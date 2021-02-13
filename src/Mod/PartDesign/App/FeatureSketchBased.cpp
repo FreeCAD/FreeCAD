@@ -80,6 +80,7 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/FeatureOffset.h>
+#include "Body.h"
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
@@ -466,7 +467,9 @@ Part::Feature *ProfileBased::getBaseObject(bool silent) const
 
     App::DocumentObject* spt = sketch->Support.getValue();
     if (spt) {
-        if (spt->isDerivedFrom(Part::Feature::getClassTypeId())) {
+        auto body = Body::findBodyOf(spt);
+        if ((body && body->BaseFeature.getValue() == spt)
+                || spt->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
             rv = static_cast<Part::Feature*>(spt);
         } else {
             err = "No base set, sketch support is not Part::Feature";

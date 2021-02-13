@@ -25,6 +25,7 @@
 #ifndef GUI_TASKVIEW_TaskAttacher_H
 #define GUI_TASKVIEW_TaskAttacher_H
 
+#include <App/DocumentObserver.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
@@ -60,6 +61,9 @@ public:
                  QString picture = QString(),
                  QString text = QString::fromLatin1("Attachment"), VisibilityFunction func = 0);
     ~TaskAttacher();
+
+    void editAfterClose(bool enable = true) {editOnClose = enable;}
+    void onClose();
 
     bool   getFlip(void) const;
 
@@ -124,6 +128,8 @@ private:
      */
     void selectMapMode(Attacher::eMapMode mmode);
 
+    void refresh();
+
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;
     std::string ObjectName;
@@ -139,10 +145,15 @@ private:
     std::vector<Attacher::eMapMode> modesInList; //this list is synchronous to what is populated into listOfModes widget.
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
+    bool editOnClose = false;
 
     typedef boost::signals2::connection Connection;
     Connection connectDelObject;
     Connection connectDelDocument;
+    Connection connectUndo;
+    Connection connectRedo;
+    App::DocumentObjectT originFeat;
+    App::SubObjectT editObjT;
 };
 
 /// simulation dialog for the TaskView
@@ -151,12 +162,20 @@ class PartGuiExport TaskDlgAttacher : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
+    TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider,
+                    bool createBox = true,
+                    const QString &picture = QString(),
+                    const QString &title = QString());
+
     ~TaskDlgAttacher();
 
     Gui::ViewProviderDocumentObject* getViewProvider() const
     { return ViewProvider; }
 
+    void editAfterClose(bool enable = true) {
+        if (parameter)
+            parameter->editAfterClose(enable);
+    }
 
 public:
     /// is called the TaskView when the dialog is opened

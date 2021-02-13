@@ -78,6 +78,9 @@ App::SubObjectT importExternalObject(const App::SubObjectT &feature, bool report
 PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true, bool assertModern=true,
         App::DocumentObject **topParent=0, std::string *subname=0);
 
+PartDesign::Body *getBody(App::SubObjectT &sobjT, 
+        bool messageIfNot=true, bool autoActivate=true, bool assertModern=true);
+
 /// Display error when there are existing Body objects, but none are active
 void needActiveBodyError(void);
 

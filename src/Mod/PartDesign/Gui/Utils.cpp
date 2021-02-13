@@ -164,6 +164,19 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
     return activeBody;
 }
 
+PartDesign::Body *getBody(App::SubObjectT &sobjT, 
+                          bool messageIfNot,
+                          bool autoActivate,
+                          bool assertModern)
+{
+    App::DocumentObject *topParent = nullptr;
+    std::string parentSub;
+    auto res = getBody(messageIfNot, autoActivate, assertModern, &topParent, &parentSub);
+    if (res)
+        sobjT = App::SubObjectT(topParent, parentSub.c_str());
+    return res;
+}
+
 void needActiveBodyError(void)
 {
     QMessageBox::warning( Gui::getMainWindow(),

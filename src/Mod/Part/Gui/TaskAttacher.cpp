@@ -39,6 +39,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/DocumentObserver.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
@@ -55,6 +56,7 @@
 #include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/SubShapeBinder.h>
 
 #include "ui_TaskAttacher.h"
 #include "TaskAttacher.h"
@@ -147,6 +149,23 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
         throw Base::RuntimeError("Object has no Part::AttachExtension");
 
+    auto editDoc = Gui::Application::Instance->editDocument();
+    if (editDoc) {
+        auto objT = editDoc->getInEditT();
+        auto sobj = objT.getSubObject();
+        if (sobj && sobj->getLinkedObject(true) == ViewProvider->getObject())
+            editObjT = objT;
+    }
+    if (editObjT.getObjectName().empty()) {
+        for (auto &sel : Gui::Selection().getSelectionT(nullptr, 0)) {
+            auto sobj = sel.getSubObject();
+            if (sobj && sobj->getLinkedObject(true) == ViewProvider->getObject()) {
+                editObjT = sel;
+                break;
+            }
+        }
+    }
+
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
@@ -196,7 +215,19 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     // Get the feature data
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<std::string> refnames = pcAttach->Support.getSubValues();
-
+    if (refnames.empty()) {
+        auto group = App::GeoFeatureGroupExtension::getGroupOfObject(ViewProvider->getObject());
+        if (group && group->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
+            auto originVp = Base::freecad_dynamic_cast<Gui::ViewProviderOrigin>(
+                    Gui::Application::Instance->getViewProvider(
+                        group->getExtensionByType<App::OriginGroupExtension>()->getOrigin()));
+            if (originVp) {
+                originFeat = originVp->getObject();
+                originVp->setTemporaryVisibility(false, true);
+            }
+        }
+    }
+                
     ui->checkBoxFlip->setChecked(pcAttach->MapReversed.getValue());
     std::vector<QString> refstrings;
     makeRefStrings(refstrings, refnames);
@@ -251,6 +282,9 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
     connectDelObject = document->signalDeletedObject.connect(bnd1);
     connectDelDocument = document->signalDeleteDocument.connect(bnd2);
+
+    connectUndo = App::GetApplication().signalUndo.connect([this]() {refresh();});
+    connectRedo = App::GetApplication().signalRedo.connect([this]() {refresh();});
 }
 
 TaskAttacher::~TaskAttacher()
@@ -261,9 +295,45 @@ TaskAttacher::~TaskAttacher()
     }
     catch (...) {
     }
-
+    
     connectDelObject.disconnect();
     connectDelDocument.disconnect();
+    connectUndo.disconnect();
+    connectRedo.disconnect();
+
+    detachSelection();
+
+    auto originVp = Base::freecad_dynamic_cast<Gui::ViewProviderOrigin>(
+            Gui::Application::Instance->getViewProvider(originFeat.getObject()));
+    if (originVp)
+        originVp->resetTemporaryVisibility();
+
+    if (editOnClose) {
+        try {
+            if (editObjT.getObjectName().size()) {
+                Gui::Selection().selStackPush();
+                Gui::Selection().addSelection(editObjT);
+            }
+            Gui::cmdGuiDocument(editObjT.getObject(),
+                    std::ostringstream() << "setEdit("
+                    << editObjT.getObjectPython() << ",0,u'"
+                    << editObjT.getSubName() << "')");
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
+    }
+}
+
+void TaskAttacher::refresh()
+{
+    if (!ViewProvider)
+        return;
+
+    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+    updateAttachmentOffsetUI();
+    updateReferencesUI();
+    updateListOfModes();
+    selectMapMode(eMapMode(pcAttach->MapMode.getValue()));
 }
 
 void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
@@ -384,39 +454,42 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         // Note: The validity checking has already been done in ReferenceSelection.cpp
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
         std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
-        std::vector<std::string> refnames = pcAttach->Support.getSubValues();
-        App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (!selObj || selObj == ViewProvider->getObject()) return;//prevent self-referencing
-        
-        std::string subname = msg.pSubName;
+        std::vector<std::string> refnames = pcAttach->Support.getSubValues(false);
+
+        App::SubObjectT sel;
+        if (msg.pOriginalMsg)
+            sel = msg.pOriginalMsg->Object;
+        else
+            sel = msg.Object;
+        auto selObj = sel.getSubObject();
+        if (!selObj)
+            return;
 
         // Remove subname for planes and datum features
-        if (selObj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
-            selObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
-            subname = "";
+        if (selObj->getLinkedObject(true)->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+            sel.setSubName(sel.getSubNameNoElement());
+
+        if (editObjT.getSubObject())
+            sel = Part::SubShapeBinder::import(sel, editObjT, true);
+        selObj = sel.getSubObject();
+        auto selElement = sel.getOldElementName();
 
         // eliminate duplicate selections
-        for (size_t r = 0; r < refs.size(); r++)
-            if ((refs[r] == selObj) && (refnames[r] == subname))
-                return;
-
-        if (autoNext && iActiveRef > 0 && iActiveRef == (ssize_t) refnames.size()){
-            if (refs[iActiveRef-1] == selObj
-                && refnames[iActiveRef-1].length() != 0 && subname.length() == 0){
-                //A whole object was selected by clicking it twice. Fill it
-                //into previous reference, where a sub-named reference filled by
-                //the first click is already stored.
-
-                iActiveRef--;
+        for (size_t r = 0; r < refs.size(); r++) {
+            if (selObj == refs[r]) {
+                if (refnames[r].empty() || refnames[r] == selElement)
+                    return;
+                if (selElement.empty()) {
+                    if (autoNext && iActiveRef > 0 && iActiveRef == (ssize_t) refnames.size())
+                        --iActiveRef;
+                    refs.erase(refs.begin() + r);
+                    refnames.erase(refnames.begin() + r);
+                    break;
+                }
             }
         }
-        if (iActiveRef < (ssize_t) refs.size()) {
-            refs[iActiveRef] = selObj;
-            refnames[iActiveRef] = subname;
-        } else {
-            refs.push_back(selObj);
-            refnames.push_back(subname);
-        }
+        refs.push_back(selObj);
+        refnames.push_back(selElement);
 
         //bool error = false;
         try {
@@ -442,8 +515,8 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         QLineEdit* line = getLine(iActiveRef);
         if (line != NULL) {
             line->blockSignals(true);
-            line->setText(makeRefString(selObj, subname));
-            line->setProperty("RefName", QByteArray(subname.c_str()));
+            line->setText(makeRefString(selObj, selElement));
+            line->setProperty("RefName", QByteArray(selElement.c_str()));
             line->blockSignals(false);
         }
 
@@ -1060,14 +1133,17 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox)
+TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider,
+                                 bool createBox,
+                                 const QString &picture,
+                                 const QString &title)
     : TaskDialog(),ViewProvider(ViewProvider), parameter(nullptr)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
 
     if(createBox) {
-        parameter  = new TaskAttacher(ViewProvider);
+        parameter  = new TaskAttacher(ViewProvider, nullptr, picture, title);
         Content.push_back(parameter);
     }
 }

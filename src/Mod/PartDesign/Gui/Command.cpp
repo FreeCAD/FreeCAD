@@ -68,6 +68,8 @@
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
+#include <Mod/Part/Gui/TaskAttacher.h>
+
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"
 #include "Utils.h"
@@ -586,11 +588,14 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     PartDesign::Body *pcActiveBody( nullptr );
     auto shouldMakeBody( false );
 
+    App::SubObjectT bodyT;
+    App::SubObjectT reference;
+
     if ( PartDesignGui::assureModernWorkflow( doc ) ) {
         // We need either an active Body, or for there to be no Body
         // objects (in which case, just make one) to make a new sketch.
 
-        pcActiveBody = PartDesignGui::getBody( /* messageIfNot = */ false );
+        pcActiveBody = PartDesignGui::getBody(bodyT, /* messageIfNot = */ false );
         if (pcActiveBody == nullptr) {
             if ( doc->getObjectsOfType(PartDesign::Body::getClassTypeId()).empty() ) {
                 shouldMakeBody = true;
@@ -609,314 +614,95 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         return;
     }
 
-    // Hint:
-    // The behaviour of this command has changed with respect to a selected sketch:
-    // It doesn't try any more to edit a selected sketch but always tries to create
-    // a new sketch.
-    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=44070
-
-    Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
-    Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
-    Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1");
-
-    if (PlaneFilter2.match())
-        PlaneFilter = PlaneFilter2;
-
-    if ( FaceFilter.match() || PlaneFilter.match() ) {
-        if (!pcActiveBody) {
-            // We shouldn't make a new Body in this case, because that means
-            // the source shape of the face/plane would be outside the Body.
-            PartDesignGui::getBody( /* messageIfNot = */ true );
-            return;
-        }
-
-        // get the selected object
-        std::string supportString;
-        App::DocumentObject* obj;
-
-        if (FaceFilter.match()) {
-            Gui::SelectionObject faceSelObject = FaceFilter.Result[0][0];
-            const std::vector<std::string>& subNames = faceSelObject.getSubNames();
-            obj = faceSelObject.getObject();
-
-            if (!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return;
-
-            // In case the selected face belongs to the body then it means its
-            // Display Mode Body is set to Tip. But the body face is not allowed
-            // to be used as support because otherwise it would cause a cyclic
-            // dependency. So, instead we use the tip object as reference.
-            // https://forum.freecadweb.org/viewtopic.php?f=3&t=37448
-            if (obj == pcActiveBody) {
-                App::DocumentObject* tip = pcActiveBody->Tip.getValue();
-                if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId()) && subNames.size() == 1) {
-                    Gui::SelectionChanges msg;
-                    msg.pDocName = faceSelObject.getDocName();
-                    msg.pObjectName = tip->getNameInDocument();
-                    msg.pSubName = subNames[0].c_str();
-                    msg.pTypeName = tip->getTypeId().getName();
-
-                    faceSelObject = Gui::SelectionObject(msg);
-                    obj = tip;
-
-                    // automatically switch to 'Through' mode
-                    PartDesignGui::ViewProviderBody* vpBody = dynamic_cast<PartDesignGui::ViewProviderBody*>
-                            (Gui::Application::Instance->getViewProvider(pcActiveBody));
-                    if (vpBody) {
-                        vpBody->DisplayModeBody.setValue("Through");
-                    }
-                }
-            }
-
-            Part::Feature* feat = static_cast<Part::Feature*>(obj);
-
-            if (subNames.size() > 1) {
-                // No assert for wrong user input!
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
-                    QObject::tr("You have to select a single face as support for a sketch!"));
-                return;
-            }
-
-            // get the selected sub shape (a Face)
-            const Part::TopoShape &shape = feat->Shape.getValue();
-            TopoDS_Shape sh = shape.getSubShape(subNames[0].c_str());
-            const TopoDS_Face& face = TopoDS::Face(sh);
-            if (face.IsNull()) {
-                // No assert for wrong user input!
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No support face selected"),
-                    QObject::tr("You have to select a face as support for a sketch!"));
-                return;
-            }
-
-            BRepAdaptor_Surface adapt(face);
-            if (adapt.GetType() != GeomAbs_Plane) {
-                TopLoc_Location loc;
-                Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-                if (surf.IsNull() || !GeomLib_IsPlanarSurface(surf).IsPlanar()) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
+    // Obtain a single selection from any object in any document. We'll use
+    // SubShapeBinder::import() to deal with external references.
+    auto sels = Gui::Selection().getSelectionT("*", 0, true);
+    App::DocumentObject *obj = nullptr;
+    if (!sels.empty() && (obj = sels[0].getSubObject())!=nullptr) {
+        reference = sels[0];
+        obj = obj->getLinkedObject(true);
+        if (!obj->isDerivedFrom(App::Plane::getClassTypeId())
+                && !obj->isDerivedFrom(PartDesign::Plane::getClassTypeId()))
+        {
+            auto shape = Part::Feature::getTopoShape(reference.getObject(),
+                                                     reference.getSubName().c_str(),
+                                                     true);
+            gp_Pln pln;
+            if (!shape.findPlane(pln)) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
                         QObject::tr("You need a planar face as support for a sketch!"));
-                    return;
-                }
-            }
-
-            supportString = faceSelObject.getAsPropertyLinkSubString();
-        }
-        else {
-            obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
-            supportString = getObjectCmd(obj,"(",",'')");
-        }
-
-
-        if (!pcActiveBody->hasObject(obj)) {
-            if ( !obj->isDerivedFrom ( App::Plane::getClassTypeId() ) )  {
-                // TODO check here if the plane associated with right part/body (2015-09-01, Fat-Zer)
-
-                auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
-
-                //check the prerequisites for the selected objects
-                //the user has to decide which option we should take if external references are used
-                // TODO share this with UnifiedDatumCommand() (2015-10-20, Fat-Zer)
-                QDialog dia(Gui::getMainWindow());
-                PartDesignGui::Ui_DlgReference dlg;
-                dlg.setupUi(&dia);
-                dia.setModal(true);
-                int result = dia.exec();
-                if (result == QDialog::DialogCode::Rejected)
-                    return;
-                else if (!dlg.radioXRef->isChecked()) {
-                    openCommand(QT_TRANSLATE_NOOP("Command", "Make copy"));
-                    std::string sub;
-                    if (FaceFilter.match())
-                        sub = FaceFilter.Result[0][0].getSubNames()[0];
-                    auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub, dlg.radioIndependent->isChecked());
-
-                    if (pcActiveBody)
-                        pcActiveBody->addObject(copy);
-                    else if (pcActivePart)
-                        pcActivePart->addObject(copy);
-
-                    if (PlaneFilter.match())
-                        supportString = getObjectCmd(copy,"(",",'')");
-                    else
-                        //it is ensured that only a single face is selected, hence it must always be Face1 of the shapebinder
-                        supportString = getObjectCmd(copy,"(",",'Face1')");
-                    commitCommand();
-                }
+                return;
             }
         }
 
-        // create Sketch on Face or Plane
-        std::string FeatName = getUniqueObjectName("Sketch",pcActiveBody);
-
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
-        Gui::cmdAppObject(pcActiveBody, std::ostringstream()
-                << "newObjectAt('Sketcher::SketchObject', '" << FeatName << "', "
-                            <<  "FreeCADGui.Selection.getSelection())");
-        auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-        Gui::cmdAppObject(Feat, std::ostringstream() <<"Support = " << supportString);
-        Gui::cmdAppObject(Feat, std::ostringstream() <<"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
-        updateActive();
-        PartDesignGui::setEdit(Feat,pcActiveBody);
+        // In case the selected face belongs to the body then it means its
+        // Display Mode Body is set to Tip. But the body face is not allowed
+        // to be used as support because otherwise it would cause a cyclic
+        // dependency. So, instead we use the tip object as reference.
+        // https://forum.freecadweb.org/viewtopic.php?f=3&t=37448
+        if (obj == pcActiveBody) {
+            App::DocumentObject* tip = pcActiveBody->Tip.getValue();
+            if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId())) {
+                reference.setSubName(reference.getSubNameNoElement()
+                        + tip->getNameInDocument() + "." + reference.getOldElementName());
+                // automatically switch to 'Through' mode
+                PartDesignGui::ViewProviderBody* vpBody = dynamic_cast<PartDesignGui::ViewProviderBody*>
+                        (Gui::Application::Instance->getViewProvider(pcActiveBody));
+                if (vpBody) {
+                    vpBody->DisplayModeBody.setValue("Through");
+                }
+            }
+        }
+    } else {
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearSelection();
     }
-    else {
-        App::GeoFeatureGroupExtension *geoGroup( nullptr );
-        if (pcActiveBody) {
-            auto group( App::GeoFeatureGroupExtension::getGroupOfObject(pcActiveBody) );
-            if (group) {
-                geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
-            }
-        }
 
-        std::vector<App::DocumentObject*> planes;
-        std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
-
-        // Start command early, so undo will undo any Body creation
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
-        if (shouldMakeBody) {
-            pcActiveBody = PartDesignGui::makeBody(doc);
-            if ( !pcActiveBody ) {
-                Base::Console().Error("Failed to create a Body object");
-                return;
-            }
-        }
-
-        // At this point, we have pcActiveBody
-
-        unsigned validPlaneCount = 0;
-
-        // Baseplanes are preapproved
-        try {
-            for ( auto plane: pcActiveBody->getOrigin ()->planes() ) {
-                planes.push_back (plane);
-                status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
-                validPlaneCount++;
-            }
-        } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what() );
-        }
-
-        auto datumPlanes( getDocument()->getObjectsOfType(PartDesign::Plane::getClassTypeId()) );
-        for (auto plane: datumPlanes) {
-            planes.push_back ( plane );
-            // Check whether this plane belongs to the active body
-            if ( pcActiveBody->hasObject(plane) ) {
-                if ( !pcActiveBody->isAfterInsertPoint ( plane ) ) {
-                    validPlaneCount++;
-                    status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
-                } else {
-                    status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
-                }
-            } else {
-                PartDesign::Body *planeBody = PartDesign::Body::findBodyOf (plane);
-                if ( planeBody ) {
-                    if ( ( geoGroup && geoGroup->hasObject ( planeBody, true ) ) ||
-                           !App::GeoFeatureGroupExtension::getGroupOfObject (planeBody) ) {
-                        status.push_back ( PartDesignGui::TaskFeaturePick::otherBody );
-                    } else {
-                        status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
-                    }
-                } else {
-                    if ( ( geoGroup && geoGroup->hasObject ( plane, true ) ) ||
-                           !App::GeoFeatureGroupExtension::getGroupOfObject ( plane ) ) {
-                        status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
-                    } else {
-                        status.push_back ( PartDesignGui::TaskFeaturePick::notInBody );
-                    }
-                }
-            }
-        }
-
-        // Collect also shape binders consisting of a single planar face
-        auto shapeBinders( getDocument()->getObjectsOfType(PartDesign::ShapeBinder::getClassTypeId()) );
-        auto binders( getDocument()->getObjectsOfType(Part::SubShapeBinder::getClassTypeId()) );
-        shapeBinders.insert(shapeBinders.end(),binders.begin(),binders.end());
-        for (auto binder : shapeBinders) {
-            // Check whether this plane belongs to the active body
-            if (pcActiveBody->hasObject(binder)) {
-                TopoDS_Shape shape = static_cast<Part::Feature*>(binder)->Shape.getValue();
-                if (!shape.IsNull() && shape.ShapeType() == TopAbs_FACE) {
-                    const TopoDS_Face& face = TopoDS::Face(shape);
-                    TopLoc_Location loc;
-                    Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-                    if (!surf.IsNull() && GeomLib_IsPlanarSurface(surf).IsPlanar()) {
-                        if (!pcActiveBody->isAfterInsertPoint (binder)) {
-                            validPlaneCount++;
-                            planes.push_back(binder);
-                            status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Determines if user made a valid selection in dialog
-        auto accepter = [](const std::vector<App::DocumentObject*>& features) -> bool {
-            return !features.empty();
-        };
-
-        // Called by dialog when user hits "OK" and accepter returns true
-        auto worker = [=](const std::vector<App::DocumentObject*>& features) {
-            // may happen when the user switched to an empty document while the
-            // dialog is open
-            if (features.empty())
-                return;
-            App::Plane* plane = static_cast<App::Plane*>(features.front());
-            std::string FeatName = getUniqueObjectName("Sketch",pcActiveBody);
-            std::string supportString = getObjectCmd(plane,"(",",[''])");
-
-            Gui::cmdAppObject(pcActiveBody, std::ostringstream()
-                    << "newObjectAt('Sketcher::SketchObject', '" << FeatName << "', "
-                                <<  "FreeCADGui.Selection.getSelection())");
-            auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"Support = " << supportString);
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
-            Gui::Command::updateActive(); // Make sure the Support's Placement property is updated
-            PartDesignGui::setEdit(Feat,pcActiveBody);
-        };
-
-        // Called by dialog for "Cancel", or "OK" if accepter returns false
-        std::string docname = doc->getName();
-        auto quitter = [docname]() {
-            Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
-            if (document)
-                document->abortCommand();
-        };
-
-        if (validPlaneCount == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid planes in this document"),
-                QObject::tr("Please create a plane first or select a face to sketch on"));
-            quitter();
+    // Start command early, so undo will undo any Body creation
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+    if (shouldMakeBody) {
+        pcActiveBody = PartDesignGui::makeBody(doc);
+        if ( !pcActiveBody ) {
+            Base::Console().Error("Failed to create a Body object");
             return;
-
-        } else if (validPlaneCount == 1) {
-            worker(planes);
-
-        } else if (validPlaneCount > 1) {
-            // Show dialog and let user pick plane
-           Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-           PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
-           if (dlg && !pickDlg) {
-                QMessageBox msgBox;
-                msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-                msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-                msgBox.setDefaultButton(QMessageBox::Yes);
-                int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes)
-                    Gui::Control().closeDialog();
-                else {
-                    quitter();
-                    return;
-                }
-            }
-
-            if (dlg)
-                Gui::Control().closeDialog();
-
-            Gui::Selection().clearSelection();
-            Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
-            App::AutoTransaction::setEnable(false);
         }
+    }
+
+    PartDesignGui::getBody(bodyT, false);
+    if (reference.getObjectName().size())
+        reference = Part::SubShapeBinder::import(reference, bodyT, true);
+
+    // create Sketch on Face or Plane
+    std::string FeatName = getUniqueObjectName("Sketch",pcActiveBody);
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
+    Gui::cmdAppObject(pcActiveBody, std::ostringstream()
+            << "newObjectAt('Sketcher::SketchObject', '" << FeatName << "', "
+                        <<  "FreeCADGui.Selection.getSelection())");
+    auto sketch = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    if (!reference.getObjectName().empty()) {
+        Gui::cmdAppObject(sketch, std::ostringstream() <<"Support = " << reference.getSubObjectPython());
+        Gui::cmdAppObject(sketch, std::ostringstream() <<"MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
+        updateActive();
+        PartDesignGui::setEdit(sketch,pcActiveBody);
+        return;
+    }
+
+    // No attachment reference. Open attachment task panel
+    auto sketchvp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
+            Gui::Application::Instance->getViewProvider(sketch));
+    if (sketchvp) {
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearSelection();
+        // Add selection so that TaskAttacher can deduce editing context
+        Gui::Selection().addSelection(bodyT.getChild(sketch));
+        Gui::Control().closeDialog();
+        auto task = new PartGui::TaskDlgAttacher(sketchvp,
+                                                 true,
+                                                 QString::fromLatin1("Sketcher_Sketch"),
+                                                 QObject::tr("Sketch attachment"));
+        task->editAfterClose();
+        Gui::Control().showDialog(task);
     }
 }
 
