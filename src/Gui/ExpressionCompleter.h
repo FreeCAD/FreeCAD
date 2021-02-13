@@ -51,7 +51,7 @@ class GuiExport ExpressionCompleter : public QCompleter
     Q_OBJECT
 public:
     ExpressionCompleter(const App::DocumentObject * currentDocObj,
-            QObject *parent = 0, bool noProperty = false);
+            QObject *parent = nullptr, bool noProperty = false);
 
     void getPrefixRange(int &start, int &end) const {
         start = prefixStart;
@@ -87,7 +87,7 @@ private:
 class GuiExport ExpressionLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    ExpressionLineEdit(QWidget *parent = 0, bool noProperty = false, bool requireLeadingEqualSign = false);
+    ExpressionLineEdit(QWidget *parent = nullptr, bool noProperty = false, bool requireLeadingEqualSign = false);
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();
@@ -112,7 +112,7 @@ private:
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {
     Q_OBJECT
 public:
-    ExpressionTextEdit(QWidget *parent = 0);
+    ExpressionTextEdit(QWidget *parent = nullptr);
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();

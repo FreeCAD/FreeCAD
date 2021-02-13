@@ -473,8 +473,8 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // No tokens
     if (tokens.size() == 0) {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
         return;
     }
 
@@ -520,8 +520,8 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // Not an unclosed string and the last character is a space
     if(!stringing && prefix.size() && prefix[prefixEnd-1] == QChar(32)) {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
         return;
     }
 
@@ -560,14 +560,14 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     if (!completionPrefix.empty() && widget()->hasFocus())
         complete();
     else {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
     }
 }
 
 ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, bool requireLeadingEqualSign)
     : QLineEdit(parent)
-    , completer(0)
+    , completer(nullptr)
     , block(true)
     , noProperty(noProperty)
     , exactMatch(false)
@@ -681,7 +681,7 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 
 ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     : QPlainTextEdit(parent)
-    , completer(0)
+    , completer(nullptr)
     , block(true)
     , exactMatch(false)
 {
@@ -703,7 +703,7 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
         return;
     }
 
-    if (currentDocObj != 0) {
+    if (currentDocObj != nullptr) {
         completer = new ExpressionCompleter(currentDocObj, this);
 #if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)
