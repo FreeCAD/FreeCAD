@@ -143,7 +143,7 @@ def orientWire(w, forward=True):
         PathLog.track('orientWire - ok')
     return wire
 
-def offsetWire(wire, base, offset, forward):
+def offsetWire(wire, base, offset, forward, Side = None):
     '''offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
@@ -163,6 +163,9 @@ def offsetWire(wire, base, offset, forward):
                 if offset > curve.Radius or PathGeom.isRoughly(offset, curve.Radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
                     return None
+                if Side:
+                    Side[0] = "Inside"
+                    print("inside")
                 new_edge = Part.makeCircle(curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z))
             
             return Part.Wire([new_edge])
@@ -186,6 +189,9 @@ def offsetWire(wire, base, offset, forward):
             # Inside / Outside
             if base.isInside(edge.Vertexes[0].Point, offset/2, True):
                 offset *= -1
+                if Side:
+                    print("inside")
+                    Side[0] = "Inside"
 
             # Create new arc
             edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius+offset), start_angle, end_angle).toShape()
@@ -223,12 +229,12 @@ def offsetWire(wire, base, offset, forward):
     if wire.isClosed():
         if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset/2, True):
             PathLog.track('closed - outside')
-            # if Side:
-            #     Side[0] = "Outside"
+            if Side:
+                Side[0] = "Outside"
             return orientWire(owire, forward)
         PathLog.track('closed - inside')
-        # if Side:
-        #     Side[0] = "Inside"
+        if Side:
+            Side[0] = "Inside"
         try:
             owire = wire.makeOffset2D(-offset)
         except Exception: # pylint: disable=broad-except
