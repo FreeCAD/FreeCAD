@@ -128,7 +128,7 @@ void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
                 Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
                 if(vp) {
                     if (saveState) {
-                        tempVisMap[vp] = vp->isVisible();
+                        tempVisMap.emplace(vp, vp->isVisible());
                     }
                     vp->setVisible(axis);
                 }
@@ -141,7 +141,7 @@ void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
                 Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(obj);
                 if(vp) {
                     if (saveState) {
-                        tempVisMap[vp] = vp->isVisible();
+                        tempVisMap.emplace(vp, vp->isVisible());
                     }
                     vp->setVisible(plane);
                 }
@@ -152,7 +152,7 @@ void ViewProviderOrigin::setTemporaryVisibility(bool axis, bool plane) {
     }
 
     // Remember & Set self visibility
-    tempVisMap[this] = isVisible();
+    tempVisMap.emplace(this, isVisible());
     setVisible(true);
 
 }
