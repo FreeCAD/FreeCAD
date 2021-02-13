@@ -372,6 +372,10 @@ void ExpressionCompleter::setNoProperty(bool enabled) {
         static_cast<ExpressionCompleterModel*>(m)->setNoProperty(enabled);
 }
 
+void ExpressionCompleter::setRequireLeadingEqualSign(bool enabled) {
+    requireLeadingEqualSign = enabled;
+}
+
 QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
 {
     auto m = model();
@@ -455,6 +459,12 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // Compute start; if prefix starts with =, start parsing from offset 1.
     int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
+
+    if (requireLeadingEqualSign && start != 1) {
+        if (auto p = popup())
+            p->setVisible(false);
+        return;
+    }
 
     std::string expression = Base::Tools::toStdString(prefix.mid(start));
 
@@ -555,12 +565,13 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 }
 
-ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
+ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, bool requireLeadingEqualSign)
     : QLineEdit(parent)
     , completer(0)
     , block(true)
     , noProperty(noProperty)
     , exactMatch(false)
+    , requireLeadingEqualSign(requireLeadingEqualSign)
 {
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
@@ -575,6 +586,7 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer = new ExpressionCompleter(currentDocObj, this, noProperty);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
+        completer->setRequireLeadingEqualSign(requireLeadingEqualSign);
 #if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
