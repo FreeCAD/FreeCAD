@@ -71,6 +71,7 @@ public:
     virtual void registerPressedKey(bool /*pressed*/, int /*key*/){}
 
     virtual bool allowExternalPick() const {return false;}
+    virtual bool allowExternalDocument() const {return false;}
 
     virtual void quit(void);
 

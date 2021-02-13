@@ -6053,14 +6053,16 @@ public:
         return true;
     }
 
+    virtual bool allowExternalDocument() const {return true;}
+
     virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
-            App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+            App::DocumentObject* obj = msg.Object.getObject();
             if (obj == NULL)
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
 
-            std::string subName(msg.pSubName);
+            std::string subName = msg.Object.getOldElementName();
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
                 obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
                 (subName.size() > 4 && subName.substr(0,4) == "Edge") ||
@@ -6076,16 +6078,20 @@ public:
                             ss << geoId << ',';
                         ss << ']';
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                "attachExternal(%s, Part.importExternalObject(%s, %s))",
+                                "attachExternal(%s, Part.importExternalObject(%s, %s, noSubObject=True))",
                                 ss.str(),
-                                msg.Object.getSubObjectPython(false),
+                                msg.pOriginalMsg ?
+                                    msg.pOriginalMsg->Object.getSubObjectPython() :
+                                    msg.Object.getSubObjectPython(),
                                 sketchgui->getEditingContext().getSubObjectPython(false));
                     } else {
                         Gui::Command::openCommand(
                                 QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                "addExternal(Part.importExternalObject(%s, %s),%s)",
-                                msg.Object.getSubObjectPython(false),
+                                "addExternal(Part.importExternalObject(%s, %s, noSubObject=True),%s)",
+                                msg.pOriginalMsg ?
+                                    msg.pOriginalMsg->Object.getSubObjectPython() :
+                                    msg.Object.getSubObjectPython(),
                                 sketchgui->getEditingContext().getSubObjectPython(false),
                                 defining?"True":"False");
                     }

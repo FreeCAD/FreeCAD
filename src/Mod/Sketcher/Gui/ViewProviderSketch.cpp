@@ -1714,16 +1714,20 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // are we in edit?
     if (edit) {
-        // ignore external object
-        if(msg.Object.getObjectName().size() && msg.Object.getDocument()!=getObject()->getDocument())
-            return;
-
         bool handled=false;
         if (Mode == STATUS_SKETCH_UseHandler) {
+            if (!edit->sketchHandler->allowExternalDocument()
+                    && msg.Object.getObjectName().size()
+                    && msg.Object.getDocument()!=getObject()->getDocument())
+                return;
             App::AutoTransaction committer;
             handled = edit->sketchHandler->onSelectionChanged(msg);
         }
         if (handled)
+            return;
+
+        // ignore external object
+        if(msg.Object.getObjectName().size() && msg.Object.getDocument()!=getObject()->getDocument())
             return;
 
         std::string temp;
