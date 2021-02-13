@@ -231,8 +231,12 @@ public:
     /// Return the sub-element (Face, Edge, etc) of the subname path
     const char *getElementName() const;
 
-    /// Return the new style sub-element name
-    std::string getNewElementName() const;
+    /** Return the new style sub-element name
+     *
+     * @param fallback: if true, then fallback to old style element name if
+     * there is no new style name.
+     */
+    std::string getNewElementName(bool fallback=true) const;
 
     /** Return the old style sub-element name
      * @param index: if given, then return the element type, and extract the index

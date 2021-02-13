@@ -409,13 +409,15 @@ const char *SubObjectT::getElementName() const {
     return Data::ComplexGeoData::findElementName(subname.c_str());
 }
 
-std::string SubObjectT::getNewElementName() const {
+std::string SubObjectT::getNewElementName(bool fallback) const {
     std::pair<std::string, std::string> element;
     auto obj = getObject();
     if(!obj)
         return std::string();
     GeoFeature::resolveElement(obj,subname.c_str(),element);
-    return std::move(element.first);
+    if (element.first.size() || !fallback)
+        return std::move(element.first);
+    return std::move(element.second);
 }
 
 std::string SubObjectT::getOldElementName(int *index) const {
