@@ -45,6 +45,7 @@
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/ActionFunction.h>
 
 #include <Mod/Part/App/SubShapeBinder.h>
 #include <Mod/Part/Gui/PartParams.h>
@@ -218,11 +219,73 @@ bool ViewProviderSubShapeBinder::doubleClicked() {
 
 void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) 
 {
+    auto self = Base::freecad_dynamic_cast<Part::SubShapeBinder>(getObject());
+    if (!self)
+        return;
+
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act;
     act = menu->addAction(QObject::tr("Synchronize"), receiver, member);
-    act->setData(QVariant((int)0));
-    act = menu->addAction(QObject::tr("Select bound object"), receiver, member);
-    act->setData(QVariant((int)0x81));
+    func->trigger(act, [this]() {updatePlacement(false);});
+
+    if(self->Support.getValue()) {
+        if (self->BindMode.getValue() <= 1) {
+            act = menu->addAction(QObject::tr("Toggle freeze"), receiver, member);
+            func->trigger(act, [self]() {
+                App::AutoTransaction committer(
+                    self->BindMode.getValue() == 1 ? 
+                        "Unfreeze shape binder" : "Freeze shape binder");
+                try {
+                    if (self->BindMode.getValue() == 0)
+                        self->BindMode.setValue((long)1);
+                    else
+                        self->BindMode.setValue((long)0);
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            });
+
+            act = menu->addAction(QObject::tr("Detach"), receiver, member);
+            func->trigger(act, [self]() {
+                App::AutoTransaction committer("Detach shape binder");
+                try {
+                    self->BindMode.setValue((long)2);
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            });
+        } else {
+            act = menu->addAction(QObject::tr("Reset bind mode"), receiver, member);
+            func->trigger(act, [self]() {
+                App::AutoTransaction committer("Reset bind mode");
+                try {
+                    self->BindMode.setValue((long)0);
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            });
+        }
+
+        act = menu->addAction(QObject::tr("Select bound object"), receiver, member);
+        func->trigger(act, [self]() {
+            Gui::Selection().selStackPush();
+            Gui::Selection().clearSelection();
+            for(auto &link : self->Support.getSubListValues()) {
+                auto obj = link.getValue();
+                if(!obj || !obj->getNameInDocument())
+                    continue;
+                const auto &subs = link.getSubValues();
+                if(subs.size())
+                    Gui::Selection().addSelections(obj->getDocument()->getName(),
+                            obj->getNameInDocument(),subs);
+                else
+                    Gui::Selection().addSelection(obj->getDocument()->getName(),
+                            obj->getNameInDocument());
+            }
+            Gui::Selection().selStackPush();
+        });
+    }
+
     ViewProviderPart::setupContextMenu(menu,receiver,member);
 }
 
