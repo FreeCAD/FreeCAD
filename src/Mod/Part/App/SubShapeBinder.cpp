@@ -130,7 +130,7 @@ SubShapeBinder::~SubShapeBinder() {
 }
 
 void SubShapeBinder::setupObject() {
-    _Version.setValue(6);
+    _Version.setValue(7);
     checkPropertyStatus();
 }
 
@@ -860,9 +860,71 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
             if(BindMode.getValue()==2 && Support.getSubListValues().size())
                 Support.setValue(0);
         }
+
+        if (prop == &Label)
+            slotLabelChanged();
+    }
+
+    // Regardless of restoring or undo, we'll check the support for lable
+    // synchronization
+    if (prop == &Support && _Version.getValue() >= 7) {
+        connLabelChange.disconnect();
+        if (Support.getValue()) {
+            auto &xlink = Support.getSubListValues().front();
+            const auto &subs = xlink.getSubValues();
+            auto linked = xlink.getValue();
+            if (linked) {
+                linked = linked->getSubObject(subs.empty() ? "" : subs[0].c_str());
+                if (linked) {
+                    connLabelChange = linked->Label.signalChanged.connect(
+                            boost::bind(&SubShapeBinder::slotLabelChanged, this));
+                    slotLabelChanged();
+                }
+            }
+        }
     }
 
     inherited::onChanged(prop);
+}
+
+void SubShapeBinder::slotLabelChanged()
+{
+    if (!getDocument()
+            || !getNameInDocument()
+            || isRestoring()
+            || getDocument()->isPerformingTransaction()
+            || _Version.getValue() < 7)
+        return;
+
+    std::string prefix = getNameInDocument();
+    prefix += "(";
+    if (Label.getStrValue() != getNameInDocument()
+            && !boost::starts_with(Label.getStrValue(), prefix))
+        return;
+
+    if (Support.getSize()) {
+        auto &xlink = Support.getSubListValues().front();
+        const auto &subs = xlink.getSubValues();
+        auto linked = xlink.getValue()->getSubObject(subs.empty() ? "" : subs[0].c_str());
+        if (linked) {
+            std::string label;
+            if (linked->isDerivedFrom(SubShapeBinder::getClassTypeId())) {
+                std::string p = linked->getNameInDocument();
+                p += "(";
+                if (boost::starts_with(linked->Label.getValue(), p))
+                    label = prefix + "*" + (linked->Label.getValue() + p.size());
+            }
+            if (label.empty())
+                label = prefix + linked->Label.getValue();
+            if (Support.getSize() > 1 || subs.size() > 1)
+                label += ")...";
+            else
+                label += ")";
+            Label.setValue(label);
+            return;
+        }
+    }
+    Label.setValue(prefix + "?)");
 }
 
 void SubShapeBinder::checkCopyOnChange(const App::Property &prop) {
@@ -1120,10 +1182,6 @@ SubShapeBinder::import(const App::SubObjectT &feature,
     if (resolvedSub.size())
         supportSubs.push_back(std::move(resolvedSub));
     binder->setLinks(std::move(support));
-    std::string label = sobj->Label.getValue();
-    if (!boost::starts_with(label, "Import_"))
-        label = std::string("Import_") + label;
-    binder->Label.setValue(label.c_str());
     if (element.size()) {
         binder->getDocument()->recomputeFeature(binder);
         auto res = Part::Feature::getElementFromSource(binder, "", sobj, element.c_str(), true);

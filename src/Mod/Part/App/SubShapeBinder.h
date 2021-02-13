@@ -107,9 +107,13 @@ protected:
 
     void slotRecomputedObject(const App::DocumentObject& Obj);
 
+    void slotLabelChanged();
+
     typedef boost::signals2::scoped_connection Connection;
     Connection connRecomputedObj;
     App::Document *contextDoc = 0;
+
+    Connection connLabelChange;
 
     std::vector<Connection> copyOnChangeConns;
     bool hasCopyOnChange = true;
