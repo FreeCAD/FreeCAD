@@ -68,7 +68,7 @@ class Arc(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Arc, self).Activated(name=translate("draft","Arc")
+        super(Arc, self).Activated(name=translate("draft","Arc"))
         if self.ui:
             self.step = 0
             self.center = None
