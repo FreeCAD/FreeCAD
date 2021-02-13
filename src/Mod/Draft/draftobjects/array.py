@@ -35,6 +35,7 @@ split in separate classes so that they are easier to manage.
 # @{
 import math
 import json
+import re
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -389,29 +390,6 @@ class Array(DraftLink):
                            "NumberPolar", "Angle", "IntervalAxis"):
                     obj.setPropertyStatus(pr, "Hidden")
 
-    def parse_skip_list(self, obj):
-        """
-            Parses obj.Skip as a list of integers.
-            The reason for parsing this ourselves instead of using PropertyIntegerList
-            is so that we can handle failure silently
-        """
-        try:
-            skip_list_raw = json.loads(obj.Skip)
-        except json.decoder.JSONDecodeError:
-            return []
-
-        if not isinstance(skip_list_raw, list):
-            return []
-
-        skip_list = []
-
-        for s in skip_list_raw:
-            if isinstance(s, int):
-                skip_list.append(s)
-
-        return skip_list
-
-
     def execute(self, obj):
         """Execture when the object is created or recomputed."""
         if not obj.Base:
@@ -432,7 +410,7 @@ class Array(DraftLink):
                          "reference.")
                 raise TypeError(_info)
 
-        skip_list = self.parse_skip_list(obj)
+        skip_list = parse_skip_list(obj.Skip)
 
         if obj.ArrayType == "ortho":
             pls = rect_placements(obj.Base.Placement,
@@ -576,5 +554,65 @@ def circ_placements(base_placement,
             count += 1
 
     return placements
+
+
+def parse_skip_list(skip_expression):
+    """
+        Parses a skip expression (as found in obj.Skip) as a list of integers.
+
+        The reason for parsing this ourselves instead of using PropertyIntegerList
+        is so that we can handle failure silently, and support more advanced indexing.
+
+        Syntax:
+        ========
+
+        Skip expressions are expanded in a python like way
+
+        Example 1: skip_expression = 1:5
+            Will be expanded to [1, 2, 3, 4]
+
+        Example 2: skip_expression = [2:5, 9]
+            Will be expanded to [2, 3, 4, 9]
+
+        Example 3: skip_expression = [1, 3:7:2, 9]
+            Will be expanded to [1, 3, 5, 9]
+    """
+
+    matches = re.finditer(r"(?P<A>-?\d+):(?P<B>-?\d*)(:(?P<C>-?\d+))*", skip_expression)
+
+    skip_list = []
+
+    if matches:
+        for m in matches:
+            d = m.groupdict()
+            d = {k:None if d[k] is None else int(d[k]) for k in d}
+
+            # some input checking
+            if d['A'] < 0 or d['B'] < 0 or (d['C'] is not None and d['C'] < 0):
+                App.Console.PrintError("Draft-Array parse Skip expression: Negative index not supported yet. -> skipping pattern\n")
+            else:
+                if d['C']:
+                    skip_list.extend(range(d['A'], d['B'], d['C']))
+                else:
+                    skip_list.extend(range(d['A'], d['B']))
+
+            skip_expression = skip_expression.replace(m.group(), '-0.1')  # hack: we use a float as a marker in order have valid json, but not a valid index.
+
+    try:
+        skip_list_raw = json.loads(skip_expression)
+    except json.decoder.JSONDecodeError:
+        return skip_list
+
+    if not isinstance(skip_list_raw, list):
+        return skip_list
+
+    for s in skip_list_raw:
+        if isinstance(s, int):
+            if s < 0:
+                App.Console.PrintError("Draft-Array-Skip parse Skip expression: Negative index not supported yet. -> skipping pattern")
+                continue
+            skip_list.append(s)
+
+    return skip_list
 
 ## @}
