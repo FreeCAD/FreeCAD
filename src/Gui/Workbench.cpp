@@ -669,6 +669,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_DependencyGraph"
           << "Std_ProjectUtil"
           << "Std_PickGeometry"
+          << "Std_ItemMenu"
           << "Separator"
           << "Std_CmdHistory"
           << "Std_CmdToolbarMenus"

@@ -767,11 +767,12 @@ QAction *PieMenu::exec(QMenu *menu,
         pmenu.pimpl->offset = 0.;
 
     if (!isEnabled(pmenu.pimpl->param.c_str())) {
-        QAction *actionPie = new QAction(tr("Show pie menu"), menu);
         const auto &actions = menu->actions();
         if (actions.isEmpty())
             return nullptr;
-        menu->insertAction(actions.front(), actionPie);
+        QAction *sep = menu->insertSeparator(actions.front());
+        QAction *actionPie = new QAction(tr("Show pie menu"), menu);
+        menu->insertAction(sep, actionPie);
 
         QAction *action = menu->exec(pt);
         menu->removeAction(actionPie);

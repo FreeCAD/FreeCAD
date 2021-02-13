@@ -76,6 +76,7 @@
 #include "OverlayWidgets.h"
 #include "SelectionView.h"
 #include "MouseSelection.h"
+#include "PieMenu.h"
 
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
@@ -3421,6 +3422,38 @@ bool StdCmdPickGeometry::isActive(void)
     return view && view->isDerivedFrom(View3DInventor::getClassTypeId());
 }
 
+//===========================================================================
+// Std_ItemMenu
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdItemMenu)
+
+StdCmdItemMenu::StdCmdItemMenu()
+  :Command("Std_ItemMenu")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Item menu");
+  sToolTipText  = QT_TR_NOOP("Bring up the context menu of either a document or\n"
+                             "an object item under the mouse cursor.");
+  sWhatsThis    = "Std_ItemMenu";
+  sStatusTip    = sToolTipText;
+  sAccel        = "M, M";
+  eType         = NoTransaction | AlterSelection | NoHistory;
+}
+
+bool StdCmdItemMenu::isActive(void)
+{
+    return App::GetApplication().getActiveDocument();
+}
+
+void StdCmdItemMenu::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    QMenu menu;
+    TreeWidget::setupObjectMenu(menu);
+    PieMenu::exec(&menu, QCursor::pos());
+}
+
 //=======================================================================
 // Std_TreeSingleDocument
 //===========================================================================
@@ -4307,6 +4340,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdBindViewCamera());
     rcCmdMgr.addCommand(new StdCmdPickGeometry());
     rcCmdMgr.addCommand(new StdCmdCloseLinkedView());
+    rcCmdMgr.addCommand(new StdCmdItemMenu());
 
 #ifdef FC_HAS_DOCK_OVERLAY
     rcCmdMgr.addCommand(new StdCmdDockOverlay());

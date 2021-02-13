@@ -1859,21 +1859,39 @@ void TreeWidget::_selectAllLinks(App::DocumentObject *obj) {
 
 bool TreeWidget::setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj)
 {
+    std::vector<App::SubObjectT> sels;
+    if(!sobj) {
+        QPoint pos = QCursor::pos();
+        QWidget *widget = qApp->widgetAt(pos);
+        if (widget)
+            widget = widget->parentWidget();
+        if (auto tree = qobject_cast<TreeWidget*>(widget)) {
+            auto item = tree->itemAt(tree->viewport()->mapFromGlobal(pos));
+            if (item) {
+                contextItem = item;
+                if (item->type() == ObjectType)
+                    return tree->_setupObjectMenu(static_cast<DocumentObjectItem*>(item), menu);
+                else if (item->type() == DocumentType) {
+                    tree->_setupDocumentMenu(static_cast<DocumentItem*>(item), menu);
+                    return !menu.actions().isEmpty();
+                }
+            }
+        } else if (auto viewer = qobject_cast<View3DInventorViewer*>(widget)) {
+            if (viewer)
+                sels = viewer->getPickedList(false);
+        }
+
+        if (sels.empty()) {
+            sels = Gui::Selection().getSelectionT(nullptr, 0, true);
+            if (sels.empty())
+                return false;
+        }
+        sobj = &sels.front();
+    }
+
     auto tree = instance();
     if(!tree)
         return false;
-
-    std::vector<App::SubObjectT> sels;
-    if(!sobj) {
-        if(Gui::Selection().getSelectionEx("*",
-                App::DocumentObject::getClassTypeId(), 1, true).size()!=1)
-            return false;
-
-        sels = Gui::Selection().getSelectionT("*", 0);
-        if(sels.empty())
-            return false;
-        sobj = &sels.front();
-    }
 
     auto it = tree->DocumentMap.find(
             Application::Instance->getDocument(sobj->getDocumentName().c_str()));
