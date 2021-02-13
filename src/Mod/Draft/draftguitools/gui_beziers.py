@@ -235,7 +235,7 @@ class CubicBezCurve(gui_lines.Line):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = 
+        _menu = ""
         _tip = ()
 
         return {'Pixmap': 'Draft_CubicBezCurve',

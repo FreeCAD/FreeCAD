@@ -54,7 +54,7 @@ class SubelementHighlight(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = 
+        _menu = ""
         _tip = ()
 
         return {'Pixmap': 'Draft_SubelementHighlight',

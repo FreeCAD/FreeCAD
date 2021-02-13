@@ -92,7 +92,7 @@ class TaskPanelPolarArray:
         pix = QtGui.QPixmap(svg)
         icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
         self.form.setWindowIcon(icon)
-        self.form.setWindowTitle(translate("draft","Polar array")
+        self.form.setWindowTitle(translate("draft","Polar array"))
 
         self.form.label_icon.setPixmap(pix.scaled(32, 32))
 

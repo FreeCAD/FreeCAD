@@ -163,7 +163,10 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
 
         d = {'Pixmap': 'Draft_SelectGroup',
              'MenuText': QT_TRANSLATE_NOOP("Draft_SelectGroup","Select group"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectGroup","If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.\n\nIf the selection is a simple object inside a group, it will select the "brother" objects, that is,\nthose that are at the same level as this object, including the upper group that contains them all.")}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectGroup","If the selection is a group, it selects all objects that are inside this group, "
+                                                              "including those in nested sub-groups.\n\nIf the selection is a simple object "
+                                                              "inside a group, it will select the \"brother\" objects, that is,\nthose that are "
+                                                              "at the same level as this object, including the upper group that contains them all.")}
         return d
 
     def Activated(self):
