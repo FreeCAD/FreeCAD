@@ -567,7 +567,7 @@ class ShowSnapBar(gui_base.GuiCommandSimplest):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = 
+        _tip = ""
 
         return {'Pixmap': 'Draft_Snap',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_ShowSnapBar","Show snap toolbar"),
