@@ -113,6 +113,7 @@ class ObjectDressup:
 
     def getDirectionOfPath(self, obj):
         op = PathDressup.baseOp(obj.Base)
+        
         if hasattr(op, 'Side') and op.Side == 'Outside':
             if hasattr(op, 'Direction') and op.Direction == 'CW':
                 return 'left'
@@ -131,12 +132,16 @@ class ObjectDressup:
         return ''
 
     def normalize(self, Vector):
+        vx = 0
+        vy = 0
+
         x = Vector.x
         y = Vector.y
         length = math.sqrt(x*x + y*y)
         if((math.fabs(length)) > 0.0000000000001):
             vx = round(x / length, 3)
             vy = round(y / length, 3)
+        
         return FreeCAD.Vector(vx, vy, 0)
 
     def invert(self,  Vector):

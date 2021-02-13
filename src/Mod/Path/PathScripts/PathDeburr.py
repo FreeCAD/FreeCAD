@@ -234,15 +234,23 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
             self.basewires.extend(basewires)
 
+            # Set default side
+            side = ["Outside"]
 
             for w in basewires:
                 self.adjusted_basewires.append(w)
-                wire = PathOpTools.offsetWire(w, base.Shape, offset, True)
+                wire = PathOpTools.offsetWire(w, base.Shape, offset, True, side)
                 if wire:
                     wires.append(wire)
 
         # Set direction of op
         forward = (obj.Direction == 'CW')
+
+        # Set value of side
+        obj.Side = side[0]
+        # Check side extra for angled faces
+        if radius_top > radius_bottom:
+            obj.Side = "Inside"
 
         zValues = []
         z = 0
