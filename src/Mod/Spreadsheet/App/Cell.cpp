@@ -1389,7 +1389,7 @@ QVariant Cell::getEditData(bool silent) const {
                         } else if (seq[0].isSequence()) {
                             list.append(((int)Py::Int(seq[1].ptr())) + 1);
                             Py::Sequence s(seq[0].ptr());
-                            for(size_t i=0;i<s.size();++i) {
+                            for(int i=0;i<s.size();++i) {
                                 tmp.setPyObject(s[i].ptr());
                                 list.append(QString::fromUtf8(tmp.getValue()));
                             }

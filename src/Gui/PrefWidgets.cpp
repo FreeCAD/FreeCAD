@@ -606,7 +606,8 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
                     if (msg.size())
                         QMessageBox::critical(this, tr("Expression"), msg);
                 } else
-                    lineEdit()->setText(values[i]); break;
+                    lineEdit()->setText(values[i]);
+                break;
             }
         }
     }

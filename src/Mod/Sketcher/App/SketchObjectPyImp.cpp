@@ -610,7 +610,7 @@ PyObject* SketchObjectPy::attachExternal(PyObject *args)
         pyargs.push_back(arg);
     else if(arg.isSequence()) {
         Py::Sequence seq(arg);
-        for(size_t i=0;i<seq.size();++i)
+        for(int i=0;i<seq.size();++i)
             pyargs.emplace_back(seq[i].ptr());
     }else{
         PyErr_SetString(PyExc_ValueError, 

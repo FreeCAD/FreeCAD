@@ -3713,11 +3713,11 @@ Py::Object AssignmentExpression::apply(const Expression *owner, int _catchAll,
     size_t catchAll;
     if(_catchAll < 0) {
         catchAll = left.size();
-        if(seq.size()>left.size())
+        if(seq.size() > (int)left.size())
             _EXPR_THROW("Too many values to unpack",owner);
-        if(seq.size()<left.size())
+        if(seq.size() < (int)left.size())
             _EXPR_THROW("Too few values to unpack",owner);
-    }else if(seq.size()+1<left.size())
+    }else if(seq.size()+1 < (int)left.size())
         _EXPR_THROW("Too few values to unpack",owner);
     else
         catchAll = (size_t)_catchAll;
@@ -3727,7 +3727,7 @@ Py::Object AssignmentExpression::apply(const Expression *owner, int _catchAll,
 
     if(catchAll < left.size()) {
         Py::List list(seq.size()-left.size()+1);
-        for(size_t i=0;i<list.size();++i) 
+        for(int i=0;i<list.size();++i) 
             list.setItem(i,seq[j++]);
         auto e = freecad_dynamic_cast<VariableExpression>(left[catchAll].get());
         if(!e) _EXPR_THROW("Invalid catch all in assignment",owner);
@@ -4257,7 +4257,7 @@ static Expression::StringList prepareCommands(const Expression *owner, const Py:
         if(!seq.size())
             return cmds;
         cmds.reserve(seq.size());
-        for(size_t i=0;i<seq.size();++i) {
+        for(int i=0;i<seq.size();++i) {
             Py::Object item(seq[i]);
             if(!item.isString())
                 _EXPR_THROW("Non string command in sequence",owner);
@@ -4280,7 +4280,7 @@ static void prepareArguments(const Expression *owner, EvalFrame &frame,
         if(name == "*") {
             PyIterable pyobj(arg->getPyValue(),owner,true);
             Py::Sequence seq(pyobj);
-            for(size_t i=0;i<seq.size();++i)
+            for(int i=0;i<seq.size();++i)
                 *frame.getVar(owner,varName(idx++),BindLocalOnly) = Py::Object(seq[i]);
         }else if(name == "**") {
             Py::Object pyobj = arg->getPyValue();
@@ -4341,14 +4341,14 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
     Py::Tuple tupleArgs;
     Py::Dict dictArgs;
 
-    size_t i=0;
+    int i=0;
     if(pyargs) {
         Py::Sequence seq(pyargs);
         if(names.empty() && seq.size()) {
             PY_THROW("Function " << FUNC_NAME << " does accept any arg");
         }
         for(i=0;i<seq.size();++i) {
-            if(i>=names.size())
+            if(i>=(int)names.size())
                 PY_THROW("Too many args when calling " << FUNC_NAME);
             auto &name = names[i];
             if(name[0] != '*') {
@@ -4358,24 +4358,24 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
             if(name[1]=='*')
                 PY_THROW("Too many args when calling " << FUNC_NAME);
             tupleArgs = Py::Tuple(seq.size()-i);
-            for(size_t j=0;i<seq.size();++i,++j)
+            for(int j=0;i<seq.size();++i,++j)
                 tupleArgs.setItem(j,seq[i]);
             break;
         }
     }
 
     if(!pykwds) {
-        if(i<args.size() && !args[i])
+        if(i<(int)args.size() && !args[i])
             PY_THROW("Missing arg '" << names[i] << "' when calling " << FUNC_NAME);
         prepareArguments(this,frame,names,args,i);
     }else{
         Py::Dict dict(pykwds);
-        for(size_t j=0;j<i;++j) {
+        for(int j=0;j<i;++j) {
             if(dict.hasKey(names[j]))
                 PY_THROW("Multiple value of keyword arg '" 
                         << names[j] << "' when calling " << FUNC_NAME);
         }
-        for(;i<args.size();++i) {
+        for(;i<(int)args.size();++i) {
             if(names[i][0]=='*')
                 break;
             if(dict.hasKey(names[i]))
@@ -4623,7 +4623,7 @@ Py::Object CallableExpression::_getPyValue(int *) const {
             tuple.setItem(k++,arg->getPyValue());
         else if(name == "*") {
             Py::Sequence seq = *it++;
-            for(size_t j=0;j<seq.size();++j)
+            for(int j=0;j<seq.size();++j)
                 tuple.setItem(k++,Py::Object(seq[j].ptr()));
         }else if(name == "**") {
             Py::Object pyobj(arg->getPyValue());
@@ -6798,12 +6798,12 @@ bool TryStatement::findException(Py::Object &res,
         int *jumpCode, Base::Exception &e, PyObject *pyobj) const
 {
     auto &frame = *_EvalStack.back();
-    for(size_t i=0;i<bodies.size();++i) {
+    for(int i=0;i<(int)bodies.size();++i) {
         if(exprs[i]) {
             Py::Object obj = exprs[i]->getPyValue();
             if(obj.isTuple()) {
                 Py::Tuple tuple(obj);
-                size_t j=0;
+                int j=0;
                 for(;j<tuple.size();++j) {
                     if(pyobj!=tuple[j].ptr() && !PyObject_IsSubclass(pyobj,tuple[j].ptr()))
                         break;
@@ -6942,7 +6942,7 @@ Py::Object FromStatement::_getPyValue(int *) const {
         if(tail == "*") {
             if(pymod.hasAttr("__all__")) {
                 Py::Sequence seq(pymod.getAttr("__all__"));
-                for(size_t j=0;j<seq.size();++j) {
+                for(int j=0;j<seq.size();++j) {
                     std::string n(Py::Object(seq[i]).as_string());
                     *frame.getVar(this,n,BindLocalOnly) = pymod.getAttr(n);
                 }

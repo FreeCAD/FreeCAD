@@ -562,7 +562,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
 
             values.resize(seq.size());
 
-            for (std::size_t i = 0; i < seq.size(); ++i) {
+            for (int i = 0; i < seq.size(); ++i) {
                 PyObject *item = seq[i].ptr();
 
                 if (PyUnicode_Check(item)) {
