@@ -96,7 +96,7 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
             "Shadowed: Only receive shadow, but not cast any shadow.\n"
             "No shadowing: Neither cast nor receive any shadow.");
 
-    ADD_PROPERTY_TYPE(Selectable, (true), sgroup, App::Prop_None, "Set if the object is selectable in the 3d view");
+    ADD_PROPERTY_TYPE(Selectable, (true), sgroup, App::Prop_None, "Set if the object is selectable in the 3d view");
     Selectable.setValue(ViewParams::instance()->getEnableSelection());
 
     static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
