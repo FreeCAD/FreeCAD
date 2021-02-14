@@ -1149,13 +1149,16 @@ int DocumentObject::isElementVisibleEx(const char *subname, int reason) const {
     if(!sobj || !sobj->getNameInDocument())
         return -1;
 
+    ++dot;
+
     if (res < 0) {
         res = isElementVisible(sobj->getNameInDocument());
         if (res == 0 || (res<0 && !sobj->Visibility.getValue()))
             return 0;
+        if (!dot[0])
+            return 1;
     }
 
-    ++dot;
     return sobj->isElementVisibleEx(dot,reason);
 }
 
