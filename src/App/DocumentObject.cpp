@@ -1283,9 +1283,12 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
         return ret;
     }
 
-    size_t pos=0,linkPos=0;
+    size_t pos=0, linkPos=0, prevPos=0, prevLinkPos=0;
     std::string linkssub,ssub;
-    do {
+    for (;;) {
+        prevPos = pos;
+        prevLinkPos = linkPos;
+
         linkPos = linkSub.find('.',linkPos);
         if(linkPos == std::string::npos) {
             link = 0;
@@ -1299,7 +1302,23 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
             break;
         }
         ++pos;
-    }while(subname.compare(0,pos,linkSub,0,linkPos)==0);
+
+        if (subname.compare(prevPos,pos,linkSub,prevLinkPos,linkPos)!=0) {
+            // Check if the name difference is caused by a label reference in
+            // one of the name path
+            if (subname[prevPos] != linkSub[prevLinkPos]
+                    && (subname[prevPos] == '$' || linkSub[prevLinkPos] == '$'))
+            {
+                // Temporary shorten name path to obtain the sub-object for
+                // comparison.
+                Base::StringGuard guard(&subname[pos]);
+                Base::StringGuard guard2(&linkSub[linkPos]);
+                if (getSubObject(subname.c_str()) == link->getSubObject(linkSub.c_str()))
+                    continue;
+            }
+            break;
+        }
+    }
 
     if(pos != std::string::npos) {
         ret = getSubObject(subname.substr(0,pos).c_str());
