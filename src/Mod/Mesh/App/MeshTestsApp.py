@@ -46,6 +46,110 @@ class MeshTopoTestCases(unittest.TestCase):
         planarMeshObject.collapseFacets(range(18))
 
 
+class MeshSplitTestCases(unittest.TestCase):
+    def setUp(self):
+        self.mesh = Mesh.createBox(1.0, 1.0, 1.0)
+
+    def testSplitFacetOnOneEdge(self):
+        p1 = self.mesh.Points[0].Vector
+        p2 = self.mesh.Points[1].Vector
+        p3 = self.mesh.Points[2].Vector
+        self.mesh.splitFacet(0, p1, (p2 + p3) / 2)
+        self.assertFalse(self.mesh.hasNonManifolds())
+        self.assertFalse(self.mesh.hasInvalidNeighbourhood())
+        self.assertFalse(self.mesh.hasPointsOutOfRange())
+        self.assertFalse(self.mesh.hasFacetsOutOfRange())
+        self.assertFalse(self.mesh.hasCorruptedFacets())
+        self.assertTrue(self.mesh.isSolid())
+
+    def testSplitFacetOnTwoEdges_21(self):
+        p1 = self.mesh.Points[0].Vector
+        p2 = self.mesh.Points[1].Vector
+        p3 = self.mesh.Points[2].Vector
+        self.mesh.splitFacet(0, (p1 + p3) / 2, (p2 + p3) / 2)
+        self.assertFalse(self.mesh.hasNonManifolds())
+        self.assertFalse(self.mesh.hasInvalidNeighbourhood())
+        self.assertFalse(self.mesh.hasPointsOutOfRange())
+        self.assertFalse(self.mesh.hasFacetsOutOfRange())
+        self.assertFalse(self.mesh.hasCorruptedFacets())
+        self.assertTrue(self.mesh.isSolid())
+
+    def testSplitFacetOnTwoEdges_12(self):
+        p1 = self.mesh.Points[0].Vector
+        p2 = self.mesh.Points[1].Vector
+        p3 = self.mesh.Points[2].Vector
+        self.mesh.splitFacet(0, (p2 + p3) / 2, (p1 + p3) / 2)
+        self.assertFalse(self.mesh.hasNonManifolds())
+        self.assertFalse(self.mesh.hasInvalidNeighbourhood())
+        self.assertFalse(self.mesh.hasPointsOutOfRange())
+        self.assertFalse(self.mesh.hasFacetsOutOfRange())
+        self.assertFalse(self.mesh.hasCorruptedFacets())
+        self.assertTrue(self.mesh.isSolid())
+
+    def testSplitFacetOnTwoEdges_01(self):
+        p1 = self.mesh.Points[0].Vector
+        p2 = self.mesh.Points[1].Vector
+        p3 = self.mesh.Points[2].Vector
+        self.mesh.splitFacet(0, (p1 + p2) / 2, (p2 + p3) / 2)
+        self.assertFalse(self.mesh.hasNonManifolds())
+        self.assertFalse(self.mesh.hasInvalidNeighbourhood())
+        self.assertFalse(self.mesh.hasPointsOutOfRange())
+        self.assertFalse(self.mesh.hasFacetsOutOfRange())
+        self.assertFalse(self.mesh.hasCorruptedFacets())
+        self.assertTrue(self.mesh.isSolid())
+
+    def testSplitFacetOnTwoEdges_10(self):
+        p1 = self.mesh.Points[0].Vector
+        p2 = self.mesh.Points[1].Vector
+        p3 = self.mesh.Points[2].Vector
+        self.mesh.splitFacet(0, (p2 + p3) / 2, (p1 + p2) / 2)
+        self.assertFalse(self.mesh.hasNonManifolds())
+        self.assertFalse(self.mesh.hasInvalidNeighbourhood())
+        self.assertFalse(self.mesh.hasPointsOutOfRange())
+        self.assertFalse(self.mesh.hasFacetsOutOfRange())
+        self.assertFalse(self.mesh.hasCorruptedFacets())
+        self.assertTrue(self.mesh.isSolid())
+
+    def testSplitFacetOnTwoEdges_02(self):
+        p1 = self.mesh.Points[0].Vector
+        p2 = self.mesh.Points[1].Vector
+        p3 = self.mesh.Points[2].Vector
+        self.mesh.splitFacet(0, (p1 + p2) / 2, (p1 + p3) / 2)
+        self.assertFalse(self.mesh.hasNonManifolds())
+        self.assertFalse(self.mesh.hasInvalidNeighbourhood())
+        self.assertFalse(self.mesh.hasPointsOutOfRange())
+        self.assertFalse(self.mesh.hasFacetsOutOfRange())
+        self.assertFalse(self.mesh.hasCorruptedFacets())
+        self.assertTrue(self.mesh.isSolid())
+
+    def testSplitFacetOnTwoEdges_20(self):
+        p1 = self.mesh.Points[0].Vector
+        p2 = self.mesh.Points[1].Vector
+        p3 = self.mesh.Points[2].Vector
+        self.mesh.splitFacet(0, (p1 + p3) / 2, (p1 + p2) / 2)
+        self.assertFalse(self.mesh.hasNonManifolds())
+        self.assertFalse(self.mesh.hasInvalidNeighbourhood())
+        self.assertFalse(self.mesh.hasPointsOutOfRange())
+        self.assertFalse(self.mesh.hasFacetsOutOfRange())
+        self.assertFalse(self.mesh.hasCorruptedFacets())
+        self.assertTrue(self.mesh.isSolid())
+
+    def testSplitFacetOnTwoEdges_5teps(self):
+        Vec3d = FreeCAD.Vector
+        for i in range(5):
+            f = self.mesh.Facets[0]
+            p1 = Vec3d(f.Points[0])
+            p2 = Vec3d(f.Points[1])
+            p3 = Vec3d(f.Points[2])
+            self.mesh.splitFacet(0, (p1 + p3) / 2, (p2 + p3) / 2)
+
+        self.assertFalse(self.mesh.hasNonManifolds())
+        self.assertFalse(self.mesh.hasInvalidNeighbourhood())
+        self.assertFalse(self.mesh.hasPointsOutOfRange())
+        self.assertFalse(self.mesh.hasFacetsOutOfRange())
+        self.assertFalse(self.mesh.hasCorruptedFacets())
+        self.assertTrue(self.mesh.isSolid())
+
 class MeshGeoTestCases(unittest.TestCase):
     def setUp(self):
         # set up a planar face with 2 triangles
