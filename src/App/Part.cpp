@@ -73,6 +73,8 @@ Part::~Part(void)
 static App::Part *_getPartOfObject(const DocumentObject *obj,
                                    std::set<const DocumentObject*> *objset)
 {
+    if (!obj || !obj->getNameInDocument())
+        return nullptr;
     // as a Part is a geofeaturegroup it must directly link to all
     // objects it contains, even if they are in additional groups etc.
     // But we still must call 'hasObject()' to exclude link brought in by
