@@ -62,6 +62,7 @@ WarningSuppressAllSpeeds        = "WarningSuppressAllSpeeds"
 WarningSuppressSelectionMode    = "WarningSuppressSelectionMode"
 WarningSuppressOpenCamLib       = "WarningSuppressOpenCamLib"
 EnableExperimentalFeatures      = "EnableExperimentalFeatures"
+EnableAdvancedOCLFeatures      = "EnableAdvancedOCLFeatures"
 
 
 def preferences():
@@ -243,6 +244,10 @@ def setDefaultTaskPanelLayout(style):
     preferences().SetInt(DefaultTaskPanelLayout, style)
 
 
+def advancedOCLFeaturesEnabled():
+    return preferences().GetBool(EnableAdvancedOCLFeatures, False)
+
+
 def experimentalFeaturesEnabled():
     return preferences().GetBool(EnableExperimentalFeatures, False)
 
@@ -262,8 +267,8 @@ def suppressSelectionModeWarning():
 def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
-def setPreferencesAdvanced(experimental, warnSpeeds, warnRapids, warnModes, warnOCL):
-    preferences().SetBool(EnableExperimentalFeatures,   experimental)
+def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL):
+    preferences().SetBool(EnableAdvancedOCLFeatures,    ocl)
     preferences().SetBool(WarningSuppressAllSpeeds,     warnSpeeds)
     preferences().SetBool(WarningSuppressRapidSpeeds,   warnRapids)
     preferences().SetBool(WarningSuppressSelectionMode, warnModes)

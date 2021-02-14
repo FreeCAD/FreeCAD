@@ -121,6 +121,7 @@ class PathWorkbench (Workbench):
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append('Path_Thread_Milling')
 
+        if PathPreferences.advancedOCLFeaturesEnabled():
             try:
                 import ocl  # pylint: disable=unused-variable
                 from PathScripts import PathSurfaceGui

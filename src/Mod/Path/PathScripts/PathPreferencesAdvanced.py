@@ -32,11 +32,11 @@ class AdvancedPreferencesPage:
     def __init__(self, parent=None):
         self.form = FreeCADGui.PySideUic.loadUi(':preferences/Advanced.ui')
         self.form.WarningSuppressAllSpeeds.stateChanged.connect(self.updateSelection)
-        self.form.EnableExperimentalFeatures.stateChanged.connect(self.updateSelection)
+        self.form.EnableAdvancedOCLFeatures.stateChanged.connect(self.updateSelection)
 
     def saveSettings(self):
         PathPreferences.setPreferencesAdvanced(
-                self.form.EnableExperimentalFeatures.isChecked(),
+                self.form.EnableAdvancedOCLFeatures.isChecked(),
                 self.form.WarningSuppressAllSpeeds.isChecked(),
                 self.form.WarningSuppressRapidSpeeds.isChecked(),
                 self.form.WarningSuppressSelectionMode.isChecked(),
@@ -46,12 +46,12 @@ class AdvancedPreferencesPage:
         self.form.WarningSuppressAllSpeeds.setChecked(PathPreferences.suppressAllSpeedsWarning())
         self.form.WarningSuppressRapidSpeeds.setChecked(PathPreferences.suppressRapidSpeedsWarning(False))
         self.form.WarningSuppressSelectionMode.setChecked(PathPreferences.suppressSelectionModeWarning())
-        self.form.EnableExperimentalFeatures.setChecked(PathPreferences.experimentalFeaturesEnabled())
+        self.form.EnableAdvancedOCLFeatures.setChecked(PathPreferences.advancedOCLFeaturesEnabled())
         self.form.WarningSuppressOpenCamLib.setChecked(PathPreferences.suppressOpenCamLibWarning())
         self.updateSelection()
 
     def updateSelection(self, state=None):
-        self.form.WarningSuppressOpenCamLib.setEnabled(self.form.EnableExperimentalFeatures.isChecked())
+        self.form.WarningSuppressOpenCamLib.setEnabled(self.form.EnableAdvancedOCLFeatures.isChecked())
         if self.form.WarningSuppressAllSpeeds.isChecked():
             self.form.WarningSuppressRapidSpeeds.setChecked(True)
             self.form.WarningSuppressRapidSpeeds.setEnabled(False)
