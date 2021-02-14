@@ -3772,7 +3772,20 @@ VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
   sStatusTip    = sToolTipText;
   sPixmap       = "sel-on-top";
   sAccel        = "V, T";
-  eType         = Alter3DView;
+  eType         = 0;
+}
+
+//======================================================================
+// Std_PreSelFaceOnTop
+//======================================================================
+VIEW_CMD_DEF(PreSelFaceOnTop, ShowPreSelectedFaceOnTop)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Pre-selection on top");
+  sToolTipText  = ViewParams::docShowPreSelectedFaceOnTop();
+  sWhatsThis    = "Std_PreSelFaceOnTop";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
 }
 
 //======================================================================
@@ -3781,7 +3794,7 @@ VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
 VIEW_CMD_DEF(SelHierarchyAscend, HierarchyAscend)
 {
   sGroup        = QT_TR_NOOP("View");
-  sMenuText     = QT_TR_NOOP("Hierarchy selection");
+  sMenuText     = QT_TR_NOOP("&Hierarchy selection");
   sToolTipText  = ViewParams::docHierarchyAscend();
   sWhatsThis    = "Std_SelHierarhcyAscend";
   sStatusTip    = sToolTipText;
@@ -3863,6 +3876,7 @@ public:
         addCommand(new StdCmdProjectBoundingBox());
         addCommand();
         addCommand(new StdCmdSelOnTop());
+        addCommand(new StdCmdPreSelFaceOnTop());
         addCommand(new StdCmdPartialHighlightOnFullSelect());
         addCommand(new StdCmdEditingAutoTransparent());
         addCommand(new StdCmdSelectionFaceWire());

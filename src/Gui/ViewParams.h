@@ -82,6 +82,8 @@ public:
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true, "") \
     FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true, \
        QT_TRANSLATE_NOOP("ViewParams","Show selection always on top")) \
+    FC_VIEW_PARAM(ShowPreSelectedFaceOnTop,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams","Show pre-selected face always on top")) \
     FC_VIEW_PARAM(SelectElementOnTop,bool,Bool,false, \
        QT_TRANSLATE_NOOP("ViewParams","Do box/lasso element selection on already selected object(s)," \
                                       "if SelectionOnTop is enabled.")) \
@@ -265,7 +267,7 @@ public:
     FC_VIEW_PARAM(StickyTaskControl, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Makes the task dialog buttons stay at top or bottom of task view."))\
     FC_VIEW_PARAM(ColorOnTop, bool, Bool, true, \
-        QT_TRANSLATE_NOOP("ViewParams","Show object on top will editing its color."))\
+        QT_TRANSLATE_NOOP("ViewParams","Show object on top when editing its color."))\
     FC_VIEW_PARAM(ColorRecompute, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Recompute affected object(s) after editing color."))\
     FC_VIEW_PARAM(SortWBList, bool, Bool, true, \

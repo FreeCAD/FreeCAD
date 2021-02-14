@@ -1733,7 +1733,7 @@ void SoBrepFaceSet::_renderSelection(SoGLRenderAction *action, SbColor color, in
     if(push) {
         state->push();
 
-        if (push > 1) {
+        if (push > 1 && Gui::ViewParams::ShowPreSelectedFaceOnTop()) {
             guard.set(GL_ALWAYS);
             highlightTransparency = Gui::ViewParams::getSelectionTransparency();
             SoLazyElement::setTransparency(state,this,1,&highlightTransparency,&packer);

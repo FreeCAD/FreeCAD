@@ -14,42 +14,7 @@
    <string>Selection</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QCheckBox" name="checkBoxAutoSwitch">
-     <property name="text">
-      <string>Auto switch to the 3D view containing the selected item</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QCheckBox" name="checkBoxAutoExpand">
-     <property name="text">
-      <string>Auto expand tree item when the corresponding object is selected in 3D view</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QCheckBox" name="checkBoxPreselect">
-     <property name="text">
-      <string>Preselect the object in 3D view when mouse over the tree item</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QCheckBox" name="checkBoxRecord">
-     <property name="text">
-      <string>Record selection in tree view in order to go back/forward using navigation button</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QCheckBox" name="checkBoxSelectionCheckBoxes">
-     <property name="text">
-      <string>Add checkboxes for selection in document tree</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -61,6 +26,94 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="4" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Tree View Selection</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="checkBoxAutoSwitch">
+        <property name="text">
+         <string>Auto switch to the 3D view containing the selected item</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxAutoExpand">
+        <property name="text">
+         <string>Auto expand tree item when the corresponding object is selected in 3D view</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxSelectionCheckBoxes">
+        <property name="text">
+         <string>Add checkboxes for selection in document tree</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxRecord">
+        <property name="text">
+         <string>Record selection in tree view in order to go back/forward using navigation button</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxPreselect">
+        <property name="text">
+         <string>Preselect the object in 3D view when mouse over the tree item</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>3D View Selection</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="checkBoxSelectionOnTop">
+        <property name="text">
+         <string>Show selection always on top</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxPreSelectionOnTop">
+        <property name="text">
+         <string>Show pre-selected face always on top</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxShowBoundBox">
+        <property name="text">
+         <string>Show selection bounding box instead of highlight</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxHiddenLineSelect">
+        <property name="toolTip">
+         <string>If enabled, you can select hidden lines/points in objects shown on top.
+
+Regardless of this option, you can always turn on hidden face/line/point selection
+by holding the SHIFT key. You use mouse wheel while holding the SHIFT key to
+select hidden face at various depth.</string>
+        </property>
+        <property name="text">
+         <string>Enable hidden line selection for on top selected objects</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

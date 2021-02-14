@@ -28,8 +28,11 @@
 
 #include "DlgSettingsSelection.h"
 #include "ui_DlgSettingsSelection.h"
+#include "TreeParams.h"
+#include "ViewParams.h"
 #include <App/Application.h>
 
+using namespace Gui;
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsSelection */
@@ -47,22 +50,30 @@ DlgSettingsSelection::~DlgSettingsSelection()
 
 void DlgSettingsSelection::saveSettings()
 {
-    auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-    handle->SetBool("SyncView", ui->checkBoxAutoSwitch->isChecked());
-    handle->SetBool("SyncSelection", ui->checkBoxAutoExpand->isChecked());
-    handle->SetBool("PreSelection", ui->checkBoxPreselect->isChecked());
-    handle->SetBool("RecordSelection", ui->checkBoxRecord->isChecked());
-    handle->SetBool("CheckBoxesSelection", ui->checkBoxSelectionCheckBoxes->isChecked());
+    TreeParams::setSyncView(ui->checkBoxAutoSwitch->isChecked());
+    TreeParams::setSyncSelection(ui->checkBoxAutoExpand->isChecked());
+    TreeParams::setPreSelection(ui->checkBoxPreselect->isChecked());
+    TreeParams::setRecordSelection(ui->checkBoxRecord->isChecked());
+    TreeParams::setCheckBoxesSelection(ui->checkBoxSelectionCheckBoxes->isChecked());
+
+    ViewParams::setShowSelectionOnTop(ui->checkBoxSelectionOnTop->isChecked());
+    ViewParams::setShowPreSelectedFaceOnTop(ui->checkBoxPreSelectionOnTop->isChecked());
+    ViewParams::setShowSelectionBoundingBox(ui->checkBoxShowBoundBox->isChecked());
+    ViewParams::setHiddenLineSelectionOnTop(ui->checkBoxHiddenLineSelect->isChecked());
 }
 
 void DlgSettingsSelection::loadSettings()
 {
-    auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-    ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView"));
-    ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection"));
-    ui->checkBoxPreselect->setChecked(handle->GetBool("PreSelection"));
-    ui->checkBoxRecord->setChecked(handle->GetBool("RecordSelection"));
-    ui->checkBoxSelectionCheckBoxes->setChecked(handle->GetBool("CheckBoxesSelection"));
+    ui->checkBoxAutoSwitch->setChecked(TreeParams::SyncView());
+    ui->checkBoxAutoExpand->setChecked(TreeParams::SyncSelection());
+    ui->checkBoxPreselect->setChecked(TreeParams::PreSelection());
+    ui->checkBoxRecord->setChecked(TreeParams::RecordSelection());
+    ui->checkBoxSelectionCheckBoxes->setChecked(TreeParams::CheckBoxesSelection());
+
+    ui->checkBoxSelectionOnTop->setChecked(ViewParams::getShowSelectionOnTop());
+    ui->checkBoxPreSelectionOnTop->setChecked(ViewParams::getShowPreSelectedFaceOnTop());
+    ui->checkBoxShowBoundBox->setChecked(ViewParams::getShowSelectionBoundingBox());
+    ui->checkBoxHiddenLineSelect->setChecked(ViewParams::getHiddenLineSelectionOnTop());
 }
 
 void DlgSettingsSelection::changeEvent(QEvent *e)
