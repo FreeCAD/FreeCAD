@@ -645,7 +645,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 {
     SO_KIT_CONSTRUCTOR(SoFCCSysDragger);
 
-    SO_KIT_ADD_CATALOG_ENTRY(annotation, Gui::SoFCPathAnnotation, TRUE, geomSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(annotation, SoFCPathAnnotation, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(scaleNode, SoScale, TRUE, annotation, "", TRUE);
 
     SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSwitch, SoSwitch, TRUE, annotation, "", TRUE);
@@ -705,7 +705,7 @@ SoFCCSysDragger::SoFCCSysDragger()
 
     SO_KIT_INIT_INSTANCE();
 
-    auto root = SO_GET_ANY_PART(this, "annotation", Gui::SoFCPathAnnotation);
+    auto root = SO_GET_ANY_PART(this, "annotation", SoFCPathAnnotation);
     root->priority.setValue(10);
 
     SoBaseColor *color;
