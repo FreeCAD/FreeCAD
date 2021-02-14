@@ -42,6 +42,7 @@
 #include <Base/Writer.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
 #include "Application.h"
 #include "DocumentObject.h"
@@ -283,27 +284,6 @@ void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::
     if(_ElementRefs.insert(geo).second)
         _ElementRefMap[geo].insert(this);
 }
-
-class StringGuard {
-public:
-    StringGuard(char *c)
-        :c(c)
-    {
-        v1 = c[0];
-        v2 = c[1];
-        c[0] = '.';
-        c[1] = 0;
-    }
-    ~StringGuard()
-    {
-        c[0] = v1;
-        c[1] = v2;
-    }
-
-    char *c;
-    char v1;
-    char v2;
-};
 
 void PropertyLinkBase::restoreLabelReference(const DocumentObject *obj,
         std::string &subname, ShadowSub *shadow)
