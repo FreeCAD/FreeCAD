@@ -530,4 +530,16 @@ class TestPathGeom(PathTestBase):
         edge = Part.Edge(Part.BSplineCurve([Vector(-8,4,0), Vector(1,-5,0), Vector(5,11,0), Vector(12,-5,0)], weights=[2,3,5,7]))
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
 
+    def test76(self):
+        '''Flip an offset wire'''
+
+        e0 = Part.Edge(Part.BSplineCurve([Vector(-8,4,0), Vector(1,-5,0), Vector(5,11,0), Vector(12,-5,0)], weights=[2,3,5,7]))
+        e1 = Part.Edge(Part.LineSegment(Vector(12,-5,0), Vector(0,-7,0)))
+        e2 = Part.Edge(Part.LineSegment(Vector(0,-7,0), Vector(-8,4,0)))
+        w0 = Part.Wire([e0, e1, e2])
+        w1 = w0.makeOffset2D(1)
+        w2 = PathGeom.flipWire(w1)
+        # do some sanity checks
+        self.assertTrue(w2.isValid())
+        self.assertTrue(w2.isClosed())
 

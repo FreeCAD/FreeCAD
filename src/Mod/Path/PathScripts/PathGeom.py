@@ -534,13 +534,18 @@ def flipEdge(edge):
         flipped.buildFromPolesMultsKnots(poles, mults , knots, perio, degree, weights, ratio)
 
         return Part.Edge(flipped)
+    elif type(edge.Curve) == Part.OffsetCurve:
+        return edge.reversed()
 
     global OddsAndEnds # pylint: disable=global-statement
     OddsAndEnds.append(edge)
-    PathLog.warning(translate('PathGeom', "%s not support for flipping") % type(edge.Curve))
+    PathLog.warning(translate('PathGeom', "%s not supported for flipping") % type(edge.Curve))
+
+Wire = []
 
 def flipWire(wire):
     '''Flip the entire wire and all its edges so it is being processed the other way around.'''
+    Wire.append(wire)
     edges = [flipEdge(e) for e in wire.Edges]
     edges.reverse()
     PathLog.debug(edges)
