@@ -22,8 +22,7 @@
 
 import FreeCAD, ArchComponent
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc, os
-    from PySide import QtCore, QtGui
+    import FreeCADGui, Arch_rc
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
