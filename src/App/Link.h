@@ -328,6 +328,13 @@ public:
 
     static bool isCopyOnChangeProperty(App::DocumentObject *obj, const Property &prop);
 
+    boost::signals2::signal<
+        void (App::DocumentObject & /*parent*/,
+              int /*startIndex*/,
+              int /*endIndex*/,
+              std::vector<App::DocumentObject *> * /*elements, maybe null if not showing elements*/)
+        > signalNewLinkElements;
+
 protected:
     void _handleChangedPropertyName(Base::XMLReader &reader,
             const char * TypeName, const char *PropName);

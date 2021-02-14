@@ -1223,11 +1223,11 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
         }
     }else if(prop == _getElementCountProperty()) {
-        size_t elementCount = getElementCountValue()<0?0:(size_t)getElementCountValue();
+        int elementCount = getElementCountValue()<0?0:getElementCountValue();
 
         auto propVis = getVisibilityListProperty();
         if(propVis) {
-            if(propVis->getSize()>(int)elementCount)
+            if(propVis->getSize()>elementCount)
                 propVis->setSize(getElementCountValue(),true);
         }
 
@@ -1240,19 +1240,16 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 getScaleListProperty()->setStatus(Property::User3,false);
             }
             if(getPlacementListProperty()) {
-                auto placements = getPlacementListValue();
-                if(placements.size()<elementCount) {
-                    for(size_t i=placements.size();i<elementCount;++i)
-                        placements.emplace_back(Base::Vector3d(i%10,(i/10)%10,i/100),Base::Rotation());
+                auto prop = getPlacementListProperty();
+                Base::ObjectStatusLocker<Property::Status,Property> guard(Property::User3, prop);
+                if(prop->getSize() < elementCount) {
+                    signalNewLinkElements(*parent, prop->getSize(), elementCount, nullptr);
                 }else
-                    placements.resize(elementCount);
-                getPlacementListProperty()->setStatus(Property::User3,true);
-                getPlacementListProperty()->setValue(placements);
-                getPlacementListProperty()->setStatus(Property::User3,false);
+                    prop->setSize(elementCount);
             }
         }else if(getElementListProperty()) {
             auto objs = getElementListValue();
-            if(elementCount>objs.size()) {
+            if(elementCount > (int)objs.size()) {
                 std::string name = parent->getNameInDocument();
                 auto doc = parent->getDocument();
                 name += "_i";
@@ -1260,14 +1257,13 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 if(name[name.size()-1] != 'i')
                     name += "_i";
                 auto offset = name.size();
-                auto placementProp = getPlacementListProperty();
                 auto scaleProp = getScaleListProperty();
                 const auto &vis = getVisibilityListValue();
 
                 auto owner = getContainer();
                 long ownerID = owner?owner->getID():0;
 
-                for(size_t i=objs.size();i<elementCount;++i) {
+                for(int i=(int)objs.size();i<elementCount;++i) {
                     name.resize(offset);
                     name += std::to_string(i);
 
@@ -1282,21 +1278,20 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                         parent->getDocument()->addObject(obj,name.c_str());
                     }
 
-                    if(vis.size()>i && !vis[i])
+                    if((int)vis.size() > i && !vis[i])
                         myHiddenElements.insert(obj);
 
-                    if(placementProp && placementProp->getSize()>(int)i)
-                        obj->Placement.setValue(placementProp->getValues()[i]);
-                    else{
-                        Base::Placement pla(Base::Vector3d(i%10,(i/10)%10,i/100),Base::Rotation());
-                        obj->Placement.setValue(pla);
-                    }
-                    if(scaleProp && scaleProp->getSize()>(int)i)
+                    if(scaleProp && scaleProp->getSize()>i)
                         obj->Scale.setValue(scaleProp->getValues()[i].x);
                     else
                         obj->Scale.setValue(1);
+
                     objs.push_back(obj);
                 }
+                signalNewLinkElements(*parent,
+                                      getElementListProperty()->getSize(),
+                                      elementCount,
+                                      &objs);
                 if(getPlacementListProperty())
                     getPlacementListProperty()->setSize(0);
                 if(getScaleListProperty())
@@ -1304,11 +1299,11 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
 
                 getElementListProperty()->setValue(objs);
 
-            }else if(elementCount<objs.size()){
+            }else if(elementCount < (int)objs.size()){
                 std::vector<App::DocumentObject*> tmpObjs;
                 auto owner = getContainer();
                 long ownerID = owner?owner->getID():0;
-                while(objs.size()>elementCount) {
+                while((int)objs.size() > elementCount) {
                     auto element = freecad_dynamic_cast<LinkElement>(objs.back());
                     if(element && element->myOwner==ownerID)
                         tmpObjs.push_back(objs.back());

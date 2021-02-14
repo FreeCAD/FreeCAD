@@ -1907,7 +1907,6 @@ void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     if(pcObj->isDerivedFrom(App::LinkElement::getClassTypeId()))
         hide();
     linkView->setOwner(this);
-
 }
 
 void ViewProviderLink::reattach(App::DocumentObject *obj) {
@@ -2041,7 +2040,62 @@ bool ViewProviderLink::setLinkType(App::LinkBaseExtension *ext) {
 App::LinkBaseExtension *ViewProviderLink::getLinkExtension() {
     if(!pcObject || !pcObject->getNameInDocument())
         return 0;
-    return pcObject->getExtensionByType<App::LinkBaseExtension>(true);
+
+    auto ext = pcObject->getExtensionByType<App::LinkBaseExtension>(true);
+    if (ext && !connNewElement.connected()) {
+        connNewElement = ext->signalNewLinkElements.connect(
+            [this, ext](App::DocumentObject &parent,
+                        int i, int end, std::vector<App::DocumentObject*> *elements)
+            {
+                auto placementProp = ext->getPlacementListProperty();
+                if(placementProp && placementProp->getSize() > i && elements) {
+                    for (; i < end; ++i) {
+                        auto element = Base::freecad_dynamic_cast<App::LinkElement>((*elements)[i]);
+                        if (element)
+                            element->Placement.setValue(placementProp->getValues()[i]);
+                    }
+                    return;
+                }
+                auto parentVp = Application::Instance->getViewProvider(&parent);
+                if (!parentVp)
+                    return;
+                auto bboxParent = parentVp->getBoundingBox();
+                bool bboxParentValid = bboxParent.IsValid();
+                auto bboxChild = parentVp->getBoundingBox("0.");
+                bool bboxChildValid = bboxChild.IsValid();
+                std::vector<Base::Placement> placements;
+                if (!elements) {
+                    placements = ext->getPlacementListValue();
+                    placements.resize(end);
+                }
+                for (; i<end; ++i) {
+                    if (i == 0) continue;
+                    Base::Placement pla(Base::Vector3d(i%10,(i/10)%10,i/100),Base::Rotation());
+                    Base::Vector3d pos; 
+                    if (bboxParentValid) {
+                        pos.x = bboxParent.MaxX;
+                        pos.y = bboxParent.MinY;
+                        pos.z = bboxParent.MinZ;
+                    }
+                    if (bboxChildValid) {
+                        int offset = i - (int)ext->getElementListValue().size();
+                        pos.x += 1.5 * bboxChild.LengthX() * ((offset % 10) + 0.5);
+                        pos.y += 1.5 * bboxChild.LengthY() * (offset/10 % 10);
+                        pos.z += 1.5 * bboxChild.LengthZ() * (offset/100);
+                        pla.setPosition(pos);
+                    }
+                    if (elements) {
+                        auto element = Base::freecad_dynamic_cast<App::LinkElement>((*elements)[i]);
+                        if (element)
+                            element->Placement.setValue(pla);
+                    } else
+                        placements[i] = pla;
+                }
+                if (placementProp)
+                    placementProp->setValues(std::move(placements));
+            });
+    }
+    return ext;
 }
 
 const App::LinkBaseExtension *ViewProviderLink::getLinkExtension() const{

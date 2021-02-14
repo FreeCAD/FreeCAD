@@ -374,6 +374,7 @@ protected:
     CoinPtr<SoDragger> pcDragger;
     ViewProviderDocumentObject *childVp;
     LinkInfoPtr childVpLink;
+    boost::signals2::scoped_connection connNewElement;
     mutable qint64 overlayCacheKey;
 };
 
