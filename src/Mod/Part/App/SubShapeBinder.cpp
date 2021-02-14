@@ -1108,8 +1108,12 @@ SubShapeBinder::import(const App::SubObjectT &feature,
         std::ostringstream ss;
         auto objs = editObjT.getSubObjectList();
         topParent = objs.front();
+        bool first = true;
         for (auto obj : objs) {
-            ss << obj->getNameInDocument() << ".";
+            if (first)
+                first = false;
+            else
+                ss << obj->getNameInDocument() << ".";
             if (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
                 subname = ss.str();
                 container = obj;
@@ -1145,6 +1149,11 @@ SubShapeBinder::import(const App::SubObjectT &feature,
 
         std::string linkSub = feature.getSubName();
         topParent->resolveRelativeLink(subname, link, linkSub);
+        if (!link)
+            FC_THROWM(Base::RuntimeError,
+                    "Failed to resolve relative link: "
+                    << editObjT.getSubObjectFullName() << " -> "
+                    << feature.getSubObjectFullName());
 
         resolved = App::SubObjectT(link, linkSub.c_str());
         if (Part::BodyBase::findBodyOf(link) == container
