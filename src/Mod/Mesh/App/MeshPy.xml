@@ -229,7 +229,7 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Check if the mesh has non-manifolds</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="removeNonManifolds">
+        <Methode Name="removeNonManifolds">
 			<Documentation>
 				<UserDocu>Remove non-manifolds</UserDocu>
 			</Documentation>
@@ -284,7 +284,27 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="countComponents" Const="true">
+        <Methode Name="hasInvalidNeighbourhood" Const="true">
+            <Documentation>
+                <UserDocu>Check if the mesh has invalid neighbourhood indices</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasPointsOutOfRange" Const="true">
+            <Documentation>
+                <UserDocu>Check if the mesh has point indices that are out of range</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasFacetsOutOfRange" Const="true">
+            <Documentation>
+                <UserDocu>Check if the mesh has facet indices that are out of range</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasCorruptedFacets" Const="true">
+            <Documentation>
+                <UserDocu>Check if the mesh has corrupted facets</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="countComponents" Const="true">
 			<Documentation>
 				<UserDocu>Get the number of topologic independent areas</UserDocu>
 			</Documentation>
