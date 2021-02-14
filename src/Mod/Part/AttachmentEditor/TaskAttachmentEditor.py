@@ -192,7 +192,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.obj = obj_to_attach
         try:
             if not self.obj.hasExtension('Part::AttachExtension'):
-                self.obj.addExtension('Part::AttachExtensionPython', None)
+                self.obj.addExtension('Part::AttachExtensionPython')
         except Exception:
             pass
 
