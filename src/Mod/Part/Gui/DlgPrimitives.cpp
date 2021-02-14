@@ -261,7 +261,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     ui->helixPitch->setRange(0, INT_MAX);
     ui->helixHeight->setRange(0, INT_MAX);
     ui->helixRadius->setRange(0, INT_MAX);
-    ui->helixAngle->setRange(0, 90);
+    ui->helixAngle->setRange(-90, 90);
     // circle
     ui->circleRadius->setRange(0, INT_MAX);
     ui->circleAngle0->setRange(0, 360);
@@ -560,7 +560,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     }
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgPrimitives::~DlgPrimitives()
@@ -1937,7 +1937,7 @@ TaskPrimitives::~TaskPrimitives()
 }
 
 QDialogButtonBox::StandardButtons TaskPrimitives::getStandardButtons() const
-{ 
+{
     return QDialogButtonBox::Close|
            QDialogButtonBox::Ok;
 }

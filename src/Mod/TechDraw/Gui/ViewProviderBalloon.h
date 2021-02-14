@@ -63,14 +63,12 @@ public:
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
     virtual bool canDelete(App::DocumentObject* obj) const;
+    void startDefaultEditMode();
 
     virtual TechDraw::DrawViewBalloon* getViewObject() const;
 
 protected:
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
-
-private:
-    void startDefaultEditMode();
 };
 
 } // namespace TechDrawGui

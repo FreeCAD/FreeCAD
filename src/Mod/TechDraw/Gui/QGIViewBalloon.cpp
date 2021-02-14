@@ -31,6 +31,7 @@
   # include <BRepAdaptor_Curve.hxx>
   # include <Precision.hxx>
 
+  # include <QDebug>
   # include <QGraphicsScene>
   # include <QGraphicsSceneMouseEvent>
   # include <QPainter>
@@ -48,7 +49,6 @@
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 #include <Gui/Tools.h>
 #include <string>
 
@@ -74,7 +74,6 @@
 #include "QGIViewDimension.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
-#include "TaskBalloon.h"
 
 //TODO: hide the Qt coord system (+y down).
 
@@ -140,8 +139,11 @@ void QGIBalloonLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIBalloonLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-    if(scene() && this == scene()->mouseGrabberItem()) {
-        Q_EMIT dragFinished();
+    if (QLineF(event->screenPos(), event->buttonDownScreenPos(Qt::LeftButton))
+        .length() > 0) {
+        if (scene() && this == scene()->mouseGrabberItem()) {
+            Q_EMIT dragFinished();
+        }
     }
     m_ctrl = false;  
     m_drag = false;
@@ -152,13 +154,17 @@ void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
     QGIViewBalloon* qgivBalloon = dynamic_cast<QGIViewBalloon*>(parentItem());
     if (qgivBalloon == nullptr) {
+        qWarning() << "QGIBalloonLabel::mouseDoubleClickEvent: No parent item";
         return;
     }
-    auto ViewProvider = static_cast<ViewProviderBalloon*>(qgivBalloon->getViewProvider(qgivBalloon->getViewObject()));
+
+    auto ViewProvider = dynamic_cast<ViewProviderBalloon*>(qgivBalloon->getViewProvider(qgivBalloon->getViewObject()));
     if (ViewProvider == nullptr) {
+        qWarning() << "QGIBalloonLabel::mouseDoubleClickEvent: No valid view provider";
         return;
     }
-    Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, ViewProvider));
+
+    ViewProvider->startDefaultEditMode();
     QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
@@ -482,7 +488,7 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
             m_saveOffset = dvb->getOriginOffset();
         }
     }
-    
+
     double scale = 1.0;
     DrawView* balloonParent = getSourceView();
     if (balloonParent != nullptr) {
@@ -499,7 +505,7 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
     if (ctrl) {
         Base::Vector3d pos(x, -y, 0.0);
         Base::Vector3d newOrg = pos - m_saveOffset;
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.OriginX = %f", 
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.OriginX = %f",
                                 dvb->getNameInDocument(), newOrg.x);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.OriginY = %f",
                                 dvb->getNameInDocument(), newOrg.y);

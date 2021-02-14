@@ -297,7 +297,7 @@ class TaskPanelCircularArray:
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Circular array", _cmd_list))
+        self.source_command.commit(translate("draft","Circular array"), _cmd_list)
 
     def get_distances(self):
         """Get the distance parameters from the widgets."""
