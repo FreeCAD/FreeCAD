@@ -515,7 +515,7 @@ class ObjectSlot(PathOp.ObjectOp):
             (p1, p2) = pnts
             begExt = obj.ExtendPathStart.Value
             endExt = obj.ExtendPathEnd.Value
-            # invert endExt, begExt args to apply extentions to correct ends
+            # invert endExt, begExt args to apply extensions to correct ends
             # XY geom is postitive CCW; Gcode postitive CW
             pnts = self._extendArcSlot(p1, p2, self.arcCenter, endExt, begExt)
 
@@ -925,7 +925,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Check that all Z values are equal (isRoughly same)
             if (abs(z1 - z2) > tolrnc or
                 abs(z1 - z3) > tolrnc ):
-#                abs(z2 - z3) > tolrnc):  3rd test reduntant.
+#                abs(z2 - z3) > tolrnc):  3rd test redundant.
                 return False
             return True
 
@@ -1230,8 +1230,8 @@ class ObjectSlot(PathOp.ObjectOp):
 
 
         # Convert extension to radians; make a generic chord ( line ) on XY plane from the x axis
-        # rotate and shift into place so it has same vertices as the required arc extention
-        # adjust rotation angle to provide +ve or -ve extention as needed 
+        # rotate and shift into place so it has same vertices as the required arc extension
+        # adjust rotation angle to provide +ve or -ve extension as needed 
         origin = FreeCAD.Vector(0.0, 0.0, 0.0)
         if begExt:
             ExtRadians = abs(begExt / self.newRadius)
