@@ -443,6 +443,11 @@ Only available for holes without thread</string>
        <string>Dimension</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>Hole depth</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="11" column="2" colspan="3">

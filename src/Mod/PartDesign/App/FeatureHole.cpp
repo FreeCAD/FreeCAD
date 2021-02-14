@@ -76,7 +76,7 @@ namespace PartDesign {
 /* TRANSLATOR PartDesign::Hole */
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ NULL };
-const char* Hole::ThreadDepthTypeEnums[]             = { "Automatic", "Dimension", NULL };
+const char* Hole::ThreadDepthTypeEnums[]             = { "Automatic", "Dimension", "Hole Depth", NULL };
 const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", NULL};
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", NULL};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", NULL };
@@ -1002,9 +1002,12 @@ void Hole::updateThreadDepthParam()
 
     if ( std::string(ThreadDepthType.getValueAsString()) == "Automatic" ) {
         ThreadDepth.setValue(Depth.getValue() - getThreadRunout());
-        if ( method == "ThroughAll" ) {
-            ThreadDepth.setValue(drillDepth);
-        }
+    } else { // hole depth
+        ThreadDepth.setValue(Depth.getValue());
+    }
+
+    if ( method == "ThroughAll" ) {
+        ThreadDepth.setValue(drillDepth);
     }
 }
 
@@ -1438,7 +1441,7 @@ void Hole::onChanged(const App::Property *prop)
         updateThreadDepthParam();
     }
     else if (prop == &Depth) {
-        if (std::string(ThreadDepthType.getValueAsString()) == "Automatic") {
+        if (std::string(ThreadDepthType.getValueAsString()) != "Dimension") {
             updateDiameterParam();  // make sure diameter and pitch are updated.
             updateThreadDepthParam();
         }
@@ -1863,16 +1866,20 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             double threadDepth = ThreadDepth.getValue();
             double helixLength = threadDepth + P/2;
             std::string threadDepthMethod(ThreadDepthType.getValueAsString());
-            if ( threadDepthMethod == "Automatic" ) {
+            if ( threadDepthMethod != "Dimension" ) {
                 std::string depthMethod(DepthType.getValueAsString());
                 if ( depthMethod == "ThroughAll" ) {
                     threadDepth = length;
                     ThreadDepth.setValue(threadDepth);
                     helixLength = threadDepth + 2*P;
-                } else {
+                } else if ( threadDepthMethod == "Automatic" ) {
                     threadDepth = Depth.getValue() - getThreadRunout();
                     ThreadDepth.setValue(threadDepth);
                     helixLength = threadDepth + P/2;
+                } else { // Hole depth
+                    threadDepth = Depth.getValue();
+                    ThreadDepth.setValue(threadDepth);
+                    helixLength = threadDepth + P/8;
                 }
             }
             TopoDS_Shape helix = TopoShape().makeLongHelix(P, helixLength, D / 2, 0.0, leftHanded);
