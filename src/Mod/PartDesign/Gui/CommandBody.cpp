@@ -186,20 +186,22 @@ void CmdPartDesignBody::activated(int iMsg)
                 baseFeature = owner;
             }
 
+            auto link = selObj;
+            std::string subname = sel.getSubName();
+            if (topParent) {
+                std::string s(topSubName);
+                topParent->resolveRelativeLink(s, link, subname);
+                if (!link)
+                    continue;
+            }
+            ss << '(' << getObjectCmd(link) << ",'" << subname << "'), ";
+
             ++count;
             int cnt = shape.countSubShapes(TopAbs_SOLID);
             if(cnt)
                 numSolids += cnt;
             else
                 numShells += shape.countSubShapes(TopAbs_SHELL);
-
-            auto link = selObj;
-            std::string subname = sel.getSubName();
-            if (topParent) {
-                std::string s(topSubName);
-                topParent->resolveRelativeLink(s, link, subname);
-            }
-            ss << '(' << getObjectCmd(link) << ",'" << subname << "'), ";
 
             if(link->getDocument() != activeDoc)
                 ss2 << '\n' << link->getFullName();
