@@ -162,10 +162,6 @@ def toolsUseLegacyTools():
     return preferences().GetBool(UseLegacyTools, False)
 
 
-def toolsReallyUseLegacyTools():
-    return toolsUseLegacyTools()
-
-
 def toolsStoreAbsolutePaths():
     return preferences().GetBool(UseAbsoluteToolPaths, False)
 

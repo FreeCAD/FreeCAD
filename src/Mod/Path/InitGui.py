@@ -102,7 +102,7 @@ class PathWorkbench (Workbench):
         specialcmdlist = []
 
 
-        if PathPreferences.toolsReallyUseLegacyTools():
+        if PathPreferences.toolsUseLegacyTools():
             toolcmdlist.append("Path_ToolLibraryEdit")
             toolbitcmdlist = []
         else:
