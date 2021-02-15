@@ -454,9 +454,10 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
         // This is a solid feature
         // If the next feature is solid, reroute its BaseFeature property to the previous solid feature
         if (nextSolidFeature) {
-            assert ( nextSolidFeature->isDerivedFrom ( PartDesign::Feature::getClassTypeId () ) );
-            // Note: It's ok to remove the first solid feature, that just mean the next feature become the base one
-            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(prevSolidFeature);
+            auto next = Base::freecad_dynamic_cast<PartDesign::Feature>(nextSolidFeature);
+            if (next && !next->NewSolid.getValue())
+                // Note: It's ok to remove the first solid feature, that just mean the next feature become the base one
+                static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(prevSolidFeature);
         }
     }
 
