@@ -95,7 +95,7 @@ public:
 private:
     // Helper functions
 
-    double vertex_error(SymmetricMatrix q, double x, double y, double z);
+    double vertex_error(const SymmetricMatrix& q, double x, double y, double z);
     double calculate_error(int id_v1, int id_v2, vec3f &p_result);
     bool flipped(vec3f p,int i0,int i1,Vertex &v0,Vertex &v1,std::vector<int> &deleted);
     void update_triangles(int i0,Vertex &v,std::vector<int> &deleted,int &deleted_triangles);
@@ -494,7 +494,7 @@ void Simplify::compact_mesh()
 
 // Error between vertex and Quadric
 
-double Simplify::vertex_error(SymmetricMatrix q, double x, double y, double z)
+double Simplify::vertex_error(const SymmetricMatrix& q, double x, double y, double z)
 {
     return   q[0]*x*x + 2*q[1]*x*y + 2*q[2]*x*z + 2*q[3]*x + q[4]*y*y
          + 2*q[5]*y*z + 2*q[6]*y + q[7]*z*z + 2*q[8]*z + q[9];

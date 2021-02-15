@@ -22,11 +22,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating rectangles with the Draft Workbench."""
+"""Provides GUI tools to create Rectangle objects."""
 ## @package gui_rectangles
-# \ingroup DRAFT
-# \brief Provides tools for creating rectangles with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Rectangle objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -36,6 +38,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
 
@@ -45,12 +48,11 @@ class Rectangle(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates a 2-point rectangle. CTRL to snap."
 
         return {'Pixmap': 'Draft_Rectangle',
                 'Accel': "R, E",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Rectangle", "Rectangle"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rectangle", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle. CTRL to snap.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -207,3 +209,5 @@ class Rectangle(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Rectangle', Rectangle())
+
+## @}

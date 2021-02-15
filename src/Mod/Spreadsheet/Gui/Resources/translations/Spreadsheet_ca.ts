@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>Alineació vertical i centrada dels continguts de les cel·les seleccionades</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Fusiona les cel·les seleccionades</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Divideix les cel·les prèviament fusionades</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Estableix el text en negreta en les cel·les seleccionades</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Estableix el text en cursiva en les cel·les seleccionades</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,97 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>Subratlla el text en les cel·les seleccionades</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Color personalitzat</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Fusiona les cel·les</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Divideix la cel·la</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation type="unfinished">Left-align cell</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation type="unfinished">Center cell</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation type="unfinished">Right-align cell</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation type="unfinished">Top-align cell</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation type="unfinished">Bottom-align cell</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation type="unfinished">Vertically center cells</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation type="unfinished">Set bold text</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation type="unfinished">Set italic text</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation type="unfinished">Set underline text</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation type="unfinished">Create Spreadsheet</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation type="unfinished">Set cell properties</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation type="unfinished">Edit cell</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Insereix files</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Suprimeix files</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Insereix columnes</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation type="unfinished">Clear cell(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation type="unfinished">Set foreground color</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation type="unfinished">Set background color</translation>
     </message>
   </context>
   <context>
@@ -257,7 +340,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Horitzontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +356,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Vertical</translation>
     </message>
     <message>
       <source>Top</source>
@@ -357,12 +440,21 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>El full de càlcul no admet la selecció de rang en enganxar. Seleccioneu només una cel·la.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>S'ha produït un error en copiar i enganxar</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>El sobrenom conté caràcters no vàlids!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Consulteu la cel·la per sobrenom, per exemple
+Spreadsheet.my_alias_name enlloc de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -437,7 +529,7 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Color personalitzat</translation>
     </message>
   </context>
   <context>
@@ -447,20 +539,18 @@ Please select one cell only.</translation>
       <translation>Forma</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Contingut</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Contingut:</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Sobrenom:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Consulteu la cel·la per sobrenom, per exemple
+Spreadsheet.my_alias_name enlloc de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

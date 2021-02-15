@@ -41,6 +41,7 @@
 #include <Mod/Mesh/App/Core/Smoothing.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/Gui/ViewProvider.h>
 
 using namespace ReverseEngineeringGui;
 
@@ -110,6 +111,119 @@ void SegmentationManual::on_cbSelectComp_toggled(bool on)
     meshSel.setAddComponentOnClick(on);
 }
 
+class SegmentationManual::Private {
+public:
+static void findGeometry(int minFaces, double tolerance,
+                         std::function<MeshCore::AbstractSurfaceFit*(const std::vector<Base::Vector3f>&,
+                                                                     const std::vector<Base::Vector3f>&)> fitFunc)
+{
+    Gui::Document* gdoc = Gui::Application::Instance->activeDocument();
+    if (!gdoc)
+        return;
+
+    App::Document* adoc = gdoc->getDocument();
+    std::vector<Mesh::Feature*> meshes = adoc->getObjectsOfType<Mesh::Feature>();
+    for (auto it : meshes) {
+        MeshGui::ViewProviderMesh* vpm = static_cast<MeshGui::ViewProviderMesh*>(gdoc->getViewProvider(it));
+        const Mesh::MeshObject& mesh = it->Mesh.getValue();
+
+        if (mesh.hasSelectedFacets()) {
+            const MeshCore::MeshKernel& kernel = mesh.getKernel();
+
+            std::vector<unsigned long> facets, vertexes;
+            mesh.getFacetsFromSelection(facets);
+            vertexes = mesh.getPointsFromFacets(facets);
+            MeshCore::MeshPointArray coords = kernel.GetPoints(vertexes);
+
+            std::vector<Base::Vector3f> points, normals;
+            normals = kernel.GetFacetNormals(facets);
+            points.insert(points.end(), coords.begin(), coords.end());
+            coords.clear();
+
+            MeshCore::AbstractSurfaceFit* surfFit = fitFunc(points, normals);
+            if (surfFit) {
+                MeshCore::MeshSegmentAlgorithm finder(kernel);
+
+                std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
+                segm.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
+                    (surfFit, kernel, minFaces, tolerance));
+                finder.FindSegments(segm);
+
+                for (auto segmIt : segm) {
+                    const std::vector<MeshCore::MeshSegment>& data = segmIt->GetSegments();
+                    for (const auto& dataIt : data) {
+                        vpm->addSelection(dataIt);
+                    }
+                }
+            }
+        }
+    }
+}
+};
+
+void SegmentationManual::on_planeDetect_clicked()
+{
+    auto func = [=](const std::vector<Base::Vector3f>& points,
+                    const std::vector<Base::Vector3f>& normal) -> MeshCore::AbstractSurfaceFit* {
+        Q_UNUSED(normal)
+
+        MeshCore::PlaneFit fit;
+        fit.AddPoints(points);
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::Vector3f base = fit.GetBase();
+            Base::Vector3f axis = fit.GetNormal();
+            return new MeshCore::PlaneSurfaceFit(base, axis);
+        }
+
+        return nullptr;
+    };
+    Private::findGeometry(ui->numPln->value(), ui->tolPln->value(), func);
+}
+
+void SegmentationManual::on_cylinderDetect_clicked()
+{
+    auto func = [=](const std::vector<Base::Vector3f>& points,
+                    const std::vector<Base::Vector3f>& normal) -> MeshCore::AbstractSurfaceFit* {
+        Q_UNUSED(normal)
+
+        MeshCore::CylinderFit fit;
+        fit.AddPoints(points);
+        if (!normal.empty()) {
+            Base::Vector3f base = fit.GetGravity();
+            Base::Vector3f axis = fit.GetInitialAxisFromNormals(normal);
+            fit.SetInitialValues(base, axis);
+        }
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::Vector3f base = fit.GetBase();
+            Base::Vector3f axis = fit.GetAxis();
+            float radius = fit.GetRadius();
+            return new MeshCore::CylinderSurfaceFit(base, axis, radius);
+        }
+
+        return nullptr;
+    };
+    Private::findGeometry(ui->numCyl->value(), ui->tolCyl->value(), func);
+}
+
+void SegmentationManual::on_sphereDetect_clicked()
+{
+    auto func = [=](const std::vector<Base::Vector3f>& points,
+                    const std::vector<Base::Vector3f>& normal) -> MeshCore::AbstractSurfaceFit* {
+        Q_UNUSED(normal)
+
+        MeshCore::SphereFit fit;
+        fit.AddPoints(points);
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::Vector3f base = fit.GetCenter();
+            float radius = fit.GetRadius();
+            return new MeshCore::SphereSurfaceFit(base, radius);
+        }
+
+        return nullptr;
+    };
+    Private::findGeometry(ui->numSph->value(), ui->tolSph->value(), func);
+}
+
 void SegmentationManual::createSegment()
 {
     Gui::Document* gdoc = Gui::Application::Instance->activeDocument();
@@ -117,7 +231,7 @@ void SegmentationManual::createSegment()
         return;
     // delete all selected faces
     App::Document* adoc = gdoc->getDocument();
-    gdoc->openCommand("Segmentation");
+    gdoc->openCommand(QT_TRANSLATE_NOOP("Command", "Segmentation"));
 
     std::vector<Mesh::Feature*> meshes = adoc->getObjectsOfType<Mesh::Feature>();
     bool selected = false;
@@ -137,7 +251,18 @@ void SegmentationManual::createSegment()
             Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(adoc->addObject("Mesh::Feature", "Segment"));
             Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
             feaMesh->swap(*segment);
+            feaMesh->clearFacetSelection();
             feaSegm->Mesh.finishEditing();
+
+            if (ui->checkBoxHideSegm->isChecked()) {
+                feaSegm->Visibility.setValue(false);
+            }
+
+            if (ui->checkBoxCutSegm->isChecked()) {
+                Mesh::MeshObject* editmesh = it->Mesh.startEditing();
+                editmesh->deleteFacets(facets);
+                it->Mesh.finishEditing();
+            }
         }
     }
 

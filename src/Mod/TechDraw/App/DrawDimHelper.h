@@ -37,7 +37,7 @@ class DrawViewPart;
 
 class TechDrawExport hTrimCurve {
     public:
-    hTrimCurve() {}
+    hTrimCurve() : first(0.0), last(0.0) {}
     hTrimCurve(Handle(Geom2d_Curve) hCurveIn,
                double parm1,
                double parm2);

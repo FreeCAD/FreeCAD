@@ -103,16 +103,10 @@ void DrawProjGroupItem::onChanged(const App::Property *prop)
 
 bool DrawProjGroupItem::isLocked(void) const
 {
-    bool isLocked = DrawView::isLocked();
-
     if (isAnchor()) {                             //Anchor view is always locked to DPG
         return true;
     }
-    DrawProjGroup* parent = getPGroup();
-    if (parent != nullptr) {
-        isLocked = isLocked || parent->LockPosition.getValue();
-    }
-    return isLocked;
+    return DrawView::isLocked();
 }
 
 bool DrawProjGroupItem::showLock(void) const

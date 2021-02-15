@@ -205,17 +205,19 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
         std::string docName = DressUpView->getObject()->getDocument()->getName();
         // get the name of the body we are in
         Part::BodyBase* body = PartDesign::Body::findBodyOf(DressUpView->getObject());
-        std::string objName = body->getNameInDocument();
+        if (body) {
+            std::string objName = body->getNameInDocument();
 
-        // hide fillet to see the original edge
-        // (a fillet creates new edges so that the original one is not available)
-        hideObject();
-        // highlight all objects in the list
-        DressUpView->highlightReferences(true);
-        // clear existing selection because only the current item is highlighted, not all selected ones to keep the overview
-        Gui::Selection().clearSelection();
-        // highligh the selected item
-        Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+            // hide fillet to see the original edge
+            // (a fillet creates new edges so that the original one is not available)
+            hideObject();
+            // highlight all objects in the list
+            DressUpView->highlightReferences(true);
+            // clear existing selection because only the current item is highlighted, not all selected ones to keep the overview
+            Gui::Selection().clearSelection();
+            // highligh the selected item
+            Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+        }
     }
 }
 

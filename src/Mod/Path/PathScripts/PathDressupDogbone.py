@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 from __future__ import print_function
 import FreeCAD
 import math
@@ -422,7 +421,7 @@ class ObjectDressup:
 
     def onDocumentRestored(self, obj):
         obj.setEditorMode('BoneBlacklist', 2)  # hide this one
-        
+
     def __getstate__(self):
         return None
 
@@ -1079,7 +1078,7 @@ class CommandDressupDogbone:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dogbone Dress-up"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "Creates a Dogbone Dress-up object from a selected path")}
 
@@ -1108,6 +1107,7 @@ class CommandDressupDogbone:
         FreeCADGui.doCommand("PathScripts.PathDressupDogbone.Create(FreeCAD.ActiveDocument.%s)" % baseObject.Name)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
 
 if FreeCAD.GuiUp:
     import FreeCADGui

@@ -20,17 +20,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Ellipse.
-"""
+"""Provides the object code for the Ellipse object."""
 ## @package ellipse
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Ellipse.
+# \ingroup draftobjects
+# \brief Provides the object code for the Ellipse object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
-from draftutils.utils import get_param
+import draftutils.utils as utils
 
 from draftobjects.base import DraftObject
 
@@ -41,32 +41,26 @@ class Ellipse(DraftObject):
     def __init__(self, obj):
         super(Ellipse, self).__init__(obj, "Ellipse")
 
-        _tip = "Start angle of the elliptical arc"
-        obj.addProperty("App::PropertyAngle", "FirstAngle",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property","Start angle of the elliptical arc")
+        obj.addProperty("App::PropertyAngle", "FirstAngle", "Draft", _tip)
 
-        _tip = "End angle of the elliptical arc \n\
-                (for a full circle, give it same value as First Angle)"
-        obj.addProperty("App::PropertyAngle", "LastAngle",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property","End angle of the elliptical arc \n\
+                (for a full circle, give it same value as First Angle)")
+        obj.addProperty("App::PropertyAngle", "LastAngle", "Draft", _tip)
 
-        _tip = "Minor radius of the ellipse"
-        obj.addProperty("App::PropertyLength", "MinorRadius",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property","Minor radius of the ellipse")
+        obj.addProperty("App::PropertyLength", "MinorRadius", "Draft", _tip)
 
-        _tip = "Major radius of the ellipse"
-        obj.addProperty("App::PropertyLength", "MajorRadius",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property","Major radius of the ellipse")
+        obj.addProperty("App::PropertyLength", "MajorRadius", "Draft", _tip)
 
-        _tip = "Create a face"
-        obj.addProperty("App::PropertyBool", "MakeFace",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property","Create a face")
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
 
-        _tip = "Area of this object"
-        obj.addProperty("App::PropertyArea", "Area",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property","Area of this object")
+        obj.addProperty("App::PropertyArea", "Area","Draft", _tip)
 
-        obj.MakeFace = get_param("fillmode",True)
+        obj.MakeFace = utils.get_param("fillmode",True)
 
     def execute(self, obj):
         import Part
@@ -99,4 +93,7 @@ class Ellipse(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _Ellipse = Ellipse
+
+## @}

@@ -4,9 +4,9 @@
   <context>
     <name>AssemblyGui::TaskAssemblyConstraints</name>
     <message>
-      <location filename="../../TaskAssemblyConstraints.cpp" line="53"/>
+      <location filename="../../TaskAssemblyConstraints.cpp" line="52"/>
       <source>Constraints</source>
-      <translation>Ograniczenia</translation>
+      <translation>Wiązania</translation>
     </message>
   </context>
   <context>
@@ -212,7 +212,7 @@
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Import one or more files and create a assembly structure.</source>
-      <translation>Importuj jeden lub więcej plików i stwórz strukturę złożenia.</translation>
+      <translation>Importuj jeden lub więcej plików i stwórz złożenie.</translation>
     </message>
   </context>
   <context>
@@ -243,7 +243,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="71"/>
       <source>You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click).</source>
-      <translation>Potrzebujesz aktywnego (niebieskiego) Złożenia aby wstawić Wiązanie. Proszę stwórz nowe lub uaktywnij istniejące (podwójne kliknięcie).</translation>
+      <translation>Potrzebujesz aktywnego (niebieskiego) złożenia aby wstawić wiązanie. Proszę stwórz nowe lub uaktywnij istniejące (podwójne kliknięcie).</translation>
     </message>
   </context>
   <context>
@@ -305,7 +305,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mocuje pierwszą geometrię w obracaniu i tłumaczeniu. Zauważ, że to mocowanie działa tylko z bezpośrednim zespołem nadrzędnym. Jeśli zbierzesz zespoły, zespół nadrzędny nie będzie umocowany wewnątrz pozostałych zespołów.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>

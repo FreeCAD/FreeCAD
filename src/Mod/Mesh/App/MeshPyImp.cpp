@@ -169,6 +169,7 @@ PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
     ext["OFF" ] = MeshCore::MeshIO::OFF;
     ext["IV"  ] = MeshCore::MeshIO::IV;
     ext["X3D" ] = MeshCore::MeshIO::X3D;
+    ext["X3DZ"] = MeshCore::MeshIO::X3DZ;
     ext["VRML"] = MeshCore::MeshIO::VRML;
     ext["WRL" ] = MeshCore::MeshIO::VRML;
     ext["WRZ" ] = MeshCore::MeshIO::WRZ;
@@ -210,24 +211,27 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
 
     MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
     std::map<std::string, MeshCore::MeshIO::Format> ext;
-    ext["BMS" ] = MeshCore::MeshIO::BMS;
-    ext["STL" ] = MeshCore::MeshIO::BSTL;
-    ext["AST" ] = MeshCore::MeshIO::ASTL;
-    ext["OBJ" ] = MeshCore::MeshIO::OBJ;
-    ext["SMF" ] = MeshCore::MeshIO::SMF;
-    ext["OFF" ] = MeshCore::MeshIO::OFF;
-    ext["IDTF"] = MeshCore::MeshIO::IDTF;
-    ext["MGL" ] = MeshCore::MeshIO::MGL;
-    ext["IV"  ] = MeshCore::MeshIO::IV;
-    ext["X3D" ] = MeshCore::MeshIO::X3D;
-    ext["VRML"] = MeshCore::MeshIO::VRML;
-    ext["WRL" ] = MeshCore::MeshIO::VRML;
-    ext["WRZ" ] = MeshCore::MeshIO::WRZ;
-    ext["NAS" ] = MeshCore::MeshIO::NAS;
-    ext["BDF" ] = MeshCore::MeshIO::NAS;
-    ext["PLY" ] = MeshCore::MeshIO::PLY;
-    ext["APLY"] = MeshCore::MeshIO::APLY;
-    ext["PY"  ] = MeshCore::MeshIO::PY;
+    ext["BMS"  ] = MeshCore::MeshIO::BMS;
+    ext["STL"  ] = MeshCore::MeshIO::BSTL;
+    ext["AST"  ] = MeshCore::MeshIO::ASTL;
+    ext["OBJ"  ] = MeshCore::MeshIO::OBJ;
+    ext["SMF"  ] = MeshCore::MeshIO::SMF;
+    ext["OFF"  ] = MeshCore::MeshIO::OFF;
+    ext["IDTF" ] = MeshCore::MeshIO::IDTF;
+    ext["MGL"  ] = MeshCore::MeshIO::MGL;
+    ext["IV"   ] = MeshCore::MeshIO::IV;
+    ext["X3D"  ] = MeshCore::MeshIO::X3D;
+    ext["X3DZ" ] = MeshCore::MeshIO::X3DZ;
+    ext["X3DOM"] = MeshCore::MeshIO::X3DOM;
+    ext["VRML" ] = MeshCore::MeshIO::VRML;
+    ext["WRL"  ] = MeshCore::MeshIO::VRML;
+    ext["WRZ"  ] = MeshCore::MeshIO::WRZ;
+    ext["NAS"  ] = MeshCore::MeshIO::NAS;
+    ext["BDF"  ] = MeshCore::MeshIO::NAS;
+    ext["PLY"  ] = MeshCore::MeshIO::PLY;
+    ext["APLY" ] = MeshCore::MeshIO::APLY;
+    ext["PY"   ] = MeshCore::MeshIO::PY;
+    ext["ASY"  ] = MeshCore::MeshIO::ASY;
 
     static char* keywords_path[] = {"Filename","Format","Name","Material",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "et|ssO", keywords_path, "utf-8",
@@ -968,6 +972,38 @@ PyObject*  MeshPy::hasNonManifolds(PyObject *args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False)); 
 }
 
+PyObject*  MeshPy::hasInvalidNeighbourhood(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasInvalidNeighbourhood();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject*  MeshPy::hasPointsOutOfRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasPointsOutOfRange();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject*  MeshPy::hasFacetsOutOfRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasFacetsOutOfRange();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject*  MeshPy::hasCorruptedFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasFacetsOutOfRange();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
 PyObject*  MeshPy::removeNonManifolds(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -1674,7 +1710,7 @@ PyObject*  MeshPy::trim(PyObject *args)
 
     polygon = tria.ProjectToFitPlane();
 
-    Base::ViewProjMatrix proj(mat);
+    Base::ViewOrthoProjMatrix proj(mat);
     Base::Polygon2d polygon2d;
     for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
         polygon2d.Add(Base::Vector2d(it->x, it->y));
@@ -1911,7 +1947,7 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
 #else
         int num = (int)Py::Int(t[4]);
 #endif
-        segm.emplace_back(new MeshCore::MeshCurvatureFreeformSegment(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
+        segm.emplace_back(std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(meshCurv.GetCurvature(), num, tol1, tol2, c1, c2));
     }
 
     finder.FindSegments(segm);

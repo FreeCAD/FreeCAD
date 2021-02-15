@@ -9,22 +9,23 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Common FEM unit tests"
+__title__  = "Common FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
+import sys
 import unittest
 
 import FreeCAD
@@ -42,12 +43,24 @@ class TestFemCommon(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
 
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestFemCommon tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -104,10 +117,27 @@ class TestFemCommon(unittest.TestCase):
         if FreeCAD.GuiUp:
             pymodules += testtools.collect_python_modules("femcommands")
             pymodules += testtools.collect_python_modules("femguiobjects")
+            pymodules += testtools.collect_python_modules("femguiutils")
+            pymodules += testtools.collect_python_modules("femtaskpanels")
+            pymodules += testtools.collect_python_modules("femviewprovider")
 
         # import all collected modules
         # fcc_print(pymodules)
         for mod in pymodules:
+            # migrate modules do not import on Python 2
+            if (
+                mod == "femtools.migrate_app"
+                or mod == "femguiutils.migrate_gui"
+            ) and sys.version_info.major < 3:
+                continue
+
+            if (
+                mod == "femsolver.solver_taskpanel"
+                or mod == "femexamples.examplesgui"
+                or mod == "TestFemGui"
+            ) and not FreeCAD.GuiUp:
+                continue
+
             fcc_print("Try importing {0} ...".format(mod))
             try:
                 im = __import__("{0}".format(mod))
@@ -117,10 +147,3 @@ class TestFemCommon(unittest.TestCase):
                 # to get an error message what was going wrong
                 __import__("{0}".format(mod))
             self.assertTrue(im, "Problem importing {0}".format(mod))
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # clearance, is executed after every test
-        FreeCAD.closeDocument(self.doc_name)

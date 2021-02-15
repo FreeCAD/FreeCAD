@@ -40,8 +40,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgRunExternal */
 
 /**
- *  Constructs a DlgRunExternal which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgRunExternal which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -62,7 +62,7 @@ DlgRunExternal::DlgRunExternal( QWidget* parent, Qt::WindowFlags fl )
     ui->extensionWidget->hide();
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgRunExternal::~DlgRunExternal()
@@ -114,8 +114,8 @@ void DlgRunExternal::advanced (void)
 
 void DlgRunExternal::finished (int exitCode, QProcess::ExitStatus exitStatus)
 {
-    Q_UNUSED(exitCode); 
-    Q_UNUSED(exitStatus); 
+    Q_UNUSED(exitCode);
+    Q_UNUSED(exitStatus);
     ui->buttonAccept->setEnabled(true);
     ui->buttonDiscard->setEnabled(true);
     ui->buttonAbort->setEnabled(false);

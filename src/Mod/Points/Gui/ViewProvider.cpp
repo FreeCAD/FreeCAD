@@ -72,7 +72,9 @@ App::PropertyFloatConstraint::Constraints ViewProviderPoints::floatRange = {1.0,
 
 ViewProviderPoints::ViewProviderPoints()
 {
-    ADD_PROPERTY(PointSize,(2.0f));
+    static const char *osgroup = "Object Style";
+
+    ADD_PROPERTY_TYPE(PointSize, (2.0f), osgroup, App::Prop_None, "Set point size");
     PointSize.setConstraints(&floatRange);
 
     // Create the selection node
@@ -463,7 +465,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
         return; // nothing needs to be done
 
     //Remove the points from the cloud and open a transaction object for the undo/redo stuff
-    Gui::Application::Instance->activeDocument()->openCommand("Cut points");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut points"));
 
     // sets the points outside the polygon to update the Inventor node
     fea->Points.removeIndices(removeIndices);
@@ -622,7 +624,7 @@ void ViewProviderStructured::cut(const std::vector<SbVec2f>& picked, Gui::View3D
 
     if (invalidatePoints) {
         //Remove the points from the cloud and open a transaction object for the undo/redo stuff
-        Gui::Application::Instance->activeDocument()->openCommand("Cut points");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut points"));
 
         // sets the points outside the polygon to update the Inventor node
         fea->Points.setValue(newKernel);

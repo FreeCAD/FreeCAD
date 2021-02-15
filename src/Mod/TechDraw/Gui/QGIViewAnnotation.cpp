@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2014 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -161,14 +161,14 @@ void QGIViewAnnotation::drawAnnotation()
     //TODO: there is still a bug here.  entering "'" works, save and restore works, but edit after
     //      save and restore brings "\'" back into text.  manually deleting the "\" fixes it until the next
     //      save/restore/edit cycle.
-    //      a guess is that the editor for propertyStringList is too enthusiastic about substituting. 
+    //      a guess is that the editor for propertyStringList is too enthusiastic about substituting.
     //      the substituting might be necessary for using the strings in Python.
-    //      &apos; doesn't seem to help in this case.  
+    //      &apos; doesn't seem to help in this case.
 
         std::string u8String = Base::Tools::escapedUnicodeToUtf8(*it); //from \x??\x?? to real utf8
         std::string apos = std::regex_replace((u8String), std::regex("\\\\"), "");  //remove doubles.
         apos = std::regex_replace((apos), std::regex("\\'"), "'");  //replace escaped apos
-        //"less than" symbol chops off line.  need to use html sub. 
+        //"less than" symbol chops off line.  need to use html sub.
         std::string lt   = std::regex_replace((apos), std::regex("<"), "&lt;");
         ss << lt;
     }

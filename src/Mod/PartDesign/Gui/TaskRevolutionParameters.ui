@@ -69,20 +69,23 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="revolveAngle" native="true">
+      <widget class="Gui::QuantitySpinBox" name="revolveAngle">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
        </property>
-       <property name="minimum" stdset="0">
+       <property name="minimum">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum" stdset="0">
+       <property name="maximum">
         <double>360.000000000000000</double>
        </property>
-       <property name="singleStep" stdset="0">
+       <property name="singleStep">
         <double>10.000000000000000</double>
        </property>
-       <property name="value" stdset="0">
+       <property name="value">
         <double>360.000000000000000</double>
        </property>
       </widget>

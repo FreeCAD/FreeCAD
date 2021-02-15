@@ -2096,7 +2096,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="135"/>
       <source>Displacement</source>
-      <translation type="unfinished">Displacement</translation>
+      <translation>Premiestnenie</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="143"/>

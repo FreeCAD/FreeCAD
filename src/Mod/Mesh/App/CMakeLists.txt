@@ -376,6 +376,16 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(Mesh PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
+# Suppress some very long Eigen3 warnings of older versions
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        Core/Approximation.cpp
+        Core/CylinderFit.cpp
+        Core/SphereFit.cpp
+        Core/KDTree.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
+
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
 

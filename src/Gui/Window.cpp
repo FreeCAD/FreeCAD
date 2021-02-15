@@ -83,8 +83,8 @@ ParameterGrp::handle  WindowParameter::getWindowParameter(void)
   return _handle;
 }
 
-/** 
- * Returns a handle to the parameter group to the user parameter 
+/**
+ * Returns a handle to the parameter group to the user parameter
  * under BaseApp/Preferences.
  */
 ParameterGrp::handle  WindowParameter::getDefaultParameter(void)

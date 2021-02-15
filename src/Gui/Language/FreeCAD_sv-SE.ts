@@ -121,6 +121,81 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Importera</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Radera</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation type="unfinished">Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation type="unfinished">Make link group</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation type="unfinished">Make link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation type="unfinished">Make sub-link</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation type="unfinished">Import links</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation type="unfinished">Import all links</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation type="unfinished">Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Justera</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Placering</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Omvandla</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Mät avstånd</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -418,7 +493,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Samling</translation>
     </message>
   </context>
   <context>
@@ -430,6 +505,14 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Utanför område</translation>
+    </message>
+    <message>
+      <source> "</source>
+      <translation> "</translation>
+    </message>
+    <message>
+      <source>"</source>
+      <translation type="unfinished">"</translation>
     </message>
   </context>
   <context>
@@ -609,16 +692,28 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Namn</translation>
     </message>
     <message>
-      <source>Document</source>
-      <translation>Dokument</translation>
+      <source>Verbose description of the new property.</source>
+      <translation type="unfinished">Verbose description of the new property.</translation>
     </message>
     <message>
-      <source>Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</source>
-      <translation type="unfinished">Append the group name in front of the property name in the form of 'group'_'name' to avoid conflict with existing property. The prefixed group name will be auto trimmed when shown in the property editor.</translation>
+      <source>Documentation</source>
+      <translation>Dokumentation</translation>
     </message>
     <message>
-      <source>Append group name</source>
-      <translation type="unfinished">Append group name</translation>
+      <source>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
+      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
+In this case the prefix will be automatically trimmed when shown in the property editor.
+However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+
+If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+    </message>
+    <message>
+      <source>Prefix group name</source>
+      <translation type="unfinished">Prefix group name</translation>
     </message>
   </context>
   <context>
@@ -1005,6 +1100,10 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Global</source>
       <translation>Global</translation>
     </message>
+    <message>
+      <source>%1 module not loaded</source>
+      <translation type="unfinished">%1 module not loaded</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -1043,16 +1142,16 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Knappar</translation>
     </message>
     <message>
-      <source>Clear</source>
-      <translation>Rensa</translation>
-    </message>
-    <message>
       <source>Print Reference</source>
       <translation>Utskriftsreferens</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
       <translation>Spaceball knappar</translation>
+    </message>
+    <message>
+      <source>Reset</source>
+      <translation>Återställ</translation>
     </message>
   </context>
   <context>
@@ -1285,7 +1384,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Display items</source>
-      <translation type="unfinished">Display items</translation>
+      <translation>Visa objekt</translation>
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
@@ -1298,6 +1397,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Font family to be used for selected code type</source>
       <translation>Typsnittsfamilj som ska användas för markerad kodtyp</translation>
+    </message>
+    <message>
+      <source>Color:</source>
+      <translation>Färg:</translation>
     </message>
   </context>
   <context>
@@ -1360,7 +1463,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Hur många filer ska visas i listan över senaste filer</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
@@ -1451,7 +1554,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>Båda</translation>
     </message>
   </context>
   <context>
@@ -1528,7 +1631,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Verktygsfält</translation>
     </message>
   </context>
   <context>
@@ -1615,7 +1718,7 @@ Kanske saknas fil-rättigheter?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Visa inte igen</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
@@ -1815,11 +1918,11 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Sorted</source>
-      <translation type="unfinished">Sorted</translation>
+      <translation>Sorterad</translation>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Snabbsökning</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
@@ -2004,6 +2107,10 @@ Ange en annan katalog.</translation>
       <source>Open in browser</source>
       <translation>Öppna i webbläsare</translation>
     </message>
+    <message>
+      <source>Program version:</source>
+      <translation>Programversion:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
@@ -2076,11 +2183,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
-    </message>
-    <message>
-      <source>If enabled, then 3D view selection will be sychronize with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be sychronize with full object hierarchy.</translation>
+      <translation>Filtrera efter typ</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
@@ -2093,6 +2196,10 @@ Ange en annan katalog.</translation>
     <message>
       <source>Clear</source>
       <translation>Rensa</translation>
+    </message>
+    <message>
+      <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
+      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
     </message>
   </context>
   <context>
@@ -2232,6 +2339,22 @@ from Python console to Report view panel</translation>
 from Python console to Report view panel</source>
       <translation type="unfinished">Internal Python error messages will be redirected
 from Python console to Report view panel</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each report</source>
+      <translation type="unfinished">Include a timecode for each report</translation>
+    </message>
+    <message>
+      <source>Include a timecode for each entry</source>
+      <translation type="unfinished">Include a timecode for each entry</translation>
+    </message>
+    <message>
+      <source>Normal messages will be recorded</source>
+      <translation type="unfinished">Normal messages will be recorded</translation>
+    </message>
+    <message>
+      <source>Record normal messages</source>
+      <translation type="unfinished">Record normal messages</translation>
     </message>
   </context>
   <context>
@@ -2463,7 +2586,7 @@ bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Intensitet</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
@@ -2476,6 +2599,40 @@ bounding box size of the 3D object that is currently displayed. </translation>
     <message>
       <source>Objects will appear in a perspective projection</source>
       <translation type="unfinished">Objects will appear in a perspective projection</translation>
+    </message>
+    <message>
+      <source>Axis cross will be shown by default at file
+opening or creation</source>
+      <translation type="unfinished">Axis cross will be shown by default at file
+opening or creation</translation>
+    </message>
+    <message>
+      <source>Show axis cross by default</source>
+      <translation type="unfinished">Show axis cross by default</translation>
+    </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Välj radie (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation type="unfinished">Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
     </message>
   </context>
   <context>
@@ -2756,12 +2913,12 @@ This feature may slightly increase recomputation time.</translation>
     <message>
       <source>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</source>
-      <translation type="unfinished">If there is a recovery file available the application will
-automatically run a file recovery when it is started.</translation>
+      <translation>Om det finns en återställningsfil tillgänglig kommer programmet
+automatiskt att köra en filåterställning när det startas.</translation>
     </message>
     <message>
       <source>How often a recovery file is written</source>
-      <translation type="unfinished">How often a recovery file is written</translation>
+      <translation>Hur ofta en återställningsfil skrivs</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
@@ -2797,7 +2954,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Datumformat</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -2880,7 +3037,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Format</translation>
     </message>
   </context>
   <context>
@@ -3097,6 +3254,29 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation type="unfinished">Unloaded Workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation type="unfinished">Load Selected</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
@@ -3165,6 +3345,34 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>The directory in which the application will search for macros</source>
       <translation type="unfinished">The directory in which the application will search for macros</translation>
+    </message>
+    <message>
+      <source>Recent macros menu</source>
+      <translation type="unfinished">Recent macros menu</translation>
+    </message>
+    <message>
+      <source>Size of recent macro list</source>
+      <translation type="unfinished">Size of recent macro list</translation>
+    </message>
+    <message>
+      <source>How many macros should be listed in recent macros list</source>
+      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+    </message>
+    <message>
+      <source>Shortcut count</source>
+      <translation type="unfinished">Shortcut count</translation>
+    </message>
+    <message>
+      <source>How many recent macros should have shortcuts</source>
+      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+    </message>
+    <message>
+      <source>Keyboard Modifiers</source>
+      <translation type="unfinished">Keyboard Modifiers</translation>
+    </message>
+    <message>
+      <source>Keyboard modifiers, default = Ctrl+Shift+</source>
+      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3248,14 +3456,6 @@ Turntable: the part will be rotated around the z-axis.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document camera orientation</source>
-      <translation type="unfinished">New document camera orientation</translation>
-    </message>
-    <message>
-      <source>Camera orientation for new documents</source>
-      <translation type="unfinished">Camera orientation for new documents</translation>
-    </message>
-    <message>
       <source>New document scale</source>
       <translation type="unfinished">New document scale</translation>
     </message>
@@ -3320,10 +3520,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Isometrisk</translation>
     </message>
@@ -3362,6 +3558,57 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Custom</source>
       <translation>Anpassad</translation>
+    </message>
+    <message>
+      <source>Default camera orientation</source>
+      <translation type="unfinished">Default camera orientation</translation>
+    </message>
+    <message>
+      <source>Default camera orientation when creating a new document or selecting the home view</source>
+      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Markering</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Förvälj objektet i 3D-vyn när musen går över trädobjektet</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
     </message>
   </context>
   <context>
@@ -3466,6 +3713,10 @@ Mouse tilting is not disabled by this setting.</translation>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation type="unfinished">Imperial for Civil Eng (ft, ft/sec)</translation>
     </message>
+    <message>
+      <source>FEM (mm, N, sec)</source>
+      <translation>FEM (mm, N, s)</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -3502,10 +3753,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation>Enkel färg</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Välj radie (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Objektet som blir redigerat</translation>
     </message>
@@ -3522,12 +3769,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation type="unfinished">Enable selection highlighting and use specified color</translation>
     </message>
     <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</translation>
-    </message>
-    <message>
       <source>Background color for the model view</source>
       <translation type="unfinished">Background color for the model view</translation>
     </message>
@@ -3541,7 +3782,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Nedre färg</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
@@ -3549,7 +3790,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Övre färg</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -3607,7 +3848,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Resultat</translation>
     </message>
     <message>
       <source>List of last used calculations 
@@ -3617,7 +3858,7 @@ To add a calculation press Return in the value input field</translation>
     </message>
     <message>
       <source>Quantity</source>
-      <translation type="unfinished">Quantity</translation>
+      <translation>Kvantitet</translation>
     </message>
     <message>
       <source>Unit system:</source>
@@ -3631,7 +3872,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Decimals:</source>
-      <translation type="unfinished">Decimals:</translation>
+      <translation>Decimaler:</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
@@ -4184,15 +4425,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>Runt y-axeln:</translation>
     </message>
     <message>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>Runt z-axeln:</translation>
     </message>
     <message>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>Runt x-axeln:</translation>
     </message>
     <message>
       <source>Rotation around the x-axis</source>
@@ -4238,15 +4479,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>VS Code</source>
-      <translation type="unfinished">VS Code</translation>
+      <translation>VS kod</translation>
     </message>
     <message>
       <source>Address:</source>
-      <translation type="unfinished">Address:</translation>
+      <translation>Adress:</translation>
     </message>
     <message>
       <source>Port:</source>
-      <translation type="unfinished">Port:</translation>
+      <translation>Port:</translation>
     </message>
     <message>
       <source>Redirect output</source>
@@ -4345,7 +4586,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Beroende</translation>
     </message>
     <message>
       <source>Document</source>
@@ -4357,11 +4598,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>State</source>
-      <translation type="unfinished">State</translation>
+      <translation>Tillstånd</translation>
     </message>
     <message>
       <source>Hierarchy</source>
-      <translation type="unfinished">Hierarchy</translation>
+      <translation>Hierarki</translation>
     </message>
     <message>
       <source>Selected</source>
@@ -4369,7 +4610,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Partial</source>
-      <translation type="unfinished">Partial</translation>
+      <translation>Partiell</translation>
     </message>
   </context>
   <context>
@@ -4412,18 +4653,6 @@ The 'Status' column shows whether the document could be recovered.</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <source>Logging</source>
-      <translation>Loggning</translation>
-    </message>
-    <message>
-      <source>Warning</source>
-      <translation>Varning</translation>
-    </message>
-    <message>
-      <source>Error</source>
-      <translation>Fel</translation>
-    </message>
-    <message>
       <source>Options</source>
       <translation>Alternativ</translation>
     </message>
@@ -4454,6 +4683,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Plain Text Files</source>
       <translation>Textfil</translation>
+    </message>
+    <message>
+      <source>Display message types</source>
+      <translation type="unfinished">Display message types</translation>
+    </message>
+    <message>
+      <source>Normal messages</source>
+      <translation type="unfinished">Normal messages</translation>
+    </message>
+    <message>
+      <source>Log messages</source>
+      <translation type="unfinished">Log messages</translation>
+    </message>
+    <message>
+      <source>Warnings</source>
+      <translation>Varningar</translation>
+    </message>
+    <message>
+      <source>Errors</source>
+      <translation>Fel</translation>
+    </message>
+    <message>
+      <source>Show report view on</source>
+      <translation type="unfinished">Show report view on</translation>
     </message>
   </context>
   <context>
@@ -4616,6 +4869,20 @@ Vill du spara ändringarna?</translation>
     <message>
       <source>PDF file</source>
       <translation>PDF-fil</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionLineEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::ExpressionTextEdit</name>
+    <message>
+      <source>Exact match</source>
+      <translation type="unfinished">Exact match</translation>
     </message>
   </context>
   <context>
@@ -5096,7 +5363,7 @@ Hur vill du fortsätta?</translation>
     </message>
     <message>
       <source>Show all</source>
-      <translation type="unfinished">Show all</translation>
+      <translation>Visa alla</translation>
     </message>
     <message>
       <source>Add property</source>
@@ -5108,7 +5375,7 @@ Hur vill du fortsätta?</translation>
     </message>
     <message>
       <source>Expression...</source>
-      <translation type="unfinished">Expression...</translation>
+      <translation>Uttryck...</translation>
     </message>
   </context>
   <context>
@@ -5219,11 +5486,11 @@ Vill du avsluta utan att spara din data?</translation>
     </message>
     <message>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Spara historik</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
-      <translation type="unfinished">Saves Python history across %1 sessions</translation>
+      <translation>Sparar Python-historik över %1 sessioner</translation>
     </message>
   </context>
   <context>
@@ -5242,6 +5509,21 @@ Vill du avsluta utan att spara din data?</translation>
     <message>
       <source>Open file %1</source>
       <translation>Öppna fil %1</translation>
+    </message>
+    <message>
+      <source>File not found</source>
+      <translation>Fil ej funnen</translation>
+    </message>
+    <message>
+      <source>The file '%1' cannot be opened.</source>
+      <translation>Filen '%1' kan inte öppnas.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::RecentMacrosAction</name>
+    <message>
+      <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
+      <translation>Kör makro %1 (Shift+klick för att redigera) genväg: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5392,7 +5674,7 @@ Vill du ange en annan katalog?</translation>
     <name>Gui::TaskElementColors</name>
     <message>
       <source>Set element color</source>
-      <translation type="unfinished">Set element color</translation>
+      <translation>Ange elementfärg</translation>
     </message>
     <message>
       <source>TextLabel</source>
@@ -5412,11 +5694,11 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Remove all</source>
-      <translation type="unfinished">Remove all</translation>
+      <translation>Ta bort alla</translation>
     </message>
     <message>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>Dölj</translation>
     </message>
     <message>
       <source>Box select</source>
@@ -5569,7 +5851,7 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Korean</source>
-      <translation type="unfinished">Korean</translation>
+      <translation>Koreansk</translation>
     </message>
     <message>
       <source>Russian</source>
@@ -5641,11 +5923,11 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Basque</source>
-      <translation type="unfinished">Basque</translation>
+      <translation>Baskisk</translation>
     </message>
     <message>
       <source>Catalan</source>
-      <translation type="unfinished">Catalan</translation>
+      <translation>Katalanska</translation>
     </message>
     <message>
       <source>Galician</source>
@@ -5790,11 +6072,11 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Close document</source>
-      <translation type="unfinished">Close document</translation>
+      <translation>Stäng dokument</translation>
     </message>
     <message>
       <source>Close the document</source>
-      <translation type="unfinished">Close the document</translation>
+      <translation>Stäng dokumentet</translation>
     </message>
     <message>
       <source>Reload document</source>
@@ -5814,11 +6096,30 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>Omräkna objekt</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
       <translation>Beräkna om det markerade objektet</translation>
+    </message>
+    <message>
+      <source> (but must be executed)</source>
+      <translation> (men måste verkställas)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::VectorListEditor</name>
+    <message>
+      <source>Vectors</source>
+      <translation>Vektorer</translation>
+    </message>
+    <message>
+      <source>Table</source>
+      <translation>Tabell</translation>
+    </message>
+    <message>
+      <source>...</source>
+      <translation>...</translation>
     </message>
   </context>
   <context>
@@ -6414,11 +6715,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Delete failed</source>
-      <translation type="unfinished">Delete failed</translation>
+      <translation>Borttagning misslyckades</translation>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Beroendefel</translation>
     </message>
     <message>
       <source>Copy selected</source>
@@ -6426,11 +6727,11 @@ Tänk på att det har betydelse var du klickar.</translation>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>Kopiera aktivt dokument</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>Kopiera alla dokument</translation>
     </message>
     <message>
       <source>Paste</source>
@@ -6452,7 +6753,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Simple group</source>
-      <translation type="unfinished">Simple group</translation>
+      <translation>Enkel grupp</translation>
     </message>
     <message>
       <source>Group with links</source>
@@ -6492,7 +6793,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Ogiltigt namn</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
@@ -6563,6 +6864,66 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Override colors...</source>
       <translation type="unfinished">Override colors...</translation>
+    </message>
+    <message>
+      <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</source>
+      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+
+</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to continue?</source>
+      <translation>Är du säker på att du vill fortsätta?</translation>
+    </message>
+    <message>
+      <source>
+
+Please check report view for more...</source>
+      <translation type="unfinished">
+
+Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>
+
+Pyhsical path: </source>
+      <translation type="unfinished">
+
+Pyhsical path: </translation>
+    </message>
+    <message>
+      <source>
+Document: </source>
+      <translation type="unfinished">
+Document: </translation>
+    </message>
+    <message>
+      <source>
+  Path: </source>
+      <translation>
+  Sökväg: </translation>
+    </message>
+    <message>
+      <source>Identical physical path</source>
+      <translation type="unfinished">Identical physical path</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Fel</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Det uppstod ett fel under inläsning av filen. Viss data kan ha ändrats eller inte återställts alls. Titta i rapportvyn för mer specifik information om de inblandade objekten.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Arbetsbänkar</translation>
     </message>
   </context>
   <context>
@@ -6820,6 +7181,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdDependencyGraph</name>
+    <message>
+      <source>Tools</source>
+      <translation>Verktyg</translation>
+    </message>
+    <message>
+      <source>Dependency graph...</source>
+      <translation>Beroende diagram...</translation>
+    </message>
+    <message>
+      <source>Show the dependency graph of the objects in the active document</source>
+      <translation>Visa objektens beroendediagram i det aktiva dokumentet</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdDlgCustomize</name>
     <message>
       <source>Tools</source>
@@ -6934,6 +7310,10 @@ Choose 'Abort' to abort</translation>
       <source>Draw style</source>
       <translation>Ritstil</translation>
     </message>
+    <message>
+      <source>Change the draw style of the objects</source>
+      <translation type="unfinished">Change the draw style of the objects</translation>
+    </message>
   </context>
   <context>
     <name>StdCmdDuplicateSelection</name>
@@ -6988,23 +7368,8 @@ Choose 'Abort' to abort</translation>
       <translation>Inget val</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Markera först de objekt som du vill exportera.</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdExportGraphviz</name>
-    <message>
-      <source>Tools</source>
-      <translation>Verktyg</translation>
-    </message>
-    <message>
-      <source>Dependency graph...</source>
-      <translation>Beroende diagram...</translation>
-    </message>
-    <message>
-      <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Visa objektens beroendediagram i det aktiva dokumentet</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
     </message>
   </context>
   <context>
@@ -7031,6 +7396,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Omberäkna föremål eller dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Hjälp</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Donera</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation type="unfinished">Donate to FreeCAD development</translation>
     </message>
   </context>
   <context>
@@ -7767,6 +8147,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdRecentMacros</name>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Recent macros</source>
+      <translation type="unfinished">Recent macros</translation>
+    </message>
+    <message>
+      <source>Recent macro list</source>
+      <translation type="unfinished">Recent macro list</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdRedo</name>
     <message>
       <source>Edit</source>
@@ -7834,11 +8229,11 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Save All</source>
-      <translation type="unfinished">Save All</translation>
+      <translation>Spara alla</translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation type="unfinished">Save all opened document</translation>
+      <translation>Spara alla öppnade dokument</translation>
     </message>
   </context>
   <context>
@@ -7894,7 +8289,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>&amp;Tillbaka</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
@@ -8453,6 +8848,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewHome</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Home</source>
+      <translation type="unfinished">Home</translation>
+    </message>
+    <message>
+      <source>Set to default home view</source>
+      <translation type="unfinished">Set to default home view</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Standard-View</source>
@@ -8588,6 +8998,21 @@ Choose 'Abort' to abort</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation type="unfinished">Restore saved camera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation type="unfinished">Restore saved camera settings</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8630,6 +9055,21 @@ Choose 'Abort' to abort</translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardvy</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation type="unfinished">Save current camera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation type="unfinished">Save current camera settings</translation>
     </message>
   </context>
   <context>
@@ -9049,16 +9489,19 @@ Are you sure you want to continue?
 </translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
-    </message>
-    <message>
       <source>Object dependencies</source>
       <translation>Objektberoenden</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Std_DependencyGraph</name>
+    <message>
+      <source>Dependency graph</source>
+      <translation>Beroendediagram</translation>
     </message>
   </context>
   <context>
@@ -9131,13 +9574,6 @@ Are you sure you want to continue?
 Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</translation>
-    </message>
-  </context>
-  <context>
-    <name>Std_ExportGraphviz</name>
-    <message>
-      <source>Dependency graph</source>
-      <translation>Beroendediagram</translation>
     </message>
   </context>
   <context>

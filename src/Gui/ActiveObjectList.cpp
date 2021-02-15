@@ -80,7 +80,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
         return info;
     if(subname) {
         info.obj = obj;
-        if(subname) info.subname = subname;
+        info.subname = subname;
     }else{
         // If the input object is not from this document, it must be brought in
         // by some link type object of this document. We only accept the object
@@ -109,7 +109,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
     return info;
 }
 
-bool Gui::ActiveObjectList::hasObject(App::DocumentObject *obj, 
+bool Gui::ActiveObjectList::hasObject(App::DocumentObject *obj,
         const char *name, const char *subname) const
 {
     auto it = _ObjectMap.find(name);
@@ -119,7 +119,7 @@ bool Gui::ActiveObjectList::hasObject(App::DocumentObject *obj,
     return info.obj==it->second.obj && info.subname==it->second.subname;
 }
 
-void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name, 
+void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name,
         const char *subname, const Gui::HighlightMode& mode)
 {
     auto it = _ObjectMap.find(name);
@@ -132,8 +132,8 @@ void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name
     auto info = getObjectInfo(obj,subname);
     if(!info.obj) {
         FC_ERR("Cannot set active object "
-                << obj->getFullName() << '.' << (subname?subname:"") 
-                << " in document '" << _Doc->getDocument()->getName() 
+                << obj->getFullName() << '.' << (subname?subname:"")
+                << " in document '" << _Doc->getDocument()->getName()
                 << "'. Not found in current selection");
         return;
     }
@@ -142,7 +142,7 @@ void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name
     setHighlight(info,mode,true);
 }
 
-bool Gui::ActiveObjectList::hasObject(const char*name)const 
+bool Gui::ActiveObjectList::hasObject(const char*name)const
 {
     return _ObjectMap.find(name) != _ObjectMap.end();
 }

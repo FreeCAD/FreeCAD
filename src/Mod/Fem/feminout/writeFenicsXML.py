@@ -21,20 +21,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD Fenics XML mesh writer"
+__title__  = "FreeCAD Fenics XML mesh writer"
 __author__ = "Johannes Hartung"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package exportFenicsXML
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XML writer for FEM workbench
 
 
+from xml.etree import ElementTree as ET  # parsing xml files and exporting
+
 from FreeCAD import Console
+
 from .importToolsFem import get_FemMeshObjectDimension
 from .importToolsFem import get_FemMeshObjectElementTypes
 from .importToolsFem import get_MaxDimElementFromList
-from xml.etree import ElementTree as ET  # parsing xml files and exporting
 
 
 def write_fenics_mesh_xml(fem_mesh_obj, outputfile):

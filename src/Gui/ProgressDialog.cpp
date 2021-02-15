@@ -26,8 +26,9 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QPushButton>
-# include <QTime>
+# include <QElapsedTimer>
 # include <QThread>
+# include <QTime>
 #endif
 #include "ProgressDialog.h"
 #include "MainWindow.h"
@@ -40,8 +41,8 @@ namespace Gui {
 struct SequencerDialogPrivate
 {
     ProgressDialog* dlg;
-    QTime measureTime;
-    QTime progressTime;
+    QElapsedTimer measureTime;
+    QElapsedTimer progressTime;
     QString text;
     bool guiThread;
     bool canabort;
@@ -239,7 +240,7 @@ void SequencerDialog::resetData()
     }
     else {
         d->dlg->resetEx();
-        // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice 
+        // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice
         // handling the same event thus a warning is printed. Possibly, this is a bug
         // in Qt. The message is QEventDispatcherUNIX::unregisterTimer: invalid argument.
         d->dlg->hide();
@@ -311,7 +312,7 @@ void ProgressDialog::onCancel()
 bool ProgressDialog::canAbort() const
 {
     int ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
-    tr("Do you really want to abort the operation?"),  QMessageBox::Yes, 
+    tr("Do you really want to abort the operation?"),  QMessageBox::Yes,
     QMessageBox::No|QMessageBox::Default);
 
     return (ret == QMessageBox::Yes) ? true : false;

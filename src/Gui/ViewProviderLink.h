@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -94,10 +94,10 @@ public:
     void updateLink();
 
     void setLink(App::DocumentObject *obj,
-        const std::vector<std::string> &subs = std::vector<std::string>()); 
+        const std::vector<std::string> &subs = std::vector<std::string>());
 
     void setLinkViewObject(ViewProviderDocumentObject *vpd,
-        const std::vector<std::string> &subs = std::vector<std::string>()); 
+        const std::vector<std::string> &subs = std::vector<std::string>());
 
     std::vector<ViewProviderDocumentObject*> getChildren() const;
 
@@ -113,7 +113,7 @@ public:
 
     enum SnapshotType {
         //three type of snapshot to override linked root node:
-        
+
         //override transform and visibility
         SnapshotTransform = 0,
         //override visibility
@@ -131,7 +131,7 @@ public:
     void setNodeType(SnapshotType type, bool sublink=true);
 
     void setChildren(const std::vector<App::DocumentObject*> &children,
-            const boost::dynamic_bitset<> &vis, SnapshotType type=SnapshotVisible); 
+            const boost::dynamic_bitset<> &vis, SnapshotType type=SnapshotVisible);
 
     bool linkGetDetailPath(const char *, SoFullPath *, SoDetail *&) const;
     bool linkGetElementPicked(const SoPickedPoint *, std::string &) const;
@@ -221,9 +221,9 @@ public:
     void dragObject(App::DocumentObject*) override;
     bool canDropObjects() const override;
     bool canDragAndDropObject(App::DocumentObject*) const override;
-    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &subElements) const override;
-    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, 
+    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*,
             const char *subname, const std::vector<std::string> &subElements) override;
 
     bool onDelete(const std::vector<std::string> &) override;

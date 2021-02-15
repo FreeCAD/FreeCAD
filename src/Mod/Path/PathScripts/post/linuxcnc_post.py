@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                        *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +19,8 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
+
 from __future__ import print_function
 import FreeCAD
 from FreeCAD import Units
@@ -64,7 +65,7 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
-USE_TLO = True # if true G43 will be output following tool changes 
+USE_TLO = True # if true G43 will be output following tool changes
 OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
@@ -185,7 +186,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, 'Active'): 
+        if hasattr(obj, 'Active'):
             if not obj.Active:
                 continue
         if hasattr(obj, 'Base') and hasattr(obj.Base, 'Active'):
@@ -246,7 +247,7 @@ def export(objectslist, filename, argstring):
         # turn coolant off if required
         if not coolantMode == 'None':
             if OUTPUT_COMMENTS:
-                gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'    
+                gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'
             gcode  += linenumber() +'M9' + '\n'
 
     # do the post_amble
@@ -256,13 +257,15 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() + line
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
-        dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
-        result = dia.exec_()
-        if result:
-            final = dia.editor.toPlainText()
+        final = gcode
+        if len(gcode) > 100000:
+            print("Skipping editor since output is greater than 100kb")
         else:
-            final = gcode
+            dia = PostUtils.GCodeEditorDialog()
+            dia.editor.setText(gcode)
+            result = dia.exec_()
+            if result:
+                final = dia.editor.toPlainText()
     else:
         final = gcode
 
@@ -389,8 +392,10 @@ def parse(pathobj):
                 # append the line to the final output
                 for w in outstring:
                     out += w + COMMAND_SPACE
-                out = out.strip() + "\n"
+                # Note: Do *not* strip `out`, since that forces the allocation
+                # of a contiguous string & thus quadratic complexity.
+                out += "\n"
 
         return out
 
-print(__name__ + " gcode postprocessor loaded.")
+# print(__name__ + " gcode postprocessor loaded.")

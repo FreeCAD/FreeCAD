@@ -59,9 +59,11 @@
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
+#include "TaskHatch.h"
 //#include "TaskLeaderLine.h"
 //#include "TaskRichAnno.h"
 #include "ViewProviderGeomHatch.h"
+#include "ViewProviderHatch.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -246,7 +248,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         }
     }
 
-    openCommand("Create Hatch");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
     if (removeOld) {
         std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
         for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
@@ -281,8 +283,18 @@ void CmdTechDrawHatch::activated(int iMsg)
     auto hatch( static_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str())) );
     hatch->Source.setValue(partFeat, subNames);
 
+    Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(hatch);
+    TechDrawGui::ViewProviderHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderHatch*>(vp);
+    if (!hvp) {
+        Base::Console().Log("ERROR - CommandDecorate - Hatch has no ViewProvider\n");
+        return;
+    }
+
     //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy
+
+    // dialog to fill in hatch values
+    Gui::Control().showDialog(new TaskDlgHatch(hatch, hvp, true));
 
     commitCommand();
 
@@ -312,7 +324,7 @@ CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to a Face");
+    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to Face");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;
@@ -339,7 +351,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     std::stringstream featLabel;
     featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
-    openCommand("Create GeomHatch");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawGeomHatch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
 
@@ -353,8 +365,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     }
 
     // dialog to fill in hatch values
-    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch,hvp,true));
-
+    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch, hvp, true));
 
     commitCommand();
 
@@ -401,14 +412,14 @@ void CmdTechDrawImage::activated(int iMsg)
     // Reading an image
     QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
         QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
-        QString::null,
+        QString(),
         QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
 
     if (!fileName.isEmpty())
     {
         std::string FeatName = getUniqueObjectName("Image");
         fileName = Base::Tools::escapeEncodeFilename(fileName);
-        openCommand("Create Image");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewImage','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),fileName.toUtf8().constData());
         doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());

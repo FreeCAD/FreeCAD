@@ -327,12 +327,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="385"/>
       <source>Dress-up trajectory...</source>
-      <translation>Prilagodi pot …</translation>
+      <translation>Dodelaj pot …</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="386"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>Ustvari objekt prilagoditve, ki preglasi nekatere parametre poti</translation>
+      <translation>Ustvari izpopolnitveni predmet, ki preglasi nekatere vidike poti</translation>
     </message>
   </context>
   <context>

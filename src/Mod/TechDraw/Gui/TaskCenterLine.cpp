@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -81,7 +81,11 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_partFeat(partFeat),
     m_basePage(page),
     m_createMode(false),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_edgeName(edgeName),
+    m_extendBy(0.0),
+    m_clIdx(0),
     m_type(0),          //0 - Face, 1 - 2 Lines, 2 - 2 points
     m_mode(0),           //0 - vertical, 1 - horizontal, 2 - aligned
     m_editMode(editMode)
@@ -97,8 +101,10 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     if (m_cl == nullptr) {         //checked by CommandAnnotate.  Should never happen.
         Base::Console().Message("TCL::TCL() - no centerline found\n");
     }
-    m_type = m_cl->m_type;
-    m_mode = m_cl->m_mode;
+    else {
+        m_type = m_cl->m_type;
+        m_mode = m_cl->m_mode;
+    }
 
     setUiEdit();
 }
@@ -112,7 +118,13 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_partFeat(partFeat),
     m_basePage(page),
     m_createMode(true),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_subNames(subNames),
+    m_extendBy(0.0),
+    m_geomIndex(0),
+    m_cl(nullptr),
+    m_clIdx(0),
     m_type(0),          //0 - Face, 1 - 2 Lines, 2 - 2 points
     m_mode(0),           //0 - vertical, 1 - horizontal, 2 - aligned
     m_editMode(editMode)
@@ -144,7 +156,6 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
 
 TaskCenterLine::~TaskCenterLine()
 {
-    delete ui;
 }
 
 void TaskCenterLine::updateTask()
@@ -230,7 +241,7 @@ void TaskCenterLine::setUiEdit()
         ui->rbAligned->setEnabled(false);
     else
         ui->rbAligned->setEnabled(true);
-    
+
     Base::Quantity qVal;
     qVal.setUnit(Base::Unit::Length);
     qVal.setValue(m_cl->m_vShift);
@@ -332,7 +343,7 @@ void TaskCenterLine::onFlipChanged()
 void TaskCenterLine::createCenterLine(void)
 {
 //    Base::Console().Message("TCL::createCenterLine() - m_type: %d\n", m_type);
-    Gui::Command::openCommand("Create CenterLine");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create CenterLine"));
 //    bool vertical = false;
     double hShift = ui->qsbHorizShift->rawValue();
     double vShift = ui->qsbVertShift->rawValue();
@@ -377,7 +388,7 @@ void TaskCenterLine::createCenterLine(void)
 void TaskCenterLine::updateCenterLine(void)
 {
 //    Base::Console().Message("TCL::updateCenterLine()\n");
-    Gui::Command::openCommand("Edit CenterLine");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit CenterLine"));
     m_cl->m_format.m_color.setValue<QColor>(ui->cpLineColor->color() );
     m_cl->m_format.m_weight = ui->dsbWeight->value().getValue();
     m_cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;
@@ -397,7 +408,6 @@ void TaskCenterLine::updateCenterLine(void)
     m_cl->m_extendBy = ui->qsbExtend->rawValue();
     m_cl->m_type = m_type;
     m_cl->m_flip2Line = ui->cbFlip->isChecked();
-    m_partFeat->replaceCenterLine(m_cl);
     m_partFeat->refreshCLGeoms();
     m_partFeat->requestPaint();
 
@@ -420,14 +430,14 @@ void TaskCenterLine::enableTaskButtons(bool b)
 
 double TaskCenterLine::getCenterWidth()
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
     double width = lg->getWeight("Graphic");
-    delete lg; 
+    delete lg;
     Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
-    if ( vp != nullptr ) {
+    if ( partVP != nullptr ) {
         width = partVP->IsoWidth.getValue();
     }
     return width;
@@ -480,7 +490,7 @@ bool TaskCenterLine::reject()
     if (getCreateMode() &&
         (m_partFeat != nullptr) )  {
 //        Base::Console().Message("TCL::reject - create Mode!!\n");
-        //nothing to remove. 
+        //nothing to remove.
     }
 
     if (!getCreateMode() &&
@@ -489,7 +499,7 @@ bool TaskCenterLine::reject()
           //nothing to un-update
     }
 
-    //make sure any dangling objects are cleaned up 
+    //make sure any dangling objects are cleaned up
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 

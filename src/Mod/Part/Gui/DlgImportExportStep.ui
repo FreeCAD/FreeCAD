@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>445</width>
-    <height>637</height>
+    <height>699</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,20 +27,32 @@
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
-          <widget class="QRadioButton" name="radioButtonAP203">
-           <property name="text">
-            <string notr="true">AP 203</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="radioButtonAP214">
-           <property name="text">
-            <string notr="true">AP 214</string>
-           </property>
+          <widget class="QComboBox" name="comboBoxSchema">
+           <item>
+            <property name="text">
+             <string notr="true">AP203</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">AP214 Committee Draft</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">AP214 Draft International Standard</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">AP214 International Standard</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string notr="true">AP242 Draft International Standard</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
@@ -113,11 +125,11 @@
         <property name="text">
          <string>Use legacy exporter</string>
         </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Import</cstring>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>ExportLegacy</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -393,8 +405,6 @@ during file reading (slower but higher details).</string>
   <tabstop>comboBoxUnits</tabstop>
   <tabstop>checkBoxPcurves</tabstop>
   <tabstop>checkBoxExportHiddenObj</tabstop>
-  <tabstop>radioButtonAP203</tabstop>
-  <tabstop>radioButtonAP214</tabstop>
   <tabstop>checkBoxMergeCompound</tabstop>
   <tabstop>checkBoxUseLinkGroup</tabstop>
   <tabstop>checkBoxImportHiddenObj</tabstop>

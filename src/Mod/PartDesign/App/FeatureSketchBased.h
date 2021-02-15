@@ -78,7 +78,7 @@ public:
      *               Default is false.
      */
     Part::Part2DObject* getVerifiedSketch(bool silent=false) const;
-    
+
     /**
      * Verifies the linked Profile and returns it if it is a valid object
      * @param silent if profile property is malformed and the parameter is true
@@ -86,7 +86,7 @@ public:
      *               Default is false.
      */
     Part::Feature* getVerifiedObject(bool silent=false) const;
-    
+
     /**
      * Verifies the linked Object and returns the shape used as profile
      * @param silent if profirle property is malformed and the parameter is true
@@ -94,25 +94,28 @@ public:
      *               Default is false.
      */
     TopoDS_Shape getVerifiedFace(bool silent = false) const;
-    
+
     /// Returns the wires the sketch is composed of
     std::vector<TopoDS_Wire> getProfileWires() const;
-    
+
     /// Returns the face of the sketch support (if any)
     const TopoDS_Face getSupportFace() const;
-    
+
     Base::Vector3d getProfileNormal() const;
 
     Part::TopoShape getProfileShape() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
-    int getSketchAxisCount(void) const;    
+    int getSketchAxisCount(void) const;
 
     virtual Part::Feature* getBaseObject(bool silent=false) const;
-    
+
     //backwards compatibility: profile property was renamed and has different type now
     virtual void Restore(Base::XMLReader& reader);
-    
+
+    // calculate the through all length
+    double getThroughAllLength() const;
+
 protected:
     void remapSupportShape(const TopoDS_Shape&);
 
@@ -132,14 +135,14 @@ protected:
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
       */
-    static void generatePrism(TopoDS_Shape& prism,
-                              const TopoDS_Shape& sketchshape,
-                              const std::string& method,
-                              const gp_Dir& direction,
-                              const double L,
-                              const double L2,
-                              const bool midplane,
-                              const bool reversed);
+    void generatePrism(TopoDS_Shape& prism,
+                       const TopoDS_Shape& sketchshape,
+                       const std::string& method,
+                       const gp_Dir& direction,
+                       const double L,
+                       const double L2,
+                       const bool midplane,
+                       const bool reversed);
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepFeat_MakePrism
@@ -167,8 +170,8 @@ protected:
     double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
-                 Base::Vector3d& base, Base::Vector3d& dir);
-        
+                 Base::Vector3d& base, Base::Vector3d& dir, bool checkPerpendicular=true);
+
     void onChanged(const App::Property* prop);
 private:
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;

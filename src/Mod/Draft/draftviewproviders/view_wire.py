@@ -20,51 +20,68 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for Draft wire related objects.
+"""Provides the viewprovider code for the Wire (polyline) object.
+
+This viewprovider is also used by simple lines, B-splines, bezier curves,
+and similar objects.
 """
-## @package view_base
-# \ingroup DRAFT
-# \brief This module provides the view provider code for Draft objects like\
-# Line, Polyline, BSpline, BezCurve.
+## @package view_wire
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Wire (polyline) object.
 
-
-from pivy import coin
-from PySide import QtCore
-from PySide import QtGui
-
+## \addtogroup draftviewproviders
+# @{
+import pivy.coin as coin
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
 import DraftVecUtils
 import DraftGeomUtils
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
+from draftutils.messages import _msg
 from draftviewproviders.view_base import ViewProviderDraft
 
 
 class ViewProviderWire(ViewProviderDraft):
-    """A base View Provider for the Wire object"""
+    """A base View Provider for the Wire object."""
+
     def __init__(self, vobj):
         super(ViewProviderWire, self).__init__(vobj)
+        self._set_properties(vobj)
 
-        _tip = "Displays a Dimension symbol at the end of the wire"
-        vobj.addProperty("App::PropertyBool", "EndArrow",
-                         "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+    def _set_properties(self, vobj):
+        """Set the properties of objects if they don't exist."""
+        super(ViewProviderWire, self)._set_properties(vobj)
 
-        _tip = "Arrow size"
-        vobj.addProperty("App::PropertyLength", "ArrowSize",
-                         "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        if not hasattr(vobj, "EndArrow"):
+            _tip = "Displays a Dimension symbol at the end of the wire."
+            vobj.addProperty("App::PropertyBool",
+                             "EndArrow",
+                             "Draft",
+                             QT_TRANSLATE_NOOP("App::Property", _tip))
+            vobj.EndArrow = False
 
-        _tip = "Arrow type"
-        vobj.addProperty("App::PropertyEnumeration", "ArrowType",
-                         "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        if not hasattr(vobj, "ArrowSize"):
+            _tip = "Arrow size"
+            vobj.addProperty("App::PropertyLength",
+                             "ArrowSize",
+                             "Draft",
+                             QT_TRANSLATE_NOOP("App::Property", _tip))
+            vobj.ArrowSize = utils.get_param("arrowsize", 0.1)
 
-        vobj.ArrowSize = utils.get_param("arrowsize",0.1)
-        vobj.ArrowType = utils.ARROW_TYPES
-        vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol",0)]
+        if not hasattr(vobj, "ArrowType"):
+            _tip = "Arrow type"
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowType",
+                             "Draft",
+                             QT_TRANSLATE_NOOP("App::Property", _tip))
+            vobj.ArrowType = utils.ARROW_TYPES
+            vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol", 0)]
 
     def attach(self, vobj):
         self.Object = vobj.Object
@@ -153,8 +170,11 @@ class ViewProviderWire(ViewProviderDraft):
                         App.ActiveDocument.commitTransaction()
 
                     else:
-                        _msg = "This Wire is already flat"
-                        App.Console.PrintMessage(QT_TRANSLATE_NOOP("Draft", _msg) + "\n")
+                        _flat = "This Wire is already flat"
+                        _msg(QT_TRANSLATE_NOOP("Draft", _flat))
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderWire = ViewProviderWire
+
+## @}

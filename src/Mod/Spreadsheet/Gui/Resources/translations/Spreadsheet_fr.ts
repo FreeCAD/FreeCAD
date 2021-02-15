@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Fusionner des cellules</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Diviser la cellule</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Aligner la cellule à gauche</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Centrer la cellule</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Aligner la cellule à droite</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Aligner la cellule en haut</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Aligner la cellule en bas</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Centrer les cellules verticalement</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Mettre le texte en gras</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Mettre le texte en italique</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Souligner le texte</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Créer une feuille de calcul</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Modifier les propriétés des cellules</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Modifier la cellule</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Insérer des lignes</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Supprimer des lignes</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Insérer des colonnes</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Effacer la/les cellule(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Définir la couleur du premier-plan</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Définir la couleur de l'arrière-plan</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -364,6 +447,15 @@ Veuillez sélectionner une seule cellule.</translation>
       <source>Copy &amp; Paste failed</source>
       <translation>Copier-coller a failli</translation>
     </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>L'alias contient des caractères invalides!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Reportez-vous à la cellule par l'alias, par exemple Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
+    </message>
   </context>
   <context>
     <name>QtColorPicker</name>
@@ -447,20 +539,17 @@ Veuillez sélectionner une seule cellule.</translation>
       <translation>Forme</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Contenu</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Contenu:</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Reportez-vous à la cellule par l'alias, par exemple Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

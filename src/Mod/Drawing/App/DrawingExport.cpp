@@ -423,10 +423,10 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
     }
 }
 
-void SVGOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+void SVGOutput::printGeneric(const BRepAdaptor_Curve& bac, int id, std::ostream& out)
 {
     TopLoc_Location location;
-    Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(c.Edge(), location);
+    Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(bac.Edge(), location);
     if (!polygon.IsNull()) {
         const TColgp_Array1OfPnt& nodes = polygon->Nodes();
         char c = 'M';
@@ -436,13 +436,13 @@ void SVGOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& o
             c = 'L';
         }
         out << "\" />" << endl;
-    } else if (c.GetType() == GeomAbs_Line) {
+    } else if (bac.GetType() == GeomAbs_Line) {
         //BRep_Tool::Polygon3D assumes the edge has polygon representation - ie already been "tessellated"
         //this is not true for all edges, especially "floating edges"
-        double f = c.FirstParameter();
-        double l = c.LastParameter();
-        gp_Pnt s = c.Value(f);
-        gp_Pnt e = c.Value(l);
+        double f = bac.FirstParameter();
+        double l = bac.LastParameter();
+        gp_Pnt s = bac.Value(f);
+        gp_Pnt e = bac.Value(l);
         char c = 'M';
         out << "<path id= \"" /*<< ViewName*/ << id << "\" d=\" "; 
         out << c << " " << s.X() << " " << s.Y()<< " " ; 

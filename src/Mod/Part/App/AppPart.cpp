@@ -1,11 +1,23 @@
 /***************************************************************************
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License as       *
- *   published by the Free Software Foundation; either version 2 of the    *
- *   License, or (at your option) any later version.                       *
- *   for detail see the LICENCE text file.                                 *
- *   Jürgen Riegel 2002                                                    *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
 
@@ -53,12 +65,15 @@
 #include "FeatureOffset.h"
 #include "PartFeatures.h"
 #include "BodyBase.h"
+#include "BodyBasePy.h"
 #include "PrimitiveFeature.h"
 #include "Part2DObject.h"
+#include "Part2DObjectPy.h"
 #include "CustomFeature.h"
 #include "Geometry.h"
 #include "GeometryExtension.h"
 #include "GeometryDefaultExtension.h"
+#include "GeometryMigrationExtension.h"
 #include "Geometry2d.h"
 #include "Mod/Part/App/GeometryIntExtensionPy.h"
 #include "Mod/Part/App/GeometryStringExtensionPy.h"
@@ -103,8 +118,10 @@
 #include "Mod/Part/App/SurfaceOfRevolutionPy.h"
 #include "Mod/Part/App/ToroidPy.h"
 #include "Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.h"
+#include "Mod/Part/App/BRepOffsetAPI_MakeFillingPy.h"
 #include "Mod/Part/App/PartFeaturePy.h"
 #include "Mod/Part/App/AttachEnginePy.h"
+#include <Mod/Part/App/BRepFeat/MakePrismPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfConic2dPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
@@ -122,6 +139,10 @@
 #include <Mod/Part/App/Geom2d/Line2dPy.h>
 #include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
 #include <Mod/Part/App/Geom2d/Parabola2dPy.h>
+#include <Mod/Part/App/GeomPlate/BuildPlateSurfacePy.h>
+#include <Mod/Part/App/GeomPlate/CurveConstraintPy.h>
+#include <Mod/Part/App/GeomPlate/PointConstraintPy.h>
+#include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
 #include "Attacher.h"
@@ -141,98 +162,6 @@ PyObject* Part::PartExceptionOCCDomainError;
 PyObject* Part::PartExceptionOCCRangeError;
 PyObject* Part::PartExceptionOCCConstructionError;
 PyObject* Part::PartExceptionOCCDimensionError;
-
-// <---
-namespace Part {
-
-// Compatibility class to keep old code working until removed
-class LinePyOld : public LineSegmentPy
-{
-public:
-    static PyTypeObject   Type;
-    virtual PyTypeObject *GetType(void) {return &Type;}
-
-public:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *)
-    {
-        PyErr_SetString(PyExc_DeprecationWarning, "For future usage 'Line' will be an infinite line, use 'LineSegment' instead");
-        PyErr_Print();
-        return new LinePyOld(new GeomLineSegment);
-    }
-    LinePyOld(GeomLineSegment *pcObject, PyTypeObject *T = &Type)
-      : LineSegmentPy(pcObject, T)
-    {
-    }
-    virtual ~LinePyOld()
-    {
-    }
-};
-
-/// Type structure of LinePyOld
-PyTypeObject LinePyOld::Type = {
-    // PyObject_HEAD_INIT(&PyType_Type)
-    // 0,                                                /*ob_size*/
-    PyVarObject_HEAD_INIT(&PyType_Type,0)
-    "Part.Line",     /*tp_name*/
-    sizeof(LinePyOld),                       /*tp_basicsize*/
-    0,                                                /*tp_itemsize*/
-    /* methods */
-    PyDestructor,                                     /*tp_dealloc*/
-    0,                                                /*tp_print*/
-    0,                                        /*tp_getattr*/
-    0,                                        /*tp_setattr*/
-    0,                                                /*tp_compare*/
-    0,                                           /*tp_repr*/
-    0,                                                /*tp_as_number*/
-    0,                                                /*tp_as_sequence*/
-    0,                                                /*tp_as_mapping*/
-    0,                                                /*tp_hash*/
-    0,                                                /*tp_call */
-    0,                                                /*tp_str  */
-    0,                                                /*tp_getattro*/
-    0,                                                /*tp_setattro*/
-    /* --- Functions to access object as input/output buffer ---------*/
-    0,                                                /* tp_as_buffer */
-    /* --- Flags to define presence of optional/expanded features */
-#if PY_MAJOR_VERSION >= 3
-    Py_TPFLAGS_DEFAULT,                               /*tp_flags */
-#else
-    Py_TPFLAGS_HAVE_CLASS,                            /*tp_flags */
-#endif
-    "",
-    0,                                                /*tp_traverse */
-    0,                                                /*tp_clear */
-    0,                                                /*tp_richcompare */
-    0,                                                /*tp_weaklistoffset */
-    0,                                                /*tp_iter */
-    0,                                                /*tp_iternext */
-    0,                     /*tp_methods */
-    0,                                                /*tp_members */
-    0,                     /*tp_getset */
-    &LineSegmentPy::Type,                        /*tp_base */
-    0,                                                /*tp_dict */
-    0,                                                /*tp_descr_get */
-    0,                                                /*tp_descr_set */
-    0,                                                /*tp_dictoffset */
-    __PyInit,                                         /*tp_init */
-    0,                                                /*tp_alloc */
-    Part::LinePyOld::PyMake,/*tp_new */
-    0,                                                /*tp_free   Low-level free-memory routine */
-    0,                                                /*tp_is_gc  For PyObject_IS_GC */
-    0,                                                /*tp_bases */
-    0,                                                /*tp_mro    method resolution order */
-    0,                                                /*tp_cache */
-    0,                                                /*tp_subclasses */
-    0,                                                /*tp_weaklist */
-    0,                                                /*tp_del */
-    0                                                 /*tp_version_tag */
-#if PY_MAJOR_VERSION >=3
-    ,0                                                /*tp_finalize */
-#endif
-};
-
-}
-// --->
 
 PyMOD_INIT_FUNC(Part)
 {
@@ -313,18 +242,8 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::TopoShapeCompSolidPy ::Type,partModule,"CompSolid");
     Base::Interpreter().addType(&Part::TopoShapeShellPy     ::Type,partModule,"Shell");
 
-    Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-
     // General
-    Base::Reference<ParameterGrp> hGenPGrp = hPartGrp->GetGroup("General");
-    if (hGenPGrp->GetBool("LineOld", false)) {
-        Base::Interpreter().addType(&Part::LinePy           ::Type,partModule,"_Line");
-        Base::Interpreter().addType(&Part::LinePyOld        ::Type,partModule,"Line");
-    }
-    else {
-        Base::Interpreter().addType(&Part::LinePy           ::Type,partModule,"Line");
-    }
+    Base::Interpreter().addType(&Part::LinePy               ::Type,partModule,"Line");
     Base::Interpreter().addType(&Part::LineSegmentPy        ::Type,partModule,"LineSegment");
     Base::Interpreter().addType(&Part::PointPy              ::Type,partModule,"Point");
     Base::Interpreter().addType(&Part::ConicPy              ::Type,partModule,"Conic");
@@ -357,6 +276,8 @@ PyMOD_INIT_FUNC(Part)
                                                             ::Type,partModule,"RectangularTrimmedSurface");
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
+    Base::Interpreter().addType(&Part::Part2DObjectPy       ::Type,partModule,"Part2DObject");
+    Base::Interpreter().addType(&Part::BodyBasePy           ::Type,partModule,"BodyBase");
     Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
 
     Base::Interpreter().addType(&Part::GeometryIntExtensionPy ::Type,partModule,"GeometryIntExtension");
@@ -364,33 +285,17 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
     Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
 
-#if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef BRepOffsetAPIDef = {
-        PyModuleDef_HEAD_INIT,
-        "BRepOffsetAPI", "BRepOffsetAPI", -1, 0,
-        NULL, NULL, NULL, NULL
-    };
-    PyObject* brepModule = PyModule_Create(&BRepOffsetAPIDef);
-#else
-    PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
-#endif
-    Py_INCREF(brepModule);
-    PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
-    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
+    // BRepFeat package
+    PyObject* brepfeatModule(module.getAttr("BRepFeat").ptr());
+    Base::Interpreter().addType(&Part::MakePrismPy::Type,brepfeatModule,"MakePrism");
+
+    // BRepOffsetAPI package
+    PyObject* brepOffsetApiModule(module.getAttr("BRepOffsetAPI").ptr());
+    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepOffsetApiModule,"MakePipeShell");
+    Base::Interpreter().addType(&Part::BRepOffsetAPI_MakeFillingPy::Type,brepOffsetApiModule,"MakeFilling");
 
     // Geom2d package
-#if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef geom2dDef = {
-        PyModuleDef_HEAD_INIT,
-        "Geom2dD", "Geom2d", -1, 0,
-        NULL, NULL, NULL, NULL
-    };
-    PyObject* geom2dModule = PyModule_Create(&geom2dDef);
-#else
-     PyObject* geom2dModule = Py_InitModule3("Geom2d", 0, "Geom2d");
-#endif
-    Py_INCREF(geom2dModule);
-    PyModule_AddObject(partModule, "Geom2d", geom2dModule);
+    PyObject* geom2dModule(module.getAttr("Geom2d").ptr());
     Base::Interpreter().addType(&Part::Geometry2dPy::Type,geom2dModule,"Geometry2d");
     Base::Interpreter().addType(&Part::Curve2dPy::Type,geom2dModule,"Curve2d");
     Base::Interpreter().addType(&Part::Conic2dPy::Type,geom2dModule,"Conic2d");
@@ -408,6 +313,16 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::Line2dSegmentPy::Type,geom2dModule,"Line2dSegment");
     Base::Interpreter().addType(&Part::Line2dPy::Type,geom2dModule,"Line2d");
     Base::Interpreter().addType(&Part::OffsetCurve2dPy::Type,geom2dModule,"OffsetCurve2d");
+
+    // GeomPlate sub-module
+    PyObject* geomPlate(module.getAttr("GeomPlate").ptr());
+    Base::Interpreter().addType(&Part::BuildPlateSurfacePy::Type, geomPlate, "BuildPlateSurface");
+    Base::Interpreter().addType(&Part::CurveConstraintPy::Type, geomPlate, "CurveConstraint");
+    Base::Interpreter().addType(&Part::PointConstraintPy::Type, geomPlate, "PointConstraint");
+
+    // ShapeUpgrade sub-module
+    PyObject* shapeUpgrade(module.getAttr("ShapeUpgrade").ptr());
+    Base::Interpreter().addType(&Part::UnifySameDomainPy::Type, shapeUpgrade, "UnifySameDomain");
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
@@ -490,45 +405,47 @@ PyMOD_INIT_FUNC(Part)
     Part::Reverse               ::init();
 
     // Geometry types
-    Part::GeometryExtension       ::init();
-    Part::GeometryIntExtension    ::init();
-    Part::GeometryStringExtension ::init();
-    Part::GeometryBoolExtension   ::init();
-    Part::GeometryDoubleExtension ::init();
-    Part::Geometry                ::init();
-    Part::GeomPoint               ::init();
-    Part::GeomCurve               ::init();
-    Part::GeomBoundedCurve        ::init();
-    Part::GeomBezierCurve         ::init();
-    Part::GeomBSplineCurve        ::init();
-    Part::GeomConic               ::init();
-    Part::GeomTrimmedCurve        ::init();
-    Part::GeomArcOfConic          ::init();
-    Part::GeomCircle              ::init();
-    Part::GeomArcOfCircle         ::init();
-    Part::GeomArcOfEllipse        ::init();
-    Part::GeomArcOfParabola       ::init();
-    Part::GeomArcOfHyperbola      ::init();
-    Part::GeomEllipse             ::init();
-    Part::GeomHyperbola           ::init();
-    Part::GeomParabola            ::init();
-    Part::GeomLine                ::init();
-    Part::GeomLineSegment         ::init();
-    Part::GeomOffsetCurve         ::init();
-    Part::GeomSurface             ::init();
-    Part::GeomBezierSurface       ::init();
-    Part::GeomBSplineSurface      ::init();
-    Part::GeomCylinder            ::init();
-    Part::GeomCone                ::init();
-    Part::GeomSphere              ::init();
-    Part::GeomToroid              ::init();
-    Part::GeomPlane               ::init();
-    Part::GeomOffsetSurface       ::init();
-    Part::GeomPlateSurface        ::init();
-    Part::GeomTrimmedSurface      ::init();
-    Part::GeomSurfaceOfRevolution ::init();
-    Part::GeomSurfaceOfExtrusion  ::init();
-    Part::Datum                   ::init();
+    Part::GeometryExtension       	::init();
+    Part::GeometryPersistenceExtension	::init();
+    Part::GeometryIntExtension    	::init();
+    Part::GeometryStringExtension 	::init();
+    Part::GeometryBoolExtension   	::init();
+    Part::GeometryDoubleExtension 	::init();
+    Part::GeometryMigrationExtension	::init();
+    Part::Geometry                	::init();
+    Part::GeomPoint               	::init();
+    Part::GeomCurve               	::init();
+    Part::GeomBoundedCurve        	::init();
+    Part::GeomBezierCurve         	::init();
+    Part::GeomBSplineCurve        	::init();
+    Part::GeomConic               	::init();
+    Part::GeomTrimmedCurve        	::init();
+    Part::GeomArcOfConic          	::init();
+    Part::GeomCircle              	::init();
+    Part::GeomArcOfCircle         	::init();
+    Part::GeomArcOfEllipse        	::init();
+    Part::GeomArcOfParabola       	::init();
+    Part::GeomArcOfHyperbola      	::init();
+    Part::GeomEllipse             	::init();
+    Part::GeomHyperbola           	::init();
+    Part::GeomParabola            	::init();
+    Part::GeomLine                	::init();
+    Part::GeomLineSegment         	::init();
+    Part::GeomOffsetCurve         	::init();
+    Part::GeomSurface             	::init();
+    Part::GeomBezierSurface       	::init();
+    Part::GeomBSplineSurface      	::init();
+    Part::GeomCylinder            	::init();
+    Part::GeomCone                	::init();
+    Part::GeomSphere              	::init();
+    Part::GeomToroid              	::init();
+    Part::GeomPlane               	::init();
+    Part::GeomOffsetSurface       	::init();
+    Part::GeomPlateSurface        	::init();
+    Part::GeomTrimmedSurface      	::init();
+    Part::GeomSurfaceOfRevolution 	::init();
+    Part::GeomSurfaceOfExtrusion  	::init();
+    Part::Datum                   	::init();
 
     // Geometry2d types
     Part::Geometry2d              ::init();

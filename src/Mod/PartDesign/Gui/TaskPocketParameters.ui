@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>241</width>
-    <height>233</height>
+    <width>193</width>
+    <height>272</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,15 +15,15 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="textLabel1">
        <property name="text">
         <string>Type</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QComboBox" name="changeMode">
        <item>
         <property name="text">
@@ -32,37 +32,36 @@
        </item>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
+     <item row="1" column="0">
       <widget class="QLabel" name="labelLength">
        <property name="text">
         <string>Length</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1">
       <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
+     <item row="2" column="0">
       <widget class="QLabel" name="labelOffset">
        <property name="text">
         <string>Offset</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit"/>
+     <item row="2" column="1">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -84,22 +83,22 @@
     </widget>
    </item>
    <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-               <widget class="QLabel" name="labelLength2">
-                   <property name="text">
-                       <string>2nd length</string>
-                   </property>
-               </widget>
-           </item>
-           <item>
-               <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
-                   <property name="minimum">
-                       <double>0.000000000000000</double>
-                   </property>
-               </widget>
-           </item>
-       </layout>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="labelLength2">
+       <property name="text">
+        <string>2nd length</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -134,13 +133,29 @@
    </item>
   </layout>
  </widget>
- <resources/>
  <customwidgets>
-   <customwidget>
-     <class>Gui::PrefQuantitySpinBox</class>
-     <extends>QWidget</extends>
-     <header>Gui/PrefWidgets.h</header>
-   </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>changeMode</tabstop>
+  <tabstop>lengthEdit</tabstop>
+  <tabstop>offsetEdit</tabstop>
+  <tabstop>checkBoxMidplane</tabstop>
+  <tabstop>checkBoxReversed</tabstop>
+  <tabstop>lengthEdit2</tabstop>
+  <tabstop>buttonFace</tabstop>
+  <tabstop>lineFaceName</tabstop>
+  <tabstop>checkBoxUpdateView</tabstop>
+ </tabstops>
+ <resources/>
  <connections/>
 </ui>

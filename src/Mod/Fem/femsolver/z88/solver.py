@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver object Z88"
+__title__  = "FreeCAD FEM solver object Z88"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package SolverZ88
 #  \ingroup FEM
@@ -53,7 +53,7 @@ class Proxy(solverbase.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 
-    Type = "Fem::FemSolverObjectZ88"
+    Type = "Fem::SolverZ88"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)

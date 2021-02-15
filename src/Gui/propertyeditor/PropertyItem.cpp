@@ -60,6 +60,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/DlgPropertyLink.h>
 #include <Gui/QuantitySpinBox.h>
+#include <Gui/VectorListEditor.h>
 
 #include "PropertyItem.h"
 #include "PropertyView.h"
@@ -343,46 +344,54 @@ QVariant PropertyItem::decoration(const QVariant&) const
 
 QVariant PropertyItem::toString(const QVariant& prop) const
 {
-    if(prop != QVariant() || propertyItems.size()!=1)
+    if (prop != QVariant() || propertyItems.size()!=1)
         return prop;
+
     Base::PyGILStateLocker lock;
-    Py::Object pyobj(propertyItems[0]->getPyObject(),true);
+    Py::Object pyobj(propertyItems[0]->getPyObject(), true);
     std::ostringstream ss;
-    if(pyobj.isNone()) 
+    if (pyobj.isNone()) {
         ss << "<None>";
+    }
     else if(pyobj.isSequence()) {
         ss << '[';
         Py::Sequence seq(pyobj);
         bool first = true;
-        size_t i=0;
-        for(i=0;i<2 && i<seq.size(); ++i) {
-            if(first)
+        Py_ssize_t i=0;
+        for (i=0; i<2 && i < seq.size(); ++i) {
+            if (first)
                 first = false;
             else
                 ss << ", ";
             ss << Py::Object(seq[i]).as_string();
         }
-        if(i<seq.size())
+
+        if (i < seq.size())
             ss << "...";
         ss << ']';
-    }else if(pyobj.isMapping()) {
+    }
+    else if (pyobj.isMapping()) {
         ss << '{';
         Py::Mapping map(pyobj);
         bool first = true;
         auto it = map.begin();
-        for(int i=0;i<2 && it!=map.end(); ++it) {
-            if(first)
+        for(int i=0; i<2 && it != map.end(); ++it, ++i) {
+            if (first)
                 first = false;
             else
                 ss << ", ";
             const auto &v = *it;
             ss << Py::Object(v.first).as_string() << ':' << Py::Object(v.second).as_string();
         }
-        if(it!=map.end())
+
+        if (it != map.end())
             ss << "...";
         ss << '}';
-    }else
+    }
+    else {
         ss << pyobj.as_string();
+    }
+
     return QVariant(QString::fromUtf8(ss.str().c_str()));
 }
 
@@ -1425,6 +1434,122 @@ void PropertyVectorItem::propertyBound()
 
 // ---------------------------------------------------------------
 
+VectorListButton::VectorListButton(int decimals, QWidget * parent)
+    : LabelButton(parent)
+    , decimals(decimals)
+{
+}
+
+VectorListButton::~VectorListButton()
+{
+}
+
+void VectorListButton::browse()
+{
+    VectorListEditor dlg(decimals, Gui::getMainWindow());
+    dlg.setValues(value().value<QList<Base::Vector3d>>());
+    QPoint p(0, 0);
+    p = this->mapToGlobal(p);
+    dlg.move(p);
+    if (dlg.exec() == QDialog::Accepted) {
+        QVariant data = QVariant::fromValue<QList<Base::Vector3d>>(dlg.getValues());
+        setValue(data);
+    }
+}
+
+void VectorListButton::showValue(const QVariant& d)
+{
+    QLocale loc;
+    QString data;
+    const QList<Base::Vector3d>& value = d.value<QList<Base::Vector3d>>();
+    if (value.isEmpty()) {
+        data = QString::fromLatin1("[]");
+    }
+    else {
+        data = QString::fromLatin1("[%1 %2 %3], ...")
+            .arg(loc.toString(value[0].x, 'f', 2),
+                 loc.toString(value[0].y, 'f', 2),
+                 loc.toString(value[0].z, 'f', 2));
+    }
+    getLabel()->setText(data);
+}
+
+PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorListItem)
+
+PropertyVectorListItem::PropertyVectorListItem()
+{
+}
+
+QVariant PropertyVectorListItem::toString(const QVariant& prop) const
+{
+    QLocale loc;
+    QString data;
+    const QList<Base::Vector3d>& value = prop.value<QList<Base::Vector3d>>();
+    if (value.isEmpty()) {
+        data = QString::fromLatin1("[]");
+    }
+    else {
+        data = QString::fromLatin1("[%1 %2 %3], ...")
+            .arg(loc.toString(value[0].x, 'f', 2),
+                 loc.toString(value[0].y, 'f', 2),
+                 loc.toString(value[0].z, 'f', 2));
+    }
+
+    if (hasExpression())
+        data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+    return QVariant(data);
+}
+
+QVariant PropertyVectorListItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVectorList::getClassTypeId()));
+
+    const std::vector<Base::Vector3d>& value = static_cast<const App::PropertyVectorList*>(prop)->getValue();
+    QList<Base::Vector3d> list;
+    std::copy(value.begin(), value.end(), std::back_inserter(list));
+    return QVariant::fromValue<QList<Base::Vector3d>>(list);
+}
+
+void PropertyVectorListItem::setValue(const QVariant& value)
+{
+    if (!value.canConvert<QList<Base::Vector3d>>())
+        return;
+    const QList<Base::Vector3d>& val = value.value<QList<Base::Vector3d>>();
+    QString data;
+    QTextStream str(&data);
+    str << "[";
+    for (const auto& it : val) {
+        str << QString::fromLatin1("(%1, %2, %3), ")
+               .arg(it.x,0,'f',decimals())
+               .arg(it.y,0,'f',decimals())
+               .arg(it.z,0,'f',decimals());
+    }
+    str << "]";
+    setPropertyValue(data);
+}
+
+QWidget* PropertyVectorListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+{
+    VectorListButton *pe = new VectorListButton(decimals(), parent);
+    QObject::connect(pe, SIGNAL(valueChanged(const QVariant &)), receiver, method);
+    pe->setDisabled(isReadOnly());
+    return pe;
+}
+
+void PropertyVectorListItem::setEditorData(QWidget *editor, const QVariant& data) const
+{
+    VectorListButton *pe = qobject_cast<VectorListButton*>(editor);
+    pe->setValue(data);
+}
+
+QVariant PropertyVectorListItem::editorData(QWidget *editor) const
+{
+    VectorListButton *pe = qobject_cast<VectorListButton*>(editor);
+    return pe->value();
+}
+
+// ---------------------------------------------------------------
+
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorDistanceItem)
 
 PropertyVectorDistanceItem::PropertyVectorDistanceItem()
@@ -1969,8 +2094,8 @@ void PlacementEditor::updateValue(const QVariant& v, bool incr, bool data)
             QVariant u = value();
             const Base::Placement& plm = u.value<Base::Placement>();
             const Base::Placement& rel = v.value<Base::Placement>();
-            Base::Placement data = rel * plm;
-            setValue(QVariant::fromValue<Base::Placement>(data));
+            Base::Placement newp = rel * plm;
+            setValue(QVariant::fromValue<Base::Placement>(newp));
         }
         else {
             setValue(v);

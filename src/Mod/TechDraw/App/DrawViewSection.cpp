@@ -31,10 +31,12 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 //#include <BRepBuilderAPI_MakePolygon.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepAlgoAPI_Section.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepTools.hxx>
@@ -230,13 +232,12 @@ void DrawViewSection::onChanged(const App::Property* prop)
 void DrawViewSection::makeLineSets(void) 
 {
 //    Base::Console().Message("DVS::makeLineSets()\n");
-    if (!FileGeomPattern.isEmpty()) {
-        std::string fileSpec = FileGeomPattern.getValue();
+    if (!PatIncluded.isEmpty())  {
+        std::string fileSpec = PatIncluded.getValue();
         Base::FileInfo fi(fileSpec);
         std::string ext = fi.extension();
         if (!fi.isReadable()) {
             Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
-            Base::Console().Message("%s using included hatch file.\n", getNameInDocument());
         } else {
             if ( (ext == "pat") ||
                  (ext == "PAT") ) {
@@ -285,7 +286,6 @@ void DrawViewSection::replacePatIncluded(std::string newPatFile)
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
-//    Base::Console().Message("DVS::execute() - %s/%s \n", getNameInDocument(), Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -354,11 +354,13 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
 void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 {
+// cut base shape with tool
     //is SectionOrigin valid?
     Bnd_Box centerBox;
     BRepBndLib::Add(baseShape, centerBox);
     centerBox.SetGap(0.0);
 
+// make tool
     gp_Pln pln = getSectionPlane();
     gp_Dir gpNormal = pln.Axis().Direction();
     Base::Vector3d orgPnt = SectionOrigin.getValue();
@@ -382,6 +384,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
     BRepBuilderAPI_Copy BuilderCopy(baseShape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
+// perform cut
     BRep_Builder builder;
     TopoDS_Compound pieces;
     builder.MakeCompound(pieces);
@@ -400,37 +403,46 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
         builder.Add(pieces, cut);
         outdb++;
     }
-
+// pieces contains result of cutting each subshape in baseShape with tool
     TopoDS_Shape rawShape = pieces;
     if (debugSection()) {
         BRepTools::Write(myShape, "DVSCopy.brep");            //debug
         BRepTools::Write(aProjFace, "DVSFace.brep");          //debug
         BRepTools::Write(prism, "DVSTool.brep");              //debug
-        BRepTools::Write(rawShape, "DVSResult.brep");         //debug
+        BRepTools::Write(pieces, "DVSPieces.brep");         //debug
     }
 
+// check for error in cut
     Bnd_Box testBox;
     BRepBndLib::Add(rawShape, testBox);
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {           //prism & input don't intersect.  rawShape is garbage, don't bother.
         Base::Console().Warning("DVS::execute - prism & input don't intersect - %s\n", Label.getValue());
         return;
+
     }
 
+// build display geometry as in DVP, with minor mods
     gp_Ax2 viewAxis;
     TopoDS_Shape centeredShape;
     try {
-        Base::Vector3d sectionOrigin = SectionOrigin.getValue();
+        Base::Vector3d origin(0.0, 0.0, 0.0);
+        viewAxis = getProjectionCS(origin);
+        gp_Pnt inputCenter;
+        inputCenter = TechDraw::findCentroid(rawShape,
+                                             viewAxis);
+        Base::Vector3d centroid(inputCenter.X(),
+                                inputCenter.Y(),
+                                inputCenter.Z());
+
         centeredShape = TechDraw::moveShape(rawShape,
-                                            sectionOrigin * -1.0);
+                                            centroid * -1.0);
         m_cutShape = centeredShape;
-        m_saveCentroid = sectionOrigin;
+        m_saveCentroid = centroid;
 
         TopoDS_Shape scaledShape   = TechDraw::scaleShape(centeredShape,
                                                           getScale());
 
-        Base::Vector3d origin(0.0, 0.0, 0.0);
-        viewAxis = getProjectionCS(origin);
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
             scaledShape = TechDraw::rotateShape(scaledShape,
                                                 viewAxis,
@@ -453,16 +465,14 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
                                 getNameInDocument(),e1.GetMessageString());
         return;
     }
+//display geometry for cut shape is in geometryObject as in DVP
 
-    try {
-        //sectionFaces = build sectionFaces(rawShape);
-        TopoDS_Compound sectionCompound = findSectionPlaneIntersections(rawShape);
- 
-        Base::Vector3d sectionOrigin = SectionOrigin.getValue();
-        TopoDS_Shape centeredShape = TechDraw::moveShape(sectionCompound,
-                                                         sectionOrigin * -1.0);
+// build section face geometry
+        TopoDS_Compound faceIntersections = findSectionPlaneIntersections(rawShape);
+        TopoDS_Shape centeredShapeF = TechDraw::moveShape(faceIntersections,
+                                                           m_saveCentroid * -1.0);
 
-        TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShape,
+        TopoDS_Shape scaledSection = TechDraw::scaleShape(centeredShapeF,
                                                           getScale());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
             scaledSection = TechDraw::rotateShape(scaledSection,
@@ -472,54 +482,61 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
         if (debugSection()) {
             BRepTools::Write(scaledSection, "DVSScaledFaces.brep");            //debug
         }
-
-        sectionFaceWires.clear();
-        TopoDS_Compound newFaces;
-        BRep_Builder builder;
-        builder.MakeCompound(newFaces);
-        TopExp_Explorer expl(scaledSection, TopAbs_FACE);
-        int idb = 0;
-        for (; expl.More(); expl.Next()) {
-            const TopoDS_Face& face = TopoDS::Face(expl.Current());
-            TopoDS_Face pFace = projectFace(face,
-                                            viewAxis);
-            if (!pFace.IsNull()) {
-                if (debugSection()) {
-                    std::stringstream ss;
-                    ss << "DVSScaledFace" << idb << ".brep" ;
-                    std::string faceName = ss.str();
-                    BRepTools::Write(pFace, faceName.c_str());            //debug
-                    std::stringstream ss2;
-                    ss2 << "DVSOuter" << idb << ".brep" ;
-                    TopoDS_Wire owdb = ShapeAnalysis::OuterWire(pFace);
-                    std::string wireName = ss2.str();
-                    BRepTools::Write(owdb, wireName.c_str());               //debug
-                }
-                TopoDS_Wire ow = ShapeAnalysis::OuterWire(pFace);
-                //this check helps prevent "ghost" faces
-                BRepCheck_Wire chkWire(ow);
-                TopoDS_Edge e1, e2;
-                BRepCheck_Status status = chkWire.SelfIntersect(pFace, e1, e2);
-                if (status == BRepCheck_NoError) {
-                    builder.Add(newFaces,pFace);
-                    sectionFaceWires.push_back(ShapeAnalysis::OuterWire(pFace));
-                }
-            }
-            idb++;
+// scaledSection is compound of TopoDS_Face intersections, but aligned to pln(origin, sectionNormal)
+// needs to be aligned to pln (origin, stdZ);
+        gp_Ax3 R3;
+        gp_Ax2 projCS = getSectionCS();
+        gp_Ax3 proj3 = gp_Ax3(gp_Pnt(0.0, 0.0, 0.0),
+                       projCS.Direction(),
+                       projCS.XDirection());
+        gp_Trsf fromR3;
+        fromR3.SetTransformation(R3, proj3);
+        BRepBuilderAPI_Transform xformer(fromR3);
+        xformer.Perform(scaledSection, true);
+        if (xformer.IsDone()) {
+            sectionFaces = TopoDS::Compound(xformer.Shape());
+//            BRepTools::Write(sectionFaces, "DVSXFaces.brep");    //debug
+        } else {
+            Base::Console().Message("DVS::sectionExec - face xform failed\n");
         }
-        //return newFaces;
-        sectionFaces = newFaces;
-    }
-    catch (Standard_Failure& e2) {
-        Base::Console().Warning("DVS::execute - failed to build section faces for %s - %s **\n",
-                                getNameInDocument(),e2.GetMessageString());
-        return;
-    }
 
+        sectionFaces = TopoDS::Compound(GeometryObject::invertGeometry(sectionFaces));     //handle Qt -y
+
+    //turn section faces into something we can draw
+        tdSectionFaces.clear();
+        TopExp_Explorer sectionExpl(sectionFaces, TopAbs_FACE);
+        int iface = 0;
+        for (; sectionExpl.More(); sectionExpl.Next()) {
+            iface++;
+            const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
+            TechDraw::Face* sectionFace = new TechDraw::Face();
+            TopExp_Explorer expFace(face, TopAbs_WIRE);
+            int iwire = 0;
+            for ( ; expFace.More(); expFace.Next()) {
+                iwire++;
+                TechDraw::Wire* w = new TechDraw::Wire();
+                const TopoDS_Wire& wire = TopoDS::Wire(expFace.Current());
+                int iedge = 0;
+                TopExp_Explorer expWire(wire, TopAbs_EDGE);
+                for ( ; expWire.More(); expWire.Next()) {
+                    iedge++;
+                    const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
+                    TechDraw::BaseGeom* e = BaseGeom::baseFactory(edge);
+                    if (e != nullptr) {
+                        w->geoms.push_back(e);
+                    }
+                }
+                sectionFace->wires.push_back(w);
+            }
+            tdSectionFaces.push_back(sectionFace);
+        }
+
+// add cosmetic entities to view
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addCenterLinesToGeom();
 
+// add landmark dim reference points to view
     addReferencesToGeom();
 }
 
@@ -562,120 +579,47 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
             }
         }
     }
+//    BRepTools::Write(result, "DVSIntersect.brep");            //debug
     return result;
 }
 
-//! get display geometry for Section faces
-std::vector<TechDraw::Face*> DrawViewSection::getFaceGeometry()
+//calculate the ends of the section line in BaseView's coords
+std::pair<Base::Vector3d, Base::Vector3d> DrawViewSection::sectionLineEnds(void)
 {
-    std::vector<TechDraw::Face*> result;
-    TopoDS_Compound c = sectionFaces;
-    TopExp_Explorer faces(c, TopAbs_FACE);
-    for (; faces.More(); faces.Next()) {
-        TechDraw::Face* f = new TechDraw::Face();
-        const TopoDS_Face& face = TopoDS::Face(faces.Current());
-        TopExp_Explorer wires(face, TopAbs_WIRE);
-        for (; wires.More(); wires.Next()) {
-            TechDraw::Wire* w = new TechDraw::Wire();
-            const TopoDS_Wire& wire = TopoDS::Wire(wires.Current());
-            TopExp_Explorer edges(wire, TopAbs_EDGE);
-            for (; edges.More(); edges.Next()) {
-                const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
-                //dumpEdge("edge",edgeCount,edge);
-                TechDraw::BaseGeom* base = TechDraw::BaseGeom::baseFactory(edge);
-                w->geoms.push_back(base);
-            }
-            f->wires.push_back(w);
-        }
-        result.push_back(f);
-    }
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    Base::Vector3d stdZ(0.0, 0.0, 1.0);
+    double baseRotation = getBaseDVP()->Rotation.getValue();      //Qt degrees
+    Base::Rotation rotator(stdZ, baseRotation * M_PI / 180.0);
+    Base::Rotation unrotator(stdZ, - baseRotation * M_PI / 180.0);
+
+    auto sNorm  = SectionNormal.getValue();
+    double angle = M_PI / 2.0;
+    auto axis   = getBaseDVP()->Direction.getValue();
+    Base::Vector3d stdOrg(0.0, 0.0, 0.0);
+    Base::Vector3d sLineDir = DrawUtil::vecRotate(sNorm, angle, axis, stdOrg);
+    sLineDir.Normalize();
+    Base::Vector3d sLineDir2 = - axis.Cross(sNorm);
+    sLineDir2.Normalize();
+    Base::Vector3d sLineOnBase = getBaseDVP()->projectPoint(sLineDir2);
+    sLineOnBase.Normalize();
+
+    auto sOrigin = SectionOrigin.getValue();
+    Base::Vector3d adjSectionOrg = sOrigin - getBaseDVP()->getOriginalCentroid();
+    Base::Vector3d sOrgOnBase = getBaseDVP()->projectPoint(adjSectionOrg);
+
+    auto bbx = getBaseDVP()->getBoundingBox();
+    double xRange = bbx.MaxX - bbx.MinX;
+    xRange /= getBaseDVP()->getScale();
+    double yRange = bbx.MaxY - bbx.MinY;
+    yRange /= getBaseDVP()->getScale();
+    sOrgOnBase = rotator.multVec(sOrgOnBase);
+    sLineOnBase = rotator.multVec(sLineOnBase);
+
+    result = DrawUtil::boxIntersect2d(sOrgOnBase, sLineOnBase, xRange, yRange);  //unscaled
+    result.first = unrotator.multVec(result.first);
+    result.second = unrotator.multVec(result.second);
+
     return result;
-}
-
-//! project a single face using HLR - used for section faces
-TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
-                                         const gp_Ax2 CS)
-{
-//    Base::Console().Message("DVS::projectFace()\n");
-    if(face.IsNull()) {
-        throw Base::ValueError("DrawViewSection::projectFace - input Face is NULL");
-    }
-
-    TopoDS_Shape hardEdges = geometryObject->projectFace(face, CS);
-
-    std::vector<TopoDS_Edge> faceEdges;
-    TopExp_Explorer expl(hardEdges, TopAbs_EDGE);
-    int i;
-    for (i = 1 ; expl.More(); expl.Next(),i++) {
-        const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
-        if (edge.IsNull()) {
-            Base::Console().Log("INFO - DVS::projectFace - hard edge: %d is NULL\n",i);
-            continue;
-        }
-        faceEdges.push_back(edge);
-    }
-    //TODO: verify that outline edges aren't required
-    //if edge is both hard & outline, it will be duplicated? are hard edges enough?
-//    TopExp_Explorer expl2(outEdges, TopAbs_EDGE);
-//    for (i = 1 ; expl2.More(); expl2.Next(),i++) {
-//        const TopoDS_Edge& edge = TopoDS::Edge(expl2.Current());
-//        if (edge.IsNull()) {
-//            Base::Console().Log("INFO - GO::projectFace - outline edge: %d is NULL\n",i);
-//            continue;
-//        }
-//        bool addEdge = true;
-//        //is edge already in faceEdges?  maybe need to use explorer for this for IsSame to work?
-//        for (auto& e:faceEdges) {
-//            if (e.IsPartner(edge)) {
-//                addEdge = false;
-//                Base::Console().Message("TRACE - DVS::projectFace - skipping an edge 1\n");
-//            }
-//        }
-//        expl.ReInit();
-//        for (; expl.More(); expl.Next()){
-//            const TopoDS_Edge& eHard = TopoDS::Edge(expl.Current());
-//            if (eHard.IsPartner(edge)) {
-//                addEdge = false;
-//                Base::Console().Message("TRACE - DVS::projectFace - skipping an edge 2\n");
-//            }
-//        }
-//        if (addEdge) {
-//            faceEdges.push_back(edge);
-//        }
-//    }
-
-    TopoDS_Face projectedFace;
-
-    if (faceEdges.empty()) {
-        Base::Console().Log("LOG - DVS::projectFace - no faceEdges\n");
-        return projectedFace;
-    }
-
-
-//recreate the wires for this single face
-    EdgeWalker ew;
-    ew.loadEdges(faceEdges);
-    bool success = ew.perform();
-    if (success) {
-        std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
-
-        if (!fw.empty()) {
-            std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw, true);
-            if (sortedWires.empty()) {
-                return projectedFace;
-            }
-
-            BRepBuilderAPI_MakeFace mkFace(sortedWires.front(),true);                   //true => only want planes?
-            std::vector<TopoDS_Wire>::iterator itWire = ++sortedWires.begin();          //starting with second face
-            for (; itWire != sortedWires.end(); itWire++) {
-                mkFace.Add(*itWire);
-            }
-            projectedFace = mkFace.Face();
-        }
-    } else {
-        Base::Console().Warning("DVS::projectFace - input is not planar graph. No face detection\n");
-    }
-    return projectedFace;
 }
 
 //this should really be in BoundBox.h
@@ -842,15 +786,24 @@ gp_Ax2 DrawViewSection::rotateCSArbitrary(gp_Ax2 oldCS,
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
+//    Base::Console().Message("DVS::getDrawableLines(%d) - lineSets: %d\n", i, m_lineSets.size());
     std::vector<LineSet> result;
-    result = DrawGeomHatch::getTrimmedLines(this,m_lineSets,i,HatchScale.getValue());
+    result = DrawGeomHatch::getTrimmedLinesSection(this,m_lineSets,
+                                                   getSectionTFace(i),
+                                                   HatchScale.getValue());
     return result;
 }
 
-std::vector<TopoDS_Wire> DrawViewSection::getWireForFace(int idx) const
+TopoDS_Face DrawViewSection::getSectionTFace(int i)
 {
-    std::vector<TopoDS_Wire> result;
-    result.push_back(sectionFaceWires.at(idx));
+    TopoDS_Face result;
+    TopExp_Explorer expl(sectionFaces, TopAbs_FACE);
+    int count = 1;
+    for (; expl.More(); expl.Next(), count++) {
+        if (count == i+1) {
+            result = TopoDS::Face(expl.Current());
+        }
+    }
     return result;
 }
 
@@ -916,29 +869,38 @@ int DrawViewSection::prefCutSurface(void) const
     return result;
 }
 
+bool DrawViewSection::showSectionEdges(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    return (hGrp->GetBool("ShowSectionEdges", true));
+}
+
+
 void DrawViewSection::onDocumentRestored() 
 {
 //    Base::Console().Message("DVS::onDocumentRestored()\n");
-    if (!FileHatchPattern.isEmpty()) {
-        std::string svgFileName = FileHatchPattern.getValue();
-        Base::FileInfo tfi(svgFileName);
-        if (tfi.isReadable()) {
-            if (SvgIncluded.isEmpty()) {
+    if (SvgIncluded.isEmpty()) {
+        if (!FileHatchPattern.isEmpty()) {
+            std::string svgFileName = FileHatchPattern.getValue();
+            Base::FileInfo tfi(svgFileName);
+            if (tfi.isReadable()) {
                 setupSvgIncluded();
             }
         }
     }
 
-    if (!FileGeomPattern.isEmpty()) {
-        std::string patFileName = FileGeomPattern.getValue();
-        Base::FileInfo tfi(patFileName);
-        if (tfi.isReadable()) {
-            if (PatIncluded.isEmpty()) {
-                setupPatIncluded();
+    if (PatIncluded.isEmpty()) {
+        if (!FileGeomPattern.isEmpty()) {
+            std::string patFileName = FileGeomPattern.getValue();
+            Base::FileInfo tfi(patFileName);
+            if (tfi.isReadable()) {
+                    setupPatIncluded();
             }
-        makeLineSets();
         }
     }
+
+    makeLineSets();
     DrawViewPart::onDocumentRestored();
 }
 

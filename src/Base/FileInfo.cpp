@@ -150,14 +150,14 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
     wchar_t buf[MAX_PATH + 2];
 
     // Path where the file is located
-    std::wstring path; 
+    std::wstring path;
     if (Path)
         path = ConvertToWideString(std::string(Path));
     else
         path = ConvertToWideString(getTempPath());
 
-    // File name in the path 
-    std::wstring file; 
+    // File name in the path
+    std::wstring file;
     if (FileName)
         file = ConvertToWideString(std::string(FileName));
     else
@@ -178,7 +178,7 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
     else
         buf = getTempPath();
 
-    // File name in the path 
+    // File name in the path
     if (FileName) {
         buf += "/";
         buf += FileName;
@@ -188,6 +188,7 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
         buf += "/fileXXXXXX";
     }
 
+    /* coverity[secure_temp] mkstemp uses 0600 as the mode and is safe */
     int id = mkstemp(const_cast<char*>(buf.c_str()));
     if (id > -1) {
         FILE* file = fdopen(id, "w");
@@ -250,10 +251,10 @@ std::string FileInfo::fileNamePure () const
 {
     std::string temp = fileName();
     std::string::size_type pos = temp.find_last_of('.');
-  
+
     if (pos != std::string::npos)
         return temp.substr(0,pos);
-    else 
+    else
         return temp;
 }
 

@@ -76,7 +76,7 @@ def insert(filename,docname):
 def process_emn(doc,filename):
    """process_emn(document, filename)-> adds emn geometry from emn file"""
    emnfile=pythonopen(filename, "r")
-   emn_unit=1.0 #presume milimeter like emn unit
+   emn_unit=1.0 #presume millimeter like emn unit
    emn_version=2 #presume emn_version 2
    board_thickness=0 #presume 0 board height
    board_outline=[] #no outline

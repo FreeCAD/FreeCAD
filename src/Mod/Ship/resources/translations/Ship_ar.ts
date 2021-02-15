@@ -134,7 +134,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation type="unfinished">Areas curve tool draft selected [m]</translation>
+      <translation>تم تحديد مسودة أداة المنحنى[m]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="220"/>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation type="unfinished">Areas curve tool trim selected [deg]</translation>
+      <translation>تم تحديد منطقة أداة اقتطاع المنحنى[deg]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
@@ -159,7 +159,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="374"/>
       <source>Areas curve tool number of points</source>
-      <translation type="unfinished">Areas curve tool number of points</translation>
+      <translation>منطقة أداة منحنى مجموعة نقاط</translation>
     </message>
   </context>
   <context>
@@ -260,7 +260,7 @@
     <message>
       <location filename="../../InitGui.py" line="41"/>
       <source>Plot module is disabled, tools cannot graph output curves</source>
-      <translation type="unfinished">Plot module is disabled, tools cannot graph output curves</translation>
+      <translation>وحدة القياس معطلة، الأداة لايمكنها الرسم خارج المنحنى</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="85"/>

@@ -33,8 +33,10 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
-      <source>Curve on mesh</source>
-      <translation>Скруглить полигональную сетку</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation>Создает приблизительную кривую поверх полигональной сетки.
+Эта команда работает только с объектом 'полигональная сетка'.</translation>
     </message>
   </context>
   <context>
@@ -90,6 +92,19 @@
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Подрезает полигональную сетку выбранной плоскостью</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation type="unfinished">Trim with plane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation type="unfinished">Section with plane</translation>
     </message>
   </context>
   <context>
@@ -155,7 +170,7 @@
       <translation>Подключите рёбра, если расстояние меньше, чем</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
       <translation>Сбой</translation>
     </message>
@@ -201,47 +216,56 @@
       <translation>Скруглить полигональную сетку</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation>Нажмите 'Начать', затем выберите точки на полигональной сетке; когда будет установлено достаточное количество точек, щёлкните правой кнопкой мыши и выберите 'Создать'. Повторите этот процесс, чтобы создать больше сплайнов. Закройте эту панель задач для завершения операции.
+
+Эта команда работает только с объектом 'полигональная сетка', а не с обычными гранью или поверхностью. Для преобразования объекта в полигональную сетку используйте инструменты верстака Mesh.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
       <translation>Ломаная</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
-      <source>Snap tolerance to vertexes</source>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
       <translation>Привязать допуск к вершинам</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
       <translation> пикс.</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
       <translation>Порог разделения</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
       <translation>Апроксимация сплайна</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
       <translation>Допуск для полигональной сетки</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
       <translation>Непрерывность</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
       <source>Maximum curve degree</source>
       <translation>Максимальный градус скругления</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
       <translation>Запустить</translation>
     </message>

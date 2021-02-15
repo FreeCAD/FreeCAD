@@ -27,6 +27,7 @@
 # include <sstream>
 # include <stdexcept>
 # include <QByteArray>
+# include <QComboBox>
 # include <QDataStream>
 # include <QDebug>
 # include <QFileInfo>
@@ -84,7 +85,7 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         return false;
     }
     try {
-        if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 
+        if (event->type() == Spaceball::ButtonEvent::ButtonEventType ||
             event->type() == Spaceball::MotionEvent::MotionEventType)
             return processSpaceballEvent(receiver, event);
         else
@@ -303,5 +304,29 @@ void GUISingleApplication::processMessages()
     d_ptr->messages.clear();
     Q_EMIT messageReceived(msg);
 }
+
+// ----------------------------------------------------------------------------
+
+WheelEventFilter::WheelEventFilter(QObject* parent)
+  : QObject(parent)
+{
+}
+
+bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
+{
+    if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel)
+        return true;
+    QAbstractSpinBox* sb = qobject_cast<QAbstractSpinBox*>(obj);
+    if (sb) {
+        if (ev->type() == QEvent::Show) {
+            sb->setFocusPolicy(Qt::StrongFocus);
+        }
+        else if (ev->type() == QEvent::Wheel) {
+            return !sb->hasFocus();
+        }
+    }
+    return false;
+}
+
 
 #include "moc_GuiApplication.cpp"

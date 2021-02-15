@@ -53,3 +53,6 @@ as the older class.
 
     old_module.Rectangle = new_module.Rectangle
 """
+## \defgroup draftobjects draftobjects
+# \ingroup DRAFT
+# \brief Modules that contain classes that define custom scripted objects.

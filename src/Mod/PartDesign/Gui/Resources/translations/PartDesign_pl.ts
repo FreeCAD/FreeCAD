@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="1403"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Additive loft</source>
-      <translation>Dodatkowy loft</translation>
+      <translation>Uzupełnianie wyciągnięciem po profilach</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Loftuj wybrany profil za pośrednictwem innych sekcji profilu</translation>
+      <translation>Przeprowadź wybrany profil przez inne sekcje profilu</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="1303"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Projekt części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Additive pipe</source>
-      <translation>Dodatkowa rura</translation>
+      <translation>Uzupełnianie wyciągnięciem wzdłuż ścieżki</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Rozciągnij wybrany rysunek wzdłuż ścieżki lub do innych profili</translation>
+      <translation>Przeprowadź wybrany szkic wzdłuż ścieżki lub do innych profili</translation>
     </message>
   </context>
   <context>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="91"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="93"/>
       <source>Create a new body and make it active</source>
-      <translation>Stwórz nową zawartość i ustaw ją jako aktywną</translation>
+      <translation>Stwórz nowe body i ustaw je jako aktywne</translation>
     </message>
   </context>
   <context>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -78,17 +78,17 @@
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation>Utwórz lokalny system współrzędnych</translation>
+      <translation>Utwórz lokalny układ współrzędnych</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation>Utwórz nowy system współrzędnych lokalnych</translation>
+      <translation>Utwórz nowy lokalny układ współrzędnych</translation>
     </message>
   </context>
   <context>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Chamfer</source>
-      <translation>Faza</translation>
+      <translation>Fazka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Sfazuj wybrane krawędzie obiektu</translation>
+      <translation>Fazuj wybrane krawędzie obiektu</translation>
     </message>
   </context>
   <context>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>Create a new clone</source>
-      <translation>Stwórz nowego klona</translation>
+      <translation>Utwórz nowy klon</translation>
     </message>
   </context>
   <context>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="632"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="1607"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1608"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="1235"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1236"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1130"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -240,12 +240,12 @@
     <message>
       <location filename="../../Command.cpp" line="1941"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1942"/>
       <source>LinearPattern</source>
-      <translation>WzorzecLiniowy</translation>
+      <translation>Szyk liniowy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1943"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="338"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="339"/>
@@ -276,17 +276,17 @@
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Mirrored</source>
-      <translation>Dublowane</translation>
+      <translation>Odbicie lustrzane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1879"/>
       <source>Create a mirrored feature</source>
-      <translation>Utwórz kopię lustrzaną funkcji</translation>
+      <translation>Utwórz kopię lustrzaną</translation>
     </message>
   </context>
   <context>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="688"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="689"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="851"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="552"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="553"/>
@@ -348,12 +348,12 @@
     <message>
       <location filename="../../Command.cpp" line="2114"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2115"/>
       <source>Create MultiTransform</source>
-      <translation>Stwórz wielokrotną transformację</translation>
+      <translation>Utwórz wielokrotną transformację</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2116"/>
@@ -366,12 +366,12 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create sketch</source>
-      <translation>Tworzenie szkicu</translation>
+      <translation>Utwórz szkic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../Command.cpp" line="1031"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1032"/>
@@ -402,7 +402,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -420,7 +420,7 @@
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1083"/>
@@ -438,12 +438,12 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Create a datum point</source>
-      <translation>Utwórz płaszczyznę odniesienia</translation>
+      <translation>Utwórz punkt odniesienia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="216"/>
@@ -456,17 +456,17 @@
     <message>
       <location filename="../../Command.cpp" line="2007"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2008"/>
       <source>PolarPattern</source>
-      <translation>WzorzecBiegunowy</translation>
+      <translation>Szyk kołowy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2009"/>
       <source>Create a polar pattern feature</source>
-      <translation>Utwórz funkcję wzorca biegunowego</translation>
+      <translation>Utwórz szyk kołowy</translation>
     </message>
   </context>
   <context>
@@ -474,17 +474,17 @@
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Revolution</source>
-      <translation>Obrót</translation>
+      <translation>Wyciągnij przez obrót</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Revolve a selected sketch</source>
-      <translation>Wyciągnij przez obrót zaznaczony szkic</translation>
+      <translation>Wyciągnij zaznaczony szkic przez obrót</translation>
     </message>
   </context>
   <context>
@@ -492,7 +492,7 @@
     <message>
       <location filename="../../Command.cpp" line="2074"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2075"/>
@@ -510,7 +510,7 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
@@ -528,17 +528,17 @@
     <message>
       <location filename="../../Command.cpp" line="1453"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Subtractive loft</source>
-      <translation>Subtraktywny loft</translation>
+      <translation>Odejmowanie wyciągnięciem po profilach</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Loftuj wybrany profil poprzez inne sekcje profilu i usuń je z zawartości</translation>
+      <translation>Przeprowadź wybrany profil przez inne profile i usuń go z zawartości</translation>
     </message>
   </context>
   <context>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../Command.cpp" line="1353"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1354"/>
@@ -564,7 +564,7 @@
     <message>
       <location filename="../../Command.cpp" line="1721"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation>Zrób bryłę o pełnych kształtach</translation>
+      <translation>Utwórz bryłę narzędziem grubość</translation>
     </message>
   </context>
   <context>
@@ -582,13 +582,13 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation>Stwórz dodatkowe prymitywy</translation>
+      <translation>Utwórz bryłę pierwotną do dodania</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="191"/>
@@ -636,13 +636,13 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="235"/>
       <source>PartDesign</source>
-      <translation>Projektowanie Części "Part"</translation>
+      <translation>Part Design</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="236"/>
       <location filename="../../CommandPrimitive.cpp" line="237"/>
       <source>Create a subtractive primitive</source>
-      <translation>Stwórz składową prymitywu</translation>
+      <translation>Utwórz bryłę pierwotną do odjęcia</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
@@ -710,12 +710,12 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Szkicuj należącą do innej zawartości funkcję</translation>
+      <translation>Szkic należy do innej funkcji zawartości</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
       <source>Base plane</source>
-      <translation>Podstawowa płaszczyzna</translation>
+      <translation>Płaszczyzna podstawowa</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
@@ -1091,17 +1091,17 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
-      <translation>Dodaj zawartość</translation>
+      <translation>Dodaj kontener</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove body</source>
-      <translation>Usuń zawartość</translation>
+      <translation>Usuń kontener</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation>Bezpiecznik</translation>
+      <translation>Suma</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
@@ -1111,7 +1111,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
       <source>Common</source>
-      <translation>Zwyczajny</translation>
+      <translation>Część wspólna</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
@@ -1121,7 +1121,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1162,7 +1162,7 @@
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="87"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1263,12 +1263,12 @@
     <message>
       <location filename="../../TaskDraftParameters.ui" line="111"/>
       <source>Reverse pull direction</source>
-      <translation>Odwrócenie kierunku wyciągania</translation>
+      <translation>Odwróć kierunek wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="100"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1336,7 +1336,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Belongs to another body</source>
-      <translation>Należy do innej części</translation>
+      <translation>Należy do innego kontenera</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
@@ -1351,7 +1351,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
       <source>Base plane</source>
-      <translation>Podstawowa płaszczyzna</translation>
+      <translation>Płaszczyzna podstawowa</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
@@ -1389,7 +1389,7 @@
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="87"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1440,12 +1440,12 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="49"/>
@@ -1475,12 +1475,12 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="114"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="114"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="328"/>
@@ -1518,27 +1518,27 @@
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation>Dodaj sekcję</translation>
+      <translation>Dodaj sekcję profilu</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation>Usuń sekcję</translation>
+      <translation>Usuń sekcję profilu</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="113"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation>Parametry szkicu</translation>
+      <translation>Parametry wyciągnięcia po profilach</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="80"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -1551,17 +1551,17 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="49"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="63"/>
@@ -1571,12 +1571,12 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="72"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="111"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="245"/>
@@ -1594,12 +1594,12 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="47"/>
@@ -1609,17 +1609,17 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="64"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="76"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="82"/>
       <source>Edit</source>
-      <translation>Edytuj</translation>
+      <translation>Edycja</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="86"/>
@@ -1634,12 +1634,12 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
       <source>Add linear pattern</source>
-      <translation>Dodaj wzorzec liniowy</translation>
+      <translation>Dodaj szyk liniowy</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
       <source>Add polar pattern</source>
-      <translation>Dodaj wzorzec biegunowy</translation>
+      <translation>Dodaj szyk kołowy</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
@@ -1649,7 +1649,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
       <source>Move up</source>
-      <translation>Przesuń w górę</translation>
+      <translation>Przenieś wyżej</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
@@ -1689,7 +1689,7 @@
     <message>
       <location filename="../../TaskPadParameters.ui" line="60"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Odsunięcie</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="75"/>
@@ -1716,7 +1716,7 @@
     <message>
       <location filename="../../TaskPadParameters.ui" line="128"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
@@ -1926,12 +1926,12 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation>Dodaj sekcję</translation>
+      <translation>Dodaj sekcję profilu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation>Usuń sekcję</translation>
+      <translation>Usuń sekcję profilu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="617"/>
@@ -1966,7 +1966,7 @@
     <message>
       <location filename="../../TaskPocketParameters.ui" line="60"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Odsunięcie</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="75"/>
@@ -1993,7 +1993,7 @@
     <message>
       <location filename="../../TaskPocketParameters.ui" line="128"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="56"/>
@@ -2041,12 +2041,12 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="49"/>
@@ -2076,12 +2076,12 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="318"/>
@@ -2153,7 +2153,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="119"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="61"/>
@@ -2171,12 +2171,12 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Dodaj właściwość</translation>
+      <translation>Dodaj element</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation>Usuń właściwość</translation>
+      <translation>Usuń element</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="49"/>
@@ -2196,12 +2196,12 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="86"/>
       <source>Update view</source>
-      <translation>Aktualizacja widoku</translation>
+      <translation>Aktualizuj widok</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="98"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -2285,7 +2285,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="100"/>
       <source>Recto Verso</source>
-      <translation>Druk obustronny</translation>
+      <translation>Obie strony</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="109"/>
@@ -2300,12 +2300,12 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="124"/>
       <source>Make thickness inwards</source>
-      <translation>Stwórz gęstość do wewnątrz</translation>
+      <translation>Stwórz grubość do wewnątrz</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="98"/>
       <source>Remove</source>
-      <translation>Usuń</translation>
+      <translation>Skasuj</translation>
     </message>
   </context>
   <context>
@@ -2381,7 +2381,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation>Przełącz aktywną zawartość</translation>
+      <translation>Przełącz aktywność zawartości</translation>
     </message>
   </context>
   <context>
@@ -2584,7 +2584,7 @@
       <location filename="../../ViewProviderPrimitive.cpp" line="94"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="93"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Czy chcesz zamknąć to okno dialogowe?</translation>
+      <translation>Czy chcesz zamknąć to okno?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="907"/>
@@ -2607,7 +2607,7 @@
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select an edge, face or body.</source>
-      <translation>Wybierz krawędź, ścianę lub zawartość.</translation>
+      <translation>Wybierz krawędź, ścianę lub kontener.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
@@ -2702,7 +2702,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
       <source>Body can't be based on another body.</source>
-      <translation>Ciało nie może opierać się na innej zawartości.</translation>
+      <translation>Podstawą zawartości nie może być inna zawartość.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
@@ -2740,7 +2740,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Base feature</source>
-      <translation>Podstawowa funkcja</translation>
+      <translation>Własność podstawowa</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="192"/>
@@ -2765,7 +2765,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="518"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Proszę edytować %1 i ponownie go zdefiniuj by używać podstawy lub punktu odniesienia płaszczyzny na płaszczyźnie szkicu.</translation>
+      <translation>Proszę edytować %1 i przedefiniuj go, aby używać płaszczyzny bazowej lub odniesienia jako płaszczyzny szkicu.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="580"/>
@@ -2887,7 +2887,7 @@ Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funk
     <message>
       <location filename="../../Utils.cpp" line="104"/>
       <source>Active Body Required</source>
-      <translation>Aktywne Body Wymagane</translation>
+      <translation>Wymagana jest aktywna zawartość</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="105"/>
@@ -2897,7 +2897,7 @@ Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funk
     <message>
       <location filename="../../Utils.cpp" line="142"/>
       <source>Feature is not in a body</source>
-      <translation>Funkcja nie stanowi body</translation>
+      <translation>Funkcja nie jest w korpusie</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="143"/>
@@ -2928,7 +2928,7 @@ Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funk
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
       <location filename="../../ViewProviderDatum.cpp" line="211"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="125"/>
@@ -2973,17 +2973,17 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="51"/>
       <source>Edit groove</source>
-      <translation>Edycja rowka</translation>
+      <translation>Edytuj rowek</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="64"/>
       <source>Edit hole</source>
-      <translation>Edytuj lukę</translation>
+      <translation>Edytuj otwór</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>
       <source>Edit loft</source>
-      <translation>Edytuj wyciągnięcie</translation>
+      <translation>Edytuj wyciągnięcie po profilach</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
@@ -3003,7 +3003,7 @@ Ta funkcja jest wadliwa i nie może być edytowana.</translation>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="76"/>
       <source>Edit primitive</source>
-      <translation>Edytuj prymitywa</translation>
+      <translation>Edytuj bryłę pierwotną</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="51"/>
@@ -3113,7 +3113,7 @@ Jednak możliwe będzie przeprowadzenie procesu migracji w każdej chwili za pom
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="161"/>
       <source>Threaded</source>
-      <translation>Wątek</translation>
+      <translation>Gwintowany</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
@@ -3128,7 +3128,7 @@ Jednak możliwe będzie przeprowadzenie procesu migracji w każdej chwili za pom
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="196"/>
       <source>Hole norm</source>
-      <translation>Wzorzec dziury</translation>
+      <translation>Norma otworu</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
@@ -3156,7 +3156,7 @@ Jednak możliwe będzie przeprowadzenie procesu migracji w każdej chwili za pom
       <location filename="../../../FeatureHole/TaskHole.ui" line="329"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="337"/>
       <source>Thread norm</source>
-      <translation>Wzorzec wątku</translation>
+      <translation>Norma gwintu</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="399"/>
@@ -3257,7 +3257,7 @@ Jednak możliwe będzie przeprowadzenie procesu migracji w każdej chwili za pom
     <message>
       <location filename="../../TaskHoleParameters.ui" line="195"/>
       <source>Pitch</source>
-      <translation>stopień</translation>
+      <translation>Skok</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="220"/>
@@ -3272,12 +3272,12 @@ Jednak możliwe będzie przeprowadzenie procesu migracji w każdej chwili za pom
     <message>
       <location filename="../../TaskHoleParameters.ui" line="240"/>
       <source>Model actual thread</source>
-      <translation>Model rzeczywistego wątku</translation>
+      <translation>Modeluj rzeczywisty gwint</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="247"/>
       <source>Threaded</source>
-      <translation>Wątek</translation>
+      <translation>Gwintowany</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="257"/>
@@ -3327,7 +3327,7 @@ Jednak możliwe będzie przeprowadzenie procesu migracji w każdej chwili za pom
     <message>
       <location filename="../../TaskHoleParameters.ui" line="449"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Punkt wiertarki&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Punkt wiercenia&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="459"/>

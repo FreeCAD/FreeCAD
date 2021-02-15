@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft join functions.
-"""
+"""Provides functions to join wires together into a single wire."""
 ## @package join
-# \ingroup DRAFT
-# \brief This module provides the code for Draft join functions.
+# \ingroup draftfuctions
+# \brief Provides functions to join wires together into a single wire.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 
@@ -89,3 +90,5 @@ def join_two_wires(wire1, wire2):
 
 
 joinTwoWires = join_two_wires
+
+## @}

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation>Skaler bilde plan</translation>
+      <translation>Skaler bildeplan</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;Velg bilde plan&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;Velg bildeplan&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation>Velg Bilde Plan og skriv inn distanse</translation>
+      <translation>Velg bildeplan og angi distanse</translation>
     </message>
   </context>
   <context>
@@ -44,12 +44,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
       <source>Scale image plane</source>
-      <translation>Skaler bilde plan</translation>
+      <translation>Skaler bildeplan</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Skalerer ett bilde plan ved å definere distansen mellom to punkt</translation>
+      <translation>Skalerer et bildeplan ved å definere avstanden mellom to punkter</translation>
     </message>
   </context>
   <context>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Lag et plant bilde i 3D rommet</translation>
+      <translation>Lag et plant bilde i 3D-rommet</translation>
     </message>
   </context>
   <context>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation>Bilde skalering</translation>
+      <translation>Bildeskalering</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="20"/>
       <source>Image plane</source>
-      <translation>Bilde plan</translation>
+      <translation>Bildeplan</translation>
     </message>
     <message>
       <location filename="../../ImageOrientationDialog.ui" line="26"/>
@@ -243,7 +243,7 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Error opening image</source>
-      <translation>Feil ved åpning av bilde fil</translation>
+      <translation>Feil ved åpning av bildefil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>

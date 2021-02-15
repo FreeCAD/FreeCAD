@@ -73,10 +73,10 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     , type(t)
 {
     ui->setupUi(this);
-    ui->moveActionRightButton->setIcon(BitmapFactory().pixmap(":/icons/button_right.svg"));
-    ui->moveActionLeftButton->setIcon(BitmapFactory().pixmap(":/icons/button_left.svg"));
-    ui->moveActionDownButton->setIcon(BitmapFactory().pixmap(":/icons/button_down.svg"));
-    ui->moveActionUpButton->setIcon(BitmapFactory().pixmap(":/icons/button_up.svg"));
+    ui->moveActionRightButton->setIcon(BitmapFactory().iconFromTheme("button_right"));
+    ui->moveActionLeftButton->setIcon(BitmapFactory().iconFromTheme("button_left"));
+    ui->moveActionDownButton->setIcon(BitmapFactory().iconFromTheme("button_down"));
+    ui->moveActionUpButton->setIcon(BitmapFactory().iconFromTheme("button_up"));
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::map<std::string,Command*> sCommands = cCmdMgr.getCommands();
@@ -130,7 +130,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
         }
     }
 
-    QStringList labels; 
+    QStringList labels;
     labels << tr("Icon") << tr("Command");
     ui->commandTreeWidget->setHeaderLabels(labels);
     ui->commandTreeWidget->header()->hide();
@@ -378,7 +378,7 @@ void DlgCustomToolbars::on_moveActionRightButton_clicked()
 void DlgCustomToolbars::on_moveActionLeftButton_clicked()
 {
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && item->parent() && item->isSelected()) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         parent->takeChild(index);
@@ -412,7 +412,7 @@ void DlgCustomToolbars::on_moveActionLeftButton_clicked()
 void DlgCustomToolbars::on_moveActionUpButton_clicked()
 {
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && item->parent() && item->isSelected()) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         if (index > 0) {
@@ -450,7 +450,7 @@ void DlgCustomToolbars::on_moveActionUpButton_clicked()
 void DlgCustomToolbars::on_moveActionDownButton_clicked()
 {
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && item->parent() && item->isSelected()) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         if (index < parent->childCount()-1) {
@@ -488,7 +488,7 @@ void DlgCustomToolbars::on_newButton_clicked()
 {
     bool ok;
     QString text = QString::fromLatin1("Custom%1").arg(ui->toolbarTreeWidget->topLevelItemCount()+1);
-    text = QInputDialog::getText(this, tr("New toolbar"), tr("Toolbar name:"), QLineEdit::Normal, text, &ok);
+    text = QInputDialog::getText(this, tr("New toolbar"), tr("Toolbar name:"), QLineEdit::Normal, text, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (ok) {
         // Check for duplicated name
         for (int i=0; i<ui->toolbarTreeWidget->topLevelItemCount(); i++) {
@@ -503,7 +503,7 @@ void DlgCustomToolbars::on_newButton_clicked()
         QTreeWidgetItem* item = new QTreeWidgetItem(ui->toolbarTreeWidget);
         item->setText(0, text);
         item->setCheckState(0, Qt::Checked);
-        ui->toolbarTreeWidget->setItemExpanded(item, true);
+        item->setExpanded(true);
 
         QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
         QString workbench = data.toString();
@@ -515,7 +515,7 @@ void DlgCustomToolbars::on_newButton_clicked()
 void DlgCustomToolbars::on_deleteButton_clicked()
 {
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && !item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && !item->parent() && item->isSelected()) {
         int index = ui->toolbarTreeWidget->indexOfTopLevelItem(item);
         ui->toolbarTreeWidget->takeTopLevelItem(index);
         removeCustomToolbar(item->text(0));
@@ -531,11 +531,11 @@ void DlgCustomToolbars::on_renameButton_clicked()
 {
     bool renamed = false;
     QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
-    if (item && !item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+    if (item && !item->parent() && item->isSelected()) {
         bool ok;
         QString old_text = item->text(0);
         QString text = QInputDialog::getText(this, tr("Rename toolbar"), tr("Toolbar name:"),
-            QLineEdit::Normal, old_text, &ok);
+            QLineEdit::Normal, old_text, &ok, Qt::MSWindowsFixedSizeDialogHint);
         if (ok && text != old_text) {
             // Check for duplicated name
             for (int i=0; i<ui->toolbarTreeWidget->topLevelItemCount(); i++) {
@@ -900,8 +900,6 @@ void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByt
 
 void DlgCustomToolbarsImp::changeEvent(QEvent *e)
 {
-    if (e->type() == QEvent::LanguageChange) {
-    }
     DlgCustomToolbars::changeEvent(e);
 }
 

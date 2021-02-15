@@ -44,6 +44,10 @@
 # include <QGLContext>
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QScreen>
+#endif
+
 #include <LibraryVersions.h>
 #include <zlib.h>
 #include <boost/version.hpp>
@@ -234,7 +238,11 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 
     setModal(true);
     ui->setupUi(this);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QRect rect = QApplication::primaryScreen()->availableGeometry();
+#else
     QRect rect = QApplication::desktop()->availableGeometry();
+#endif
     QPixmap image = getMainWindow()->splashImage();
 
     // Make sure the image is not too big
@@ -286,7 +294,8 @@ static QString getOperatingSystem()
 {
 #if QT_VERSION >= 0x050400
     return QSysInfo::prettyProductName();
-#endif
+
+#else // < 0x050400
 
 #if defined (Q_OS_WIN32)
     switch(QSysInfo::windowsVersion())
@@ -371,6 +380,8 @@ static QString getOperatingSystem()
 #else
     return QString();
 #endif
+
+#endif // >= 0x050400
 }
 
 static int getWordSizeOfOS()
@@ -744,11 +755,11 @@ void AboutDialog::on_copyButton_clicked()
     QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
-    
+
     QString deskEnv = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("XDG_CURRENT_DESKTOP"),QString::fromLatin1(""));
     QString deskSess = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("DESKTOP_SESSION"),QString::fromLatin1(""));
     QString deskInfo = QString::fromLatin1("");
-    
+
     if (!(deskEnv == QString::fromLatin1("") && deskSess == QString::fromLatin1("")))
     {
         if (deskEnv == QString::fromLatin1("") || deskSess == QString::fromLatin1(""))
@@ -761,39 +772,39 @@ void AboutDialog::on_copyButton_clicked()
             deskInfo = QString::fromLatin1(" (") + deskEnv + QString::fromLatin1("/") + deskSess + QString::fromLatin1(")");
         }
     }
-    
-    str << "OS: " << SystemInfo::getOperatingSystem() << deskInfo << endl;
-    
+
+    str << "OS: " << SystemInfo::getOperatingSystem() << deskInfo << '\n';
+
     int wordSize = SystemInfo::getWordSizeOfOS();
     if (wordSize > 0) {
-        str << "Word size of OS: " << wordSize << "-bit" << endl;
+        str << "Word size of OS: " << wordSize << "-bit\n";
     }
-    str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit" << endl;
+    str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
     str << "Version: " << major << "." << minor << "." << build;
     char *appimage = getenv("APPIMAGE");
     if (appimage)
         str << " AppImage";
-    str << endl;
+    str << '\n';
 
 #if defined(_DEBUG) || defined(DEBUG)
-    str << "Build type: Debug" << endl;
+    str << "Build type: Debug\n";
 #elif defined(NDEBUG)
-    str << "Build type: Release" << endl;
+    str << "Build type: Release\n";
 #elif defined(CMAKE_BUILD_TYPE)
-    str << "Build type: " << CMAKE_BUILD_TYPE << endl;
+    str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
 #else
-    str << "Build type: Unknown" << endl;
+    str << "Build type: Unknown\n";
 #endif
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
-        str << "Branch: " << QString::fromUtf8(it->second.c_str()) << endl;
+        str << "Branch: " << QString::fromUtf8(it->second.c_str()) << '\n';
     it = config.find("BuildRevisionHash");
     if (it != config.end())
-        str << "Hash: " << it->second.c_str() << endl;
+        str << "Hash: " << it->second.c_str() << '\n';
     // report also the version numbers of the most important libraries in FreeCAD
-    str << "Python version: " << PY_VERSION << endl;
-    str << "Qt version: " << QT_VERSION_STR << endl;
-    str << "Coin version: " << COIN_VERSION << endl;
+    str << "Python version: " << PY_VERSION << '\n';
+    str << "Qt version: " << QT_VERSION_STR << '\n';
+    str << "Coin version: " << COIN_VERSION << '\n';
 #if defined(HAVE_OCC_VERSION)
     str << "OCC version: "
         << OCC_VERSION_MAJOR << "."
@@ -802,12 +813,12 @@ void AboutDialog::on_copyButton_clicked()
 #ifdef OCC_VERSION_DEVELOPMENT
         << "." OCC_VERSION_DEVELOPMENT
 #endif
-        << endl;
+        << '\n';
 #endif
     QLocale loc;
     str << "Locale: " << loc.languageToString(loc.language()) << "/"
         << loc.countryToString(loc.country())
-        << " (" << loc.name() << ")" << endl;
+        << " (" << loc.name() << ")\n";
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
@@ -818,7 +829,7 @@ void AboutDialog::on_copyButton_clicked()
 /* TRANSLATOR Gui::LicenseView */
 
 LicenseView::LicenseView(QWidget* parent)
-    : MDIView(0,parent,0)
+    : MDIView(0,parent,Qt::WindowFlags())
 {
     browser = new QTextBrowser(this);
     browser->setOpenExternalLinks(true);

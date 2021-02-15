@@ -29,6 +29,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPainterPathStroker>
 #include <QStyleOptionGraphicsItem>
 #include <QKeyEvent>

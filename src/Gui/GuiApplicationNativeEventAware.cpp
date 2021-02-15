@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <algorithm>
+#include <iomanip>
+#include <sstream>
 
 #include <QGlobalStatic>
 #include <QMainWindow>
@@ -46,7 +49,7 @@
 #endif // Spacemice
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
-        QApplication (argc, argv)
+        QApplication (argc, argv), spaceballPresent(false)
 {
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     nativeEvent = new Gui::GuiNativeEvent(this);
@@ -114,7 +117,7 @@ void Gui::GUIApplicationNativeEventAware::postMotionEvent(std::vector<int> motio
 
 	Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
     motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
-    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);  
+    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
     this->postEvent(currentWidget, motionEvent);
 }
 
@@ -153,6 +156,29 @@ float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
 void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motionDataArray)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Spaceball")->GetGroup("Motion");
+
+    // Remapping of motion data
+    long remap = group->GetInt("Remapping", 12345);
+    if (remap != 12345) {
+        std::stringstream s;
+        s << std::setfill('0') << std::setw(6) << remap;
+
+        std::string str;
+        s >> str;
+
+        // the string must have a length of 6 and it must contain all digits 0,...,5
+        std::string::size_type pos1 = str.find_first_not_of("012345");
+        std::string::size_type pos2 = std::string("012345").find_first_not_of(str);
+        if (pos1 == std::string::npos && pos2 == std::string::npos) {
+            std::vector<int> vec(str.size());
+            std::transform(str.begin(), str.end(), vec.begin(), [](char c) -> int { return c - '0';});
+
+            std::vector<int> copy = motionDataArray;
+            for (int i=0; i<6; i++) {
+                motionDataArray[i] = copy[vec[i]];
+            }
+        }
+    }
 
     // here I import settings from a dialog. For now they are set as is
     bool  dominant           = group->GetBool("Dominant"); // Is dominant checked

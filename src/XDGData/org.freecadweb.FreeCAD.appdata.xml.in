@@ -8,20 +8,47 @@
   <summary>An open source parametric 3D CAD modeler</summary>
   <description>
     <p>
-      FreeCAD is a parametric 3D modeler. Parametric modeling
-      allows you to easily modify your design by going back into
-      your model history and changing its parameters. FreeCAD is
-      open source (LGPL license) and completely modular, allowing
-      for very advanced extension and customization.
+      FreeCAD is an open-source parametric 3D modeler made 
+      primarily to design real-life objects of any size. 
+      Parametric modeling allows you to easily modify your 
+      design by going back into your model history and 
+      changing its parameters. It is designed to fit a 
+      wide range of uses including product design, mechanical 
+      engineering, architecture and 3D printing.
     </p>
     <p>
-      FreeCAD is multiplatfom, and reads and writes many open
-      file formats such as STEP, IGES, STL and others.
+      FreeCAD allows you to sketch geometry constrained 
+      2D shapes and use them as a base to build other objects. 
+      It contains many components to adjust dimensions or 
+      extract design details from 3D models to create high 
+      quality production-ready drawings. it is a multiplatfom 
+      (Windows, Mac and Linux), highly customizable using the 
+      Python language. It reads and writes to many open file 
+      formats such as STEP, IGES, STL, SVG, DXF, OBJ, IFC, 
+      DAE and many others, making it possible to seamlessly 
+      integrate it into your workflow. 
+    </p>
+    <p>
+      FreeCAD includes a modern Finite Element Analysis (FEA) 
+      tools, experimental CFD, BIM, Geodata workbenches, 
+      a Path (CNC) workbench, a robot simulation module that 
+      allows you to study robot movements and many more, and
+      a rich collection of plugins and macros installable
+      directly from within the application.
     </p>
   </description>
   <screenshots>
     <screenshot type="default">
-      <image>https://www.freecadweb.org/wiki/images/2/2d/FreeCAD011.png</image>
+      <image>https://wiki.freecadweb.org/images/7/72/Freecad016_screenshot1.jpg</image>
+    </screenshot>
+    <screenshot>
+      <image>https://wiki.freecadweb.org/images/f/f7/FreeCAD_highlight_3_0.19.jpg</image>
+    </screenshot>
+    <screenshot>
+      <image>https://wiki.freecadweb.org/images/c/c3/Arch_tutorial_43.jpg</image>
+    </screenshot>
+    <screenshot>
+      <image>https://wiki.freecadweb.org/images/f/f4/Freecad-document-01.jpg</image>
     </screenshot>
   </screenshots>
   <url type="homepage">https://www.freecadweb.org</url>

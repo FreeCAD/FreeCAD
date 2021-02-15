@@ -71,6 +71,10 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
     Offset.setConstraints ( &signedLengthConstraint );
+
+    // Remove the constraints and keep the type to allow to accept negative values
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
+    Length2.setConstraints(nullptr);
 }
 
 short Pocket::mustExecute() const
@@ -117,10 +121,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         base = getBaseShape();
     }
     catch (const Base::Exception&) {
-        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n\n"
-                                    "  \xe2\x80\xa2 the active Body does not contain a base shape, so there is no\n"
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n"
+                                    "  - the active Body does not contain a base shape, so there is no\n"
                                     "  material to be removed;\n"
-                                    "  \xe2\x80\xa2 the selected sketch does not belong to the active Body."));
+                                    "  - the selected sketch does not belong to the active Body."));
         return new App::DocumentObjectExecReturn(text);
     }
 
@@ -184,7 +188,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoDS_Shape prism = PrismMaker.Shape();
 #else
             TopoDS_Shape prism;
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, 1);
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, Standard_True);
 #endif
 
             // And the really expensive way to get the SubShape...

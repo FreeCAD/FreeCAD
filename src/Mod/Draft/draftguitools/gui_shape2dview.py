@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for projecting objects into a 2D plane.
+"""Provides GUI tools to project an object into a 2D plane.
 
 This creates a 2D shape in the 3D view itself. This projection
 can be further used to create a technical drawing using
 the TechDraw Workbench.
 """
 ## @package gui_shape2dview
-# \ingroup DRAFT
-# \brief Provides tools for projecting objects into a 2D plane.
+# \ingroup draftguitools
+# \brief Provides GUI tools to project an object into a 2D plane.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -39,8 +41,9 @@ import DraftVecUtils
 import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -51,38 +54,26 @@ class Shape2DView(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Shape 2D view"
-        _tip = ("Creates a 2D projection of the selected objects "
-                "on the XY plane.\n"
-                "The initial projection direction is the negative "
-                "of the current active view direction.\n"
-                "You can select individual faces to project, or "
-                "the entire solid, and also include hidden lines.\n"
-                "These projections can be used to create technical "
-                "drawings with the TechDraw Workbench.")
 
         return {'Pixmap': 'Draft_2DShapeView',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Shape2DView", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Shape2DView", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Shape2DView", "Shape 2D view"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Shape2DView", "Creates a 2D projection of the selected objects on the XY plane.\nThe initial projection direction is the negative of the current active view direction.\nYou can select individual faces to project, or the entire solid, and also include hidden lines.\nThese projections can be used to create technical drawings with the TechDraw Workbench.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Shape2DView, self).Activated(name=_tr("Project 2D view"))
+        super(Shape2DView, self).Activated(name=translate("draft","Project 2D view"))
         if not Gui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to project"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         faces = []
         objs = []
         vec = Gui.ActiveDocument.ActiveView.getViewDirection().negative()
@@ -121,3 +112,5 @@ class Shape2DView(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Shape2DView', Shape2DView())
+
+## @}

@@ -20,18 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft fuse function.
-"""
+"""Provides functions to create a fusion of two shapes."""
 ## @package fuse
-# \ingroup DRAFT
-# \brief This module provides the code for Draft fuse function.
+# \ingroup draftfuctions
+# \brief Provides functions to create a fusion of two shapes.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
 import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
 
 from draftmake.make_wire import Wire
+
 if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
 
@@ -78,3 +78,5 @@ def fuse(object1, object2):
         gui_utils.select(obj)
 
     return obj
+
+## @}

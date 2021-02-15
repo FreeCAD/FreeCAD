@@ -4,35 +4,35 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="210"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="211"/>
+      <location filename="../../Command.cpp" line="212"/>
       <source>Cylinder</source>
       <translation>Cilindre</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="212"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>Aproxima un cilindre</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="111"/>
       <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <translation>Pla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="111"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Approximate a plane</source>
       <translation>Aproximar-se a un pla</translation>
     </message>
@@ -40,53 +40,53 @@
   <context>
     <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>Superfície polinomial</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="326"/>
       <source>Approximate a polynomial surface</source>
-      <translation type="unfinished">Approximate a polynomial surface</translation>
+      <translation>Aproxima una superfície polinomial</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSphere</name>
     <message>
-      <location filename="../../Command.cpp" line="261"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="262"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="263"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Aproxima una esfera</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="74"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>Approximate B-spline surface...</source>
       <translation>Superficie B-Spline aproximada...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>Approximate a B-spline surface</source>
       <translation>Aproximar-se a una superfície de B-spline</translation>
     </message>
@@ -94,35 +94,35 @@
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="474"/>
+      <location filename="../../Command.cpp" line="490"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="491"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>Filferro des del límit de la malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>Crea un filferro des dels límits de la malla</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="540"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="541"/>
+      <location filename="../../Command.cpp" line="557"/>
       <source>Poisson...</source>
       <translation>Poisson...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="542"/>
+      <location filename="../../Command.cpp" line="558"/>
       <source>Poisson surface reconstruction</source>
       <translation>Reconstrucció de superfícies de Poisson</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="363"/>
+      <location filename="../../Command.cpp" line="379"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>Segmentació de la malla...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="381"/>
       <source>Create mesh segments</source>
       <translation>Crea segments de malla</translation>
     </message>
@@ -148,56 +148,104 @@
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="424"/>
+      <location filename="../../Command.cpp" line="440"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="425"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Des dels components</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="426"/>
+      <location filename="../../Command.cpp" line="442"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Crea segments de malla a partir dels components</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="395"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Segmentació manual...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="413"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>Crea segments de malla manualment</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="574"/>
+      <location filename="../../Command.cpp" line="590"/>
       <source>Reverse Engineering</source>
       <translation>Enginyeria Inversa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="575"/>
+      <location filename="../../Command.cpp" line="591"/>
       <source>Structured point clouds</source>
       <translation>Núvols de punts estructurat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="576"/>
-      <location filename="../../Command.cpp" line="577"/>
+      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="593"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Triangulació de núvols de punts estructurat</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Fit plane</source>
+      <translation type="unfinished">Fit plane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="221"/>
+      <source>Fit cylinder</source>
+      <translation type="unfinished">Fit cylinder</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="287"/>
+      <source>Fit sphere</source>
+      <translation type="unfinished">Fit sphere</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="335"/>
+      <source>Fit polynomial surface</source>
+      <translation type="unfinished">Fit polynomial surface</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="601"/>
+      <source>View triangulation</source>
+      <translation type="unfinished">View triangulation</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <source>Placement</source>
+      <translation>Posició</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <source>Fit B-Spline</source>
+      <translation type="unfinished">Fit B-Spline</translation>
+    </message>
+    <message>
+      <location filename="../../Poisson.cpp" line="101"/>
+      <source>Poisson reconstruction</source>
+      <translation type="unfinished">Poisson reconstruction</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <source>Segmentation</source>
+      <translation>Segmentació</translation>
     </message>
   </context>
   <context>
@@ -232,7 +280,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Paràmetres</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
@@ -277,7 +325,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>Crea una ubicació</translation>
     </message>
   </context>
   <context>
@@ -335,18 +383,18 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="88"/>
-      <location filename="../../Command.cpp" line="553"/>
+      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="90"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+      <translation>Selecciona un núvol de punts o una malla.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="554"/>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Please select a single point cloud.</source>
       <translation>Seleccioneu un sol punt del núvol.</translation>
     </message>
@@ -354,7 +402,7 @@
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="609"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>View triangulation failed</source>
       <translation>Ha fallat la vista de triangulació</translation>
     </message>
@@ -369,7 +417,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="27"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>Crea un compost</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="34"/>
@@ -384,12 +432,12 @@
     <message>
       <location filename="../../Segmentation.ui" line="53"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>Tolerància de la curvatura</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="70"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>Distància al pla</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="87"/>
@@ -399,7 +447,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>Crea una malla a partir de triangles no utilitzats</translation>
     </message>
   </context>
   <context>
@@ -407,7 +455,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>Segmentació manual</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -451,24 +499,75 @@
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
+      <source>Plane</source>
+      <translation>Pla</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="128"/>
+      <location filename="../../SegmentationManual.ui" line="181"/>
+      <location filename="../../SegmentationManual.ui" line="234"/>
+      <source>Tolerance</source>
+      <translation>Tolerància</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="148"/>
+      <location filename="../../SegmentationManual.ui" line="201"/>
+      <location filename="../../SegmentationManual.ui" line="254"/>
+      <source>Minimum number of faces</source>
+      <translation>Nombre mínim de cares</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="165"/>
+      <location filename="../../SegmentationManual.ui" line="218"/>
+      <location filename="../../SegmentationManual.ui" line="271"/>
+      <source>Detect</source>
+      <translation>Detectar</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="175"/>
+      <source>Cylinder</source>
+      <translation>Cilindre</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="228"/>
+      <source>Sphere</source>
+      <translation>Esfera</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
       <translation>Opcions de regió</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="128"/>
+      <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
       <translation>Respecta només els triangles visibles</translation>
     </message>
     <message>
-      <location filename="../../SegmentationManual.ui" line="138"/>
+      <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with normals facing screen</source>
       <translation>Respecta només els triangles amb les normals enfront de la pantalla</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="310"/>
+      <source>Segmentation</source>
+      <translation>Segmentació</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="316"/>
+      <source>Cut segment from mesh</source>
+      <translation>Tallar segment de la malla</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="326"/>
+      <source>Hide segment</source>
+      <translation>Amagar segment</translation>
     </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="185"/>
+      <location filename="../../SegmentationManual.cpp" line="310"/>
       <source>Create</source>
       <translation>Crea</translation>
     </message>

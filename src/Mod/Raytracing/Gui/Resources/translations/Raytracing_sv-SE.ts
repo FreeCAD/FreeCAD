@@ -472,7 +472,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Sökväg till programfilen för POV-Ray, om du vill utföra rendering från %1</translation>
     </message>
   </context>
   <context>
@@ -496,17 +496,17 @@ Vill du fortsätta?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="146"/>
+      <location filename="../../ViewProvider.cpp" line="147"/>
       <source>Edit Povray project</source>
       <translation>Redigera POV-Ray-projekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Povray template</source>
       <translation>POV-Ray-mall</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Select a Povray template</source>
       <translation>Välj en POV-Ray-mall</translation>
     </message>

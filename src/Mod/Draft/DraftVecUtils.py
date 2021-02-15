@@ -602,7 +602,7 @@ def find(vector, vlist):
     return None
 
 
-def closest(vector, vlist):
+def closest(vector, vlist, return_length=False):
     """Find the closest point to one point in a list of points (vectors).
 
     The scalar distance between the original point and one point in the list
@@ -611,15 +611,24 @@ def closest(vector, vlist):
 
     Parameters
     ----------
-    vector : Base::Vector3
-        The tested point (or vector).
-    vlist : list
-        A list of points (or vectors).
+    vector: Base::Vector3
+        The tested point or vector.
+
+    vlist: list
+        A list of points or vectors.
+
+    return_length: bool, optional
+        It defaults to `False`.
+        If it is `True`, the value of the smallest distance will be returned.
 
     Returns
     -------
     int
         The index of the list where the closest point is found.
+
+    int, float
+        If `return_length` is `True`, it returns both the index
+        and the length to the closest point.
     """
     typecheck([(vector, Vector), (vlist, list)], "closest")
 
@@ -628,11 +637,15 @@ def closest(vector, vlist):
     dist = 9999999999999999
     index = None
     for i, v in enumerate(vlist):
-        d = vector.sub(v).Length
+        d = (vector - v).Length
         if d < dist:
             dist = d
             index = i
-    return index
+
+    if return_length:
+        return index, dist
+    else:
+        return index
 
 
 def isColinear(vlist):
@@ -703,8 +716,9 @@ def isColinear(vlist):
     return True
 
 
-def rounded(v):
-    """Return a vector rounded to the `precision` in the parameter database.
+def rounded(v,d=None):
+    """Return a vector rounded to the `precision` in the parameter database
+    or to the given decimals value
 
     Each of the components of the vector is rounded to the decimal
     precision set in the parameter database.
@@ -713,6 +727,7 @@ def rounded(v):
     ----------
     v : Base::Vector3
         The input vector.
+    d : (Optional) the number of decimals to round to
 
     Returns
     -------
@@ -722,6 +737,8 @@ def rounded(v):
         in the parameter database.
     """
     p = precision()
+    if d:
+        p = d
     return Vector(round(v.x, p), round(v.y, p), round(v.z, p))
 
 

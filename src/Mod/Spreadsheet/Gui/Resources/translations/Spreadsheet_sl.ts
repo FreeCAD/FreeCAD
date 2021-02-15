@@ -99,7 +99,7 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Poravnaj navpično sredinsko</translation>
+      <translation>Sredinso poravnaj po navpičnici</translation>
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Združi celice</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Razcepi celice</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Levo poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Sredinjenje polja</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Desno poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Gornje poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Spodnje poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Sredinjenje polj po navpičnici</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Nastavi na krepko besedilo</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Nastavi na ležeče besedilo</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Nastavi na podčrtano besedilo</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Ustvari preglednico</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Nastavi lastnosti polja</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Uredi polje</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Vstavi vrstice</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Odstrani vrstice</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Vstavi stolpce</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Počisti polje (i, a)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Nastavi barvo ospredja</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Nastavi barvo ozadja</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -357,12 +440,21 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Preglednica pri lepljenju na podpira obsegovnega izbora.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopiranje in Lepljenje spodletelo</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Vzdevek vsebuje neveljavne znake!</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Na celico se sklicuj z vzdevkom, npr.
+Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
   </context>
   <context>
@@ -447,20 +539,18 @@ Please select one cell only.</translation>
       <translation>Oblika</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Vsebina</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Vsebina:</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Vzdevek:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Na celico se sklicuj z vzdevkom, npr.
+Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     </message>
   </context>
   <context>

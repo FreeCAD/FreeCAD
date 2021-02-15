@@ -33,8 +33,10 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
-      <source>Curve on mesh</source>
-      <translation>Ronding op gaas</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation type="unfinished">Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</translation>
     </message>
   </context>
   <context>
@@ -90,6 +92,19 @@
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Snijdt een maaswerk bij met een vlak</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation type="unfinished">Trim with plane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation type="unfinished">Section with plane</translation>
     </message>
   </context>
   <context>
@@ -152,12 +167,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Verbind de randen als afstand kleiner is dan</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Mislukt</translation>
     </message>
   </context>
   <context>
@@ -201,47 +216,56 @@
       <translation>Ronding op gaas</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
       <translation>Draad</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
-      <source>Snap tolerance to vertexes</source>
-      <translation>Uitlijnen van tolerantie tot hoekpunten</translation>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
+      <translation type="unfinished">Snap tolerance to vertices</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
       <translation>Scheidings drempel</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
       <translation>Benadering spleet</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
       <translation>Tolerantie tot het gaas</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
       <translation>Continuïteit</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
       <source>Maximum curve degree</source>
       <translation>Maximaal aantal graden voor de ronding</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
@@ -281,12 +305,12 @@
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
+      <translation>Gebruik de standaardmesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>Maximale lineaire deflectie van een meshsectie ten opzichte van het oppervlak van het object</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -296,14 +320,14 @@
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>Maximale hoekdeflectie van een mesh naar de volgende sectie</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>De maximale lineaire afwijking van een meshsegment wordt gespecificeerd
+Oppervlakteafwijking vermenigvuldigd met de lengte van het huidige meshsegment (rand)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -313,7 +337,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>Mesh krijgt vlakkleuren van het object</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -325,9 +349,9 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>Meshsegmenten worden gegroepeerd op basis van de kleur van de objectvlakken.
+Deze groepen zullen worden geëxporteerd voor meshuitgangsformaten
+die deze functie ondersteunen (bijvoorbeeld het OBJ-formaat).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -337,7 +361,7 @@ this feature (e.g. the format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation type="unfinished">Use the Mefisto mesher</translation>
+      <translation>Gebruik de Mefistomesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -348,18 +372,18 @@ this feature (e.g. the format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation type="unfinished">If this number is smaller the mesh becomes finer.
-The smallest value is 0.</translation>
+      <translation>Als dit aantal kleiner is, wordt de mesh fijner.
+De kleinste waarde is 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Schatting</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation type="unfinished">Use the Netgen mesher</translation>
+      <translation>Gebruik de Netgenmesher</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
@@ -405,8 +429,8 @@ The smallest value is 0.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
-A value in the range of 0.1-1.</translation>
+      <translation>Als deze parameter kleiner is, wordt de mesh fijner.
+Een waarde tussen 0,1 en 1.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
@@ -418,8 +442,8 @@ A value in the range of 0.1-1.</translation>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation type="unfinished">If this parameter is larger, the mesh becomes finer.
-A value in the range of 0.2-10.</translation>
+      <translation>Als deze parameter kleiner is, wordt de mesh fijner.
+Een waarde tussen 0,2 en 10.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
@@ -429,7 +453,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation type="unfinished">Whether optimization of surface shape will be done</translation>
+      <translation>Of de optimalisatie van de oppervlakte zal worden gedaan</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -439,7 +463,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation type="unfinished">Whether second order elements will be generated</translation>
+      <translation>Of er tweede orde-elementen worden gegenereerd</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
@@ -449,7 +473,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation type="unfinished">Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation>Of meshes bij voorkeur worden gerangschikt met vierzijdige vlakken</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -459,12 +483,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Laat paneel open</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
       <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <translation>gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="226"/>
@@ -516,12 +540,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Onderaan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Bovenaan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

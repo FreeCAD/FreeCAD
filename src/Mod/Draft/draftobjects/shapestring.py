@@ -20,22 +20,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Shapestring.
-"""
+"""Provides the object code for the ShapeString object."""
 ## @package shapestring
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Shapestring.
+# \ingroup draftobjects
+# \brief Provides the object code for the ShapeString object.
 
+## \addtogroup draftobjects
+# @{
 import sys
-
-import FreeCAD as App
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from draftutils.utils import epsilon
+import FreeCAD as App
+import draftutils.utils as utils
 
 from draftutils.translate import translate
-
 from draftobjects.base import DraftObject
 
 
@@ -45,21 +43,17 @@ class ShapeString(DraftObject):
     def __init__(self, obj):
         super(ShapeString, self).__init__(obj, "ShapeString")
 
-        _tip = "Text string"
-        obj.addProperty("App::PropertyString", "String",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Text string")
+        obj.addProperty("App::PropertyString", "String", "Draft", _tip)
 
-        _tip = "Font file name"
-        obj.addProperty("App::PropertyFile", "FontFile",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Font file name")
+        obj.addProperty("App::PropertyFile", "FontFile", "Draft", _tip)
 
-        _tip = "Height of text"
-        obj.addProperty("App::PropertyLength", "Size",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Height of text")
+        obj.addProperty("App::PropertyLength", "Size", "Draft", _tip)
 
-        _tip = "Inter-character spacing"
-        obj.addProperty("App::PropertyLength", "Tracking",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
+        obj.addProperty("App::PropertyLength", "Tracking", "Draft", _tip)
 
     def execute(self, obj):
         import Part
@@ -156,7 +150,7 @@ class ShapeString(DraftObject):
                 # some fonts fail here
                 if face.Surface.Axis.z < 0.0:
                     face.reverse()
-            except:
+            except Exception:
                 pass
             compFaces.append(face)
         ret = Part.Compound(compFaces)
@@ -178,7 +172,7 @@ class ShapeString(DraftObject):
             bcfA = biggest.common(face).Area
             fA = face.Area
             difA = abs(bcfA - fA)
-            eps = epsilon()
+            eps = utils.epsilon()
             # if biggest.common(face).Area == face.Area:
             if difA <= eps:                              # close enough to zero
                 # biggest completely overlaps current face ==> cut
@@ -200,4 +194,7 @@ class ShapeString(DraftObject):
         return ret
 
 
+# Alias for compatibility with v0.18 and earlier
 _ShapeString = ShapeString
+
+## @}

@@ -28,6 +28,7 @@
 #include "GeoFeature.h"
 
 #include "OriginFeature.h"
+#include "GeoFeatureGroupExtension.h"
 #include "PropertyLinks.h"
 
 namespace App
@@ -135,6 +136,15 @@ private:
     struct SetupData;
     void setupOriginFeature (App::PropertyLink &featProp, const SetupData &data);
 
+    class OriginExtension : public GeoFeatureGroupExtension {
+        Origin* obj;
+    public:
+        OriginExtension(Origin* obj);
+        void initExtension(ExtensionContainer* obj);
+        bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
+                PyObject **, Base::Matrix4D *, bool, int) const;
+    };
+    OriginExtension extension;
 };
 
 } //namespace App

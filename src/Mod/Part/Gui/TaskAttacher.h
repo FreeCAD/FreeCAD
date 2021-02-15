@@ -53,7 +53,8 @@ class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::Se
     Q_OBJECT
 
 public:
-    typedef boost::function<void (bool, Gui::ViewProviderDocumentObject*, App::DocumentObject *, const std::string&)>  VisibilityFunction;
+    typedef boost::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
+                                  App::DocumentObject *, const std::string&)>  VisibilityFunction;
 
     TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = 0,
                  QString picture = QString(),
@@ -125,10 +126,11 @@ private:
 
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;
+    std::string ObjectName;
 
 private:
     QWidget* proxy;
-    Ui_TaskAttacher* ui;
+    std::unique_ptr<Ui_TaskAttacher> ui;
     VisibilityFunction visibilityFunc;
 
     // TODO fix documentation here (2015-11-10, Fat-Zer)

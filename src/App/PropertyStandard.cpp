@@ -100,18 +100,18 @@ PyObject *PropertyInteger::getPyObject(void)
 }
 
 void PropertyInteger::setPyObject(PyObject *value)
-{ 
+{
 #if PY_MAJOR_VERSION < 3
     if (PyInt_Check(value)) {
         aboutToSetValue();
         _lValue = PyInt_AsLong(value);
-#else    
+#else
     if (PyLong_Check(value)) {
         aboutToSetValue();
         _lValue = PyLong_AsLong(value);
 #endif
         hasSetValue();
-    } 
+    }
     else {
         std::string error = std::string("type must be int, not ");
         error += value->ob_type->tp_name;
@@ -152,12 +152,14 @@ void PropertyInteger::setPathValue(const ObjectIdentifier &path, const boost::an
 
     if (value.type() == typeid(long))
         setValue(boost::any_cast<long>(value));
-    else if (value.type() == typeid(double))
-        setValue(boost::math::round(boost::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity))
-        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
     else if (value.type() == typeid(int))
         setValue(boost::any_cast<int>(value));
+    else if (value.type() == typeid(double))
+        setValue(boost::math::round(boost::any_cast<double>(value)));
+    else if (value.type() == typeid(float))
+        setValue(boost::math::round(boost::any_cast<float>(value)));
+    else if (value.type() == typeid(Quantity))
+        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
     else
         throw bad_cast();
 }
@@ -201,7 +203,7 @@ void PropertyPath::setValue(const boost::filesystem::path &Path)
 void PropertyPath::setValue(const char * Path)
 {
     aboutToSetValue();
-#if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
+#if (BOOST_FILESYSTEM_VERSION == 2)
     _cValue = boost::filesystem::path(Path,boost::filesystem::no_check );
     //_cValue = boost::filesystem::path(Path,boost::filesystem::native );
     //_cValue = boost::filesystem::path(Path,boost::filesystem::windows_name );
@@ -218,7 +220,7 @@ boost::filesystem::path PropertyPath::getValue(void) const
 
 PyObject *PropertyPath::getPyObject(void)
 {
-#if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
+#if (BOOST_FILESYSTEM_VERSION == 2)
     std::string str = _cValue.native_file_string();
 #else
     std::string str = _cValue.string();
@@ -322,7 +324,20 @@ void PropertyEnumeration::setEnums(const char **plEnums)
     // to be preserved.
     int index = _enum._index;
     _enum.setEnums(plEnums);
-    _enum._index = index;
+    // Make sure not to set an index out of range
+    int max = _enum.maxValue();
+    _enum._index = std::min<int>(index, max);
+}
+
+void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
+{
+    if (_enum.isValid()) {
+        const std::string &index = getValueAsString();
+        _enum.setEnums(Enums);
+        setValue(index.c_str());
+    } else {
+        _enum.setEnums(Enums);
+    }
 }
 
 void PropertyEnumeration::setValue(const char *value)
@@ -430,7 +445,9 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
     }
 
     if (val < 0) {
-        Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
+        // If the enum is empty at this stage do not print a warning
+        if (_enum.getEnums())
+            Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
         val = getValue();
     }
 
@@ -727,7 +744,7 @@ long PropertyIntegerList::getPyValue(PyObject *item) const {
     if (PyInt_Check(item))
         return PyInt_AsLong(item);
 #else
-    if (PyLong_Check(item)) 
+    if (PyLong_Check(item))
         return PyLong_AsLong(item);
 #endif
     std::string error = std::string("type in list must be int, not ");
@@ -751,13 +768,13 @@ void PropertyIntegerList::Restore(Base::XMLReader &reader)
     reader.readElement("IntegerList");
     // get the value of my Attribute
     int count = reader.getAttributeAsInteger("count");
-    
+
     std::vector<long> values(count);
     for(int i = 0; i < count; i++) {
         reader.readElement("I");
         values[i] = reader.getAttributeAsInteger("v");
     }
-    
+
     reader.readEndElement("IntegerList");
 
     //assignment
@@ -837,9 +854,9 @@ PyObject *PropertyIntegerSet::getPyObject(void)
 }
 
 void PropertyIntegerSet::setPyObject(PyObject *value)
-{ 
+{
     if (PySequence_Check(value)) {
-        
+
         Py_ssize_t nSize = PySequence_Length(value);
         std::set<long> values;
 
@@ -895,13 +912,13 @@ void PropertyIntegerSet::Restore(Base::XMLReader &reader)
     reader.readElement("IntegerSet");
     // get the value of my Attribute
     int count = reader.getAttributeAsInteger("count");
-    
+
     std::set<long> values;
     for(int i = 0; i < count; i++) {
         reader.readElement("I");
         values.insert(reader.getAttributeAsInteger("v"));
     }
-    
+
     reader.readEndElement("IntegerSet");
 
     //assignment
@@ -1026,14 +1043,18 @@ void PropertyFloat::setPathValue(const ObjectIdentifier &path, const boost::any 
 {
     verifyPath(path);
 
-    if (value.type() == typeid(double))
-        setValue(boost::any_cast<double>(value));
-    else if (value.type() == typeid(Quantity))
-        setValue((boost::any_cast<Quantity>(value)).getValue());
-    else if (value.type() == typeid(long))
+    if (value.type() == typeid(long))
         setValue(boost::any_cast<long>(value));
     else if (value.type() == typeid(unsigned long))
         setValue(boost::any_cast<unsigned long>(value));
+    else if (value.type() == typeid(int))
+        setValue(boost::any_cast<int>(value));
+    else if (value.type() == typeid(double))
+        setValue(boost::any_cast<double>(value));
+    else if (value.type() == typeid(float))
+        setValue(boost::any_cast<float>(value));
+    else if (value.type() == typeid(Quantity))
+        setValue((boost::any_cast<Quantity>(value)).getValue());
     else
         throw bad_cast();
 }
@@ -1082,7 +1103,7 @@ const PropertyFloatConstraint::Constraints*  PropertyFloatConstraint::getConstra
 }
 
 void PropertyFloatConstraint::setPyObject(PyObject *value)
-{ 
+{
     if (PyFloat_Check(value)) {
         double temp = PyFloat_AsDouble(value);
         if (_ConstStruct) {
@@ -1091,7 +1112,7 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
             else if (temp < _ConstStruct->LowerBound)
                 temp = _ConstStruct->LowerBound;
         }
-    
+
         aboutToSetValue();
         _dValue = temp;
         hasSetValue();
@@ -1109,7 +1130,7 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
             else if (temp < _ConstStruct->LowerBound)
                 temp = _ConstStruct->LowerBound;
         }
-    
+
         aboutToSetValue();
         _dValue = temp;
         hasSetValue();
@@ -1240,7 +1261,7 @@ void PropertyFloatList::Save (Base::Writer &writer) const
         writer.Stream() << writer.ind() <<"</FloatList>" << endl ;
     }
     else {
-        writer.Stream() << writer.ind() << "<FloatList file=\"" << 
+        writer.Stream() << writer.ind() << "<FloatList file=\"" <<
             (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
     }
 }
@@ -1345,8 +1366,8 @@ void PropertyString::setValue(const char* newLabel)
 
     if(obj && obj->getNameInDocument() && this==&obj->Label &&
        (!obj->getDocument()->testStatus(App::Document::Restoring)||
-        obj->getDocument()->testStatus(App::Document::Importing)) && 
-       !obj->getDocument()->isPerformingTransaction()) 
+        obj->getDocument()->testStatus(App::Document::Importing)) &&
+       !obj->getDocument()->isPerformingTransaction())
     {
         // allow object to control label change
 
@@ -1399,7 +1420,7 @@ void PropertyString::setValue(const char* newLabel)
                             break;
                     }
                     if(*c == 0 && std::find(objectLabels.begin(), objectLabels.end(),
-                                            obj->getNameInDocument())==objectLabels.end()) 
+                                            obj->getNameInDocument())==objectLabels.end())
                     {
                         label = obj->getNameInDocument();
                         changed = true;
@@ -1420,7 +1441,7 @@ void PropertyString::setValue(const char* newLabel)
             // importing (which also counts as restoring), it is possible the
             // new object changes its label. However, we cannot update label
             // references here, because object restoring is not based on
-            // dependency order. It can only be done in afterRestore(). 
+            // dependency order. It can only be done in afterRestore().
             //
             // See PropertyLinkBase::restoreLabelReference() for more details.
             propChanges = PropertyLinkBase::updateLabelReferences(obj,newLabel);
@@ -1493,7 +1514,7 @@ void PropertyString::Save (Base::Writer &writer) const
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     writer.Stream() << writer.ind() << "<String ";
     bool exported = false;
-    if(obj && obj->getNameInDocument() && 
+    if(obj && obj->getNameInDocument() &&
        obj->isExporting() && &obj->Label==this)
     {
         if(obj->allowDuplicateLabel())
@@ -1554,8 +1575,12 @@ void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any
         setValue(boost::any_cast<bool>(value)?"True":"False");
     else if (value.type() == typeid(int))
         setValue(std::to_string(boost::any_cast<int>(value)));
+    else if (value.type() == typeid(long))
+        setValue(std::to_string(boost::any_cast<long>(value)));
     else if (value.type() == typeid(double))
-        setValue(std::to_string(boost::math::round(App::any_cast<double>(value))));
+        setValue(std::to_string(App::any_cast<double>(value)));
+    else if (value.type() == typeid(float))
+        setValue(std::to_string(App::any_cast<float>(value)));
     else if (value.type() == typeid(Quantity))
         setValue(boost::any_cast<Quantity>(value).getUserString().toUtf8().constData());
     else if (value.type() == typeid(std::string))
@@ -1784,7 +1809,7 @@ std::string PropertyStringList::getPyValue(PyObject *item) const
 unsigned int PropertyStringList::getMemSize (void) const
 {
     size_t size=0;
-    for(int i = 0;i<getSize(); i++) 
+    for(int i = 0;i<getSize(); i++)
         size += _lValueList[i].size();
     return static_cast<unsigned int>(size);
 }
@@ -1813,7 +1838,7 @@ void PropertyStringList::Restore(Base::XMLReader &reader)
         reader.readElement("String");
         values[i] = reader.getAttribute("value");
     }
-    
+
     reader.readEndElement("StringList");
 
     // assignment
@@ -1874,7 +1899,7 @@ void PropertyMap::setValues(const std::map<std::string,std::string>& map)
 
 
 
-const std::string& PropertyMap::operator[] (const std::string& key) const 
+const std::string& PropertyMap::operator[] (const std::string& key) const
 {
     static std::string empty;
     std::map<std::string,std::string>::const_iterator it = _lValueList.find(key);
@@ -1882,7 +1907,7 @@ const std::string& PropertyMap::operator[] (const std::string& key) const
         return it->second;
     else
         return empty;
-} 
+}
 
 
 PyObject *PropertyMap::getPyObject(void)
@@ -1954,7 +1979,7 @@ void PropertyMap::setPyObject(PyObject *value)
                 throw Base::TypeError(error);
             }
         }
-        
+
         setValues(values);
     }
     else {
@@ -1999,7 +2024,7 @@ void PropertyMap::Restore(Base::XMLReader &reader)
         reader.readElement("Item");
         values[reader.getAttribute("key")] = reader.getAttribute("value");
     }
-    
+
     reader.readEndElement("Map");
 
     // assignment
@@ -2300,7 +2325,7 @@ void PropertyColor::setValue(float r, float g, float b, float a)
     hasSetValue();
 }
 
-const Color& PropertyColor::getValue(void) const 
+const Color& PropertyColor::getValue(void) const
 {
     return _cCol;
 }
@@ -2379,7 +2404,7 @@ void PropertyColor::setPyObject(PyObject *value)
 
 void PropertyColor::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyColor value=\"" 
+    writer.Stream() << writer.ind() << "<PropertyColor value=\""
     <<  _cCol.getPackedValue() <<"\"/>" << endl;
 }
 
@@ -2459,7 +2484,7 @@ Color PropertyColorList::getPyValue(PyObject *item) const {
 void PropertyColorList::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<ColorList file=\"" << 
+        writer.Stream() << writer.ind() << "<ColorList file=\"" <<
             (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
     }
 }
@@ -2542,7 +2567,7 @@ void PropertyMaterial::setValue(const Material &mat)
     hasSetValue();
 }
 
-const Material& PropertyMaterial::getValue(void) const 
+const Material& PropertyMaterial::getValue(void) const
 {
     return _cMat;
 }
@@ -2608,13 +2633,14 @@ void PropertyMaterial::setPyObject(PyObject *value)
 
 void PropertyMaterial::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyMaterial ambientColor=\"" 
-        <<  _cMat.ambientColor.getPackedValue() 
-        << "\" diffuseColor=\"" <<  _cMat.diffuseColor.getPackedValue() 
+    writer.Stream() << writer.ind() << "<PropertyMaterial ambientColor=\""
+        <<  _cMat.ambientColor.getPackedValue()
+        << "\" diffuseColor=\""  <<  _cMat.diffuseColor.getPackedValue()
         << "\" specularColor=\"" <<  _cMat.specularColor.getPackedValue()
         << "\" emissiveColor=\"" <<  _cMat.emissiveColor.getPackedValue()
-        << "\" shininess=\"" <<  _cMat.shininess << "\" transparency=\"" 
-        <<  _cMat.transparency << "\"/>" << endl;
+        << "\" shininess=\""     <<  _cMat.shininess
+        << "\" transparency=\""  <<  _cMat.transparency
+        << "\"/>" << endl;
 }
 
 void PropertyMaterial::Restore(Base::XMLReader &reader)
@@ -2699,7 +2725,7 @@ Material PropertyMaterialList::getPyValue(PyObject *value) const {
 void PropertyMaterialList::Save(Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<MaterialList file=\"" << 
+        writer.Stream() << writer.ind() << "<MaterialList file=\"" <<
             (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
     }
 }

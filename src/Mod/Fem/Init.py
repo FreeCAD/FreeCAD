@@ -10,23 +10,54 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
-# FreeCAD init script of the Fem module
+"""FEM module App init script
 
+Gathering all the information to start FreeCAD.
+This is the first one of three init scripts.
+The third one runs when the gui is up.
+
+The script is executed using exec().
+This happens inside srd/Gui/FreeCADGuiInit.py
+All imports made there are available here too.
+Thus no need to import them here.
+But the import code line is used anyway to get flake8 quired.
+Since they are cached they will not be imported twice.
+"""
+
+__title__  = "FEM module App init script"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
+__url__    = "https://www.freecadweb.org"
+
+# imports to get flake8 quired
+import sys
 import FreeCAD
 
+# needed imports
+from femtools.migrate_app import FemMigrateApp
 
+
+if sys.version_info.major >= 3:
+    # migrate old FEM App objects
+    sys.meta_path.append(FemMigrateApp())
+
+
+# add FEM App unit tests
+FreeCAD.__unit_test__ += ["TestFemApp"]
+
+
+# add import and export file types
 FreeCAD.addExportType("FEM mesh Python (*.meshpy)", "feminout.importPyMesh")
 
 FreeCAD.addExportType("FEM mesh TetGen (*.poly)", "feminout.convert2TetGen")
@@ -55,5 +86,3 @@ FreeCAD.addImportType("FEM result Z88 displacements (*o2.txt)", "feminout.import
 if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
     FreeCAD.addImportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
     FreeCAD.addExportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
-
-FreeCAD.__unit_test__ += ["TestFem"]

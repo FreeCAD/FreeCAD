@@ -24,7 +24,7 @@
 #ifndef PART_TOPOSHAPE_H
 #define PART_TOPOSHAPE_H
 
-#include <iostream>
+#include <iosfwd>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
@@ -52,8 +52,6 @@ public:
    NullShapeException();
    NullShapeException(const char * sMessage);
    NullShapeException(const std::string& sMessage);
-   /// Construction
-   NullShapeException(const NullShapeException &inst);
    /// Destruction
    virtual ~NullShapeException() throw() {}
 };
@@ -67,8 +65,6 @@ public:
    BooleanException();
    BooleanException(const char * sMessage);
    BooleanException(const std::string& sMessage);
-   /// Construction
-   BooleanException(const BooleanException &inst);
    /// Destruction
    virtual ~BooleanException() throw() {}
 };
@@ -114,11 +110,11 @@ public:
     /// set the transformation of the CasCade Shape
     void setTransform(const Base::Matrix4D& rclTrf);
     /// set the transformation of the CasCade Shape
-    void setPlacement(const Base::Placement& rclTrf);
+    void setShapePlacement(const Base::Placement& rclTrf);
+    /// get the transformation of the CasCade Shape
+    Base::Placement getShapePlacement(void) const;
     /// get the transformation of the CasCade Shape
     Base::Matrix4D getTransform(void) const;
-    /// get the transformation of the CasCade Shape
-    Base::Placement getPlacemet(void) const;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox(void)const;
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
@@ -161,6 +157,8 @@ public:
     bool hasSubShape(TopAbs_ShapeEnum type) const;
     /// get the Topo"sub"Shape with the given name
     PyObject * getPySubShape(const char* Type, bool silent=false) const;
+    PyObject * getPyObject();
+    void setPyObject(PyObject*);
 
     /** @name Save/restore */
     //@{
@@ -200,6 +198,8 @@ public:
     bool isClosed() const;
     bool isCoplanar(const TopoShape &other, double tol=-1) const;
     bool findPlane(gp_Pln &pln, double tol=-1) const;
+    /// Returns true if the expansion of the shape is infinite, false otherwise
+    bool isInfinite() const;
     //@}
 
     /** @name Boolean operation*/
@@ -249,6 +249,9 @@ public:
     TopoDS_Shape revolve(const gp_Ax1&, double d, Standard_Boolean isSolid=Standard_False) const;
     TopoDS_Shape makeSweep(const TopoDS_Shape& profile, double, int) const;
     TopoDS_Shape makeTube(double radius, double tol, int cont, int maxdeg, int maxsegm) const;
+    TopoDS_Shape makeTorus(Standard_Real radius1, Standard_Real radius2,
+        Standard_Real angle1, Standard_Real angle2, Standard_Real angle3,
+        Standard_Boolean isSolid=Standard_True) const;
     TopoDS_Shape makeHelix(Standard_Real pitch, Standard_Real height,
         Standard_Real radius, Standard_Real angle=0,
         Standard_Boolean left=Standard_False, Standard_Boolean style=Standard_False) const;

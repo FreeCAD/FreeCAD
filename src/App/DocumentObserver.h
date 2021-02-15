@@ -25,7 +25,7 @@
 #define APP_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <set>
 #include <memory>
 
@@ -51,6 +51,8 @@ public:
     DocumentT(Document*);
     /*! Constructor */
     DocumentT(const std::string&);
+    /*! Constructor */
+    DocumentT(const DocumentT&);
     /*! Destructor */
     ~DocumentT();
     /*! Assignment operator */

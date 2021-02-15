@@ -40,6 +40,7 @@
 #include "Stream.h"
 #include "Swap.h"
 #include <CXX/Objects.hxx>
+#include <Python.h>
 
 using namespace Base;
 
@@ -529,6 +530,7 @@ IODeviceIStreambuf::seekpos(std::streambuf::pos_type pos,
 // http://www.icce.rug.nl/documents/cplusplus/cplusplus24.html
 PyStreambuf::PyStreambuf(PyObject* o, std::size_t buf_size, std::size_t put_back)
     : inp(o)
+    , type(Unknown)
     , put_back(std::max(put_back, std::size_t(1)))
     , buffer(std::max(buf_size, put_back) + put_back)
 {
@@ -568,8 +570,22 @@ PyStreambuf::int_type PyStreambuf::underflow()
     Py::Callable meth(Py::Object(inp).getAttr("read"));
 
     try {
-        Py::String res(meth.apply(arg));
-        std::string c = static_cast<std::string>(res);
+        std::string c;
+        Py::Object res(meth.apply(arg));
+#if PY_MAJOR_VERSION >= 3
+        if (res.isBytes()) {
+            c = static_cast<std::string>(Py::Bytes(res));
+        }
+        else if (res.isString()) {
+            c = static_cast<std::string>(Py::String(res));
+        }
+        else {
+            // wrong type
+            return traits_type::eof();
+        }
+#else
+        c = static_cast<std::string>(Py::String(res));
+#endif
         n = c.size();
         if (n == 0) {
             return traits_type::eof();
@@ -601,17 +617,8 @@ PyStreambuf::overflow(PyStreambuf::int_type ch)
 #else
     if (ch != EOF) {
         char z = ch;
-
-        try {
-            Py::Tuple arg(1);
-            arg.setItem(0, Py::Char(z));
-            Py::Callable meth(Py::Object(inp).getAttr("write"));
-            meth.apply(arg);
-        }
-        catch(Py::Exception& e) {
-            e.clear();
-            return EOF;
-        }
+        if (!writeStr(&z, 1))
+            return traits_type::eof();
     }
 
     return ch;
@@ -634,18 +641,60 @@ bool PyStreambuf::flushBuffer()
 {
     std::ptrdiff_t n = pptr() - pbase();
     pbump(-n);
+    return writeStr(pbase(), n);
+}
 
+bool PyStreambuf::writeStr(const char* str, std::streamsize num)
+{
     try {
         Py::Tuple arg(1);
-        arg.setItem(0, Py::String(pbase(), n));
         Py::Callable meth(Py::Object(inp).getAttr("write"));
-        meth.apply(arg);
-        return true;
+
+        if (type == StringIO) {
+            arg.setItem(0, Py::String(str, num));
+            meth.apply(arg);
+            return true;
+        }
+        else if (type == BytesIO) {
+#if PY_MAJOR_VERSION >= 3
+            arg.setItem(0, Py::Bytes(str, num));
+#else
+            arg.setItem(0, Py::String(str, num));
+#endif
+            meth.apply(arg);
+            return true;
+        }
+        else {
+            // try out what works
+            try {
+                arg.setItem(0, Py::String(str, num));
+                meth.apply(arg);
+                type = StringIO;
+                return true;
+            }
+            catch (Py::Exception& e) {
+                if (PyErr_ExceptionMatches(PyExc_TypeError)) {
+                    e.clear();
+#if PY_MAJOR_VERSION >= 3
+                    arg.setItem(0, Py::Bytes(str, num));
+#else
+                    arg.setItem(0, Py::String(str, num));
+#endif
+                    meth.apply(arg);
+                    type = BytesIO;
+                    return true;
+                }
+                else {
+                    throw; // re-throw
+                }
+            }
+        }
     }
     catch(Py::Exception& e) {
         e.clear();
-        return false;
     }
+
+    return false;
 }
 
 std::streamsize PyStreambuf::xsputn (const char* s, std::streamsize num)
@@ -653,17 +702,8 @@ std::streamsize PyStreambuf::xsputn (const char* s, std::streamsize num)
 #ifdef PYSTREAM_BUFFERED
     return std::streambuf::xsputn(s, num);
 #else
-    try {
-        Py::Tuple arg(1);
-        arg.setItem(0, Py::String(s, num));
-        Py::Callable meth(Py::Object(inp).getAttr("write"));
-        meth.apply(arg);
-    }
-    catch(Py::Exception& e) {
-        e.clear();
+    if (!writeStr(s, num))
         return 0;
-    }
-
     return num;
 #endif
 }
@@ -743,6 +783,7 @@ Streambuf::int_type Streambuf::uflow()
 
 Streambuf::int_type Streambuf::pbackfail( int_type ch )
 {
+    /* coverity[negative_returns] _cur is an iterator */
     if (_cur == _beg || (ch != traits_type::eof() && ch != _cur[-1]))
         return traits_type::eof();
 

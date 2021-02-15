@@ -69,7 +69,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
     if (dlg.exec()== QDialog::Accepted) {
         Base::Vector3d dir = dlg.getDirection();
         Base::Vector3d pos = dlg.getPosition();
-        openCommand("Create Part Cylinder");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Part Cylinder"));
         doCommand(Doc,"from FreeCAD import Base");
         doCommand(Doc,"import Part");
         doCommand(Doc,"App.ActiveDocument.addObject(\"Part::Feature\",\"Cylinder\")"
@@ -126,7 +126,7 @@ void CmdPartShapeFromMesh::activated(int iMsg)
 
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
-        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok);
+        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
@@ -134,7 +134,7 @@ void CmdPartShapeFromMesh::activated(int iMsg)
     meshes = Gui::Selection().getObjectsOfType(meshid);
     Gui::WaitCursor wc;
     std::vector<App::DocumentObject*>::iterator it;
-    openCommand("Convert mesh");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert mesh"));
     for (it = meshes.begin(); it != meshes.end(); ++it) {
         App::Document* doc = (*it)->getDocument();
         std::string mesh = (*it)->getNameInDocument();
@@ -193,7 +193,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
     meshes = Gui::Selection().getObjectsOfType(meshid);
     Gui::WaitCursor wc;
     std::vector<App::DocumentObject*>::iterator it;
-    openCommand("Points from mesh");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Points from mesh"));
 
     for (it = meshes.begin(); it != meshes.end(); ++it) {
         App::Document* doc = (*it)->getDocument();
@@ -231,7 +231,7 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
     sToolTipText  = QT_TR_NOOP("Create a simple non-parametric copy");
     sWhatsThis    = "Part_SimpleCopy";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Tree_Part";
+    sPixmap       = "Part_3D_object";
 }
 
 static void _copyShape(const char *cmdName, bool resolve,bool needElement=false, bool refine=false) {
@@ -370,7 +370,7 @@ void CmdPartRefineShape::activated(int iMsg)
         Gui::WaitCursor wc;
         Base::Type partid = Base::Type::fromName("Part::Feature");
         std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
-        openCommand("Refine shape");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Refine shape"));
         std::for_each(objs.begin(), objs.end(), [](App::DocumentObject* obj) {
             try {
                 doCommand(Doc,"App.ActiveDocument.addObject('Part::Refine','%s').Source="
@@ -427,7 +427,7 @@ void CmdPartDefeaturing::activated(int iMsg)
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
-    openCommand("Defeaturing");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         try {
             std::string shape;

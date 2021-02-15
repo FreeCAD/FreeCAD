@@ -25,7 +25,6 @@
 #define SANDBOX_DOCUMENTPROTECTOR_H
 
 #include <string>
-#include <boost/bind.hpp>
 #include <App/DocumentObserver.h>
 
 namespace App {

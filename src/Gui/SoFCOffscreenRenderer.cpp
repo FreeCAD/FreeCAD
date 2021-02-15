@@ -162,10 +162,10 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
                     img.setText(QLatin1String("Description"), QLatin1String("Screenshot created by FreeCAD"));
                 else if (strcmp(comment,"$MIBA")==0)
                     img.setText(QLatin1String("Description"), QLatin1String(createMIBA(mat).c_str()));
-                else 
+                else
                     img.setText(QLatin1String("Description"), QString::fromUtf8(comment));
                 img.setText(QLatin1String("Creation Time"), QDateTime::currentDateTime().toString());
-                img.setText(QLatin1String("Software"), 
+                img.setText(QLatin1String("Software"),
                     QString::fromUtf8(App::GetApplication().getExecutableName()));
             }
 
@@ -238,7 +238,7 @@ QStringList SoFCOffscreenRenderer::getWriteImageFiletypeInfo()
         SbList<SbName> extlist;
 # else                         // Coin3D >= 2.3.x
         SbPList extlist;
-# endif                        
+# endif
 #else                          // Coin3D >= 3.x
         SbPList extlist;
 #endif
@@ -285,17 +285,17 @@ std::string SoFCOffscreenRenderer::createMIBA(const SbMatrix& mat) const
     com << setw(7) << setfill(' ') << fixed;
     com << "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" ;
     com << "<MIBA xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"http://juergen-riegel.net/Miba/Miba2.xsd\" Version=\"2\"> \n" ;
-    com << " <View>\n"; 
-    com << "  <Matrix \n"; 
+    com << " <View>\n";
+    com << "  <Matrix \n";
     com << "     a11=\"" << mat[0][0] <<"\" a12=\"" << mat[1][0] <<"\" a13=\"" << mat[2][0] <<"\" a14=\"" << mat[3][0] << "\"\n";
     com << "     a21=\"" << mat[0][1] <<"\" a22=\"" << mat[1][1] <<"\" a23=\"" << mat[2][1] <<"\" a24=\"" << mat[3][1] << "\"\n";
     com << "     a31=\"" << mat[0][2] <<"\" a32=\"" << mat[1][2] <<"\" a33=\"" << mat[2][2] <<"\" a34=\"" << mat[3][2] << "\"\n";
     com << "     a41=\"" << mat[0][3] <<"\" a42=\"" << mat[1][3] <<"\" a43=\"" << mat[2][3] <<"\" a44=\"" << mat[3][3] << "\"\n";
-    com << "   />\n" ; 
-    com << " </View>\n" ; 
-    com << " <Source>\n" ; 
-    com << "  <Creator>Unknown</Creator>\n" ;  
-    com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toLatin1().constData() << "</CreationDate>\n" ;  
+    com << "   />\n" ;
+    com << " </View>\n" ;
+    com << " <Source>\n" ;
+    com << "  <Creator>Unknown</Creator>\n" ;
+    com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toLatin1().constData() << "</CreationDate>\n" ;
     com << "  <CreatingSystem>" << App::GetApplication().getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
     com << "  <PartNumber>Unknown</PartNumber>\n";
     com << "  <Revision>1.0</Revision>\n";
@@ -779,7 +779,7 @@ SoQtOffscreenRenderer::render(SoPath * scene)
     return PRIVATE(this)->renderFromBase(scene);
 }
 
-/*! 
+/*!
    Writes the rendered image buffer directly into a QImage object.
 */
 void
@@ -822,7 +822,7 @@ SoQtOffscreenRenderer::writeToImage (QImage& img) const
 }
 
 /*!
-   This method returns all image file formats supported by Coin3D (see getWriteFiletypeInfo()) with all QImage file formats that are 
+   This method returns all image file formats supported by Coin3D (see getWriteFiletypeInfo()) with all QImage file formats that are
    not directly supported by Coin3D, if so.
 */
 QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const

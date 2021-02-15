@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +27,7 @@
 #ifndef _PreComp_
 # include <assert.h>
 # include <string>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <QApplication>
 # include <QString>
 # include <QStatusBar>
@@ -44,6 +45,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -59,6 +61,7 @@ FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
 using namespace Gui;
 using namespace std;
+namespace bp = boost::placeholders;
 
 SelectionGateFilterExternal::SelectionGateFilterExternal(const char *docName, const char *objName) {
     if(docName) {
@@ -129,14 +132,16 @@ bool SelectionObserver::isConnectionAttached() const
 void SelectionObserver::attachSelection()
 {
     if (!connectSelection.connected()) {
-        auto &signal = resolve>1?Selection().signalSelectionChanged3:(
-                resolve?Selection().signalSelectionChanged2:
-                Selection().signalSelectionChanged);
+        auto &signal = resolve > 1 ? Selection().signalSelectionChanged3 :
+                       resolve     ? Selection().signalSelectionChanged2 :
+                                     Selection().signalSelectionChanged  ;
         connectSelection = signal.connect(boost::bind
-            (&SelectionObserver::_onSelectionChanged, this, _1));
-        if(filterDocName.size())
+            (&SelectionObserver::_onSelectionChanged, this, bp::_1));
+
+        if (filterDocName.size()) {
             Selection().addSelectionGate(
                     new SelectionGateFilterExternal(filterDocName.c_str(),filterObjName.c_str()));
+        }
     }
 }
 
@@ -594,7 +599,13 @@ void SelectionSingleton::notify(SelectionChanges &&Chng) {
         }
         if(notify) {
             Notify(msg);
-            signalSelectionChanged(msg);
+            try {
+                signalSelectionChanged(msg);
+            }
+            catch (const boost::exception&) {
+                // reported by code analyzers
+                Base::Console().Warning("notify: Unexpected boost exception\n");
+            }
         }
         NotificationQueue.pop_front();
     }
@@ -730,16 +741,28 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
                 newElementName.size()?newElementName.c_str():oldElementName.c_str(),
                 pObject->getTypeId().getName(), msg.x,msg.y,msg.z);
 
-        msg2.pOriginalMsg = &msg;
-        signalSelectionChanged3(msg2);
+        try {
+            msg2.pOriginalMsg = &msg;
+            signalSelectionChanged3(msg2);
 
-        msg2.Object.setSubName(oldElementName.c_str());
-        msg2.pSubName = msg2.Object.getSubName().c_str();
-        signalSelectionChanged2(msg2);
-
-    }else {
-        signalSelectionChanged3(msg);
-        signalSelectionChanged2(msg);
+            msg2.Object.setSubName(oldElementName.c_str());
+            msg2.pSubName = msg2.Object.getSubName().c_str();
+            signalSelectionChanged2(msg2);
+        }
+        catch (const boost::exception&) {
+            // reported by code analyzers
+            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+        }
+    }
+    else {
+        try {
+            signalSelectionChanged3(msg);
+            signalSelectionChanged2(msg);
+        }
+        catch (const boost::exception&) {
+            // reported by code analyzers
+            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+        }
     }
 }
 
@@ -843,6 +866,34 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     return DocName.empty()?0:1;
 }
 
+namespace Gui {
+std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, double y, double z, double precision)
+{
+    Base::Quantity mmx(Base::Quantity::MilliMetre);
+    mmx.setValue(fabs(x) > precision ? x : 0.0);
+    Base::Quantity mmy(Base::Quantity::MilliMetre);
+    mmy.setValue(fabs(y) > precision ? y : 0.0);
+    Base::Quantity mmz(Base::Quantity::MilliMetre);
+    mmz.setValue(fabs(z) > precision ? z : 0.0);
+
+    double xfactor, yfactor, zfactor;
+    QString xunit, yunit, zunit;
+
+    Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
+    Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
+    Base::UnitsApi::schemaTranslate(mmz, zfactor, zunit);
+
+    double xuser = fabs(x) > precision ? x / xfactor : 0.0;
+    double yuser = fabs(y) > precision ? y / yfactor : 0.0;
+    double zuser = fabs(z) > precision ? z / zfactor : 0.0;
+
+    std::array<std::pair<double, std::string>, 3> ret = {std::make_pair(xuser, xunit.toUtf8().constBegin()),
+                                                         std::make_pair(yuser, yunit.toUtf8().constBegin()),
+                                                         std::make_pair(zuser, zunit.toUtf8().constBegin())};
+    return ret;
+}
+}
+
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
 {
     static char buf[513];
@@ -854,13 +905,17 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     CurrentPreselection.y = y;
     CurrentPreselection.z = z;
 
-    snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",CurrentPreselection.pDocName
-                                                       ,CurrentPreselection.pObjectName
-                                                       ,CurrentPreselection.pSubName
-                                                       ,x,y,z);
+    auto pts = schemaTranslatePoint(x, y, z, 0.0);
+    snprintf(buf,512,"Preselected: %s.%s.%s (%f %s,%f %s,%f %s)"
+                    ,CurrentPreselection.pDocName
+                    ,CurrentPreselection.pObjectName
+                    ,CurrentPreselection.pSubName
+                    ,pts[0].first, pts[0].second.c_str()
+                    ,pts[1].first, pts[1].second.c_str()
+                    ,pts[2].first, pts[2].second.c_str());
 
     if (getMainWindow())
-        getMainWindow()->showMessage(QString::fromLatin1(buf));
+        getMainWindow()->showMessage(QString::fromUtf8(buf));
 }
 
 void SelectionSingleton::rmvPreselect(bool signal)
@@ -918,11 +973,14 @@ void SelectionSingleton::rmvSelectionGate(void)
 {
     if (ActiveGate) {
         delete ActiveGate;
-        ActiveGate=0;
+        ActiveGate = nullptr;
+
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
+            // if a document is about to be closed it has no MDI view any more
             Gui::MDIView* mdi = doc->getActiveView();
-            mdi->restoreOverrideCursor();
+            if (mdi)
+                mdi->restoreOverrideCursor();
         }
     }
 }
@@ -1390,27 +1448,30 @@ void SelectionSingleton::setVisible(VisibleState vis) {
         App::DocumentObject *parent = 0;
         std::string elementName;
         obj = obj->resolve(sel.SubName.c_str(),&parent,&elementName);
-        if(!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
+        if (!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
         // try call parent object's setElementVisible
-        if(parent) {
+        if (parent) {
             // prevent setting the same object visibility more than once
-            if(!filter.insert(std::make_pair(obj,parent)).second)
+            if (!filter.insert(std::make_pair(obj,parent)).second)
                 continue;
-            int vis = parent->isElementVisible(elementName.c_str());
-            if(vis>=0) {
-                if(vis>0) vis = 1;
-                if(visible>=0) {
-                    if(vis == visible)
+            int visElement = parent->isElementVisible(elementName.c_str());
+            if (visElement >= 0) {
+                if (visElement > 0)
+                    visElement = 1;
+                if (visible >= 0) {
+                    if (visElement == visible)
                         continue;
-                    vis = visible;
-                }else
-                    vis = !vis;
+                    visElement = visible;
+                }
+                else {
+                    visElement = !visElement;
+                }
 
-                if(!vis)
+                if (!visElement)
                     updateSelection(false,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
-                parent->setElementVisible(elementName.c_str(),vis?true:false);
-                if(vis)
+                parent->setElementVisible(elementName.c_str(), visElement ? true : false);
+                if (visElement)
                     updateSelection(true,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 continue;
             }
@@ -1424,17 +1485,17 @@ void SelectionSingleton::setVisible(VisibleState vis) {
         auto vp = Application::Instance->getViewProvider(obj);
 
         if(vp) {
-            int vis;
+            bool visObject;
             if(visible>=0)
-                vis = visible;
+                visObject = visible ? true : false;
             else
-                vis = !vp->isShow();
+                visObject = !vp->isShow();
 
-            if(vis) {
+            if(visObject) {
                 vp->show();
-                updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                updateSelection(visObject,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
             } else {
-                updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                updateSelection(visObject,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 vp->hide();
             }
         }
@@ -1477,44 +1538,42 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
     // Because the introduction of external editing, it is best to make
     // clearSelection(0) behave as clearCompleteSelection(), which is the same
     // behavior of python Selection.clearSelection(None)
-    if(!pDocName || !pDocName[0] || strcmp(pDocName,"*")==0) {
+    if (!pDocName || !pDocName[0] || strcmp(pDocName,"*")==0) {
         clearCompleteSelection(clearPreSelect);
         return;
     }
 
-    if(_PickedList.size()) {
+    if (_PickedList.size()) {
         _PickedList.clear();
         notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     App::Document* pDoc;
     pDoc = getDocument(pDocName);
-    if(pDoc) {
-        std::string docName;
-        if (pDocName)
-            docName = pDocName;
-        else
-            docName = pDoc->getName(); // active document
-
-        if(clearPreSelect && DocName == docName)
+    if (pDoc) {
+        std::string docName = pDocName;
+        if (clearPreSelect && DocName == docName)
             rmvPreselect();
 
         bool touched = false;
-        for(auto it=_SelList.begin();it!=_SelList.end();) {
-            if(it->DocName == docName) {
+        for (auto it=_SelList.begin();it!=_SelList.end();) {
+            if (it->DocName == docName) {
                 touched = true;
                 it = _SelList.erase(it);
-            }else
+            }
+            else {
                 ++it;
+            }
         }
-        if(!touched)
+
+        if (!touched)
             return;
 
-        if(!logDisabled) {
+        if (!logDisabled) {
             std::ostringstream ss;
             ss << "Gui.Selection.clearSelection('" << docName << "'";
-            if(!clearPreSelect)
-                ss << ",False";
+            if (!clearPreSelect)
+                ss << ", False";
             ss << ')';
             Application::Instance->macroManager()->addLine(MacroManager::Cmt,ss.str().c_str());
         }
@@ -1590,6 +1649,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
             FC_ERR("Object not found");
         return -1;
     }
+    if(sel.pObject->testStatus(App::ObjectStatus::Remove))
+        return -1;
     if(pSubName)
        sel.SubName = pSubName;
     if(!resolve)
@@ -1605,6 +1666,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
             FC_ERR("Sub-object " << sel.DocName << '#' << sel.FeatName << '.' << sel.SubName << " not found");
         return -1;
     }
+    if(sel.pResolvedObject->testStatus(App::ObjectStatus::Remove))
+        return -1;
     std::string subname;
     std::string prefix;
     if(pSubName && element) {
@@ -1724,8 +1787,8 @@ SelectionSingleton::SelectionSingleton()
     hz = 0;
     ActiveGate = 0;
     gateResolve = 1;
-    App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, _1));
-    signalSelectionChanged.connect(boost::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, _1));
+    App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, bp::_1));
+    signalSelectionChanged.connect(boost::bind(&Gui::SelectionSingleton::slotSelectionChanged, this, bp::_1));
 }
 
 /**
@@ -1771,7 +1834,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
      "isSelected(object,resolve=True) -- Check if a given object is selected"},
-    {"setPreselection",      (PyCFunction) SelectionSingleton::sSetPreselection, METH_VARARGS|METH_KEYWORDS,
+    {"setPreselection",      reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( SelectionSingleton::sSetPreselection )), METH_VARARGS|METH_KEYWORDS,
      "setPreselection() -- Set preselected object"},
     {"getPreselection",      (PyCFunction) SelectionSingleton::sGetPreselection, METH_VARARGS,
      "getPreselection() -- Get preselected object"},

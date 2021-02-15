@@ -61,37 +61,37 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="321"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>Споји облак тачака</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
-      <location filename="../../Command.cpp" line="323"/>
+      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>Споји више облака тачака у један</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>Cut point cloud</source>
       <translation>Исеци облак тачака</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Сече облак тачака са изабраним многоуглом</translation>
     </message>
@@ -99,20 +99,20 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="363"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Структурни облак тачака</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="363"/>
       <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="367"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Претвори тачке у структурни облак тачака</translation>
     </message>
   </context>
   <context>
@@ -132,6 +132,30 @@
       <location filename="../../Command.cpp" line="156"/>
       <source>Test to transform a point cloud</source>
       <translation>Теcт да cе транcформише облак тачака</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="88"/>
+      <source>Import points</source>
+      <translation type="unfinished">Import points</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="168"/>
+      <source>Transform points</source>
+      <translation type="unfinished">Transform points</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="208"/>
+      <source>Convert to points</source>
+      <translation>Претвори у тачке</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="468"/>
+      <location filename="../../ViewProvider.cpp" line="627"/>
+      <source>Cut points</source>
+      <translation type="unfinished">Cut points</translation>
     </message>
   </context>
   <context>
@@ -285,7 +309,7 @@
       <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Формати тачке</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="81"/>
@@ -294,12 +318,12 @@
       <translation>Све датотеке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Enter maximum distance:</source>
       <translation>Унеcите макcималну удаљеноcт:</translation>
     </message>

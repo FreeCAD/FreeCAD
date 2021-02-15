@@ -113,11 +113,13 @@ protected:
 
     boost::uuids::uuid tag;
 
+    Py::Object PythonObject;
+
+
 };
 
 //********** CosmeticEdge ******************************************************
 
-//?? should this inherit BaseGeom or have a BaseGeom member?
 class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
 {
     TYPESYSTEM_HEADER();
@@ -144,10 +146,10 @@ public:
     CosmeticEdge* copy(void) const;
     CosmeticEdge* clone(void) const;
 
-    Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords?
+    Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
     Base::Vector3d permaEnd; 
     double permaRadius;
-    void unscaleEnds(double scale);
+//    void unscaleEnds(double scale);
     TechDraw::BaseGeom* m_geometry;
     LineFormat m_format;
 
@@ -158,8 +160,10 @@ protected:
     //Uniqueness
     void createNewTag();
     void assignTag(const TechDraw::CosmeticEdge* ce);
-
     boost::uuids::uuid tag;
+
+    Py::Object PythonObject;
+
 };
 
 //***** CenterLine *************************************************************
@@ -269,6 +273,8 @@ protected:
 
     boost::uuids::uuid tag;
 
+    Py::Object PythonObject;
+
 };
 
 //********** GeomFormat ********************************************************
@@ -310,6 +316,7 @@ protected:
     void assignTag(const TechDraw::GeomFormat* gf);
 
     boost::uuids::uuid tag;
+    Py::Object PythonObject;
 };
 
 } //end namespace TechDraw

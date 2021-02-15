@@ -16,7 +16,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Hivatkozások hozzáadásához válassza ki a 3D-s nézetben és kattintson a "Hozzáadás" gombra.</translation>
     </message>
   </context>
   <context>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Válassza ki a listához hozzáadni kívánt szilárd test elemeit. A test hozzáadáshoz kattintson a "Hozzáadás" gombra.</translation>
     </message>
   </context>
   <context>

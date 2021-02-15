@@ -166,7 +166,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>build</source>
-      <translation>construir</translation>
+      <translation>build</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
@@ -207,6 +207,11 @@
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Notes</source>
       <translation>Notas</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Open start page preferences</source>
+      <translation type="unfinished">Open start page preferences</translation>
     </message>
   </context>
   <context>

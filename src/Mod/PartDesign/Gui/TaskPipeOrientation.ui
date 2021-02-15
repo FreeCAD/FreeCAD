@@ -98,6 +98,14 @@
             <item>
              <widget class="QLineEdit" name="profileBaseEdit"/>
             </item>
+            <item>
+             <widget class="QToolButton" name="buttonProfileClear">
+              <property name="icon">
+               <iconset resource="../../../Gui/Icons/resource.qrc">
+                <normaloff>:/icons/edit-cleartext.svg</normaloff>:/icons/edit-cleartext.svg</iconset>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
@@ -244,7 +252,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../Gui/Icons/resource.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>comboBoxMode</sender>

@@ -20,16 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Clone.
-"""
+"""Provides the object code for the Clone object."""
 ## @package clone
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Clone.
+# \ingroup draftobjects
+# \brief Provides the object code for the Clone object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftVecUtils
 
 from draftobjects.base import DraftObject
@@ -41,18 +41,21 @@ class Clone(DraftObject):
     def __init__(self,obj):
         super(Clone, self).__init__(obj, "Clone")
 
-        _tip = "The objects included in this clone"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The objects included in this clone")
         obj.addProperty("App::PropertyLinkListGlobal", "Objects",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The scale factor of this clone"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The scale factor of this clone")
         obj.addProperty("App::PropertyVector", "Scale",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "If Clones includes several objects,\n\
-                set True for fusion or False for compound"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "If Clones includes several objects,\n"
+                "set True for fusion or False for compound")
         obj.addProperty("App::PropertyBool", "Fuse",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
         
         obj.Scale = App.Vector(1,1,1)
 
@@ -76,7 +79,7 @@ class Clone(DraftObject):
             try:
                 sh = shapes[0].multiFuse(shapes[1:])
                 sh = sh.removeSplitter()
-            except:
+            except Exception:
                 pass
             else:
                 return sh
@@ -128,4 +131,7 @@ class Clone(DraftObject):
         return None
 
 
+# Alias for compatibility with v0.18 and earlier
 _Clone = Clone
+
+## @}

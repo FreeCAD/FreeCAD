@@ -305,11 +305,6 @@ AttachEngineException::AttachEngineException(const std::string& sMessage)
 {
 }
 
-AttachEngineException::AttachEngineException(const AttachEngineException &inst)
-  : Base::Exception(inst)
-{
-}
-
 
 namespace App {
 /// @cond DOXERR

@@ -20,24 +20,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft move function.
-"""
+"""Provides functions to move objects from one position to another."""
 ## @package move
-# \ingroup DRAFT
-# \brief This module provides the code for Draft move function.
+# \ingroup draftfuctions
+# \brief Provides functions to move objects from one position to another.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
-
-from draftmake.make_copy import make_copy
-
-from draftobjects.dimension import LinearDimension
-from draftobjects.text import Text
-if App.GuiUp:
-    from draftviewproviders.view_text import ViewProviderText
-    from draftviewproviders.view_dimension import ViewProviderLinearDimension
+import draftutils.gui_utils as gui_utils
+import draftutils.groups as groups
+import draftfunctions.join as join
+import draftmake.make_copy as make_copy
+import draftmake.make_line as make_line
 
 
 def move(objectslist, vector, copy=False):
@@ -63,89 +59,86 @@ def move(objectslist, vector, copy=False):
     The objects (or their copies) are returned.
     """
     utils.type_check([(vector, App.Vector), (copy,bool)], "move")
-    if not isinstance(objectslist,list): objectslist = [objectslist]
-    objectslist.extend(utils.get_movable_children(objectslist))
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
+
+    objectslist.extend(groups.get_movable_children(objectslist))
     newobjlist = []
     newgroups = {}
     objectslist = utils.filter_objects_for_modifiers(objectslist, copy)
+
     for obj in objectslist:
         newobj = None
         # real_vector have been introduced to take into account
         # the possibility that object is inside an App::Part
+        # TODO: Make Move work also with App::Link
         if hasattr(obj, "getGlobalPlacement"):
             v_minus_global = obj.getGlobalPlacement().inverse().Rotation.multVec(vector)
             real_vector = obj.Placement.Rotation.multVec(v_minus_global)
         else:
             real_vector = vector
+
         if utils.get_type(obj) == "Point":
-            v = App.Vector(obj.X,obj.Y,obj.Z)
-            v = v.add(real_vector)
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
-            newobj.X = v.x
-            newobj.Y = v.y
-            newobj.Z = v.z
+            newobj.X = obj.X + real_vector.x
+            newobj.Y = obj.Y + real_vector.y
+            newobj.Z = obj.Z + real_vector.z
+
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             pass
+
         elif hasattr(obj,'Shape'):
             if copy:
-                newobj = make_copy(obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             pla = newobj.Placement
             pla.move(real_vector)
+
         elif utils.get_type(obj) == "Annotation":
             if copy:
-                newobj = App.ActiveDocument.addObject("App::Annotation",
-                                                      utils.getRealName(obj.Name))
-                newobj.LabelText = obj.LabelText
-                if App.GuiUp:
-                    gui_utils.formatObject(newobj,obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             newobj.Position = obj.Position.add(real_vector)
-        elif utils.get_type(obj) == "Text":
+
+        elif utils.get_type(obj) in ("Text", "DraftText"):
             if copy:
-                # TODO: Why make_copy do not handle Text object??
-                newobj = App.ActiveDocument.addObject("App::FeaturePython",
-                                                      utils.getRealName(obj.Name))
-                Text(newobj)
-                if App.GuiUp:
-                    ViewProviderText(newobj.ViewObject)
-                    gui_utils.formatObject(newobj,obj)
-                newobj.Text = obj.Text
-                newobj.Placement = obj.Placement
-                if App.GuiUp:
-                    gui_utils.formatObject(newobj,obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             newobj.Placement.Base = obj.Placement.Base.add(real_vector)
-        elif utils.get_type(obj) in ["Dimension","LinearDimension"]:
+
+        elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
             if copy:
-                # TODO: Why make_copy do not handle Dimension object??
-                # TODO: Support also Label and Angular dimension
-                newobj = App.ActiveDocument.addObject("App::FeaturePython",
-                                                      utils.getRealName(obj.Name))
-                LinearDimension(newobj)
-                if App.GuiUp:
-                    ViewProviderLinearDimension(newobj.ViewObject)
-                    gui_utils.formatObject(newobj,obj)
+                newobj = make_copy.make_copy(obj)
             else:
                 newobj = obj
             newobj.Start = obj.Start.add(real_vector)
             newobj.End = obj.End.add(real_vector)
             newobj.Dimline = obj.Dimline.add(real_vector)
-        else:
-            if copy and obj.isDerivedFrom("Mesh::Feature"):
-                print("Mesh copy not supported at the moment") # TODO
-            newobj = obj
-            if "Placement" in obj.PropertiesList:
-                pla = obj.Placement
-                pla.move(real_vector)
+
+        elif utils.get_type(obj) in ["AngularDimension"]:
+            if copy:
+                newobj = make_copy.make_copy(obj)
+            else:
+                newobj = obj
+            newobj.Center = obj.Start.add(real_vector)
+
+        elif "Placement" in obj.PropertiesList:
+            if copy:
+                newobj = make_copy.make_copy(obj)
+            else:
+                newobj = obj
+            pla = obj.Placement
+            pla.move(real_vector)
+
         if newobj is not None:
             newobjlist.append(newobj)
+
         if copy:
             for p in obj.InList:
                 if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
@@ -154,9 +147,72 @@ def move(objectslist, vector, copy=False):
                     break
                 if utils.get_type(p) == "Layer":
                     p.Proxy.addObject(p,newobj)
+
     if copy and utils.get_param("selectBaseObjects",False):
         gui_utils.select(objectslist)
     else:
         gui_utils.select(newobjlist)
-    if len(newobjlist) == 1: return newobjlist[0]
+    if len(newobjlist) == 1:
+        return newobjlist[0]
     return newobjlist
+
+
+#   Following functions are needed for SubObjects modifiers
+#   implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire)
+
+
+def move_vertex(object, vertex_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    points = object.Points
+    points[vertex_index] = points[vertex_index].add(vector)
+    object.Points = points
+
+
+moveVertex = move_vertex
+
+
+def move_edge(object, edge_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    moveVertex(object, edge_index, vector)
+    if utils.isClosedEdge(edge_index, object):
+        moveVertex(object, 0, vector)
+    else:
+        moveVertex(object, edge_index+1, vector)
+
+
+moveEdge = move_edge
+
+
+def copy_moved_edges(arguments):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    copied_edges = []
+    for argument in arguments:
+        copied_edges.append(copy_moved_edge(argument[0], argument[1], argument[2]))
+    join.join_wires(copied_edges)
+
+
+copyMovedEdges = copy_moved_edges
+
+
+def copy_moved_edge(object, edge_index, vector):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
+    vertex1 = object.Placement.multVec(object.Points[edge_index]).add(vector)
+    if utils.isClosedEdge(edge_index, object):
+        vertex2 = object.Placement.multVec(object.Points[0]).add(vector)
+    else:
+        vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
+    return make_line.make_line(vertex1, vertex2)
+
+## @}

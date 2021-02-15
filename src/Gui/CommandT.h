@@ -65,7 +65,7 @@ public:
  * @param mod: module name, "Gui" or "App"
  * @param cmd: command string, streamable
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      _cmdDocument(Gui::Command::Gui, doc, "Gui", std::stringstream() << "getObject('" << objName << "')");
  * @endcode
@@ -93,7 +93,7 @@ void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::Document* doc, co
  * @param cmd: command string, streamable
  * @sa _cmdDocument()
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      cmdAppDocument(doc, std::stringstream() << "getObject('" << objName << "')");
  * @endcode
@@ -115,7 +115,7 @@ inline void cmdAppDocument(const App::Document* doc, T&& cmd) {
  * @param cmd: command string, streamable
  * @sa _cmdDocument()
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      cmdGuiDocument(doc, std::stringstream() << "getObject('" << objName << "')");
  * @endcode
@@ -169,7 +169,7 @@ inline void cmdGuiDocument(const App::DocumentObject* obj, T&& cmd) {
  * @param mod: module name, "Gui" or "App"
  * @param cmd: command string, streamable
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      _cmdObject(Command::Gui,obj,"Gui", "Visibility = " << (visible?"True":"False"));
  * @endcode
@@ -245,7 +245,7 @@ inline void cmdSetEdit(const App::DocumentObject* obj) {
  * @param cmd: command string, supporting printf like formatter
  * @param obj: pointer to a DocumentObject
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      cmdAppObjectArgs(obj, "Visibility = %s", visible ? "True" : "False");
  * @endcode
@@ -304,7 +304,7 @@ void cmdGuiObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
  * @param cmdType: command type
  * @param cmd: command string, supporting printf like formatter
  *
- * Example: 
+ * Example:
  * @code{.cpp}
  *      doCommandT(Gui::Command::Gui, "Gui.getDocument(%s).getObject(%s).Visibility = %s", "DocName", "ObjName", visible?"True":"False");
  * @endcode

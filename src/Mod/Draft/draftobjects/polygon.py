@@ -20,22 +20,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Polygon.
-"""
+"""Provides the object code for the Polygon object."""
 ## @package polygon
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Polygon.
+# \ingroup draftobjects
+# \brief Provides the object code for the Polygon object.
 
+## \addtogroup draftobjects
+# @{
 import math
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftGeomUtils
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -45,33 +43,33 @@ class Polygon(DraftObject):
     def __init__(self, obj):
         super(Polygon, self).__init__(obj, "Polygon")
 
-        _tip = "Number of faces"
-        obj.addProperty("App::PropertyInteger", "FacesNumber",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Number of faces")
+        obj.addProperty("App::PropertyInteger", "FacesNumber", "Draft", _tip)
 
-        _tip = "Radius of the control circle"
-        obj.addProperty("App::PropertyLength", "Radius",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Radius of the control circle")
+        obj.addProperty("App::PropertyLength", "Radius", "Draft", _tip)
         
-        _tip = "How the polygon must be drawn from the control circle"
-        obj.addProperty("App::PropertyEnumeration", "DrawMode",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "How the polygon must be drawn from the control circle")
+        obj.addProperty("App::PropertyEnumeration", "DrawMode", "Draft", _tip)
         
-        _tip = "Radius to use to fillet the corners"
-        obj.addProperty("App::PropertyLength", "FilletRadius",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", _tip)
         
-        _tip = "Size of the chamfer to give to the corners"
-        obj.addProperty("App::PropertyLength", "ChamferSize",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyLength", "ChamferSize", "Draft", _tip)
         
-        _tip = "Create a face"
-        obj.addProperty("App::PropertyBool", "MakeFace",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Create a face")
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
         
-        _tip = "The area of this object"
-        obj.addProperty("App::PropertyArea", "Area",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The area of this object")
+        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
         
         obj.MakeFace = get_param("fillmode",True)
         obj.DrawMode = ['inscribed','circumscribed']
@@ -119,4 +117,7 @@ class Polygon(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _Polygon = Polygon
+
+## @}

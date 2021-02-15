@@ -11,12 +11,12 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation>Um Referenzen hinzuzufügen, wähle diese in der 3D-Ansicht aus und klicke dann auf "Hinzufügen".</translation>
+      <translation>Um Referenzen hinzuzufügen, wählen Sie diese in der 3D-Ansicht aus und klicken Sie dann auf "Hinzufügen".</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Um Referenzen hinzuzufügen, wählen Sie diese in der 3D-Ansicht aus und klicken Sie auf "Hinzufügen".</translation>
     </message>
   </context>
   <context>
@@ -100,17 +100,17 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation>Körper wählen</translation>
+      <translation>Volumenkörper auswählen</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation>Wählen Sie den Elementteil des Körpers, der zur Liste hinzugefügt werden soll. Um den Volumenkörper hinzuzufügen, klicken Sie auf "Hinzufügen".</translation>
+      <translation>Wählen Sie die Elemente des Volumenkörpers, die zur Liste hinzugefügt werden sollen und bestätigen Sie durch 'Hinzufügen'.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Wählen Sie den Elementteil des Körpers, der zur Liste hinzugefügt werden soll. Um den Volumenkörper hinzuzufügen, klicken Sie auf "Hinzufügen".</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation>Analysebehälter</translation>
+      <translation>Analyse-Container</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
@@ -149,7 +149,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation>Fügt anhand der ausgewählten Fläche eine Schnittebene hinzu</translation>
+      <translation>Fügt eine Schnittebene durch Auswahl einer Fläche hinzu</translation>
     </message>
   </context>
   <context>
@@ -165,12 +165,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation>Bedingung Körperwärmequelle</translation>
+      <translation>Randbedingung Körperwärmequelle</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation>FEM-Bedingung für eine Körperwärmequelle erstellen</translation>
+      <translation>FEM Randbedingung für Körperwärmequelle erstellen</translation>
     </message>
   </context>
   <context>
@@ -178,12 +178,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation>Elektrostatisches Potential</translation>
+      <translation>Randbedingung elektrostatisches Potential</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation>Elektrostatisches Potential erstellen</translation>
+      <translation>FEM Randbedingung für elektrostatisches Potential erstellen</translation>
     </message>
   </context>
   <context>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation>Fließgeschwindigkeit</translation>
+      <translation>Randbedingung Strömungsgeschwindigkeit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -204,12 +204,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation>Anfangsfließgeschwindigkeit</translation>
+      <translation>Randbedingung anfängliche Strömungsgeschwindigkeit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation>Anfangsfließgeschwindigkeit festlegen</translation>
+      <translation>FEM Randbedingung für anfängliche Strömungsgeschwindigkeit festlegen</translation>
     </message>
   </context>
   <context>
@@ -217,12 +217,12 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weight</source>
-      <translation>Eigengewicht</translation>
+      <translation>Randbedingung Eigengewicht</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation>Eigengewicht hinzufügen</translation>
+      <translation>FEM Randbedingung Eigengewicht erstellen</translation>
     </message>
   </context>
   <context>
@@ -446,7 +446,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation>FEM-Netz mit Gmsh-Vernetzer erstellen</translation>
+      <translation>FEM-Netz mit Gmsh-Netzgenerator erstellen</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
@@ -638,7 +638,7 @@
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Erstelle ein FEM Volumen Mesh aus einem Festkörper oder Flächenform von Netgen internen Meshers</translation>
+      <translation>Erstellen eines FEM-Volumennetzes aus einem Festkörper oder einer Flächenform mit Netgens internem Netzgenerator</translation>
     </message>
   </context>
   <context>
@@ -693,7 +693,7 @@
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation>Analysebehälter</translation>
+      <translation>Analyse-Container</translation>
     </message>
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
@@ -752,12 +752,12 @@
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation>Eigengewicht</translation>
+      <translation>Randbedingung Eigengewicht</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weigt</source>
-      <translation>Eigengewicht hinzufügen</translation>
+      <translation>FEM Randbedingung Eigengewicht erstellen</translation>
     </message>
   </context>
   <context>
@@ -832,7 +832,7 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Erstelle ein FEM Volumen Mesh aus einem Festkörper oder Flächenform von Netgen internen Meshers</translation>
+      <translation>Erstellen eines FEM-Volumennetzes aus einem Festkörper oder einer Flächenform mit Netgens internem Netzgenerator</translation>
     </message>
   </context>
   <context>
@@ -1110,12 +1110,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation>Verschiebung erstellen</translation>
+      <translation>FEM Randbedingung für Verschiebung erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation>FEM-Randbedingung für eine Verschiebung auf einer Fläche</translation>
+      <translation>FEM Randbedingung für eine Verschiebung auf einer Fläche erstellen</translation>
     </message>
   </context>
   <context>
@@ -1128,12 +1128,12 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation>FEM-Einspannbedingung erstellen</translation>
+      <translation>FEM Einspannbedingung erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation>FEM-Randbedingung für eine fixierte geometrische Einheit erstellen</translation>
+      <translation>FEM Randbedingung für eine fixierte geometrische Einheit erstellen</translation>
     </message>
   </context>
   <context>
@@ -1182,12 +1182,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation>Erstellen Sie eine FEM-Druck-Randbedingung</translation>
+      <translation>FEM Randbedingung für Drücke erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create FEM constraint for a pressure acting on a face</source>
-      <translation>Erstellen Sie eine FEM-Randbedingung mit einem Druck, der auf eine Fläche wirkt</translation>
+      <translation>FEM Randbedingung durch einem Druck, der auf eine Fläche wirkt, erstellen</translation>
     </message>
   </context>
   <context>
@@ -1500,7 +1500,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>FEM-Randbedingungen</translation>
+      <translation>FEM Randbedingungen</translation>
     </message>
   </context>
   <context>
@@ -1576,7 +1576,7 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation>Ausgewähltes Objekt ist kein Part!</translation>
+      <translation>Ausgewähltes Objekt ist kein Teil!</translation>
     </message>
   </context>
   <context>
@@ -2022,7 +2022,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
       <source>Constraint force</source>
-      <translation>Einschränkungskraft</translation>
+      <translation>Randbedingung Kräfte</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
@@ -2296,7 +2296,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="165"/>
       <source>Force location [deg]</source>
-      <translation>Kraftwinkel [Grad]</translation>
+      <translation>Standort [deg] erzwingen</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="192"/>
@@ -2369,7 +2369,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation>fixiert</translation>
+      <translation>Fixiert</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
@@ -2389,17 +2389,17 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation>Rotation x</translation>
+      <translation>Drehung x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation>Rotation y</translation>
+      <translation>Drehung y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation>Rotation z</translation>
+      <translation>Drehung z</translation>
     </message>
   </context>
   <context>

@@ -4,17 +4,17 @@
   <context>
     <name>CmdSketcherBSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="175"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="162"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="176"/>
-      <source>Show/Hide B-spline curvature comb</source>
-      <translation>B-Spline-Krümmungskamm anzeigen / ausblenden</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="163"/>
+      <source>Show/hide B-spline curvature comb</source>
+      <translation>B-Spline-Krümmungskamm ein- / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="177"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="164"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
       <translation>Wechselt zwischen dem Anzeigen und Ausblenden des Krümmungskammes für alle B-Splines</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSketcherBSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="107"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="100"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="108"/>
-      <source>Show/Hide B-spline degree</source>
-      <translation>B-Spline-Grad anzeigen / ausblenden</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="101"/>
+      <source>Show/hide B-spline degree</source>
+      <translation>B-Spline-Grad ein- / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="109"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="102"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
       <translation>Wechselt zwischen dem Anzeigen und Ausblenden des Grades für alle B-Splines</translation>
     </message>
@@ -40,35 +40,53 @@
   <context>
     <name>CmdSketcherBSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="209"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="193"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="210"/>
-      <source>Show/Hide B-spline knot multiplicity</source>
-      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Vielfachheit</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="194"/>
+      <source>Show/hide B-spline knot multiplicity</source>
+      <translation>Vielfachheit der B-Spline-Knoten ein- / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="211"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="195"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Wechselt zwischen dem Anzeigen und Ausblenden der Knoten-Multiplikation für alle B-Splines</translation>
+      <translation>Wechselt zwischen dem Anzeigen und Ausblenden der Knoten-Vielfachheit für alle B-Splines</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherBSplinePoleWeight</name>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="224"/>
+      <source>Sketcher</source>
+      <translation>Skizze</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="225"/>
+      <source>Show/hide B-spline control point weight</source>
+      <translation>Gewicht der B-Spline-Kontrollpunkte anzeigen / ausblenden</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="226"/>
+      <source>Switches between showing and hiding the control point weight for all B-splines</source>
+      <translation>Wechselt zwischen dem Anzeigen und Ausblenden des Gewichts für alle B-Spline-Kontrollpunkte</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherBSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="141"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="131"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="142"/>
-      <source>Show/Hide B-spline control polygon</source>
-      <translation>B-Spline-Kontroll-Polygon anzeigen / ausblenden</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="132"/>
+      <source>Show/hide B-spline control polygon</source>
+      <translation>B-Spline-Kontrollpolygon ein- / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="143"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="133"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
       <translation>Wechselt zwischen dem Anzeigen und Ausblenden der Kontroll-Polygone für alle B-Splines</translation>
     </message>
@@ -76,17 +94,17 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6803"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6204"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6804"/>
-      <source>CarbonCopy</source>
-      <translation>Kopie</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="6205"/>
+      <source>Carbon copy</source>
+      <translation>Pause</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6805"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6206"/>
       <source>Copies the geometry of another sketch</source>
       <translation>Kopiert die Geometrie einer anderen Skizze</translation>
     </message>
@@ -94,17 +112,17 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1456"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1558"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1457"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1559"/>
       <source>Clone</source>
       <translation>Klonen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1458"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1560"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
@@ -112,79 +130,83 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="97"/>
+      <location filename="../../CommandSketcherTools.cpp" line="100"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="98"/>
-      <source>Close Shape</source>
-      <translation>Form schließen</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="101"/>
+      <source>Close shape</source>
+      <translation>Kontur schließen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="99"/>
-      <source>Produce closed shape by Link end point of element with next elements' starting point</source>
-      <translation>Erzeugt eine geschlossene Form durch Verbinden des Element-End-Punktes mit dem Startpunkt des nächsten Elementes</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="102"/>
+      <source>Produce a closed shape by tying the end point of one element with the next element's starting point</source>
+      <translation>Erzeugt eine geschlossene Kontur durch Verbinden des Endpunktes eines Elements mit dem Startpunkt des nächsten Elements</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompBSplineShowHideGeometryInformation</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="243"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="255"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="245"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="256"/>
       <source>Show/hide B-spline information layer</source>
       <translation>B-Spline-Informationsschicht ein- / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="314"/>
-      <source>Show/Hide B-spline degree</source>
-      <translation>B-Spline-Grad anzeigen / ausblenden</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="331"/>
+      <source>Show/hide B-spline degree</source>
+      <translation>B-Spline-Grad ein- / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="318"/>
-      <source>Show/Hide B-spline control polygon</source>
-      <translation>B-Spline-Kontroll-Polygon anzeigen / ausblenden</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="338"/>
+      <source>Show/hide B-spline control polygon</source>
+      <translation>B-Spline-Kontrollpolygon ein- / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="322"/>
-      <source>Show/Hide B-spline curvature comb</source>
-      <translation>B-Spline-Krümmungskamm anzeigen / ausblenden</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="345"/>
+      <source>Show/hide B-spline curvature comb</source>
+      <translation>B-Spline-Krümmungskamm ein- / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="326"/>
-      <source>Show/Hide B-spline knot multiplicity</source>
-      <translation>Anzeigen/Ausblenden von B-Spline Knoten-Vielfachheit</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="352"/>
+      <source>Show/hide B-spline knot multiplicity</source>
+      <translation>Vielfachheit der B-Spline-Knoten ein- / ausblenden</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
+      <source>Show/hide B-spline control point weight</source>
+      <translation>Gewicht der B-Spline-Kontrollpunkte anzeigen / ausblenden</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5762"/>
+      <location filename="../../CommandConstraints.cpp" line="5730"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5763"/>
+      <location filename="../../CommandConstraints.cpp" line="5731"/>
       <source>Constrain arc or circle</source>
       <translation>Bogen oder Kreis festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5764"/>
+      <location filename="../../CommandConstraints.cpp" line="5732"/>
       <source>Constrain an arc or a circle</source>
-      <translation>Einen Bogen oder Kreis beschränken</translation>
+      <translation>Krümmung eines Kreisbogens oder Kreises festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5847"/>
+      <location filename="../../CommandConstraints.cpp" line="5815"/>
       <source>Constrain radius</source>
       <translation>Radius festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5851"/>
+      <location filename="../../CommandConstraints.cpp" line="5819"/>
       <source>Constrain diameter</source>
       <translation>Durchmesser festlegen</translation>
     </message>
@@ -192,17 +214,17 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1532"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1633"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1533"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1634"/>
       <source>Copy</source>
       <translation>Kopieren</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1534"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1635"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
@@ -210,27 +232,27 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2002"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1809"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2003"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1810"/>
       <source>Create arc</source>
       <translation>Bogen erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2004"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1811"/>
       <source>Create an arc in the sketcher</source>
-      <translation>Einen Bogen in der Skizze erstellen</translation>
+      <translation>Kreisbogen in der Skizze erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2081"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1888"/>
       <source>Center and end points</source>
       <translation>Mittel- und Endpunkte</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2085"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1892"/>
       <source>End points and rim point</source>
       <translation>Endpunkte und Punkt auf Kreisbogen</translation>
     </message>
@@ -238,45 +260,45 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4900"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4445"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4901"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4446"/>
       <source>Create a B-spline</source>
       <translation>B-Spline erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4902"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4447"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>Eine B-Spline in der Skizze erstellen</translation>
+      <translation>B-Spline in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5258"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4763"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5259"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4764"/>
       <source>Create circle</source>
       <translation>Kreis erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5260"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4765"/>
       <source>Create a circle in the sketcher</source>
       <translation>Einen Kreis in der Skizze erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5337"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4842"/>
       <source>Center and rim point</source>
       <translation>Mittelpunkt und Punkt auf Kreisbogen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5341"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4846"/>
       <source>3 rim points</source>
       <translation>Drei Punkte auf Kreisbogen</translation>
     </message>
@@ -284,95 +306,123 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4262"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3868"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4263"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3869"/>
       <source>Create a conic</source>
       <translation>Erstellen eines Kegelschnitts</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4264"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3870"/>
       <source>Create a conic in the sketch</source>
-      <translation>Ein Kegelschnitt in der Skizze erstellen</translation>
+      <translation>Kegelschnitt in der Skizze erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4369"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3975"/>
       <source>Ellipse by center, major radius, point</source>
       <translation>Ellipse durch Angabe von Mittelpunkt, Hauptradius und Punkt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4373"/>
-      <source>Ellipse by Periapsis, apoapsis, minor radius</source>
-      <translation>Ellipse durch Angabe von Periapsis, Apoapsis, kleinerem Radius</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="3979"/>
+      <source>Ellipse by periapsis, apoapsis, minor radius</source>
+      <translation>Ellipse durch Periapsis, Apoapsis (Endpunkte der Hauptachse), kleinem Radius</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4377"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3983"/>
       <source>Arc of ellipse by center, major radius, endpoints</source>
-      <translation>Ellipsen-Bogen durch Angabe von Zentrum, großem Radius, Endpunkte</translation>
+      <translation>Ellipsenbogen durch Angabe von Mittelpunkt, großem Radius und Endpunkten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4381"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3987"/>
       <source>Arc of hyperbola by center, major radius, endpoints</source>
-      <translation>Hyperbel Bogen durch Mittelpunkt, Hauptradius, Endpunkte</translation>
+      <translation>Hyperbelbogen durch Angabe von Mittelpunkt, Hauptradius sowie den Endpunkten</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4385"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3991"/>
       <source>Arc of parabola by focus, vertex, endpoints</source>
-      <translation>Bogen der Parabel durch Fokus, Scheitelpunkt, Endpunkte</translation>
+      <translation>Parabelbogen durch Angabe von Fokus, Scheitelpunkt sowie den Endpunkten</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCompCreateFillets</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5340"/>
+      <source>Sketcher</source>
+      <translation>Skizze</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5341"/>
+      <source>Fillets</source>
+      <translation type="unfinished">Fillets</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5342"/>
+      <source>Create a fillet between two lines</source>
+      <translation type="unfinished">Create a fillet between two lines</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5417"/>
+      <source>Sketch fillet</source>
+      <translation type="unfinished">Sketch fillet</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5421"/>
+      <source>Constraint-preserving sketch fillet</source>
+      <translation type="unfinished">Constraint-preserving sketch fillet</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7511"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6833"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7512"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6834"/>
       <source>Create regular polygon</source>
       <translation>Regelmäßiges Polygon erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7513"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6835"/>
       <source>Create a regular polygon in the sketcher</source>
       <translation>Erstelle ein regelmäßiges Polygon in der Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7628"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6950"/>
       <source>Triangle</source>
       <translation>Dreieck</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7632"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6954"/>
       <source>Square</source>
       <translation>Quadrat</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7636"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6958"/>
       <source>Pentagon</source>
       <translation>Fünfeck</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7640"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6962"/>
       <source>Hexagon</source>
       <translation>Sechseck</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7644"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6966"/>
       <source>Heptagon</source>
       <translation>Siebeneck</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7648"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6970"/>
       <source>Octagon</source>
       <translation>Achteck</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7652"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6974"/>
       <source>Regular Polygon</source>
       <translation>Regelmäßiges Polygon</translation>
     </message>
@@ -380,99 +430,99 @@
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="795"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="898"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="899"/>
       <source>Modify knot multiplicity</source>
-      <translation>Knoten-Multiplikation ändern</translation>
+      <translation>Vielfachheit eines Spline-Knotens ändern</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="797"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="900"/>
       <source>Modifies the multiplicity of the selected knot of a B-spline</source>
-      <translation>Modifiziert die Multiplikation eines ausgewählten Knoten einer B-Spline</translation>
+      <translation>Modifiziert die Vielfachheit eines ausgewählten B-Spline-Knotens</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="859"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="961"/>
       <source>Increase knot multiplicity</source>
-      <translation>Knoten-Multiplikation erhöhen</translation>
+      <translation>Vielfachheit eines Spline-Knotens erhöhen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="863"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="968"/>
       <source>Decrease knot multiplicity</source>
-      <translation>Knoten-Multiplikation verringern</translation>
+      <translation>Vielfachheit eines Spline-Knotens verringern</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="203"/>
+      <location filename="../../CommandSketcherTools.cpp" line="211"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="204"/>
-      <source>Connect Edges</source>
-      <translation>verbundene Kanten</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="212"/>
+      <source>Connect edges</source>
+      <translation>Kanten verbinden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="205"/>
-      <source>Link end point of element with next elements' starting point</source>
-      <translation>Den Endpunkt des Elementes mit dem Startpunkt des nächsten Elementes verbinden</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="213"/>
+      <source>Tie the end point of the element with next element's starting point</source>
+      <translation>Den Endpunkt des Elements mit dem Startpunkt des nächsten Elements verbinden</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5880"/>
+      <location filename="../../CommandConstraints.cpp" line="5848"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5881"/>
+      <location filename="../../CommandConstraints.cpp" line="5849"/>
       <source>Constrain angle</source>
       <translation>Winkel festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5882"/>
+      <location filename="../../CommandConstraints.cpp" line="5850"/>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Winkel einer Linie oder zweier Linien festlegen</translation>
+      <translation>Winkel einer Linie (zur horizontalen Skizzenachse) oder Winkel zwischen zwei Linien festlegen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1835"/>
+      <location filename="../../CommandConstraints.cpp" line="1753"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1836"/>
-      <source>Constrain Block</source>
-      <translation>Fixierung festlegen</translation>
+      <location filename="../../CommandConstraints.cpp" line="1754"/>
+      <source>Constrain block</source>
+      <translation>Fixieren</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1837"/>
-      <source>Create a Block constraint on the selected item</source>
-      <translation>Erzeuge eine Fixierbeschränkung auf dem ausgewählten Element</translation>
+      <location filename="../../CommandConstraints.cpp" line="1755"/>
+      <source>Block constraint: block the selected edge from moving</source>
+      <translation>Fixierbedingung: Ausgewählte Kante unbeweglich machen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2140"/>
+      <location filename="../../CommandConstraints.cpp" line="2063"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2141"/>
+      <location filename="../../CommandConstraints.cpp" line="2064"/>
       <source>Constrain coincident</source>
       <translation>Koinzidenz erzwingen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2142"/>
+      <location filename="../../CommandConstraints.cpp" line="2065"/>
       <source>Create a coincident constraint on the selected item</source>
       <translation>Eine Koinzidenzbeschränkung für das gewählte Element setzen</translation>
     </message>
@@ -480,35 +530,35 @@
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5319"/>
+      <location filename="../../CommandConstraints.cpp" line="5275"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5320"/>
+      <location filename="../../CommandConstraints.cpp" line="5276"/>
       <source>Constrain diameter</source>
       <translation>Durchmesser festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5321"/>
+      <location filename="../../CommandConstraints.cpp" line="5277"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Leget den Durchmesser eines Kreises oder Bogens fest</translation>
+      <translation>Durchmesser eines Kreises oder Kreisbogens festlegen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2328"/>
+      <location filename="../../CommandConstraints.cpp" line="2251"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2329"/>
+      <location filename="../../CommandConstraints.cpp" line="2252"/>
       <source>Constrain distance</source>
       <translation>Distanz festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2330"/>
+      <location filename="../../CommandConstraints.cpp" line="2253"/>
       <source>Fix a length of a line or the distance between a line and a vertex</source>
       <translation>Die Länge einer Linie oder den Abstand einer Linie und eines Vertex festlegen</translation>
     </message>
@@ -516,17 +566,17 @@
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2894"/>
+      <location filename="../../CommandConstraints.cpp" line="2806"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2895"/>
+      <location filename="../../CommandConstraints.cpp" line="2807"/>
       <source>Constrain horizontal distance</source>
       <translation>Horizontalen Abstand festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2896"/>
+      <location filename="../../CommandConstraints.cpp" line="2808"/>
       <source>Fix the horizontal distance between two points or line ends</source>
       <translation>Den horizontalen Abstand zwischen zwei Punkten oder Streckenenden festlegen</translation>
     </message>
@@ -534,17 +584,17 @@
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3141"/>
+      <location filename="../../CommandConstraints.cpp" line="3060"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3142"/>
+      <location filename="../../CommandConstraints.cpp" line="3061"/>
       <source>Constrain vertical distance</source>
       <translation>Vertikalen Abstand festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3143"/>
+      <location filename="../../CommandConstraints.cpp" line="3062"/>
       <source>Fix the vertical distance between two points or line ends</source>
       <translation>Den vertikalen Abstand zwischen zwei Punkten oder Streckenenden festlegen</translation>
     </message>
@@ -552,17 +602,17 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6381"/>
+      <location filename="../../CommandConstraints.cpp" line="6375"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6382"/>
+      <location filename="../../CommandConstraints.cpp" line="6376"/>
       <source>Constrain equal</source>
       <translation>Gleichheit festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6383"/>
+      <location filename="../../CommandConstraints.cpp" line="6377"/>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
       <translation>Eine Gleichheitsbeschränkung zwischen zwei Linien oder zwischen Kreisen und Bögen festlegen</translation>
     </message>
@@ -570,17 +620,17 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1083"/>
+      <location filename="../../CommandConstraints.cpp" line="1056"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1084"/>
+      <location filename="../../CommandConstraints.cpp" line="1057"/>
       <source>Constrain horizontally</source>
       <translation>Horizontal einschränken</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1085"/>
+      <location filename="../../CommandConstraints.cpp" line="1058"/>
       <source>Create a horizontal constraint on the selected item</source>
       <translation>Eine horizontale Beschränkung für das gewählte Element setzen</translation>
     </message>
@@ -588,53 +638,54 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6994"/>
+      <location filename="../../CommandConstraints.cpp" line="7056"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6995"/>
-      <source>Constrain InternalAlignment</source>
-      <translation>Interne Ausrichtung einschränken</translation>
+      <location filename="../../CommandConstraints.cpp" line="7057"/>
+      <source>Constrain internal alignment</source>
+      <translation>Interne Ausrichtung Festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6996"/>
+      <location filename="../../CommandConstraints.cpp" line="7058"/>
       <source>Constrains an element to be aligned with the internal geometry of another element</source>
-      <translation>Schränkt die Ausrichtung eines Elements bezüglich der internen geometrz eines anderen Elements ein</translation>
+      <translation>Schränkt die Ausrichtung eines Elements bezüglich der internen Geometrie eines anderen Elements ein</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1575"/>
+      <location filename="../../CommandConstraints.cpp" line="1528"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1576"/>
+      <location filename="../../CommandConstraints.cpp" line="1529"/>
       <source>Constrain lock</source>
       <translation>Sperren</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1577"/>
-      <source>Create a lock constraint on the selected item</source>
-      <translation>Eine Sperrung für das gewählte Element setzen</translation>
+      <location filename="../../CommandConstraints.cpp" line="1530"/>
+      <source>Lock constraint: create both a horizontal and a vertical distance constraint
+on the selected vertex</source>
+      <translation>Sperren: Gleichzeitig den horizontalen und den vertikalen Abstand eines ausgewählten Knotens zum Ursprung festlegen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3422"/>
+      <location filename="../../CommandConstraints.cpp" line="3306"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3423"/>
+      <location filename="../../CommandConstraints.cpp" line="3307"/>
       <source>Constrain parallel</source>
       <translation>Parallelität erzwingen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3424"/>
+      <location filename="../../CommandConstraints.cpp" line="3308"/>
       <source>Create a parallel constraint between two lines</source>
       <translation>Parallelität zwischen zwei Geraden erzwingen</translation>
     </message>
@@ -642,17 +693,17 @@
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3612"/>
+      <location filename="../../CommandConstraints.cpp" line="3456"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3613"/>
+      <location filename="../../CommandConstraints.cpp" line="3457"/>
       <source>Constrain perpendicular</source>
       <translation>Orthogonalität festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3614"/>
+      <location filename="../../CommandConstraints.cpp" line="3458"/>
       <source>Create a perpendicular constraint between two lines</source>
       <translation>Eine Orthogonalitätsbeschränkung zwischen zwei Linien erstellen</translation>
     </message>
@@ -660,17 +711,17 @@
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2709"/>
+      <location filename="../../CommandConstraints.cpp" line="2599"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2710"/>
+      <location filename="../../CommandConstraints.cpp" line="2600"/>
       <source>Constrain point onto object</source>
       <translation>Punkt auf Objekt festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2711"/>
+      <location filename="../../CommandConstraints.cpp" line="2601"/>
       <source>Fix a point onto an object</source>
       <translation>Punkt auf ein Objekt festlegen</translation>
     </message>
@@ -678,71 +729,73 @@
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4862"/>
+      <location filename="../../CommandConstraints.cpp" line="4764"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4863"/>
-      <source>Constrain radius</source>
-      <translation>Radius festlegen</translation>
+      <location filename="../../CommandConstraints.cpp" line="4765"/>
+      <source>Constrain radius or weight</source>
+      <translation>Radius oder Gewicht festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4864"/>
-      <source>Fix the radius of a circle or an arc</source>
-      <translation>Lege Radius eines Kreises oder Bogens fest</translation>
+      <location filename="../../CommandConstraints.cpp" line="4766"/>
+      <source>Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</source>
+      <translation>Legt den Radius eines Kreises oder eines Bogens fest, oder legt das Gewicht eines B-Spline-Pols fest</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6842"/>
+      <location filename="../../CommandConstraints.cpp" line="6892"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6843"/>
+      <location filename="../../CommandConstraints.cpp" line="6893"/>
       <source>Constrain refraction (Snell's law')</source>
-      <translation>Beschränkung: Lichtbrechung (Snellius-Gesetz)</translation>
+      <translation>(Licht-) Brechung (nach Snellius-Gesetz) festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6844"/>
-      <source>Create a refraction law (Snell's law) constraint between two endpoints of rays and an edge as an interface.</source>
-      <translation>Erstellen Sie eine Lichtbrechung (Snellius-Gesetz) als Einschränkung zwischen zwei Endpunkten der Strahlen und einer Kante als Schnittstelle.</translation>
+      <location filename="../../CommandConstraints.cpp" line="6894"/>
+      <source>Create a refraction law (Snell's law) constraint between two endpoints of rays
+and an edge as an interface.</source>
+      <translation>Einschränkung entsprechend der Lichtbrechung (Snellius-Gesetz) zwischen den Endpunkten zweier Strahlen und einer Kante als Schnittstelle erstellen.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6571"/>
+      <location filename="../../CommandConstraints.cpp" line="6592"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6572"/>
+      <location filename="../../CommandConstraints.cpp" line="6593"/>
       <source>Constrain symmetrical</source>
       <translation>Symmetrie festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6573"/>
-      <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
-      <translation>Eine Symmetriebeschränkung zwischen zwei Punkten in Bezug auf eine Linie oder einen dritten Punkt erstellen</translation>
+      <location filename="../../CommandConstraints.cpp" line="6594"/>
+      <source>Create a symmetry constraint between two points
+with respect to a line or a third point</source>
+      <translation>Die Symmetrie zwischen zwei Punkten im Bezug auf eine Linie oder einen dritten Punkt festlegen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4219"/>
+      <location filename="../../CommandConstraints.cpp" line="4092"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4220"/>
+      <location filename="../../CommandConstraints.cpp" line="4093"/>
       <source>Constrain tangent</source>
       <translation>Tangente setzen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4221"/>
+      <location filename="../../CommandConstraints.cpp" line="4094"/>
       <source>Create a tangent constraint between two entities</source>
       <translation>Tangente zwischen zwei Elementen erzwingen</translation>
     </message>
@@ -750,17 +803,17 @@
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1330"/>
+      <location filename="../../CommandConstraints.cpp" line="1294"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1331"/>
+      <location filename="../../CommandConstraints.cpp" line="1295"/>
       <source>Constrain vertically</source>
       <translation>Vertikal einschränken</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1332"/>
+      <location filename="../../CommandConstraints.cpp" line="1296"/>
       <source>Create a vertical constraint on the selected item</source>
       <translation>Eine vertikale Beschränkung für das gewählte Element setzen</translation>
     </message>
@@ -768,71 +821,71 @@
   <context>
     <name>CmdSketcherConvertToNURB</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="347"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="384"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="348"/>
-      <source>Convert Geometry to B-spline</source>
-      <translation>Konvertiere Geometrie zu B-Spline</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
+      <source>Convert geometry to B-spline</source>
+      <translation>Geometrie in B-Spline wandeln</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
-      <source>Converts the given Geometry to a B-spline</source>
-      <translation>Konvertiert die gegebene Geometrie in eine B-Spline</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="386"/>
+      <source>Converts the selected geometry to a B-spline</source>
+      <translation>Wandelt die ausgewählte Geometrie in einen B-Spline</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1514"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1413"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1515"/>
       <source>Copy</source>
       <translation>Kopieren</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1414"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1516"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation>Erstellt eine einfache Kopie der Geometrie von den zuletzt gewählten Punkt</translation>
+      <translation>Erstellt eine einfache Kopie der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1975"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1782"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1976"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1783"/>
       <source>Create arc by three points</source>
-      <translation>Bogen aus drei Punkten erstellen</translation>
+      <translation>Kreisbogen durch drei Punkte erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1977"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1784"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation>Erstelle einen Bogen mit Endpunkten und einem Punkt auf Bogen</translation>
+      <translation>Kreisbogen durch die Endpunkte und einen Punkt auf dem Bogen erstellen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5231"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4736"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5232"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4737"/>
       <source>Create circle by three points</source>
       <translation>Kreis aus drei Punkten erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5233"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4738"/>
       <source>Create a circle by 3 perimeter points</source>
       <translation>Kreis erstellen aus drei Punkten auf dem Kreisbogen</translation>
     </message>
@@ -840,107 +893,107 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1666"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1513"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1667"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1514"/>
       <source>Create arc by center</source>
       <translation>Bogen aus Mittelpunkt erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1668"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1515"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation>Erstelle einen Bogen aus Mittel- und Endpunkten</translation>
+      <translation>Kreisbogen mit Mittelpunkt und durch die Endpunkte erstellen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3509"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3195"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3510"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3196"/>
       <source>Create an arc of ellipse</source>
-      <translation>Erstellen eines Ellipsen-Bogens</translation>
+      <translation>Ellipsenbogen erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3511"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3197"/>
       <source>Create an arc of ellipse in the sketch</source>
-      <translation>Erstellen eines Ellipsen-Bogens in der Skizze</translation>
+      <translation>Ellipsenbogen in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3892"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3538"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3893"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3539"/>
       <source>Create an arc of hyperbola</source>
-      <translation>Bogen einer Hyperbel erstellen</translation>
+      <translation>Hyperbelbogen erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3894"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3540"/>
       <source>Create an arc of hyperbola in the sketch</source>
-      <translation>Bogen einer Hyperbel in der Skizze erstellen</translation>
+      <translation>Hyperbelbogen in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4230"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3836"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4231"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3837"/>
       <source>Create an arc of parabola</source>
-      <translation>Erstellen von Bogen der Parabel</translation>
+      <translation>Parabelbogen erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4232"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3838"/>
       <source>Create an arc of parabola in the sketch</source>
-      <translation>Erstellen von Bogen der Parabel in der Skizze</translation>
+      <translation>Parabelbogen in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4825"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4370"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4826"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4371"/>
       <source>Create B-spline</source>
       <translation>B-Spline erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4827"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4372"/>
       <source>Create a B-spline via control points in the sketch.</source>
-      <translation>Erstellen eines B-Splines über Kontrollpunkte in der Skizze.</translation>
+      <translation>B-Spline über Kontrollpunkte in der Skizze erstellen.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2276"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2043"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2277"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2044"/>
       <source>Create circle</source>
       <translation>Kreis erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2278"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2045"/>
       <source>Create a circle in the sketch</source>
       <translation>Kreis in der Skizze erstellen</translation>
     </message>
@@ -948,17 +1001,17 @@
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5535"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5000"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5536"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5001"/>
       <source>Create draft line</source>
       <translation>Entwurfslinie erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5537"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5002"/>
       <source>Create a draft line in the sketch</source>
       <translation>Eine Entwurfslinie in der Skizze erstellen</translation>
     </message>
@@ -966,35 +1019,35 @@
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3142"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2868"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3143"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2869"/>
       <source>Create ellipse by 3 points</source>
-      <translation>Erstellen einer Ellipse durch 3 Punkte</translation>
+      <translation>Ellipse durch 3 Punkte erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3144"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2870"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation>Erstellen einer Ellipse durch 3 Punkte in der Skizze</translation>
+      <translation>Ellipse durch 3 Punkte in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3112"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2838"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3113"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2839"/>
       <source>Create ellipse by center</source>
       <translation>Erstellen einer Ellipse durch Angabe des Zentrums</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="3114"/>
+      <location filename="../../CommandCreateGeo.cpp" line="2840"/>
       <source>Create an ellipse by center in the sketch</source>
       <translation>Erstellen einer Ellipse durch Angabe des Zentrums in der Skizze</translation>
     </message>
@@ -1002,17 +1055,17 @@
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5846"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5280"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5847"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5281"/>
       <source>Create fillet</source>
       <translation>Abrundung erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5848"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5282"/>
       <source>Create a fillet between two lines or at a coincident point</source>
       <translation>Erstellen einer Abrundung zwischen zwei Geraden oder an einem anliegenden Punkt</translation>
     </message>
@@ -1020,17 +1073,17 @@
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7426"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6748"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7427"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6749"/>
       <source>Create heptagon</source>
       <translation>Siebeneck erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7428"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6750"/>
       <source>Create a heptagon in the sketch</source>
       <translation>Siebeneck in der Skizze erstellen</translation>
     </message>
@@ -1038,17 +1091,17 @@
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7399"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6721"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7400"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6722"/>
       <source>Create hexagon</source>
       <translation>Sechseck erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7401"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6723"/>
       <source>Create a hexagon in the sketch</source>
       <translation>Sechseck in der Skizze erstellen</translation>
     </message>
@@ -1056,17 +1109,17 @@
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="416"/>
+      <location filename="../../CommandCreateGeo.cpp" line="383"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="417"/>
+      <location filename="../../CommandCreateGeo.cpp" line="384"/>
       <source>Create line</source>
       <translation>Linie erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="418"/>
+      <location filename="../../CommandCreateGeo.cpp" line="385"/>
       <source>Create a line in the sketch</source>
       <translation>Linie in der Skizze erstellen</translation>
     </message>
@@ -1074,17 +1127,17 @@
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7453"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6775"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7454"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6776"/>
       <source>Create octagon</source>
       <translation>Achteck erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7455"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6777"/>
       <source>Create an octagon in the sketch</source>
       <translation>Achteck in der Skizze erstellen</translation>
     </message>
@@ -1092,17 +1145,17 @@
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7371"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6693"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7372"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6694"/>
       <source>Create pentagon</source>
       <translation>Fünfeck erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7373"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6695"/>
       <source>Create a pentagon in the sketch</source>
       <translation>Fünfeck in der Skizze erstellen</translation>
     </message>
@@ -1110,17 +1163,17 @@
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4869"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4414"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4870"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4415"/>
       <source>Create periodic B-spline</source>
       <translation>Erstellen von periodischer B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4871"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4416"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
       <translation>Erstellen periodischer B-Splines über Kontrollpunkte in der Skizze.</translation>
     </message>
@@ -1128,35 +1181,53 @@
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5478"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4943"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5479"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4944"/>
       <source>Create point</source>
       <translation>Punkt erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5480"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4945"/>
       <source>Create a point in the sketch</source>
       <translation>Punkt in der Skizze erstellen</translation>
     </message>
   </context>
   <context>
-    <name>CmdSketcherCreatePolyline</name>
+    <name>CmdSketcherCreatePointFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1383"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5309"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1384"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5310"/>
+      <source>Create corner-preserving fillet</source>
+      <translation type="unfinished">Create corner-preserving fillet</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5311"/>
+      <source>Fillet that preserves intersection point and most constraints</source>
+      <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreatePolyline</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1270"/>
+      <source>Sketcher</source>
+      <translation>Skizze</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1271"/>
       <source>Create polyline</source>
       <translation>Linienzug erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1385"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1272"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
       <translation>Einen Linienzug in der Skizze erstellen. Taste 'M' wechselt Verhalten durch</translation>
     </message>
@@ -1164,17 +1235,17 @@
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="655"/>
+      <location filename="../../CommandCreateGeo.cpp" line="582"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="656"/>
+      <location filename="../../CommandCreateGeo.cpp" line="583"/>
       <source>Create rectangle</source>
       <translation>Rechteck erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="657"/>
+      <location filename="../../CommandCreateGeo.cpp" line="584"/>
       <source>Create a rectangle in the sketch</source>
       <translation>Rechteck in der Skizze erstellen</translation>
     </message>
@@ -1182,17 +1253,17 @@
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7480"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6802"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7481"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6803"/>
       <source>Create regular polygon</source>
       <translation>Regelmäßiges Polygon erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7482"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6804"/>
       <source>Create a regular polygon in the sketch</source>
       <translation>Erstelle ein regelmäßiges Polygon in der Skizze</translation>
     </message>
@@ -1200,17 +1271,17 @@
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7083"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6445"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7084"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6446"/>
       <source>Create slot</source>
       <translation>Nut erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7085"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6447"/>
       <source>Create a slot in the sketch</source>
       <translation>Nut in der Skizze erstellen</translation>
     </message>
@@ -1218,17 +1289,17 @@
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7344"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6666"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7345"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6667"/>
       <source>Create square</source>
       <translation>Quadrat erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7346"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6668"/>
       <source>Create a square in the sketch</source>
       <translation>Quadrat in der Skizze erstellen</translation>
     </message>
@@ -1236,17 +1307,17 @@
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5507"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4972"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5508"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4973"/>
       <source>Create text</source>
       <translation>Text erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5509"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4974"/>
       <source>Create text in the sketch</source>
       <translation>Text in der Skizze erstellen</translation>
     </message>
@@ -1254,107 +1325,125 @@
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7317"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6639"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7318"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6640"/>
       <source>Create equilateral triangle</source>
       <translation>Gleichseitiges Dreieck erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7319"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6641"/>
       <source>Create an equilateral triangle in the sketch</source>
-      <translation>Erstellen Sie ein gleichseitiges Dreieck in der Skizze</translation>
+      <translation>Gleichseitiges Dreieck in der Skizze erstellen</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherDecreaseDegree</name>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="525"/>
+      <source>Sketcher</source>
+      <translation>Skizze</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="526"/>
+      <source>Decrease B-spline degree</source>
+      <translation>Grad des B-Splines verringern</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="527"/>
+      <source>Decreases the degree of the B-spline</source>
+      <translation>Verringert den Grad des B-Splines</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="651"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="756"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="652"/>
-      <source>Decrease multiplicity</source>
-      <translation>Multiplikation verringern</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="757"/>
+      <source>Decrease knot multiplicity</source>
+      <translation>Vielfachheit eines Spline-Knotens verringern</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="653"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="758"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Verringert die Multiplikation eines ausgewählten Knoten einer B-Spline</translation>
+      <translation>Verringert die Vielfachheit eines ausgewählten B-Spline-Knotens</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1999"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2094"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2000"/>
-      <source>Delete All Constraints</source>
+      <location filename="../../CommandSketcherTools.cpp" line="2095"/>
+      <source>Delete all constraints</source>
       <translation>Alle Einschränkungen löschen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2001"/>
-      <source>Deletes all the constraints</source>
-      <translation>Alle Einschränkungen werden gelöscht</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="2096"/>
+      <source>Delete all constraints in the sketch</source>
+      <translation>Alle Einschränkungen in der Skizze löschen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1936"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2033"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1937"/>
-      <source>Delete All Geometry</source>
+      <location filename="../../CommandSketcherTools.cpp" line="2034"/>
+      <source>Delete all geometry</source>
       <translation>Gesamte Geometrie löschen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1938"/>
-      <source>Deletes all the geometry and constraints but external geometry</source>
-      <translation>Löscht alle Geometrie und Einschränkungen, jedoch ohne die externe Geometrie</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="2035"/>
+      <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
+      <translation>Sämtliche Geometrie und Einschränkungen aus der aktuellen Skizze löschen, mit Ausnahme der externen Geometrie</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="265"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="261"/>
+      <location filename="../../Command.cpp" line="266"/>
       <source>Edit sketch</source>
       <translation>Skizze bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="262"/>
-      <source>Edit the selected sketch</source>
-      <translation>ausgewählte Skizze bearbeiten</translation>
+      <location filename="../../Command.cpp" line="267"/>
+      <source>Edit the selected sketch.</source>
+      <translation>Ausgewählte Skizze bearbeiten.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6362"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5844"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6363"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5845"/>
       <source>Extend edge</source>
-      <translation>Äußere Kanten</translation>
+      <translation>Kante verlängern</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6364"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5846"/>
       <source>Extend an edge with respect to the picked position</source>
       <translation>Verlängern einer Kante in Bezug auf die ausgewählte Position</translation>
     </message>
@@ -1362,17 +1451,17 @@
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6587"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6028"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6588"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6029"/>
       <source>External geometry</source>
       <translation>Externe Geometrie</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6589"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6030"/>
       <source>Create an edge linked to an external geometry</source>
       <translation>Erstellen einer Kante verknüpft mit einer externen Geometrie</translation>
     </message>
@@ -1380,142 +1469,157 @@
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="420"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="452"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
-      <source>Increase degree</source>
-      <translation>Erhöhung des Grades</translation>
+      <location filename="../../CommandSketcherBSpline.cpp" line="453"/>
+      <source>Increase B-spline degree</source>
+      <translation>Grad des B-Splines erhöhen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="422"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="454"/>
       <source>Increases the degree of the B-spline</source>
-      <translation>Erhöhen den Grades der B-Spline</translation>
+      <translation>Erhöht den Grad des B-Splines</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="494"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="602"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="495"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="603"/>
       <source>Increase knot multiplicity</source>
-      <translation>Knoten-Multiplikation erhöhen</translation>
+      <translation>Vielfachheit eines Spline-Knotens erhöhen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="496"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Erhöht die Multiplikation eines ausgewählten Knoten einer B-Spline</translation>
+      <translation>Erhöht die Vielfachheit eines ausgewählten B-Spline-Knotens</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="291"/>
+      <location filename="../../Command.cpp" line="295"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="292"/>
+      <location filename="../../Command.cpp" line="296"/>
       <source>Leave sketch</source>
       <translation>Skizze verlassen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="293"/>
-      <source>Close the editing of the sketch</source>
-      <translation>Bearbeitung der Skizze beenden</translation>
+      <location filename="../../Command.cpp" line="297"/>
+      <source>Finish editing the active sketch.</source>
+      <translation>Bearbeitung der aktiven Skizze beenden.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="507"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="508"/>
       <source>Map sketch to face...</source>
       <translation>Skizze einer Fläche zuordnen...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="461"/>
-      <source>Map a sketch to a face</source>
-      <translation>Eine Skizze einer Fläche zuordnen</translation>
+      <location filename="../../Command.cpp" line="509"/>
+      <source>Set the 'Support' of a sketch.
+First select the supporting geometry, for example, a face or an edge of a solid object,
+then call this command, then choose the desired sketch.</source>
+      <translation>'Unterstützung' einer Skizze festlegen.
+Zuerst die Stützgeometrie auswählen, zum Beispiel eine Fläche oder eine Kante eines Festkörpers (Solid),
+danach diesen Befehl aufrufen, und schließlich die gewünschte Skizze auswählen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
-      <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!</source>
-      <translation>Einige der ausgewählten Objekte hängen von der Skizze ab. Zirkuläre Abhängigkeiten sind nicht erlaubt!</translation>
+      <location filename="../../Command.cpp" line="561"/>
+      <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
+      <translation>Einige der ausgewählten Objekte hängen von der Skizze ab. Zirkuläre Abhängigkeiten sind nicht erlaubt.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="863"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
-      <location filename="../../Command.cpp" line="802"/>
+      <location filename="../../Command.cpp" line="864"/>
       <source>Merge sketches</source>
       <translation>Skizzen zusammenführen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="815"/>
+      <location filename="../../Command.cpp" line="865"/>
+      <source>Create a new sketch from merging two or more selected sketches.</source>
+      <translation>Eine neue Skizze durch das Zusammenführen von zwei oder mehr ausgewählten Skizzen erstellen.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="878"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="816"/>
-      <source>Select at least two sketches, please.</source>
-      <translation>Bitte wählen Sie mindestens zwei Skizzen.</translation>
+      <location filename="../../Command.cpp" line="879"/>
+      <source>Select at least two sketches.</source>
+      <translation>Mindestens zwei Skizzen auswählen.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="689"/>
+      <location filename="../../Command.cpp" line="756"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="690"/>
-      <location filename="../../Command.cpp" line="691"/>
+      <location filename="../../Command.cpp" line="757"/>
       <source>Mirror sketch</source>
       <translation>Skizze spiegeln</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="704"/>
+      <location filename="../../Command.cpp" line="758"/>
+      <source>Create a new mirrored sketch for each selected sketch
+by using the X or Y axes, or the origin point,
+as mirroring reference.</source>
+      <translation>Eine neue gespiegelte Skizze für jede ausgewählte Skizze erzeugen, indem die X- oder Y-Achsen oder der Ursprungspunkt
+als Spiegelreferenz verwendet werden.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="773"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="705"/>
-      <source>Select one or more sketches, please.</source>
-      <translation>Bitte wählen Sie eine oder mehrere Skizzen.</translation>
+      <location filename="../../Command.cpp" line="774"/>
+      <source>Select one or more sketches.</source>
+      <translation>Eine oder mehrere Skizzen auswählen.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1499"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1601"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1500"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1602"/>
       <source>Move</source>
       <translation>Verschieben</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1501"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1603"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Verschiebt die Geometrie und verwendet den zuletzt ausgewählten Punkt als Referenz</translation>
     </message>
@@ -1534,228 +1638,262 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="144"/>
-      <source>Create a new sketch</source>
-      <translation>Neue Skizze erstellen</translation>
+      <source>Create a new sketch.</source>
+      <translation>Neue Skizze erstellen.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1797"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1895"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
-      <source>Rectangular Array</source>
-      <translation>Rechteckiges Array</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="1896"/>
+      <source>Rectangular array</source>
+      <translation>Rechteckige Anordnung</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1897"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation>Erzeugt ein rechteckiges Array der Geometrie mit Bezug auf den zuletzt ausgewählten Punkt</translation>
+      <translation>Erzeugt eine rechteckige Anordnung der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
+      <location filename="../../Command.cpp" line="380"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="377"/>
+      <location filename="../../Command.cpp" line="381"/>
       <source>Reorient sketch...</source>
       <translation>Skizze neu ausrichten...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="378"/>
-      <source>Reorient the selected sketch</source>
-      <translation>Die ausgewählte Skizze neu ausrichten</translation>
+      <location filename="../../Command.cpp" line="382"/>
+      <source>Place the selected sketch on one of the global coordinate planes.
+This will clear the 'Support' property, if any.</source>
+      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
+This will clear the 'Support' property, if any.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="818"/>
+      <location filename="../../CommandSketcherTools.cpp" line="906"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="819"/>
+      <location filename="../../CommandSketcherTools.cpp" line="907"/>
       <source>Show/hide internal geometry</source>
-      <translation>Anzeigen/Ausblenden der internen Geometrie</translation>
+      <translation>Interne Geometrie anzeigen / ausblenden</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="820"/>
-      <source>Show all internal geometry / hide unused internal geometry</source>
-      <translation>Anzeige aller internen Geometrie / Ausblenden aller unbenutzten internen Geometrie</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="908"/>
+      <source>Show all internal geometry or hide unused internal geometry</source>
+      <translation>Sämtliche interne Geometrie anzeigen oder ungenutzte interne Geometrie ausblenden</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="538"/>
+      <location filename="../../CommandSketcherTools.cpp" line="652"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="539"/>
-      <location filename="../../CommandSketcherTools.cpp" line="540"/>
-      <source>Select Conflicting Constraints</source>
-      <translation>Wählen Sie widersprüchliche Einschränkungen aus</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="653"/>
+      <location filename="../../CommandSketcherTools.cpp" line="654"/>
+      <source>Select conflicting constraints</source>
+      <translation>Widersprüchliche Einschränkungen auswählen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="286"/>
+      <location filename="../../CommandSketcherTools.cpp" line="296"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="287"/>
-      <source>Select Constraints</source>
-      <translation>Wählen Sie Einschränkungen aus</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="297"/>
+      <source>Select associated constraints</source>
+      <translation>Zugehörige Einschränkungen auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="288"/>
-      <source>Select the constraints associated to the selected elements</source>
-      <translation>Wählen Sie die Einschränkungen der ausgewählten Elemente aus</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="298"/>
+      <source>Select the constraints associated with the selected geometrical elements</source>
+      <translation>Einschränkungen auswählen, die zu den ausgewählten geometrischen Elementen gehören</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="589"/>
+      <location filename="../../CommandSketcherTools.cpp" line="703"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="590"/>
-      <location filename="../../CommandSketcherTools.cpp" line="591"/>
-      <source>Select Elements associated with constraints</source>
-      <translation>Wählen Sie Elemente mit Einschränkungen</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="704"/>
+      <source>Select associated geometry</source>
+      <translation>Zugehörige Geometrie auswählen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="705"/>
+      <source>Select the geometrical elements associated with the selected constraints</source>
+      <translation>Die geometrischen Elemente auswählen, die den ausgewählten Einschränkungen zugeordnet sind</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="711"/>
+      <location filename="../../CommandSketcherTools.cpp" line="823"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="712"/>
-      <source>Select solver DoFs</source>
-      <translation>Wähle Freiheitsgrade des Lösers</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="824"/>
+      <source>Select unconstrained DoF</source>
+      <translation>Nicht bestimmte Freiheitsgrade Auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="713"/>
-      <source>Select elements where the solver still detects unconstrained degrees of freedom.</source>
-      <translation>Wähle Elemente aus, bei denen der Löser nach wie vor uneingeschränkte Freiheitsgrade erkennt.</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="825"/>
+      <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
+      <translation>Geometrische Elemente auswählen, bei denen der Löser noch nicht bestimmte Freiheitsgrade erkennt.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="442"/>
+      <location filename="../../CommandSketcherTools.cpp" line="454"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="443"/>
-      <source>Select Horizontal Axis</source>
-      <translation>horizontale Achse auswählen</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="455"/>
+      <source>Select horizontal axis</source>
+      <translation>Horizontale Achse auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="444"/>
-      <source>Select the horizontal axis</source>
-      <translation>Wählen Sie die horizontale Achse aus</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="456"/>
+      <source>Select the local horizontal axis of the sketch</source>
+      <translation>Die lokale horizontale Achse der Skizze auswählen</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherSelectMalformedConstraints</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="547"/>
+      <source>Sketcher</source>
+      <translation>Skizze</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="548"/>
+      <location filename="../../CommandSketcherTools.cpp" line="549"/>
+      <source>Select malformed constraints</source>
+      <translation type="unfinished">Select malformed constraints</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="350"/>
+      <location filename="../../CommandSketcherTools.cpp" line="368"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="351"/>
-      <source>Select Origin</source>
+      <location filename="../../CommandSketcherTools.cpp" line="369"/>
+      <source>Select origin</source>
       <translation>Ursprung auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="352"/>
-      <source>Select the origin point</source>
-      <translation>Wählen Sie den Ursprung</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="370"/>
+      <source>Select the local origin point of the sketch</source>
+      <translation>Den lokalen Ursprungspunkt der Skizze auswählen</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="599"/>
+      <source>Sketcher</source>
+      <translation>Skizze</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="600"/>
+      <location filename="../../CommandSketcherTools.cpp" line="601"/>
+      <source>Select partially redundant constraints</source>
+      <translation type="unfinished">Select partially redundant constraints</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="485"/>
+      <location filename="../../CommandSketcherTools.cpp" line="495"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="486"/>
-      <location filename="../../CommandSketcherTools.cpp" line="487"/>
-      <source>Select Redundant Constraints</source>
-      <translation>Wählen Sie redundante Einschränkungen aus</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="496"/>
+      <location filename="../../CommandSketcherTools.cpp" line="497"/>
+      <source>Select redundant constraints</source>
+      <translation>Redundante Einschränkungen auswählen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="398"/>
+      <location filename="../../CommandSketcherTools.cpp" line="412"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="399"/>
-      <source>Select Vertical Axis</source>
-      <translation>vertikale Achse auswählen</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="413"/>
+      <source>Select vertical axis</source>
+      <translation>Vertikale Achse auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="400"/>
-      <source>Select the vertical axis</source>
-      <translation>Wählen Sie die vertikale Achse aus</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="414"/>
+      <source>Select the local vertical axis of the sketch</source>
+      <translation>Die lokale vertikale Achse der Skizze auswählen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>Stop operation</source>
       <translation>Vorgang stoppen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
-      <source>Stop current operation</source>
-      <translation>Laufende Aktion anhalten</translation>
+      <location filename="../../Command.cpp" line="341"/>
+      <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
+      <translation>Beenden Sie im Bearbeitungsmodus die aktive Operation (Zeichnung, Einschränkung, etc.).</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSwitchVirtualSpace</name>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="96"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="92"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="97"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="93"/>
       <source>Switch virtual space</source>
       <translation>Wechsle zum virtuellen Bereich</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="98"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="94"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
       <translation>Schaltet die ausgewählten Einschränkungen oder die Ansicht auf den virtuellen Bereich um</translation>
     </message>
@@ -1763,17 +1901,17 @@
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="911"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1000"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="912"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1001"/>
       <source>Symmetry</source>
       <translation>Symmetrie</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="913"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1002"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
       <translation>Erstellt eine symmetrische Geometrie mit Bezug auf die zuletzt ausgewählte Linie oder Punkt</translation>
     </message>
@@ -1781,19 +1919,19 @@
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7546"/>
+      <location filename="../../CommandConstraints.cpp" line="7643"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7547"/>
-      <source>Toggle activate/deactivate constraint</source>
-      <translation>Aktivierung/Deaktiviere Maskierung</translation>
+      <location filename="../../CommandConstraints.cpp" line="7644"/>
+      <source>Activate/deactivate constraint</source>
+      <translation>Einschränkung aktivieren/deaktivieren</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7548"/>
-      <source>Toggles activate/deactivate state for selected constraints</source>
-      <translation>Aktiviert/deaktiviere Status für ausgewählte Maskierung</translation>
+      <location filename="../../CommandConstraints.cpp" line="7645"/>
+      <source>Activates or deactivates the selected constraints</source>
+      <translation>Aktiviert oder deaktiviert die ausgewählten Einschränkungen</translation>
     </message>
   </context>
   <context>
@@ -1817,35 +1955,37 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7422"/>
+      <location filename="../../CommandConstraints.cpp" line="7517"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7423"/>
-      <source>Toggle reference/driving constraint</source>
-      <translation>Umschalten auf steuernde Bemaßung</translation>
+      <location filename="../../CommandConstraints.cpp" line="7518"/>
+      <source>Toggle driving/reference constraint</source>
+      <translation>Einschränkung zwischen festlegend und anzeigend umschalten</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7424"/>
-      <source>Toggles the toolbar or selected constraints to/from reference mode</source>
-      <translation>Schaltet die Toolbar oder die ausgewählten Beschränkungen in/aus dem Steuer-Modus</translation>
+      <location filename="../../CommandConstraints.cpp" line="7519"/>
+      <source>Set the toolbar, or the selected constraints,
+into driving or reference mode</source>
+      <translation>Die Symbolleiste oder die ausgewählten Einschränkungen
+auf den festlegenden oder den anzeigenden Modus festlegen</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6008"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5530"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6009"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5531"/>
       <source>Trim edge</source>
       <translation>Kante zuschneiden</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6010"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5532"/>
       <source>Trim an edge with respect to the picked position</source>
       <translation>Trimmen einer Kante bezüglich der ausgewählten Position</translation>
     </message>
@@ -1853,146 +1993,629 @@
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="655"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="656"/>
+      <location filename="../../Command.cpp" line="719"/>
       <source>Validate sketch...</source>
       <translation>Skizze überprüfen...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="657"/>
-      <source>Validate sketch</source>
-      <translation>Skizze überprüfen</translation>
+      <location filename="../../Command.cpp" line="720"/>
+      <source>Validate a sketch by looking at missing coincidences,
+invalid constraints, degenerated geometry, etc.</source>
+      <translation>Eine Skizze durch Betrachtung der fehlenden Übereinstimmungen,
+ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="669"/>
+      <location filename="../../Command.cpp" line="735"/>
+      <source>Select only one sketch.</source>
+      <translation>Nur eine Skizze auswählen.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="734"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="670"/>
-      <source>Select one sketch, please.</source>
-      <translation>Bitte wählen Sie eine Skizze.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="880"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="881"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>View section</source>
       <translation>Abschnitt anzeigen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="882"/>
-      <source>Switches between section and full view</source>
-      <translation>Wechselt zwischen Schnitt- und Vollansicht</translation>
+      <location filename="../../Command.cpp" line="949"/>
+      <source>When in edit mode, switch between section view and full view.</source>
+      <translation>Wechseln Sie im Bearbeitungsmodus zwischen der Sektionsansicht und der Vollansicht.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
+      <location filename="../../Command.cpp" line="679"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="680"/>
       <source>View sketch</source>
       <translation>Skizze anzeigen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
-      <source>View sketch perpendicular to sketch plane</source>
-      <translation>Skizze senkrecht zur Skizzenebene anzeigen</translation>
+      <location filename="../../Command.cpp" line="681"/>
+      <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
+      <translation>Stellen Sie im Bearbeitungsmodus die Kameraorientierung senkrecht auf die Skizzenebene ein.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1158"/>
+      <location filename="../../CommandConstraints.cpp" line="1233"/>
+      <source>Add horizontal constraint</source>
+      <translation>Horizontal-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1167"/>
+      <location filename="../../CommandConstraints.cpp" line="1259"/>
+      <location filename="../../CommandConstraints.cpp" line="1494"/>
+      <source>Add horizontal alignment</source>
+      <translation>Horizontale Ausrichtung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1395"/>
+      <location filename="../../CommandConstraints.cpp" line="1469"/>
+      <source>Add vertical constraint</source>
+      <translation>Vertikal-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1403"/>
+      <source>Add vertical alignment</source>
+      <translation>Vertikale Ausrichtung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1608"/>
+      <source>Add 'Lock' constraint</source>
+      <translation>Sperreinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1649"/>
+      <source>Add relative 'Lock' constraint</source>
+      <translation>Relative Sperreinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1694"/>
+      <source>Add fixed constraint</source>
+      <translation>Sperr-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1836"/>
+      <source>Add 'Block' constraint</source>
+      <translation>Fixier-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1880"/>
+      <source>Add block constraint</source>
+      <translation>Fixier-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2026"/>
+      <location filename="../../CommandConstraints.cpp" line="2126"/>
+      <location filename="../../CommandConstraints.cpp" line="2215"/>
+      <location filename="../../CommandSketcherTools.cpp" line="144"/>
+      <location filename="../../CommandSketcherTools.cpp" line="250"/>
+      <source>Add coincident constraint</source>
+      <translation>Koinzidenz-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2150"/>
+      <source>Swap edge tangency with ptp tangency</source>
+      <translation type="unfinished">Swap edge tangency with ptp tangency</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2321"/>
+      <location filename="../../CommandConstraints.cpp" line="2453"/>
+      <source>Add distance from horizontal axis constraint</source>
+      <translation>Einschränkung des Abstands zur horizontalen Achse hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2329"/>
+      <location filename="../../CommandConstraints.cpp" line="2460"/>
+      <source>Add distance from vertical axis constraint</source>
+      <translation>Einschränkung des Abstands zur vertikalen Achse hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2337"/>
+      <location filename="../../CommandConstraints.cpp" line="2467"/>
+      <source>Add point to point distance constraint</source>
+      <translation>Einschränkung des Abstands zweier Punkte hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2372"/>
+      <location filename="../../CommandConstraints.cpp" line="2542"/>
+      <source>Add point to line Distance constraint</source>
+      <translation>Einschränkung des Abstands eines Punktes zu einer Linie hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2406"/>
+      <location filename="../../CommandConstraints.cpp" line="2499"/>
+      <source>Add length constraint</source>
+      <translation>Längeneinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2657"/>
+      <location filename="../../CommandConstraints.cpp" line="2740"/>
+      <source>Add point on object constraint</source>
+      <translation>Punkt-auf-Objekt-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2908"/>
+      <location filename="../../CommandConstraints.cpp" line="3010"/>
+      <source>Add point to point horizontal distance constraint</source>
+      <translation>Einschränkung des horizontalen Abstands zweier Punkte hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2939"/>
+      <source>Add fixed x-coordinate constraint</source>
+      <translation>Einschränkung zur Sperrung der x-Koordinate hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="3157"/>
+      <location filename="../../CommandConstraints.cpp" line="3259"/>
+      <source>Add point to point vertical distance constraint</source>
+      <translation>Einschränkung des vertikalen Abstands zweier Punkte hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="3187"/>
+      <source>Add fixed y-coordinate constraint</source>
+      <translation>Einschränkung zur Sperrung der y-Koordinate hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="3388"/>
+      <location filename="../../CommandConstraints.cpp" line="3429"/>
+      <source>Add parallel constraint</source>
+      <translation>Parallelitätseinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="3553"/>
+      <location filename="../../CommandConstraints.cpp" line="3621"/>
+      <location filename="../../CommandConstraints.cpp" line="3775"/>
+      <location filename="../../CommandConstraints.cpp" line="3811"/>
+      <location filename="../../CommandConstraints.cpp" line="3956"/>
+      <location filename="../../CommandConstraints.cpp" line="3990"/>
+      <location filename="../../CommandConstraints.cpp" line="4032"/>
+      <source>Add perpendicular constraint</source>
+      <translation>Rechtwinkligkeitseinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="3658"/>
+      <source>Add perpendicularity constraint</source>
+      <translation>Rechtwinkligkeitseinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4187"/>
+      <location filename="../../CommandConstraints.cpp" line="4239"/>
+      <location filename="../../CommandConstraints.cpp" line="4275"/>
+      <location filename="../../CommandConstraints.cpp" line="4468"/>
+      <location filename="../../CommandConstraints.cpp" line="4625"/>
+      <location filename="../../CommandConstraints.cpp" line="4683"/>
+      <location filename="../../CommandConstraints.cpp" line="4704"/>
+      <source>Add tangent constraint</source>
+      <translation>Tangenteneinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4317"/>
+      <source>Swap coincident+tangency with ptp tangency</source>
+      <translation type="unfinished">Swap coincident+tangency with ptp tangency</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4354"/>
+      <location filename="../../CommandConstraints.cpp" line="4361"/>
+      <location filename="../../CommandConstraints.cpp" line="4368"/>
+      <location filename="../../CommandConstraints.cpp" line="4392"/>
+      <location filename="../../CommandConstraints.cpp" line="4400"/>
+      <location filename="../../CommandConstraints.cpp" line="4425"/>
+      <location filename="../../CommandConstraints.cpp" line="4433"/>
+      <location filename="../../CommandConstraints.cpp" line="4460"/>
+      <location filename="../../CommandConstraints.cpp" line="4546"/>
+      <location filename="../../CommandConstraints.cpp" line="4553"/>
+      <location filename="../../CommandConstraints.cpp" line="4560"/>
+      <location filename="../../CommandConstraints.cpp" line="4584"/>
+      <location filename="../../CommandConstraints.cpp" line="4591"/>
+      <location filename="../../CommandConstraints.cpp" line="4617"/>
+      <source>Add tangent constraint point</source>
+      <translation>Punkt für Tangenteneinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4881"/>
+      <location filename="../../CommandConstraints.cpp" line="4946"/>
+      <location filename="../../CommandConstraints.cpp" line="4965"/>
+      <location filename="../../CommandConstraints.cpp" line="5123"/>
+      <source>Add radius constraint</source>
+      <translation>Radius-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5382"/>
+      <location filename="../../CommandConstraints.cpp" line="5441"/>
+      <location filename="../../CommandConstraints.cpp" line="5453"/>
+      <location filename="../../CommandConstraints.cpp" line="5608"/>
+      <source>Add diameter constraint</source>
+      <translation>Durchmesser-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5940"/>
+      <location filename="../../CommandConstraints.cpp" line="6073"/>
+      <location filename="../../CommandConstraints.cpp" line="6103"/>
+      <location filename="../../CommandConstraints.cpp" line="6127"/>
+      <location filename="../../CommandConstraints.cpp" line="6240"/>
+      <location filename="../../CommandConstraints.cpp" line="6294"/>
+      <source>Add angle constraint</source>
+      <translation>Winkel-Einschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6508"/>
+      <location filename="../../CommandConstraints.cpp" line="6560"/>
+      <source>Add equality constraint</source>
+      <translation>Gleichheitseinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6681"/>
+      <location filename="../../CommandConstraints.cpp" line="6733"/>
+      <location filename="../../CommandConstraints.cpp" line="6749"/>
+      <location filename="../../CommandConstraints.cpp" line="6835"/>
+      <location filename="../../CommandConstraints.cpp" line="6870"/>
+      <source>Add symmetric constraint</source>
+      <translation>Symmetrieeinschränkung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7009"/>
+      <source>Add Snell's law constraint</source>
+      <translation>Einschränkung nach Snellius-Gesetz (Lichtbrechung) hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7218"/>
+      <location filename="../../CommandConstraints.cpp" line="7396"/>
+      <source>Add internal alignment constraint</source>
+      <translation>Einschränkung zur internen Ausrichtung hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7602"/>
+      <source>Toggle constraint to driving/reference</source>
+      <translation>Einschränkung zwischen festlegend und anzeigend umschalten</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7686"/>
+      <source>Activate/Deactivate constraint</source>
+      <translation>Einschränkung aktivieren / deaktivieren</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="207"/>
+      <source>Create a new sketch on a face</source>
+      <translation>Neue Skizze auf einer Fläche erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="239"/>
+      <source>Create a new sketch</source>
+      <translation>Neue Skizze erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="489"/>
+      <source>Reorient sketch</source>
+      <translation>Skizze neu ausrichten</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="644"/>
+      <source>Attach sketch</source>
+      <translation>Skizze anheften</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="649"/>
+      <source>Detach sketch</source>
+      <translation>Skizze abtrennen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="789"/>
+      <source>Create a mirrored sketch for each selected sketch</source>
+      <translation>Eine gespiegelte Skizze für jede ausgewählte Skizze erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="888"/>
+      <source>Merge sketches</source>
+      <translation>Skizzen zusammenführen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAlterGeometry.cpp" line="137"/>
+      <source>Toggle draft from/to draft</source>
+      <translation type="unfinished">Toggle draft from/to draft</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="319"/>
+      <source>Add sketch line</source>
+      <translation>Skizzenlinie hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="493"/>
+      <source>Add sketch box</source>
+      <translation>Skizzenkasten hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="981"/>
+      <source>Add line to sketch wire</source>
+      <translation>Linie zum Skizzendraht hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1001"/>
+      <source>Add arc to sketch wire</source>
+      <translation>Bogen zum Skizzendraht hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1444"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1713"/>
+      <source>Add sketch arc</source>
+      <translation>Skizzenbogen hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1982"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4668"/>
+      <source>Add sketch circle</source>
+      <translation>Skizzenkreis hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="2741"/>
+      <source>Add sketch ellipse</source>
+      <translation>Skizzenellipse hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="3110"/>
+      <source>Add sketch arc of ellipse</source>
+      <translation>Skizzenellipsenbogen hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="3448"/>
+      <source>Add sketch arc of hyperbola</source>
+      <translation>Skizzenhyperbelbogen hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="3750"/>
+      <source>Add sketch arc of Parabola</source>
+      <translation>Skizzenparbelbogen hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="4073"/>
+      <source>Add Pole circle</source>
+      <translation>Polkreis hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="4895"/>
+      <source>Add sketch point</source>
+      <translation>Skizzenpunkt hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5144"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5222"/>
+      <source>Create fillet</source>
+      <translation>Abrundung erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5505"/>
+      <source>Trim edge</source>
+      <translation>Kante zuschneiden</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5776"/>
+      <source>Extend edge</source>
+      <translation>Kante verlängern</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5992"/>
+      <source>Add external geometry</source>
+      <translation>Externe Geometrie hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="6173"/>
+      <source>Add carbon copy</source>
+      <translation>Pause hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="6354"/>
+      <source>Add slot</source>
+      <translation>Nut hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="6567"/>
+      <source>Add hexagon</source>
+      <translation>Sechseck hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
+      <source>Convert to NURBS</source>
+      <translation>In NURBS umwandeln</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="479"/>
+      <source>Increase spline degree</source>
+      <translation>Grad des Splines erhöhen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
+      <source>Decrease spline degree</source>
+      <translation>Grad des Splines verringern</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="647"/>
+      <source>Increase knot multiplicity</source>
+      <translation>Vielfachheit eines Spline-Knotens erhöhen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="801"/>
+      <source>Decrease knot multiplicity</source>
+      <translation>Vielfachheit eines Spline-Knotens verringern</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="964"/>
+      <source>Exposing Internal Geometry</source>
+      <translation type="unfinished">Exposing Internal Geometry</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="1174"/>
+      <source>Create symmetric geometry</source>
+      <translation>Symmetrische Geometrie erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="1316"/>
+      <source>Copy/clone/move geometry</source>
+      <translation>Geometrie kopieren / klonen / verschieben</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="1840"/>
+      <source>Create copy of geometry</source>
+      <translation>Eine Kopie der Geometrie erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2060"/>
+      <source>Delete all geometry</source>
+      <translation>Gesamte Geometrie löschen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2120"/>
+      <source>Delete All Constraints</source>
+      <translation>Alle Einschränkungen löschen</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
+      <source>Toggle constraints to the other virtual space</source>
+      <translation type="unfinished">Toggle constraints to the other virtual space</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="862"/>
+      <source>Update constraint's virtual space</source>
+      <translation type="unfinished">Update constraint's virtual space</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandler.cpp" line="601"/>
+      <source>Add auto constraints</source>
+      <translation>Automatische Einschränkungen hinzufügen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.cpp" line="625"/>
+      <source>Swap constraint names</source>
+      <translation>Namen der Beschränkungen tauschen</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstrains.cpp" line="847"/>
+      <source>Rename sketch constraint</source>
+      <translation>Skizzeneinschränkung umbenennen</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="840"/>
+      <source>Drag Point</source>
+      <translation>Punkt ziehen</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="871"/>
+      <source>Drag Curve</source>
+      <translation>Kurve ziehen</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="922"/>
+      <source>Drag Constraint</source>
+      <translation>Einschränkung ziehen</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="1099"/>
+      <source>Modify sketch constraints</source>
+      <translation>Skizzeneinschränkung ändern</translation>
     </message>
   </context>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="374"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="373"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze beim Anwenden von Koinzidenzen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="453"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="454"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze beim Anwenden von vetikalen/horizontalen Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="648"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="651"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze beim Anwenden von gleichheits Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="702"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="705"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze ohne Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="739"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="742"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze nach dem Anwenden von horizontalen und vertikalen Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="761"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="764"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze nach dem Anwenden von Punkt auf Punkt Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="789"/>
+      <location filename="../../../App/SketchAnalysis.cpp" line="792"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
       <translation>Fehler automatische Beschränkungen: unlösbare Skizze nach dem Anwenden von gleichheits Beschränkungen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1559"/>
+      <location filename="../../../App/SketchObject.cpp" line="2034"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Schnittpunkt von Kurven konnte nicht gefunden werden. Versuchen Sie eine Koinzidenz Beschränkung zwischen den Scheitelpunkten der Kurven hinzuzufügen, die Sie verrunden möchten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="4985"/>
+      <location filename="../../../App/SketchObject.cpp" line="5667"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Diese Version von OCE/OCC unterstützt keine Knoten-Operationen. Sie benötigen 6.9.0 oder höher.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="4989"/>
+      <location filename="../../../App/SketchObject.cpp" line="5671"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline Geometrie Index (GeoID) ist außerhalb des gültigen Bereichs.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="4992"/>
+      <location filename="../../../App/SketchObject.cpp" line="5674"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Sie fordern keine Änderung in der Multiplizität der Knoten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="4997"/>
+      <location filename="../../../App/SketchObject.cpp" line="5679"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Der bereitgestellte Geometrieindex (GeoId) ist keine B-Spline-Kurve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5004"/>
+      <location filename="../../../App/SketchObject.cpp" line="5686"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Der Knotenindex ist außerhalb der Grenzen. Beachten Sie, dass der erste Knoten gemäß der OCC-Notation den Index 1 und nicht Null hat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5011"/>
+      <location filename="../../../App/SketchObject.cpp" line="5693"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation>Die Multiplizität kann nicht über den Grad des B-Splines hinaus erhöht werden.</translation>
+      <translation>Die Vielfachheit kann nicht über den Grad des B-Splines hinaus erhöht werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5014"/>
+      <location filename="../../../App/SketchObject.cpp" line="5696"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
-      <translation>Die Multiplizität kann nicht über Null hinaus verringert werden.</translation>
+      <translation>Die Vielfachheit kann nicht über Null hinaus verringert werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5027"/>
+      <location filename="../../../App/SketchObject.cpp" line="5708"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kann die Multiplizität innerhalb der maximalen Toleranz nicht verringern.</translation>
     </message>
@@ -2008,9 +2631,9 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="123"/>
-      <location filename="../../AppSketcherGui.cpp" line="124"/>
-      <location filename="../../AppSketcherGui.cpp" line="125"/>
+      <location filename="../../AppSketcherGui.cpp" line="135"/>
+      <location filename="../../AppSketcherGui.cpp" line="136"/>
+      <location filename="../../AppSketcherGui.cpp" line="137"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -2048,149 +2671,170 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Can't map the sketch to selected object. %1.</source>
-      <translation>Ausgewähltes Objekt kann nicht der Skizze zugeordnet werden. %1.</translation>
+      <translation>Die Skizze kann dem ausgewählten Objekt nicht zugeordnet werden. %1.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="172"/>
-      <location filename="../../Command.cpp" line="539"/>
+      <location filename="../../Command.cpp" line="590"/>
       <source>Don't attach</source>
       <translation>Nicht anhängen</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="123"/>
       <location filename="../../CommandAlterGeometry.cpp" line="131"/>
-      <location filename="../../CommandConstraints.cpp" line="126"/>
-      <location filename="../../CommandConstraints.cpp" line="132"/>
-      <location filename="../../CommandConstraints.cpp" line="1113"/>
-      <location filename="../../CommandConstraints.cpp" line="1360"/>
-      <location filename="../../CommandConstraints.cpp" line="1604"/>
-      <location filename="../../CommandConstraints.cpp" line="1627"/>
-      <location filename="../../CommandConstraints.cpp" line="1631"/>
-      <location filename="../../CommandConstraints.cpp" line="1864"/>
-      <location filename="../../CommandConstraints.cpp" line="1891"/>
-      <location filename="../../CommandConstraints.cpp" line="1895"/>
-      <location filename="../../CommandConstraints.cpp" line="2171"/>
-      <location filename="../../CommandConstraints.cpp" line="2182"/>
-      <location filename="../../CommandConstraints.cpp" line="2192"/>
-      <location filename="../../CommandConstraints.cpp" line="2362"/>
-      <location filename="../../CommandConstraints.cpp" line="2373"/>
-      <location filename="../../CommandConstraints.cpp" line="2470"/>
-      <location filename="../../CommandConstraints.cpp" line="2503"/>
-      <location filename="../../CommandConstraints.cpp" line="2590"/>
-      <location filename="../../CommandConstraints.cpp" line="2743"/>
-      <location filename="../../CommandConstraints.cpp" line="2783"/>
-      <location filename="../../CommandConstraints.cpp" line="2798"/>
-      <location filename="../../CommandConstraints.cpp" line="2805"/>
-      <location filename="../../CommandConstraints.cpp" line="2852"/>
-      <location filename="../../CommandConstraints.cpp" line="2868"/>
-      <location filename="../../CommandConstraints.cpp" line="2926"/>
-      <location filename="../../CommandConstraints.cpp" line="2937"/>
-      <location filename="../../CommandConstraints.cpp" line="2964"/>
-      <location filename="../../CommandConstraints.cpp" line="3012"/>
-      <location filename="../../CommandConstraints.cpp" line="3040"/>
-      <location filename="../../CommandConstraints.cpp" line="3069"/>
-      <location filename="../../CommandConstraints.cpp" line="3172"/>
-      <location filename="../../CommandConstraints.cpp" line="3183"/>
-      <location filename="../../CommandConstraints.cpp" line="3208"/>
-      <location filename="../../CommandConstraints.cpp" line="3257"/>
-      <location filename="../../CommandConstraints.cpp" line="3284"/>
-      <location filename="../../CommandConstraints.cpp" line="3313"/>
-      <location filename="../../CommandConstraints.cpp" line="3454"/>
-      <location filename="../../CommandConstraints.cpp" line="3467"/>
-      <location filename="../../CommandConstraints.cpp" line="3481"/>
-      <location filename="../../CommandConstraints.cpp" line="3497"/>
-      <location filename="../../CommandConstraints.cpp" line="3535"/>
-      <location filename="../../CommandConstraints.cpp" line="3662"/>
-      <location filename="../../CommandConstraints.cpp" line="3675"/>
-      <location filename="../../CommandConstraints.cpp" line="3752"/>
-      <location filename="../../CommandConstraints.cpp" line="3789"/>
-      <location filename="../../CommandConstraints.cpp" line="3798"/>
-      <location filename="../../CommandConstraints.cpp" line="3822"/>
-      <location filename="../../CommandConstraints.cpp" line="3831"/>
-      <location filename="../../CommandConstraints.cpp" line="3962"/>
-      <location filename="../../CommandConstraints.cpp" line="3997"/>
-      <location filename="../../CommandConstraints.cpp" line="4006"/>
-      <location filename="../../CommandConstraints.cpp" line="4267"/>
-      <location filename="../../CommandConstraints.cpp" line="4280"/>
-      <location filename="../../CommandConstraints.cpp" line="4356"/>
-      <location filename="../../CommandConstraints.cpp" line="4377"/>
-      <location filename="../../CommandConstraints.cpp" line="4386"/>
-      <location filename="../../CommandConstraints.cpp" line="4410"/>
-      <location filename="../../CommandConstraints.cpp" line="4592"/>
-      <location filename="../../CommandConstraints.cpp" line="4628"/>
-      <location filename="../../CommandConstraints.cpp" line="4767"/>
-      <location filename="../../CommandConstraints.cpp" line="4892"/>
-      <location filename="../../CommandConstraints.cpp" line="4903"/>
-      <location filename="../../CommandConstraints.cpp" line="4954"/>
-      <location filename="../../CommandConstraints.cpp" line="5179"/>
-      <location filename="../../CommandConstraints.cpp" line="5349"/>
-      <location filename="../../CommandConstraints.cpp" line="5360"/>
-      <location filename="../../CommandConstraints.cpp" line="5411"/>
-      <location filename="../../CommandConstraints.cpp" line="5635"/>
-      <location filename="../../CommandConstraints.cpp" line="5923"/>
-      <location filename="../../CommandConstraints.cpp" line="5935"/>
-      <location filename="../../CommandConstraints.cpp" line="6110"/>
-      <location filename="../../CommandConstraints.cpp" line="6164"/>
-      <location filename="../../CommandConstraints.cpp" line="6411"/>
-      <location filename="../../CommandConstraints.cpp" line="6424"/>
-      <location filename="../../CommandConstraints.cpp" line="6440"/>
-      <location filename="../../CommandConstraints.cpp" line="6445"/>
-      <location filename="../../CommandConstraints.cpp" line="6464"/>
-      <location filename="../../CommandConstraints.cpp" line="6484"/>
-      <location filename="../../CommandConstraints.cpp" line="6498"/>
-      <location filename="../../CommandConstraints.cpp" line="6609"/>
-      <location filename="../../CommandConstraints.cpp" line="6621"/>
-      <location filename="../../CommandConstraints.cpp" line="6645"/>
-      <location filename="../../CommandConstraints.cpp" line="6666"/>
-      <location filename="../../CommandConstraints.cpp" line="6695"/>
-      <location filename="../../CommandConstraints.cpp" line="6731"/>
-      <location filename="../../CommandConstraints.cpp" line="6753"/>
-      <location filename="../../CommandConstraints.cpp" line="6780"/>
-      <location filename="../../CommandConstraints.cpp" line="6795"/>
-      <location filename="../../CommandConstraints.cpp" line="6916"/>
-      <location filename="../../CommandConstraints.cpp" line="7012"/>
-      <location filename="../../CommandConstraints.cpp" line="7023"/>
-      <location filename="../../CommandConstraints.cpp" line="7043"/>
-      <location filename="../../CommandConstraints.cpp" line="7066"/>
-      <location filename="../../CommandConstraints.cpp" line="7088"/>
-      <location filename="../../CommandConstraints.cpp" line="7094"/>
-      <location filename="../../CommandConstraints.cpp" line="7100"/>
-      <location filename="../../CommandConstraints.cpp" line="7247"/>
-      <location filename="../../CommandConstraints.cpp" line="7253"/>
-      <location filename="../../CommandConstraints.cpp" line="7259"/>
-      <location filename="../../CommandConstraints.cpp" line="7265"/>
-      <location filename="../../CommandConstraints.cpp" line="7404"/>
-      <location filename="../../CommandConstraints.cpp" line="7459"/>
-      <location filename="../../CommandConstraints.cpp" line="7467"/>
-      <location filename="../../CommandConstraints.cpp" line="7499"/>
-      <location filename="../../CommandConstraints.cpp" line="7570"/>
-      <location filename="../../CommandConstraints.cpp" line="7580"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="398"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="472"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="594"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="685"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="738"/>
-      <location filename="../../CommandSketcherTools.cpp" line="116"/>
-      <location filename="../../CommandSketcherTools.cpp" line="124"/>
-      <location filename="../../CommandSketcherTools.cpp" line="166"/>
-      <location filename="../../CommandSketcherTools.cpp" line="222"/>
-      <location filename="../../CommandSketcherTools.cpp" line="230"/>
-      <location filename="../../CommandSketcherTools.cpp" line="305"/>
-      <location filename="../../CommandSketcherTools.cpp" line="837"/>
-      <location filename="../../CommandSketcherTools.cpp" line="930"/>
-      <location filename="../../CommandSketcherTools.cpp" line="938"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1044"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1050"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1285"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1293"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1352"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1816"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1824"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1886"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="129"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="153"/>
+      <location filename="../../CommandConstraints.cpp" line="127"/>
+      <location filename="../../CommandConstraints.cpp" line="133"/>
+      <location filename="../../CommandConstraints.cpp" line="1085"/>
+      <location filename="../../CommandConstraints.cpp" line="1323"/>
+      <location filename="../../CommandConstraints.cpp" line="1559"/>
+      <location filename="../../CommandConstraints.cpp" line="1582"/>
+      <location filename="../../CommandConstraints.cpp" line="1586"/>
+      <location filename="../../CommandConstraints.cpp" line="1782"/>
+      <location filename="../../CommandConstraints.cpp" line="1812"/>
+      <location filename="../../CommandConstraints.cpp" line="1816"/>
+      <location filename="../../CommandConstraints.cpp" line="2093"/>
+      <location filename="../../CommandConstraints.cpp" line="2104"/>
+      <location filename="../../CommandConstraints.cpp" line="2114"/>
+      <location filename="../../CommandConstraints.cpp" line="2284"/>
+      <location filename="../../CommandConstraints.cpp" line="2295"/>
+      <location filename="../../CommandConstraints.cpp" line="2393"/>
+      <location filename="../../CommandConstraints.cpp" line="2426"/>
+      <location filename="../../CommandConstraints.cpp" line="2518"/>
+      <location filename="../../CommandConstraints.cpp" line="2632"/>
+      <location filename="../../CommandConstraints.cpp" line="2672"/>
+      <location filename="../../CommandConstraints.cpp" line="2678"/>
+      <location filename="../../CommandConstraints.cpp" line="2695"/>
+      <location filename="../../CommandConstraints.cpp" line="2706"/>
+      <location filename="../../CommandConstraints.cpp" line="2754"/>
+      <location filename="../../CommandConstraints.cpp" line="2762"/>
+      <location filename="../../CommandConstraints.cpp" line="2778"/>
+      <location filename="../../CommandConstraints.cpp" line="2839"/>
+      <location filename="../../CommandConstraints.cpp" line="2850"/>
+      <location filename="../../CommandConstraints.cpp" line="2879"/>
+      <location filename="../../CommandConstraints.cpp" line="2929"/>
+      <location filename="../../CommandConstraints.cpp" line="2958"/>
+      <location filename="../../CommandConstraints.cpp" line="2987"/>
+      <location filename="../../CommandConstraints.cpp" line="3091"/>
+      <location filename="../../CommandConstraints.cpp" line="3102"/>
+      <location filename="../../CommandConstraints.cpp" line="3127"/>
+      <location filename="../../CommandConstraints.cpp" line="3177"/>
+      <location filename="../../CommandConstraints.cpp" line="3207"/>
+      <location filename="../../CommandConstraints.cpp" line="3236"/>
+      <location filename="../../CommandConstraints.cpp" line="3337"/>
+      <location filename="../../CommandConstraints.cpp" line="3350"/>
+      <location filename="../../CommandConstraints.cpp" line="3364"/>
+      <location filename="../../CommandConstraints.cpp" line="3380"/>
+      <location filename="../../CommandConstraints.cpp" line="3418"/>
+      <location filename="../../CommandConstraints.cpp" line="3505"/>
+      <location filename="../../CommandConstraints.cpp" line="3518"/>
+      <location filename="../../CommandConstraints.cpp" line="3548"/>
+      <location filename="../../CommandConstraints.cpp" line="3601"/>
+      <location filename="../../CommandConstraints.cpp" line="3638"/>
+      <location filename="../../CommandConstraints.cpp" line="3647"/>
+      <location filename="../../CommandConstraints.cpp" line="3653"/>
+      <location filename="../../CommandConstraints.cpp" line="3677"/>
+      <location filename="../../CommandConstraints.cpp" line="3686"/>
+      <location filename="../../CommandConstraints.cpp" line="3695"/>
+      <location filename="../../CommandConstraints.cpp" line="3823"/>
+      <location filename="../../CommandConstraints.cpp" line="3858"/>
+      <location filename="../../CommandConstraints.cpp" line="3867"/>
+      <location filename="../../CommandConstraints.cpp" line="3876"/>
+      <location filename="../../CommandConstraints.cpp" line="4027"/>
+      <location filename="../../CommandConstraints.cpp" line="4139"/>
+      <location filename="../../CommandConstraints.cpp" line="4152"/>
+      <location filename="../../CommandConstraints.cpp" line="4182"/>
+      <location filename="../../CommandConstraints.cpp" line="4234"/>
+      <location filename="../../CommandConstraints.cpp" line="4255"/>
+      <location filename="../../CommandConstraints.cpp" line="4264"/>
+      <location filename="../../CommandConstraints.cpp" line="4270"/>
+      <location filename="../../CommandConstraints.cpp" line="4294"/>
+      <location filename="../../CommandConstraints.cpp" line="4300"/>
+      <location filename="../../CommandConstraints.cpp" line="4482"/>
+      <location filename="../../CommandConstraints.cpp" line="4518"/>
+      <location filename="../../CommandConstraints.cpp" line="4524"/>
+      <location filename="../../CommandConstraints.cpp" line="4663"/>
+      <location filename="../../CommandConstraints.cpp" line="4699"/>
+      <location filename="../../CommandConstraints.cpp" line="4793"/>
+      <location filename="../../CommandConstraints.cpp" line="4804"/>
+      <location filename="../../CommandConstraints.cpp" line="4865"/>
+      <location filename="../../CommandConstraints.cpp" line="4870"/>
+      <location filename="../../CommandConstraints.cpp" line="5117"/>
+      <location filename="../../CommandConstraints.cpp" line="5304"/>
+      <location filename="../../CommandConstraints.cpp" line="5315"/>
+      <location filename="../../CommandConstraints.cpp" line="5357"/>
+      <location filename="../../CommandConstraints.cpp" line="5372"/>
+      <location filename="../../CommandConstraints.cpp" line="5596"/>
+      <location filename="../../CommandConstraints.cpp" line="5602"/>
+      <location filename="../../CommandConstraints.cpp" line="5890"/>
+      <location filename="../../CommandConstraints.cpp" line="5902"/>
+      <location filename="../../CommandConstraints.cpp" line="5933"/>
+      <location filename="../../CommandConstraints.cpp" line="5995"/>
+      <location filename="../../CommandConstraints.cpp" line="6091"/>
+      <location filename="../../CommandConstraints.cpp" line="6147"/>
+      <location filename="../../CommandConstraints.cpp" line="6287"/>
+      <location filename="../../CommandConstraints.cpp" line="6404"/>
+      <location filename="../../CommandConstraints.cpp" line="6417"/>
+      <location filename="../../CommandConstraints.cpp" line="6433"/>
+      <location filename="../../CommandConstraints.cpp" line="6438"/>
+      <location filename="../../CommandConstraints.cpp" line="6457"/>
+      <location filename="../../CommandConstraints.cpp" line="6487"/>
+      <location filename="../../CommandConstraints.cpp" line="6502"/>
+      <location filename="../../CommandConstraints.cpp" line="6554"/>
+      <location filename="../../CommandConstraints.cpp" line="6636"/>
+      <location filename="../../CommandConstraints.cpp" line="6649"/>
+      <location filename="../../CommandConstraints.cpp" line="6674"/>
+      <location filename="../../CommandConstraints.cpp" line="6696"/>
+      <location filename="../../CommandConstraints.cpp" line="6726"/>
+      <location filename="../../CommandConstraints.cpp" line="6763"/>
+      <location filename="../../CommandConstraints.cpp" line="6786"/>
+      <location filename="../../CommandConstraints.cpp" line="6828"/>
+      <location filename="../../CommandConstraints.cpp" line="6844"/>
+      <location filename="../../CommandConstraints.cpp" line="6971"/>
+      <location filename="../../CommandConstraints.cpp" line="6977"/>
+      <location filename="../../CommandConstraints.cpp" line="7076"/>
+      <location filename="../../CommandConstraints.cpp" line="7089"/>
+      <location filename="../../CommandConstraints.cpp" line="7110"/>
+      <location filename="../../CommandConstraints.cpp" line="7133"/>
+      <location filename="../../CommandConstraints.cpp" line="7155"/>
+      <location filename="../../CommandConstraints.cpp" line="7163"/>
+      <location filename="../../CommandConstraints.cpp" line="7169"/>
+      <location filename="../../CommandConstraints.cpp" line="7325"/>
+      <location filename="../../CommandConstraints.cpp" line="7333"/>
+      <location filename="../../CommandConstraints.cpp" line="7341"/>
+      <location filename="../../CommandConstraints.cpp" line="7347"/>
+      <location filename="../../CommandConstraints.cpp" line="7496"/>
+      <location filename="../../CommandConstraints.cpp" line="7556"/>
+      <location filename="../../CommandConstraints.cpp" line="7564"/>
+      <location filename="../../CommandConstraints.cpp" line="7596"/>
+      <location filename="../../CommandConstraints.cpp" line="7669"/>
+      <location filename="../../CommandConstraints.cpp" line="7680"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="431"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="502"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="580"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="640"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="703"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="794"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="843"/>
+      <location filename="../../CommandSketcherTools.cpp" line="125"/>
+      <location filename="../../CommandSketcherTools.cpp" line="133"/>
+      <location filename="../../CommandSketcherTools.cpp" line="175"/>
+      <location filename="../../CommandSketcherTools.cpp" line="235"/>
+      <location filename="../../CommandSketcherTools.cpp" line="243"/>
+      <location filename="../../CommandSketcherTools.cpp" line="320"/>
+      <location filename="../../CommandSketcherTools.cpp" line="931"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1024"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1032"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1137"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1146"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1384"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1393"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1452"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1915"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1924"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1986"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="123"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="146"/>
       <source>Wrong selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
@@ -2198,307 +2842,333 @@
       <location filename="../../CommandAlterGeometry.cpp" line="124"/>
       <location filename="../../CommandAlterGeometry.cpp" line="132"/>
       <source>Select edge(s) from the sketch.</source>
-      <translation>Wählen Sie Kante(n) aus der Skizze.</translation>
+      <translation>Kante(n) aus der Skizze auswählen.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5124"/>
-      <location filename="../../CommandConstraints.cpp" line="5255"/>
-      <location filename="../../CommandConstraints.cpp" line="5580"/>
-      <location filename="../../CommandConstraints.cpp" line="5709"/>
-      <location filename="../../EditDatumDialog.cpp" line="186"/>
+      <location filename="../../CommandConstraints.cpp" line="5062"/>
+      <location filename="../../CommandConstraints.cpp" line="5211"/>
+      <location filename="../../CommandConstraints.cpp" line="5541"/>
+      <location filename="../../CommandConstraints.cpp" line="5677"/>
+      <location filename="../../EditDatumDialog.cpp" line="206"/>
       <source>Dimensional constraint</source>
-      <translation>Dimensionale Beschränkung</translation>
+      <translation>Maßliche Einschränkung</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="127"/>
-      <source>Cannot add a constraint between two external geometries!</source>
-      <translation>Eine Nebenbedingung zwischen zwei externen Geometrien kann nicht hinzugefügt werden!</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="133"/>
-      <source>Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation>Eine Beschränkung zwischen zwei festen Geometrien kann nicht hinzugefügt werden! Feste Geometrien beinhalten externe Geometrie, geblockte Geometrie oder spezielle Punkte als B-Spline Knotenpunkte.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="666"/>
-      <location filename="../../CommandConstraints.cpp" line="677"/>
-      <location filename="../../CommandConstraints.cpp" line="689"/>
+      <location filename="../../CommandConstraints.cpp" line="704"/>
+      <location filename="../../CommandConstraints.cpp" line="715"/>
+      <location filename="../../CommandConstraints.cpp" line="727"/>
       <source>Only sketch and its support is allowed to select</source>
       <translation>Nur Skizze und ihre Auflage dürfen ausgewählt werden</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="698"/>
+      <location filename="../../CommandConstraints.cpp" line="736"/>
       <source>One of the selected has to be on the sketch</source>
       <translation>Eine der Ausgewählten muss auf der Skizze liegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1114"/>
-      <location filename="../../CommandConstraints.cpp" line="1361"/>
+      <location filename="../../CommandConstraints.cpp" line="1086"/>
+      <location filename="../../CommandConstraints.cpp" line="1324"/>
       <source>Select an edge from the sketch.</source>
       <translation>Wählen Sie eine Kante aus der Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1139"/>
-      <location filename="../../CommandConstraints.cpp" line="1153"/>
-      <location filename="../../CommandConstraints.cpp" line="1159"/>
+      <location filename="../../CommandConstraints.cpp" line="1111"/>
+      <location filename="../../CommandConstraints.cpp" line="1125"/>
+      <location filename="../../CommandConstraints.cpp" line="1131"/>
+      <location filename="../../CommandConstraints.cpp" line="1150"/>
       <location filename="../../CommandConstraints.cpp" line="1178"/>
       <location filename="../../CommandConstraints.cpp" line="1206"/>
-      <location filename="../../CommandConstraints.cpp" line="1233"/>
-      <location filename="../../CommandConstraints.cpp" line="1247"/>
-      <location filename="../../CommandConstraints.cpp" line="1253"/>
-      <location filename="../../CommandConstraints.cpp" line="1386"/>
-      <location filename="../../CommandConstraints.cpp" line="1400"/>
-      <location filename="../../CommandConstraints.cpp" line="1406"/>
-      <location filename="../../CommandConstraints.cpp" line="1424"/>
-      <location filename="../../CommandConstraints.cpp" line="1450"/>
-      <location filename="../../CommandConstraints.cpp" line="1478"/>
-      <location filename="../../CommandConstraints.cpp" line="1487"/>
-      <location filename="../../CommandConstraints.cpp" line="1498"/>
-      <location filename="../../CommandSketcherTools.cpp" line="156"/>
-      <location filename="../../CommandSketcherTools.cpp" line="254"/>
+      <location filename="../../CommandConstraints.cpp" line="1220"/>
+      <location filename="../../CommandConstraints.cpp" line="1226"/>
+      <location filename="../../CommandConstraints.cpp" line="1349"/>
+      <location filename="../../CommandConstraints.cpp" line="1363"/>
+      <location filename="../../CommandConstraints.cpp" line="1369"/>
+      <location filename="../../CommandConstraints.cpp" line="1387"/>
+      <location filename="../../CommandConstraints.cpp" line="1413"/>
+      <location filename="../../CommandConstraints.cpp" line="1442"/>
+      <location filename="../../CommandConstraints.cpp" line="1451"/>
+      <location filename="../../CommandConstraints.cpp" line="1462"/>
+      <location filename="../../CommandSketcherTools.cpp" line="165"/>
+      <location filename="../../CommandSketcherTools.cpp" line="267"/>
       <source>Impossible constraint</source>
       <translation>Nicht erfüllbare Bedingung</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1140"/>
-      <location filename="../../CommandConstraints.cpp" line="1234"/>
-      <location filename="../../CommandConstraints.cpp" line="1387"/>
-      <location filename="../../CommandConstraints.cpp" line="1479"/>
+      <location filename="../../CommandConstraints.cpp" line="1112"/>
+      <location filename="../../CommandConstraints.cpp" line="1207"/>
+      <location filename="../../CommandConstraints.cpp" line="1350"/>
+      <location filename="../../CommandConstraints.cpp" line="1443"/>
       <source>The selected edge is not a line segment</source>
       <translation>Die gewählte Kante ist kein Linienabschnitt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1148"/>
-      <location filename="../../CommandConstraints.cpp" line="1242"/>
-      <location filename="../../CommandConstraints.cpp" line="1395"/>
-      <location filename="../../CommandConstraints.cpp" line="1492"/>
-      <location filename="../../CommandConstraints.cpp" line="1905"/>
-      <location filename="../../CommandConstraints.cpp" line="1953"/>
+      <location filename="../../CommandConstraints.cpp" line="1120"/>
+      <location filename="../../CommandConstraints.cpp" line="1215"/>
+      <location filename="../../CommandConstraints.cpp" line="1358"/>
+      <location filename="../../CommandConstraints.cpp" line="1456"/>
+      <location filename="../../CommandConstraints.cpp" line="1826"/>
+      <location filename="../../CommandConstraints.cpp" line="1874"/>
       <source>Double constraint</source>
       <translation>Doppelbedingung</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1149"/>
-      <location filename="../../CommandConstraints.cpp" line="1243"/>
-      <location filename="../../CommandConstraints.cpp" line="1401"/>
-      <location filename="../../CommandConstraints.cpp" line="1488"/>
+      <location filename="../../CommandConstraints.cpp" line="1121"/>
+      <location filename="../../CommandConstraints.cpp" line="1216"/>
+      <location filename="../../CommandConstraints.cpp" line="1364"/>
+      <location filename="../../CommandConstraints.cpp" line="1452"/>
       <source>The selected edge already has a horizontal constraint!</source>
-      <translation>Die ausgewählte Kante hat bereits eine horizontale Einschränkung!</translation>
+      <translation>Die ausgewählte Kante hat bereits eine Horizontal-Einschränkung!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1154"/>
-      <location filename="../../CommandConstraints.cpp" line="1248"/>
-      <location filename="../../CommandConstraints.cpp" line="1396"/>
-      <location filename="../../CommandConstraints.cpp" line="1493"/>
+      <location filename="../../CommandConstraints.cpp" line="1126"/>
+      <location filename="../../CommandConstraints.cpp" line="1221"/>
+      <location filename="../../CommandConstraints.cpp" line="1359"/>
+      <location filename="../../CommandConstraints.cpp" line="1457"/>
       <source>The selected edge already has a vertical constraint!</source>
-      <translation>Die ausgewählte Kante hat bereits eine vertikale Einschränkung!</translation>
+      <translation>Die ausgewählte Kante hat bereits eine Vertikal-Einschränkung!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1160"/>
-      <location filename="../../CommandConstraints.cpp" line="1254"/>
-      <location filename="../../CommandConstraints.cpp" line="1407"/>
-      <location filename="../../CommandConstraints.cpp" line="1499"/>
-      <location filename="../../CommandConstraints.cpp" line="1906"/>
-      <location filename="../../CommandConstraints.cpp" line="1954"/>
+      <location filename="../../CommandConstraints.cpp" line="1132"/>
+      <location filename="../../CommandConstraints.cpp" line="1227"/>
+      <location filename="../../CommandConstraints.cpp" line="1370"/>
+      <location filename="../../CommandConstraints.cpp" line="1463"/>
+      <location filename="../../CommandConstraints.cpp" line="1827"/>
+      <location filename="../../CommandConstraints.cpp" line="1875"/>
       <source>The selected edge already has a Block constraint!</source>
-      <translation>Die ausgewählte Kante hat bereits eine fixier Einschränkung!</translation>
+      <translation>Die ausgewählte Kante hat bereits eine Fixier-Einschränkung!</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1151"/>
+      <source>The selected item(s) can't accept a horizontal constraint!</source>
+      <translation>Die ausgewählten Elemente können keine Horizontal-Einschränkung annehmen!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1179"/>
-      <source>The selected item(s) can't accept a horizontal constraint!</source>
-      <translation>Die ausgewählten Elemente nehmen keine horizontale Nebenbedingung an!</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="1207"/>
       <source>There are more than one fixed point selected. Select a maximum of one fixed point!</source>
       <translation>Es ist mehr als ein Fixpunkt ausgewählt. Wähle maximal einen Fixpunkt!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1425"/>
+      <location filename="../../CommandConstraints.cpp" line="1388"/>
       <source>The selected item(s) can't accept a vertical constraint!</source>
-      <translation>Die ausgewählten Elemente nehmen keine vertikale Nebenbedingung an!</translation>
+      <translation>Die ausgewählten Elemente können keine Vertikal-Einschränkung annehmen!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1451"/>
+      <location filename="../../CommandConstraints.cpp" line="1414"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>Es ist mehr als ein Fixpunkt ausgewählt. Wähle maximal einen Fixpunkt!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1605"/>
-      <location filename="../../CommandConstraints.cpp" line="1865"/>
+      <location filename="../../CommandConstraints.cpp" line="1560"/>
+      <location filename="../../CommandConstraints.cpp" line="1783"/>
       <source>Select vertices from the sketch.</source>
       <translation>Wählen Sie Knoten aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1628"/>
+      <location filename="../../CommandConstraints.cpp" line="1583"/>
       <source>Select one vertex from the sketch other than the origin.</source>
-      <translation>Wählen Sie einen Punkt der Skizze außer den Ursprung.</translation>
+      <translation>Einen Knoten aus der Skizze auswählen, nur nicht den Ursprung.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1632"/>
+      <location filename="../../CommandConstraints.cpp" line="1587"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
-      <translation>Wählen Sie nur Scheitelpunkte aus der Skizze. Die letzten ausgewählte Scheitelpunkt ist möglicherweise der Ursprung.</translation>
+      <translation>Nur Knoten aus der Skizze auswählen. Der letzte gewählte Knoten darf der Ursprung sein.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1876"/>
+      <location filename="../../CommandConstraints.cpp" line="1794"/>
       <source>Wrong solver status</source>
       <translation>Falscher Solver Status</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1877"/>
-      <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
-      <translation>Eine Fixierung kann nicht hinzugefügt werden, wenn die Skizze nicht gelöst ist oder redundante und / oder widersprüchliche Einschränkungen vorliegen.</translation>
+      <location filename="../../CommandConstraints.cpp" line="128"/>
+      <source>Cannot add a constraint between two external geometries.</source>
+      <translation>Es ist nicht möglich eine Einschränkung zwischen zwei externen Geometrien hinzuzufügen.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1892"/>
+      <location filename="../../CommandConstraints.cpp" line="134"/>
+      <source>Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
+      <translation>Es ist nicht möglich eine Einschränkung zwischen zwei unveränderlichen Geometrien hinzuzufügen. Unveränderliche Geometrien schließen auch externe Geometrie, fixierte Geometrie oder spezielle Punkte wie B-Spline-Knotenpunkte ein.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1795"/>
+      <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
+      <translation>Eine Fixier-Einschränkung kann nicht hinzugefügt werden, solange die Skizze nicht berechnet (gelöst) ist oder redundante und / oder widersprüchliche Einschränkungen enthält.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="1813"/>
       <source>Select one edge from the sketch.</source>
       <translation>Wähle eine Kante aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1896"/>
+      <location filename="../../CommandConstraints.cpp" line="1817"/>
       <source>Select only edges from the sketch.</source>
       <translation>Wähle nur Kanten aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1924"/>
-      <location filename="../../CommandConstraints.cpp" line="1969"/>
-      <location filename="../../CommandConstraints.cpp" line="3728"/>
-      <location filename="../../CommandConstraints.cpp" line="4183"/>
-      <location filename="../../CommandConstraints.cpp" line="4333"/>
-      <location filename="../../CommandConstraints.cpp" line="4826"/>
-      <location filename="../../CommandConstraints.cpp" line="6977"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="725"/>
+      <location filename="../../CommandConstraints.cpp" line="1845"/>
+      <location filename="../../CommandConstraints.cpp" line="1890"/>
+      <location filename="../../CommandConstraints.cpp" line="3577"/>
+      <location filename="../../CommandConstraints.cpp" line="4056"/>
+      <location filename="../../CommandConstraints.cpp" line="4211"/>
+      <location filename="../../CommandConstraints.cpp" line="4728"/>
+      <location filename="../../CommandConstraints.cpp" line="7039"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="833"/>
       <source>Error</source>
       <translation>Fehlermeldungen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2172"/>
+      <location filename="../../CommandConstraints.cpp" line="2094"/>
       <source>Select two or more points from the sketch.</source>
       <translation>Wählen Sie aus der Skizze zwei oder mehr Punkte aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2183"/>
-      <location filename="../../CommandConstraints.cpp" line="2193"/>
+      <location filename="../../CommandConstraints.cpp" line="2105"/>
+      <location filename="../../CommandConstraints.cpp" line="2115"/>
       <source>Select two or more vertexes from the sketch.</source>
-      <translation>Wählen Sie zwei oder mehr Scheitelpunkte von der Skizze.</translation>
+      <translation>Zwei oder mehr Punkte aus der Skizze auswählen.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2245"/>
-      <location filename="../../CommandConstraints.cpp" line="4440"/>
+      <location filename="../../CommandConstraints.cpp" line="2168"/>
+      <location filename="../../CommandConstraints.cpp" line="4330"/>
       <source>Constraint Substitution</source>
       <translation>Beschränkung Ersetzen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2246"/>
+      <location filename="../../CommandConstraints.cpp" line="2169"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>Die Endpunkt zu Endpunkt Tangente wurde stattdessen angewendet.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2363"/>
+      <location filename="../../CommandConstraints.cpp" line="2285"/>
       <source>Select vertexes from the sketch.</source>
       <translation>Wählen Sie Vertexe aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2374"/>
-      <location filename="../../CommandConstraints.cpp" line="2504"/>
+      <location filename="../../CommandConstraints.cpp" line="2296"/>
+      <location filename="../../CommandConstraints.cpp" line="2427"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Wählen Sie genau eine Linie oder einen Punkt und eine Linie oder zwei Punkte aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2471"/>
+      <location filename="../../CommandConstraints.cpp" line="2394"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Keine Längenbeschränkung einer Achse möglich!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2591"/>
+      <location filename="../../CommandConstraints.cpp" line="2519"/>
       <source>This constraint does not make sense for non-linear curves</source>
       <translation>Diese Einschränkung ist für nichtlineare Kurven nicht sinnvoll</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2744"/>
-      <location filename="../../CommandConstraints.cpp" line="2927"/>
-      <location filename="../../CommandConstraints.cpp" line="3173"/>
-      <location filename="../../CommandConstraints.cpp" line="4893"/>
-      <location filename="../../CommandConstraints.cpp" line="5350"/>
-      <location filename="../../CommandConstraints.cpp" line="5924"/>
+      <location filename="../../CommandConstraints.cpp" line="2633"/>
+      <location filename="../../CommandConstraints.cpp" line="2840"/>
+      <location filename="../../CommandConstraints.cpp" line="3092"/>
+      <location filename="../../CommandConstraints.cpp" line="4794"/>
+      <location filename="../../CommandConstraints.cpp" line="5305"/>
+      <location filename="../../CommandConstraints.cpp" line="5891"/>
       <source>Select the right things from the sketch.</source>
       <translation>Wähle die richtigen Dinge aus der Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2784"/>
-      <location filename="../../CommandConstraints.cpp" line="2853"/>
+      <location filename="../../CommandConstraints.cpp" line="2673"/>
+      <location filename="../../CommandConstraints.cpp" line="2755"/>
       <source>Point on B-spline edge currently unsupported.</source>
       <translation>Punkt auf B-Spline Rand wird derzeit nicht unterstützt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2799"/>
-      <location filename="../../CommandConstraints.cpp" line="2869"/>
+      <location filename="../../CommandConstraints.cpp" line="2779"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>Keiner der gewählten Punkte wurde beschränkt auf die zugehörigen Kurven. Sie sind entweder Bestandteil des gleichen Elements oder Sie sind beide Externe Geometrie.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2806"/>
+      <location filename="../../CommandConstraints.cpp" line="2707"/>
       <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
       <translation>Wählen Sie entweder einen Punkt und mehrere Kurven oder eine Kurve und mehrere Punkte. Sie haben %1 Kurven und %2 Punkte ausgewählt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2938"/>
-      <location filename="../../CommandConstraints.cpp" line="3041"/>
-      <location filename="../../CommandConstraints.cpp" line="3184"/>
-      <location filename="../../CommandConstraints.cpp" line="3285"/>
+      <location filename="../../CommandConstraints.cpp" line="2679"/>
+      <location filename="../../CommandConstraints.cpp" line="2763"/>
+      <location filename="../../CommandConstraints.cpp" line="3549"/>
+      <location filename="../../CommandConstraints.cpp" line="3654"/>
+      <location filename="../../CommandConstraints.cpp" line="3696"/>
+      <location filename="../../CommandConstraints.cpp" line="3877"/>
+      <location filename="../../CommandConstraints.cpp" line="4028"/>
+      <location filename="../../CommandConstraints.cpp" line="4183"/>
+      <location filename="../../CommandConstraints.cpp" line="4271"/>
+      <location filename="../../CommandConstraints.cpp" line="4301"/>
+      <location filename="../../CommandConstraints.cpp" line="4525"/>
+      <location filename="../../CommandConstraints.cpp" line="4700"/>
+      <location filename="../../CommandConstraints.cpp" line="5358"/>
+      <location filename="../../CommandConstraints.cpp" line="5603"/>
+      <location filename="../../CommandConstraints.cpp" line="5934"/>
+      <location filename="../../CommandConstraints.cpp" line="5996"/>
+      <location filename="../../CommandConstraints.cpp" line="6288"/>
+      <location filename="../../CommandConstraints.cpp" line="6978"/>
+      <source>Select an edge that is not a B-spline weight</source>
+      <translation>Eine Kante wählen, die kein B-Spline-Gewicht darstellt</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2696"/>
+      <source>None of the selected points were constrained onto the respective curves, because they are parts of the same element, because they are both external geometry, or because the edge is not eligible.</source>
+      <translation type="unfinished">None of the selected points were constrained onto the respective curves, because they are parts of the same element, because they are both external geometry, or because the edge is not eligible.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2851"/>
+      <location filename="../../CommandConstraints.cpp" line="2959"/>
+      <location filename="../../CommandConstraints.cpp" line="3103"/>
+      <location filename="../../CommandConstraints.cpp" line="3208"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Wählen Sie genau eine Linie oder bis zu zwei Punkte aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2965"/>
+      <location filename="../../CommandConstraints.cpp" line="2880"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Keine horizontale Längenbeschränkung einer Achse möglich!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3013"/>
+      <location filename="../../CommandConstraints.cpp" line="2930"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>Eine feste x-Einschränkung auf den Ursprung kann nicht hinzugefügt werden!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3070"/>
-      <location filename="../../CommandConstraints.cpp" line="3314"/>
+      <location filename="../../CommandConstraints.cpp" line="2988"/>
+      <location filename="../../CommandConstraints.cpp" line="3237"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
       <translation>Diese Einschränkung macht nur Sinn auf einem Liniensegment oder einem Paar von Punkten</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3209"/>
+      <location filename="../../CommandConstraints.cpp" line="3128"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Keine vertikale Längenbeschränkung einer Achse möglich!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3258"/>
+      <location filename="../../CommandConstraints.cpp" line="3178"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>Eine feste y-Einschränkung auf den Ursprung kann nicht hinzugefügt werden!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3455"/>
+      <location filename="../../CommandConstraints.cpp" line="3338"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Wählen Sie zwei oder mehr Linien aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3468"/>
-      <location filename="../../CommandConstraints.cpp" line="6425"/>
+      <location filename="../../CommandConstraints.cpp" line="3351"/>
+      <location filename="../../CommandConstraints.cpp" line="6418"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Wählen Sie mindestens zwei Linien aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3482"/>
+      <location filename="../../CommandConstraints.cpp" line="3365"/>
       <source>Select a valid line</source>
       <translation>Wählen Sie eine gültige Linie aus</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3498"/>
-      <location filename="../../CommandConstraints.cpp" line="3536"/>
+      <location filename="../../CommandConstraints.cpp" line="3381"/>
+      <location filename="../../CommandConstraints.cpp" line="3419"/>
       <source>The selected edge is not a valid line</source>
       <translation>Die gewählte Kante ist keine gültige Linie</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3640"/>
+      <location filename="../../CommandConstraints.cpp" line="3483"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2508,45 +3178,45 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Erlaubte Kombinationen: zwei Kurven; einen Endpunkt und eine Kurve; zwei Endpunkte; zwei Kurven und einen Punkt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3660"/>
+      <location filename="../../CommandConstraints.cpp" line="3503"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>Geometrie aus der Skizze auswählen.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3673"/>
+      <location filename="../../CommandConstraints.cpp" line="3516"/>
       <source>Wrong number of selected objects!</source>
       <comment>perpendicular constraint</comment>
       <translation>Falsche Anzahl von ausgewählten Objekten!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3744"/>
-      <location filename="../../CommandConstraints.cpp" line="4348"/>
+      <location filename="../../CommandConstraints.cpp" line="3593"/>
+      <location filename="../../CommandConstraints.cpp" line="4226"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
       <translation>Bei 3 Objekten müssen diese aus 2 Kurven und 1 Punkt bestehen.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3753"/>
-      <location filename="../../CommandConstraints.cpp" line="3790"/>
+      <location filename="../../CommandConstraints.cpp" line="3602"/>
+      <location filename="../../CommandConstraints.cpp" line="3639"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Eine Rechtwinkligkeitsbedingung kann nicht zu einem unverbundenen Punkt hinzugefügt werden!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3799"/>
-      <location filename="../../CommandConstraints.cpp" line="3832"/>
-      <location filename="../../CommandConstraints.cpp" line="4007"/>
+      <location filename="../../CommandConstraints.cpp" line="3648"/>
+      <location filename="../../CommandConstraints.cpp" line="3687"/>
+      <location filename="../../CommandConstraints.cpp" line="3868"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
       <translation>Senkrecht zur B-Spline-Kante wird derzeit nicht unterstützt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3823"/>
-      <location filename="../../CommandConstraints.cpp" line="3998"/>
+      <location filename="../../CommandConstraints.cpp" line="3678"/>
+      <location filename="../../CommandConstraints.cpp" line="3859"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Eine der ausgewählten Kanten sollte eine Gerade sein.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4246"/>
+      <location filename="../../CommandConstraints.cpp" line="4118"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -2556,384 +3226,395 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpunkte; Zwei Kurven und ein Punkt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4265"/>
+      <location filename="../../CommandConstraints.cpp" line="4137"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>Geometrie aus der Skizze auswählen.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4278"/>
+      <location filename="../../CommandConstraints.cpp" line="4150"/>
       <source>Wrong number of selected objects!</source>
       <comment>tangent constraint</comment>
       <translation>Falsche Anzahl von ausgewählten Objekten!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4357"/>
-      <location filename="../../CommandConstraints.cpp" line="4378"/>
-      <location filename="../../CommandConstraints.cpp" line="4768"/>
+      <location filename="../../CommandConstraints.cpp" line="4235"/>
+      <location filename="../../CommandConstraints.cpp" line="4256"/>
+      <location filename="../../CommandConstraints.cpp" line="4664"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Eine Tangentialrandbedingung kann nicht zu einem unverbundenen Punkt hinzugefügt werden!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4387"/>
-      <location filename="../../CommandConstraints.cpp" line="4411"/>
-      <location filename="../../CommandConstraints.cpp" line="4629"/>
+      <location filename="../../CommandConstraints.cpp" line="4265"/>
+      <location filename="../../CommandConstraints.cpp" line="4295"/>
+      <location filename="../../CommandConstraints.cpp" line="4519"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
       <translation>Tangentiale zu B-Spline Rand wird derzeit nicht unterstützt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4441"/>
+      <location filename="../../CommandConstraints.cpp" line="4331"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
-      <translation>Die Endpunkt zu Endpunkt Tangente wurde stattdessen angewendet. Die Koinzidenzbedingung wurde gelöscht.</translation>
+      <translation>Eine Endpunkt-zu-Endpunkt-Tangente wurde angelegt. Die Koinzidenz-Einschränkung wurde gelöscht.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4904"/>
-      <location filename="../../CommandConstraints.cpp" line="4955"/>
-      <location filename="../../CommandConstraints.cpp" line="5361"/>
-      <location filename="../../CommandConstraints.cpp" line="5412"/>
+      <location filename="../../CommandConstraints.cpp" line="4805"/>
+      <location filename="../../CommandConstraints.cpp" line="4866"/>
+      <location filename="../../CommandConstraints.cpp" line="5316"/>
+      <location filename="../../CommandConstraints.cpp" line="5373"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Wählen Sie eine oder mehrere Bögen oder Kreise aus der Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5005"/>
-      <location filename="../../CommandConstraints.cpp" line="5461"/>
+      <location filename="../../CommandConstraints.cpp" line="4871"/>
+      <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
+      <translation>Entweder nur einen oder mehrere B-Splinen-Pole auswählen oder nur einen oder mehrere Bögen oder Kreise aus der Skizze auswählen, aber nicht gemischt.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="4927"/>
+      <location filename="../../CommandConstraints.cpp" line="5422"/>
       <source>Constrain equal</source>
       <translation>Gleichheit festlegen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5006"/>
+      <location filename="../../CommandConstraints.cpp" line="4928"/>
       <source>Do you want to share the same radius for all selected elements?</source>
       <translation>Möchten Sie den gleichen Radius allen ausgewählten Elemente zuweisen?</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5180"/>
-      <location filename="../../CommandConstraints.cpp" line="5636"/>
+      <location filename="../../CommandConstraints.cpp" line="5118"/>
+      <location filename="../../CommandConstraints.cpp" line="5597"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Einschränkung gilt nur für Bögen oder Kreise.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5462"/>
+      <location filename="../../CommandConstraints.cpp" line="5423"/>
       <source>Do you want to share the same diameter for all selected elements?</source>
       <translation>Möchten Sie für alle ausgewählten Elemente den gleichen Durchmesser verwenden?</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5936"/>
-      <location filename="../../CommandConstraints.cpp" line="6165"/>
+      <location filename="../../CommandConstraints.cpp" line="5903"/>
+      <location filename="../../CommandConstraints.cpp" line="6148"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Wählen Sie eine oder zwei Linien aus der Skizze. Oder wählen Sie zwei Kanten und einen Punkt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6078"/>
-      <location filename="../../CommandConstraints.cpp" line="6243"/>
+      <location filename="../../CommandConstraints.cpp" line="6059"/>
+      <location filename="../../CommandConstraints.cpp" line="6226"/>
       <source>Parallel lines</source>
       <translation>Parallele Linien</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6079"/>
-      <location filename="../../CommandConstraints.cpp" line="6244"/>
+      <location filename="../../CommandConstraints.cpp" line="6060"/>
+      <location filename="../../CommandConstraints.cpp" line="6227"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
-      <translation>Eine Winkel-Einschränkung kann für zwei parallele Linien nicht festgelegt werden.</translation>
+      <translation>Es ist nicht möglich eine Winkel-Einschränkung für zwei parallele Linien festzulegen.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6111"/>
+      <location filename="../../CommandConstraints.cpp" line="6092"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Winkelbeschränkung einer Achse nicht möglich!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6412"/>
+      <location filename="../../CommandConstraints.cpp" line="6405"/>
       <source>Select two edges from the sketch.</source>
       <translation>Wählen Sie zwei Kanten aus der Skizze aus.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6441"/>
-      <location filename="../../CommandConstraints.cpp" line="7067"/>
+      <location filename="../../CommandConstraints.cpp" line="6434"/>
+      <location filename="../../CommandConstraints.cpp" line="7134"/>
       <source>Select two or more compatible edges</source>
       <translation>Wählen Sie zwei oder mehr kompatible Kanten</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6446"/>
+      <location filename="../../CommandConstraints.cpp" line="6439"/>
       <source>Sketch axes cannot be used in equality constraints</source>
       <translation>Skizzen-Achsen nicht in Gleichheitbeschränkungen einsetzbar</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6465"/>
+      <location filename="../../CommandConstraints.cpp" line="6458"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Gleichheit für B-Spline Rand wird derzeit nicht unterstützt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6485"/>
-      <location filename="../../CommandConstraints.cpp" line="6499"/>
+      <location filename="../../CommandConstraints.cpp" line="6488"/>
+      <location filename="../../CommandConstraints.cpp" line="6503"/>
+      <location filename="../../CommandConstraints.cpp" line="6555"/>
       <source>Select two or more edges of similar type</source>
       <translation>Wählen Sie mindestens zwei Kanten ähnlichen Typs</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6610"/>
-      <location filename="../../CommandConstraints.cpp" line="6622"/>
-      <location filename="../../CommandConstraints.cpp" line="6667"/>
-      <location filename="../../CommandConstraints.cpp" line="6732"/>
-      <location filename="../../CommandConstraints.cpp" line="6796"/>
+      <location filename="../../CommandConstraints.cpp" line="6637"/>
+      <location filename="../../CommandConstraints.cpp" line="6650"/>
+      <location filename="../../CommandConstraints.cpp" line="6697"/>
+      <location filename="../../CommandConstraints.cpp" line="6764"/>
+      <location filename="../../CommandConstraints.cpp" line="6845"/>
       <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
       <translation>Wählen Sie zwei Punkte und eine Symmetrielinie, zwei Punkte und einen Symmetriepunkt oder eine Linie und einen Symmetriepunkt von der Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6646"/>
-      <location filename="../../CommandConstraints.cpp" line="6696"/>
-      <location filename="../../CommandConstraints.cpp" line="6754"/>
-      <location filename="../../CommandConstraints.cpp" line="6781"/>
+      <location filename="../../CommandConstraints.cpp" line="6675"/>
+      <location filename="../../CommandConstraints.cpp" line="6829"/>
+      <source>Cannot add a symmetry constraint between a line and its end points.</source>
+      <translation>Es ist nicht möglich eine Symmetrieeinschränkung zwischen einer Linie und ihren Endpunkten hinzuzufügen.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6727"/>
+      <location filename="../../CommandConstraints.cpp" line="6787"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
-      <translation>Kann keine Symmetrie zwischen einer Linie und deren Endpunkten definieren!</translation>
+      <translation>Es ist nicht möglich eine Symmetrieeinschränkung zwischen einer Linie und ihren Endpunkten hinzuzufügen!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6855"/>
-      <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
+      <location filename="../../CommandConstraints.cpp" line="6907"/>
+      <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation>Wählen Sie zwei Endpunkte von Linien aus, die als Strahlen dienen sollen, und eine Kante, die eine Grenze darstellt. Der erste gewählte Punkt entspricht Index n1, zweitens - zu n2 und der Bezugs-Wert legt das Verhältnis n2/n1 fest.</translation>
+      <translation>Endpunkte zweier Linien, die als Strahlen dienen sollen, und eine Kante, die eine Grenze darstellt, auswählen. Der erste gewählte Punkt entspricht dem Index n1, der zweite dem Index n2 und der Eigabewert legt das Verhältnis n2/n1 fest.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6870"/>
+      <location filename="../../CommandConstraints.cpp" line="6955"/>
+      <source>Cannot create constraint with external geometry only.</source>
+      <translation>Es ist nicht möglich eine Einschränkung zu erstellen, die nur auf externen Geometrien basiert.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6962"/>
+      <source>Incompatible geometry is selected.</source>
+      <translation>Es wurde unpassende Geometrie ausgewählt.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6972"/>
+      <source>SnellsLaw on B-spline edge is currently unsupported.</source>
+      <translation>Brechung nach Snellius-Gesetz an B-Spline-Kanten wird derzeit nicht unterstützt.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7156"/>
+      <source>You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</source>
+      <translation type="unfinished">You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7209"/>
+      <location filename="../../CommandConstraints.cpp" line="7387"/>
+      <source>Currently all internal geometrical elements of the ellipse are already exposed.</source>
+      <translation type="unfinished">Currently all internal geometrical elements of the ellipse are already exposed.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="7557"/>
+      <location filename="../../CommandConstraints.cpp" line="7565"/>
+      <location filename="../../CommandConstraints.cpp" line="7597"/>
+      <location filename="../../CommandConstraints.cpp" line="7670"/>
+      <location filename="../../CommandConstraints.cpp" line="7681"/>
+      <source>Select constraints from the sketch.</source>
+      <translation>Einschränkungen aus der Skizze auswählen.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="6923"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Ausgewählte Objekte sind nicht nur Geometrie aus einer einzigen Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6879"/>
+      <location filename="../../CommandConstraints.cpp" line="6933"/>
       <source>Number of selected objects is not 3 (is %1).</source>
       <translation>Die Anzahl der ausgewählten Objekte ist nicht 3 (ist %1).</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6901"/>
-      <source>Cannot create constraint with external geometry only!!</source>
-      <translation>Kann keine Beschränkung ausschließlich auf Basis einer Externen Geometrie erstellen!!</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6908"/>
-      <source>Incompatible geometry is selected!</source>
-      <translation>Inkompatible Geometrie wurde ausgewählt!</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="6917"/>
-      <source>SnellsLaw on B-spline edge currently unsupported.</source>
-      <translation>SnellsLaw auf B-Spline Rand wird derzeit nicht unterstützt.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7013"/>
-      <location filename="../../CommandConstraints.cpp" line="7024"/>
+      <location filename="../../CommandConstraints.cpp" line="7077"/>
+      <location filename="../../CommandConstraints.cpp" line="7090"/>
       <source>Select at least one ellipse and one edge from the sketch.</source>
       <translation>Wählen Sie mindestens eine Ellipse und eine Kante aus der Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7044"/>
+      <location filename="../../CommandConstraints.cpp" line="7111"/>
       <source>Sketch axes cannot be used in internal alignment constraint</source>
       <translation>Skizzen-Achsen können nicht in interner Ausrichtungs-Einschränkung eingesetzt werden</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7089"/>
-      <source>You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</source>
-      <translation>Sie können nicht intern eine Ellipse auf eine andere Ellipse beschränken. Wählen Sie nur eine Ellipse.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7095"/>
-      <location filename="../../CommandConstraints.cpp" line="7260"/>
+      <location filename="../../CommandConstraints.cpp" line="7164"/>
+      <location filename="../../CommandConstraints.cpp" line="7342"/>
       <source>Maximum 2 points are supported.</source>
       <translation>Maximal 2 Punkte werden unterstützt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7101"/>
-      <location filename="../../CommandConstraints.cpp" line="7266"/>
+      <location filename="../../CommandConstraints.cpp" line="7170"/>
+      <location filename="../../CommandConstraints.cpp" line="7348"/>
       <source>Maximum 2 lines are supported.</source>
-      <translation>Maximal 2 Punkte werden unterstützt.</translation>
+      <translation>Es werden höchstens 2 Linien unterstützt.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7138"/>
-      <location filename="../../CommandConstraints.cpp" line="7303"/>
+      <location filename="../../CommandConstraints.cpp" line="7208"/>
+      <location filename="../../CommandConstraints.cpp" line="7386"/>
       <source>Nothing to constrain</source>
-      <translation>Nichts zu beschränken</translation>
+      <translation>Nichts einzuschränken</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7139"/>
-      <source>Currently all internal geometry of the ellipse is already exposed.</source>
-      <translation>Alle Innengeometrie der Ellipse ist derzeit bereits benutzt.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7226"/>
-      <location filename="../../CommandConstraints.cpp" line="7234"/>
-      <location filename="../../CommandConstraints.cpp" line="7391"/>
-      <location filename="../../CommandConstraints.cpp" line="7399"/>
+      <location filename="../../CommandConstraints.cpp" line="7299"/>
+      <location filename="../../CommandConstraints.cpp" line="7310"/>
+      <location filename="../../CommandConstraints.cpp" line="7477"/>
+      <location filename="../../CommandConstraints.cpp" line="7488"/>
       <source>Extra elements</source>
       <translation>Zusätzliche Elemente</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7227"/>
-      <location filename="../../CommandConstraints.cpp" line="7235"/>
-      <location filename="../../CommandConstraints.cpp" line="7392"/>
+      <location filename="../../CommandConstraints.cpp" line="7300"/>
+      <location filename="../../CommandConstraints.cpp" line="7311"/>
+      <location filename="../../CommandConstraints.cpp" line="7478"/>
       <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
       <translation>Mehr Elemente als möglich wurden für die angegebene Ellipse zur Verfügung gestellt. Diese wurden ignoriert.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7248"/>
+      <location filename="../../CommandConstraints.cpp" line="7326"/>
       <source>You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse.</source>
-      <translation>Sie können nicht den Bogen einer Ellipse auf den anderen Bogen der gleichen Ellipse einschränken. Wählen Sie nur einen Bogen einer Ellipse.</translation>
+      <translation>Es ist nicht möglich eine interne Ausrichtung eines Ellipsenbogens zu einem anderen Ellipsenbogen anzulegen. Es darf nur ein Ellipsenbogen ausgewählt werden.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7254"/>
+      <location filename="../../CommandConstraints.cpp" line="7334"/>
       <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-      <translation>Sie können nicht eine Ellipse auf einen anderen Bogen der gleichen Ellipse einschränken. Wählen Sie nur eine Ellipse oder einen Bogen einer Ellipse.</translation>
+      <translation>Es ist nicht möglich eine interne Ausrichtung einer Ellipse zu einem Ellipsenbogen anzulegen. Es darf nur eine Ellipse oder ein Ellipsenbogen ausgewählt werden.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7304"/>
-      <source>Currently all internal geometry of the arc of ellipse is already exposed.</source>
-      <translation>Die ganze interne Geometrie des elliptischen Bogens ist derzeit bereits freigelegt.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="7400"/>
+      <location filename="../../CommandConstraints.cpp" line="7489"/>
       <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
       <translation>Mehr Elemente als möglich wurden für den angegebenen elliptischen Bogen zur Verfügung gestellt. Diese wurden ignoriert.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7405"/>
+      <location filename="../../CommandConstraints.cpp" line="7497"/>
       <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-      <translation>Interne Geometrie wird derzeit nur für Ellipsen und elliptische Bögen unterstützt. Das ausgewählte Element muss eine Ellipse oder ein elliptischer Bogen sein.</translation>
+      <translation>Interne Geometrie wird derzeit nur für Ellipsen und Ellipsenbögen unterstützt. Das zuletzt ausgewählte Element muss eine Ellipse oder ein Ellipsenbogen sein.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7460"/>
-      <location filename="../../CommandConstraints.cpp" line="7468"/>
-      <location filename="../../CommandConstraints.cpp" line="7500"/>
-      <location filename="../../CommandConstraints.cpp" line="7571"/>
-      <location filename="../../CommandConstraints.cpp" line="7581"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="122"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="154"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="124"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="147"/>
       <source>Select constraint(s) from the sketch.</source>
-      <translation>Wählen Sie die Beschränkung(en) aus der Skizze.</translation>
+      <translation>Einschränkung(en) aus der Skizze auswählen.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5800"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="570"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5233"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="682"/>
       <source>CAD Kernel Error</source>
       <translation>CAD-Kernel-Fehler</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="399"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="432"/>
       <source>None of the selected elements is an edge.</source>
       <translation>Keines der ausgewählten Elemente ist eine Kante.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="473"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="503"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="581"/>
       <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
       <translation>Mindestens eines der ausgewählten Objekte war keine B-Spline und wurde ignoriert.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="509"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="666"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="618"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="772"/>
       <source>Wrong OCE/OCC version</source>
       <translation>Falsche Version von OCE/OCC</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="510"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="667"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="619"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="773"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
       <translation>Diese Version von OCE/OCC unterstützt keine Knoten-Operationen. Sie benötigen 6.9.0 oder höher</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="529"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="686"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="641"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="795"/>
       <source>The selection comprises more than one item. Please select just one knot.</source>
       <translation>Die Auswahl umfasst mehrere Elemente. Bitte wählen Sie nur einen Knoten.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="578"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="691"/>
       <source>Input Error</source>
       <translation>Eingabefehler</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="595"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="739"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="704"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="844"/>
       <source>None of the selected elements is a knot of a B-spline</source>
       <translation>Keines der ausgewählten Elemente ist ein Knoten einer B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="117"/>
-      <location filename="../../CommandSketcherTools.cpp" line="125"/>
-      <location filename="../../CommandSketcherTools.cpp" line="223"/>
-      <location filename="../../CommandSketcherTools.cpp" line="231"/>
+      <location filename="../../CommandSketcherTools.cpp" line="126"/>
+      <location filename="../../CommandSketcherTools.cpp" line="134"/>
+      <location filename="../../CommandSketcherTools.cpp" line="236"/>
+      <location filename="../../CommandSketcherTools.cpp" line="244"/>
       <source>Select at least two edges from the sketch.</source>
       <translation>Wählen Sie mindestens zwei Kanten aus der Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="157"/>
-      <location filename="../../CommandSketcherTools.cpp" line="255"/>
+      <location filename="../../CommandSketcherTools.cpp" line="166"/>
+      <location filename="../../CommandSketcherTools.cpp" line="268"/>
       <source>One selected edge is not connectable</source>
       <translation>Eine ausgewählte Kante ist nicht anschließbar</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="167"/>
+      <location filename="../../CommandSketcherTools.cpp" line="176"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
       <translation>Das schließen einer Form, bestehend aus exakt zwei Linien, ergibt keinen Sinn.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="306"/>
-      <location filename="../../CommandSketcherTools.cpp" line="838"/>
-      <location filename="../../CommandSketcherTools.cpp" line="931"/>
-      <location filename="../../CommandSketcherTools.cpp" line="939"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1286"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1294"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1817"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1825"/>
+      <location filename="../../CommandSketcherTools.cpp" line="321"/>
+      <location filename="../../CommandSketcherTools.cpp" line="932"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1025"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1033"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1385"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1394"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1916"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1925"/>
       <source>Select elements from a single sketch.</source>
       <translation>Wähle Elemente aus einer einzigen Skizze.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="695"/>
+      <location filename="../../CommandSketcherTools.cpp" line="807"/>
       <source>No constraint selected</source>
       <translation>Keine Einschränkung ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="696"/>
+      <location filename="../../CommandSketcherTools.cpp" line="808"/>
       <source>At least one constraint must be selected</source>
       <translation>Mindestens eine Einschränkung muss ausgewählt sein</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1045"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1138"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Eine symmetrische Konstruktion erfordert mindestens zwei geometrische Elemente. Das letzte geometrische Element wird die Referenz für die Symmetrie.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1051"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1147"/>
       <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
       <translation>Das letzte Element muss ein Punkt oder eine Linie sein, die als Referenz für die Symmetrie dient.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1353"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1887"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1453"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1987"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Eine Kopie benötigt mindestens ein ausgewähltes nicht-externes geometrisches Element</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1950"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2048"/>
       <source>Delete All Geometry</source>
       <translation>Gesamte Geometrie löschen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1951"/>
-      <source>Are you really sure you want to delete all the geometry and constraints?</source>
-      <translation>Sind Sie wirklich sicher, dass Sie alle Geometrie und Einschränkungen löschen möchten?</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="2049"/>
+      <source>Are you really sure you want to delete all geometry and constraints?</source>
+      <translation>Sollen wirklich alle Geometrien und Einschränkungen gelöscht werden?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2013"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2108"/>
       <source>Delete All Constraints</source>
       <translation>Alle Einschränkungen löschen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2014"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2109"/>
       <source>Are you really sure you want to delete all the constraints?</source>
       <translation>Sind Sie wirklich sicher, dass Sie alle Beschränkungen löschen möchten?</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="79"/>
+      <location filename="../../EditDatumDialog.cpp" line="80"/>
       <source>Distance constraint</source>
-      <translation>Abstandsbedingung</translation>
+      <translation>Abstandseinschränkung</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="80"/>
+      <location filename="../../EditDatumDialog.cpp" line="81"/>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
       <translation>Der Wert kann nicht geändert werden, da die Skizze Randbedingungskonflikte enthält</translation>
     </message>
@@ -2941,42 +3622,42 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6634"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6075"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Eine Kopie würde zu einem Zirkelbezug führen.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6637"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6078"/>
       <source>This object is in another document.</source>
       <translation>Dieses Objekt ist in einem anderen Dokument.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6640"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6081"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
-      <translation type="unfinished">This object belongs to another body. Hold Ctrl to allow cross-references.</translation>
+      <translation>Dieses Objekt gehört zu einem anderen Körper. Strg-Taste drücken und halten um Querverweise zu erlauben.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6643"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6084"/>
       <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
-      <translation type="unfinished">This object belongs to another body and it contains external geometry. Cross-reference not allowed.</translation>
+      <translation>Dieses Objekt gehört zu einem anderen Körper und enthält externe Geometrie. Querverweis ist nicht erlaubt.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6646"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6087"/>
       <source>This object belongs to another part.</source>
       <translation>Dieses Objekt gehört zu einem anderen Teil.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6649"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6090"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation>Die ausgewählte Skizze ist nicht parallel zu dieser Skizze. Drücke Sie Strg + Alt um eine nicht parallele Skizze zu erlauben.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6652"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6093"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Die XY-Achsen der ausgewählten Skizze haben nicht die gleiche Richtung wie die Aktive Skizze. Drücken Sie Strg + Alt um den Fehler zu ignorieren.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6655"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6096"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Der Ursprung der ausgewählten Skizze ist nicht mit dem Ursprung dieser Skizze ausgerichtet. Halten Sie Strg + Alt, um den Fehler zu ignorieren.</translation>
     </message>
@@ -2984,62 +3665,62 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="465"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="485"/>
       <source>Change value</source>
       <translation>Wert ändern</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="469"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="489"/>
       <source>Toggle to/from reference</source>
-      <translation>Umschalten zum/vom Bezug</translation>
+      <translation>Referenz-Modus ein- / ausschalten</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="472"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="492"/>
       <source>Deactivate</source>
       <translation>Deaktivieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="472"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="492"/>
       <source>Activate</source>
       <translation>Aktivieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="476"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="496"/>
       <source>Show constraints</source>
       <translation>Einschränkungen einblenden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="478"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="498"/>
       <source>Hide constraints</source>
       <translation>Einschränkungen ausblenden</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="484"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="504"/>
       <source>Rename</source>
       <translation>Umbenennen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="491"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="511"/>
       <source>Center sketch</source>
       <translation>Skizze zentrieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="494"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="514"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="498"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="518"/>
       <source>Swap constraint names</source>
       <translation>Namen der Beschränkungen tauschen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="596"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="616"/>
       <source>Unnamed constraint</source>
       <translation>Unbenannte Beschränkung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="597"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="617"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Nur die Namen von benannten Beschränkungen können vertauscht werden.</translation>
     </message>
@@ -3047,80 +3728,98 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="94"/>
+      <location filename="../../EditDatumDialog.cpp" line="96"/>
       <source>Insert angle</source>
       <translation>Winkel einfügen</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="96"/>
+      <location filename="../../EditDatumDialog.cpp" line="98"/>
       <source>Angle:</source>
       <translation>Winkel:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="100"/>
+      <location filename="../../EditDatumDialog.cpp" line="102"/>
       <source>Insert radius</source>
       <translation>Radius einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5076"/>
-      <location filename="../../CommandConstraints.cpp" line="5218"/>
-      <location filename="../../EditDatumDialog.cpp" line="102"/>
+      <location filename="../../CommandConstraints.cpp" line="5015"/>
+      <location filename="../../CommandConstraints.cpp" line="5173"/>
+      <location filename="../../EditDatumDialog.cpp" line="104"/>
       <source>Radius:</source>
       <translation>Radius:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="106"/>
+      <location filename="../../EditDatumDialog.cpp" line="108"/>
       <source>Insert diameter</source>
       <translation>Durchmesser einfügen</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5533"/>
-      <location filename="../../CommandConstraints.cpp" line="5673"/>
-      <location filename="../../EditDatumDialog.cpp" line="108"/>
+      <location filename="../../CommandConstraints.cpp" line="5494"/>
+      <location filename="../../CommandConstraints.cpp" line="5641"/>
+      <location filename="../../EditDatumDialog.cpp" line="110"/>
       <source>Diameter:</source>
       <translation>Durchmesser:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="112"/>
+      <location filename="../../EditDatumDialog.cpp" line="114"/>
+      <source>Insert weight</source>
+      <translation>Gewicht einfügen</translation>
+    </message>
+    <message>
+      <location filename="../../EditDatumDialog.cpp" line="119"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Brechungsindex-Verhältnis</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="113"/>
+      <location filename="../../EditDatumDialog.cpp" line="120"/>
       <source>Ratio n2/n1:</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Verhältnis n2/n1:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="117"/>
+      <location filename="../../EditDatumDialog.cpp" line="125"/>
       <source>Insert length</source>
       <translation>Länge einfügen</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="119"/>
+      <location filename="../../EditDatumDialog.cpp" line="127"/>
       <source>Length:</source>
       <translation>Länge:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5075"/>
-      <location filename="../../CommandConstraints.cpp" line="5217"/>
+      <location filename="../../CommandConstraints.cpp" line="5009"/>
+      <location filename="../../CommandConstraints.cpp" line="5167"/>
+      <source>Change weight</source>
+      <translation>Gewicht ändern</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5010"/>
+      <location filename="../../CommandConstraints.cpp" line="5168"/>
+      <location filename="../../EditDatumDialog.cpp" line="115"/>
+      <source>Weight:</source>
+      <translation>Gewicht:</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="5014"/>
+      <location filename="../../CommandConstraints.cpp" line="5172"/>
       <source>Change radius</source>
       <translation>Radius ändern</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5532"/>
-      <location filename="../../CommandConstraints.cpp" line="5672"/>
+      <location filename="../../CommandConstraints.cpp" line="5493"/>
+      <location filename="../../CommandConstraints.cpp" line="5640"/>
       <source>Change diameter</source>
       <translation>Durchmesser ändern</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6928"/>
+      <location filename="../../CommandConstraints.cpp" line="6989"/>
       <source>Refractive index ratio</source>
       <translation>Brechungsindex-Verhältnis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6929"/>
+      <location filename="../../CommandConstraints.cpp" line="6990"/>
       <source>Ratio n2/n1:</source>
       <translation>Verhältnis n2/n1:</translation>
     </message>
@@ -3128,7 +3827,7 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="181"/>
+      <location filename="../../TaskSketcherElements.cpp" line="184"/>
       <source>Delete</source>
       <translation>Löschen</translation>
     </message>
@@ -3136,22 +3835,22 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6402"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5884"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Diese Verknüpfung wird Zirkulare Abhängigkeiten verursachen.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6405"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5887"/>
       <source>This object is in another document.</source>
       <translation>Dieses Objekt ist in einem anderen Dokument.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6408"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5890"/>
       <source>This object belongs to another body, can't link.</source>
       <translation>Dieses Objekt gehört zu einem anderen Körper, kann nicht verknüft werden.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="6411"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5893"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>Dieses Objekt gehört zu einem anderen Teil, kann nicht verknüpft werden.</translation>
     </message>
@@ -3169,22 +3868,22 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
       <translation>Bezug:</translation>
     </message>
     <message>
-      <location filename="../../InsertDatum.ui" line="54"/>
+      <location filename="../../InsertDatum.ui" line="48"/>
       <source>Name (optional)</source>
       <translation>Name (optional)</translation>
     </message>
     <message>
-      <location filename="../../InsertDatum.ui" line="73"/>
+      <location filename="../../InsertDatum.ui" line="61"/>
       <source>Constraint name (available for expressions)</source>
-      <translation type="unfinished">Constraint name (available for expressions)</translation>
+      <translation>Name der Einschränkung (verfügbar für Audrücke)</translation>
     </message>
     <message>
-      <location filename="../../InsertDatum.ui" line="88"/>
+      <location filename="../../InsertDatum.ui" line="76"/>
       <source>Reference (or constraint) dimension</source>
-      <translation type="unfinished">Reference (or constraint) dimension</translation>
+      <translation>Referenzmaß (aktivierter Haken, sonst Aktives Maß)</translation>
     </message>
     <message>
-      <location filename="../../InsertDatum.ui" line="91"/>
+      <location filename="../../InsertDatum.ui" line="79"/>
       <source>Reference</source>
       <translation>Referenz</translation>
     </message>
@@ -3192,8 +3891,8 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="130"/>
-      <location filename="../../PropertyConstraintListItem.cpp" line="183"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="131"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="184"/>
       <source>Unnamed</source>
       <translation>Unbenannt</translation>
     </message>
@@ -3301,14 +4000,14 @@ Akzeptierte Kombinationen: zwei Kurven; Ein Endpunkt und eine Kurve; Zwei Endpun
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained
 with respect to the others using construction lines</source>
-      <translation>Wenn aktiviert, wird jedes Element im Array maskiert unter Beachtung anderer Elemente mit Konstruktionslinien</translation>
+      <translation>Wenn aktiviert, werden alle Elemente einer Anordnung in der Lage zueinander festgelegt, unter Benutzung von Konstruktionslinien</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="116"/>
       <source>If selected, it substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
-      <translation>Wenn diese Option aktiviert ist, werden bei Kopien dimensionale Maskierungen durch geometrische Maskierungen ersetzt. Änderungen am ursprünglichen Element wirken direkt auf die abgeleiteten Kopien</translation>
+      <translation>Wenn aktiviert, werden bei den Kopien maßliche Einschränkungen durch geometrische Einschränkungen ersetzt. Dadurch wirken sich Änderungen am ursprünglichen Element direkt auf die abgeleiteten Kopien aus</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="100"/>
@@ -3324,23 +4023,23 @@ reflected on copies</source>
   <context>
     <name>SketcherGui::SketcherGeneralWidget</name>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="103"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="108"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="113"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="132"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="137"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="142"/>
       <source>Normal Geometry</source>
       <translation>Normale Geometrie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="103"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="108"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="113"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="132"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="137"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="142"/>
       <source>Construction Geometry</source>
       <translation>Konstruktionsgeometrie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="103"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="108"/>
-      <location filename="../../TaskSketcherGeneral.cpp" line="113"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="132"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="137"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="142"/>
       <source>External Geometry</source>
       <translation>Externe Geometrie</translation>
     </message>
@@ -3406,21 +4105,31 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="115"/>
+      <source>New constraints that would be redundant will automatically be removed</source>
+      <translation>Neue redundante Beschränkungen werden automatisch entfernt</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="118"/>
+      <source>Auto remove redundants</source>
+      <translation>Automatisches entfernen redundanter Beschränkungen</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="134"/>
       <source>Allow to leave sketch edit mode when pressing Esc button</source>
       <translation>Erlaubt den Skizzenbearbeitungsmodus durch Drücken der Esc-Taste zu verlassen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="118"/>
+      <location filename="../../SketcherSettings.ui" line="137"/>
       <source>Esc can leave sketch edit mode</source>
       <translation>Esc kann Skizzenbearbeitungsmodus verlassen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="134"/>
+      <location filename="../../SketcherSettings.ui" line="153"/>
       <source>Notifies about automatic constraint substitutions</source>
       <translation>Benachrichtigt automatisch beim Ersetzen einer Beschränkung</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="137"/>
+      <location filename="../../SketcherSettings.ui" line="156"/>
       <source>Notify automatic constraint substitutions</source>
       <translation>Automatisch beim Ersatz einer Beschränkung benachrichtigen</translation>
     </message>
@@ -3443,183 +4152,214 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
       <translation>Skizzenfarben</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="34"/>
+      <location filename="../../SketcherSettingsColors.ui" line="28"/>
       <source>Default edge color</source>
       <translation>Standard-Kantenfarbe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="67"/>
+      <location filename="../../SketcherSettingsColors.ui" line="55"/>
       <source>Default vertex color</source>
       <translation>Standard-Knotenpunktfarbe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="100"/>
+      <location filename="../../SketcherSettingsColors.ui" line="82"/>
       <source>Making line color</source>
       <translation>Linienfarbe beim erstellen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="133"/>
+      <location filename="../../SketcherSettingsColors.ui" line="109"/>
       <source>Edit edge color</source>
       <translation>Kantenfarbe bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="166"/>
+      <location filename="../../SketcherSettingsColors.ui" line="136"/>
       <source>Edit vertex color</source>
       <translation>Scheitelpunktfarbe bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="199"/>
+      <location filename="../../SketcherSettingsColors.ui" line="163"/>
       <source>Construction geometry</source>
       <translation>Konstruktionsgeometrie</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="232"/>
+      <location filename="../../SketcherSettingsColors.ui" line="217"/>
       <source>External geometry</source>
       <translation>Externe Geometrie</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="265"/>
+      <location filename="../../SketcherSettingsColors.ui" line="271"/>
       <source>Fully constrained geometry</source>
       <translation>Vollständig bestimmte Geometrie</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="298"/>
+      <location filename="../../SketcherSettingsColors.ui" line="406"/>
       <source>Constraint color</source>
       <translation>Farbe für Beschränkungen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="352"/>
+      <location filename="../../SketcherSettingsColors.ui" line="460"/>
       <source>Expression dependent constraint color</source>
       <translation>Farbe von ausdrucksabhängigen Beschränkungen</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="412"/>
-      <source>Datum color</source>
-      <translation>Farbe für Bezüge</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="41"/>
+      <location filename="../../SketcherSettingsColors.ui" line="35"/>
       <source>Color of edges</source>
       <translation>Farbe der Kanten</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="74"/>
+      <location filename="../../SketcherSettingsColors.ui" line="62"/>
       <source>Color of vertices</source>
       <translation>Farbe der Eckpunkte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="107"/>
+      <location filename="../../SketcherSettingsColors.ui" line="89"/>
       <source>Color used while new sketch elements are created</source>
       <translation>Farbe, die beim Erstellen neuer Skizzenelemente verwendet wird</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="140"/>
+      <location filename="../../SketcherSettingsColors.ui" line="116"/>
       <source>Color of edges being edited</source>
       <translation>Farbe der bearbeiteten Kanten</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="173"/>
+      <location filename="../../SketcherSettingsColors.ui" line="143"/>
       <source>Color of vertices being edited</source>
       <translation>Farbe der bearbeiteten Eckpunkte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="206"/>
+      <location filename="../../SketcherSettingsColors.ui" line="170"/>
       <source>Color of construction geometry in edit mode</source>
       <translation>Farbe von Konstruktionsgeometrie im Bearbeitungsmodus</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="239"/>
+      <location filename="../../SketcherSettingsColors.ui" line="190"/>
+      <source>Internal alignment edge color</source>
+      <translation>Innerer Ausrichtung</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="197"/>
+      <source>Color of edges of internal alignment geometry</source>
+      <translation>Farbe von Kanten mit innerer Ausrichtung</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="224"/>
       <source>Color of external geometry in edit mode</source>
       <translation>Farbe von externer Geometrie im Bearbeitungsmodus</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="272"/>
+      <location filename="../../SketcherSettingsColors.ui" line="244"/>
+      <source>Invalid Sketch</source>
+      <translation type="unfinished">Invalid Sketch</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="251"/>
+      <source>Color of geometry indicating an invalid sketch</source>
+      <translation type="unfinished">Color of geometry indicating an invalid sketch</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="278"/>
       <source>Color of fully constrained geometry in edit mode</source>
-      <translation>Farbe einer vollständig eingeschränkten Geometrie im Bearbeitungsmodus</translation>
+      <translation>Farbe einer vollständig bestimmten Geometrie im Bearbeitungsmodus</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="298"/>
+      <source>Fully constrained edit edge color</source>
+      <translation>Vollständig bestimmte Kanten</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="305"/>
+      <source>Color of fully constrained edge color in edit mode</source>
+      <translation>Farbe von vollständig bestimmten Kanten im Bearbeitungsmodus</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="325"/>
+      <source>Fully constrained edit construction edge color</source>
+      <translation>Vollständig bestimmte Konstruktionskanten</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="332"/>
+      <source>Color of fully constrained construction edge color in edit mode</source>
+      <translation>Farbe von vollständig bestimmten Konstruktionskanten im Bearbeitungsmodus</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="352"/>
+      <source>Fully constrained edit internal alignment edge color</source>
+      <translation>Vollständig bestimmte innere Ausrichtung</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="359"/>
+      <source>Color of fully constrained internal alignment edge color in edit mode</source>
+      <translation>Farbe von vollständig bestimmten internen Ausrichtungen im Bearbeitungsmodus</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="379"/>
+      <source>Fully constrained edit vertex color</source>
+      <translation>Vollständig bestimmte Knoten</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="386"/>
+      <source>Color of fully constrained vertex color in edit mode</source>
+      <translation>Farbe von vollständig bestimmten Knoten im Bearbeitungsmodus</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsColors.ui" line="413"/>
       <source>Color of driving constraints in edit mode</source>
       <translation>Farbe für definierende Beschränkungen im Bearbeitungsmodus</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="325"/>
+      <location filename="../../SketcherSettingsColors.ui" line="433"/>
       <source>Reference constraint color</source>
       <translation>Referenzbeschränkungsfarbe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="332"/>
+      <location filename="../../SketcherSettingsColors.ui" line="440"/>
       <source>Color of reference constraints in edit mode</source>
       <translation>Die Farbe der Referenz-Beschränkung im Bearbeitungsmodus</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="359"/>
+      <location filename="../../SketcherSettingsColors.ui" line="467"/>
       <source>Color of expression dependent constraints in edit mode</source>
       <translation>Farbe der ausdrucksabhängigen Beschränkungen im Bearbeitungsmodus</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="379"/>
+      <location filename="../../SketcherSettingsColors.ui" line="487"/>
       <source>Deactivated constraint color</source>
       <translation>Deaktivierte Beschränkungsfarbe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="386"/>
+      <location filename="../../SketcherSettingsColors.ui" line="494"/>
       <source>Color of deactivated constraints in edit mode</source>
       <translation>Farbe deaktivierter Beschränkungen im Bearbeitungsmodus</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="419"/>
-      <source>Color of the datum portion of a driving constraint</source>
-      <translation>Farbe des Bezugspunkt-Teils der definirenden Beschränkung</translation>
+      <location filename="../../SketcherSettingsColors.ui" line="514"/>
+      <source>Dimensional constraint color</source>
+      <translation type="unfinished">Dimensional constraint color</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="445"/>
-      <source>Datum text size</source>
-      <translation>Textgröße für Bezüge</translation>
+      <location filename="../../SketcherSettingsColors.ui" line="521"/>
+      <source>Color of dimensional driving constraints</source>
+      <translation type="unfinished">Color of dimensional driving constraints</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="452"/>
-      <location filename="../../SketcherSettingsColors.ui" line="487"/>
-      <location filename="../../SketcherSettingsColors.ui" line="522"/>
-      <source>The default line thickness for new shapes</source>
-      <translation>Die Standard-Linienstärke für neue Formen</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="455"/>
-      <location filename="../../SketcherSettingsColors.ui" line="490"/>
-      <location filename="../../SketcherSettingsColors.ui" line="525"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="480"/>
-      <source>Default vertex size</source>
-      <translation>Standard-Knotenpunktgröße</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="515"/>
-      <source>Default line width</source>
-      <translation>Standard-Linienbreite</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsColors.ui" line="550"/>
+      <location filename="../../SketcherSettingsColors.ui" line="541"/>
       <source>Coordinate text color</source>
       <translation>Koordinaten-Textfarbe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="557"/>
+      <location filename="../../SketcherSettingsColors.ui" line="548"/>
       <source>Text color of the coordinates</source>
       <translation>Textfarbe der Koordinaten</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="590"/>
+      <location filename="../../SketcherSettingsColors.ui" line="575"/>
       <source>Color of crosshair cursor.
 (The one you get when creating a new sketch element.)</source>
       <translation>Farbe des Fadenkreuz-Cursors.
 (Die Sie beim Erstellen eines neuen Zeichnungselements erhalten)</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsColors.ui" line="583"/>
+      <location filename="../../SketcherSettingsColors.ui" line="568"/>
       <source>Cursor crosshair color</source>
       <translation>Fadenkreuzfarbe des Cursors</translation>
     </message>
@@ -3639,12 +4379,12 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="39"/>
       <source>A dialog will pop up to input a value for new dimensional constraints</source>
-      <translation>Ein Dialog öffnet sich, um einen Wert für neue Dimensionsbeschränkungen einzugeben</translation>
+      <translation>Ein Dialog wird geöffnet, zur Eingabe eines Wertes für die neu erstellte maßliche Einschränkung</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
       <source>Ask for value after creating a dimensional constraint</source>
-      <translation>Nach Wert fragen nachdem eine Abstandsbeschränkung erstellt wurde</translation>
+      <translation>Wert erfragen, nach Erstellung einer maßlichen Einschränkung</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="58"/>
@@ -3659,7 +4399,7 @@ Erfordert das erneute aktivieren des Bearbeitungsmodus.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="68"/>
       <source>Constraint creation "Continue Mode"</source>
-      <translation>Beschränkungs Erstellung "Fortfahr- Modus"</translation>
+      <translation>Beschränkungserstellung "Fortlaufender Modus"</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="84"/>
@@ -3715,8 +4455,23 @@ Unterstützt alle Einheitensysteme außer 'US customary' und 'Gebäude US/Euro'.
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="198"/>
-      <source>Show object(s) sketch is attached to</source>
-      <translation>Zeige Objekt(e) an denen die Skizze hängt</translation>
+      <source>Show objects that the sketch is attached to</source>
+      <translation>Objekte anzeigen, an die die Skizze angehängt ist</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
+      <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
+      <translation>Hinweis: Dieses sind die Standardeinstellungen, die für neue Skizzen verwendet werden. Das Verhalten wird für jede Skizze separat als Eigenschaften auf der Registerkarte Ansicht gespeichert.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="347"/>
+      <source>View scale ratio</source>
+      <translation type="unfinished">View scale ratio</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="354"/>
+      <source>The 3D view is scaled based on this factor</source>
+      <translation type="unfinished">The 3D view is scaled based on this factor</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="214"/>
@@ -3727,11 +4482,6 @@ Unterstützt alle Einheitensysteme außer 'US customary' und 'Gebäude US/Euro'.
       <location filename="../../SketcherSettingsDisplay.ui" line="217"/>
       <source>Restore camera position after editing</source>
       <translation>Kameraposition nach der Bearbeitung wiederherstellen</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
-      <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on View tab.</source>
-      <translation>Hinweis: Diese Einstellungen werden standardmäßig auf neue Skizzen angewendet. Das Verhalten wird für jede Skizze einzeln als Eigenschaften auf der Registerkarte Ansicht gespeichert.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
@@ -3761,7 +4511,7 @@ Unterstützt alle Einheitensysteme außer 'US customary' und 'Gebäude US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
       <source>Geometry creation "Continue Mode"</source>
-      <translation>Geometrie Erstellung "Fortfahr- Modus"</translation>
+      <translation>Geometrieerstellung "Fortflaufender Modus"</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
@@ -3774,12 +4524,12 @@ Unterstützt alle Einheitensysteme außer 'US customary' und 'Gebäude US/Euro'.
       <translation>Anzahl der Polygone für geometrische Näherung</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="217"/>
+      <location filename="../../SketcherSettings.cpp" line="219"/>
       <source>Unexpected C++ exception</source>
       <translation>Unerwartete C++ - Ausnahme</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="220"/>
+      <location filename="../../SketcherSettings.cpp" line="222"/>
       <source>Sketcher</source>
       <translation>Skizze</translation>
     </message>
@@ -3886,7 +4636,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <location filename="../../TaskSketcherValidation.cpp" line="289"/>
       <location filename="../../TaskSketcherValidation.cpp" line="301"/>
       <source>Delete constraints to external geom.</source>
-      <translation>Lösche Beschränkungen an externer Geometrie</translation>
+      <translation>Lösche Beschränkungen zu externen Geometrien</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="290"/>
@@ -3897,6 +4647,26 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <location filename="../../TaskSketcherValidation.cpp" line="302"/>
       <source>All constraints that deal with external geometry were deleted.</source>
       <translation>Alle Beschränkungen mit Verknüpfungen zu externer Geometrie wurden gelöscht.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="359"/>
+      <source>No degenerated geometry</source>
+      <translation>Keine degenerierte Geometrie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="360"/>
+      <source>No degenerated geometry found</source>
+      <translation>Keine degenerierte Geometrie gefunden</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="364"/>
+      <source>Degenerated geometry</source>
+      <translation>Degenerierte Geometrie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="365"/>
+      <source>%1 degenerated geometry found</source>
+      <translation>%1 degenerierte Geometrie gefunden</translation>
     </message>
   </context>
   <context>
@@ -3939,7 +4709,7 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="75"/>
       <source>Internal alignments will be hidden</source>
-      <translation>Interne Ausrichtungen werden versteckt</translation>
+      <translation>Interne Ausrichtungen werden ausgeblendet</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="78"/>
@@ -3957,13 +4727,13 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <translation>Erweiterte Informationen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="618"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="638"/>
       <source>Constraints</source>
       <translation>Einschränkungen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="837"/>
-      <location filename="../../TaskSketcherConstrains.cpp" line="853"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="856"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="872"/>
       <source>Error</source>
       <translation>Fehlermeldungen</translation>
     </message>
@@ -4041,106 +4811,106 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <translation>Automatisch zu Kante umschalten</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="250"/>
+      <location filename="../../TaskSketcherElements.cpp" line="257"/>
       <source>Elements</source>
       <translation>Elemente</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="271"/>
+      <location filename="../../TaskSketcherElements.cpp" line="278"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: Mehrfachauswahl &lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: Umschalten auf den nächsten gültigen Typ&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="741"/>
-      <location filename="../../TaskSketcherElements.cpp" line="742"/>
-      <location filename="../../TaskSketcherElements.cpp" line="847"/>
-      <location filename="../../TaskSketcherElements.cpp" line="848"/>
+      <location filename="../../TaskSketcherElements.cpp" line="747"/>
+      <location filename="../../TaskSketcherElements.cpp" line="748"/>
+      <location filename="../../TaskSketcherElements.cpp" line="853"/>
+      <location filename="../../TaskSketcherElements.cpp" line="854"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="744"/>
-      <location filename="../../TaskSketcherElements.cpp" line="746"/>
-      <location filename="../../TaskSketcherElements.cpp" line="850"/>
-      <location filename="../../TaskSketcherElements.cpp" line="851"/>
+      <location filename="../../TaskSketcherElements.cpp" line="750"/>
+      <location filename="../../TaskSketcherElements.cpp" line="752"/>
+      <location filename="../../TaskSketcherElements.cpp" line="856"/>
+      <location filename="../../TaskSketcherElements.cpp" line="857"/>
       <source>Line</source>
       <translation>Linie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="99"/>
-      <location filename="../../TaskSketcherElements.cpp" line="745"/>
-      <location filename="../../TaskSketcherElements.cpp" line="749"/>
-      <location filename="../../TaskSketcherElements.cpp" line="753"/>
-      <location filename="../../TaskSketcherElements.cpp" line="757"/>
-      <location filename="../../TaskSketcherElements.cpp" line="761"/>
-      <location filename="../../TaskSketcherElements.cpp" line="765"/>
-      <location filename="../../TaskSketcherElements.cpp" line="769"/>
-      <location filename="../../TaskSketcherElements.cpp" line="773"/>
-      <location filename="../../TaskSketcherElements.cpp" line="777"/>
+      <location filename="../../TaskSketcherElements.cpp" line="751"/>
+      <location filename="../../TaskSketcherElements.cpp" line="755"/>
+      <location filename="../../TaskSketcherElements.cpp" line="759"/>
+      <location filename="../../TaskSketcherElements.cpp" line="763"/>
+      <location filename="../../TaskSketcherElements.cpp" line="767"/>
+      <location filename="../../TaskSketcherElements.cpp" line="771"/>
+      <location filename="../../TaskSketcherElements.cpp" line="775"/>
+      <location filename="../../TaskSketcherElements.cpp" line="779"/>
+      <location filename="../../TaskSketcherElements.cpp" line="783"/>
       <source>Construction</source>
       <translation>Konstruktion</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="748"/>
-      <location filename="../../TaskSketcherElements.cpp" line="750"/>
-      <location filename="../../TaskSketcherElements.cpp" line="853"/>
-      <location filename="../../TaskSketcherElements.cpp" line="854"/>
+      <location filename="../../TaskSketcherElements.cpp" line="754"/>
+      <location filename="../../TaskSketcherElements.cpp" line="756"/>
+      <location filename="../../TaskSketcherElements.cpp" line="859"/>
+      <location filename="../../TaskSketcherElements.cpp" line="860"/>
       <source>Arc</source>
       <translation>Kreisbogen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="752"/>
-      <location filename="../../TaskSketcherElements.cpp" line="754"/>
-      <location filename="../../TaskSketcherElements.cpp" line="856"/>
-      <location filename="../../TaskSketcherElements.cpp" line="857"/>
+      <location filename="../../TaskSketcherElements.cpp" line="758"/>
+      <location filename="../../TaskSketcherElements.cpp" line="760"/>
+      <location filename="../../TaskSketcherElements.cpp" line="862"/>
+      <location filename="../../TaskSketcherElements.cpp" line="863"/>
       <source>Circle</source>
       <translation>Kreis</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="756"/>
-      <location filename="../../TaskSketcherElements.cpp" line="758"/>
-      <location filename="../../TaskSketcherElements.cpp" line="859"/>
-      <location filename="../../TaskSketcherElements.cpp" line="860"/>
+      <location filename="../../TaskSketcherElements.cpp" line="762"/>
+      <location filename="../../TaskSketcherElements.cpp" line="764"/>
+      <location filename="../../TaskSketcherElements.cpp" line="865"/>
+      <location filename="../../TaskSketcherElements.cpp" line="866"/>
       <source>Ellipse</source>
       <translation>Ellipse</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="760"/>
-      <location filename="../../TaskSketcherElements.cpp" line="762"/>
-      <location filename="../../TaskSketcherElements.cpp" line="862"/>
-      <location filename="../../TaskSketcherElements.cpp" line="863"/>
+      <location filename="../../TaskSketcherElements.cpp" line="766"/>
+      <location filename="../../TaskSketcherElements.cpp" line="768"/>
+      <location filename="../../TaskSketcherElements.cpp" line="868"/>
+      <location filename="../../TaskSketcherElements.cpp" line="869"/>
       <source>Elliptical Arc</source>
       <translation>Elliptischer Bogen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="764"/>
-      <location filename="../../TaskSketcherElements.cpp" line="766"/>
-      <location filename="../../TaskSketcherElements.cpp" line="865"/>
-      <location filename="../../TaskSketcherElements.cpp" line="866"/>
+      <location filename="../../TaskSketcherElements.cpp" line="770"/>
+      <location filename="../../TaskSketcherElements.cpp" line="772"/>
+      <location filename="../../TaskSketcherElements.cpp" line="871"/>
+      <location filename="../../TaskSketcherElements.cpp" line="872"/>
       <source>Hyperbolic Arc</source>
       <translation>Hyperbolischer Bogen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="768"/>
-      <location filename="../../TaskSketcherElements.cpp" line="770"/>
-      <location filename="../../TaskSketcherElements.cpp" line="868"/>
-      <location filename="../../TaskSketcherElements.cpp" line="869"/>
+      <location filename="../../TaskSketcherElements.cpp" line="774"/>
+      <location filename="../../TaskSketcherElements.cpp" line="776"/>
+      <location filename="../../TaskSketcherElements.cpp" line="874"/>
+      <location filename="../../TaskSketcherElements.cpp" line="875"/>
       <source>Parabolic Arc</source>
       <translation>Parabolischer Bogen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="772"/>
-      <location filename="../../TaskSketcherElements.cpp" line="774"/>
-      <location filename="../../TaskSketcherElements.cpp" line="871"/>
-      <location filename="../../TaskSketcherElements.cpp" line="872"/>
+      <location filename="../../TaskSketcherElements.cpp" line="778"/>
+      <location filename="../../TaskSketcherElements.cpp" line="780"/>
+      <location filename="../../TaskSketcherElements.cpp" line="877"/>
+      <location filename="../../TaskSketcherElements.cpp" line="878"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="776"/>
-      <location filename="../../TaskSketcherElements.cpp" line="778"/>
-      <location filename="../../TaskSketcherElements.cpp" line="874"/>
-      <location filename="../../TaskSketcherElements.cpp" line="875"/>
+      <location filename="../../TaskSketcherElements.cpp" line="782"/>
+      <location filename="../../TaskSketcherElements.cpp" line="784"/>
+      <location filename="../../TaskSketcherElements.cpp" line="880"/>
+      <location filename="../../TaskSketcherElements.cpp" line="881"/>
       <source>Other</source>
       <translation>Andere</translation>
     </message>
@@ -4153,69 +4923,69 @@ Es wurden keine Beschränkungen zu diesen Punkten gefunden.</translation>
       <translation>Form</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="20"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
       <source>A grid will be shown</source>
       <translation>Ein Raster wird angezeigt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="23"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="26"/>
       <source>Show grid</source>
       <translation>Raster anzeigen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="35"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="44"/>
       <source>Grid size:</source>
       <translation>Rastergröße:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="42"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="51"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Abstand zwischen zwei nachfolgenden Rasterlinien</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="72"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="87"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
       <translation>Neue Punkte werden an der nächsten Rasterlinie fangen.
 Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie gesetzt werden, damit sie fangen.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="76"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="91"/>
       <source>Grid snap</source>
       <translation>Am Raster fangen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="86"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="107"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
       <translation>Skizzierer schlägt automatisch sinnvolle Beschränkungen vor.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="89"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="110"/>
       <source>Auto constraints</source>
       <translation>Automatische Randbedingungen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="99"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="126"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
       <translation>Sketcher versucht, keine redundanten Beschränkungen vorzuschlagen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="102"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="129"/>
       <source>Avoid redundant auto constraints</source>
       <translation>Vermeide redundante automatische Beschränkung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="118"/>
-      <source>Rendering order:</source>
-      <translation>Renderingreihenfolge:</translation>
+      <location filename="../../TaskSketcherGeneral.ui" line="145"/>
+      <source>Rendering order (global):</source>
+      <translation>Rendering-Reihenfolge (global):</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.ui" line="137"/>
+      <location filename="../../TaskSketcherGeneral.ui" line="164"/>
       <source>To change, drag and drop a geometry type to top or bottom</source>
       <translation>Zum Ändern ein Geometrietyp per Drag &amp; Drop nach oben oder unten ziehen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="201"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="195"/>
       <source>Edit controls</source>
       <translation>Bedienelemente bearbeiten</translation>
     </message>
@@ -4223,7 +4993,7 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>SketcherGui::TaskSketcherMessages</name>
     <message>
-      <location filename="../../TaskSketcherMessages.cpp" line="50"/>
+      <location filename="../../TaskSketcherMessages.cpp" line="51"/>
       <source>Solver messages</source>
       <translation>Meldungen des Lösers</translation>
     </message>
@@ -4231,7 +5001,7 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>SketcherGui::TaskSketcherSolverAdvanced</name>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.cpp" line="65"/>
+      <location filename="../../TaskSketcherSolverAdvanced.cpp" line="64"/>
       <source>Advanced solver control</source>
       <translation>Erweiterte Einstellungen des Lösers</translation>
     </message>
@@ -4244,70 +5014,77 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
       <translation>Skizzenprüfung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="20"/>
+      <location filename="../../TaskSketcherValidation.ui" line="70"/>
       <source>Invalid constraints</source>
       <translation>Ungültige Beschränkung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="26"/>
-      <location filename="../../TaskSketcherValidation.ui" line="63"/>
+      <location filename="../../TaskSketcherValidation.ui" line="53"/>
+      <location filename="../../TaskSketcherValidation.ui" line="83"/>
+      <location filename="../../TaskSketcherValidation.ui" line="113"/>
       <source>Fix</source>
       <translation>Reparieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="33"/>
-      <location filename="../../TaskSketcherValidation.ui" line="73"/>
+      <location filename="../../TaskSketcherValidation.ui" line="46"/>
+      <location filename="../../TaskSketcherValidation.ui" line="76"/>
       <location filename="../../TaskSketcherValidation.ui" line="106"/>
+      <location filename="../../TaskSketcherValidation.ui" line="129"/>
       <source>Find</source>
       <translation>Suchen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="40"/>
+      <location filename="../../TaskSketcherValidation.ui" line="90"/>
       <source>Delete constraints to external geom.</source>
-      <translation>Lösche Beschränkungen an externer Geometrie</translation>
+      <translation>Lösche Beschränkungen zu externen Geometrien</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="50"/>
+      <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Missing coincidences</source>
       <translation>Zusammenfallende Punkte</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="56"/>
+      <location filename="../../TaskSketcherValidation.ui" line="26"/>
       <source>Tolerance:</source>
       <translation>Toleranz:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="80"/>
+      <location filename="../../TaskSketcherValidation.ui" line="60"/>
       <source>Highlight open vertexes</source>
       <translation>Endpunkte markieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="87"/>
+      <location filename="../../TaskSketcherValidation.ui" line="36"/>
       <source>Ignore construction geometry</source>
       <translation>Hilfsgeometrie ignorieren</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="100"/>
+      <source>Degenerated geometry</source>
+      <translation>Degenerierte Geometrie</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.ui" line="123"/>
       <source>Reversed external geometry</source>
       <translation>Verdrehte externe Geometrie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="113"/>
+      <location filename="../../TaskSketcherValidation.ui" line="136"/>
       <source>Swap endpoints in constraints</source>
       <translation>Tausche Endpunkte in Beschränkung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="123"/>
+      <location filename="../../TaskSketcherValidation.ui" line="146"/>
       <source>Constraint orientation locking</source>
       <translation>Fixiert Orientierung von Beschränkung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="129"/>
+      <location filename="../../TaskSketcherValidation.ui" line="152"/>
       <source>Enable/Update</source>
       <translation>Aktivieren/Aktualisieren</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.ui" line="136"/>
+      <location filename="../../TaskSketcherValidation.ui" line="159"/>
       <source>Disable</source>
       <translation>Deaktivieren</translation>
     </message>
@@ -4315,104 +5092,136 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5587"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6162"/>
       <source>Edit sketch</source>
       <translation>Skizze bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5603"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6176"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ein Dialog im Arbeitspanel ist bereits geöffnet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5604"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6177"/>
       <source>Do you want to close this dialog?</source>
       <translation>Möchten Sie dieses Dialogfeld schließen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5618"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6191"/>
       <source>Invalid sketch</source>
       <translation>Ungültige Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5619"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6192"/>
       <source>Do you want to open the sketch validation tool?</source>
       <translation>Möchten Sie das Werkzeug zum Überprüfen der Skizze öffnen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5620"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6193"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Die Skizze ist ungültig und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5802"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6407"/>
       <source>Please remove the following constraint:</source>
       <translation>Bitte folgende Beschränkung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5804"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6408"/>
       <source>Please remove at least one of the following constraints:</source>
       <translation>Bitte mindestens eine der folgenden Beschränkungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5820"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6414"/>
       <source>Please remove the following redundant constraint:</source>
       <translation>Bitte folgende redundante Beschränkung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5822"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6415"/>
       <source>Please remove the following redundant constraints:</source>
       <translation>Bitte folgende, redundante Beschränkungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5841"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6421"/>
+      <source>The following constraint is partially redundant:</source>
+      <translation type="unfinished">The following constraint is partially redundant:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="6422"/>
+      <source>The following constraints are partially redundant:</source>
+      <translation type="unfinished">The following constraints are partially redundant:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="6428"/>
+      <source>Please remove the following malformed constraint:</source>
+      <translation type="unfinished">Please remove the following malformed constraint:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="6429"/>
+      <source>Please remove the following malformed constraints:</source>
+      <translation type="unfinished">Please remove the following malformed constraints:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="6464"/>
       <source>Empty sketch</source>
       <translation>Leere Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5848"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6471"/>
       <source>Over-constrained sketch </source>
       <translation>Überbestimmte Skizze </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5849"/>
-      <location filename="../../ViewProviderSketch.cpp" line="5856"/>
-      <location filename="../../ViewProviderSketch.cpp" line="5864"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6472"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6479"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6486"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6494"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6503"/>
       <source>(click to select)</source>
       <translation>(anklicken zum Auswählen)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5855"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6478"/>
+      <source>Sketch contains malformed constraints </source>
+      <translation type="unfinished">Sketch contains malformed constraints </translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="6485"/>
       <source>Sketch contains conflicting constraints </source>
       <translation>Skizze enthält widersprüchliche Einschränkungen </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5863"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6493"/>
       <source>Sketch contains redundant constraints </source>
       <translation>Skizze enthält redundante Einschränkungen </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5874"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6502"/>
+      <source>Sketch contains partially redundant constraints </source>
+      <translation type="unfinished">Sketch contains partially redundant constraints </translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSketch.cpp" line="6514"/>
       <source>Fully constrained sketch</source>
-      <translation>Vollständig eingeschränkte Skizze</translation>
+      <translation>Vollständig bestimmte Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5879"/>
-      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</source>
-      <translation>Unbeschränkte Skizze mit &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 Freiheitsgrad&lt;/span&gt;&lt;/a&gt;</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="6521"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
+      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5881"/>
-      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</source>
-      <translation>Unbeschränkte Skizze mit &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 Freiheitsgraden&lt;/span&gt;&lt;/a&gt;</translation>
+      <location filename="../../ViewProviderSketch.cpp" line="6524"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
+      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5884"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6529"/>
       <source>Solved in %1 sec</source>
       <translation>Berechnet in %1 s</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="5887"/>
+      <location filename="../../ViewProviderSketch.cpp" line="6532"/>
       <source>Unsolved (%1 sec)</source>
       <translation>Keine Lösung (%1 s)</translation>
     </message>
@@ -4420,8 +5229,8 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="323"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="324"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="347"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
       <translation>Wechselt zwischen dem Anzeigen und Ausblenden des Krümmungskammes für alle B-Splines</translation>
     </message>
@@ -4429,17 +5238,17 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="864"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="865"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="970"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="972"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Verringert die Multiplikation eines ausgewählten Knoten einer B-Spline</translation>
+      <translation>Verringert die Vielfachheit eines ausgewählten B-Spline-Knotens</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="315"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="316"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="333"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="335"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
       <translation>Wechselt zwischen dem Anzeigen und Ausblenden des Grades für alle B-Splines</translation>
     </message>
@@ -4447,26 +5256,35 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="860"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="861"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="963"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="965"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Erhöht die Multiplikation eines ausgewählten Knoten einer B-Spline</translation>
+      <translation>Erhöht die Vielfachheit eines ausgewählten B-Spline-Knotens</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="328"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="354"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="356"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
-      <translation>Wechselt zwischen dem Anzeigen und Ausblenden der Knoten-Multiplikation für alle B-Splines</translation>
+      <translation>Wechselt zwischen dem Anzeigen und Ausblenden der Knoten-Vielfachheit für alle B-Splines</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_BSplinePoleWeight</name>
+    <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="362"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="364"/>
+      <source>Switches between showing and hiding the control point weight for all B-splines</source>
+      <translation>Wechselt zwischen dem Anzeigen und Ausblenden des Gewichts für alle B-Spline-Kontrollpunkte</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_BSplinePolygon</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="319"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="320"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="340"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="342"/>
       <source>Switches between showing and hiding the control polygons for all B-splines</source>
       <translation>Wechselt zwischen dem Anzeigen und Ausblenden der Kontroll-Polygone für alle B-Splines</translation>
     </message>
@@ -4474,8 +5292,8 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1609"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1610"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1708"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1709"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Erstellt einen Klon der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
@@ -4483,17 +5301,17 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1608"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1707"/>
       <source>Clone</source>
       <translation>Klonen</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1612"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1711"/>
       <source>Copy</source>
       <translation>Kopieren</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1616"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1715"/>
       <source>Move</source>
       <translation>Verschieben</translation>
     </message>
@@ -4501,44 +5319,44 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5852"/>
-      <location filename="../../CommandConstraints.cpp" line="5853"/>
+      <location filename="../../CommandConstraints.cpp" line="5820"/>
+      <location filename="../../CommandConstraints.cpp" line="5821"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Leget den Durchmesser eines Kreises oder Bogens fest</translation>
+      <translation>Durchmesser eines Kreises oder Kreisbogens festlegen</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5848"/>
-      <location filename="../../CommandConstraints.cpp" line="5849"/>
+      <location filename="../../CommandConstraints.cpp" line="5816"/>
+      <location filename="../../CommandConstraints.cpp" line="5817"/>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>Lege Radius eines Kreises oder Bogens fest</translation>
+      <translation>Radius eines Kreises oder Kreisbogens festlegen</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1613"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1614"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1712"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1713"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation>Erstellt eine einfache Kopie der Geometrie von den zuletzt gewählten Punkt</translation>
+      <translation>Erstellt eine einfache Kopie der Geometrie mit dem zuletzt gewählten Punkt als Referenz</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2086"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2087"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1893"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1894"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation>Erstelle einen Bogen mit Endpunkten und einem Punkt auf Bogen</translation>
+      <translation>Kreisbogen durch die Endpunkte und einen Punkt auf dem Bogen erstellen</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5342"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5343"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4847"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4848"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Erstelle einen Kreis aus drei Punkten auf dem Kreisbogen</translation>
     </message>
@@ -4546,49 +5364,49 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="2082"/>
-      <location filename="../../CommandCreateGeo.cpp" line="2083"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1889"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1890"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation>Erstelle einen Bogen aus Mittel- und Endpunkten</translation>
+      <translation>Kreisbogen mit Mittelpunkt und durch die Endpunkte erstellen</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4378"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4379"/>
-      <source>Create an arc of ellipse by its center, major radius, endpoints</source>
-      <translation>Elliptischen Bogen aus Mittelpunkt, großer Halbachse und Endpunkten erzeugen</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="3984"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3985"/>
+      <source>Create an arc of ellipse by its center, major radius, and endpoints</source>
+      <translation>Ellipsenbogen durch Mittelpunkt, großem Radius sowie den Endpunkten erstellen</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4382"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4383"/>
-      <source>Create an arc of hyperbola by its center, major radius, endpoints</source>
-      <translation>Erstellen Sie einen Hyperbel Bogen durch seine Mitte, großer Radius, Endpunkte</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="3988"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3989"/>
+      <source>Create an arc of hyperbola by its center, major radius, and endpoints</source>
+      <translation>Hyperbelbogen durch Mittelpunkt, großem Radius sowie den Endpunkten erstellen</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4386"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4387"/>
-      <source>Create an arc of parabola by its focus, vertex, endpoints</source>
-      <translation>Erstellen Sie einen Parabel Bogen durch seinen Fokus, Scheitelpunkt, Endpunkte</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="3992"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3993"/>
+      <source>Create an arc of parabola by its focus, vertex, and endpoints</source>
+      <translation>Parabelbogen durch Fokus, Scheitelpunkt sowie den Endpunkten erstellen</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4986"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4531"/>
       <source>B-spline by control points</source>
       <translation>B-Spline Kontrollpunkte</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4987"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4988"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4532"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4533"/>
       <source>Create a B-spline by control points</source>
       <translation>B-Spline erzeugen - offene Form</translation>
     </message>
@@ -4596,8 +5414,8 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="5338"/>
-      <location filename="../../CommandCreateGeo.cpp" line="5339"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4843"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4844"/>
       <source>Create a circle by its center and by a rim point</source>
       <translation>Erstelle einen Kreis aus Mittel- und einem Randpunkt</translation>
     </message>
@@ -4605,8 +5423,8 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4374"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4375"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3980"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3981"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>Ellipse aus Periapsis, Apoapsis und kleiner Halbachse erzeugen</translation>
     </message>
@@ -4614,17 +5432,26 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4370"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4371"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3976"/>
+      <location filename="../../CommandCreateGeo.cpp" line="3977"/>
       <source>Create an ellipse by center, major radius and point</source>
       <translation>Ellipse aus Mittelpunkt, großer Halbachse und weiterem Punkt erzeugen</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_CreateFillet</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5418"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5419"/>
+      <source>Creates a radius between two lines</source>
+      <translation type="unfinished">Creates a radius between two lines</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7645"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7646"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6967"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6968"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Siebeneck aus Mittelpunkt und einer Ecke erzeugen</translation>
     </message>
@@ -4632,8 +5459,8 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7641"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7642"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6963"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6964"/>
       <source>Create a hexagon by its center and by one corner</source>
       <translation>Sechseck aus Mittelpunkt und einer Ecke erzeugen</translation>
     </message>
@@ -4641,14 +5468,14 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7649"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7650"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6971"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6972"/>
       <source>Create an octagon by its center and by one corner</source>
       <translation>Achteck aus Mittelpunkt und einer Ecke erzeugen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7653"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7654"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6975"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6976"/>
       <source>Create a regular polygon by its center and by one corner</source>
       <translation>Regelmäßiges Polygon aus Mittelpunkt und einer Ecke erzeugen</translation>
     </message>
@@ -4656,17 +5483,26 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7637"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7638"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6959"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6960"/>
       <source>Create a pentagon by its center and by one corner</source>
       <translation>Fünfeck aus Mittelpunkt und einer Ecke erzeugen</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_CreatePointFillet</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="5422"/>
+      <location filename="../../CommandCreateGeo.cpp" line="5423"/>
+      <source>Fillet that preserves constraints and intersection point</source>
+      <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_CreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7633"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7634"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6955"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6956"/>
       <source>Create a square by its center and by one corner</source>
       <translation>Quadrat aus Mittelpunkt und einer Ecke erzeugen</translation>
     </message>
@@ -4674,8 +5510,8 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_CreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="7629"/>
-      <location filename="../../CommandCreateGeo.cpp" line="7630"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6951"/>
+      <location filename="../../CommandCreateGeo.cpp" line="6952"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
       <translation>Gleichseitiges Dreieck aus Mittelpunkt und einer Ecke erzeugen</translation>
     </message>
@@ -4683,13 +5519,13 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_Create_Periodic_BSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4990"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4535"/>
       <source>Periodic B-spline by control points</source>
-      <translation>B-Spline erzeugen - offene Form</translation>
+      <translation>B-Spline erzeugen - geschlossenen Form</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="4991"/>
-      <location filename="../../CommandCreateGeo.cpp" line="4992"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4536"/>
+      <location filename="../../CommandCreateGeo.cpp" line="4537"/>
       <source>Create a periodic B-spline by control points</source>
       <translation>B-Spline erzeugen - geschlossene Form</translation>
     </message>
@@ -4697,62 +5533,63 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>No sketch found</source>
       <translation>Keine Skizze gefunden</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="534"/>
       <source>The document doesn't have a sketch</source>
       <translation>Das Dokument hat keine Skizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="493"/>
+      <location filename="../../Command.cpp" line="543"/>
       <source>Select sketch</source>
       <translation>Skizze auswählen</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="494"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Select a sketch from the list</source>
       <translation>Wähle eine Skizze aus der Liste</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="547"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source> (incompatible with selection)</source>
       <translation> (Nicht kompatibel mit Auswahl)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="549"/>
+      <location filename="../../Command.cpp" line="600"/>
       <source> (current)</source>
       <translation> (aktuell)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="556"/>
+      <location filename="../../Command.cpp" line="607"/>
       <source> (suggested)</source>
       <translation> (empfohlen)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="562"/>
+      <location filename="../../Command.cpp" line="613"/>
       <source>Sketch attachment</source>
       <translation>Skizze Anhang</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="564"/>
-      <source>Current attachment mode is incompatible with the new selection. Select the method to attach this sketch to selected objects.</source>
+      <location filename="../../Command.cpp" line="615"/>
+      <source>Current attachment mode is incompatible with the new selection.
+Select the method to attach this sketch to selected objects.</source>
       <translation>Der aktuelle Anhang Modus ist mit der neuen Auswahl nicht kompatibel. Wählen Sie die Methode aus, um diese Skizze an ausgewählte Objekte anzuhängen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="566"/>
+      <location filename="../../Command.cpp" line="619"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Wählen Sie die Methode aus, um diese Skizze an ausgewählte Objekte anzuhängen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="600"/>
+      <location filename="../../Command.cpp" line="656"/>
       <source>Map sketch</source>
       <translation>Kartenskizze</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="601"/>
+      <location filename="../../Command.cpp" line="657"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Kann keine Skizze zur Unterstützung abbilden:
@@ -4762,8 +5599,8 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1617"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1618"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1716"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1717"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Verschiebt die Geometrie und verwendet den zuletzt ausgewählten Punkt als Referenz</translation>
     </message>
@@ -4784,12 +5621,12 @@ Punkte müssen näher als ein Fünftel der Rastergröße an eine Rasterlinie ges
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="389"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Sketch has support</source>
       <translation>Skizze ist einer Fläche zugeordnet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
       <translation>Skizzen, die einer Fläche zugeordnet sind können nicht umorientiert werden.
@@ -4826,7 +5663,7 @@ Soll die Skizze von der Fläche entfernt werden?</translation>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="61"/>
       <source>Executes a recomputation of active document after every sketch action</source>
-      <translation>Führt eine Neuberechnung des aktiven Dokuments nach jeder Zeichnung aus</translation>
+      <translation>Führt eine Neuberechnung des aktiven Dokuments nach jeder Skizzier-Aktion durch</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="64"/>
@@ -4841,7 +5678,7 @@ Soll die Skizze von der Fläche entfernt werden?</translation>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="83"/>
       <source>Update</source>
-      <translation>Update</translation>
+      <translation>Aktualisieren</translation>
     </message>
   </context>
   <context>
@@ -4943,9 +5780,9 @@ Der BFGS-Löser verwendet den Broyden-Fletcher-Goldfarb-Shanno-Algorithmus.</tra
       <source>During diagnosing the QR rank of matrix is calculated.
 Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
 Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</source>
-      <translation type="unfinished">During diagnosing the QR rank of matrix is calculated.
-Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
-Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</translation>
+      <translation>Die Diagnose errechnet den QR Rang der Matrix
+Eigen Dense QR ist eine dicht besetzte Matrix mit vollständigem pivoting, meist langsamer.
+Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist; meist schneller</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>
@@ -5081,7 +5918,7 @@ to determine whether a solution converges or not</source>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="347"/>
       <source>During a QR, values under the pivot threshold are treated as zero</source>
-      <translation type="unfinished">During a QR, values under the pivot threshold are treated as zero</translation>
+      <translation>Wahrend QR werden Werte unterhalb des Pivot Schwellwerts als Null angesehen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>

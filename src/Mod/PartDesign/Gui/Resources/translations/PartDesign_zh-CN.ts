@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="2237"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation>对两个以上的实体进行布尔运算</translation>
+      <translation>对两个或以上的实体进行布尔运算</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation>创建本地坐标系</translation>
+      <translation>创建局部坐标系</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation>创建新的本地坐标系</translation>
+      <translation>创建新的局部坐标系</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Chamfer</source>
-      <translation>倒直角</translation>
+      <translation>倒角</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
       <source>Duplicate selected object</source>
-      <translation>复制所选物体</translation>
+      <translation>复制所选对象</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="634"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>复制所选对象并将它添加到激活状态的实体</translation>
+      <translation>复制所选对象并将其添加到活动实体</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="1131"/>
       <source>Create a hole with the selected sketch</source>
-      <translation>用选定草图创建孔</translation>
+      <translation>基于选定草图创建孔</translation>
     </message>
   </context>
   <context>
@@ -317,12 +317,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
       <source>Move object after other object</source>
-      <translation>移动对象到其他对象后面</translation>
+      <translation>将对象移至其它对象之后</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="853"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>插入所选物体至另一物体之后</translation>
+      <translation>插入所选对象至另一对象之后</translation>
     </message>
   </context>
   <context>
@@ -1727,7 +1727,7 @@
       <location filename="../../TaskPadParameters.cpp" line="63"/>
       <location filename="../../TaskPadParameters.cpp" line="420"/>
       <source>No face selected</source>
-      <translation>未选择面</translation>
+      <translation>未选择任何面</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="125"/>
@@ -2004,7 +2004,7 @@
       <location filename="../../TaskPocketParameters.cpp" line="64"/>
       <location filename="../../TaskPocketParameters.cpp" line="447"/>
       <source>No face selected</source>
-      <translation>未选择面</translation>
+      <translation>未选择任何面</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="120"/>

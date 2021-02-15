@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for downgrading objects with the Draft Workbench.
+"""Provides GUI tools to downgrade objects.
 
 Downgrades 2D objects to simpler objects until it reaches
 simple Edge primitives. For example, a Draft Line to wire, and then
 to a series of edges.
 """
 ## @package gui_downgrade
-# \ingroup DRAFT
-# \brief Provides tools for downgrading objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to downgrade objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -39,7 +41,7 @@ import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -50,36 +52,27 @@ class Downgrade(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Downgrades the selected objects into simpler shapes.\n"
-                "The result of the operation depends on the types of objects, "
-                "which may be able to be downgraded several times in a row.\n"
-                "For example, it explodes the selected polylines "
-                "into simpler faces, wires, and then edges. "
-                "It can also subtract faces.")
 
         return {'Pixmap': 'Draft_Downgrade',
                 'Accel': "D, N",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrade"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Downgrade", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrades the selected objects into simpler shapes.\nThe result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.\nFor example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Downgrade, self).Activated(name=_tr("Downgrade"))
+        super(Downgrade, self).Activated(name=translate("draft","Downgrade"))
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to upgrade"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
             else:
                 self.proceed()
 
     def proceed(self):
         """Proceed with execution of the command after selection."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         if Gui.Selection.getSelection():
             Gui.addModule("Draft")
             _cmd = 'Draft.downgrade'
@@ -87,7 +80,7 @@ class Downgrade(gui_base_original.Modifier):
             _cmd += 'FreeCADGui.Selection.getSelection(), '
             _cmd += 'delete=True'
             _cmd += ')'
-            _cmd_list = ['d = ' + _cmd,
+            _cmd_list = ['_objs_ = ' + _cmd,
                          'FreeCAD.ActiveDocument.recompute()']
             self.commit(translate("draft", "Downgrade"),
                         _cmd_list)
@@ -95,3 +88,5 @@ class Downgrade(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Downgrade', Downgrade())
+
+## @}

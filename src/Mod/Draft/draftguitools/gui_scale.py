@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for scaling objects with the Draft Workbench.
+"""Provides GUI tools to scale objects in the 3D space.
 
 The scale operation can also be done with subelements.
 
@@ -31,9 +31,11 @@ because internally the functions `scaleVertex` and `scaleEdge`
 only work with polylines that have a `Points` property.
 """
 ## @package gui_scale
-# \ingroup DRAFT
-# \brief Provides tools for scaling objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to scale objects in the 3D space.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -41,11 +43,13 @@ import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
 import draftutils.utils as utils
+import draftutils.groups as groups
 import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 import drafttaskpanels.task_scale as task_scale
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
 
@@ -61,13 +65,11 @@ class Scale(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Scales the selected objects from a base point.\n"
-                "CTRL to snap, SHIFT to constrain, ALT to copy.")
 
         return {'Pixmap': 'Draft_Scale',
                 'Accel': "S, C",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Scale", "Scale"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Scale", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point.\nCTRL to snap, SHIFT to constrain, ALT to copy.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -93,7 +95,8 @@ class Scale(gui_base_original.Modifier):
             self.view.removeEventCallback("SoEvent", self.call)
 
         self.selected_objects = Gui.Selection.getSelection()
-        self.selected_objects = utils.getGroupContents(self.selected_objects)
+        self.selected_objects = \
+            groups.get_group_contents(self.selected_objects)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.refs = []
         self.ui.pointUi(self.name)
@@ -219,13 +222,26 @@ class Scale(gui_base_original.Modifier):
         else:
             _cmd_name = translate("draft", "Scale")
 
+        # the correction translation of the clone placement is
+        # (node[0] - clone.Placement.Base) - (node[0] - clone.Placement.Base)\
+        #   .scale(delta.x,delta.y,delta.z)
+        # equivalent to:
+        # (node[0] - clone.Placement.Base)\
+        #   .scale(1-delta.x,1-delta.y,1-delta.z)
+        str_node0 = DraftVecUtils.toString(self.node[0])
+        str_delta = DraftVecUtils.toString(self.delta)
+        str_delta_corr = DraftVecUtils.toString(App.Vector(1,1,1) - self.delta)
+
         _cmd = 'Draft.clone'
         _cmd += '('
         _cmd += objects + ', '
         _cmd += 'forcedraft=True'
         _cmd += ')'
         _cmd_list = ['clone = ' + _cmd,
-                     'clone.Scale = ' + DraftVecUtils.toString(self.delta),
+                     'clone.Scale = ' + str_delta,
+                     'clone_corr = (' + str_node0 + ' - clone.Placement.Base)'\
+                        + '.scale(*'+ str_delta_corr + ')',
+                     'clone.Placement.move(clone_corr)',
                      'FreeCAD.ActiveDocument.recompute()']
         self.commit(_cmd_name, _cmd_list)
 
@@ -295,7 +311,7 @@ class Scale(gui_base_original.Modifier):
         and `BSpline`.
         """
         t = utils.getType(obj)
-        if t in ["Rectangle", "Wire", "Annotation", "BSpline"]:
+        if t in ["Rectangle", "Wire", "Annotation", "BSpline","Image::ImagePlane"]:
             # TODO: support more types in Draft.scale
             return True
         else:
@@ -319,9 +335,7 @@ class Scale(gui_base_original.Modifier):
             else:
                 m = translate("draft", "Unable to scale objects: ")
                 m += ", ".join([o.Label for o in bads])
-            m += " - " + translate("draft",
-                                   "This object type cannot be scaled "
-                                   "directly. Please use the clone method.")
+            m += " - " + translate("draft","This object type cannot be scaled directly. Please use the clone method.")
             _err(m)
         if goods:
             _doc = 'FreeCAD.ActiveDocument.'
@@ -405,3 +419,5 @@ class Scale(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Scale', Scale())
+
+## @}

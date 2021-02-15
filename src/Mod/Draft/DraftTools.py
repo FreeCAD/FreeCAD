@@ -76,6 +76,7 @@ if not hasattr(FreeCAD, "DraftWorkingPlane"):
 # ---------------------------------------------------------------------------
 import draftguitools.gui_edit
 import draftguitools.gui_selectplane
+import draftguitools.gui_setstyle
 import draftguitools.gui_planeproxy
 from draftguitools.gui_lineops import FinishLine
 from draftguitools.gui_lineops import CloseLine
@@ -93,7 +94,7 @@ from draftguitools.gui_dimension_ops import Draft_FlipDimension
 from draftguitools.gui_lineslope import Draft_Slope
 import draftguitools.gui_arrays
 import draftguitools.gui_annotationstyleeditor
-# import DraftFillet
+from draftguitools.gui_layers import Layer
 
 # ---------------------------------------------------------------------------
 # Preflight stuff
@@ -150,6 +151,7 @@ from draftguitools.gui_base_original import Creator
 
 from draftguitools.gui_lines import Line
 from draftguitools.gui_lines import Wire
+from draftguitools.gui_fillets import Fillet
 from draftguitools.gui_splines import BSpline
 from draftguitools.gui_beziers import BezCurve
 from draftguitools.gui_beziers import CubicBezCurve

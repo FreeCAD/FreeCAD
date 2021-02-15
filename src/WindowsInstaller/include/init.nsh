@@ -161,11 +161,14 @@ Function un.onInit
   !insertmacro MULTIUSER_UNINIT
 
   # Check that FreeCAD is not currently running
-  FindProcDLL::FindProc "${BIN_FREECAD}"
-  ${if} $R0 == "1"
+  ${nsProcess::FindProcess} ${BIN_FREECAD} $R0
+  # if running result is '0', if not running it is '603'
+  ${if} $R0 == "0"
    MessageBox MB_OK|MB_ICONSTOP "$(UnInstallRunning)" /SD IDOK
    Abort
   ${endif}
+  # plugin must be unloaded
+  ${nsProcess::Unload}
   
   # check if it is a 64bit system
   ${if} ${RunningX64}

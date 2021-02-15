@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -82,7 +82,7 @@ void ViewProviderPathCompound::dropObject(App::DocumentObject* obj)
 
 QIcon ViewProviderPathCompound::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("Path-Compound");
+    return Gui::BitmapFactory().pixmap("Path_Compound");
 }
 
 // Python object -----------------------------------------------------------------------

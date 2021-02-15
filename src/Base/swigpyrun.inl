@@ -29,8 +29,11 @@ int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int 
 
     swig_type_info * swig_type = 0;
     swig_type = SWIG_TypeQuery(TypeName);
-    if (!swig_type)
-        throw Base::RuntimeError("Cannot find type information for requested type");
+    if (!swig_type) {
+        std::stringstream str;
+        str << "SWIG: Cannot find type information for requested type: " << TypeName;
+        throw Base::RuntimeError(str.str());
+    }
     
     *ptr = SWIG_NewPointerObj(obj,swig_type,own);
     if (*ptr == 0)

@@ -172,7 +172,7 @@ void GeometryObject::clear()
 
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShape(const TopoDS_Shape& input,
-                                  const gp_Ax2 viewAxis)
+                                  const gp_Ax2& viewAxis)
 {
 //    Base::Console().Message("GO::projectShape() - %s\n", m_parentName.c_str());
    // Clear previous Geometry
@@ -295,7 +295,7 @@ TopoDS_Shape GeometryObject::invertGeometry(const TopoDS_Shape s)
 
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
-                                                 const gp_Ax2 viewAxis)
+                                                 const gp_Ax2 &viewAxis)
 {
     // Clear previous Geometry
     clear();
@@ -404,7 +404,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
 }
 
 TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape &face,
-                                         const gp_Ax2 CS)
+                                         const gp_Ax2 &CS)
 {
 //    Base::Console().Message("GO::projectFace()\n");
     if(face.IsNull()) {
@@ -636,7 +636,7 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 // insertGeomForCE(ce)
 int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
-    Base::Console().Message("GO::addCosmeticEdge(%X)\n", ce);
+//    Base::Console().Message("GO::addCosmeticEdge(%X) 0\n", ce);
     double scale = m_parent->getScale();
     TechDraw::BaseGeom* e = ce->scaledGeometry(scale);
     e->cosmetic = true;
@@ -652,7 +652,7 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 int GeometryObject::addCosmeticEdge(Base::Vector3d start,
                                     Base::Vector3d end)
 {
-    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
+//    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
@@ -670,7 +670,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
                                     Base::Vector3d end,
                                     std::string tagString)
 {
-    Base::Console().Message("GO::addCosmeticEdge() 2\n");
+//    Base::Console().Message("GO::addCosmeticEdge() 2\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
@@ -687,6 +687,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
                                     std::string tagString)
 {
+//    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
     base->cosmetic = true;
     base->hlrVisible = true;
     base->source(1);           //1-CosmeticEdge, 2-CenterLine
@@ -787,6 +788,7 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
              BRepBndLib::Add((*it)->occEdge, testBox);
         }
     }
+    
 
     double xMin = 0,xMax = 0,yMin = 0,yMax = 0, zMin = 0, zMax = 0;
     if (testBox.IsVoid()) {
@@ -813,8 +815,6 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
     }
     vertexGeom = newVerts;
 }
-
-
 
 //! does this GeometryObject already have this vertex
 bool GeometryObject::findVertex(Base::Vector3d v)
@@ -939,7 +939,7 @@ gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
 
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
-                                      const gp_Ax2 viewAxis)
+                                      const gp_Ax2 &viewAxis)
 {
 //    Base::Console().Message("GO::findCentroid() - 2\n");
 //    Base::Vector3d origin(0.0,0.0,0.0);
@@ -976,7 +976,7 @@ Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
 }
 
 Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
-                                         const gp_Ax2 cs)
+                                         const gp_Ax2 &cs)
 {
 //    Base::Console().Message("GO::findCentroidVec() - 2\n");
     gp_Pnt p = TechDraw::findCentroid(shape,cs);

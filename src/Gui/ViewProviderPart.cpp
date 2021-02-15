@@ -27,7 +27,7 @@
 # include <QApplication>
 # include <QMenu>
 # include <QPixmap>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <App/Part.h>
@@ -53,7 +53,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDragger)
  * Creates the view provider for an object group.
  */
 ViewProviderPart::ViewProviderPart()
-{ 
+{
     initExtension(this);
 
     sPixmap = "Geofeaturegroup.svg";
@@ -90,7 +90,7 @@ bool ViewProviderPart::doubleClicked(void)
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->setActiveView(this);
-    if(!activeView) 
+    if(!activeView)
         return false;
 
     activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);

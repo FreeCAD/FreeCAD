@@ -32,7 +32,7 @@
 #include <QPushButton>
 #include <QPlainTextEdit>
 #include <QBasicTimer>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QToolButton>
 #include <QModelIndex>
 #include "ExpressionBinding.h"
@@ -179,7 +179,7 @@ class GuiExport CheckListDialog : public QDialog
   Q_OBJECT
 
 public:
-  CheckListDialog( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+  CheckListDialog( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
   ~CheckListDialog();
 
   void setCheckableItems( const QStringList& items );
@@ -248,7 +248,7 @@ private:
 
 /**
  * A text label where a url can specified. When the user clicks on the text label the system browser
- * gets opened with the specified url. 
+ * gets opened with the specified url.
  *
  * This can be used for e.g. in the about dialog where the url of the maintainer of an application
  * can be specified.
@@ -260,7 +260,7 @@ class GuiExport UrlLabel : public QLabel
   Q_PROPERTY( QString  url    READ url   WRITE setUrl)
 
 public:
-  UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+  UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = Qt::WindowFlags() );
   virtual ~UrlLabel();
 
   QString url() const;
@@ -351,12 +351,12 @@ private:
     QPoint pos;
     QPointer<QWidget> w; // need guard in case widget gets destroyed
     QBasicTimer tooltipTimer;
-    QTime displayTime;
+    QElapsedTimer displayTime;
 };
 
 // ----------------------------------------------------------------------
 
-class GuiExport StatusWidget : public QWidget
+class GuiExport StatusWidget : public QDialog
 {
     Q_OBJECT
 
@@ -370,7 +370,6 @@ public:
 protected:
     void showEvent(QShowEvent*);
     void hideEvent(QHideEvent*);
-    void adjustPosition(QWidget* w);
 
 private:
     QLabel* label;
@@ -415,7 +414,7 @@ public:
     LabelEditor (QWidget * parent = 0);
     virtual ~LabelEditor();
 
-    /** 
+    /**
     * Returns the text.
     */
     QString text() const;

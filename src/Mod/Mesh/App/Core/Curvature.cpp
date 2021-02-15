@@ -28,7 +28,7 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 //#define OPTIMIZE_CURVATURE
 #ifdef OPTIMIZE_CURVATURE
@@ -48,6 +48,7 @@
 #include <Base/Tools.h>
 
 using namespace MeshCore;
+namespace bp = boost::placeholders;
 
 MeshCurvature::MeshCurvature(const MeshKernel& kernel)
   : myKernel(kernel), myMinPoints(20), myRadius(0.5f)
@@ -79,7 +80,7 @@ void MeshCurvature::ComputePerFace(bool parallel)
     }
     else {
         QFuture<CurvatureInfo> future = QtConcurrent::mapped
-            (mySegment, boost::bind(&FacetCurvature::Compute, &face, _1));
+            (mySegment, boost::bind(&FacetCurvature::Compute, &face, bp::_1));
         QFutureWatcher<CurvatureInfo> watcher;
         watcher.setFuture(future);
         watcher.waitForFinished();

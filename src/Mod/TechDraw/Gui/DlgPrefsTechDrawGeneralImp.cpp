@@ -29,18 +29,21 @@
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 
 #include "DlgPrefsTechDrawGeneralImp.h"
+#include "ui_DlgPrefsTechDrawGeneral.h"
 #include <Gui/PrefWidgets.h>
 
 #include "PreferencesGui.h"
+
 using namespace TechDrawGui;
 using namespace TechDraw;
 
 DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
   : PreferencePage( parent )
+  , ui(new Ui_DlgPrefsTechDrawGeneralImp)
 {
-    this->setupUi(this);
-    plsb_LabelSize->setUnit(Base::Unit::Length);
-    plsb_LabelSize->setMinimum(0);
+    ui->setupUi(this);
+    ui->plsb_LabelSize->setUnit(Base::Unit::Length);
+    ui->plsb_LabelSize->setMinimum(0);
 }
 
 DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
@@ -50,54 +53,59 @@ DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
 
 void DlgPrefsTechDrawGeneralImp::saveSettings()
 {
-    pfc_DefTemp->onSave();
-    pfc_DefDir->onSave();
-    pfc_HatchFile->onSave();
-    pfc_FilePattern->onSave();
-    pfc_LineGroup->onSave();
-    pfc_Welding->onSave();
-    le_NamePattern->onSave();
+    ui->cb_Global->onSave();
+    ui->cb_Override->onSave();
+    ui->cb_PageUpdate->onSave();
+    ui->cb_AutoDist->onSave();
 
-    pfb_LabelFont->onSave();
-    plsb_LabelSize->onSave();
+    ui->pfb_LabelFont->onSave();
+    ui->plsb_LabelSize->onSave();
 
-    cb_Global->onSave();
-    cb_Override->onSave();
-    cb_PageUpdate->onSave();
-    cb_AutoDist->onSave();
+    ui->cbProjAngle->onSave();
+    ui->cbHiddenLineStyle->onSave();
+
+    ui->pfc_DefTemp->onSave();
+    ui->pfc_DefDir->onSave();
+    ui->pfc_HatchFile->onSave();
+    ui->pfc_LineGroup->onSave();
+    ui->pfc_Welding->onSave();
+    ui->pfc_FilePattern->onSave();
+    ui->le_NamePattern->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
 {
-//    double labelDefault = 8.0;
+    ui->cb_Global->onRestore();
+    ui->cb_Override->onRestore();
+    ui->cb_PageUpdate->onRestore();
+    ui->cb_AutoDist->onRestore();
+
     double labelDefault = Preferences::labelFontSizeMM();
-    plsb_LabelSize->setValue(labelDefault);
+    ui->plsb_LabelSize->setValue(labelDefault);
     QFont prefFont(Preferences::labelFontQString());
-    pfb_LabelFont->setCurrentFont(prefFont);
-//    pfb_LabelFont->setCurrentText(Preferences::labelFontQString());   //only works in Qt5
+    ui->pfb_LabelFont->setCurrentFont(prefFont);
+    //    ui->pfb_LabelFont->setCurrentText(Preferences::labelFontQString());   //only works in Qt5
 
-    pfc_DefTemp->setFileName(Preferences::defaultTemplate());
-    pfc_DefDir->setFileName(Preferences::defaultTemplateDir());
-    pfc_HatchFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
-    pfc_FilePattern->setFileName(QString::fromStdString(DrawGeomHatch::prefGeomHatchFile()));
-    pfc_Welding->setFileName(PreferencesGui::weldingDirectory());
-    pfc_LineGroup->setFileName(QString::fromUtf8(Preferences::lineGroupFile().c_str()));
+    ui->pfb_LabelFont->onRestore();
+    ui->plsb_LabelSize->onRestore();
 
-    pfc_DefTemp->onRestore();
-    pfc_DefDir->onRestore();
-    pfc_HatchFile->onRestore();
-    pfc_FilePattern->onRestore();
-    pfc_LineGroup->onRestore();
-    pfc_Welding->onRestore();
-    le_NamePattern->onRestore();
-
-    pfb_LabelFont->onRestore();
-    plsb_LabelSize->onRestore();
-
-    cb_Global->onRestore();
-    cb_Override->onRestore();
-    cb_PageUpdate->onRestore();
-    cb_AutoDist->onRestore();
+    ui->cbProjAngle->onRestore();
+    ui->cbHiddenLineStyle->onRestore(); 
+    
+    ui->pfc_DefTemp->setFileName(Preferences::defaultTemplate());
+    ui->pfc_DefDir->setFileName(Preferences::defaultTemplateDir());
+    ui->pfc_HatchFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
+    ui->pfc_LineGroup->setFileName(QString::fromUtf8(Preferences::lineGroupFile().c_str()));
+    ui->pfc_Welding->setFileName(PreferencesGui::weldingDirectory());
+    ui->pfc_FilePattern->setFileName(QString::fromStdString(DrawGeomHatch::prefGeomHatchFile()));
+    
+    ui->pfc_DefTemp->onRestore();
+    ui->pfc_DefDir->onRestore();
+    ui->pfc_HatchFile->onRestore();
+    ui->pfc_LineGroup->onRestore();
+    ui->pfc_Welding->onRestore();
+    ui->pfc_FilePattern->onRestore();
+    ui->le_NamePattern->onRestore();
 }
 
 /**
@@ -107,7 +115,7 @@ void DlgPrefsTechDrawGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
-        retranslateUi(this);
+        ui->retranslateUi(this);
         loadSettings();
     }
     else {

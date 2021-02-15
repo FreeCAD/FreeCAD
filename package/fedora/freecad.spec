@@ -1,6 +1,6 @@
 # This package depends on automagic byte compilation
-# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
-%global _python_bytecompile_extra 1
+# https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_3
+%global py_bytecompile 1
 
 # Setup python target for shiboken so the right cmake file is imported.
 %global py_suffix %(%{__python3} -c "import sysconfig; print(sysconfig.get_config_var('SOABI'))")
@@ -16,6 +16,9 @@
 %global bundled_pycxx %{?_without_bundled_pycxx: 0} %{?!_without_bundled_pycxx: 1}
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
+
+# Prevent RPM from doing its magical 'build' directory for now
+%global __cmake_in_source_build 0
 
 # See FreeCAD-master/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
@@ -46,7 +49,7 @@ BuildRequires:  git
 
 # Development Libraries
 
-BuildRequires:  Coin3-devel
+BuildRequires:  Coin4-devel
 BuildRequires:  Inventor-devel
 BuildRequires:  opencascade-devel
 BuildRequires:  boost-devel
@@ -70,6 +73,7 @@ BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  python3-pivy
 BuildRequires:  mesa-libEGL-devel
+BuildRequires:  openmpi-devel
 BuildRequires:  pcl-devel
 BuildRequires:  pyside2-tools
 BuildRequires:  python3
@@ -197,8 +201,8 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3 \
        -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        -DOpenGL_GL_PREFERENCE=GLVND \
-       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin3 \
-       -DCOIN3D_DOC_PATH=%{_datadir}/Coin3/Coin \
+       -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
+       -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
        -DUSE_OCC=TRUE \
 %if ! %{bundled_smesh}
@@ -241,6 +245,9 @@ mv %{buildroot}%{_libdir}/%{name}/share/metainfo/* %{buildroot}%{_metainfodir}/
 mkdir %{buildroot}%{_datadir}/applications/
 mv %{buildroot}%{_libdir}/%{name}/share/applications/* %{buildroot}%{_datadir}/applications/
 
+mkdir -p %{buildroot}%{_datadir}/thumbnailers/
+mv %{buildroot}%{_libdir}/%{name}/share/thumbnailers/* %{buildroot}%{_datadir}/thumbnailers/
+
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/
 mv %{buildroot}%{_libdir}/%{name}/share/icons/hicolor/scalable/* %{buildroot}%{_datadir}/icons/hicolor/scalable/
 
@@ -260,7 +267,8 @@ popd
 # Remove obsolete Start_Page.html
 rm -f %{buildroot}%{_docdir}/%{name}/Start_Page.html
 # Belongs in %%license not %%doc
-rm -f %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
+#No longer present?
+#rm -f %{buildroot}%{_docdir}/freecad/ThirdPartyLibraries.html
 
 # Bug maintainers to keep %%{plugins} macro up to date.
 #
@@ -326,6 +334,7 @@ fi
 %{_datadir}/icons/hicolor/scalable/*
 %{_datadir}/pixmaps/*
 %{_datadir}/mime/packages/*
+%{_datadir}/thumbnailers/*
 
 %files data
 %{_datadir}/%{name}/

@@ -76,17 +76,17 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X, (0.0), group, App::Prop_None, "X position");
-    ADD_PROPERTY_TYPE(Y, (0.0), group, App::Prop_None, "Y position");
-    ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_None, "Lock View position to parent Page or Group");
-    ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_None, "Rotation in degrees counterclockwise");
+    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_Output | App::Prop_NoRecompute), "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_Output | App::Prop_NoRecompute), "Y position");
+    ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_Output, "Lock View position to parent Page or Group");
+    ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
-    ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_None, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view");
+    ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_Output, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_Output, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
     Scale.setConstraints(&scaleRange);
 
-    ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_None, "Short text about the view");
+    ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
 }
 
 DrawView::~DrawView()
@@ -95,10 +95,17 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
-//    Base::Console().Message("DV::execute() - %s\n", getNameInDocument());
+//    Base::Console().Message("DV::execute() - %s touched: %d\n", getNameInDocument(), isTouched());
+    if (findParentPage() == nullptr) {
+        return App::DocumentObject::execute();
+    }
     handleXYLock();
     requestPaint();
-    return App::DocumentObject::execute();
+    //documentobject::execute doesn't do anything useful for us.
+    //documentObject::recompute causes an infinite loop.
+    //should not be necessary to purgeTouched here, but it prevents a superfluous feature recompute
+    purgeTouched();                           //this should not be necessary!
+    return App::DocumentObject::StdReturn;
 }
 
 void DrawView::checkScale(void)
@@ -146,11 +153,15 @@ void DrawView::onChanged(const App::Property* prop)
             }
         } else if (prop == &LockPosition) {
             handleXYLock();
+            requestPaint();         //change lock icon
             LockPosition.purgeTouched(); 
-        }
-        if ((prop == &Caption) ||
+        } else if ((prop == &Caption) ||
             (prop == &Label)) {
             requestPaint();
+        } else if ((prop == &X) ||
+            (prop == &Y)) {
+            X.purgeTouched();
+            Y.purgeTouched();
         }
     }
     App::DocumentObject::onChanged(prop);
@@ -195,11 +206,7 @@ short DrawView::mustExecute() const
     short result = 0;
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
-                    ScaleType.isTouched() ||
-                    Caption.isTouched() ||
-                    X.isTouched() ||
-                    Y.isTouched() ||
-                    LockPosition.isTouched());
+                    ScaleType.isTouched());
     }
     if ((bool) result) {
         return result;
@@ -228,11 +235,11 @@ DrawPage* DrawView::findParentPage() const
     std::vector<App::DocumentObject*> parent = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
-            page = dynamic_cast<TechDraw::DrawPage *>(*it);
+            page = static_cast<TechDraw::DrawPage *>(*it);
         }
 
         if ((*it)->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
-            collection = dynamic_cast<TechDraw::DrawViewCollection *>(*it);
+            collection = static_cast<TechDraw::DrawViewCollection *>(*it);
             page = collection->findParentPage();
         }
 

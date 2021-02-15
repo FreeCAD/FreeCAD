@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2014 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -125,7 +125,7 @@ void QGIViewClip::drawClip()
     QPointF clipOrigin = mapToItem(m_cliparea,midMapped);
 
     m_cliparea->setRect(r.adjusted(-1,-1,1,1));
-    
+
     std::vector<std::string> childNames = viewClip->getChildViewNames();
     //for all child Views in Clip, add the graphics representation of the View to the Clip group
     for(std::vector<std::string>::iterator it = childNames.begin(); it != childNames.end(); it++) {

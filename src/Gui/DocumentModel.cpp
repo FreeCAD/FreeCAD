@@ -26,8 +26,8 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <algorithm>
-# include <boost/signals2.hpp>
-# include <boost/bind.hpp>
+# include <boost_signals2.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include <boost/unordered_set.hpp>
@@ -42,6 +42,7 @@
 #include <App/PropertyLinks.h>
 
 using namespace Gui;
+namespace bp = boost::placeholders;
 
 namespace Gui {
     // forward declaration
@@ -83,12 +84,12 @@ namespace Gui {
         { return childItems.count(); }
         virtual QVariant data(int role) const
         {
-            Q_UNUSED(role); 
+            Q_UNUSED(role);
             return QVariant();
         }
         virtual bool setData (const QVariant & value, int role)
         {
-            Q_UNUSED(value); 
+            Q_UNUSED(value);
             if (role == Qt::EditRole) {
                 return true;
             }
@@ -298,7 +299,7 @@ namespace Gui {
             ViewProviderIndex* c = static_cast<ViewProviderIndex*>(*it)->clone();
             copy->appendChild(c);
         }
-        return copy; 
+        return copy;
     }
 
     void ViewProviderIndex::findViewProviders(const ViewProviderDocumentObject& vp,
@@ -367,11 +368,11 @@ DocumentModel::DocumentModel(QObject* parent)
     }
 
     // Setup connections
-    Application::Instance->signalNewDocument.connect(boost::bind(&DocumentModel::slotNewDocument, this, _1));
-    Application::Instance->signalDeleteDocument.connect(boost::bind(&DocumentModel::slotDeleteDocument, this, _1));
-    Application::Instance->signalRenameDocument.connect(boost::bind(&DocumentModel::slotRenameDocument, this, _1));
-    Application::Instance->signalActiveDocument.connect(boost::bind(&DocumentModel::slotActiveDocument, this, _1));
-    Application::Instance->signalRelabelDocument.connect(boost::bind(&DocumentModel::slotRelabelDocument, this, _1));
+    Application::Instance->signalNewDocument.connect(boost::bind(&DocumentModel::slotNewDocument, this, bp::_1));
+    Application::Instance->signalDeleteDocument.connect(boost::bind(&DocumentModel::slotDeleteDocument, this, bp::_1));
+    Application::Instance->signalRenameDocument.connect(boost::bind(&DocumentModel::slotRenameDocument, this, bp::_1));
+    Application::Instance->signalActiveDocument.connect(boost::bind(&DocumentModel::slotActiveDocument, this, bp::_1));
+    Application::Instance->signalRelabelDocument.connect(boost::bind(&DocumentModel::slotRelabelDocument, this, bp::_1));
 }
 
 DocumentModel::~DocumentModel()
@@ -381,13 +382,13 @@ DocumentModel::~DocumentModel()
 
 void DocumentModel::slotNewDocument(const Gui::Document& Doc)
 {
-    Doc.signalNewObject.connect(boost::bind(&DocumentModel::slotNewObject, this, _1));
-    Doc.signalDeletedObject.connect(boost::bind(&DocumentModel::slotDeleteObject, this, _1));
-    Doc.signalChangedObject.connect(boost::bind(&DocumentModel::slotChangeObject, this, _1, _2));
-    Doc.signalRelabelObject.connect(boost::bind(&DocumentModel::slotRenameObject, this, _1));
-    Doc.signalActivatedObject.connect(boost::bind(&DocumentModel::slotActiveObject, this, _1));
-    Doc.signalInEdit.connect(boost::bind(&DocumentModel::slotInEdit, this, _1));
-    Doc.signalResetEdit.connect(boost::bind(&DocumentModel::slotResetEdit, this, _1));
+    Doc.signalNewObject.connect(boost::bind(&DocumentModel::slotNewObject, this, bp::_1));
+    Doc.signalDeletedObject.connect(boost::bind(&DocumentModel::slotDeleteObject, this, bp::_1));
+    Doc.signalChangedObject.connect(boost::bind(&DocumentModel::slotChangeObject, this, bp::_1, bp::_2));
+    Doc.signalRelabelObject.connect(boost::bind(&DocumentModel::slotRenameObject, this, bp::_1));
+    Doc.signalActivatedObject.connect(boost::bind(&DocumentModel::slotActiveObject, this, bp::_1));
+    Doc.signalInEdit.connect(boost::bind(&DocumentModel::slotInEdit, this, bp::_1));
+    Doc.signalResetEdit.connect(boost::bind(&DocumentModel::slotResetEdit, this, bp::_1));
 
     QModelIndex parent = createIndex(0,0,d->rootItem);
     int count_docs = d->rootItem->childCount();
@@ -411,7 +412,7 @@ void DocumentModel::slotDeleteDocument(const Gui::Document& Doc)
 
 void DocumentModel::slotRenameDocument(const Gui::Document& Doc)
 {
-    Q_UNUSED(Doc); 
+    Q_UNUSED(Doc);
     // do nothing here
 }
 
@@ -436,12 +437,12 @@ void DocumentModel::slotActiveDocument(const Gui::Document& /*Doc*/)
 
 void DocumentModel::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
-    Q_UNUSED(v); 
+    Q_UNUSED(v);
 }
 
 void DocumentModel::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 {
-    Q_UNUSED(v); 
+    Q_UNUSED(v);
 }
 
 void DocumentModel::slotNewObject(const Gui::ViewProviderDocumentObject& obj)
@@ -550,13 +551,13 @@ void DocumentModel::slotChangeObject(const Gui::ViewProviderDocumentObject& obj,
 
 void DocumentModel::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 {
-    Q_UNUSED(obj); 
+    Q_UNUSED(obj);
     // renaming of objects not supported at the moment
 }
 
 void DocumentModel::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
 {
-    Q_UNUSED(obj); 
+    Q_UNUSED(obj);
     // do nothing here because this is automatically done by calling
     // ViewProviderIndex::data()
 }
@@ -627,7 +628,7 @@ Qt::ItemFlags DocumentModel::flags(const QModelIndex &index) const
     //    return Qt::ItemIsEnabled;
     //return QAbstractItemModel::flags(index);
     if (!index.isValid())
-        return 0;
+        return Qt::ItemFlags();
     return static_cast<DocumentModelIndex*>(index.internalPointer())->flags();
 }
 
@@ -664,7 +665,7 @@ int DocumentModel::rowCount (const QModelIndex & parent) const
 
 QVariant DocumentModel::headerData (int section, Qt::Orientation orientation, int role) const
 {
-    Q_UNUSED(section); 
+    Q_UNUSED(section);
     if (orientation == Qt::Horizontal) {
         if (role != Qt::DisplayRole)
             return QVariant();

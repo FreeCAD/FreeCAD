@@ -47,7 +47,7 @@ class Mesh2ShapeGmsh : public MeshGui::GmshWidget
     Q_OBJECT
 
 public:
-    Mesh2ShapeGmsh(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    Mesh2ShapeGmsh(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Mesh2ShapeGmsh();
 
     void process(App::Document* doc, const std::list<App::SubObjectT>&);

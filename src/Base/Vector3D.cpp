@@ -193,7 +193,7 @@ Vector3<_Precision> Vector3<_Precision>::Cross(const Vector3<_Precision>& rcVct)
 }
 
 template <class _Precision>
-bool Vector3<_Precision>::IsOnLineSegment (const Vector3<_Precision>& startVct, const Vector3<_Precision>& endVct) const 
+bool Vector3<_Precision>::IsOnLineSegment (const Vector3<_Precision>& startVct, const Vector3<_Precision>& endVct) const
 {
     Vector3<_Precision> vectorAB = endVct - startVct;
     Vector3<_Precision> vectorAC = *this - startVct;

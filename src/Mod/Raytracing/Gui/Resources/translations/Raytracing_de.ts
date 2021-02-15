@@ -121,7 +121,7 @@
     <message>
       <location filename="../../Command.cpp" line="870"/>
       <source>&amp;Reset Camera</source>
-      <translation>Kamera zurücksetzen</translation>
+      <translation>Kamera zu&amp;rücksetzen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="871"/>
@@ -496,17 +496,17 @@ Möchten Sie fortfahren?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="146"/>
+      <location filename="../../ViewProvider.cpp" line="147"/>
       <source>Edit Povray project</source>
       <translation>Povray-Projekt bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Povray template</source>
       <translation>Povray-Vorlage</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Select a Povray template</source>
       <translation>Wählen Sie eine Povray-Vorlage</translation>
     </message>

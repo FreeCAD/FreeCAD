@@ -42,6 +42,16 @@ std::string DrawViewDimensionPy::representation(void) const
 {
     return std::string("<DrawViewDimension object>");
 }
+
+PyObject* DrawViewDimensionPy::getRawValue(PyObject* args)
+{
+    (void) args;
+    DrawViewDimension* dvd = getDrawViewDimensionPtr();
+    double val = dvd->getDimValue();
+    PyObject* pyVal = PyFloat_FromDouble(val);
+    return pyVal;
+}
+
 PyObject* DrawViewDimensionPy::getText(PyObject* args)
 {
     (void) args;
@@ -51,7 +61,7 @@ PyObject* DrawViewDimensionPy::getText(PyObject* args)
 //        return 0;
 //    }
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
-    std::string  textString = dvd->getFormatedValue();
+    std::string  textString = dvd->getFormattedDimensionValue();
 //TODO: check multiversion code!
 #if PY_MAJOR_VERSION >= 3
     PyObject* pyText = Base::PyAsUnicodeObject(textString);
@@ -66,10 +76,10 @@ PyObject* DrawViewDimensionPy::getLinearPoints(PyObject* args)
     (void) args;
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     pointPair pts = dvd->getLinearPoints();
-    PyObject* ret = PyList_New(0);
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.first)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.second)));
-    return ret;
+    Py::List ret;
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.first))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.second))));
+    return Py::new_reference_to(ret);
 }
 
 PyObject* DrawViewDimensionPy::getArcPoints(PyObject* args)
@@ -77,14 +87,14 @@ PyObject* DrawViewDimensionPy::getArcPoints(PyObject* args)
     (void) args;
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     arcPoints pts = dvd->getArcPoints();
-    PyObject* ret = PyList_New(0);
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.center)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.onCurve.first)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.onCurve.second)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.arcEnds.first)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.arcEnds.second)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.midArc)));
-    return ret;
+    Py::List ret;
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.center))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.onCurve.first))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.onCurve.second))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.arcEnds.first))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.arcEnds.second))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.midArc))));
+    return Py::new_reference_to(ret);
 }
 
 PyObject* DrawViewDimensionPy::getAnglePoints(PyObject* args)
@@ -92,11 +102,11 @@ PyObject* DrawViewDimensionPy::getAnglePoints(PyObject* args)
     (void) args;
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     anglePoints pts = dvd->getAnglePoints();
-    PyObject* ret = PyList_New(0);
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.ends.first)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.ends.second)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.vertex)));
-    return ret;
+    Py::List ret;
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.ends.first))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.ends.second))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.vertex))));
+    return Py::new_reference_to(ret);
 }
 
 PyObject* DrawViewDimensionPy::getArrowPositions(PyObject* args)
@@ -104,10 +114,10 @@ PyObject* DrawViewDimensionPy::getArrowPositions(PyObject* args)
     (void) args;
     DrawViewDimension* dvd = getDrawViewDimensionPtr();
     pointPair pts = dvd->getArrowPositions();
-    PyObject* ret = PyList_New(0);
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.first)));
-    PyList_Append(ret,new Base::VectorPy(new Base::Vector3d(pts.second)));
-    return ret;
+    Py::List ret;
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.first))));
+    ret.append(Py::asObject(new Base::VectorPy(new Base::Vector3d(pts.second))));
+    return Py::new_reference_to(ret);
 }
 PyObject *DrawViewDimensionPy::getCustomAttributes(const char* /*attr*/) const
 {

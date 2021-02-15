@@ -32,6 +32,7 @@
 
   # include <QGraphicsScene>
   # include <QPainter>
+  # include <QPainterPath>
   # include <QPaintDevice>
   # include <QSvgGenerator>
 

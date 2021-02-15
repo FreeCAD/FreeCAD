@@ -43,4 +43,4 @@ class CompleteWorkbench(Workbench):
     def GetClassName(self):
         return "Gui::PythonWorkbench"
 
-Gui.addWorkbench(CompleteWorkbench())
+# Gui.addWorkbench(CompleteWorkbench())

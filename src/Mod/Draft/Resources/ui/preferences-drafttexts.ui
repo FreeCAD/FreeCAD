@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>522</width>
-    <height>473</height>
+    <width>537</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -459,6 +459,43 @@ such as &quot;Arial:Bold&quot;</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>showUnit</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Override unit</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit">
+          <property name="toolTip">
+           <string>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>overrideUnit</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>

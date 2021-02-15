@@ -35,7 +35,7 @@ namespace Gui {
 bool GuiExport OpenURLInBrowser(const char * URL);
 
 /**
- * Returns the content of an HTML page which gets sent to 
+ * Returns the content of an HTML page which gets sent to
  * the client to be displayed.
  * @author Werner Mayer
  */
@@ -52,7 +52,7 @@ public:
     QByteArray loadFailed(const QString& error) const;
 };
 
-/** 
+/**
  * The HttpServer class implements a simple HTTP server.
  */
 class HttpServer : public QTcpServer

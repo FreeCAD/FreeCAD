@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver Elmer equation object _NonLinear"
+__title__  = "FreeCAD FEM solver Elmer equation object _NonLinear"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -41,20 +41,35 @@ class Proxy(linear.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat", "NonlinearTolerance",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "NonlinearTolerance",
+            "Nonlinear System",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyInteger", "NonlinearIterations",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "NonlinearIterations",
+            "Nonlinear System",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyFloat", "RelaxationFactor",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "RelaxationFactor",
+            "Nonlinear System",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyInteger", "NonlinearNewtonAfterIterations",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyInteger",
+            "NonlinearNewtonAfterIterations",
+            "Nonlinear System",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyFloat", "NonlinearNewtonAfterTolerance",
-            "Nonlinear System", "Select type of solver for linear system")
+            "App::PropertyFloat",
+            "NonlinearNewtonAfterTolerance",
+            "Nonlinear System",
+            ""
+        )
         obj.NonlinearTolerance = 1e-8
         obj.NonlinearIterations = 500
         obj.RelaxationFactor = 1

@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating clones of objects with the Draft Workbench.
+"""Provides GUI tools to create Clone objects.
 
 The clone is basically a simple copy of the `Shape` of another object,
 whether that is a Draft object or any other 3D object.
@@ -35,9 +35,11 @@ more memory efficient as it reuses the same internal `Shape`
 instead of creating a copy of it.
 """
 ## @package gui_clone
-# \ingroup DRAFT
-# \brief Provides tools for creating clones of objects.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Clone objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -47,7 +49,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftutils.todo as todo
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -62,33 +64,27 @@ class Clone(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a clone of the selected objects.\n"
-                "The resulting clone can be scaled in each "
-                "of its three directions.")
 
         return {'Pixmap': 'Draft_Clone',
                 'Accel': "C,L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Clone", "Clone"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Clone", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Clone", "Creates a clone of the selected objects.\nThe resulting clone can be scaled in each of its three directions.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Clone, self).Activated(name=_tr("Clone"))
+        super(Clone, self).Activated(name=translate("draft","Clone"))
         if not Gui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to clone"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         if Gui.Selection.getSelection():
             sels = len(Gui.Selection.getSelection())
             Gui.addModule("Draft")
@@ -123,3 +119,5 @@ class Clone(gui_base_original.Modifier):
 
 Draft_Clone = Clone
 Gui.addCommand('Draft_Clone', Clone())
+
+## @}

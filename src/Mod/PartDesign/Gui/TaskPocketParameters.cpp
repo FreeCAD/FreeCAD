@@ -53,12 +53,12 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPocketParameters */
 
 TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent, bool newObj)
-    : TaskSketchBasedParameters(PocketView, parent, "PartDesign_Pocket",tr("Pocket parameters"))
+    : TaskSketchBasedParameters(PocketView, parent, "PartDesign_Pocket", tr("Pocket parameters"))
+    , ui(new Ui_TaskPocketParameters)
     , oldLength(0)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPocketParameters();
     ui->setupUi(proxy);
 #if QT_VERSION >= 0x040700
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
@@ -126,6 +126,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPocket->Length);
     ui->lengthEdit2->bind(pcPocket->Length2);
+    ui->offsetEdit->bind(pcPocket->Offset);
 
     QMetaObject::connectSlotsByName(this);
 
@@ -421,7 +422,6 @@ QString TaskPocketParameters::getFaceName(void) const
 
 TaskPocketParameters::~TaskPocketParameters()
 {
-    delete ui;
 }
 
 void TaskPocketParameters::changeEvent(QEvent *e)

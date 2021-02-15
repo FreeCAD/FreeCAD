@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>304</width>
-    <height>253</height>
+    <height>264</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -119,27 +119,11 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,1,2">
-     <item row="2" column="2">
-      <widget class="Gui::QuantitySpinBox" name="qsbRadius">
-       <property name="toolTip">
-        <string>size of detail view</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-       <property name="value">
-        <double>10.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
+    <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,0,0">
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>X</string>
+        <string>Reference</string>
        </property>
       </widget>
      </item>
@@ -156,20 +140,6 @@
        </property>
       </spacer>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Y</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <widget class="Gui::QuantitySpinBox" name="qsbX">
        <property name="toolTip">
@@ -178,11 +148,96 @@
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
        <property name="value">
         <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="Gui::QuantitySpinBox" name="qsbScale">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>scale factor for detail view</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="singleStep">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>X</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="Gui::QuantitySpinBox" name="qsbRadius">
+       <property name="toolTip">
+        <string>size of detail view</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+       <property name="value">
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Scale Factor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Y</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Radius</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QLineEdit" name="leReference">
+       <property name="toolTip">
+        <string>reference label</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -194,29 +249,43 @@
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Radius</string>
+     <item row="3" column="2">
+      <widget class="QComboBox" name="cbScaleType">
+       <property name="toolTip">
+        <string>Page: scale factor of page is used
+Automatic: if the detail view is larger than the page,
+                   it will be scaled down to fit into the page
+Custom: custom scale factor is used</string>
        </property>
+       <item>
+        <property name="text">
+         <string>Page</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Automatic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Custom</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Reference</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QLineEdit" name="leReference">
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <string>Scale Type</string>
        </property>
       </widget>
      </item>

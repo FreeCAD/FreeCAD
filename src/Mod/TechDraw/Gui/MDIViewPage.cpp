@@ -39,8 +39,8 @@
     #include <QPrinter>
     #include <QPrintDialog>
     #include <QPrintPreviewDialog>
-    #include <boost/signals2.hpp>
-    #include <boost/bind.hpp>
+    #include <boost_signals2.hpp>
+    #include <boost_bind_bind.hpp>
 
 #endif  // #ifndef _PreComp_
 
@@ -109,6 +109,7 @@
 
 
 using namespace TechDrawGui;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
@@ -116,8 +117,13 @@ TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
 
 MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent),
+#if QT_VERSION >= 0x050300
+    m_orientation(QPageLayout::Landscape),
+    m_paperSize(QPageSize::A4),
+#else
     m_orientation(QPrinter::Landscape),
     m_paperSize(QPrinter::A4),
+#endif
     m_vpPage(pageVp)
 {
 
@@ -163,7 +169,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
     //get informed by App side about deleted DocumentObjects
     App::Document* appDoc = m_vpPage->getDocument()->getDocument();
-    auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, _1);
+    auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, bp::_1);
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
 }
 
@@ -306,13 +312,25 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 {
     m_view->setPageTemplate(obj);
-    double width  =  obj->Width.getValue();
-    double height =  obj->Height.getValue();
-    m_paperSize = getPaperSize(int(round(width)),int(round(height)));
-    if (width > height) {
+    pagewidth  =  obj->Width.getValue();
+    pageheight =  obj->Height.getValue();
+#if QT_VERSION >= 0x050300
+    m_paperSize = QPageSize::id(QSizeF(pagewidth, pageheight), QPageSize::Millimeter, QPageSize::FuzzyOrientationMatch);
+#else
+    m_paperSize = getPaperSize(int(round(pagewidth)), int(round(pageheight)));
+#endif
+    if (pagewidth > pageheight) {
+#if QT_VERSION >= 0x050300
+        m_orientation = QPageLayout::Landscape;
+#else
         m_orientation = QPrinter::Landscape;
+#endif
     } else {
+#if QT_VERSION >= 0x050300
+        m_orientation = QPageLayout::Portrait;
+#else
         m_orientation = QPrinter::Portrait;
+#endif
     }
 }
 
@@ -482,17 +500,6 @@ void MDIViewPage::fixOrphans(bool force)
             }
         }
     }
-
-    // Update all the QGIVxxxx
-    // WF: why do we do this?  views should be keeping themselves up to date.
-//    const std::vector<QGIView *> &upviews = m_view->getViews();
-//    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-//        Base::Console().Message("TRACE - MDIVP::fixOrphans - updating a QGIVxxxx\n");
-//        if((*it)->getViewObject()->isTouched() ||
-//           forceUpdate) {
-//            (*it)->updateView(forceUpdate);
-//        }
-//    }
 }
 
 //NOTE: this doesn't add missing views.  see fixOrphans()
@@ -516,6 +523,7 @@ void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
         }
     }
 }
+
 void MDIViewPage::findMissingViews(const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing)
 {
     for(std::vector<App::DocumentObject*>::const_iterator it = list.begin(); it != list.end(); ++it) {
@@ -661,15 +669,31 @@ void MDIViewPage::printPdf(std::string file)
     QString filename = QString::fromUtf8(file.data(),file.size());
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(filename);
-//    printer.setOrientation(m_orientation);
+
+#if QT_VERSION >= 0x050300
+    if (m_paperSize == QPageSize::Ledger)  {
+        printer.setPageOrientation((QPageLayout::Orientation) (1 - m_orientation));  //reverse 0/1
+#else
     if (m_paperSize == QPrinter::Ledger)  {
         printer.setOrientation((QPrinter::Orientation) (1 - m_orientation));  //reverse 0/1
+#endif
     } else {
+#if QT_VERSION >= 0x050300
+        printer.setPageOrientation(m_orientation);
+#else
         printer.setOrientation(m_orientation);
+#endif
     }
+#if QT_VERSION >= 0x050300
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
+#else
     printer.setPaperSize(m_paperSize);
+#endif
     print(&printer);
 }
 
@@ -677,8 +701,17 @@ void MDIViewPage::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
+#if QT_VERSION >= 0x050300
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
+    printer.setPageOrientation(m_orientation);
+#else
     printer.setPaperSize(m_paperSize);
     printer.setOrientation(m_orientation);
+#endif
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
@@ -689,8 +722,17 @@ void MDIViewPage::printPreview()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
+#if QT_VERSION >= 0x050300
+    if (m_paperSize == QPageSize::Custom) {
+        printer.setPageSize(QPageSize(QSizeF(pagewidth, pageheight), QPageSize::Millimeter));
+    } else {
+        printer.setPageSize(QPageSize(m_paperSize));
+    }
+    printer.setPageOrientation(m_orientation);
+#else
     printer.setPaperSize(m_paperSize);
     printer.setOrientation(m_orientation);
+#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -714,16 +756,21 @@ void MDIViewPage::print(QPrinter* printer)
     // a certain scaling effect can be observed and the content becomes smaller.
     QPaintEngine::Type paintType = printer->paintEngine()->type();
     if (printer->outputFormat() == QPrinter::NativeFormat) {
-        int w = printer->widthMM();
-        int h = printer->heightMM();
-        QPrinter::PaperSize psPrtCalcd = getPaperSize(w, h);
+#if QT_VERSION >= 0x050300
+        QPageSize::PageSizeId psPrtSetting = printer->pageLayout().pageSize().id();
+#else
         QPrinter::PaperSize psPrtSetting = printer->paperSize();
+#endif
 
         // for the preview a 'Picture' paint engine is used which we don't
         // care if it uses wrong printer settings
         bool doPrint = paintType != QPaintEngine::Picture;
 
+#if QT_VERSION >= 0x050300
+        if (doPrint && printer->pageLayout().orientation() != m_orientation) {
+#else
         if (doPrint && printer->orientation() != m_orientation) {
+#endif
             int ret = QMessageBox::warning(this, tr("Different orientation"),
                 tr("The printer uses a different orientation  than the drawing.\n"
                    "Do you want to continue?"),
@@ -731,15 +778,7 @@ void MDIViewPage::print(QPrinter* printer)
             if (ret != QMessageBox::Yes)
                 return;
         }
-        else if (doPrint && psPrtCalcd != m_paperSize) {
-            int ret = QMessageBox::warning(this, tr("Different paper size"),
-                tr("The printer uses a different paper size than the drawing.\n"
-                   "Do you want to continue?"),
-                   QMessageBox::Yes | QMessageBox::No);
-            if (ret != QMessageBox::Yes)
-                return;
-        }
-        else if (doPrint && psPrtSetting != m_paperSize) {
+        if (doPrint && psPrtSetting != m_paperSize) {
             int ret = QMessageBox::warning(this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
@@ -758,12 +797,20 @@ void MDIViewPage::print(QPrinter* printer)
         return;
     }
 
+#if QT_VERSION >= 0x050300
+    QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
+#else
     QRect targetRect = printer->paperRect();
+#endif
 #ifdef Q_OS_WIN32
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
-        targetRect = printer->pageRect();
+#if QT_VERSION >= 0x050300
+        QRect targetRect = printer->pageLayout().paintRectPixels(printer->resolution());
+#else
+        QRect targetRect = printer->pageRect();
+#endif
 #endif
 
     //bool block =
@@ -797,7 +844,7 @@ void MDIViewPage::print(QPrinter* printer)
     static_cast<void> (blockConnection(false));
 }
 
-
+#if QT_VERSION < 0x050300
 QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
 {
     static const float paperSizes[][2] = {
@@ -855,6 +902,7 @@ QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
 
     return ps;
 }
+#endif
 
 PyObject* MDIViewPage::getPyObject()
 {
@@ -934,7 +982,7 @@ void MDIViewPage::saveDXF(std::string fileName)
     TechDraw::DrawPage* page = m_vpPage->getDrawPage();
     std::string PageName = page->getNameInDocument();
     fileName = Base::Tools::escapeEncodeFilename(fileName);
-    Gui::Command::openCommand("Save page to dxf");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Save page to dxf"));
     Gui::Command::doCommand(Gui::Command::Doc,"import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",
                             PageName.c_str(),(const char*)fileName.c_str());
@@ -1026,7 +1074,7 @@ void MDIViewPage::clearSceneSelection()
 {
 //    Base::Console().Message("MDIVP::clearSceneSelection()\n");
     blockSelection(true);
-    qgSceneSelected.clear();
+    m_qgSceneSelected.clear();
 
     std::vector<QGIView *> views = m_view->getViews();
 
@@ -1058,7 +1106,6 @@ void MDIViewPage::clearSceneSelection()
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
 void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 {
-//    Base::Console().Message("MDIVP::selectQGIV(%s) - %d\n", obj->getNameInDocument(), isSelected);
     QGIView *view = m_view->findQViewForDocObj(obj);
 
     blockSelection(true);
@@ -1106,35 +1153,35 @@ void MDIViewPage::sceneSelectionManager()
     QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
 
     if (sceneSel.isEmpty()) {
-        qgSceneSelected.clear(); //TODO: need to signal somebody?  Tree? handled elsewhere
+        m_qgSceneSelected.clear(); //TODO: need to signal somebody?  Tree? handled elsewhere
         //clearSelection
         return;
     }
 
-    if (qgSceneSelected.isEmpty() &&
+    if (m_qgSceneSelected.isEmpty() &&
         !sceneSel.isEmpty()) {
-        qgSceneSelected.push_back(sceneSel.front());
+        m_qgSceneSelected.push_back(sceneSel.front());
         return;
     }
 
-    //add to qgSceneSelected anything that is in q_sceneSel
+    //add to m_qgSceneSelected anything that is in q_sceneSel
     for (auto qts: sceneSel) {
         bool found = false;
-        for (auto ms: qgSceneSelected) {
+        for (auto ms: m_qgSceneSelected) {
             if ( qts == ms ) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            qgSceneSelected.push_back(qts);
+            m_qgSceneSelected.push_back(qts);
             break;
         }
     }
 
-    //remove items from qgSceneSelected that are not in q_sceneSel
+    //remove items from m_qgSceneSelected that are not in q_sceneSel
     QList<QGraphicsItem*> m_new;
-    for (auto m: qgSceneSelected) {
+    for (auto m: m_qgSceneSelected) {
         for (auto q: sceneSel)  {
             if (m == q) {
                 m_new.push_back(m);
@@ -1142,14 +1189,13 @@ void MDIViewPage::sceneSelectionManager()
             }
         }
     }
-    qgSceneSelected = m_new;
+    m_qgSceneSelected = m_new;
 }
 
 //! update Tree Selection from QGraphicsScene selection
 //triggered by m_view->scene() signal
 void MDIViewPage::sceneSelectionChanged()
 {
-//    Base::Console().Message("MDIVP::sceneSelctionChanged()\n");
     sceneSelectionManager();
 
 //    QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
@@ -1159,8 +1205,7 @@ void MDIViewPage::sceneSelectionChanged()
     }
 
     std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
-//    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
-    QList<QGraphicsItem*> sceneSel = qgSceneSelected;
+    QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
 
     //check if really need to change selection
     bool sameSel = compareSelections(treeSel,sceneSel);
@@ -1174,17 +1219,13 @@ void MDIViewPage::sceneSelectionChanged()
 //Note: Qt says: "no guarantee of selection order"!!!
 void MDIViewPage::setTreeToSceneSelect(void)
 {
-//    Base::Console().Message("MDIVP::setTreeToSceneSelect()\n");
     bool saveBlock = blockConnection(true); // block selectionChanged signal from Tree/Observer
     blockSelection(true);
     Gui::Selection().clearSelection();
-//    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();   //"no particular order"!!!
-    QList<QGraphicsItem*> sceneSel = qgSceneSelected;
+    QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
     for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView == 0) {
-//            Base::Console().Message("MDIVP::setTreeToScene - selection not QGIView - type: %d\n",
-//                                    (*it)->type() - QGraphicsItem::UserType);
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge) {
                 QGraphicsItem*parent = edge->parentItem();
@@ -1284,28 +1325,23 @@ void MDIViewPage::setTreeToSceneSelect(void)
             
             QGMText *mText = dynamic_cast<QGMText*>(*it);
             if(mText) {
-//                Base::Console().Message("MDIVP::setTreeToScene - mTextSelected!\n");
                 QGraphicsItem* textParent = mText->QGraphicsItem::parentItem();
                 if(!textParent) {
-//                    Base::Console().Message("MDIVP::setTreeToScene - mText has no parent item\n");
                     continue;
                 }
 
                 QGIView *parent = dynamic_cast<QGIView *>(textParent);
 
                 if(!parent) {
-//                  Base::Console().Message("MDIVP::setTreeToScene - mText parent is not QGIV\n");
                   continue;
                   }
 
                 TechDraw::DrawView *parentFeat = parent->getViewObject();
                 if (!parentFeat) {
-//                    Base::Console().Message("MDIVP::setTreeToScene - mText has no parent Feature\n");
                     continue;
                 }
                 const char* name = parentFeat->getNameInDocument();
                 if (!name) {                                   //can happen during undo/redo if Dim is selected???
-//                    Base::Console().Message("INFO - MDIVP::sceneSelectionChanged - parentFeat name is null!\n");
                     continue;
                 }
 
@@ -1314,8 +1350,6 @@ void MDIViewPage::setTreeToSceneSelect(void)
             }
 
         } else {
-//            Base::Console().Message("MDIVP::setTreeToScene - selection IS a QGIView - type: %d\n",
-//                                    itemView->type() - QGraphicsItem::UserType);
 
             TechDraw::DrawView *viewObj = itemView->getViewObject();
             if (viewObj && !viewObj->isRemoving()) {
@@ -1336,7 +1370,6 @@ void MDIViewPage::setTreeToSceneSelect(void)
 
 bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel)
 {
-//    Base::Console().Message("MDIVP::compareSelections()\n");
     bool result = true;
 
     if (treeSel.empty() && sceneSel.empty()) {
@@ -1366,11 +1399,22 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
     treeCount = treeNames.size();
 
     for (auto sn:sceneSel){
-        QGIView *itemView = dynamic_cast<QGIView *>(sn);   //<<<<<
+        QGIView *itemView = dynamic_cast<QGIView *>(sn);
         if(itemView == 0) {
+            QGIDatumLabel* dl = dynamic_cast<QGIDatumLabel*>(sn);
             QGIPrimPath* pp = dynamic_cast<QGIPrimPath*>(sn);   //count Vertex/Edge/Face
             if (pp != nullptr) {
                 ppCount++;
+            } else if (dl != nullptr) {
+                //get dim associated with this label
+                QGraphicsItem* qgi = dl->parentItem();
+                if (qgi != nullptr) {
+                    QGIViewDimension* vd = dynamic_cast<QGIViewDimension*>(qgi);
+                    if (vd != nullptr) {
+                        std::string s = vd->getViewNameAsString();
+                        sceneNames.push_back(s);
+                    }
+                }
             }
         } else {
             std::string s = itemView->getViewNameAsString();

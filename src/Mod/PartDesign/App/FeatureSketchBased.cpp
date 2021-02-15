@@ -208,7 +208,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
                 if(faces.empty()) {
                     if(!shape.hasSubShape(TopAbs_WIRE))
                         shape = shape.makEWires();
-                    if(shape.hasSubShape(TopAbs_WIRE)) 
+                    if(shape.hasSubShape(TopAbs_WIRE))
                         shape = shape.makEFace(0,"Part::FaceMakerCheese");
                     else
                         err = "Cannot make face from profile";
@@ -543,6 +543,21 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
     }
 }
 
+double ProfileBased::getThroughAllLength() const
+{
+    TopoDS_Shape profileshape;
+    TopoDS_Shape base;
+    profileshape = getVerifiedFace();
+    base = getBaseShape();
+    Bnd_Box box;
+    BRepBndLib::Add(base, box);
+    BRepBndLib::Add(profileshape, box);
+    box.SetGap(0.0);
+    // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
+    // co-planar issues, gives a length that is guaranteed to go through all.
+    return 1.01 * sqrt(box.SquareExtent());
+}
+
 void ProfileBased::generatePrism(TopoDS_Shape& prism,
                                 const TopoDS_Shape& sketchshape,
                                 const std::string& method,
@@ -556,9 +571,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
         double Ltotal = L;
         double Loffset = 0.;
         if (method == "ThroughAll")
-            // "ThroughAll" is modelled as a very long, but finite prism to avoid problems with pockets
-            // Note: 1E6 created problems once...
-            Ltotal = 1E4;
+            Ltotal = getThroughAllLength();
 
 
         if (method == "TwoLengths") {
@@ -579,7 +592,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
 
         // Its better not to use BRepFeat_MakePrism here even if we have a support because the
         // resulting shape creates problems with Pocket
-        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0,1); // finite prism
+        BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0, 1); // finite prism
         if (!PrismMaker.IsDone())
             throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
         prism = PrismMaker.Shape();
@@ -884,8 +897,7 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 }
 
 namespace PartDesign {
-struct gp_Pnt_Less  : public std::binary_function<const gp_Pnt&,
-                                                  const gp_Pnt&, bool>
+struct gp_Pnt_Less
 {
     bool operator()(const gp_Pnt& p1,
                     const gp_Pnt& p2) const
@@ -954,6 +966,7 @@ bool ProfileBased::isEqualGeometry(const TopoDS_Shape& s1, const TopoDS_Shape& s
         }
     }
     else if (s1.ShapeType() == TopAbs_EDGE && s2.ShapeType() == TopAbs_EDGE) {
+        // Do nothing here
     }
     else if (s1.ShapeType() == TopAbs_VERTEX && s2.ShapeType() == TopAbs_VERTEX) {
         gp_Pnt p1 = BRep_Tool::Pnt(TopoDS::Vertex(s1));
@@ -1012,7 +1025,7 @@ double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vecto
 }
 
 void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std::vector<std::string> &subReferenceAxis,
-                          Base::Vector3d& base, Base::Vector3d& dir)
+                          Base::Vector3d& base, Base::Vector3d& dir, bool checkPerpendicular)
 {
     dir = Base::Vector3d(0,0,0); // If unchanged signals that no valid axis was found
     if (pcReferenceAxis == NULL)
@@ -1071,7 +1084,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         dir = line->getDirection();
 
         // Check that axis is perpendicular with sketch plane!
-        if (sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
+        if (checkPerpendicular && sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
             throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
         return;
     }
@@ -1082,7 +1095,7 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
         line->Placement.getValue().multVec(Base::Vector3d (1,0,0), dir);
 
         // Check that axis is perpendicular with sketch plane!
-        if (sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
+        if (checkPerpendicular && sketchplane.Axis().Direction().IsParallel(gp_Dir(dir.x, dir.y, dir.z), Precision::Angular()))
             throw Base::ValueError("Rotation axis must not be perpendicular with the sketch plane");
         return;
     }
@@ -1092,7 +1105,14 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
             throw Base::ValueError("No rotation axis reference specified");
         const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
         Part::TopoShape refShape = refFeature->Shape.getShape();
-        TopoDS_Shape ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+        TopoDS_Shape ref;
+        try {
+            // if an exception is raised then convert it into a FreeCAD-specific exception
+            ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+        }
+        catch (const Standard_Failure& e) {
+            throw Base::RuntimeError(e.GetMessageString());
+        }
 
         if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);

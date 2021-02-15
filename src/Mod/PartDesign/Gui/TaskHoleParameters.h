@@ -28,7 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <App/DocumentObserver.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
@@ -67,8 +67,9 @@ public:
     long   getThreadClass() const;
     long   getThreadFit() const;
     Base::Quantity getDiameter() const;
-    bool   getThreadDirection() const;
+    long   getThreadDirection() const;
     long   getHoleCutType() const;
+    bool   getHoleCutCustomValues() const;
     Base::Quantity getHoleCutDiameter() const;
     Base::Quantity getHoleCutDepth() const;
     Base::Quantity getHoleCutCountersinkAngle() const;
@@ -76,6 +77,7 @@ public:
     Base::Quantity getDepth() const;
     long   getDrillPoint() const;
     Base::Quantity getDrillPointAngle() const;
+    bool   getDrillForDepth() const;
     bool   getTapered() const;
     Base::Quantity getTaperedAngle() const;
 
@@ -92,7 +94,8 @@ private Q_SLOTS:
     void threadAngleChanged(double value);    
     void threadDiameterChanged(double value);
     void threadDirectionChanged();
-    void holeCutChanged(int index);
+    void holeCutTypeChanged(int index);
+    void holeCutCustomValuesChanged();
     void holeCutDiameterChanged(double value);
     void holeCutDepthChanged(double value);
     void holeCutCountersinkAngleChanged(double value);
@@ -100,7 +103,9 @@ private Q_SLOTS:
     void depthValueChanged(double value);
     void drillPointChanged();
     void drillPointAngledValueChanged(double value);
+    void drillForDepthChanged();
     void taperedChanged();
+    void reversedChanged();
     void taperedAngleChanged(double value);   
 private:
     class Observer : public App::DocumentObserver {
@@ -125,9 +130,9 @@ private:
     Connection connectPropChanged;
 
     std::unique_ptr<Observer> observer;
-    QWidget* proxy;
-    Ui_TaskHoleParameters* ui;
     bool isApplying;
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskHoleParameters> ui;
 };
 
 /// simulation dialog for the TaskView

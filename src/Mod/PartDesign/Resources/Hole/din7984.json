@@ -1,0 +1,23 @@
+{
+    "name": "DIN 7984",
+    "cut_type": "counterbore",
+    "thread_type": "metric",
+    "data": [
+	{ "thread": "M2",   "diameter":  4.3, "depth":  1.6 },
+	{ "thread": "M2.5", "diameter":  5.0, "depth":  2.0 },
+	{ "thread": "M3",   "diameter":  6.0, "depth":  2.4 },
+	{ "thread": "M3.5", "diameter":  6.5, "depth":  2.9 },
+	{ "thread": "M4",   "diameter":  8.0, "depth":  3.2 },
+	{ "thread": "M5",   "diameter": 10.0, "depth":  4.0 },
+	{ "thread": "M6",   "diameter": 11.0, "depth":  4.7 },
+	{ "thread": "M8",   "diameter": 15.0, "depth":  6.0 },
+	{ "thread": "M10",  "diameter": 18.0, "depth":  7.0 },
+	{ "thread": "M12",  "diameter": 20.0, "depth":  8.0 },
+	{ "thread": "M14",  "diameter": 24.0, "depth":  9.0 },
+	{ "thread": "M16",  "diameter": 26.0, "depth": 10.5 },
+	{ "thread": "M18",  "diameter": 30.0, "depth": 11.5 },
+	{ "thread": "M20",  "diameter": 33.0, "depth": 12.5 },
+	{ "thread": "M22",  "diameter": 36.0, "depth": 13.5 },
+	{ "thread": "M24",  "diameter": 40.0, "depth": 14.5 }
+    ]
+}

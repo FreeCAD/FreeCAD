@@ -173,7 +173,7 @@ void UnitTestDialog::on_helpButton_clicked()
  */
 void UnitTestDialog::on_aboutButton_clicked()
 {
-    QMessageBox::information(this, tr("About FreeCAD UnitTest"), tr( 
+    QMessageBox::information(this, tr("About FreeCAD UnitTest"), tr(
         "Copyright (c) Werner Mayer\n\n"
         "FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for "
         "ones own modules."));
@@ -291,7 +291,7 @@ void UnitTestDialog::setStatusText(const QString& text)
 
 /**
  * Sets the progress of the progress bar whereas fraction is in between 0.0 and 1.0.
- * It also sets the color of the progress bar to red if a failure or error in the unit 
+ * It also sets the color of the progress bar to red if a failure or error in the unit
  * test occurred.
  */
 void UnitTestDialog::setProgressFraction(float fraction, const QString& color)
@@ -324,7 +324,7 @@ void UnitTestDialog::insertError(const QString& failure, const QString& details)
 {
     QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeViewFailure);
     item->setText(0,failure);
-    item->setTextColor(0, Qt::red);
+    item->setForeground(0, Qt::red);
     item->setData(0, Qt::UserRole, QVariant(details));
 }
 

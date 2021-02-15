@@ -38,6 +38,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
@@ -81,13 +82,14 @@ void EditDatumDialog::exec(bool atCursor)
             return;
         }
 
+        Base::Quantity init_val;
+
         QDialog dlg(Gui::getMainWindow());
         if (ui_ins_datum == nullptr) {
             ui_ins_datum.reset(new Ui_InsertDatum);
             ui_ins_datum->setupUi(&dlg);
         }
         double datum = Constr->getValue();
-        Base::Quantity init_val;
 
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
@@ -108,10 +110,16 @@ void EditDatumDialog::exec(bool atCursor)
             ui_ins_datum->label->setText(tr("Diameter:"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
         }
+        else if (Constr->Type == Sketcher::Weight) {
+            dlg.setWindowTitle(tr("Insert weight"));
+            ui_ins_datum->label->setText(tr("Weight:"));
+            ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherWeight"));
+        }
         else if (Constr->Type == Sketcher::SnellsLaw) {
             dlg.setWindowTitle(tr("Refractive index ratio", "Constraint_SnellsLaw"));
             ui_ins_datum->label->setText(tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
             ui_ins_datum->labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+            ui_ins_datum->labelEdit->setSingleStep(0.05);
         }
         else {
             dlg.setWindowTitle(tr("Insert length"));
@@ -127,9 +135,9 @@ void EditDatumDialog::exec(bool atCursor)
         ui_ins_datum->labelEdit->selectNumber();
         ui_ins_datum->labelEdit->bind(sketch->Constraints.createPath(ConstrNbr));
         ui_ins_datum->name->setText(Base::Tools::fromStdString(Constr->Name));
-        
+
         ui_ins_datum->cbDriving->setChecked(! Constr->isDriving);
-        
+
         connect(ui_ins_datum->cbDriving, SIGNAL(toggled(bool)), this, SLOT(drivingToggled(bool)));
         connect(ui_ins_datum->labelEdit, SIGNAL(valueChanged(const Base::Quantity&)), this, SLOT(datumChanged()));
         connect(ui_ins_datum->labelEdit, SIGNAL(showFormulaDialog(bool)), this, SLOT(formEditorOpened(bool)));
@@ -155,18 +163,21 @@ void EditDatumDialog::exec(bool atCursor)
 void EditDatumDialog::accepted()
 {
     Base::Quantity newQuant = ui_ins_datum->labelEdit->value();
-    if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())) {
+    if( newQuant.isQuantity() ||
+        (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless()) ||
+        (Constr->Type == Sketcher::Weight && newQuant.isDimensionless())) {
+
         // save the value for the history
         ui_ins_datum->labelEdit->pushToHistory();
-        
+
         double newDatum = newQuant.getValue();
-        
+
         try {
-            
+
             /*if (ui_ins_datum->cbDriving->isChecked() == Constr->isDriving) {
                 Gui::cmdAppObjectArgs(sketch, "toggleDriving(%i)", ConstrNbr);
             }*/
-            
+
             if (! ui_ins_datum->cbDriving->isChecked()) {
                 if (ui_ins_datum->labelEdit->hasExpression())
                     ui_ins_datum->labelEdit->apply();
@@ -174,26 +185,30 @@ void EditDatumDialog::accepted()
                     Gui::cmdAppObjectArgs(sketch, "setDatum(%i,App.Units.Quantity('%f %s'))",
                                           ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
             }
-            
+
             QString constraintName = ui_ins_datum->name->text().trimmed();
             if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                 std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
                 Gui::cmdAppObjectArgs(sketch, "renameConstraint(%d, u'%s')",
                                       ConstrNbr, escapedstr.c_str());
             }
-            
+
             Gui::Command::commitCommand();
-            
+
             if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
                 sketch->ExpressionEngine.execute();
                 sketch->solve();
             }
-            
+
             tryAutoRecompute(sketch);
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
             Gui::Command::abortCommand();
+
+            if(sketch->noRecomputes) // if setdatum failed, it is highly likely that solver information is invalid.
+                sketch->solve();
+
         }
     }
 }
@@ -210,6 +225,8 @@ void EditDatumDialog::drivingToggled(bool state)
         ui_ins_datum->labelEdit->setToLastUsedValue();
     }
     sketch->setDriving(ConstrNbr, !state);
+    if(!sketch->noRecomputes) // if noRecomputes, solve() is already done by setDriving()
+        sketch->solve();
 }
 
 void EditDatumDialog::datumChanged()

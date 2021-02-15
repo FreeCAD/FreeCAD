@@ -22,18 +22,28 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label">
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="toolController_label">
         <property name="text">
          <string>ToolController</string>
         </property>
        </widget>
       </item>
-      <item>
+      <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="coolantController"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="coolantController_label">
+        <property name="text">
+         <string>Coolant Mode</string>
         </property>
        </widget>
       </item>
@@ -157,22 +167,32 @@
         </item>
         <item>
          <property name="text">
-          <string>Line</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>ZigZag</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>Circular</string>
          </property>
         </item>
         <item>
          <property name="text">
           <string>CircularZigZag</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Line</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Offset</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiral</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZigZag</string>
          </property>
         </item>
        </widget>
@@ -192,12 +212,6 @@
          <number>1</number>
         </property>
         <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="singleStep">
-         <number>10</number>
-        </property>
-        <property name="value">
          <number>100</number>
         </property>
        </widget>
@@ -285,6 +299,18 @@
    <header>Gui/InputField.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>toolController</tabstop>
+  <tabstop>coolantController</tabstop>
+  <tabstop>algorithmSelect</tabstop>
+  <tabstop>boundBoxSelect</tabstop>
+  <tabstop>layerMode</tabstop>
+  <tabstop>cutPattern</tabstop>
+  <tabstop>boundaryAdjustment</tabstop>
+  <tabstop>stepOver</tabstop>
+  <tabstop>sampleInterval</tabstop>
+  <tabstop>optimizeEnabled</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

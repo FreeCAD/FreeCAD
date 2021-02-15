@@ -111,11 +111,11 @@ public:
   inline std::string getFunction() const;
   inline bool getTranslatable() const;
   inline bool getReported() const { return _isReported; }
-  
+
   /// setter methods for including debug information
   /// intended to use via macro for autofilling of debugging information
   inline void setDebugInformation(const std::string & file, const int line, const std::string & function);
-  
+
   inline void setTranslatable(bool translatable);
 
   inline void setReported(bool reported) { _isReported = reported; }
@@ -163,8 +163,6 @@ public:
   AbortException(const char * sMessage);
   /// Construction
   AbortException();
-  /// Construction
-  AbortException(const AbortException &inst);
 
   /// Destruction
   virtual ~AbortException() throw() {}
@@ -183,8 +181,6 @@ public:
   XMLBaseException();
   XMLBaseException(const char * sMessage);
   XMLBaseException(const std::string& sMessage);
-  /// Construction
-  XMLBaseException(const XMLBaseException &inst);
 
   /// Destruction
   virtual ~XMLBaseException() throw() {}
@@ -203,8 +199,6 @@ public:
   XMLParseException(const std::string& sMessage);
   /// Construction
   XMLParseException();
-  /// Construction
-  XMLParseException(const XMLParseException &inst);
 
   /// Destruction
   virtual ~XMLParseException() throw() {}
@@ -225,8 +219,6 @@ public:
   XMLAttributeError(const std::string& sMessage);
   /// Construction
   XMLAttributeError();
-  /// Construction
-  XMLAttributeError(const XMLAttributeError &inst);
 
   /// Destruction
   virtual ~XMLAttributeError() throw() {}
@@ -269,7 +261,7 @@ protected:
   FileInfo file;
   // necessary   for what() legacy behaviour as it returns a buffer that
   // can not be of a temporary object to be destroyed at end of what()
-  std::string _sErrMsgAndFileName; 
+  std::string _sErrMsgAndFileName;
 };
 
 /**
@@ -284,8 +276,6 @@ public:
   FileSystemError();
   FileSystemError(const char * sMessage);
   FileSystemError(const std::string& sMessage);
-  /// Construction
-  FileSystemError(const FileSystemError &inst);
   /// Destruction
   virtual ~FileSystemError() throw() {}
 };
@@ -301,8 +291,6 @@ public:
   BadFormatError();
   BadFormatError(const char * sMessage);
   BadFormatError(const std::string& sMessage);
-  /// Construction
-  BadFormatError(const BadFormatError &inst);
   /// Destruction
   virtual ~BadFormatError() throw() {}
 };
@@ -325,6 +313,8 @@ public:
   MemoryException(const MemoryException &inst);
   /// Destruction
   virtual ~MemoryException() throw() {}
+  /// Assignment operator
+  MemoryException &operator=(const MemoryException &inst);
 #if defined (__GNUC__)
   /// Description of the exception
   virtual const char* what() const throw() override;
@@ -342,8 +332,6 @@ public:
   AccessViolation();
   AccessViolation(const char * sMessage);
   AccessViolation(const std::string& sMessage);
-  /// Construction
-  AccessViolation(const AccessViolation &inst);
   /// Destruction
   virtual ~AccessViolation() throw() {}
 };
@@ -360,7 +348,6 @@ public:
   /// Construction
   AbnormalProgramTermination(const char * sMessage);
   AbnormalProgramTermination(const std::string& sMessage);
-  AbnormalProgramTermination(const AbnormalProgramTermination &inst);
   /// Destruction
   virtual ~AbnormalProgramTermination() throw() {}
 };
@@ -376,8 +363,6 @@ public:
   UnknownProgramOption();
   UnknownProgramOption(const char * sMessage);
   UnknownProgramOption(const std::string& sMessage);
-  /// Construction
-  UnknownProgramOption(const UnknownProgramOption &inst);
   /// Destruction
   virtual ~UnknownProgramOption() throw() {}
 };
@@ -393,8 +378,6 @@ public:
   ProgramInformation();
   ProgramInformation(const char * sMessage);
   ProgramInformation(const std::string& sMessage);
-  /// Construction
-  ProgramInformation(const ProgramInformation &inst);
 
   /// Destruction
   virtual ~ProgramInformation() throw() {}
@@ -411,8 +394,6 @@ public:
   TypeError();
   TypeError(const char * sMessage);
   TypeError(const std::string& sMessage);
-  /// Construction
-  TypeError(const TypeError &inst);
   /// Destruction
   virtual ~TypeError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -429,8 +410,6 @@ public:
   ValueError();
   ValueError(const char * sMessage);
   ValueError(const std::string& sMessage);
-  /// Construction
-  ValueError(const ValueError &inst);
   /// Destruction
   virtual ~ValueError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -447,8 +426,6 @@ public:
   IndexError();
   IndexError(const char * sMessage);
   IndexError(const std::string& sMessage);
-  /// Construction
-  IndexError(const IndexError &inst);
   /// Destruction
   virtual ~IndexError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -461,8 +438,6 @@ public:
   NameError();
   NameError(const char * sMessage);
   NameError(const std::string& sMessage);
-  /// Construction
-  NameError(const NameError &inst);
   /// Destruction
   virtual ~NameError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -475,8 +450,6 @@ public:
   ImportError();
   ImportError(const char * sMessage);
   ImportError(const std::string& sMessage);
-  /// Construction
-  ImportError(const ImportError &inst);
   /// Destruction
   virtual ~ImportError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -493,8 +466,6 @@ public:
   AttributeError();
   AttributeError(const char * sMessage);
   AttributeError(const std::string& sMessage);
-  /// Construction
-  AttributeError(const AttributeError &inst);
   /// Destruction
   virtual ~AttributeError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -511,8 +482,6 @@ public:
   RuntimeError();
   RuntimeError(const char * sMessage);
   RuntimeError(const std::string& sMessage);
-  /// Construction
-  RuntimeError(const RuntimeError &inst);
   /// Destruction
   virtual ~RuntimeError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -529,8 +498,6 @@ public:
   BadGraphError();
   BadGraphError(const char * sMessage);
   BadGraphError(const std::string& sMessage);
-  /// Construction
-  BadGraphError(const BadGraphError &inst);
   /// Destruction
   virtual ~BadGraphError() throw() {}
 };
@@ -546,8 +513,6 @@ public:
   NotImplementedError();
   NotImplementedError(const char * sMessage);
   NotImplementedError(const std::string& sMessage);
-  /// Construction
-  NotImplementedError(const NotImplementedError &inst);
   /// Destruction
   virtual ~NotImplementedError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -564,8 +529,6 @@ public:
   DivisionByZeroError();
   DivisionByZeroError(const char * sMessage);
   DivisionByZeroError(const std::string& sMessage);
-  /// Construction
-  DivisionByZeroError(const DivisionByZeroError &inst);
   /// Destruction
   virtual ~DivisionByZeroError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -582,8 +545,6 @@ public:
   ReferencesError();
   ReferencesError(const char * sMessage);
   ReferencesError(const std::string& sMessage);
-  /// Construction
-  ReferencesError(const ReferencesError &inst);
   /// Destruction
   virtual ~ReferencesError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -601,8 +562,6 @@ public:
   ExpressionError();
   ExpressionError(const char * sMessage);
   ExpressionError(const std::string& sMessage);
-  /// Construction
-  ExpressionError(const ExpressionError &inst);
   /// Destruction
   virtual ~ExpressionError() throw() {}
 };
@@ -618,8 +577,6 @@ public:
   ParserError();
   ParserError(const char * sMessage);
   ParserError(const std::string& sMessage);
-  /// Construction
-  ParserError(const ParserError &inst);
   /// Destruction
   virtual ~ParserError() throw() {}
 };
@@ -635,8 +592,6 @@ public:
   UnicodeError();
   UnicodeError(const char * sMessage);
   UnicodeError(const std::string& sMessage);
-  /// Construction
-  UnicodeError(const UnicodeError &inst);
   /// Destruction
   virtual ~UnicodeError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -653,8 +608,6 @@ public:
   OverflowError();
   OverflowError(const char * sMessage);
   OverflowError(const std::string& sMessage);
-  /// Construction
-  OverflowError(const OverflowError &inst);
   /// Destruction
   virtual ~OverflowError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -671,8 +624,6 @@ public:
   UnderflowError();
   UnderflowError(const char * sMessage);
   UnderflowError(const std::string& sMessage);
-  /// Construction
-  UnderflowError(const UnderflowError &inst);
   /// Destruction
   virtual ~UnderflowError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -689,8 +640,6 @@ public:
   UnitsMismatchError();
   UnitsMismatchError(const char * sMessage);
   UnitsMismatchError(const std::string& sMessage);
-  /// Construction
-  UnitsMismatchError(const UnitsMismatchError &inst);
   /// Destruction
   virtual ~UnitsMismatchError() throw() {}
   virtual PyObject * getPyExceptionType() const override;
@@ -708,8 +657,6 @@ public:
     CADKernelError();
     CADKernelError(const char * sMessage);
     CADKernelError(const std::string& sMessage);
-    /// Construction
-    CADKernelError(const CADKernelError &inst);
     /// Destruction
     virtual ~CADKernelError() throw() {}
 };
@@ -717,10 +664,10 @@ public:
 /* The RestoreError can be used to try to do a best recovery effort when an error during restoring
  * occurs. The best recovery effort may be to ignore the element altogether or to insert a placeholder
  * depending on where the actual element being restored is used.
- * 
- * For example, if it is part of an array (e.g. PropertyList) and the order in the array is relevant, it 
+ *
+ * For example, if it is part of an array (e.g. PropertyList) and the order in the array is relevant, it
  * is better to have a placeholder than to fail to restore the whole array.
- */ 
+ */
 class BaseExport RestoreError : public Exception
 {
 public:
@@ -728,8 +675,6 @@ public:
     RestoreError();
     RestoreError(const char * sMessage);
     RestoreError(const std::string& sMessage);
-    /// Construction
-    RestoreError(const RestoreError &inst);
     /// Destruction
     virtual ~RestoreError() throw() {}
 };

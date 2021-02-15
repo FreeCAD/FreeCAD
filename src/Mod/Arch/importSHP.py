@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2020 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -53,7 +52,7 @@ def insert(filename,docname,record=None):
 
     if not checkShapeFileLibrary():
         return
-    
+
     import shapefile
     import Part
 
@@ -61,7 +60,7 @@ def insert(filename,docname,record=None):
     # doc at https://github.com/GeospatialPython/pyshp
 
     shp = shapefile.Reader(filename)
-    
+
     # check which record to use for elevation
     if not record:
         fields = ["None"] + [field[0] for field in shp.fields]
@@ -72,10 +71,9 @@ def insert(filename,docname,record=None):
                                                translate("Arch","Shapes elevation"),
                                                translate("Arch","Choose which field provides shapes elevations:"),
                                                fields)
-            if reply[1]:
-                if record != "None":
+            if reply[1] and reply[0] != "None":
                     record = reply[0]
-    
+
     # build shapes
     shapes = []
     for shaperec in shp.shapeRecords():
@@ -115,7 +113,7 @@ def insert(filename,docname,record=None):
         FreeCAD.Console.PrintWarning(translate("Arch","No shape found in this file")+"\n")
 
 def getFields(filename):
-    
+
     """returns the fields found in the given file"""
 
     if not checkShapeFileLibrary():
@@ -125,21 +123,21 @@ def getFields(filename):
     return [field[0] for field in shp.fields]
 
 def checkShapeFileLibrary():
-    
+
     """Looks for and/or installs the ShapeFile library"""
 
     try:
         import shapefile
-    except:
+    except Exception:
         url = "https://raw.githubusercontent.com/GeospatialPython/pyshp/master/shapefile.py"
         if FreeCAD.GuiUp:
             import addonmanager_utilities
             import FreeCADGui
             from PySide import QtGui
-            reply = QtGui.QMessageBox.question(FreeCADGui.getMainWindow(), 
-                                               translate("Arch","Shapefile module not found"), 
-                                               translate("Arch","The shapefile python library was not found on your system. Would you like to downloadit now from <a href=\"https://github.com/GeospatialPython/pyshp\">https://github.com/GeospatialPython/pyshp</a>? It will be placed in your macros folder."),
-                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, 
+            reply = QtGui.QMessageBox.question(FreeCADGui.getMainWindow(),
+                                               translate("Arch","Shapefile module not found"),
+                                               translate("Arch","The shapefile python library was not found on your system. Would you like to download it now from <a href=\"https://github.com/GeospatialPython/pyshp\">https://github.com/GeospatialPython/pyshp</a>? It will be placed in your macros folder."),
+                                               QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                                                QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:
                 u = addonmanager_utilities.urlopen(url)
@@ -155,7 +153,7 @@ def checkShapeFileLibrary():
                 f.close()
                 try:
                     import shapefile
-                except:
+                except Exception:
                     FreeCAD.Console.PrintError(translate("Arch","Could not download shapefile module. Aborting.")+"\n")
                     return False
             else:

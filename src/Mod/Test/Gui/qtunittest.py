@@ -1,9 +1,5 @@
-# Qt Unit test module
-# (c) 2006 Werner Mayer
-#
-
 #***************************************************************************
-#*   (c) Werner Mayer <werner.wm.mayer@gmx.de> 2006                        *
+#*   Copyright (c) 2006 Werner Mayer <werner.wm.mayer@gmx.de>              *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -22,9 +18,9 @@
 #*   License along with FreeCAD; if not, write to the Free Software        *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
-#*                                                                         *
-#*   Werner Mayer 2006                                                     *
 #***************************************************************************/
+
+# Qt Unit test module
 
 __author__ = "Werner Mayer (werner.wm.mayer@gmx.de)"
 
@@ -81,7 +77,7 @@ class BaseGUITestRunner:
         self.__rollbackImporter = RollbackImporter()
         try:
             test = unittest.defaultTestLoader.loadTestsFromName(testName)
-        except:
+        except Exception:
             exc_type, exc_value, exc_tb = sys.exc_info()
             #apply(traceback.print_exception,sys.exc_info())
             traceback.print_exception(*sys.exc_info())
@@ -161,7 +157,7 @@ class RollbackImporter:
     """
     def __init__(self):
         self.previousModules = sys.modules.copy()
-        
+
     def rollbackImports(self):
         for modname in sys.modules.keys():
             if modname not in self.previousModules:

@@ -106,7 +106,7 @@ public:
   unsigned int getKey(void) const;
   bool isBad(void) const;
 
-  void operator =  (const Type type); 
+  void operator =  (const Type type);
   bool operator == (const Type type) const;
   bool operator != (const Type type) const;
 
@@ -150,7 +150,7 @@ Type::operator != (const Type type) const
 }
 
 inline void
-Type::operator = (const Type type) 
+Type::operator = (const Type type)
 {
   this->index = type.getKey();
 }

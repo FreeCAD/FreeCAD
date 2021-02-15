@@ -1517,7 +1517,7 @@ yyreduce:
 
   case 18:
 #line 85 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new FunctionExpression(DocumentObject, (yyvsp[-2].func), (yyvsp[-1].arguments));                   }
+    { (yyval.expr) = new FunctionExpression(DocumentObject, (yyvsp[-2].func.first), std::move((yyvsp[-2].func.second)), (yyvsp[-1].arguments));                   }
 #line 1522 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 

@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Analysis Checks"
+__title__  = "Analysis Checks"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -60,7 +60,7 @@ def check_analysismember(analysis, solver, mesh, member):
                 "Solver is set to nonlinear materials, "
                 "but there is no nonlinear material in the analysis.\n"
             )
-        if solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools" \
+        if solver.Proxy.Type == "Fem::SolverCcxTools" \
                 and solver.GeometricalNonlinearity != "nonlinear":
             # nonlinear geometry --> should be set
             # https://forum.freecadweb.org/viewtopic.php?f=18&t=23101&p=180489#p180489
@@ -265,6 +265,17 @@ def check_analysismember(analysis, solver, mesh, member):
             if items != 2:
                 message += (
                     "{} doesn't references exactly two needed faces.\n"
+                    .format(c["Object"].Name)
+                )
+    # sectionprint
+    if member.cons_sectionprint:
+        for c in member.cons_sectionprint:
+            items = 0
+            for reference in c["Object"].References:
+                items += len(reference[1])
+            if items != 1:
+                message += (
+                    "{} doesn't reference exactly one needed face.\n"
                     .format(c["Object"].Name)
                 )
     # transform

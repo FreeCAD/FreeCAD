@@ -20,24 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft scale function.
-"""
+"""Provides functions to scale shapes."""
 ## @package scale
-# \ingroup DRAFT
-# \brief This module provides the code for Draft scale function.
+# \ingroup draftfuctions
+# \brief Provides functions to scale shapes.
 
-import math
-
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
 import DraftVecUtils
-
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
-
-from draftfunctions.join import join_wires
-
-from draftmake.make_copy import make_copy
+import draftutils.gui_utils as gui_utils
+import draftfunctions.join as join
+import draftmake.make_copy as make_copy
 
 
 def scale(objectslist, scale=App.Vector(1,1,1),
@@ -70,17 +65,15 @@ def scale(objectslist, scale=App.Vector(1,1,1),
     newobjlist = []
     for obj in objectslist:
         if copy:
-            newobj = make_copy(obj)
+            newobj = make_copy.make_copy(obj)
         else:
             newobj = obj
         if hasattr(obj,'Shape'):
             scaled_shape = obj.Shape.copy()
             m = App.Matrix()
-            m.move(obj.Placement.Base.negative())
             m.move(center.negative())
             m.scale(scale.x,scale.y,scale.z)
             m.move(center)
-            m.move(obj.Placement.Base)
             scaled_shape = scaled_shape.transformGeometry(m)
         if utils.get_type(obj) == "Rectangle":
             p = []
@@ -106,13 +99,32 @@ def scale(objectslist, scale=App.Vector(1,1,1),
                 scale_vertex(newobj, index, scale, center)
         elif hasattr(obj,'Shape'):
             newobj.Shape = scaled_shape
-        elif (obj.TypeId == "App::Annotation"):
-            factor = scale.y * obj.ViewObject.FontSize
-            newobj.ViewObject.FontSize = factor
+        elif hasattr(obj,"Position"):
             d = obj.Position.sub(center)
             newobj.Position = center.add(App.Vector(d.x * scale.x,
                                                     d.y * scale.y,
                                                     d.z * scale.z))
+        elif hasattr(obj,"Placement"):
+            d = obj.Placement.Base.sub(center)
+            newobj.Placement.Base = center.add(App.Vector(d.x * scale.x,
+                                                    d.y * scale.y,
+                                                    d.z * scale.z))
+            if hasattr(obj,"Height"):
+                obj.setExpression('Height', None)
+                obj.Height = obj.Height * scale.y
+            if hasattr(obj,"Width"):
+                obj.setExpression('Width', None)
+                obj.Width = obj.Width * scale.x
+            if hasattr(obj,"XSize"):
+                obj.setExpression('XSize', None)
+                obj.XSize = obj.XSize * scale.x
+            if hasattr(obj,"YSize"):
+                obj.setExpression('YSize', None)
+                obj.YSize = obj.YSize * scale.y
+        if obj.ViewObject and hasattr(obj.ViewObject,"FontSize"):
+            obj.ViewObject.FontSize = obj.ViewObject.FontSize * scale.y
+                
+                
         if copy:
             gui_utils.format_object(newobj,obj)
         newobjlist.append(newobj)
@@ -124,7 +136,15 @@ def scale(objectslist, scale=App.Vector(1,1,1),
     return newobjlist
 
 
+#   Following functions are needed for SubObjects modifiers
+#   implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire)
+
+
 def scale_vertex(obj, vertex_index, scale, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     points = obj.Points
     points[vertex_index] = obj.Placement.inverse().multVec(
         scaleVectorFromCenter(
@@ -137,16 +157,21 @@ scaleVertex = scale_vertex
 
 
 def scale_vector_from_center(vector, scale, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     return vector.sub(center).scale(scale.x, scale.y, scale.z).add(center)
 
 
 scaleVectorFromCenter = scale_vector_from_center
 
 
-# code needed for subobject modifiers
-
-
 def scale_edge(obj, edge_index, scale, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     scaleVertex(obj, edge_index, scale, center)
     if utils.isClosedEdge(edge_index, obj):
         scaleVertex(obj, 0, scale, center)
@@ -158,6 +183,10 @@ scaleEdge = scale_edge
 
 
 def copy_scaled_edge(obj, edge_index, scale, center):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     import Part
     vertex1 = scaleVectorFromCenter(
         obj.Placement.multVec(obj.Points[edge_index]),
@@ -177,11 +206,17 @@ copyScaledEdge = copy_scaled_edge
 
 
 def copy_scaled_edges(arguments):
+    """
+    Needed for SubObjects modifiers.
+    Implemented by Dion Moult during 0.19 dev cycle (works only with Draft Wire).
+    """
     copied_edges = []
     for argument in arguments:
         copied_edges.append(copyScaledEdge(argument[0], argument[1],
             argument[2], argument[3]))
-    join_wires(copied_edges)
+    join.join_wires(copied_edges)
 
 
 copyScaledEdges = copy_scaled_edges
+
+## @}

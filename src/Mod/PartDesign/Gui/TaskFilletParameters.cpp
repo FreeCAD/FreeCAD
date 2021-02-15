@@ -54,10 +54,10 @@ using namespace Gui;
 
 TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, true, true, parent)
+    , ui(new Ui_TaskFilletParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskFilletParameters();
     ui->setupUi(proxy);
 
     this->groupLayout()->addWidget(proxy);
@@ -212,10 +212,14 @@ double TaskFilletParameters::getLength(void) const
 
 TaskFilletParameters::~TaskFilletParameters()
 {
-    Gui::Selection().clearSelection(); 
-    Gui::Selection().rmvSelectionGate();
-
-    delete ui;
+    try {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskFilletParameters::event(QEvent *e)
@@ -235,7 +239,7 @@ void TaskFilletParameters::apply()
 {
     std::string name = getDressUpView()->getObject()->getNameInDocument();
 
-    //Gui::Command::openCommand("Fillet changed");
+    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fillet changed"));
     ui->filletRadius->apply();
 }
 

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -73,7 +73,6 @@ DlgObjectSelection::DlgObjectSelection(
         info.depItem = new QTreeWidgetItem(ui->depList);
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if(vp) info.depItem->setIcon(0, vp->getIcon());
-        info.depItem->setIcon(0, vp->getIcon());
         info.depItem->setText(0, QString::fromUtf8((obj)->Label.getValue()));
         info.depItem->setText(1, QString::fromUtf8(obj->getDocument()->getName()));
         info.depItem->setText(2, QString::fromLatin1(obj->getNameInDocument()));
@@ -197,7 +196,7 @@ App::DocumentObject *DlgObjectSelection::objFromItem(QTreeWidgetItem *item) {
 }
 
 void DlgObjectSelection::onItemExpanded(QTreeWidgetItem * item) {
-    if(item->childCount()) 
+    if(item->childCount())
         return;
     auto obj = objFromItem(item);
     if(!obj)

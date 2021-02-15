@@ -90,30 +90,41 @@ Py::Object ControlPy::repr()
 
 Py::Object ControlPy::showDialog(const Py::Tuple& args)
 {
+    PyObject* arg0;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &arg0))
+        throw Py::Exception();
     Gui::TaskView::TaskDialog* act = Gui::Control().activeDialog();
     if (act)
         throw Py::RuntimeError("Active task dialog found");
-    TaskDialogPython* dlg = new TaskDialogPython(args[0]);
+    TaskDialogPython* dlg = new TaskDialogPython(Py::Object(arg0));
     Gui::Control().showDialog(dlg);
     return Py::None();
 }
 
-Py::Object ControlPy::activeDialog(const Py::Tuple&)
+Py::Object ControlPy::activeDialog(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     return Py::Boolean(dlg!=0);
 }
 
-Py::Object ControlPy::closeDialog(const Py::Tuple&)
+Py::Object ControlPy::closeDialog(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     Gui::Control().closeDialog();
     return Py::None();
 }
 
 Py::Object ControlPy::addTaskWatcher(const Py::Tuple& args)
 {
+    PyObject* arg0;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &arg0))
+        throw Py::Exception();
+
     std::vector<Gui::TaskView::TaskWatcher*> watcher;
-    Py::Sequence list(args[0]);
+    Py::Sequence list(arg0);
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         TaskWatcherPython* w = new TaskWatcherPython(*it);
         watcher.push_back(w);
@@ -125,34 +136,44 @@ Py::Object ControlPy::addTaskWatcher(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object ControlPy::clearTaskWatcher(const Py::Tuple&)
+Py::Object ControlPy::clearTaskWatcher(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
     if (taskView)
         taskView->clearTaskWatcher();
     return Py::None();
 }
 
-Py::Object ControlPy::isAllowedAlterDocument(const Py::Tuple&)
+Py::Object ControlPy::isAllowedAlterDocument(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     bool ok = Gui::Control().isAllowedAlterDocument();
     return Py::Boolean(ok);
 }
 
-Py::Object ControlPy::isAllowedAlterView(const Py::Tuple&)
+Py::Object ControlPy::isAllowedAlterView(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     bool ok = Gui::Control().isAllowedAlterView();
     return Py::Boolean(ok);
 }
 
-Py::Object ControlPy::isAllowedAlterSelection(const Py::Tuple&)
+Py::Object ControlPy::isAllowedAlterSelection(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     bool ok = Gui::Control().isAllowedAlterSelection();
     return Py::Boolean(ok);
 }
 
-Py::Object ControlPy::showTaskView(const Py::Tuple&)
+Py::Object ControlPy::showTaskView(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     Gui::Control().showTaskView();
     return Py::None();
 }
@@ -178,7 +199,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
 
     Gui::TaskView::TaskBox *tb = 0;
     if (watcher.hasAttr(std::string("commands"))) {
-        if (!tb) tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
+        tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
         Py::Sequence cmds(watcher.getAttr(std::string("commands")));
         CommandManager &mgr = Gui::Application::Instance->commandManager();
         for (Py::Sequence::iterator it = cmds.begin(); it != cmds.end(); ++it) {
@@ -316,8 +337,20 @@ TaskDialogPython::~TaskDialogPython()
     std::vector< QPointer<QWidget> > guarded;
     guarded.insert(guarded.begin(), Content.begin(), Content.end());
     Content.clear();
+
     Base::PyGILStateLocker lock;
+
+    // The widgets stored in the 'form' attribute will be deleted.
+    // Thus, set this attribute to None to make sure that when using
+    // the same dialog instance for a task panel won't segfault.
+    if (this->dlg.hasAttr(std::string("form"))) {
+        this->dlg.setAttr(std::string("form"), Py::None());
+    }
     this->dlg = Py::None();
+
+    // Assigning None to 'dlg' may destroy some of the stored widgets.
+    // By guarding them with QPointer their pointers will be set to null
+    // so that the destructor of the base class can reliably call 'delete'.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
 }
 

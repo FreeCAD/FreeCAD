@@ -58,6 +58,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "Window.h"
+#include "Tools.h"
 
 using namespace Gui;
 
@@ -67,7 +68,7 @@ const char* ViewProviderAnnotation::RotationAxisEnums[]= {"X","Y","Z",NULL};
 PROPERTY_SOURCE(Gui::ViewProviderAnnotation, Gui::ViewProviderDocumentObject)
 
 
-ViewProviderAnnotation::ViewProviderAnnotation() 
+ViewProviderAnnotation::ViewProviderAnnotation()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     unsigned long col = hGrp->GetUnsigned("AnnotationTextColor",4294967295UL); // light grey
@@ -190,7 +191,7 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
     SoAnnotation* anno3d = new SoAnnotation();
 
     SoFCSelection* textsep = new SoFCSelection();
-    
+
     // set selection/highlight colors
     float transparency;
     ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
@@ -216,11 +217,11 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
     textsep->addChild(pLabel);
 
     SoFCSelection* textsep3d = new SoFCSelection();
-    
+
     // set sel/highlight color here too
     textsep3d->colorHighlight.setValue(highlightColor);
     textsep3d->colorSelection.setValue(selectionColor);
-    
+
     textsep3d->objectName = pcObject->getNameInDocument();
     textsep3d->documentName = pcObject->getDocument()->getName();
     textsep3d->subElementName = "Main";
@@ -239,7 +240,7 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
 
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() && 
+    if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() &&
         strcmp(prop->getName(),"LabelText") == 0) {
         const std::vector<std::string> lines = static_cast<const App::PropertyStringList*>(prop)->getValues();
         int index=0;
@@ -277,7 +278,7 @@ const char* ViewProviderAnnotationLabel::JustificationEnums[]= {"Left","Right","
 PROPERTY_SOURCE(Gui::ViewProviderAnnotationLabel, Gui::ViewProviderDocumentObject)
 
 
-ViewProviderAnnotationLabel::ViewProviderAnnotationLabel() 
+ViewProviderAnnotationLabel::ViewProviderAnnotationLabel()
 {
     ADD_PROPERTY(TextColor,(1.0f,1.0f,1.0f));
     ADD_PROPERTY(BackgroundColor,(0.0f,0.333f,1.0f));
@@ -380,7 +381,7 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
 
 void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() && 
+    if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() &&
         strcmp(prop->getName(),"LabelText") == 0) {
         drawImage(static_cast<const App::PropertyStringList*>(prop)->getValues());
     }
@@ -413,7 +414,7 @@ void ViewProviderAnnotationLabel::setupContextMenu(QMenu* menu, QObject* receive
 void ViewProviderAnnotationLabel::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand("Transform");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
 }
 
 void ViewProviderAnnotationLabel::dragFinishCallback(void *, SoDragger *)
@@ -434,7 +435,7 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void *data, SoDragger *drag
 
 bool ViewProviderAnnotationLabel::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum); 
+    Q_UNUSED(ModNum);
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(false);
@@ -455,7 +456,7 @@ bool ViewProviderAnnotationLabel::setEdit(int ModNum)
 
 void ViewProviderAnnotationLabel::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum); 
+    Q_UNUSED(ModNum);
     SoSearchAction sa;
     sa.setType(TranslateManip::getClassTypeId());
     sa.setInterest(SoSearchAction::FIRST);
@@ -493,7 +494,7 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     QStringList lines;
     for (std::vector<std::string>::const_iterator it = s.begin(); it != s.end(); ++it) {
         QString line = QString::fromUtf8(it->c_str());
-        w = std::max<int>(w, fm.width(line));
+        w = std::max<int>(w, QtTools::horizontalAdvance(fm, line));
         lines << line;
     }
 

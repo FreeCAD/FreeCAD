@@ -31,7 +31,7 @@
 # include <QString>
 # include <QImage>
 # include <QPixmap>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "TaskSketcherElements.h"
@@ -40,6 +40,7 @@
 #include "ViewProviderSketch.h"
 
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -145,7 +146,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     QMenu menu;
     QList<QListWidgetItem *> items = selectedItems();
 
-    // CONTEXT_ITEM(ICONSTR,NAMESTR,FUNC,KEY)
+    // CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)
     CONTEXT_ITEM("Constraint_PointOnPoint","Point Coincidence","Sketcher_ConstrainCoincident",doPointCoincidence,true)
     CONTEXT_ITEM("Constraint_PointOnObject","Point on Object","Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint,true)
     CONTEXT_ITEM("Constraint_Vertical","Vertical Constraint","Sketcher_ConstrainVertical", doVerticalConstraint,true)
@@ -155,7 +156,9 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Constraint_Tangent","Tangent Constraint","Sketcher_ConstrainTangent",doTangentConstraint,true)
     CONTEXT_ITEM("Constraint_EqualLength","Equal Length","Sketcher_ConstrainEqual",doEqualConstraint,true)
     CONTEXT_ITEM("Constraint_Symmetric","Symmetric","Sketcher_ConstrainSymmetric",doSymmetricConstraint,true)
-    CONTEXT_ITEM("Sketcher_ConstrainLock","Lock Constraint","Sketcher_ConstrainLock",doLockConstraint,true)
+    CONTEXT_ITEM("Constraint_Block","Block Constraint","Sketcher_ConstrainBlock",doBlockConstraint,true)
+
+    CONTEXT_ITEM("Constraint_Lock","Lock Constraint","Sketcher_ConstrainLock",doLockConstraint,true)
     CONTEXT_ITEM("Constraint_HorizontalDistance","Horizontal Distance","Sketcher_ConstrainDistanceX",doHorizontalDistance,true)
     CONTEXT_ITEM("Constraint_VerticalDistance","Vertical Distance","Sketcher_ConstrainDistanceY",doVerticalDistance,true)
     CONTEXT_ITEM("Constraint_Length","Length Constraint","Sketcher_ConstrainDistance",doLengthConstraint,true)
@@ -187,25 +190,29 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     menu.exec(event->globalPos());
 }
 
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceX",doHorizontalDistance)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY",doVerticalDistance)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal",doHorizontalConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical",doVerticalConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock",doLockConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainCoincident",doPointCoincidence)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical",doVerticalConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal",doHorizontalConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainParallel",doParallelConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainPerpendicular",doPerpendicularConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent",doTangentConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainEqual",doEqualConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainSymmetric",doSymmetricConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainBlock",doBlockConstraint)
+
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock",doLockConstraint)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceX",doHorizontalDistance)
+CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY",doVerticalDistance)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistance",doLengthConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadius",doRadiusConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainDiameter",doDiameterConstraint)
 CONTEXT_MEMBER_DEF("Sketcher_ConstrainAngle",doAngleConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainEqual",doEqualConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainSymmetric",doSymmetricConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent",doTangentConstraint)
+
+CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction",doToggleConstruction)
+
 CONTEXT_MEMBER_DEF("Sketcher_CloseShape",doCloseShape)
 CONTEXT_MEMBER_DEF("Sketcher_ConnectLines",doConnect)
-CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction",doToggleConstruction)
 CONTEXT_MEMBER_DEF("Sketcher_SelectConstraints",doSelectConstraints)
 CONTEXT_MEMBER_DEF("Sketcher_SelectOrigin",doSelectOrigin)
 CONTEXT_MEMBER_DEF("Sketcher_SelectHorizontalAxis",doSelectHAxis)
@@ -216,7 +223,7 @@ void ElementView::deleteSelectedItems()
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) return;
 
-    doc->openTransaction("Delete");
+    doc->openTransaction("Delete element");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(ft->getObject());
@@ -335,7 +342,6 @@ TaskSketcherElements::~TaskSketcherElements()
     }
 
     connectionElementsChanged.disconnect();
-    delete ui;
 }
 
 void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -706,7 +712,7 @@ void TaskSketcherElements::slotElementsChanged(void)
     int i=1;
     for(std::vector< Part::Geometry * >::const_iterator it= vals.begin();it!=vals.end();++it,++i){
       Base::Type type = (*it)->getTypeId();
-      bool construction = (*it)->Construction;
+      bool construction = Sketcher::GeometryFacade::getConstruction(*it);
 
       ui->listWidgetElements->addItem(new ElementItem(
         (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, false) :
@@ -1064,12 +1070,12 @@ void TaskSketcherElements::updateIcons(int element)
     MultIcon Sketcher_Element_BSpline_EndPoint("Sketcher_Element_BSpline_EndPoint");
     MultIcon none("Sketcher_Element_SelectionTypeInvalid");
 
-    
+
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
       Base::Type type = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->GeometryType;
       bool construction = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->isConstruction;
       bool external = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->isExternal;
-      
+
       ui->listWidgetElements->item(i)->setIcon(
         (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, external) :
         (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? Sketcher_Element_Line_Edge.getIcon(construction, external) :
@@ -1116,7 +1122,7 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     Normal = Gui::BitmapFactory().iconFromTheme(name);
     QImage imgConstr(Normal.pixmap(Normal.availableSizes()[0]).toImage());
     QImage imgExt(imgConstr);
-    
+
     for(int ix=0 ; ix<imgConstr.width() ; ix++) {
         for(int iy=0 ; iy<imgConstr.height() ; iy++) {
             QColor clr = QColor::fromRgba(imgConstr.pixel(ix,iy));
@@ -1142,7 +1148,7 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     External = QIcon(QPixmap::fromImage(imgExt));
 
 }
-    
+
 QIcon TaskSketcherElements::MultIcon::getIcon(bool construction, bool external) const
 {
     if (construction && external) return QIcon();

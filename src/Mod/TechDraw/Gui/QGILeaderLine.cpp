@@ -33,6 +33,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPaintDevice>
 #include <QSvgGenerator>
 #include <QVector2D>
@@ -73,8 +74,14 @@ using namespace TechDraw;
 
 //**************************************************************
 QGILeaderLine::QGILeaderLine() :
+    m_parentItem(nullptr),
+    m_lineWidth(1.0),
     m_lineColor(Qt::black),
+    m_lineStyle(Qt::SolidLine),
+    m_editPathStyle(Qt::SolidLine),
     m_hasHover(false),
+    m_saveX(0.0),
+    m_saveY(0.0),
     m_blockDraw(false)
 
 {
@@ -292,6 +299,9 @@ void QGILeaderLine::startPathEdit(void)
 {
     saveState();
     auto featLeader( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
+    if (featLeader == nullptr) {
+        return;
+    }
 
     double scale = featLeader->getScale();
     m_editPath->setScale(scale);

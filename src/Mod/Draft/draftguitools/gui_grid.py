@@ -22,16 +22,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Draft_ToggleGrid command to show the Draft grid."""
+"""Provides GUI tools to enable and disable the working plane grid."""
 ## @package gui_grid
-# \ingroup DRAFT
-# \brief Provide the Draft_ToggleGrid command to show the Draft grid.
+# \ingroup draftguitools
+# \brief Provides GUI tools to enable and disable the working plane grid.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
-from draftutils.translate import _tr
+
+from draftutils.translate import translate
 
 
 class ToggleGrid(gui_base.GuiCommandSimplest):
@@ -45,18 +48,15 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(ToggleGrid, self).__init__(name=_tr("Toggle grid"))
+        super(ToggleGrid, self).__init__(name=translate("draft","Toggle grid"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Toggles the Draft grid on and off."
 
         d = {'Pixmap': 'Draft_Grid',
              'Accel': "G,R",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleGrid",
-                                           "Toggle grid"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleGrid",
-                                          _tip),
+             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleGrid","Toggle grid"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleGrid","Toggles the Draft grid on and off."),
              'CmdType': 'ForEdit'}
 
         return d
@@ -77,3 +77,5 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
 
 
 Gui.addCommand('Draft_ToggleGrid', ToggleGrid())
+
+## @}

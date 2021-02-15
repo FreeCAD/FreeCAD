@@ -62,7 +62,7 @@
 #include <algorithm>
 
 // Boost
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 // OCC
 #include <Standard_math.hxx>

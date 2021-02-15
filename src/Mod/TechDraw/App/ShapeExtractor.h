@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan    <wandererfan@gmail.com>             *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,7 +45,7 @@ namespace TechDraw
 class TechDrawExport ShapeExtractor
 {
 public:
-    static TopoDS_Shape getShapes(const std::vector<App::DocumentObject*> links); 
+    static TopoDS_Shape getShapes(const std::vector<App::DocumentObject*> links);
     static std::vector<TopoDS_Shape> getShapes2d(const std::vector<App::DocumentObject*> links);
     static std::vector<TopoDS_Shape> getXShapes(const App::Link* xLink);
     static std::vector<TopoDS_Shape> getShapesFromObject(const App::DocumentObject* docObj);

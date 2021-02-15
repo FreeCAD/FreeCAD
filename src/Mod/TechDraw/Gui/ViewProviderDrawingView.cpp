@@ -25,9 +25,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/signals2/connection.hpp>
-#include <boost/bind.hpp>
+#include <boost_bind_bind.hpp>
 
 #endif
 
@@ -56,6 +56,7 @@
 #include "ViewProviderDrawingView.h"
 
 using namespace TechDrawGui;
+namespace bp = boost::placeholders;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
 
@@ -82,7 +83,7 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 //    Base::Console().Message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
-    auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, _1);
+    auto bnd = boost::bind(&ViewProviderDrawingView::onGuiRepaint, this, bp::_1);
     auto feature = getViewObject();
     if (feature != nullptr) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);

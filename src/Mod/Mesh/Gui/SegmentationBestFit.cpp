@@ -427,7 +427,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::CylinderSurfaceFit;
         }
-        segm.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+        segm.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
             (fitter, kernel, ui->numCyl->value(), ui->tolCyl->value()));
     }
     if (ui->groupBoxSph->isChecked()) {
@@ -441,7 +441,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::SphereSurfaceFit;
         }
-        segm.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+        segm.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
             (fitter, kernel, ui->numSph->value(), ui->tolSph->value()));
     }
     if (ui->groupBoxPln->isChecked()) {
@@ -455,7 +455,7 @@ void SegmentationBestFit::accept()
         else {
             fitter = new MeshCore::PlaneSurfaceFit;
         }
-        segm.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+        segm.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
             (fitter, kernel, ui->numPln->value(), ui->tolPln->value()));
     }
     finder.FindSegments(segm);

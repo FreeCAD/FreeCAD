@@ -121,7 +121,7 @@ void PyException::raiseException() {
 
         std::string exceptionname;
         if (_exceptionType == Base::BaseExceptionFreeCADAbort)
-            edict.setItem("sclassname", 
+            edict.setItem("sclassname",
                     Py::String(typeid(Base::AbortException).name()));
         if (_isReported)
             edict.setItem("breported", Py::True());
@@ -159,7 +159,7 @@ void PyException::setPyException() const
 
 SystemExitException::SystemExitException()
 {
-    // Set exception message and code based upon the pthon sys.exit() code and/or message 
+    // Set exception message and code based upon the python sys.exit() code and/or message
     // based upon the following sys.exit() call semantics.
     //
     // Invocation       |  _exitCode  |  _sErrMsg
@@ -207,12 +207,6 @@ SystemExitException::SystemExitException()
     _sErrMsg  = errMsg;
     _exitCode = errCode;
 }
-
-SystemExitException::SystemExitException(const SystemExitException &inst)
-  : Exception(inst), _exitCode(inst._exitCode)
-{
-}
-
 
 // ---------------------------------------------------------
 
@@ -297,6 +291,50 @@ std::string InterpreterSingleton::runString(const char *sCmd)
         PyErr_Clear();
         return std::string();
     }
+}
+
+/** runStringWithKey(psCmd, key, key_initial_value)
+ * psCmd is python script to run
+ * key is the name of a python string variable the script will have read/write
+ * access to during script execution.  It will be our return value.
+ * key_initial_value is the initial value c++ will set before calling the script
+ * If the script runs successfully it will be able to change the value of key as
+ * the return value, but if there is a runtime error key will not be changed even
+ * if the error occurs after changing it inside the script.
+ */
+
+std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char *key, const char *key_initial_value)
+{
+    PyGILStateLocker locker;
+    Py::Module module("__main__");
+    Py::Dict globalDictionary = module.getDict();
+    Py::Dict localDictionary;
+    Py::String initial_value(key_initial_value);
+    localDictionary.setItem(key, initial_value);
+
+    PyObject* presult = PyRun_String(psCmd, Py_file_input, globalDictionary.ptr(), localDictionary.ptr());
+    if (!presult) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
+            throw SystemExitException();
+        }
+        else {
+            PyException::ThrowException();
+            return std::string(); // just to quieten code analyzers
+        }
+    }
+    Py_DECREF(presult);
+
+    Py::Object key_return_value = localDictionary.getItem(key);
+    if (!key_return_value.isString())
+        key_return_value = key_return_value.str();
+
+#if PY_MAJOR_VERSION >= 3
+    Py::Bytes str = Py::String(key_return_value).encode("utf-8", "~E~");
+    std::string result = static_cast<std::string>(str);
+#else
+    std::string result = static_cast<std::string>(Py::String(key_return_value));
+#endif
+    return result;
 }
 
 Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
@@ -506,15 +544,8 @@ void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const ch
 void InterpreterSingleton::addPythonPath(const char* Path)
 {
     PyGILStateLocker locker;
-    PyObject *list = PySys_GetObject("path");
-#if PY_MAJOR_VERSION >= 3
-    PyObject *path = PyUnicode_FromString(Path);
-#else
-    PyObject *path = PyString_FromString(Path);
-#endif
-    PyList_Append(list, path);
-    Py_DECREF(path);
-    PySys_SetObject("path", list);
+    Py::List list(PySys_GetObject("path"));
+    list.append(Py::String(Path));
 }
 
 const char* InterpreterSingleton::init(int argc,char *argv[])
@@ -549,7 +580,11 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
                 "    exec(open(activate_this).read(), {'__file__':activate_this})\n"
             );
         }
+
+#if PY_VERSION_HEX < 0x03090000
         PyEval_InitThreads();
+#endif
+
 #if PY_MAJOR_VERSION >= 3
         size_t size = argc;
         wchar_t **_argv = new wchar_t*[size];
@@ -700,7 +735,11 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
         throw TypeError("InterpreterSingleton::RunMethod() wrong arguments");
     }
 
+#if PY_VERSION_HEX < 0x03090000
     presult = PyEval_CallObject(pmeth, pargs);   /* run interpreter */
+#else
+    presult = PyObject_CallObject(pmeth, pargs);   /* run interpreter */
+#endif
 
     Py_DECREF(pmeth);
     Py_DECREF(pargs);
@@ -873,6 +912,9 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
 #else
+    (void)TypeName;
+    (void)Pointer;
+    (void)own;
     result = -1; // indicates error
 #endif
 #if PY_MAJOR_VERSION < 3
@@ -925,9 +967,13 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     (void)Module;
 #endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
-        result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
+    result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
 #else
-        result = -1; // indicates error
+    (void)TypeName;
+    (void)obj;
+    (void)ptr;
+    (void)flags;
+    result = -1; // indicates error
 #endif
 #if PY_MAJOR_VERSION < 3
     }
@@ -956,6 +1002,8 @@ void InterpreterSingleton::cleanupSWIG(const char* TypeName)
     PyGILStateLocker locker;
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     Swig_python::cleanupSWIG_T(TypeName);
+#else
+    (void)TypeName;
 #endif
 #if PY_MAJOR_VERSION < 3
     Swig_1_3_25::cleanupSWIG_T(TypeName);

@@ -20,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemMesh to Mesh converter"
+__title__  = "FemMesh to Mesh converter"
 __author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package FwmMesh2Mesh
 #  \ingroup FEM

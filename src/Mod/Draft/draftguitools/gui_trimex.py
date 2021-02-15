@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for trimming and extending lines with the Draft Workbench.
+"""Provides GUI tools to trim and extend lines.
 
 It also extends closed faces to create solids, that is, it can be used
 to extrude a closed profile.
@@ -32,9 +32,11 @@ the direction of a line, and up to the distance specified
 by the snapping point.
 """
 ## @package gui_trimex
-# \ingroup DRAFT
-# \brief Provides tools for trimming and extending lines.
+# \ingroup draftguitools
+# \brief Provides GUI tools to trim and extend lines.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -48,8 +50,9 @@ import draftutils.gui_utils as gui_utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _err
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -67,19 +70,15 @@ class Trimex(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Trims or extends the selected object, "
-                "or extrudes single faces.\n"
-                "CTRL snaps, SHIFT constrains to current segment "
-                "or to normal, ALT inverts.")
 
         return {'Pixmap': 'Draft_Trimex',
                 'Accel': "T, R",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Trimex", "Trims or extends the selected object, or extrudes single faces.\nCTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Trimex, self).Activated(name=_tr("Trimex"))
+        super(Trimex, self).Activated(name=translate("draft","Trimex"))
         self.edges = []
         self.placement = None
         self.ghost = []
@@ -569,3 +568,5 @@ class Trimex(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Trimex', Trimex())
+
+## @}

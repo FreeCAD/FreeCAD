@@ -47,6 +47,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 173};
     int type() const { return Type;}
 
+    virtual QRectF boundingRect() const;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
     virtual void draw();
     void setWidth(double w);

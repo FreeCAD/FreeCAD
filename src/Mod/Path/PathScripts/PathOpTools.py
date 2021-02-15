@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -35,7 +33,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "PathOpTools - Tools for Path operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Collection of functions used by various Path operations. The functions are specific to Path and the algorithms employed by Path's operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -136,6 +134,7 @@ def orientWire(w, forward=True):
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
     If forward = None the orientation is determined by the order in which the edges appear in the wire.'''
+    PathLog.debug('orienting forward: {}'.format(forward))
     wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
         if forward != _isWireClockwise(wire):
@@ -144,7 +143,7 @@ def orientWire(w, forward=True):
         PathLog.track('orientWire - ok')
     return wire
 
-def offsetWire(wire, base, offset, forward, Side = None):
+def offsetWire(wire, base, offset, forward):#, Side = None):
     '''offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
@@ -156,7 +155,7 @@ def offsetWire(wire, base, offset, forward, Side = None):
         curve = edge.Curve
         if Part.Circle == type(curve) and wire.isClosed():
             # it's a full circle and there are some problems with that, see
-            # http://www.freecadweb.org/wiki/Part%20Offset2D
+            # https://www.freecadweb.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
             z = -1 if forward else 1
             edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
@@ -198,12 +197,12 @@ def offsetWire(wire, base, offset, forward, Side = None):
     if wire.isClosed():
         if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset/2, True):
             PathLog.track('closed - outside')
-            if Side:
-                Side[0] = "Outside"
+            # if Side:
+            #     Side[0] = "Outside"
             return orientWire(owire, forward)
         PathLog.track('closed - inside')
-        if Side:
-            Side[0] = "Inside"
+        # if Side:
+        #     Side[0] = "Inside"
         try:
             owire = wire.makeOffset2D(-offset)
         except Exception: # pylint: disable=broad-except

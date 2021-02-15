@@ -33,8 +33,10 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
-      <source>Curve on mesh</source>
-      <translation>Courbe sur maillage</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation>Crée une courbe approximative au dessus d'un maillage.
+Cette commande ne fonctionne qu'avec un objet 'mesh'.</translation>
     </message>
   </context>
   <context>
@@ -90,6 +92,19 @@
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Ajuste le maillage avec un plan</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation>Ajuster avec un plan</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation>Section avec un plan</translation>
     </message>
   </context>
   <context>
@@ -155,7 +170,7 @@
       <translation>Racorder les arêtes si la distance est inférieure à</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
       <translation>Échec</translation>
     </message>
@@ -201,47 +216,56 @@
       <translation>Courbe sur maillage</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation>Appuyez sur "Démarrer", puis sélectionnez les points sur le maillage ; lorsque suffisamment de points ont été définis, faites un clic droit et choisissez "Créer". Répétez ce processus pour créer plus de splines. Fermez ce panneau de tâches pour terminer l'opération.
+
+Cette commande ne fonctionne qu'avec un objet 'Mesh', pas avec une face ou une surface régulière. Pour convertir un objet en maillage, utilisez les outils de l'atelier Mesh.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
       <translation>Fil</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
-      <source>Snap tolerance to vertexes</source>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
       <translation>Tolérance d'accrochage aux sommets</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
       <translation>Seuil de séparation</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
       <translation>Approximation de Spline</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
       <translation>Tolérance pour mailler</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
       <translation>Continuité</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
       <source>Maximum curve degree</source>
       <translation>Angle de courbure maximal</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
       <translation>Début</translation>
     </message>
@@ -506,7 +530,7 @@ Une valeur dans la plage de 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Trim by plane</source>
-      <translation>Coupé par un plan</translation>
+      <translation>Découpe par un plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>

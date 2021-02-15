@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -51,9 +50,9 @@ if sys.version_info.major >= 3:
 #  This module provides tools to build BuildingPart objects.
 #  BuildingParts are used to group different Arch objects
 
-__title__="FreeCAD Arch BuildingPart"
+__title__  = "FreeCAD Arch BuildingPart"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 BuildingTypes = ['Undefined',
@@ -324,8 +323,8 @@ class BuildingPart(ArchIFC.IfcProduct):
     def __init__(self,obj):
 
         obj.Proxy = self
-        obj.addExtension('App::GroupExtensionPython', self)
-        #obj.addExtension('App::OriginGroupExtensionPython', self)
+        obj.addExtension('App::GroupExtensionPython')
+        #obj.addExtension('App::OriginGroupExtensionPython')
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -444,7 +443,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
-        for child in Draft.getGroupContents(obj):
+        for child in Draft.get_group_contents(obj):
             if hasattr(child,'Shape'):
                 shapes.extend(child.Shape.Faces)
         return shapes
@@ -461,7 +460,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         return g
 
     def touchChildren(self,obj):
-        
+
         "Touches all descendents where applicable"
 
         for child in obj.Group:
@@ -472,6 +471,15 @@ class BuildingPart(ArchIFC.IfcProduct):
             elif Draft.getType(child) in ["Group","BuildingPart"]:
                 self.touchChildren(child)
 
+    def addObject(self,obj,child):
+
+        "Adds an object to the group of this BuildingPart"
+
+        if not child in obj.Group:
+            g = obj.Group
+            g.append(child)
+            obj.Group = g
+
 
 class ViewProviderBuildingPart:
 
@@ -480,8 +488,8 @@ class ViewProviderBuildingPart:
 
     def __init__(self,vobj):
 
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
-        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+        #vobj.addExtension("Gui::ViewProviderGeoFeatureGroupExtensionPython")
         vobj.Proxy = self
         self.setProperties(vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
@@ -528,7 +536,7 @@ class ViewProviderBuildingPart:
         if not "RestoreView" in pl:
             vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
         if not "DoubleClickActivates" in pl:
-            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree turns it active"))
+            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree activates it"))
 
         # inventor saving
         if not "SaveInventor" in pl:
@@ -565,7 +573,7 @@ class ViewProviderBuildingPart:
 
     def onDocumentRestored(self,vobj):
 
-        selt.setProperties(vobj)
+        self.setProperties(vobj)
 
     def getIcon(self):
 
@@ -644,7 +652,7 @@ class ViewProviderBuildingPart:
         "recursively get the colors of objects inside this BuildingPart"
 
         colors = []
-        for child in Draft.getGroupContents(obj):
+        for child in Draft.get_group_contents(obj):
             if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
                 if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
                     colors.extend(child.ViewObject.DiffuseColor)
@@ -703,7 +711,7 @@ class ViewProviderBuildingPart:
                         u = q.getUserPreferred()[2]
                     try:
                         q = q.getValueAs(u)
-                    except:
+                    except Exception:
                         q = q.getValueAs(q.getUserPreferred()[2])
                     d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
                     fmt = "{0:."+ str(d) + "f}"
@@ -730,7 +738,8 @@ class ViewProviderBuildingPart:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                    for o in Draft.get_group_contents(vobj.Object.Group,
+                                                      walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "One side"
                     self.clip = coin.SoClipPlane()
@@ -755,7 +764,8 @@ class ViewProviderBuildingPart:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                    for o in Draft.get_group_contents(vobj.Object.Group,
+                                                      walls=True):
                         if hasattr(o.ViewObject,"Lighting"):
                             o.ViewObject.Lighting = "Two side"
         elif prop == "Visibility":
@@ -770,7 +780,7 @@ class ViewProviderBuildingPart:
         if self.clip:
             sg.removeChild(self.clip)
             self.clip = None
-        for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+        for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
             if hasattr(o.ViewObject,"Lighting"):
                 o.ViewObject.Lighting = "Two side"
         return True

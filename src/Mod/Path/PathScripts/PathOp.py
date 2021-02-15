@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,16 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
+import time
+
+from PySide import QtCore
+
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
-
 from PathScripts.PathUtils import waiting_effects
-from PySide import QtCore
-import time
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -39,16 +38,17 @@ Part = LazyLoader('Part', globals(), 'Part')
 
 __title__ = "Base class for all operations."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Base class and properties implementation for all Path operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule()
+# PathLog.trackModule()
 
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 FeatureTool         = 0x0001     # ToolController
 FeatureDepths       = 0x0002     # FinalDepth, StartDepth
@@ -63,8 +63,9 @@ FeatureBaseFaces    = 0x0400     # Base
 FeatureBasePanels   = 0x0800     # Base
 FeatureLocations    = 0x1000     # Locations
 FeatureCoolant      = 0x2000     # Coolant
+FeatureDiameters    = 0x4000     # Turning Diameters
 
-FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels | FeatureCoolant
+FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
 
 
 class ObjectOp(object):
@@ -89,7 +90,8 @@ class ObjectOp(object):
         FeatureBaseFaces     ... Base geometry support for faces
         FeatureBasePanels    ... Base geometry support for Arch.Panels
         FeatureLocations     ... Base location support
-        FeatureCoolant       ... Support for operation coolant 
+        FeatureCoolant       ... Support for operation coolant
+        FeatureDiameters     ... Support for turning operation diameters
 
     The base class handles all base API and forwards calls to subclasses with
     an op prefix. For instance, an op is not expected to overwrite onChanged(),
@@ -140,7 +142,7 @@ class ObjectOp(object):
 
         if FeatureCoolant & features:
             obj.addProperty("App::PropertyString", "CoolantMode", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Coolant mode for this operation"))
- 
+
         if FeatureDepths & features:
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Final Depth of Tool- lowest value in Z"))
@@ -168,6 +170,10 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyVectorDistance", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"))
             obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make True, if specifying a Start Point"))
 
+        if FeatureDiameters & features:
+            obj.addProperty("App::PropertyDistance", "MinDiameter", "Diameter", QtCore.QT_TRANSLATE_NOOP("PathOp", "Lower limit of the turning diameter"))
+            obj.addProperty("App::PropertyDistance", "MaxDiameter", "Diameter", QtCore.QT_TRANSLATE_NOOP("PathOp", "Upper limit of the turning diameter."))
+
         # members being set later
         self.commandlist = None
         self.horizFeed = None
@@ -179,6 +185,7 @@ class ObjectOp(object):
         self.tool = None
         self.vertFeed = None
         self.vertRapid = None
+        self.addNewProps = None
 
         self.initOperation(obj)
 
@@ -194,7 +201,7 @@ class ObjectOp(object):
 
         for op in ['OpStartDepth', 'OpFinalDepth', 'OpToolDiameter', 'CycleTime']:
             if hasattr(obj, op):
-                obj.setEditorMode(op, 1) # read-only
+                obj.setEditorMode(op, 1)  # read-only
 
         if FeatureDepths & features:
             if FeatureNoFinalDepth & features:
@@ -225,10 +232,6 @@ class ObjectOp(object):
         if not hasattr(obj, 'OpStockZMax'):
             self.addOpValues(obj, ['stockz'])
 
-        if not hasattr(obj, 'EnableRotation'):
-            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
-            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
-
         if not hasattr(obj, 'CycleTime'):
             obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
 
@@ -247,7 +250,7 @@ class ObjectOp(object):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
-        The default implementation returns "FeatureTool | FeatureDeptsh | FeatureHeights | FeatureStartPoint"
+        The default implementation returns "FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint"
         Should be overwritten by subclasses.'''
         # pylint: disable=unused-argument
         return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint | FeatureBaseGeometry | FeatureFinishDepth | FeatureCoolant
@@ -255,12 +258,12 @@ class ObjectOp(object):
     def initOperation(self, obj):
         '''initOperation(obj) ... implement to create additional properties.
         Should be overwritten by subclasses.'''
-        pass # pylint: disable=unnecessary-pass
+        pass  # pylint: disable=unnecessary-pass
 
     def opOnDocumentRestored(self, obj):
         '''opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses.'''
-        pass # pylint: disable=unnecessary-pass
+        pass  # pylint: disable=unnecessary-pass
 
     def opOnChanged(self, obj, prop):
         '''opOnChanged(obj, prop) ... overwrite to process property changes.
@@ -269,24 +272,24 @@ class ObjectOp(object):
         distinguish between assigning a different value and assigning the same
         value again.
         Can safely be overwritten by subclasses.'''
-        pass # pylint: disable=unnecessary-pass
+        pass  # pylint: disable=unnecessary-pass
 
     def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj, job) ... overwrite to set initial default values.
         Called after the receiver has been fully created with all properties.
         Can safely be overwritten by subclasses.'''
-        pass # pylint: disable=unnecessary-pass
+        pass  # pylint: disable=unnecessary-pass
 
     def opUpdateDepths(self, obj):
         '''opUpdateDepths(obj) ... overwrite to implement special depths calculation.
         Can safely be overwritten by subclass.'''
-        pass # pylint: disable=unnecessary-pass
+        pass  # pylint: disable=unnecessary-pass
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses.'''
-        pass # pylint: disable=unnecessary-pass
+        pass  # pylint: disable=unnecessary-pass
 
     def opRejectAddBase(self, obj, base, sub):
         '''opRejectAddBase(base, sub) ... if op returns True the addition of the feature is prevented.
@@ -297,11 +300,10 @@ class ObjectOp(object):
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
-        if not 'Restore' in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
+        if 'Restore' not in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
             self.updateDepths(obj, True)
 
         self.opOnChanged(obj, prop)
-
 
     def applyExpression(self, obj, prop, expr):
         '''applyExpression(obj, prop, expr) ... set expression expr on obj.prop if expr is set'''
@@ -323,7 +325,7 @@ class ObjectOp(object):
             if 1 < len(job.Operations.Group):
                 obj.ToolController = PathUtil.toolControllerForOp(job.Operations.Group[-2])
             else:
-                obj.ToolController = PathUtils.findToolController(obj)
+                obj.ToolController = PathUtils.findToolController(obj, self)
             if not obj.ToolController:
                 return None
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
@@ -354,6 +356,12 @@ class ObjectOp(object):
             if job.SetupSheet.ClearanceHeightExpression:
                 if not self.applyExpression(obj, 'ClearanceHeight', job.SetupSheet.ClearanceHeightExpression):
                     obj.ClearanceHeight = '5 mm'
+
+        if FeatureDiameters & features:
+            obj.MinDiameter = '0 mm'
+            obj.MaxDiameter = '0 mm'
+            if job.Stock:
+                obj.MaxDiameter = job.Stock.Shape.BoundBox.XLength
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
@@ -414,7 +422,10 @@ class ObjectOp(object):
                 zmax = max(zmax, bb.ZMax)
                 for sub in sublist:
                     try:
-                        fbb = base.Shape.getElement(sub).BoundBox
+                        if sub:
+                            fbb = base.Shape.getElement(sub).BoundBox
+                        else:
+                            fbb = base.Shape.BoundBox
                         zmin = max(zmin, faceZmin(bb, fbb))
                         zmax = max(zmax, fbb.ZMax)
                     except Part.OCCError as e:
@@ -475,26 +486,22 @@ class ObjectOp(object):
         '''
         PathLog.track()
 
-        if obj.ViewObject:
-            obj.ViewObject.Visibility = obj.Active
-
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
             return
-
 
         if not self._setBaseAndStock(obj):
             return
 
         if FeatureCoolant & self.opFeatures(obj):
             if not hasattr(obj, 'CoolantMode'):
-                FreeCAD.Console.PrintError("No coolant property found. Please recreate operation.")
+                PathLog.error(translate("Path", "No coolant property found. Please recreate operation."))
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
             if tc is None or tc.ToolNumber == 0:
-                FreeCAD.Console.PrintError("No Tool Controller is selected. We need a tool to build a Path.")
+                PathLog.error(translate("Path", "No Tool Controller is selected. We need a tool to build a Path."))
                 return
             else:
                 self.vertFeed = tc.VertFeed.Value
@@ -503,9 +510,9 @@ class ObjectOp(object):
                 self.horizRapid = tc.HorizRapid.Value
                 tool = tc.Proxy.getTool(tc)
                 if not tool or float(tool.Diameter) == 0:
-                    FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
+                    PathLog.error(translate("Path", "No Tool found or diameter is zero. We need a tool to build a Path."))
                     return
-                self.radius = float(tool.Diameter) /2 
+                self.radius = float(tool.Diameter) / 2.0
                 self.tool = tool
                 obj.OpToolDiameter = tool.Diameter
 
@@ -519,9 +526,9 @@ class ObjectOp(object):
         if obj.Comment:
             self.commandlist.append(Path.Command("(%s)" % obj.Comment))
 
-        result = self.opExecute(obj) # pylint: disable=assignment-from-no-return
+        result = self.opExecute(obj)  # pylint: disable=assignment-from-no-return
 
-        if FeatureHeights & self.opFeatures(obj):
+        if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
             # Let's finish by rapid to clearance...just for safety
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
@@ -536,28 +543,28 @@ class ObjectOp(object):
         tc = obj.ToolController
 
         if tc is None or tc.ToolNumber == 0:
-            FreeCAD.Console.PrintError("No Tool Controller is selected. Tool feed rates required to calculate the cycle time.\n")
-            return translate('PathGui', 'Tool Error')
+            PathLog.error(translate("Path", "No Tool Controller selected."))
+            return translate('Path', 'Tool Error')
 
         hFeedrate = tc.HorizFeed.Value
         vFeedrate = tc.VertFeed.Value
         hRapidrate = tc.HorizRapid.Value
         vRapidrate = tc.VertRapid.Value
 
-        if hFeedrate == 0 or vFeedrate == 0:
-            FreeCAD.Console.PrintError("Tool Controller requires feed rates. Tool feed rates required to calculate the cycle time.\n")
-            return translate('PathGui', 'Feedrate Error')
+        if (hFeedrate == 0 or vFeedrate == 0) and not PathPreferences.suppressAllSpeedsWarning():
+            PathLog.warning(translate("Path", "Tool Controller feedrates required to calculate the cycle time."))
+            return translate('Path', 'Feedrate Error')
 
-        if hRapidrate == 0 or vRapidrate == 0:
-            FreeCAD.Console.PrintWarning("Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.\n")
+        if (hRapidrate == 0 or vRapidrate == 0) and not PathPreferences.suppressRapidSpeedsWarning():
+            PathLog.warning(translate("Path", "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times."))
 
-        ## get the cycle time in seconds
+        # Get the cycle time in seconds
         seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
-        
+
         if not seconds:
-            return translate('PathGui', 'Cycletime Error')
-            
-        ## convert the cycle time to a HH:MM:SS format
+            return translate('Path', 'Cycletime Error')
+
+        # Convert the cycle time to a HH:MM:SS format
         cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
 
         return cycleTime
@@ -578,11 +585,19 @@ class ObjectOp(object):
 
             for p, el in baselist:
                 if p == base and sub in el:
-                    PathLog.notice((translate("Path", "Base object %s.%s already in the list")+"\n") % (base.Label, sub))
+                    PathLog.notice((translate("Path", "Base object %s.%s already in the list") + "\n") % (base.Label, sub))
                     return
 
             if not self.opRejectAddBase(obj, base, sub):
                 baselist.append((base, sub))
                 obj.Base = baselist
             else:
-                PathLog.notice((translate("Path", "Base object %s.%s rejected by operation")+"\n") % (base.Label, sub))
+                PathLog.notice((translate("Path", "Base object %s.%s rejected by operation") + "\n") % (base.Label, sub))
+
+    def isToolSupported(self, obj, tool):
+        '''toolSupported(obj, tool) ... Returns true if the op supports the given tool.
+        This function can safely be overwritten by subclasses.'''
+
+        return True
+
+

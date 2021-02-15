@@ -21,112 +21,63 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
-"""This module provides the object code for Draft Text.
-"""
+"""Provides the object code for the Text object."""
 ## @package text
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Text.
+# \ingroup draftobjects
+# \brief Provides the object code for the Text object.
+
+## \addtogroup draftobjects
+# @{
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import math
-from PySide.QtCore import QT_TRANSLATE_NOOP
-import DraftGeomUtils
-import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
+
 from draftobjects.draft_annotation import DraftAnnotation
-
-if App.GuiUp:
-    from draftviewproviders.view_text import ViewProviderText
-
-
-
-def make_text(stringslist, point=App.Vector(0,0,0), screen=False):
-    """makeText(strings, point, screen)
-    
-    Creates a Text object containing the given strings. 
-    The current color and text height and font
-    specified in preferences are used.
-    
-    Parameters
-    ----------
-    stringlist : List
-                 Given list of strings, one string by line (strings can also
-                 be one single string)
-
-    point : App::Vector
-            insert point of the text
-
-    screen : Bool
-             If screen is True, the text always faces the view direction.
-
-    """
-
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
-
-    utils.type_check([(point, App.Vector)], "makeText")
-    if not isinstance(stringslist,list): stringslist = [stringslist]
-
-    obj = App.ActiveDocument.addObject("App::FeaturePython","Text")
-    Text(obj)
-    obj.Text = stringslist
-    obj.Placement.Base = point
-
-    if App.GuiUp:
-        ViewProviderText(obj.ViewObject)
-        if screen:
-            obj.ViewObject.DisplayMode = "3D text"
-        h = utils.get_param("textheight",0.20)
-        if screen:
-            h = h*10
-        obj.ViewObject.FontSize = h
-        obj.ViewObject.FontName = utils.get_param("textfont","")
-        obj.ViewObject.LineSpacing = 1
-        gui_utils.format_object(obj)
-        gui_utils.select(obj)
-
-    return obj
 
 
 class Text(DraftAnnotation):
-    """The Draft Text object"""
+    """The Draft Text object."""
 
     def __init__(self, obj):
-
         super(Text, self).__init__(obj, "Text")
-
-        self.init_properties(obj)
-
+        self.set_properties(obj)
         obj.Proxy = self
-    
 
-    def init_properties(self, obj):
-        """Add Text specific properties to the object and set them"""
+    def set_properties(self, obj):
+        """Add properties to the object and set them."""
+        properties = obj.PropertiesList
 
-        obj.addProperty("App::PropertyPlacement",
-                        "Placement",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The placement of this object"))
+        if "Placement" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The placement of the base point "
+                                     "of the first line")
+            obj.addProperty("App::PropertyPlacement",
+                            "Placement",
+                            "Base",
+                            _tip)
+            obj.Placement = App.Placement()
 
-        obj.addProperty("App::PropertyStringList",
-                        "Text",
-                        "Base",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The text displayed by this object"))
+        if "Text" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The text displayed by this object.\n"
+                                     "It is a list of strings; each element "
+                                     "in the list will be displayed "
+                                     "in its own line.")
+            obj.addProperty("App::PropertyStringList",
+                            "Text",
+                            "Base",
+                            _tip)
+            obj.Text = []
 
     def onDocumentRestored(self, obj):
+        """Execute code when the document is restored.
+
+        It calls the parent class to add missing annotation properties.
+        """
         super(Text, self).onDocumentRestored(obj)
 
-    def execute(self,obj):
-        '''Do something when recompute object'''
 
-        return
+# Alias for compatibility with v0.18 and earlier
+DraftText = Text
 
-
-    def onChanged(self,obj,prop):
-        '''Do something when a property has changed'''
-                
-        return
+## @}

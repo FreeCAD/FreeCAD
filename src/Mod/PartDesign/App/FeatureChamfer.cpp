@@ -41,6 +41,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureChamfer.h"
@@ -51,18 +52,53 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
+const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", NULL};
 const App::PropertyQuantityConstraint::Constraints floatSize = {0.0,FLT_MAX,0.1};
+const App::PropertyAngle::Constraints floatAngle = {0.0,180.0,1.0};
+
+static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle);
 
 Chamfer::Chamfer()
 {
-    ADD_PROPERTY(Size,(1.0));
+    ADD_PROPERTY_TYPE(ChamferType, (0L), "Chamfer", App::Prop_None, "Type of chamfer");
+    ChamferType.setEnums(ChamferTypeEnums);
+
+    ADD_PROPERTY_TYPE(Size, (1.0), "Chamfer", App::Prop_None, "Size of chamfer");
     Size.setUnit(Base::Unit::Length);
     Size.setConstraints(&floatSize);
+
+    ADD_PROPERTY_TYPE(Size2, (1.0), "Chamfer", App::Prop_None, "Second size of chamfer");
+    Size2.setUnit(Base::Unit::Length);
+    Size2.setConstraints(&floatSize);
+
+    ADD_PROPERTY_TYPE(Angle, (45.0), "Chamfer", App::Prop_None, "Angle of chamfer");
+    Angle.setUnit(Base::Unit::Angle);
+    Angle.setConstraints(&floatAngle);
+
+    ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");
+
+    updateProperties();
 }
 
 short Chamfer::mustExecute() const
 {
-    if (Placement.isTouched() || Size.isTouched())
+    bool touched = false;
+
+    auto chamferType = ChamferType.getValue();
+
+    switch (chamferType) {
+        case 0: // "Equal distance"
+            touched = Size.isTouched() || ChamferType.isTouched();
+            break;
+        case 1: // "Two distances"
+            touched = Size.isTouched() || ChamferType.isTouched() || Size2.isTouched();
+            break;
+        case 2: // "Distance and Angle"
+            touched = Size.isTouched() || ChamferType.isTouched() || Angle.isTouched();
+            break;
+    }
+
+    if (Placement.isTouched() || touched)
         return 1;
     return DressUp::mustExecute();
 }
@@ -84,9 +120,16 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     if (SubNames.size() == 0)
         return new App::DocumentObjectExecReturn("No edges specified");
 
-    double size = Size.getValue();
-    if (size <= 0)
-        return new App::DocumentObjectExecReturn("Size must be greater than zero");
+    const int chamferType = ChamferType.getValue();
+    const double size = Size.getValue();
+    const double size2 = Size2.getValue();
+    const double angle = Angle.getValue();
+    const bool flipDirection = FlipDirection.getValue();
+
+    auto res = validateParameters(chamferType, size, size2, angle);
+    if (res != App::DocumentObject::StdReturn) {
+        return res;
+    }
 
     this->positionByBaseFeature();
     // create an untransformed copy of the basefeature shape
@@ -102,12 +145,20 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
 
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
-            const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
-#if OCC_VERSION_HEX > 0x070300
-            mkChamfer.Add(size, size, edge, face);
-#else
-            mkChamfer.Add(size, edge, face);
-#endif
+            const TopoDS_Face& face = (chamferType != 0 && flipDirection) ?
+                TopoDS::Face(mapEdgeFace.FindFromKey(edge).Last()) :
+                TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+            switch (chamferType) {
+                case 0: // Equal distance
+                    mkChamfer.Add(size, size, edge, face);
+                    break;
+                case 1: // Two distances
+                    mkChamfer.Add(size, size2, edge, face);
+                    break;
+                case 2: // Distance and angle
+                    mkChamfer.AddDA(size, Base::toRadians(angle), edge, face);
+                    break;
+            }
         }
 
         mkChamfer.Build();
@@ -134,7 +185,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         if (solidCount > 1) {
             return new App::DocumentObjectExecReturn("Chamfer: Result has multiple solids. This is not supported at this time.");
         }
-
+        shape = refineShapeIfActive(shape);
         this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }
@@ -178,3 +229,64 @@ void Chamfer::Restore(Base::XMLReader &reader)
     }
     reader.readEndElement("Properties");
 }
+
+void Chamfer::onChanged(const App::Property* prop)
+{
+    if (prop == &ChamferType) {
+        updateProperties();
+    }
+
+    DressUp::onChanged(prop);
+}
+
+void Chamfer::updateProperties()
+{
+    auto chamferType = ChamferType.getValue();
+
+    auto disableproperty = [](App::Property * prop, bool on) {
+        prop->setStatus(App::Property::ReadOnly, on);
+    };
+
+    switch (chamferType) {
+    case 0: // "Equal distance"
+        disableproperty(&this->Angle, true);
+        disableproperty(&this->Size2, true);
+        break;
+    case 1: // "Two distances"
+        disableproperty(&this->Angle, true);
+        disableproperty(&this->Size2, false);
+        break;
+    case 2: // "Distance and Angle"
+        disableproperty(&this->Angle, false);
+        disableproperty(&this->Size2, true);
+        break;
+    }
+}
+
+static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle)
+{
+    // Size is common to all chamfer types.
+    if (size <= 0) {
+        return new App::DocumentObjectExecReturn("Size must be greater than zero");
+    }
+
+    switch (chamferType) {
+        case 0: // Equal distance
+            // Nothing to do.
+            break;
+        case 1: // Two distances
+            if (size2 <= 0) {
+                return new App::DocumentObjectExecReturn("Size2 must be greater than zero");
+            }
+            break;
+        case 2: // Distance and angle
+            if (angle <= 0 || angle >= 180.0) {
+                return new App::DocumentObjectExecReturn("Angle must be greater than 0 and less than 180");
+            }
+            break;
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
+

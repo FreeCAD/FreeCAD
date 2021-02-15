@@ -20,17 +20,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Circle.
-"""
+"""Provides the object code for the Circle object."""
 ## @package circle
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Circle.
+# \ingroup draftobjects
+# \brief Provides the object code for the Circle object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
-from draftutils.utils import get_param
+import draftutils.utils as utils
 
 from draftobjects.base import DraftObject
 
@@ -41,28 +41,28 @@ class Circle(DraftObject):
     def __init__(self, obj):
         super(Circle, self).__init__(obj, "Circle")
 
-        _tip = "Start angle of the arc"
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Start angle of the arc")
         obj.addProperty("App::PropertyAngle", "FirstAngle", 
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "End angle of the arc (for a full circle, \
-                give it same value as First Angle)"
+        _tip = QT_TRANSLATE_NOOP("App::Property", "End angle of the arc (for a full circle, \
+                give it same value as First Angle)")
         obj.addProperty("App::PropertyAngle","LastAngle",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Radius of the circle"
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Radius of the circle")
         obj.addProperty("App::PropertyLength", "Radius",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Create a face"
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Create a face")
         obj.addProperty("App::PropertyBool", "MakeFace",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The area of this object"
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
         obj.addProperty("App::PropertyArea", "Area",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        obj.MakeFace = get_param("fillmode", True)
+        obj.MakeFace = utils.get_param("fillmode", True)
 
 
     def execute(self, obj):
@@ -95,4 +95,7 @@ class Circle(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _Circle = Circle
+
+## @}

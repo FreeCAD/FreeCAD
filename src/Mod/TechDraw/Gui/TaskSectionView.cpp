@@ -76,7 +76,9 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     ui(new Ui_TaskSectionView),
     m_base(base),
     m_section(nullptr),
+    m_saveScale(0.0),
     m_dirName(""),
+    m_doc(nullptr),
     m_createMode(true),
     m_saved(false),
     m_abort(false)
@@ -110,6 +112,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     ui(new Ui_TaskSectionView),
     m_base(nullptr),
     m_section(section),
+    m_saveScale(0.0),
+    m_doc(nullptr),
     m_createMode(false),
     m_saved(false),
     m_abort(false)
@@ -148,7 +152,6 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
 
 TaskSectionView::~TaskSectionView()
 {
-    delete ui;
 }
 
 void TaskSectionView::setUiPrimary()
@@ -176,13 +179,14 @@ void TaskSectionView::setUiPrimary()
     this->setToolTip(QObject::tr("Select at first an orientation"));
     enableAll(false);
 
-    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
-    //valueChanged fires every keystroke causing a recompute.
     connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
-    connect(ui->sbScale, SIGNAL(editingFinished()), this, SLOT(onScaleChanged()));
-    connect(ui->sbOrgX, SIGNAL(editingFinished()), this, SLOT(onXChanged()));
-    connect(ui->sbOrgY, SIGNAL(editingFinished()), this, SLOT(onYChanged()));
-    connect(ui->sbOrgZ, SIGNAL(editingFinished()), this, SLOT(onZChanged()));
+
+    // the UI file uses keyboardTracking = false so that a recomputation
+    // will only be triggered when the arrow keys of the spinboxes are used
+    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
+    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
+    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
+    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 }
 
 void TaskSectionView::setUiEdit()
@@ -207,13 +211,14 @@ void TaskSectionView::setUiEdit()
     ui->sbOrgZ->setUnit(Base::Unit::Length);
     ui->sbOrgZ->setValue(origin.z);
 
-    //use editingFinished signal instead of valueChanged to prevent keyboard lock out
-    //valueChanged fires every keystroke causing a recompute.
     connect(ui->leSymbol, SIGNAL(editingFinished()), this, SLOT(onIdentifierChanged()));
-    connect(ui->sbScale, SIGNAL(editingFinished()), this, SLOT(onScaleChanged()));
-    connect(ui->sbOrgX, SIGNAL(editingFinished()), this, SLOT(onXChanged()));
-    connect(ui->sbOrgY, SIGNAL(editingFinished()), this, SLOT(onYChanged()));
-    connect(ui->sbOrgZ, SIGNAL(editingFinished()), this, SLOT(onZChanged()));
+
+    // the UI file uses keyboardTracking = false so that a recomputation
+    // will only be triggered when the arrow keys of the spinboxes are used
+    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
+    connect(ui->sbOrgX, SIGNAL(valueChanged(double)), this, SLOT(onXChanged()));
+    connect(ui->sbOrgY, SIGNAL(valueChanged(double)), this, SLOT(onYChanged()));
+    connect(ui->sbOrgZ, SIGNAL(valueChanged(double)), this, SLOT(onZChanged()));
 }
 
 //save the start conditions
@@ -346,7 +351,7 @@ bool TaskSectionView::apply(void)
 void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
-    Gui::Command::openCommand("Apply Quick");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Quick"));
     m_dirName = dir;
     if (m_section == nullptr) {
         createSectionView();
@@ -372,7 +377,7 @@ void TaskSectionView::applyQuick(std::string dir)
 void TaskSectionView::applyAligned(void) 
 {
     Base::Console().Message("TSV::applyAligned() - not implemented yet\n");
-    Gui::Command::openCommand("Apply Aligned");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Apply Aligned"));
     m_dirName = "Aligned";
     //fiddle with directions here
 
@@ -395,7 +400,7 @@ void TaskSectionView::createSectionView(void)
     std::string baseName = m_base->getNameInDocument();
     double baseScale = m_base->getScale();
 
-    Gui::Command::openCommand("Create SectionView");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
     if (m_section == nullptr) {
         m_sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";

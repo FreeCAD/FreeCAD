@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FEM geometry tools"
+__title__  = "FEM geometry tools"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import FreeCAD
 
@@ -220,12 +220,7 @@ def get_rectangular_coords(
         a_y = A[1] * cos(z_rot) - A[0] * sin(z_rot)
         b_x = B[0] * cos(z_rot) + B[1] * sin(z_rot)
         b_y = B[1] * cos(z_rot) - B[0] * sin(z_rot)
-    A = [a_x, a_y, a_z]
-    B = [b_x, b_y, b_z]
-    A_coords = str(round(A[0], 4)) + "," + str(round(A[1], 4)) + "," + str(round(A[2], 4))
-    B_coords = str(round(B[0], 4)) + "," + str(round(B[1], 4)) + "," + str(round(B[2], 4))
-    coords = A_coords + "," + B_coords
-    return coords
+    return (a_x, a_y, a_z, b_x, b_y, b_z)
 
 
 # ************************************************************************************************
@@ -234,15 +229,10 @@ def get_cylindrical_coords(
 ):
     vec = obj.Axis
     base = obj.BasePoint
-    Ax = base[0] + 10 * vec[0]
-    Ay = base[1] + 10 * vec[1]
-    Az = base[2] + 10 * vec[2]
-    Bx = base[0] - 10 * vec[0]
-    By = base[1] - 10 * vec[1]
-    Bz = base[2] - 10 * vec[2]
-    A = [Ax, Ay, Az]
-    B = [Bx, By, Bz]
-    A_coords = str(A[0]) + "," + str(A[1]) + "," + str(A[2])
-    B_coords = str(B[0]) + "," + str(B[1]) + "," + str(B[2])
-    coords = A_coords + "," + B_coords
-    return coords
+    a_x = base[0] + 10 * vec[0]
+    a_y = base[1] + 10 * vec[1]
+    a_z = base[2] + 10 * vec[2]
+    b_x = base[0] - 10 * vec[0]
+    b_y = base[1] - 10 * vec[1]
+    b_z = base[2] - 10 * vec[2]
+    return (a_x, a_y, a_z, b_x, b_y, b_z)

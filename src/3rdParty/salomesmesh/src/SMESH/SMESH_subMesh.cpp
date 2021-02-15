@@ -2100,7 +2100,7 @@ TopoDS_Shape SMESH_subMesh::getCollection(SMESH_Gen * theGen,
     }
   }
 
-  return std::move(aCompound);
+  return TopoDS_Compound(std::move(aCompound));
 }
 
 //=======================================================================

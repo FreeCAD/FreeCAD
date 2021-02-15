@@ -20,25 +20,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Wire.
-"""
+"""Provides the object code for the Wire (Polyline) object."""
 ## @package wire
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Wire.
+# \ingroup draftobjects
+# \brief Provides the object code for the Wire (Polyline) object.
 
+## \addtogroup draftobjects
+# @{
 import math
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftGeomUtils
 import DraftVecUtils
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
-
 
 
 class Wire(DraftObject):
@@ -47,53 +44,53 @@ class Wire(DraftObject):
     def __init__(self, obj):
         super(Wire, self).__init__(obj, "Wire")
 
-        _tip = "The vertices of the wire"
-        obj.addProperty("App::PropertyVectorList","Points",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The vertices of the wire")
+        obj.addProperty("App::PropertyVectorList","Points", "Draft",_tip)
 
-        _tip = "If the wire is closed or not"
-        obj.addProperty("App::PropertyBool","Closed",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "If the wire is closed or not")
+        obj.addProperty("App::PropertyBool","Closed", "Draft",_tip)
 
-        _tip = "The base object is the wire, it's formed from 2 objects"
-        obj.addProperty("App::PropertyLink","Base",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The base object is the wire, it's formed from 2 objects")
+        obj.addProperty("App::PropertyLink","Base", "Draft",_tip)
 
-        _tip = "The tool object is the wire, it's formed from 2 objects"
-        obj.addProperty("App::PropertyLink","Tool",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The tool object is the wire, it's formed from 2 objects")
+        obj.addProperty("App::PropertyLink","Tool", "Draft",_tip)
 
-        _tip = "The start point of this line"
-        obj.addProperty("App::PropertyVectorDistance","Start",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The start point of this line")
+        obj.addProperty("App::PropertyVectorDistance","Start", "Draft",_tip)
 
-        _tip = "The end point of this line"
-        obj.addProperty("App::PropertyVectorDistance","End",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The end point of this line")
+        obj.addProperty("App::PropertyVectorDistance","End", "Draft",_tip)
 
-        _tip = "The length of this line"
-        obj.addProperty("App::PropertyLength","Length",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The length of this line")
+        obj.addProperty("App::PropertyLength","Length", "Draft",_tip)
 
-        _tip = "Radius to use to fillet the corners"
-        obj.addProperty("App::PropertyLength","FilletRadius",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyLength","FilletRadius", "Draft",_tip)
 
-        _tip = "Size of the chamfer to give to the corners"
-        obj.addProperty("App::PropertyLength","ChamferSize",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyLength","ChamferSize", "Draft",_tip)
 
-        _tip = "Create a face if this object is closed"
-        obj.addProperty("App::PropertyBool","MakeFace",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Create a face if this object is closed")
+        obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip)
 
-        _tip = "The number of subdivisions of each edge"
-        obj.addProperty("App::PropertyInteger","Subdivisions",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The number of subdivisions of each edge")
+        obj.addProperty("App::PropertyInteger","Subdivisions", "Draft",_tip)
 
-        _tip = "The area of this object"
-        obj.addProperty("App::PropertyArea","Area",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The area of this object")
+        obj.addProperty("App::PropertyArea","Area", "Draft",_tip)
         
         obj.MakeFace = get_param("fillmode",True)
         obj.Closed = False
@@ -248,4 +245,7 @@ class Wire(DraftObject):
                     obj.End = displayfpend
 
 
+# Alias for compatibility with v0.18 and earlier
 _Wire = Wire
+
+## @}

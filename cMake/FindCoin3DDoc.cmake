@@ -23,18 +23,19 @@ IF (COIN3D_FOUND)
       find_path(COIN3D_DOC_PATH index.html 
                 /usr/share/doc/libcoin80-doc/html
                 /usr/share/doc/coin/html
+                /usr/share/doc/Coin/html
       )
       IF( EXISTS ${COIN3D_DOC_PATH})
         message(STATUS "Coin3D doc is installed")
-        find_file(COIN3D_DOC_TAGFILE coin.tag Coin.tag 
-            ${COIN3D_DOC_PATH}
+        find_file(COIN3D_DOC_TAGFILE NAMES coin.tag Coin.tag 
+            PATHS ${COIN3D_DOC_PATH}
         )
         IF( EXISTS ${COIN3D_DOC_TAGFILE})
           SET( COIN3D_DOC_FOUND "YES"
           )
         ELSE( EXISTS ${COIN3D_DOC_TAGFILE})
-          find_file(COIN3D_DOC_TAGFILE_GZ coin.tag.gz Coin.tag.gz 
-              ${COIN3D_DOC_PATH}
+          find_file(COIN3D_DOC_TAGFILE_GZ NAMES coin.tag.gz Coin.tag.gz 
+              PATHS ${COIN3D_DOC_PATH}
           )
           IF( EXISTS ${COIN3D_DOC_TAGFILE_GZ})
             message(STATUS "  Found ${COIN3D_DOC_TAGFILE_GZ}")
@@ -85,4 +86,5 @@ if(COIN3D_DOC_FOUND)
   message(STATUS "  Location: ${COIN3D_DOC_PATH}")
 endif(COIN3D_DOC_FOUND)
 
-
+# export for others
+SET( COIN3D_DOC_FOUND "${COIN3D_DOC_FOUND}" CACHE BOOL "Coin3d documentation available")

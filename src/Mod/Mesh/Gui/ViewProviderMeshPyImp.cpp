@@ -124,7 +124,19 @@ PyObject* ViewProviderMeshPy::clearSelection(PyObject *args)
     Py_Return;
 }
 
+PyObject* ViewProviderMeshPy::highlightSegments(PyObject *args)
+{
+    PyObject* list;
+    if (!PyArg_ParseTuple(args, "O", &list))
+        return 0;
 
+    App::PropertyColorList colors;
+    colors.setPyObject(list);
+
+    ViewProviderMesh* vp = getViewProviderMeshPtr();
+    vp->highlightSegments(colors.getValues());
+    Py_Return;
+}
 
 PyObject *ViewProviderMeshPy::getCustomAttributes(const char* /*attr*/) const
 {

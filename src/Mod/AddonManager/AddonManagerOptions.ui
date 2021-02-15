@@ -40,7 +40,7 @@ installed addons will be checked for available updates
     <widget class="QTextEdit" name="customRepositories">
      <property name="toolTip">
       <string>You can use this window to specify additional addon repositories
-sto be scanned for available addons</string>
+to be scanned for available addons</string>
      </property>
     </widget>
    </item>

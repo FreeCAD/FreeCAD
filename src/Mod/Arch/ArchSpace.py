@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -21,9 +20,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch Space"
+__title__= "FreeCAD Arch Space"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 SpaceTypes = [
 "Undefined",
@@ -318,7 +317,8 @@ class _Space(ArchComponent.Component):
             if hasattr(obj,"EquipmentPower"):
                 if obj.AutoPower:
                     p = 0
-                    for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Equipment"):
+                    for o in Draft.getObjectsOfType(Draft.get_group_contents(obj.Group, addgroups=True),
+                                                    "Equipment"):
                         if hasattr(o,"EquipmentPower"):
                             p += o.EquipmentPower
                     if p != obj.EquipmentPower:
@@ -348,6 +348,15 @@ class _Space(ArchComponent.Component):
                             objs.append((o.Object,el))
         obj.Boundaries = objs
 
+    def addObject(self,obj,child):
+
+        "Adds an object to this Space"
+
+        if not child in obj.Group:
+            g = obj.Group
+            g.append(child)
+            obj.Group = g
+
     def getShape(self,obj):
 
         "computes a shape from a base shape and/or boundary faces"
@@ -358,8 +367,8 @@ class _Space(ArchComponent.Component):
         pl = obj.Placement
 
         #print("starting compute")
-        # 1: if we have a base shape, we use it
 
+        # 1: if we have a base shape, we use it
         if obj.Base:
             if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.Solids:
@@ -379,6 +388,12 @@ class _Space(ArchComponent.Component):
                     else:
                         bb.add(b[0].Shape.BoundBox)
             if not bb:
+                # compute area even if we are not calculating the shape
+                if obj.Shape and obj.Shape.Solids:
+                    if hasattr(obj.Area,"Value"):
+                        a = self.getArea(obj)
+                        if obj.Area.Value != a:
+                            obj.Area = a
                 return
             shape = Part.makeBox(bb.XLength,bb.YLength,bb.ZLength,FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin))
             #print("created shape from boundbox")
@@ -414,9 +429,7 @@ class _Space(ArchComponent.Component):
             if shape.Solids:
                 #print("setting objects shape")
                 shape = shape.Solids[0]
-                obj.Shape = shape
-                #pl = pl.multiply(obj.Placement)
-                obj.Placement = pl
+                self.applyShape(obj,shape,pl)
                 if hasattr(obj.Area,"Value"):
                     a = self.getArea(obj)
                     if obj.Area.Value != a:
@@ -701,7 +714,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 self.label.whichChild = 0
             else:
                 self.label.whichChild = -1
-        
+
         elif prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
                 self.fmat.diffuseColor.setValue((vobj.ShapeColor[0],vobj.ShapeColor[1],vobj.ShapeColor[2]))

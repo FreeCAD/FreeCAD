@@ -22,14 +22,17 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the Base object for all Draft Gui commands."""
+"""Provides the base classes for newer Draft Gui Commands."""
 ## @package gui_base
-# \ingroup DRAFT
-# \brief This module provides the Base object for all Draft Gui commands.
+# \ingroup draftguitools
+# \brief Provides the base classes for newer Draft Gui Commands.
 
+## \addtogroup draftguitools
+# @{
 import FreeCAD as App
 import FreeCADGui as Gui
 import draftutils.todo as todo
+
 from draftutils.messages import _msg, _log
 
 __metaclass__ = type  # to support Python 2 use of `super()`
@@ -214,3 +217,5 @@ class GuiCommandBase:
             that will be executed.
         """
         self.commit_list.append((name, func))
+
+## @}

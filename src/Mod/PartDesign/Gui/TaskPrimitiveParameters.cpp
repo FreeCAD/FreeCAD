@@ -24,32 +24,30 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+# include <Precision.hxx>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
-# include <Precision.hxx>
-# include <boost/bind/bind.hpp>
-# include <boost/bind.hpp>
+# include <sstream>
 #endif
 
 #include "TaskPrimitiveParameters.h"
 #include "ui_TaskPrimitiveParameters.h"
 #include "ViewProviderDatumCS.h"
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include <Mod/PartDesign/App/DatumCS.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Part/App/DatumFeature.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProviderOrigin.h>
-#include <Base/Interpreter.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <App/Origin.h>
 
+#include <App/Origin.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/UnitsApi.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProviderOrigin.h>
+#include <Mod/Part/App/DatumFeature.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
 
 using namespace PartDesignGui;
 
@@ -194,6 +192,10 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->prismCircumradius->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius);
             ui->prismHeight->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getValue());
             ui->prismHeight->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Height);
+            ui->prismXSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->FirstAngle.getValue());
+            ui->prismXSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->FirstAngle);
+            ui->prismYSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->SecondAngle.getValue());
+            ui->prismYSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->SecondAngle);
             ui->prismCircumradius->setMaximum(INT_MAX);
             ui->prismCircumradius->setMinimum(0.0);
             ui->prismHeight->setMaximum(INT_MAX);
@@ -308,6 +310,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     //prism
     connect(ui->prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
     connect(ui->prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
+    connect(ui->prismXSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismXSkewChanged(double)));
+    connect(ui->prismYSkew, SIGNAL(valueChanged(double)), this, SLOT(onPrismYSkewChanged(double)));
     connect(ui->prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
 
     // wedge
@@ -522,6 +526,40 @@ void TaskBoxPrimitives::onPrismHeightChanged(double v) {
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
+void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
+    PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
+    // we must assure that if the user incremented from e.g. 85 degree with the
+    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    if ((v < 90.0) && (v > -90.0)) {
+        sph->FirstAngle.setValue(v);
+    }
+    else {
+        if (v == 90.0)
+            sph->FirstAngle.setValue(89.99999);
+        else if (v == -90.0)
+            sph->FirstAngle.setValue(-89.99999);
+        ui->prismXSkew->setValue(sph->FirstAngle.getQuantityValue());
+    }
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onPrismYSkewChanged(double v) {
+    PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
+    // we must assure that if the user incremented from e.g. 85 degree with the
+    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    if ((v < 90.0) && (v > -90.0)) {
+        sph->SecondAngle.setValue(v);
+    }
+    else {
+        if (v == 90.0)
+            sph->SecondAngle.setValue(89.99999);
+        else if (v == -90.0)
+            sph->SecondAngle.setValue(-89.99999);
+        ui->prismYSkew->setValue(sph->SecondAngle.getQuantityValue());
+    }
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
 void TaskBoxPrimitives::onPrismPolygonChanged(int v) {
     PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
     sph->Polygon.setValue(v);
@@ -694,11 +732,15 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                 cmd = QString::fromLatin1(
                     "%1.Polygon=%2\n"
                     "%1.Circumradius=%3\n"
-                    "%1.Height=%4\n")
+                    "%1.Height=%4\n"
+                    "%1.FirstAngle=%5\n"
+                    "%1.SecondAngle=%6\n")
                     .arg(name)
                     .arg(ui->prismPolygon->value())
-                    .arg(ui->prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->prismCircumradius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                    .arg(ui->prismHeight->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                    .arg(ui->prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+                    .arg(ui->prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals());
                 break;
             case 8:  // wedge
                 cmd = QString::fromLatin1(
@@ -748,36 +790,43 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
 
+    /*
     // handle visibility automation differently to the default method
     auto customvisfunc = [] (bool opening_not_closing,
+                             const std::string &postfix,
                              Gui::ViewProviderDocumentObject* vp,
                              App::DocumentObject *editObj,
                              const std::string& editSubName) {
         if (opening_not_closing) {
             QString code = QString::fromLatin1(
                 "import Show\n"
-                "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
+                "_tv_%4 = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
                 "tvObj = %1\n"
-                "dep_features = tv.get_all_dependent(%2, '%3')\n"
+                "dep_features = _tv_%4.get_all_dependent(%2, '%3')\n"
                 "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
                 "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
                 "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
                 "\tdel(visible_features)\n"
-                "tv.hide(dep_features)\n"
+                "_tv_%4.hide(dep_features)\n"
                 "del(dep_features)\n"
                 "del(tvObj)"
                 ).arg(
                     QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
                     QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
-                    QString::fromLatin1(editSubName.c_str()));
+                    QString::fromLatin1(editSubName.c_str()),
+                    QString::fromLatin1(postfix.c_str()));
+            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
+        } else if(postfix.size()) {
+            QString code = QString::fromLatin1(
+                "_tv_%1.restore()\n"
+                "del(_tv_%1)"
+                ).arg(QString::fromLatin1(postfix.c_str()));
             Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
         }
-        else {
-            Base::Interpreter().runString("del(tv)");
-        }
     };
-
     parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"), customvisfunc);
+    */
+    parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"));
     Content.push_back(parameter);
 }
 

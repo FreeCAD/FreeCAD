@@ -50,8 +50,6 @@ using namespace std;
 
 PROPERTY_SOURCE(Drawing::FeaturePage, App::DocumentObjectGroup)
 
-const char *group = "Drawing view";
-
 FeaturePage::FeaturePage(void) : numChildren(0)
 {
     static const char *group = "Drawing view";

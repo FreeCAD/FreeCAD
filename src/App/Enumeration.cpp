@@ -220,7 +220,7 @@ bool Enumeration::contains(const char *value) const
     // using string methods without set, use setEnums(const char** plEnums) first!
     //assert(_EnumArray);
 
-    if (!isValid()) {
+    if (!getEnums()) {
         return false;
     }
 

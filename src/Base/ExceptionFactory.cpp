@@ -46,7 +46,7 @@ void ExceptionFactory::Destruct (void)
 void ExceptionFactory::raiseException (PyObject * pydict) const
 {
     std::string classname;
-    
+
     Py::Dict edict(pydict);
     if (edict.hasKey("sclassname")) {
         classname = static_cast<std::string>(Py::String(edict.getItem("sclassname")));

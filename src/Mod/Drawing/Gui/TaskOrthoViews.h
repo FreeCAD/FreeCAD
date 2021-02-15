@@ -29,7 +29,7 @@
 
 #include <gp_Ax2.hxx>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 #include <Mod/Drawing/App/FeatureViewPart.h>
 
@@ -47,7 +47,7 @@ public:
     ~orthoview();
 
     void    set_data(int r_x, int r_y);
-    void    set_projection(gp_Ax2 cs);
+    void    set_projection(const gp_Ax2& cs);
     void    setPos(float = 0, float = 0);
     void    setScale(float newscale);
     float   getScale();

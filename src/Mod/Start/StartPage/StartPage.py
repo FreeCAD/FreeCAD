@@ -25,7 +25,7 @@
 # the html code of the start page. It is built only once per FreeCAD session for now...
 
 import six
-import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
+import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,re
 from . import TranslationTexts
 from PySide import QtCore,QtGui
 
@@ -102,16 +102,20 @@ def getInfo(filename):
 
     def getFreeDesktopThumbnail(filename):
         "if we have gnome libs available, try to find a system-generated thumbnail"
+        path = os.path.abspath(filename)
+        thumb = None
         try:
             import gnome.ui
             import gnomevfs
-        except:
-            return None
-
-        path = os.path.abspath(filename)
-        uri = gnomevfs.get_uri_from_local_path(path)
-        thumb = gnome.ui.thumbnail_path_for_uri(uri, "normal")
-        if os.path.exists(thumb):
+        except Exception:
+            # alternative method
+            import hashlib
+            fhash = hashlib.md5(("file://"+path).encode("utf8")).hexdigest()
+            thumb = os.path.join(os.path.expanduser("~"),".thumbnails","normal",fhash+".png")
+        else:
+            uri = gnomevfs.get_uri_from_local_path(path)
+            thumb = gnome.ui.thumbnail_path_for_uri(uri, "normal")
+        if thumb and os.path.exists(thumb):
             return thumb
         return None
 
@@ -136,7 +140,7 @@ def getInfo(filename):
         if filename.lower().endswith(".fcstd"):
             try:
                 zfile=zipfile.ZipFile(filename)
-            except:
+            except Exception:
                 print("Cannot read file: ",filename)
                 return None
             files=zfile.namelist()
@@ -144,19 +148,19 @@ def getInfo(filename):
             if files[0] == "Document.xml":
                 doc = str(zfile.read(files[0]))
                 doc = doc.replace("\n"," ")
-                r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
+                r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"/>",doc)
                 if r:
                     author = r[0]
                     # remove email if present in author field
                     if "&lt;" in author:
                         author = author.split("&lt;")[0].strip()
-                r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
+                r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"/>",doc)
                 if r:
                     company = r[0]
-                r = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
+                r = re.findall("Property name=\"License.*?String value=\"(.*?)\"/>",doc)
                 if r:
                     lic = r[0]
-                r = re.findall("Property name=\"Comment.*?String value=\"(.*?)\"\/>",doc)
+                r = re.findall("Property name=\"Comment.*?String value=\"(.*?)\"/>",doc)
                 if r:
                     descr = r[0]
                 if "thumbnails/Thumbnail.png" in files:
@@ -230,7 +234,7 @@ def buildCard(filename,method,arg=None):
 
     result = encode("")
     if os.path.exists(filename) and isOpenableByFreeCAD(filename):
-        basename = os.path.basename(filename)
+        basename = encode(os.path.basename(filename))
         if not arg:
             arg = basename
         finfo = getInfo(filename)
@@ -243,16 +247,16 @@ def buildCard(filename,method,arg=None):
             if finfo[5]:
                 infostring += "\n\n" + encode(finfo[5])
             if size:
-                result += '<a href="'+method+arg+'" title="'+infostring+'">'
                 result += '<li class="icon">'
-                result += '<img src="file:///'+image+'">'
+                result += '<a href="'+method+arg+'" title="'+infostring+'">'
+                result += '<img src="file:///'+image.replace('\\','/')+'" alt="'+encode(basename)+'">'
                 result += '<div class="caption">'
                 result += '<h4>'+encode(basename)+'</h4>'
                 result += '<p>'+encode(author)+'</p>'
                 result += '<p>'+size+'</p>'
                 result += '</div>'
-                result += '</li>'
                 result += '</a>'
+                result += '</li>'
     return result
 
 
@@ -294,6 +298,10 @@ def handle():
     HTML = HTML.replace("CSS",CSS)
     HTML = encode(HTML)
 
+    # set the language
+
+    HTML = HTML.replace("BCP47_LANGUAGE",QtCore.QLocale().bcp47Name())
+
     # get the stylesheet if we are using one
 
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("UseStyleSheet",False):
@@ -320,11 +328,11 @@ def handle():
                     f = QtCore.QFile(path)
                     if f.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
                         ALTCSS = encode(QtCore.QTextStream(f).readAll())
+                        HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
                 else:
                     with open(path, 'r') as f:
                         ALTCSS = encode(f.read())
-
-                HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
+                        HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
     # turn tips off if needed
 
@@ -362,22 +370,21 @@ def handle():
 
     # build SECTION_RECENTFILES
 
-    SECTION_RECENTFILES = encode("")
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     rfcount = rf.GetInt("RecentFiles",0)
     SECTION_RECENTFILES = encode("<h2>"+TranslationTexts.T_RECENTFILES+"</h2>")
     SECTION_RECENTFILES += "<ul>"
-    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
     SECTION_RECENTFILES += '<li class="icon">'
+    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
-        SECTION_RECENTFILES += '<img src="file:///'+encode(iconbank["createimg"])+'">'
+        SECTION_RECENTFILES += '<img src="file:///'+encode(iconbank["createimg"]).replace('\\','/')+'" alt="'+encode(TranslationTexts.T_CREATENEW)+'">'
     else:
-        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg")+'">'
+        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg").replace('\\','/')+'" alt="'+encode(TranslationTexts.T_CREATENEW)+'">'
     SECTION_RECENTFILES += '<div class="caption">'
     SECTION_RECENTFILES += '<h4>'+encode(TranslationTexts.T_CREATENEW)+'</h4>'
     SECTION_RECENTFILES += '</div>'
-    SECTION_RECENTFILES += '</li>'
     SECTION_RECENTFILES += '</a>'
+    SECTION_RECENTFILES += '</li>'
     for i in range(rfcount):
         filename = rf.GetString("MRU%d" % (i))
         SECTION_RECENTFILES += encode(buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i)))
@@ -402,30 +409,31 @@ def handle():
     # build SECTION_CUSTOM
 
     SECTION_CUSTOM = encode("")
-    cfolder = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
-    if cfolder:
-        if not os.path.isdir(cfolder):
-            cfolder = os.path.dirname(cfolder)
-        SECTION_CUSTOM = encode("<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>")
-        SECTION_CUSTOM += "<ul>"
-        for basename in os.listdir(cfolder):
-            filename = os.path.join(cfolder,basename)
-            SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="))
-        SECTION_CUSTOM += "</ul>"
-        # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
-        HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
+    cfolders = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
+    if cfolders:
+        dn = 0
+        for cfolder in cfolders.split(";;"): # allow several paths separated by ;;
+            if not os.path.isdir(cfolder):
+                cfolder = os.path.dirname(cfolder)
+            SECTION_CUSTOM += encode("<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>")
+            SECTION_CUSTOM += "<ul>"
+            for basename in os.listdir(cfolder):
+                filename = os.path.join(cfolder,basename)
+                SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="+str(dn)+"_"))
+            SECTION_CUSTOM += "</ul>"
+            # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
+            HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
+            dn += 1
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
     # build IMAGE_SRC paths
 
-    HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png'))
-    HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
-    HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))
-    HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png'))
-    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/settings.png'))
-    imagepath= 'file:///'+os.path.join(resources_dir, 'images/installed.png')
-    imagepath = imagepath.replace('\\','/')  # replace Windows backslash with slash to make the path javascript compatible
-    HTML = HTML.replace("IMAGE_SRC_INSTALLED",imagepath)
+    HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/settings.png').replace('\\','/'))
+    HTML = HTML.replace("IMAGE_SRC_INSTALLED",'file:///'+os.path.join(resources_dir, 'images/installed.png').replace('\\','/'))
 
     # build UL_WORKBENCHES
 
@@ -475,7 +483,7 @@ def handle():
                     xpm = w.Icon
                     if "XPM" in xpm:
                         xpm = xpm.replace("\n        ","\n") # some XPMs have some indent that QT doesn't like
-                        r = [s[:-1].strip('"') for s in re.findall("(?s)\{(.*?)\};",xpm)[0].split("\n")[1:]]
+                        r = [s[:-1].strip('"') for s in re.findall("(?s){(.*?)};",xpm)[0].split("\n")[1:]]
                         p = QtGui.QPixmap(r)
                         p = p.scaled(24,24)
                         img = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
@@ -486,7 +494,7 @@ def handle():
                     img = os.path.join(resources_dir,"images/freecad.png")
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
-        UL_WORKBENCHES += '<img src="file:///'+iconbank[wb]+'">&nbsp;'
+        UL_WORKBENCHES += '<img src="file:///'+img.replace('\\','/')+'" alt="'+wn+'">&nbsp;'
         UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
@@ -496,19 +504,19 @@ def handle():
 
     try:
         import dxfLibrary
-    except:
+    except Exception:
         pass
     else:
         wblist.append("dxf-library")
     try:
         import RebarTools
-    except:
+    except Exception:
         pass
     else:
         wblist.append("reinforcement")
     try:
         import CADExchangerIO
-    except:
+    except Exception:
         pass
     else:
         wblist.append("cadexchanger")
@@ -540,6 +548,7 @@ def handle():
     HTML = HTML.replace("TEXTCOLOR",TEXTCOLOR)
     HTML = HTML.replace("BGTCOLOR",BGTCOLOR)
     HTML = HTML.replace("BACKGROUND",BACKGROUND)
+    HTML = HTML.replace("SHADOW",SHADOW)
     HTML = HTML.replace("FONTFAMILY",FONTFAMILY)
     HTML = HTML.replace("FONTSIZE",str(FONTSIZE)+"px")
 

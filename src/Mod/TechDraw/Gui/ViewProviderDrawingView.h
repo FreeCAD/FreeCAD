@@ -22,10 +22,10 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERVIEW_H
-#define DRAWINGGUI_VIEWPROVIDERVIEW_H
+#ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
+#define TECHDRAWGUI_VIEWPROVIDERVIEW_H
 
-#include <boost/signals2.hpp> 
+#include <boost_signals2.hpp> 
 
 #include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
@@ -93,4 +93,4 @@ private:
 } // namespace TechDrawGui
 
 
-#endif // DRAWINGGUI_VIEWPROVIDERVIEW_H
+#endif // TECHDRAWGUI_VIEWPROVIDERVIEW_H

@@ -22,7 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating mirrored objects with the Draft Workbench.
+"""Provides GUI tools to create mirrored objects.
 
 The mirror tool creates a `Part::Mirroring` object, which is the same
 as the one created by the Part module.
@@ -30,9 +30,11 @@ as the one created by the Part module.
 Perhaps in the future a specific Draft `Mirror` object can be defined.
 """
 ## @package gui_mirror
-# \ingroup DRAFT
-# \brief Provides tools for creating mirrored objects with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create mirrored objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -42,6 +44,7 @@ import DraftVecUtils
 import WorkingPlane
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg
 from draftutils.translate import translate
 
@@ -54,13 +57,11 @@ class Mirror(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Mirrors the selected objects along a line "
-                "defined by two points.")
 
         return {'Pixmap': 'Draft_Mirror',
                 'Accel': "M, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirror"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Mirror", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Mirror", "Mirrors the selected objects along a line defined by two points.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -212,3 +213,5 @@ class Mirror(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Mirror', Mirror())
+
+## @}

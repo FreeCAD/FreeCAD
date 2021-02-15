@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Python.h>
 # include <algorithm>
 # include <stdexcept>
 # include <SMESH_Gen.hxx>
@@ -1032,6 +1033,103 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
 
     return Py::new_reference_to(tuple);
 }
+
+/*
+Add Groups and elements to these.
+*/
+
+PyObject* FemMeshPy::addGroup(PyObject *args)
+{
+    // get name and typestring from arguments
+    char* Name;
+    char* typeString;
+    int theId = -1;
+    if (!PyArg_ParseTuple(args, "etet|i","utf-8", &Name, "utf-8", &typeString, &theId))
+        return 0;
+    std::string EncodedName = std::string(Name);
+    std::string EncodedTypeString = std::string(typeString);
+
+    int retId = -1;
+
+    try
+    {
+        retId = getFemMeshPtr()->addGroup(EncodedTypeString, EncodedName, theId);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        return 0;
+    }
+    std::cout << "Added Group: Name: \'" << EncodedName << "\' Type: \'" << EncodedTypeString << "\' id: " << retId << std::endl;
+
+#if PY_MAJOR_VERSION >= 3
+    return PyLong_FromLong(retId);
+#else
+    return PyInt_FromLong(retId);
+#endif
+}
+
+PyObject* FemMeshPy::addGroupElements(PyObject *args)
+{
+    int id;
+    // the second object should be a list
+    // see https://stackoverflow.com/questions/22458298/extending-python-with-c-pass-a-list-to-pyarg-parsetuple
+    PyObject *pList;
+    PyObject *pItem;
+    Py_ssize_t n;
+
+    if (!PyArg_ParseTuple(args, "iO!", &id, &PyList_Type, &pList))
+    {
+        PyErr_SetString(PyExc_TypeError, "AddGroupElements: 2nd Parameter must be a list.");
+        return 0;
+    }
+
+    std::set<Py_ssize_t> ids;
+    n = PyList_Size(pList);
+    std::cout << "AddGroupElements: num elements: " << n << " sizeof: " << sizeof(n) << std::endl;
+    for (Py_ssize_t i = 0; i < n; i++) {
+        pItem = PyList_GetItem(pList, i);
+#if PY_MAJOR_VERSION >= 3
+        if(!PyLong_Check(pItem)) {
+#else
+        if(!PyInt_Check(pItem)) {
+#endif
+            PyErr_SetString(PyExc_TypeError, "AddGroupElements: List items must be integers.");
+            return 0;
+        }
+#if PY_MAJOR_VERSION >= 3
+        ids.insert(PyLong_AsSsize_t(pItem));
+#else
+        ids.insert(PyInt_AsSsize_t(pItem));
+#endif
+        // Py_ssize_t transparently handles maximum array lengths on 32bit and 64bit machines
+        // See: https://www.python.org/dev/peps/pep-0353/
+    }
+
+    // Downcast Py_ssize_t to int to be compatible with SMESH functions
+    std::set<int> int_ids;
+    for (std::set<Py_ssize_t>::iterator it = ids.begin(); it != ids.end(); ++it)
+        int_ids.insert(Py_SAFE_DOWNCAST(*it, Py_ssize_t, int));
+
+    try
+    {
+        getFemMeshPtr()->addGroupElements(id, int_ids);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* FemMeshPy::removeGroup(PyObject *args)
+{
+    int theId;
+    if (!PyArg_ParseTuple(args, "i", &theId))
+        return 0;
+    return PyBool_FromLong((long)(getFemMeshPtr()->removeGroup(theId)));
+}
+
 
 PyObject* FemMeshPy::getElementType(PyObject *args)
 {

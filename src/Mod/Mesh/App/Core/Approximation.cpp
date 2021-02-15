@@ -938,20 +938,20 @@ struct LMCylinderFunctor
     Eigen::MatrixXd measuredValues;
 
     // Compute 'm' errors, one for each data point, for the given parameter values in 'x'
-    int operator()(const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const
+    int operator()(const Eigen::VectorXd &xvec, Eigen::VectorXd &fvec) const
     {
-        // 'x' has dimensions n x 1
+        // 'xvec' has dimensions n x 1
         // It contains the current estimates for the parameters.
 
         // 'fvec' has dimensions m x 1
         // It will contain the error for each data point.
-        double aParam = x(0); // dir_x
-        double bParam = x(1); // dir_y
-        double cParam = x(2); // dir_z
-        double dParam = x(3); // cnt_x
-        double eParam = x(4); // cnt_y
-        double fParam = x(5); // cnt_z
-        double gParam = x(6); // radius
+        double aParam = xvec(0); // dir_x
+        double bParam = xvec(1); // dir_y
+        double cParam = xvec(2); // dir_z
+        double dParam = xvec(3); // cnt_x
+        double eParam = xvec(4); // cnt_y
+        double fParam = xvec(5); // cnt_z
+        double gParam = xvec(6); // radius
 
         // use distance functions (fvec(i)) for cylinders as defined in the paper:
         // Least-Squares Fitting Algorithms of the NIST Algorithm Testing System
@@ -1109,43 +1109,19 @@ float CylinderFit::Fit()
     _bIsFitted = true;
 
 #if 1
-    std::vector<Wm4::Vector3d> input;
-    std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
-                   [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });
-
-    Wm4::Vector3d cnt, axis;
-    if (_initialGuess) {
-        cnt = Base::convertTo<Wm4::Vector3d>(_vBase);
-        axis = Base::convertTo<Wm4::Vector3d>(_vAxis);
-    }
-
-    double radius, height;
-    Wm4::CylinderFit3<double> fit(input.size(), input.data(), cnt, axis, radius, height, _initialGuess);
-    _initialGuess = false;
-
-    _vBase = Base::convertTo<Base::Vector3f>(cnt);
-    _vAxis = Base::convertTo<Base::Vector3f>(axis);
-    _fRadius = float(radius);
-
-    _fLastResult = double(fit);
-
-#if defined(FC_DEBUG)
-    Base::Console().Message("   WildMagic Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f\n",
-        _vBase.x, _vBase.y, _vBase.z, _vAxis.x, _vAxis.y, _vAxis.z, _fRadius, GetStdDeviation());
-#endif
-
     // Do the cylinder fit
     MeshCoreFit::CylinderFit cylFit;
     cylFit.AddPoints(_vPoints);
-    if (_fLastResult < FLOAT_MAX)
+    if (_initialGuess)
         cylFit.SetApproximations(_fRadius, Base::Vector3d(_vBase.x, _vBase.y, _vBase.z), Base::Vector3d(_vAxis.x, _vAxis.y, _vAxis.z));
 
     float result = cylFit.Fit();
     if (result < FLOAT_MAX) {
         Base::Vector3d base = cylFit.GetBase();
         Base::Vector3d dir = cylFit.GetAxis();
+
 #if defined(FC_DEBUG)
-        Base::Console().Message("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
+        Base::Console().Log("MeshCoreFit::Cylinder Fit:  Base: (%0.4f, %0.4f, %0.4f),  Axis: (%0.6f, %0.6f, %0.6f),  Radius: %0.4f,  Std Dev: %0.4f,  Iterations: %d\n",
             base.x, base.y, base.z, dir.x, dir.y, dir.z, cylFit.GetRadius(), cylFit.GetStdDeviation(), cylFit.GetNumIterations());
 #endif
         _vBase = Base::convertTo<Base::Vector3f>(base);

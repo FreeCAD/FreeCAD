@@ -284,6 +284,67 @@ bool DrawUtil::fpCompare(const double& d1, const double& d2, double tolerance)
     return result;
 }
 
+//brute force intersection points of line(point, dir) with box(xRange, yRange)
+std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3d point,
+                                                                   Base::Vector3d dirIn,
+                                                                   double xRange,
+                                                                   double yRange) 
+{
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    Base::Vector3d p1, p2;
+    Base::Vector3d dir = dirIn;
+    dir.Normalize();
+    // y = mx + b
+    // m = (y1 - y0) / (x1 - x0)
+    if (DrawUtil::fpCompare(dir.x, 0.0) ) {                 //vertical case
+        p1 = Base::Vector3d(point.x, - yRange / 2.0, 0.0);  
+        p2 = Base::Vector3d(point.x, yRange / 2.0, 0.0);
+    } else {
+        double slope = dir.y / dir.x;
+        double left = -xRange / 2.0;
+        double right = xRange / 2.0;
+        if (DrawUtil::fpCompare(slope, 0.0)) {               //horizontal case
+            p1 = Base::Vector3d(left, point.y);
+            p2 = Base::Vector3d(right, point.y);
+        } else {                                           //normal case
+            double top = yRange / 2.0;
+            double bottom = -yRange / 2.0;
+            double yLeft   = point.y - slope * (point.x - left) ;
+            double yRight  = point.y - slope * (point.x - right);
+            double xTop    = point.x - ( (point.y - top) / slope );
+            double xBottom = point.x - ( (point.y - bottom) / slope );
+
+            if ( (bottom < yLeft) &&
+                 (top > yLeft) )  {
+                p1 = Base::Vector3d(left, yLeft);
+            } else if (yLeft <= bottom) {
+                p1 = Base::Vector3d(xBottom, bottom);
+            } else if (yLeft >= top) {
+                p1 = Base::Vector3d(xTop, top);
+            }
+
+            if ( (bottom < yRight) &&
+                 (top > yRight) )  {
+                p2 = Base::Vector3d(right, yRight);
+            } else if (yRight <= bottom) {
+                p2 = Base::Vector3d(xBottom, bottom);
+            } else if (yRight >= top) {
+                p2 = Base::Vector3d(xTop, top);
+            }
+        }
+    }
+    result.first = p1;
+    result.second = p2;
+    Base::Vector3d dirCheck = p2 - p1;
+    dirCheck.Normalize();
+    if (!dir.IsEqual(dirCheck, 0.00001)) {
+        result.first = p2;
+        result.second = p1;
+    }
+
+    return result;
+}
+
 Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
 {
     gp_Pnt gp  = BRep_Tool::Pnt(v);
@@ -378,7 +439,7 @@ bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
 }
 
 //!convert fromPoint in coordinate system fromSystem to reference coordinate system
-Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint)
+Base::Vector3d DrawUtil::toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint)
 {
     gp_Pnt gFromPoint(fromPoint.x,fromPoint.y,fromPoint.z);
     gp_Pnt gToPoint;
@@ -500,9 +561,8 @@ double DrawUtil::sensibleScale(double working_scale)
 
 double DrawUtil::getDefaultLineWeight(std::string lineType)
 {
-    std::string lgName = Preferences::lineGroup();
- 
-    auto lg = LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = LineGroup::lineGroupFactory(lgNumber);
 
     double weight = lg->getWeight(lineType);
     delete lg;                                    //Coverity CID 174671
@@ -613,7 +673,7 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
 {
 //    Base::Console().Message("DU::pyTupleToColor()\n");
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-    App::Color c(red, blue, green, alpha);
+    App::Color c(red, green, blue, alpha);
     if (PyTuple_Check(pColor)) {
         int tSize = (int) PyTuple_Size(pColor);
         if (tSize > 2) {
@@ -628,7 +688,7 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
             PyObject* pAlpha = PyTuple_GetItem(pColor,3);
             alpha = PyFloat_AsDouble(pAlpha);
         }
-        c = App::Color(red, blue, green, alpha);
+        c = App::Color(red, green, blue, alpha);
     }
     return c;
 }
@@ -712,6 +772,22 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
 //    Base::Console().Message("DU::isCrazy - returns: %d ratio: %.3f\n", result, ratio);
     return result;
 } 
+
+//get 3d position of a face's center
+Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
+{
+    BRepAdaptor_Surface adapt(f);
+    double u1 = adapt.FirstUParameter();
+    double u2 = adapt.LastUParameter();
+    double mu = (u1 + u2) / 2.0;
+    double v1 = adapt.FirstVParameter();
+    double v2 = adapt.LastVParameter();
+    double mv = (v1 + v2) / 2.0;
+    BRepLProp_SLProps prop(adapt,mu,mv,0,Precision::Confusion());
+    const gp_Pnt gv = prop.Value();
+    Base::Vector3d v(gv.X(), gv.Y(), gv.Z());
+    return v;
+}
 
 // Supplementary mathematical functions
 // ====================================
@@ -1186,7 +1262,7 @@ QString DrawUtil::qbaToDebug(const QByteArray & line)
 }
 
 void DrawUtil::dumpCS(const char* text,
-                      gp_Ax2 CS)
+                      const gp_Ax2& CS)
 {
     gp_Dir baseAxis = CS.Direction();
     gp_Dir baseX    = CS.XDirection();
@@ -1200,7 +1276,7 @@ void DrawUtil::dumpCS(const char* text,
 }
 
 void DrawUtil::dumpCS3(const char* text,
-                       gp_Ax3 CS)
+                       const gp_Ax3& CS)
 {
     gp_Dir baseAxis = CS.Direction();
     gp_Dir baseX    = CS.XDirection();

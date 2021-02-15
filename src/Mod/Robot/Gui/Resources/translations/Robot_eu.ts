@@ -562,7 +562,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.cpp" line="47"/>
       <source>TaskEdge2TracParameter</source>
-      <translation type="unfinished">TaskEdge2TracParameter</translation>
+      <translation>TaskEdge2TracParameter</translation>
     </message>
   </context>
   <context>
@@ -620,7 +620,7 @@
     <message>
       <location filename="../../TaskRobot6Axis.cpp" line="52"/>
       <source>TaskRobot6Axis</source>
-      <translation type="unfinished">TaskRobot6Axis</translation>
+      <translation>TaskRobot6Axis</translation>
     </message>
   </context>
   <context>
@@ -628,7 +628,7 @@
     <message>
       <location filename="../../TaskRobotControl.cpp" line="46"/>
       <source>TaskRobotControl</source>
-      <translation type="unfinished">TaskRobotControl</translation>
+      <translation>TaskRobotControl</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@
     <message>
       <location filename="../../TaskRobotMessages.cpp" line="46"/>
       <source>TaskRobotMessages</source>
-      <translation type="unfinished">TaskRobotMessages</translation>
+      <translation>TaskRobotMessages</translation>
     </message>
   </context>
   <context>

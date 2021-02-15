@@ -32,7 +32,7 @@
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
 #include "TaskSketcherSolverAdvanced.h"
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 typedef boost::signals2::connection Connection;
 
@@ -62,7 +62,7 @@ public:
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Close; }
 
@@ -77,8 +77,6 @@ protected:
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
     TaskSketcherSolverAdvanced *SolverAdvanced;
-    Connection connectUndoDocument;
-    Connection connectRedoDocument;
 };
 
 

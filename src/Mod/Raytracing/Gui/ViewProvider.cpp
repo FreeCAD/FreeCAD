@@ -96,7 +96,7 @@ bool ViewProviderLux::setEdit(int ModNum)
         int current = items.indexOf(cfi.absoluteFilePath());
 
         bool ok;
-        QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("LuxRender template"), tr("Select a LuxRender template"), items, current, false, &ok);
+        QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("LuxRender template"), tr("Select a LuxRender template"), items, current, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
         if (ok) {
             App::Document* doc  = getObject()->getDocument();
             doc->openTransaction("Edit LuxRender project");
@@ -114,6 +114,7 @@ bool ViewProviderLux::setEdit(int ModNum)
 void ViewProviderLux::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
+        // Do nothing here
     }
     else {
         ViewProviderDocumentObjectGroup::unsetEdit(ModNum);
@@ -174,7 +175,7 @@ bool ViewProviderPovray::setEdit(int ModNum)
         int current = items.indexOf(cfi.absoluteFilePath());
 
         bool ok;
-        QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("Povray template"), tr("Select a Povray template"), items, current, false, &ok);
+        QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("Povray template"), tr("Select a Povray template"), items, current, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
         if (ok) {
             App::Document* doc  = getObject()->getDocument();
             doc->openTransaction("Edit Povray project");
@@ -192,6 +193,7 @@ bool ViewProviderPovray::setEdit(int ModNum)
 void ViewProviderPovray::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
+        // Do nothing here
     }
     else {
         ViewProviderDocumentObjectGroup::unsetEdit(ModNum);

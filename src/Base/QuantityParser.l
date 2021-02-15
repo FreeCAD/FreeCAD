@@ -1,6 +1,25 @@
 %{
+/***************************************************************************
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 /* Lexer for the FreeCAD  Units language   */
-/* (c) 2013 Juergen Riegel  LGPL           */
 
 /* use this file to generate the file 'QuantityLexer.c' using the program flex
  * the command for this operation is:
@@ -20,11 +39,11 @@
 
 /* the manual says "somewhat more optimized" */
 %option batch
-%option never-interactive 
+%option never-interactive
 
 
 /* no support for include files is planned */
-%option noyywrap nounput 
+%option noyywrap nounput
 
 DIGIT    [0-9]
 ID       [a-z][a-z0-9]*
@@ -71,12 +90,12 @@ CGRP     '\,'[0-9][0-9][0-9]
 "\xC2\xB5g"    yylval = Quantity::MicroGram;           return UNIT; // micro gram
 "mg"       yylval = Quantity::MilliGram;           return UNIT; // milli gram
 "g"        yylval = Quantity::Gram;                return UNIT; // gram
-"kg"       yylval = Quantity::KiloGram;            return UNIT; // kilo gram      (internal standard for mass) 
+"kg"       yylval = Quantity::KiloGram;            return UNIT; // kilo gram      (internal standard for mass)
 "t"        yylval = Quantity::Ton;                 return UNIT; // Metric Tonne
 
 "s"        yylval = Quantity::Second;              return UNIT; // second         (internal standard time)
 "min"      yylval = Quantity::Minute;              return UNIT; // minute
-"h"        yylval = Quantity::Hour;                return UNIT; // hour  
+"h"        yylval = Quantity::Hour;                return UNIT; // hour
 
 "A"        yylval = Quantity::Ampere;              return UNIT; // Ampere         (internal standard electric current)
 "mA"       yylval = Quantity::MilliAmpere;         return UNIT; // milli Ampere
@@ -107,7 +126,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "cft"      yylval = Quantity::CubicFoot;           return UNIT; // cubic foot
 
 "lb"       yylval = Quantity::Pound;               return UNIT; // pound
-"lbm"      yylval = Quantity::Pound;               return UNIT; // pound 
+"lbm"      yylval = Quantity::Pound;               return UNIT; // pound
 "oz"       yylval = Quantity::Ounce;               return UNIT; // ounce
 "st"       yylval = Quantity::Stone;               return UNIT; // Stone
 "cwt"      yylval = Quantity::Hundredweights;      return UNIT; // hundredweights
@@ -187,8 +206,8 @@ CGRP     '\,'[0-9][0-9][0-9]
 "eV"       yylval = Quantity::ElectronVolt;        return UNIT; // 1 eV = 1.602176634e-19 J
 "keV"      yylval = Quantity::KiloElectronVolt;    return UNIT;
 "MeV"      yylval = Quantity::MegaElectronVolt;    return UNIT;
-"cal"      yylval = Quantity::Calorie;             return UNIT; // 1 cal = 4.1868 J 
-"kcal"     yylval = Quantity::KiloCalorie;         return UNIT; 
+"cal"      yylval = Quantity::Calorie;             return UNIT; // 1 cal = 4.1868 J
+"kcal"     yylval = Quantity::KiloCalorie;         return UNIT;
 
 "\xC2\xB0" yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 "deg"      yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
@@ -196,8 +215,8 @@ CGRP     '\,'[0-9][0-9][0-9]
 "gon"      yylval = Quantity::Gon;                 return UNIT; // gon
 "M"        yylval = Quantity::AngMinute;           return UNIT; // minute(Angular)
 "\xE2\x80\xB2" yylval = Quantity::AngMinute;       return UNIT; // minute(Angular)
-"AS"       yylval = Quantity::AngSecond;           return UNIT; // second(Angular) 
-"\xE2\x80\xB3" yylval = Quantity::AngSecond;       return UNIT; // second(Angular) 
+"AS"       yylval = Quantity::AngSecond;           return UNIT; // second(Angular)
+"\xE2\x80\xB3" yylval = Quantity::AngSecond;       return UNIT; // second(Angular)
 
 "1"        yylval = Quantity(1.0);                 return ONE;
 {DIGIT}+"."?{DIGIT}*{EXPO}?                         {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
@@ -208,7 +227,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 
 "pi"                   {yylval = Quantity(M_PI)          ; return NUM;} // constant pi
 "e"                    {yylval = Quantity(M_E)           ; return NUM;} // constant e
-                     
+
 "acos"                 return ACOS;
 "asin"                 return ASIN;
 "atan"                 return ATAN;

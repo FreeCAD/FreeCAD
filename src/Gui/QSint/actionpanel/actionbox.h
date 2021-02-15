@@ -86,7 +86,7 @@ namespace QSint
     // create a spacer after two actions added before
     box1->createSpacer(hbl1);
     // create another action which will be preceded by the empty space (i.e. right-aligned)
-    ActionLabel *action5 = box1->createItem("3nd action in row", hbl1);
+    ActionLabel *action5 = box1->createItem("3rd action in row", hbl1);
     \endcode
 
     6. You can insert arbitrary layout items and widgets into ActionBox using
@@ -182,7 +182,7 @@ public:
     void setIcon(const QPixmap & icon);
     /** Returns icon of the ActionBox.
       */
-    inline const QPixmap* icon() const { return iconLabel->pixmap(); }
+    QPixmap icon() const;// { return iconLabel->pixmap(); }
 
     /** Returns header item of the ActionBox.
       */

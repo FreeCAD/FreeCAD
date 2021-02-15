@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QClipboard>
+# include <QDateTime>
 # include <QEventLoop>
 # include <QFileDialog>
 # include <QLabel>
@@ -160,6 +161,14 @@ void StdCmdOpen::activated(int iMsg)
     else {
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->open(it.key().toUtf8(), it.value().toLatin1());
+
+            App::Document *doc = App::GetApplication().getActiveDocument();
+
+            if(doc && doc->testStatus(App::Document::PartialRestore))
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+
+            if(doc && doc->testStatus(App::Document::RestoreError))
+                QMessageBox::critical(getMainWindow(), QObject::tr("Error"), QObject::tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
         }
     }
 }
@@ -179,7 +188,7 @@ StdCmdImport::StdCmdImport()
     sToolTipText  = QT_TR_NOOP("Import a file in the active document");
     sWhatsThis    = "Std_Import";
     sStatusTip    = QT_TR_NOOP("Import a file in the active document");
-    //sPixmap       = "Open";
+    sPixmap       = "Std_Import";
     sAccel        = "Ctrl+I";
 }
 
@@ -267,40 +276,209 @@ StdCmdExport::StdCmdExport()
     sStatusTip    = QT_TR_NOOP("Export an object in the active document");
     //sPixmap       = "Open";
     sAccel        = "Ctrl+E";
+    sPixmap       = "Std_Export";
     eType         = 0;
+}
+
+/**
+Create a default filename from a user-specified format string
+ 
+Format options are:
+%F - the basename of the .FCStd file (or the label, if it is not saved yet)
+%Lx - the label of the selected object(s), separated by character 'x'
+%Px - the label of the selected object(s) and their first parent, separated by character 'x'
+%U - the date and time, in UTC, ISO 8601
+%D - the date and time, in local timezone, ISO 8601
+Any other characters are treated literally, though if the filename is illegal
+it will be changed on saving.
+
+The format string is stored in two user preferences (not currently exposed in the GUI):
+* BaseApp/Preferences/General/ExportDefaultFilenameSingle
+* BaseApp/Preferences/General/ExportDefaultFilenameMultiple
+*/
+QString createDefaultExportBasename()
+{
+    QString defaultFilename;
+
+    auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    QString exportFormatString;
+    if (selection.size() == 1) {
+        exportFormatString = QString::fromStdString (App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+            GetASCII("ExportDefaultFilenameSingle", "%F-%P-"));
+    }
+    else {
+        exportFormatString = QString::fromStdString (App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+            GetASCII("ExportDefaultFilenameMultiple", "%F"));
+    }
+
+    // For code simplicity, pull all values we might need
+
+    // %F - the basename of the.FCStd file(or the label, if it is not saved yet)
+    QString docFilename = QString::fromUtf8(App::GetApplication().getActiveDocument()->getFileName());
+    QFileInfo fi(docFilename);
+    QString fcstdBasename = fi.completeBaseName();
+    if (fcstdBasename.isEmpty()) 
+        fcstdBasename = QString::fromStdString(App::GetApplication().getActiveDocument()->Label.getStrValue());
+
+    // %L - the label of the selected object(s)
+    QStringList objectLabels;
+    for (const auto& object : selection)
+        objectLabels.push_back(QString::fromStdString(object->Label.getStrValue()));
+
+    // %P - the label of the selected objects and their first parent
+    QStringList parentLabels;
+    for (const auto& object : selection) {
+        auto parents = object->getParents();
+        QString firstParent;
+        if (!parents.empty())
+            firstParent = QString::fromStdString(parents.front().first->Label.getStrValue());
+        parentLabels.append(firstParent + QString::fromStdString(object->Label.getStrValue()));
+    }
+
+    // %U - the date and time, in UTC, ISO 8601
+    QDateTime utc = QDateTime(QDateTime::currentDateTimeUtc());
+    QString utcISO8601 = utc.toString(Qt::ISODate);
+
+    // %D - the date and time, in local timezone, ISO 8601
+    QDateTime local = utc.toLocalTime();
+    QString localISO8601 = local.toString(Qt::ISODate);
+
+    // Parse the format string one character at a time:
+    for (int i = 0; i < exportFormatString.size(); ++i) {
+        auto c = exportFormatString.at(i);
+        if (c != QLatin1Char('%')) {
+            // Anything that's not a format start character is just a literal
+            defaultFilename.append(c);
+        }
+        else {
+            // The format start character now requires us to look at at least the next single
+            // character (if there isn't another character, the % just gets eaten)
+            if (i < exportFormatString.size() - 1) {
+                ++i;
+                auto formatChar = exportFormatString.at(i);
+                QChar separatorChar = QLatin1Char('-');
+                // If this format type requires an additional char, read that now (or default to
+                // '-' if the format string ends) 
+                if (formatChar == QLatin1Char('L') ||
+                    formatChar == QLatin1Char('P')) {
+                    if (i < exportFormatString.size() - 1) {
+                        ++i;
+                        separatorChar = exportFormatString.at(i);
+                    }
+                }
+
+                // Handle our format characters:
+                if (formatChar == QLatin1Char('F')) {
+                    defaultFilename.append(fcstdBasename);
+                }
+                else if (formatChar == QLatin1Char('L')) {
+                    defaultFilename.append(objectLabels.join(separatorChar));
+                }
+                else if (formatChar == QLatin1Char('P')) {
+                    defaultFilename.append(parentLabels.join(separatorChar));
+                }
+                else if (formatChar == QLatin1Char('U')) {
+                    defaultFilename.append(utcISO8601);
+                }
+                else if (formatChar == QLatin1Char('D')) {
+                    defaultFilename.append(localISO8601);
+                }
+                else {
+                    FC_WARN("When parsing default export filename format string, %" 
+                        << QString(formatChar).toStdString() 
+                        << " is not a known format string.");
+                }
+            }
+        }
+    }
+
+    // Finally, clean the string so it's valid for all operating systems:
+    QString invalidCharacters = QLatin1String("/\\?%*:|\"<>");
+    for (const auto &c : invalidCharacters)
+        defaultFilename.replace(c,QLatin1String("_"));
+
+    return defaultFilename;
 }
 
 void StdCmdExport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) == 0) {
+    static QString lastExportFullPath = QString();
+    static bool lastExportUsedGeneratedFilename = true;
+    static QString lastExportFilterUsed = QString();
+
+    auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(),
             QString::fromUtf8(QT_TR_NOOP("No selection")),
-            QString::fromUtf8(QT_TR_NOOP("Please select first the objects you want to export.")));
+            QString::fromUtf8(QT_TR_NOOP("Select the objects to export before choosing Export.")));
         return;
     }
 
-    // fill the list of registered endings
+    // fill the list of registered suffixes
     QStringList filterList;
-    std::map<std::string, std::string> FilterList = App::GetApplication().getExportFilters();
-    std::map<std::string, std::string>::const_iterator jt;
-    for (jt=FilterList.begin();jt != FilterList.end();++jt) {
+    std::map<std::string, std::string> filterMap = App::GetApplication().getExportFilters();
+    for (const auto &filter : filterMap) {
         // ignore the project file format
-        if (jt->first.find("(*.FCStd)") == std::string::npos) {
-            filterList << QString::fromLatin1(jt->first.c_str());
+        if (filter.first.find("(*.FCStd)") == std::string::npos)
+            filterList << QString::fromStdString(filter.first);
+    }
+    QString formatList = filterList.join(QLatin1String(";;"));
+    Base::Reference<ParameterGrp> hPath = 
+        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
+    if (!lastExportFilterUsed.isEmpty())
+        selectedFilter = lastExportFilterUsed;
+
+    // Create a default filename for the export
+    // * If this is the first export this session default, generate a new default.
+    // * If this is a repeated export during the same session:
+    //     * If the user accepted the default filename last time, regenerate a new
+    //       default, potentially updating the object label.
+    //     * If not, default to their previously-set export filename.
+    QString defaultFilename = lastExportFullPath;
+
+    bool filenameWasGenerated = false;
+    // We want to generate a new default name in two cases:
+    if (defaultFilename.isEmpty() || lastExportUsedGeneratedFilename) {
+        // First, get the name and path of the current .FCStd file, if there is one:
+        QString docFilename = QString::fromUtf8(
+            App::GetApplication().getActiveDocument()->getFileName());
+
+        // Find the default location for our exported file. Three possibilities:
+        QString defaultExportPath;
+        if (!lastExportFullPath.isEmpty()) {
+            QFileInfo fi(lastExportFullPath);
+            defaultExportPath = fi.path();
+        }
+        else if (!docFilename.isEmpty()) {
+            QFileInfo fi(docFilename);
+            defaultExportPath = fi.path();
+        }
+        else {
+            defaultExportPath = Gui::FileDialog::getWorkingDirectory();
+        }
+
+        if (lastExportUsedGeneratedFilename /*<- static, true on first call*/ ) {
+            defaultFilename = defaultExportPath + QLatin1Char('/') + createDefaultExportBasename();
+
+            // Append the last extension used, if there is one.
+            if (!lastExportFullPath.isEmpty()) {
+                QFileInfo lastExportFile(lastExportFullPath);
+                if (!lastExportFile.suffix().isEmpty())
+                    defaultFilename += QLatin1String(".") + lastExportFile.suffix();
+            }
+            filenameWasGenerated = true;
         }
     }
 
-    QString formatList = filterList.join(QLatin1String(";;"));
-    Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                               ->GetGroup("Preferences")->GetGroup("General");
-    QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
-
+    // Launch the file selection modal dialog
     QString fileName = FileDialog::getSaveFileName(getMainWindow(),
-        QObject::tr("Export file"), QString(), formatList, &selectedFilter);
+        QObject::tr("Export file"), defaultFilename, formatList, &selectedFilter);
     if (!fileName.isEmpty()) {
         hPath->SetASCII("FileExportFilter", selectedFilter.toLatin1().constData());
+        lastExportFilterUsed = selectedFilter; // So we can select the same one next time
         SelectModule::Dict dict = SelectModule::exportHandler(fileName, selectedFilter);
         // export the files with the associated modules
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
@@ -308,6 +486,18 @@ void StdCmdExport::activated(int iMsg)
                 getActiveGuiDocument()->getDocument()->getName(),
                 it.value().toLatin1());
         }
+
+        // Keep a record of if the user used our suggested generated filename. If they
+        // did, next time we can recreate it, which will update the object label if
+        // there is one.
+        QFileInfo defaultExportFI(defaultFilename);
+        QFileInfo thisExportFI(fileName);
+        if (filenameWasGenerated && 
+            thisExportFI.completeBaseName() == defaultExportFI.completeBaseName())
+            lastExportUsedGeneratedFilename = true;
+        else
+            lastExportUsedGeneratedFilename = false;
+        lastExportFullPath = fileName;
     }
 }
 
@@ -331,6 +521,7 @@ StdCmdMergeProjects::StdCmdMergeProjects()
     sToolTipText  = QT_TR_NOOP("Merge project");
     sWhatsThis    = "Std_MergeProjects";
     sStatusTip    = QT_TR_NOOP("Merge project");
+    sPixmap       = "Std_MergeProjects";
 }
 
 void StdCmdMergeProjects::activated(int iMsg)
@@ -369,33 +560,34 @@ bool StdCmdMergeProjects::isActive(void)
 }
 
 //===========================================================================
-// Std_ExportGraphviz
+// Std_DependencyGraph
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdExportGraphviz)
+DEF_STD_CMD_A(StdCmdDependencyGraph)
 
-StdCmdExportGraphviz::StdCmdExportGraphviz()
-  : Command("Std_ExportGraphviz")
+StdCmdDependencyGraph::StdCmdDependencyGraph()
+  : Command("Std_DependencyGraph")
 {
     // setting the
     sGroup        = QT_TR_NOOP("Tools");
     sMenuText     = QT_TR_NOOP("Dependency graph...");
     sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
     sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
-    sWhatsThis    = "Std_ExportGraphviz";
+    sWhatsThis    = "Std_DependencyGraph";
     eType         = 0;
+    sPixmap       = "Std_DependencyGraph";
 }
 
-void StdCmdExportGraphviz::activated(int iMsg)
+void StdCmdDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
     Gui::GraphvizView* view = new Gui::GraphvizView(*doc);
-    view->setWindowTitle(qApp->translate("Std_ExportGraphviz","Dependency graph"));
+    view->setWindowTitle(qApp->translate("Std_DependencyGraph","Dependency graph"));
     getMainWindow()->addWindow(view);
 }
 
-bool StdCmdExportGraphviz::isActive(void)
+bool StdCmdDependencyGraph::isActive(void)
 {
     return (getActiveGuiDocument() ? true : false);
 }
@@ -527,7 +719,7 @@ StdCmdSaveCopy::StdCmdSaveCopy()
   sToolTipText  = QT_TR_NOOP("Save a copy of the active document under a new file name");
   sWhatsThis    = "Std_SaveCopy";
   sStatusTip    = QT_TR_NOOP("Save a copy of the active document under a new file name");
-  //sPixmap       = "document-save-as";
+  sPixmap       = "Std_SaveCopy";
 }
 
 void StdCmdSaveCopy::activated(int iMsg)
@@ -560,11 +752,12 @@ StdCmdSaveAll::StdCmdSaveAll()
   sToolTipText  = QT_TR_NOOP("Save all opened document");
   sWhatsThis    = "Std_SaveAll";
   sStatusTip    = QT_TR_NOOP("Save all opened document");
+  sPixmap       = "Std_SaveAll";
 }
 
 void StdCmdSaveAll::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Document::saveAll();
 }
 
@@ -587,7 +780,7 @@ StdCmdRevert::StdCmdRevert()
     sToolTipText  = QT_TR_NOOP("Reverts to the saved version of this file");
     sWhatsThis    = "Std_Revert";
     sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
-  //sPixmap       = "document-revert";
+    sPixmap       = "Std_Revert";
     eType         = NoTransaction;
 }
 
@@ -658,6 +851,7 @@ StdCmdProjectUtil::StdCmdProjectUtil()
     sMenuText     = QT_TR_NOOP("Project utility...");
     sToolTipText  = QT_TR_NOOP("Utility to extract or create project files");
     sStatusTip    = QT_TR_NOOP("Utility to extract or create project files");
+    sPixmap       = "Std_ProjectUtil";
 }
 
 void StdCmdProjectUtil::activated(int iMsg)
@@ -687,6 +881,7 @@ StdCmdPrint::StdCmdPrint()
     sStatusTip    = QT_TR_NOOP("Print the document");
     sPixmap       = "document-print";
     sAccel        = keySequenceToAccel(QKeySequence::Print);
+    eType         = 0;
 }
 
 void StdCmdPrint::activated(int iMsg)
@@ -717,6 +912,7 @@ StdCmdPrintPreview::StdCmdPrintPreview()
     sWhatsThis    = "Std_PrintPreview";
     sStatusTip    = QT_TR_NOOP("Print preview");
     sPixmap       = "document-print-preview";
+    eType         = 0;
 }
 
 void StdCmdPrintPreview::activated(int iMsg)
@@ -745,6 +941,8 @@ StdCmdPrintPdf::StdCmdPrintPdf()
     sToolTipText  = QT_TR_NOOP("Export the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
     sStatusTip    = QT_TR_NOOP("Export the document as PDF");
+    sPixmap       = "Std_PrintPdf";
+    eType         = 0;
 }
 
 void StdCmdPrintPdf::activated(int iMsg)
@@ -992,6 +1190,7 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
     sToolTipText  = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
     sWhatsThis    = "Std_DuplicateSelection";
     sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
+    sPixmap       = "Std_DuplicateSelection";
 }
 
 void StdCmdDuplicateSelection::activated(int iMsg)
@@ -1044,7 +1243,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
                 "To link to external objects, the document must be saved at least once.\n"
                 "Do you want to save the document now?"),
                 QMessageBox::Yes,QMessageBox::No);
-            if(ret == QMessageBox::Yes) 
+            if(ret == QMessageBox::Yes)
                 proceed = Application::Instance->getDocument(doc)->saveAs();
         }
         if(proceed) {
@@ -1125,7 +1324,7 @@ void StdCmdDelete::activated(int iMsg)
 
     std::set<App::Document*> docs;
     try {
-        openCommand("Delete");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
             commitCommand();
             return;
@@ -1214,8 +1413,8 @@ void StdCmdDelete::activated(int iMsg)
                         bodyMessageStream << "\n";
                     }
                     std::string thisDoc = pGuiDoc->getDocument()->getName();
-                    bodyMessageStream << qApp->translate("Std_Delete", 
-                                            "These items are selected for deletion, but are not in the active document. \n\n"); 
+                    bodyMessageStream << qApp->translate("Std_Delete",
+                                            "These items are selected for deletion, but are not in the active document.");
                     for (const auto &currentLabel : inactiveLabels)
                         bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                 }
@@ -1297,7 +1496,7 @@ StdCmdRefresh::StdCmdRefresh()
     // undoing the last transaction the manual recompute will clear the redo stack.
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Document");
-    bool create = hGrp->GetBool("TransactionOnRecompute", true);
+    bool create = hGrp->GetBool("TransactionOnRecompute", false);
     if (!create)
         eType = eType | NoTransaction;
 }
@@ -1434,6 +1633,7 @@ StdCmdAlignment::StdCmdAlignment()
     sToolTipText  = QT_TR_NOOP("Align the selected objects");
     sStatusTip    = QT_TR_NOOP("Align the selected objects");
     sWhatsThis    = "Std_Alignment";
+    sPixmap       = "Std_Alignment";
 }
 
 void StdCmdAlignment::activated(int iMsg)
@@ -1539,6 +1739,10 @@ class StdCmdExpression : public Gui::Command
 {
 public:
     StdCmdExpression() : Command("Std_Expressions")
+                       , pcActionCopyAll(nullptr)
+                       , pcActionCopySel(nullptr)
+                       , pcActionCopyActive(nullptr)
+                       , pcActionPaste(nullptr)
     {
         sGroup        = QT_TR_NOOP("Edit");
         sMenuText     = QT_TR_NOOP("Expression actions");
@@ -1609,7 +1813,7 @@ protected:
                            << " (" << obj->Label.getValue() << ')' << std::endl;
                         ss << "##@@";
                         if(v.second->comment.size()) {
-                            if(v.second->comment[0] == '&' 
+                            if(v.second->comment[0] == '&'
                                     || v.second->comment.find('\n') != std::string::npos
                                     || v.second->comment.find('\r') != std::string::npos)
                             {
@@ -1630,7 +1834,7 @@ protected:
     }
 
     void pasteExpressions() {
-        std::map<App::Document*, std::map<App::PropertyExpressionContainer*, 
+        std::map<App::Document*, std::map<App::PropertyExpressionContainer*,
             std::map<App::ObjectIdentifier, App::ExpressionPtr> > > exprs;
 
         bool failed = false;
@@ -1699,7 +1903,7 @@ protected:
             return;
         }
 
-        openCommand("Paste expressions");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
         try {
             for(auto &v : exprs) {
                 for(auto &v2 : v.second) {
@@ -1758,7 +1962,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
-    rcCmdMgr.addCommand(new StdCmdExportGraphviz());
+    rcCmdMgr.addCommand(new StdCmdDependencyGraph());
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());

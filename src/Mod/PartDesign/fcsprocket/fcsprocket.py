@@ -29,9 +29,9 @@ def makeSprocket(P, N, Dr):
     w = FCWireBuilder()
     sprocket.CreateSprocket(w, P, N, Dr)
     sprocketw = Part.Wire([o.toShape() for o in w.wire])
-    sprocket = doc.addObject("Part::Feature", "Sprocket")
-    sprocket.Shape = sprocketw
-    return sprocket
+    sprocketf = doc.addObject("Part::Feature", "Sprocket")
+    sprocketf.Shape = sprocketw
+    return sprocketf
 
 class FCWireBuilder(object):
     """A helper class to prepare a Part.Wire object"""

@@ -105,8 +105,8 @@ from drafttests.test_modification import DraftModification as DraftTest03
 from drafttests.test_svg import DraftSVG as DraftTest04
 from drafttests.test_dxf import DraftDXF as DraftTest05
 from drafttests.test_dwg import DraftDWG as DraftTest06
-from drafttests.test_oca import DraftOCA as DraftTest07
-from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest08
+# from drafttests.test_oca import DraftOCA as DraftTest07
+# from drafttests.test_airfoildat import DraftAirfoilDAT as DraftTest08
 
 # Use the modules so that code checkers don't complain (flake8)
 True if DraftTest01 else False
@@ -115,5 +115,5 @@ True if DraftTest03 else False
 True if DraftTest04 else False
 True if DraftTest05 else False
 True if DraftTest06 else False
-True if DraftTest07 else False
-True if DraftTest08 else False
+# True if DraftTest07 else False
+# True if DraftTest08 else False

@@ -16,7 +16,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
       <source>To add references: select them in the 3D view  and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
+      <translation>Để thêm tham chiếu, hãy chọn chúng trong chế độ xem 3D, sau đó nhấp vào Thêm.</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </translation>
+      <translation>Nhấp vào "Thêm" và chọn các yếu tố hình học để thêm chúng vào danh sách. Nếu không có hình học nào được thêm vào danh sách, tất cả các hình còn lại sẽ được sử dụng. Các yếu tố hình học sau đây được phép chọn: </translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Chọn các phần tử của chất rắn sẽ được thêm vào danh sách. Để thêm chất rắn, nhấp chuột vào "Thêm".</translation>
     </message>
   </context>
   <context>
@@ -157,7 +157,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="96"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Gỡ bỏ tất cả các mặt phẳng cắt</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Tạo ra và khống chế một điện thế tĩnh điện theo FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Khống chế tốc độ dòng chảy</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -204,12 +204,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Khống chế tốc độ dòng ban đầu</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Tạo và khống chế tốc độ dòng chảy theo FEM</translation>
     </message>
   </context>
   <context>
@@ -334,7 +334,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <translation>Dòng giải pháp nhiệt</translation>
     </message>
   </context>
   <context>
@@ -355,7 +355,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Vật liệu FEM cho chất lỏng</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Vật liệu bê-tông gia cường (bê-tông)</translation>
     </message>
   </context>
   <context>
@@ -394,7 +394,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Vật liệu rắn</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Hiển thị thông tin về lưới FEM</translation>
     </message>
   </context>
   <context>
@@ -441,12 +441,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="556"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>lưới FEM từ đối tượng (shape) tạo bởi Gmsh</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="557"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Tạo lưới FEM cho đối tượng (shape) từ thuật toán chia lưới của Gmsh</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
@@ -537,12 +537,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="679"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>Trình giải CalculiX tiêu chuẩn</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="681"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>Tạo trình giải CalculiX tiêu chuyển với công cụ ccx</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
@@ -573,7 +573,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="740"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Trình giải Elmer</translation>
     </message>
   </context>
   <context>
@@ -620,12 +620,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Trình hiệu chỉnh vật liệu</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Mở trình hiệu chỉnh vật liệu FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -1967,7 +1967,7 @@
       <location filename="../../Command.cpp" line="123"/>
       <location filename="../../Command.cpp" line="185"/>
       <source>Select an edge, face or body. Only one body is allowed.</source>
-      <translation type="unfinished">Select an edge, face or body. Only one body is allowed.</translation>
+      <translation>Chọn một cạnh, mặt hoặc khối. Chỉ một khối được cho phép.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
@@ -1979,7 +1979,7 @@
       <location filename="../../Command.cpp" line="129"/>
       <location filename="../../Command.cpp" line="191"/>
       <source>Fillet works only on parts</source>
-      <translation type="unfinished">Fillet works only on parts</translation>
+      <translation>Thuật toán bo tròn chỉ hoạt động với chi tiết (part)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="83"/>

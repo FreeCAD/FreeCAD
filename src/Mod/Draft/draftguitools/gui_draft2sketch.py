@@ -22,25 +22,26 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for converting Draft objects to Sketches and back.
+"""Provides GUI tools to convert Draft objects to Sketches and back.
 
-Many Draft objects will be converted to a single non-contrainted Sketch.
+Many Draft objects will be converted to a single non-constrained Sketch.
 
 However, a single sketch with disconnected traces will be converted
 into several individual Draft objects.
 """
 ## @package gui_draft2sketch
-# \ingroup DRAFT
-# \brief Provides tools for converting Draft objects to Sketches and back.
+# \ingroup draftguitools
+# \brief Provides GUI tools to convert Draft objects to Sketches and back.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
 import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -51,36 +52,26 @@ class Draft2Sketch(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Draft to Sketch"
-        _tip = ("Convert bidirectionally between Draft objects "
-                "and Sketches.\n"
-                "Many Draft objects will be converted into a single "
-                "non-constrained Sketch.\n"
-                "However, a single sketch with disconnected traces "
-                "will be converted into several individual Draft objects.")
 
         return {'Pixmap': 'Draft_Draft2Sketch',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Convert bidirectionally between Draft objects and Sketches.\nMany Draft objects will be converted into a single non-constrained Sketch.\nHowever, a single sketch with disconnected traces will be converted into several individual Draft objects.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Draft2Sketch, self).Activated(name=_tr("Convert Draft/Sketch"))
+        super(Draft2Sketch, self).Activated(name=translate("draft","Convert Draft/Sketch"))
         if not Gui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to convert."))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         sel = Gui.Selection.getSelection()
         allSketches = True
         allDraft = True
@@ -88,7 +79,8 @@ class Draft2Sketch(gui_base_original.Modifier):
         for obj in sel:
             if obj.isDerivedFrom("Sketcher::SketchObject"):
                 allDraft = False
-            elif obj.isDerivedFrom("Part::Part2DObjectPython"):
+            elif (obj.isDerivedFrom("Part::Part2DObjectPython")
+                  or obj.isDerivedFrom("Part::Feature")):
                 allSketches = False
             else:
                 allDraft = False
@@ -139,12 +131,13 @@ class Draft2Sketch(gui_base_original.Modifier):
 
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
                     _cmd_list.append("obj" + str(n) + " = " + _cmd_df)
-                elif obj.isDerivedFrom("Part::Part2DObjectPython"):
+                elif (obj.isDerivedFrom("Part::Part2DObjectPython")
+                      or obj.isDerivedFrom("Part::Feature")):
                     _cmd_list.append("obj" + str(n) + " = " + _cmd_sk)
-                elif obj.isDerivedFrom("Part::Feature"):
-                    # if (len(obj.Shape.Wires) == 1
-                    #     or len(obj.Shape.Edges) == 1):
-                    _cmd_list.append("obj" + str(n) + " = " + _cmd_sk)
+                #elif obj.isDerivedFrom("Part::Feature"):
+                #    # if (len(obj.Shape.Wires) == 1
+                #    #     or len(obj.Shape.Edges) == 1):
+                #    _cmd_list.append("obj" + str(n) + " = " + _cmd_sk)
                 n += 1
             _cmd_list.append('FreeCAD.ActiveDocument.recompute()')
             self.commit(translate("draft", "Convert Draft/Sketch"),
@@ -153,3 +146,5 @@ class Draft2Sketch(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Draft2Sketch', Draft2Sketch())
+
+## @}

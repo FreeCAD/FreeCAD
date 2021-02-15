@@ -667,6 +667,54 @@ public:
     }
 };
 
+class PrefQuantitySpinBoxPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    PrefQuantitySpinBoxPlugin()
+    {
+    }
+    QWidget* createWidget(QWidget* parent)
+    {
+        return new Gui::PrefQuantitySpinBox(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Preference Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon(QPixmap(quantityspinbox_pixmap));
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/PrefWidgets.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Preference Quantity Spin Box");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("Preference Quantity Spin Box Widget.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+            " <widget class=\"Gui::PrefQuantitySpinBox\" name=\"unitSpinBox\">\n"
+            " </widget>\n"
+            "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::PrefQuantitySpinBox");
+    }
+};
+
 /* XPM */
 static const char *iconview_pixmap[]={
 "22 22 10 1",
@@ -828,6 +876,102 @@ public:
     QString name() const
     {
         return QLatin1String("Gui::UIntSpinBox");
+    }
+};
+
+class IntSpinBoxPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    IntSpinBoxPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::IntSpinBox(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Input Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( spinbox_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/SpinBox.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Spin Box");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("Spin box widget (spin button).");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::IntSpinBox\" name=\"intSpinBox\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::IntSpinBox");
+    }
+};
+
+class DoubleSpinBoxPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    DoubleSpinBoxPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::DoubleSpinBox(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Input Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( spinbox_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/SpinBox.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Double Spin Box");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("Spin box widget (spin button).");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::DoubleSpinBox\" name=\"doubleSpinBox\">\n"
+               " </widget>\n"
+               "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::DoubleSpinBox");
     }
 };
 
@@ -1553,6 +1697,8 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
     cw.append(new QuantitySpinBoxPlugin);
     cw.append(new CommandIconViewPlugin);
     cw.append(new UIntSpinBoxPlugin);
+    cw.append(new IntSpinBoxPlugin);
+    cw.append(new DoubleSpinBoxPlugin);
     cw.append(new ColorButtonPlugin);
     cw.append(new PrefFileChooserPlugin);
     cw.append(new PrefSpinBoxPlugin);
@@ -1565,6 +1711,7 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
     cw.append(new PrefDoubleSpinBoxPlugin);
     cw.append(new PrefFontBoxPlugin);
     cw.append(new PrefUnitSpinBoxPlugin);
+    cw.append(new PrefQuantitySpinBoxPlugin);
     return cw;
 }
 

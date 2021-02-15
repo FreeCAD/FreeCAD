@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   (c) Yorik van Havre (yorik@uncreated.net) 2015                        *
+# *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -19,7 +20,7 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
 
 from PySide import QtCore, QtGui
@@ -191,19 +192,19 @@ class GCodeEditorDialog(QtGui.QDialog):
 
 def show(obj):
     "show(obj): shows the G-code data of the given Path object in a dialog"
-    
+
     prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
     # default Max Highlighter Size = 512 Ko
-    defaultMHS = 512 * 1024 
+    defaultMHS = 512 * 1024
     mhs = prefs.GetUnsigned('inspecteditorMaxHighlighterSize', defaultMHS)
-    
+
     if hasattr(obj, "Path"):
         if obj.Path:
             dia = GCodeEditorDialog(obj.Path)
             dia.editor.setText(obj.Path.toGCode())
             gcodeSize = len(dia.editor.toPlainText())
             if (gcodeSize <= mhs):
-                # because of poor performance, syntax highlighting is 
+                # because of poor performance, syntax highlighting is
                 # limited to mhs octets (default 512 KB).
                 # It seems than the response time curve has an inflexion near 500 KB
                 # beyond 500 KB, the response time increases exponentially.
@@ -224,7 +225,7 @@ def show(obj):
 class CommandPathInspect:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Inspect',
+        return {'Pixmap': 'Path_Inspect',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Inspect", "Inspect G-code"),
                 'Accel': "P, I",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Inspect", "Inspects the G-code contents of a path")}

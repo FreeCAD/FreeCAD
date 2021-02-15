@@ -29,6 +29,7 @@
 #include <QMouseEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOptionGraphicsItem>
 #include <QBitmap>
 #include <QFile>
@@ -58,7 +59,10 @@
 #include "ZVALUE.h"
 //
 #include "Rez.h"
+#include "DrawGuiUtil.h"
+#include <QByteArrayMatcher>
 #include "QGCustomSvg.h"
+#include "QGCustomImage.h"
 #include "QGCustomRect.h"
 #include "QGIViewPart.h"
 #include "QGIPrimPath.h"
@@ -84,7 +88,8 @@ QGIFace::QGIFace(int index) :
     setPrettyNormal();
     m_texture = QPixmap();                      //empty texture
 
-    m_svg = new QGCustomSvg();
+    m_image = new QGCustomImage();
+    m_image->setParentItem(this);
 
     m_rect = new QGCustomRect();
     m_rect->setParentItem(this);
@@ -119,6 +124,8 @@ void QGIFace::draw()
 
     if (isHatched()) {   
         if (m_mode == GeomHatchFill) {
+            //GeomHatch does not appear in pdf if clipping is set to true
+            setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
                 m_fillStyleCurrent = m_styleDef;
@@ -139,10 +146,17 @@ void QGIFace::draw()
                     m_styleNormal = m_styleDef;
                     m_fillStyleCurrent = m_styleNormal;
                     loadSvgHatch(m_fileSpec);
-                    buildSvgHatch();
                     if (m_hideSvgTiles) {
+                        //bitmap hatch doesn't need clipping
+                        setFlag(QGraphicsItem::ItemClipsChildrenToShape,false);
+                        buildPixHatch();
                         m_rect->hide();
+                        m_image->show();
                     } else {
+                        //SVG tiles need to be clipped
+                        setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
+                        buildSvgHatch();
+                        m_image->hide();
                         m_rect->show();
                     }
                 } else if ((ext.toUpper() == QString::fromUtf8("JPG"))   ||
@@ -156,9 +170,7 @@ void QGIFace::draw()
                 }
             }
         } else if (m_mode == PlainFill) {
-            if (!m_lineSets.empty()) {
-                setFill(m_colNormalFill, m_styleNormal);
-            }
+            setFill(m_colNormalFill, m_styleNormal);
         }
     }
     show();
@@ -210,9 +222,16 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
         return;
     }
     m_svgXML = f.readAll();
-    if (!m_svg->load(&m_svgXML)) {
-        Base::Console().Error("Error - Could not load hatch into SVG renderer for %s\n", fileSpec.c_str());
-        return;
+
+    // search in the file for the "stroke" specification in order to find out what declaration style is used
+    // this is necessary to apply a color set by the user to the SVG
+    QByteArray pattern("stroke:");
+    QByteArrayMatcher matcher(pattern);
+    int pos = 0;
+    if (matcher.indexIn(m_svgXML, pos) != -1) {
+        SVGCOLPREFIX = "stroke:"; // declaration part of a style="" statement
+    } else {
+        SVGCOLPREFIX = "stroke=\""; // declaration of its own
     }
 }
 
@@ -524,8 +543,8 @@ void QGIFace::buildSvgHatch()
     m_rect->centerAt(fCenter);
     r = m_rect->rect();
     QByteArray before,after;
-    before.append(QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT));
-    after.append(QString::fromStdString(SVGCOLPREFIX + m_svgCol));
+    before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
+    after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
     QByteArray colorXML = m_svgXML.replace(before,after);
     long int tileCount = 0;
     for (int iw = 0; iw < int(nw); iw++) {
@@ -551,6 +570,89 @@ void QGIFace::buildSvgHatch()
 void QGIFace::clearSvg()
 {
     hideSvg(true);
+}
+
+void QGIFace::buildPixHatch()
+{
+    double wTile = SVGSIZEW * m_fillScale;
+    double hTile = SVGSIZEH * m_fillScale;
+    double w = m_outline.boundingRect().width();
+    double h = m_outline.boundingRect().height();
+    QRectF r = m_outline.boundingRect();
+    QPointF fCenter = r.center();
+    double nw = ceil(w / wTile);
+    double nh = ceil(h / hTile);
+    w = nw * wTile;
+    h = nh * hTile;
+
+    m_rect->setRect(0.,0.,w,-h);
+    m_rect->centerAt(fCenter);
+
+    r = m_rect->rect();
+    QByteArray before,after;
+    before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
+    after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
+    QByteArray colorXML = m_svgXML.replace(before,after);
+    QSvgRenderer renderer;
+    bool success = renderer.load(colorXML);
+    if (!success) {
+        Base::Console().Error("QGIF::buildPixHatch - renderer failed to load\n");
+    }
+
+    QImage imageIn(64, 64, QImage::Format_ARGB32);
+    imageIn.fill(Qt::transparent);
+    QPainter painter(&imageIn);
+
+    renderer.render(&painter);
+    if (imageIn.isNull()) {
+        Base::Console().Error("QGIF::buildPixHatch - imageIn is null\n");
+        return;
+    }
+
+    QPixmap pm(64, 64);
+    pm  = QPixmap::fromImage(imageIn);
+    pm = pm.scaled(wTile, hTile);
+    if (pm.isNull()) {
+        Base::Console().Error("QGIF::buildPixHatch - pm is null\n");
+        return;
+    }
+
+    QImage tileField(w, h, QImage::Format_ARGB32);
+    QPointF fieldCenter(w / 2.0, h / 2.0);
+
+    tileField.fill(Qt::transparent);
+    QPainter painter2(&tileField);
+    QPainter::RenderHints hints = painter2.renderHints();
+    hints = hints & QPainter::Antialiasing;
+    painter2.setRenderHints(hints);
+    QPainterPath clipper = path();
+    QPointF offset = (fieldCenter - fCenter);
+    clipper.translate(offset);
+    painter2.setClipPath(clipper);
+
+    long int tileCount = 0;
+    for (int iw = 0; iw < int(nw); iw++) {
+        for (int ih = 0; ih < int(nh); ih++) {
+            painter2.drawPixmap(QRectF(iw*wTile, ih*hTile, wTile, hTile),   //target rect
+                               pm,                                           //map
+                               QRectF(0, 0, wTile, hTile));  //source rect
+            tileCount++;
+            if (tileCount > m_maxTile) {
+                Base::Console().Warning("Pixmap tile count exceeded: %ld\n",tileCount);
+                break;
+            }
+        }
+        if (tileCount > m_maxTile) {
+            break;
+        }
+    }
+    QPixmap bigMap(fabs(r.width()), fabs(r.height()));
+    bigMap = QPixmap::fromImage(tileField);
+
+    QPixmap nothing;
+    m_image->setPixmap(nothing);
+    m_image->load(bigMap);
+    m_image->centerAt(fCenter);
 }
 
 //this isn't used currently

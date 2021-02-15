@@ -18,16 +18,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the view provider code for Bezier curve objects.
+"""Provides the viewprovider code for the BezCurve object.
 
 At the moment this view provider subclasses the Wire view provider,
 and behaves the same as it. In the future this could change
 if another behavior is desired.
 """
-## @package view_bezier
-# \ingroup DRAFT
-# \brief Provides the view provider code for Bezier curve objects.
+## @package view_bezcurve
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the BezCurve object.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_wire import ViewProviderWire
 
 
@@ -38,4 +40,7 @@ class ViewProviderBezCurve(ViewProviderWire):
         super(ViewProviderBezCurve, self).__init__(vobj)
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderBezCurve = ViewProviderBezCurve
+
+## @}

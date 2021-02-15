@@ -26,12 +26,7 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Basic shapes"
 
 
-import FreeCAD
-from FreeCAD import Qt
-import FreeCADGui
 import Part
-import math
-import sys
 
 def makeTube(outerRadius, innerRadius, height):
     outer_cylinder = Part.makeCylinder(outerRadius, height)
@@ -48,29 +43,9 @@ class TubeFeature:
         obj.addProperty("App::PropertyLength","OuterRadius","Tube","Outer radius").OuterRadius = 5.0
         obj.addProperty("App::PropertyLength","InnerRadius","Tube","Inner radius").InnerRadius = 2.0
         obj.addProperty("App::PropertyLength","Height","Tube", "Height of the tube").Height = 10.0
+        obj.addExtension("Part::AttachExtensionPython")
 
     def execute(self, fp):
+        if fp.InnerRadius >= fp.OuterRadius:
+            raise ValueError("Inner radius must be smaller than outer radius")
         fp.Shape = makeTube(fp.OuterRadius, fp.InnerRadius, fp.Height)
-
-
-class _CommandMakeTube:
-    "Make tube command"
-    def GetResources(self):
-        return {'MenuText': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Create tube"),
-                'Accel': "",
-                'CmdType': "ForEdit",
-                'ToolTip': Qt.QT_TRANSLATE_NOOP("Part_MakeTube","Creates a tube")}
-        
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create tube")
-        tube = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tube")
-        TubeFeature(tube)
-        tube.ViewObject.Proxy = 0
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-    def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
-
-
-FreeCADGui.addCommand('Part_MakeTube',_CommandMakeTube())

@@ -694,7 +694,7 @@ class Plane:
         if self.weak or force:
             if direction and point:
                 self.alignToPointAndAxis(point, direction, 0, upvec)
-            else:
+            elif FreeCAD.GuiUp:
                 try:
                     import FreeCADGui
                     from pivy import coin
@@ -777,11 +777,12 @@ class Plane:
         # Arch active container
         if FreeCAD.GuiUp:
             import FreeCADGui
-            view = FreeCADGui.ActiveDocument.ActiveView
-            if view:
-                a = view.getActiveObject("Arch")
-                if a:
-                    p = a.Placement.inverse().multiply(p)
+            if FreeCADGui.ActiveDocument:
+                view = FreeCADGui.ActiveDocument.ActiveView
+                if view:
+                    a = view.getActiveObject("Arch")
+                    if a:
+                        p = a.Placement.inverse().multiply(p)
         return p
 
     def getPlacement(self, rotated=False):

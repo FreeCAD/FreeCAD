@@ -515,12 +515,12 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation>Bezugsobjekt erstellen</translation>
+      <translation>Formbinder erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>Create a new shape binder</source>
-      <translation>Erstelle ein neues Bezugsobjekt</translation>
+      <translation>Neuen Formbinder erstellen</translation>
     </message>
   </context>
   <context>
@@ -1407,12 +1407,12 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>ISO metric coarse profile</source>
-      <translation>ISO metrisches Grobprofil</translation>
+      <translation>metrisches ISO Regelgewinde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric fine profile</source>
-      <translation>ISO metrisches Feinprofil</translation>
+      <translation>metrisches ISO Feingewinde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
@@ -1721,7 +1721,7 @@
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
       <source>Pad parameters</source>
-      <translation>Parameter der Aufpolsterung</translation>
+      <translation>Parameter der Extrusion</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="63"/>
@@ -1774,7 +1774,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>fixiert</translation>
+      <translation>Fixiert</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -2987,7 +2987,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
       <source>Edit pad</source>
-      <translation>Block bearbeiten</translation>
+      <translation>Extrusion bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="80"/>
@@ -3012,7 +3012,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="184"/>
       <source>Edit shape binder</source>
-      <translation>Bezugsobjekt bearbeiten</translation>
+      <translation>Formbinder bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="152"/>
@@ -3132,7 +3132,7 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
       <source>Custom dimensions</source>
-      <translation>Standard-Abmessungen</translation>
+      <translation>Benutzerdefinierte Maße</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>

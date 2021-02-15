@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Preseli dokument v sodobni PartDesign poteka dela</translation>
+      <translation>Preseli dokument v sodobni PartDesignov delotok</translation>
     </message>
   </context>
   <context>
@@ -371,12 +371,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create sketch</source>
-      <translation>Ustvari skico</translation>
+      <translation>Ustvari očrt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create a new sketch</source>
-      <translation type="unfinished">Create a new sketch</translation>
+      <translation>Ustvari nov očrt</translation>
     </message>
   </context>
   <context>
@@ -715,7 +715,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
       <source>Base plane</source>
-      <translation>Osnovna ravniva</translation>
+      <translation>Osnovna ravnina</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
@@ -746,7 +746,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation>Parameter evolvente</translation>
+      <translation>Določilka evolvente</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -864,7 +864,7 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="305"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1159"/>
       <source>Angle:</source>
-      <translation>Kot:</translation>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="251"/>
@@ -893,12 +893,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="455"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="646"/>
       <source>U parameter:</source>
-      <translation>Spremenljivka U:</translation>
+      <translation>Določilka U:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="462"/>
       <source>V parameters:</source>
-      <translation>Spremenljivke V:</translation>
+      <translation>Določilke V:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="599"/>
@@ -909,12 +909,12 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="669"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="759"/>
       <source>V parameter:</source>
-      <translation>Spremenljivka V:</translation>
+      <translation>Določilka V:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="736"/>
       <source>U Parameter:</source>
-      <translation>Spremenljivka U:</translation>
+      <translation>Določilka U:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="886"/>
@@ -1113,7 +1113,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
       <source>Boolean parameters</source>
-      <translation>Spremenljivke logičnih vrednosti</translation>
+      <translation>Določilke logičnih vrednosti</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
@@ -1126,7 +1126,7 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="54"/>
       <source>Primitive parameters</source>
-      <translation>Parametri osnovnika</translation>
+      <translation>Določilke osnovnika</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="646"/>
@@ -1167,7 +1167,7 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="73"/>
       <source> parameters</source>
-      <translation> parametri</translation>
+      <translation> določilke</translation>
     </message>
   </context>
   <context>
@@ -1348,7 +1348,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
       <source>Base plane</source>
-      <translation>Osnovna ravniva</translation>
+      <translation>Osnovna ravnina</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
@@ -1394,7 +1394,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="48"/>
       <source>Hole parameters</source>
-      <translation>Parametri luknje</translation>
+      <translation>Določilke luknje</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
@@ -1530,7 +1530,7 @@
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation>Parametri navlečka</translation>
+      <translation>Določilke navlečka</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="80"/>
@@ -1718,7 +1718,7 @@
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
       <source>Pad parameters</source>
-      <translation>Parametri izbokline</translation>
+      <translation>Določilke izbokline</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="63"/>
@@ -1766,12 +1766,12 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Običajno</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Pritrjen</translation>
+      <translation>Nepremičen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -1895,7 +1895,7 @@
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="74"/>
       <source>Pipe parameters</source>
-      <translation>Spremenljivke cevi</translation>
+      <translation>Določilke cevi</translation>
     </message>
   </context>
   <context>
@@ -1995,7 +1995,7 @@
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="56"/>
       <source>Pocket parameters</source>
-      <translation>Parametri ugreza</translation>
+      <translation>Določilke ugreza</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="64"/>
@@ -2135,7 +2135,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="67"/>
       <source>Angle:</source>
-      <translation>Kot:</translation>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="98"/>
@@ -2155,7 +2155,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="61"/>
       <source>Revolution parameters</source>
-      <translation>Parametri zvrtenja</translation>
+      <translation>Določilke zvrtenja</translation>
     </message>
   </context>
   <context>
@@ -2226,7 +2226,7 @@
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
       <source>Datum shape parameters</source>
-      <translation>Parametri sklicne oblike</translation>
+      <translation>Določilke sklicne oblike</translation>
     </message>
   </context>
   <context>
@@ -3135,7 +3135,7 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="249"/>
@@ -3196,7 +3196,7 @@ Neglede na to je selitev v bodoče z "Oblikovanje delov -&gt; Preseli" mogoča k
     <message>
       <location filename="../../TaskHoleParameters.ui" line="14"/>
       <source>Task Hole Parameters</source>
-      <translation>Parametri luknje</translation>
+      <translation>Določilke luknje</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="33"/>

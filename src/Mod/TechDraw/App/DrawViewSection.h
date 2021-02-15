@@ -2,6 +2,7 @@
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -67,7 +68,7 @@ public:
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
     App::PropertyEnumeration SectionDirection;
- 
+
     App::PropertyEnumeration CutSurfaceDisplay;        //new v019
     App::PropertyFile   FileHatchPattern;
     App::PropertyFile   FileGeomPattern;               //new v019
@@ -92,7 +93,7 @@ public:
 
     void sectionExec(TopoDS_Shape s);
 
-    std::vector<TechDraw::Face*> getFaceGeometry();
+    std::vector<TechDraw::Face*> getTDFaceGeometry() {return tdSectionFaces;}
 
     void setCSFromBase(const std::string sectionName);
     gp_Ax2 getCSFromBase(const std::string sectionName) const;
@@ -106,10 +107,9 @@ public:
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
 
-    virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const override;
     TopoDS_Compound getSectionFaces() { return sectionFaces;};
-    std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }
-
+//    std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }   //obs?
+    TopoDS_Face getSectionTFace(int i);
     void makeLineSets(void) ;
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
@@ -119,16 +119,19 @@ public:
     static const char* SectionDirEnums[];
     static const char* CutSurfaceEnums[];
 
+    std::pair<Base::Vector3d, Base::Vector3d> sectionLineEnds(void);
+
+    bool showSectionEdges(void);
+
 protected:
-    TopoDS_Compound sectionFaces;
-    std::vector<TopoDS_Wire> sectionFaceWires;
+    TopoDS_Compound sectionFaces;    //tSectionFaces
+//    std::vector<TopoDS_Wire> sectionFaceWires;   //obs??? getSectionFaceWires
     std::vector<LineSet> m_lineSets;
+    std::vector<TechDraw::Face*> tdSectionFaces;
+
 
     gp_Pln getSectionPlane() const;
     TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
-    TopoDS_Face projectFace(const TopoDS_Shape &face,
-                            const gp_Ax2 CS);
-                                     
     void getParameters(void);
     bool debugSection(void) const;
     int prefCutSurface(void) const;

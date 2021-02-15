@@ -142,8 +142,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>424</width>
-        <height>537</height>
+        <width>366</width>
+        <height>330</height>
        </rect>
       </property>
       <attribute name="label">
@@ -348,8 +348,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>407</width>
-        <height>570</height>
+        <width>319</width>
+        <height>528</height>
        </rect>
       </property>
       <attribute name="label">
@@ -655,8 +655,11 @@
        </item>
        <item>
         <widget class="QCheckBox" name="toolsOpenLastLibrary">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Causes the toollibrary manager to remember last directory. This ONLY affects legacy tools. &lt;/p&gt;&lt;p&gt;This control is deprecated and will be removed in a future version&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
-          <string>Remember last library</string>
+          <string>Remember last library (legacy)</string>
          </property>
         </widget>
        </item>

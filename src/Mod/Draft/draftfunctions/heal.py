@@ -20,15 +20,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft heal function.
-"""
+"""Provides functions to repair certain objects created with old versions."""
 ## @package heal
-# \ingroup DRAFT
-# \brief This module provides the code for Draft heal function.
+# \ingroup draftfuctions
+# \brief Provides functions to repair certain objects from old versions.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
-import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 
 from draftmake.make_copy import make_copy
@@ -113,3 +112,5 @@ def heal(objlist=None, delete=True, reparent=True):
     if dellist and delete:
         for n in dellist:
             App.ActiveDocument.removeObject(n)
+
+## @}

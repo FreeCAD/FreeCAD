@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -277,12 +277,12 @@ PyObject* ToolPy::getToolTypes(PyObject * args)
 {
     if (PyArg_ParseTuple(args, "")) {
         std::vector<std::string> toolTypes = Tool::ToolTypes();
-        PyObject *list = PyList_New(0);
+        Py::List list;
         for(unsigned i = 0; i != toolTypes.size(); i++) {
 
-            PyList_Append(list, PYSTRING_FROMSTRING(toolTypes[i].c_str()));
+            list.append(Py::asObject(PYSTRING_FROMSTRING(toolTypes[i].c_str())));
         }
-        return list;
+        return Py::new_reference_to(list);
     }
     throw Py::TypeError("This method accepts no argument");
 }
@@ -291,12 +291,12 @@ PyObject* ToolPy::getToolMaterials(PyObject * args)
 {
     if (PyArg_ParseTuple(args, "")) {
         std::vector<std::string> toolMaterials = Tool::ToolMaterials();
-        PyObject *list = PyList_New(0);
+        Py::List list;;
         for(unsigned i = 0; i != toolMaterials.size(); i++) {
 
-            PyList_Append(list, PYSTRING_FROMSTRING(toolMaterials[i].c_str()));
+            list.append(Py::asObject(PYSTRING_FROMSTRING(toolMaterials[i].c_str())));
         }
-        return list;
+        return Py::new_reference_to(list);
     }
     throw Py::TypeError("This method accepts no argument");
 }

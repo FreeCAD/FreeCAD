@@ -1582,7 +1582,7 @@ void  ParameterManager::CheckDocument() const
         parser.parse(xmlFile);
 
         if (parser.getErrorCount() > 0) {
-            Base::Console().Error("Unexpected XML structure detected: %d errors\n", parser.getErrorCount());
+            Base::Console().Error("Unexpected XML structure detected: %zu errors\n", parser.getErrorCount());
         }
     }
     catch (XMLException& e) {

@@ -24,7 +24,7 @@
 #define BASE_IINPUTSOURCE_H
 
 
-#include <iostream>
+#include <iosfwd>
 
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/util/BinInputStream.hpp>
@@ -65,7 +65,7 @@ private :
   //  Unimplemented constructors and operators
   // -----------------------------------------------------------------------
   StdInputStream(const StdInputStream&);
-  StdInputStream& operator=(const StdInputStream&);   
+  StdInputStream& operator=(const StdInputStream&);
 
   // -----------------------------------------------------------------------
   //  Private data members

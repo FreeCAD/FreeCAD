@@ -85,6 +85,8 @@ public Q_SLOTS:
     void onTorusAngle3Changed(double);
     void onPrismCircumradiusChanged(double);
     void onPrismHeightChanged(double);
+    void onPrismXSkewChanged(double);
+    void onPrismYSkewChanged(double);
     void onPrismPolygonChanged(int);
     void onWedgeXmaxChanged(double);
     void onWedgeXminChanged(double);

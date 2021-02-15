@@ -39,7 +39,7 @@
        </property>
        <property name="icon">
         <iconset resource="../Path.qrc">
-         <normaloff>:/icons/Path-BStop.svg</normaloff>:/icons/Path-BStop.svg</iconset>
+         <normaloff>:/icons/Path_BStop.svg</normaloff>:/icons/Path_BStop.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -59,7 +59,7 @@
        </property>
        <property name="icon">
         <iconset resource="../Path.qrc">
-         <normaloff>:/icons/Path-BPlay.svg</normaloff>:/icons/Path-BPlay.svg</iconset>
+         <normaloff>:/icons/Path_BPlay.svg</normaloff>:/icons/Path_BPlay.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -79,7 +79,7 @@
        </property>
        <property name="icon">
         <iconset resource="../Path.qrc">
-         <normaloff>:/icons/Path-BPause.svg</normaloff>:/icons/Path-BPause.svg</iconset>
+         <normaloff>:/icons/Path_BPause.svg</normaloff>:/icons/Path_BPause.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -99,7 +99,7 @@
        </property>
        <property name="icon">
         <iconset resource="../Path.qrc">
-         <normaloff>:/icons/Path-BStep.svg</normaloff>:/icons/Path-BStep.svg</iconset>
+         <normaloff>:/icons/Path_BStep.svg</normaloff>:/icons/Path_BStep.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -119,7 +119,7 @@
        </property>
        <property name="icon">
         <iconset resource="../Path.qrc">
-         <normaloff>:/icons/Path-BFastForward.svg</normaloff>:/icons/Path-BFastForward.svg</iconset>
+         <normaloff>:/icons/Path_BFastForward.svg</normaloff>:/icons/Path_BFastForward.svg</iconset>
        </property>
        <property name="iconSize">
         <size>

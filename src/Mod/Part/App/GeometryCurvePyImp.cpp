@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <sstream>
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -43,6 +44,7 @@
 # include <Geom_Surface.hxx>
 # include <GeomAdaptor_Curve.hxx>
 # include <GeomFill.hxx>
+# include <GeomLProp.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_BSplineSurface.hxx>
@@ -354,6 +356,136 @@ PyObject* GeometryCurvePy::parameterAtDistance(PyObject *args)
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
     return 0;
+}
+
+PyObject* GeometryCurvePy::getD0(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return nullptr;
+            gp_Pnt p;
+            c->D0(u, p);
+            return new Base::VectorPy(Base::Vector3d(p.X(),p.Y(),p.Z()));
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
+PyObject* GeometryCurvePy::getD1(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return nullptr;
+            gp_Pnt p;
+            gp_Vec v;
+            c->D1(u, p, v);
+            Py::Tuple tuple(2);
+            tuple.setItem(0, Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+            tuple.setItem(1, Py::Vector(Base::Vector3d(v.X(),v.Y(),v.Z())));
+            return Py::new_reference_to(tuple);
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
+PyObject* GeometryCurvePy::getD2(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return nullptr;
+            gp_Pnt p1;
+            gp_Vec v1, v2;
+            c->D2(u, p1, v1, v2);
+            Py::Tuple tuple(3);
+            tuple.setItem(0, Py::Vector(Base::Vector3d(p1.X(),p1.Y(),p1.Z())));
+            tuple.setItem(1, Py::Vector(Base::Vector3d(v1.X(),v1.Y(),v1.Z())));
+            tuple.setItem(2, Py::Vector(Base::Vector3d(v2.X(),v2.Y(),v2.Z())));
+            return Py::new_reference_to(tuple);
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
+PyObject* GeometryCurvePy::getD3(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return nullptr;
+            gp_Pnt p1;
+            gp_Vec v1, v2, v3;
+            c->D3(u, p1, v1, v2, v3);
+            Py::Tuple tuple(4);
+            tuple.setItem(0, Py::Vector(Base::Vector3d(p1.X(),p1.Y(),p1.Z())));
+            tuple.setItem(1, Py::Vector(Base::Vector3d(v1.X(),v1.Y(),v1.Z())));
+            tuple.setItem(2, Py::Vector(Base::Vector3d(v2.X(),v2.Y(),v2.Z())));
+            tuple.setItem(3, Py::Vector(Base::Vector3d(v3.X(),v3.Y(),v3.Z())));
+            return Py::new_reference_to(tuple);
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
+}
+
+PyObject* GeometryCurvePy::getDN(PyObject *args)
+{
+    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            int n;
+            double u;
+            if (!PyArg_ParseTuple(args, "di", &u, &n))
+                return nullptr;
+            gp_Vec v = c->DN(u, n);
+            return new Base::VectorPy(Base::Vector3d(v.X(),v.Y(),v.Z()));
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return nullptr;
 }
 
 PyObject* GeometryCurvePy::value(PyObject *args)
@@ -706,6 +838,84 @@ PyObject* GeometryCurvePy::approximateBSpline(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return 0;
     }
+}
+
+PyObject* GeometryCurvePy::continuityWith(PyObject *args)
+{
+    double u1 = -1.0, u2 = -1.0;
+    double tl = -1.0, ta = -1.0;
+    PyObject* curve;
+    PyObject* rev1 = Py_False;
+    PyObject* rev2 = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|ddO!O!dd",
+                          &GeometryCurvePy::Type, &curve,
+                          &u1, &u2,
+                          &PyBool_Type, &rev1,
+                          &PyBool_Type, &rev2,
+                          &tl, &ta))
+        return nullptr;
+
+    Handle(Geom_Geometry) g1 = getGeometryPtr()->handle();
+    Handle(Geom_Curve) c1 = Handle(Geom_Curve)::DownCast(g1);
+    Handle(Geom_Geometry) g2 = static_cast<GeometryCurvePy*>(curve)->getGeomCurvePtr()->handle();
+    Handle(Geom_Curve) c2 = Handle(Geom_Curve)::DownCast(g2);
+
+    // if no parameter value is given then by default use the end of the parameter range
+    if (u1 < 0.0)
+        u1 = c1->LastParameter();
+
+    // if no parameter value is given then by default use the start of the parameter range
+    if (u2 < 0.0)
+        u2 = c2->FirstParameter();
+
+    Standard_Boolean r1 = PyObject_IsTrue(rev1) ? Standard_True : Standard_False;
+    Standard_Boolean r2 = PyObject_IsTrue(rev2) ? Standard_True : Standard_False;
+
+    try {
+        if (!c1.IsNull() && !c2.IsNull()) {
+            GeomAbs_Shape c;
+            if (tl >= 0.0 && ta >= 0.0)
+                c = GeomLProp::Continuity(c1, c2, u1, u2, r1, r2, tl, ta);
+            else
+                c = GeomLProp::Continuity(c1, c2, u1, u2, r1, r2);
+
+            std::string str;
+            switch (c) {
+            case GeomAbs_C0:
+                str = "C0";
+                break;
+            case GeomAbs_G1:
+                str = "G1";
+                break;
+            case GeomAbs_C1:
+                str = "C1";
+                break;
+            case GeomAbs_G2:
+                str = "G2";
+                break;
+            case GeomAbs_C2:
+                str = "C2";
+                break;
+            case GeomAbs_C3:
+                str = "C3";
+                break;
+            case GeomAbs_CN:
+                str = "CN";
+                break;
+            default:
+                str = "Unknown";
+                break;
+            }
+            return Py_BuildValue("s", str.c_str());
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return 0;
 }
 
 Py::String GeometryCurvePy::getContinuity(void) const

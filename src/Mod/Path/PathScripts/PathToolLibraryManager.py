@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -168,7 +166,7 @@ class ToolLibraryManager():
     def getCurrentTable(self):
         ''' returns an object of the current tool table '''
         return self.getTableFromName(self.currentTableName)
-    
+
     def getTableFromName(self, name):
         ''' get the tool table object from the name '''
         for table in self.toolTables:
@@ -178,15 +176,15 @@ class ToolLibraryManager():
     def getNextToolTableName(self, tableName='Tool Table'):
         ''' get a unique name for a new tool table '''
         iter = 1
-        tempName = tableName[-2:] 
+        tempName = tableName[-2:]
 
         if tempName[0] == '-' and tempName[-1].isdigit():
             tableName = tableName[:-2]
 
         while any(table.Name == tableName + '-' + str(iter) for table in self.toolTables):
-            iter += 1              
-        
-        return tableName + '-' + str(iter) 
+            iter += 1
+
+        return tableName + '-' + str(iter)
 
     def addNewToolTable(self):
         ''' creates a new tool table '''
@@ -201,7 +199,7 @@ class ToolLibraryManager():
     def deleteToolTable(self):
         ''' deletes the selected tool table '''
         if len(self.toolTables):
-            index = next((index for (index, d) in enumerate(self.toolTables) if d.Name == self.currentTableName), None) 
+            index = next((index for (index, d) in enumerate(self.toolTables) if d.Name == self.currentTableName), None)
             self.toolTables.pop(index)
             self.saveMainLibrary()
 
@@ -219,7 +217,7 @@ class ToolLibraryManager():
             tt.Name = newName
             self.saveMainLibrary()
             return True
-        
+
 
     def templateAttrs(self):
         ''' gets the tool table arributes '''
@@ -235,12 +233,12 @@ class ToolLibraryManager():
 
             tableData['Tools'] = toolData
             toolTables.append(tableData)
-                  
+
         return toolTables
 
     def tooltableFromAttrs(self, stringattrs):
         if stringattrs.get('Version') and 1 == int(stringattrs['Version']):
-            
+
             tt = Path.Tooltable()
             tt.Version = 1
             tt.Name = self.getNextToolTableName()
@@ -252,9 +250,9 @@ class ToolLibraryManager():
                 tt.Name = stringattrs.get('TableName')
                 if any(table.Name == tt.Name for table in self.toolTables):
                     tt.Name = self.getNextToolTableName(tt.Name)
-            
+
             for key, attrs in PathUtil.keyValueIter(stringattrs['Tools']):
-                    tool = Path.Tool() 
+                    tool = Path.Tool()
                     tool.Name = str(attrs["name"])
                     tool.ToolType = str(attrs["tooltype"])
                     tool.Material = str(attrs["material"])
@@ -316,7 +314,7 @@ class ToolLibraryManager():
             if hasattr(o, "Proxy"):
                 if isinstance(o.Proxy, PathScripts.PathJob.ObjectJob):
                     tablelist.append(o.Label)
-                    
+
         return tablelist
 
     def getTool(self, listname, toolnum):
@@ -394,14 +392,14 @@ class ToolLibraryManager():
 
                     if isinstance(tableData, list):
                         for table in tableData:
-                            ht = self.tooltableFromAttrs(table)                 
+                            ht = self.tooltableFromAttrs(table)
                             if ht:
                                 importedTables.append(ht)
 
             if importedTables:
                 for tt in importedTables:
                     self.toolTables.append(tt)
-                
+
                 self.saveMainLibrary()
                 return True
             else:

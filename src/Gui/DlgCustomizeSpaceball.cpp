@@ -33,6 +33,7 @@
 #include <QPrinter>
 #include <QPainter>
 #include <QTableView>
+#include <QComboBox>
 #endif
 
 #include "Base/Console.h"
@@ -55,11 +56,12 @@ ButtonView::ButtonView(QWidget *parent) : QListView(parent)
 void ButtonView::selectButton(int number)
 {
     this->selectionModel()->select(this->model()->index(number, 0), QItemSelectionModel::ClearAndSelect);
+    this->scrollTo(this->model()->index(number, 0), QAbstractItemView::EnsureVisible);
 }
 
 void ButtonView::goSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    Q_UNUSED(deselected); 
+    Q_UNUSED(deselected);
     if (selected.indexes().isEmpty())
         return;
     QModelIndex select(selected.indexes().at(0));
@@ -78,14 +80,14 @@ void ButtonView::goChangedCommand(const QString& commandName)
 
 ButtonModel::ButtonModel(QObject *parent) : QAbstractListModel(parent)
 {
-   load3DConnexionButtons("SpacePilot Pro");
+   //load3DConnexionButtons("SpacePilot Pro");
 }
 
 // Process the given Mapping tree to load in the Button mappings.
 void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree ButtonMapTree)
 {
    spaceballButtonGroup()->Clear();
-   
+
    BOOST_FOREACH(const boost::property_tree::ptree::value_type &Map, ButtonMapTree.get_child("Mapping"))
    {
       if ("Map" == Map.first)
@@ -94,7 +96,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
          std::string ButtonCode;
          std::string ButtonCommand;
          std::string ButtonDownTime;
-         
+
          // Inspect Map attributes
          BOOST_FOREACH(const boost::property_tree::ptree::value_type &kv, Map.second.get_child("<xmlattr>"))
          {
@@ -103,7 +105,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
 
             Attribute = kv.first.data();
             Value = kv.second.data();
-     
+
             if (0 == Attribute.compare("Description"))
             {
                ButtonDescription = Value;
@@ -121,7 +123,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
                ButtonCommand = Value;
             }
          }
-         
+
          // ButtonCode is mandatory, the remaining attributes optional.
          if (!ButtonCode.empty())
          {
@@ -129,6 +131,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
 
             newGroup = spaceballButtonGroup()->GetGroup(ButtonCode.c_str());
             newGroup->SetASCII("Command", ButtonCommand.c_str());
+            newGroup->SetASCII("Description", ButtonDescription.c_str());
          }
       }
    }
@@ -142,7 +145,7 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
    {
       boost::property_tree::ptree tree;
       boost::property_tree::ptree DeviceTree;
-    
+
       // exception thrown if no file found
       std::string path = App::Application::getResourceDir();
       path += "3Dconnexion/3DConnexion.xml";
@@ -167,7 +170,7 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
                   {
                      // We found the ButtonMap we want to load up
                      DeviceTree = ButtonMap.second;
-                  } 
+                  }
                }
             }
          }
@@ -184,10 +187,10 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
       Base::Console().Warning("%s\n", e.what());
    }
 }
-    
+
 int ButtonModel::rowCount (const QModelIndex &parent) const
 {
-    Q_UNUSED(parent); 
+    Q_UNUSED(parent);
     return spaceballButtonGroup()->GetGroups().size();
 }
 
@@ -224,6 +227,7 @@ void ButtonModel::insertButtonRows(int number)
         groupName.setNum(index);
         Base::Reference<ParameterGrp> newGroup = spaceballButtonGroup()->GetGroup(groupName.toLatin1());//builds the group.
         newGroup->SetASCII("Command", "");
+        newGroup->SetASCII("Description", "");
     }
     endInsertRows();
     return;
@@ -269,10 +273,26 @@ ParameterGrp::handle ButtonModel::spaceballButtonGroup() const
 
 QString ButtonModel::getLabel(const int &number) const
 {
-    if (number > -1 && number < 20)
-        return tr("Button %1").arg(number+1);
-    else
+    if (number > -1 && number < 32) {
+        QString numberString;
+        numberString.setNum(number);
+        QString desc = QString::fromStdString(spaceballButtonGroup()->
+                                              GetGroup(numberString.toLatin1())->
+                                              GetASCII("Description",""));
+        if (desc.length())
+            desc = tr(" \"") + desc + tr("\"");
+        return tr("Button %1").arg(number + 1) + desc;
+    } else
         return tr("Out Of Range");
+}
+
+void ButtonModel::loadConfig(const char *RequiredDeviceName)
+{
+    goClear();
+    if (!RequiredDeviceName) {
+        return;
+    }
+    load3DConnexionButtons(RequiredDeviceName);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -384,7 +404,7 @@ int CommandModel::rowCount(const QModelIndex &parent) const
 
 int CommandModel::columnCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent); 
+    Q_UNUSED(parent);
     return 1;
 }
 
@@ -581,13 +601,13 @@ PrintModel::PrintModel(QObject *parent, ButtonModel *buttonModelIn, CommandModel
 
 int PrintModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent); 
+    Q_UNUSED(parent);
     return buttonModel->rowCount();
 }
 
 int PrintModel::columnCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent); 
+    Q_UNUSED(parent);
     return 2;
 }
 
@@ -631,8 +651,14 @@ QVariant PrintModel::headerData(int section, Qt::Orientation orientation, int ro
 ///////////////////////////////////////////////////////////////////////////////////////
 
 DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
-  : CustomizeActionPage(parent), buttonView(0), buttonModel(0),
-    commandView(0), commandModel(0), clearButton(0), printReference(0)
+  : CustomizeActionPage(parent)
+  , buttonView(nullptr)
+  , buttonModel(nullptr)
+  , commandView(nullptr)
+  , commandModel(nullptr)
+  , clearButton(nullptr)
+  , printReference(nullptr)
+  , devModel(nullptr)
 {
     this->setWindowTitle(tr("Spaceball Buttons"));
     GUIApplicationNativeEventAware *app = qobject_cast<GUIApplicationNativeEventAware *>(QApplication::instance());
@@ -693,11 +719,26 @@ void DlgCustomizeSpaceball::setupCommandModelView()
 void DlgCustomizeSpaceball::setupLayout()
 {
     QLabel *buttonLabel = new QLabel(tr("Buttons"), this);
-    clearButton = new QPushButton(tr("Clear"), this);
+    clearButton = new QPushButton(tr("Reset"), this);
+    devModel = new QComboBox(this);
+
+    // Load the devModel(s) from the config xml file
+    devModel->addItems(getModels());
+
+    // Select the current preference or the first entry
+    QString model = QString::fromStdString(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+            GetGroup("Spaceball")->GetASCII("Model",""));
+    if (model.length() > 0) {
+        devModel->setCurrentIndex(devModel->findText(model));
+    } else {
+        devModel->setCurrentIndex(0);
+    }
+
     QVBoxLayout *buttonGroup = new QVBoxLayout();
     buttonGroup->addWidget(buttonLabel);
     buttonGroup->addWidget(buttonView);
     QHBoxLayout *clearLayout = new QHBoxLayout();
+    clearLayout->addWidget(devModel);
     clearLayout->addWidget(clearButton);
     clearLayout->addStretch();
     buttonGroup->addLayout(clearLayout);
@@ -730,7 +771,12 @@ void DlgCustomizeSpaceball::goClear()
     commandView->clearSelection();
     commandView->collapseAll();
     commandView->setDisabled(true);
-    buttonModel->goClear();
+    //buttonModel->goClear();
+
+    QByteArray currentDevice = devModel->currentText().toLocal8Bit();
+    App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+            GetGroup("Spaceball")->SetASCII("Model", currentDevice.data());
+    buttonModel->loadConfig(currentDevice.data());
 }
 
 void DlgCustomizeSpaceball::goPrint()
@@ -825,7 +871,50 @@ void DlgCustomizeSpaceball::onRemoveMacroAction(const QByteArray &macroName)
 void DlgCustomizeSpaceball::onModifyMacroAction(const QByteArray &macroName)
 {
     //don't think I need to do anything here.
-    Q_UNUSED(macroName); 
+    Q_UNUSED(macroName);
+}
+
+QStringList DlgCustomizeSpaceball::getModels()
+{
+    QStringList modelList;
+    try
+    {
+       boost::property_tree::ptree tree;
+       boost::property_tree::ptree DeviceTree;
+
+       // exception thrown if no file found
+       std::string path = App::Application::getResourceDir();
+       path += "3Dconnexion/3DConnexion.xml";
+       read_xml(path.c_str(), tree);
+
+       BOOST_FOREACH(const boost::property_tree::ptree::value_type &ButtonMap, tree.get_child(""))
+       {
+          if ("ButtonMap" == ButtonMap.first)
+          {
+             // Inspect ButtonMap attributes for DeviceName
+             BOOST_FOREACH(const boost::property_tree::ptree::value_type &kv, ButtonMap.second.get_child("<xmlattr>"))
+             {
+                std::string Attribute;
+                std::string Value;
+
+                Attribute = kv.first.data();
+                Value = kv.second.data();
+
+                if (0 == Attribute.compare("DeviceName"))
+                {
+                    modelList << QString::fromStdString(Value);
+                }
+             }
+          }
+       }
+    }
+    catch (const std::exception& e)
+    {
+       // We don't mind not finding the file to be opened
+       Base::Console().Warning("%s\n", e.what());
+    }
+
+    return modelList;
 }
 
 #include "moc_DlgCustomizeSpaceball.cpp"

@@ -202,6 +202,12 @@ QString PreferencesGui::weldingDirectory()
                                     
     std::string symbolDir = hGrp->GetASCII("WeldingDir", defaultDir.c_str());
     QString qSymbolDir = QString::fromUtf8(symbolDir.c_str());
+    Base::FileInfo fi(symbolDir);
+    if (!fi.isReadable()) {
+        qSymbolDir = QString::fromUtf8(defaultDir.c_str());
+        Base::Console().Warning("Welding Directory: %s is not readable\n", symbolDir.c_str());
+
+    }
     return qSymbolDir;
 }
 

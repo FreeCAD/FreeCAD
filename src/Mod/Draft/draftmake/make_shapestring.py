@@ -20,18 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_shapestring function.
-"""
+"""Provides functions to create ShapeString objects."""
 ## @package make_shapestring
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_shapestring function.
+# \ingroup draftmake
+# \brief Provides functions to create ShapeString objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.shapestring import ShapeString
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
 
@@ -61,12 +61,14 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
 
     if App.GuiUp:
         ViewProviderDraft(obj.ViewObject)
-        format_object(obj)
+        gui_utils.format_object(obj)
         obrep = obj.ViewObject
         if "PointSize" in obrep.PropertiesList: obrep.PointSize = 1 # hide the segment end points
-        select(obj)
+        gui_utils.select(obj)
     obj.recompute()
     return obj
 
 
 makeShapeString = make_shapestring
+
+## @}

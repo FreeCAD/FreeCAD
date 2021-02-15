@@ -1,4 +1,3 @@
-"""Initialization of the Arch workbench (graphical interface)."""
 # ***************************************************************************
 # *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -19,6 +18,9 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
+"""Initialization of the Arch workbench (graphical interface)."""
+
 import os
 import FreeCAD
 import FreeCADGui
@@ -65,7 +67,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
                           "Arch_SectionPlane", "Arch_Space", "Arch_Stairs",
                           "Arch_PanelTools", "Arch_Equipment",
                           "Arch_Frame", "Arch_Fence", "Arch_Truss",
-                          "Arch_MaterialTools",
+                          "Arch_Profile","Arch_MaterialTools",
                           "Arch_Schedule", "Arch_PipeTools",
                           "Arch_CutPlane", "Arch_CutLine",
                           "Arch_Add", "Arch_Remove", "Arch_Survey"]

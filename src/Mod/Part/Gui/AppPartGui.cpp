@@ -38,6 +38,7 @@
 #include "ViewProvider.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderPython.h"
+#include "ViewProviderPrimitive.h"
 #include "ViewProviderBox.h"
 #include "ViewProviderCurveNet.h"
 #include "ViewProviderImport.h"
@@ -125,6 +126,12 @@ PyMOD_INIT_FUNC(PartGui)
 
     Base::Console().Log("Loading GUI of Part module... done\n");
 
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/booleans"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/create"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/measure"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/parametric"));
+    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
+
 #if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef pAttachEngineTextsModuleDef = {
         PyModuleDef_HEAD_INIT,
@@ -149,8 +156,11 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::SoFCControlPoints                      ::initClass();
     PartGui::ViewProviderAttachExtension            ::init();
     PartGui::ViewProviderAttachExtensionPython      ::init();
+    PartGui::ViewProviderSplineExtension            ::init();
+    PartGui::ViewProviderSplineExtensionPython      ::init();
     PartGui::ViewProviderPartExt                    ::init();
     PartGui::ViewProviderPart                       ::init();
+    PartGui::ViewProviderPrimitive                  ::init();
     PartGui::ViewProviderEllipsoid                  ::init();
     PartGui::ViewProviderPython                     ::init();
     PartGui::ViewProviderBox                        ::init();
@@ -162,6 +172,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderExtrusion                  ::init();
     PartGui::ViewProvider2DObject                   ::init();
     PartGui::ViewProvider2DObjectPython             ::init();
+    PartGui::ViewProvider2DObjectGrid               ::init();
     PartGui::ViewProviderMirror                     ::init();
     PartGui::ViewProviderFillet                     ::init();
     PartGui::ViewProviderChamfer                    ::init();
@@ -214,9 +225,9 @@ PyMOD_INIT_FUNC(PartGui)
     // register preferences pages
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );
     (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>   ( QT_TRANSLATE_NOOP("QObject","Part design") );
+    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Part design") );
     (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
     (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
-    (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
     Gui::ViewProviderBuilder::add(
         Part::PropertyPartShape::getClassTypeId(),
         PartGui::ViewProviderPart::getClassTypeId());

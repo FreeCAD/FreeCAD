@@ -153,7 +153,7 @@
            <string>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</string>
           </property>
           <property name="value">
-           <number>0</number>
+           <number>16</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>useMaxFN</cstring>

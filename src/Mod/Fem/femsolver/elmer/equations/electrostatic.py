@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver Elmer equation object Electrostatic"
+__title__  = "FreeCAD FEM solver Elmer equation object Electrostatic"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -45,24 +45,42 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyBool", "CalculateElectricField",
-            "Electrostatic", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculateElectricField",
+            "Electrostatic",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyBool", "CalculateElectricFlux",
-            "Electrostatic", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculateElectricFlux",
+            "Electrostatic",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyBool", "CalculateElectricEnergy",
-            "Electrostatic", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculateElectricEnergy",
+            "Electrostatic",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyBool", "CalculateSurfaceCharge",
-            "Electrostatic", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculateSurfaceCharge",
+            "Electrostatic",
+            ""
+        )
         obj.addProperty(
-            "App::PropertyBool", "CalculateCapacitanceMatrix",
-            "Electrostatic", "Select type of solver for linear system")
+            "App::PropertyBool",
+            "CalculateCapacitanceMatrix",
+            "Electrostatic",
+            ""
+        )
         """
-        #obj.addProperty(
-            #"App::PropertyInteger", "CapacitanceBodies",
-            #"Electrostatic", "Select type of solver for linear system")
+        obj.addProperty(
+            "App::PropertyInteger",
+            "CapacitanceBodies",
+            "Electrostatic",
+            ""
+        )
         """
 
         obj.Priority = 10

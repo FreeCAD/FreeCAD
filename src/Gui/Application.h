@@ -91,6 +91,8 @@ public:
     void onUpdate(void);
     /// call update to all views of the active document
     void updateActive(void);
+    /// call update to all command actions
+    void updateActions(bool delay = false);
     //@}
 
     /** @name Signals of the Application */
@@ -258,11 +260,6 @@ public:
 
     static PyObject* sRunCommand               (PyObject *self,PyObject *args);
     static PyObject* sAddCommand               (PyObject *self,PyObject *args);
-    static PyObject* sGetCommandInfo           (PyObject *self,PyObject *args);
-    static PyObject* sListCommands             (PyObject *self,PyObject *args);
-    static PyObject* sGetCommandShortcut       (PyObject *self,PyObject *args);
-    static PyObject* sIsCommandActive          (PyObject *self,PyObject *args);
-    static PyObject* sUpdateCommands           (PyObject *self,PyObject *args);
 
     static PyObject* sHide                     (PyObject *self,PyObject *args); // deprecated
     static PyObject* sShow                     (PyObject *self,PyObject *args); // deprecated

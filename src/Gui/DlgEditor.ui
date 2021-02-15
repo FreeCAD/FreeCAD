@@ -71,9 +71,6 @@
       </item>
       <item row="4" column="1" rowspan="3" colspan="2">
        <widget class="QTextEdit" name="textEdit1">
-        <property name="tabStopWidth">
-         <number>40</number>
-        </property>
        </widget>
       </item>
       <item row="0" column="2">

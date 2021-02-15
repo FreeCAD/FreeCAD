@@ -53,7 +53,7 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
 }
 
 /// destructor
-PyObjectBase::~PyObjectBase() 
+PyObjectBase::~PyObjectBase()
 {
     PyGILStateLocker lock;
 #ifdef FC_LOGPYOBJECTS
@@ -66,14 +66,19 @@ PyObjectBase::~PyObjectBase()
  * PyObjectBase Type		-- Every class, even the abstract one should have a Type
 ------------------------------*/
 
-/** \brief 
- * To prevent subclasses of PyTypeObject to be subclassed in Python we should remove 
+/** \brief
+ * To prevent subclasses of PyTypeObject to be subclassed in Python we should remove
  * the Py_TPFLAGS_BASETYPE flag. For example, the classes App::VectorPy and App::MatrixPy
  * have removed this flag and its Python proxies App.Vector and App.Matrix cannot be subclassed.
  * In case we want to allow to derive from subclasses of PyTypeObject in Python
  * we must either reimplement tp_new, tp_dealloc, tp_getattr, tp_setattr, tp_repr or set them to
  * 0 and define tp_base as 0.
  */
+
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 PyTypeObject PyObjectBase::Type = {
     PyVarObject_HEAD_INIT(&PyType_Type,0)
@@ -133,7 +138,18 @@ PyTypeObject PyObjectBase::Type = {
 #if PY_MAJOR_VERSION >= 3
     ,0                                                      /*tp_finalize */
 #endif
+#if PY_VERSION_HEX >= 0x03090000
+    ,0                                                      /*tp_vectorcall */
+#elif PY_VERSION_HEX >= 0x03080000
+    ,0                                                      /*tp_vectorcall */
+    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
+    ,0                                                      /*tp_print */
+#endif
 };
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 /*------------------------------
  * PyObjectBase Methods 	-- Every class, even the abstract one should have a Methods
@@ -256,8 +272,8 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 PyObject *PyObjectBase::_getattr(const char *attr)
 {
     if (streq(attr, "__class__")) {
-        // Note: We must return the type object here, 
-        // so that our own types feel as really Python objects 
+        // Note: We must return the type object here,
+        // so that our own types feel as really Python objects
         Py_INCREF(Py_TYPE(this));
         return (PyObject *)(Py_TYPE(this));
     }

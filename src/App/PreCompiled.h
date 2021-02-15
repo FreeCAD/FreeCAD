@@ -39,7 +39,9 @@
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #endif
 
 #ifdef _PreComp_
@@ -61,7 +63,7 @@
 #include <iostream>
 #include <sstream>
 
-// STL 
+// STL
 #include <string>
 #include <list>
 #include <map>
@@ -78,13 +80,13 @@
 #include <iterator>
 
 // Boost
-#include <boost/signals2.hpp>
-#include <boost/bind.hpp>
+#include <boost_signals2.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/regex.hpp>
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 
 #include <boost/program_options.hpp>
 //namespace po = boost::program_options;

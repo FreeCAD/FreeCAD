@@ -33,8 +33,10 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
-      <source>Curve on mesh</source>
-      <translation>Görbe a hálón</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation>Közelítő ívet hoz létre a háló tetején.
+Ez a parancs csak 'háló' objektummal működik.</translation>
     </message>
   </context>
   <context>
@@ -90,6 +92,19 @@
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Egy síkkal metsz egy hálótestet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation type="unfinished">Trim with plane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation type="unfinished">Section with plane</translation>
     </message>
   </context>
   <context>
@@ -152,12 +167,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Csatlakoztassa az éleket, ha a távolság kisebb, mint</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Hiba</translation>
     </message>
   </context>
   <context>
@@ -201,47 +216,56 @@
       <translation>Görbe a hálón</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation>Nyomja le a 'Start' gombot, majd válasszon pontokat a hálón; ha elegendő pont van beállítva, kattintson a jobb gombbal, és válassza a 'Létrehozás' parancsot. Ismételje meg ezt a folyamatot, hogy több görbét hozzon létre. A művelet végrehajtásához zárja be ezt a feladatpanelt.
+
+Ez a parancs csak 'háló' objektummal működik, normál felülettel vagy felszínnel nem. Az objektum hálóvá alakításához használja a Háló munkaterület eszközeit.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
       <translation>Drótháló</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
-      <source>Snap tolerance to vertexes</source>
-      <translation>Tűrés illesztése végpontokhoz</translation>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
+      <translation>A csúcsokkal szembeni raszteres tűrés</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
       <translation>Határérték felosztás</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
       <translation>Hozzávetőleges görbe</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
       <translation>Tűrés a hálóhoz</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
       <translation>Folytonosság</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
       <source>Maximum curve degree</source>
       <translation>Hozzávetőleges szöge a görbének</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
       <translation>Kezdő időpont</translation>
     </message>
@@ -281,12 +305,12 @@
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
+      <translation>Használja a szabványos hálógenerálót</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>A hálószakasz maximális lineáris elhajlása az objektum felületétől</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -296,14 +320,14 @@
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>A hálószakasz maximális szöghajlása a következő szakaszig</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>A hálószegmens maximális lineáris eltérése a megadott
+felületeltérés szorozva az aktuális hálószakasz hosszával (él)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -313,7 +337,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>A háló az objektum felület színeit kapja</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -325,9 +349,9 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>A hálószegmensek az objektum felületek színe szerint lesznek csoportosítva.
+Ezek a csoportok a hálókimeneti formátumokhoz lesznek exportálva, amelyek 
+támogatják ezt a tulajdonságot (pl. OBJ formátum).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -337,7 +361,7 @@ this feature (e.g. the format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation type="unfinished">Use the Mefisto mesher</translation>
+      <translation>Használja a Mefisto hálógenerálót</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -348,18 +372,18 @@ this feature (e.g. the format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation type="unfinished">If this number is smaller the mesh becomes finer.
-The smallest value is 0.</translation>
+      <translation>Ha ez a szám kisebb, a háló finomabb lesz.
+A legkisebb érték 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Becslés</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation type="unfinished">Use the Netgen mesher</translation>
+      <translation>Használja a Netgen hálógenerálót</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
@@ -405,8 +429,8 @@ The smallest value is 0.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
-A value in the range of 0.1-1.</translation>
+      <translation>Ha ez a paraméter kisebb, a háló finomabb lesz.
+0.1-1 tartományban lévő érték.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
@@ -418,8 +442,8 @@ A value in the range of 0.1-1.</translation>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation type="unfinished">If this parameter is larger, the mesh becomes finer.
-A value in the range of 0.2-10.</translation>
+      <translation>Ha ez a paraméter nagyobb, a háló finomabb lesz.
+0.2-10-es tartományban lévő érték.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
@@ -429,7 +453,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation type="unfinished">Whether optimization of surface shape will be done</translation>
+      <translation>A felületalakzat optimalizálása megtörténik-e</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -439,7 +463,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation type="unfinished">Whether second order elements will be generated</translation>
+      <translation>A rendszer létrehoz-e másodrendű elemeket</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
@@ -449,7 +473,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation type="unfinished">Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation>Jelzi, hogy a hálók elrendezéséhez lehetőleg a négyoldalú felületeket használata</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -459,12 +483,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>A panel nyitva hagyása</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
       <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <translation>gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="226"/>
@@ -516,12 +540,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Alá</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Fölé</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

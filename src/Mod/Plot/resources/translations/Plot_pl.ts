@@ -120,7 +120,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="213"/>
       <source>Apply to all axes</source>
-      <translation>Zastosuj do wszystkich osi</translation>
+      <translation>Zastosuj dla wszystkich osi</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="217"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="164"/>
       <source>Title font size</source>
-      <translation>Rozmiar czcionki tytułu</translation>
+      <translation>Rozmiar czcionki dla tytułu</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="169"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="174"/>
       <source>X axis title font size</source>
-      <translation>Rozmiar czcionki tytułu osi X</translation>
+      <translation>Rozmiar czcionki dla tytułu osi X</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="179"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="184"/>
       <source>Y axis title font size</source>
-      <translation>Rozmiar czcionki tytułu osi Y</translation>
+      <translation>Rozmiar czcionki dla tytułu osi Y</translation>
     </message>
   </context>
   <context>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="198"/>
       <source>Line width</source>
-      <translation>Szerekość linii</translation>
+      <translation>Szerokość linii</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="203"/>

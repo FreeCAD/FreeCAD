@@ -27,7 +27,7 @@ macro(PrintFinalReport)
         message(STATUS "pybind11:            not enabled")
     endif(DEFINED pybind11_FOUND)
 
-    message(STATUS "Boost:               ${Boost_VERSION}")
+    message(STATUS "Boost:               ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION} (${Boost_VERSION})")
 
     message(STATUS "XercesC:             [${XercesC_LIBRARIES}] [${XercesC_INCLUDE_DIRS}]")
 
@@ -35,7 +35,7 @@ macro(PrintFinalReport)
 
     message(STATUS "PyCXX:               [${PYCXX_INCLUDE_DIR}]")
 
-    message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}]")
+    message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}] [${OCC_LIBRARY_DIR}] [${OCC_INCLUDE_DIR}]")
 
     if(BUILD_SMESH)
         if(FREECAD_USE_EXTERNAL_SMESH)
@@ -51,7 +51,7 @@ macro(PrintFinalReport)
     endif(BUILD_SMESH)
 
     if(DEFINED NETGEN_FOUND)
-        message(STATUS "NETGEN:              ${NETGEN_VERSION} [${NETGEN_DEFINITIONS}] [${NETGEN_CXX_FLAGS}] [${NGLIB_INCLUDE_DIR}] [${NGLIB_LIBRARIES}] [${NETGEN_INCLUDE_DIRS}]")
+        message(STATUS "NETGEN:              ${NETGEN_VERSION_MAJOR}.${NETGEN_VERSION_MINOR}.${NETGEN_VERSION_PATCH} (${NETGEN_VERSION}) [${NETGEN_DEFINITIONS}] [${NETGEN_CXX_FLAGS}] [${NGLIB_INCLUDE_DIR}] [${NGLIB_LIBRARIES}] [${NETGEN_INCLUDE_DIRS}]")
     else(DEFINED NETGEN_FOUND)
         message(STATUS "NETGEN:              not enabled")
     endif(DEFINED NETGEN_FOUND)
@@ -163,6 +163,7 @@ macro(PrintFinalReport)
         message(STATUS "Freetype:            disabled")
     endif(FREECAD_USE_FREETYPE)
 
+    message(STATUS "OpenGL:              ${OPENGL_gl_LIBRARY}")
     message(STATUS "OpenGLU:             ${OPENGL_glu_LIBRARY} [${OPENGL_glu_LIBRARY}][${OPENGL_INCLUDE_DIR}]")
 
     message(STATUS "Coin3D:              [${COIN3D_LIBRARIES}] [${COIN3D_INCLUDE_DIRS}]")
@@ -223,8 +224,7 @@ macro(PrintFinalReport)
                 file(COPY ${FREECAD_LIBPACK_DIR}/plugins/styles DESTINATION ${CMAKE_BINARY_DIR}/bin)
                 file(COPY ${FREECAD_LIBPACK_DIR}/plugins/printsupport DESTINATION ${CMAKE_BINARY_DIR}/bin)
                 file(COPY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR})
-                file(COPY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide2/translations/qtwebengine_locales
-                    DESTINATION ${CMAKE_BINARY_DIR}/bin)
+                file(COPY ${FREECAD_LIBPACK_DIR}/translations/qtwebengine_locales DESTINATION ${CMAKE_BINARY_DIR}/translations)
                 message(STATUS "... end copying.\n=======================================\n")
             endif(FREECAD_COPY_DEPEND_DIRS_TO_BUILD)
 
@@ -258,7 +258,7 @@ macro(PrintFinalReport)
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/sqldrivers DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/styles DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/plugins/printsupport DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
-                install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin/Lib/site-packages/PySide2/translations/qtwebengine_locales DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+                install(DIRECTORY ${FREECAD_LIBPACK_DIR}/translations/qtwebengine_locales DESTINATION ${CMAKE_INSTALL_PREFIX}/translations)
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/resources DESTINATION ${CMAKE_INSTALL_PREFIX})
                 install(DIRECTORY ${FREECAD_LIBPACK_DIR}/bin DESTINATION ${CMAKE_INSTALL_PREFIX})
                 message(STATUS "Created install commands for INSTALL target.\n")

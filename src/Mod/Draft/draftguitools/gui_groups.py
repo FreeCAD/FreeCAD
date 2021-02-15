@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools to do various operations with groups.
+"""Provides GUI tools to do various operations with groups.
 
 For example, add objects to groups, select objects inside groups,
 set the automatic group in which to create objects, and add objects
 to the construction group.
 """
 ## @package gui_groups
-# \ingroup DRAFT
-# \brief Provides tools to do various operations with groups.
+# \ingroup draftguitools
+# \brief Provides GUI tools to do various operations with groups.
 
+## \addtogroup draftguitools
+# @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -39,8 +41,10 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import draftutils.utils as utils
+import draftutils.groups as groups
 import draftguitools.gui_base as gui_base
-from draftutils.translate import _tr, translate
+
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -57,21 +61,16 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(AddToGroup, self).__init__(name=_tr("Add to group"))
-        self.ungroup = QT_TRANSLATE_NOOP("Draft_AddToGroup",
-                                         "Ungroup")
+        super(AddToGroup, self).__init__(name=translate("draft","Add to group"))
+        self.ungroup = QT_TRANSLATE_NOOP("Draft_AddToGroup","Ungroup")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tooltip = ("Moves the selected objects to an existing group, "
-                    "or removes them from any group.\n"
-                    "Create a group first to use this tool.")
+        _tooltip = ()
 
         d = {'Pixmap': 'Draft_AddToGroup',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_AddToGroup",
-                                           "Move to group"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup",
-                                          _tooltip)}
+             'MenuText': QT_TRANSLATE_NOOP("Draft_AddToGroup","Move to group")+"...",
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddToGroup","Moves the selected objects to an existing group, or removes them from any group.\nCreate a group first to use this tool.")}
         return d
 
     def Activated(self):
@@ -79,7 +78,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
         super(AddToGroup, self).Activated()
 
         self.groups = [self.ungroup]
-        self.groups.extend(utils.get_group_names())
+        self.groups.extend(groups.get_group_names())
 
         self.labels = [self.ungroup]
         for group in self.groups:
@@ -115,7 +114,7 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
         if labelname == self.ungroup:
             for obj in Gui.Selection.getSelection():
                 try:
-                    utils.ungroup(obj)
+                    groups.ungroup(obj)
                 except Exception:
                     pass
         else:
@@ -157,24 +156,15 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(SelectGroup, self).__init__(name=_tr("Select group"))
+        super(SelectGroup, self).__init__(name=translate("draft","Select group"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tooltip = ("If the selection is a group, it selects all objects "
-                    "that are inside this group, including those in "
-                    "nested sub-groups.\n"
-                    "\n"
-                    "If the selection is a simple object inside a group, "
-                    'it will select the "brother" objects, that is,\n'
-                    "those that are at the same level as this object, "
-                    "including the upper group that contains them all.")
 
         d = {'Pixmap': 'Draft_SelectGroup',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectGroup",
-                                           "Select group"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectGroup",
-                                          _tooltip)}
+             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectGroup","Select group"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectGroup","If the selection is a group, it selects all objects that are inside this group, including those in nested sub-groups.\n\nIf the selection is a simple object inside a group, it will select the \"brother\" objects, that is,\nthose that are at the same level as this object, including the upper group that contains them all.")}
+
         return d
 
     def Activated(self):
@@ -193,7 +183,7 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
         sel = Gui.Selection.getSelection()
         if len(sel) == 1:
             if sel[0].isDerivedFrom("App::DocumentObjectGroup"):
-                cts = utils.get_group_contents(Gui.Selection.getSelection())
+                cts = groups.get_group_contents(Gui.Selection.getSelection())
                 for o in cts:
                     Gui.Selection.addSelection(o)
                 return
@@ -240,15 +230,14 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
     """GuiCommand for the Draft_AutoGroup tool."""
 
     def __init__(self):
-        super(SetAutoGroup, self).__init__(name=_tr("Autogroup"))
+        super(SetAutoGroup, self).__init__(name=translate("draft","Autogroup"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Select a group to add all Draft and Arch objects to."
 
         return {'Pixmap': 'Draft_AutoGroup',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Autogroup"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_AutoGroup", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to add all Draft and Arch objects to.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -281,7 +270,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         self.groups = ["None"]
         gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
         if App.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups", False):
-            gn.extend(utils.get_group_names())
+            gn.extend(groups.get_group_names())
         if gn:
             self.groups.extend(gn)
             self.labels = [translate("draft", "None")]
@@ -345,18 +334,14 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(AddToConstruction, self).__init__(name=_tr("Add to construction group"))
+        super(AddToConstruction, self).__init__(name=translate("draft","Add to construction group"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Add to Construction group"
-        _tip = ("Adds the selected objects to the construction group,\n"
-                "and changes their appearance to the construction style.\n"
-                "It creates a construction group if it doesn't exist.")
 
         d = {'Pixmap': 'Draft_AddConstruction',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", _menu),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddConstruction", _tip)}
+             'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to Construction group"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the construction group,\nand changes their appearance to the construction style.\nIt creates a construction group if it doesn't exist.")}
         return d
 
     def Activated(self):
@@ -394,3 +379,5 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
 
 Draft_AddConstruction = AddToConstruction
 Gui.addCommand('Draft_AddConstruction', AddToConstruction())
+
+## @}

@@ -20,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Tools for the work with finite element meshes"
+__title__  = "Tools for the work with finite element meshes"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -735,7 +735,7 @@ def get_elset_short_name(
     i
 ):
     from femtools.femutils import is_of_type
-    if is_of_type(obj, "Fem::Material"):
+    if is_of_type(obj, "Fem::MaterialCommon"):
         return "M" + str(i)
     elif is_of_type(obj, "Fem::ElementGeometry1D"):
         return "B" + str(i)
@@ -1621,6 +1621,9 @@ def get_pressure_obj_faces(
                     # 0 if femmeshface normal == reference face normal direction
                     # -1 if femmeshface normal opposite reference face normal direction
                     # easy on plane faces, but on a half sphere ... ?!?
+                    # might be useful to add ...
+                    # How to find the orientation of a FEM mesh face?
+                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=51898
         else:
             FreeCAD.Console.PrintError(
                 "Pressure on shell mesh at the moment only "
@@ -1699,6 +1702,7 @@ def get_contact_obj_faces(
             "or not supported reference shape elements, contact face combination "
             "(example: multiple element faces per master or slave\n"
         )
+        return [[], []]
 
     FreeCAD.Console.PrintLog("    Slave: {}, {}\n".format(slave_ref[0].Name, slave_ref))
     FreeCAD.Console.PrintLog("    Master: {}, {}\n".format(master_ref[0].Name, master_ref))
@@ -1790,6 +1794,7 @@ def get_tie_obj_faces(
             "or not supported reference shape elements, contact face combination "
             "(example: multiple element faces per master or slave\n"
         )
+        return [[], []]
 
     FreeCAD.Console.PrintLog("Slave: {}, {}\n".format(slave_ref[0].Name, slave_ref))
     FreeCAD.Console.PrintLog("Master: {}, {}\n".format(master_ref[0].Name, master_ref))
@@ -1877,7 +1882,7 @@ def get_analysis_group_elements(
             elif (
                 len(m.References) == 0
                 and (
-                    is_of_type(m, "Fem::Material")
+                    is_of_type(m, "Fem::MaterialCommon")
                     # TODO test and implement ElementGeometry1D and ElementGeometry2D
                     # or is_of_type(m, "Fem::ElementGeometry1D")
                     # or is_of_type(m, "Fem::ElementGeometry2D")
@@ -2356,35 +2361,40 @@ def compact_mesh(
             new_mesh.addNode(old_nodes[n].x, old_nodes[n].y, old_nodes[n].z, nid)
             node_map[n] = nid
 
+    # element id is one id for Edges, Faces and Volumes
+    # thus should not start with 0 for each element type
+    # because this will give an error for mixed meshes
+    # because the id is used already
+    # https://forum.freecadweb.org/viewtopic.php?t=48215
+    ele_id = 1
     if old_femmesh.Edges:
-        for i, ed in enumerate(old_femmesh.Edges):
-            eid = i + 1
+        for ed in old_femmesh.Edges:
             old_elem_nodes = old_femmesh.getElementNodes(ed)
             new_elemnodes = []
             for old_node_id in old_elem_nodes:
                 new_elemnodes.append(node_map[old_node_id])
-            new_mesh.addEdge(new_elemnodes, eid)
-            elem_map[ed] = eid
-
+            new_mesh.addEdge(new_elemnodes, ele_id)
+            elem_map[ed] = ele_id
+            ele_id += 1
     if old_femmesh.Faces:
-        for i, fa in enumerate(old_femmesh.Faces):
-            fid = i + 1
+        for fa in old_femmesh.Faces:
+            ele_id += 1
             old_elem_nodes = old_femmesh.getElementNodes(fa)
             new_elemnodes = []
             for old_node_id in old_elem_nodes:
                 new_elemnodes.append(node_map[old_node_id])
-            new_mesh.addFace(new_elemnodes, fid)
-            elem_map[fa] = fid
-
+            new_mesh.addFace(new_elemnodes, ele_id)
+            elem_map[fa] = ele_id
+            ele_id += 1
     if old_femmesh.Volumes:
-        for i, vo in enumerate(old_femmesh.Volumes):
-            vid = i + 1
+        for vo in old_femmesh.Volumes:
             old_elem_nodes = old_femmesh.getElementNodes(vo)
             new_elemnodes = []
             for old_node_id in old_elem_nodes:
                 new_elemnodes.append(node_map[old_node_id])
-            new_mesh.addVolume(new_elemnodes, vid)
-        elem_map[vo] = vid
+            new_mesh.addVolume(new_elemnodes, ele_id)
+            elem_map[vo] = ele_id
+            ele_id += 1
 
     # may be return another value if the mesh was compacted, just check last map entries
     return (new_mesh, node_map, elem_map)

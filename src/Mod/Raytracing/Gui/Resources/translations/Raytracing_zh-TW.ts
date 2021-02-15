@@ -496,17 +496,17 @@ Do you want to continue?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="146"/>
+      <location filename="../../ViewProvider.cpp" line="147"/>
       <source>Edit Povray project</source>
       <translation>編輯Povray專案</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Povray template</source>
       <translation>Povray範本</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Select a Povray template</source>
       <translation>選擇一個Povray範本</translation>
     </message>

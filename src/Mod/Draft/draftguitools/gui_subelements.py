@@ -22,23 +22,26 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for highlighting subelements in the Draft Workbench.
+"""Provides GUI tools to highlight subelements of objects.
 
 The highlighting can be used to manipulate shapes with other tools
 such as Move, Rotate, and Scale.
 """
 ## @package gui_subelements
-# \ingroup DRAFT
-# \brief Provides tools for highlighting subelements in the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to highlight subelements of objects.
 
+## \addtogroup draftguitools
+# @{
 import pivy.coin as coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 
 class SubelementHighlight(gui_base_original.Modifier):
@@ -51,25 +54,18 @@ class SubelementHighlight(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Subelement highlight"
-        _tip = ("Highlight the subelements "
-                "of the selected objects, "
-                "so that they can then be edited "
-                "with the move, rotate, and scale tools.")
 
         return {'Pixmap': 'Draft_SubelementHighlight',
                 'Accel': "H, S",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight",
-                                              _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight",
-                                             _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Subelement highlight"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.")}
 
     def Activated(self):
         """Execute when the command is called."""
         if self.is_running:
             return self.finish()
         self.is_running = True
-        super(SubelementHighlight, self).Activated(name=_tr("Subelement highlight"))
+        super(SubelementHighlight, self).Activated(name=translate("draft","Subelement highlight"))
         self.get_selection()
 
     def proceed(self):
@@ -159,3 +155,5 @@ class SubelementHighlight(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_SubelementHighlight', SubelementHighlight())
+
+## @}

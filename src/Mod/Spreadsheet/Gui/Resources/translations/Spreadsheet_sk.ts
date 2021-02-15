@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>Vertikálne zarovnať na stred obsah vybraných buniek</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Zlúčiť vybrané bunky</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>Nastaviť pomenovanie</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>Nastaviť pomenovanie pre vybranú bunku</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Rozdeliť predtým zlúčené bunky</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Nastaviť text vo vybraných bunkách na tučný</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Nastaviť text vo vybraných bunkách na kurzívu</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,97 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>Podčiarknúť text vo vybraných bunkách</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Vlastná farba</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Zlúčiť bunky</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Rozdeliť bunku</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation type="unfinished">Left-align cell</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation type="unfinished">Center cell</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation type="unfinished">Right-align cell</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation type="unfinished">Top-align cell</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation type="unfinished">Bottom-align cell</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation type="unfinished">Vertically center cells</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation type="unfinished">Set bold text</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation type="unfinished">Set italic text</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation type="unfinished">Set underline text</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation type="unfinished">Create Spreadsheet</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation type="unfinished">Set cell properties</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation type="unfinished">Edit cell</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Vložiť riadky</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Odstrániť riadky</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Vložiť stĺpce</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation type="unfinished">Clear cell(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation type="unfinished">Set foreground color</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation type="unfinished">Set background color</translation>
     </message>
   </context>
   <context>
@@ -265,7 +348,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Stred</translation>
     </message>
     <message>
       <source>Right</source>
@@ -320,7 +403,7 @@
     <name>QObject</name>
     <message>
       <source>All (*)</source>
-      <translation type="unfinished">All (*)</translation>
+      <translation>Všetko (*)</translation>
     </message>
     <message>
       <source>Import file</source>
@@ -336,19 +419,19 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Nastaviť farbu popredia bunky</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Nataviť farbu popredia buniek zošita</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Nataviť farbu pozadia bunky</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Nastaviť farbu pozadia buniek zošita</translation>
     </message>
     <message>
       <source>Spreadsheet</source>
@@ -357,12 +440,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Tabuľkový procesor nepodporuje vyberanie rozsahu pri vkladaní.
+Prosím vyberte len jednu bunku.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopírovať a vložiť zlyhalo</translation>
+    </message>
+    <message>
+      <source>Alias contains invalid characters!</source>
+      <translation>Adresa obsahuje neplatné znaky.</translation>
+    </message>
+    <message>
+      <source>Refer to cell by alias, for example
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Odkazovať na bunku jej pomenovaním, napríklad
+Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -437,7 +530,7 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Vlastná farba</translation>
     </message>
   </context>
   <context>
@@ -447,20 +540,18 @@ Please select one cell only.</translation>
       <translation>Forma</translation>
     </message>
     <message>
-      <source>&amp;Contents</source>
-      <translation>&amp;Obsah</translation>
+      <source>&amp;Content:</source>
+      <translation>&amp;Obsah:</translation>
     </message>
     <message>
-      <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <source>&amp;Alias:</source>
+      <translation>&amp;Pomenovanie:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1
-       </translation>
+Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
+      <translation>Odkazovať na bunku jej pomenovaním, napríklad
+Spreadsheet.moje_pomenovanie namiesto Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

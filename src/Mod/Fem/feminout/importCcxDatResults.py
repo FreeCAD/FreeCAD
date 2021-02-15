@@ -22,17 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "importCcxDatResults"
+__title__  = "Result import for Calculix dat file format"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package importCcxDatResults
 #  \ingroup FEM
 #  \brief FreeCAD Calculix DAT reader for FEM workbench
 
+import os
+
 import FreeCAD
 from FreeCAD import Console
-import os
 
 
 EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
@@ -100,7 +101,7 @@ def readResult(
                 m["frequency"] = mode_frequency
                 results.append(m)
                 mode_reading = True
-            except:
+            except Exception:
                 if mode_reading:
                     # Conversion error after mode reading started, so it's the end of section
                     eigenvalue_output_section_found = False

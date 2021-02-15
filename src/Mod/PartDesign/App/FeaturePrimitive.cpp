@@ -155,8 +155,18 @@ void FeaturePrimitive::handleChangedPropertyName(Base::XMLReader &reader, const 
     extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
 }
 
+// suppress warning about tp_print for Py3.8
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 PYTHON_TYPE_DEF(PrimitivePy, PartDesign::FeaturePy)
 PYTHON_TYPE_IMP(PrimitivePy, PartDesign::FeaturePy)
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 PyObject* FeaturePrimitive::getPyObject()
 {
@@ -492,16 +502,24 @@ App::DocumentObjectExecReturn* Torus::execute(void)
     if (Radius2.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
     try {
-
+        // https://forum.freecadweb.org/viewtopic.php?f=3&t=52719
+#if 0
         BRepPrimAPI_MakeTorus mkTorus(Radius1.getValue(),
                                       Radius2.getValue(),
                                       Angle1.getValue()/180.0f*M_PI,
                                       Angle2.getValue()/180.0f*M_PI,
                                       Angle3.getValue()/180.0f*M_PI);
         return FeaturePrimitive::execute(mkTorus.Solid());
+#else
+        Part::TopoShape shape;
+        return FeaturePrimitive::execute(shape.makeTorus(Radius1.getValue(),
+                                                         Radius2.getValue(),
+                                                         Angle1.getValue(),
+                                                         Angle2.getValue(),
+                                                         Angle3.getValue()));
+#endif
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -532,9 +550,14 @@ PROPERTY_SOURCE(PartDesign::Prism, PartDesign::FeaturePrimitive)
 
 Prism::Prism()
 {
-    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"Number of sides in the polygon, of the prism");
-    ADD_PROPERTY_TYPE(Circumradius,(2.0),"Prism",App::Prop_None,"Circumradius (centre to vertex) of the polygon, of the prism");
-    ADD_PROPERTY_TYPE(Height,(10.0f),"Prism",App::Prop_None,"The height of the prism");
+    ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Height, (10.0f), "Prism", App::Prop_None, "The height of the prism");
+    ADD_PROPERTY_TYPE(FirstAngle, (0.0f), "Prism", App::Prop_None, "Angle in first direction");
+    ADD_PROPERTY_TYPE(SecondAngle, (0.0f), "Prism", App::Prop_None, "Angle in second direction");
+    static const App::PropertyQuantityConstraint::Constraints angleConstraint = { -89.99999, 89.99999, 1.0 };
+    FirstAngle.setConstraints(&angleConstraint);
+    SecondAngle.setConstraints(&angleConstraint);
 
     primitiveType = FeaturePrimitive::Prism;
 }
@@ -563,11 +586,14 @@ App::DocumentObjectExecReturn* Prism::execute(void)
         }
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
-        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), gp_Vec(0,0,Height.getValue()));
+        // the direction vector for the prism is the height for z and the given angle
+        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(),
+            gp_Vec(Height.getValue() * tan(Base::toRadians<double>(FirstAngle.getValue())),
+                   Height.getValue() * tan(Base::toRadians<double>(SecondAngle.getValue())),
+                   Height.getValue()));
         return FeaturePrimitive::execute(mkPrism.Shape());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -581,6 +607,10 @@ short int Prism::mustExecute() const
     if (Circumradius.isTouched())
         return 1;
     if (Height.isTouched())
+        return 1;
+    if (FirstAngle.isTouched())
+        return 1;
+    if (SecondAngle.isTouched())
         return 1;
 
     return FeaturePrimitive::mustExecute();

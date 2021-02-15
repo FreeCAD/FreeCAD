@@ -397,6 +397,34 @@ PyObject*  DocumentObjectPy::recompute(PyObject *args)
     }
 }
 
+PyObject*  DocumentObjectPy::isValid(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    try {
+        bool ok = getDocumentObjectPtr()->isValid();
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  DocumentObjectPy::getStatusString(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    try {
+        Py::String text(getDocumentObjectPtr()->getStatusString());
+        return Py::new_reference_to(text);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
 PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
 {
     PyObject *obj;
@@ -460,7 +488,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         Py::Object obj;
         Py::Object pyObj;
         Base::Matrix4D mat;
-        SubInfo(const Base::Matrix4D &mat):mat(mat){}
+        SubInfo(const Base::Matrix4D &mat) : sobj(nullptr), mat(mat){}
     };
 
     Base::Matrix4D mat;

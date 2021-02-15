@@ -2,6 +2,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,384 +23,643 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Dimension.
+"""Provides the object code for the dimension objects.
+
+This includes the `LinearDimension` and `AgularDimension`.
+The first one measures a distance between two points or vertices
+in an object; it includes radial dimensions of circular arcs.
+The second one creates an arc between two straight lines to measure
+the angle between both.
+
+To Do
+-----
+1. Currently the angular dimension does not use linked geometrical
+elements, meaning that it cannot update its `Angle` by picking lines or edges
+from objects. If fact, `LinkedGeometry` is hidden to prevent the user
+from picking any object.
+
+At the moment the user must manually modify `FirstAngle` and `LastAngle`
+to obtain a new `Angle`, but since the values are manually entered
+the result is not parametrically tied to any actual object in the document.
+
+We introduced a function `measure_two_obj_angles` to calculate
+the corresponding parameters from a pair of objects and their edges.
+Currently this function is deactivated because we don't consider it
+to be ready; it is there for testing purposes only.
+This needs to be improved because at the moment it only gives
+one possible angle. We should be able to get the four angles
+of a two-line intersection. Maybe a new property is required
+to indicate the quadrant to choose and display.
+
+2. In general, the `LinkedGeometry` property must be changed in type,
+as it does not need to be an `App::PropertyLinkSubList`.
+A `LinkSubList` is to select multiple subelements (vertices, edges)
+from multiple objects (two lines). However, since we typically measure
+a single object, for example, a single line or circle, the subelements
+that we can choose must belong to this object only.
+
+Therefore, just like in the case of the `PathArray` class the best property
+that could be used is `App::PropertyLinkSub`.
+Then in the property editor we will be unable to select more than one object
+thus preventing errors of the subelements not matching the measured object.
+
+3. Currently the `LinearDimension` class is able to measure the distance
+between two arbitrary vertices in two distinct objects.
+For this case `App::PropertyLinkSubList` is in fact the right property
+to use, however, neither the `make_dimension` functions
+nor the Gui Command are set up to use this type of information.
+This has to be done manually by picking the two objects and the two vertices
+in the property editor. That is, this functionality is not entirely intuitive,
+so it is somewhat 'hidden' from the user.
+
+So, the make function and the Gui Command should be expanded to consider
+this case.
+
+Another possibility would be to use one property (LinkSub) for single-object
+measurements (linear, radial), and a second property (LinkSubList)
+for two-object measurements (linear, angular). This would require adjustments
+to the `execute` method to handle both cases properly. It may be necessary
+to have another property to control which type to use.
+
+4. The `Support` property is not used at all, so it should be removed.
+It is just set at creation time by the `make_dimension` function
+but it actually isn't used in the `execute` code.
+
+5. In fact the `DimensionBase` class is not the best base class
+than can be used as parent for all dimensions because it defines `Normal`,
+`Support`, and `LinkedGeometry`, which aren't used in all cases.
+In some of the derived classes, these properties are hidden.
+
+So, together with what is explained in point 3, we probably need to use
+a more generic base class, while at the same time improve the way
+the link properties are used.
 """
 ## @package dimension
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Dimension.
+# \ingroup draftobjects
+# \brief Provides the object code for the dimension objects.
 
-import FreeCAD as App
+## \addtogroup draftobjects
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import DraftGeomUtils, DraftVecUtils
-import draftutils.gui_utils as gui_utils
+
+import FreeCAD as App
+import DraftVecUtils
+import DraftGeomUtils
 import draftutils.utils as utils
+
 from draftobjects.draft_annotation import DraftAnnotation
-
-if App.GuiUp:
-    from draftviewproviders.view_dimension import ViewProviderDimensionBase
-    from draftviewproviders.view_dimension import ViewProviderLinearDimension
-    from draftviewproviders.view_dimension import ViewProviderAngularDimension
-
-def make_dimension(p1,p2,p3=None,p4=None):
-    """makeDimension(p1,p2,[p3]) or makeDimension(object,i1,i2,p3)
-    or makeDimension(objlist,indices,p3): Creates a Dimension object with
-    the dimension line passign through p3.The current line width and color
-    will be used. There are multiple  ways to create a dimension, depending on
-    the arguments you pass to it:
-    - (p1,p2,p3): creates a standard dimension from p1 to p2
-    - (object,i1,i2,p3): creates a linked dimension to the given object,
-    measuring the distance between its vertices indexed i1 and i2
-    - (object,i1,mode,p3): creates a linked dimension
-    to the given object, i1 is the index of the (curved) edge to measure,
-    and mode is either "radius" or "diameter".
-    """
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = App.ActiveDocument.addObject("App::FeaturePython","Dimension")
-    LinearDimension(obj)
-    if App.GuiUp:
-        ViewProviderLinearDimension(obj.ViewObject)
-    if isinstance(p1,App.Vector) and isinstance(p2,App.Vector):
-        obj.Start = p1
-        obj.End = p2
-        if not p3:
-            p3 = p2.sub(p1)
-            p3.multiply(0.5)
-            p3 = p1.add(p3)
-    elif isinstance(p2,int) and isinstance(p3,int):
-        l = []
-        idx = (p2,p3)
-        l.append((p1,"Vertex"+str(p2+1)))
-        l.append((p1,"Vertex"+str(p3+1)))
-        obj.LinkedGeometry = l
-        obj.Support = p1
-        p3 = p4
-        if not p3:
-            v1 = obj.Base.Shape.Vertexes[idx[0]].Point
-            v2 = obj.Base.Shape.Vertexes[idx[1]].Point
-            p3 = v2.sub(v1)
-            p3.multiply(0.5)
-            p3 = v1.add(p3)
-    elif isinstance(p3,str):
-        l = []
-        l.append((p1,"Edge"+str(p2+1)))
-        if p3 == "radius":
-            #l.append((p1,"Center"))
-            if App.GuiUp:
-                obj.ViewObject.Override = "R $dim"
-            obj.Diameter = False
-        elif p3 == "diameter":
-            #l.append((p1,"Diameter"))
-            if App.GuiUp:
-                obj.ViewObject.Override = "Ø $dim"
-            obj.Diameter = True
-        obj.LinkedGeometry = l
-        obj.Support = p1
-        p3 = p4
-        if not p3:
-            p3 = p1.Shape.Edges[p2].Curve.Center.add(App.Vector(1,0,0))
-    obj.Dimline = p3
-    if hasattr(App,"DraftWorkingPlane"):
-        normal = App.DraftWorkingPlane.axis
-    else:
-        normal = App.Vector(0,0,1)
-    if App.GuiUp:
-        # invert the normal if we are viewing it from the back
-        vnorm = gui_utils.get3DView().getViewDirection()
-        if vnorm.getAngle(normal) < math.pi/2:
-            normal = normal.negative()
-    obj.Normal = normal
-
-    if App.GuiUp:
-        gui_utils.format_object(obj)
-        gui_utils.select(obj)
-
-    return obj
-
-
-def make_angular_dimension(center,angles,p3,normal=None):
-    """makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension
-    from the given center, with the given list of angles, passing through p3.
-    """
-    if not App.ActiveDocument:
-        App.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = App.ActiveDocument.addObject("App::FeaturePython","Dimension")
-    AngularDimension(obj)
-    if App.GuiUp:
-        ViewProviderAngularDimension(obj.ViewObject)
-    obj.Center = center
-    for a in range(len(angles)):
-        if angles[a] > 2*math.pi:
-            angles[a] = angles[a]-(2*math.pi)
-    obj.FirstAngle = math.degrees(angles[1])
-    obj.LastAngle = math.degrees(angles[0])
-    obj.Dimline = p3
-    if not normal:
-        if hasattr(App,"DraftWorkingPlane"):
-            normal = App.DraftWorkingPlane.axis
-        else:
-            normal = App.Vector(0,0,1)
-    if App.GuiUp:
-        # invert the normal if we are viewing it from the back
-        vnorm = gui_utils.get3DView().getViewDirection()
-        if vnorm.getAngle(normal) < math.pi/2:
-            normal = normal.negative()
-
-    obj.Normal = normal
-            
-    if App.GuiUp:
-        gui_utils.format_object(obj)
-        gui_utils.select(obj)
-
-    return obj
-
 
 
 class DimensionBase(DraftAnnotation):
-    """
-    The Draft Dimension Base object
+    """The base objects for dimension objects.
+
+    This class inherits `DraftAnnotation` to define the basic properties
+    of all annotation type objects, like a scaling multiplier.
+
     This class is not used directly, but inherited by all dimension
     objects.
     """
 
-    def __init__(self, obj, tp = "Dimension"):
-        """Add common dimension properties to the object and set them"""
-        
+    def __init__(self, obj, tp="Dimension"):
         super(DimensionBase, self).__init__(obj, tp)
+        self.set_properties(obj)
+        obj.Proxy = self
 
-        # Draft
-        obj.addProperty("App::PropertyVector",
-                        "Normal",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The normal direction of this dimension"))
+    def set_properties(self, obj):
+        """Set basic properties only if they don't exist."""
+        properties = obj.PropertiesList
 
-        obj.addProperty("App::PropertyLink",
-                        "Support",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The object measured by this dimension"))
+        if "Normal" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The normal direction of the text "
+                                     "of the dimension")
+            obj.addProperty("App::PropertyVector",
+                            "Normal",
+                            "Dimension",
+                            _tip)
+            obj.Normal = App.Vector(0, 0, 1)
 
-        obj.addProperty("App::PropertyLinkSubList",
-                        "LinkedGeometry",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The geometry this dimension is linked to"))
-                                          
-        obj.addProperty("App::PropertyVectorDistance",
-                        "Dimline",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Point on which the dimension \n"
-                                          "line is placed."))
-                                          
-        obj.Dimline = App.Vector(0,1,0)
-        obj.Normal = App.Vector(0,0,1)
+        # TODO: remove Support property as it is not used at all.
+        # It is just set at creation time by the make_dimension function
+        # but it is not used.
+        if "Support" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The object measured by this dimension "
+                                     "object")
+            obj.addProperty("App::PropertyLink",
+                            "Support",
+                            "Dimension",
+                            _tip)
+            obj.Support = None
+
+        if "LinkedGeometry" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The object, and specific subelements "
+                                     "of it,\n"
+                                     "that this dimension object "
+                                     "is measuring.\n"
+                                     "\n"
+                                     "There are various possibilities:\n"
+                                     "- An object, and one of its edges.\n"
+                                     "- An object, and two of its vertices.\n"
+                                     "- An arc object, and its edge.\n")
+            obj.addProperty("App::PropertyLinkSubList",
+                            "LinkedGeometry",
+                            "Dimension",
+                            _tip)
+            obj.LinkedGeometry = []
+
+        if "Dimline" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "A point through which the dimension "
+                                     "line, or an extrapolation of it, "
+                                     "will pass.\n"
+                                     "\n"
+                                     "- For linear dimensions, this property "
+                                     "controls how close the dimension line\n"
+                                     "is to the measured object.\n"
+                                     "- For radial dimensions, this controls "
+                                     "the direction of the dimension line\n"
+                                     "that displays the measured radius or "
+                                     "diameter.\n"
+                                     "- For angular dimensions, "
+                                     "this controls the radius of the "
+                                     "dimension arc\n"
+                                     "that displays the measured angle.")
+            obj.addProperty("App::PropertyVectorDistance",
+                            "Dimline",
+                            "Dimension",
+                            _tip)
+            obj.Dimline = App.Vector(0, 1, 0)
 
     def onDocumentRestored(self, obj):
+        """Execute code when the document is restored.
+
+        It calls the parent class to add missing annotation properties.
+        """
         super(DimensionBase, self).onDocumentRestored(obj)
-
-    def execute(self, obj):
-        '''Do something when recompute object'''
-        
-        return
-
-
-    def onChanged(self,obj,prop):
-        '''Do something when a property has changed'''
-
-        return
 
 
 class LinearDimension(DimensionBase):
-    """
-    The Draft Linear Dimension object
+    """The linear dimension object.
+
+    This inherits `DimensionBase` to provide the basic functionality of
+    a dimension.
+
+    This linear dimension includes measurements between two vertices,
+    but also a radial dimension of a circular edge or arc.
     """
 
     def __init__(self, obj):
-
         super(LinearDimension, self).__init__(obj, "LinearDimension")
-
+        super(LinearDimension, self).set_properties(obj)
+        self.set_properties(obj)
         obj.Proxy = self
 
-        self.init_properties(obj)
+    def set_properties(self, obj):
+        """Set basic properties only if they don't exist."""
+        properties = obj.PropertiesList
 
+        if "Start" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Starting point of the dimension line.\n"
+                                     "\n"
+                                     "If it is a radius dimension it will be "
+                                     "the center of the arc.\n"
+                                     "If it is a diameter dimension "
+                                     "it will be a point that lies "
+                                     "on the arc.")
+            obj.addProperty("App::PropertyVectorDistance",
+                            "Start",
+                            "Linear/radial dimension",
+                            _tip)
+            obj.Start = App.Vector(0, 0, 0)
 
-    def init_properties(self, obj):
-        """Add Linear Dimension specific properties to the object and set them"""
+        if "End" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Ending point of the dimension line.\n"
+                                     "\n"
+                                     "If it is a radius or diameter "
+                                     "dimension\n"
+                                     "it will be a point that lies "
+                                     "on the arc.")
+            obj.addProperty("App::PropertyVectorDistance",
+                            "End",
+                            "Linear/radial dimension",
+                            _tip)
+            obj.End = App.Vector(1, 0, 0)
 
-        # Draft
-        obj.addProperty("App::PropertyVectorDistance",
-                        "Start",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Startpoint of dimension"))
+        if "Direction" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The direction of the dimension line.\n"
+                                     "If this remains '(0,0,0)', "
+                                     "the direction will be calculated "
+                                     "automatically.")
+            obj.addProperty("App::PropertyVector",
+                            "Direction",
+                            "Linear/radial dimension",
+                            _tip)
 
-        obj.addProperty("App::PropertyVectorDistance",
-                        "End",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Endpoint of dimension"))
+        if "Distance" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The value of the measurement.\n"
+                                     "\n"
+                                     "This property is read-only because "
+                                     "the value is calculated\n"
+                                     "from the 'Start' and 'End' properties.\n"
+                                     "\n"
+                                     "If the 'Linked Geometry' "
+                                     "is an arc or circle, this 'Distance'\n"
+                                     "is the radius or diameter, depending "
+                                     "on the 'Diameter' property.")
+            obj.addProperty("App::PropertyLength",
+                            "Distance",
+                            "Linear/radial dimension",
+                            _tip)
+            obj.Distance = 0
 
-        obj.addProperty("App::PropertyVector",
-                        "Direction",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The normal direction of this dimension"))
-
-        obj.addProperty("App::PropertyLength",
-                        "Distance",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The measurement of this dimension"))
-
-        obj.addProperty("App::PropertyBool",
-                        "Diameter",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "For arc/circle measurements, false = radius, true = diameter"))
-
-        obj.Start = App.Vector(0,0,0)
-        obj.End = App.Vector(1,0,0)
-
+        if "Diameter" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "When measuring circular arcs, "
+                                     "it determines whether to display\n"
+                                     "the radius or the diameter value")
+            obj.addProperty("App::PropertyBool",
+                            "Diameter",
+                            "Radial dimension",
+                            _tip)
+            obj.Diameter = False
 
     def onDocumentRestored(self, obj):
+        """Execute code when the document is restored.
+
+        It calls the parent class to add missing dimension properties.
+        """
         super(LinearDimension, self).onDocumentRestored(obj)
 
-    def onChanged(self,obj,prop):
-        '''Do something when a property has changed'''
-        if hasattr(obj, "Distance"):
-            obj.setEditorMode('Distance', 1)
-        #if hasattr(obj,"Normal"):
-        #    obj.setEditorMode('Normal', 2)
-        if hasattr(obj, "Support"):
-            obj.setEditorMode('Support', 2)
+    def onChanged(self, obj, prop):
+        """Execute when a property is changed.
 
+        It just sets some properties to be read-only or hidden,
+        as they aren't used.
+        """
+        if hasattr(obj, "Distance"):
+            obj.setPropertyStatus('Distance', 'ReadOnly')
+
+        # if hasattr(obj, "Normal"):
+        #    obj.setPropertyStatus('Normal', 'Hidden')
+        if hasattr(obj, "Support"):
+            obj.setPropertyStatus('Support', 'Hidden')
 
     def execute(self, obj):
-        """ Set start point and end point according to the linked geometry"""
+        """Execute when the object is created or recomputed.
+
+        Set start point and end point according to the linked geometry
+        and the number of subelements.
+
+        If it has one subelement, we assume a straight edge or a circular edge.
+        If it has two subelements, we assume a straight edge (two vertices).
+        """
         if obj.LinkedGeometry:
             if len(obj.LinkedGeometry) == 1:
-                lobj = obj.LinkedGeometry[0][0]
-                lsub = obj.LinkedGeometry[0][1]
-                if len(lsub) == 1:
-                    if "Edge" in lsub[0]:
-                        n = int(lsub[0][4:])-1
-                        edge = lobj.Shape.Edges[n]
-                        if DraftGeomUtils.geomType(edge) == "Line":
-                            obj.Start = edge.Vertexes[0].Point
-                            obj.End = edge.Vertexes[-1].Point
-                        elif DraftGeomUtils.geomType(edge) == "Circle":
-                            c = edge.Curve.Center
-                            r = edge.Curve.Radius
-                            a = edge.Curve.Axis
-                            ray = obj.Dimline.sub(c).projectToPlane(App.Vector(0,0,0),a)
-                            if (ray.Length == 0):
-                                ray = a.cross(App.Vector(1,0,0))
-                                if (ray.Length == 0):
-                                    ray = a.cross(App.Vector(0,1,0))
-                            ray = DraftVecUtils.scaleTo(ray,r)
-                            if hasattr(obj,"Diameter"):
-                                if obj.Diameter:
-                                    obj.Start = c.add(ray.negative())
-                                    obj.End = c.add(ray)
-                                else:
-                                    obj.Start = c
-                                    obj.End = c.add(ray)
-                elif len(lsub) == 2:
-                    if ("Vertex" in lsub[0]) and ("Vertex" in lsub[1]):
-                        n1 = int(lsub[0][6:])-1
-                        n2 = int(lsub[1][6:])-1
-                        obj.Start = lobj.Shape.Vertexes[n1].Point
-                        obj.End = lobj.Shape.Vertexes[n2].Point
-            elif len(obj.LinkedGeometry) == 2:
-                lobj1 = obj.LinkedGeometry[0][0]
-                lobj2 = obj.LinkedGeometry[1][0]
-                lsub1 = obj.LinkedGeometry[0][1]
-                lsub2 = obj.LinkedGeometry[1][1]
-                if (len(lsub1) == 1) and (len(lsub2) == 1):
-                    if ("Vertex" in lsub1[0]) and ("Vertex" in lsub2[1]):
-                        n1 = int(lsub1[0][6:])-1
-                        n2 = int(lsub2[0][6:])-1
-                        obj.Start = lobj1.Shape.Vertexes[n1].Point
-                        obj.End = lobj2.Shape.Vertexes[n2].Point
-        # set the distance property
-        total_len = (obj.Start.sub(obj.End)).Length
-        if round(obj.Distance.Value, utils.precision()) != round(total_len, utils.precision()):
-            obj.Distance = total_len
-        if App.GuiUp:
-            if obj.ViewObject:
-                obj.ViewObject.update()
+                linked_obj = obj.LinkedGeometry[0][0]
+                sub_list = obj.LinkedGeometry[0][1]
 
+                if len(sub_list) == 1:
+                    # If it has one subelement, we assume an edge
+                    # that can be a straight line, or a circular edge
+                    subelement = sub_list[0]
+                    (obj.Start,
+                     obj.End) = measure_one_obj_edge(linked_obj,
+                                                     subelement,
+                                                     obj.Dimline,
+                                                     obj.Diameter)
+                elif len(sub_list) == 2:
+                    # If it has two subelements, we assume a straight edge
+                    # that is measured by two vertices
+                    (obj.Start,
+                     obj.End) = measure_one_obj_vertices(linked_obj,
+                                                         sub_list)
+
+            elif len(obj.LinkedGeometry) == 2:
+                # If the list has two objects, it measures the distance
+                # between the two vertices in those two objects
+                (obj.Start,
+                 obj.End) = measure_two_objects(obj.LinkedGeometry[0],
+                                                obj.LinkedGeometry[1])
+
+        # Update the distance property by comparing the floats
+        # with the precision
+        net_length = (obj.Start.sub(obj.End)).Length
+        rounded_1 = round(obj.Distance.Value, utils.precision())
+        rounded_2 = round(net_length, utils.precision())
+
+        if rounded_1 != rounded_2:
+            obj.Distance = net_length
+
+        # The lines and text are created in the viewprovider, so we should
+        # update it whenever the object is recomputed
+        if App.GuiUp and obj.ViewObject:
+            obj.ViewObject.update()
+
+
+def measure_one_obj_edge(obj, subelement, dim_point, diameter=False):
+    """Measure one object with one subelement, a straight or circular edge.
+
+    Parameters
+    ----------
+    obj: Part::Feature
+        The object that is measured.
+
+    subelement: str
+        The subelement that is measured, for example, `'Edge1'`.
+
+    dim_line: Base::Vector3
+        A point through which the dimension goes through.
+    """
+    start = App.Vector()
+    end = App.Vector()
+
+    if "Edge" in subelement:
+        n = int(subelement[4:]) - 1
+        edge = obj.Shape.Edges[n]
+
+        if DraftGeomUtils.geomType(edge) == "Line":
+            start = edge.Vertexes[0].Point
+            end = edge.Vertexes[-1].Point
+        elif DraftGeomUtils.geomType(edge) == "Circle":
+            center = edge.Curve.Center
+            radius = edge.Curve.Radius
+            axis = edge.Curve.Axis
+            dim_line = dim_point.sub(center)
+
+            # The ray is projected to the plane on which the circle lies,
+            # but if the projection is not successful, try in the other planes
+            ray = dim_line.projectToPlane(App.Vector(0, 0, 0), axis)
+
+            if ray.Length == 0:
+                ray = axis.cross(App.Vector(1, 0, 0))
+                if ray.Length == 0:
+                    ray = axis.cross(App.Vector(0, 1, 0))
+
+            # The ray is made as large as the arc's radius
+            # and optionally the diameter
+            ray = DraftVecUtils.scaleTo(ray, radius)
+
+            if diameter:
+                # The start and end points lie on the arc
+                start = center.add(ray.negative())
+                end = center.add(ray)
+            else:
+                # The start is th center and the end lies on the arc
+                start = center
+                end = center.add(ray)
+
+    return start, end
+
+
+def measure_one_obj_vertices(obj, subelements):
+    """Measure two vertices in the same object."""
+    start = App.Vector()
+    end = App.Vector()
+
+    subelement1 = subelements[0]
+    subelement2 = subelements[1]
+
+    if "Vertex" in subelement1 and "Vertex" in subelement2:
+        n1 = int(subelement1[6:]) - 1
+        n2 = int(subelement2[6:]) - 1
+        start = obj.Shape.Vertexes[n1].Point
+        end = obj.Shape.Vertexes[n2].Point
+
+    return start, end
+
+
+def measure_two_objects(link_sub_1, link_sub_2):
+    """Measure two vertices from two different objects.
+
+    Parameters
+    ----------
+    link_sub_1: tuple
+        A tuple containing one object and a list of subelement strings,
+        which may be empty. Only the first subelement is considered, which
+        must be a vertex.
+        ::
+            link_sub_1 = (obj1, ['VertexN', ...])
+
+    link_sub_2: tuple
+        Same.
+    """
+    start = App.Vector()
+    end = App.Vector()
+
+    obj1 = link_sub_1[0]
+    lsub1 = link_sub_1[1]
+
+    obj2 = link_sub_2[0]
+    lsub2 = link_sub_2[1]
+
+    # The subelement list may be empty so we test it first
+    # and pick only the first item
+    if lsub1 and lsub2:
+        subelement1 = lsub1[0]
+        subelement2 = lsub2[0]
+
+        if "Vertex" in subelement1 and "Vertex" in subelement2:
+            n1 = int(subelement1[6:]) - 1
+            n2 = int(subelement2[6:]) - 1
+            start = obj1.Shape.Vertexes[n1].Point
+            end = obj2.Shape.Vertexes[n2].Point
+
+    return start, end
+
+
+# Alias for compatibility with v0.18 and earlier
+_Dimension = LinearDimension
 
 
 class AngularDimension(DimensionBase):
-    """
-    The Draft AngularDimension object
+    """The angular dimension object.
+
+    This inherits `DimensionBase` to provide the basic functionality of
+    a dimension.
     """
 
     def __init__(self, obj):
-
         super(AngularDimension, self).__init__(obj, "AngularDimension")
-        
-        self.init_properties(obj)
+        super(AngularDimension, self).set_properties(obj)
+        self.set_properties(obj)
+        obj.Proxy = self
 
-        obj.Proxy = self    
+        # Inherited properties from the parent class
+        obj.Normal = App.Vector(0, 0, 1)
+        obj.Dimline = App.Vector(0, 1, 0)
 
+    def set_properties(self, obj):
+        """Set basic properties only if they don't exist."""
+        properties = obj.PropertiesList
 
-    def init_properties(self, obj):
-        """Add Angular Dimension specific properties to the object and set them"""
+        if "FirstAngle" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Starting angle of the dimension line "
+                                     "(circular arc).\n"
+                                     "The arc is drawn counter-clockwise.")
+            obj.addProperty("App::PropertyAngle",
+                            "FirstAngle",
+                            "Angular dimension",
+                            _tip)
+            obj.FirstAngle = 0
 
-        obj.addProperty("App::PropertyAngle",
-                        "FirstAngle",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Start angle of the dimension"))
+        if "LastAngle" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Ending angle of the dimension line "
+                                     "(circular arc).\n"
+                                     "The arc is drawn counter-clockwise.")
+            obj.addProperty("App::PropertyAngle",
+                            "LastAngle",
+                            "Angular dimension",
+                            _tip)
+            obj.LastAngle = 90
 
-        obj.addProperty("App::PropertyAngle",
-                        "LastAngle",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "End angle of the dimension"))
+        if "Center" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The center point of the dimension "
+                                     "line, which is a circular arc.\n"
+                                     "\n"
+                                     "This is normally the point where two "
+                                     "line segments, or their extensions\n"
+                                     "intersect, resulting in the "
+                                     "measured 'Angle' between them.")
+            obj.addProperty("App::PropertyVectorDistance",
+                            "Center",
+                            "Angular dimension",
+                            _tip)
+            obj.Center = App.Vector(0, 0, 0)
 
-        obj.addProperty("App::PropertyVectorDistance",
-                        "Center",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The center point of this dimension"))
-
-        obj.addProperty("App::PropertyAngle",
-                        "Angle",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The measurement of this dimension"))
-
-        obj.FirstAngle = 0
-        obj.LastAngle = 90
-        obj.Dimline = App.Vector(0,1,0)
-        obj.Center = App.Vector(0,0,0)
-        obj.Normal = App.Vector(0,0,1)
+        if "Angle" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The value of the measurement.\n"
+                                     "\n"
+                                     "This property is read-only because "
+                                     "the value is calculated from\n"
+                                     "the 'First Angle' and "
+                                     "'Last Angle' properties.")
+            obj.addProperty("App::PropertyAngle",
+                            "Angle",
+                            "Angular dimension",
+                            _tip)
+            obj.Angle = 0
 
     def onDocumentRestored(self, obj):
+        """Execute code when the document is restored.
+
+        It calls the parent class to add missing dimension properties.
+        """
         super(AngularDimension, self).onDocumentRestored(obj)
 
-    def execute(self, fp):
-        '''Do something when recompute object'''
-        if fp.ViewObject:
-            fp.ViewObject.update()
+    def execute(self, obj):
+        """Execute when the object is created or recomputed.
+
+        Nothing is actually done here, except update the viewprovider,
+        as the lines and text are created in the viewprovider.
+        """
+        # TODO: introduce the calculation of 'Angle' by taking a pair of
+        # objects and edges in the 'LinkedGeometry' property.
+        #
+        # We introduced a function `measure_two_obj_angles` to calculate
+        # the corresponding parameters from a pair of objects and their edges.
+        # Currently this function is deactivated because we don't consider it
+        # to be ready; it is there for testing purposes only.
+        #
+        # if obj.LinkedGeometry and len(obj.LinkedGeometry) == 2:
+        #     (obj.FirstAngle,
+        #      obj.LastAngle) = measure_two_obj_angles(obj.LinkedGeometry[0],
+        #                                              obj.LinkedGeometry[1])
+
+        # TODO: move the calculation of 'Angle' from the viewprovider
+        # to this object class.
+        # The viewprovider should modify visual properties only, not real
+        # properties. It can react to real properties by using the 'updateData'
+        # method.
+        if App.GuiUp and obj.ViewObject:
+            obj.ViewObject.update()
+
+    def onChanged(self, obj, prop):
+        """Execute when a property is changed.
+
+        It just sets some properties to be read-only or hidden,
+        as they aren't used.
+        """
+        if hasattr(obj, "Angle"):
+            obj.setPropertyStatus('Angle', 'ReadOnly')
+
+        if hasattr(obj, "Normal"):
+            obj.setPropertyStatus('Normal', 'Hidden')
+        if hasattr(obj, "Support"):
+            obj.setPropertyStatus('Support', 'Hidden')
+        if hasattr(obj, "LinkedGeometry"):
+            obj.setPropertyStatus('LinkedGeometry', 'Hidden')
 
 
-    def onChanged(self,obj,prop):
-        '''Do something when a property has changed'''
-        super(AngularDimension, self).onChanged(obj, prop)
-        if hasattr(obj,"Angle"):
-            obj.setEditorMode('Angle',1)
-        if hasattr(obj,"Normal"):
-            obj.setEditorMode('Normal',2)
-        if hasattr(obj,"Support"):
-            obj.setEditorMode('Support',2)
+def measure_two_obj_angles(link_sub_1, link_sub_2):
+    """Measure two edges from two different objects to measure the angle.
+
+    This function is a prototype because it does not determine all possible
+    starting and ending angles that could be used to draw the dimension line,
+    which is a circular arc.
+
+    Parameters
+    ----------
+    link_sub_1: tuple
+        A tuple containing one object and a list of subelement strings,
+        which may be empty. Only the first subelement is considered, which
+        must be an edge.
+        ::
+            link_sub_1 = (obj1, ['EdgeN', ...])
+
+    link_sub_2: tuple
+        Same.
+    """
+    start = 0
+    end = 0
+
+    obj1 = link_sub_1[0]
+    lsub1 = link_sub_1[1]
+
+    obj2 = link_sub_2[0]
+    lsub2 = link_sub_2[1]
+
+    # The subelement list may be empty so we test it first
+    # and pick only the first item
+    if lsub1 and lsub2:
+        subelement1 = lsub1[0]
+        subelement2 = lsub2[0]
+
+        if "Edge" in subelement1 and "Edge" in subelement2:
+            n1 = int(subelement1[4:]) - 1
+            n2 = int(subelement2[4:]) - 1
+            start = obj1.Shape.Edges[n1].Curve.Direction
+            end = obj2.Shape.Edges[n2].Curve.Direction
+
+            # We get the angle from the direction of the line to the U axis
+            # of the working plane; we should be able to also use the V axis
+            start_r = DraftVecUtils.angle(start, App.DraftWorkingPlane.u)
+            end_r = DraftVecUtils.angle(end, App.DraftWorkingPlane.u)
+            start = math.degrees(start_r)
+            end = math.degrees(end_r)
+
+            # We make the angle positive because when tested, some errors
+            # were produced in the code that calculates the 'Angle'.
+            # This code is actually inside the viewprovider.
+            if start < 0:
+                start = abs(start)
+            if end < 0:
+                end = abs(end)
+
+    return start, end
 
 
+# Alias for compatibility with v0.18 and earlier
+_AngularDimension = AngularDimension
+
+## @}

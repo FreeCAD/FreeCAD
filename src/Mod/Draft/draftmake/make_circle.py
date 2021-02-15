@@ -20,26 +20,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_circle function.
-"""
-## @package make circle
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_circle.
+"""Provides functions to create Circle objects."""
+## @package make_circle
+# \ingroup draftmake
+# \brief Provides functions to create Circle objects.
 
-
+## \addtogroup draftmake
+# @{
 import math
 
 import FreeCAD as App
-
 import Part
 import DraftGeomUtils
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftutils.utils import type_check
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.circle import Circle
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
 
@@ -78,7 +75,8 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    if placement: type_check([(placement,App.Placement)], "make_circle")
+    if placement:
+        utils.type_check([(placement,App.Placement)], "make_circle")
 
     if startangle != endangle:
         _name = "Arc"
@@ -126,10 +124,12 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
 
     if App.GuiUp:
         ViewProviderDraft(obj.ViewObject)
-        format_object(obj)
-        select(obj)
+        gui_utils.format_object(obj)
+        gui_utils.select(obj)
 
     return obj
 
 
 makeCircle = make_circle
+
+## @}

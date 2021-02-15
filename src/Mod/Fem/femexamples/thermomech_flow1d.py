@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -9,13 +10,13 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
@@ -45,6 +46,18 @@ def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
     return doc
+
+
+def get_information():
+    info = {"name": "Thermomech Flow 1D",
+            "meshtype": "solid",
+            "meshelement": "Seg3",
+            "constraints": ["self weight"],
+            "solvers": ["calculix"],
+            "material": "fluid",
+            "equation": "thermomechanical"
+            }
+    return info
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -111,6 +124,11 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")  # CalculiX
         )[0]
         solver_object.WorkingDir = u""
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "thermomech"
@@ -235,6 +253,7 @@ def setup(doc=None, solvertype="ccxtools"):
     outlet.OutletPressure = 0.1
     outlet.References = [(geom_obj, "Edge13")]
 
+    # self_weight_constraint
     self_weight = analysis.addObject(
         ObjectsFem.makeConstraintSelfWeight(doc, "ConstraintSelfWeight")
     )[0]
@@ -252,9 +271,11 @@ def setup(doc=None, solvertype="ccxtools"):
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
-        doc.addObject("Fem::FemMeshObject", mesh_name)
+        ObjectsFem.makeMeshGmsh(doc, mesh_name)
     )[0]
     femmesh_obj.FemMesh = fem_mesh
+    femmesh_obj.Part = geom_obj
+    femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()
     return doc

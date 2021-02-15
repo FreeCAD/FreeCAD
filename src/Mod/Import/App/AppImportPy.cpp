@@ -174,12 +174,16 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
 
+#if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
                     pi->Show();
+#endif
                     aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
+#endif
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().Error("%s\n", e.GetMessageString());
@@ -206,12 +210,16 @@ private:
                         throw Py::Exception(PyExc_IOError, "cannot read IGES file");
                     }
 
+#if OCC_VERSION_HEX < 0x070500
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading IGES file...");
                     pi->Show();
+#endif
                     aReader.Transfer(hDoc);
+#if OCC_VERSION_HEX < 0x070500
                     pi->EndScope();
+#endif
                     // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
                     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
                             ->SetModel(new IGESData_IGESModel);
@@ -316,9 +324,10 @@ private:
                 if(keepPlacement!=Py_None)
                     ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement));
                 ocaf.exportObjects(objs);
-            }else{
-                bool keepExplicitPlacement = objs.size() > 1;
-                keepExplicitPlacement = Standard_True;
+            }
+            else {
+                //bool keepExplicitPlacement = objs.size() > 1;
+                bool keepExplicitPlacement = Standard_True;
                 ExportOCAF ocaf(hDoc, keepExplicitPlacement);
                 // That stuff is exporting a list of selected objects into FreeCAD Tree
                 std::vector <TDF_Label> hierarchical_label;
@@ -354,7 +363,8 @@ private:
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
-                makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
+                // https://forum.freecadweb.org/viewtopic.php?f=8&t=52967
+                //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::GetApplication().getExecutableName()));
@@ -398,8 +408,7 @@ private:
         char* Name;
         const char* DocName=0;
         const char* optionSource = nullptr;
-        char* defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
-        char* useOptionSource = nullptr;
+        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         bool IgnoreErrors=true;
         if (!PyArg_ParseTuple(args.ptr(), "et|sbs","utf-8",&Name,&DocName,&IgnoreErrors,&optionSource))
             throw Py::Exception();
@@ -411,6 +420,8 @@ private:
         if (!file.exists())
             throw Py::RuntimeError("File doesn't exist");
 
+        if (optionSource)
+            defaultOptions = optionSource;
 
         App::Document *pcDoc;
         if (DocName)
@@ -420,16 +431,10 @@ private:
         if (!pcDoc) 
             pcDoc = App::GetApplication().newDocument(DocName);
 
-        if (optionSource) {
-            strcpy(useOptionSource,optionSource);
-        } else {
-            useOptionSource = defaultOptions;
-        }
-
         try {
             // read the DXF file
             ImpExpDxfRead dxf_file(EncodedName,pcDoc);
-            dxf_file.setOptionSource(useOptionSource);
+            dxf_file.setOptionSource(defaultOptions);
             dxf_file.setOptions();
             dxf_file.DoRead(IgnoreErrors);
             pcDoc->recompute();

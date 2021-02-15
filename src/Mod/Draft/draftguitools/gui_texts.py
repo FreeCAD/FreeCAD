@@ -22,16 +22,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating text annotations with the Draft Workbench.
+"""Provides GUI tools to create simple Text objects.
 
 The textual block can consist of multiple lines.
 """
 ## @package gui_texts
-# \ingroup DRAFT
-# \brief Provides tools for creating text annotations with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create simple Text objects.
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
+## \addtogroup draftguitools
+# @{
 import sys
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -39,6 +41,7 @@ import Draft_rc
 import DraftVecUtils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.translate import translate
 from draftutils.messages import _msg
 
@@ -51,12 +54,11 @@ class Text(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates a multi-line annotation. CTRL to snap."
 
         return {'Pixmap': 'Draft_Text',
                 'Accel': "T, E",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Text", "Text"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Text", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Text", "Creates a multi-line annotation. CTRL to snap.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -84,26 +86,32 @@ class Text(gui_base_original.Creator):
 
     def createObject(self):
         """Create the actual object in the current document."""
-        txt = '['
-        for line in self.text:
-            if len(txt) > 1:
-                txt += ', '
-            if sys.version_info.major < 3:
-                # Python2, string needs to be converted to unicode
-                line = unicode(line)
-                txt += '"' + str(line.encode("utf8")) + '"'
-            else:
-                # Python3, string is already unicode
-                txt += '"' + line + '"'
-        txt += ']'
+        text_list = self.text
+
+        # If the last element is an empty string "" we remove it
+        if not text_list[-1]:
+            text_list.pop()
+
+        # For Python 2 we convert the string to unicode,
+        # Python 3 nothing needs to be done
+        if sys.version_info.major < 3:
+            u_list = [unicode(line) for line in text_list]
+            t_list = ['"' + str(line.encode("utf8")) + '"' for line in u_list]
+        else:
+            t_list = ['"' + line + '"' for line in text_list]
+
+        list_as_text = ", ".join(t_list)
+
+        string = '[' + list_as_text + ']'
+
         Gui.addModule("Draft")
-        _cmd = 'Draft.makeText'
+        _cmd = 'Draft.make_text'
         _cmd += '('
-        _cmd += txt + ', '
-        _cmd += 'point=' + DraftVecUtils.toString(self.node[0])
+        _cmd += string + ', '
+        _cmd += 'placement=' + DraftVecUtils.toString(self.node[0])
         _cmd += ')'
-        _cmd_list = ['text = ' + _cmd,
-                     'Draft.autogroup(text)',
+        _cmd_list = ['_text_ = ' + _cmd,
+                     'Draft.autogroup(_text_)',
                      'FreeCAD.ActiveDocument.recompute()']
         self.commit(translate("draft", "Create Text"),
                     _cmd_list)
@@ -150,3 +158,5 @@ class Text(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Text', Text())
+
+## @}

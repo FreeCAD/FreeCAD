@@ -59,9 +59,12 @@
         <file>icons/Draft_Offset.svg</file>
         <file>icons/Draft_PathArray.svg</file>
         <file>icons/Draft_PathLinkArray.svg</file>
+        <file>icons/Draft_PathTwistedArray.svg</file>
+        <file>icons/Draft_PathTwistedLinkArray.svg</file>
         <file>icons/Draft_PlaneProxy.svg</file>
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_PointArray.svg</file>
+        <file>icons/Draft_PointLinkArray.svg</file>
         <file>icons/Draft_PolarArray.svg</file>
         <file>icons/Draft_PolarLinkArray.svg</file>
         <file>icons/Draft_Polygon.svg</file>
@@ -102,21 +105,31 @@
         <file>icons/Snap_Perpendicular.svg</file>
         <file>icons/Snap_Special.svg</file>
         <file>icons/Snap_WorkingPlane.svg</file>
+        <file>icons/Draft_NewLayer.svg</file>
+        <file>patterns/aluminium.svg</file>
         <file>patterns/brick01.svg</file>
         <file>patterns/concrete.svg</file>
         <file>patterns/cross.svg</file>
+        <file>patterns/cuprous.svg</file>
         <file>patterns/diagonal1.svg</file>
         <file>patterns/diagonal2.svg</file>
         <file>patterns/earth.svg</file>
+        <file>patterns/general_steel.svg</file>
+        <file>patterns/glass.svg</file>
+        <file>patterns/hatch45L.svg</file>
+        <file>patterns/hatch45R.svg</file>
         <file>patterns/hbone.svg</file>
         <file>patterns/line.svg</file>
+        <file>patterns/plastic.svg</file>
         <file>patterns/plus.svg</file>
         <file>patterns/simple.svg</file>
         <file>patterns/solid.svg</file>
         <file>patterns/square.svg</file>
         <file>patterns/steel.svg</file>
+        <file>patterns/titanium.svg</file>
         <file>patterns/wood.svg</file>
         <file>patterns/woodgrain.svg</file>
+        <file>patterns/zinc.svg</file>
         <file>translations/Draft_af.qm</file>
         <file>translations/Draft_ar.qm</file>
         <file>translations/Draft_ca.qm</file>
@@ -169,5 +182,6 @@
         <file>ui/TaskSelectPlane.ui</file>
         <file>ui/TaskShapeString.ui</file>
         <file>ui/dialog_AnnotationStyleEditor.ui</file>
+        <file>ui/TaskPanel_SetStyle.ui</file>
     </qresource>
 </RCC> 

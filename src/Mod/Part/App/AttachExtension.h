@@ -52,8 +52,6 @@ public:
    AttachEngineException();
    AttachEngineException(const char * sMessage);
    AttachEngineException(const std::string& sMessage);
-   /// Construction
-   AttachEngineException(const AttachEngineException &inst);
    /// Destruction
    virtual ~AttachEngineException() throw() {}
 };

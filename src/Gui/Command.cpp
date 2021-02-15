@@ -93,9 +93,9 @@ using namespace Gui::DockWnd;
  *
  * \section wayout Way out
  * To solve these problems we have introduced the command framework to decouple QAction and MainWindow. The base classes of the framework are
- * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world. 
+ * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world.
  *
- * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created 
+ * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created
  * (@ref Gui::CommandBase::createAction()) not before it is added (@ref Gui::Command::addTo()) to a menu or toolbar.
  *
  * Now, the implementation of the slots of MainWindow can be done in the method \a activated() of subclasses of Command instead.
@@ -119,7 +119,7 @@ using namespace Gui::DockWnd;
  *   void activated(int)
  *   {
  *     QString filter ... // make a filter of all supported file formats
- *     QStringList FileList = QFileDialog::getOpenFileNames( filter,QString::null, getMainWindow() );
+ *     QStringList FileList = QFileDialog::getOpenFileNames( filter,QString(), getMainWindow() );
  *     for ( QStringList::Iterator it = FileList.begin(); it != FileList.end(); ++it ) {
  *       getGuiApplication()->open((*it).latin1());
  *     }
@@ -381,7 +381,13 @@ void Command::invoke(int i, TriggerSource trigger)
         if(displayText.empty())
             displayText = getName();
     }
-    App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
+
+    // Because Transaction now captures ViewObject changes, auto named
+    // transaction is disabled here to avoid too many unnecessary transactions.
+    //
+    // App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
+    App::AutoTransaction committer(0,true);
+
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
@@ -476,7 +482,7 @@ void Command::testActive(void)
     }
 
     if (!(eType & ForEdit)) { // special case for commands which are only in some edit modes active
-        
+
         if ((!Gui::Control().isAllowedAlterDocument()  && eType & AlterDoc)    ||
             (!Gui::Control().isAllowedAlterView()      && eType & Alter3DView) ||
             (!Gui::Control().isAllowedAlterSelection() && eType & AlterSelection)) {
@@ -536,8 +542,8 @@ std::string Command::getUniqueObjectName(const char *BaseName, const App::Docume
     return doc->getUniqueObjectName(BaseName);
 }
 
-std::string Command::getObjectCmd(const char *Name, const App::Document *doc, 
-        const char *prefix, const char *postfix, bool gui) 
+std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
+        const char *prefix, const char *postfix, bool gui)
 {
     if(!doc) doc = App::GetApplication().getActiveDocument();
     if(!doc || !Name)
@@ -545,7 +551,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
     std::ostringstream str;
     if(prefix)
         str << prefix;
-    str << (gui?"Gui":"App") << ".getDocument('" << doc->getName() 
+    str << (gui?"Gui":"App") << ".getDocument('" << doc->getName()
         << "').getObject('" << Name << "')";
     if(postfix)
         str << postfix;
@@ -553,7 +559,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
 }
 
 std::string Command::getObjectCmd(const App::DocumentObject *obj,
-        const char *prefix, const char *postfix, bool gui) 
+        const char *prefix, const char *postfix, bool gui)
 {
     if(!obj || !obj->getNameInDocument())
         return std::string("None");
@@ -624,7 +630,11 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     va_list ap;
     va_start(ap, sCmd);
     QString s;
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     const QString cmd = s.vsprintf(sCmd, ap);
+#else
+    const QString cmd = s.vasprintf(sCmd, ap);
+#endif
     va_end(ap);
 
     // 'vsprintf' expects a utf-8 string for '%s'
@@ -641,7 +651,7 @@ void Command::printPyCaller() {
     if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
     PyFrameObject* frame = PyEval_GetFrame();
-    if(!frame) 
+    if(!frame)
         return;
     int line = PyFrame_GetLineNumber(frame);
 #if PY_MAJOR_VERSION >= 3
@@ -653,7 +663,7 @@ void Command::printPyCaller() {
 }
 
 void Command::printCaller(const char *file, int line) {
-    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) 
+    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
     std::ostringstream str;
 #ifdef FC_OS_WIN32
@@ -680,7 +690,8 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const ch
 
     try {
         Base::Interpreter().runString(sCmd);
-    }catch(Py::Exception &) {
+    }
+    catch(Py::Exception &) {
         Base::PyException::ThrowException();
     }
 }
@@ -709,7 +720,7 @@ void Command::addModule(DoCmd_Type eType,const char* sModuleName)
 
 std::string Command::_assureWorkbench(const char *file, int line, const char * sName)
 {
-    // check if the WB is already open? 
+    // check if the WB is already open?
     std::string actName = WorkbenchManager::instance()->active()->name();
     // if yes, do nothing
     if(actName == sName)
@@ -984,6 +995,7 @@ Command *GroupCommand::addCommand(const char *name) {
 
 Action * GroupCommand::createAction(void) {
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    pcAction->setMenuRole(QAction::NoRole);
     pcAction->setDropDownMenu(true);
     pcAction->setExclusive(false);
     pcAction->setCheckable(true);
@@ -1028,7 +1040,7 @@ void GroupCommand::languageChange() {
 void GroupCommand::setup(Action *pcAction) {
 
     pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
-    
+
     int idx = pcAction->property("defaultAction").toInt();
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
@@ -1072,7 +1084,7 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     QDir d;
     if (!systemMacro) {
@@ -1088,7 +1100,7 @@ void MacroCommand::activated(int iMsg)
         QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
         d = QDir(dirstr);
     }
-    
+
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
     if (!fi.exists()) {
         QMessageBox::critical(Gui::getMainWindow(),

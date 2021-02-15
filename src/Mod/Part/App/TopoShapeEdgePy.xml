@@ -522,7 +522,22 @@ coordinate system.</UserDocu>
       </Documentation>
       <Parameter Name="PrincipalProperties" Type="Dict"/>
     </Attribute>
-		<ClassDeclarations>
+    <Attribute Name="Continuity" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Returns the continuity</UserDocu>
+        </Documentation>
+        <Parameter Name="Continuity" Type="String"/>
+    </Attribute>
+		<Methode Name="curveOnSurface" Const="true">
+			<Documentation>
+				<UserDocu>curveOnSurface(idx) -> None or tuple
+Returns the 2D curve, the surface, the placement and the parameter range of index idx.
+Returns None if index idx is out of range.
+Returns a 5-items tuple of a curve, a surface, a placement, first parameter and last parameter.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <ClassDeclarations>
 		</ClassDeclarations>
 	</PythonExport>
 </GenerateModel>

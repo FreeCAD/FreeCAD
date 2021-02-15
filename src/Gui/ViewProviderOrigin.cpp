@@ -29,7 +29,6 @@
 # include <QPixmap>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <boost/bind.hpp>
 #endif
 
 

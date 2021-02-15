@@ -20,20 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Rectangle.
-"""
+"""Provides the object code for the Rectangle object."""
 ## @package rectangle
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Rectangle.
+# \ingroup draftobjects
+# \brief Provides the object code for the Rectangle object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftGeomUtils
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -43,37 +42,29 @@ class Rectangle(DraftObject):
     def __init__(self, obj):
         super(Rectangle, self).__init__(obj, "Rectangle")
 
-        _tip = "Length of the rectangle"
-        obj.addProperty("App::PropertyDistance", "Length",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",_tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Length of the rectangle")
+        obj.addProperty("App::PropertyDistance", "Length", "Draft", _tip)
 
-        _tip = "Height of the rectangle"
-        obj.addProperty("App::PropertyDistance", "Height",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Height of the rectangle")
+        obj.addProperty("App::PropertyDistance", "Height", "Draft", _tip)
 
-        _tip = "Radius to use to fillet the corners"
-        obj.addProperty("App::PropertyLength", "FilletRadius",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Radius to use to fillet the corners")
+        obj.addProperty("App::PropertyLength", "FilletRadius", "Draft", _tip)
         
-        _tip = "Size of the chamfer to give to the corners"
-        obj.addProperty("App::PropertyLength", "ChamferSize",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyLength", "ChamferSize", "Draft", _tip)
 
-        _tip = "Create a face"
-        obj.addProperty("App::PropertyBool", "MakeFace",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Create a face")
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip)
         
-        _tip = "Horizontal subdivisions of this rectangle"
-        obj.addProperty("App::PropertyInteger", "Rows",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Horizontal subdivisions of this rectangle")
+        obj.addProperty("App::PropertyInteger", "Rows", "Draft", _tip)
         
-        _tip = "Vertical subdivisions of this rectangle"
-        obj.addProperty("App::PropertyInteger", "Columns",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Vertical subdivisions of this rectangle")
+        obj.addProperty("App::PropertyInteger", "Columns", "Draft", _tip)
         
-        _tip = "The area of this object"
-        obj.addProperty("App::PropertyArea", "Area",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property", _tip))
+        _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
+        obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
         
         obj.MakeFace = get_param("fillmode",True)
         obj.Length=1
@@ -177,4 +168,7 @@ class Rectangle(DraftObject):
         obj.positionBySupport()
 
 
+# Alias for compatibility with v0.18 and earlier
 _Rectangle = Rectangle
+
+## @}

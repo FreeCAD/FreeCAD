@@ -43,6 +43,8 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint)
 
+// see forum topic: https://forum.freecadweb.org/viewtopic.php?&p=407901
+
 // also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error
 static const char* BoundaryTypes[] = {"inlet","wall","outlet","interface","freestream", NULL};

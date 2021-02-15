@@ -133,7 +133,7 @@ void DlgMacroExecuteImp::fillUpList(void)
     }
 }
 
-/** 
+/**
  * Selects a macro file in the list view.
  */
 void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem* item)
@@ -274,6 +274,7 @@ void DlgMacroExecuteImp::accept()
 
     QFileInfo fi(dir, item->text(0));
     try {
+        getMainWindow()->appendRecentMacro(fi.filePath());
         Application::Instance->macroManager()->run(Gui::MacroManager::File, fi.filePath().toUtf8());
         // after macro run recalculate the document
         if (Application::Instance->activeDocument())
@@ -334,6 +335,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     edit->open(file);
     edit->resize(400, 300);
     getMainWindow()->addWindow(edit);
+    getMainWindow()->appendRecentMacro(file);
 
     if (mitem->systemWide) {
         editor->setReadOnly(true);
@@ -341,7 +343,6 @@ void DlgMacroExecuteImp::on_editButton_clicked()
         shownName = QString::fromLatin1("%1[*] - [%2]").arg(item->text(0), tr("Read-only"));
         edit->setWindowTitle(shownName);
     }
-
     close();
 }
 
@@ -350,7 +351,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
 {
     // query file name
     QString fn = QInputDialog::getText(this, tr("Macro file"), tr("Enter a file name, please:"),
-        QLineEdit::Normal, QString::null, 0);
+        QLineEdit::Normal, QString(), nullptr, Qt::MSWindowsFixedSizeDialogHint);
     if (!fn.isEmpty())
     {
         QString suffix = QFileInfo(fn).suffix().toLower();
@@ -380,6 +381,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
             editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
             PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fi.absoluteFilePath());
+            getMainWindow()->appendRecentMacro(fi.absoluteFilePath());
             edit->setWindowTitle(QString::fromLatin1("%1[*]").arg(fn));
             edit->resize(400, 300);
             getMainWindow()->addWindow(edit);
@@ -678,7 +680,7 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
 
     // query new name
     QString fn = QInputDialog::getText(this, tr("Renaming Macro File"),
-        tr("Enter new name:"), QLineEdit::Normal, oldName, 0);
+        tr("Enter new name:"), QLineEdit::Normal, oldName, nullptr, Qt::MSWindowsFixedSizeDialogHint);
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
@@ -765,7 +767,8 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
 
     // give user a chance to pick a different name from digitized name suggested
     QString fn = QInputDialog::getText(this, tr("Duplicate Macro"),
-        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 0);
+        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 
+        nullptr, Qt::MSWindowsFixedSizeDialogHint);
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py")){

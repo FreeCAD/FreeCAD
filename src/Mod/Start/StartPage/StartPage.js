@@ -31,7 +31,7 @@ function load() {
 
     if (allowDownloads == 1) {
         // load latest commits
-        ddiv = document.getElementById("commits");
+        var ddiv = document.getElementById("commits");
         ddiv.innerHTML = "Connecting...";
         var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=printCommits');
         tobj.buildScriptTag(); // Build the script tag
@@ -61,7 +61,7 @@ function printCommits(data) {
 
     // json callback for git commits
 
-    ddiv = document.getElementById('commits');
+    var ddiv = document.getElementById('commits');
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
     for (var i = 0; i < 25; i++) {
@@ -76,7 +76,7 @@ function printAddons(data) {
 
     // json callback for addons list
 
-    ddiv = document.getElementById('addons');
+    var ddiv = document.getElementById('addons');
     ddiv.innerHTML = "Received";
     var html = ['<ul class="addonslist">'];
     var blacklist = ['addons_installer.FCMacro','FreeCAD-Addon-Details.md','README.md'];
@@ -85,7 +85,7 @@ function printAddons(data) {
             if (wblist.indexOf(data.data[i].name.toLowerCase()) == -1) {
                 html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].name, '</a></li>');
             } else {
-                html.push('<li>', data.data[i].name, '&nbsp;<img src="IMAGE_SRC_INSTALLED"></li>');
+                html.push('<li><a href="', data.data[i].html_url, '">', data.data[i].name, '</a>&nbsp;<img src="IMAGE_SRC_INSTALLED"></li>');
             }
         }
     }
@@ -98,7 +98,7 @@ function printForum(data) {
 
     // json callback for forum posts
 
-    ddiv = document.getElementById('forum');
+    var ddiv = document.getElementById('forum');
     ddiv.innerHTML = "Received";
     var html = ['<ul>'];
     for (var i = 0; i < 25; i++) {

@@ -55,13 +55,12 @@ using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
 
-bool isSketcherBSplineActive(Gui::Document *doc, bool actsOnSelection )
+bool isSketcherBSplineActive(Gui::Document *doc, bool actsOnSelection)
 {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
-                ->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection)
                     return true;
                 else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
@@ -69,16 +68,13 @@ bool isSketcherBSplineActive(Gui::Document *doc, bool actsOnSelection )
             }
         }
     }
-
     return false;
 }
 
 void ActivateBSplineHandler(Gui::Document *doc,DrawSketchHandler *handler)
 {
     if (doc) {
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
-           (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
             vp->purgeHandler();
             vp->activateHandler(handler);
@@ -89,11 +85,8 @@ void ActivateBSplineHandler(Gui::Document *doc,DrawSketchHandler *handler)
 void ShowRestoreInformationLayer(SketcherGui::ViewProviderSketch* vp, char * visibleelementname)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-
     bool status = hGrp->GetBool(visibleelementname, true);
-
     hGrp->SetBool(visibleelementname, !status);
-
     vp->showRestoreInformationLayer();
 }
 
@@ -101,11 +94,11 @@ void ShowRestoreInformationLayer(SketcherGui::ViewProviderSketch* vp, char * vis
 DEF_STD_CMD_A(CmdSketcherBSplineDegree)
 
 CmdSketcherBSplineDegree::CmdSketcherBSplineDegree()
-:Command("Sketcher_BSplineDegree")
+    : Command("Sketcher_BSplineDegree")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Show/Hide B-spline degree");
+    sMenuText       = QT_TR_NOOP("Show/hide B-spline degree");
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the degree for all B-splines");
     sWhatsThis      = "Sketcher_BSplineDegree";
     sStatusTip      = sToolTipText;
@@ -118,28 +111,25 @@ void CmdSketcherBSplineDegree::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document * doc= getActiveGuiDocument();
-
+    Gui::Document * doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-
     ShowRestoreInformationLayer(vp, "BSplineDegreeVisible");
-
 }
 
 bool CmdSketcherBSplineDegree::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+    return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
 // Show/Hide B-spline polygon
 DEF_STD_CMD_A(CmdSketcherBSplinePolygon)
 
 CmdSketcherBSplinePolygon::CmdSketcherBSplinePolygon()
-    :Command("Sketcher_BSplinePolygon")
+    : Command("Sketcher_BSplinePolygon")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Show/Hide B-spline control polygon");
+    sMenuText       = QT_TR_NOOP("Show/hide B-spline control polygon");
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the control polygons for all B-splines");
     sWhatsThis      = "Sketcher_BSplinePolygon";
     sStatusTip      = sToolTipText;
@@ -152,28 +142,25 @@ void CmdSketcherBSplinePolygon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document * doc= getActiveGuiDocument();
-
+    Gui::Document * doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-
     ShowRestoreInformationLayer(vp, "BSplineControlPolygonVisible");
-
 }
 
 bool CmdSketcherBSplinePolygon::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+    return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
 // Show/Hide B-spline comb
 DEF_STD_CMD_A(CmdSketcherBSplineComb)
 
 CmdSketcherBSplineComb::CmdSketcherBSplineComb()
-:Command("Sketcher_BSplineComb")
+    : Command("Sketcher_BSplineComb")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Show/Hide B-spline curvature comb");
+    sMenuText       = QT_TR_NOOP("Show/hide B-spline curvature comb");
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the curvature comb for all B-splines");
     sWhatsThis      = "Sketcher_BSplineComb";
     sStatusTip      = sToolTipText;
@@ -186,28 +173,25 @@ void CmdSketcherBSplineComb::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document * doc= getActiveGuiDocument();
-
+    Gui::Document * doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-
     ShowRestoreInformationLayer(vp, "BSplineCombVisible");
-
 }
 
 bool CmdSketcherBSplineComb::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+    return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
 //
 DEF_STD_CMD_A(CmdSketcherBSplineKnotMultiplicity)
 
 CmdSketcherBSplineKnotMultiplicity::CmdSketcherBSplineKnotMultiplicity()
-:Command("Sketcher_BSplineKnotMultiplicity")
+    : Command("Sketcher_BSplineKnotMultiplicity")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Show/Hide B-spline knot multiplicity");
+    sMenuText       = QT_TR_NOOP("Show/hide B-spline knot multiplicity");
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the knot multiplicity for all B-splines");
     sWhatsThis      = "Sketcher_BSplineKnotMultiplicity";
     sStatusTip      = sToolTipText;
@@ -220,29 +204,57 @@ void CmdSketcherBSplineKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::Document * doc= getActiveGuiDocument();
-
+    Gui::Document * doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-
     ShowRestoreInformationLayer(vp, "BSplineKnotMultiplicityVisible");
-
 }
 
 bool CmdSketcherBSplineKnotMultiplicity::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+}
+
+//
+DEF_STD_CMD_A(CmdSketcherBSplinePoleWeight)
+
+CmdSketcherBSplinePoleWeight::CmdSketcherBSplinePoleWeight()
+    : Command("Sketcher_BSplinePoleWeight")
+{
+    sAppModule = "Sketcher";
+    sGroup = QT_TR_NOOP("Sketcher");
+    sMenuText = QT_TR_NOOP("Show/hide B-spline control point weight");
+    sToolTipText = QT_TR_NOOP("Switches between showing and hiding the control point weight for all B-splines");
+    sWhatsThis = "Sketcher_BSplinePoleWeight";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_BSplinePoleWeight";
+    sAccel = "";
+    eType = ForEdit;
+}
+
+void CmdSketcherBSplinePoleWeight::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Document* doc = getActiveGuiDocument();
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    ShowRestoreInformationLayer(vp, "BSplinePoleWeightVisible");
+}
+
+bool CmdSketcherBSplinePoleWeight::isActive(void)
+{
+    return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
 // Composite drop down menu for show/hide geometry information layer
 DEF_STD_CMD_ACLU(CmdSketcherCompBSplineShowHideGeometryInformation)
 
 CmdSketcherCompBSplineShowHideGeometryInformation::CmdSketcherCompBSplineShowHideGeometryInformation()
-: Command("Sketcher_CompBSplineShowHideGeometryInformation")
+    : Command("Sketcher_CompBSplineShowHideGeometryInformation")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Show/hide B-spline information layer");
-    sToolTipText    = QT_TR_NOOP("Show/hide B-spline information layer");
+    sToolTipText    = sMenuText;
     sWhatsThis      = "Sketcher_CompBSplineShowHideGeometryInformation";
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
@@ -251,17 +263,18 @@ CmdSketcherCompBSplineShowHideGeometryInformation::CmdSketcherCompBSplineShowHid
 void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-
     Gui::Command * cmd;
 
-    if (iMsg==0)
+    if (iMsg == 0)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDegree");
-    else if (iMsg==1)
+    else if (iMsg == 1)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePolygon");
-    else if (iMsg==2)
+    else if (iMsg == 2)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineComb");
-    else if (iMsg==3)
+    else if (iMsg == 3)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineKnotMultiplicity");
+    else if (iMsg == 4)
+        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePoleWeight");
     else
         return;
 
@@ -274,6 +287,8 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
 
     assert(iMsg < a.size());
     pcAction->setIcon(a[iMsg]->icon());
+    // we must also set the tooltip of the used command
+    pcAction->setToolTip(a[iMsg]->toolTip());
 }
 
 Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction(void)
@@ -290,6 +305,8 @@ Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction(vo
     c3->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineComb"));
     QAction* c4 = pcAction->addAction(QString());
     c4->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplineKnotMultiplicity"));
+    QAction* c5 = pcAction->addAction(QString());
+    c5->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BSplinePoleWeight"));
 
     _pcAction = pcAction;
     languageChange();
@@ -311,21 +328,41 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* c1 = a[0];
-    c1->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline degree"));
-    c1->setToolTip(QApplication::translate("Sketcher_BSplineDegree","Switches between showing and hiding the degree for all B-splines"));
-    c1->setStatusTip(QApplication::translate("Sketcher_BSplineDegree","Switches between showing and hiding the degree for all B-splines"));
+    c1->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+                                        "Show/hide B-spline degree"));
+    c1->setToolTip(QApplication::translate("Sketcher_BSplineDegree",
+                                           "Switches between showing and hiding the degree for all B-splines"));
+    c1->setStatusTip(QApplication::translate("Sketcher_BSplineDegree",
+                                             "Switches between showing and hiding the degree for all B-splines"));
     QAction* c2 = a[1];
-    c2->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline control polygon"));
-    c2->setToolTip(QApplication::translate("Sketcher_BSplinePolygon","Switches between showing and hiding the control polygons for all B-splines"));
-    c2->setStatusTip(QApplication::translate("Sketcher_BSplinePolygon","Switches between showing and hiding the control polygons for all B-splines"));
+    c2->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+                                        "Show/hide B-spline control polygon"));
+    c2->setToolTip(QApplication::translate("Sketcher_BSplinePolygon",
+                                           "Switches between showing and hiding the control polygons for all B-splines"));
+    c2->setStatusTip(QApplication::translate("Sketcher_BSplinePolygon",
+                                             "Switches between showing and hiding the control polygons for all B-splines"));
     QAction* c3 = a[2];
-    c3->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline curvature comb"));
-    c3->setToolTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-splines"));
-    c3->setStatusTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-splines"));
+    c3->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+                                        "Show/hide B-spline curvature comb"));
+    c3->setToolTip(QApplication::translate("Sketcher_BSplineComb",
+                                           "Switches between showing and hiding the curvature comb for all B-splines"));
+    c3->setStatusTip(QApplication::translate("Sketcher_BSplineComb",
+                                             "Switches between showing and hiding the curvature comb for all B-splines"));
     QAction* c4 = a[3];
-    c4->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-spline knot multiplicity"));
-    c4->setToolTip(QApplication::translate("Sketcher_BSplineKnotMultiplicity","Switches between showing and hiding the knot multiplicity for all B-splines"));
-    c4->setStatusTip(QApplication::translate("Sketcher_BSplineKnotMultiplicity","Switches between showing and hiding the knot multiplicity for all B-splines"));
+    c4->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+                                        "Show/hide B-spline knot multiplicity"));
+    c4->setToolTip(QApplication::translate("Sketcher_BSplineKnotMultiplicity",
+                                           "Switches between showing and hiding the knot multiplicity for all B-splines"));
+    c4->setStatusTip(QApplication::translate("Sketcher_BSplineKnotMultiplicity",
+                                             "Switches between showing and hiding the knot multiplicity for all B-splines"));
+
+    QAction* c5 = a[4];
+    c5->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation",
+        "Show/hide B-spline control point weight"));
+    c5->setToolTip(QApplication::translate("Sketcher_BSplinePoleWeight",
+        "Switches between showing and hiding the control point weight for all B-splines"));
+    c5->setStatusTip(QApplication::translate("Sketcher_BSplinePoleWeight",
+        "Switches between showing and hiding the control point weight for all B-splines"));
 }
 
 void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*/)
@@ -334,20 +371,20 @@ void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*
 
 bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+    return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
-// Convert to NURB
+// Convert to NURBS
 DEF_STD_CMD_A(CmdSketcherConvertToNURB)
 
 CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
-:Command("Sketcher_BSplineConvertToNURB")
+    : Command("Sketcher_BSplineConvertToNURB")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Convert Geometry to B-spline");
-    sToolTipText    = QT_TR_NOOP("Converts the given Geometry to a B-spline");
-    sWhatsThis      = "Sketcher_ConvertToNURB";
+    sMenuText       = QT_TR_NOOP("Convert geometry to B-spline");
+    sToolTipText    = QT_TR_NOOP("Converts the selected geometry to a B-spline");
+    sWhatsThis      = "Sketcher_BSplineConvertToNURB";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineApproximate";
     sAccel          = "";
@@ -373,27 +410,23 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
 
     bool nurbsized = false;
 
-    openCommand("Convert to NURBS");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
 
-    for (unsigned int i=0; i<SubNames.size(); i++ ) {
+    for (size_t i=0; i < SubNames.size(); i++) {
         // only handle edges
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
-
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
             Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
             nurbsized = true;
         }
         else if (SubNames[i].size() > 12 && SubNames[i].substr(0,12) == "ExternalEdge") {
-
             int GeoId = - (std::atoi(SubNames[i].substr(12,4000).c_str()) + 2);
             Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
             nurbsized = true;
         }
-
-
     }
 
-    if(!nurbsized) {
+    if (!nurbsized) {
         abortCommand();
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("None of the selected elements is an edge."));
@@ -401,24 +434,23 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
     else {
         commitCommand();
     }
-
     tryAutoRecomputeIfNotSolve(Obj);
 }
 
 bool CmdSketcherConvertToNURB::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), true );
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
 
-// Convert to NURB
+// Increase degree of the spline
 DEF_STD_CMD_A(CmdSketcherIncreaseDegree)
 
 CmdSketcherIncreaseDegree::CmdSketcherIncreaseDegree()
-:Command("Sketcher_BSplineIncreaseDegree")
+    : Command("Sketcher_BSplineIncreaseDegree")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Increase degree");
+    sMenuText       = QT_TR_NOOP("Increase B-spline degree");
     sToolTipText    = QT_TR_NOOP("Increases the degree of the B-spline");
     sWhatsThis      = "Sketcher_BSplineIncreaseDegree";
     sStatusTip      = sToolTipText;
@@ -444,51 +476,127 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("Increase degree");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Increase spline degree"));
 
-    bool ignored=false;
+    bool ignored = false;
 
-    for (unsigned int i=0; i<SubNames.size(); i++ ) {
+    for (size_t i=0; i < SubNames.size(); i++) {
         // only handle edges
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
-
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
-
             const Part::Geometry * geo = Obj->getGeometry(GeoId);
 
             if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "increaseBSplineDegree(%d) ", GeoId);
-                
                 // add new control points
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
             }
             else {
-                ignored=true;
+                ignored = true;
             }
         }
     }
 
-    if(ignored) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("At least one of the selected objects was not a B-Spline and was ignored."));
+    if (ignored) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("At least one of the selected "
+                                         "objects was not a B-Spline and was ignored."));
     }
 
     commitCommand();
-
     tryAutoRecomputeIfNotSolve(Obj);
-
     getSelection().clearSelection();
 }
 
 bool CmdSketcherIncreaseDegree::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), true );
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
+
+
+// Decrease degree of the spline
+DEF_STD_CMD_A(CmdSketcherDecreaseDegree)
+
+CmdSketcherDecreaseDegree::CmdSketcherDecreaseDegree()
+    : Command("Sketcher_BSplineDecreaseDegree")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Decrease B-spline degree");
+    sToolTipText    = QT_TR_NOOP("Decreases the degree of the B-spline");
+    sWhatsThis      = "Sketcher_BSplineDecreaseDegree";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_BSplineDecreaseDegree";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherDecreaseDegree::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        return;
+    }
+
+    getSelection().clearSelection();
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease spline degree"));
+
+    bool ignored = false;
+
+    for (size_t i=0; i < SubNames.size(); i++) {
+        // only handle edges
+        if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
+            int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
+            const Part::Geometry * geo = Obj->getGeometry(GeoId);
+
+            if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "decreaseBSplineDegree(%d) ", GeoId);
+                // add new control points
+                // Currently exposeInternalGeometry is called from within decreaseBSplineDegree because
+                // the old spline is deleted and a new one is added so that the GeoId is invalid afterwards
+                //Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
+                break; // cannot handle more than spline because the GeoIds will be invalidated after the first change
+            }
+            else {
+                ignored = true;
+            }
+        }
+    }
+
+    if (ignored) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("At least one of the selected "
+                                         "objects was not a B-Spline and was ignored."));
+    }
+
+    commitCommand();
+    tryAutoRecomputeIfNotSolve(Obj);
+    getSelection().clearSelection();
+}
+
+bool CmdSketcherDecreaseDegree::isActive(void)
+{
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+}
+
 
 DEF_STD_CMD_A(CmdSketcherIncreaseKnotMultiplicity)
 
 CmdSketcherIncreaseKnotMultiplicity::CmdSketcherIncreaseKnotMultiplicity()
-:Command("Sketcher_BSplineIncreaseKnotMultiplicity")
+    : Command("Sketcher_BSplineIncreaseKnotMultiplicity")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -505,11 +613,14 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    #if OCC_VERSION_HEX < 0x060900
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong OCE/OCC version"),
-                         QObject::tr("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher"));
+#if OCC_VERSION_HEX < 0x060900
+    QMessageBox::warning(Gui::getMainWindow(),
+                         QObject::tr("Wrong OCE/OCC version"),
+                         QObject::tr("This version of OCE/OCC "
+                                     "does not support knot operation. "
+                                     "You need 6.9.0 or higher"));
     return;
-    #endif
+#endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
@@ -523,8 +634,9 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
 
-    if(SubNames.size()>1) {
-        // Check that only one object is selected, as we need only one object to get the new GeoId after multiplicity change
+    if (SubNames.size() > 1) {
+        // Check that only one object is selected,
+        // as we need only one object to get the new GeoId after multiplicity change
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selection comprises more than one item. Please select just one knot."));
         return;
@@ -532,70 +644,67 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("Increase knot multiplicity");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Increase knot multiplicity"));
 
     bool applied = false;
     bool notaknot = true;
-
     boost::uuids::uuid bsplinetag;
 
     int GeoId;
     Sketcher::PointPos PosId;
     getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-    if(isSimpleVertex(Obj, GeoId, PosId)) {
+    if (isSimpleVertex(Obj, GeoId, PosId)) {
+        const std::vector<Sketcher::Constraint *> &vals = Obj->Constraints.getValues();
 
-        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
+        for (std::vector<Sketcher::Constraint *>::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+            if ((*it)->Type == Sketcher::InternalAlignment
+                && (*it)->First == GeoId
+                && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
             {
                 bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
-
                 notaknot = false;
 
                 try {
-                    Gui::cmdAppObjectArgs(selection[0].getObject(), "modifyBSplineKnotMultiplicity(%d,%d,%d) ",
-                        (*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
-
+                    Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                          "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                                          (*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
                     applied = true;
 
-                    // Warning: GeoId list might have changed as the consequence of deleting pole circles and
+                    // Warning: GeoId list might have changed
+                    // as the consequence of deleting pole circles and
                     // particularly B-spline GeoID might have changed.
-
                 }
                 catch (const Base::CADKernelError& e) {
                     e.ReportException();
-                    if(e.getTranslatable()) {
-                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
-                                            QObject::tr(e.getMessage().c_str()));
+                    if (e.getTranslatable()) {
+                        QMessageBox::warning(Gui::getMainWindow(),
+                                             QObject::tr("CAD Kernel Error"),
+                                             QObject::tr(e.getMessage().c_str()));
                     }
                     getSelection().clearSelection();
                 }
                 catch (const Base::Exception& e) {
                     e.ReportException();
-                    if(e.getTranslatable()) {
-                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Input Error"),
-                                            QObject::tr(e.getMessage().c_str()));
+                    if (e.getTranslatable()) {
+                        QMessageBox::warning(Gui::getMainWindow(),
+                                             QObject::tr("Input Error"),
+                                             QObject::tr(e.getMessage().c_str()));
                     }
-
                     getSelection().clearSelection();
                 }
-
-                break; // we have already found our knot.
-
+                break;  // we have already found our knot.
             }
-
         }
-
     }
 
-    if(notaknot){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    if (notaknot) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
                              QObject::tr("None of the selected elements is a knot of a B-spline"));
     }
 
-    if(applied)
+    if (applied)
     {
         // find new geoid for B-spline as GeoId might have changed
         const std::vector< Part::Geometry * > &gvals = Obj->getInternalGeometry();
@@ -610,8 +719,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
             }
         }
 
-
-        if(ngfound) {
+        if (ngfound) {
             try {
                 // add internalalignment for new pole
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
@@ -620,11 +728,10 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                 Base::Console().Error("%s\n", e.what());
                 getSelection().clearSelection();
             }
-
         }
     }
 
-    if(!applied) {
+    if (!applied) {
         abortCommand();
     }
     else {
@@ -632,24 +739,22 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     }
 
     tryAutoRecomputeIfNotSolve(Obj);
-
     getSelection().clearSelection();
-
 }
 
 bool CmdSketcherIncreaseKnotMultiplicity::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), true );
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
 
 DEF_STD_CMD_A(CmdSketcherDecreaseKnotMultiplicity)
 
 CmdSketcherDecreaseKnotMultiplicity::CmdSketcherDecreaseKnotMultiplicity()
-:Command("Sketcher_BSplineDecreaseKnotMultiplicity")
+    : Command("Sketcher_BSplineDecreaseKnotMultiplicity")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Decrease multiplicity");
+    sMenuText       = QT_TR_NOOP("Decrease knot multiplicity");
     sToolTipText    = QT_TR_NOOP("Decreases the multiplicity of the selected knot of a B-spline");
     sWhatsThis      = "Sketcher_BSplineDecreaseKnotMultiplicity";
     sStatusTip      = sToolTipText;
@@ -662,11 +767,14 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    #if OCC_VERSION_HEX < 0x060900
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong OCE/OCC version"),
-                         QObject::tr("This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher"));
+#if OCC_VERSION_HEX < 0x060900
+    QMessageBox::warning(Gui::getMainWindow(),
+                         QObject::tr("Wrong OCE/OCC version"),
+                         QObject::tr("This version of OCE/OCC "
+                                     "does not support knot operation. "
+                                     "You need 6.9.0 or higher"));
     return;
-    #endif
+#endif
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
@@ -680,8 +788,9 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
 
-    if(SubNames.size()>1) {
-        // Check that only one object is selected, as we need only one object to get the new GeoId after multiplicity change
+    if (SubNames.size() > 1) {
+        // Check that only one object is selected,
+        // as we need only one object to get the new GeoId after multiplicity change
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("The selection comprises more than one item. Please select just one knot."));
         return;
@@ -689,57 +798,53 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand("Decrease knot multiplicity");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease knot multiplicity"));
 
     bool applied = false;
     bool notaknot = true;
-
     boost::uuids::uuid bsplinetag;
 
     int GeoId;
     Sketcher::PointPos PosId;
     getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-    if(isSimpleVertex(Obj, GeoId, PosId)) {
-
+    if (isSimpleVertex(Obj, GeoId, PosId))
+    {
         const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
+            if ((*it)->Type == Sketcher::InternalAlignment
+                && (*it)->First == GeoId
+                && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
             {
                 bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
-
                 notaknot = false;
 
                 try {
-                    Gui::cmdAppObjectArgs(selection[0].getObject(), "modifyBSplineKnotMultiplicity(%d,%d,%d) ",
+                    Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                          "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
                                           (*it)->Second, (*it)->InternalAlignmentIndex + 1, -1);
-                    
                     applied = true;
 
                     // Warning: GeoId list might have changed as the consequence of deleting pole circles and
                     // particularly B-spline GeoID might have changed.
-
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
                                          QObject::tr(getStrippedPythonExceptionString(e).c_str()));
                     getSelection().clearSelection();
                 }
-
-                break; // we have already found our knot.
-
+                break;  // we have already found our knot.
             }
         }
-
     }
 
-    if(notaknot){
+    if (notaknot) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("None of the selected elements is a knot of a B-spline"));
     }
 
-    if(applied)
+    if (applied)
     {
         // find new geoid for B-spline as GeoId might have changed
         const std::vector< Part::Geometry * > &gvals = Obj->getInternalGeometry();
@@ -754,8 +859,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
             }
         }
 
-
-        if(ngfound) {
+        if (ngfound) {
             try {
                 // add internalalignment for new pole
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
@@ -767,7 +871,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         }
     }
 
-    if(!applied) {
+    if (!applied) {
         abortCommand();
     }
     else {
@@ -775,13 +879,12 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     }
 
     tryAutoRecomputeIfNotSolve(Obj);
-
     getSelection().clearSelection();
 }
 
 bool CmdSketcherDecreaseKnotMultiplicity::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), true );
+    return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
 
 
@@ -789,7 +892,7 @@ bool CmdSketcherDecreaseKnotMultiplicity::isActive(void)
 DEF_STD_CMD_ACLU(CmdSketcherCompModifyKnotMultiplicity)
 
 CmdSketcherCompModifyKnotMultiplicity::CmdSketcherCompModifyKnotMultiplicity()
-: Command("Sketcher_CompModifyKnotMultiplicity")
+    : Command("Sketcher_CompModifyKnotMultiplicity")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -804,12 +907,11 @@ void CmdSketcherCompModifyKnotMultiplicity::activated(int iMsg)
 {
 
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-
     Gui::Command * cmd;
 
-    if (iMsg==0)
+    if (iMsg == 0)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineIncreaseKnotMultiplicity");
-    else if (iMsg==1)
+    else if (iMsg == 1)
         cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDecreaseKnotMultiplicity");
     else
         return;
@@ -856,14 +958,19 @@ void CmdSketcherCompModifyKnotMultiplicity::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* c1 = a[0];
-    c1->setText(QApplication::translate("CmdSketcherCompModifyKnotMultiplicity","Increase knot multiplicity"));
-    c1->setToolTip(QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity","Increases the multiplicity of the selected knot of a B-spline"));
-    c1->setStatusTip(QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity","Increases the multiplicity of the selected knot of a B-spline"));
+    c1->setText(QApplication::translate("CmdSketcherCompModifyKnotMultiplicity",
+                                        "Increase knot multiplicity"));
+    c1->setToolTip(QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity",
+                                           "Increases the multiplicity of the selected knot of a B-spline"));
+    c1->setStatusTip(QApplication::translate("Sketcher_BSplineIncreaseKnotMultiplicity",
+                                             "Increases the multiplicity of the selected knot of a B-spline"));
     QAction* c2 = a[1];
-    c2->setText(QApplication::translate("CmdSketcherCompModifyKnotMultiplicity","Decrease knot multiplicity"));
-    c2->setToolTip(QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity","Decreases the multiplicity of the selected knot of a B-spline"));
-    c2->setStatusTip(QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity","Decreases the multiplicity of the selected knot of a B-spline"));
-
+    c2->setText(QApplication::translate("CmdSketcherCompModifyKnotMultiplicity",
+                                        "Decrease knot multiplicity"));
+    c2->setToolTip(QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity",
+                                           "Decreases the multiplicity of the selected knot of a B-spline"));
+    c2->setStatusTip(QApplication::translate("Sketcher_BSplineDecreaseKnotMultiplicity",
+                                             "Decreases the multiplicity of the selected knot of a B-spline"));
 }
 
 void CmdSketcherCompModifyKnotMultiplicity::updateAction(int /*mode*/)
@@ -872,7 +979,7 @@ void CmdSketcherCompModifyKnotMultiplicity::updateAction(int /*mode*/)
 
 bool CmdSketcherCompModifyKnotMultiplicity::isActive(void)
 {
-    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+    return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
 void CreateSketcherCommandsBSpline(void)
@@ -883,9 +990,11 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherBSplinePolygon());
     rcCmdMgr.addCommand(new CmdSketcherBSplineComb());
     rcCmdMgr.addCommand(new CmdSketcherBSplineKnotMultiplicity());
+    rcCmdMgr.addCommand(new CmdSketcherBSplinePoleWeight());
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
     rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
+    rcCmdMgr.addCommand(new CmdSketcherDecreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherDecreaseKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherCompModifyKnotMultiplicity());

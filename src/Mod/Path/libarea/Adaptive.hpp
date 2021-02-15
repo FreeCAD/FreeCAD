@@ -1,5 +1,6 @@
 /**************************************************************************
-*   Copyright (c) Kresimir Tusek         (kresimir.tusek@gmail.com) 2018  *
+*   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
+*                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
 *   This library is free software; you can redistribute it and/or         *
@@ -92,6 +93,7 @@ class Adaptive2d
 	double tolerance = 0.1;
 	double stockToLeave = 0;
 	bool forceInsideOut = true;
+	bool finishingProfile = true;
 	double keepToolDownDistRatio = 3.0; // keep tool down distance ratio
 	OperationType opType = OperationType::otClearingInside;
 

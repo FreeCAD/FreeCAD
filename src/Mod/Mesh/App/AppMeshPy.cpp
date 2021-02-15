@@ -192,6 +192,21 @@ private:
                         (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
                     pcFeature->Label.setValue(groupName.c_str());
                     pcFeature->Mesh.swapMesh(*segm);
+
+                    // if colors are set per face
+                    if (mat.binding == MeshCore::MeshIO::PER_FACE &&
+                        mat.diffuseColor.size() == mesh.countFacets()) {
+                        App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                            (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
+                        if (prop) {
+                            std::vector<App::Color> diffuseColor;
+                            diffuseColor.reserve(group.getIndices().size());
+                            for (const auto& it : group.getIndices()) {
+                                diffuseColor.push_back(mat.diffuseColor[it]);
+                            }
+                            prop->setValues(diffuseColor);
+                        }
+                    }
                     pcFeature->purgeTouched();
                 }
             }
@@ -271,6 +286,21 @@ private:
                         (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
                     pcFeature->Label.setValue(groupName.c_str());
                     pcFeature->Mesh.swapMesh(*segm);
+
+                    // if colors are set per face
+                    if (mat.binding == MeshCore::MeshIO::PER_FACE &&
+                        mat.diffuseColor.size() == mesh.countFacets()) {
+                        App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                            (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
+                        if (prop) {
+                            std::vector<App::Color> diffuseColor;
+                            diffuseColor.reserve(group.getIndices().size());
+                            for (const auto& it : group.getIndices()) {
+                                diffuseColor.push_back(mat.diffuseColor[it]);
+                            }
+                            prop->setValues(diffuseColor);
+                        }
+                    }
                     pcFeature->purgeTouched();
                 }
             }
@@ -331,9 +361,9 @@ private:
 
         if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
 #if PY_MAJOR_VERSION >= 3
-                                          "Oet|fp",
+                                          "Oet|dp",
 #else
-                                          "Oet|fi",
+                                          "Oet|di",
 #endif // Python version switch
                                           kwList, &objects, "utf-8", &fileNamePy,
                                           &fTolerance, &exportAmfCompressed )) {
@@ -352,29 +382,16 @@ private:
 
         // collect all object types that can be exported as mesh
         std::vector<App::DocumentObject*> objectList;
-        std::string label;
         for (auto it : list) {
             PyObject *item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 auto obj( static_cast<App::DocumentObjectPy *>(item)->getDocumentObjectPtr() );
-                label = obj->Label.getValue();
-                if (Exporter::isSupported(obj))
-                    objectList.push_back(obj);
+                objectList.push_back(obj);
             }
         }
 
         if (objectList.empty()) {
-            std::string errorMessage;
-            if (list.length() == 1) {
-                std::stringstream str;
-                str << label << " cannot be exported to a mesh file";
-                errorMessage = str.str();
-            }
-            else {
-                errorMessage = "None of the objects can be exported to a mesh file";
-            }
-
-            throw Py::TypeError(errorMessage);
+            throw Py::TypeError("None of the objects can be exported to a mesh file");
         }
 
         auto exportFormat( MeshOutput::GetFormat(outputFileName.c_str()) );

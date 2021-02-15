@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>272</width>
-    <height>271</height>
+    <width>280</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,15 +15,15 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="textLabel1">
        <property name="text">
         <string>Type</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QComboBox" name="changeMode">
        <item>
         <property name="text">
@@ -32,19 +32,18 @@
        </item>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
+     <item row="1" column="0">
       <widget class="QLabel" name="labelLength">
        <property name="text">
         <string>Length</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1">
       <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
@@ -53,16 +52,132 @@
     </layout>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBoxDirection">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Use custom vector for pad direction otherwise
+the sketch plane's normal vector will be used</string>
+     </property>
+     <property name="title">
+      <string>Use custom direction</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout1">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelXSkew">
+          <property name="text">
+           <string>x</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::DoubleSpinBox" name="XDirectionEdit">
+          <property name="toolTip">
+           <string>x-component of direction vector</string>
+          </property>
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labelYSkew">
+          <property name="text">
+           <string>y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::DoubleSpinBox" name="YDirectionEdit">
+          <property name="toolTip">
+           <string>y-component of direction vector</string>
+          </property>
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labelZSkew">
+          <property name="text">
+           <string>z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::DoubleSpinBox" name="ZDirectionEdit">
+          <property name="toolTip">
+           <string>z-component of direction vector</string>
+          </property>
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QLabel" name="labelOffset">
        <property name="text">
-        <string>Offset</string>
+        <string>Offset to face</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit"/>
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
+       <property name="toolTip">
+        <string>Offset from face in which pad will end</string>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -71,6 +186,9 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
+     <property name="toolTip">
+      <string>Applies length symmetrically to sketch plane</string>
+     </property>
      <property name="text">
       <string>Symmetric to plane</string>
      </property>
@@ -78,6 +196,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxReversed">
+     <property name="toolTip">
+      <string>Reverses pad direction</string>
+     </property>
      <property name="text">
       <string>Reversed</string>
      </property>
@@ -94,8 +215,8 @@
      </item>
      <item>
       <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit2">
-       <property name="minimum">
-        <double>0.000000000000000</double>
+       <property name="keyboardTracking">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -134,13 +255,23 @@
    </item>
   </layout>
  </widget>
- <resources/>
  <customwidgets>
-   <customwidget>
-     <class>Gui::PrefQuantitySpinBox</class>
-     <extends>QWidget</extends>
-     <header>Gui/PrefWidgets.h</header>
-   </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
+ <resources/>
  <connections/>
 </ui>

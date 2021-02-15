@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver object CalculiX"
+__title__  = "FreeCAD FEM solver object CalculiX"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package SolverCalculix
 #  \ingroup FEM
@@ -53,7 +53,7 @@ class Proxy(solverbase.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
 
-    Type = "Fem::FemSolverObjectCalculix"
+    Type = "Fem::SolverCalculix"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
@@ -317,3 +317,16 @@ def add_attributes(obj, ccx_prefs):
     )
     dimout = ccx_prefs.GetBool("BeamShellOutput", False)
     obj.BeamShellResultOutput3D = dimout
+
+
+"""
+Should there be some equation object for Calculix too.
+
+Necessarily yes! The properties GeometricalNonlinearity,
+MaterialNonlinearity, ThermoMechSteadyState might be moved
+to the appropriate equation.
+
+Furthermore the material Category should not be used in writer.
+See common materila object for more information. The equation
+should used instead to get this information needed in writer.
+"""

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -218,7 +216,7 @@ class JobPreferencesPage:
         rotZ = attrs.get('rotZ')
         rotW = attrs.get('rotW')
         if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
-            pos = FreeCAD.Vector(float(posX), float(posY), float(posZ)) 
+            pos = FreeCAD.Vector(float(posX), float(posY), float(posZ))
             rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
             placement = FreeCAD.Placement(pos, rot)
             self.form.stockPlacementGroup.setChecked(True)

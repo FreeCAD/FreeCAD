@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>154</height>
+    <height>180</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QCheckBox" name="capacitanceBodyBox">
@@ -110,10 +110,17 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="capacityBody_label">
      <property name="text">
       <string extracomment="Enabled by 'Calculate Capacity Matrix' in Electrostatic equation">Capacity Body: </string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="electricForcecalculationBox">
+     <property name="text">
+      <string>Calculate Electric Force</string>
      </property>
     </widget>
    </item>

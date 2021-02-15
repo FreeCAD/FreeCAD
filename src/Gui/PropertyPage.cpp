@@ -31,13 +31,13 @@
 using namespace Gui::Dialog;
 
 /** Construction */
-PropertyPage::PropertyPage(QWidget* parent) : QWidget(parent) 
+PropertyPage::PropertyPage(QWidget* parent) : QWidget(parent)
 {
   bChanged = false;
 }
 
 /** Destruction */
-PropertyPage::~PropertyPage() 
+PropertyPage::~PropertyPage()
 {
 }
 
@@ -96,12 +96,12 @@ void PropertyPage::onReset()
 // ----------------------------------------------------------------
 
 /** Construction */
-PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent) 
+PreferencePage::PreferencePage(QWidget* parent) : QWidget(parent)
 {
 }
 
 /** Destruction */
-PreferencePage::~PreferencePage() 
+PreferencePage::~PreferencePage()
 {
 }
 
@@ -119,6 +119,7 @@ PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
 #if QT_VERSION >= 0x040500
     loader.setLanguageChangeEnabled(true);
 #endif
+    loader.setWorkingDirectory(QFileInfo(fn).absolutePath());
     QFile file(fn);
     if (file.open(QFile::ReadOnly))
         form = loader.load(&file, this);
@@ -171,6 +172,7 @@ void PreferenceUiForm::loadSettings()
     loadPrefWidgets<Gui::PrefLineEdit       *>();
     loadPrefWidgets<Gui::PrefFileChooser    *>();
     loadPrefWidgets<Gui::PrefComboBox       *>();
+    loadPrefWidgets<Gui::PrefFontBox        *>();
     loadPrefWidgets<Gui::PrefCheckBox       *>();
     loadPrefWidgets<Gui::PrefRadioButton    *>();
     loadPrefWidgets<Gui::PrefSlider         *>();
@@ -189,6 +191,7 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefLineEdit       *>();
     savePrefWidgets<Gui::PrefFileChooser    *>();
     savePrefWidgets<Gui::PrefComboBox       *>();
+    savePrefWidgets<Gui::PrefFontBox        *>();
     savePrefWidgets<Gui::PrefCheckBox       *>();
     savePrefWidgets<Gui::PrefRadioButton    *>();
     savePrefWidgets<Gui::PrefSlider         *>();
@@ -199,12 +202,12 @@ void PreferenceUiForm::saveSettings()
 // ----------------------------------------------------------------
 
 /** Construction */
-CustomizeActionPage::CustomizeActionPage(QWidget* parent) : QWidget(parent) 
+CustomizeActionPage::CustomizeActionPage(QWidget* parent) : QWidget(parent)
 {
 }
 
 /** Destruction */
-CustomizeActionPage::~CustomizeActionPage() 
+CustomizeActionPage::~CustomizeActionPage()
 {
 }
 

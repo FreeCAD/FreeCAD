@@ -1,8 +1,3 @@
-"""Provide the task panel for the Draft Scale tool."""
-## @package task_scale
-# \ingroup DRAFT
-# \brief Provide the task panel for the Draft Scale tool.
-
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -26,16 +21,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the task panel code for the Draft Scale tool."""
+## @package task_scale
+# \ingroup drafttaskpanels
+# \brief Provides the task panel code for the Draft Scale tool.
+
+## \addtogroup drafttaskpanels
+# @{
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
-from draftutils.translate import translate
-_Quantity = App.Units.Quantity
 
+from draftutils.translate import translate
 
 # So the resource file doesn't trigger errors from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -52,21 +53,21 @@ class ScaleTaskPanel:
         layout.addWidget(self.xLabel, 0, 0, 1, 1)
         self.xValue = QtGui.QDoubleSpinBox()
         self.xValue.setRange(0.0000001, 1000000.0)
-        self.xValue.setDecimals(Draft.getParam("precision"))
+        self.xValue.setDecimals(Draft.precision())
         self.xValue.setValue(1)
         layout.addWidget(self.xValue,0,1,1,1)
         self.yLabel = QtGui.QLabel()
         layout.addWidget(self.yLabel,1,0,1,1)
         self.yValue = QtGui.QDoubleSpinBox()
         self.yValue.setRange(.0000001,1000000.0)
-        self.yValue.setDecimals(Draft.getParam("precision"))
+        self.yValue.setDecimals(Draft.precision())
         self.yValue.setValue(1)
         layout.addWidget(self.yValue,1,1,1,1)
         self.zLabel = QtGui.QLabel()
         layout.addWidget(self.zLabel,2,0,1,1)
         self.zValue = QtGui.QDoubleSpinBox()
         self.zValue.setRange(.0000001,1000000.0)
-        self.zValue.setDecimals(Draft.getParam("precision"))
+        self.zValue.setDecimals(Draft.precision())
         self.zValue.setValue(1)
         layout.addWidget(self.zValue,2,1,1,1)
         self.lock = QtGui.QCheckBox()
@@ -155,3 +156,5 @@ class ScaleTaskPanel:
             self.sourceCmd.finish()
         Gui.ActiveDocument.resetEdit()
         return True
+
+## @}

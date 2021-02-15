@@ -347,9 +347,9 @@ void GridReconstruction::perform(int ksearch)
     GridProjection<PointNormal> grid;
 
     // Set parameters
-    grid.setResolution(0.005); 
-    grid.setPaddingSize(3); 
-    grid.setNearestNeighborNum(100); 
+    grid.setResolution(0.005);
+    grid.setPaddingSize(3);
+    grid.setNearestNeighborNum(100);
     grid.setMaxBinarySearchLevel(10);
     grid.setInputCloud (cloud_with_normals);
     grid.setSearchMethod (tree2);
@@ -395,9 +395,9 @@ void GridReconstruction::perform(const std::vector<Base::Vector3f>& normals)
     GridProjection<PointNormal> grid;
 
     // Set parameters
-    grid.setResolution(0.005); 
-    grid.setPaddingSize(3); 
-    grid.setNearestNeighborNum(100); 
+    grid.setResolution(0.005);
+    grid.setPaddingSize(3);
+    grid.setNearestNeighborNum(100);
     grid.setMaxBinarySearchLevel(10);
     grid.setInputCloud (cloud_with_normals);
     grid.setSearchMethod (tree);

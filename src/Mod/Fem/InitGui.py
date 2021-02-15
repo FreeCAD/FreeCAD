@@ -1,5 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -7,25 +10,53 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
+# *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
-# Fem gui init module
-# Gathering all the information to start FreeCAD
-# This is the second one of three init scripts
-# the third one runs when the gui is up
+"""FEM module Gui init script
 
+Gathering all the information to start FreeCAD.
+This is the second one of three init scripts.
+The third one runs when the gui is up.
+
+The script is executed using exec().
+This happens inside srd/Gui/FreeCADGuiInit.py
+All imports made there are available here too.
+Thus no need to import them here.
+But the import code line is used anyway to get flake8 quired.
+Since they are cached they will not be imported twice.
+"""
+
+__title__  = "FEM module Gui init script"
+__author__ = "Juergen Riegel, Bernd Hahnebach"
+__url__    = "https://www.freecadweb.org"
+
+# imports to get flake8 quired
+import sys
 import FreeCAD
 import FreeCADGui
+from FreeCADGui import Workbench
+
+# needed imports
+from femguiutils.migrate_gui import FemMigrateGui
+
+
+if sys.version_info.major >= 3:
+    # migrate old FEM Gui objects
+    sys.meta_path.append(FemMigrateGui())
+
+
+# add FEM Gui unit tests
+FreeCAD.__unit_test__ += ["TestFemGui"]
 
 
 class FemWorkbench(Workbench):
@@ -41,6 +72,10 @@ class FemWorkbench(Workbench):
         import Fem
         import FemGui
         import femcommands.commands
+        # dummy usage to get flake8 and lgtm quiet
+        False if Fem.__name__ else True
+        False if FemGui.__name__ else True
+        False if femcommands.commands.__name__ else True
 
     def GetClassName(self):
         # see https://forum.freecadweb.org/viewtopic.php?f=10&t=43300

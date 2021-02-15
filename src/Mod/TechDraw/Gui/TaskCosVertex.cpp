@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wandererfan <wandererfan@gmail.com                 *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -72,10 +72,19 @@ using namespace TechDrawGui;
 TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                                TechDraw::DrawPage* page) :
     ui(new Ui_TaskCosVertex),
+    blockUpdate(false),
     m_tracker(nullptr),
+    m_mdi(nullptr),
+    m_scene(nullptr),
+    m_view(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
+    m_qgParent(nullptr),
+    m_trackerMode(QGTracker::None),
+    m_saveContextPolicy(Qt::DefaultContextMenu),
     m_inProgressLock(false),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
     m_pbTrackerState(TRACKERPICK),
     m_savePoint(QPointF(0.0,0.0)),
     pointFromTracker(false)
@@ -97,7 +106,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     m_view = m_mdi->getQGVPage();
 
     setUiPrimary();
-    
+
     connect(ui->pbTracker, SIGNAL(clicked(bool)),
             this, SLOT(onTrackerClicked(bool)));
 
@@ -106,7 +115,6 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
 
 TaskCosVertex::~TaskCosVertex()
 {
-    delete ui;
 }
 
 void TaskCosVertex::updateTask()
@@ -155,7 +163,7 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 {
 //    Base::Console().Message("TCV::addCosVertex(%s)\n", TechDraw::DrawUtil::formatVector(qPos).c_str());
     Base::Vector3d pos(qPos.x(), -qPos.y());
-//    int idx = 
+//    int idx =
     (void) m_baseFeat->addCosmeticVertex(pos);
     m_baseFeat->requestPaint();
 }
@@ -341,7 +349,7 @@ bool TaskCosVertex::reject()
         m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     }
 
-    //make sure any dangling objects are cleaned up 
+    //make sure any dangling objects are cleaned up
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 

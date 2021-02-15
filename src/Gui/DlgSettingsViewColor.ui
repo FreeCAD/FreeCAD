@@ -176,42 +176,6 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Pick radius (px):</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefDoubleSpinBox" name="spinPickRadius">
-          <property name="toolTip">
-           <string>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</string>
-          </property>
-          <property name="inputMethodHints">
-           <set>Qt::ImhPreferNumbers</set>
-          </property>
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="minimum">
-           <double>0.500000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>200.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>PickRadius</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
      </layout>
@@ -631,7 +595,6 @@ Larger value eases to pick things, but can make small features impossible to sel
   <tabstop>HighlightColor</tabstop>
   <tabstop>checkBoxSelection</tabstop>
   <tabstop>SelectionColor</tabstop>
-  <tabstop>spinPickRadius</tabstop>
   <tabstop>radioButtonSimple</tabstop>
   <tabstop>SelectionColor_Background</tabstop>
   <tabstop>radioButtonGradient</tabstop>

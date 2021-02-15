@@ -19,9 +19,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Fem Tools for results"
+__title__  = "Fem Tools for results"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -275,6 +275,7 @@ def fill_femresult_stats(res_obj):
     if res_obj.DisplacementVectors:
         x_max, y_max, z_max = map(max, zip(*res_obj.DisplacementVectors))
         x_min, y_min, z_min = map(min, zip(*res_obj.DisplacementVectors))
+    if res_obj.DisplacementLengths:
         a_min = min(res_obj.DisplacementLengths)
         a_max = max(res_obj.DisplacementLengths)
     if res_obj.vonMises:
@@ -373,6 +374,10 @@ def add_von_mises(res_obj):
 
 
 def add_principal_stress_std(res_obj):
+    # saved into PrincipalMax, PrincipalMed, PrincipalMin
+    # TODO may be use only one container for principal stresses in result object
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+    # but which one is better
     prinstress1 = []
     prinstress2 = []
     prinstress3 = []
@@ -395,7 +400,7 @@ def add_principal_stress_std(res_obj):
     res_obj.PrincipalMed = prinstress2
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
-    FreeCAD.Console.PrintLog("Added principal stress and max shear values.\n")
+    FreeCAD.Console.PrintLog("Added standard principal stresses and max shear values.\n")
     return res_obj
 
 
@@ -430,7 +435,7 @@ def get_concrete_nodes(res_obj):
                     for cn in concrete_nodes:
                         ic[cn - 1] = 1
         elif obj.isDerivedFrom("App::MaterialObjectPython") \
-                and is_of_type(obj, "Fem::Material"):
+                and is_of_type(obj, "Fem::MaterialCommon"):
             FreeCAD.Console.PrintMessage("No ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -454,6 +459,10 @@ def add_principal_stress_reinforced(res_obj):
     #
     # calculate principal and max Shear and fill them in res_obj
     #
+    # saved into PS1Vector, PS2Vector, PS3Vector
+    # TODO may be use only one container for principal stresses in result object
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&p=416006#p416006
+    # but which one is better
     prinstress1 = []
     prinstress2 = []
     prinstress3 = []
@@ -551,9 +560,9 @@ def add_principal_stress_reinforced(res_obj):
     res_obj.PS2Vector = ps2v
     res_obj.PS3Vector = ps3v
 
-    FreeCAD.Console.PrintMessage(
-        "Added principal stress and max shear values as well as"
-        "reinforcment rations, Mohr Coloumb values.\n"
+    FreeCAD.Console.PrintLog(
+        "Added reinforcement principal stresses and max shear values as well as "
+        "reinforcment ratios, Mohr Coloumb values.\n"
     )
     return res_obj
 
@@ -565,8 +574,8 @@ def compact_result(res_obj):
     # as workaround for https://www.freecadweb.org/tracker/view.php?id=2873
 
     # get compact mesh data
-    from femmesh.meshtools import compact_mesh as cm
-    compact_femmesh_data = cm(res_obj.Mesh.FemMesh)
+    from femmesh.meshtools import compact_mesh
+    compact_femmesh_data = compact_mesh(res_obj.Mesh.FemMesh)
     compact_femmesh = compact_femmesh_data[0]
     node_map = compact_femmesh_data[1]
     # FreeCAD result obj does not support elem results ATM

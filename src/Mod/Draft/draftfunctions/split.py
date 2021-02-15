@@ -20,15 +20,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft split functions.
-"""
+"""Provides functions to split wires into separate wire objects."""
 ## @package split
-# \ingroup DRAFT
-# \brief This module provides the code for Draft split functions.
+# \ingroup draftfuctions
+# \brief Provides functions to split wires into separate wire objects.
 
+## \addtogroup draftfuctions
+# @{
 import draftutils.utils as utils
-
-from draftmake.make_wire import make_wire
+import draftmake.make_wire as make_wire
 
 
 def split(wire, newPoint, edgeIndex):
@@ -43,10 +43,10 @@ def split(wire, newPoint, edgeIndex):
 def split_closed_wire(wire, edgeIndex):
     wire.Closed = False
     if edgeIndex == len(wire.Points):
-        make_wire([wire.Placement.multVec(wire.Points[0]),
+        make_wire.make_wire([wire.Placement.multVec(wire.Points[0]),
             wire.Placement.multVec(wire.Points[-1])], placement=wire.Placement)
     else:
-        make_wire([wire.Placement.multVec(wire.Points[edgeIndex-1]),
+        make_wire.make_wire([wire.Placement.multVec(wire.Points[edgeIndex-1]),
             wire.Placement.multVec(wire.Points[edgeIndex])], placement=wire.Placement)
         wire.Points = list(reversed(wire.Points[0:edgeIndex])) + list(reversed(wire.Points[edgeIndex:]))
 
@@ -67,7 +67,9 @@ def split_open_wire(wire, newPoint, edgeIndex):
         elif index > edgeIndex:
             wire2Points.append(wire.Placement.multVec(point))
     wire.Points = wire1Points
-    make_wire(wire2Points, placement=wire.Placement)
+    make_wire.make_wire(wire2Points, placement=wire.Placement)
 
 
 splitOpenWire = split_open_wire
+
+## @}

@@ -345,7 +345,7 @@
     <message>
       <location filename="../../shipGZ/Tools.py" line="294"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>Ogiltig tank! (objektet med etiketten '{}' är inte en tank)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>

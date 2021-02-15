@@ -34,7 +34,7 @@ using namespace Part;
 std::string GeometryBoolExtensionPy::representation(void) const
 {
     std::stringstream str;
-    double val = getGeometryBoolExtensionPtr()->getValue();
+    bool val = getGeometryBoolExtensionPtr()->getValue();
     str << "<GeometryBoolExtension (" ;
 
     if(getGeometryBoolExtensionPtr()->getName().size()>0)

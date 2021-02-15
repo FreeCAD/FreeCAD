@@ -34,6 +34,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPaintDevice>
 #include <QSvgGenerator>
 #include <QRegExp>
@@ -87,7 +88,7 @@ using namespace TechDrawGui;
 //**************************************************************
 QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
                          TechDraw::DrawRichAnno* anno) :
-    m_isExporting(false)
+    m_isExporting(false), m_hasHover(false)
 {
     setHandlesChildEvents(false);
     setAcceptHoverEvents(false);

@@ -133,9 +133,13 @@ void DlgCheckableMessageBox::setText(const QString &t)
 
 QPixmap DlgCheckableMessageBox::iconPixmap() const
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    return m_d->ui.pixmapLabel->pixmap(Qt::ReturnByValue);
+#else
     if (const QPixmap *p = m_d->ui.pixmapLabel->pixmap())
         return QPixmap(*p);
     return QPixmap();
+#endif
 }
 
 void DlgCheckableMessageBox::setIconPixmap(const QPixmap &p)

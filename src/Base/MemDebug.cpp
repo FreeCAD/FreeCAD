@@ -10,16 +10,15 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        * 
+ *   License along with FreeCAD; if not, write to the Free Software        *
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2006                                                   *
  ***************************************************************************/
 
 /** \defgroup MemDebug Memory debugging
@@ -44,7 +43,7 @@
 # ifdef _MSC_VER
 #  include <cstdio>
 #  include <time.h>
-#  include <windows.h>
+#  include <Windows.h>
 #  include <crtdbg.h>
 # endif
 #endif
@@ -52,6 +51,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "MemDebug.h"
+#include <stdexcept>
 
 using namespace Base;
 
@@ -60,12 +60,12 @@ using namespace Base;
 
 /** Memory debugging class
  * This class is an interface to the Windows CRT debugging
- * facility. If the define MemDebugOn in the src/FCConfig.h is 
- * set the class gets instantiated globally and tracks all memory allocations on the heap. 
+ * facility. If the define MemDebugOn in the src/FCConfig.h is
+ * set the class gets instantiated globally and tracks all memory allocations on the heap.
  * The result gets written in the MemLog.txt in the active directory.
  *  \par
- * NOTE: you must not instantiate this class! 
- *  
+ * NOTE: you must not instantiate this class!
+ *
  *
  * \author Juergen Riegel
  */
@@ -88,7 +88,7 @@ protected:
   //@}
 };
 
-// the one and only MemDebug instance. 
+// the one and only MemDebug instance.
 #ifdef MemDebugOn
 MemDebug cSingelton;
 #endif
@@ -116,24 +116,24 @@ MemDebug::MemDebug()
    _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR );
    _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE );
    _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR );
- 
+
    // Set the debug heap to report memory leaks when the process terminates,
    // and to keep freed blocks in the linked list.
    SET_CRT_DEBUG_FIELD( _CRTDBG_LEAK_CHECK_DF | _CRTDBG_DELAY_FREE_MEM_DF );
 
-   // Open a log file for the hook functions to use 
+   // Open a log file for the hook functions to use
    if ( logFile != NULL )
-     throw "Base::MemDebug::MemDebug():38: Don't call the constructor by your self!";
+     throw std::runtime_error("Base::MemDebug::MemDebug():38: Don't call the constructor by your self!");
 #if (_MSC_VER >= 1400)
    fopen_s( &logFile, "MemLog.txt", "w" );
    if ( logFile == NULL )
-     throw "Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...";
+     throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
    _strtime_s( timeStr, 15 );
    _strdate_s( dateStr, 15 );
 #elif (_MSC_VER >= 1200)
    logFile = fopen( "MemLog.txt", "w" );
    if ( logFile == NULL )
-     throw "Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...";
+     throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
    _strtime( timeStr );
    _strdate( dateStr );
 #endif
@@ -212,8 +212,8 @@ int __cdecl MemDebug::sAllocHook(
 
    if( nBlockUse !=4 )
      return(7);
-   
-   fprintf( logFile, 
+
+   fprintf( logFile,
             "%s (#%7d) %12Iu byte (%s) in %s line %d",
             operation[nAllocType],lRequest, nSize, blockType[nBlockUse],szFileName, nLine);
    if ( pvData != NULL )

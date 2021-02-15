@@ -20,18 +20,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_line function.
-"""
+"""Provides functions to create two-point Wire objects."""
 ## @package make_line
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_line function.
+# \ingroup draftmake
+# \brief Provides functions to create two-point Wire objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftmake.make_wire import make_wire
+import draftmake.make_wire as make_wire
 
 
 def make_line(first_param, last_param=None):
@@ -42,7 +39,7 @@ def make_line(first_param, last_param=None):
     Parameters
     ----------
     first_param : 
-        Base.Vector -> First point of the line (if p2 == None)
+        Base.Vector -> First point of the line (if p2 is None)
         Part.LineSegment -> Line is created from the given Linesegment
         Shape -> Line is created from the give Shape
 
@@ -65,9 +62,11 @@ def make_line(first_param, last_param=None):
             App.Console.PrintError(_err + "\n")
             return
 
-    obj = make_wire([p1,p2])
+    obj = make_wire.make_wire([p1,p2])
 
     return obj
 
 
 makeLine = make_line
+
+## @}

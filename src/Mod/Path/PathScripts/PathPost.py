@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 ''' Post Process command that will make use of the Output File and Post Processor entries in PathJob '''
 
 from __future__ import print_function
@@ -37,7 +36,7 @@ import os
 
 from PathScripts.PathPostProcessor import PostProcessor
 from PySide import QtCore, QtGui
-
+from datetime import datetime
 
 LOG_MODULE = PathLog.thisModule()
 
@@ -177,7 +176,7 @@ class CommandPathPost:
         return dlg.exec_()
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Post',
+        return {'Pixmap': 'Path_Post',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Post", "Post Process"),
                 'Accel': "P, P",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Post", "Post Process the selected Job")}
@@ -210,9 +209,9 @@ class CommandPathPost:
             print("post: %s(%s, %s)" % (postname, filename, postArgs))
             processor = PostProcessor.load(postname)
             gcode = processor.export(objs, filename, postArgs)
-            return (False, gcode)
+            return (False, gcode, filename)
         else:
-            return (True, '')
+            return (True, '', filename)
 
     def Activated(self):
         PathLog.track()
@@ -391,17 +390,22 @@ class CommandPathPost:
         rc = '' # pylint: disable=unused-variable
         if split:
             for slist in postlist:
-                (fail, rc) = self.exportObjectsWith(slist, job)
+                (fail, rc, filename) = self.exportObjectsWith(slist, job)
         else:
             finalpostlist = [item for slist in postlist for item in slist]
-            (fail, rc) = self.exportObjectsWith(finalpostlist, job)
+            (fail, rc, filename) = self.exportObjectsWith(finalpostlist, job)
 
         self.subpart = 1
 
         if fail:
             FreeCAD.ActiveDocument.abortTransaction()
         else:
+            if hasattr(job, "LastPostProcessDate"):
+                job.LastPostProcessDate = str(datetime.now())
+            if hasattr(job, "LastPostProcessOutput"):
+                job.LastPostProcessOutput = filename
             FreeCAD.ActiveDocument.commitTransaction()
+
         FreeCAD.ActiveDocument.recompute()
 
 

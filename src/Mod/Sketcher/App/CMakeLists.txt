@@ -38,6 +38,8 @@ generate_from_xml(SketchObjectSFPy)
 generate_from_xml(SketchObjectPy)
 generate_from_xml(SketchGeometryExtensionPy)
 generate_from_xml(ExternalGeometryExtensionPy)
+generate_from_xml(GeometryFacadePy)
+generate_from_xml(ExternalGeometryFacadePy)
 generate_from_xml(ConstraintPy)
 generate_from_xml(SketchPy)
 
@@ -56,6 +58,8 @@ SET(Features_SRCS
     SketchGeometryExtension.h
     ExternalGeometryExtension.cpp
     ExternalGeometryExtension.h
+    SolverGeometryExtension.cpp
+    SolverGeometryExtension.h
     SketchObject.cpp
     SketchObject.h
     SketchAnalysis.h
@@ -69,6 +73,10 @@ SET(Datatypes_SRCS
     Constraint.h
     Sketch.cpp
     Sketch.h
+    GeometryFacade.cpp
+    GeometryFacade.h
+    ExternalGeometryFacade.cpp
+    ExternalGeometryFacade.h
 )
 SOURCE_GROUP("Datatypes" FILES ${Datatypes_SRCS})
 
@@ -81,6 +89,10 @@ SET(Python_SRCS
     SketchGeometryExtensionPyImp.cpp
     ExternalGeometryExtensionPy.xml
     ExternalGeometryExtensionPyImp.cpp
+    GeometryFacadePy.xml
+    GeometryFacadePyImp.cpp
+    ExternalGeometryFacadePy.xml
+    ExternalGeometryFacadePyImp.cpp
     ConstraintPyImp.cpp
     ConstraintPy.xml
     SketchPy.xml
@@ -90,7 +102,6 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
 SET(PlaneGCS_SRCS
-    planegcs/qp_eq.h
     planegcs/GCS.cpp
     planegcs/GCS.h
     planegcs/Util.h
@@ -138,6 +149,15 @@ if(FREECAD_USE_PCH)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Sketcher_CPP_SRCS ${Sketcher_PCH_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(Sketcher PreCompiled.h PreCompiled.cpp Sketcher_CPP_SRCS)
 endif(FREECAD_USE_PCH)
+
+# Suppress some very long Eigen3 warnings of older versions
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        planegcs/GCS.cpp
+        planegcs/SubSystem.cpp
+        planegcs/qp_eq.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
 
 
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)

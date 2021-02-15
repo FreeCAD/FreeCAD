@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -19,7 +19,12 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
+
+
 #include "PreCompiled.h"
+
+// From Boost 1.75 on the geometry component requires C++14
+#define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
 
 #ifndef _PreComp_
 # include <cfloat>
@@ -30,7 +35,7 @@
 #   include "boost_fix/intrusive/detail/memory_util.hpp"
 #   include "boost_fix/container/detail/memory_util.hpp"
 # endif
-# include <boost/geometry.hpp>
+# include <boost_geometry.hpp>
 # include <boost/geometry/index/rtree.hpp>
 # include <boost/geometry/geometries/geometries.hpp>
 # include <boost/geometry/geometries/register/point.hpp>
@@ -332,7 +337,7 @@ int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
 static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection) {
     std::vector<gp_Pnt> ret;
     BRepAdaptor_Curve curve(edge);
-    Standard_Real efirst,elast,first,last;
+    Standard_Real efirst,elast;
     efirst = curve.FirstParameter();
     elast = curve.LastParameter();
     bool reversed = (edge.Orientation()==TopAbs_REVERSED);
@@ -340,29 +345,12 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
     // push the first point
     ret.push_back(curve.Value(reversed?elast:efirst));
 
-    Handle(Geom_Curve) c = BRep_Tool::Curve(edge, first, last);
-    first = c->FirstParameter();
-    last = c->LastParameter();
-    if(efirst>elast) {
-        if(first<last)
-            std::swap(first,last);
-    }else if(first>last)
-        std::swap(first,last);
-
-    // NOTE: OCCT QuasiUniformDeflection has a bug cause it to return only
-    // partial points for some (BSpline) curve if we pass in the edge trimmed
-    // first and last parameters. Passing the original curve first and last
-    // parameters works fine. The following algorithm uses the original curve
-    // parameters, and skip those out of range. The algorithm shall work the
-    // same for any other discetization algorithm, althgouth it seems only
-    // QuasiUniformDeflection has this bug.
-
     // NOTE: QuasiUniformDeflection has trouble with some B-Spline, see
     // https://forum.freecadweb.org/viewtopic.php?f=15&t=42628
     //
     // GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
     //
-    GCPnts_UniformDeflection discretizer(curve, deflection, first, last);
+    GCPnts_UniformDeflection discretizer(curve, deflection, efirst, elast);
     if (!discretizer.IsDone ())
         Standard_Failure::Raise("Curve discretization failed");
     if(discretizer.NbPoints () > 1) {
@@ -370,22 +358,10 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
         //strangely OCC discretizer points are one-based, not zero-based, why?
         if(reversed) {
             for (int i=nbPoints-1; i>=1; --i) {
-                auto param = discretizer.Parameter(i);
-                if(first<last) {
-                    if(param<efirst || param>elast)
-                        continue;
-                }else if(param>efirst || param<elast)
-                    continue;
                 ret.push_back(discretizer.Value(i));
             }
         }else{
             for (int i=2; i<=nbPoints; i++) {
-                auto param = discretizer.Parameter(i);
-                if(first<last) {
-                    if(param<efirst || param>elast)
-                        continue;
-                }else if(param>efirst || param<elast)
-                    continue;
                 ret.push_back(discretizer.Value(i));
             }
         }
@@ -783,9 +759,6 @@ struct WireJoiner {
 
     // split any edges that are intersected by other edge's end point in the middle
     void splitEdges() {
-#if (BOOST_VERSION < 105500)
-        throw Base::RuntimeError("Module must be built with boost version >= 1.55");
-#else
         for(auto it=edges.begin();it!=edges.end();) {
             const auto &info = *it;
             if(!info.hasBox) {
@@ -858,20 +831,15 @@ struct WireJoiner {
             add(it=edges.emplace(itNext,mkEdge1.Edge(),true));
             add(edges.emplace(itNext,mkEdge2.Edge(),true));
         }
-#endif
     }
 
     // This algorithm tries to find a set of closed wires that includes as many
     // edges (added by calling add() ) as possible. One edge may be included
     // in more than one closed wires if it connects to more than one edges.
-    int findClosedWires() {
-#if (BOOST_VERSION < 105500)
-        throw Base::RuntimeError("Module must be built with boost version >= 1.55");
-#else
-        // It seems OCC projector sometimes mess up the tolerance of edges
-        // which are supposed to be connected. So use a lesser precision
-        // below, and call makeCleanWire to fix the tolerance
-        const double tol = 1e-10;
+    int findClosedWires(double tol = Precision::Confusion()) {
+        // Note on tolerance: It seems OCC projector sometimes mess up the
+        // tolerance of edges which are supposed to be connected. So use a
+        // lesser precision below, and call makeCleanWire to fix the tolerance
 
         std::vector<VertexInfo> adjacentList;
         std::set<EdgeInfo*> edgesToVisit;
@@ -1038,7 +1006,6 @@ struct WireJoiner {
         }
         FC_TIME_LOG(t,"found " << count << " closed wires, skipped " << skips << "edges. ");
         return skips;
-#endif
     }
 
     //! make a clean wire with sorted, oriented, connected, etc edges
@@ -1185,7 +1152,7 @@ static int foreachSubshape(const TopoDS_Shape &shape,
     }
     if(openShapes.empty())
         return res;
- 
+
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
@@ -1258,7 +1225,9 @@ TopoDS_Shape Area::findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf)
 }
 
 int Area::project(TopoDS_Shape &shape_out,
-        const TopoDS_Shape &shape_in, const AreaParams *params)
+        const TopoDS_Shape &shape_in,
+        const AreaParams *params,
+        const TopoDS_Shape *work_plane)
 {
     FC_TIME_INIT2(t,t1);
     Handle_HLRBRep_Algo brep_hlr = NULL;
@@ -1309,7 +1278,8 @@ int Area::project(TopoDS_Shape &shape_out,
         showShape(v.edge,"split");
     }
 
-    int skips = joiner.findClosedWires();
+    double tolerance = params ? params->Tolerance : Precision::Confusion();
+    int skips = joiner.findClosedWires(tolerance);
     FC_TIME_LOG(t1,"WireJoiner findClosedWires");
 
     showShape(joiner.comp,"pre_project");
@@ -1325,6 +1295,9 @@ int Area::project(TopoDS_Shape &shape_out,
     area.myParams.Fill = TopExp_Explorer(shape_in,TopAbs_FACE).More()?FillFace:FillNone;
     area.myParams.Coplanar = CoplanarNone;
     area.myProjecting = true;
+    if (work_plane) {
+        area.myWorkPlane = *work_plane;
+    }
     area.add(joiner.comp, OperationUnion);
     const TopoDS_Shape &shape = area.getShape();
 
@@ -1627,7 +1600,8 @@ std::list<Area::Shape> Area::getProjectedShapes(const gp_Trsf &trsf, bool invers
     mySkippedShapes = 0;
     for(auto &s : myShapes) {
         TopoDS_Shape out;
-        int skipped = Area::project(out,s.shape.Moved(loc),&myParams);
+        int skipped =
+            Area::project(out, s.shape.Moved(loc), &myParams, &myWorkPlane);
         if(skipped < 0) {
             ++mySkippedShapes;
             continue;
@@ -2989,19 +2963,18 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         pstart = *_pstart;
     bool use_bound = !has_start || _pstart==NULL;
 
-    if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
-        //Second stage, group shape by its plane, and find overall boundary
+    //Second stage, group shape by its plane, and find overall boundary
 
-        if(arcPlaneFound || use_bound) {
-            for(auto &info : shape_list) {
-                if(arcPlaneFound) {
-                    info.myShape.Move(trsf);
-                    if(info.myPlanar) info.myPln.Transform(trsf);
-                }
-                if(use_bound)
-                    BRepBndLib::Add(info.myShape, bounds, Standard_False);
-            }
+    for(auto &info : shape_list) {
+        if(arcPlaneFound) {
+            info.myShape.Move(trsf);
+            if(info.myPlanar) info.myPln.Transform(trsf);
         }
+
+        BRepBndLib::Add(info.myShape, bounds, Standard_False);
+    }
+
+    if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
 
         for(auto itNext=shape_list.begin(),it=itNext;it!=shape_list.end();it=itNext) {
             ++itNext;
@@ -3031,15 +3004,35 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
 
     //FC_DURATION_DECL_INIT(td);
 
+    bounds.SetGap(0.0);
+    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+    bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+    AREA_TRACE("bound (" << xMin<<", "<<xMax<<"), ("<<
+            yMin<<", "<<yMax<<"), ("<<zMin<<", "<<zMax<<')');
+
     if(use_bound) {
-        bounds.SetGap(0.0);
-        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        AREA_TRACE("bound (" << xMin<<", "<<xMax<<"), ("<<
-                yMin<<", "<<yMax<<"), ("<<zMin<<", "<<zMax<<')');
         pstart.SetCoord(xMax,yMax,zMax);
         if(_pstart) *_pstart = pstart;
+    }else{
+        switch(retract_axis) {
+        case RetractAxisX:
+            if (pstart.X()<xMax){
+                pstart.SetX(xMax);
+            }
+            break;
+        case RetractAxisY:
+            if (pstart.Y()<yMax){
+                pstart.SetY(yMax);
+            }
+            break;
+        default:
+            if (pstart.Z()<zMax){
+                pstart.SetZ(zMax);
+            }
+        }
+        if(_pstart) *_pstart = pstart;
     }
+
 
     gp_Pln pln;
     double hint = 0.0;
@@ -3238,6 +3231,9 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 
+    if (wires.size() == 0)
+        return;
+
     short currentArcPlane = arc_plane;
     if (preamble) {
       // absolute mode
@@ -3289,18 +3285,15 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     p = pstart;
 
     // rapid horizontal move to start point
-    if(fabs((p.*getter)()-retraction) > Precision::Confusion()) {
-        // check if last is equal to current, if it is change last so the initial G0 is still emitted
-        gp_Pnt tmpPlast = plast;
-        (tmpPlast.*setter)((p.*getter)());
-        if(_pstart && p.IsEqual(tmpPlast, Precision::Confusion())){
-            plast.SetCoord(10.0, 10.0, 10.0);
-            (plast.*setter)(retraction);
-        }
-        (p.*setter)(retraction);
-        addGCode(false,path,plast,p,"G0");
+    gp_Pnt tmpPlast = plast;
+    (tmpPlast.*setter)((p.*getter)());
+    if(_pstart && p.IsEqual(tmpPlast, Precision::Confusion())){
+        plast.SetCoord(10.0, 10.0, 10.0);
+        (plast.*setter)(retraction);
     }
-    
+    (p.*setter)(retraction);
+    addGCode(false,path,plast,p,"G0");
+
 
     plast = p;
     bool first = true;

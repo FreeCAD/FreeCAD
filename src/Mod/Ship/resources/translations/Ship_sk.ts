@@ -11,7 +11,7 @@
     <message>
       <location filename="../../InitGui.py" line="67"/>
       <source>Weights</source>
-      <translation type="unfinished">Weights</translation>
+      <translation>Hmotnosť</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="44"/>
@@ -129,7 +129,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="319"/>
       <source>Displacement</source>
-      <translation type="unfinished">Displacement</translation>
+      <translation>Premiestnenie</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>

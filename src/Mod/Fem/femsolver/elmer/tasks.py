@@ -21,16 +21,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver Elmer tasks"
+__title__  = "FreeCAD FEM solver Elmer tasks"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
+import os
 import os.path
 import subprocess
 import sys
+from platform import system
 
 import FreeCAD
 
@@ -72,11 +74,14 @@ class Check(run.Check):
 class Prepare(run.Prepare):
 
     def run(self):
+        # TODO print working dir to report console
         self.pushStatus("Preparing input files...\n")
-        FreeCAD.Console.PrintMessage("Machine testmode: {}\n".format(self.testmode))
         if self.testmode:
-            w = writer.Writer(self.solver, self.directory, True)  # test mode
+            # test mode: neither gmsh, nor elmergrid nor elmersolver binaries needed
+            FreeCAD.Console.PrintMessage("Machine testmode: {}\n".format(self.testmode))
+            w = writer.Writer(self.solver, self.directory, True)
         else:
+            FreeCAD.Console.PrintLog("Machine testmode: {}\n".format(self.testmode))
             w = writer.Writer(self.solver, self.directory)
         try:
             w.write()
@@ -98,9 +103,24 @@ class Prepare(run.Prepare):
 class Solve(run.Solve):
 
     def run(self):
+        # on rerun the result file will not deleted before starting the solver
+        # if the solver fails, the existing result from a former run file will be loaded
+        # TODO: delete result file (may be delete all files which will be recreated)
         self.pushStatus("Executing solver...\n")
         binary = settings.get_binary("ElmerSolver")
         if binary is not None:
+            # if ELMER_HOME is not set, set it.
+            # Needed if elmer is compiled but not installed on Linux
+            # http://www.elmerfem.org/forum/viewtopic.php?f=2&t=7119
+            # https://stackoverflow.com/questions/1506010/how-to-use-export-with-python-on-linux
+            # TODO move retrieving the param to solver settings module
+            elparams = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
+            elmer_env = elparams.GetBool("SetElmerEnvVariables", False)
+            if elmer_env is True and system() == "Linux" and "ELMER_HOME" not in os.environ:
+                solvpath = os.path.split(binary)[0]
+                if os.path.isdir(solvpath):
+                    os.environ["ELMER_HOME"] = solvpath
+                    os.environ["LD_LIBRARY_PATH"] = "$LD_LIBRARY_PATH:{}/modules".format(solvpath)
             self._process = subprocess.Popen(
                 [binary], cwd=self.directory,
                 stdout=subprocess.PIPE,

@@ -41,9 +41,9 @@ the form written in the list above. To make the solver recognize settings for a
 new solver have a look at :class:`_SolverDlg`.
 """
 
-__title__ = "FreeCAD FEM solver settings"
+__title__  = "FreeCAD FEM solver settings"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 import FreeCAD

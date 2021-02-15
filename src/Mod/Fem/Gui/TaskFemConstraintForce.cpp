@@ -394,7 +394,7 @@ TaskDlgFemConstraintForce::TaskDlgFemConstraintForce(ViewProviderFemConstraintFo
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintForce(ConstraintView);;
+    this->parameter = new TaskFemConstraintForce(ConstraintView);
 
     Content.push_back(parameter);
 }
@@ -418,7 +418,7 @@ bool TaskDlgFemConstraintForce::accept()
     const TaskFemConstraintForce* parameterForce = static_cast<const TaskFemConstraintForce*>(parameter);
 
     try {
-        //Gui::Command::openCommand("FEM force constraint changed");
+        //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
 
         if (parameterForce->getForce()<=0)
         {

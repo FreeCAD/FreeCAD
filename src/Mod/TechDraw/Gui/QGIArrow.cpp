@@ -30,6 +30,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QPainterPathStroker>
 #include <QPainter>
+#include <QPainterPath>
 #endif
 
 #include <App/Application.h>

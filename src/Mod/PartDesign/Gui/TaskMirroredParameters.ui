@@ -39,7 +39,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetFeatures"/>
+    <widget class="QListWidget" name="listWidgetFeatures">
+     <property name="toolTip">
+      <string>List can be reordered by dragging</string>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -76,21 +83,41 @@
      </property>
     </widget>
    </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonAddFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonRemoveFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonRemoveFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonAddFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>186</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>66</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -47,6 +47,11 @@
 #   pragma warning(disable : 4522)
 #endif
 
+// pcl headers include <boost/bind.hpp> instead of <boost/bind/bind.hpp>
+#ifndef BOOST_BIND_GLOBAL_PLACEHOLDERS
+#define BOOST_BIND_GLOBAL_PLACEHOLDERS
+#endif
+
 #ifdef _PreComp_
 
 // standard

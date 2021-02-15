@@ -91,9 +91,15 @@ generate_from_xml(TopoShapeSolidPy)
 generate_from_xml(TopoShapeVertexPy)
 generate_from_xml(TopoShapeWirePy)
 generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
+generate_from_xml(BRepOffsetAPI_MakeFillingPy)
 
 # make sure to create the directory at configure time
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
+
+generate_from_xml(BRepFeat/MakePrismPy)
 
 generate_from_xml(Geom2d/ArcOfCircle2dPy)
 generate_from_xml(Geom2d/ArcOfConic2dPy)
@@ -112,6 +118,12 @@ generate_from_xml(Geom2d/Line2dSegmentPy)
 generate_from_xml(Geom2d/Line2dPy)
 generate_from_xml(Geom2d/OffsetCurve2dPy)
 generate_from_xml(Geom2d/Parabola2dPy)
+
+generate_from_xml(GeomPlate/BuildPlateSurfacePy)
+generate_from_xml(GeomPlate/CurveConstraintPy)
+generate_from_xml(GeomPlate/PointConstraintPy)
+
+generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
 
 SET(Features_SRCS
     FeaturePartBoolean.cpp
@@ -296,10 +308,20 @@ SET(Python_SRCS
     TopoShapeWirePyImp.cpp
     BRepOffsetAPI_MakePipeShellPy.xml
     BRepOffsetAPI_MakePipeShellPyImp.cpp
+    BRepOffsetAPI_MakeFillingPy.xml
+    BRepOffsetAPI_MakeFillingPyImp.cpp
     PartPyCXX.cpp
     PartPyCXX.h
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
+# BRepFeat wrappers
+SET(BRepFeatPy_SRCS
+    BRepFeat/MakePrismPy.xml
+    BRepFeat/MakePrismPyImp.cpp
+)
+
+SOURCE_GROUP("ShapeUpgrade" FILES ${ShapeUpgradePy_SRCS})
 
 # Geom2d wrappers
 SET(Geom2dPy_SRCS
@@ -341,11 +363,34 @@ SET(Geom2dPy_SRCS
 
 SOURCE_GROUP("Geom2d" FILES ${Geom2dPy_SRCS})
 
+# GeomPlate wrappers
+SET(GeomPlatePy_SRCS
+    GeomPlate/BuildPlateSurfacePy.xml
+    GeomPlate/BuildPlateSurfacePyImp.cpp
+    GeomPlate/CurveConstraintPy.xml
+    GeomPlate/CurveConstraintPyImp.cpp
+    GeomPlate/PointConstraintPy.xml
+    GeomPlate/PointConstraintPyImp.cpp
+)
+
+SOURCE_GROUP("GeomPlate" FILES ${GeomPlatePy_SRCS})
+
+# ShapeUpgrade wrappers
+SET(ShapeUpgradePy_SRCS
+    ShapeUpgrade/UnifySameDomainPy.xml
+    ShapeUpgrade/UnifySameDomainPyImp.cpp
+)
+
+SOURCE_GROUP("ShapeUpgrade" FILES ${ShapeUpgradePy_SRCS})
+
 SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
+    ${BRepFeatPy_SRCS}
     ${Geom2dPy_SRCS}
+    ${GeomPlatePy_SRCS}
+    ${ShapeUpgradePy_SRCS}
     Attacher.cpp
     Attacher.h
     AppPart.cpp
@@ -359,6 +404,8 @@ SET(Part_SRCS
     GeometryExtension.h
     GeometryDefaultExtension.cpp
     GeometryDefaultExtension.h
+    GeometryMigrationExtension.h
+    GeometryMigrationExtension.cpp
     Geometry.cpp
     Geometry.h
     Geometry2d.cpp
@@ -396,6 +443,14 @@ if(FREECAD_USE_PCH)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Part_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(Part PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
+
+# Suppress some very long Eigen3 warnings of older versions
+if (EIGEN3_NO_DEPRECATED_COPY)
+    set_source_files_properties(
+        GeometryCurvePyImp.cpp
+        GeometrySurfacePyImp.cpp
+        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
+endif ()
 
 add_library(Part SHARED ${Part_SRCS})
 target_link_libraries(Part ${Part_LIBS})

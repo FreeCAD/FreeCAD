@@ -36,8 +36,6 @@
 # include <QRegExp>
 #endif
 
-#include <Inventor/sensors/SoTimerSensor.h>
-
 #include <App/Application.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
@@ -223,8 +221,8 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockrecenter = true;
             if (!viewer->isEditing()) {
                 // If we are in zoom or pan mode ignore RMB events otherwise
-                // the canvas doesn't get any release events 
-                if (this->currentmode != NavigationStyle::ZOOMING && 
+                // the canvas doesn't get any release events
+                if (this->currentmode != NavigationStyle::ZOOMING &&
                     this->currentmode != NavigationStyle::PANNING &&
                     this->currentmode != NavigationStyle::DRAGGING) {
                     if (this->isPopupMenuEnabled()) {
@@ -265,14 +263,6 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent * const ev)
                 }
             }
             this->button3down = press;
-            break;
-        case SoMouseButtonEvent::BUTTON4:
-            doZoom(viewer->getSoRenderManager()->getCamera(), true, posn);
-            processed = true;
-            break;
-        case SoMouseButtonEvent::BUTTON5:
-            doZoom(viewer->getSoRenderManager()->getCamera(), false, posn);
-            processed = true;
             break;
         default:
             break;

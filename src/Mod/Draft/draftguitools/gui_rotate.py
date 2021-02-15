@@ -22,26 +22,29 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for rotating objects in the 3D space."""
+"""Provides GUI tools to rotate objects in the 3D space."""
 ## @package gui_rotate
-# \ingroup DRAFT
-# \brief Provides tools for rotating objects in the 3D space.
+# \ingroup draftguitools
+# \brief Provides GUI tools to rotate objects in the 3D space.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
-from FreeCAD import Units as U
 import DraftVecUtils
-import draftutils.utils as utils
+import draftutils.groups as groups
 import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
+from FreeCAD import Units as U
 from draftutils.messages import _msg, _err
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -52,22 +55,16 @@ class Rotate(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Rotates the selected objects. "
-                "Choose the center of rotation, then the initial angle, "
-                "and then the final angle.\n"
-                'If the "copy" option is active, it will create '
-                "rotated copies.\n"
-                "CTRL to snap, SHIFT to constrain. "
-                "Hold ALT and click to create a copy with each click.")
+        _tip = ()
 
         return {'Pixmap': 'Draft_Rotate',
                 'Accel': "R, O",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Rotate", "Rotate"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rotate", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rotate", "Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.\nIf the \"copy\" option is active, it will create rotated copies.\nCTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Rotate, self).Activated(name=_tr("Rotate"))
+        super(Rotate, self).Activated(name=translate("draft","Rotate"))
         if not self.ui:
             return
         self.ghosts = []
@@ -88,10 +85,11 @@ class Rotate(gui_base_original.Modifier):
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
         self.selected_objects = Gui.Selection.getSelection()
-        self.selected_objects = utils.getGroupContents(self.selected_objects,
-                                                       addgroups=True,
-                                                       spaces=True,
-                                                       noarchchild=True)
+        self.selected_objects = \
+            groups.get_group_contents(self.selected_objects,
+                                      addgroups=True,
+                                      spaces=True,
+                                      noarchchild=True)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.step = 0
         self.center = None
@@ -195,8 +193,7 @@ class Rotate(gui_base_original.Modifier):
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
         self.ui.hasFill.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
-        _tip = "The base angle you wish to start the rotation from"
-        self.ui.radiusValue.setToolTip(translate("draft", _tip))
+        self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
         self.arctrack.setCenter(self.center)
         for ghost in self.ghosts:
             ghost.center(self.center)
@@ -208,9 +205,7 @@ class Rotate(gui_base_original.Modifier):
     def set_start_point(self):
         """Set the starting point of the rotation."""
         self.ui.labelRadius.setText(translate("draft", "Rotation"))
-        _tip = ("The amount of rotation you wish to perform.\n"
-                "The final angle will be the base angle plus this amount.")
-        self.ui.radiusValue.setToolTip(translate("draft", _tip))
+        self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation you wish to perform.\nThe final angle will be the base angle plus this amount."))
         self.rad = DraftVecUtils.dist(self.point, self.center)
         self.arctrack.on()
         self.arctrack.setStartPoint(self.point)
@@ -393,8 +388,7 @@ class Rotate(gui_base_original.Modifier):
         self.ui.radiusUi()
         self.ui.hasFill.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
-        _tip = "The base angle you wish to start the rotation from"
-        self.ui.radiusValue.setToolTip(translate("draft", _tip))
+        self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
         self.step = 1
         _msg(translate("draft", "Pick base angle"))
@@ -407,10 +401,7 @@ class Rotate(gui_base_original.Modifier):
         """
         if self.step == 1:
             self.ui.labelRadius.setText(translate("draft", "Rotation"))
-            _tip = ("The amount of rotation you wish to perform.\n"
-                    "The final angle will be the base angle "
-                    "plus this amount.")
-            self.ui.radiusValue.setToolTip(translate("draft", _tip))
+            self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation you wish to perform.\nThe final angle will be the base angle plus this amount."))
             self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
             self.firstangle = math.radians(rad)
             self.arctrack.setStartAngle(self.firstangle)
@@ -426,3 +417,5 @@ class Rotate(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Rotate', Rotate())
+
+## @}

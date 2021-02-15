@@ -9,21 +9,21 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Mesh FEM unit tests"
+__title__  = "Mesh FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import unittest
 from os.path import join
@@ -43,12 +43,24 @@ class TestMeshCommon(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
 
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestMeshCommon tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -157,7 +169,7 @@ class TestMeshCommon(unittest.TestCase):
         tetra10.addNode(9, 3, 9, 10)
         tetra10.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
-        unv_file = testtools.get_fem_test_tmp_dir() + "/tetra10_mesh.unv"
+        unv_file = join(testtools.get_fem_test_tmp_dir("mesh_common_unv_save"), "tetra10_mesh.unv")
         tetra10.write(unv_file)
         newmesh = Fem.read(unv_file)
         expected = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
@@ -185,7 +197,7 @@ class TestMeshCommon(unittest.TestCase):
         )
         seg2.addEdge([1, 2])
 
-        inp_file = testtools.get_fem_test_tmp_dir() + "/seg2_mesh.inp"
+        inp_file = join(testtools.get_fem_test_tmp_dir("mesh_common_inp_preci"), "seg2_mesh.inp")
         seg2.writeABAQUS(inp_file, 1, False)
 
         read_file = open(inp_file, "r")
@@ -208,12 +220,6 @@ class TestMeshCommon(unittest.TestCase):
             )
         )
 
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        FreeCAD.closeDocument(self.doc_name)
-
 
 # ************************************************************************************************
 # ************************************************************************************************
@@ -225,20 +231,19 @@ class TestMeshEleTetra10(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
+
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
 
         # more inits
         self.elem = "tetra10"
+
         self.base_testfile = join(
             testtools.get_fem_test_home_dir(),
             "mesh",
             (self.elem + "_mesh.")
         )
-        self.base_outfile = join(
-            testtools.get_fem_test_tmp_dir(),
-            (self.elem + "_mesh.")
-        )
+
         # 10 node tetrahedron --> tetra10
         femmesh = Fem.FemMesh()
         femmesh.addNode(6, 12, 18, 1)
@@ -280,9 +285,20 @@ class TestMeshEleTetra10(unittest.TestCase):
         fcc_print("\n")
         """
 
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestMeshEleTetra10 tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -294,8 +310,13 @@ class TestMeshEleTetra10(unittest.TestCase):
         self,
         file_extension
     ):
-        outfile = self.base_outfile + file_extension
         testfile = self.base_testfile + file_extension
+        outfile = join(
+            testtools.get_fem_test_tmp_dir("mesh_elements_" + self.elem + "_" + file_extension),
+            self.elem + "_mesh." + file_extension
+        )
+
+        # fcc_print("\n")
         # fcc_print(outfile)
         # fcc_print(testfile)
         return (outfile, testfile)
@@ -512,9 +533,173 @@ class TestMeshEleTetra10(unittest.TestCase):
             file_extension
         )
 
+
+# ************************************************************************************************
+# ************************************************************************************************
+# TODO: add elements to group with another type. Should be empty at the end.
+class TestMeshGroups(unittest.TestCase):
+    fcc_print("import TestMeshGroups")
+
+    # ********************************************************************************************
+    def setUp(
+        self
+    ):
+        # setUp is executed before every test
+
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
     # ********************************************************************************************
     def tearDown(
         self
     ):
-        # clearance, is executed after every test
-        FreeCAD.closeDocument(self.doc_name)
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
+    def test_00print(
+        self
+    ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
+        fcc_print("\n{0}\n{1} run FEM TestMeshGroups tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            57 * "*"
+        ))
+
+    # ********************************************************************************************
+    def test_add_groups(self):
+        """
+        Create different groups with different names. Check whether the
+        ids are correct, the names are correct, and whether the GroupCount is
+        correct.
+        """
+
+        from femexamples.meshes.mesh_canticcx_tetra10 import create_elements
+        from femexamples.meshes.mesh_canticcx_tetra10 import create_nodes
+
+        fm = Fem.FemMesh()
+        control = create_nodes(fm)
+        if not control:
+            fcc_print("failed to create nodes")
+        control = create_elements(fm)
+        if not control:
+            fcc_print("failed to create elements")
+
+        # information
+        # fcc_print(fm)
+
+        expected_dict = {}
+        expected_dict["ids"] = []
+        expected_dict["names"] = [
+            "MyNodeGroup",
+            "MyEdgeGroup",
+            "MyVolumeGroup",
+            "My0DElementGroup",
+            "MyBallGroup"
+        ]
+        expected_dict["types"] = [
+            "Node",
+            "Edge",
+            "Volume",
+            "0DElement",
+            "Ball"
+        ]
+        expected_dict["count"] = fm.GroupCount + 5
+        result_dict = {}
+
+        mygrpids = []
+        for (name, typ) in zip(expected_dict["names"], expected_dict["types"]):
+            mygrpids.append(fm.addGroup(name, typ))
+
+        expected_dict["ids"] = sorted(tuple(mygrpids))
+
+        # fcc_print("expected dict")
+        # fcc_print(expected_dict)
+
+        result_dict["count"] = fm.GroupCount
+        result_dict["ids"] = sorted(fm.Groups)
+        result_dict["types"] = list([fm.getGroupElementType(g)
+                                     for g in fm.Groups])
+        result_dict["names"] = list([fm.getGroupName(g) for g in fm.Groups])
+
+        # fcc_print("result dict")
+        # fcc_print(result_dict)
+
+        self.assertEqual(
+            expected_dict,
+            result_dict,
+            msg="expected: {0}\n\nresult: {1}\n\n differ".format(expected_dict, result_dict)
+        )
+
+    def test_delete_groups(self):
+        """
+        Adds a number of groups to FemMesh and deletes them
+        afterwards. Checks whether GroupCount is OK
+        """
+        from femexamples.meshes.mesh_canticcx_tetra10 import create_elements
+        from femexamples.meshes.mesh_canticcx_tetra10 import create_nodes
+
+        fm = Fem.FemMesh()
+        control = create_nodes(fm)
+        if not control:
+            fcc_print("failed to create nodes")
+        control = create_elements(fm)
+        if not control:
+            fcc_print("failed to create elements")
+
+        # information
+        # fcc_print(fm)
+        old_group_count = fm.GroupCount
+        myids = []
+        for i in range(1000):
+            myids.append(fm.addGroup("group" + str(i), "Node"))
+        for grpid in myids:
+            fm.removeGroup(grpid)
+        new_group_count = fm.GroupCount
+        self.assertEqual(
+            old_group_count,
+            new_group_count,
+            msg=(
+                "GroupCount before and after adding and deleting groups differ: {0} != {1}"
+                .format(old_group_count, new_group_count)
+            )
+        )
+
+    def test_add_group_elements(self):
+        """
+        Add a node group, add elements to it. Verify that elements added
+        and elements in getGroupElements are the same.
+        """
+        from femexamples.meshes.mesh_canticcx_tetra10 import create_elements
+        from femexamples.meshes.mesh_canticcx_tetra10 import create_nodes
+
+        fm = Fem.FemMesh()
+        control = create_nodes(fm)
+        if not control:
+            fcc_print("failed to create nodes")
+        control = create_elements(fm)
+        if not control:
+            fcc_print("failed to create elements")
+
+        # information
+        # fcc_print(fm)
+
+        elements_to_be_added = [1, 2, 3, 4, 49, 64, 88, 100, 102, 188, 189, 190, 191]
+        myid = fm.addGroup("mynodegroup", "Node")
+
+        # fcc_print(fm.getGroupElements(myid))
+
+        fm.addGroupElements(myid, elements_to_be_added)
+        elements_returned = list(fm.getGroupElements(myid))  # returns tuple
+        # fcc_print(elements_returned)
+        self.assertEqual(
+            elements_to_be_added,
+            elements_returned,
+            msg=(
+                "elements to be added {0} and elements returned {1} differ".
+                format(elements_to_be_added, elements_returned)
+            )
+        )

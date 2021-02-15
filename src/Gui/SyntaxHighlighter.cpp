@@ -38,7 +38,7 @@ public:
         cBlockcomment.setRgb(160, 160, 164); cLiteral.setRgb(255, 0, 0);
         cNumber.setRgb(0, 0, 255); cOperator.setRgb(160, 160, 164);
         cKeyword.setRgb(0, 0, 255); cClassName.setRgb(255, 170, 0);
-        cDefineName.setRgb(255, 170, 0); cOutput.setRgb(170, 170, 127); 
+        cDefineName.setRgb(255, 170, 0); cOutput.setRgb(170, 170, 127);
         cError.setRgb(255, 0, 0);
     }
 
@@ -62,7 +62,7 @@ SyntaxHighlighter::~SyntaxHighlighter()
     delete d;
 }
 
-/** Sets the color \a col to the paragraph type \a type. 
+/** Sets the color \a col to the paragraph type \a type.
  * This method is provided for convenience to specify the paragraph type
  * by its name.
  */
@@ -73,7 +73,7 @@ void SyntaxHighlighter::setColor(const QString& type, const QColor& col)
     if (!old.isValid())
         return; // no such type
     if (old == col)
-        return; 
+        return;
     if (type == QLatin1String("Text"))
         d->cNormalText = col;
     else if (type == QLatin1String("Comment"))
@@ -157,8 +157,8 @@ QColor SyntaxHighlighter::colorByType(SyntaxHighlighter::TColor type)
 
 void SyntaxHighlighter::colorChanged(const QString& type, const QColor& col)
 {
-    Q_UNUSED(type); 
-    Q_UNUSED(col); 
+    Q_UNUSED(type);
+    Q_UNUSED(col);
   // rehighlight
 #if QT_VERSION >= 0x040200
     rehighlight();

@@ -33,8 +33,10 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
-      <source>Curve on mesh</source>
-      <translation>Kurve auf Netz</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation>Erstellt eine ungefähre Kurve über einem Netz.
+Dieser Befehl funktioniert nur mit einem 'mesh'-Objekt.</translation>
     </message>
   </context>
   <context>
@@ -90,6 +92,19 @@
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Ein Netz mit einer Ebene trimmen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation type="unfinished">Trim with plane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation type="unfinished">Section with plane</translation>
     </message>
   </context>
   <context>
@@ -155,7 +170,7 @@
       <translation>Kanten verbinden, wenn die Distanz kleiner ist als</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.cpp" line="344"/>
+      <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
       <translation>Ein Fehler ist aufgetreten</translation>
     </message>
@@ -201,47 +216,56 @@
       <translation>Kurve auf Netz</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation>Drücke 'Start' und wähle dann Punkte im Netz; wenn genug Punkte gesetzt wurden, klicke mit der rechten Maustaste und wähle 'Erstellen'. Wiederholen Sie diesen Prozess, um weitere Splines zu erstellen. Schließen Sie diese Taskleiste, um den Vorgang abzuschließen.
+
+Dieser Befehl funktioniert nur mit einem 'mesh' Objekt, nicht mit einer normalen Fläche oder Oberfläche. Um ein Objekt in ein Netz zu konvertieren, verwenden Sie die Werkzeuge der Mesh Workbench.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
       <translation>Kantenzug</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
-      <source>Snap tolerance to vertexes</source>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
       <translation>Einrast-Toleranz zu Netzpunkten</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
       <translation>Grenzwert für Trennung</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
       <translation>Annäherung durch Splines</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
       <translation>Toleranz zu Netz</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
       <translation>Kontinuität</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
       <source>Maximum curve degree</source>
       <translation>Maximaler Grad der Kurve</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
@@ -281,7 +305,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation>Standardmesher verwenden</translation>
+      <translation>Standardnetzgenerator verwenden</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -302,8 +326,8 @@
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Die maximale lineare Abweichung eines Netzsegments wird die angegebene
+Oberflächenabweichung multipliziert mit der Länge des aktuellen Netzsegments (Kante)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -313,7 +337,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>Das Netz erhält die Flächenfarben des Objekts</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -325,9 +349,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>Netzsegmente werden entsprechend der Farbe der Objektflächen gruppiert. Diese Gruppen werden in Netz-Ausgangsformaten exportiert, die diese Funktion unterstützen (z.B. das Format OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
@@ -337,7 +359,7 @@ this feature (e.g. the format OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation type="unfinished">Use the Mefisto mesher</translation>
+      <translation>Mefisto Netzgenerator verwenden</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -348,8 +370,8 @@ this feature (e.g. the format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation type="unfinished">If this number is smaller the mesh becomes finer.
-The smallest value is 0.</translation>
+      <translation>Wenn diese Zahl kleiner ist, wird das Netz feiner.
+Der kleinste Wert ist 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
@@ -359,7 +381,7 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation type="unfinished">Use the Netgen mesher</translation>
+      <translation>Netgen Netzgenerator verwenden</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
@@ -405,8 +427,8 @@ The smallest value is 0.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
-A value in the range of 0.1-1.</translation>
+      <translation>Wenn dieser Parameter kleiner ist, wird das Netz feiner.
+Ein Wert im Bereich von 0.1-1.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
@@ -418,8 +440,8 @@ A value in the range of 0.1-1.</translation>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation type="unfinished">If this parameter is larger, the mesh becomes finer.
-A value in the range of 0.2-10.</translation>
+      <translation>Wenn dieser Parameter größer ist, wird das Netz feiner.
+Ein Wert im Bereich von 0.2-10.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
@@ -429,7 +451,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation type="unfinished">Whether optimization of surface shape will be done</translation>
+      <translation>Ob die Optimierung der Oberflächenform durchgeführt wird</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -439,7 +461,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation type="unfinished">Whether second order elements will be generated</translation>
+      <translation>Ob Elemente der zweiten Bestellung generiert werden</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
@@ -449,7 +471,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation type="unfinished">Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation>Ob Netze vorzugsweise mit quadrilateralen Flächen angeordnet werden</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -459,12 +481,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Fenster geöffnet lassen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
       <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <translation>gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="226"/>

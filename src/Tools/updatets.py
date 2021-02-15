@@ -65,9 +65,9 @@ DirFilter = ["^Attic$",
 
 # python folders that need a special pylupdate command
 PyCommands = [["src/Mod/Draft",
-               "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/Draft.ts"],
+               'pylupdate `find ./ -name "*.py"` Resources/ui/*.ui -ts Resources/translations/Draft.ts'],
               ["src/Mod/Arch",
-               "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/Arch.ts"],
+               'pylupdate `find ./ -name "*.py"` Resources/ui/*.ui -ts Resources/translations/Arch.ts'],
               ["src/Mod/OpenSCAD",
                "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/OpenSCAD.ts"],
               ["src/Mod/Start",
@@ -146,7 +146,9 @@ def find_tools(noobsolete=True):
             LUPDATE += " -noobsolete"
     else:
         raise Exception("Cannot find lupdate")
-    if (os.system("pylupdate -version") == 0):
+    if (os.system("pyside2-lupdate -version") == 0):
+        PYLUPDATE = "pyside2-lupdate"
+    elif (os.system("pylupdate -version") == 0):
         PYLUPDATE = "pylupdate"
     elif (os.system("pylupdate5 -version") == 0):
         PYLUPDATE = "pylupdate5"
@@ -187,6 +189,7 @@ def update_translation(path):
     global QMAKE, LUPDATE
     cur = os.getcwd()
     os.chdir(path)
+    existingjsons = [f for f in os.listdir(".") if f.endswith(".json")]
     filename = os.path.basename(path) + ".pro"
     os.system(QMAKE + " -project")
     #os.system(LUPDATE + " " + filename)
@@ -198,6 +201,10 @@ def update_translation(path):
         tsname = " -ts "+os.path.join("Language", "FreeCAD.ts")
     os.system(LUPDATE + " " + filename + tsname)
     os.remove(filename)
+    # lupdate creates json files since Qt5.something. Remove them here too
+    for jsonfile in [f for f in os.listdir(".") if f.endswith(".json")]:
+        if not jsonfile in existingjsons:
+            os.remove(jsonfile)
     os.chdir(cur)
 
 def update_python_translation(item):

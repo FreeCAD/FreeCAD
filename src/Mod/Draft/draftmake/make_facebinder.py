@@ -20,17 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_facebinder function.
-"""
+"""Provides functions to create Facebinder objects."""
 ## @package make_facebinder
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_facebinder function.
+# \ingroup draftmake
+# \brief Provides functions to create Facebinder objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-from draftutils.gui_utils import select
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.facebinder import Facebinder
+
 if App.GuiUp:
     from draftviewproviders.view_facebinder import ViewProviderFacebinder
 
@@ -59,8 +60,10 @@ def make_facebinder(selectionset, name="Facebinder"):
         ViewProviderFacebinder(fb.ViewObject)
     faces = [] # unused variable?
     fb.Proxy.addSubobjects(fb, selectionset)
-    select(fb)
+    gui_utils.select(fb)
     return fb
 
 
 makeFacebinder = make_facebinder
+
+## @}

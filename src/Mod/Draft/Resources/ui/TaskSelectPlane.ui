@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>200</width>
-    <height>547</height>
+    <width>210</width>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -192,7 +192,7 @@ will be moved to the center of the view</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
       <widget class="QSpinBox" name="fieldSnapRadius">
        <property name="toolTip">
         <string>The distance at which a point can be snapped to
@@ -201,7 +201,7 @@ value by using the [ and ] keys while drawing</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="QLabel" name="label_6">
        <property name="toolTip">
         <string>The distance at which a point can be snapped to
@@ -210,6 +210,26 @@ value by using the [ and ] keys while drawing</string>
        </property>
        <property name="text">
         <string>Snapping radius</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Grid extension</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="fieldGridExtension">
+       <property name="suffix">
+        <string> lines</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>9999</number>
        </property>
       </widget>
      </item>

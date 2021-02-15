@@ -66,7 +66,7 @@ public:
 
     /** Sets the Unit this widget is working with.
      *  After setting the Unit the widget will only accept
-     *  user input with this unit type. Or if the user input 
+     *  user input with this unit type. Or if the user input
      *  a value without unit, this one will be added to the resulting
      *  Quantity.
      */
@@ -79,17 +79,17 @@ public:
 
     /// Get the value of the singleStep property
     double singleStep() const;
-    /// Set the value of the singleStep property 
+    /// Set the value of the singleStep property
     void setSingleStep(double val);
 
     /// Gets the value of the minimum property
     double minimum() const;
-    /// Sets the value of the minimum property 
+    /// Sets the value of the minimum property
     void setMinimum(double min);
 
     /// Gets the value of the maximum property
     double maximum() const;
-    /// Sets the value of the maximum property 
+    /// Sets the value of the maximum property
     void setMaximum(double max);
 
     /// Gets the number of decimals
@@ -142,20 +142,25 @@ protected Q_SLOTS:
     void userInput(const QString & text);
     void openFormulaDialog();
     void finishFormulaDialog();
-    
+    void handlePendingEmit();
+
     //get notified on expression change
     virtual void onChange();
 
 protected:
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
+    virtual void hideEvent(QHideEvent * event);
+    virtual void closeEvent(QCloseEvent * event);
     virtual void focusInEvent(QFocusEvent * event);
     virtual void focusOutEvent(QFocusEvent * event);
     virtual void keyPressEvent(QKeyEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
+    virtual void paintEvent(QPaintEvent *event);
 
 private:
     void updateText(const Base::Quantity&);
+    void updateFromCache(bool);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
 
@@ -170,6 +175,10 @@ Q_SIGNALS:
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
     void valueChanged(double);
+    /**
+     * The new value is passed in \a text with unit.
+     */
+    void textChanged(const QString&);
     /** Gets emitted if formula dialog is about to be opened (true)
      *  or finished (false).
      */

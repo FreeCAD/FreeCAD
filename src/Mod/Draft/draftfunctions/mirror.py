@@ -21,21 +21,23 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the code for the mirror operation.
+"""Provides functions to produce a mirrored object.
 
 It just creates a `Part::Mirroring` object, and sets the appropriate
 `Source` and `Normal` properties.
 """
 ## @package mirror
-# \ingroup DRAFT
-# \brief Provides the code for the mirror operation.
+# \ingroup draftfunctions
+# \brief Provides functions to produce a mirrored object.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
+
 from draftutils.messages import _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -85,11 +87,11 @@ def mirror(objlist, p1, p2):
     utils.print_header('mirror', "Create mirror")
 
     if not objlist:
-        _err(_tr("No object given"))
+        _err(translate("draft","No object given"))
         return
 
     if p1 == p2:
-        _err(_tr("The two points are coincident"))
+        _err(translate("draft","The two points are coincident"))
         return
 
     if not isinstance(objlist, list):
@@ -108,7 +110,7 @@ def mirror(objlist, p1, p2):
 
     for obj in objlist:
         mir = App.ActiveDocument.addObject("Part::Mirroring", "mirror")
-        mir.Label = obj.Label + _tr(" (mirrored)")
+        mir.Label = obj.Label + " (" + translate("draft","mirrored" + ")")
         mir.Source = obj
         mir.Base = p1
         mir.Normal = pnorm
@@ -120,3 +122,5 @@ def mirror(objlist, p1, p2):
         gui_utils.select(result)
 
     return result
+
+## @}

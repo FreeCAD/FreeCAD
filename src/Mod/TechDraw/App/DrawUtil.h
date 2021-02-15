@@ -79,6 +79,10 @@ class TechDrawExport DrawUtil {
         static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
         static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
         static bool fpCompare(const double& d1, const double& d2, double tolerance = FLT_EPSILON);
+        static std::pair<Base::Vector3d, Base::Vector3d> boxIntersect2d(Base::Vector3d point,
+                                                                        Base::Vector3d dir,
+                                                                        double xRange,
+                                                                        double yRange) ;
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
         static std::string formatVector(const Base::Vector3d& v);
         static std::string formatVector(const gp_Dir& v);
@@ -89,7 +93,7 @@ class TechDrawExport DrawUtil {
         static std::string formatVector(const QPointF& v);
 
         static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
-        static Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
+        static Base::Vector3d toR3(const gp_Ax2& fromSystem, const Base::Vector3d& fromPoint);
         static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2, double tolerance = FLT_EPSILON);
         //! rotate vector by angle radians around axis through org
         static Base::Vector3d vecRotate(Base::Vector3d vec,
@@ -116,6 +120,7 @@ class TechDrawExport DrawUtil {
         static App::Color pyTupleToColor(PyObject* pColor);
         static PyObject* colorToPyTuple(App::Color color);
         static bool isCrazy(TopoDS_Edge e);
+        static Base::Vector3d getFaceCenter(TopoDS_Face f);
 
         // Supplementary mathematical functions
         static int sgn(double x);
@@ -168,8 +173,8 @@ class TechDrawExport DrawUtil {
         static void countEdges(const char* label, const TopoDS_Shape& s);
         static const char* printBool(bool b);
         static QString qbaToDebug(const QByteArray& line);
-        static void dumpCS(const char* text, gp_Ax2 CS);
-        static void dumpCS3(const char* text, gp_Ax3 CS);
+        static void dumpCS(const char* text, const gp_Ax2& CS);
+        static void dumpCS3(const char* text, const gp_Ax3& CS);
         static void dumpEdges(const char* text, const TopoDS_Shape& s);
 
 };

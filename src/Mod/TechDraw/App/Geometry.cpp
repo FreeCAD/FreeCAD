@@ -27,14 +27,18 @@
 #include <BRepBndLib.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepAdaptor_HCurve.hxx>
 #include <BRepLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <Precision.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <gce_MakeCirc.hxx>
+#include <GC_MakeEllipse.hxx>
 #include <GC_MakeArcOfCircle.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Circ.hxx>
@@ -96,7 +100,12 @@ Wire::Wire(const TopoDS_Wire &w)
     TopExp_Explorer edges(w, TopAbs_EDGE);
     for (; edges.More(); edges.Next()) {
         const auto edge( TopoDS::Edge(edges.Current()) );
-        geoms.push_back( BaseGeom::baseFactory(edge) );
+        BaseGeom* bg = BaseGeom::baseFactory(edge);
+        if (bg != nullptr) {
+            geoms.push_back( BaseGeom::baseFactory(edge) );
+        } else {
+            Base::Console().Log("G::Wire - baseFactory returned null geom ptr\n");
+        }
     }
 }
 
@@ -106,6 +115,46 @@ Wire::~Wire()
         delete it;
     }
     geoms.clear();
+}
+
+TopoDS_Wire Wire::toOccWire(void) const
+{
+    TopoDS_Wire result;
+    BRepBuilderAPI_MakeWire mkWire;
+    for (auto& g: geoms) {
+        TopoDS_Edge e = g->occEdge;
+        mkWire.Add(e);
+    }
+    if (mkWire.IsDone())  {
+        result = mkWire.Wire();
+    }
+//    BRepTools::Write(result, "toOccWire.brep");
+    return result;
+}
+
+void Wire::dump(std::string s)
+{
+    BRepTools::Write(toOccWire(), s.c_str());            //debug
+}
+
+TopoDS_Face Face::toOccFace(void) const
+{
+    TopoDS_Face result;
+    //if (!wires.empty) {
+    BRepBuilderAPI_MakeFace mkFace(wires.front()->toOccWire(), true);
+    int limit = wires.size();
+    int iwire = 1;
+    for ( ; iwire < limit; iwire++) {
+//        w->dump("wireInToFace.brep");
+        TopoDS_Wire wOCC = wires.at(iwire)->toOccWire();
+        if(!wOCC.IsNull())  {
+            mkFace.Add(wOCC);
+        }
+    }
+    if (mkFace.IsDone())  {
+        result = mkFace.Face();
+    }
+    return result;
 }
 
 Face::~Face()
@@ -536,6 +585,25 @@ Ellipse::Ellipse(const TopoDS_Edge &e)
     angle = xaxis.AngleWithRef(gp_Dir(1, 0, 0), gp_Dir(0, 0, -1));
 }
 
+Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
+{
+    geomType = ELLIPSE;
+    center = c;
+    major = mjr;
+    minor = mnr;
+    angle = 0;
+
+    GC_MakeEllipse me(gp_Ax2(gp_Pnt(c.x,c.y,c.z), gp_Dir(0.0,0.0,1.0)),
+                      major, minor);
+    if (!me.IsDone()) {
+        Base::Console().Message("G:Ellipse - failed to make Ellipse\n");
+    }
+    const Handle(Geom_Ellipse) gEllipse = me.Value();
+    BRepBuilderAPI_MakeEdge mkEdge(gEllipse, 0.0, 2 * M_PI);
+    if (mkEdge.IsDone()) {
+        occEdge = mkEdge.Edge();
+    }
+}
 
 AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
 {
@@ -580,6 +648,27 @@ Circle::Circle(void)
     radius = 0.0;
     center = Base::Vector3d(0.0, 0.0, 0.0);
 }
+
+Circle::Circle(Base::Vector3d c, double r)
+{
+    geomType = CIRCLE;
+    radius = r;
+    center = c;
+    gp_Pnt loc(c.x, c.y, c.z);
+    gp_Dir dir(0,0,1);
+    gp_Ax1 axis(loc, dir);
+    gp_Circ circle;
+    circle.SetAxis(axis);
+    circle.SetRadius(r);
+    double angle1 = 0.0;
+    double angle2 = 360.0;
+
+    Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(M_PI/180), angle2*(M_PI/180));
+    TopoDS_Edge edge = aMakeEdge.Edge();
+    occEdge = edge;
+}
+
 
 Circle::Circle(const TopoDS_Edge &e)
 {
@@ -657,6 +746,50 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
         reversed = true;
     }
 }
+
+AOC::AOC(Base::Vector3d c, double r, double sAng, double eAng) : Circle()
+{
+    geomType = ARCOFCIRCLE;
+
+    radius = r;
+    center = c;
+    gp_Pnt loc(c.x, c.y, c.z);
+    gp_Dir dir(0,0,1);
+    gp_Ax1 axis(loc, dir);
+    gp_Circ circle;
+    circle.SetAxis(axis);
+    circle.SetRadius(r);
+
+    Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
+    BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, sAng*(M_PI/180), eAng*(M_PI/180));
+    TopoDS_Edge edge = aMakeEdge.Edge();
+    occEdge = edge;
+
+    BRepAdaptor_Curve adp(edge);
+
+    double f = adp.FirstParameter();
+    double l = adp.LastParameter();
+    gp_Pnt s = adp.Value(f);
+    gp_Pnt m = adp.Value((l+f)/2.0);
+    gp_Pnt ePt = adp.Value(l);           //if start == end, it isn't an arc!
+    gp_Vec v1(m,s);        //vector mid to start
+    gp_Vec v2(m,ePt);      //vector mid to end
+    gp_Vec v3(0,0,1);      //stdZ
+    double a = v3.DotCross(v1,v2);    //error if v1 = v2?
+
+    startAngle = fmod(f,2.0*M_PI);
+    endAngle = fmod(l,2.0*M_PI);
+    cw = (a < 0) ? true: false;
+    largeArc = (fabs(l-f) > M_PI) ? true : false;
+
+    startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
+    endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
+    midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
+    if (edge.Orientation() == TopAbs_REVERSED) {
+        reversed = true;
+    }
+}
+
 
 AOC::AOC(void) : Circle()
 {

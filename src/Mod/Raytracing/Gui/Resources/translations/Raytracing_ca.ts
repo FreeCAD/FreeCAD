@@ -472,7 +472,7 @@ Voleu continuar?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>El camí a l'executable de POV-Ray, si voleu renderitzar des de %1</translation>
     </message>
   </context>
   <context>
@@ -496,17 +496,17 @@ Voleu continuar?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location filename="../../ViewProvider.cpp" line="146"/>
+      <location filename="../../ViewProvider.cpp" line="147"/>
       <source>Edit Povray project</source>
       <translation>Editar el projecte Povray</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Povray template</source>
       <translation>Plantilla Povray</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="177"/>
+      <location filename="../../ViewProvider.cpp" line="178"/>
       <source>Select a Povray template</source>
       <translation>Seleccionar una plantilla Povray</translation>
     </message>
@@ -516,7 +516,7 @@ Voleu continuar?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>&amp;Raytracing</source>
-      <translation>&amp; Raytracing</translation>
+      <translation>T&amp;raçat de raigs</translation>
     </message>
   </context>
 </TS>

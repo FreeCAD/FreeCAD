@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -97,7 +97,7 @@ public:
             setArrow();
             return;
         }
-        if(msg.Type!=Gui::SelectionChanges::SetPreselect 
+        if(msg.Type!=Gui::SelectionChanges::SetPreselect
                     && msg.Type!=Gui::SelectionChanges::MovePreselect)
             return;
         auto obj = msg.Object.getObject();
@@ -115,17 +115,19 @@ public:
             setArrow();
             return;
         }
-        
-        if(vp->pt0Index >= 0) { 
+
+        if(vp->pt0Index >= 0) {
             mat *= linkMat;
             mat.inverse();
             Base::Vector3d pt = mat*Base::Vector3d(msg.x,msg.y,msg.z);
-            const SbVec3f &ptTo = *vp->pcLineCoords->point.getValues(vp->pt0Index);
-            SbVec3f ptFrom(pt.x,pt.y,pt.z);
-            if(ptFrom != ptTo) {
-                vp->pcArrowTransform->pointAt(ptFrom,ptTo);
-                setArrow(vp->pcArrowSwitch);
-                return;
+            if(vp->pcLineCoords->point.getNum() > 0){
+                auto ptTo = vp->pcLineCoords->point.getValues(vp->pt0Index);
+                SbVec3f ptFrom(pt.x,pt.y,pt.z);
+                if(ptTo && ptFrom != *ptTo) {
+                    vp->pcArrowTransform->pointAt(ptFrom,*ptTo);
+                    setArrow(vp->pcArrowSwitch);
+                    return;
+                }
             }
         }
         setArrow();
@@ -228,7 +230,7 @@ ViewProviderPath::ViewProviderPath()
     MarkerColor.touch();
 
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
-    
+
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox","None",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
     unsigned long sstyle = hGrp->GetInt("DefaultSelectionStyle",0);
@@ -356,7 +358,7 @@ void ViewProviderPath::onChanged(const App::Property* prop)
 
             pcMatBind->value = SoMaterialBinding::PER_PART;
             // resizing and writing the color vector:
-            
+
             int count = coordEnd-coordStart;
             if(count > (int)colorindex.size()-coordStart) count = colorindex.size()-coordStart;
             pcLineColor->diffuseColor.setNum(count);
@@ -400,7 +402,7 @@ void ViewProviderPath::onChanged(const App::Property* prop)
 
 void ViewProviderPath::showBoundingBox(bool show) {
     if(show) {
-        if(!pcLineCoords->point.getNum()) 
+        if(!pcLineCoords->point.getNum())
             return;
     }
     inherited::showBoundingBox(show);
@@ -600,7 +602,7 @@ private:
 void ViewProviderPath::updateVisual(bool rebuild) {
 
     hideSelection();
-    
+
     updateShowConstraints();
 
     pcLines->coordIndex.deleteValues(0);
@@ -630,7 +632,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
             pcLineCoords->point.setNum(points.size());
             SbVec3f* verts = pcLineCoords->point.startEditing();
             int i=0;
-            for(const auto &pt : points) 
+            for(const auto &pt : points)
                 verts[i++].setValue(pt.x,pt.y,pt.z);
             pcLineCoords->point.finishEditing();
 
@@ -715,7 +717,7 @@ void ViewProviderPath::recomputeBoundingBox()
 
 QIcon ViewProviderPath::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("Path-Toolpath");
+    return Gui::BitmapFactory().pixmap("Path_Toolpath");
 }
 
 // Python object -----------------------------------------------------------------------

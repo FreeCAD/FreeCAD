@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver object Elmer"
+__title__  = "FreeCAD FEM solver object Elmer"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -32,7 +32,8 @@ from . import tasks
 from .equations import elasticity
 from .equations import electrostatic
 from .equations import flow
-from .equations import fluxsolver
+from .equations import flux
+from .equations import electricforce
 from .equations import heat
 from .. import run
 from .. import solverbase
@@ -47,33 +48,51 @@ def create(doc, name="ElmerSolver"):
 class Proxy(solverbase.Proxy):
     """Proxy for FemSolverElmers Document Object."""
 
-    Type = "Fem::FemSolverObjectElmer"
+    Type = "Fem::SolverElmer"
 
     _EQUATIONS = {
         "Heat": heat,
         "Elasticity": elasticity,
         "Electrostatic": electrostatic,
-        "Fluxsolver": fluxsolver,
+        "Flux": flux,
+        "Electricforce": electricforce,
         "Flow": flow,
     }
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMaxIterations",
-            "Steady State", "")
-        obj.addProperty(
-            "App::PropertyInteger", "SteadyStateMinIterations",
-            "Steady State", "")
-        obj.addProperty(
-            "App::PropertyLink", "ElmerResult",
-            "Base", "", 4 | 8)
-        obj.addProperty(
-            "App::PropertyLink", "ElmerOutput",
-            "Base", "", 4 | 8)
 
+        obj.addProperty(
+            "App::PropertyInteger",
+            "SteadyStateMaxIterations",
+            "Steady State",
+            ""
+        )
         obj.SteadyStateMaxIterations = 1
+
+        obj.addProperty(
+            "App::PropertyInteger",
+            "SteadyStateMinIterations",
+            "Steady State",
+            ""
+        )
         obj.SteadyStateMinIterations = 0
+
+        obj.addProperty(
+            "App::PropertyLink",
+            "ElmerResult",
+            "Base",
+            "",
+            4 | 8
+        )
+
+        obj.addProperty(
+            "App::PropertyLink",
+            "ElmerOutput",
+            "Base",
+            "",
+            4 | 8
+        )
 
     def createMachine(self, obj, directory, testmode=False):
         return run.Machine(

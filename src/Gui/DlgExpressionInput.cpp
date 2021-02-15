@@ -30,6 +30,7 @@
 #include "DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
 #include "ExpressionCompleter.h"
+#include "Tools.h"
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -55,14 +56,23 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // Setup UI
     ui->setupUi(this);
 
-    if (expression) {
-        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
-        textChanged(Base::Tools::fromStdString(expression->toString()));
-    }
-
     // Connect signal(s)
     connect(ui->expression, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
     connect(ui->discardBtn, SIGNAL(clicked()), this, SLOT(setDiscarded()));
+
+    if (expression) {
+        ui->expression->setText(Base::Tools::fromStdString(expression->toString()));
+    }
+    else {
+        QVariant text = parent->property("text");
+#if QT_VERSION >= 0x050000
+        if (text.canConvert(QMetaType::QString)) {
+#else
+        if (text.canConvert(QVariant::String)) {
+#endif
+            ui->expression->setText(text.toString());
+        }
+    }
 
     // Set document object on line edit to create auto completer
     DocumentObject * docObj = path.getDocumentObject();
@@ -115,12 +125,12 @@ void DlgExpressionInput::textChanged(const QString &text)
     try {
         //resize the input field according to text size
         QFontMetrics fm(ui->expression->font());
-        int width = fm.width(text) + 15;
+        int width = QtTools::horizontalAdvance(fm, text) + 15;
         if (width < minimumWidth)
             ui->expression->setMinimumWidth(minimumWidth);
         else
             ui->expression->setMinimumWidth(width);
-        
+
         if(this->width() < ui->expression->minimumWidth())
             setMinimumWidth(ui->expression->minimumWidth());
 
@@ -147,13 +157,17 @@ void DlgExpressionInput::textChanged(const QString &text)
                 Base::Quantity value = n->getQuantity();
                 QString msg = value.getUserString();
 
-                if(!impliedUnit.isEmpty()) {
+                if (!value.isValid()) {
+                    throw Base::ValueError("Not a number");
+                }
+                else if (!impliedUnit.isEmpty()) {
                     if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                     value.setUnit(impliedUnit);
 
-                } else if (!value.getUnit().isEmpty()) {
+                }
+                else if (!value.getUnit().isEmpty()) {
                     msg += QString::fromUtf8(" (Warning: unit discarded)");
 
                     QPalette p(ui->msg->palette());
@@ -251,6 +265,13 @@ void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
         if (!on)
             this->reject();
     }
+}
+
+void DlgExpressionInput::show()
+{
+    QDialog::show();
+    this->activateWindow();
+    ui->expression->selectAll();
 }
 
 void DlgExpressionInput::showEvent(QShowEvent* ev)

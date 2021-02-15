@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -35,7 +33,6 @@ else:
 
 Processed = False
 
-
 def Startup():
     global Processed # pylint: disable=global-statement
     if not Processed:
@@ -43,7 +40,8 @@ def Startup():
         from PathScripts import PathAdaptiveGui
         from PathScripts import PathArray
         from PathScripts import PathComment
-        from PathScripts import PathCustom
+        # from PathScripts import PathCustom
+        from PathScripts import PathCustomGui
         from PathScripts import PathDeburrGui
         from PathScripts import PathDressupAxisMap
         from PathScripts import PathDressupDogbone
@@ -64,21 +62,26 @@ def Startup():
         from PathScripts import PathPocketShapeGui
         from PathScripts import PathPost
         from PathScripts import PathProbeGui
-        from PathScripts import PathProfileContourGui
-        from PathScripts import PathProfileEdgesGui
-        from PathScripts import PathProfileFacesGui
+        # from PathScripts import PathProfileContourGui
+        # from PathScripts import PathProfileEdgesGui
+        # from PathScripts import PathProfileFacesGui
+        from PathScripts import PathProfileGui
+        from PathScripts import PathPropertyBagGui
         from PathScripts import PathSanity
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
+        from PathScripts import PathSlotGui
         from PathScripts import PathStop
         # from PathScripts import PathSurfaceGui  # Added in initGui.py due to OCL dependency
+        from PathScripts import PathThreadMillingGui
         from PathScripts import PathToolController
         from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryManager
         from PathScripts import PathToolLibraryEditor
         from PathScripts import PathUtilsGui
         # from PathScripts import PathWaterlineGui  # Added in initGui.py due to OCL dependency
+        from PathScripts import PathVcarveGui
         Processed = True
     else:
         PathLog.debug('Skipping PathGui initialisation')

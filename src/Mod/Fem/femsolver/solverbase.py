@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver base object"
+__title__  = "FreeCAD FEM solver base object"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -39,7 +39,7 @@ from femtools.errors import DirectoryDoesNotExistError
 if App.GuiUp:
     from PySide import QtGui
     import FreeCADGui as Gui
-    from femguiobjects import _TaskPanelFemSolverControl
+    from . import solver_taskpanel
 
 
 class Proxy(object):
@@ -48,7 +48,7 @@ class Proxy(object):
 
     def __init__(self, obj):
         obj.Proxy = self
-        obj.addExtension("App::GroupExtensionPython", self)
+        obj.addExtension("App::GroupExtensionPython")
 
     def createMachine(self, obj, directory, testmode):
         raise NotImplementedError()
@@ -78,7 +78,7 @@ class ViewProxy(object):
 
     def __init__(self, vobj):
         vobj.Proxy = self
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
 
     def setEdit(self, vobj, mode=0):
         try:
@@ -105,7 +105,7 @@ class ViewProxy(object):
                 error_message
             )
             return False
-        task = _TaskPanelFemSolverControl.ControlTaskPanel(machine)
+        task = solver_taskpanel.ControlTaskPanel(machine)
         Gui.Control.showDialog(task)
         return True
 

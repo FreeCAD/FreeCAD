@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Joe Dowsett <dowsettjoe[at]yahoo[dot]co[dot]uk>    *
- *   Copyright (c) 2014  Luke Parry <l.parry@warwick.ac.uk>                *
+ *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,16 +45,16 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-
+#include "ViewProviderPage.h"
 #include "ViewProviderProjGroup.h"
 #include "ViewProviderProjGroupItem.h"
-#include "ViewProviderPage.h"
+
 #include "TaskProjGroup.h"
 #include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
@@ -75,8 +75,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
     setFractionalScale(multiView->getScale());
     ui->cmbScaleType->setCurrentIndex(multiView->ScaleType.getValue());
-    
-    //Allow or prevent scale changing initially 
+
+    //Allow or prevent scale changing initially
     if (multiView->ScaleType.isValue("Custom"))	{
         ui->sbScaleNum->setEnabled(true);
         ui->sbScaleDen->setEnabled(true);
@@ -85,6 +85,13 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
         ui->sbScaleNum->setEnabled(false);
         ui->sbScaleDen->setEnabled(false);
     }
+
+    ui->cbAutoDistribute->setChecked(multiView->AutoDistribute.getValue());
+    // disable if no AutoDistribute
+    ui->sbXSpacing->setEnabled(multiView->AutoDistribute.getValue());
+    ui->sbYSpacing->setEnabled(multiView->AutoDistribute.getValue());
+    ui->sbXSpacing->setValue(multiView->spacingX.getValue());
+    ui->sbYSpacing->setValue(multiView->spacingY.getValue());
 
     // Initially toggle view checkboxes if needed
     setupViewCheckboxes(true);
@@ -112,6 +119,13 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 //    connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionTypeChanged(int)));
     connect(ui->projection, SIGNAL(currentIndexChanged(QString)), this, SLOT(projectionTypeChanged(QString)));
 
+    // Spacing
+    connect(ui->cbAutoDistribute, SIGNAL(clicked(bool)), this, SLOT(AutoDistributeClicked(bool)));
+    connect(ui->sbXSpacing, SIGNAL(valueChanged(double)), this, SLOT(spacingChanged(void)));
+    connect(ui->sbYSpacing, SIGNAL(valueChanged(double)), this, SLOT(spacingChanged(void)));
+    ui->sbXSpacing->setUnit(Base::Unit::Length);
+    ui->sbYSpacing->setUnit(Base::Unit::Length);
+
     m_page = multiView->findParentPage();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
@@ -124,7 +138,6 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
 TaskProjGroup::~TaskProjGroup()
 {
-    delete ui;
 }
 
 void TaskProjGroup::saveGroupState()
@@ -135,13 +148,17 @@ void TaskProjGroup::saveGroupState()
         m_saveProjType = multiView->ProjectionType.getValueAsString();
         m_saveScaleType = multiView->ScaleType.getValueAsString();
         m_saveScale = multiView->Scale.getValue();
+        m_saveAutoDistribute = multiView->AutoDistribute.getValue();
+        m_saveSpacingX = multiView->spacingX.getValue();
+        m_saveSpacingY = multiView->spacingY.getValue();
         DrawProjGroupItem* anchor = multiView->getAnchor();
         m_saveDirection = anchor->Direction.getValue();
-    }
-    for( const auto it : multiView->Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if (view != nullptr) {
-            m_saveViewNames.push_back(view->Type.getValueAsString());
+
+        for( const auto it : multiView->Views.getValues() ) {
+            auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+            if (view != nullptr) {
+                m_saveViewNames.push_back(view->Type.getValueAsString());
+            }
         }
     }
 }
@@ -152,8 +169,11 @@ void TaskProjGroup::restoreGroupState()
     Base::Console().Message("TPG::restoreGroupState()\n");
     if (multiView != nullptr) {
         multiView->ProjectionType.setValue(m_saveProjType.c_str());
-        multiView->ScaleType.setValue(m_saveScaleType.c_str()); 
+        multiView->ScaleType.setValue(m_saveScaleType.c_str());
         multiView->Scale.setValue(m_saveScale);
+        multiView->AutoDistribute.setValue(m_saveAutoDistribute);
+        multiView->spacingX.setValue(m_saveSpacingX);
+        multiView->spacingY.setValue(m_saveSpacingY);
         multiView->purgeProjections();
         for(auto & sv : m_saveViewNames) {
             if (sv != "Front") {
@@ -203,7 +223,7 @@ void TaskProjGroup::rotateButtonClicked(void)
             multiView->rotateRight();
         } else if ( clicked == ui->butLeftRotate) {
             multiView->rotateLeft();
-        } else if ( clicked == ui->butCWRotate ) { 
+        } else if ( clicked == ui->butCWRotate ) {
             multiView->spinCW();
         } else if ( clicked == ui->butCCWRotate) {
             multiView->spinCCW();
@@ -233,17 +253,17 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
 
 void TaskProjGroup::scaleTypeChanged(int index)
 {
-    if(blockUpdate)
+    if (blockUpdate)
         return;
 
-    //defaults to prevent scale changing 
+    //defaults to prevent scale changing
     ui->sbScaleNum->setEnabled(false);
     ui->sbScaleDen->setEnabled(false);
 
-    if(index == 0) {
+    if (index == 0) {
         // Document Scale Type
         multiView->ScaleType.setValue("Page");
-    } else if(index == 1) {
+    } else if (index == 1) {
         // Automatic Scale Type
         //block recompute
         multiView->ScaleType.setValue("Automatic");
@@ -251,7 +271,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
         multiView->Scale.setValue(autoScale);
         //unblock recompute
 
-    } else if(index == 2) {
+    } else if (index == 2) {
         // Custom Scale Type
         //block recompute
         multiView->ScaleType.setValue("Custom");
@@ -267,6 +287,25 @@ void TaskProjGroup::scaleTypeChanged(int index)
         Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n",index);
         return;
     }
+}
+
+void TaskProjGroup::AutoDistributeClicked(bool b)
+{
+    if (blockUpdate) {
+        return;
+    }
+    multiView->AutoDistribute.setValue(b);
+    multiView->recomputeFeature();
+}
+
+void TaskProjGroup::spacingChanged(void)
+{
+    if (blockUpdate) {
+        return;
+    }
+    multiView->spacingX.setValue(ui->sbXSpacing->value().getValue());
+    multiView->spacingY.setValue(ui->sbYSpacing->value().getValue());
+    multiView->recomputeFeature();
 }
 
 std::pair<int, int> TaskProjGroup::nearestFraction(const double val, const long int maxDenom) const

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ void PropertyTool::setValue(const Tool& tt)
 }
 
 
-const Tool &PropertyTool::getValue(void)const 
+const Tool &PropertyTool::getValue(void)const
 {
     return _Tool;
 }
@@ -85,7 +85,7 @@ App::Property *PropertyTool::Copy(void) const
 {
     PropertyTool *prop = new PropertyTool();
     prop->_Tool = this->_Tool;
- 
+
     return prop;
 }
 

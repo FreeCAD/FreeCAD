@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <assert.h>
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOptionGraphicsItem>
 #endif
 

@@ -39,7 +39,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetFeatures"/>
+    <widget class="QListWidget" name="listWidgetFeatures">
+     <property name="toolTip">
+      <string>List can be reordered by dragging</string>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="label">
@@ -71,5 +78,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonAddFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonRemoveFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonRemoveFeature</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>buttonAddFeature</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>21</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>67</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

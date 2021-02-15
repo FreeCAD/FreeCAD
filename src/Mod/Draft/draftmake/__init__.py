@@ -80,3 +80,6 @@ can have other properties like `App::PropertyPlacement`,
 or which can interact with the 3D view through Coin,
 can be based on the simple `App::FeaturePython` object.
 """
+## \defgroup draftmake draftmake
+# \ingroup DRAFT
+# \brief Modules with functions to create the custom scripted objects.

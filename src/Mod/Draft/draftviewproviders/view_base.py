@@ -20,31 +20,30 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for the base Draft object.
-"""
+"""Provides the viewprovider code for the base Draft object.
+
+Many viewprovider classes may inherit this class in order to have
+the same basic behavior."""
 ## @package view_base
-# \ingroup DRAFT
-# \brief This module provides the view provider code for the base Draft object.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the base Draft object.
 
-
+## \addtogroup draftviewproviders
+# @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
 if App.GuiUp:
     from pivy import coin
     import FreeCADGui as Gui
+    import Draft_rc
+    # The module is used to prevent complaints from code checkers (flake8)
+    bool(Draft_rc.__name__)
 
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-#import Draft_rc
-# from DraftGui import translate
-# from DraftGui import displayExternal
-
-# So the resource file doesn't trigger errors from code checkers (flake8)
-#True if Draft_rc.__name__ else False
 
 class ViewProviderDraft(object):
     """The base class for Draft view providers.
@@ -93,17 +92,27 @@ class ViewProviderDraft(object):
         self.texture = None
         self.texcoords = None
 
-        vobj.addProperty("App::PropertyEnumeration", "Pattern", "Draft",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Defines a hatch pattern"))
-        vobj.addProperty("App::PropertyFloat", "PatternSize", "Draft",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Sets the size of the pattern"))
-        vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
-        vobj.PatternSize = 1
-
+        self._set_properties(vobj)
         # This class is assigned to the Proxy attribute
         vobj.Proxy = self
+
+    def _set_properties(self, vobj):
+        """Set the properties of objects if they don't exist."""
+        if not hasattr(vobj, "Pattern"):
+            _tip = "Defines a hatch pattern."
+            vobj.addProperty("App::PropertyEnumeration",
+                             "Pattern",
+                             "Draft",
+                             QT_TRANSLATE_NOOP("App::Property", _tip))
+            vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
+
+        if not hasattr(vobj, "PatternSize"):
+            _tip = "Defines the size of the hatch pattern."
+            vobj.addProperty("App::PropertyFloat",
+                             "PatternSize",
+                             "Draft",
+                             QT_TRANSLATE_NOOP("App::Property", _tip))
+            vobj.PatternSize = utils.get_param("HatchPatternSize", 1)
 
     def __getstate__(self):
         """Return a tuple of all serializable objects or None.
@@ -138,7 +147,7 @@ class ViewProviderDraft(object):
         so nothing needs to be done here, and it returns `None`.
 
         Parameters
-        ---------
+        ----------
         state : state
             A serialized object.
 
@@ -167,7 +176,7 @@ class ViewProviderDraft(object):
         return
 
     def updateData(self, obj, prop):
-        """This method is run when an object property is changed.
+        """Run when an object property is changed.
 
         Override this method to handle the behavior of the view provider
         depending on changes that occur to the real object's properties.
@@ -241,7 +250,7 @@ class ViewProviderDraft(object):
         return mode
 
     def onChanged(self, vobj, prop):
-        """This method is run when a view property is changed.
+        """Run when a view property is changed.
 
         Override this method to handle the behavior
         of the view provider depending on changes that occur to its properties
@@ -277,8 +286,9 @@ class ViewProviderDraft(object):
                     if path and vobj.RootNode:
                         if vobj.RootNode.getChildren().getLength() > 2:
                             if vobj.RootNode.getChild(2).getChildren().getLength() > 0:
-                                if vobj.RootNode.getChild(2).getChild(0).getChildren().getLength() > 2:
-                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
+                                innodes = vobj.RootNode.getChild(2).getChild(0).getChildren().getLength()
+                                if  innodes > 2:
+                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(innodes-1)
                                     i = QtCore.QFileInfo(path)
                                     if self.texture:
                                         r.removeChild(self.texture)
@@ -334,7 +344,7 @@ class ViewProviderDraft(object):
             self.texcoords.directionT.setValue(vT.x, vT.y, vT.z)
 
     def execute(self, vobj):
-        """This method is run when the object is created or recomputed.
+        """Run when the object is created or recomputed.
 
         Override this method to produce effects when the object
         is newly created, and whenever the document is recomputed.
@@ -439,17 +449,16 @@ class ViewProviderDraft(object):
         str
             `':/icons/Draft_Draft.svg'`
         """
-        tp = self.Object.Proxy.Type
-        if tp in ('Line', 'Wire', 'Polyline'):
-            return ":/icons/Draft_N-Linear.svg"
-        elif tp in ('Rectangle', 'Polygon'):
-            return ":/icons/Draft_N-Polygon.svg"
-        elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
-            return ":/icons/Draft_N-Curve.svg"
-        elif tp in ("ShapeString"):
-            return ":/icons/Draft_ShapeString_tree.svg"
-        else:
-            return ":/icons/Draft_Draft.svg"
+        if hasattr(self.Object,"Proxy") and hasattr(self.Object.Proxy,"Type"):
+            tp = self.Object.Proxy.Type
+            if tp in ('Line', 'Wire', 'Polyline'):
+                return ":/icons/Draft_N-Linear.svg"
+            elif tp in ('Rectangle', 'Polygon'):
+                return ":/icons/Draft_N-Polygon.svg"
+            elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
+                return ":/icons/Draft_N-Curve.svg"
+            elif tp in ("ShapeString"):
+                return ":/icons/Draft_ShapeString_tree.svg"
         return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):
@@ -481,6 +490,7 @@ class ViewProviderDraft(object):
         return objs
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderDraft = ViewProviderDraft
 
 
@@ -498,20 +508,24 @@ class ViewProviderDraftAlt(ViewProviderDraft):
         return objs
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderDraftAlt = ViewProviderDraftAlt
 
 
 class ViewProviderDraftPart(ViewProviderDraftAlt):
     """A view provider that displays a Part icon instead of a Draft icon.
 
-    The `getIcon` method is overridden to provide `Tree_Part.svg`.
+    The `getIcon` method is overridden to provide `Part_3D_object.svg`.
     """
 
     def __init__(self, vobj):
         super(ViewProviderDraftPart, self).__init__(vobj)
 
     def getIcon(self):
-        return ":/icons/Tree_Part.svg"
+        return ":/icons/Part_3D_object.svg"
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderDraftPart = ViewProviderDraftPart
+
+## @}

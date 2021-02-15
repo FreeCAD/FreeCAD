@@ -30,6 +30,8 @@
 
 #include <iomanip>
 
+#include <boost/regex.hpp>
+
 #include <App/Application.h>
 #include <App/Property.h>
 #include <App/PropertyStandard.h>
@@ -161,71 +163,92 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
     std::string scellstart = CellStart.getValue();
     std::string scellend = CellEnd.getValue();
 
+    //s/s columns are A,B,C, ... ZX,ZY,ZZ 
+    //lower case characters are not valid
+    transform(scellstart.begin(), scellstart.end(), scellstart.begin(), ::toupper); 
+    transform(scellend.begin(), scellend.end(), scellend.begin(), ::toupper); 
+
+    std::string colPart;
+    std::string rowPart;
+    boost::regex re{"([A-Z]*)([0-9]*)"};
+    boost::smatch what;
+    int iRowStart = 0, iRowEnd = 0;
+    std::string sColStart, sColEnd;
+    if (boost::regex_search(scellstart, what, re)) {
+        if (what.size() < 3) {
+            Base::Console().Error("%s - start cell (%s) is invalid\n",getNameInDocument(),CellStart.getValue());
+            return result.str();
+        } else {
+            colPart = what[1];
+            sColStart = colPart;
+            rowPart = what[2];
+            try {
+                iRowStart = std::stoi(rowPart);
+            }
+            catch (...) {
+                Base::Console().Error("%s - start cell (%s) invalid row\n",
+                                      getNameInDocument(), rowPart.c_str());
+                return result.str();
+            }
+        }
+    }
+
+    if (boost::regex_search(scellend, what, re)) {
+        if (what.size() < 3) {
+            Base::Console().Error("%s - end cell (%s) is invalid\n",getNameInDocument(),CellEnd.getValue());
+        } else {
+            colPart = what[1];
+            sColEnd = colPart;
+            rowPart = what[2];
+            try {
+                iRowEnd = std::stoi(rowPart);
+            }
+            catch (...) {
+                Base::Console().Error("%s - end cell (%s) invalid row\n",
+                                      getNameInDocument(), rowPart.c_str());
+                return result.str();
+            }
+        }
+    }
+
     std::vector<std::string> availcolumns = getAvailColumns();
 
-    // build rows range and columns range
-    std::vector<std::string> columns;
-    std::vector<int> rows;
-    //break startcell into row & column parts
-    //Note: could do this with regex ([A-Z]*)([0-9]*)
-    std::string startCol;
-    int startRow = -1;
-    for (unsigned int i=0; i<scellstart.length(); ++i) {
-        if (isdigit(scellstart[i])) {
-            startCol = scellstart.substr(0,i);
-            startRow = std::atoi(scellstart.substr(i,scellstart.length()-1).c_str());
-            break;    //first digit is enough
-        }
-    }
-
-    //validate startCol in A:ZZ
-    int iStart = colInList(availcolumns,startCol);
-    if (iStart >= 0) {
-        columns.push_back(startCol);
-        rows.push_back(startRow);
-    } else {
-        Base::Console().Error("DVS - %s - start Column (%s) is invalid\n",getNameInDocument(),startCol.c_str());
-        return result.str();
-    }
-    //startCol is valid
-
-    //break endcell contents into row & col parts
-    std::string endCol;
-    int endRow = -1;
-    for (unsigned int i=0; i<scellend.length(); ++i) {
-        if (isdigit(scellend[i])) {
-            endCol = scellend.substr(0,i);
-            endRow = std::atoi(scellend.substr(i,scellend.length()-1).c_str());
-            break;
-        }
-    }
-    //validate endCol in A:ZZ
-    int iEnd = colInList(availcolumns,endCol);
-    if (iEnd < 0) {
-        Base::Console().Error("DVS - %s - end Column (%s) is invalid\n",getNameInDocument(),endCol.c_str());
-        return result.str();
-    }
-    //endCol is valid
-
-    if ( (startCol > endCol) ||
-         (startRow > endRow) ) {
-        Base::Console().Error("DVS - %s - cell range is invalid\n",getNameInDocument());
+    //validate range start column in sheet's available columns
+    int iAvailColStart = colInList(availcolumns, sColStart);
+    if (iAvailColStart < 0) {               //not found range start column in availcolumns list
+        Base::Console().Error("DVS - %s - start Column (%s) is invalid\n",
+                               getNameInDocument(), sColStart.c_str());
         return result.str();
     }
 
-    //fill the col/row name vectors
-    if (startCol != endCol) {
-        int i = iStart + 1;
-        for ( ; i < iEnd; i++) {
-            columns.push_back(availcolumns.at(i));
-        }
-        columns.push_back(endCol);
+    //validate range end column in sheet's available columns
+    int iAvailColEnd = colInList(availcolumns,sColEnd);
+    if (iAvailColEnd < 0) {
+        Base::Console().Error("DVS - %s - end Column (%s) is invalid\n",
+                              getNameInDocument(), sColEnd.c_str());
+        return result.str();
     }
-    int i = startRow + 1;
-    for (; i < endRow; i ++) {
-        rows.push_back(i);
+
+    //check for logical range
+    if ( (iAvailColStart > iAvailColEnd) ||
+         (iRowStart > iRowEnd) ) {
+        Base::Console().Error("%s - cell range is illogical\n",getNameInDocument());
+        return result.str();
     }
-    rows.push_back(endRow);
+
+    // build row and column ranges
+    std::vector<std::string> validColNames;
+    std::vector<int> validRowNumbers;
+
+    int iCol = iAvailColStart;
+    for (; iCol <= iAvailColEnd; iCol++) {
+        validColNames.push_back(availcolumns.at(iCol));
+    }
+    
+    int iRow = iRowStart;
+    for ( ; iRow <= iRowEnd ; iRow++) {
+        validRowNumbers.push_back(iRow);
+    }
 
     // create the Svg code
     std::string ViewName = Label.getValue();
@@ -244,10 +267,10 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
     Spreadsheet::Sheet* sheet = static_cast<Spreadsheet::Sheet*>(link);
     std::vector<std::string> skiplist;
 
-    for (std::vector<std::string>::const_iterator col = columns.begin(); col != columns.end(); ++col) {
+    for (std::vector<std::string>::const_iterator col = validColNames.begin(); col != validColNames.end(); ++col) {
         // create a group for each column
         result << "  <g id=\"" << ViewName << "_col" << (*col) << "\">" << endl;
-        for (std::vector<int>::const_iterator row = rows.begin(); row != rows.end(); ++row) {
+        for (std::vector<int>::const_iterator row = validRowNumbers.begin(); row != validRowNumbers.end(); ++row) {
             // get cell size
             std::stringstream srow;
             srow << (*row);
@@ -259,7 +282,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             // get the text
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
-            if (prop != 0) {
+            if (prop && cell) {
                 if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId()))) {
                     field << cell->getFormattedQuantity();
                 } else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId()))) {
@@ -349,8 +372,9 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
 
 }
 
+//find index of column name "toFind" in "list" of column names
 int DrawViewSpreadsheet::colInList(const std::vector<std::string>& list,
-                                                              const std::string& toFind)
+                                   const std::string& toFind)
 {
     int result = -1;
     auto match = std::find(std::begin(list), std::end(list), toFind);

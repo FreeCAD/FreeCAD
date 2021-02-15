@@ -20,9 +20,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Tools for the work with Gmsh mesher"
+__title__  = "Tools for the work with Gmsh mesher"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -38,6 +38,10 @@ import Fem
 from . import meshtools
 from femtools import femutils
 from femtools import geomtools
+
+
+class GmshError(Exception):
+    pass
 
 
 class GmshTools():
@@ -154,12 +158,15 @@ class GmshTools():
         self.write_geo()
 
     def create_mesh(self):
-        self.update_mesh_data()
-        self.get_tmp_file_paths()
-        self.get_gmsh_command()
-        self.write_gmsh_input_files()
-        error = self.run_gmsh_with_geo()
-        self.read_and_set_new_mesh()
+        try:
+            self.update_mesh_data()
+            self.get_tmp_file_paths()
+            self.get_gmsh_command()
+            self.write_gmsh_input_files()
+            error = self.run_gmsh_with_geo()
+            self.read_and_set_new_mesh()
+        except GmshError as e:
+            error = str(e)
         return error
 
     def start_logs(self):
@@ -292,7 +299,7 @@ class GmshTools():
                         "in FEM preferences tab Gmsh.\n"
                     )
                     Console.PrintError(error_message)
-                    raise Exception(error_message)
+                    raise GmshError(error_message)
                 self.gmsh_bin = gmsh_path
             else:
                 error_message = (
@@ -300,7 +307,7 @@ class GmshTools():
                     "Set GMHS binary path in FEM preferences.\n"
                 )
                 Console.PrintError(error_message)
-                raise Exception(error_message)
+                raise GmshError(error_message)
         else:
             if not self.gmsh_bin:
                 self.gmsh_bin = FreeCAD.ParamGet(
@@ -338,7 +345,10 @@ class GmshTools():
             "User parameter:BaseApp/Preferences/Mod/Fem/General"
         ).GetBool("AnalysisGroupMeshing", False)
         if self.analysis and analysis_group_meshing:
-            Console.PrintMessage("  Group meshing for analysis.\n")
+            Console.PrintWarning(
+                "  Group meshing for analysis is set to true in FEM General Preferences. "
+                "Are you really sure about this? You could run into trouble!\n"
+            )
             self.group_nodes_export = True
             new_group_elements = meshtools.get_analysis_group_elements(
                 self.analysis,
@@ -828,7 +838,7 @@ class GmshTools():
             # but the warnings are in stderr and thus printed :-)
             # print(output)
             # print(error)
-        except:
+        except Exception:
             error = "Error executing: {}\n".format(" ".join(comandlist))
             Console.PrintError(error)
             self.error = True

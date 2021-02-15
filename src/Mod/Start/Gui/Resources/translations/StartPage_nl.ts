@@ -208,6 +208,11 @@
       <source>Notes</source>
       <translation>Notities</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Open start page preferences</source>
+      <translation type="unfinished">Open start page preferences</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -406,7 +411,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation>Gebruik het FreeCAD opmaakmodel</translation>
+      <translation>Gebruik het FreeCAD-stijlblad</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>

@@ -189,7 +189,7 @@ void DemoMode::reorientCamera(SoCamera * cam, const SbRotation & rot)
 
 void DemoMode::on_speedSlider_valueChanged(int v)
 {
-    Q_UNUSED(v); 
+    Q_UNUSED(v);
     Gui::View3DInventor* view = activeView();
     if (view && view->getViewer()->isAnimating()) {
         startAnimation(view);
@@ -257,7 +257,7 @@ void DemoMode::startAnimation(Gui::View3DInventor* view)
 {
     if (!view->getViewer()->isAnimationEnabled())
         view->getViewer()->setAnimationEnabled(true);
-    view->getViewer()->startAnimating(getDirection(view), 
+    view->getViewer()->startAnimating(getDirection(view),
         getSpeed(ui->speedSlider->value()));
 }
 

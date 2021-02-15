@@ -154,7 +154,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetY" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetY">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -170,6 +170,9 @@
         <property name="toolTip">
          <string>Note: The placement is expressed in local coordinate system
 of object being attached.</string>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -187,7 +190,7 @@ of object being attached.</string>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetZ" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetZ">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -203,6 +206,9 @@ of object being attached.</string>
         <property name="toolTip">
          <string>Note: The placement is expressed in local coordinate system
 of object being attached.</string>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -246,7 +252,7 @@ of object being attached.</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetX" native="true">
+       <widget class="Gui::PrefQuantitySpinBox" name="attachmentOffsetX">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -263,10 +269,13 @@ of object being attached.</string>
          <string>Note: The placement is expressed in local coordinate system
 of object being attached.</string>
         </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -278,22 +287,22 @@ of object being attached.</string>
 Note: The placement is expressed in local coordinate system
 of object being attached.</string>
         </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetPitch" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetPitch">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -305,22 +314,22 @@ of object being attached.</string>
 Note: The placement is expressed in local coordinate system
 of object being attached.</string>
         </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -332,17 +341,17 @@ of object being attached.</string>
 Note: The placement is expressed in local coordinate system
 of object being attached.</string>
         </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum" stdset="0">
+        <property name="minimum">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum" stdset="0">
+        <property name="maximum">
          <double>360.000000000000000</double>
-        </property>
-        <property name="value" stdset="0">
-         <double>0.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -369,7 +378,7 @@ of object being attached.</string>
   </customwidget>
   <customwidget>
    <class>Gui::PrefQuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends>Gui::QuantitySpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

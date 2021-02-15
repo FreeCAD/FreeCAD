@@ -581,7 +581,7 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Esegui i calcoli con il solutore</translation>
+      <translation>Avvia il solutore</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
@@ -809,7 +809,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation>Materiale...</translation>
+      <translation>Materiale meccanico...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
@@ -892,7 +892,7 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation>Esegui i calcoli con il solutore</translation>
+      <translation>Avvia il solutore</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
@@ -1047,7 +1047,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation>Materiale...</translation>
+      <translation>Materiale meccanico...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>

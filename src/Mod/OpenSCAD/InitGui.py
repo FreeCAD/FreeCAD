@@ -49,7 +49,8 @@ class OpenSCADWorkbench ( Workbench ):
             return text
         import OpenSCAD_rc,OpenSCADCommands
         commands = ['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',
-                    'OpenSCAD_RefineShapeFeature','OpenSCAD_IncreaseToleranceFeature', 
+                    'OpenSCAD_RefineShapeFeature','OpenSCAD_MirrorMeshFeature',
+                    'OpenSCAD_ScaleMeshFeature','OpenSCAD_ResizeMeshFeature','OpenSCAD_IncreaseToleranceFeature',
                     'OpenSCAD_Edgestofaces', 'OpenSCAD_ExpandPlacements','OpenSCAD_ExplodeGroup']
         toolbarcommands = ['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',
                            'OpenSCAD_ExplodeGroup','OpenSCAD_RefineShapeFeature',

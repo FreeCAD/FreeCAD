@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Estableix l'orientació per defecte per a ordres posteriors per a la creació de fites</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Estableix els valors per defecte de velocitat, acceleració i continuïtat per a ordres posteriors de creació de fites</translation>
     </message>
   </context>
   <context>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="231"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>Necessiteu almenys dos punts de camí en una trajectòria per a la simulació.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="88"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set default continuity</source>
-      <translation type="unfinished">Set default continuity</translation>
+      <translation>Estableix la continuïtat per defecte</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="285"/>
       <source>Set default acceleration</source>
-      <translation type="unfinished">Set default acceleration</translation>
+      <translation>Estableix l'acceleració per defecte</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="286"/>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="164"/>
       <source>Modify</source>
-      <translation type="unfinished">Modify</translation>
+      <translation>Modifica</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>

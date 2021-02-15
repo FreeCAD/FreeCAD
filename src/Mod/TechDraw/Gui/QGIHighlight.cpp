@@ -63,49 +63,12 @@ QGIHighlight::QGIHighlight()
     m_reference->setFlag(QGraphicsItem::ItemIsSelectable, false);
 
     setWidth(Rez::guiX(0.75));
-    setStyle(getHighlightStyle());
-    setColor(getHighlightColor());
 }
 
 QGIHighlight::~QGIHighlight()
 {
 
 }
-
-//really only want to emit signal at end of movement
-//QVariant QGIHighlight::itemChange(GraphicsItemChange change, const QVariant &value)
-//{
-//    if (change == ItemPositionHasChanged && scene()) {
-//        // nothing to do here
-//    }
-//    return QGraphicsItem::itemChange(change, value);
-//}
-
-//void QGIHighlight::mousePressEvent(QGraphicsSceneMouseEvent * event)
-//{
-//    Base::Console().Message("QGIHighlight::mousePress() - %X\n", this);
-////    if(scene() && m_reference == scene()->mouseGrabberItem()) {
-//        if ( (event->button() == Qt::LeftButton) && 
-//            (flags() && QGraphicsItem::ItemIsMovable) ) {
-//                m_dragging = true;
-//        }
-////    }
-//    QGIDecoration::mousePressEvent(event);
-//}
-
-//void QGIHighlight::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-//{
-//    Base::Console().Message("QGIHighlight::mouseRelease() - %X grabber: %X\n", this, scene()->mouseGrabberItem());
-////    if(scene() && this == scene()->mouseGrabberItem()) {
-//        if (m_dragging) {
-//            m_dragging = false;
-////            QString itemName = data(0).toString();
-//            Q_EMIT positionChange(pos());
-//            return;
-//        }
-////    }
-//    QGIDecoration::mouseReleaseEvent(event);
-//}
 
 void QGIHighlight::draw()
 {
@@ -175,11 +138,13 @@ void QGIHighlight::setFont(QFont f, double fsize)
 }
 
 
+//obs?
 QColor QGIHighlight::getHighlightColor()
 {
     return PreferencesGui::sectionLineQColor();
 }
 
+//obs??
 Qt::PenStyle QGIHighlight::getHighlightStyle()
 {
     return PreferencesGui::sectionLineStyle();

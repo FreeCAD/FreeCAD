@@ -49,6 +49,8 @@ public:
 
     virtual short mustExecute() const override;
 
+    virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+
     Part::PropertyPartShape   AddSubShape;
     App::PropertyBool Refine;
 

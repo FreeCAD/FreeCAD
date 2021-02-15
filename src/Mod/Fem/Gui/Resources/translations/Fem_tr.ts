@@ -110,7 +110,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Listeye eklenecek atı maddenin parçalarından element seç. Katı madde eklemek için "Ekle"ye bas.</translation>
     </message>
   </context>
   <context>
@@ -1989,7 +1989,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="84"/>
       <source>Cancel</source>
-      <translation>İptal et</translation>
+      <translation>İptal</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
@@ -2228,7 +2228,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="113"/>
       <source>Center distance</source>
-      <translation>Merkez uzaklığı</translation>
+      <translation>Merkez mesafesi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="137"/>
@@ -2276,7 +2276,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
       <source>Center distance</source>
-      <translation>Merkez uzaklığı</translation>
+      <translation>Merkez mesafesi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="110"/>
@@ -2286,7 +2286,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="134"/>
       <source>Belt tension force</source>
-      <translation>Kemer gerginlik kuvveti</translation>
+      <translation>Kemer gerilim kuvveti</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="156"/>

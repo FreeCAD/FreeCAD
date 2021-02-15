@@ -22,25 +22,28 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for moving objects in the 3D space."""
+"""Provides GUI tools to move objects in the 3D space."""
 ## @package gui_move
-# \ingroup DRAFT
-# \brief Provides tools for moving objects in the 3D space.
+# \ingroup draftguitools
+# \brief Provides GUI tools to move objects in the 3D space.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import DraftVecUtils
-import draftutils.utils as utils
+import draftutils.groups as groups
 import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
-from draftguitools.gui_subelements import SubelementHighlight
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
+from draftguitools.gui_subelements import SubelementHighlight
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -54,16 +57,11 @@ class Move(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Moves the selected objects from one base point "
-                "to another point.\n"
-                'If the "copy" option is active, it will create '
-                "displaced copies.\n"
-                "CTRL to snap, SHIFT to constrain.")
 
         return {'Pixmap': 'Draft_Move',
                 'Accel': "M, V",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Move", "Move"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Move", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects from one base point to another point.\nIf the \"copy\" option is active, it will create displaced copies.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -90,10 +88,11 @@ class Move(gui_base_original.Modifier):
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
         self.selected_objects = Gui.Selection.getSelection()
-        self.selected_objects = utils.getGroupContents(self.selected_objects,
-                                                       addgroups=True,
-                                                       spaces=True,
-                                                       noarchchild=True)
+        self.selected_objects = \
+            groups.get_group_contents(self.selected_objects,
+                                      addgroups=True,
+                                      spaces=True,
+                                      noarchchild=True)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.ui.lineUi(self.name)
         self.ui.modUi()
@@ -310,3 +309,5 @@ class Move(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Move', Move())
+
+## @}

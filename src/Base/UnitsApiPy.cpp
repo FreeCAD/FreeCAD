@@ -32,7 +32,7 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "UnitsApi.h"
 #include "Quantity.h"
-#include "QuantityPy.h" 
+#include "QuantityPy.h"
 
 
 
@@ -57,13 +57,13 @@ PyMethodDef UnitsApi::Methods[] = {
     // " That means if no unit is issued the user prefs are in \n"
     // " charge. If one unit is used the user prefs get ignored\n"
     // " type can be: \n"
-    // " Length  \n"  
-    // " Area  \n"  
-    // " Volume  \n"  
-    // " Angle  \n" 
+    // " Length  \n"
+    // " Area  \n"
+    // " Volume  \n"
+    // " Angle  \n"
     // " TimeSpan  \n"
     // " Velocity  \n"
-    // " Acceleration \n" 
+    // " Acceleration \n"
     // " Mass   \n"
     // " Temperature \n"
 

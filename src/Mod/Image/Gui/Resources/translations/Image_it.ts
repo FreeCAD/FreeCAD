@@ -118,7 +118,7 @@
       <location filename="../../GLImageBox.cpp" line="333"/>
       <location filename="../../OpenGLImageBox.cpp" line="385"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Spazio colore indefinito per la visualizzazione delle immagini</translation>
+      <translation>Tipo di spazio colore indefinito per la visualizzazione delle immagini</translation>
     </message>
   </context>
   <context>

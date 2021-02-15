@@ -30,7 +30,6 @@
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepPrimAPI_MakeSphere.hxx>
-# include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepPrim_Wedge.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -75,7 +74,7 @@
 
 
 namespace Part {
-    const App::PropertyQuantityConstraint::Constraints apexRange   = {0.0,90.0,0.1};
+    const App::PropertyQuantityConstraint::Constraints apexRange   = {-90.0,90.0,0.1};
     const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0,180.0,1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
@@ -106,10 +105,20 @@ App::DocumentObjectExecReturn* Primitive::execute(void) {
     return Part::Feature::execute();
 }
 
+// suppress warning about tp_print for Py3.8
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
+
 namespace Part {
     PYTHON_TYPE_DEF(PrimitivePy, PartFeaturePy)
     PYTHON_TYPE_IMP(PrimitivePy, PartFeaturePy)
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 PyObject* Primitive::getPyObject()
 {
@@ -561,10 +570,15 @@ PROPERTY_SOURCE(Part::Prism, Part::Primitive)
 
 Prism::Prism(void)
 {
-    ADD_PROPERTY_TYPE(Polygon,(6.0),"Prism",App::Prop_None,"Number of sides in the polygon, of the prism");
-    ADD_PROPERTY_TYPE(Circumradius,(2.0),"Prism",App::Prop_None,"Circumradius (centre to vertex) of the polygon, of the prism");
-    ADD_PROPERTY_TYPE(Height,(10.0f),"Prism",App::Prop_None,"The height of the prism");
+    ADD_PROPERTY_TYPE(Polygon, (6.0), "Prism", App::Prop_None, "Number of sides in the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Circumradius, (2.0), "Prism", App::Prop_None, "Circumradius (centre to vertex) of the polygon, of the prism");
+    ADD_PROPERTY_TYPE(Height, (10.0f), "Prism", App::Prop_None, "The height of the prism");
+    ADD_PROPERTY_TYPE(FirstAngle, (0.0f), "Prism", App::Prop_None, "Angle in first direction");
+    ADD_PROPERTY_TYPE(SecondAngle, (0.0f), "Prism", App::Prop_None, "Angle in second direction");
     Polygon.setConstraints(&polygonRange);
+    static const App::PropertyQuantityConstraint::Constraints angleConstraint = { -89.99999, 89.99999, 1.0 };
+    FirstAngle.setConstraints(&angleConstraint);
+    SecondAngle.setConstraints(&angleConstraint);
 }
 
 short Prism::mustExecute() const
@@ -574,6 +588,10 @@ short Prism::mustExecute() const
     if (Circumradius.isTouched())
         return 1;
     if (Height.isTouched())
+        return 1;
+    if (FirstAngle.isTouched())
+        return 1;
+    if (SecondAngle.isTouched())
         return 1;
     return Primitive::mustExecute();
 }
@@ -602,11 +620,14 @@ App::DocumentObjectExecReturn *Prism::execute(void)
         }
         mkPoly.Add(gp_Pnt(v.x,v.y,v.z));
         BRepBuilderAPI_MakeFace mkFace(mkPoly.Wire());
-        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), gp_Vec(0,0,Height.getValue()));
+        // the direction vector for the prism is the height for z and the given angle
+        BRepPrimAPI_MakePrism mkPrism(mkFace.Face(),
+            gp_Vec(Height.getValue() * tan(Base::toRadians<double>(FirstAngle.getValue())),
+                   Height.getValue() * tan(Base::toRadians<double>(SecondAngle.getValue())),
+                   Height.getValue()));
         this->Shape.setValue(mkPrism.Shape());
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -753,34 +774,14 @@ App::DocumentObjectExecReturn *Torus::execute(void)
     if (Radius2.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of torus too small");
     try {
-#if 1
-        // Build a torus
-        gp_Circ circle;
-        circle.SetRadius(Radius2.getValue());
-        gp_Pnt pos(Radius1.getValue(),0,0);
-        gp_Dir dir(0,1,0);
-        circle.SetAxis(gp_Ax1(pos, dir));
-
-        BRepBuilderAPI_MakeEdge mkEdge(circle, Base::toRadians<double>(Angle1.getValue()+180.0f),
-                                               Base::toRadians<double>(Angle2.getValue()+180.0f));
-        BRepBuilderAPI_MakeWire mkWire;
-        mkWire.Add(mkEdge.Edge());
-        BRepBuilderAPI_MakeFace mkFace(mkWire.Wire());
-        BRepPrimAPI_MakeRevol mkRevol(mkFace.Face(), gp_Ax1(gp_Pnt(0,0,0), gp_Dir(0,0,1)),
-            Base::toRadians<double>(Angle3.getValue()), Standard_True);
-        TopoDS_Shape ResultShape = mkRevol.Shape();
-#else
-        BRepPrimAPI_MakeTorus mkTorus(Radius1.getValue(),
-                                      Radius2.getValue(),
-                                      Angle1.getValue()/180.0f*Standard_PI,
-                                      Angle2.getValue()/180.0f*Standard_PI,
-                                      Angle3.getValue()/180.0f*Standard_PI);
-        const TopoDS_Solid& ResultShape = mkTorus.Solid();
-#endif
-        this->Shape.setValue(ResultShape);
+        TopoShape shape;
+        this->Shape.setValue(shape.makeTorus(Radius1.getValue(),
+                                             Radius2.getValue(),
+                                             Angle1.getValue(),
+                                             Angle2.getValue(),
+                                             Angle3.getValue()));
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 
@@ -800,7 +801,7 @@ Helix::Helix(void)
     Height.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Helix",App::Prop_None,"The radius of the helix");
     Radius.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is > 0 a conical otherwise a cylindircal surface is used");
+    ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is != 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
     ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
     LocalCoord.setEnums(LocalCSEnums);
@@ -912,9 +913,9 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         Standard_Real myNumRot = Rotations.getValue();
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myGrowth = Growth.getValue();
-        Standard_Real myPitch  = 1.0;
-        Standard_Real myHeight = myNumRot * myPitch;
-        Standard_Real myAngle  = atan(myGrowth / myPitch);
+        Standard_Real myAngle  = 45.0;
+        Standard_Real myPitch  = myGrowth / tan(Base::toRadians(myAngle));
+        Standard_Real myHeight = myPitch * myNumRot;
         TopoShape helix;
 
         if (myGrowth < Precision::Confusion())
@@ -922,29 +923,9 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
 
         if (myNumRot < Precision::Confusion())
             Standard_Failure::Raise("Number of rotations too small");
-
-        gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-        Handle(Geom_Surface) surf = new Geom_ConicalSurface(gp_Ax3(cylAx2), myAngle, myRadius);
-
-        gp_Pnt2d aPnt(0, 0);
-        gp_Dir2d aDir(2. * M_PI, myPitch);
-        gp_Ax2d aAx2d(aPnt, aDir);
-
-        Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
-        gp_Pnt2d beg = line->Value(0);
-        gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+myPitch*myPitch)*(myHeight/myPitch));
-
-        // calculate end point for conical helix
-        Standard_Real v = myHeight / cos(myAngle);
-        Standard_Real u = (myHeight/myPitch) * 2.0 * M_PI;
-        gp_Pnt2d cend(u, v);
-        end = cend;
-
-        Handle(Geom2d_TrimmedCurve) segm = GCE2d_MakeSegment(beg , end);
-
-        TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
-        TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
-        BRepLib::BuildCurves3d(wire);
+        // spiral suffers from same bug as helix (FC bug #0954)
+        // So, we use same work around for OCC bug #23314
+        TopoDS_Shape myHelix = helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, Standard_False);
 
         Handle(Geom_Plane) aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
         Standard_Real range = (myNumRot+1) * myGrowth + 1 + myRadius;
@@ -953,7 +934,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         , Precision::Confusion()
 #endif
         );
-        BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
+        BRepProj_Projection proj(myHelix, mkFace.Face(), gp::DZ());
         this->Shape.setValue(proj.Shape());
 
         return Primitive::execute();

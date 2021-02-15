@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -295,7 +294,7 @@ PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
                         break;
                     }
                 }
-                if(!found) 
+                if(!found)
                     ret.append(Py::Int((long)i));
             }
         }
@@ -359,6 +358,33 @@ PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
         return Py::new_reference_to(Py::String(""));
 }
 
+PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
+{
+    char *pstr;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
+
+    PropertyEnumeration *enumProp = dynamic_cast<PropertyEnumeration*>(prop);
+    if (!enumProp) {
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+
+    std::vector<std::string> enumerations = enumProp->getEnumVector();
+
+    Py::List ret;
+    for (std::vector<std::string>::const_iterator it = enumerations.begin(); it != enumerations.end(); ++it) {
+        ret.append(Py::String(*it));
+    }
+    return Py::new_reference_to(ret);
+}
+
 Py::List PropertyContainerPy::getPropertiesList(void) const
 {
     Py::List ret;
@@ -396,7 +422,7 @@ PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwd
     }
     catch (...) {
        PyErr_SetString(PyExc_IOError, "Unable parse content into binary representation");
-       return NULL; 
+       return NULL;
     }
 
     //build the byte array with correct size
@@ -508,7 +534,7 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         }
         return dict;
     } else if(Base::streq(attr,"Shape")
-            && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) 
+            && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
     {
         // Special treatment of Shape property
         static PyObject *_getShape = 0;
@@ -527,7 +553,7 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
             Py::Tuple args(1);
             args.setItem(0,Py::Object(const_cast<PropertyContainerPy*>(this)));
             auto res = PyObject_CallObject(_getShape, args.ptr());
-            if(!res) 
+            if(!res)
                 PyErr_Clear();
             else {
                 Py::Object pyres(res,true);

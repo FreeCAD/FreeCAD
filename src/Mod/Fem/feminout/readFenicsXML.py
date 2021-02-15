@@ -21,19 +21,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD Fenics XML mesh reader"
+__title__  = "FreeCAD Fenics XML mesh reader"
 __author__ = "Johannes Hartung"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package importFenicsXML
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XML reader for FEM workbench
 
+import itertools
+from xml.etree import ElementTree as ET
 
 import FreeCAD
 from FreeCAD import Console
-from xml.etree import ElementTree as ET
-import itertools
 
 
 def read_fenics_mesh_xml(xmlfilename):

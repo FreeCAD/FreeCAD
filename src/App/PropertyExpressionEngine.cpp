@@ -34,9 +34,8 @@
 #include "PropertyStandard.h"
 #include "PropertyUnits.h"
 #include <CXX/Objects.hxx>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
 
 
 using namespace App;

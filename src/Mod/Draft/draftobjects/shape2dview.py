@@ -1,4 +1,4 @@
-2# ***************************************************************************
+# ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 FreeCAD Developers                                 *
@@ -20,21 +20,22 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the object code for Draft Shape2dView.
-"""
+"""Provides the object code for the Shape2dView object."""
 ## @package shape2dview
-# \ingroup DRAFT
-# \brief This module provides the object code for Draft Shape2dView.
+# \ingroup draftobjects
+# \brief Provides the object code for the Shape2dView object.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftVecUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
-from draftutils.translate import translate
+import draftutils.groups as groups
 
+from draftutils.translate import translate
 from draftobjects.base import DraftObject
 
 
@@ -43,48 +44,58 @@ class Shape2DView(DraftObject):
 
     def __init__(self,obj):
 
-        _tip = "The base object this 2D view must represent"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The base object this 2D view must represent")
         obj.addProperty("App::PropertyLink", "Base",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The projection vector of this object"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The projection vector of this object")
         obj.addProperty("App::PropertyVector", "Projection",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The way the viewed object must be projected"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The way the viewed object must be projected")
         obj.addProperty("App::PropertyEnumeration", "ProjectionMode",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "The indices of the faces to be projected in Individual Faces mode"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "The indices of the faces to be projected in Individual Faces mode")
         obj.addProperty("App::PropertyIntegerList", "FaceNumbers",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Show hidden lines"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Show hidden lines")
         obj.addProperty("App::PropertyBool", "HiddenLines",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Fuse wall and structure objects of same type and material"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Fuse wall and structure objects of same type and material")
         obj.addProperty("App::PropertyBool", "FuseArch",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Tessellate Ellipses and B-splines into line segments"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Tessellate Ellipses and B-splines into line segments")
         obj.addProperty("App::PropertyBool", "Tessellation",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "For Cutlines and Cutfaces modes, \
-                this leaves the faces at the cut location"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "For Cutlines and Cutfaces modes, \
+                this leaves the faces at the cut location")
         obj.addProperty("App::PropertyBool", "InPlace",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "Length of line segments if tessellating Ellipses or B-splines \
-                into line segments"
+        _tip = QT_TRANSLATE_NOOP("App::Property",
+                "Length of line segments if tessellating Ellipses or B-splines \
+                into line segments")
         obj.addProperty("App::PropertyFloat", "SegmentLength",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
 
-        _tip = "If this is True, this object will be recomputed only if it is \
-                visible"
+        _tip = QT_TRANSLATE_NOOP("App::Property", 
+                "If this is True, this object will be recomputed only if it is \
+                visible")
         obj.addProperty("App::PropertyBool", "VisibleOnly",
-                        "Draft", QT_TRANSLATE_NOOP("App::Property", _tip))
+                        "Draft", _tip)
         
         obj.Projection = App.Vector(0,0,1)
         obj.ProjectionMode = ["Solid", "Individual Faces",
@@ -100,13 +111,13 @@ class Shape2DView(DraftObject):
         "returns projected edges from a shape and a direction"
         import Part, Drawing, DraftGeomUtils
         edges = []
-        groups = Drawing.projectEx(shape, direction)
-        for g in groups[0:5]:
+        _groups = Drawing.projectEx(shape, direction)
+        for g in _groups[0:5]:
             if g:
                 edges.append(g)
         if hasattr(obj,"HiddenLines"):
             if obj.HiddenLines:
-                for g in groups[5:]:
+                for g in _groups[5:]:
                     edges.append(g)
         #return Part.makeCompound(edges)
         if hasattr(obj,"Tessellation") and obj.Tessellation:
@@ -145,7 +156,7 @@ class Shape2DView(DraftObject):
                     if hasattr(obj.Base,"OnlySolids"):
                         onlysolids = obj.Base.OnlySolids
                     import Arch, Part, Drawing
-                    objs = utils.get_group_contents(objs,walls=True)
+                    objs = groups.get_group_contents(objs, walls=True)
                     objs = gui_utils.remove_hidden(objs)
                     shapes = []
                     if hasattr(obj,"FuseArch") and obj.FuseArch:
@@ -236,7 +247,7 @@ class Shape2DView(DraftObject):
 
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
-                objs = utils.get_group_contents(obj.Base)
+                objs = groups.get_group_contents(obj.Base)
                 for o in objs:
                     if hasattr(o,'Shape'):
                         if o.Shape:
@@ -269,4 +280,7 @@ class Shape2DView(DraftObject):
             obj.Placement = pl
 
 
+# Alias for compatibility with v0.18 and earlier
 _Shape2DView = Shape2DView
+
+## @}

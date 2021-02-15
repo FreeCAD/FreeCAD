@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 
@@ -31,7 +30,7 @@ from PySide import QtCore #, QtGui
 
 __title__ = "Path Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Base page controller and command implementation for path pocket operations."
 
 def translate(context, text, disambig=None):
@@ -65,7 +64,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             form.clearEdges.hide()
 
         if FeaturePocket & self.pocketFeatures():
-            form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
+            form.extraOffset_label.setText(translate("PathPocket", "Pass Extension"))
             form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
 
         if not (FeatureOutline & self.pocketFeatures()):

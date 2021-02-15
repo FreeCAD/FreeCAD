@@ -34,6 +34,8 @@
 #include <Precision.hxx>
 #include <Bnd_Box2d.hxx>
 #include <BndLib_Add2dCurve.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
 #include <Extrema_ExtCC2d.hxx>
 #include <Geom2dAdaptor_Curve.hxx>
 #include <Geom2d_Curve.hxx>
@@ -107,8 +109,8 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     std::pair<Base::Vector3d, Base::Vector3d> endPoints = minMax(dvp,
                                                                  edgeNames,
                                                                  direction);
-    Base::Vector3d refMin = endPoints.first;
-    Base::Vector3d refMax = endPoints.second;
+    Base::Vector3d refMin = endPoints.first / dvp->getScale();     //unscale from geometry
+    Base::Vector3d refMax = endPoints.second / dvp->getScale();
 
     //pause recomputes
     dvp->getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
@@ -185,10 +187,14 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
         selEdges = dvp->getEdgeGeometry();                  //do the whole View
     }
 
+    Bnd_Box edgeBbx;
+    edgeBbx.SetGap(0.0);
+
     std::vector<Handle(Geom_Curve)> selCurves;
     std::vector<hTrimCurve> hTCurve2dList;
     for (auto& bg: selEdges) {
         TopoDS_Edge e = bg->occEdge;
+        BRepBndLib::Add(e, edgeBbx);
         double first = 0.0;
         double last = 0.0;
         Handle(Geom_Curve) hCurve = BRep_Tool::Curve(e, first, last);
@@ -198,19 +204,18 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     }
 
     //can't use Bnd_Box2d here as BndLib_Add2dCurve::Add adds the poles of splines to the box.
-    //poles are not necessarily on the curve! 3d Bnd_Box does it properly. FC bbx3 is already calculated
-    //bbx3 is scaled??
-//    double scale = dvp->getScale();
+    //poles are not necessarily on the curve! 3d Bnd_Box does it properly. 
+    //this has to be the bbx of the selected edges, not the dvp!!!
+    double minX, minY, minZ, maxX, maxY, maxZ;
+    edgeBbx.Get(minX, minY, minZ, maxX, maxY, maxZ);
+    double xMid = (maxX + minX) / 2.0;
+    double yMid = (maxY + minY) / 2.0;
 
-    Base::BoundBox3d bbx3 = dvp->getBoundingBox();
+    gp_Pnt2d rightMid(maxX, yMid);
+    gp_Pnt2d leftMid(minX, yMid);
+    gp_Pnt2d topMid(xMid, maxY);
+    gp_Pnt2d bottomMid(xMid, minY);
 
-    double xMid = (bbx3.MaxX + bbx3.MinX) / 2.0;
-    double yMid = (bbx3.MaxY + bbx3.MinY) / 2.0;
-
-    gp_Pnt2d rightMid(bbx3.MaxX, yMid);
-    gp_Pnt2d leftMid(bbx3.MinX, yMid);
-    gp_Pnt2d topMid(xMid, bbx3.MaxY);
-    gp_Pnt2d bottomMid(xMid, bbx3.MinY);
     gp_Dir2d xDir(1.0, 0.0);
     gp_Dir2d yDir(0.0, 1.0);
 
@@ -326,11 +331,10 @@ gp_Pnt2d DrawDimHelper::findClosestPoint(std::vector<hTrimCurve> hTCurve2dList,
     return result;
 }
 
-//TODO: this needs to be exposed to Python
 DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
                                               std::string dimType,
-                                              Base::Vector3d inMin,
-                                              Base::Vector3d inMax,
+                                              Base::Vector3d inMin,      //is this scaled or unscaled??
+                                              Base::Vector3d inMax,      //expects scaled from makeExtentDim
                                               bool extent)
 {
 //    Base::Console().Message("DDH::makeDistDim() - inMin: %s inMax: %s\n",
@@ -346,13 +350,11 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
         dimName = doc->getUniqueObjectName("DimExtent");
     }
 
-    double scale = dvp->getScale();
-
-    //regular dims will have trouble with geom indexes!
-    Base::Vector3d cleanMin = DrawUtil::invertY(inMin) / scale;
+    Base::Vector3d cleanMin = DrawUtil::invertY(inMin);
     std::string tag1 = dvp->addCosmeticVertex(cleanMin);
     int iGV1 = dvp->add1CVToGV(tag1);
-    Base::Vector3d cleanMax = DrawUtil::invertY(inMax) / scale;
+    
+    Base::Vector3d cleanMax = DrawUtil::invertY(inMax);
     std::string tag2 = dvp->addCosmeticVertex(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);
 
@@ -366,6 +368,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     objs.push_back(dvp);
 
     ss.clear();
+    ss.str(std::string());
     ss << "Vertex" << iGV2;
     vertexName = ss.str();
     subs.push_back(vertexName);

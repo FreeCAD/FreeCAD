@@ -106,11 +106,11 @@ void StdCmdWorkbench::activated(int i)
         int pos = rx.indexIn(msg);
         if (pos != -1)
             msg = msg.mid(rx.matchedLength());
-        QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), msg); 
+        QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), msg);
     }
     catch(...) {
-        QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"), 
-            QObject::tr("A general error occurred while loading the workbench")); 
+        QMessageBox::critical(getMainWindow(), QObject::tr("Cannot load workbench"),
+            QObject::tr("A general error occurred while loading the workbench"));
     }
 }
 
@@ -146,6 +146,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
     sToolTipText  = QT_TR_NOOP("Recent file list");
     sWhatsThis    = "Std_RecentFiles";
     sStatusTip    = QT_TR_NOOP("Recent file list");
+    sPixmap       = "Std_RecentFiles";
     eType         = NoTransaction;
 }
 
@@ -167,6 +168,46 @@ Action * StdCmdRecentFiles::createAction(void)
 {
     RecentFilesAction* pcAction = new RecentFilesAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentFiles"));
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
+
+//===========================================================================
+// Std_RecentMacros
+//===========================================================================
+
+DEF_STD_CMD_C(StdCmdRecentMacros)
+
+StdCmdRecentMacros::StdCmdRecentMacros()
+  :Command("Std_RecentMacros")
+{
+    sGroup        = QT_TR_NOOP("Macro");
+    sMenuText     = QT_TR_NOOP("Recent macros");
+    sToolTipText  = QT_TR_NOOP("Recent macro list");
+    sWhatsThis    = "Std_RecentMacros";
+    sStatusTip    = QT_TR_NOOP("Recent macro list");
+    eType         = NoTransaction;
+}
+
+/**
+ * Opens the recent macro at position \a iMsg in the menu.
+ * If the macro does not exist or cannot be loaded this item is removed
+ * from the list.
+ */
+void StdCmdRecentMacros::activated(int iMsg)
+{
+    RecentMacrosAction* act = qobject_cast<RecentMacrosAction*>(_pcAction);
+    if (act) act->activateFile( iMsg );
+}
+
+/**
+ * Creates the QAction object containing the recent macros.
+ */
+Action * StdCmdRecentMacros::createAction(void)
+{
+    RecentMacrosAction* pcAction = new RecentMacrosAction(this, getMainWindow());
+    pcAction->setObjectName(QLatin1String("recentMacros"));
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
     return pcAction;
@@ -224,7 +265,7 @@ bool StdCmdAbout::isActive()
  */
 void StdCmdAbout::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     const Gui::Dialog::AboutDialogFactory* f = Gui::Dialog::AboutDialogFactory::defaultFactory();
     boost::scoped_ptr<QDialog> dlg(f->create(getMainWindow()));
     dlg->exec();
@@ -262,7 +303,7 @@ StdCmdAboutQt::StdCmdAboutQt()
 
 void StdCmdAboutQt::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     qApp->aboutQt();
 }
 
@@ -286,7 +327,7 @@ StdCmdWhatsThis::StdCmdWhatsThis()
 
 void StdCmdWhatsThis::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     QWhatsThis::enterWhatsThisMode();
 }
 
@@ -303,13 +344,13 @@ StdCmdDlgParameter::StdCmdDlgParameter()
   sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the parameters");
   sWhatsThis    = "Std_DlgParameter";
   sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the parameters");
-  //sPixmap     = "settings";
+  sPixmap       = "Std_DlgParameter";
   eType         = 0;
 }
 
 void StdCmdDlgParameter::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Dialog::DlgParameterImp cDlg(getMainWindow());
     cDlg.resize(QSize(800, 600));
     cDlg.exec();
@@ -336,12 +377,13 @@ Action * StdCmdDlgPreferences::createAction(void)
 {
     Action *pcAction = Command::createAction();
     pcAction->setMenuRole(QAction::PreferencesRole);
+
     return pcAction;
 }
 
 void StdCmdDlgPreferences::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
     cDlg.exec();
 }
@@ -365,7 +407,7 @@ StdCmdDlgCustomize::StdCmdDlgCustomize()
 
 void StdCmdDlgCustomize::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     static QPointer<QDialog> dlg = 0;
     if (!dlg)
         dlg = new Gui::Dialog::DlgCustomizeImp(getMainWindow());
@@ -392,7 +434,7 @@ StdCmdCommandLine::StdCmdCommandLine()
 
 void StdCmdCommandLine::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     bool show = getMainWindow()->isMaximized ();
 
     // pop up the Gui command window
@@ -441,7 +483,7 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
 
 void StdCmdOnlineHelp::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::getMainWindow()->showDocumentation(QString::fromLatin1("Online_Help_Startpage"));
 }
 
@@ -464,11 +506,38 @@ StdCmdOnlineHelpWebsite::StdCmdOnlineHelpWebsite()
 
 void StdCmdOnlineHelpWebsite::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org/wiki/Online_Help_Toc").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("OnlineHelp", defaulturl.c_str());
     hURLGrp->SetASCII("OnlineHelp", url.c_str());
+    OpenURLInBrowser(url.c_str());
+}
+
+//===========================================================================
+// Std_FreeCADDonation
+//===========================================================================
+
+DEF_STD_CMD(StdCmdFreeCADDonation)
+
+StdCmdFreeCADDonation::StdCmdFreeCADDonation()
+  :Command("Std_FreeCADDonation")
+{
+    sGroup        = QT_TR_NOOP("Help");
+    sMenuText     = QT_TR_NOOP("Donate");
+    sToolTipText  = QT_TR_NOOP("Donate to FreeCAD development");
+    sWhatsThis    = "Std_FreeCADDonation";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdFreeCADDonation::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("DonatePage", "https://wiki.freecadweb.org/Donate");
+    hURLGrp->SetASCII("DonatePage", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
 
@@ -492,7 +561,7 @@ StdCmdFreeCADWebsite::StdCmdFreeCADWebsite()
 
 void StdCmdFreeCADWebsite::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("WebPage", defaulturl.c_str());
@@ -520,7 +589,7 @@ StdCmdFreeCADUserHub::StdCmdFreeCADUserHub()
 
 void StdCmdFreeCADUserHub::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org/wiki/User_hub").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("Documentation", defaulturl.c_str());
@@ -548,7 +617,7 @@ StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
 
 void StdCmdFreeCADPowerUserHub::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org/wiki/Power_users_hub").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("PowerUsers", defaulturl.c_str());
@@ -576,7 +645,7 @@ StdCmdFreeCADForum::StdCmdFreeCADForum()
 
 void StdCmdFreeCADForum::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://forum.freecadweb.org").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("UserForum", defaulturl.c_str());
@@ -604,7 +673,7 @@ StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
 
 void StdCmdFreeCADFAQ::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     std::string defaulturl = QCoreApplication::translate(this->className(),"http://www.freecadweb.org/wiki/FAQ").toStdString();
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("FAQ", defaulturl.c_str());
@@ -632,7 +701,7 @@ StdCmdPythonWebsite::StdCmdPythonWebsite()
 
 void StdCmdPythonWebsite::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     OpenURLInBrowser("http://python.org");
 }
 
@@ -656,9 +725,9 @@ StdCmdMeasurementSimple::StdCmdMeasurementSimple()
 
 void StdCmdMeasurementSimple::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     unsigned int n = getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId());
- 
+
     if (n == 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Only one object selected. Please select two objects.\n"
@@ -684,7 +753,7 @@ void StdCmdMeasurementSimple::activated(int iMsg)
     name += "-";
     name += Sel[1].SubName;
 
-    openCommand("Insert measurement");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Insert measurement"));
     doCommand(Doc,"_f = App.activeDocument().addObject(\"App::MeasureDistance\",\"%s\")","Measurement");
     doCommand(Doc,"_f.Label ='%s'",name.c_str());
     doCommand(Doc,"_f.P1 = FreeCAD.Vector(%f,%f,%f)",Sel[0].x,Sel[0].y,Sel[0].z);
@@ -715,7 +784,7 @@ void StdCmdTextDocument::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand("Insert text document");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Insert text document"));
     doCommand(Doc, "App.ActiveDocument.addObject(\"App::TextDocument\",\"%s\").Label=\"%s\"","Text document","Text document");
     doCommand(Gui, "Gui.ActiveDocument.ActiveObject.doubleClicked()");
     updateActive();
@@ -746,7 +815,7 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
 
 void StdCmdUnitsCalculator::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     Gui::Dialog::DlgUnitsCalculator *dlg = new Gui::Dialog::DlgUnitsCalculator( getMainWindow() );
     dlg->show();
 }
@@ -766,11 +835,13 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdCommandLine());
     rcCmdMgr.addCommand(new StdCmdWorkbench());
     rcCmdMgr.addCommand(new StdCmdRecentFiles());
+    rcCmdMgr.addCommand(new StdCmdRecentMacros());
     rcCmdMgr.addCommand(new StdCmdWhatsThis());
     rcCmdMgr.addCommand(new StdCmdPythonHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
+    rcCmdMgr.addCommand(new StdCmdFreeCADDonation());
     rcCmdMgr.addCommand(new StdCmdFreeCADUserHub());
     rcCmdMgr.addCommand(new StdCmdFreeCADPowerUserHub());
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());

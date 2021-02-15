@@ -187,6 +187,12 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.callback_Apply     = callback_Apply
 
         self.obj = obj_to_attach
+        try:
+            if not self.obj.hasExtension('Part::AttachExtension'):
+                self.obj.addExtension('Part::AttachExtensionPython')
+        except Exception:
+            pass
+
         if hasattr(obj_to_attach,'Attacher'):
             self.attacher = obj_to_attach.Attacher
         elif hasattr(obj_to_attach,'AttacherType'):
@@ -224,7 +230,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
         import os
         self.form=uic.loadUi(os.path.dirname(__file__) + os.path.sep + 'TaskAttachmentEditor.ui')
-        self.form.setWindowIcon(QtGui.QIcon(':/icons/Part_Attachment.svg'))
+        self.form.setWindowIcon(QtGui.QIcon(':/icons/tools/Part_Attachment.svg'))
         self.form.setWindowTitle(_translate('AttachmentEditor',"Attachment",None))
 
         self.form.attachmentOffsetX.setProperty("unit", "mm")
@@ -388,15 +394,10 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if index >= 0  and  index <= 2:
             plm.Base = pos
 
-        rot = plm.Rotation;
-        (yaw, pitch, roll) = rot.toEuler()
-        if index==3:
-            yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
-        if index==4:
-            pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
-        if index==5:
-            roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
         if index >= 3  and  index <= 5:
+            yaw = Q(self.form.attachmentOffsetYaw.text()).getValueAs(deg)
+            pitch = Q(self.form.attachmentOffsetPitch.text()).getValueAs(deg)
+            roll = Q(self.form.attachmentOffsetRoll.text()).getValueAs(deg)
             rot = App.Rotation(yaw,pitch,roll)
             plm.Rotation = rot
 
@@ -616,3 +617,4 @@ class AttachmentEditorTaskPanel(FrozenClass):
         Gui.Selection.removeObserver(self)
         if self.tv:
             self.tv.restore()
+

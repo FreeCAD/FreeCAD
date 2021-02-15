@@ -161,6 +161,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
+    OnChange(*hGrp,"ShowAxisCross");
     OnChange(*hGrp,"UseAutoRotation");
     OnChange(*hGrp,"Gradient");
     OnChange(*hGrp,"BackgroundColor");
@@ -199,7 +200,7 @@ View3DInventor::~View3DInventor()
 {
     if(_pcDocument) {
         SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
-        if (Cam) 
+        if (Cam)
             _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
     }
     hGrp->Detach(this);
@@ -356,15 +357,28 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         float val = rGrp.GetFloat("ZoomStep", 0.0f);
         _viewer->navigationStyle()->setZoomStep(val);
     }
-    else if (strcmp(Reason,"DragAtCursor") == 0) {
-        bool on = rGrp.GetBool("DragAtCursor", false);
-        _viewer->navigationStyle()->setDragAtCursor(on);
+    else if (strcmp(Reason,"RotationMode") == 0) {
+        long mode = rGrp.GetInt("RotationMode", 1);
+        if (mode == 0) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::WindowCenter);
+        }
+        else if (mode == 1) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::FocalPointAtCursor);
+        }
+        else if (mode == 2) {
+            _viewer->navigationStyle()->setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
+                                                              NavigationStyle::RotationCenterMode::BoundingBoxCenter);
+        }
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         _viewer->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
     }
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
         _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
+    }
+    else if (strcmp(Reason,"ShowAxisCross") == 0) {
+        _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross",false));
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
         _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
@@ -499,10 +513,13 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-#if (QT_VERSION > QT_VERSION_CHECK(5, 9, 0))
+#if QT_VERSION >= 0x050300
+    printer.setPageSize(QPageSize(QPageSize::A4));
+    printer.setPageOrientation(QPageLayout::Landscape);
+#else
     printer.setPageSize(QPrinter::A4);
-#endif
     printer.setOrientation(QPrinter::Landscape);
+#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -522,7 +539,11 @@ void View3DInventor::print(QPrinter* printer)
         return;
     }
 
+#if QT_VERSION >= 0x050300
+    QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
+#else
     QRect rect = printer->pageRect();
+#endif
     QImage img;
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);
@@ -753,47 +774,53 @@ bool View3DInventor::setCamera(const char* pCamera)
     SoNode * Cam;
     SoDB::read(&in,Cam);
 
-    if (!Cam){
+    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
         throw Base::RuntimeError("Camera settings failed to read");
     }
 
+    // this is to make sure to reliably delete the node
+    CoinPtr<SoNode> camPtr(Cam, true);
+
     // toggle between perspective and orthographic camera
-    if (Cam->getTypeId() != CamViewer->getTypeId())
-    {
+    if (Cam->getTypeId() != CamViewer->getTypeId()) {
         _viewer->setCameraType(Cam->getTypeId());
         CamViewer = _viewer->getSoRenderManager()->getCamera();
     }
 
-    SoPerspectiveCamera  * CamViewerP = 0;
-    SoOrthographicCamera * CamViewerO = 0;
+    SoPerspectiveCamera  * CamViewerP = nullptr;
+    SoOrthographicCamera * CamViewerO = nullptr;
 
     if (CamViewer->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        CamViewerP = (SoPerspectiveCamera *)CamViewer;  // safe downward cast, knows the type
-    } else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        CamViewerO = (SoOrthographicCamera *)CamViewer;  // safe downward cast, knows the type
+        CamViewerP = static_cast<SoPerspectiveCamera *>(CamViewer);  // safe downward cast, knows the type
+    }
+    else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        CamViewerO = static_cast<SoOrthographicCamera *>(CamViewer);  // safe downward cast, knows the type
     }
 
     if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         if (CamViewerP){
-            CamViewerP->position      = ((SoPerspectiveCamera *)Cam)->position;
-            CamViewerP->orientation   = ((SoPerspectiveCamera *)Cam)->orientation;
-            CamViewerP->nearDistance  = ((SoPerspectiveCamera *)Cam)->nearDistance;
-            CamViewerP->farDistance   = ((SoPerspectiveCamera *)Cam)->farDistance;
-            CamViewerP->focalDistance = ((SoPerspectiveCamera *)Cam)->focalDistance;
-        } else {
+            CamViewerP->position      = static_cast<SoPerspectiveCamera *>(Cam)->position;
+            CamViewerP->orientation   = static_cast<SoPerspectiveCamera *>(Cam)->orientation;
+            CamViewerP->nearDistance  = static_cast<SoPerspectiveCamera *>(Cam)->nearDistance;
+            CamViewerP->farDistance   = static_cast<SoPerspectiveCamera *>(Cam)->farDistance;
+            CamViewerP->focalDistance = static_cast<SoPerspectiveCamera *>(Cam)->focalDistance;
+        }
+        else {
             throw Base::TypeError("Camera type mismatch");
         }
-    } else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+    }
+    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         if (CamViewerO){
-            CamViewerO->viewportMapping  = ((SoOrthographicCamera *)Cam)->viewportMapping;
-            CamViewerO->position         = ((SoOrthographicCamera *)Cam)->position;
-            CamViewerO->orientation      = ((SoOrthographicCamera *)Cam)->orientation;
-            CamViewerO->nearDistance     = ((SoOrthographicCamera *)Cam)->nearDistance;
-            CamViewerO->farDistance      = ((SoOrthographicCamera *)Cam)->farDistance;
-            CamViewerO->focalDistance    = ((SoOrthographicCamera *)Cam)->focalDistance;
-            CamViewerO->aspectRatio      = ((SoOrthographicCamera *)Cam)->aspectRatio ;
-            CamViewerO->height           = ((SoOrthographicCamera *)Cam)->height;
-        } else {
+            CamViewerO->viewportMapping  = static_cast<SoOrthographicCamera *>(Cam)->viewportMapping;
+            CamViewerO->position         = static_cast<SoOrthographicCamera *>(Cam)->position;
+            CamViewerO->orientation      = static_cast<SoOrthographicCamera *>(Cam)->orientation;
+            CamViewerO->nearDistance     = static_cast<SoOrthographicCamera *>(Cam)->nearDistance;
+            CamViewerO->farDistance      = static_cast<SoOrthographicCamera *>(Cam)->farDistance;
+            CamViewerO->focalDistance    = static_cast<SoOrthographicCamera *>(Cam)->focalDistance;
+            CamViewerO->aspectRatio      = static_cast<SoOrthographicCamera *>(Cam)->aspectRatio ;
+            CamViewerO->height           = static_cast<SoOrthographicCamera *>(Cam)->height;
+        }
+        else {
             throw Base::TypeError("Camera type mismatch");
         }
     }

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKCOSVERTEX_H
-#define TECHDRAWGUI_TASKCOSVERTEX_H
+#ifndef TECHDRAWGUI_TASKDETAIL_H
+#define TECHDRAWGUI_TASKDETAIL_H
 
 #include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
@@ -46,7 +46,7 @@ namespace TechDraw
 {
 class DrawPage;
 class DrawView;
-class DrawDetail;
+class DrawViewDetail;
 class DrawViewPart;
 }
 
@@ -76,6 +76,8 @@ public Q_SLOTS:
     void onXEdit();
     void onYEdit();
     void onRadiusEdit();
+    void onScaleTypeEdit();
+    void onScaleEdit();
     void onReferenceEdit();
 
 public:
@@ -108,7 +110,7 @@ protected:
     TechDraw::DrawViewDetail* getDetailFeat();
 
 private:
-    Ui_TaskDetail * ui;
+    std::unique_ptr<Ui_TaskDetail> ui;
     bool blockUpdate;
 
     QGIGhostHighlight* m_ghost;
@@ -176,4 +178,4 @@ private:
 
 } //namespace TechDrawGui
 
-#endif // #ifndef TECHDRAWGUI_TASKCOSVERTEX_H
+#endif // #ifndef TECHDRAWGUI_TASKDETAIL_H

@@ -77,6 +77,7 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
+# include <QApplication>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -146,6 +147,7 @@
 #include "SoTouchEvents.h"
 #include "WinNativeGestureRecognizers.h"
 #include "Document.h"
+#include "ViewParams.h"
 
 #include "ViewProviderLink.h"
 
@@ -269,8 +271,13 @@ public:
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
             QWheelEvent* we = static_cast<QWheelEvent*>(event);
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+            if (qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y()))
+                return true;
+#else
             if (we->orientation() == Qt::Horizontal)
                 return true;
+#endif
         }
         else if (event->type() == QEvent::KeyPress) {
             QKeyEvent* ke = static_cast<QKeyEvent*>(event);
@@ -331,12 +338,13 @@ public:
             SoMotion3Event* motion3Event = new SoMotion3Event;
             motion3Event->setTranslation(translationVector);
             motion3Event->setRotation(xRot * yRot * zRot);
+            motion3Event->setPosition(this->mousepos);
 
             return motion3Event;
         }
 
         return NULL;
-    };
+    }
 };
 
 /** \defgroup View3D 3D Viewer
@@ -592,17 +600,12 @@ void View3DInventorViewer::init()
     }
 
     //create the cursors
-    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
-    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
-    spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+    createStandardCursors(devicePixelRatio());
+#if (QT_VERSION >= 0x050000)
+    connect(this, &View3DInventorViewer::devicePixelRatioChanged,
+            this, &View3DInventorViewer::createStandardCursors);
+#endif
 
-    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
-    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
-
-    cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
-    mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
 }
@@ -676,6 +679,35 @@ View3DInventorViewer::~View3DInventorViewer()
     delete glAction;
 }
 
+void View3DInventorViewer::createStandardCursors(double dpr)
+{
+    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
+    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#else
+    Q_UNUSED(dpr)
+#endif
+    spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+
+    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
+    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
+    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
+
+    cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
+    mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
+#if defined(Q_OS_WIN32)
+    cursor.setDevicePixelRatio(dpr);
+    mask.setDevicePixelRatio(dpr);
+#endif
+    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
+}
+
 void View3DInventorViewer::aboutToDestroyGLContext()
 {
     if (naviCube) {
@@ -738,7 +770,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             return;
     }
     if(Reason.Type == SelectionChanges::RmvPreselect ||
-       Reason.Type == SelectionChanges::RmvPreselectSignal) 
+       Reason.Type == SelectionChanges::RmvPreselectSignal)
     {
         SoSelectionElementAction action(SoSelectionElementAction::None,true);
         action.apply(pcGroupOnTopPreSel);
@@ -856,12 +888,12 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         if(idx<0 || idx>=modeSwitch->getNumChildren() ||
            modeSwitch->getChild(idx)!=childRoot)
         {
-            FC_LOG("skip " << obj->getFullName() << '.' << (subname?subname:"") 
+            FC_LOG("skip " << obj->getFullName() << '.' << (subname?subname:"")
                     << ", hidden inside geo group");
             return;
         }
         if(childRoot->findChild(childVp->getRoot())<0) {
-            FC_LOG("cannot find '" << childVp->getObject()->getFullName() 
+            FC_LOG("cannot find '" << childVp->getObject()->getFullName()
                     << "' in geo group '" << grp->getNameInDocument() << "'");
             break;
         }
@@ -911,7 +943,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
 
     SelectionChanges Reason(_Reason);
 
-    if(Reason.pDocName && *Reason.pDocName && 
+    if(Reason.pDocName && *Reason.pDocName &&
        strcmp(getDocument()->getDocument()->getName(),Reason.pDocName)!=0)
         return;
 
@@ -930,7 +962,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
     case SelectionChanges::RmvPreselect:
     case SelectionChanges::RmvPreselectSignal:
     case SelectionChanges::SetSelection:
-    case SelectionChanges::AddSelection:     
+    case SelectionChanges::AddSelection:
     case SelectionChanges::RmvSelection:
     case SelectionChanges::ClrSelection:
         checkGroupOnTop(Reason);
@@ -941,8 +973,8 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
         return;
     }
 
-    if(Reason.Type == SelectionChanges::RmvPreselect || 
-       Reason.Type == SelectionChanges::RmvPreselectSignal) 
+    if(Reason.Type == SelectionChanges::RmvPreselect ||
+       Reason.Type == SelectionChanges::RmvPreselectSignal)
     {
         SoFCHighlightAction cAct(SelectionChanges::RmvPreselect);
         cAct.apply(pcViewProviderRoot);
@@ -1038,7 +1070,7 @@ void View3DInventorViewer::setEditingTransform(const Base::Matrix4D &mat) {
 }
 
 void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *mat) {
-    if(!editViewProvider) 
+    if(!editViewProvider)
         return;
     resetEditingRoot(false);
     if(mat)
@@ -1061,7 +1093,8 @@ void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *
     ViewProviderLink::updateLinks(editViewProvider);
 }
 
-void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
+void View3DInventorViewer::resetEditingRoot(bool updateLinks)
+{
     if(!editViewProvider || pcEditingRoot->getNumChildren()<=1)
         return;
     if(!restoreEditingRoot) {
@@ -1070,14 +1103,44 @@ void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
     }
     restoreEditingRoot = false;
     auto root = editViewProvider->getRoot();
-    if(root->getNumChildren()) 
+    if(root->getNumChildren())
         FC_ERR("WARNING!!! Editing view provider root node is tampered");
     root->addChild(editViewProvider->getTransformNode());
     for(int i=1,count=pcEditingRoot->getNumChildren();i<count;++i)
         root->addChild(pcEditingRoot->getChild(i));
     pcEditingRoot->getChildren()->truncate(1);
-    if(updateLinks)
-        ViewProviderLink::updateLinks(editViewProvider);
+
+    // handle exceptions eventually raised by ViewProviderLink
+    try {
+        if (updateLinks)
+            ViewProviderLink::updateLinks(editViewProvider);
+    }
+    catch (const Py::Exception& e) {
+        /* coverity[UNCAUGHT_EXCEPT] Uncaught exception */
+        // Coverity created several reports when removeViewProvider()
+        // is used somewhere in a destructor which indirectly invokes
+        // resetEditingRoot().
+        // Now theoretically Py::type can throw an exception which nowhere
+        // will be handled and thus terminates the application. So, add an
+        // extra try/catch block here.
+        try {
+            Py::Object o = Py::type(e);
+            if (o.isString()) {
+                Py::String s(o);
+                Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+            }
+            else {
+                Py::String s(o.repr());
+                Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
+            }
+            // Prints message to console window if we are in interactive mode
+            PyErr_Print();
+        }
+        catch (Py::Exception& e) {
+            e.clear();
+            Base::Console().Error("Unexpected exception raised in View3DInventorViewer::resetEditingRoot\n");
+        }
+    }
 }
 
 SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const
@@ -1104,8 +1167,8 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvi
     SoTransform* trans = new SoTransform;
     trans->setMatrix(gm.getMatrix());
     trans->ref();
-    
-    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated
     // transformation
     SoSeparator* root = new SoSeparator;
     root->ref();
@@ -1130,7 +1193,7 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
 {
     // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
-    
+
     SoPath *path;
     if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
         path = new SoPath(1);
@@ -1149,19 +1212,19 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
     }
     SoGetMatrixAction gm(getSoRenderManager()->getViewportRegion());
     gm.apply(path);
-    
-    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated
     // transformation
     SoTransform* trans = new SoTransform;
     trans->ref();
     trans->setMatrix(gm.getMatrix());
-    
+
     SoSeparator* root = new SoSeparator;
     root->ref();
     root->addChild(getSoRenderManager()->getCamera());
     root->addChild(trans);
     root->addChild(path->getTail());
-    
+
     //get the picked point
     SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
     rp.setRay(pos,dir);
@@ -1345,11 +1408,19 @@ bool View3DInventorViewer::isEnabledVBO() const
 
 void View3DInventorViewer::setRenderCache(int mode)
 {
-    if (mode<0) {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/View");
+    static int canAutoCache = -1;
 
-        int setting = hGrp->GetInt("RenderCache", 0);
+    if (mode<0) {
+        // Work around coin bug of unmatched call of
+        // SoGLLazyElement::begin/endCaching() when on top rendering
+        // transparent object with SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+        // transparency type.
+        //
+        // For more details see:
+        // https://forum.freecadweb.org/viewtopic.php?f=18&t=43305&start=10#p412537
+        coin_setenv("COIN_AUTO_CACHING", "0", TRUE);
+
+        int setting = ViewParams::instance()->getRenderCache();
         if (mode == -2) {
             if (pcViewProviderRoot && setting != 1)
                 pcViewProviderRoot->renderCaching = SoSeparator::ON;
@@ -1362,10 +1433,21 @@ void View3DInventorViewer::setRenderCache(int mode)
         }
     }
 
-    SoFCSeparator::setCacheMode(
-            mode == 0 ? SoSeparator::AUTO :
-           (mode == 1 ? SoSeparator::ON : SoSeparator::OFF)
-    );
+    if (canAutoCache < 0) {
+        const char *env = coin_getenv("COIN_AUTO_CACHING");
+        canAutoCache = env ? atoi(env) : 1;
+    }
+
+    // If coin auto cache is disabled, do not use 'Auto' render cache mode, but
+    // fallback to 'Distributed' mode.
+    if (!canAutoCache && mode != 2)
+        mode = 1;
+
+    auto caching = mode == 0 ? SoSeparator::AUTO :
+                  (mode == 1 ? SoSeparator::ON :
+                               SoSeparator::OFF);
+
+    SoFCSeparator::setCacheMode(caching);
 }
 
 void View3DInventorViewer::setEnabledNaviCube(bool on)
@@ -2694,7 +2776,7 @@ void View3DInventorViewer::toggleClippingPlane(int toggle, bool beforeEditing,
     pcClipPlane->ref();
     if(beforeEditing)
         pcViewProviderRoot->insertChild(pcClipPlane,0);
-    else 
+    else
         pcViewProviderRoot->insertChild(pcClipPlane,pcViewProviderRoot->findChild(pcEditingRoot)+1);
 }
 
@@ -3517,6 +3599,7 @@ void View3DInventorViewer::selectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
     if (vp && vp->useNewSelectionModel()) {
+        // do nothing here
     }
 }
 
@@ -3524,6 +3607,7 @@ void View3DInventorViewer::deselectCB(void* viewer, SoPath* path)
 {
     ViewProvider* vp = static_cast<View3DInventorViewer*>(viewer)->getViewProviderByPath(path);
     if (vp && vp->useNewSelectionModel()) {
+        // do nothing here
     }
 }
 

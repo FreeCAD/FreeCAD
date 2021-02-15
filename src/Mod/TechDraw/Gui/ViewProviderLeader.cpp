@@ -200,8 +200,8 @@ TechDraw::DrawLeaderLine* ViewProviderLeader::getFeature() const
 double ViewProviderLeader::getDefLineWeight(void)
 {
     double result = 0.0;
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
     result = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
     return result;
@@ -251,7 +251,7 @@ bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage); 
         bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete this leader line because\n it has a weld symbol that would become broken.");
+            "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);

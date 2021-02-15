@@ -22,11 +22,14 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QSignalMapper>
 #include <QDockWidget>
 #include <QMessageBox>
 #include <QClipboard>
 #include <QMetaObject>
+#include <boost_bind_bind.hpp>
+#endif
 
 #include "Placement.h"
 #include "ui_Placement.h"
@@ -45,6 +48,7 @@
 #include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
+namespace bp = boost::placeholders;
 
 namespace Gui { namespace Dialog {
 class find_placement
@@ -118,7 +122,7 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
     connect(signalMapper, SIGNAL(mapped(int)),
             this, SLOT(onPlacementChanged(int)));
     connectAct = Application::Instance->signalActiveDocument.connect
-        (boost::bind(&Placement::slotActiveDocument, this, _1));
+        (boost::bind(&Placement::slotActiveDocument, this, bp::_1));
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (activeDoc) documents.insert(activeDoc->getName());
 
@@ -265,13 +269,13 @@ void Placement::applyPlacement(const QString& data, bool incremental)
         }
         catch (...) {
         }
-        document->openCommand("Placement");
+        document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
     }
     else {
         std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
             (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
         if (!sel.empty()) {
-            document->openCommand("Placement");
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
             for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
                 std::map<std::string,App::Property*> props;
                 (*it)->getPropertyMap(props);
@@ -871,7 +875,7 @@ void TaskPlacement::setPropertyName(const QString& name)
 }
 
 QDialogButtonBox::StandardButtons TaskPlacement::getStandardButtons() const
-{ 
+{
     return QDialogButtonBox::Ok|
            QDialogButtonBox::Cancel|
            QDialogButtonBox::Apply;

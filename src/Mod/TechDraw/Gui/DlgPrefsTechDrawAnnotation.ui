@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>478</height>
+    <width>440</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -569,6 +569,9 @@
           <property name="text">
            <string>Show Center Marks</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>ShowCenterMarks</cstring>
           </property>
@@ -578,7 +581,7 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="Gui::PrefLineEdit" name="leLineGroup">
+         <widget class="Gui::PrefComboBox" name="pcbLineGroup">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -591,20 +594,14 @@
             <height>0</height>
            </size>
           </property>
-          <property name="toolTip">
-           <string>Default name in LineGroup CSV file</string>
-          </property>
-          <property name="text">
-           <string notr="true">FC 0.70mm</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineGroup</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+          <property name="text" stdset="0">
+           <string/>
           </property>
          </widget>
         </item>
@@ -612,7 +609,7 @@
          <widget class="QLabel" name="label">
           <property name="font">
            <font>
-            <italic>true</italic>
+            <italic>false</italic>
            </font>
           </property>
           <property name="text">
@@ -698,8 +695,11 @@
             <italic>true</italic>
            </font>
           </property>
+          <property name="toolTip">
+           <string>Line group used to set line widths</string>
+          </property>
           <property name="text">
-           <string>Line Group Name</string>
+           <string>Line Width Group</string>
           </property>
          </widget>
         </item>
@@ -840,15 +840,12 @@
     <widget class="QLabel" name="label_17">
      <property name="font">
       <font>
-       <pointsize>12</pointsize>
-       <italic>true</italic>
+       <pointsize>10</pointsize>
+       <italic>false</italic>
       </font>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
      <property name="text">
-      <string>Items in italics are default values for new objects.  They have no effect on existing objects.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -884,11 +881,6 @@
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

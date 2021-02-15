@@ -27,6 +27,7 @@
 #include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <QStyleOptionGraphicsItem>
 #endif
 

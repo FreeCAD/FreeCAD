@@ -40,7 +40,7 @@ class DlgProjectInformationImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgProjectInformationImp(App::Document* doc, QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgProjectInformationImp(App::Document* doc, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgProjectInformationImp();
     void accept();
 

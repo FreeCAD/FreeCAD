@@ -40,8 +40,8 @@ QList<QByteArray> DlgCustomizeImp::_pages;
 /* TRANSLATOR Gui::Dialog::DlgCustomizeImp */
 
 /**
- *  Constructs a DlgCustomizeImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgCustomizeImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -51,16 +51,16 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 {
     setModal(false);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    resize( 690, 365 ); 
+    resize( 690, 365 );
 
     setWindowTitle(tr("Customize"));
     setSizeGripEnabled( true );
 
-    customLayout = new QGridLayout( this ); 
+    customLayout = new QGridLayout( this );
     customLayout->setSpacing( 6 );
     customLayout->setMargin( 11 );
 
-    layout = new QHBoxLayout; 
+    layout = new QHBoxLayout;
     layout->setSpacing( 6 );
     layout->setMargin( 0 );
 

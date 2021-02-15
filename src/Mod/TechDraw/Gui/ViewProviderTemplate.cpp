@@ -118,7 +118,7 @@ void ViewProviderTemplate::onChanged(const App::Property *prop)
     }
 
     if (prop == &Visibility) {
-        if(Visibility.getValue()) {
+        if (Visibility.getValue()) {
             show();
         } else {
             hide();
@@ -195,9 +195,9 @@ bool ViewProviderTemplate::onDelete(const std::vector<std::string> &)
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
     bodyMessageStream << qApp->translate("Std_Delete",
-        "The following referencing objects might break.\n\n"
-        "Are you sure you want to continue?\n");
-    bodyMessageStream << '\n' << QString::fromUtf8(page->Label.getValue());
+        "The following referencing object might break:");
+    bodyMessageStream << "\n\n" << QString::fromUtf8(page->Label.getValue());
+    bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
 
     // show and evaluate dialog
     int DialogResult = QMessageBox::warning(Gui::getMainWindow(),

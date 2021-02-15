@@ -9,21 +9,21 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Objects FEM unit tests"
+__title__  = "Objects FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import sys
 import unittest
@@ -44,12 +44,24 @@ class TestObjectCreate(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
 
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestObjectCreate tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -60,68 +72,7 @@ class TestObjectCreate(unittest.TestCase):
     def test_femobjects_make(
         self
     ):
-        doc = self.document
-        analysis = ObjectsFem.makeAnalysis(doc)
-
-        analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
-        analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
-        analysis.addObject(ObjectsFem.makeConstraintContact(doc))
-        analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
-        analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
-        analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
-        analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
-        analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
-        analysis.addObject(ObjectsFem.makeConstraintForce(doc))
-        analysis.addObject(ObjectsFem.makeConstraintGear(doc))
-        analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))
-        analysis.addObject(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
-        analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))
-        analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
-        analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
-        analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
-        analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
-        analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
-        analysis.addObject(ObjectsFem.makeConstraintTie(doc))
-        analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
-
-        analysis.addObject(ObjectsFem.makeElementFluid1D(doc))
-        analysis.addObject(ObjectsFem.makeElementGeometry1D(doc))
-        analysis.addObject(ObjectsFem.makeElementGeometry2D(doc))
-        analysis.addObject(ObjectsFem.makeElementRotation1D(doc))
-
-        analysis.addObject(ObjectsFem.makeMaterialFluid(doc))
-        mat = analysis.addObject(ObjectsFem.makeMaterialSolid(doc))[0]
-        analysis.addObject(ObjectsFem.makeMaterialMechanicalNonlinear(doc, mat))
-        analysis.addObject(ObjectsFem.makeMaterialReinforced(doc))
-
-        msh = analysis.addObject(ObjectsFem.makeMeshGmsh(doc))[0]
-        ObjectsFem.makeMeshBoundaryLayer(doc, msh)
-        ObjectsFem.makeMeshGroup(doc, msh)
-        ObjectsFem.makeMeshRegion(doc, msh)
-        analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
-        rm = ObjectsFem.makeMeshResult(doc)
-
-        res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
-        res.Mesh = rm
-        if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
-            vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, res))[0]
-            ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
-            ObjectsFem.makePostVtkFilterClipScalar(doc, vres)
-            ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
-            ObjectsFem.makePostVtkFilterWarp(doc, vres)
-
-        analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
-        analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
-        sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
-        analysis.addObject(ObjectsFem.makeSolverZ88(doc))
-
-        ObjectsFem.makeEquationElasticity(doc, sol)
-        ObjectsFem.makeEquationElectrostatic(doc, sol)
-        ObjectsFem.makeEquationFlow(doc, sol)
-        ObjectsFem.makeEquationFluxsolver(doc, sol)
-        ObjectsFem.makeEquationHeat(doc, sol)
-
-        doc.recompute()
+        doc = create_all_fem_objects_doc(self.document)
 
         # count the def make in ObjectsFem module
         # if FEM VTK post processing is disabled, we are not able to create VTK post objects
@@ -133,14 +84,14 @@ class TestObjectCreate(unittest.TestCase):
         # thus they are not added to the analysis group ATM
         # https://forum.freecadweb.org/viewtopic.php?t=25283
         # thus they should not be counted
-        # solver children: equations --> 5
+        # solver children: equations --> 6
         # gmsh mesh children: group, region, boundary layer --> 3
         # resule children: mesh result --> 1
         # post pipeline childeren: region, scalar, cut, wrap --> 4
         # analysis itself is not in analysis group --> 1
         # thus: -14
 
-        self.assertEqual(len(analysis.Group), count_defmake - 14)
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - 15)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print("doc objects count: {}, method: {}".format(
@@ -149,22 +100,15 @@ class TestObjectCreate(unittest.TestCase):
         )
 
         # save the file
-        save_dir = testtools.get_unit_test_tmp_dir(
-            testtools.get_fem_test_tmp_dir(),
-            "FEM_all_objects"
+        save_fc_file = join(
+            testtools.get_fem_test_tmp_dir("objects_create_all"),
+            "all_objects.FCStd"
         )
-        save_fc_file = join(save_dir, "all_objects.FCStd")
         fcc_print(
             "Save FreeCAD all objects file to {} ..."
             .format(save_fc_file)
         )
         self.document.saveAs(save_fc_file)
-
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        FreeCAD.closeDocument(self.doc_name)
 
 
 # ************************************************************************************************
@@ -177,12 +121,24 @@ class TestObjectType(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        self.doc_name = self.__class__.__name__
-        self.document = FreeCAD.newDocument(self.doc_name)
 
+        # new document
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        # tearDown is executed after every test
+        FreeCAD.closeDocument(self.document.Name)
+
+    # ********************************************************************************************
     def test_00print(
         self
     ):
+        # since method name starts with 00 this will be run first
+        # this test just prints a line with stars
+
         fcc_print("\n{0}\n{1} run FEM TestObjectType tests {2}\n{0}".format(
             100 * "*",
             10 * "*",
@@ -194,11 +150,16 @@ class TestObjectType(unittest.TestCase):
         self
     ):
         doc = self.document
+        create_all_fem_objects_doc
 
         from femtools.femutils import type_of_obj
         self.assertEqual(
             "Fem::FemAnalysis",
             type_of_obj(ObjectsFem.makeAnalysis(doc))
+        )
+        self.assertEqual(
+            "Fem::ConstantVacuumPermittivity",
+            type_of_obj(ObjectsFem.makeConstantVacuumPermittivity(doc))
         )
         self.assertEqual(
             "Fem::ConstraintBearing",
@@ -265,6 +226,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintPulley(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintSectionPrint",
+            type_of_obj(ObjectsFem.makeConstraintSectionPrint(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintSelfWeight",
             type_of_obj(ObjectsFem.makeConstraintSelfWeight(doc))
         )
@@ -298,11 +263,11 @@ class TestObjectType(unittest.TestCase):
         )
         materialsolid = ObjectsFem.makeMaterialSolid(doc)
         self.assertEqual(
-            "Fem::Material",
+            "Fem::MaterialCommon",
             type_of_obj(ObjectsFem.makeMaterialFluid(doc))
         )
         self.assertEqual(
-            "Fem::Material",
+            "Fem::MaterialCommon",
             type_of_obj(materialsolid))
         self.assertEqual(
             "Fem::MaterialMechanicalNonlinear",
@@ -342,24 +307,28 @@ class TestObjectType(unittest.TestCase):
         )
         solverelmer = ObjectsFem.makeSolverElmer(doc)
         self.assertEqual(
-            "Fem::FemSolverCalculixCcxTools",
+            "Fem::SolverCcxTools",
             type_of_obj(ObjectsFem.makeSolverCalculixCcxTools(doc))
         )
         self.assertEqual(
-            "Fem::FemSolverObjectCalculix",
+            "Fem::SolverCalculix",
             type_of_obj(ObjectsFem.makeSolverCalculix(doc))
         )
         self.assertEqual(
-            "Fem::FemSolverObjectElmer",
+            "Fem::SolverElmer",
             type_of_obj(solverelmer)
         )
         self.assertEqual(
-            "Fem::FemSolverObjectZ88",
+            "Fem::SolverZ88",
             type_of_obj(ObjectsFem.makeSolverZ88(doc))
         )
         self.assertEqual(
             "Fem::EquationElmerElasticity",
             type_of_obj(ObjectsFem.makeEquationElasticity(doc, solverelmer))
+        )
+        self.assertEqual(
+            "Fem::EquationElmerElectricforce",
+            type_of_obj(ObjectsFem.makeEquationElectricforce(doc, solverelmer))
         )
         self.assertEqual(
             "Fem::EquationElmerElectrostatic",
@@ -370,8 +339,8 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeEquationFlow(doc, solverelmer))
         )
         self.assertEqual(
-            "Fem::EquationElmerFluxsolver",
-            type_of_obj(ObjectsFem.makeEquationFluxsolver(doc, solverelmer))
+            "Fem::EquationElmerFlux",
+            type_of_obj(ObjectsFem.makeEquationFlux(doc, solverelmer))
         )
         self.assertEqual(
             "Fem::EquationElmerHeat",
@@ -396,6 +365,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeAnalysis(doc),
             "Fem::FemAnalysis"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstantVacuumPermittivity(doc),
+            "Fem::ConstantVacuumPermittivity"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintBearing(doc),
@@ -462,6 +435,10 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintPulley"
         ))
         self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintSectionPrint(doc),
+            "Fem::ConstraintSectionPrint"
+        ))
+        self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintSelfWeight(doc),
             "Fem::ConstraintSelfWeight"
         ))
@@ -496,11 +473,11 @@ class TestObjectType(unittest.TestCase):
         materialsolid = ObjectsFem.makeMaterialSolid(doc)
         self.assertTrue(is_of_type(
             ObjectsFem.makeMaterialFluid(doc),
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
         self.assertTrue(is_of_type(
             materialsolid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMaterialMechanicalNonlinear(doc, materialsolid),
@@ -542,23 +519,27 @@ class TestObjectType(unittest.TestCase):
         solverelmer = ObjectsFem.makeSolverElmer(doc)
         self.assertTrue(is_of_type(
             ObjectsFem.makeSolverCalculixCcxTools(doc),
-            "Fem::FemSolverCalculixCcxTools"
+            "Fem::SolverCcxTools"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeSolverCalculix(doc),
-            "Fem::FemSolverObjectCalculix"
+            "Fem::SolverCalculix"
         ))
         self.assertTrue(is_of_type(
             solverelmer,
-            "Fem::FemSolverObjectElmer"
+            "Fem::SolverElmer"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeSolverZ88(doc),
-            "Fem::FemSolverObjectZ88"
+            "Fem::SolverZ88"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElasticity(doc, solverelmer),
             "Fem::EquationElmerElasticity"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeEquationElectricforce(doc, solverelmer),
+            "Fem::EquationElmerElectricforce"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElectrostatic(doc, solverelmer),
@@ -569,8 +550,8 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerFlow"
         ))
         self.assertTrue(is_of_type(
-            ObjectsFem.makeEquationFluxsolver(doc, solverelmer),
-            "Fem::EquationElmerFluxsolver"
+            ObjectsFem.makeEquationFlux(doc, solverelmer),
+            "Fem::EquationElmerFlux"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationHeat(doc, solverelmer),
@@ -603,6 +584,21 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             analysis,
             "Fem::FemAnalysis"
+        ))
+
+        # ConstantVacuumPermittivity
+        constant_vacuumpermittivity = ObjectsFem.makeConstantVacuumPermittivity(doc)
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constant_vacuumpermittivity,
+            "Fem::ConstantVacuumPermittivity"
         ))
 
         # ConstraintBearing
@@ -845,6 +841,21 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintPulley"
         ))
 
+        # ConstraintSectionPrint
+        constraint_self_weight = ObjectsFem.makeConstraintSectionPrint(doc)
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_self_weight,
+            "Fem::ConstraintSectionPrint"
+        ))
+
         # ConstraintSelfWeight
         constraint_self_weight = ObjectsFem.makeConstraintSelfWeight(doc)
         self.assertTrue(is_derived_from(
@@ -905,7 +916,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintTransform"
         ))
 
-        # FemElementFluid1D
+        # ElementFluid1D
         fluid1d = ObjectsFem.makeElementFluid1D(doc)
         self.assertTrue(is_derived_from(
             fluid1d,
@@ -920,7 +931,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ElementFluid1D"
         ))
 
-        # FemElementGeometry1D
+        # ElementGeometry1D
         geometry1d = ObjectsFem.makeElementGeometry1D(doc)
         self.assertTrue(is_derived_from(
             geometry1d,
@@ -935,7 +946,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ElementGeometry1D"
         ))
 
-        # FemElementGeometry2D
+        # ElementGeometry2D
         geometry2d = ObjectsFem.makeElementGeometry2D(doc)
         self.assertTrue(is_derived_from(
             geometry2d,
@@ -950,7 +961,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ElementGeometry2D"
         ))
 
-        # FemElementRotation1D
+        # ElementRotation1D
         rotation1d = ObjectsFem.makeElementRotation1D(doc)
         self.assertTrue(is_derived_from(
             rotation1d,
@@ -977,7 +988,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             material_fluid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
 
         # Material Solid
@@ -992,7 +1003,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             material_solid,
-            "Fem::Material"
+            "Fem::MaterialCommon"
         ))
 
         # MaterialMechanicalNonlinear
@@ -1040,7 +1051,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::FemMeshGmsh"
         ))
 
-        # FemMeshBoundaryLayer
+        # MeshBoundaryLayer
         mesh_boundarylayer = ObjectsFem.makeMeshBoundaryLayer(doc, mesh_gmsh)
         self.assertTrue(is_derived_from(
             mesh_boundarylayer,
@@ -1055,7 +1066,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::MeshBoundaryLayer"
         ))
 
-        # FemMeshGroup
+        # MeshGroup
         mesh_group = ObjectsFem.makeMeshGroup(doc, mesh_gmsh)
         self.assertTrue(is_derived_from(
             mesh_group,
@@ -1070,7 +1081,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::MeshGroup"
         ))
 
-        # FemMeshRegion
+        # MeshRegion
         mesh_region = ObjectsFem.makeMeshRegion(doc, mesh_gmsh)
         self.assertTrue(is_derived_from(
             mesh_region,
@@ -1096,7 +1107,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::FemMeshShapeNetgenObject"
         ))
 
-        # FemMeshResult
+        # MeshResult
         mesh_result = ObjectsFem.makeMeshResult(doc)
         self.assertTrue(is_derived_from(
             mesh_result,
@@ -1111,7 +1122,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::MeshResult"
         ))
 
-        # FemResultMechanical
+        # ResultMechanical
         result_mechanical = ObjectsFem.makeResultMechanical(doc)
         self.assertTrue(is_derived_from(
             result_mechanical,
@@ -1126,7 +1137,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::ResultMechanical"
         ))
 
-        # FemSolverCalculixCcxTools
+        # SolverCcxTools
         solver_ccxtools = ObjectsFem.makeSolverCalculixCcxTools(doc)
         self.assertTrue(is_derived_from(
             solver_ccxtools,
@@ -1142,10 +1153,10 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             solver_ccxtools,
-            "Fem::FemSolverCalculixCcxTools"
+            "Fem::SolverCcxTools"
         ))
 
-        # FemSolverObjectCalculix
+        # SolverCalculix
         solver_calculix = ObjectsFem.makeSolverCalculix(doc)
         self.assertTrue(is_derived_from(
             solver_calculix,
@@ -1161,10 +1172,10 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             solver_calculix,
-            "Fem::FemSolverObjectCalculix"
+            "Fem::SolverCalculix"
         ))
 
-        # FemSolverObjectElmer
+        # SolverElmer
         solver_elmer = ObjectsFem.makeSolverElmer(doc)
         self.assertTrue(is_derived_from(
             solver_elmer,
@@ -1180,10 +1191,10 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             solver_elmer,
-            "Fem::FemSolverObjectElmer"
+            "Fem::SolverElmer"
         ))
 
-        # FemSolverObjectZ88
+        # SolverZ88
         solver_z88 = ObjectsFem.makeSolverZ88(doc)
         self.assertTrue(is_derived_from(
             solver_z88,
@@ -1199,10 +1210,10 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             solver_z88,
-            "Fem::FemSolverObjectZ88"
+            "Fem::SolverZ88"
         ))
 
-        # FemEquationElmerElasticity
+        # EquationElmerElasticity
         equation_elasticity = ObjectsFem.makeEquationElasticity(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_elasticity,
@@ -1217,7 +1228,22 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerElasticity"
         ))
 
-        # FemEquationElmerElectrostatic
+        # EquationElmerElectricforce
+        equation_elasticity = ObjectsFem.makeEquationElectricforce(doc, solver_elmer)
+        self.assertTrue(is_derived_from(
+            equation_elasticity,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            equation_elasticity,
+            "App::FeaturePython"
+        ))
+        self.assertTrue(is_derived_from(
+            equation_elasticity,
+            "Fem::EquationElmerElectricforce"
+        ))
+
+        # EquationElmerElectrostatic
         equation_electrostatic = ObjectsFem.makeEquationElectrostatic(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_electrostatic,
@@ -1232,7 +1258,7 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerElectrostatic"
         ))
 
-        # FemEquationElmerFlow
+        # EquationElmerFlow
         equation_flow = ObjectsFem.makeEquationFlow(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_flow,
@@ -1247,8 +1273,8 @@ class TestObjectType(unittest.TestCase):
             "Fem::EquationElmerFlow"
         ))
 
-        # FemEquationElmerFluxsolver
-        equation_flux = ObjectsFem.makeEquationFluxsolver(doc, solver_elmer)
+        # EquationElmerFlux
+        equation_flux = ObjectsFem.makeEquationFlux(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_flux,
             "App::DocumentObject"
@@ -1259,10 +1285,10 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_flux,
-            "Fem::EquationElmerFluxsolver"
+            "Fem::EquationElmerFlux"
         ))
 
-        # FemEquationElmerHeat
+        # EquationElmerHeat
         equation_heat = ObjectsFem.makeEquationHeat(doc, solver_elmer)
         self.assertTrue(is_derived_from(
             equation_heat,
@@ -1296,6 +1322,11 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeAnalysis(
                 doc
             ).isDerivedFrom("Fem::FemAnalysis")
+        )
+        self.assertTrue(
+            ObjectsFem.makeConstantVacuumPermittivity(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
             ObjectsFem.makeConstraintBearing(
@@ -1373,6 +1404,11 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeConstraintPulley(
                 doc
             ).isDerivedFrom("Fem::ConstraintPulley")
+        )
+        self.assertTrue(
+            ObjectsFem.makeConstraintSectionPrint(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
             ObjectsFem.makeConstraintSelfWeight(
@@ -1496,6 +1532,12 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("App::FeaturePython")
         )
         self.assertTrue(
+            ObjectsFem.makeEquationElectricforce(
+                doc,
+                solverelmer
+            ).isDerivedFrom("App::FeaturePython")
+        )
+        self.assertTrue(
             ObjectsFem.makeEquationElectrostatic(
                 doc,
                 solverelmer
@@ -1508,7 +1550,7 @@ class TestObjectType(unittest.TestCase):
             ).isDerivedFrom("App::FeaturePython")
         )
         self.assertTrue(
-            ObjectsFem.makeEquationFluxsolver(
+            ObjectsFem.makeEquationFlux(
                 doc,
                 solverelmer
             ).isDerivedFrom("App::FeaturePython")
@@ -1527,9 +1569,74 @@ class TestObjectType(unittest.TestCase):
         # TODO: vtk post objs, thus 5 obj less than test_femobjects_make
         self.assertEqual(len(doc.Objects), testtools.get_defmake_count(False))
 
-    # ********************************************************************************************
-    def tearDown(
-        self
-    ):
-        # clearance, is executed after every test
-        FreeCAD.closeDocument(self.doc_name)
+
+# helper
+def create_all_fem_objects_doc(
+    doc
+):
+    analysis = ObjectsFem.makeAnalysis(doc)
+
+    analysis.addObject(ObjectsFem.makeConstantVacuumPermittivity(doc))
+    analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
+    analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
+    analysis.addObject(ObjectsFem.makeConstraintContact(doc))
+    analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
+    analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
+    analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
+    analysis.addObject(ObjectsFem.makeConstraintFlowVelocity(doc))
+    analysis.addObject(ObjectsFem.makeConstraintFluidBoundary(doc))
+    analysis.addObject(ObjectsFem.makeConstraintForce(doc))
+    analysis.addObject(ObjectsFem.makeConstraintGear(doc))
+    analysis.addObject(ObjectsFem.makeConstraintHeatflux(doc))
+    analysis.addObject(ObjectsFem.makeConstraintInitialFlowVelocity(doc))
+    analysis.addObject(ObjectsFem.makeConstraintInitialTemperature(doc))
+    analysis.addObject(ObjectsFem.makeConstraintPlaneRotation(doc))
+    analysis.addObject(ObjectsFem.makeConstraintPressure(doc))
+    analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
+    analysis.addObject(ObjectsFem.makeConstraintSectionPrint(doc))
+    analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
+    analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
+    analysis.addObject(ObjectsFem.makeConstraintTie(doc))
+    analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
+
+    analysis.addObject(ObjectsFem.makeElementFluid1D(doc))
+    analysis.addObject(ObjectsFem.makeElementGeometry1D(doc))
+    analysis.addObject(ObjectsFem.makeElementGeometry2D(doc))
+    analysis.addObject(ObjectsFem.makeElementRotation1D(doc))
+
+    analysis.addObject(ObjectsFem.makeMaterialFluid(doc))
+    mat = analysis.addObject(ObjectsFem.makeMaterialSolid(doc))[0]
+    analysis.addObject(ObjectsFem.makeMaterialMechanicalNonlinear(doc, mat))
+    analysis.addObject(ObjectsFem.makeMaterialReinforced(doc))
+
+    msh = analysis.addObject(ObjectsFem.makeMeshGmsh(doc))[0]
+    ObjectsFem.makeMeshBoundaryLayer(doc, msh)
+    ObjectsFem.makeMeshGroup(doc, msh)
+    ObjectsFem.makeMeshRegion(doc, msh)
+    analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
+    rm = ObjectsFem.makeMeshResult(doc)
+
+    res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
+    res.Mesh = rm
+    if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
+        vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, res))[0]
+        ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
+        ObjectsFem.makePostVtkFilterClipScalar(doc, vres)
+        ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
+        ObjectsFem.makePostVtkFilterWarp(doc, vres)
+
+    analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
+    analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
+    sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
+    analysis.addObject(ObjectsFem.makeSolverZ88(doc))
+
+    ObjectsFem.makeEquationElasticity(doc, sol)
+    ObjectsFem.makeEquationElectricforce(doc, sol)
+    ObjectsFem.makeEquationElectrostatic(doc, sol)
+    ObjectsFem.makeEquationFlow(doc, sol)
+    ObjectsFem.makeEquationFlux(doc, sol)
+    ObjectsFem.makeEquationHeat(doc, sol)
+
+    doc.recompute()
+
+    return doc

@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -9,13 +10,13 @@
 # *   the License, or (at your option) any later version.                   *
 # *   for detail see the LICENCE text file.                                 *
 # *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   This program is distributed in the hope that it will be useful,       *
 # *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
 # *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
 # *   GNU Library General Public License for more details.                  *
 # *                                                                         *
 # *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
@@ -46,6 +47,18 @@ def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
     return doc
+
+
+def get_information():
+    info = {"name": "Constraint Constact Shell Shell",
+            "meshtype": "solid",
+            "meshelement": "Tria3",
+            "constraints": ["fixed", "force", "contact"],
+            "solvers": ["calculix"],
+            "material": "solid",
+            "equation": "mechanical"
+            }
+    return info
 
 
 def setup(doc=None, solvertype="ccxtools"):
@@ -97,20 +110,20 @@ def setup(doc=None, solvertype="ccxtools"):
     # compound out of bool frag and lower tube
     geom_obj = doc.addObject("Part::Compound", "AllGeomCompound")
     geom_obj.Links = [boolfrag, lower_tube]
-
-    # line for load direction
-    sh_load_line = Part.makeLine(v_force_pt, FreeCAD.Vector(0, 150, 475))
-    load_line = doc.addObject("Part::Feature", "Load_direction_line")
-    load_line.Shape = sh_load_line
-    if FreeCAD.GuiUp:
-        load_line.ViewObject.LineWidth = 5.0
-        load_line.ViewObject.LineColor = (1.0, 0.0, 0.0)
-
     doc.recompute()
 
     if FreeCAD.GuiUp:
         geom_obj.ViewObject.Document.activeView().viewAxonometric()
         geom_obj.ViewObject.Document.activeView().fitAll()
+
+    # line for load direction
+    sh_load_line = Part.makeLine(v_force_pt, FreeCAD.Vector(0, 150, 475))
+    load_line = doc.addObject("Part::Feature", "Load_direction_line")
+    load_line.Shape = sh_load_line
+    doc.recompute()
+    if FreeCAD.GuiUp:
+        load_line.ViewObject.LineWidth = 5.0
+        load_line.ViewObject.LineColor = (1.0, 0.0, 0.0)
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -125,6 +138,11 @@ def setup(doc=None, solvertype="ccxtools"):
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "static"
         solver_object.BeamShellResultOutput3D = True
@@ -190,9 +208,11 @@ def setup(doc=None, solvertype="ccxtools"):
     if not control:
         FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
-        doc.addObject("Fem::FemMeshObject", mesh_name)
+        ObjectsFem.makeMeshGmsh(doc, mesh_name)
     )[0]
     femmesh_obj.FemMesh = fem_mesh
+    femmesh_obj.Part = geom_obj
+    femmesh_obj.SecondOrderLinear = False
 
     doc.recompute()
     return doc

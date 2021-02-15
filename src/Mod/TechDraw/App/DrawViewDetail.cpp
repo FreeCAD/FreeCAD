@@ -85,9 +85,10 @@
 #include "Cosmetic.h"
 #include "EdgeWalker.h"
 #include "DrawProjectSplit.h"
+#include "DrawProjGroupItem.h"
+#include "DrawPage.h"
 #include "DrawUtil.h"
 #include "DrawViewDetail.h"
-#include "DrawProjGroupItem.h"
 #include "DrawViewSection.h"
 
 using namespace TechDraw;
@@ -116,6 +117,7 @@ DrawViewDetail::DrawViewDetail()
     //hide Properties not relevant to DVDetail
     Direction.setStatus(App::Property::ReadOnly,true);   //Should be same as BaseView
     Rotation.setStatus(App::Property::ReadOnly,true);    //same as BaseView
+    ScaleType.setValue("Custom");                        //dvd uses scale from BaseView
 }
 
 DrawViewDetail::~DrawViewDetail()
@@ -153,6 +155,35 @@ void DrawViewDetail::onChanged(const App::Property* prop)
         if (prop == &AnchorPoint)  {
             // to see AnchorPoint changes repainting is not enough, we must recompute
             recomputeFeature(true);
+        }
+        if (prop == &ScaleType) {
+            auto page = findParentPage();
+            // if ScaleType is "Page", the user cannot change it
+            if (ScaleType.isValue("Page")) {
+                Scale.setStatus(App::Property::ReadOnly, true);
+                // apply the page-wide Scale
+                if (page != nullptr) {
+                    if (std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
+                        Scale.setValue(page->Scale.getValue());
+                        Scale.purgeTouched();
+                    }
+                }
+            }
+            else if (ScaleType.isValue("Custom")) {
+                // allow the change Scale
+                Scale.setStatus(App::Property::ReadOnly, false);
+            }
+            else if (ScaleType.isValue("Automatic")) {
+                Scale.setStatus(App::Property::ReadOnly, true);
+                // apply a Scale
+                if (!checkFit(page)) {
+                    double newScale = autoScale(page->getPageWidth(), page->getPageHeight());
+                    if (std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                        Scale.setValue(newScale);
+                        Scale.purgeTouched();
+                    }
+                }
+            }
         }
     }
     DrawView::onChanged(prop);
@@ -441,9 +472,7 @@ void DrawViewDetail::unsetupObject()
     if (base != nullptr) {
         base->requestPaint();
     }
-
 }
-
 
 void DrawViewDetail::getParameters()
 {

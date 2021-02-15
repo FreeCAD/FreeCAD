@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) Yorik van Havre (yorik@uncreated.net) 2014                        *
+# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -27,16 +27,29 @@ This is an example preprocessor file for the Path workbench. Its aim is to
 open a gcode file, parse its contents, and create the appropriate objects
 in FreeCAD.
 
+This preprocessor will split gcode on tool changes and create one or more
+PathCustom objects in the job.  Tool Change commands themselves are not
+preserved. It is up to the user to create and assign appropriate tool
+controllers.
+
+Only gcodes that are supported by Path are imported. Thus things like G43
+are suppressed.
+
+Importing gcode is inherently dangerous because context cannot be safely
+assumed. The user should carefully examine the resulting gcode!
+
 Read the Path Workbench documentation to know how to create Path objects
 from GCode.
 '''
 
 import os
-import Path
 import FreeCAD
-import PathScripts.PathUtils
+import PathScripts.PathUtils as PathUtils
 import PathScripts.PathLog as PathLog
 import re
+import PathScripts.PathCustom as PathCustom
+import PathScripts.PathCustomGui as PathCustomGui
+import PathScripts.PathOpGui as PathOpGui
 
 # LEVEL = PathLog.Level.DEBUG
 LEVEL = PathLog.Level.INFO
@@ -59,71 +72,113 @@ def open(filename):
     insert(filename, doc.Name)
 
 
+def matchToolController(op, toolnumber):
+    """Try to match a tool controller in the job by number"""
+    toolcontrollers = PathUtils.getToolControllers(op)
+    for tc in toolcontrollers:
+        if tc.ToolNumber == toolnumber:
+            return tc
+    return toolcontrollers[0]
+
+
 def insert(filename, docname):
     "called when freecad imports a file"
     PathLog.track(filename)
     gfile = pythonopen(filename)
     gcode = gfile.read()
     gfile.close()
-    # split on tool changes
-    paths = re.split('(?=[mM]+\s?0?6)', gcode)
-    # if there are any tool changes combine the preamble with the default tool 
-    if len(paths) > 1:
-        paths = ["\n".join(paths[0:2])] +  paths[2:]
+
+    # Regular expression to match tool changes in the format 'M6 Tn'
+    p = re.compile('[mM]+?\s?0?6\s?T\d*\s')
+
+    # split the gcode on tool changes
+    paths = re.split('([mM]+?\s?0?6\s?T\d*\s)', gcode)
+
+    # iterate the gcode sections and add customs for each
+    toolnumber = 0
+
     for path in paths:
+
+        # if the section is a tool change, extract the tool number
+        m = p.match(path)
+        if m:
+            toolnumber = int(m.group().split('T')[-1])
+            continue
+
+        # Parse the gcode and throw away any empty lists
         gcode = parse(path)
-        doc = FreeCAD.getDocument(docname)
-        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Custom")
-        PathScripts.PathCustom.ObjectCustom(obj)
-        obj.ViewObject.Proxy = 0
+        if len(gcode) == 0:
+            continue
+
+        # Create a custom and viewobject
+        obj = PathCustom.Create("Custom")
+        res = PathOpGui.CommandResources('Custom',
+            PathCustom.Create, PathCustomGui.TaskPanelOpPage,
+            'Path_Custom', 
+            QtCore.QT_TRANSLATE_NOOP('Path_Custom', 'Custom'), '', ''
+            )
+        obj.ViewObject.Proxy = PathOpGui.ViewProvider(obj.ViewObject, res)
+        obj.ViewObject.Proxy.setDeleteObjectsOnReject(False)
+
+        # Set the gcode and try to match a tool controller
         obj.Gcode = gcode
-        PathScripts.PathUtils.addToJob(obj)
-        obj.ToolController = PathScripts.PathUtils.findToolController(obj)
+        obj.ToolController = matchToolController(obj, toolnumber)
+
     FreeCAD.ActiveDocument.recompute()
 
 
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
+
+    supported = ['G0', 'G00',
+                 'G1', 'G01',
+                 'G2', 'G02',
+                 'G3', 'G03',
+                 'G81', 'G82', 'G83',
+                 'G90', 'G91']
+
+    axis = ["X", "Y", "Z", "A", "B", "C", "U", "V", "W"]
+
     print("preprocessing...")
     PathLog.track(inputstring)
     # split the input by line
-    lines = inputstring.split("\n")
-    output = [] #""
-    lastcommand = None 
+    lines = inputstring.splitlines()
+    output = []
+    lastcommand = None
 
     for lin in lines:
         # remove any leftover trailing and preceding spaces
         lin = lin.strip()
+
+        # discard empty lines
         if not lin:
-            # discard empty lines
             continue
+
+        # remove line numbers
         if lin[0].upper() in ["N"]:
-            # remove line numbers
             lin = lin.split(" ", 1)
             if len(lin) >= 1:
                 lin = lin[1].strip()
             else:
                 continue
 
-        if lin[0] in ["(", "%", "#", ";"]:
-            # discard comment and other non strictly gcode lines
+        # Anything else not a G/M code or an axis move is ignored.
+        if lin[0] not in ["G", "M", "X", "Y", "Z", "A", "B", "C", "U", "V", "W"]:
             continue
-        if lin[0].upper() in ["G", "M"]:
-            # found a G or M command: we store it
-            #output += lin + "\n"
-            output.append(lin) # + "\n"
-            last = lin[0].upper()
-            for c in lin[1:]:
-                if not c.isdigit():
-                    break
-                else:
-                    last += c
-            lastcommand = last
-        elif lastcommand:
-            # no G or M command: we repeat the last one
-            output.append(lastcommand + " " + lin) # + "\n"
+
+        # if the remaining line is supported, store it
+        currcommand = lin.split()[0]
+
+        if currcommand in supported:
+            output.append(lin)
+            lastcommand = currcommand
+
+        # modal commands have no G or M but have axis moves. append those too.
+        elif currcommand[0] in axis and lastcommand:
+            output.append(lastcommand + " " + lin)
 
     print("done preprocessing.")
     return output
+
 
 print(__name__ + " gcode preprocessor loaded.")

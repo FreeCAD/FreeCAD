@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for Draft Point.
-"""
+"""Provides the viewprovider code for the Point object."""
 ## @package view_point
-# \ingroup DRAFT
-# \brief This module provides the view provider code for Draft Point.
+# \ingroup draftviewproviders
+# \brief Provides the viewprovider code for the Point object.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -52,4 +53,7 @@ class ViewProviderPoint(ViewProviderDraft):
         return ":/icons/Draft_Dot.svg"
 
 
+# Alias for compatibility with v0.18 and earlier
 _ViewProviderPoint = ViewProviderPoint
+
+## @}

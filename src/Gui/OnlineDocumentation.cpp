@@ -195,7 +195,7 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
         PyObject* main = PyImport_AddModule("__main__");
         PyObject* dict = PyModule_GetDict(main);
         dict = PyDict_Copy(dict);
-        QByteArray cmd = 
+        QByteArray cmd =
             "import pydoc\n"
             "object, name = pydoc.resolve(\"";
         cmd += name.toUtf8();
@@ -255,8 +255,7 @@ QByteArray PythonOnlineHelp::fileNotFound() const
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
     QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
 
-    QByteArray res;
-    res.append(httpResponseHeader);
+    QByteArray res = httpResponseHeader.toLatin1();
     return res;
 }
 
@@ -285,8 +284,7 @@ QByteArray PythonOnlineHelp::loadFailed(const QString& error) const
     QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
     QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
 
-    QByteArray res;
-    res.append(httpResponseHeader);
+    QByteArray res = httpResponseHeader.toLatin1();
     return res;
 }
 
@@ -395,19 +393,19 @@ StdCmdPythonHelp::~StdCmdPythonHelp()
 
 void StdCmdPythonHelp::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
     // try to open a connection over this port
     qint16 port = 7465;
     if (!this->server)
         this->server = new HttpServer();
 
     // if server is not yet running try to open one
-    if (this->server->isListening() || 
+    if (this->server->isListening() ||
         this->server->listen(QHostAddress(QHostAddress::LocalHost), port)) {
         // okay the server is running, now we try to open the system internet browser
         bool failed = true;
 
-        // The webbrowser Python module allows to start the system browser in an 
+        // The webbrowser Python module allows to start the system browser in an
         // OS-independent way
         Base::PyGILStateLocker lock;
         PyObject* module = PyImport_ImportModule("webbrowser");
@@ -419,10 +417,14 @@ void StdCmdPythonHelp::activated(int iMsg)
                 char szBuf[201];
                 snprintf(szBuf, 200, "http://localhost:%d", port);
                 PyObject* args = Py_BuildValue("(s)", szBuf);
+#if PY_VERSION_HEX < 0x03090000
                 PyObject* result = PyEval_CallObject(func,args);
+#else
+                PyObject* result = PyObject_CallObject(func,args);
+#endif
                 if (result)
                     failed = false;
-        
+
                 // decrement the args and module reference
                 Py_XDECREF(result);
                 Py_DECREF(args);
@@ -432,13 +434,13 @@ void StdCmdPythonHelp::activated(int iMsg)
 
         // print error message on failure
         if (failed) {
-            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"), 
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"),
                 QObject::tr("Unable to open your browser.\n\n"
                 "Please open a browser window and type in: http://localhost:%1.").arg(port));
         }
     }
     else {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Server"), 
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Server"),
             QObject::tr("Unable to start the server to port %1: %2.").arg(port).arg(server->errorString()));
     }
 }
@@ -455,24 +457,28 @@ bool Gui::OpenURLInBrowser(const char * URL)
         PyObject* func = PyDict_GetItemString(dict, "open");
         if (func) {
             PyObject* args = Py_BuildValue("(s)", URL);
+#if PY_VERSION_HEX < 0x03090000
             PyObject* result = PyEval_CallObject(func,args);
+#else
+            PyObject* result = PyObject_CallObject(func,args);
+#endif
             if (result)
                 failed = false;
-        
+
             // decrement the args and module reference
             Py_XDECREF(result);
             Py_DECREF(args);
             Py_DECREF(module);
         }
-    } 
+    }
 
     // print error message on failure
     if (failed) {
-        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"), 
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("No Browser"),
             QObject::tr("Unable to open your system browser."));
         return false;
     }
-  
+
     return true;
 }
 

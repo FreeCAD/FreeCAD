@@ -43,7 +43,7 @@
 # include <QItemSelection>
 # include <QItemSelectionModel>
 # include <QTimer>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 # include <Python.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -75,6 +75,7 @@
 #include <Gui/Window.h>
 
 using namespace PartGui;
+namespace bp = boost::placeholders;
 
 FilletRadiusDelegate::FilletRadiusDelegate(QObject *parent) : QItemDelegate(parent)
 {
@@ -245,9 +246,9 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
 
     d->fillet = fillet;
     d->connectApplicationDeletedObject = App::GetApplication().signalDeletedObject
-        .connect(boost::bind(&DlgFilletEdges::onDeleteObject, this, _1));
+        .connect(boost::bind(&DlgFilletEdges::onDeleteObject, this, bp::_1));
     d->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument
-        .connect(boost::bind(&DlgFilletEdges::onDeleteDocument, this, _1));
+        .connect(boost::bind(&DlgFilletEdges::onDeleteDocument, this, bp::_1));
     // set tree view with three columns
     QStandardItemModel* model = new FilletRadiusModel(this);
     connect(model, SIGNAL(toggleCheckState(const QModelIndex&)),
@@ -697,13 +698,13 @@ void DlgFilletEdges::changeEvent(QEvent *e)
     }
 }
 
-void DlgFilletEdges::on_shapeObject_activated(int index)
+void DlgFilletEdges::on_shapeObject_activated(int itemPos)
 {
     d->object = 0;
     QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
     model->removeRows(0, model->rowCount());
 
-    QByteArray name = ui->shapeObject->itemData(index).toByteArray();
+    QByteArray name = ui->shapeObject->itemData(itemPos).toByteArray();
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc)
         return;

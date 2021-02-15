@@ -197,19 +197,21 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
     return QVariant(); // no such feature found
 }
 
-QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub)
+QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QString& sub) const
 {
+    App::Document* doc = this->vp->getObject()->getDocument();
     QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
 
     if (o.isEmpty())
         return QString();
-    else
-        return QString::fromLatin1("(App.activeDocument().") + o +
-                QString::fromLatin1(", [\"") + sub + QString::fromLatin1("\"])");
+
+    return QString::fromLatin1("(App.getDocument(\"%1\").%2, [\"%3\"])")
+            .arg(QString::fromLatin1(doc->getName()), o, sub);
 }
 
 TaskSketchBasedParameters::~TaskSketchBasedParameters()
 {
+    Gui::Selection().rmvSelectionGate();
 }
 
 

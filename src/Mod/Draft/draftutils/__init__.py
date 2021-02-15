@@ -48,3 +48,6 @@ Initialization modules for the GUI
 - `init_tools`, initialize toolbars and menus of the workbench
 - `init_draft_statusbar`, initialize the status bar of the workbench
 """
+## \defgroup draftutils draftutils
+# \ingroup DRAFT
+# \brief Utility modules that are used throughout the workbench.

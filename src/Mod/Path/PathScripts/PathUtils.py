@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Dan Falck <ddfalck@gmail.com>                      *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,13 +22,13 @@
 '''PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data '''
 import FreeCAD
 import Path
-import PathScripts
+# import PathScripts
+import PathScripts.PathJob as PathJob
 import PathScripts.PathGeom as PathGeom
 import math
 import numpy
 
 from FreeCAD import Vector
-from PathScripts import PathJob
 from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
@@ -42,7 +40,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def translate(context, text, disambig=None):
@@ -148,7 +146,7 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                         else:
                             drillable = True
         PathLog.debug("candidate is drillable: {}".format(drillable))
-    except Exception as ex: # pylint: disable=broad-except
+    except Exception as ex:  # pylint: disable=broad-except
         PathLog.warning(translate("PathUtils", "Issue determine drillability: {}").format(ex))
     return drillable
 
@@ -336,6 +334,49 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     return envelopeshape
 
 
+# Function to extract offset face from shape
+def getOffsetArea(fcShape,
+                  offset,
+                  removeHoles=False,
+                  # Default: XY plane
+                  plane=Part.makeCircle(10),
+                  tolerance=1e-4):
+    '''Make an offset area of a shape, projected onto a plane.
+    Positive offsets expand the area, negative offsets shrink it.
+    Inspired by _buildPathArea() from PathAreaOp.py module. Adjustments made
+    based on notes by @sliptonic at this webpage:
+    https://github.com/sliptonic/FreeCAD/wiki/PathArea-notes.'''
+    PathLog.debug('getOffsetArea()')
+
+    areaParams = {}
+    areaParams['Offset'] = offset
+    areaParams['Fill'] = 1  # 1
+    areaParams['Outline'] = removeHoles
+    areaParams['Coplanar'] = 0
+    areaParams['SectionCount'] = 1  # -1 = full(all per depthparams??) sections
+    areaParams['Reorient'] = True
+    areaParams['OpenMode'] = 0
+    areaParams['MaxArcPoints'] = 400  # 400
+    areaParams['Project'] = True
+    areaParams['FitArcs'] = False  # Can be buggy & expensive
+    areaParams['Deflection'] = tolerance
+    areaParams['Accuracy'] = tolerance
+    areaParams['Tolerance'] = 1e-5  # Equal point tolerance
+    areaParams['Simplify'] = True
+    areaParams['CleanDistance'] = tolerance / 5
+
+    area = Path.Area()  # Create instance of Area() class object
+    # Set working plane normal to Z=1
+    area.setPlane(makeWorkplane(plane))
+    area.add(fcShape)
+    area.setParams(**areaParams)  # set parameters
+
+    offsetShape = area.getShape()
+    if not offsetShape.Faces:
+        return False
+    return offsetShape
+
+
 def reverseEdge(e):
     if DraftGeomUtils.geomType(e) == "Circle":
         arcstpt = e.valueAt(e.FirstParameter)
@@ -351,19 +392,22 @@ def reverseEdge(e):
     return newedge
 
 
-def getToolControllers(obj):
+def getToolControllers(obj, proxy=None):
     '''returns all the tool controllers'''
+    if proxy is None:
+        proxy = obj.Proxy
     try:
         job = findParentJob(obj)
-    except Exception: # pylint: disable=broad-except
+    except Exception:  # pylint: disable=broad-except
         job = None
 
+    PathLog.debug("op={} ({})".format(obj.Label, type(obj)))
     if job:
-        return job.ToolController
+        return [tc for tc in job.Tools.Group if proxy.isToolSupported(obj, tc.Tool)]
     return []
 
 
-def findToolController(obj, name=None):
+def findToolController(obj, proxy, name=None):
     '''returns a tool controller with a given name.
     If no name is specified, returns the first controller.
     if no controller is found, returns None'''
@@ -375,7 +419,7 @@ def findToolController(obj, name=None):
     if c is not None:
         return c
 
-    controllers = getToolControllers(obj)
+    controllers = getToolControllers(obj, proxy)
 
     if len(controllers) == 0:
         return None
@@ -397,7 +441,7 @@ def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
     PathLog.track()
     for i in obj.InList:
-        if hasattr(i, 'Proxy') and isinstance(i.Proxy, PathScripts.PathJob.ObjectJob):
+        if hasattr(i, 'Proxy') and isinstance(i.Proxy, PathJob.ObjectJob):
             return i
         if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython" or i.TypeId == "App::DocumentObjectGroup":
             grandParent = findParentJob(i)
@@ -494,7 +538,7 @@ def arc(cx, cy, sx, sy, ex, ey, horizFeed=0, ez=None, ccw=False):
 
     eps = 0.01
     if (math.sqrt((cx - sx)**2 + (cy - sy)**2) - math.sqrt((cx - ex)**2 + (cy - ey)**2)) >= eps:
-        print("ERROR: Illegal arc: Start and end radii not equal")
+        PathLog.error(translate("Path", "Illegal arc: Start and end radii not equal"))
         return ""
 
     retstr = ""
@@ -649,7 +693,7 @@ def sort_jobs(locations, keys, attractors=None):
             # prevent dictionary comparison by inserting the index
             q.put((dist(j, location) + weight(j), i, j))
 
-        prio, i, result = q.get() # pylint: disable=unused-variable
+        prio, i, result = q.get()  # pylint: disable=unused-variable
 
         return result
 
@@ -701,7 +745,7 @@ def guessDepths(objshape, subs=None):
 
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
-    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or float(tool.Diameter) == 0.0:
+    if not hasattr(tool, 'CuttingEdgeAngle') or tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or float(tool.Diameter) == 0.0:
         return 0.0
     else:
         if tool.CuttingEdgeAngle <= 0 or tool.CuttingEdgeAngle >= 180:
@@ -871,3 +915,80 @@ class depth_params(object):
             return depths
         else:
             return [stop] + depths
+
+
+def simplify3dLine(line, tolerance=1e-4):
+    """Simplify a line defined by a list of App.Vectors, while keeping the
+    maximum deviation from the original line within the defined tolerance.
+    Implementation of
+    https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm"""
+    stack = [(0, len(line) - 1)]
+    results = []
+
+    def processRange(start, end):
+        """Internal worker. Process a range of Vector indices within the
+        line."""
+        if end - start < 2:
+            results.extend(line[start:end])
+            return
+        # Find point with maximum distance
+        maxIndex, maxDistance = 0, 0.0
+        startPoint, endPoint = (line[start], line[end])
+        for i in range(start + 1, end):
+            v = line[i]
+            distance = v.distanceToLineSegment(startPoint, endPoint).Length
+            if distance > maxDistance:
+                maxDistance = distance
+                maxIndex = i
+        if maxDistance > tolerance:
+            # Push second branch first, to be executed last
+            stack.append((maxIndex, end))
+            stack.append((start, maxIndex))
+        else:
+            results.append(line[start])
+
+    while len(stack):
+        processRange(*stack.pop())
+    # Each segment only appended its start point to the final result, so fill in
+    # the last point.
+    results.append(line[-1])
+    return results
+
+
+def RtoIJ(startpoint, command):
+    '''
+    This function takes a startpoint and an arc command in radius mode and
+    returns an arc command in IJ mode. Useful for preprocessor scripts
+    '''
+    if 'R' not in command.Parameters:
+        raise ValueError('No R parameter in command')
+    if command.Name not in ['G2', 'G02', 'G03', 'G3']:
+        raise ValueError('Not an arc command')
+
+    endpoint = command.Placement.Base
+    radius = command.Parameters['R']
+
+    # calculate the IJ
+    # we take a vector between the start and endpoints
+    chord = endpoint.sub(startpoint)
+
+    # Take its perpendicular (we assume the arc is in the XY plane)
+    perp = chord.cross(FreeCAD.Vector(0, 0, 1))
+
+    # use pythagoras to get the perp length
+    plength = math.sqrt(radius**2 - (chord.Length / 2)**2)
+    perp.normalize()
+    perp.scale(plength, plength, plength)
+
+    # Calculate the relative center
+    relativecenter = chord.scale(0.5, 0.5, 0.5).add(perp)
+
+    # build new command
+    params = { c: command.Parameters[c] for c in 'XYZF' if c in command.Parameters}
+    params['I'] = relativecenter.x
+    params['J'] = relativecenter.y
+
+    newcommand = Path.Command(command.Name)
+    newcommand.Parameters = params
+
+    return newcommand

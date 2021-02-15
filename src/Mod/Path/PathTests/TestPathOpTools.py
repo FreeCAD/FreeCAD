@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -147,7 +145,7 @@ class TestPathOpTools(PathTestUtils.PathTestBase):
         self.assertEqual(1, len(wire.Edges))
         self.assertRoughly(7, wire.Edges[0].Curve.Radius)
         self.assertCoincide(Vector(0, 0, 1), wire.Edges[0].Curve.Axis)
-        
+
         wire = PathOpTools.offsetWire(small, obj.Shape, 9.9, True)
         self.assertIsNotNone(wire)
         self.assertEqual(1, len(wire.Edges))

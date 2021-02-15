@@ -2033,7 +2033,7 @@
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-      <translation>[Mazgų: %1, Briaunų: %2, Sienų: %3, Daugiakampių: %4, Tūrių: %5, Daugiasienių: %6]</translation>
+      <translation>[Mazgų: %1, Kraštinių: %2, Sienų: %3, Daugiakampių: %4, Tūrių: %5, Daugiasienių: %6]</translation>
     </message>
   </context>
   <context>
@@ -2162,7 +2162,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Stačiakampis gretasienis</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>

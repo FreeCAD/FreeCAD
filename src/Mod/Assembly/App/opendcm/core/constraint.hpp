@@ -32,11 +32,7 @@
 #include <boost/mpl/size.hpp>
 #include <boost/mpl/for_each.hpp>
 
-#ifndef BOOST_105400
 #include <boost/any.hpp>
-#else
-#include <boost_any_1_55.hpp>
-#endif
 #include <boost/fusion/include/as_vector.hpp>
 
 #include <boost/preprocessor.hpp>

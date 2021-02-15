@@ -128,7 +128,7 @@ private:
                      const int32_t *texindices,
                      const int nbind,
                      const int mbind,
-                     const int texture);
+                     SbBool texture);
 
     typedef Gui::SoFCSelectionContextEx SelContext;
     typedef Gui::SoFCSelectionContextExPtr SelContextPtr;

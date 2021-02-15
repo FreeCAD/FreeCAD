@@ -41,6 +41,14 @@ struct Point3d
    {
    }
 
+   Point3d(const Point3d& pnt) : p(pnt.p), i(pnt.i)
+   {
+   }
+
+   ~Point3d()
+   {
+   }
+
    inline value_type operator[](const int N) const
    {
        return p[N];

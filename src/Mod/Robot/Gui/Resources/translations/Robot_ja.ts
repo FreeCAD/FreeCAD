@@ -1008,7 +1008,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Robot</source>
-      <translation>ロボット (&amp;ｒ)</translation>
+      <translation>ロボット (&amp;R)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

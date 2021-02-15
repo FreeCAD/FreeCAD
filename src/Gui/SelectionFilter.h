@@ -34,19 +34,19 @@ namespace App {
 
 namespace Gui {
     struct Node_Block;
-    
 
-/** Selection filter definition 
+
+/** Selection filter definition
  *  This class builds up a type/count tree out of a string
- *  to test very fast a selection or object/subelement type 
- *  against it. 
+ *  to test very fast a selection or object/subelement type
+ *  against it.
  *
  *  Example strings are:
- *  "SELECT Part::Feature SUBELEMENT Edge", 
- *  "SELECT Robot::RobotObject", 
+ *  "SELECT Part::Feature SUBELEMENT Edge",
+ *  "SELECT Robot::RobotObject",
  *  "SELECT Robot::RobotObject COUNT 1..5"
  */
-class GuiExport SelectionFilter 
+class GuiExport SelectionFilter
 {
 
 public:
@@ -55,26 +55,26 @@ public:
     SelectionFilter(const std::string& filter);
     virtual ~SelectionFilter();
 
-    /// Set a new filter string 
+    /// Set a new filter string
     void setFilter(const char* filter);
     const std::string& getFilter() const {
         return Filter;
     }
     /** Test to current selection
      *  This method tests the current selection set
-     *  against the filter and returns true if the 
+     *  against the filter and returns true if the
      *  described object(s) are selected.
      */
     bool match(void);
     /** Test objects
-     *  This method tests if a given object is described in the 
+     *  This method tests if a given object is described in the
      *  filter. If SubName is not NULL the Subelement gets also
      *  tested.
      */
     bool test(App::DocumentObject*pObj, const char*sSubName);
 
     void addError(const char* e);
- 
+
     friend class SelectionSingleton;
 
     std::vector<std::vector<SelectionObject> > Result;
@@ -92,9 +92,9 @@ protected:
 };
 
 /** Filter object for the SelectionSengleton
- * This object is a link between the selection 
- * filter class and the selection singleton. Created with a 
- * filter string and registered in the selection it will only 
+ * This object is a link between the selection
+ * filter class and the selection singleton. Created with a
+ * filter string and registered in the selection it will only
  * allow the described object types to be selected.
  * @see SelectionFilter
  * @see SelectionSingleton
@@ -141,7 +141,7 @@ private:
  * @see SelectionFilter
  * @author Werner Mayer
  */
-class SelectionFilterPy : public Py::PythonExtension<SelectionFilterPy> 
+class SelectionFilterPy : public Py::PythonExtension<SelectionFilterPy>
 {
 public:
     SelectionFilter filter;
@@ -193,7 +193,7 @@ private:
 
 // === Abstract syntax tree (AST) ===========================================
 
-struct Node_Slice 
+struct Node_Slice
 {
     Node_Slice(int min=1,int max=INT_MAX):Min(min),Max(max){}
     int Min,Max;
@@ -201,7 +201,7 @@ struct Node_Slice
 };
 
 
-struct Node_Object 
+struct Node_Object
 {
     Node_Object(std::string *type,std::string *subname,Node_Slice* slc )
         :Slice(slc)
@@ -221,7 +221,7 @@ struct Node_Object
     std::string SubName;
 };
 
-struct Node_Block 
+struct Node_Block
 {
     Node_Block(Node_Object* obj){Objects.push_back(obj);}
     std::vector< Node_Object *> Objects;

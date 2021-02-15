@@ -57,6 +57,11 @@
 
 using namespace FemGui;
 
+#ifdef VTK_CELL_ARRAY_V2
+typedef const vtkIdType* vtkIdTypePtr;
+#else
+typedef vtkIdType* vtkIdTypePtr;
+#endif
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
@@ -182,7 +187,7 @@ void ViewProviderFemPostObject::attach(App::DocumentObject *pcObj)
     addDisplayMaskMode(m_seperator, "Default");
     setDisplayMaskMode("Default");
 
-    setupPipeline();
+    (void)setupPipeline();
 }
 
 SoSeparator* ViewProviderFemPostObject::getFrontRoot(void) const {
@@ -208,7 +213,7 @@ void ViewProviderFemPostObject::setDisplayMode(const char* ModeName)
     else if (strcmp("Nodes (surface only)",ModeName)==0)
         m_currentAlgorithm = m_pointsSurface;
 
-    update();
+    updateVtk();
 
     ViewProviderDocumentObject::setDisplayMode( ModeName );
 }
@@ -226,7 +231,7 @@ std::vector<std::string> ViewProviderFemPostObject::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderFemPostObject::update() {
+void ViewProviderFemPostObject::updateVtk() {
 
     if(!setupPipeline())
         return;
@@ -317,7 +322,7 @@ void ViewProviderFemPostObject::update3D() {
     vtkDataArray *tcoords = NULL;
     vtkCellArray *cells;
     vtkIdType npts = 0;
-    vtkIdType *indx = 0;
+    vtkIdTypePtr indx = 0;
 
     points = pd->GetPoints();
     pntData = pd->GetPointData();
@@ -505,7 +510,7 @@ void ViewProviderFemPostObject::WriteTransparency() {
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
 
     if( strcmp(p->getName(), "Data") == 0 ) {
-        update();
+        updateVtk();
     }
 }
 

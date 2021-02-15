@@ -30,7 +30,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QString>
 #include <QObject>
 
@@ -248,7 +248,7 @@ template<typename T>
 class BitsetLocker
 {
 public:
-    BitsetLocker(T& flags, std::size_t flag, bool value = true) 
+    BitsetLocker(T& flags, std::size_t flag, bool value = true)
         : flags(flags), flag(flag)
     { oldValue = flags.test(flag); flags.set(flag,value); }
     ~BitsetLocker()

@@ -99,7 +99,7 @@ void Segmentation::accept()
     // First create segments by curavture to get the surface type
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     if (ui->groupBoxPln->isChecked()) {
-        segm.emplace_back(new MeshCore::MeshCurvaturePlanarSegment
+        segm.emplace_back(std::make_shared<MeshCore::MeshCurvaturePlanarSegment>
             (meshCurv.GetCurvature(), ui->numPln->value(), ui->curvTolPln->value()));
     }
     finder.FindSegments(segm);
@@ -118,7 +118,7 @@ void Segmentation::accept()
                     Base::Vector3f base = fit.GetBase();
                     Base::Vector3f axis = fit.GetNormal();
                     MeshCore::AbstractSurfaceFit* fitter = new MeshCore::PlaneSurfaceFit(base, axis);
-                    segmSurf.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+                    segmSurf.emplace_back(std::make_shared<MeshCore::MeshDistanceGenericSurfaceFitSegment>
                         (fitter, kernel, ui->numPln->value(), ui->distToPln->value()));
                 }
             }

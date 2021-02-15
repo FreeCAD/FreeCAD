@@ -38,6 +38,7 @@
 #include <xercesc/util/TranscodingException.hpp>
 #include <boost/regex.hpp>
 
+#include "Action.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -138,21 +139,6 @@ PyMethodDef Application::Methods[] = {
   {"runCommand",              (PyCFunction) Application::sRunCommand, METH_VARARGS,
    "runCommand(string) -> None\n\n"
    "Run command with name"},
-  {"isCommandActive",         (PyCFunction) Application::sIsCommandActive, METH_VARARGS,
-   "isCommandActive(string) -> Bool\n\n"
-   "Test if a command is active"},
-  {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
-   "listCommands() -> list of strings\n\n"
-   "Returns a list of all commands known to FreeCAD."},
-  {"getCommandInfo",               (PyCFunction) Application::sGetCommandInfo, METH_VARARGS,
-  "getCommandInfo(string) -> list of strings\n\n"
-  "Usage: menuText,tooltipText,whatsThisText,statustipText,pixmapText,shortcutText = getCommandInfo(string)"},
-  {"getCommandShortcut",               (PyCFunction) Application::sGetCommandShortcut, METH_VARARGS,
-   "getCommandShortcut(string) -> string\n\n"
-   "Returns string representing shortcut key accelerator for command."},
-  {"updateCommands",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
-   "updateCommands\n\n"
-   "Update all command active status"},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView, METH_VARARGS,
    "deprecated -- use class View"},
   {"sendMsgToFocusView",     (PyCFunction) Application::sSendFocusView, METH_VARARGS,
@@ -212,7 +198,7 @@ PyMethodDef Application::Methods[] = {
 
   {"getMarkerIndex", (PyCFunction) Application::sGetMarkerIndex, METH_VARARGS,
    "Get marker index according to marker size setting"},
-   
+
     {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver, METH_VARARGS,
      "addDocumentObserver() -> None\n\n"
      "Add an observer to get notified about changes on documents."},
@@ -228,7 +214,7 @@ PyMethodDef Application::Methods[] = {
    "loadFile(string=filename,[string=module]) -> None\n\n"
    "Loads an arbitrary file by delegating to the given Python module:\n"
    "* If no module is given it will be determined by the file extension.\n"
-   "* If more than one module can load a file the first one one will be taken.\n"
+   "* If more than one module can load a file the first one will be taken.\n"
    "* If no module exists to load the file an exception will be raised."},
 
   {"coinRemoveAllChildren",     (PyCFunction) Application::sCoinRemoveAllChildren, METH_VARARGS,
@@ -239,8 +225,8 @@ PyMethodDef Application::Methods[] = {
 
 PyObject* Gui::Application::sEditDocument(PyObject * /*self*/, PyObject *args)
 {
-	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-		return NULL;                       // NULL triggers exception 
+	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+		return NULL;                       // NULL triggers exception
 
 	Document *pcDoc = Instance->editDocument();
 	if (pcDoc) {
@@ -284,7 +270,7 @@ PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
         Gui::MDIView* mdiView = Instance->activeView();
         if (mdiView && (type.isBad() || mdiView->isDerivedFrom(type))) {
             auto res = Py::asObject(mdiView->getPyObject());
-            if(!res.isNone() || !type.isBad()) 
+            if(!res.isNone() || !type.isBad())
                 return Py::new_reference_to(res);
         }
 
@@ -597,8 +583,13 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args)
         QFileInfo fi;
         fi.setFile(fileName);
         QString ext = fi.suffix().toLower();
-        if (ext == QLatin1String("iv") || ext == QLatin1String("wrl") ||
-            ext == QLatin1String("vrml") || ext == QLatin1String("wrz")) {
+        if (ext == QLatin1String("iv") ||
+            ext == QLatin1String("wrl") ||
+            ext == QLatin1String("vrml") ||
+            ext == QLatin1String("wrz") ||
+            ext == QLatin1String("x3d") ||
+            ext == QLatin1String("x3dz") ||
+            ext == QLatin1String("xhtml")) {
 
             // build up the graph
             SoSeparator* sep = new SoSeparator();
@@ -908,17 +899,17 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         // to be base class for all workbench classes
         Py::Module module("__main__");
         Py::Object baseclass(module.getAttr(std::string("Workbench")));
-        
+
         // check whether it is an instance or class object
         Py::Object object(pcObject);
         Py::String name;
-        
+
         if (PyObject_IsSubclass(object.ptr(), baseclass.ptr()) == 1) {
             // create an instance of this class
             name = object.getAttr(std::string("__name__"));
-            Py::Tuple args;
+            Py::Tuple arg;
             Py::Callable creation(object);
-            object = creation.apply(args);
+            object = creation.apply(arg);
         }
         else if (PyObject_IsInstance(object.ptr(), baseclass.ptr()) == 1) {
             // extract the class name of the instance
@@ -937,7 +928,7 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         Py::Callable(object.getAttr(std::string("GetClassName")));
         item = name.as_std_string("ascii");
 
-        PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,item.c_str()); 
+        PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,item.c_str());
         if (wb) {
             PyErr_Format(PyExc_KeyError, "'%s' already exists.", item.c_str());
             return NULL;
@@ -960,7 +951,7 @@ PyObject* Application::sRemoveWorkbenchHandler(PyObject * /*self*/, PyObject *ar
     if (!PyArg_ParseTuple(args, "s", &psKey))
         return NULL;
 
-    PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,psKey); 
+    PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,psKey);
     if (!wb) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
         return NULL;
@@ -979,7 +970,7 @@ PyObject* Application::sGetWorkbenchHandler(PyObject * /*self*/, PyObject *args)
     char* psKey;
     if (!PyArg_ParseTuple(args, "s", &psKey))
         return NULL;
-   
+
     // get the python workbench object from the dictionary
     PyObject* pcWorkbench = PyDict_GetItemString(Instance->_pcWorkbenchDictionary, psKey);
     if (!pcWorkbench) {
@@ -1087,7 +1078,7 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
     const char *format = "XPM";
     if (!PyArg_ParseTuple(args, "ss#|s", &iconName,&content,&size,&format))
         return NULL;
-    
+
     QPixmap icon;
     if (BitmapFactory().findPixmapInCache(iconName, icon)) {
         PyErr_SetString(PyExc_AssertionError, "Icon with this name already registered");
@@ -1118,7 +1109,7 @@ PyObject* Application::sGetIcon(PyObject * /*self*/, PyObject *args)
     char *iconName;
     if (!PyArg_ParseTuple(args, "s", &iconName))
         return NULL;
-    
+
     PythonWrapper wrap;
     wrap.loadGuiModule();
     wrap.loadWidgetsModule();
@@ -1133,7 +1124,7 @@ PyObject* Application::sIsIconCached(PyObject * /*self*/, PyObject *args)
     char *iconName;
     if (!PyArg_ParseTuple(args, "s", &iconName))
         return NULL;
-    
+
     QPixmap icon;
     return Py::new_reference_to(Py::Boolean(BitmapFactory().findPixmapInCache(iconName, icon)));
 }
@@ -1254,117 +1245,6 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
     }
 }
 
-PyObject* Application::sIsCommandActive(PyObject * /*self*/, PyObject *args)
-{
-    char* pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))
-        return NULL;
-
-    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (!cmd) {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
-        return 0;
-    }
-    PY_TRY {
-        return Py::new_reference_to(Py::Boolean(cmd->isActive()));
-    }PY_CATCH;
-}
-
-PyObject* Application::sUpdateCommands(PyObject * /*self*/, PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return NULL;
-
-    getMainWindow()->updateActions();
-    Py_Return;
-}
-
-PyObject* Application::sGetCommandShortcut(PyObject * /*self*/, PyObject *args)
-{
-    char* pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))
-        return NULL;
-
-    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (cmd) {
-
-#if PY_MAJOR_VERSION >= 3
-        PyObject* str = PyUnicode_FromString(cmd->getAccel() ? cmd->getAccel() : "");
-#else
-        PyObject* str = PyString_FromString(cmd->getAccel() ? cmd->getAccel() : "");
-#endif
-        return str;
-    }
-    else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
-        return 0;
-    }
-}
-
-PyObject* Application::sGetCommandInfo(PyObject * /*self*/, PyObject *args)
-{
-    char* pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))
-        return NULL;
-
-    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
-    if (cmd) {
-        PyObject* pyList = PyList_New(6);
-        const char* menuTxt = cmd->getMenuText();
-        const char* tooltipTxt = cmd->getToolTipText();
-        const char* whatsThisTxt = cmd->getWhatsThis();
-        const char* statustipTxt = cmd->getStatusTip();
-        const char* pixMapTxt = cmd->getPixmap();
-        const char* shortcutTxt = cmd->getAccel();
-
-#if PY_MAJOR_VERSION >= 3
-        PyObject* strMenuTxt = PyUnicode_FromString(menuTxt ? menuTxt : "");
-        PyObject* strTooltipTxt = PyUnicode_FromString(tooltipTxt ? tooltipTxt : "");
-        PyObject* strWhatsThisTxt = PyUnicode_FromString(whatsThisTxt ? whatsThisTxt : "");
-        PyObject* strStatustipTxt = PyUnicode_FromString(statustipTxt ? statustipTxt : "");
-        PyObject* strPixMapTxt = PyUnicode_FromString(pixMapTxt ? pixMapTxt : "");
-        PyObject* strShortcutTxt = PyUnicode_FromString(shortcutTxt ? shortcutTxt : "");
-#else
-        PyObject* strMenuTxt = PyString_FromString(menuTxt ? menuTxt : "");
-        PyObject* strTooltipTxt = PyString_FromString(tooltipTxt ? tooltipTxt : "");
-        PyObject* strWhatsThisTxt = PyString_FromString(whatsThisTxt ? whatsThisTxt : "");
-        PyObject* strStatustipTxt = PyString_FromString(statustipTxt ? statustipTxt : "");
-        PyObject* strPixMapTxt = PyString_FromString(pixMapTxt ? pixMapTxt : "");
-        PyObject* strShortcutTxt = PyString_FromString(shortcutTxt ? shortcutTxt : "");
-#endif
-        PyList_SetItem(pyList, 0, strMenuTxt);
-        PyList_SetItem(pyList, 1, strTooltipTxt);
-        PyList_SetItem(pyList, 2, strWhatsThisTxt);
-        PyList_SetItem(pyList, 3, strStatustipTxt);
-        PyList_SetItem(pyList, 4, strPixMapTxt);
-        PyList_SetItem(pyList, 5, strShortcutTxt);
-        return pyList;
-    }
-    else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
-        return 0;
-    }
-}
-
-PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return NULL;
-
-    std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
-    PyObject* pyList = PyList_New(cmds.size());
-    int i=0;
-    for ( std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it ) {
-#if PY_MAJOR_VERSION >= 3
-        PyObject* str = PyUnicode_FromString((*it)->getName());
-#else
-        PyObject* str = PyString_FromString((*it)->getName());
-#endif
-        PyList_SetItem(pyList, i++, str);
-    }
-    return pyList;
-}
-
 PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)
 {
     char *sCmd=0;
@@ -1450,7 +1330,7 @@ PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "|si", &pstr, &idx))
         return NULL;
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
-    if (pstr) 
+    if (pstr)
         cDlg.activateGroupPage(QString::fromUtf8(pstr),idx);
     WaitCursor wc;
     wc.restoreCursor();

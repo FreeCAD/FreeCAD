@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2011 Joe Dowsett <j-dowsett[at]users.sourceforge.net>   *
- *   Copyright (c) 2014  Luke Parry <l.parry@warwick.ac.uk>                *
+ *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -85,6 +85,9 @@ protected Q_SLOTS:
 /*    void projectionTypeChanged(int index);*/
     void projectionTypeChanged(QString qText);
     void scaleTypeChanged(int index);
+    void AutoDistributeClicked(bool b);
+    /// Updates item spacing
+    void spacingChanged(void);
     void scaleManuallyChanged(int i);
 
 protected:
@@ -106,7 +109,7 @@ protected:
     MDIViewPage* m_mdi;
 
 private:
-    Ui_TaskProjGroup * ui;
+    std::unique_ptr<Ui_TaskProjGroup> ui;
     TechDraw::DrawProjGroup* multiView;
     bool m_createMode;
 
@@ -122,6 +125,9 @@ private:
     std::string    m_saveProjType;
     std::string    m_saveScaleType;
     double         m_saveScale;
+    bool           m_saveAutoDistribute;
+    double         m_saveSpacingX;
+    double         m_saveSpacingY;
     Base::Vector3d m_saveDirection;
     std::vector<std::string> m_saveViewNames;
 };
@@ -137,7 +143,7 @@ public:
 
     const ViewProviderProjGroup * getViewProvider() const { return viewProvider; }
     TechDraw::DrawProjGroup * getMultiView() const { return multiView; }
-    
+
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
     virtual void modifyStandardButtons(QDialogButtonBox* box);

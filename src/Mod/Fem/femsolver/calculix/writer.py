@@ -22,14 +22,15 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver CalculiX writer"
+__title__  = "FreeCAD FEM solver CalculiX writer"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
-import io
+# import io
+import codecs
 import os
 import six
 import sys
@@ -41,6 +42,37 @@ import FreeCAD
 from .. import writerbase
 from femmesh import meshtools
 from femtools import geomtools
+
+
+# Interesting forum topic: https://forum.freecadweb.org/viewtopic.php?&t=48451
+# TODO somehow set units at beginning and every time a value is retrieved use this identifier
+# this would lead to support of unit system, force might be retrieved in base writer!
+
+
+# the following text will be at the end of the main calculix input file
+units_information = """***********************************************************
+**  About units:
+**  See ccx manual, ccx does not know about any unit.
+**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  The user is the FreeCAD calculix writer module ;-)
+**
+**  The unit system which is used at Guido Dhondt's company: mm, N, s, K
+**  Since Length and Mass are connected by Force, if Length is mm the Mass is in t to get N
+**  The following units are used to write to inp file:
+**
+**  Length: mm (this includes the mesh geometry)
+**  Mass: t
+**  TimeSpan: s
+**  Temperature: K
+**
+**  This leads to:
+**  Force: N
+**  Pressure: N/mm^2
+**  Density: t/mm^3
+**  Gravity: mm/s^2
+**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
+**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
+"""
 
 
 class FemInputWriterCcx(writerbase.FemInputWriter):
@@ -125,6 +157,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_node_sets_constraints_planerotation(inpfileMain, self.split_inpfile)
         self.write_surfaces_constraints_contact(inpfileMain, self.split_inpfile)
         self.write_surfaces_constraints_tie(inpfileMain, self.split_inpfile)
+        self.write_surfaces_constraints_sectionprint(inpfileMain, self.split_inpfile)
         self.write_node_sets_constraints_transform(inpfileMain, self.split_inpfile)
         self.write_node_sets_constraints_temperature(inpfileMain, self.split_inpfile)
 
@@ -154,7 +187,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         self.file_name,
                         self.fluid_inout_nodes_file
                     )
-                    inpfileMain = io.open(self.file_name, "a", encoding="utf-8")
+                    # inpfileMain = io.open(self.file_name, "a", encoding="utf-8")
+                    inpfileMain = codecs.open(self.file_name, "a", encoding="utf-8")
 
         # constraints independent from steps
         self.write_constraints_planerotation(inpfileMain)
@@ -168,6 +202,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # constraints dependent from steps
         self.write_constraints_fixed(inpfileMain)
         self.write_constraints_displacement(inpfileMain)
+        self.write_constraints_sectionprint(inpfileMain)
         self.write_constraints_selfweight(inpfileMain)
         self.write_constraints_force(inpfileMain, self.split_inpfile)
         self.write_constraints_pressure(inpfileMain, self.split_inpfile)
@@ -204,7 +239,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             if self.fluidsection_objects:
                 meshtools.write_D_network_element_to_inputfile(split_mesh_file_path)
 
-            inpfile = io.open(self.file_name, "w", encoding="utf-8")
+            # inpfile = io.open(self.file_name, "w", encoding="utf-8")
+            inpfile = codecs.open(self.file_name, "w", encoding="utf-8")
             inpfile.write("***********************************************************\n")
             inpfile.write("** {}\n".format(write_name))
             inpfile.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
@@ -222,7 +258,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 meshtools.write_D_network_element_to_inputfile(self.file_name)
 
             # reopen file with "append" to add all the rest
-            inpfile = io.open(self.file_name, "a", encoding="utf-8")
+            # inpfile = io.open(self.file_name, "a", encoding="utf-8")
+            inpfile = codecs.open(self.file_name, "a", encoding="utf-8")
             inpfile.write("\n\n")
 
         return inpfile
@@ -608,6 +645,83 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f.write("{},{}\n".format(dep_surf, ind_surf))
 
     # ********************************************************************************************
+    # constraints sectionprint
+    def write_surfaces_constraints_sectionprint(self, f, inpfile_split=None):
+        if not self.sectionprint_objects:
+            return
+        # write for all analysis types
+
+        write_name = "constraints_sectionprint_surface_sets"
+        f.write("\n***********************************************************\n")
+        f.write("** {}\n".format(write_name.replace("_", " ")))
+        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+
+        if inpfile_split is True:
+            file_name_splitt = self.mesh_name + "_" + write_name + ".inp"
+            f.write("** {}\n".format(write_name.replace("_", " ")))
+            f.write("*INCLUDE,INPUT={}\n".format(file_name_splitt))
+            inpfile_splitt = open(join(self.dir_name, file_name_splitt), "w")
+            self.write_surfacefaces_constraints_sectionprint(inpfile_splitt)
+            inpfile_splitt.close()
+        else:
+            self.write_surfacefaces_constraints_sectionprint(f)
+
+    # TODO move code parts from this method to base writer module
+    def write_surfacefaces_constraints_sectionprint(self, f):
+        # get surface nodes and write them to file
+        obj = 0
+        for femobj in self.sectionprint_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            sectionprint_obj = femobj["Object"]
+            f.write("** " + sectionprint_obj.Label + "\n")
+            obj = obj + 1
+            for o, elem_tup in sectionprint_obj.References:
+                for elem in elem_tup:
+                    ref_shape = o.Shape.getElement(elem)
+                    if ref_shape.ShapeType == "Face":
+                        name = "SECTIONFACE" + str(obj)
+                        f.write("*SURFACE, NAME=" + name + "\n")
+
+                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
+                        if len(v) > 0:
+                            # volume elements found
+                            FreeCAD.Console.PrintLog(
+                                "{}, surface {}, {} touching volume elements found\n"
+                                .format(sectionprint_obj.Label, name, len(v))
+                            )
+                            for i in v:
+                                f.write("{},S{}\n".format(i[0], i[1]))
+                        else:
+                            # no volume elements found, shell elements not allowed
+                            FreeCAD.Console.PrintError(
+                                "{}, surface {}, Error: "
+                                "No volume elements found!\n"
+                                .format(sectionprint_obj.Label, name)
+                            )
+                            f.write("** Error: empty list\n")
+
+    def write_constraints_sectionprint(self, f):
+        if not self.sectionprint_objects:
+            return
+        # write for all analysis types
+
+        # write constraint to file
+        f.write("\n***********************************************************\n")
+        f.write("** SectionPrint Constraints\n")
+        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        obj = 0
+        for femobj in self.sectionprint_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            obj = obj + 1
+            sectionprint_obj = femobj["Object"]
+            f.write("** {}\n".format(sectionprint_obj.Label))
+            f.write(
+                "*SECTION PRINT, SURFACE=SECTIONFACE{}, NAME=SECTIONPRINT{}\n"
+                .format(obj, obj)
+            )
+            f.write("SOF, SOM, SOAREA\n")
+
+    # ********************************************************************************************
     # constraints transform
     def write_node_sets_constraints_transform(self, f, inpfile_split=None):
         if not self.transform_objects:
@@ -656,15 +770,30 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         for trans_object in self.transform_objects:
             trans_obj = trans_object["Object"]
-            f.write("** " + trans_obj.Label + "\n")
+            trans_name = ""
+            trans_type = ""
             if trans_obj.TransformType == "Rectangular":
-                f.write("*TRANSFORM, NSET=Rect" + trans_obj.Name + ", TYPE=R\n")
+                trans_name = "Rect"
+                trans_type = "R"
                 coords = geomtools.get_rectangular_coords(trans_obj)
-                f.write(coords + "\n")
             elif trans_obj.TransformType == "Cylindrical":
-                f.write("*TRANSFORM, NSET=Cylin" + trans_obj.Name + ", TYPE=C\n")
+                trans_name = "Cylin"
+                trans_type = "C"
                 coords = geomtools.get_cylindrical_coords(trans_obj)
-                f.write(coords + "\n")
+            f.write("** {}\n".format(trans_obj.Label))
+            f.write("*TRANSFORM, NSET={}{}, TYPE={}\n".format(
+                trans_name,
+                trans_obj.Name,
+                trans_type,
+            ))
+            f.write("{:f},{:f},{:f},{:f},{:f},{:f}\n".format(
+                coords[0],
+                coords[1],
+                coords[2],
+                coords[3],
+                coords[4],
+                coords[5],
+            ))
 
     # ********************************************************************************************
     # constraints temperature
@@ -1209,12 +1338,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         ))
         f.write("**\n")
         f.write("**\n")
-        f.write("**\n")
-        f.write("**   Units\n")
-        f.write("**\n")
-        f.write("**   Geometry (mesh data)        --> mm\n")
-        f.write("**   Materials (Young's modulus) --> N/mm2 = MPa\n")
-        f.write("**   Loads (nodal loads)         --> N\n")
+        f.write(units_information)
         f.write("**\n")
 
     # ********************************************************************************************
@@ -1729,11 +1853,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material,
                             section_type
                         )
-                        section_nor = "{}, {}, {}\n".format(
-                            normal[0],
-                            normal[1],
-                            normal[2]
-                        )
                     elif beamsec_obj.SectionType == "Circular":
                         radius = 0.5 * beamsec_obj.CircDiameter.getValueAs("mm")
                         section_type = ", SECTION=CIRC"
@@ -1742,11 +1861,6 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             elsetdef,
                             material,
                             section_type
-                        )
-                        section_nor = "{}, {}, {}\n".format(
-                            normal[0],
-                            normal[1],
-                            normal[2]
                         )
                     elif beamsec_obj.SectionType == "Pipe":
                         radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs("mm")
@@ -1758,11 +1872,13 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             material,
                             section_type
                         )
-                        section_nor = "{}, {}, {}\n".format(
-                            normal[0],
-                            normal[1],
-                            normal[2]
-                        )
+                    # see forum topic for output formatting of rotation
+                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=46133&p=405142#p405142
+                    section_nor = "{:f}, {:f}, {:f}\n".format(
+                        normal[0],
+                        normal[1],
+                        normal[2]
+                    )
                     f.write(section_def)
                     f.write(section_geo)
                     f.write(section_nor)
@@ -1803,6 +1919,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     material = "MATERIAL=" + ccx_elset["mat_obj_name"]
                     section_def = "*SOLID SECTION, " + elsetdef + material + "\n"
                     f.write(section_def)
+
 
 # ************************************************************************************************
 # Helpers

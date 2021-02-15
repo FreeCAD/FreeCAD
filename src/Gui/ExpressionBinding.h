@@ -27,7 +27,7 @@
 #include <App/ObjectIdentifier.h>
 #include <boost/shared_ptr.hpp>
 #include <QLabel>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 namespace App {
 class Expression;
@@ -39,7 +39,7 @@ class GuiExport ExpressionBinding
 {
 public:
     ExpressionBinding();
-    ~ExpressionBinding();
+    virtual ~ExpressionBinding();
 
     virtual void bind(const App::ObjectIdentifier & _path);
     virtual void bind(const App::Property & prop);
@@ -49,19 +49,19 @@ public:
     bool hasExpression() const;
 
     QPixmap getIcon(const char *name, const QSize &size) const;
-   
-    //auto apply means that the python code is issued not only on apply() but 
+
+    //auto apply means that the python code is issued not only on apply() but
     //also on setExpression
     bool autoApply() const {return m_autoApply;};
     void setAutoApply(bool value) {m_autoApply = value;};
-    
+
 protected:
     const App::ObjectIdentifier & getPath() const { return path; }
     boost::shared_ptr<App::Expression> getExpression() const;
     std::string getExpressionString(bool no_throw=true) const;
     std::string getEscapedExpressionString() const;
     virtual void setExpression(boost::shared_ptr<App::Expression> expr);
-    
+
     //gets called when the bound expression is changed, either by this binding or any external action
     virtual void onChange() {};
 

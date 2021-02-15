@@ -20,25 +20,24 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_rectangle function.
-"""
+"""Provides functions to create Rectangle objects."""
 ## @package make_rectangle
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_rectangle function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftutils.utils import type_check
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.rectangle import Rectangle
+
 if App.GuiUp:
     from draftviewproviders.view_rectangle import ViewProviderRectangle
 
 
-def make_rectangle(length, height, placement=None, face=None, support=None):
+def make_rectangle(length, height=0, placement=None, face=None, support=None):
     """makeRectangle(length, width, [placement], [face])
 
     Creates a Rectangle object with length in X direction and height in Y
@@ -54,13 +53,29 @@ def make_rectangle(length, height, placement=None, face=None, support=None):
     face : Bool
         If face is False, the rectangle is shown as a wireframe, 
         otherwise as a face.
+        
+    Rectangles can also be constructed by giving them a list of four vertices
+    as first argument: makeRectangle(list_of_vertices,face=...)
+    but you are responsible to check yourself that these 4 vertices are ordered
+    and actually form a rectangle, otherwise the result might be wrong. Placement
+    is ignored when constructing a rectangle this way (face argument is kept).
     """
 
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    if placement: type_check([(placement,App.Placement)], "make_rectangle")
+    if isinstance(length,(list,tuple)) and (len(length) == 4):
+        verts = length
+        xv = verts[1].sub(verts[0])
+        yv = verts[3].sub(verts[0])
+        zv = xv.cross(yv)
+        rr = App.Rotation(xv,yv,zv,"XYZ")
+        rp = App.Placement(verts[0],rr)
+        return makeRectangle(xv.Length,yv.Length,rp,face,support)
+
+    if placement:
+        utils.type_check([(placement,App.Placement)], "make_rectangle")
 
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
     Rectangle(obj)
@@ -76,10 +91,12 @@ def make_rectangle(length, height, placement=None, face=None, support=None):
 
     if App.GuiUp:
         ViewProviderRectangle(obj.ViewObject)
-        format_object(obj)
-        select(obj)
+        gui_utils.format_object(obj)
+        gui_utils.select(obj)
 
     return obj
 
 
 makeRectangle = make_rectangle
+
+## @}

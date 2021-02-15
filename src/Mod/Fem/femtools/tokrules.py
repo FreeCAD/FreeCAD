@@ -21,9 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FEM Utilities"
+__title__  = "FEM Utilities"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 tokens = (
     'NAME',

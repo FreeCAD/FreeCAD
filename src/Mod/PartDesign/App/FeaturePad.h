@@ -40,10 +40,12 @@ class PartDesignExport Pad : public ProfileBased
 public:
     Pad();
 
-    App::PropertyEnumeration    Type;
-    App::PropertyLength         Length;
-    App::PropertyLength         Length2;
-    App::PropertyLength         Offset;
+    App::PropertyEnumeration Type;
+    App::PropertyLength      Length;
+    App::PropertyLength      Length2;
+    App::PropertyBool        UseCustomVector;
+    App::PropertyVector      Direction;
+    App::PropertyLength      Offset;
 
     /** @name methods override feature */
     //@{

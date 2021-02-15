@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -237,7 +235,7 @@ class ViewProviderArray:
 class CommandPathArray:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Array',
+        return {'Pixmap': 'Path_Array',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Array", "Array"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Array", "Creates an array from a selected path")}
 

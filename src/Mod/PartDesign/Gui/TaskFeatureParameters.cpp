@@ -27,7 +27,7 @@
 #endif
 
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -106,15 +106,14 @@ bool TaskDlgFeatureParameters::accept() {
             throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
-        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
-
-        FCMD_OBJ_HIDE(previous);
-
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+        Gui::cmdAppDocument(feature, "recompute()");
 
         if (!feature->isValid()) {
             throw Base::RuntimeError(vp->getObject()->getStatusString());
         }
+
+        App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
+        Gui::cmdAppObjectHide(previous);
 
         // detach the task panel from the selection to avoid to invoke
         // eventually onAddSelection when the selection changes
@@ -125,7 +124,7 @@ bool TaskDlgFeatureParameters::accept() {
                 param->detachSelection();
         }
 
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::cmdGuiDocument(feature, "resetEdit()");
         Gui::Command::commitCommand();
     } catch (const Base::Exception& e) {
         // Generally the only thing that should fail is feature->isValid() others should be fine

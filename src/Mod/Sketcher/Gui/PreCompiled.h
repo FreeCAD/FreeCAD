@@ -67,7 +67,7 @@
 
 // Boost
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #ifdef FC_OS_WIN32
@@ -76,7 +76,7 @@
 #endif
 
 // OCC
-#include <TopoDS_Shape.hxx>
+#include <Standard_Version.hxx>
 #include <GC_MakeEllipse.hxx>
 #include <BRep_Tool.hxx>
 #include <gp_Pnt.hxx>
@@ -87,6 +87,7 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 
 // Qt Toolkit
@@ -94,6 +95,7 @@
 # include <Gui/Qt4All.h>
 #endif
 
+# include <QGuiApplication>
 # include <QMessageBox>
 #include <qdebug.h>
 #include <QString>

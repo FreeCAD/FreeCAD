@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Barrido del croquis seleccionado a lo largo de un camino o de otros perfiles</translation>
+      <translation>Barrer un boceto seleccionado a través de una trayectoria u otros bocetos</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation>Crear un nuevo sistema de coordenadas locales</translation>
+      <translation>Crear un nuevo sistema de coordenadas</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Migrar documentos al flujo de trabajo PartDesign moderno</translation>
+      <translation>Migrar documentos al banco de trabajo PartDesign</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Mirrored</source>
-      <translation>Reflejar</translation>
+      <translation>Simetrico</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1879"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="690"/>
       <source>Moves the selected object to another body</source>
-      <translation>Se mueve el objeto seleccionado a otro cuerpo</translation>
+      <translation>Mueve el objeto seleccionado a otro cuerpo</translation>
     </message>
   </context>
   <context>

@@ -22,11 +22,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides tools for creating circles with the Draft Workbench."""
+"""Provides GUI tools to create Circle objects."""
 ## @package gui_circles
-# \ingroup DRAFT
-# \brief Provides tools for creating circlres with the Draft Workbench.
+# \ingroup draftguitools
+# \brief Provides GUI tools to create Circle objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -71,13 +73,13 @@ class Circle(gui_arcs.Arc):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a circle (full circular arc).\n"
-                "CTRL to snap, ALT to select tangent objects.")
 
         return {'Pixmap': 'Draft_Circle',
                 'Accel': "C, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Circle", "Circle"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Circle", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Circle", "Creates a circle (full circular arc).\nCTRL to snap, ALT to select tangent objects.")}
 
 
 Gui.addCommand('Draft_Circle', Circle())
+
+## @}

@@ -108,7 +108,7 @@ else(Netgen_FOUND)
 
   IF(NOT NGLIB_INCLUDE_DIR AND NOT NETGEN_DIR_include)
       MESSAGE(STATUS "Cannot find NETGEN header files.")
-  ELSE()
+  ELSEIF(NOT NETGEN_VERSION)
       file(STRINGS ${NETGEN_DIR_include}/mydefs.hpp NETGEN_VERSION
           REGEX "#define PACKAGE_VERSION.*"
       )
@@ -129,23 +129,27 @@ endif(Netgen_FOUND)
 
 # Package-provided cMake file is not enough
 IF(Netgen_FOUND)
-  IF(NETGEN_VERSION)
-      string(REGEX MATCHALL "[0-9]+" NETGEN_VERSION_expr ${NETGEN_VERSION})
-      list(LENGTH NETGEN_VERSION_expr NETGEN_VERSION_COUNT)
-      list(GET NETGEN_VERSION_expr 0 NETGEN_VERSION_MAJOR)
-      IF(NETGEN_VERSION_COUNT GREATER 1)
-          list(GET NETGEN_VERSION_expr 1 NETGEN_VERSION_MINOR)
-      ELSE()
-          set(NETGEN_VERSION_MINOR 0)
-      ENDIF()
-  ELSE()  # workaround for netgen 6.2 and newer. currently there is no easy way to detect the version
-      # better use "find_package(netgen CONFIG REQUIRED)"
-      set(NETGEN_VERSION_MAJOR 6)
-      set(NETGEN_VERSION_MINOR 2)
+  IF(NOT NETGEN_VERSION_MAJOR)
+    IF(NETGEN_VERSION)
+        string(REGEX MATCHALL "[0-9]+" NETGEN_VERSION_expr ${NETGEN_VERSION})
+        list(LENGTH NETGEN_VERSION_expr NETGEN_VERSION_COUNT)
+        list(GET NETGEN_VERSION_expr 0 NETGEN_VERSION_MAJOR)
+        IF(NETGEN_VERSION_COUNT GREATER 1)
+            list(GET NETGEN_VERSION_expr 1 NETGEN_VERSION_MINOR)
+        ELSE()
+            set(NETGEN_VERSION_MINOR 0)
+        ENDIF()
+    ELSE()  # workaround for netgen 6.2 and newer. currently there is no easy way to detect the version
+        # better use "find_package(netgen CONFIG REQUIRED)"
+        set(NETGEN_VERSION_MAJOR 6)
+        set(NETGEN_VERSION_MINOR 2)
+    ENDIF()
+    set(NETGEN_VERSION_PATCH 0)
   ENDIF()
 
-  MATH(EXPR NETGEN_VERSION_C "(${NETGEN_VERSION_MAJOR} << 16) + (${NETGEN_VERSION_MINOR} << 8)")
+  MATH(EXPR NETGEN_VERSION_C "(${NETGEN_VERSION_MAJOR} << 16) + (${NETGEN_VERSION_MINOR} << 8) + (${NETGEN_VERSION_PATCH})")
   MATH(EXPR NETGEN_VERSION_62 "(6 << 16) + (2 << 8)")
+  MATH(EXPR NETGEN_VERSION_62_2004 "(6 << 16) + (2 << 8) + (2004)")
   IF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
     IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         # Clang sometimes fails to include <cstdio>

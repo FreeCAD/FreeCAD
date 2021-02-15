@@ -149,10 +149,10 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
     double sourceHeight = 0.0;
     double sourceAngle  = 45.0;
     if (sourceCam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        oCam = dynamic_cast<SoOrthographicCamera*>(sourceCam);
+        oCam = static_cast<SoOrthographicCamera*>(sourceCam);
         sourceHeight = oCam->height.getValue();
     } else if (sourceCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) { 
-        pCam = dynamic_cast<SoPerspectiveCamera*>(sourceCam);
+        pCam = static_cast<SoPerspectiveCamera*>(sourceCam);
         sourceAngle = pCam->heightAngle.getValue();
     }
     oCam = nullptr;
@@ -197,11 +197,11 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
     svgCam->focalDistance.setValue(sourceFocal);
     svgCam->aspectRatio.setValue(sourceAspect);
     if (svgCam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        SoOrthographicCamera* oSvgCam = dynamic_cast<SoOrthographicCamera*>(svgCam);
+        SoOrthographicCamera* oSvgCam = static_cast<SoOrthographicCamera*>(svgCam);
         double newHeight = sourceHeight * zoomFactor;
         oSvgCam->height.setValue(newHeight);
     } else if (svgCam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) { 
-        SoPerspectiveCamera* vSvgCam = dynamic_cast<SoPerspectiveCamera*>(svgCam);
+        SoPerspectiveCamera* vSvgCam = static_cast<SoPerspectiveCamera*>(svgCam);
         vSvgCam->heightAngle.setValue(sourceAngle);
     }
 

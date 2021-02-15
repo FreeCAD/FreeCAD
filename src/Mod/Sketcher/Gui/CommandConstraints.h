@@ -31,7 +31,7 @@ namespace SketcherGui {
 
 bool checkBothExternal(int GeoId1, int GeoId2);
 
-bool checkBothExternalOrConstructionPoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2);
+bool checkBothExternalOrBSplinePoints(const Sketcher::SketchObject* Obj,int GeoId1, int GeoId2);
 
 bool isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId);
 
@@ -47,10 +47,17 @@ bool inline isEdge(int GeoId, Sketcher::PointPos PosId);
 
 bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId);
 
-bool isConstructionPoint(const Sketcher::SketchObject* Obj, int GeoId);
+bool isBsplineKnot(const Sketcher::SketchObject* Obj, int GeoId);
 
 bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos PosIdPoint, Sketcher::SketchObject* Obj);
 
+bool isBsplinePole(const Part::Geometry * geo);
+
+bool isBsplinePole(const Sketcher::SketchObject* Obj, int GeoId);
+
+/// Release any currently-active handler for the document.
+/// Returns true if a handler was released, and false if not
+bool ReleaseHandler(Gui::Document* doc);
 
 // These functions are declared here to promote code reuse from other modules
 

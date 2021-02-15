@@ -20,17 +20,18 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_block function.
-"""
+"""Provides functions to create Block objects."""
 ## @package make_block
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_block function.
+# \ingroup draftmake
+# \brief Provides functions to create Block objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
-from draftutils.gui_utils import select
+import draftutils.gui_utils as gui_utils
 
 from draftobjects.block import Block
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraftPart
 
@@ -56,8 +57,10 @@ def make_block(objectslist):
         ViewProviderDraftPart(obj.ViewObject)
         for o in objectslist:
             o.ViewObject.Visibility = False
-        select(obj)
+        gui_utils.select(obj)
     return obj
 
 
 makeBlock = make_block
+
+## @}

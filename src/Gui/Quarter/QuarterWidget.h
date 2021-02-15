@@ -81,9 +81,9 @@ class QUARTER_DLL_API QuarterWidget : public QGraphicsView {
 
 
 public:
-  explicit QuarterWidget(QWidget * parent = 0, const QtGLWidget * sharewidget = 0, Qt::WindowFlags f = 0);
-  explicit QuarterWidget(QtGLContext * context, QWidget * parent = 0, const QtGLWidget * sharewidget = 0, Qt::WindowFlags f = 0);
-  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = 0, const QtGLWidget * shareWidget = 0, Qt::WindowFlags f = 0);
+  explicit QuarterWidget(QWidget * parent = 0, const QtGLWidget * sharewidget = 0, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(QtGLContext * context, QWidget * parent = 0, const QtGLWidget * sharewidget = 0, Qt::WindowFlags f = Qt::WindowFlags());
+  explicit QuarterWidget(const QtGLFormat & format, QWidget * parent = 0, const QtGLWidget * shareWidget = 0, Qt::WindowFlags f = Qt::WindowFlags());
   virtual ~QuarterWidget();
 
   enum TransparencyType {

@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Ek Ofseti (yerel koordinatlarda):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
@@ -127,6 +127,15 @@
       <translation>Bileşik Filtre</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
+      <source>Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+      <translation>Hacim, alan veya uzunluk gibi özelliklere göre ya da belirgin ögeleri seçerek, seçilen birleşikten nesneleri süz.
+Eğer ikinci bir nesne seçiliyse bu, başvuru ögesi olarak kullanılacak. Örneğin çakışma veya mesafe süzme için.</translation>
+    </message>
+    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
       <translation>Bileşik Filtre: bir bileşikten bazı bağımlılıkları (childs) çıkarın</translation>
@@ -135,6 +144,11 @@
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
       <translation>Öncelikle bileşik olan bir şekil seçin! İkinci seçilen öğe (isteğe bağlı) bir şablon olarak ele alınacaktır.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
+      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+      <translation>Önce, birleşik olan bir şekil seçin. İkinci bir nesne seçilirse (isteğe bağlı) buna, şablon olarak davranılacak.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -161,11 +175,11 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
 {errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Sonucu hesaplanırken bşr hata oluştu:
 
-{errstr}
+{Errstr}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Buna rağmen özelliği oluşturmak için 'Devam'a, iptal etmek için' İptal'e tıklayın.</translation>
     </message>
   </context>
   <context>
@@ -176,6 +190,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation>Bileşiği patlat</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
+      <source>Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</source>
+      <translation>Şekiller birleşimini ayrı nesneler halinde ayır.
+Bu işlem her bir şekil için 'Birleşim Süzgeci' oluşturacak.</translation>
+    </message>
+    <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
       <source>Explode compound: split up a list of shapes into separate objects</source>
       <translation>Bileşiği patlat: Bir şekil listesini, ayrı nesnelere böler</translation>
@@ -184,6 +205,11 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
       <translation>Öncelikle, bileşik olan bir şekil seçin!</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>First select a shape that is a compound.</source>
+      <translation>Önce bileşik olan bir şekil seçin.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -233,6 +259,29 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
   <context>
     <name>Part_JoinFeatures</name>
     <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Sonuçları hesaplama işlemi hatayla sonuçlandı:
+
+{err}
+
+Özelliği yine de oluşturmak için 'Devam et' e, iptal etmek için 'Vazgeç' e tıklayın.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation>Kötü seçim</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation>Devam</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
       <source>Computing the result failed with an error: 
 
@@ -246,19 +295,14 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
  Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek için' İptal et'i tıklayın.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Kötü seçim</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Devam</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
       <translation>Öncelikle en az iki nesne ya da bir veya daha fazla bileşik seçin!</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>En az iki nesne ya da bir veya birden fazla birleşik parça seçin</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
@@ -266,26 +310,123 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <translation>Temel nesneyi, ardından yerleştirilecek nesneyi seçin ve bu aracı çalıştırın.</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Temel nesneyi, sonra gömülecek nesneyi seçin; daha sonra bu aracı başlatın.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
       <translation>Bir kesim yapmak için nesneyi seçin, ardından kesime uyması gereken nesneyi seçin ve bu aracı çalıştırın.</translation>
     </message>
-  </context>
-  <context>
-    <name>Part_MakeTube</name>
     <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
-      <source>Create tube</source>
-      <translation>Boru oluştur</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
-      <source>Creates a tube</source>
-      <translation>Bir boru oluşturur</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Oyulacak nesneyi seçin, sonra oyuğa uydurulması gereken nesneyi seçin ve bu aracı başlatın.</translation>
     </message>
   </context>
   <context>
     <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Sonuçları hesaplama işlemi hatayla sonuçlandı:
+
+{err}
+
+Özelliği yine de oluşturmak için 'Devam et' e, iptal etmek için 'Vazgeç' e tıklayın.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Kötü seçim</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Devam</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
+      <source>Boolean fragments</source>
+      <translation>Mantıksal (Boolean) parçalar</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Seçilen bir veya daha fazla nesneden ya da bir birleşik içindeki şekillerden 'Mantıksal Parçalar' nesnesi oluştur.
+Bu mantıksal bir birleşmedir; daha sonra orijinal şekillerin kesişimlerinde bölünür.
+Bölünen parçaları elde etmek için 'Birleşik Süzgeci' kullanılabilir.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>En azından iki nesne veya bir ya da daha fazla birleşik seçin. Eğer sadece bir birleşik seçilirse, birleştirilmiş şekiller birbiri arasında kesiştirilecektir (diğer yandan, kendileriyle kesişen birleşikler geçersizdir).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Bileşiği dilimle</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Kesme aracı olarak diğer nesneleri kullanıp seçilen nesneyi bölümleyin.
+Sonuçta oluşan parçalar bir birleşikte depolanacaktır.
+Bölümleri nesneden çıkarmak için 'Birleşik Filtresi' kullanılabilir.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>En az iki nesne seçin. İlki bölümlenecek nesne, diğerleri ise bölümlemede kullanılacak nesnelerdir.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Dilimle</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Mantıksal (Boolean) Parçalar</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Nesnelerin kesiştiği yerlerden ayır</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Nesneyi, diğer nesnelerle kesişme noktalarına göre bölün ve parçaları bir bileşene yerleştirin.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Nesneyi, diğer nesnelerle kesişme noktalarına göre bölün.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Öncelikle en az iki nesne seçin! İlk seçilen, dilimlenecek nesne; gerisi ise dilimlemek için kullanılacak nesnelerdir.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Seçilen bir nesneyi diğer nesnelerle dilimleyin ve ayırın.
+Her dilim için bir 'Bileşik Filtre' oluşturacaktır.</translation>
+    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
       <source>Computing the result failed with an error: 
@@ -300,24 +441,9 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek için' İptal et'i tıklayın.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Kötü seçim</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Devam</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Mantıksal (Boolean) Parçalar</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Nesnelerin kesiştiği yerlerden ayır</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Kesişen parçaları kaldır</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -325,39 +451,514 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <translation>Öncelikle en az iki nesne ya da bir veya daha fazla bileşik seçin! Yalnızca bir bileşik seçilirse, bileşik şekiller birbirleri arasında kesişir (aksi halde, kendi kesişen bileşikler geçersiz olur).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Bileşiği dilimle</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
-      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation>Nesneyi, diğer nesnelerle kesişme noktalarına göre bölün ve parçaları bir bileşene yerleştirin.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Öncelikle en az iki nesne seçin! İlk seçilen, dilimlenecek nesne; gerisi ise dilimlemek için kullanılacak nesnelerdir.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Parçalara ayır</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
-      <source>Split object by intersections with other objects.</source>
-      <translation>Nesneyi, diğer nesnelerle kesişme noktalarına göre bölün.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation>Mantıksal XOR</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
-      <source>Remove intersection fragments</source>
-      <translation>Kesişen parçaları kaldır</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>İki veya daha fazla seçilen nesne ile ya da bir birleşik içerisindeki şekillerle 'özel bir OR' mantıksal işlemi gerçekleştirin.
+Bu; şekillerin örtüşen hacimleri kaldırılacak anlamına gelir.
+Kalan parçaları çıkarmak için 'Birleşik Filtresi' kullanılabilir.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Boru oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Bir boru oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="51"/>
+      <source>Create tube</source>
+      <translation>Boru oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
+      <source>Edit %1</source>
+      <translation>%1'i düzenle</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="210"/>
+      <location filename="../../AppPartGui.cpp" line="211"/>
+      <source>Part design</source>
+      <translation>Parça tasarımı</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="212"/>
+      <location filename="../../AppPartGui.cpp" line="213"/>
+      <source>Import-Export</source>
+      <translation>İçe-Dışa Aktar</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="214"/>
+      <source>Display</source>
+      <translation>Ekran</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="284"/>
+      <location filename="../../Command.cpp" line="381"/>
+      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="902"/>
+      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="2074"/>
+      <source>Wrong selection</source>
+      <translation>Yanlış seçim</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="285"/>
+      <location filename="../../Command.cpp" line="954"/>
+      <source>Select two shapes please.</source>
+      <translation>İki şekli seçin lütfen.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="499"/>
+      <source>Non-solids selected</source>
+      <translation>Katılar seçilmedi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="500"/>
+      <source>The use of non-solids for boolean operations may lead to unexpected results.
+Do you want to continue?</source>
+      <translation>Boole işlemleri için katı olmayanların kullanılması beklenmedik sonuçlara neden olabilir.
+Devam etmek istiyor musun?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="382"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
+      <translation>İki şekil seçin veya daha fazla, lütfen. Veya ortak arasında hesaplamak için iki veya daha fazla şekil içeren bir bileşik seçin.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="484"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation>İki şekil seçin veya daha fazla, lütfen. Veya kaynaştırılacak iki veya daha fazla şekil içeren bir bileşik seçin.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="903"/>
+      <source>Select one shape or more, please.</source>
+      <translation>Bir şekil seçin veya daha fazla, lütfen.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1107"/>
+      <source>All CAD Files</source>
+      <translation>Tüm CAD Dosyaları</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1112"/>
+      <source>All Files</source>
+      <translation>Tüm Dosyalar</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2075"/>
+      <source>You have to select either two edges or two wires.</source>
+      <translation>İki kenarı veya iki çizgiyi seçtiniz.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="120"/>
+      <source>Sewing Tolerance</source>
+      <translation>Dikiş Toleransı</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="121"/>
+      <source>Enter tolerance for sewing shape:</source>
+      <translation>Dikiş şekli toleransını girin:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="71"/>
+      <location filename="../../TaskAttacher.cpp" line="104"/>
+      <source>No reference selected</source>
+      <translation>Seçilen referans yok</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <source>Face</source>
+      <translation>Yüz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <source>Edge</source>
+      <translation>Kenar</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="86"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <source>Vertex</source>
+      <translation type="unfinished">Vertex</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <source>Compound</source>
+      <translation>Bileşik</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <source>Compound Solid</source>
+      <translation>Bileşik Katı</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <source>Solid</source>
+      <translation>Katı</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <source>Shell</source>
+      <translation>Kabuk</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <source>Wire</source>
+      <translation>Yay</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+      <source>Shape</source>
+      <translation>Şekil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <source>No Error</source>
+      <translation>Hata yok</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <source>Invalid Point On Curve</source>
+      <translation>Eğri Üzerindeki Geçersiz Nokta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Yüzey Üzerindeki Eğri Üzerindeki Geçersiz Nokta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <source>Invalid Point On Surface</source>
+      <translation>Yüzey Üzerinde Geçersiz Nokta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <source>No 3D Curve</source>
+      <translation>3D Eğri Yok</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <source>Multiple 3D Curve</source>
+      <translation>Birden fazla 3D Eğri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <source>Invalid 3D Curve</source>
+      <translation>Geçersiz 3D Eğri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <source>No Curve On Surface</source>
+      <translation>Yüzey Üzerinde Eğri Yok</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <source>Invalid Curve On Surface</source>
+      <translation>Yüzey Üzerinde Geçersiz Eğri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Kapalı Yüzey Üzerinde Geçersiz Eğri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <source>Invalid Same Range Flag</source>
+      <translation>Geçersiz Aynı Aralık İşareti</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Geçersiz Aynı Parametre Bayrağı</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Geçersiz Dejenere Bayrak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <source>Free Edge</source>
+      <translation>Serbest kenar</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <source>Invalid MultiConnexity</source>
+      <translation>Geçersiz Çoklu Bağımlık</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <source>Invalid Range</source>
+      <translation>Geçersiz Aralık</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <source>Empty Wire</source>
+      <translation>Boş tel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <source>Redundant Edge</source>
+      <translation>Yedekli Kenar</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <source>Self Intersecting Wire</source>
+      <translation>Kendiliğinden Kesişen Tel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <source>No Surface</source>
+      <translation>Yüz Yok</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <source>Invalid Wire</source>
+      <translation>Geçersiz Tel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <source>Redundant Wire</source>
+      <translation>Yedek Tel</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <source>Intersecting Wires</source>
+      <translation>Kesişen Teller</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Kabloların Geçersiz İmbrication</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <source>Empty Shell</source>
+      <translation>Boş kabuk</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <source>Redundant Face</source>
+      <translation>Yedek Yüz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <source>Unorientable Shape</source>
+      <translation>Kayıtsız Şekil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <source>Not Closed</source>
+      <translation>Kapalı değil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <source>Not Connected</source>
+      <translation>Bağlı değil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <source>Sub Shape Not In Shape</source>
+      <translation>Şekil Alt Değil Şekil Değil</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <source>Bad Orientation</source>
+      <translation>Kötü Oryantasyon</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Alt Şekilın Kötü Yönlendirilmesi</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <source>Invalid Tolerance Value</source>
+      <translation>Geçersiz Tolerans Değeri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <source>Check Failed</source>
+      <translation>Kontrol Edilemedi</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
+      <source>No Result</source>
+      <translation>Sonuç yok</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
+      <source>Out Of Enum Range: </source>
+      <translation>Enum Aralığı: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+      <source>BOPAlgo CheckUnknown</source>
+      <translation>BOPAlgo BilinmeyeniKontrolEdin</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+      <source>BOPAlgo BadType</source>
+      <translation>BOPAlgo KötüTip</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <source>BOPAlgo SelfIntersect</source>
+      <translation>BOPAlgo KendiniKesiş</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <source>BOPAlgo TooSmallEdge</source>
+      <translation>BOPAlgo ÇokKüçükKenar</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <source>BOPAlgo NonRecoverableFace</source>
+      <translation>BOPAlgo KurtarılamayanYüz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <source>BOPAlgo IncompatibilityOfVertex</source>
+      <translation>BOPAlgo GeçilmezlikOfVereksleri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <source>BOPAlgo IncompatibilityOfEdge</source>
+      <translation>BOPAlgo UyuşmazlıkDefteri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <source>BOPAlgo IncompatibilityOfFace</source>
+      <translation>BOPAlgo UyuşmazlıkFonu</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <source>BOPAlgo OperationAborted</source>
+      <translation>BOPAlgo OperasyonuKapalı</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
+      <source>BOPAlgo GeomAbs_C0</source>
+      <translation>BOPAlgo GeomAbs_C0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
+      <source>BOPAlgo_InvalidCurveOnSurface</source>
+      <translation>BOPAlgo_YüzeyÜzerindeGeçersizEğri</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <source>BOPAlgo NotValid</source>
+      <translation>BOPAlgo Geçersiz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
+      <source>Invalid</source>
+      <translation>Geçersiz</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="556"/>
+      <location filename="../../TaskDimension.cpp" line="1602"/>
+      <source>Selections</source>
+      <translation>Seçimler</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="563"/>
+      <location filename="../../TaskDimension.cpp" line="1609"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1340"/>
+      <source>Reset Dialog</source>
+      <translation>İletişim Kutusunu Sıfırla</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1344"/>
+      <source>Toggle 3d</source>
+      <translation>3d'yi aç / kapat</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1349"/>
+      <source>Toggle Delta</source>
+      <translation>Delta'ya Geçiş Yap</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1354"/>
+      <source>Clear All</source>
+      <translation>Hepsini temizle</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="847"/>
+      <source>Set colors...</source>
+      <translation>Renkleri ayarla...</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="79"/>
+      <source>Edit mirror plane</source>
+      <translation>Ayna düzlemini düzenle</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="276"/>
+      <source>Edit fillet edges</source>
+      <translation>Dolgu kenarlarını düzenleme</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="379"/>
+      <source>Edit chamfer edges</source>
+      <translation>Kenarların pahını düzenle</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="520"/>
+      <source>Edit offset</source>
+      <translation>Ofseti düzenle</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="606"/>
+      <source>Edit thickness</source>
+      <translation>Kalınlığı düzenleme</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="81"/>
+      <source>Show control points</source>
+      <translation>Kontrol noktalarını göster</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="59"/>
+      <source>Create tube</source>
+      <translation>Boru oluştur</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Bir boru oluşturur</translation>
     </message>
   </context>
   <context>
@@ -402,7 +1003,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <location filename="../../AttacherTexts.cpp" line="319"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
-      <translation>Çember</translation>
+      <translation>Daire</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="320"/>
@@ -456,7 +1057,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <location filename="../../AttacherTexts.cpp" line="329"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
-      <translation>Simit</translation>
+      <translation>Halka</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="330"/>
@@ -667,7 +1268,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <location filename="../../AttacherTexts.cpp" line="212"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Eğrinin Ekseni</translation>
+      <translation>Eğrilik Ekseni</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="213"/>
@@ -1549,12 +2150,12 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../Command.cpp" line="2139"/>
       <source>Color per face</source>
-      <translation>Yüz başına renk</translation>
+      <translation>Yüzey rengi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2140"/>
       <source>Set color per face</source>
-      <translation>Yüz başına renk ayarla</translation>
+      <translation>Yüzey rengini ayarla</translation>
     </message>
   </context>
   <context>
@@ -1981,12 +2582,12 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../Command.cpp" line="1306"/>
       <source>Extrude...</source>
-      <translation>Patlat...</translation>
+      <translation>Uzat...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1307"/>
       <source>Extrude a selected sketch</source>
-      <translation>Seçili bir eskiza kalınlık ver</translation>
+      <translation>Seçili bir eskize kalınlık ver</translation>
     </message>
   </context>
   <context>
@@ -2125,7 +2726,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../Command.cpp" line="1468"/>
       <source>Mirroring...</source>
-      <translation>Aynalanıyor...</translation>
+      <translation>Aynala...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1469"/>
@@ -2287,12 +2888,12 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../Command.cpp" line="941"/>
       <source>Section</source>
-      <translation>Bölüm</translation>
+      <translation>Kesişim</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
       <source>Make a section of two shapes</source>
-      <translation>İki şeklin bölümünü oluştur</translation>
+      <translation>İki şeklin kesişimini oluştur</translation>
     </message>
   </context>
   <context>
@@ -2433,7 +3034,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <location filename="../../CommandParametric.cpp" line="222"/>
       <location filename="../../CommandParametric.cpp" line="227"/>
       <source>Torus</source>
-      <translation>Simit</translation>
+      <translation>Halka</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="212"/>
@@ -2559,7 +3160,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Bölümler</translation>
+      <translation>Kesişimler</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -2592,7 +3193,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
       <source>Section</source>
-      <translation>Bölüm</translation>
+      <translation>Kesişim</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="39"/>
@@ -2852,7 +3453,9 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation>Ekstrüzyon oluşturulurken hata oluştu</translation>
+      <translation>Ekstrüzyon oluşturma işlemi başarısız oldu.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
@@ -2992,7 +3595,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <location filename="../../DlgFilletEdges.cpp" line="835"/>
       <source>Start length</source>
-      <translation>Başlama uzunluğu</translation>
+      <translation>Başlangıç uzunluğu</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
@@ -3416,13 +4019,13 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <location filename="../../DlgPrimitives.ui" line="78"/>
       <location filename="../../DlgPrimitives.cpp" line="475"/>
       <source>Ellipsoid</source>
-      <translation>Elipsoid</translation>
+      <translation>Elipsoit</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
       <location filename="../../DlgPrimitives.cpp" line="495"/>
       <source>Torus</source>
-      <translation>Simit</translation>
+      <translation>Halka</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
@@ -3452,7 +4055,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <location filename="../../DlgPrimitives.ui" line="132"/>
       <location filename="../../DlgPrimitives.cpp" line="594"/>
       <source>Circle</source>
-      <translation>Çember</translation>
+      <translation>Daire</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
@@ -3809,7 +4412,9 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Devir ekseni bağlantısı geçersiz</translation>
+      <translation>Devir ekseni bağlantısı geçersiz.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
@@ -3827,7 +4432,9 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Dönme başarısız oldu</translation>
+      <translation>Döndürerek katılama başarısız oldu.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
@@ -4468,7 +5075,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>
       <source>%1 (add %2)</source>
-      <translation>% 1 (% 2 ekle)</translation>
+      <translation>%1 (%2 ekle)</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="826"/>
@@ -4510,7 +5117,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../TaskFaceColors.ui" line="14"/>
       <source>Set color per face</source>
-      <translation>Yüz başına renk ayarla</translation>
+      <translation>Yüzey rengini ayarla</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
@@ -4781,465 +5388,6 @@ bir veya daha fazla profil seçin ilave kenar veya tel seçin.</translation>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Yüzleri deliklerle destekleme desteği, iç içe yerleştirmeyi desteklemez.</translation>
-    </message>
-  </context>
-  <context>
-    <name>QObject</name>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="210"/>
-      <location filename="../../AppPartGui.cpp" line="211"/>
-      <source>Part design</source>
-      <translation>Parça tasarımı</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <source>Import-Export</source>
-      <translation>İçe-Dışa Aktar</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <source>Display</source>
-      <translation>Ekran</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="284"/>
-      <location filename="../../Command.cpp" line="381"/>
-      <location filename="../../Command.cpp" line="483"/>
-      <location filename="../../Command.cpp" line="902"/>
-      <location filename="../../Command.cpp" line="953"/>
-      <location filename="../../Command.cpp" line="2074"/>
-      <source>Wrong selection</source>
-      <translation>Yanlış seçim</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="285"/>
-      <location filename="../../Command.cpp" line="954"/>
-      <source>Select two shapes please.</source>
-      <translation>İki şekli seçin lütfen.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="295"/>
-      <location filename="../../Command.cpp" line="397"/>
-      <location filename="../../Command.cpp" line="499"/>
-      <source>Non-solids selected</source>
-      <translation>Katılar seçilmedi</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="296"/>
-      <location filename="../../Command.cpp" line="398"/>
-      <location filename="../../Command.cpp" line="500"/>
-      <source>The use of non-solids for boolean operations may lead to unexpected results.
-Do you want to continue?</source>
-      <translation>Boole işlemleri için katı olmayanların kullanılması beklenmedik sonuçlara neden olabilir.
-Devam etmek istiyor musun?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="382"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>İki şekil seçin veya daha fazla, lütfen. Veya ortak arasında hesaplamak için iki veya daha fazla şekil içeren bir bileşik seçin.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="484"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>İki şekil seçin veya daha fazla, lütfen. Veya kaynaştırılacak iki veya daha fazla şekil içeren bir bileşik seçin.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="903"/>
-      <source>Select one shape or more, please.</source>
-      <translation>Bir şekil seçin veya daha fazla, lütfen.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1107"/>
-      <source>All CAD Files</source>
-      <translation>Tüm CAD Dosyaları</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1112"/>
-      <source>All Files</source>
-      <translation>Tüm Dosyalar</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2075"/>
-      <source>You have to select either two edges or two wires.</source>
-      <translation>İki kenarı veya iki çizgiyi seçtiniz.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="120"/>
-      <source>Sewing Tolerance</source>
-      <translation>Dikiş Toleransı</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="121"/>
-      <source>Enter tolerance for sewing shape:</source>
-      <translation>Dikiş şekli toleransını girin:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="71"/>
-      <location filename="../../TaskAttacher.cpp" line="104"/>
-      <source>No reference selected</source>
-      <translation>Seçilen referans yok</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
-      <source>Face</source>
-      <translation>Yüz</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
-      <source>Edge</source>
-      <translation>Kenar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="86"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
-      <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
-      <source>Compound</source>
-      <translation>Bileşik</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
-      <source>Compound Solid</source>
-      <translation>Bileşik Katı</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
-      <source>Solid</source>
-      <translation>Katı</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
-      <source>Shell</source>
-      <translation>Kabuk</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
-      <source>Wire</source>
-      <translation>Yay</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
-      <source>Shape</source>
-      <translation>Şekil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
-      <source>No Error</source>
-      <translation>Hata yok</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
-      <source>Invalid Point On Curve</source>
-      <translation>Eğri Üzerindeki Geçersiz Nokta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>Yüzey Üzerindeki Eğri Üzerindeki Geçersiz Nokta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
-      <source>Invalid Point On Surface</source>
-      <translation>Yüzey Üzerinde Geçersiz Nokta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>No 3D Curve</source>
-      <translation>3D Eğri Yok</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Multiple 3D Curve</source>
-      <translation>Birden fazla 3D Eğri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>Invalid 3D Curve</source>
-      <translation>Geçersiz 3D Eğri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>No Curve On Surface</source>
-      <translation>Yüzey Üzerinde Eğri Yok</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>Yüzey Üzerinde Geçersiz Eğri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>Kapalı Yüzey Üzerinde Geçersiz Eğri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid Same Range Flag</source>
-      <translation>Geçersiz Aynı Aralık İşareti</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation>Geçersiz Aynı Parametre Bayrağı</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation>Geçersiz Dejenere Bayrak</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Free Edge</source>
-      <translation>Serbest kenar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid MultiConnexity</source>
-      <translation>Geçersiz Çoklu Bağımlık</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Invalid Range</source>
-      <translation>Geçersiz Aralık</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Empty Wire</source>
-      <translation>Boş tel</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Redundant Edge</source>
-      <translation>Yedekli Kenar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>Self Intersecting Wire</source>
-      <translation>Kendiliğinden Kesişen Tel</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>No Surface</source>
-      <translation>Yüz Yok</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Invalid Wire</source>
-      <translation>Geçersiz Tel</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Redundant Wire</source>
-      <translation>Yedek Tel</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Intersecting Wires</source>
-      <translation>Kesişen Teller</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation>Kabloların Geçersiz İmbrication</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Empty Shell</source>
-      <translation>Boş kabuk</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Redundant Face</source>
-      <translation>Yedek Yüz</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Unorientable Shape</source>
-      <translation>Kayıtsız Şekil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Not Closed</source>
-      <translation>Kapalı değil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Not Connected</source>
-      <translation>Bağlı değil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>Şekil Alt Değil Şekil Değil</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Bad Orientation</source>
-      <translation>Kötü Oryantasyon</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>Alt Şekilın Kötü Yönlendirilmesi</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>Geçersiz Tolerans Değeri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
-      <source>Check Failed</source>
-      <translation>Kontrol Edilemedi</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
-      <source>No Result</source>
-      <translation>Sonuç yok</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
-      <source>Out Of Enum Range: </source>
-      <translation>Enum Aralığı: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo BilinmeyeniKontrolEdin</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo KötüTip</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo KendiniKesiş</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo ÇokKüçükKenar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo KurtarılamayanYüz</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo GeçilmezlikOfVereksleri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo UyuşmazlıkDefteri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo UyuşmazlıkFonu</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo OperasyonuKapalı</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_YüzeyÜzerindeGeçersizEğri</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo Geçersiz</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
-      <source>Invalid</source>
-      <translation>Geçersiz</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="556"/>
-      <location filename="../../TaskDimension.cpp" line="1602"/>
-      <source>Selections</source>
-      <translation>Seçimler</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="563"/>
-      <location filename="../../TaskDimension.cpp" line="1609"/>
-      <source>Control</source>
-      <translation type="unfinished">Control</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1340"/>
-      <source>Reset Dialog</source>
-      <translation>İletişim Kutusunu Sıfırla</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1344"/>
-      <source>Toggle 3d</source>
-      <translation>3d'yi aç / kapat</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1349"/>
-      <source>Toggle Delta</source>
-      <translation>Delta'ya Geçiş Yap</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1354"/>
-      <source>Clear All</source>
-      <translation>Hepsini temizle</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderExt.cpp" line="847"/>
-      <source>Set colors...</source>
-      <translation>Renkleri ayarla...</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="79"/>
-      <source>Edit mirror plane</source>
-      <translation>Ayna düzlemini düzenle</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="276"/>
-      <source>Edit fillet edges</source>
-      <translation>Dolgu kenarlarını düzenleme</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="379"/>
-      <source>Edit chamfer edges</source>
-      <translation>Kenarların pahını düzenle</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="520"/>
-      <source>Edit offset</source>
-      <translation>Ofseti düzenle</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="606"/>
-      <source>Edit thickness</source>
-      <translation>Kalınlığı düzenleme</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpline.cpp" line="81"/>
-      <source>Show control points</source>
-      <translation>Kontrol noktalarını göster</translation>
     </message>
   </context>
   <context>

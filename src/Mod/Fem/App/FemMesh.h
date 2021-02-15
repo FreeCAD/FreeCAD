@@ -32,6 +32,7 @@
 #include <list>
 #include <boost/shared_ptr.hpp>
 #include <SMESH_Version.h>
+#include <SMDSAbs_ElementType.hxx>
 
 class SMESH_Gen;
 class SMESH_Mesh;
@@ -131,6 +132,17 @@ public:
     void transformGeometry(const Base::Matrix4D &rclMat);
     //@}
 
+    /** @name Group management */
+    //@{
+    /// Adds group to mesh
+    int addGroup(const std::string, const std::string, const int=-1);
+    /// Adds elements to group (int due to int used by raw SMESH functions)
+    void addGroupElements(int, const std::set<int>&);
+    /// Remove group (Name due to similarity to SMESH basis functions)
+    bool removeGroup(int);
+    //@}
+
+
     struct FemMeshInfo {
         int numFaces;
         int numNode;
@@ -157,6 +169,7 @@ public:
 private:
     void copyMeshData(const FemMesh&);
     void readNastran(const std::string &Filename);
+    void readNastran95(const std::string &Filename);
     void readZ88(const std::string &Filename);
     void readAbaqus(const std::string &Filename);
 

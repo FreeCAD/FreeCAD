@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+      Father="PyObjectBase"
+      Name="MakePrismPy"
+      PythonName="Part.BRepFeat.MakePrism"
+      Twin="BRepFeat_MakePrism"
+      TwinPointer="BRepFeat_MakePrism"
+      Include="BRepFeat_MakePrism.hxx"
+      Namespace="Part"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+          <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
+          <UserDocu>Describes functions to build prism features.</UserDocu>
+    </Documentation>
+    <Methode Name="init" Keyword="true">
+        <Documentation>
+            <UserDocu>
+Initializes this algorithm for building prisms along surfaces.
+A face Pbase is selected in the shape Sbase
+to serve as the basis for the prism. The orientation
+of the prism will be defined by the vector Direction.
+
+Fuse offers a choice between:
+-   removing matter with a Boolean cut using the setting 0
+-   adding matter with Boolean fusion using the setting 1.
+The sketch face Skface serves to determine
+the type of operation. If it is inside the basis
+shape, a local operation such as glueing can be performed.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="add" Keyword="true">
+        <Documentation>
+            <UserDocu>
+Indicates that the edge will slide on the face.
+Raises ConstructionError if the  face does not belong to the
+basis shape, or the edge to the prismed shape.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="perform" Keyword="true">
+        <Documentation>
+            <UserDocu></UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="performUntilEnd">
+        <Documentation>
+            <UserDocu>
+Realizes a semi-infinite prism, limited by the
+position of the prism base. All other faces extend infinitely.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="performFromEnd">
+        <Documentation>
+            <UserDocu>
+Realizes a semi-infinite prism, limited by the face Funtil.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="performThruAll">
+        <Documentation>
+            <UserDocu>
+Builds an infinite prism. The infinite descendants will not be kept in the result.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="performUntilHeight">
+        <Documentation>
+            <UserDocu>
+Assigns both a limiting shape, Until from TopoDS_Shape
+and a height, Length at which to stop generation of the prism feature.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="curves" Const="true">
+        <Documentation>
+            <UserDocu>
+Returns the list of curves S parallel to the axis of the prism.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="barycCurve" Const="true">
+        <Documentation>
+            <UserDocu>
+Generates a curve along the center of mass of the primitive.
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="shape" Const="true">
+        <Documentation>
+            <UserDocu>Returns a shape built by the shape construction algorithm.</UserDocu>
+        </Documentation>
+    </Methode>
+    </PythonExport>
+</GenerateModel>

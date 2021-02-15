@@ -58,7 +58,11 @@ PP_Run_Method(PyObject *pobject,  const char *method,
     if (PP_DEBUG)                                    /* debug it too? */ 
         presult = PP_Debug_Function(pmeth, pargs); 
     else 
+#if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(pmeth, pargs);   /* run interpreter */
+#else
+        presult = PyObject_CallObject(pmeth, pargs);   /* run interpreter */
+#endif
 
     Py_DECREF(pmeth);
     Py_DECREF(pargs);
@@ -133,7 +137,11 @@ PP_Run_Function(const char *modname, const char *funcname,          /* load from
     if (PP_DEBUG && strcmp(modname, "pdb") != 0)    /* debug this call? */
         presult = PP_Debug_Function(func, args);    /* run in pdb; incref'd */
     else
+#if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(func, args);    /* run function; incref'd */
+#else
+        presult = PyObject_CallObject(func, args);    /* run function; incref'd */
+#endif
 
     Py_DECREF(func);
     Py_DECREF(args);                                    /* result may be None */
@@ -185,7 +193,11 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
     if (PP_DEBUG)                                   /* debug this call? */
         presult = PP_Debug_Function(object, args);  /* run in pdb; incref'd */
     else
+#if PY_VERSION_HEX < 0x03090000
         presult = PyEval_CallObject(object, args);  /* run function; incref'd */
+#else
+        presult = PyObject_CallObject(object, args);  /* run function; incref'd */
+#endif
 
     Py_DECREF(args);                                    /* result may be None */
     return PP_Convert_Result(presult, resfmt, cresult); /* convert result to C*/

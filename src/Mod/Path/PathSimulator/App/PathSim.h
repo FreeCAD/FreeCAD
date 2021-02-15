@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Shsi Seger (shaise at gmail) 2017                       *
+ *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,15 +40,15 @@ namespace PathSimulator
 {
 
     /** The representation of a CNC Toolpath Simulator */
-    
+
 	class PathSimulatorExport PathSim : public Base::BaseClass
     {
         TYPESYSTEM_HEADER();
-    
+
         public:
 			PathSim();
 			~PathSim();
-            
+
 			void BeginSimulation(Part::TopoShape * stock, float resolution);
 			void SetToolShape(const TopoDS_Shape& toolShape, float resolution);
 			Base::Placement * ApplyCommand(Base::Placement * pos, Command * cmd);

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2015 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,9 +37,12 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/Control.h>
 
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+
+#include "TaskHatch.h"
 #include "ViewProviderHatch.h"
 
 using namespace TechDrawGui;
@@ -91,6 +94,45 @@ std::vector<std::string> ViewProviderHatch::getDisplayModes(void) const
     std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
 
     return StrList;
+}
+
+bool ViewProviderHatch::setEdit(int ModNum)
+{
+    Q_UNUSED(ModNum);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    TaskDlgHatch *projDlg = qobject_cast<TaskDlgHatch *>(dlg);
+    if (projDlg && (projDlg->getViewProvider() != this))
+        projDlg = 0; // somebody left task panel open
+
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+
+    // start the edit dialog
+    if (projDlg) {
+        projDlg->setCreateMode(false);
+        Gui::Control().showDialog(projDlg);
+    }
+    else {
+        Gui::Control().showDialog(new TaskDlgHatch(getViewObject(), this, false));
+    }
+
+    return true;
+}
+
+void ViewProviderHatch::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDocumentObject::unsetEdit(ModNum);
+    }
+}
+
+bool ViewProviderHatch::doubleClicked(void)
+{
+    setEdit(0);
+    return true;
 }
 
 void ViewProviderHatch::onChanged(const App::Property* prop)

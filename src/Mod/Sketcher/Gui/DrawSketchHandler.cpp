@@ -29,6 +29,9 @@
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoFont.h>
 # include <QPainter>
+# if QT_VERSION >= 0x050000
+# include <QGuiApplication>
+# endif
 # include <cmath>
 #endif  // #ifndef _PreComp_
 
@@ -91,17 +94,156 @@ int DrawSketchHandler::getHighestCurveIndex(void)
     return sketchgui->getSketchObject()->getHighestCurveIndex();
 }
 
-void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y)
+void DrawSketchHandler::setCrosshairCursor(const char* svgName) {
+    QString cursorName = QString::fromLatin1(svgName);
+    const unsigned long defaultCrosshairColor = 0xFFFFFF;
+    unsigned long color = getCrosshairColor();
+    auto colorMapping = std::map<unsigned long, unsigned long>();
+    colorMapping[defaultCrosshairColor] = color;
+    // hot spot of all SVG icons should be 8,8 for 32x32 size (16x16 for 64x64)
+    int hotX = 8;
+    int hotY = 8;
+    setSvgCursor(cursorName, hotX, hotY, colorMapping);
+}
+
+void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, const std::map<unsigned long, unsigned long>& colorMapping)
+{
+    // The Sketcher_Pointer_*.svg icons have a default size of 64x64. When directly creating
+    // them with a size of 32x32 they look very bad.
+    // As a workaround the icons are created with 64x64 and afterwards the pixmap is scaled to
+    // 32x32. This workaround is only needed if pRatio is equal to 1.0
+    //
+    qreal pRatio = devicePixelRatio();
+    bool isRatioOne = (pRatio == 1.0);
+    qreal defaultCursorSize = isRatioOne ? 64 : 32;
+    qreal hotX = x;
+    qreal hotY = y;
+#if QT_VERSION >= 0x050000
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+    if (qGuiApp->platformName() == QLatin1String("xcb")) {
+        hotX *= pRatio;
+        hotY *= pRatio;
+    }
+#endif
+#endif
+    qreal cursorSize = defaultCursorSize * pRatio;
+
+    QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(), QSizeF(cursorSize, cursorSize), colorMapping);
+    if (isRatioOne)
+        pointer = pointer.scaled(32, 32);
+#if QT_VERSION >= 0x050000
+    pointer.setDevicePixelRatio(pRatio);
+#endif
+
+    setCursor(pointer, hotX, hotY, false);
+}
+
+void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
 {
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
 
         oldCursor = viewer->getWidget()->cursor();
-        QCursor cursor(p, x, y);
+
+        QCursor cursor;
+        QPixmap p1(p);
+        // TODO remove autoScale after all cursors are SVG-based
+        if (autoScale) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
+            qreal pRatio = viewer->devicePixelRatio();
+#else
+            qreal pRatio = 1;
+#endif
+            int newWidth = p.width()*pRatio;
+            int newHeight = p.height()*pRatio;
+            p1 = p1.scaled(newWidth, newHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
+            p1.setDevicePixelRatio(pRatio);
+#endif
+            qreal hotX = x;
+            qreal hotY = y;
+#if QT_VERSION >= 0x050000
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+            if (qGuiApp->platformName() == QLatin1String("xcb")) {
+                hotX *= pRatio;
+                hotY *= pRatio;
+            }
+#endif
+#endif
+            cursor = QCursor(p1, hotX, hotY);
+        } else {
+            // already scaled
+            cursor = QCursor(p1, x, y);
+        }
+
         actCursor = cursor;
+        actCursorPixmap = p1;
 
         viewer->getWidget()->setCursor(cursor);
+    }
+}
+
+void DrawSketchHandler::addCursorTail( std::vector<QPixmap> &pixmaps ) {
+    // Create a pixmap that will contain icon and each autoconstraint icon
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        QPixmap baseIcon = QPixmap(actCursorPixmap);
+#if QT_VERSION >= 0x050000
+        baseIcon.setDevicePixelRatio(actCursorPixmap.devicePixelRatio());
+        qreal pixelRatio = baseIcon.devicePixelRatio();
+#else
+        qreal pixelRatio = 1;
+#endif
+        // cursor size in device independent pixels
+        qreal baseCursorWidth = baseIcon.width();
+        qreal baseCursorHeight = baseIcon.height();
+
+        int tailWidth = 0;
+        for (auto const& p: pixmaps) {
+            tailWidth += p.width();
+        }
+
+        int newIconWidth = baseCursorWidth + tailWidth;
+        int newIconHeight = baseCursorHeight;
+
+        QPixmap newIcon(newIconWidth, newIconHeight);
+        newIcon.fill(Qt::transparent);
+
+        QPainter qp;
+        qp.begin(&newIcon);
+
+        qp.drawPixmap(QPointF(0,0), baseIcon.scaled(
+            baseCursorWidth * pixelRatio,
+            baseCursorHeight * pixelRatio,
+            Qt::KeepAspectRatio,
+            Qt::SmoothTransformation
+        ));
+
+        // Iterate through pixmaps and them to the cursor pixmap
+        std::vector<QPixmap>::iterator pit=pixmaps.begin();
+        int i = 0;
+        qreal currentIconX = baseCursorWidth;
+        qreal currentIconY;
+
+        for (; pit != pixmaps.end(); ++pit, i++) {
+            QPixmap icon = *pit;
+            currentIconY = baseCursorHeight - icon.height();
+            qp.drawPixmap(QPointF(currentIconX, currentIconY), icon);
+            currentIconX += icon.width();
+        }
+
+        qp.end(); // Finish painting
+
+        // Create the new cursor with the icon.
+        QPoint p=actCursor.hotSpot();
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
+        newIcon.setDevicePixelRatio(pixelRatio);
+#endif
+
+        QCursor newCursor(newIcon, p.x(), p.y());
+        applyCursor(newCursor);
     }
 }
 
@@ -126,6 +268,64 @@ void DrawSketchHandler::unsetCursor(void)
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         viewer->getWidget()->setCursor(oldCursor);
     }
+}
+
+qreal DrawSketchHandler::devicePixelRatio() {
+    qreal pixelRatio = 1;
+# if QT_VERSION >= 0x050000
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        pixelRatio = viewer->devicePixelRatio();
+    }
+# endif
+    return pixelRatio;
+}
+
+std::vector<QPixmap> DrawSketchHandler::suggestedConstraintsPixmaps(
+        std::vector<AutoConstraint> &suggestedConstraints) {
+    std::vector<QPixmap> pixmaps;
+    // Iterate through AutoConstraints types and get their pixmaps
+    std::vector<AutoConstraint>::iterator it=suggestedConstraints.begin();
+    int i = 0;
+    for (; it != suggestedConstraints.end(); ++it, i++) {
+        QString iconType;
+        switch (it->Type)
+        {
+        case Horizontal:
+            iconType = QString::fromLatin1("Constraint_Horizontal");
+            break;
+        case Vertical:
+            iconType = QString::fromLatin1("Constraint_Vertical");
+            break;
+        case Coincident:
+            iconType = QString::fromLatin1("Constraint_PointOnPoint");
+            break;
+        case PointOnObject:
+            iconType = QString::fromLatin1("Constraint_PointOnObject");
+            break;
+        case Tangent:
+            iconType = QString::fromLatin1("Constraint_Tangent");
+            break;
+        default:
+            break;
+        }
+        if (!iconType.isEmpty()) {
+            qreal pixelRatio = 1;
+# if QT_VERSION >= 0x050000
+            Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+            if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+                Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+                pixelRatio = viewer->devicePixelRatio();
+            }
+# endif
+            int iconWidth = 16 * pixelRatio;
+            QPixmap icon = Gui::BitmapFactory()
+                .pixmapFromSvg(iconType.toStdString().c_str(), QSize(iconWidth, iconWidth));
+            pixmaps.push_back(icon);
+        }
+    }
+    return pixmaps;
 }
 
 int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggestedConstraints,
@@ -172,6 +372,9 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     }
 
     if (GeoId != Constraint::GeoUndef) {
+
+        const Part::Geometry * hitobject = sketchgui->getSketchObject()->getGeometry(GeoId);
+
         // Currently only considers objects in current Sketcher
         AutoConstraint constr;
         constr.Type = Sketcher::None;
@@ -181,7 +384,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             constr.Type = Sketcher::Coincident;
         else if (type == AutoConstraint::CURVE && PosId != Sketcher::none)
             constr.Type = Sketcher::PointOnObject;
-        else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none)
+        else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none && hitobject->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
             constr.Type = Sketcher::PointOnObject;
         else if (type == AutoConstraint::CURVE && PosId == Sketcher::none)
             constr.Type = Sketcher::Tangent;
@@ -395,7 +598,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
 
         if(createowncommand) {
             // Open the Command
-            Gui::Command::openCommand("Add auto constraints");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add auto constraints"));
         }
 
         // Iterate through constraints
@@ -499,58 +702,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
 
 void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints)
 {
-    // Auto Constraint icon size in px
-    int iconSize = 16;
-
-    // Create a pixmap that will contain icon and each autoconstraint icon
-    QPixmap baseIcon = actCursor.pixmap();
-    QPixmap newIcon(baseIcon.width() + suggestedConstraints.size() * iconSize,
-                    baseIcon.height());
-    newIcon.fill(Qt::transparent);
-
-    QPainter qp;
-    qp.begin(&newIcon);
-
-    qp.drawPixmap(0,0, baseIcon);
-
-    // Iterate through AutoConstraints type and add icons to the cursor pixmap
-    std::vector<AutoConstraint>::iterator it=suggestedConstraints.begin();
-    int i = 0;
-    for (; it != suggestedConstraints.end(); ++it, i++) {
-        QString iconType;
-        switch (it->Type)
-        {
-        case Horizontal:
-            iconType = QString::fromLatin1("Constraint_Horizontal");
-            break;
-        case Vertical:
-            iconType = QString::fromLatin1("Constraint_Vertical");
-            break;
-        case Coincident:
-            iconType = QString::fromLatin1("Constraint_PointOnPoint");
-            break;
-        case PointOnObject:
-            iconType = QString::fromLatin1("Constraint_PointOnObject");
-            break;
-        case Tangent:
-            iconType = QString::fromLatin1("Constraint_Tangent");
-            break;
-        default:
-            break;
-        }
-
-        if (!iconType.isEmpty()) {
-            QPixmap icon = Gui::BitmapFactory().pixmap(iconType.toLatin1()).scaledToWidth(iconSize);
-            qp.drawPixmap(QPoint(baseIcon.width() + i * iconSize, baseIcon.height() - iconSize), icon);
-        }
-    }
-
-    qp.end(); // Finish painting
-
-    // Create the new cursor with the icon.
-    QPoint p=actCursor.hotSpot();
-    QCursor newCursor(newIcon, p.x(), p.y());
-    applyCursor(newCursor);
+    std::vector<QPixmap> pixmaps = suggestedConstraintsPixmaps(suggestedConstraints);
+    addCursorTail(pixmaps);
 }
 
 void DrawSketchHandler::setPositionText(const Base::Vector2d &Pos, const SbString &text)

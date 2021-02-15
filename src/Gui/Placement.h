@@ -29,8 +29,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
 
-#include <boost/signals2.hpp>
-#include <boost/bind.hpp>
+#include <boost_signals2.hpp>
 
 class QSignalMapper;
 
@@ -46,7 +45,7 @@ class GuiExport Placement : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Placement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    Placement(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~Placement();
     void accept();
     void reject();
@@ -117,7 +116,7 @@ class GuiExport DockablePlacement : public Placement
     Q_OBJECT
 
 public:
-    DockablePlacement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DockablePlacement(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DockablePlacement();
 
     void accept();

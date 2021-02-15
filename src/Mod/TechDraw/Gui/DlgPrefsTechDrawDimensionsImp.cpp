@@ -33,6 +33,7 @@
 #include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 #include "DlgPrefsTechDrawDimensionsImp.h"
+#include "ui_DlgPrefsTechDrawDimensions.h"
 
 
 using namespace TechDrawGui;
@@ -41,12 +42,13 @@ using namespace TechDraw;
 
 DlgPrefsTechDrawDimensionsImp::DlgPrefsTechDrawDimensionsImp( QWidget* parent )
   : PreferencePage( parent )
+  , ui(new Ui_DlgPrefsTechDrawDimensionsImp)
 {
-    this->setupUi(this);
-    plsb_FontSize->setUnit(Base::Unit::Length);
-    plsb_FontSize->setMinimum(0);
-    plsb_ArrowSize->setUnit(Base::Unit::Length);
-    plsb_ArrowSize->setMinimum(0);
+    ui->setupUi(this);
+    ui->plsb_FontSize->setUnit(Base::Unit::Length);
+    ui->plsb_FontSize->setMinimum(0);
+    ui->plsb_ArrowSize->setUnit(Base::Unit::Length);
+    ui->plsb_ArrowSize->setMinimum(0);
 }
 
 DlgPrefsTechDrawDimensionsImp::~DlgPrefsTechDrawDimensionsImp()
@@ -56,16 +58,15 @@ DlgPrefsTechDrawDimensionsImp::~DlgPrefsTechDrawDimensionsImp()
 
 void DlgPrefsTechDrawDimensionsImp::saveSettings()
 {
-    cbGlobalDecimals->onSave();
-    cbHiddenLineStyle->onSave();
-    cbProjAngle->onSave();
-    cbShowUnits->onSave();
-    leDiameter->onSave();
-    pcbArrow->onSave();
-    pcbStandardAndStyle->onSave();
-    plsb_ArrowSize->onSave();
-    plsb_FontSize->onSave();
-    sbAltDecimals->onSave();
+    ui->pcbStandardAndStyle->onSave(); 
+    ui->cbGlobalDecimals->onSave();
+    ui->cbShowUnits->onSave();
+    ui->sbAltDecimals->onSave();
+    ui->plsb_FontSize->onSave();
+    ui->pdsbToleranceScale->onSave();
+    ui->leDiameter->onSave();
+    ui->pcbArrow->onSave();
+    ui->plsb_ArrowSize->onSave();
 }
 
 void DlgPrefsTechDrawDimensionsImp::loadSettings()
@@ -74,24 +75,23 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     //Quantity widgets do not use preset value since they are based on
     //QAbstractSpinBox
     double fontDefault = Preferences::dimFontSizeMM();
-    plsb_FontSize->setValue(fontDefault);
+    ui->plsb_FontSize->setValue(fontDefault);
 //    double arrowDefault = 5.0;
 //    plsb_ArrowSize->setValue(arrowDefault);
-    plsb_ArrowSize->setValue(fontDefault);
+    ui->plsb_ArrowSize->setValue(fontDefault);
 
-    cbGlobalDecimals->onRestore();
-    cbHiddenLineStyle->onRestore();
-    cbProjAngle->onRestore();
-    cbShowUnits->onRestore();
-    leDiameter->onRestore();
-    pcbArrow->onRestore();
-    pcbStandardAndStyle->onRestore();
-    plsb_ArrowSize->onRestore();
-    plsb_FontSize->onRestore();
-    sbAltDecimals->onRestore();
+    ui->pcbStandardAndStyle->onRestore();
+    ui->cbGlobalDecimals->onRestore();
+    ui->cbShowUnits->onRestore();
+    ui->sbAltDecimals->onRestore();
+    ui->plsb_FontSize->onRestore();
+    ui->pdsbToleranceScale->onRestore();
+    ui->leDiameter->onRestore();
+    ui->pcbArrow->onRestore();
+    ui->plsb_ArrowSize->onRestore();
 
-    DrawGuiUtil::loadArrowBox(pcbArrow);
-    pcbArrow->setCurrentIndex(prefArrowStyle());
+    DrawGuiUtil::loadArrowBox(ui->pcbArrow);
+    ui->pcbArrow->setCurrentIndex(prefArrowStyle());
 }
 
 /**
@@ -101,7 +101,7 @@ void DlgPrefsTechDrawDimensionsImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
-        retranslateUi(this);
+        ui->retranslateUi(this);
         loadSettings();
     }
     else {

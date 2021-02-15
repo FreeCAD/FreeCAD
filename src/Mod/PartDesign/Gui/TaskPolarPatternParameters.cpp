@@ -61,11 +61,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPolarPatternParameters */
 
 TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
-        : TaskTransformedParameters(TransformedView, parent)
+    : TaskTransformedParameters(TransformedView, parent)
+    , ui(new Ui_TaskPolarPatternParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskPolarPatternParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -81,10 +81,9 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(ViewProviderTransformed *
 }
 
 TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask)
+        : TaskTransformedParameters(parentTask), ui(new Ui_TaskPolarPatternParameters)
 {
     proxy = new QWidget(parentTask);
-    ui = new Ui_TaskPolarPatternParameters();
     ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(pressed()),
             parentTask, SLOT(onSubTaskButtonOK()));
@@ -119,13 +118,15 @@ void TaskPolarPatternParameters::setupUI()
     ui->listWidgetFeatures->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(ui->listWidgetFeatures->model(),
+        SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
-
     connect(updateViewTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateViewTimer()));
+    
     connect(ui->comboAxis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -354,10 +355,15 @@ void TaskPolarPatternParameters::onFeatureDeleted(void)
 {
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    int currentRow = ui->listWidgetFeatures->currentRow();
+    if (currentRow < 0) {
+        Base::Console().Error("PartDesign PolarPattern: No feature selected for removing.\n");
+        return; //no current row selected
+    }
+    originals.erase(originals.begin() + currentRow);
     setupTransaction();
     pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
+    ui->listWidgetFeatures->model()->removeRow(currentRow);
     recomputeFeature();
 }
 
@@ -399,7 +405,6 @@ TaskPolarPatternParameters::~TaskPolarPatternParameters()
         Base::Console().Error ("%s\n", ex.what () );
     }
 
-    delete ui;
     if (proxy)
         delete proxy;
 }

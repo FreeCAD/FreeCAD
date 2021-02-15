@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "ui_TaskAppearance.h"
@@ -38,6 +38,7 @@
 #include <Base/Console.h>
 
 using namespace Gui::TaskView;
+namespace bp = boost::placeholders;
 
 /* TRANSLATOR Gui::TaskView::TaskAppearance */
 
@@ -57,7 +58,7 @@ TaskAppearance::TaskAppearance(QWidget *parent)
 
     this->connectChangedObject =
     Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&TaskAppearance::slotChangedObject, this, _1, _2));
+        (&TaskAppearance::slotChangedObject, this, bp::_1, bp::_2));
 }
 
 TaskAppearance::~TaskAppearance()
@@ -100,9 +101,8 @@ void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
     // We pick out all the properties for which we need to update this dialog.
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     std::vector<Gui::ViewProvider*>::const_iterator vp = std::find_if
-        (Provider.begin(), Provider.end(), 
-        std::bind2nd(std::equal_to<Gui::ViewProvider*>(),
-        const_cast<Gui::ViewProvider*>(&obj)));
+        (Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) { return v == &obj; });
+
     if (vp != Provider.end()) {
         std::string prop_name = obj.getPropertyName(&prop);
         if (prop.getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {

@@ -137,7 +137,6 @@ void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
                                      const Handle(Poly_Triangulation)& aPolyTri,
                                      TColgp_Array1OfDir& theNormals)
 {
-    Poly_Connect thePolyConnect(aPolyTri);
     const TColgp_Array1OfPnt& aNodes = aPolyTri->Nodes();
 
     if(aPolyTri->HasNormals())
@@ -167,6 +166,7 @@ void ViewProviderPartExt::getNormals(const TopoDS_Face&  theFace,
     }
 
     // take in face the surface location
+    Poly_Connect thePolyConnect(aPolyTri);
     const TopoDS_Face      aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
     Handle(Geom_Surface)   aSurf     = BRep_Tool::Surface(aZeroFace);
     const Standard_Real    aTol      = Precision::Confusion();
@@ -254,6 +254,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     lowerLimit = std::max(lowerLimit, Precision::Confusion());
     tessRange.LowerBound = lowerLimit;
 
+    static const char *osgroup = "Object Style";
+
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);
     mat.diffuseColor.set(r,g,b);
@@ -261,24 +263,30 @@ ViewProviderPartExt::ViewProviderPartExt()
     mat.emissiveColor.set(0.0f,0.0f,0.0f);
     mat.shininess = 1.0f;
     mat.transparency = 0.0f;
-    ADD_PROPERTY(LineMaterial,(mat));
-    ADD_PROPERTY(PointMaterial,(mat));
-    ADD_PROPERTY(LineColor,(mat.diffuseColor));
-    ADD_PROPERTY(PointColor,(mat.diffuseColor));
-    ADD_PROPERTY(PointColorArray, (PointColor.getValue()));
-    ADD_PROPERTY(DiffuseColor,(ShapeColor.getValue()));
-    ADD_PROPERTY(LineColorArray,(LineColor.getValue()));
-    ADD_PROPERTY(LineWidth,(lwidth));
+    ADD_PROPERTY_TYPE(LineMaterial,(mat), osgroup, App::Prop_None, "Object line material.");
+    ADD_PROPERTY_TYPE(PointMaterial,(mat), osgroup, App::Prop_None, "Object point material.");
+    ADD_PROPERTY_TYPE(LineColor, (mat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
+    ADD_PROPERTY_TYPE(PointColor, (mat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
+    ADD_PROPERTY_TYPE(PointColorArray, (PointColor.getValue()), osgroup, App::Prop_None, "Object point color array.");
+    ADD_PROPERTY_TYPE(DiffuseColor,(ShapeColor.getValue()), osgroup, App::Prop_None, "Object diffuse color.");
+    ADD_PROPERTY_TYPE(LineColorArray,(LineColor.getValue()), osgroup, App::Prop_None, "Object line color array.");
+    ADD_PROPERTY_TYPE(LineWidth,(lwidth), osgroup, App::Prop_None, "Set object line width.");
     LineWidth.setConstraints(&sizeRange);
     PointSize.setConstraints(&sizeRange);
-    ADD_PROPERTY(PointSize,(psize));
-    ADD_PROPERTY(Deviation,(0.5f));
+    ADD_PROPERTY_TYPE(PointSize,(psize), osgroup, App::Prop_None, "Set object point size.");
+    ADD_PROPERTY_TYPE(Deviation,(0.5f), osgroup, App::Prop_None,
+            "Sets the accuracy of the polygonal representation of the model\n"
+            "in the 3D view (tessellation). Lower values indicate better quality.\n"
+            "The value is in percent of object's size.");
     Deviation.setConstraints(&tessRange);
-    ADD_PROPERTY(AngularDeflection,(28.65));
+    ADD_PROPERTY_TYPE(AngularDeflection,(28.65), osgroup, App::Prop_None,
+            "Specify how finely to generate the mesh for rendering on screen or when exporting.\n"
+            "The default value is 28.5 degrees, or 0.5 radians. The smaller the value\n"
+            "the smoother the appearance in the 3D view, and the finer the mesh that will be exported.");
     AngularDeflection.setConstraints(&angDeflectionRange);
-    ADD_PROPERTY(Lighting,(twoside));
+    ADD_PROPERTY_TYPE(Lighting,(twoside), osgroup, App::Prop_None, "Set object lighting.");
     Lighting.setEnums(LightingEnums);
-    ADD_PROPERTY(DrawStyle,((long int)0));
+    ADD_PROPERTY_TYPE(DrawStyle,((long int)0), osgroup, App::Prop_None, "Defines the style of the edges in the 3D view.");
     DrawStyle.setEnums(DrawStyleEnums);
 
     coords = new SoCoordinate3();
@@ -326,7 +334,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     Lighting.touch();
     DrawStyle.touch();
 
-    sPixmap = "Tree_Part";
+    sPixmap = "Part_3D_object";
     loadParameter();
 }
 
@@ -929,11 +937,10 @@ void ViewProviderPartExt::reload()
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
-    const char *propName = prop?prop->getName():"";
-    if(propName  && (strcmp(propName,"Shape")==0 || strstr(propName,"Touched")!=0))
-    {
+    const char *propName = prop->getName();
+    if (propName && (strcmp(propName, "Shape") == 0 || strstr(propName, "Touched") != nullptr)) {
         // calculate the visual only if visible
-        if (isUpdateForced()||Visibility.getValue())
+        if (isUpdateForced() || Visibility.getValue())
             updateVisual();
         else 
             VisualTouched = true;
@@ -955,21 +962,26 @@ void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const
     act->setData(QVariant((int)ViewProvider::Color));
 }
 
+bool ViewProviderPartExt::changeFaceColors()
+{
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        Gui::Control().showDialog(dlg);
+        return false;
+    }
+
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskFaceColors(this));
+    return true;
+}
+
 bool ViewProviderPartExt::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        if (dlg) {
-            Gui::Control().showDialog(dlg);
-            return false;
-        }
-
-        Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new TaskFaceColors(this));
-        return true;
+        return changeFaceColors();
     }
     else {
         return Gui::ViewProviderGeometryObject::setEdit(ModNum);
@@ -979,6 +991,7 @@ bool ViewProviderPartExt::setEdit(int ModNum)
 void ViewProviderPartExt::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
+        // Do nothing here
     }
     else {
         Gui::ViewProviderGeometryObject::unsetEdit(ModNum);
@@ -1120,7 +1133,10 @@ void ViewProviderPartExt::updateVisual()
             const TopoDS_Face &actFace = TopoDS::Face(faceMap(i));
             // get the mesh of the shape
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace,aLoc);
-            if (mesh.IsNull()) continue;
+            if (mesh.IsNull()) {
+                parts[ii] = 0;
+                continue;
+            }
 
             // getting the transformation of the shape/face
             gp_Trsf myTransf;

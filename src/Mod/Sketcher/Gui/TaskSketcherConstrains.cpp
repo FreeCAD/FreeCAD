@@ -33,7 +33,7 @@
 # include <QStyledItemDelegate>
 # include <QPainter>
 # include <QPixmapCache>
-# include <boost/bind.hpp>
+# include <boost_bind_bind.hpp>
 #endif
 
 #include "TaskSketcherConstrains.h"
@@ -42,6 +42,7 @@
 #include "ViewProviderSketch.h"
 
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/Gui/CommandConstraints.h>
 
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -137,6 +138,7 @@ public:
             case Sketcher::DistanceX:
             case Sketcher::DistanceY:
             case Sketcher::Radius:
+            case Sketcher::Weight:
             case Sketcher::Diameter:
             case Sketcher::Angle:
                 name = QString::fromLatin1("%1 (%2)").arg(name).arg(constraint->getPresentationValue().getUserString());
@@ -181,8 +183,8 @@ public:
             static QIcon vdist( Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance") );
             static QIcon horiz( Gui::BitmapFactory().iconFromTheme("Constraint_Horizontal") );
             static QIcon vert ( Gui::BitmapFactory().iconFromTheme("Constraint_Vertical") );
-          //static QIcon lock ( Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock") );
-            static QIcon block ( Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainBlock") );
+          //static QIcon lock ( Gui::BitmapFactory().iconFromTheme("Constraint_Lock") );
+            static QIcon block ( Gui::BitmapFactory().iconFromTheme("Constraint_Block") );
             static QIcon coinc( Gui::BitmapFactory().iconFromTheme("Constraint_PointOnPoint") );
             static QIcon para ( Gui::BitmapFactory().iconFromTheme("Constraint_Parallel") );
             static QIcon perp ( Gui::BitmapFactory().iconFromTheme("Constraint_Perpendicular") );
@@ -256,6 +258,7 @@ public:
             case Sketcher::DistanceY:
                 return selicon(constraint,vdist,vdist_driven);
             case Sketcher::Radius:
+            case Sketcher::Weight:
                 return selicon(constraint,radi,radi_driven);
             case Sketcher::Diameter:
                 return selicon(constraint,dia,dia_driven);
@@ -325,6 +328,7 @@ public:
         case Sketcher::DistanceY:
         case Sketcher::Radius:
         case Sketcher::Diameter:
+        case Sketcher::Weight:
         case Sketcher::Angle:
         case Sketcher::SnellsLaw:
             return ( constraint->First >= 0 || constraint->Second >= 0 || constraint->Third >= 0 );
@@ -380,7 +384,7 @@ protected:
             .arg(size.width())
             .arg(size.height());
         QPixmap icon;
-        if (QPixmapCache::find(key, icon))
+        if (QPixmapCache::find(key, &icon))
             return icon;
 
         icon = Gui::BitmapFactory().pixmapFromSvg(name, size);
@@ -442,6 +446,22 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     QMenu menu;
     QListWidgetItem* item = currentItem();
     QList<QListWidgetItem *> items = selectedItems();
+
+    // Cancel any in-progress operation
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    bool didRelease = SketcherGui::ReleaseHandler(doc);
+
+    // Sync the FreeCAD selection with the selection in the ConstraintView widget
+    if (didRelease) {
+        Gui::Selection().clearSelection();
+        for (auto&& it : items) {
+            auto ci = static_cast<ConstraintItem*>(it);
+            std::string constraint_name = Sketcher::PropertyConstraintList::getConstraintName(ci->ConstraintNbr);
+            std::string doc_name = ci->sketchView->getSketchObject()->getDocument()->getName();
+            std::string obj_name = ci->sketchView->getSketchObject()->getNameInDocument();
+            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), constraint_name.c_str());
+        }
+    }
 
     bool isQuantity = false;
     bool isToggleDriving = false;
@@ -564,7 +584,7 @@ void ConstraintView::deleteSelectedItems()
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc) return;
 
-    doc->openTransaction("Delete");
+    doc->openTransaction("Delete constraint");
     std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
     for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(ft->getObject());
@@ -602,7 +622,7 @@ void ConstraintView::swapNamedOfSelectedItems()
     ss << "DummyConstraint" << rand();
     std::string tmpname = ss.str();
 
-    Gui::Command::openCommand("Swap constraint names");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
     Gui::cmdAppObjectArgs(item1->sketch, "renameConstraint(%d, u'%s')",
                           item1->ConstraintNbr, tmpname.c_str());
     Gui::cmdAppObjectArgs(item2->sketch, "renameConstraint(%d, u'%s')",
@@ -614,13 +634,13 @@ void ConstraintView::swapNamedOfSelectedItems()
 
 // ----------------------------------------------------------------------------
 
-TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Constraints"),true, 0)
-    , sketchView(sketchView), inEditMode(false)
+TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView) :
+    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Constraints"), true, 0),
+    sketchView(sketchView), inEditMode(false),
+    ui(new Ui_TaskSketcherConstrains)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskSketcherConstrains();
     ui->setupUi(proxy);
     ui->listWidgetConstraints->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
@@ -680,7 +700,6 @@ TaskSketcherConstrains::~TaskSketcherConstrains()
     this->ui->filterInternalAlignment->onSave();
     this->ui->extendedInformation->onSave();
     connectionConstraintsChanged.disconnect();
-    delete ui;
 }
 
 void TaskSketcherConstrains::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -825,7 +844,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     if (newName != currConstraintName && !basename.empty()) {
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(newName.c_str());
 
-        Gui::Command::openCommand("Rename sketch constraint");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(sketch ,"renameConstraint(%d, u'%s')",
                                   it->ConstraintNbr, escapedstr.c_str());
@@ -840,7 +859,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     }
 
     // update constraint virtual space status
-    Gui::Command::openCommand("Update constraint's virtual space");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
     try {
         Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
                               it->ConstraintNbr,
@@ -928,6 +947,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         case Sketcher::DistanceX:
         case Sketcher::DistanceY:
         case Sketcher::Radius:
+        case Sketcher::Weight:
         case Sketcher::Diameter:
         case Sketcher::Angle:
         case Sketcher::SnellsLaw:

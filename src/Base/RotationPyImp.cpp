@@ -55,7 +55,7 @@ std::string RotationPy::representation(void) const
 
 PyObject *RotationPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of RotationPy and the Twin object 
+    // create a new instance of RotationPy and the Twin object
     return new RotationPy(new Rotation);
 }
 

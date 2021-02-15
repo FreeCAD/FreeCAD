@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -28,7 +26,7 @@ import importlib
 
 __title__ = "Path Icon ViewProvider"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "ViewProvider who's main and only task is to assign an icon."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -64,7 +62,7 @@ class ViewProvider(object):
             self.editCallback = state['editCallback']
 
     def getIcon(self):
-        return ":/icons/Path-{}.svg".format(self.icon)
+        return ":/icons/Path_{}.svg".format(self.icon)
 
     def onEdit(self, callback):
         self.editModule = callback.__module__
@@ -80,7 +78,7 @@ class ViewProvider(object):
         # pylint: disable=unused-argument
         if 0 == mode:
             self._onEditCallback(True)
-        return True
+        return False
 
     def unsetEdit(self, arg1, arg2):
         # pylint: disable=unused-argument

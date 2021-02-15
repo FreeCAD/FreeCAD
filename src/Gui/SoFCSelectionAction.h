@@ -24,7 +24,7 @@
 #ifndef _SoFCSelectionAction_h
 #define _SoFCSelectionAction_h
 
-//#include <Inventor/SoAction.h> 
+//#include <Inventor/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/events/SoSubEvent.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -65,7 +65,7 @@ private:
 
 /**
  * The SoFCSelectionAction class is used to inform an SoFCSelection node
- * whether an object gets selected. 
+ * whether an object gets selected.
  * @author Jürgen Riegel
  */
 class GuiExport SoFCSelectionAction : public SoAction
@@ -90,7 +90,7 @@ private:
 
 /**
  * The SoFCEnableSelectionAction class is used to inform an SoFCSelection node
- * whether selection is enabled or disabled. 
+ * whether selection is enabled or disabled.
  * @author Werner Mayer
  */
 class GuiExport SoFCEnableSelectionAction : public SoAction
@@ -115,7 +115,7 @@ private:
 
 /**
  * The SoFCEnableHighlightAction class is used to inform an SoFCSelection node
- * whether preselection is enabled or disabled. 
+ * whether preselection is enabled or disabled.
  * @author Werner Mayer
  */
 class GuiExport SoFCEnableHighlightAction : public SoAction
@@ -140,7 +140,7 @@ private:
 
 /**
  * The SoFCSelectionColorAction class is used to inform an SoFCSelection node
- * which selection color is used. 
+ * which selection color is used.
  * @author Werner Mayer
  */
 class GuiExport SoFCSelectionColorAction : public SoAction
@@ -165,7 +165,7 @@ private:
 
 /**
  * The SoFCHighlightColorAction class is used to inform an SoFCSelection node
- * which preselection color is used. 
+ * which preselection color is used.
  * @author Werner Mayer
  */
 class GuiExport SoFCHighlightColorAction : public SoAction
@@ -190,7 +190,7 @@ private:
 
 /**
  * The SoFCDocumentAction class is used to inform an SoFCSelection node
- * when a document has been renamed. 
+ * when a document has been renamed.
  * @author Werner Mayer
  */
 class GuiExport SoFCDocumentAction : public SoAction
@@ -370,4 +370,4 @@ private:
 } // namespace Gui
 
 
-#endif // _SoFCSelectionAction_h 
+#endif // _SoFCSelectionAction_h

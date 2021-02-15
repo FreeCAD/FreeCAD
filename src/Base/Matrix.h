@@ -49,12 +49,12 @@ public:
   Matrix4D(void);
 
   /// Construction
-  Matrix4D (float a11, float a12, float a13, float a14, 
+  Matrix4D (float a11, float a12, float a13, float a14,
             float a21, float a22, float a23, float a24,
             float a31, float a32, float a33, float a34,
             float a41, float a42, float a43, float a44 );
   /// Construction
-  Matrix4D (double a11, double a12, double a13, double a14, 
+  Matrix4D (double a11, double a12, double a13, double a14,
             double a21, double a22, double a23, double a24,
             double a31, double a32, double a33, double a34,
             double a41, double a42, double a43, double a44 );
@@ -80,7 +80,7 @@ public:
   inline Matrix4D& operator =  (const Matrix4D& rclMtrx);
   /// Matrix multiplication
   inline Matrix4D  operator *  (const Matrix4D& rclMtrx) const;
-  /// Multiplication matrix with vector 
+  /// Multiplication matrix with vector
   inline Vector3f  operator *  (const Vector3f& rclVct) const;
   inline Vector3d  operator *  (const Vector3d& rclVct) const;
   inline void multVec(const Vector3d & src, Vector3d & dst) const;
@@ -172,7 +172,7 @@ public:
   std::string toString(void) const;
   /// read the 16 double of the matrix from a string
   void fromString (const std::string &str);
-  
+
 private:
   double  dMtrx4D[4][4];
 };
@@ -240,12 +240,12 @@ inline Matrix4D& Matrix4D::operator *= (const Matrix4D& rclMtrx)
     for (is = 0; is < 4; is++) {
       clMat.dMtrx4D[iz][is] = 0;
       for (ie = 0; ie < 4; ie++)
-        clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] * 
+        clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] *
                           rclMtrx.dMtrx4D[ie][is];
     }
 
   (*this) = clMat;
- 
+
   return *this;
 }
 
@@ -258,7 +258,7 @@ inline Matrix4D Matrix4D::operator * (const Matrix4D& rclMtrx) const
     for (is = 0; is < 4; is++) {
       clMat.dMtrx4D[iz][is] = 0;
       for (ie = 0; ie < 4; ie++)
-       	clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] * 
+       	clMat.dMtrx4D[iz][is] += dMtrx4D[iz][ie] *
                           rclMtrx.dMtrx4D[ie][is];
     }
 
@@ -274,7 +274,7 @@ inline Matrix4D& Matrix4D::operator= (const Matrix4D& rclMtrx)
       dMtrx4D[iz][is] = rclMtrx.dMtrx4D[iz][is];
     }
   }
-  
+
   return *this;
 }
 
@@ -370,6 +370,6 @@ inline const double* Matrix4D::operator[] (unsigned short usNdx) const
 } // namespace Base
 
 
-#endif // BASE_MATRIX_H 
+#endif // BASE_MATRIX_H
 
 

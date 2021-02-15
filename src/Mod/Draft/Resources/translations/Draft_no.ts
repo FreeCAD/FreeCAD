@@ -2,242 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="no" sourcelanguage="en">
   <context>
-    <name>App::Property</name>
-    <message>
-      <location filename="../../DraftFillet.py" line="151"/>
-      <source>Radius to use to fillet the corners</source>
-      <translation>Radius for å bruke til å runde av kantene</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="148"/>
-      <source>The start point of this line</source>
-      <translation>Startpunktet for denne linjen</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="149"/>
-      <source>The end point of this line</source>
-      <translation>Sluttpunktet for denne linjen</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="150"/>
-      <source>The length of this line</source>
-      <translation>Lengden av denne linjen</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2525"/>
-      <source>Projection direction</source>
-      <translation>Projiseringsretning</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2526"/>
-      <source>The width of the lines inside this object</source>
-      <translation>Bredden på linjene inne i dette objektet</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2527"/>
-      <source>The size of the texts inside this object</source>
-      <translation type="unfinished">The size of the texts inside this object</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2528"/>
-      <source>The spacing between lines of text</source>
-      <translation>Avstanden mellom linjer med tekst</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2529"/>
-      <source>The color of the projected objects</source>
-      <translation>Fargen på de projiserte objekter</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2530"/>
-      <source>The linked object</source>
-      <translation type="unfinished">The linked object</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2531"/>
-      <source>Shape Fill Style</source>
-      <translation type="unfinished">Shape Fill Style</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2532"/>
-      <source>Line Style</source>
-      <translation>Linjestil</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2533"/>
-      <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation type="unfinished">If checked, source objects are displayed regardless of being visible in the 3D model</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2888"/>
-      <source>The base object that must be duplicated</source>
-      <translation type="unfinished">The base object that must be duplicated</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2728"/>
-      <source>The type of array to create</source>
-      <translation type="unfinished">The type of array to create</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2730"/>
-      <source>The axis direction</source>
-      <translation type="unfinished">The axis direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2731"/>
-      <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2732"/>
-      <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2733"/>
-      <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2891"/>
-      <source>Number of copies</source>
-      <translation type="unfinished">Number of copies</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2735"/>
-      <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2736"/>
-      <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2737"/>
-      <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2738"/>
-      <source>Distance and orientation of intervals in Axis direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Axis direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2739"/>
-      <source>Center point</source>
-      <translation type="unfinished">Center point</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2740"/>
-      <source>Angle to cover with copies</source>
-      <translation>
-
-bankig
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2745"/>
-      <source>Specifies if copies must be fused (slower)</source>
-      <translation type="unfinished">Specifies if copies must be fused (slower)</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2889"/>
-      <source>The path object along which to distribute objects</source>
-      <translation type="unfinished">The path object along which to distribute objects</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2890"/>
-      <source>Selected subobjects (edges) of PathObj</source>
-      <translation type="unfinished">Selected subobjects (edges) of PathObj</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2892"/>
-      <source>Optional translation vector</source>
-      <translation type="unfinished">Optional translation vector</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2893"/>
-      <source>Orientation of Base along path</source>
-      <translation type="unfinished">Orientation of Base along path</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2962"/>
-      <source>Base</source>
-      <translation>Base</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2963"/>
-      <source>PointList</source>
-      <translation type="unfinished">PointList</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2964"/>
-      <source>Count</source>
-      <translation>Antall</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="110"/>
-      <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="147"/>
-      <source>If on, the child objects of this layer will match its visual aspects</source>
-      <translation type="unfinished">If on, the child objects of this layer will match its visual aspects</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="156"/>
-      <source>The line color of the children of this layer</source>
-      <translation type="unfinished">The line color of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="162"/>
-      <source>The shape color of the children of this layer</source>
-      <translation type="unfinished">The shape color of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="168"/>
-      <source>The line width of the children of this layer</source>
-      <translation type="unfinished">The line width of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="174"/>
-      <source>The draw style of the children of this layer</source>
-      <translation type="unfinished">The draw style of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="180"/>
-      <source>The transparency of the children of this layer</source>
-      <translation type="unfinished">The transparency of the children of this layer</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2900"/>
-      <source>Show array element as children object</source>
-      <translation type="unfinished">Show array element as children object</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2729"/>
-      <source>The axis (e.g. DatumLine) overriding Axis/Center</source>
-      <translation type="unfinished">The axis (e.g. DatumLine) overriding Axis/Center</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2741"/>
-      <source>Distance between copies in a circle</source>
-      <translation type="unfinished">Distance between copies in a circle</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2742"/>
-      <source>Distance between circles</source>
-      <translation type="unfinished">Distance between circles</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2744"/>
-      <source>number of circles</source>
-      <translation type="unfinished">number of circles</translation>
-    </message>
-  </context>
-  <context>
     <name>Dialog</name>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
@@ -247,192 +11,242 @@ bankig
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style name</source>
-      <translation type="unfinished">Style name</translation>
+      <translation>Stilnavn</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="26"/>
-      <source>The name of your style. Existing style names can be edited</source>
-      <translation type="unfinished">The name of your style. Existing style names can be edited</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new...</source>
-      <translation type="unfinished">Add new...</translation>
+      <translation>Legg til ny...</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="55"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
       <source>Renames the selected style</source>
-      <translation type="unfinished">Renames the selected style</translation>
+      <translation>Endrer navn på valgt stil</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="58"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="82"/>
       <source>Rename</source>
       <translation>Omdøp</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="74"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="110"/>
       <source>Deletes the selected style</source>
-      <translation type="unfinished">Deletes the selected style</translation>
+      <translation>Sletter valgt stil</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="77"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="113"/>
       <source>Delete</source>
       <translation>Slett</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="108"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="164"/>
       <source>Text</source>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="114"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
       <source>Font size</source>
       <translation type="unfinished">Font size</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="121"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Linjeavstand</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="128"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="193"/>
       <source>Font name</source>
       <translation>Skriftnavn</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="135"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="212"/>
       <source>The font to use for texts and dimensions</source>
-      <translation type="unfinished">The font to use for texts and dimensions</translation>
+      <translation>Skriften som skal brukes for tekst og dimensjoner</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="159"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="239"/>
       <source>Units</source>
       <translation>Enheter</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="165"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="248"/>
       <source>Scale multiplier</source>
-      <translation type="unfinished">Scale multiplier</translation>
+      <translation>Skala multiplikator</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="172"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>Desimaler</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="179"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="268"/>
       <source>Unit override</source>
-      <translation type="unfinished">Unit override</translation>
+      <translation>Overstyr enheter</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="186"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Vis enhet</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="193"/>
-      <source>A multiplier value that affects distances shown by dimensions</source>
-      <translation type="unfinished">A multiplier value that affects distances shown by dimensions</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="206"/>
-      <source>Forces dimensions to be shown in a specific unit</source>
-      <translation type="unfinished">Forces dimensions to be shown in a specific unit</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="213"/>
-      <source>The number of decimals to show on dimensions</source>
-      <translation type="unfinished">The number of decimals to show on dimensions</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="220"/>
-      <source>Shows the units suffix on dimensions or not</source>
-      <translation type="unfinished">Shows the units suffix on dimensions or not</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="236"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
       <source>Line and arrows</source>
-      <translation type="unfinished">Line and arrows</translation>
+      <translation>Linje og piler</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="242"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="340"/>
       <source>Line width</source>
       <translation type="unfinished">Line width</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="249"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
       <source>Extension overshoot</source>
       <translation type="unfinished">Extension overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="256"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="360"/>
       <source>Arrow size</source>
       <translation>Pilstørrelse</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="263"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
       <source>Show lines</source>
-      <translation type="unfinished">Show lines</translation>
+      <translation>Vis linjer</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="270"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="380"/>
       <source>Dimension overshoot</source>
       <translation type="unfinished">Dimension overshoot</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="277"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="390"/>
       <source>Extension lines</source>
       <translation type="unfinished">Extension lines</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="284"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="400"/>
       <source>Arrow type</source>
       <translation>Piltype</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="291"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="410"/>
       <source>Line / text color</source>
-      <translation type="unfinished">Line / text color</translation>
+      <translation>Linje / tekstfarge</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
-      <source>Shows the dimension line or not</source>
-      <translation type="unfinished">Shows the dimension line or not</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="314"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="433"/>
       <source>The width of the dimension lines</source>
-      <translation type="unfinished">The width of the dimension lines</translation>
+      <translation>Bredden på linjene for dimensjonering</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="317"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="436"/>
       <source>px</source>
       <translation type="unfinished">px</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="327"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="446"/>
       <source>The color of dimension lines, arrows and texts</source>
-      <translation type="unfinished">The color of dimension lines, arrows and texts</translation>
+      <translation>Fargen på dimensjonslinjer, piler og tekst</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="341"/>
-      <source>The typeof arrows to use for dimensions</source>
-      <translation type="unfinished">The typeof arrows to use for dimensions</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="476"/>
       <source>Dot</source>
-      <translation type="unfinished">Dot</translation>
+      <translation>Prikk</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="350"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="486"/>
       <source>Arrow</source>
-      <translation type="unfinished">Arrow</translation>
+      <translation>Pil</translation>
     </message>
     <message>
-      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="491"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Avmerking</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
+      <source>The name of your style. Existing style names can be edited.</source>
+      <translation>Navnet på stilen din. Eksisterende stilnavn kan endres.</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="219"/>
+      <source>Font size in the system units</source>
+      <translation>Størrelse på skrift i systemenhetene</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="180"/>
+      <source>Line spacing in system units</source>
+      <translation>Linjeavstand i systemenheter</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="285"/>
+      <source>A multiplier factor that affects the size of texts and markers</source>
+      <translation>En multiplikatorfaktor som påvirker størrelsen på tekster og markører</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="305"/>
+      <source>The number of decimals to show for dimension values</source>
+      <translation>Antall desimaler som skal vises for dimensjoneringsverdier</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="298"/>
+      <source>Specify a valid length unit like mm, m, in, ft, to force displaying the dimension value in this unit</source>
+      <translation>Angi en gyldig lengdeenhet som mm, m, mot venstre, for å tvinge visning av dimensjonsverdien i denne enheten</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="315"/>
+      <source>If it is checked it will show the unit next to the dimension value</source>
+      <translation>Dersom den er avhuket vil den vise enheten ved dimensjons-verdien</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="534"/>
+      <source>The distance that the extension lines are additionally extended beyond the dimension line</source>
+      <translation type="unfinished">The distance that the extension lines are additionally extended beyond the dimension line</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="504"/>
+      <source>The size of the dimension arrows or markers in system units</source>
+      <translation type="unfinished">The size of the dimension arrows or markers in system units</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="417"/>
+      <source>If it is checked it will display the dimension line</source>
+      <translation>Hvis den er merket vil den vise dimensjonslinjen</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="514"/>
+      <source>The distance that the dimension line is additionally extended</source>
+      <translation type="unfinished">The distance that the dimension line is additionally extended</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="524"/>
+      <source>The length of the extension lines</source>
+      <translation type="unfinished">The length of the extension lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="472"/>
+      <source>The type of arrows or markers to use at the end of dimension lines</source>
+      <translation type="unfinished">The type of arrows or markers to use at the end of dimension lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="481"/>
+      <source>Circle</source>
+      <translation>Sirkel</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="496"/>
+      <source>Tick-2</source>
+      <translation type="unfinished">Tick-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
+      <source>Import styles from json file</source>
+      <translation type="unfinished">Import styles from json file</translation>
+    </message>
+    <message>
+      <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
+      <source>Export styles to json file</source>
+      <translation type="unfinished">Export styles to json file</translation>
     </message>
   </context>
   <context>
@@ -445,16 +259,6 @@ from menu Tools -&gt; Addon Manager</source>
       <translation type="unfinished">Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="996"/>
-      <source>%s cannot be modified because its placement is readonly.</source>
-      <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2235"/>
-      <source>Upgrade: Unknown force method:</source>
-      <translation type="unfinished">Upgrade: Unknown force method:</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="104"/>
@@ -494,7 +298,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../InitGui.py" line="113"/>
       <source>&amp;Utilities</source>
-      <translation type="unfinished">&amp;Utilities</translation>
+      <translation>&amp;Verktøy</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="122"/>
@@ -502,7 +306,7 @@ from menu Tools -&gt; Addon Manager</translation>
       <translation type="unfinished">Draft</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="186"/>
+      <location filename="../../InitGui.py" line="183"/>
       <source>Import-Export</source>
       <translation type="unfinished">Import-Export</translation>
     </message>
@@ -524,7 +328,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>Rotasjonssenter</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="69"/>
@@ -561,7 +365,7 @@ This only works if "Link array" is off.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="150"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Fusjoner</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="157"/>
@@ -595,12 +399,12 @@ It cannot be zero.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="203"/>
       <source>Radial distance</source>
-      <translation type="unfinished">Radial distance</translation>
+      <translation>Radial avstand</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="261"/>
       <source>The number of symmetry lines in the circular array.</source>
-      <translation type="unfinished">The number of symmetry lines in the circular array.</translation>
+      <translation>Antall symmetrilinjer i den sirkulære listen.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="250"/>
@@ -630,21 +434,21 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
       <source>Orthogonal array</source>
-      <translation type="unfinished">Orthogonal array</translation>
+      <translation>Ortogonal matrise</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="44"/>
       <source>Distance between the elements in the Z direction.
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Z direction.
-Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Avstand mellom elementene i Z-retningen
+Normalt er det bare behov for Z-verdien. De to andre verdiene kan gi en ekstra skift i de respektive retningene.
+Negative verdier vil resultere i kopier som er produsert i negativ retning.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="49"/>
       <source>Z intervals</source>
-      <translation type="unfinished">Z intervals</translation>
+      <translation>Z-intervaller</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="385"/>
@@ -664,12 +468,12 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="353"/>
       <source>Reset the distances.</source>
-      <translation type="unfinished">Reset the distances.</translation>
+      <translation>Tilbakestill avstandene.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="125"/>
       <source>Reset Z</source>
-      <translation type="unfinished">Reset Z</translation>
+      <translation>Tilbakestille Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="137"/>
@@ -681,7 +485,7 @@ This only works if "Link array" is off.</translation>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="141"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Fusjoner</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="148"/>
@@ -712,43 +516,43 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
       <source>X intervals</source>
-      <translation type="unfinished">X intervals</translation>
+      <translation>X-intervaller</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
       <source>Reset X</source>
-      <translation type="unfinished">Reset X</translation>
+      <translation>Tilbakestille X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="275"/>
       <source>Distance between the elements in the Y direction.
 Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation type="unfinished">Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Avstand mellom elementene i Y-retningen
+Normalt er det bare nødvendig med Y-verdien. De to andre verdiene kan gi en ekstra skift i de respektive retningene.
+Negative verdier vil resultere i kopier som er produsert i negativ retning.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="280"/>
       <source>Y intervals</source>
-      <translation type="unfinished">Y intervals</translation>
+      <translation>Y-intervaller</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="356"/>
       <source>Reset Y</source>
-      <translation type="unfinished">Reset Y</translation>
+      <translation>Tilbakestille Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="366"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation type="unfinished">Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</translation>
+      <translation>Antall elementer i listen i den angitte retningen, inkludert en kopi av det opprinnelige objektet.
+Tallet må være minst 1 i hver retning.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="370"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>Antall elementer</translation>
     </message>
   </context>
   <context>
@@ -768,7 +572,7 @@ Change the direction of the axis itself in the property editor.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="61"/>
       <source>Center of rotation</source>
-      <translation type="unfinished">Center of rotation</translation>
+      <translation>Rotasjonssenter</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="69"/>
@@ -805,7 +609,7 @@ This only works if "Link array" is off.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="150"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Fusjoner</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="157"/>
@@ -843,7 +647,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="212"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>Antall elementer</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="235"/>
@@ -896,12 +700,12 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="101"/>
       <source>Font file</source>
-      <translation type="unfinished">Font file</translation>
+      <translation>Skrift fil</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="73"/>
       <source>Enter coordinates or select point with mouse.</source>
-      <translation type="unfinished">Enter coordinates or select point with mouse.</translation>
+      <translation>Angi koordinater eller velg punkt med musen.</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="186"/>
@@ -911,20 +715,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="192"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
-    </message>
-  </context>
-  <context>
-    <name>Draft_Layer</name>
-    <message>
-      <location filename="../../DraftLayer.py" line="83"/>
-      <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="84"/>
-      <source>Adds a layer</source>
-      <translation type="unfinished">Adds a layer</translation>
+      <translation>Tilbakestill punkt</translation>
     </message>
   </context>
   <context>
@@ -949,32 +740,32 @@ Or choose one of the options below</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="34"/>
       <source>Top (XY)</source>
-      <translation type="unfinished">Top (XY)</translation>
+      <translation>Topp (XY)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="41"/>
       <source>Sets the working plane to the XZ plane (front plane)</source>
-      <translation type="unfinished">Sets the working plane to the XZ plane (front plane)</translation>
+      <translation>Angir arbeidsplan til XZ-planet (frontplan)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="44"/>
       <source>Front (XZ)</source>
-      <translation type="unfinished">Front (XZ)</translation>
+      <translation>Forside (XZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="51"/>
       <source>Sets the working plane to the YZ plane (side plane)</source>
-      <translation type="unfinished">Sets the working plane to the YZ plane (side plane)</translation>
+      <translation>Angir arbeidsplan til YZ-planet (sideplan)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="54"/>
       <source>Side (YZ)</source>
-      <translation type="unfinished">Side (YZ)</translation>
+      <translation>Side (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="61"/>
       <source>Sets the working plane facing the current view</source>
-      <translation type="unfinished">Sets the working plane facing the current view</translation>
+      <translation>Angir arbeidsplanet som vender mot gjeldende visning</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="64"/>
@@ -1019,7 +810,7 @@ of the buttons above</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="111"/>
       <source>Center plane on view</source>
-      <translation type="unfinished">Center plane on view</translation>
+      <translation>Midtstilt plan på visning</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="135"/>
@@ -1035,34 +826,34 @@ Then, press the button below</translation>
       <source>Moves the working plane without changing its
 orientation. If no point is selected, the plane
 will be moved to the center of the view</source>
-      <translation type="unfinished">Moves the working plane without changing its
-orientation. If no point is selected, the plane
-will be moved to the center of the view</translation>
+      <translation>Flytter arbeidslaget uten å endre
+sin orientering. Hvis ingen punkt er valgt, vil planet
+bli flyttet til midten av visningen</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="152"/>
       <source>Move working plane</source>
-      <translation type="unfinished">Move working plane</translation>
+      <translation>Flytt arbeidsplan</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="171"/>
       <source>The spacing between the smaller grid lines</source>
-      <translation type="unfinished">The spacing between the smaller grid lines</translation>
+      <translation>Avstanden mellom de mindre nettlinjene</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="164"/>
       <source>Grid spacing</source>
-      <translation type="unfinished">Grid spacing</translation>
+      <translation>Avstand mellom ruter</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="191"/>
       <source>The number of squares between each main line of the grid</source>
-      <translation type="unfinished">The number of squares between each main line of the grid</translation>
+      <translation>Antall ruter mellom hver hovedlinje i nettet</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="184"/>
       <source>Main line every</source>
-      <translation type="unfinished">Main line every</translation>
+      <translation>Hoved linjer for hver</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="207"/>
@@ -1079,24 +870,254 @@ value by using the [ and ] keys while drawing</translation>
       <translation type="unfinished">Snapping radius</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="221"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="241"/>
       <source>Centers the view on the current working plane</source>
-      <translation type="unfinished">Centers the view on the current working plane</translation>
+      <translation>Sentrer visningen på gjeldende plan</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
-      <translation type="unfinished">Center view</translation>
+      <translation>Sentrer visning</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="231"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="251"/>
       <source>Resets the working plane to its previous position</source>
-      <translation type="unfinished">Resets the working plane to its previous position</translation>
+      <translation>Nullstiller arbeidsplanet til forrige posisjon</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="234"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>Forrige</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="219"/>
+      <source>Grid extension</source>
+      <translation type="unfinished">Grid extension</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskSelectPlane.ui" line="226"/>
+      <source> lines</source>
+      <translation type="unfinished"> lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
+      <source>Style settings</source>
+      <translation type="unfinished">Style settings</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="207"/>
+      <source>Text color</source>
+      <translation type="unfinished">Text color</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="132"/>
+      <source>Shape color</source>
+      <translation type="unfinished">Shape color</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="50"/>
+      <source>Line width</source>
+      <translation type="unfinished">Line width</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="29"/>
+      <source>The color of faces</source>
+      <translation type="unfinished">The color of faces</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="168"/>
+      <source>The type of dimension arrows</source>
+      <translation type="unfinished">The type of dimension arrows</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="172"/>
+      <source>Dot</source>
+      <translation>Prikk</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="177"/>
+      <source>Circle</source>
+      <translation>Sirkel</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="182"/>
+      <source>Arrow</source>
+      <translation>Pil</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="187"/>
+      <source>Tick</source>
+      <translation>Avmerking</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
+      <source>Tick-2</source>
+      <translation type="unfinished">Tick-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="234"/>
+      <source>The color of texts and dimension texts</source>
+      <translation type="unfinished">The color of texts and dimension texts</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="241"/>
+      <source>The size of texts and dimension texts</source>
+      <translation type="unfinished">The size of texts and dimension texts</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="281"/>
+      <source>Show unit</source>
+      <translation>Vis enhet</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="43"/>
+      <source>Line color</source>
+      <translation>Linjefarge</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="271"/>
+      <source>The size of dimension arrows</source>
+      <translation type="unfinished">The size of dimension arrows</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="220"/>
+      <source>The font to use for texts and dimensions</source>
+      <translation>Skriften som skal brukes for tekst og dimensjoner</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="64"/>
+      <source>The line style</source>
+      <translation type="unfinished">The line style</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="68"/>
+      <source>Solid</source>
+      <translation>Solid</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="73"/>
+      <source>Dashed</source>
+      <translation type="unfinished">Dashed</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="78"/>
+      <source>Dotted</source>
+      <translation type="unfinished">Dotted</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="83"/>
+      <source>DashDot</source>
+      <translation type="unfinished">DashDot</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="227"/>
+      <source>Text size</source>
+      <translation type="unfinished">Text size</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="295"/>
+      <source>Unit override</source>
+      <translation>Overstyr enheter</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="302"/>
+      <source>The unit to use for dimensions. Leave blank to use current FreeCAD unit</source>
+      <translation type="unfinished">The unit to use for dimensions. Leave blank to use current FreeCAD unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="146"/>
+      <source>The transparency of faces</source>
+      <translation type="unfinished">The transparency of faces</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="149"/>
+      <source> %</source>
+      <translation> %</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="139"/>
+      <source>Transparency</source>
+      <translation type="unfinished">Transparency</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="98"/>
+      <source>Display mode</source>
+      <translation>Visningsmodus</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="200"/>
+      <source>Text font</source>
+      <translation type="unfinished">Text font</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="288"/>
+      <source>Arrow size</source>
+      <translation>Pilstørrelse</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="105"/>
+      <source>The display mode for faces</source>
+      <translation type="unfinished">The display mode for faces</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="109"/>
+      <source>Flat Lines</source>
+      <translation type="unfinished">Flat Lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="114"/>
+      <source>Wireframe</source>
+      <translation type="unfinished">Wireframe</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="119"/>
+      <source>Shaded</source>
+      <translation type="unfinished">Shaded</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="124"/>
+      <source>Points</source>
+      <translation>Punkter</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="36"/>
+      <source>Draw style</source>
+      <translation type="unfinished">Draw style</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
+      <source>The color of lines</source>
+      <translation type="unfinished">The color of lines</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="251"/>
+      <source>Arrow style</source>
+      <translation type="unfinished">Arrow style</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="91"/>
+      <source> px</source>
+      <translation type="unfinished"> px</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="312"/>
+      <source>Apply to selected objects</source>
+      <translation>Bruk på valgte objekter</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="20"/>
+      <source>Lines and faces</source>
+      <translation type="unfinished">Lines and faces</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="162"/>
+      <source>Annotations</source>
+      <translation type="unfinished">Annotations</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="258"/>
+      <source>If the unit suffix is shown on dimension texts or not</source>
+      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
     </message>
   </context>
   <context>
@@ -1267,52 +1288,52 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="287"/>
       <source>Select base objects after copying</source>
-      <translation type="unfinished">Select base objects after copying</translation>
+      <translation>Velg baseobjekter etter kopiering</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="271"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="269"/>
       <source>If checked, a grid will appear when drawing</source>
-      <translation type="unfinished">If checked, a grid will appear when drawing</translation>
+      <translation>Hvis merket av, vil et rutenett vises når tegning vises</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="274"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="272"/>
       <source>Use grid</source>
-      <translation type="unfinished">Use grid</translation>
+      <translation>Bruk rutenett</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="372"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="402"/>
       <source>Grid spacing</source>
-      <translation type="unfinished">Grid spacing</translation>
+      <translation>Avstand mellom ruter</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="395"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="425"/>
       <source>The spacing between each grid line</source>
-      <translation type="unfinished">The spacing between each grid line</translation>
+      <translation>Avstanden mellom hver rutenett</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="323"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="353"/>
       <source>Main lines every</source>
-      <translation type="unfinished">Main lines every</translation>
+      <translation>Hoved linjer for hver</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="346"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="376"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
-      <translation type="unfinished">Mainlines will be drawn thicker. Specify here how many squares between mainlines.</translation>
+      <translation>Hovedlinjer vil bli trukket raskere. Angi her hvor mange ruter mellom hovedlinjene.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
       <source>Internal precision level</source>
-      <translation type="unfinished">Internal precision level</translation>
+      <translation>Innvendig presisjonsnivå</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="395"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
-      <translation type="unfinished">This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</translation>
+      <translation>Dette er retningen på dimensjonstekstene når disse dimensjonene er vertikale. Standard er venstre, som er ISO-standarden.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="405"/>
       <source>Left (ISO standard)</source>
-      <translation type="unfinished">Left (ISO standard)</translation>
+      <translation>Venstre (ISO standard)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="410"/>
@@ -1350,14 +1371,14 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">Show Working Plane tracker</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="297"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="291"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
       <translation type="unfinished">If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="388"/>
       <source>Use standard font size for texts</source>
-      <translation type="unfinished">Use standard font size for texts</translation>
+      <translation>Bruk standard skriftstørrelse for tekster</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="431"/>
@@ -1367,12 +1388,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="452"/>
       <source>Render polylines with width</source>
-      <translation type="unfinished">Render polylines with width</translation>
+      <translation>Render polyliner med bredde</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="141"/>
       <source>Translated (for print &amp; display)</source>
-      <translation type="unfinished">Translated (for print &amp; display)</translation>
+      <translation>Oversatt (for utskrift og visning)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="146"/>
@@ -1412,7 +1433,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="132"/>
       <source>Import</source>
-      <translation type="unfinished">Import</translation>
+      <translation>Importer</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="142"/>
@@ -1422,7 +1443,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="158"/>
       <source>points</source>
-      <translation type="unfinished">points</translation>
+      <translation>punkter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="174"/>
@@ -1442,12 +1463,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
       <source>Visual settings</source>
-      <translation type="unfinished">Visual settings</translation>
+      <translation>Visuelle innstillinger</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
       <source>Visual Settings</source>
-      <translation type="unfinished">Visual Settings</translation>
+      <translation>Visuelle innstillinger</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="34"/>
@@ -1467,7 +1488,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="80"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Farge</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="237"/>
@@ -1477,17 +1498,17 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="263"/>
       <source>Grid</source>
-      <translation type="unfinished">Grid</translation>
+      <translation>Rutenett</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="300"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="294"/>
       <source>Always show the grid</source>
       <translation>Alltid vise rutenettet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
       <source>Texts and dimensions</source>
-      <translation type="unfinished">Texts and dimensions</translation>
+      <translation>Tekster og dimensjoner</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="59"/>
@@ -1497,7 +1518,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="323"/>
       <source>Dot</source>
-      <translation type="unfinished">Dot</translation>
+      <translation>Prikk</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="328"/>
@@ -1507,7 +1528,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="333"/>
       <source>Arrow</source>
-      <translation type="unfinished">Arrow</translation>
+      <translation>Pil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="362"/>
@@ -1525,9 +1546,9 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">The space between the dimension line and the dimension text</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="497"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="534"/>
       <source>Select a font file</source>
-      <translation type="unfinished">Select a font file</translation>
+      <translation>Velg en skriftfil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="267"/>
@@ -1552,7 +1573,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="252"/>
       <source>Sketches</source>
-      <translation type="unfinished">Sketches</translation>
+      <translation>Skisser</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="325"/>
@@ -1585,12 +1606,12 @@ such as "Arial:Bold"</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="427"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="457"/>
       <source>Grid size</source>
       <translation type="unfinished">Grid size</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="453"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="483"/>
       <source> lines</source>
       <translation type="unfinished"> lines</translation>
     </message>
@@ -1605,34 +1626,34 @@ such as "Arial:Bold"</source>
       <translation type="unfinished"> text inside (3D)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="375"/>
       <source>Dashed line definition</source>
       <translation type="unfinished">Dashed line definition</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="398"/>
       <source>0.09,0.05</source>
       <translation type="unfinished">0.09,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="369"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="418"/>
       <source>Dashdot line definition</source>
       <translation type="unfinished">Dashdot line definition</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="392"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="441"/>
       <source>0.09,0.05,0.02,0.05</source>
       <translation type="unfinished">0.09,0.05,0.02,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="412"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="461"/>
       <source>Dotted line definition</source>
-      <translation type="unfinished">Dotted line definition</translation>
+      <translation>Prikket linjedefinisjon</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="435"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="484"/>
       <source>0.02,0.02</source>
-      <translation type="unfinished">0.02,0.02</translation>
+      <translation>0.02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
@@ -1642,12 +1663,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Text settings</source>
-      <translation type="unfinished">Text settings</translation>
+      <translation>Tekstinnstillinger</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="34"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Skrift familie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="76"/>
@@ -1657,67 +1678,67 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="116"/>
       <source>Dimension settings</source>
-      <translation type="unfinished">Dimension settings</translation>
+      <translation>Dimensjon innstillinger</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="124"/>
       <source>Display mode</source>
-      <translation type="unfinished">Display mode</translation>
+      <translation>Visningsmodus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="309"/>
       <source>Arrows style</source>
-      <translation type="unfinished">Arrows style</translation>
+      <translation>Piltype</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="355"/>
       <source>Arrows size</source>
-      <translation type="unfinished">Arrows size</translation>
+      <translation>Pilstørrelse</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="388"/>
       <source>Text orientation</source>
-      <translation type="unfinished">Text orientation</translation>
+      <translation>Tekst orientering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="422"/>
       <source>Text spacing</source>
-      <translation type="unfinished">Text spacing</translation>
+      <translation>Tekst mellomrom</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="476"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="513"/>
       <source>ShapeString settings</source>
       <translation type="unfinished">ShapeString settings</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="521"/>
       <source>Default ShapeString font file</source>
       <translation type="unfinished">Default ShapeString font file</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="318"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="367"/>
       <source>Drawing view line definitions</source>
       <translation type="unfinished">Drawing view line definitions</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
       <source>DWG</source>
-      <translation type="unfinished">DWG</translation>
+      <translation>DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="26"/>
       <source>DWG conversion</source>
-      <translation type="unfinished">DWG conversion</translation>
+      <translation>Konvertering til DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Merk:&lt;/span&gt; DXF alternativer gjelder også for DWG-filer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="14"/>
       <source>DXF</source>
-      <translation type="unfinished">DXF</translation>
+      <translation>DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
@@ -1737,17 +1758,17 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-oca.ui" line="14"/>
       <source>OCA</source>
-      <translation type="unfinished">OCA</translation>
+      <translation>OCA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="14"/>
       <source>SVG</source>
-      <translation type="unfinished">SVG</translation>
+      <translation>SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="86"/>
       <source>Disable units scaling</source>
-      <translation type="unfinished">Disable units scaling</translation>
+      <translation>Deaktiver skalering av enheter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="574"/>
@@ -1762,12 +1783,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="29"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+      <translation>Vis denne dialogen ved import og eksport</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="80"/>
       <source>Automatic update (legacy importer only)</source>
-      <translation type="unfinished">Automatic update (legacy importer only)</translation>
+      <translation>Automatisk oppdatering (kun legacy importør)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="341"/>
@@ -1787,37 +1808,32 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
       <source>Number of decimals</source>
-      <translation type="unfinished">Number of decimals</translation>
+      <translation>Antall desimaler</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="197"/>
       <source>Shift</source>
-      <translation type="unfinished">Shift</translation>
+      <translation>Skift</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="202"/>
       <source>Ctrl</source>
-      <translation type="unfinished">Ctrl</translation>
+      <translation>Ctrl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="207"/>
       <source>Alt</source>
-      <translation type="unfinished">Alt</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="184"/>
       <source>The Alt modifier key</source>
-      <translation type="unfinished">The Alt modifier key</translation>
+      <translation>Alt endringstasten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="447"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="477"/>
       <source>The number of horizontal or vertical lines of the grid</source>
-      <translation type="unfinished">The number of horizontal or vertical lines of the grid</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="496"/>
-      <source>The default color for new objects</source>
-      <translation type="unfinished">The default color for new objects</translation>
+      <translation>Antall horisontale eller vertikale linjer i rutenettet</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="87"/>
@@ -1835,7 +1851,7 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">If checked, a widget indicating the current working plane orientation appears during drawing operations</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="432"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="481"/>
       <source>An SVG linestyle definition</source>
       <translation type="unfinished">An SVG linestyle definition</translation>
     </message>
@@ -1867,7 +1883,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="338"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Avmerking</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="343"/>
@@ -1875,22 +1891,22 @@ such as "Arial:Bold"</source>
       <translation type="unfinished">Tick-2</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="277"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="326"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
       <translation type="unfinished">Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="329"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve colors of faces during downgrade/upgrade</translation>
+      <translation>Bevar farger av overflater under nedgradering/oppgradering</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="297"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="346"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
       <translation type="unfinished">Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="349"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
       <translation type="unfinished">Preserve names of faces during downgrade/upgrade</translation>
     </message>
@@ -1918,8 +1934,8 @@ such as "Arial:Bold"</source>
       <location filename="../ui/preferences-draft.ui" line="169"/>
       <source>This is the value used by functions that use a tolerance.
 Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</source>
-      <translation type="unfinished">This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</translation>
+      <translation>Dette er verdien som brukes av funksjoner som bruker en toleranse.
+Verdier som har differanser under denne verdien vil bli behandlet likt. Denne verdien vil bli foreldet snart slik at presisjonsnivået over kontrollerer begge deler.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="67"/>
@@ -1944,22 +1960,22 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="118"/>
       <source>Relative</source>
-      <translation type="unfinished">Relative</translation>
+      <translation>Relativ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="140"/>
       <source>R</source>
-      <translation type="unfinished">R</translation>
+      <translation>R</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="236"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsett</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="214"/>
       <source>T</source>
-      <translation type="unfinished">T</translation>
+      <translation>T</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="111"/>
@@ -1969,7 +1985,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="177"/>
       <source>O</source>
-      <translation type="unfinished">O</translation>
+      <translation>O</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="243"/>
@@ -1979,7 +1995,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="469"/>
       <source>P</source>
-      <translation type="unfinished">P</translation>
+      <translation>P</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="498"/>
@@ -1989,22 +2005,22 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="381"/>
       <source>D</source>
-      <translation type="unfinished">D</translation>
+      <translation>D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="491"/>
       <source>Fill</source>
-      <translation type="unfinished">Fill</translation>
+      <translation>Fyll</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="425"/>
       <source>L</source>
-      <translation type="unfinished">L</translation>
+      <translation>L</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="447"/>
       <source>Exit</source>
-      <translation type="unfinished">Exit</translation>
+      <translation>Avslutt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="638"/>
@@ -2014,12 +2030,12 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="579"/>
       <source>Select Edge</source>
-      <translation type="unfinished">Select Edge</translation>
+      <translation>Velg kant</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="520"/>
       <source>E</source>
-      <translation type="unfinished">E</translation>
+      <translation>E</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="403"/>
@@ -2029,7 +2045,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="675"/>
       <source>Q</source>
-      <translation type="unfinished">Q</translation>
+      <translation>Q</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="352"/>
@@ -2039,7 +2055,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="557"/>
       <source>H</source>
-      <translation type="unfinished">H</translation>
+      <translation>H</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="359"/>
@@ -2049,17 +2065,17 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="601"/>
       <source>W</source>
-      <translation type="unfinished">W</translation>
+      <translation>W</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="697"/>
       <source>Set WP</source>
-      <translation type="unfinished">Set WP</translation>
+      <translation>Angi gjeldende plan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="719"/>
       <source>U</source>
-      <translation type="unfinished">U</translation>
+      <translation>U</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="257"/>
@@ -2069,7 +2085,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="52"/>
       <source>`</source>
-      <translation type="unfinished">`</translation>
+      <translation>`</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="338"/>
@@ -2079,32 +2095,32 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="89"/>
       <source>S</source>
-      <translation type="unfinished">S</translation>
+      <translation>S</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="250"/>
       <source>Increase Radius</source>
-      <translation type="unfinished">Increase Radius</translation>
+      <translation>Øk radius</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="279"/>
       <source>[</source>
-      <translation type="unfinished">[</translation>
+      <translation>[</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="345"/>
       <source>Decrease Radius</source>
-      <translation type="unfinished">Decrease Radius</translation>
+      <translation>Reduser radius</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="316"/>
       <source>]</source>
-      <translation type="unfinished">]</translation>
+      <translation>]</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="741"/>
       <source>Restrict X</source>
-      <translation type="unfinished">Restrict X</translation>
+      <translation>Begrens X</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="763"/>
@@ -2114,7 +2130,7 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="785"/>
       <source>Restrict Y</source>
-      <translation type="unfinished">Restrict Y</translation>
+      <translation>Begrens Y</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="807"/>
@@ -2124,17 +2140,12 @@ Values with differences below this value will be treated as same. This value wil
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="829"/>
       <source>Restrict Z</source>
-      <translation type="unfinished">Restrict Z</translation>
+      <translation>Begrens Z</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="851"/>
       <source>Z</source>
       <translation>Z</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="476"/>
-      <source>Grid color</source>
-      <translation type="unfinished">Grid color</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="194"/>
@@ -2199,17 +2210,17 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="14"/>
       <source>User interface settings</source>
-      <translation type="unfinished">User interface settings</translation>
+      <translation>Innstillinger for brukergrensesnitt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="884"/>
       <source>Enable draft statusbar customization</source>
-      <translation type="unfinished">Enable draft statusbar customization</translation>
+      <translation>Aktiver utkast statuslinje tilpasninger</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="887"/>
       <source>Draft Statusbar</source>
-      <translation type="unfinished">Draft Statusbar</translation>
+      <translation>Utkast Statuslinje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="907"/>
@@ -2232,32 +2243,32 @@ Note that this is not fully supported, and many object will be not editable with
       <translation type="unfinished">Annotation scale widget</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="521"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="567"/>
       <source>Draft Edit preferences</source>
-      <translation type="unfinished">Draft Edit preferences</translation>
+      <translation>Utkast Redigering instillinger</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="524"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="570"/>
       <source>Edit</source>
       <translation>Rediger</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="538"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="584"/>
       <source>Maximum number of contemporary edited objects</source>
       <translation type="unfinished">Maximum number of contemporary edited objects</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="561"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="607"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="599"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="645"/>
       <source>Draft edit pick radius</source>
-      <translation type="unfinished">Draft edit pick radius</translation>
+      <translation>Utkast til redigeringsradius</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftsnap.ui" line="622"/>
+      <location filename="../ui/preferences-draftsnap.ui" line="668"/>
       <source>Controls pick radius of edit nodes</source>
       <translation type="unfinished">Controls pick radius of edit nodes</translation>
     </message>
@@ -2299,12 +2310,12 @@ from the Addon Manager.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="139"/>
       <source>If unchecked, texts and mtexts won't be imported</source>
-      <translation type="unfinished">If unchecked, texts and mtexts won't be imported</translation>
+      <translation>Hvis umerket, tekster og mtekster importeres ikke</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="155"/>
       <source>If unchecked, points won't be imported</source>
-      <translation type="unfinished">If unchecked, points won't be imported</translation>
+      <translation>Hvis umerket, vil ikke punkter importeres</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="171"/>
@@ -2378,7 +2389,7 @@ instead of the size they have in the DXF document</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="408"/>
       <source>Use Layers</source>
-      <translation type="unfinished">Use Layers</translation>
+      <translation>Bruk lag</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="428"/>
@@ -2447,6 +2458,66 @@ This value is the maximum segment length. </source>
 In this case arcs will be discretized into small line segments.
 This value is the maximum segment length. </translation>
     </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="310"/>
+      <source>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</source>
+      <translation type="unfinished">If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="313"/>
+      <source>Show grid border</source>
+      <translation type="unfinished">Show grid border</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="475"/>
+      <source>Override unit</source>
+      <translation type="unfinished">Override unit</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="495"/>
+      <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
+      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="257"/>
+      <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
+      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="280"/>
+      <source>Hatch Pattern default size</source>
+      <translation type="unfinished">Hatch Pattern default size</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="300"/>
+      <source>The default size of hatch patterns</source>
+      <translation type="unfinished">The default size of hatch patterns</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="329"/>
+      <source>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</source>
+      <translation type="unfinished">If set, the grid will have its two main axes colored in red, green or blue when they match global axes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="332"/>
+      <source>Use colored axes</source>
+      <translation type="unfinished">Use colored axes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="506"/>
+      <source>Grid color and transparency</source>
+      <translation type="unfinished">Grid color and transparency</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="526"/>
+      <source>The color of the grid</source>
+      <translation type="unfinished">The color of the grid</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftsnap.ui" line="546"/>
+      <source>The overall transparency of the grid</source>
+      <translation type="unfinished">The overall transparency of the grid</translation>
+    </message>
   </context>
   <context>
     <name>ImportDWG</name>
@@ -2464,210 +2535,190 @@ This value is the maximum segment length. </translation>
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1799"/>
+      <location filename="../../importSVG.py" line="1807"/>
       <source>Unknown SVG export style, switching to Translated</source>
-      <translation type="unfinished">Unknown SVG export style, switching to Translated</translation>
+      <translation>Ukjent SVG eksportstil, bytte til oversatt</translation>
+    </message>
+    <message>
+      <location filename="../../importSVG.py" line="1826"/>
+      <source>The export list contains no object with a valid bounding box</source>
+      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
     </message>
   </context>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="285"/>
+      <location filename="../../DraftGui.py" line="233"/>
       <source>Draft Command Bar</source>
-      <translation type="unfinished">Draft Command Bar</translation>
+      <translation>Utkast kommandolinje</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="735"/>
+      <location filename="../../DraftGui.py" line="698"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Veksle byggemodus</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="736"/>
-      <source>Current line color</source>
-      <translation type="unfinished">Current line color</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="737"/>
-      <source>Current face color</source>
-      <translation>Gjeldende overflatefarge</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="738"/>
-      <source>Current line width</source>
-      <translation type="unfinished">Current line width</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="739"/>
-      <source>Current font size</source>
-      <translation type="unfinished">Current font size</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="740"/>
-      <source>Apply to selected objects</source>
-      <translation>Bruk på valgte objekter</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1872"/>
+      <location filename="../../DraftGui.py" line="1894"/>
       <source>Autogroup off</source>
       <translation type="unfinished">Autogroup off</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="651"/>
+      <location filename="../../DraftGui.py" line="610"/>
       <source>active command:</source>
       <translation>aktiv kommando:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="963"/>
+      <location filename="../../DraftGui.py" line="929"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="653"/>
+      <location filename="../../DraftGui.py" line="612"/>
       <source>Active Draft command</source>
       <translation>Aktiv kommando</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="654"/>
+      <location filename="../../DraftGui.py" line="613"/>
       <source>X coordinate of next point</source>
       <translation>X koordinat for neste punkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="964"/>
+      <location filename="../../DraftGui.py" line="930"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="656"/>
+      <location filename="../../DraftGui.py" line="615"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="657"/>
+      <location filename="../../DraftGui.py" line="616"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="658"/>
+      <location filename="../../DraftGui.py" line="617"/>
       <source>Y coordinate of next point</source>
       <translation>Y koordinat for neste punkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="659"/>
+      <location filename="../../DraftGui.py" line="618"/>
       <source>Z coordinate of next point</source>
       <translation>Z koordinat for neste punkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="660"/>
+      <location filename="../../DraftGui.py" line="619"/>
       <source>Enter point</source>
-      <translation type="unfinished">Enter point</translation>
+      <translation>Legg til punkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="661"/>
+      <location filename="../../DraftGui.py" line="620"/>
       <source>Enter a new point with the given coordinates</source>
-      <translation type="unfinished">Enter a new point with the given coordinates</translation>
+      <translation>Angi et nytt punkt med gitte koordinater</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="662"/>
+      <location filename="../../DraftGui.py" line="621"/>
       <source>Length</source>
       <translation>Lengde</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="663"/>
+      <location filename="../../DraftGui.py" line="622"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="664"/>
+      <location filename="../../DraftGui.py" line="623"/>
       <source>Length of current segment</source>
-      <translation type="unfinished">Length of current segment</translation>
+      <translation>Lengde på valgte segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="665"/>
+      <location filename="../../DraftGui.py" line="624"/>
       <source>Angle of current segment</source>
-      <translation type="unfinished">Angle of current segment</translation>
+      <translation>Vinkel på valgte segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1011"/>
+      <location filename="../../DraftGui.py" line="980"/>
       <source>Radius</source>
       <translation>Radius</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1012"/>
+      <location filename="../../DraftGui.py" line="981"/>
       <source>Radius of Circle</source>
       <translation>Sirkelradius</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="676"/>
+      <location filename="../../DraftGui.py" line="635"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Hvis denne er merket vil kommandoen ikke bli fullført før du trykker kommandoknappen igjen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="678"/>
+      <location filename="../../DraftGui.py" line="637"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performed instead of the classic offset</translation>
+      <translation>Hvis merket av, vil en OCC-stil forskyvning bli utført i stedet for klassisk forskyvning</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="679"/>
+      <location filename="../../DraftGui.py" line="638"/>
       <source>&amp;OCC-style offset</source>
-      <translation type="unfinished">&amp;OCC-style offset</translation>
+      <translation>&amp;OCC-stil forskyvning</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="696"/>
+      <location filename="../../DraftGui.py" line="658"/>
       <source>Sides</source>
-      <translation type="unfinished">Sides</translation>
+      <translation>Sider</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="697"/>
+      <location filename="../../DraftGui.py" line="659"/>
       <source>Number of sides</source>
       <translation>Antall sider</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="941"/>
+      <location filename="../../DraftGui.py" line="907"/>
       <source>Offset</source>
       <translation>Avsetting</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="602"/>
+      <location filename="../../DraftGui.py" line="552"/>
       <source>Auto</source>
-      <translation type="unfinished">Auto</translation>
+      <translation>Automatisk</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="703"/>
+      <location filename="../../DraftGui.py" line="665"/>
       <source>Text string to draw</source>
-      <translation type="unfinished">Text string to draw</translation>
+      <translation>Tekststreng som skal tegnes</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="704"/>
+      <location filename="../../DraftGui.py" line="666"/>
       <source>String</source>
       <translation>Streng</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="705"/>
+      <location filename="../../DraftGui.py" line="667"/>
       <source>Height of text</source>
-      <translation type="unfinished">Height of text</translation>
+      <translation>Høyde på tekst</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="706"/>
+      <location filename="../../DraftGui.py" line="668"/>
       <source>Height</source>
       <translation>Høyde</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="707"/>
+      <location filename="../../DraftGui.py" line="669"/>
       <source>Intercharacter spacing</source>
       <translation type="unfinished">Intercharacter spacing</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="708"/>
+      <location filename="../../DraftGui.py" line="670"/>
       <source>Tracking</source>
-      <translation type="unfinished">Tracking</translation>
+      <translation>Sporing</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="709"/>
+      <location filename="../../DraftGui.py" line="671"/>
       <source>Full path to font file:</source>
-      <translation type="unfinished">Full path to font file:</translation>
+      <translation>Fullstendig bane til skriftfil:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="710"/>
+      <location filename="../../DraftGui.py" line="672"/>
       <source>Open a FileChooser for font file</source>
       <translation type="unfinished">Open a FileChooser for font file</translation>
     </message>
@@ -2677,147 +2728,147 @@ This value is the maximum segment length. </translation>
       <translation>Linje</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="862"/>
+      <location filename="../../DraftGui.py" line="828"/>
       <source>DWire</source>
       <translation type="unfinished">DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="845"/>
       <source>Circle</source>
       <translation>Sirkel</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="895"/>
+      <location filename="../../DraftGui.py" line="861"/>
       <source>Center X</source>
       <translation>Senter X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="894"/>
+      <location filename="../../DraftGui.py" line="860"/>
       <source>Arc</source>
       <translation>Bue</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="900"/>
+      <location filename="../../DraftGui.py" line="866"/>
       <source>Point</source>
-      <translation type="unfinished">Point</translation>
+      <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="925"/>
+      <location filename="../../DraftGui.py" line="891"/>
       <source>Label</source>
       <translation type="unfinished">Label</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1003"/>
+      <location filename="../../DraftGui.py" line="972"/>
       <source>Distance</source>
       <translation>Avstand</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1000"/>
+      <location filename="../../DraftGui.py" line="969"/>
       <source>Trim</source>
-      <translation type="unfinished">Trim</translation>
+      <translation>Beskjær</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1098"/>
+      <location filename="../../DraftGui.py" line="1067"/>
       <source>Pick Object</source>
       <translation>Velg objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1104"/>
+      <location filename="../../DraftGui.py" line="1073"/>
       <source>Edit</source>
       <translation>Rediger</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1154"/>
+      <location filename="../../DraftGui.py" line="1124"/>
       <source>Global X</source>
-      <translation type="unfinished">Global X</translation>
+      <translation>Global X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1155"/>
+      <location filename="../../DraftGui.py" line="1125"/>
       <source>Global Y</source>
-      <translation type="unfinished">Global Y</translation>
+      <translation>Globalt Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1156"/>
+      <location filename="../../DraftGui.py" line="1126"/>
       <source>Global Z</source>
-      <translation type="unfinished">Global Z</translation>
+      <translation>Global Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1159"/>
+      <location filename="../../DraftGui.py" line="1129"/>
       <source>Local X</source>
-      <translation type="unfinished">Local X</translation>
+      <translation>Lokal X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1160"/>
+      <location filename="../../DraftGui.py" line="1130"/>
       <source>Local Y</source>
-      <translation type="unfinished">Local Y</translation>
+      <translation>Lokal Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1161"/>
+      <location filename="../../DraftGui.py" line="1131"/>
       <source>Local Z</source>
-      <translation type="unfinished">Local Z</translation>
+      <translation>Lokal Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1380"/>
+      <location filename="../../DraftGui.py" line="1360"/>
       <source>Invalid Size value. Using 200.0.</source>
-      <translation type="unfinished">Invalid Size value. Using 200.0.</translation>
+      <translation>Ugyldig størrelse verdi. Bruker 200.0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1388"/>
+      <location filename="../../DraftGui.py" line="1368"/>
       <source>Invalid Tracking value. Using 0.</source>
-      <translation type="unfinished">Invalid Tracking value. Using 0.</translation>
+      <translation>Ugyldig sporingsverdi. Bruker 0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1402"/>
+      <location filename="../../DraftGui.py" line="1382"/>
       <source>Please enter a text string.</source>
-      <translation type="unfinished">Please enter a text string.</translation>
+      <translation>Vennligst skriv inn en tekststreng.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1410"/>
+      <location filename="../../DraftGui.py" line="1390"/>
       <source>Select a Font file</source>
-      <translation type="unfinished">Select a Font file</translation>
+      <translation>Velg en skriftfil</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1441"/>
+      <location filename="../../DraftGui.py" line="1421"/>
       <source>Please enter a font file.</source>
-      <translation type="unfinished">Please enter a font file.</translation>
+      <translation>Vennligst angi en skriftfil.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1865"/>
+      <location filename="../../DraftGui.py" line="1887"/>
       <source>Autogroup: </source>
       <translation type="unfinished">Autogroup: </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2166"/>
+      <location filename="../../DraftGui.py" line="2188"/>
       <source>Faces</source>
       <translation>Flater</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2167"/>
+      <location filename="../../DraftGui.py" line="2189"/>
       <source>Remove</source>
       <translation>Fjern</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2168"/>
+      <location filename="../../DraftGui.py" line="2190"/>
       <source>Add</source>
       <translation>Legg til</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2169"/>
+      <location filename="../../DraftGui.py" line="2191"/>
       <source>Facebinder elements</source>
       <translation type="unfinished">Facebinder elements</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>BSpline</source>
-      <translation type="unfinished">BSpline</translation>
+      <translation>BSpline</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>BezCurve</source>
-      <translation type="unfinished">BezCurve</translation>
+      <translation>BezCurve</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="699"/>
+      <location filename="../../DraftGui.py" line="661"/>
       <source>Copy</source>
       <translation>Kopier</translation>
     </message>
@@ -2841,299 +2892,167 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="1980"/>
-      <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="1986"/>
-      <source>Found mesh(es): turning into Part shapes</source>
-      <translation type="unfinished">Found mesh(es): turning into Part shapes</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="1995"/>
-      <source>Found 1 solidifiable object: solidifying it</source>
-      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2001"/>
-      <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2007"/>
-      <source>Found several objects: creating a shell</source>
-      <translation type="unfinished">Found several objects: creating a shell</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2013"/>
-      <source>Found several coplanar objects or faces: creating one face</source>
-      <translation type="unfinished">Found several coplanar objects or faces: creating one face</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2019"/>
-      <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2043"/>
-      <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2034"/>
-      <source>Found 1 linear object: converting to line</source>
-      <translation type="unfinished">Found 1 linear object: converting to line</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2049"/>
-      <source>Found closed wires: creating faces</source>
-      <translation type="unfinished">Found closed wires: creating faces</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2055"/>
-      <source>Found 1 open wire: closing it</source>
-      <translation type="unfinished">Found 1 open wire: closing it</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2061"/>
-      <source>Found several open wires: joining them</source>
-      <translation type="unfinished">Found several open wires: joining them</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2067"/>
-      <source>Found several edges: wiring them</source>
-      <translation type="unfinished">Found several edges: wiring them</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2073"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2077"/>
-      <source>Unable to upgrade these objects.</source>
-      <translation type="unfinished">Unable to upgrade these objects.</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2246"/>
-      <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2253"/>
-      <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2259"/>
-      <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2267"/>
-      <source>Found 2 objects: subtracting them</source>
-      <translation type="unfinished">Found 2 objects: subtracting them</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2275"/>
-      <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2281"/>
-      <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2287"/>
-      <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2293"/>
-      <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2297"/>
-      <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3006"/>
-      <source>No point found
-</source>
-      <translation type="unfinished">No point found
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="670"/>
+      <location filename="../../DraftGui.py" line="629"/>
       <source>Relative</source>
-      <translation type="unfinished">Relative</translation>
+      <translation>Relativ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="677"/>
+      <location filename="../../DraftGui.py" line="636"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsett</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="688"/>
+      <location filename="../../DraftGui.py" line="650"/>
       <source>Close</source>
       <translation>Lukk</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="64"/>
+      <location filename="../../DraftGui.py" line="60"/>
       <source>Fill</source>
-      <translation type="unfinished">Fill</translation>
+      <translation>Fyll</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="65"/>
+      <location filename="../../DraftGui.py" line="61"/>
       <source>Exit</source>
-      <translation type="unfinished">Exit</translation>
+      <translation>Avslutt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="66"/>
+      <location filename="../../DraftGui.py" line="62"/>
       <source>Snap On/Off</source>
       <translation type="unfinished">Snap On/Off</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="67"/>
+      <location filename="../../DraftGui.py" line="63"/>
       <source>Increase snap radius</source>
       <translation type="unfinished">Increase snap radius</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="68"/>
+      <location filename="../../DraftGui.py" line="64"/>
       <source>Decrease snap radius</source>
       <translation type="unfinished">Decrease snap radius</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="69"/>
+      <location filename="../../DraftGui.py" line="65"/>
       <source>Restrict X</source>
-      <translation type="unfinished">Restrict X</translation>
+      <translation>Begrens X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="70"/>
+      <location filename="../../DraftGui.py" line="66"/>
       <source>Restrict Y</source>
-      <translation type="unfinished">Restrict Y</translation>
+      <translation>Begrens Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="71"/>
+      <location filename="../../DraftGui.py" line="67"/>
       <source>Restrict Z</source>
-      <translation type="unfinished">Restrict Z</translation>
+      <translation>Begrens Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="694"/>
+      <location filename="../../DraftGui.py" line="656"/>
       <source>Select edge</source>
-      <translation type="unfinished">Select edge</translation>
+      <translation>Velg kant</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="73"/>
+      <location filename="../../DraftGui.py" line="69"/>
       <source>Add custom snap point</source>
       <translation type="unfinished">Add custom snap point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="74"/>
+      <location filename="../../DraftGui.py" line="70"/>
       <source>Length mode</source>
-      <translation type="unfinished">Length mode</translation>
+      <translation>Lengde modus</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="690"/>
+      <location filename="../../DraftGui.py" line="652"/>
       <source>Wipe</source>
       <translation type="unfinished">Wipe</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="76"/>
+      <location filename="../../DraftGui.py" line="72"/>
       <source>Set Working Plane</source>
-      <translation type="unfinished">Set Working Plane</translation>
+      <translation>Angi arbeidsplan</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="77"/>
+      <location filename="../../DraftGui.py" line="73"/>
       <source>Cycle snap object</source>
       <translation type="unfinished">Cycle snap object</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="667"/>
+      <location filename="../../DraftGui.py" line="626"/>
       <source>Check this to lock the current angle</source>
       <translation type="unfinished">Check this to lock the current angle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="671"/>
+      <location filename="../../DraftGui.py" line="630"/>
       <source>Coordinates relative to last point or absolute</source>
       <translation type="unfinished">Coordinates relative to last point or absolute</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="672"/>
+      <location filename="../../DraftGui.py" line="631"/>
       <source>Filled</source>
       <translation type="unfinished">Filled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="674"/>
+      <location filename="../../DraftGui.py" line="633"/>
       <source>Finish</source>
       <translation>Fullfør</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="675"/>
+      <location filename="../../DraftGui.py" line="634"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation type="unfinished">Finishes the current drawing or editing operation</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="686"/>
+      <location filename="../../DraftGui.py" line="648"/>
       <source>&amp;Undo (CTRL+Z)</source>
       <translation type="unfinished">&amp;Undo (CTRL+Z)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="687"/>
+      <location filename="../../DraftGui.py" line="649"/>
       <source>Undo the last segment</source>
       <translation type="unfinished">Undo the last segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="689"/>
+      <location filename="../../DraftGui.py" line="651"/>
       <source>Finishes and closes the current line</source>
       <translation type="unfinished">Finishes and closes the current line</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="691"/>
+      <location filename="../../DraftGui.py" line="653"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="692"/>
+      <location filename="../../DraftGui.py" line="654"/>
       <source>Set WP</source>
-      <translation type="unfinished">Set WP</translation>
+      <translation>Angi gjeldende plan</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="693"/>
+      <location filename="../../DraftGui.py" line="655"/>
       <source>Reorients the working plane on the last segment</source>
       <translation type="unfinished">Reorients the working plane on the last segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="695"/>
+      <location filename="../../DraftGui.py" line="657"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="700"/>
+      <location filename="../../DraftGui.py" line="662"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
       <translation type="unfinished">If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="990"/>
-      <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="63"/>
+      <location filename="../../DraftGui.py" line="59"/>
       <source>Subelement mode</source>
       <translation type="unfinished">Subelement mode</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="701"/>
+      <location filename="../../DraftGui.py" line="663"/>
       <source>Modify subelements</source>
       <translation type="unfinished">Modify subelements</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="702"/>
+      <location filename="../../DraftGui.py" line="664"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation type="unfinished">If checked, subelements will be modified instead of entire objects</translation>
     </message>
@@ -3158,29 +3077,14 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Side</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="734"/>
+      <location filename="../../DraftGui.py" line="696"/>
       <source>Current working plane</source>
       <translation type="unfinished">Current working plane</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="673"/>
+      <location filename="../../DraftGui.py" line="632"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe. Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="43"/>
-      <source>No active document. Aborting</source>
-      <translation type="unfinished">No active document. Aborting</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="50"/>
-      <source>Layer</source>
-      <translation type="unfinished">Layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="71"/>
-      <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
@@ -3193,144 +3097,49 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Draft</translation>
     </message>
     <message>
-      <location filename="../../DraftFillet.py" line="264"/>
-      <source>two elements needed</source>
-      <translation type="unfinished">two elements needed</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="107"/>
-      <source>radius too large</source>
-      <translation type="unfinished">radius too large</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="112"/>
-      <source>length: </source>
-      <translation type="unfinished">length: </translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="134"/>
-      <source>removed original objects</source>
-      <translation type="unfinished">removed original objects</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="185"/>
-      <source>Fillet</source>
-      <translation>Avrunding</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="182"/>
-      <source>Creates a fillet between two wires or edges.</source>
-      <translation type="unfinished">Creates a fillet between two wires or edges.</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="188"/>
-      <source>No active document</source>
-      <translation>Ingen aktive dokumenter</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="194"/>
-      <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="195"/>
-      <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="208"/>
-      <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="214"/>
-      <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="227"/>
-      <source>Enter radius</source>
-      <translation type="unfinished">Enter radius</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="246"/>
-      <source>Delete original objects: </source>
-      <translation type="unfinished">Delete original objects: </translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="252"/>
-      <source>Chamfer mode: </source>
-      <translation type="unfinished">Chamfer mode: </translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="275"/>
-      <source>Test object</source>
-      <translation type="unfinished">Test object</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="276"/>
-      <source>Test object removed</source>
-      <translation type="unfinished">Test object removed</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="277"/>
-      <source>fillet cannot be created</source>
-      <translation type="unfinished">fillet cannot be created</translation>
-    </message>
-    <message>
-      <location filename="../../DraftFillet.py" line="291"/>
-      <source>Create fillet</source>
-      <translation type="unfinished">Create fillet</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="78"/>
+      <location filename="../../DraftGui.py" line="74"/>
       <source>Toggle near snap on/off</source>
       <translation type="unfinished">Toggle near snap on/off</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="673"/>
       <source>Create text</source>
       <translation>Lag tekst</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="712"/>
+      <location filename="../../DraftGui.py" line="674"/>
       <source>Press this button to create the text object, or finish your text with two blank lines</source>
       <translation type="unfinished">Press this button to create the text object, or finish your text with two blank lines</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="896"/>
+      <location filename="../../DraftGui.py" line="862"/>
       <source>Center Y</source>
       <translation type="unfinished">Center Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="897"/>
+      <location filename="../../DraftGui.py" line="863"/>
       <source>Center Z</source>
       <translation type="unfinished">Center Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="948"/>
+      <location filename="../../DraftGui.py" line="914"/>
       <source>Offset distance</source>
       <translation type="unfinished">Offset distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1004"/>
+      <location filename="../../DraftGui.py" line="973"/>
       <source>Trim distance</source>
       <translation type="unfinished">Trim distance</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="334"/>
-      <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
-    </message>
-    <message>
-      <location filename="../../DraftLayer.py" line="341"/>
-      <source>Select contents</source>
-      <translation type="unfinished">Select contents</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Wire</source>
       <translation type="unfinished">Wire</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="697"/>
+      <source>Change default style for new objects</source>
+      <translation type="unfinished">Change default style for new objects</translation>
     </message>
   </context>
   <context>

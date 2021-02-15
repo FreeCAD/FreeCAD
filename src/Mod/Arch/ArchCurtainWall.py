@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2020 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -21,9 +20,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch Curtain Wall"
+__title__  = "FreeCAD Arch Curtain Wall"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import math,sys
 import FreeCAD
@@ -147,12 +146,7 @@ class CommandArchCurtainWall:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("baseline = Draft.makeLine(FreeCAD."+str(self.points[0])+",FreeCAD."+str(self.points[1])+")")
-            FreeCADGui.doCommand("base = FreeCAD.ActiveDocument.addObject('Part::Extrusion','Extrude')")
-            FreeCADGui.doCommand("base.Base = baseline")
-            FreeCADGui.doCommand("base.DirMode = 'Custom'")
-            FreeCADGui.doCommand("base.Dir = App.Vector(FreeCAD.DraftWorkingPlane.axis)")
-            FreeCADGui.doCommand("base.LengthFwd = 1000")
+            FreeCADGui.doCommand("base = Draft.makeLine(FreeCAD."+str(self.points[0])+",FreeCAD."+str(self.points[1])+")")
             FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
@@ -173,6 +167,15 @@ class CurtainWall(ArchComponent.Component):
     def setProperties(self,obj):
 
         pl = obj.PropertiesList
+        vsize = 50
+        hsize = 50
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        if not "Host" in pl:
+            obj.addProperty("App::PropertyLink","Host","CurtainWall",QT_TRANSLATE_NOOP("App::Property","An optional host object for this curtain wall"))
+        if not "Height" in pl:
+            obj.addProperty("App::PropertyLength","Height","CurtainWall",
+                            QT_TRANSLATE_NOOP("App::Property","The height of the curtain wall, if based on an edge"))
+            obj.Height = p.GetFloat("WallHeight",3000)
         if not "VerticalMullionNumber" in pl:
             obj.addProperty("App::PropertyInteger","VerticalMullionNumber","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of vertical mullions"))
@@ -183,11 +186,19 @@ class CurtainWall(ArchComponent.Component):
         if not "VerticalSections" in pl:
             obj.addProperty("App::PropertyInteger","VerticalSections","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of vertical sections of this curtain wall"))
-            obj.VerticalSections = 4
-        if not "VerticalMullionSize" in pl:
-            obj.addProperty("App::PropertyLength","VerticalMullionSize","CurtainWall",
-                            QT_TRANSLATE_NOOP("App::Property","The size of the vertical mullions, if no profile is used"))
-            obj.VerticalMullionSize = 100
+            obj.VerticalSections = 1
+        if "VerticalMullionSize" in pl:
+            # obsolete
+            vsize = obj.VerticalMullionSize.Value
+            obj.removeProperty("VerticalMullionSize")
+        if not "VerticalMullionHeight" in pl:
+            obj.addProperty("App::PropertyLength","VerticalMullionHeight","CurtainWall",
+                            QT_TRANSLATE_NOOP("App::Property","The height of the vertical mullions profile, if no profile is used"))
+            obj.VerticalMullionHeight = vsize
+        if not "VerticalMullionWidth" in pl:
+            obj.addProperty("App::PropertyLength","VerticalMullionWidth","CurtainWall",
+                            QT_TRANSLATE_NOOP("App::Property","The width of the vertical mullions profile, if no profile is used"))
+            obj.VerticalMullionWidth = vsize
         if not "VerticalMullionProfile" in pl:
             obj.addProperty("App::PropertyLink","VerticalMullionProfile","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","A profile for vertical mullions (disables vertical mullion size)"))
@@ -201,11 +212,19 @@ class CurtainWall(ArchComponent.Component):
         if not "HorizontalSections" in pl:
             obj.addProperty("App::PropertyInteger","HorizontalSections","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","The number of horizontal sections of this curtain wall"))
-            obj.HorizontalSections = 4
-        if not "HorizontalMullionSize" in pl:
-            obj.addProperty("App::PropertyLength","HorizontalMullionSize","CurtainWall",
-                            QT_TRANSLATE_NOOP("App::Property","The size of the horizontal mullions, if no profile is used"))
-            obj.HorizontalMullionSize = 50
+            obj.HorizontalSections = 1
+        if "HorizontalMullionSize" in pl:
+            # obsolete
+            hsize = obj.HorizontalMullionSize.Value
+            obj.removeProperty("HorizontalMullionSize")
+        if not "HorizontalMullionHeight" in pl:
+            obj.addProperty("App::PropertyLength","HorizontalMullionHeight","CurtainWall",
+                            QT_TRANSLATE_NOOP("App::Property","The height of the horizontal mullions profile, if no profile is used"))
+            obj.HorizontalMullionHeight = hsize
+        if not "HorizontalMullionWidth" in pl:
+            obj.addProperty("App::PropertyLength","HorizontalMullionWidth","CurtainWall",
+                            QT_TRANSLATE_NOOP("App::Property","The width of the horizontal mullions profile, if no profile is used"))
+            obj.HorizontalMullionWidth = hsize
         if not "HorizontalMullionProfile" in pl:
             obj.addProperty("App::PropertyLink","HorizontalMullionProfile","CurtainWall",
                             QT_TRANSLATE_NOOP("App::Property","A profile for horizontal mullions (disables horizontal mullion size)"))
@@ -268,9 +287,6 @@ class CurtainWall(ArchComponent.Component):
         if not hasattr(obj.Base,"Shape"):
             FreeCAD.Console.PrintLog(obj.Label+": invalid base\n")
             return
-        if not obj.Base.Shape.Faces:
-            FreeCAD.Console.PrintLog(obj.Label+": no faces in base\n")
-            return
         if obj.VerticalMullionProfile:
             if not hasattr(obj.VerticalMullionProfile,"Shape"):
                 FreeCAD.Console.PrintLog(obj.Label+": invalid vertical mullion profile\n")
@@ -283,13 +299,23 @@ class CurtainWall(ArchComponent.Component):
             if not hasattr(obj.DiagonalMullionProfile,"Shape"):
                 FreeCAD.Console.PrintLog(obj.Label+": invalid diagonal mullion profile\n")
                 return
-        if (not obj.HorizontalSections) or (not obj.VerticalSections):
-                return
 
         facets = []
 
+        faces = []
+        if obj.Base.Shape.Faces:
+            faces = obj.Base.Shape.Faces
+        elif obj.Height.Value and obj.VerticalDirection.Length:
+            ext = FreeCAD.Vector(obj.VerticalDirection)
+            ext.normalize()
+            ext = ext.multiply(obj.Height.Value)
+            faces = [edge.extrude(ext) for edge in obj.Base.Shape.Edges]
+        if not faces:
+            FreeCAD.Console.PrintLog(obj.Label+": unable to build base faces\n")
+            return
+
         # subdivide the faces into quads
-        for face in obj.Base.Shape.Faces:
+        for face in faces:
 
             fp = face.ParameterRange
 
@@ -309,12 +335,16 @@ class CurtainWall(ArchComponent.Component):
                 vertsec = obj.HorizontalSections
                 horizsec = obj.VerticalSections
 
-            hstep = (fp[1]-fp[0])/vertsec
-            vstep = (fp[3]-fp[2])/horizsec
+            hstep = (fp[1]-fp[0])
+            if vertsec:
+                hstep = hstep/vertsec
+            vstep = (fp[3]-fp[2])
+            if horizsec:
+                vstep = vstep/horizsec
 
             # construct facets
-            for i in range(vertsec):
-                for j in range(horizsec):
+            for i in range(vertsec or 1):
+                for j in range(horizsec or 1):
                     p0 = face.valueAt(fp[0]+i*hstep,fp[2]+j*vstep)
                     p1 = face.valueAt(fp[0]+(i+1)*hstep,fp[2]+j*vstep)
                     p2 = face.valueAt(fp[0]+(i+1)*hstep,fp[2]+(j+1)*vstep)
@@ -364,7 +394,7 @@ class CurtainWall(ArchComponent.Component):
         # construct vertical mullions
         vmullions = []
         vprofile = self.getMullionProfile(obj,"Vertical")
-        if vprofile:
+        if vprofile and vertsec:
             for vedge in vedges:
                 vn = self.edgenormals[vedge.hashCode()]
                 if (vn.x != 0) or (vn.y != 0):
@@ -380,7 +410,7 @@ class CurtainWall(ArchComponent.Component):
         # construct horizontal mullions
         hmullions = []
         hprofile = self.getMullionProfile(obj,"Horizontal")
-        if hprofile:
+        if hprofile and horizsec:
             for hedge in hedges:
                 rot = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),-90)
                 vn = self.edgenormals[hedge.hashCode()]
@@ -493,14 +523,15 @@ class CurtainWall(ArchComponent.Component):
 
         import Part,DraftGeomUtils
 
-        prop1 = getattr(obj,direction+"MullionProfile")
-        prop2 = getattr(obj,direction+"MullionSize").Value
-        if prop1:
-            profile = prop1.Shape.copy()
+        prof = getattr(obj,direction+"MullionProfile")
+        proh = getattr(obj,direction+"MullionHeight").Value
+        prow = getattr(obj,direction+"MullionWidth").Value
+        if prof:
+            profile = prof.Shape.copy()
         else:
-            if not prop2:
+            if (not proh) or (not prow):
                 return None
-            profile = Part.Face(Part.makePlane(prop2,prop2,FreeCAD.Vector(-prop2/2,-prop2/2,0)))
+            profile = Part.Face(Part.makePlane(prow,proh,FreeCAD.Vector(-prow/2,-proh/2,0)))
         return profile
 
     def getProjectedLength(self,v,ref):

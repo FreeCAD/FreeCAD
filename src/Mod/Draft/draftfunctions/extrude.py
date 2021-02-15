@@ -20,14 +20,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft extrude function.
-"""
+"""Provides functions to create an extrusion object from a profile."""
 ## @package extrude
-# \ingroup DRAFT
-# \brief This module provides the code for Draft extrude function.
+# \ingroup draftfuctions
+# \brief Provides functions to create an extrusion object from a profile.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
-
 import draftutils.gui_utils as gui_utils
 
 
@@ -59,3 +59,5 @@ def extrude(obj, vector, solid=False):
         gui_utils.select(newobj)
 
     return newobj
+
+## @}

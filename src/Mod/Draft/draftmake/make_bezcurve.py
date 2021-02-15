@@ -20,26 +20,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the code for Draft make_bezcurve function.
-"""
+"""Provides functions to create BezCurve objects."""
 ## @package make_bezcurve
-# \ingroup DRAFT
-# \brief This module provides the code for Draft make_bezcurve function.
+# \ingroup draftmake
+# \brief Provides functions to create BezCurve objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
-from draftutils.gui_utils import format_object
-from draftutils.gui_utils import select
-
-from draftutils.utils import type_check
 from draftutils.translate import translate
-
 from draftobjects.bezcurve import BezCurve
+
 if App.GuiUp:
     from draftviewproviders.view_bezcurve import ViewProviderBezCurve
 
 
-def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=None, degree=None):
+def make_bezcurve(pointslist,
+                  closed=False, placement=None, face=None, support=None,
+                  degree=None):
     """make_bezcurve(pointslist, [closed], [placement])
     
     Creates a Bezier Curve object from the given list of vectors.
@@ -76,7 +77,8 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
         pointslist = nlist
-    if placement: type_check([(placement,App.Placement)], "make_bezcurve")
+    if placement:
+        utils.type_check([(placement,App.Placement)], "make_bezcurve")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "BezCurve"
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
@@ -98,10 +100,12 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
         ViewProviderBezCurve(obj.ViewObject)
 #        if not face: obj.ViewObject.DisplayMode = "Wireframe"
 #        obj.ViewObject.DisplayMode = "Wireframe"
-        format_object(obj)
-        select(obj)
+        gui_utils.format_object(obj)
+        gui_utils.select(obj)
 
     return obj
 
 
 makeBezCurve = make_bezcurve
+
+## @}

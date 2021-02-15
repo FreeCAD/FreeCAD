@@ -35,7 +35,7 @@ class DlgProjectUtility : public QDialog
     Q_OBJECT
 
 public:
-    DlgProjectUtility(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgProjectUtility(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgProjectUtility();
 
 private Q_SLOTS:

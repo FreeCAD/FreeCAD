@@ -74,7 +74,7 @@ void CmdImageOpen::activated(int iMsg)
     str << ");;" << QObject::tr("All files") << " (*.*)";
     // Reading an image
     QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"),
-                                             QString::null, formats);
+                                             QString(), formats);
     if (!s.isEmpty()) {
         try {
             s = Base::Tools::escapeEncodeFilename(s);
@@ -122,7 +122,7 @@ void CmdCreateImagePlane::activated(int iMsg)
     str << ");;" << QObject::tr("All files") << " (*.*)";
     // Reading an image
     QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"),
-                                             QString::null, formats);
+                                             QString(), formats);
     if (!s.isEmpty()) {
 
         QImage impQ(s);
@@ -152,7 +152,7 @@ void CmdCreateImagePlane::activated(int iMsg)
 
         QString pyfile = Base::Tools::escapeEncodeFilename(s);
 
-        openCommand("Create ImagePlane");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create ImagePlane"));
         doCommand(Doc,"App.activeDocument().addObject('Image::ImagePlane','%s\')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),(const char*)pyfile.toUtf8());
         doCommand(Doc,"App.activeDocument().%s.XSize = %d",FeatName.c_str(),nWidth);

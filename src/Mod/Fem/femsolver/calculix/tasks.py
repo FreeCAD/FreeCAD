@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM solver CalculiX tasks"
+__title__  = "FreeCAD FEM solver CalculiX tasks"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -115,7 +115,7 @@ class Results(run.Results):
 
     def purge_results(self):
         for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
-            if femutils.is_of_type(m.Mesh, "Fem::MeshResult"):
+            if m.Mesh and femutils.is_of_type(m.Mesh, "Fem::MeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
         self.analysis.Document.recompute()
