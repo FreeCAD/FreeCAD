@@ -2664,6 +2664,11 @@ public:
                 name = _name.c_str();
             }
 
+            if ((!name || !name[0]) && PyObject_HasAttrString(pyobj, "__module__")) {
+                _name = Py::Object(pyobj).getAttr("__module__").as_string();
+                name = _name.c_str();
+            }
+
             if (!name || !name[0]) {
                 Py::Object pymod;
                 PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
@@ -2682,7 +2687,11 @@ public:
                         auto pybase = static_cast<BaseClassPy*>(self);
                         _name = pybase->getModule();
                         name = _name.c_str();
-                    } else if (self) {
+                    } else if (self && PyObject_HasAttrString(self, "__module__")) {
+                        _name = Py::Object(self).getAttr("__module__").as_string();
+                        name = _name.c_str();
+                    }
+                    if (!name || !name[0]) {
                         module = PyObject_CallFunction(this->inspect.ptr(), "O", self->ob_type);
                         if (module) {
                             pymod = Py::asObject(module);
