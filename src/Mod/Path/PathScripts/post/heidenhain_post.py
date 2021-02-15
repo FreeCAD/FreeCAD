@@ -800,7 +800,7 @@ def HEIDEN_PolarArc(pol_cc_X, pol_cc_Y, pol_X, pol_Y, pol_Z, pol_Axis, pol_Incr)
         pol_Angle = 90 - pol_Angle
     # with Y axis zero have the Z+ direction
     elif pol_Axis == "Y":
-        pol_Angle = pol_Angle
+        pol_Angle = 0 + pol_Angle
     # with Z axis zero have the X+ direction
     elif pol_Axis == "Z":
         pol_Angle = 90 - pol_Angle
