@@ -47,13 +47,7 @@ class CommandToolBitSelectorOpen:
     def Activated(self):
         import PathScripts.PathToolBitLibraryGui as PathToolBitLibraryGui
         dock = PathToolBitLibraryGui.ToolBitSelector()
-
-        lastlib = PathPreferences.lastPathToolLibrary()
-
-        if PathPreferences.toolsOpenLastLibrary():
-            dock.open(lastlib)
-        else:
-            dock.open()
+        dock.open()
 
 
 class CommandToolBitLibraryOpen:
@@ -76,13 +70,7 @@ class CommandToolBitLibraryOpen:
     def Activated(self):
         import PathScripts.PathToolBitLibraryGui as PathToolBitLibraryGui
         library = PathToolBitLibraryGui.ToolBitLibrary()
-
-        lastlib = PathPreferences.lastPathToolLibrary()
-
-        if PathPreferences.toolsOpenLastLibrary():
-            library.open(lastlib)
-        else:
-            library.open()
+        library.open()
 
 # class CommandToolBitLibraryLoad:
 #     '''
