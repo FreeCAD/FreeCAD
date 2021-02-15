@@ -62,6 +62,7 @@ WarningSuppressAllSpeeds        = "WarningSuppressAllSpeeds"
 WarningSuppressSelectionMode    = "WarningSuppressSelectionMode"
 WarningSuppressOpenCamLib       = "WarningSuppressOpenCamLib"
 EnableExperimentalFeatures      = "EnableExperimentalFeatures"
+EnableAdvancedOCLFeatures      = "EnableAdvancedOCLFeatures"
 
 
 def preferences():
@@ -243,6 +244,10 @@ def setDefaultTaskPanelLayout(style):
     preferences().SetInt(DefaultTaskPanelLayout, style)
 
 
+def advancedOCLFeaturesEnabled():
+    return preferences().GetBool(EnableAdvancedOCLFeatures, False)
+
+
 def experimentalFeaturesEnabled():
     return preferences().GetBool(EnableExperimentalFeatures, False)
 
@@ -251,8 +256,8 @@ def suppressAllSpeedsWarning():
     return preferences().GetBool(WarningSuppressAllSpeeds, True)
 
 
-def suppressRapidSpeedsWarning():
-    return suppressAllSpeedsWarning() or preferences().GetBool(WarningSuppressRapidSpeeds, True)
+def suppressRapidSpeedsWarning(user=True):
+    return (user and suppressAllSpeedsWarning()) or preferences().GetBool(WarningSuppressRapidSpeeds, True)
 
 
 def suppressSelectionModeWarning():
@@ -262,6 +267,12 @@ def suppressSelectionModeWarning():
 def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
+def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL):
+    preferences().SetBool(EnableAdvancedOCLFeatures,    ocl)
+    preferences().SetBool(WarningSuppressAllSpeeds,     warnSpeeds)
+    preferences().SetBool(WarningSuppressRapidSpeeds,   warnRapids)
+    preferences().SetBool(WarningSuppressSelectionMode, warnModes)
+    preferences().SetBool(WarningSuppressOpenCamLib,    warnOCL)
 
 def lastFileToolLibrary():
     filename = preferences().GetString(LastFileToolLibrary)
