@@ -207,7 +207,7 @@ class _TaskPanel:
                 "Unexpected error when creating mesh: {}\n"
                 .format(sys.exc_info()[0])
             )
-            error = sys.exc_info()[0].strip();
+            error = sys.exc_info()[0].strip()
         if error:
             FreeCAD.Console.PrintMessage("Gmsh had warnings ...\n")
             FreeCAD.Console.PrintMessage("{}\n".format(error))
