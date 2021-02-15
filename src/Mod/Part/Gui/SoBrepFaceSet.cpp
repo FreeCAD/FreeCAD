@@ -957,6 +957,17 @@ int SoBrepFaceSet::overrideMaterialBinding(
             overrideTransparency = 0.01;
         else if(!(shapestyleflags & SoShapeStyleElement::TRANSP_MATERIAL))
             return 0;
+    } else if (Gui::ViewParams::ShowPreSelectedFaceOnTop()
+                && !ctx2
+                && !selected
+                && ctx
+                && ctx->isHighlighted()
+                && !ctx->isHighlightAll())
+    {
+        // If show pre-selected face is enabled, the preselected face highlight
+        // will be shown on top with transparency, so no need for material
+        // override.
+        return 0;
     }
 
     auto mb = SoMaterialBindingElement::get(state);
