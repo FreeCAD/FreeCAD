@@ -899,6 +899,18 @@ elementary shapes, Face, Edge, Vertex.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getChildShapes" Const="true">
+      <Documentation>
+          <UserDocu>
+getChildShapes(shapetype, avoidtype='') -> list(Shape)
+
+Return a list of child sub-shapes of given type.
+
+shapetype: the type of requesting sub shapes
+avoidtype: optional shape type to skip when exploring
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>

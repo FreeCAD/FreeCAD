@@ -2909,11 +2909,29 @@ void TopoShapePy::setOrientation(Py::String arg)
     getTopoShapePtr()->setShape(sh);
 }
 
-static Py::List getElements(const TopoShape &sh, TopAbs_ShapeEnum type) {
+static Py::List getElements(const TopoShape &sh,
+                            TopAbs_ShapeEnum type,
+                            TopAbs_ShapeEnum avoid = TopAbs_SHAPE)
+{
     Py::List ret;
-    for(auto &shape : sh.getSubTopoShapes(type))
+    for(auto &shape : sh.getSubTopoShapes(type, avoid))
         ret.append(shape2pyshape(shape));
     return ret;
+}
+
+PyObject *TopoShapePy::getChildShapes(PyObject *args)
+{
+    const char *type;
+    const char *avoid = 0;
+    if (!PyArg_ParseTuple(args, "s|s", &type, &avoid))
+        return nullptr;
+
+    PY_TRY {
+        return Py::new_reference_to(
+                getElements(*getTopoShapePtr(),
+                    TopoShape::shapeType(type),
+                    avoid && avoid[0] ? TopoShape::shapeType(avoid) : TopAbs_SHAPE));
+    }PY_CATCH_OCC;
 }
 
 Py::List TopoShapePy::getSubShapes(void) const

@@ -836,10 +836,15 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool force
     }
 }
 
-std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type) const {
+std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type, TopAbs_ShapeEnum avoid) const {
     std::vector<TopoDS_Shape> ret;
     if(isNull())
         return ret;
+    if (avoid != TopAbs_SHAPE) {
+        for (TopExp_Explorer exp(getShape(), type, avoid); exp.More(); exp.Next())
+            ret.push_back(exp.Current());
+        return ret;
+    }
     INIT_SHAPE_CACHE();
     auto &info = _Cache->getInfo(type);
     int count = info.count();
@@ -849,11 +854,21 @@ std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type) const {
     return ret;
 }
 
-std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const {
+std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type, TopAbs_ShapeEnum avoid) const {
     if(isNull())
         return std::vector<TopoShape>();
     INIT_SHAPE_CACHE();
-    return _Cache->getInfo(type).getTopoShapes(*this);
+
+    auto res = _Cache->getInfo(type).getTopoShapes(*this);
+    if (avoid != TopAbs_SHAPE && hasSubShape(avoid)) {
+        for (auto it = res.begin(); it != res.end(); ) {
+            if (_Cache->findAncestor(_Shape, it->getShape(), avoid).IsNull())
+                ++it;
+            else
+                it = res.erase(it);
+        }
+    }
+    return res;
 }
 
 static const std::string _SubShape("SubShape");
