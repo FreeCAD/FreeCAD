@@ -226,7 +226,7 @@ class ToolController:
 
 
 def Create(name='TC: Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
-    legacyTool = PathPreferences.toolsReallyUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
+    legacyTool = PathPreferences.toolsUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
 
     PathLog.track(tool, toolNumber, legacyTool)
 
