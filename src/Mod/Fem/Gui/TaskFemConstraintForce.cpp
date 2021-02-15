@@ -394,7 +394,7 @@ TaskDlgFemConstraintForce::TaskDlgFemConstraintForce(ViewProviderFemConstraintFo
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintForce(ConstraintView);;
+    this->parameter = new TaskFemConstraintForce(ConstraintView);
 
     Content.push_back(parameter);
 }
