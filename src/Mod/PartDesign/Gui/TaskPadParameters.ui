@@ -82,6 +82,29 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxMidplane">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Applies length symmetrically to sketch plane</string>
+     </property>
+     <property name="text">
+      <string>Symmetric to plane</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxReversed">
+     <property name="toolTip">
+      <string>Reverses pad direction</string>
+     </property>
+     <property name="text">
+      <string>Reversed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBoxDirection">
      <property name="enabled">
       <bool>true</bool>
@@ -188,29 +211,6 @@ the sketch plane's normal vector will be used</string>
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxMidplane">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="toolTip">
-      <string>Applies length symmetrically to sketch plane</string>
-     </property>
-     <property name="text">
-      <string>Symmetric to plane</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxReversed">
-     <property name="toolTip">
-      <string>Reverses pad direction</string>
-     </property>
-     <property name="text">
-      <string>Reversed</string>
-     </property>
     </widget>
    </item>
    <item>
@@ -364,8 +364,6 @@ the sketch plane's normal vector will be used</string>
   <tabstop>XDirectionEdit</tabstop>
   <tabstop>YDirectionEdit</tabstop>
   <tabstop>ZDirectionEdit</tabstop>
-  <tabstop>checkBoxMidplane</tabstop>
-  <tabstop>checkBoxReversed</tabstop>
  </tabstops>
  <resources/>
  <connections/>
