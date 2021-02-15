@@ -1232,17 +1232,34 @@ Base::Vector3d ProfileBased::getProfileNormal(const TopoShape &profileShape) con
         return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
     }
 
-    if (!shape.hasSubShape(TopAbs_EDGE))
-        return SketchVector;
-
-    // Find the first planar face that contains the edge, and return the plane normal
-    TopoShape objShape = Part::Feature::getTopoShape(obj);
-    for (int idx : objShape.findAncestors(shape.getSubShape(TopAbs_EDGE, 1), TopAbs_FACE)) {
-        if (objShape.getSubTopoShape(TopAbs_FACE, idx).findPlane(pln)) {
-            gp_Dir dir = pln.Axis().Direction();
-            return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+    if (shape.hasSubShape(TopAbs_EDGE)) {
+        // Find the first planar face that contains the edge, and return the plane normal
+        TopoShape objShape = Part::Feature::getTopoShape(obj);
+        for (int idx : objShape.findAncestors(shape.getSubShape(TopAbs_EDGE, 1), TopAbs_FACE)) {
+            if (objShape.getSubTopoShape(TopAbs_FACE, idx).findPlane(pln)) {
+                gp_Dir dir = pln.Axis().Direction();
+                return Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+            }
         }
     }
+
+    // If no planar face, try to use the normal of the center of the first face.
+    if (shape.hasSubShape(TopAbs_FACE)) {
+        TopoDS_Face face = TopoDS::Face(shape.getSubShape(TopAbs_FACE, 1));
+        BRepAdaptor_Surface adapt(face);
+        double u = adapt.FirstUParameter() + (adapt.LastUParameter() - adapt.FirstUParameter())/2.;
+        double v = adapt.FirstVParameter() + (adapt.LastVParameter() - adapt.FirstVParameter())/2.;
+        BRepLProp_SLProps prop(adapt,u,v,2,Precision::Confusion());
+        if(prop.IsNormalDefined()) {
+            gp_Pnt pnt; gp_Vec vec;
+            // handles the orientation state of the shape
+            BRepGProp_Face(face).Normal(u,v,pnt,vec);
+            return Base::Vector3d(vec.X(), vec.Y(), vec.Z());
+        }
+    }
+
+    if (!shape.hasSubShape(TopAbs_EDGE))
+        return SketchVector;
 
     // If the shape is a line, then return an arbitrary direction that is perpendicular to the line
     auto geom = Part::Geometry::fromShape(shape.getSubShape(TopAbs_EDGE, 1), true);
