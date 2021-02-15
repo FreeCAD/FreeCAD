@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>318</width>
-    <height>399</height>
+    <height>342</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,16 +32,9 @@
        </item>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="labelLength">
-       <property name="text">
-        <string>Length</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit">
-       <property name="keyboardTracking">
+     <item row="2" column="1">
+      <widget class="Gui::PrefQuantitySpinBox" name="lengthEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
        <property name="minimum" stdset="0">
@@ -49,19 +42,39 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="labelOffset">
-       <property name="text">
-        <string>Offset</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit">
-       <property name="keyboardTracking">
+     <item row="3" column="1">
+      <widget class="Gui::PrefQuantitySpinBox" name="offsetEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
         <bool>false</bool>
        </property>
       </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelLength">
+       <property name="text">
+        <string>Length</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelOffset">
+       <property name="text">
+        <string>Offset to face</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="buttonFace">
+       <property name="text">
+        <string>Face</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineFaceName"/>
      </item>
     </layout>
    </item>
@@ -208,20 +221,6 @@
      </item>
     </layout>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QPushButton" name="buttonFace">
-       <property name="text">
-        <string>Face</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineFaceName"/>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -243,8 +242,6 @@
   <tabstop>checkBoxMidplane</tabstop>
   <tabstop>checkBoxReversed</tabstop>
   <tabstop>lengthEdit2</tabstop>
-  <tabstop>buttonFace</tabstop>
-  <tabstop>lineFaceName</tabstop>
  </tabstops>
  <resources/>
  <connections/>

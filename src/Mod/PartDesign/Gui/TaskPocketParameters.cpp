@@ -271,12 +271,19 @@ void TaskPocketParameters::updateUI(int index)
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
+        ui->lineFaceName->show();
+        ui->buttonFace->show();
     }
     // two dimensions
     else {
         isLengthEditVisable = true;
         isLengthEdit2Visable = true;
     }    
+
+    if (index != 3) {
+        ui->lineFaceName->hide();
+        ui->buttonFace->hide();
+    }
 
     ui->lengthEdit->setVisible( isLengthEditVisable );
     ui->lengthEdit->setEnabled( isLengthEditVisable );
@@ -442,7 +449,8 @@ void TaskPocketParameters::onModeChanged(int index)
     }
 
     updateUI(index);
-    recomputeFeature();
+    if (index != 3 || pcPocket->UpToFace.getValue())
+        recomputeFeature();
 }
 
 void TaskPocketParameters::onButtonFace(const bool pressed)
