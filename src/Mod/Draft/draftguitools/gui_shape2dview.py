@@ -54,8 +54,6 @@ class Shape2DView(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = ""
-        _tip = ()
 
         return {'Pixmap': 'Draft_2DShapeView',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Shape2DView", "Shape 2D view"),

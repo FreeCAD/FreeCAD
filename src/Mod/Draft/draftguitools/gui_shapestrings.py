@@ -62,8 +62,6 @@ class ShapeString(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = ""
-        _tip = ()
 
         d = {'Pixmap': 'Draft_ShapeString',
              'Accel': "S, S",
