@@ -504,7 +504,12 @@ double Helix::safePitch()
 void Helix::proposeParameters(bool force)
 {
     if (force || !HasBeenEdited.getValue()) {
-        double pitch = 1.1*safePitch();
+        TopoDS_Shape sketchshape = getVerifiedFace();
+        Bnd_Box bb;
+        BRepBndLib::Add(sketchshape, bb);
+        bb.SetGap(0.0);
+        double pitch = 1.1 * sqrt(bb.SquareExtent());
+
         Pitch.setValue(pitch);
         Height.setValue(pitch*3.0);
         HasBeenEdited.setValue(1);

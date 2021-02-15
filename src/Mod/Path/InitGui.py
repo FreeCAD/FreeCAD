@@ -121,6 +121,7 @@ class PathWorkbench (Workbench):
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append('Path_Thread_Milling')
 
+        if PathPreferences.advancedOCLFeaturesEnabled():
             try:
                 import ocl  # pylint: disable=unused-variable
                 from PathScripts import PathSurfaceGui
@@ -164,6 +165,9 @@ class PathWorkbench (Workbench):
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
 
+        # keep this one the last entry in the preferences
+        import PathScripts.PathPreferencesAdvanced as PathPreferencesAdvanced
+        FreeCADGui.addPreferencePage(PathPreferencesAdvanced.AdvancedPreferencesPage, "Path")
         Log('Loading Path workbench... done\n')
 
     def GetClassName(self):

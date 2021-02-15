@@ -1726,6 +1726,8 @@ class ComponentTaskPanel:
             self.classButton.hide()
         else:
             import os
+            # the BIM_Classification command needs to be added before it can be used
+            FreeCADGui.activateWorkbench("BIMWorkbench")
             self.classButton.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
