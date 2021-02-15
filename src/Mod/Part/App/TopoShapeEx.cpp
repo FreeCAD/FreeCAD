@@ -140,6 +140,7 @@
 # include <Geom_CartesianPoint.hxx>
 # include <Geom_SphericalSurface.hxx>
 # include <Geom_ToroidalSurface.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 # include <Poly_Triangulation.hxx>
 # include <Standard_Failure.hxx>
 # include <StlAPI_Writer.hxx>
@@ -3785,9 +3786,13 @@ bool TopoShape::getRelatedElementsCached(const char *name, bool sameType,
     return true;
 }
 
-bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
+bool TopoShape::findPlane(gp_Pln &pln, double tol, double atol) const {
     if(_Shape.IsNull())
         return false;
+    if (tol < 0.0)
+        tol = Precision::Confusion();
+    if (atol < 0.0)
+        atol = Precision::Angular();
     TopoDS_Shape shape;
     if (countSubShapes(TopAbs_EDGE) == 1) {
         // To deal with OCCT bug of wrong edge transformation
@@ -3795,10 +3800,64 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     } else
         shape = _Shape;
     try {
-        BRepLib_FindSurface finder(shape,tol,Standard_True);
-        if (!finder.Found())
-            return false;
-        pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+        bool found = false;
+        // BRepLib_FindSurface only really works on edges. We'll deal face first
+        for (auto &shape : getSubShapes(TopAbs_FACE)) {
+            gp_Pln plane;
+            auto face = TopoDS::Face(shape);
+            BRepAdaptor_Surface adapt(face);
+            if (adapt.GetType() == GeomAbs_Plane) {
+                plane = adapt.Plane();
+            } else {
+                TopLoc_Location loc;
+                Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                GeomLib_IsPlanarSurface check(surf);
+                if (check.IsPlanar())
+                    plane = check.Plan();
+                else
+                    return false;
+            }
+            if (!found) {
+                found = true;
+                pln = plane;
+            } else if (!pln.Position().IsCoplanar(plane.Position(), tol, atol))
+                return false;
+        }
+
+        // Check if there is free edges (i.e. edges does not belong to any face)
+        if (TopExp_Explorer(getShape(), TopAbs_EDGE, TopAbs_FACE).More()) {
+            BRepLib_FindSurface finder(shape,tol,Standard_True);
+            if (!finder.Found())
+                return false;
+            pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+            found = true;
+        }
+
+        // Check for free vertexes
+        auto vertexes = getSubShapes(TopAbs_VERTEX, TopAbs_EDGE);
+        if (vertexes.size()) {
+            if (!found && vertexes.size() > 2) {
+                BRep_Builder builder;
+                TopoDS_Compound comp;
+                builder.MakeCompound(comp);
+                for (int i=0, c=(int)vertexes.size()-1; i<c; ++i) {
+                    builder.Add(comp, 
+                            BRepBuilderAPI_MakeEdge(TopoDS::Vertex(vertexes[i]),
+                                                    TopoDS::Vertex(vertexes[i+1])).Edge());
+                }
+                BRepLib_FindSurface finder(comp,tol,Standard_True);
+                if (!finder.Found())
+                    return false;
+                pln = GeomAdaptor_Surface(finder.Surface()).Plane();
+                return true;
+            }
+
+            double tt = tol * tol;
+            for (auto &v : vertexes) {
+                if (pln.SquareDistance(BRep_Tool::Pnt(TopoDS::Vertex(v))) > tt)
+                    return false;
+            }
+        }
 
         // To make the returned plane normal more stable, if the shape has any
         // face, use the normal of the first face.
@@ -3828,7 +3887,7 @@ bool TopoShape::findPlane(gp_Pln &pln, double tol) const {
     }
 }
 
-bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
+bool TopoShape::isCoplanar(const TopoShape &other, double tol, double atol) const {
     if(isNull() || other.isNull())
         return false;
     if(_Shape.IsEqual(other._Shape))
@@ -3838,7 +3897,9 @@ bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
         return false;
     if(tol<0.0)
         tol = Precision::Confusion();
-    return pln1.Position().IsCoplanar(pln2.Position(),tol,tol);
+    if (atol<0.0)
+        atol = Precision::Angular();
+    return pln1.Position().IsCoplanar(pln2.Position(),tol,atol);
 }
 
 std::vector<std::string> TopoShape::getHigherElements(const char *element, bool silent) const
