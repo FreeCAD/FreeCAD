@@ -459,11 +459,19 @@ void DlgExpressionInput::evalFuncChecked(bool checked)
 
 bool DlgExpressionInput::eventFilter(QObject *obj, QEvent *ev)
 {
+    if (!obj->isWidgetType())
+        return false;
+
     if (ev->type() == QEvent::MouseMove && obj != this)
         unsetCursor();
 
     // if the user clicks on a widget different to this
-    if (ev->type() == QEvent::MouseButtonPress && obj != this) {
+    if (this->noBackground && ev->type() == QEvent::MouseButtonPress) {
+        auto widget = static_cast<QWidget*>(obj);
+        for (auto w=widget; w; w=w->parentWidget()) {
+            if (w == this)
+                return false;
+        }
         // Since the widget has a transparent background we cannot rely
         // on the size of the widget. Instead, it must be checked if the
         // cursor is on this or an underlying widget or outside.
