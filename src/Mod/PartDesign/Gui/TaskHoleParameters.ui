@@ -154,6 +154,9 @@ Note that the calculation can take some time</string>
      <property name="singleStep">
       <double>0.100000000000000</double>
      </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
    <item row="5" column="0">
@@ -460,6 +463,9 @@ Only available for holes without thread</string>
      </property>
      <property name="unit" stdset="0">
       <string notr="true">mm</string>
+     </property>
+     <property name="keyboardTracking">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
