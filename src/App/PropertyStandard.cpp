@@ -48,6 +48,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "DocumentParams.h"
 
 using namespace App;
 using namespace Base;
@@ -1629,15 +1630,45 @@ void PropertyString::setValue(const char* newLabel)
         obj->getDocument()->testStatus(App::Document::Importing)) &&
        !obj->getDocument()->isPerformingTransaction())
     {
+        // Special handling on importing. If the imported label starts with the
+        // same base with the object's internal name, change the label to start
+        // with the internal name.
+        if (newLabel && obj->getDocument()->testStatus(App::Document::Importing)) {
+            int len = 0;
+            const char *a=newLabel, *b=obj->getNameInDocument();
+            for (; *a && *b; ++a, ++b) {
+                int ac = *a;
+                int bc = *b;
+                if (ac == bc) {
+                    if(ac == '_' || std::isalpha(ac))
+                        continue;
+                    if (std::isdigit(ac)) {
+                        len = a - newLabel;
+                        break;
+                    }
+                } else {
+                    if (std::isdigit(bc) && ac != '_' && !std::isalpha(ac))
+                        len = a - newLabel;
+                    break;
+                }
+            }
+            if (!len && *b == 0) {
+                int ac = *a;
+                if (ac == 0 || (ac != '_' && !std::isalpha(ac)))
+                    len = a - newLabel;
+            }
+            if (len) {
+                for (; newLabel[len] && std::isdigit(newLabel[len]); ++len);
+                _newLabel = obj->getNameInDocument();
+                _newLabel += newLabel + len;
+                newLabel = _newLabel.c_str();
+            }
+        }
+
         // allow object to control label change
 
-        static ParameterGrp::handle _hPGrp;
-        if(!_hPGrp) {
-            _hPGrp = GetApplication().GetUserParameter().GetGroup("BaseApp");
-            _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
-        }
         App::Document* doc = obj->getDocument();
-        if(doc && !_hPGrp->GetBool("DuplicateLabels") && !obj->allowDuplicateLabel()) {
+        if(doc && !DocumentParams::DuplicateLabels() && !obj->allowDuplicateLabel()) {
             std::vector<std::string> objectLabels;
             std::vector<App::DocumentObject*>::const_iterator it;
             std::vector<App::DocumentObject*> objs = doc->getObjects();
