@@ -7616,3 +7616,24 @@ bool ViewProviderSketchExport::doubleClicked(void) {
     vp->selectElement(name.c_str());
     return true;
 }
+
+void ViewProviderSketchExport::updateData(const App::Property *prop)
+{
+    auto exp = Base::freecad_dynamic_cast<Sketcher::SketchExport>(getObject());
+    if (exp && !exp->isRestoring()
+            && getDocument()
+            && !getDocument()->isPerformingTransaction())
+    {
+        if (prop == &exp->Base) {
+            auto vp = Base::freecad_dynamic_cast<ViewProviderSketch>(
+                    Gui::Application::Instance->getViewProvider(exp->Base.getValue()));
+            if (vp) {
+                LineColor.setValue(vp->LineColor.getValue());
+                PointColor.setValue(vp->PointColor.getValue());
+                PointSize.setValue(vp->PointSize.getValue());
+            }
+        }
+    }
+    ViewProvider2DObject::updateData(prop);
+}
+

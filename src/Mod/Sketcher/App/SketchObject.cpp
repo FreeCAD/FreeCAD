@@ -9591,16 +9591,31 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 PROPERTY_SOURCE(Sketcher::SketchExport, Part::Part2DObject)
 
 SketchExport::SketchExport() {
-    ADD_PROPERTY_TYPE(Base,(0),"",App::Prop_Hidden,"Base sketch object name");
-    ADD_PROPERTY_TYPE(Refs,(),"",App::Prop_None,"Sketch geometry references");
-    ADD_PROPERTY_TYPE(SyncPlacement,(true),"",App::Prop_None,"Synchronize placement with parent sketch if not attached");
+    ADD_PROPERTY_TYPE(Base,(0),"",
+            (App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly),
+            "(Deprecated) Base sketch object name");
+
+    ADD_PROPERTY_TYPE(Refs,(),"",App::Prop_Hidden,
+            "(Deprecated) Sketch geometry references");
+
+    ADD_PROPERTY_TYPE(BaseRefs,(0),"",App::Prop_None,"Base sketch references");
+
+    ADD_PROPERTY_TYPE(SyncPlacement,(true),"",
+            App::Prop_None,"Synchronize placement with parent sketch if not attached");
 }
 
 SketchExport::~SketchExport()
 {}
 
 App::DocumentObject *SketchExport::getBase() const {
-    return Base.getValue();
+    return BaseRefs.getValue();
+}
+
+void SketchExport::onDocumentRestored()
+{
+    if (BaseRefs.getValue() != Base.getValue())
+        BaseRefs.setValue(Base.getValue(), Refs.getValues());
+    Part::Part2DObject::onDocumentRestored();
 }
 
 App::DocumentObjectExecReturn *SketchExport::execute(void) {
@@ -9623,9 +9638,12 @@ App::DocumentObjectExecReturn *SketchExport::execute(void) {
 }
 
 void SketchExport::onChanged(const App::Property* prop) {
-    if(prop == &Refs) {
-        if(!isRestoring() && !Refs.testStatus(App::Property::User3))
+    auto doc = getDocument();
+    if(prop == &BaseRefs) {
+        if(!isRestoring() && doc && !doc->isPerformingTransaction())
             update();
+        Base.setValue(BaseRefs.getValue());
+        Refs.setValue(BaseRefs.getSubValues(true));
     } else if(prop == &Shape) {
         // bypass Part::Feature logic, 'cause we don't want to transform the
         // shape and mess up the element map.
@@ -9637,7 +9655,7 @@ void SketchExport::onChanged(const App::Property* prop) {
 
 std::set<std::string> SketchExport::getRefs() const {
     std::set<std::string> refSet;
-    const auto &refs = Refs.getValues();
+    const auto &refs = BaseRefs.getSubValues();
     refSet.insert(refs.begin(),refs.end());
     if(refSet.size()>1)
         refSet.erase("");

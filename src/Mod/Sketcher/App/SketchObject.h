@@ -715,6 +715,7 @@ public:
 
     App::PropertyStringList Refs;
     App::PropertyLink Base;
+    App::PropertyLinkSub BaseRefs;
     App::PropertyBool SyncPlacement;
 
     App::DocumentObjectExecReturn *execute(void);
@@ -729,6 +730,7 @@ public:
     std::set<std::string> getRefs() const;
 
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    virtual void onDocumentRestored();
 };
 
 } //namespace Sketcher

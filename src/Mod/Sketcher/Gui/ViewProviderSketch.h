@@ -512,6 +512,7 @@ public:
 
     ViewProviderSketchExport();
     virtual bool doubleClicked(void);
+    virtual void updateData(const App::Property *prop);
 };
 
 } // namespace PartGui

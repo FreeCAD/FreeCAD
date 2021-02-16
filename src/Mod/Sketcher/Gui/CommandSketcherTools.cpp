@@ -57,8 +57,11 @@
 #include "CommandConstraints.h"
 
 using namespace std;
+using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
+
+FC_LOG_LEVEL_INIT("Sketch", true, true)
 
 bool isSketcherAcceleratorActive(Gui::Document *doc, bool actsOnSelection)
 {
@@ -2174,86 +2177,112 @@ CmdSketcherExportGeometry::CmdSketcherExportGeometry()
 
 static void exportSketch(Gui::Command &cmd, bool compound)
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(
-            0, App::DocumentObject::getClassTypeId(), 2);
+    Sketcher::SketchObject *sketchObj = nullptr;
+    Sketcher::SketchExport *exportObj = nullptr;
+    App::SubObjectT exportT;
+    App::SubObjectT sketchT;
 
-    auto title = QObject::tr("Wrong selection");
-    auto msg = QObject::tr("Select any geometry element(s) from the sketch to export.\n"
-            "You can select an existing export to modify.");
+    auto editDoc = Gui::Application::Instance->editDocument();
+    if (editDoc) {
+        sketchT = editDoc->getInEditT();
+        sketchObj = Base::freecad_dynamic_cast<Sketcher::SketchObject>(sketchT.getSubObject());
+    }
 
-    // only one sketch with its subelements are allowed to be selected
-    if (selection.empty() || selection.size() > 2) {
-        QMessageBox::warning(Gui::getMainWindow(), title,msg);
+    std::vector<std::string> elements;
+    for (auto &sel : Gui::Selection().getSelectionT("", 0)) {
+        auto sobj = sel.getSubObject();
+        if (!sobj)
+            continue;
+        sobj = sobj->getLinkedObject(true);
+        auto sketch = Base::freecad_dynamic_cast<Sketcher::SketchObject>(sobj);
+        if (sketch) {
+            if (!sketchObj) {
+                sketchObj = sketch;
+                sketchT = sel;
+            } else if (sketchObj != sketch) {
+                FC_WARN("Ignore non-editing sketch " << sel.getSubObjectFullName());
+                continue;
+            }
+            auto element = sel.getElementName();
+            if (element && element[0])
+                elements.emplace_back(element);
+            continue;
+        }
+
+        auto exp = Base::freecad_dynamic_cast<Sketcher::SketchExport>(sobj);
+        if (exp != exportObj) {
+            if (!exportObj) {
+                exportObj = exp;
+                exportT = sel;
+            } else if (exp != exportObj) {
+                FC_WARN("Ignore invalid selection " << sel.getSubObjectFullName());
+                continue;
+            }
+        }
+    }
+    if (elements.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("Select any geometry element(s) from the sketch to export.\n"
+                                         "You can select an existing export to modify."));
         return;
     }
 
-    // get the needed lists and objects
-    int idx = 0;
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[idx].getObject());
-    Sketcher::SketchExport* Export = 0;
-    if(selection.size()>1) {
-        if(!Obj) {
-            idx = 1;
-            Obj = dynamic_cast<Sketcher::SketchObject*>(selection[idx].getObject());
-        }
-        Export = dynamic_cast<Sketcher::SketchExport*>(selection[idx^1].getObject());
-        if(!Export || Obj->Exports.find(Export->getNameInDocument())!=Export) {
-            QMessageBox::warning(Gui::getMainWindow(), title,msg);
-            return;
-        }
-        compound = true;
+    if (exportObj) {
+        if (exportObj->BaseRefs.getValue() != sketchObj) {
+            exportObj = nullptr;
+            FC_WARN("Ignore invalid selection " << exportT.getSubObjectFullName());
+        } else
+            compound = true;
     }
-    if(!Obj) {
-        QMessageBox::warning(Gui::getMainWindow(), title,msg);
-        return;
-    }
-    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(Obj);
 
+    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(sketchObj);
+
+    App::AutoTransaction committer("Sketch export");
     try {
-        cmd.openCommand("Sketch export");
-        if(compound) {
-            if(!Export) {
-                std::string FeatName = cmd.getUniqueObjectName("Export",Obj);
-                FCMD_OBJ_DOC_CMD(Obj,"addObject('Sketcher::SketchExport','"<<FeatName<<"')");
-                Export = dynamic_cast<Sketcher::SketchExport*>(Obj->getDocument()->getObject(FeatName.c_str()));
-                if(!Export) return;
-                FCMD_OBJ_CMD(Export,"Base = "<<cmd.getObjectCmd(Obj));
-                FCMD_OBJ_CMD(Obj,"Exports = {-1:"<<cmd.getObjectCmd(Export)<<"}");
-                FCMD_VOBJ_CMD(Obj,"TempoVis.hide("<<cmd.getObjectCmd(Export)<<")");
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearSelection();
+
+        auto createExport = [&](const std::string &FeatName) {
+            cmdAppDocument(sketchObj, std::ostringstream()
+                    << "addObject('Sketcher::SketchExport','" << FeatName << "')");
+            auto exportObj = Base::freecad_dynamic_cast<Sketcher::SketchExport>(
+                    sketchObj->getDocument()->getObject(FeatName.c_str()));
+            if(exportObj) {
+                cmdAppObjectArgs(sketchObj, "Exports = {-1:%s}", cmd.getObjectCmd(exportObj));
+                cmdAppObjectArgs(exportObj, "Visibility = False");
                 if(grp)
-                    FCMD_OBJ_CMD(grp,"addObject("<<cmd.getObjectCmd(Export)<<")");
-                cmd.copyVisual(Export,"LineColor",Obj);
-                cmd.copyVisual(Export,"PointColor",Obj);
-                cmd.copyVisual(Export,"PointSize",Obj);
+                    cmdAppObjectArgs(grp,"addObject(%s)", cmd.getObjectCmd(exportObj));
+            }
+            return exportObj;
+        };
+        if(compound) {
+            if(!exportObj) {
+                std::string FeatName = cmd.getUniqueObjectName("Export", sketchObj);
+                exportObj = createExport(FeatName);
             }
             std::ostringstream ss;
-            ss << '[';
-            for(const auto &sub : selection[idx].getSubNames())
-                ss << "'" << sub << "',";
-            ss << ']';
-            FCMD_OBJ_CMD(Export,"Refs = " << ss.str());
+            for(const auto &sub : elements)
+                ss << "u'" << sub << "',";
+            cmdAppObjectArgs(exportObj, "BaseRefs = (%s, [%s])", cmd.getObjectCmd(sketchObj), ss.str());
+            sketchT.setSubName(sketchT.getSubNameNoElement() + exportObj->getNameInDocument() + ".");
+            Selection().addSelection(sketchT);
         }else{
-            for(const auto &sub : selection[idx].getSubNames()) {
-                auto shape = Part::Feature::getShape(Obj,sub.c_str(),true);
+            for(const auto &sub : elements) {
+                auto shape = Part::Feature::getShape(sketchObj,sub.c_str(),true);
                 if(shape.IsNull()) continue;
-                std::string FeatName = cmd.getUniqueObjectName("Export",Obj);
-                FCMD_OBJ_DOC_CMD(Obj,"addObject('Sketcher::SketchExport','" << FeatName << "')");
-                Export = dynamic_cast<Sketcher::SketchExport*>(Obj->getDocument()->getObject(FeatName.c_str()));
-                if(!Export) continue;
-                FCMD_OBJ_CMD(Export,"Base = "<<cmd.getObjectCmd(Obj));
-                FCMD_OBJ_CMD(Obj,"Exports = {-1:"<<cmd.getObjectCmd(Export)<<"}");
-                if(grp)
-                    FCMD_OBJ_CMD(grp,"addObject("<<cmd.getObjectCmd(Export)<<")");
-                FCMD_OBJ_CMD(Export,"Refs = '"<<sub<<"'");
-                FCMD_VOBJ_CMD(Obj,"TempoVis.hide("<<cmd.getObjectCmd(Export)<<")");
-                cmd.copyVisual(Export,"LineColor",Obj);
-                cmd.copyVisual(Export,"PointColor",Obj);
-                cmd.copyVisual(Export,"PointSize",Obj);
+                std::string FeatName = cmd.getUniqueObjectName("Export", sketchObj);
+                exportObj = createExport(FeatName);
+                cmdAppObjectArgs(exportObj, "BaseRefs = (%s, u'%s')", cmd.getObjectCmd(sketchObj), sub);
+                auto sel = sketchT;
+                sel.setSubName(sketchT.getSubNameNoElement() + exportObj->getNameInDocument() + ".");
+                Selection().addSelection(sketchT);
             }
         }
-        cmd.commitCommand();
+        TreeWidget::scrollItemToTop();
+        Selection().selStackGoBack();
     }catch (const Base::Exception& e) {
-        cmd.abortCommand();
+        committer.close(true);
         e.ReportException();
     }
 }
