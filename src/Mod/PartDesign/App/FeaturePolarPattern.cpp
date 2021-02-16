@@ -26,6 +26,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <gp_Lin.hxx>
+# include <gp_Circ.hxx>
 # include <gp_Ax2.hxx>
 # include <BRepAdaptor_Curve.hxx>
 #endif
@@ -140,12 +141,16 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
             if (refEdge.IsNull())
                 throw Base::ValueError("Failed to extract axis edge");
             BRepAdaptor_Curve adapt(refEdge);
-            if (adapt.GetType() != GeomAbs_Line)
-                throw Base::TypeError("Axis edge must be a straight line");
-
-            axbase = adapt.Value(adapt.FirstParameter());
-            axdir = adapt.Line().Direction();
-        } else {
+            if (adapt.GetType() == GeomAbs_Line) {
+                axbase = adapt.Line().Location();
+                axdir = adapt.Line().Direction();
+            } else if (adapt.GetType() == GeomAbs_Circle) {
+                axbase = adapt.Circle().Location();
+                axdir = adapt.Circle().Axis().Direction();
+            } else {
+                throw Base::TypeError("Rotation edge must be a straight line, circle or arc of circle");
+            }
+         } else {
             throw Base::TypeError("Axis reference must be an edge");
         }
     } else {
