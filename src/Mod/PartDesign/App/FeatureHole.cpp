@@ -76,7 +76,7 @@ namespace PartDesign {
 /* TRANSLATOR PartDesign::Hole */
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ NULL };
-const char* Hole::ThreadDepthTypeEnums[]             = { "Automatic", "Dimension", "Hole Depth", NULL };
+const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  NULL };
 const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", NULL};
 const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", NULL};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", NULL };
@@ -1000,7 +1000,7 @@ void Hole::updateThreadDepthParam()
         throw Base::RuntimeError("Unsupported depth type \n");
     }
 
-    if ( std::string(ThreadDepthType.getValueAsString()) == "Automatic" ) {
+    if ( std::string(ThreadDepthType.getValueAsString()) == "Tapped (DIN76)" ) {
         ThreadDepth.setValue(Depth.getValue() - getThreadRunout());
     } else { // hole depth
         ThreadDepth.setValue(Depth.getValue());
@@ -1872,7 +1872,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
                     threadDepth = length;
                     ThreadDepth.setValue(threadDepth);
                     helixLength = threadDepth + 2*P;
-                } else if ( threadDepthMethod == "Automatic" ) {
+                } else if ( threadDepthMethod == "Tapped (DIN76)" ) {
                     threadDepth = Depth.getValue() - getThreadRunout();
                     ThreadDepth.setValue(threadDepth);
                     helixLength = threadDepth + P/2;

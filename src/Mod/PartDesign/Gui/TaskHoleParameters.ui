@@ -435,7 +435,7 @@ Only available for holes without thread</string>
      </property>
      <item>
       <property name="text">
-       <string>Automatic</string>
+       <string>Hole depth</string>
       </property>
      </item>
      <item>
@@ -445,7 +445,7 @@ Only available for holes without thread</string>
      </item>
      <item>
       <property name="text">
-       <string>Hole depth</string>
+       <string>Tapped (DIN76)</string>
       </property>
      </item>
     </widget>
