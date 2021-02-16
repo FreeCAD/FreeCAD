@@ -178,6 +178,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->labelThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked() && ui->UseCustomThreadClearance->isChecked());
     ui->CustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked() && ui->UseCustomThreadClearance->isChecked());
     ui->UpdateView->setChecked(!ui->ModelThread->isChecked());
+    ui->UpdateView->setEnabled(ui->ModelThread->isChecked());
 
     ui->ThreadDepthType->setEnabled(ui->Threaded->isChecked());
     ui->ThreadDepth->setEnabled(ui->Threaded->isChecked() && std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension");
@@ -249,6 +250,7 @@ void TaskHoleParameters::threadedChanged()
 
     updateViewChanged(!(isChecked && ui->ModelThread->isChecked()));
     ui->UpdateView->setChecked(!(isChecked && ui->ModelThread->isChecked()));
+    ui->UpdateView->setEnabled(isChecked && ui->ModelThread->isChecked());
 
     pcHole->Threaded.setValue(ui->Threaded->isChecked());
     recomputeFeature();
@@ -265,6 +267,7 @@ void TaskHoleParameters::modelThreadChanged()
     // this will also ensure that the feature is recomputed.
     blockUpdate = isChecked;
     ui->UpdateView->setChecked(!isChecked);
+    ui->UpdateView->setEnabled(isChecked);
 
     // conditional enabling of thread modeling options
     ui->UseCustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
