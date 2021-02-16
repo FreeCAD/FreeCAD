@@ -9006,20 +9006,22 @@ App::DocumentObject *SketchObject::getSubObject(
 {
     std::string sub;
     const char *mapped = Data::ComplexGeoData::isMappedElement(subname);
-    if(!subname || !subname[0] || !pyObj)
+    if(!subname || !subname[0])
         return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
-    if(!mapped) {
+    const char *element = Data::ComplexGeoData::findElementName(subname);
+    if(element != subname) {
         const char *dot = strchr(subname,'.');
-        if(dot) {
-            std::string name(subname,dot-subname);
-            auto child = Exports.find(name.c_str());
-            if(!child)
-                return 0;
-            return child->getSubObject(dot+1,pyObj,pmat,true,depth+1);
-        } else if (Part::TopoShape::shapeTypeAndIndex(subname).second > 0)
+        if(!dot)
+            return 0;
+        std::string name(subname,dot-subname);
+        auto child = Exports.find(name.c_str());
+        if(!child)
+            return 0;
+        return child->getSubObject(dot+1,pyObj,pmat,true,depth+1);
+    } else if (!pyObj || !mapped) {
+        if (!pyObj || Part::TopoShape::shapeTypeAndIndex(subname).second > 0)
             return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
-    }
-    else {
+    } else {
         auto subshape = Shape.getShape().getSubTopoShape(subname, true);
         if (!subshape.isNull())
             return Part2DObject::getSubObject(subname,pyObj,pmat,transform,depth);
