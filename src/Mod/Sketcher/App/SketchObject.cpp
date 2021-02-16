@@ -8686,6 +8686,35 @@ void SketchObject::onDocumentRestored()
 {
     restoreFinished();
     Part::Part2DObject::onDocumentRestored();
+
+    if (getDocument()->testStatus(App::Document::Importing)) {
+        App::GeoFeatureGroupExtension *grp = nullptr;
+        auto grpObj = App::GeoFeatureGroupExtension::getGroupOfObject(this);
+        if (grpObj)
+            grp = grpObj->getExtensionByType<App::GeoFeatureGroupExtension>(true);
+        
+        auto exports = Exports.getValues();
+        bool touched = false;
+        for (auto &obj : exports) {
+            auto exp = Base::freecad_dynamic_cast<SketchExport>(obj);
+            if (!exp || exp->BaseRefs.getValue() == this)
+                continue;
+            auto newexp = Base::freecad_dynamic_cast<SketchExport>(
+                    getDocument()->addObject("Sketcher::SketchExport", "Export"));
+            if (grp)
+                grp->addObject(newexp);
+            if (exp->Label.getStrValue() != exp->getNameInDocument())
+                newexp->Label.setValue(exp->Label.getValue());
+            else
+                newexp->Label.setValue(newexp->getNameInDocument());
+            newexp->BaseRefs.setValue(this, exp->BaseRefs.getSubValues(false));
+            newexp->Visibility.setValue(exp->Visibility.getValue());
+            obj = newexp;
+            touched = true;
+        }
+        if (touched)
+            Exports.setValues(exports);
+    }
 }
 
 void SketchObject::restoreFinished()
@@ -9613,7 +9642,7 @@ App::DocumentObject *SketchExport::getBase() const {
 
 void SketchExport::onDocumentRestored()
 {
-    if (BaseRefs.getValue() != Base.getValue())
+    if (!BaseRefs.getValues() && Base.getValue())
         BaseRefs.setValue(Base.getValue(), Refs.getValues());
     Part::Part2DObject::onDocumentRestored();
 }
