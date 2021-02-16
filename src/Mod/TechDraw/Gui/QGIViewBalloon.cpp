@@ -644,8 +644,8 @@ void QGIViewBalloon::drawBalloon(bool dragged)
         y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
     }
     else {
-        x = Rez::guiX(balloonLabel->X() / refObj->getScale());
-        y = -Rez::guiX(balloonLabel->Y() / refObj->getScale());
+        x = balloonLabel->X();
+        y = -balloonLabel->Y();
     }
     Base::Vector3d lblCenter(x, -y, 0.0);
 
