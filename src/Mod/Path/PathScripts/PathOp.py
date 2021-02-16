@@ -514,7 +514,7 @@ class ObjectOp(object):
         if not self._setBaseAndStock(obj):
             return
 
-        # make sure Base is stil valid or clear it
+        # make sure Base is still valid or clear it
         self.sanitizeBase(obj)
 
         if FeatureCoolant & self.opFeatures(obj):
