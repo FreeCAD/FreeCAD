@@ -11,6 +11,7 @@ SET(Stylesheets_Files
     "Light-blue.qss"
     "Light-green.qss"
     "Light-orange.qss"
+    "Dark-contrast.qss"
     "ProDark.qss"
 )
 
