@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import importlib
