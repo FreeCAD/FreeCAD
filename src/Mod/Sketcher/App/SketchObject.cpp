@@ -9642,7 +9642,7 @@ App::DocumentObject *SketchExport::getBase() const {
 
 void SketchExport::onDocumentRestored()
 {
-    if (!BaseRefs.getValues() && Base.getValue())
+    if (!BaseRefs.getValue() && Base.getValue())
         BaseRefs.setValue(Base.getValue(), Refs.getValues());
     Part::Part2DObject::onDocumentRestored();
 }
