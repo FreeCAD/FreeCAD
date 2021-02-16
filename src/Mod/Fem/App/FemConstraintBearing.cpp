@@ -45,15 +45,15 @@ PROPERTY_SOURCE(Fem::ConstraintBearing, Fem::Constraint)
 
 ConstraintBearing::ConstraintBearing()
 {
-    ADD_PROPERTY_TYPE(Location,(0),"ConstraintBearing",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Location,(0),"ConstraintBearing",App::Prop_None,
                       "Element giving axial location of constraint");
     ADD_PROPERTY(Dist,(0.0));
     ADD_PROPERTY(AxialFree,(0));
     ADD_PROPERTY(Radius,(0.0));
     ADD_PROPERTY(Height,(0.0));
-    ADD_PROPERTY_TYPE(BasePoint,(Base::Vector3d(0,0,0)),"ConstraintBearing",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(BasePoint,(Base::Vector3d(0,0,0)),"ConstraintBearing",App::Prop_ReadOnly+App::Prop_Output,
                       "Base point of cylindrical bearing seat");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0,1,0)),"ConstraintBearing",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0,1,0)),"ConstraintBearing",App::Prop_ReadOnly+App::Prop_Output,
                       "Axis of bearing seat");
 }
 

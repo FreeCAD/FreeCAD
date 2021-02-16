@@ -327,12 +327,12 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
         for( App::Property* prop : props ) {
 
             //independent copies don't have links and are not attached
-            if(independent && (
+            if (independent && (
                 prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()) ||
                 prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId()) ||
                 prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId()) ||
                 prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())||
-                ( prop->getGroup() && strcmp(prop->getGroup(),"Attachment")==0) ))    {
+                ( prop->getGroup() == "Attachment" ) )) {
 
                 ++it;
                 continue;
@@ -340,7 +340,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
             App::Property* cprop = *it++;
 
-            if( strcmp(prop->getName(), "Label") == 0 ) {
+            if (prop->getName() == "Label") {
                 static_cast<App::PropertyString*>(cprop)->setValue(name.c_str());
                 continue;
             }

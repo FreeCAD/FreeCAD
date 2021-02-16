@@ -74,8 +74,8 @@ Draft::Draft()
 {
     ADD_PROPERTY(Angle,(1.5));
     Angle.setConstraints(&floatAngle);
-    ADD_PROPERTY_TYPE(NeutralPlane,(0),"Draft",(App::PropertyType)(App::Prop_None),"NeutralPlane");
-    ADD_PROPERTY_TYPE(PullDirection,(0),"Draft",(App::PropertyType)(App::Prop_None),"PullDirection");
+    ADD_PROPERTY_TYPE(NeutralPlane,(0),"Draft",App::Prop_None,"NeutralPlane");
+    ADD_PROPERTY_TYPE(PullDirection,(0),"Draft",App::Prop_None,"PullDirection");
     ADD_PROPERTY(Reversed,(0));
 }
 

@@ -50,7 +50,7 @@ ViewProviderDrawingView::ViewProviderDrawingView()
     sPixmap = "Page";
 
     // Do not show in property editor
-    DisplayMode.setStatus(App::Property::Hidden, true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden, true);
 }
 
 ViewProviderDrawingView::~ViewProviderDrawingView()
@@ -148,7 +148,7 @@ ViewProviderDrawingClip::ViewProviderDrawingClip()
     sPixmap = "Page";
 
     // Do not show in property editor
-    DisplayMode.setStatus(App::Property::Hidden, true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden, true);
 }
 
 ViewProviderDrawingClip::~ViewProviderDrawingClip()

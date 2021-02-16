@@ -164,12 +164,7 @@ PyObject* LinkBaseExtensionPy::getLinkExtPropertyName(PyObject *args) {
         PyErr_SetString(PyExc_RuntimeError, "no extended container");
         return 0;
     }
-    name = container->getPropertyName(prop);
-    if(!name) {
-        PyErr_SetString(PyExc_RuntimeError, "cannot find property name");
-        return 0;
-    }
-    return Py::new_reference_to(Py::String(name));
+    return Py::new_reference_to(Py::String( prop->getName()));
 }
 
 PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject *args)

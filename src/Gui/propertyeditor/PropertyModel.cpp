@@ -220,7 +220,7 @@ struct PropItemInfo {
 
 static void setPropertyItemName(PropertyItem *item, const char *propName, QString groupName) {
     QString name = QString::fromLatin1(propName);
-    if(name.size()>groupName.size()+1 
+    if(name.size()>groupName.size()+1
             && name.startsWith(groupName + QLatin1Char('_')))
         name = name.right(name.size()-groupName.size()-1);
 
@@ -239,9 +239,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     PropertyModel::PropertyList::const_iterator jt;
     for (jt = props.begin(); jt != props.end(); ++jt) {
         App::Property* prop = jt->second.front();
-        const char* group = prop->getGroup();
-        bool isEmpty = (group == 0 || group[0] == '\0');
-        std::string grp = isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group;
+        const std::string& group = prop->getGroup();
+        std::string grp = group.empty() ? QT_TRANSLATE_NOOP("App::Property", "Base") : group;
         propGroup[grp].emplace_back(jt->first,jt->second);
     }
 
@@ -273,7 +272,7 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     child->setParent(rootItem);
                     rootItem->appendChild(child);
 
-                    setPropertyItemName(child,prop->getName(),groupName);
+                    setPropertyItemName(child,prop->getName().c_str(),groupName);
 
                     child->setPropertyData(info.props);
                 }
@@ -315,9 +314,8 @@ void PropertyModel::appendProperty(const App::Property& prop)
             return;
         }
 
-        const char* group = prop.getGroup();
-        bool isEmpty = (group == 0 || group[0] == '\0');
-        std::string grp = isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group;
+        const std::string& group = prop.getGroup();
+        std::string grp = group.empty() ? QT_TRANSLATE_NOOP("App::Property", "Base") : group;
         QString groupName = QString::fromStdString(grp);
 
         // go through all group names and check if one matches
@@ -383,7 +381,7 @@ void PropertyModel::appendProperty(const App::Property& prop)
         std::vector<App::Property*> data;
         data.push_back(const_cast<App::Property*>(&prop));
 
-        setPropertyItemName(item,prop.getName(),groupName);
+        setPropertyItemName(item,prop.getName().c_str(),groupName);
         item->setPropertyData(data);
 
         endInsertRows();

@@ -250,26 +250,12 @@ public:
     /** @name Access properties */
     //@{
     /// find a property by its name
-    virtual Property *extensionGetPropertyByName(const char* name) const;
-    /// get the name of a property
-    virtual const char* extensionGetPropertyName(const Property* prop) const;
+    virtual Property *extensionGetPropertyByName(const std::string& name) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyMap(std::map<std::string,Property*> &Map) const;
     /// get all properties of the class (including properties of the parent)
     virtual void extensionGetPropertyList(std::vector<Property*> &List) const;
 
-    /// get the Type of a Property
-    virtual short extensionGetPropertyType(const Property* prop) const;
-    /// get the Type of a named Property
-    virtual short extensionGetPropertyType(const char *name) const;
-    /// get the Group of a Property
-    virtual const char* extensionGetPropertyGroup(const Property* prop) const;
-    /// get the Group of a named Property
-    virtual const char* extensionGetPropertyGroup(const char *name) const;
-    /// get the Group of a Property
-    virtual const char* extensionGetPropertyDocumentation(const Property* prop) const;
-    /// get the Group of a named Property
-    virtual const char* extensionGetPropertyDocumentation(const char *name) const;
     //@}
 
     /** @name Persistence */
@@ -304,7 +290,7 @@ private:
 #define _EXTENSION_ADD_PROPERTY(_name, _prop_, _defaultval_) \
   do { \
     this->_prop_.setValue _defaultval_;\
-    propertyData.addProperty(static_cast<App::Extension*>(this), _name, &this->_prop_); \
+    propertyData.addProperty(static_cast<App::Extension*>(this), _name, &this->_prop_, std::string(), std::string() ); \
   } while (0)
 
 
@@ -314,7 +300,8 @@ private:
 #define _EXTENSION_ADD_PROPERTY_TYPE(_name, _prop_, _defaultval_, _group_,_type_,_Docu_) \
   do { \
     this->_prop_.setValue _defaultval_;\
-    propertyData.addProperty(static_cast<App::Extension*>(this), _name, &this->_prop_, (_group_),(_type_),(_Docu_)); \
+    this->_prop_.setStatus( _type_ ); \
+    propertyData.addProperty(static_cast<App::Extension*>(this), _name, &this->_prop_, (_group_), (_Docu_)); \
   } while (0)
 
 #define EXTENSION_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \

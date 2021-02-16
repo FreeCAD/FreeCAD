@@ -47,7 +47,7 @@ PROPERTY_SOURCE(PartDesign::Mirrored, PartDesign::Transformed)
 
 Mirrored::Mirrored()
 {
-    ADD_PROPERTY_TYPE(MirrorPlane,(0),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
+    ADD_PROPERTY_TYPE(MirrorPlane,(0),"Mirrored",App::Prop_None,"Mirror plane");
 }
 
 short Mirrored::mustExecute() const

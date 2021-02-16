@@ -70,7 +70,7 @@ ViewProviderDrawingView::ViewProviderDrawingView()
 
     // Do not show in property editor   why? wf  WF: because DisplayMode applies only to coin and we
     // don't use coin.
-    DisplayMode.setStatus(App::Property::Hidden,true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden,true);
     m_docReady = true;
 }
 
@@ -97,7 +97,7 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 //    TechDraw::DrawView* view = static_cast<TechDraw::DrawView*>(pcFeat);
 //    TechDraw::DrawPage* page = view->findParentPage();
 //    TechDraw::DrawPage* page = feature->findParentPage();
-//    Base::Console().Message("VPDV::attach(%X) - parent: %X\n", 
+//    Base::Console().Message("VPDV::attach(%X) - parent: %X\n",
 //            pcFeat, page);
 //            pcFeat->getNameInDocument(), page->getNameInDocument());
 }
@@ -267,7 +267,7 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
     return getMDIViewPage();
 }
 
-void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
+void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
 //   Base::Console().Message("VPDV::onGuiRepaint(%s)\n", dv->getNameInDocument());
     if (dv == getViewObject()) {

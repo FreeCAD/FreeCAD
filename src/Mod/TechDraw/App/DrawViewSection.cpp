@@ -151,8 +151,8 @@ DrawViewSection::DrawViewSection()
     hatchFilter = ("PAT files (*.pat *.PAT);;All files (*)");
     FileGeomPattern.setFilter(hatchFilter);
 
-    SvgIncluded.setStatus(App::Property::ReadOnly,true);
-    PatIncluded.setStatus(App::Property::ReadOnly,true);
+    SvgIncluded.setStatus(App::PropertyStatus::ReadOnly,true);
+    PatIncluded.setStatus(App::PropertyStatus::ReadOnly,true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -179,7 +179,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
 {
     App::Document* doc = getDocument();
 //    bool docRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
-//    Base::Console().Message("DVS::onChanged(%s) - obj restoring: %d\n", 
+//    Base::Console().Message("DVS::onChanged(%s) - obj restoring: %d\n",
 //                            prop->getName(), isRestoring());
 
     if (!isRestoring()) {
@@ -229,7 +229,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
     DrawView::onChanged(prop);
 }
 
-void DrawViewSection::makeLineSets(void) 
+void DrawViewSection::makeLineSets(void)
 {
 //    Base::Console().Message("DVS::makeLineSets()\n");
     if (!PatIncluded.isEmpty())  {
@@ -243,7 +243,7 @@ void DrawViewSection::makeLineSets(void)
                  (ext == "PAT") ) {
                 if ((!fileSpec.empty())  &&
                     (!NameGeomPattern.isEmpty())) {
-                    std::vector<PATLineSpec> specs = 
+                    std::vector<PATLineSpec> specs =
                                DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
                                                                       NameGeomPattern.getValue());
                     m_lineSets.clear();
@@ -301,14 +301,14 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     } else {
         dvp = static_cast<TechDraw::DrawViewPart*>(base);
     }
-    
+
     TopoDS_Shape baseShape;
     if (FuseBeforeCut.getValue()) {
         baseShape = dvp->getSourceShapeFused();
     } else {
         baseShape = dvp->getSourceShape();
     }
-    
+
     if (baseShape.IsNull()) {
         bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
         if (isRestoring) {
@@ -670,7 +670,7 @@ Base::Vector3d DrawViewSection::getXDirection(void) const
     return result;
 }
 
-void DrawViewSection::setCSFromBase(const std::string sectionName) 
+void DrawViewSection::setCSFromBase(const std::string sectionName)
 {
 //    Base::Console().Message("DVS::setCSFromBase(%s)\n", sectionName.c_str());
     gp_Ax2 CS = getCSFromBase(sectionName);
@@ -696,7 +696,7 @@ gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
     Base::Vector3d sectOrigin = SectionOrigin.getValue();
 
     gp_Ax2 dvpCS = getBaseDVP()->getProjectionCS(sectOrigin);
-    
+
     if (debugSection()) {
         DrawUtil::dumpCS("DVS::getCSFromBase - dvp CS", dvpCS);
     }
@@ -757,7 +757,7 @@ gp_Ax2 DrawViewSection::getSectionCS(void) const
     gp_Ax2 sectionCS(gOrigin,
                      gNormal);
     try {
-        sectionCS = gp_Ax2(gOrigin, 
+        sectionCS = gp_Ax2(gOrigin,
                            gNormal,
                            gXDir);
     }
@@ -877,7 +877,7 @@ bool DrawViewSection::showSectionEdges(void)
 }
 
 
-void DrawViewSection::onDocumentRestored() 
+void DrawViewSection::onDocumentRestored()
 {
 //    Base::Console().Message("DVS::onDocumentRestored()\n");
     if (SvgIncluded.isEmpty()) {
@@ -921,7 +921,7 @@ void DrawViewSection::setupSvgIncluded(void)
     special += "SvgHatch.svg";
     std::string dir = doc->TransientDir.getValue();
     std::string svgName = dir + special;
-    
+
     //first time
     std::string svgInclude = SvgIncluded.getValue();
     if (svgInclude.empty()) {

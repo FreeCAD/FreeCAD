@@ -509,7 +509,7 @@ void ViewProviderFemPostObject::WriteTransparency() {
 
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
 
-    if( strcmp(p->getName(), "Data") == 0 ) {
+    if (p->getName() == "Data") {
         updateVtk();
     }
 }

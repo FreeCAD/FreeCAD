@@ -48,13 +48,13 @@ ConstraintTemperature::ConstraintTemperature()
 {
     ADD_PROPERTY(Temperature,(300.0));
     ADD_PROPERTY(CFlux,(0.0));
-    ADD_PROPERTY_TYPE(ConstraintType,(1),"ConstraintTemperature",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(ConstraintType,(1),"ConstraintTemperature",App::Prop_None,
                       "Type of constraint, temperature or concentrated heat flux");
     ConstraintType.setEnums(ConstraintTypes);
 
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintTemperature",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintTemperature",App::Prop_ReadOnly+App::Prop_Output,
                       "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintTemperature",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintTemperature",App::Prop_ReadOnly+App::Prop_Output,
                                                                              "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());

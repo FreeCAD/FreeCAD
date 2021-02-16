@@ -130,7 +130,7 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
     }
 #endif
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop->getName() == "Points") {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
 
 #ifdef USE_MULTIPLE_COPY
@@ -173,7 +173,7 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         cp->matrix.finishEditing();
 #endif
     }
-    else if (strcmp(prop->getName(),"DirectionVector") == 0) { // Note: "Reversed" also triggers "DirectionVector"
+    else if (prop->getName() == "DirectionVector") { // Note: "Reversed" also triggers "DirectionVector"
         // Re-orient all arrows
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
         Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();

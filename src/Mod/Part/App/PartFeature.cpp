@@ -235,12 +235,11 @@ struct ShapeCache {
     }
 
     void slotChanged(const App::DocumentObject &obj, const App::Property &prop) {
-        const char *propName = prop.getName();
-        if(!propName)
-            return;
-        if(strcmp(propName,"Shape")==0 
-                || strcmp(propName,"Group")==0 
-                || strstr(propName,"Touched")!=0)
+        const std::string& propName= prop.getName();
+
+        if(propName == "Shape"
+        || propName == "Group"
+        || propName.find("Touched") != std::string::npos)
             slotClear(obj);
     }
 

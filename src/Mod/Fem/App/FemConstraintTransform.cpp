@@ -47,19 +47,19 @@ ConstraintTransform::ConstraintTransform()
     ADD_PROPERTY(X_rot,(0.0)); //numeric value, 0.0
     ADD_PROPERTY(Y_rot,(0.0));
     ADD_PROPERTY(Z_rot,(0.0));
-    ADD_PROPERTY_TYPE(TransformType,(1),"ConstraintTransform",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TransformType,(1),"ConstraintTransform",App::Prop_None,
                       "Type of transform, rectangular or cylindrical");
     TransformType.setEnums(TransformTypes);
-    ADD_PROPERTY_TYPE(RefDispl,(0,0),"ConstraintTransform",(App::PropertyType)(App::Prop_None),"Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(NameDispl,(0),"ConstraintTransform",(App::PropertyType)(App::Prop_None),"Elements where the constraint is applied");
-    ADD_PROPERTY_TYPE(BasePoint,(Base::Vector3d(0,0,0)),"ConstraintTransform",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(RefDispl,(0,0),"ConstraintTransform",App::Prop_None,"Elements where the constraint is applied");
+    ADD_PROPERTY_TYPE(NameDispl,(0),"ConstraintTransform",App::Prop_None,"Elements where the constraint is applied");
+    ADD_PROPERTY_TYPE(BasePoint,(Base::Vector3d(0,0,0)),"ConstraintTransform",App::Prop_ReadOnly+App::Prop_Output,
                       "Base point of cylindrical surface");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0,1,0)),"ConstraintTransform",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0,1,0)),"ConstraintTransform",App::Prop_ReadOnly+App::Prop_Output,
                       "Axis of cylindrical surface");
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintTransform",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintTransform",App::Prop_ReadOnly+App::Prop_Output,
                       "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintTransform",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-                                                                             "Normals where symbols are drawn");
+    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintTransform",App::Prop_ReadOnly+App::Prop_Output,
+                      "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }

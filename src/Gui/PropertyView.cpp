@@ -224,7 +224,7 @@ void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::P
 
 bool PropertyView::isPropertyHidden(const App::Property *prop) {
     return prop && !showAll() &&
-        ((prop->getType() & App::Prop_Hidden) || prop->testStatus(App::Property::Hidden));
+        (prop->testStatus(App::PropertyStatus::Prop_Hidden) || prop->testStatus(App::PropertyStatus::Hidden));
 }
 
 void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
@@ -482,7 +482,7 @@ void PropertyView::onTimer() {
                 if(it!=propMap.end() && !isPropertyHidden(it->second))
                     continue;
                 std::vector<App::Property*> items(1,prop);
-                if(prop->testStatus(App::Property::PropDynamic))
+                if(prop->testStatus(App::PropertyStatus::Prop_Dynamic))
                     dataPropsMap.emplace(name+"*",std::move(items));
                 else
                     dataProps.emplace_back(name+"*", std::move(items));
@@ -514,7 +514,7 @@ void PropertyView::onTimer() {
 
     for (it = propDataMap.begin(); it != propDataMap.end(); ++it) {
         if (it->propList.size() == sels.size()) {
-            if(it->propList[0]->testStatus(App::Property::PropDynamic))
+            if(it->propList[0]->testStatus(App::PropertyStatus::Prop_Dynamic))
                 dataPropsMap.emplace(it->propName, std::move(it->propList));
             else
                 dataProps.emplace_back(it->propName, std::move(it->propList));

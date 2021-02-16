@@ -85,10 +85,10 @@ Sheet::Sheet()
     , props(PropertyContainer::dynamicProps)
     , cells(this)
 {
-    ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_Hidden), "Cell contents");
-    ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Column widths");
-    ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
-    ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Row heights");
+    ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", Prop_Hidden, "Cell contents");
+    ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", Prop_ReadOnly+Prop_Hidden+Prop_Output, "Column widths");
+    ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", Prop_ReadOnly+Prop_Hidden+Prop_Output, "Row heights");
+    ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", Prop_ReadOnly+Prop_Hidden, "Row heights");
 }
 
 /**
@@ -481,15 +481,16 @@ void Sheet::onSettingDocument()
 
 Property * Sheet::setFloatProperty(CellAddress key, double value)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    Property * prop = props.getDynamicPropertyByName(key.toString());
     PropertyFloat * floatProp;
 
     if (!prop || prop->getTypeId() != PropertyFloat::getClassTypeId()) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(key.toString());
             propAddress.erase(prop);
         }
-        floatProp = freecad_dynamic_cast<PropertyFloat>(addDynamicProperty("App::PropertyFloat", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        floatProp = freecad_dynamic_cast<PropertyFloat>(addDynamicProperty("App::PropertyFloat", key.toString()));
+        floatProp->setStatus(Prop_ReadOnly + Prop_Hidden + Prop_NoPersist);
     }
     else
         floatProp = static_cast<PropertyFloat*>(prop);
@@ -510,9 +511,8 @@ Property * Sheet::setIntegerProperty(CellAddress key, long value)
             this->removeDynamicProperty(key.toString().c_str());
             propAddress.erase(prop);
         }
-        intProp = freecad_dynamic_cast<PropertyInteger>(addDynamicProperty(
-                    "App::PropertyInteger", key.toString().c_str(), 0, 0, 
-                    Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        intProp = freecad_dynamic_cast<PropertyInteger>(addDynamicProperty("App::PropertyInteger", key.toString()));
+        intProp->setStatus(Prop_ReadOnly + Prop_Hidden + Prop_NoPersist);
     }
     else
         intProp = static_cast<PropertyInteger*>(prop);
@@ -536,15 +536,16 @@ Property * Sheet::setIntegerProperty(CellAddress key, long value)
 
 Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base::Unit & unit)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    Property * prop = props.getDynamicPropertyByName(key.toString());
     PropertySpreadsheetQuantity * quantityProp;
 
     if (!prop || prop->getTypeId() != PropertySpreadsheetQuantity::getClassTypeId()) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(key.toString());
             propAddress.erase(prop);
         }
-        Property * p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist);
+        Property * p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", key.toString());
+        p->setStatus(Prop_ReadOnly + Prop_Hidden + Prop_NoPersist);
         quantityProp = freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
     }
     else
@@ -570,15 +571,16 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
 
 Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    Property * prop = props.getDynamicPropertyByName(key.toString());
     PropertyString * stringProp = freecad_dynamic_cast<PropertyString>(prop);
 
     if (!stringProp) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(key.toString());
             propAddress.erase(prop);
         }
-        stringProp = freecad_dynamic_cast<PropertyString>(addDynamicProperty("App::PropertyString", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        stringProp = freecad_dynamic_cast<PropertyString>(addDynamicProperty("App::PropertyString", key.toString()));
+        stringProp->setStatus(Prop_ReadOnly + Prop_Hidden + Prop_NoPersist);
     }
 
     propAddress[stringProp] = key;
@@ -589,15 +591,16 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
 
 Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
 {
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    Property * prop = props.getDynamicPropertyByName(key.toString());
     PropertyPythonObject * pyProp = freecad_dynamic_cast<PropertyPythonObject>(prop);
 
     if (!pyProp) {
         if (prop) {
-            this->removeDynamicProperty(key.toString().c_str());
+            this->removeDynamicProperty(key.toString());
             propAddress.erase(prop);
         }
-        pyProp = freecad_dynamic_cast<PropertyPythonObject>(addDynamicProperty("App::PropertyPythonObject", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        pyProp = freecad_dynamic_cast<PropertyPythonObject>(addDynamicProperty("App::PropertyPythonObject", key.toString()));
+        pyProp-> setStatus(Prop_ReadOnly + Prop_Hidden + Prop_NoPersist);
     }
 
     propAddress[pyProp] = key;
@@ -634,8 +637,8 @@ void Sheet::updateAlias(CellAddress key)
         }
 
         if (!aliasProp) {
-            aliasProp = addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_NoPersist);
-            aliasProp->setStatus(App::Property::Hidden,true);
+            aliasProp = addDynamicProperty(prop->getTypeId().getName(), alias);
+            aliasProp->setStatus(Hidden + Prop_ReadOnly + Prop_NoPersist);
         }
 
         aliasProp->Paste(*prop);
@@ -703,12 +706,12 @@ void Sheet::updateProperty(CellAddress key)
                 setFloatProperty(key, number->getValue());
         }else{
             auto str_expr = freecad_dynamic_cast<StringExpression>(output.get());
-            if(str_expr) 
+            if(str_expr)
                 setStringProperty(key, str_expr->getText().c_str());
             else {
                 Base::PyGILStateLocker lock;
                 auto py_expr = freecad_dynamic_cast<PyObjectExpression>(output.get());
-                if(py_expr) 
+                if(py_expr)
                     setObjectProperty(key, py_expr->getPyValue());
                 else
                     setObjectProperty(key, Py::Object());
@@ -1087,7 +1090,7 @@ std::vector<std::string> Sheet::getUsedCells() const
     return usedCells;
 }
 
-void Sheet::updateColumnsOrRows(bool horizontal, int section, int count) 
+void Sheet::updateColumnsOrRows(bool horizontal, int section, int count)
 {
     const auto &sizes = horizontal?columnWidths.getValues():rowHeights.getValues();
     auto iter = sizes.lower_bound(section);

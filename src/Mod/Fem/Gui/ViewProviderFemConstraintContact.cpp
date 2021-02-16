@@ -113,7 +113,7 @@ void ViewProviderFemConstraintContact::updateData(const App::Property* prop)
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     float scaledwidth = WIDTH * pcConstraint->Scale.getValue();
 
-    if (strcmp(prop->getName(),"Points") == 0) {
+    if (prop->getName() == "Points") {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
         if (points.size() != normals.size())

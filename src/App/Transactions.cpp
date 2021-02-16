@@ -169,11 +169,11 @@ void Transaction::apply(Document &Doc, bool forward)
     std::string errMsg;
     try {
         auto &index = _Objects.get<0>();
-        for(auto &info : index) 
+        for(auto &info : index)
             info.second->applyDel(Doc, const_cast<TransactionalObject*>(info.first));
-        for(auto &info : index) 
+        for(auto &info : index)
             info.second->applyNew(Doc, const_cast<TransactionalObject*>(info.first));
-        for(auto &info : index) 
+        for(auto &info : index)
             info.second->applyChn(Doc, const_cast<TransactionalObject*>(info.first), forward);
     }catch(Base::Exception &e) {
         e.ReportException();
@@ -184,7 +184,7 @@ void Transaction::apply(Document &Doc, bool forward)
         errMsg = "Unknown exception";
     }
     if(errMsg.size()) {
-        FC_ERR("Exception on " << (forward?"redo":"undo") << " '" 
+        FC_ERR("Exception on " << (forward?"redo":"undo") << " '"
                 << Name << "':" << errMsg);
     }
 }
@@ -281,8 +281,6 @@ TransactionObject::TransactionObject()
  */
 TransactionObject::~TransactionObject()
 {
-    for(auto &v : _PropChangeMap)
-        delete v.second.property;
 }
 
 void TransactionObject::applyDel(Document & /*Doc*/, TransactionalObject * /*pcObj*/)
@@ -298,40 +296,30 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
     if (status == New || status == Chn) {
         // Property change order is not preserved, as it is recursive in nature
         for(auto &v : _PropChangeMap) {
-            auto &data = v.second;
-            auto prop = const_cast<Property*>(v.first);
 
-            if(!data.property) {
+            if(!v.second) {
                 // here means we are undoing/redoing and property add operation
-                pcObj->removeDynamicProperty(v.second.name.c_str());
+                pcObj->removeDynamicProperty(v.first->Name);
                 continue;
             }
 
-            // getPropertyName() is specially coded to be safe even if prop has
-            // been destroies. We must prepare for the case where user removed
-            // a dynamic property but does not recordered as transaction.
-            auto name = pcObj->getPropertyName(prop);
-            if(!name) {
-                // Here means the original property is not found, probably removed
-                if(v.second.name.empty()) {
-                    // not a dynamic property, nothing to do
-                    continue;
-                }
+            auto prop= pcObj->getPropertyByName(v.first->Name);
+            if(!prop) {
 
                 // It is possible for the dynamic property to be removed and
                 // restored. But since restoring property is actually creating
                 // a new property, the property key inside redo stack will not
                 // match. So we search by name first.
-                prop = pcObj->getDynamicPropertyByName(v.second.name.c_str());
+                prop = pcObj->getDynamicPropertyByName(v.second->getName());
                 if(!prop) {
                     // Still not found, re-create the property
                     prop = pcObj->addDynamicProperty(
-                            data.property->getTypeId().getName(),
-                            v.second.name.c_str(), data.group.c_str(), data.doc.c_str(),
-                            data.attr, data.readonly, data.hidden);
+                            v.second->getTypeId().getName(),
+                            v.second->getName(),v.second->getGroup(),v.second->getDocumentation()
+                            );
                     if(!prop)
                         continue;
-                    prop->setStatusValue(data.property->getStatus());
+                    prop->setStatus(v.second->getStatus());
                 }
             }
 
@@ -349,7 +337,7 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
             //     continue;
             // }
             try {
-                prop->Paste(*data.property);
+                prop->Paste(*v.second);
             } catch (Base::Exception &e) {
                 e.ReportException();
                 FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
@@ -363,13 +351,12 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
 
 void TransactionObject::setProperty(const Property* pcProp)
 {
-    auto &data = _PropChangeMap[pcProp];
-    if(!data.property && data.name.empty()) {
-        static_cast<DynamicProperty::PropData&>(data) = 
-            pcProp->getContainer()->getDynamicPropertyData(pcProp);
-        data.property = pcProp->Copy();
-        data.propertyType = pcProp->getTypeId();
-        data.property->setStatusValue(pcProp->getStatus());
+    //This if looks like defeat. We should not need this. This happens because setProperty is called WHILE undoing
+    if( _PropChangeMap.find(pcProp->getPropertySpec()) == _PropChangeMap.end()) {
+        std::shared_ptr<Property> copyProperty(pcProp->Copy());
+        copyProperty->setStatus(pcProp->getStatus());
+        copyProperty->setPropertySpec(pcProp->getPropertySpec());
+        _PropChangeMap[pcProp->getPropertySpec()]=copyProperty;
     }
 }
 
@@ -379,28 +366,20 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
     if(!pcProp || !pcProp->getContainer())
         return;
 
-    auto &data = _PropChangeMap[pcProp];
-    if(data.name.size()) {
-        if(!add && !data.property) {
-            // this means add and remove the same property inside a single
-            // transaction, so they cancel each other out.
-            _PropChangeMap.erase(pcProp);
-        }
-        return;
+    if(!add
+    && _PropChangeMap.find(pcProp->getPropertySpec()) != _PropChangeMap.end() 
+    && _PropChangeMap[pcProp->getPropertySpec()]) {
+        // this means add and remove the same property inside a single
+        // transaction, so they cancel each other out.
+        _PropChangeMap.erase(pcProp->getPropertySpec());
     }
-    if(data.property) {
-        delete data.property;
-        data.property = 0;
-    }
+    return;
 
-    static_cast<DynamicProperty::PropData&>(data) = 
-        pcProp->getContainer()->getDynamicPropertyData(pcProp);
-    if(add) 
-        data.property = 0;
+    if(add){
+        _PropChangeMap[pcProp->getPropertySpec()] =  std::shared_ptr<Property>();
+    }
     else {
-        data.property = pcProp->Copy();
-        data.propertyType = pcProp->getTypeId();
-        data.property->setStatusValue(pcProp->getStatus());
+       setProperty(pcProp);
     }
 }
 
@@ -452,7 +431,7 @@ void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcO
 
 #ifndef USE_OLD_DAG
         //Make sure the backlinks of all linked objects are updated. As the links of the removed
-        //object are never set to [] they also do not remove the backlink. But as they are 
+        //object are never set to [] they also do not remove the backlink. But as they are
         //not in the document anymore we need to remove them anyway to ensure a correct graph
         auto list = obj->getOutList();
         for (auto link : list)

@@ -392,7 +392,7 @@ void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int en
     for (int i=start; i<=end; i++) {
         QModelIndex item = propertyModel->index(i, column, parent);
         PropertyItem* propItem = static_cast<PropertyItem*>(item.internalPointer());
-        if (!PropertyView::showAll() && propItem && propItem->testStatus(App::Property::Hidden)) {
+        if (!PropertyView::showAll() && propItem && propItem->testStatus(App::PropertyStatus::Hidden)) {
             setRowHidden (i, parent, true);
         }
         if (propItem && propItem->isSeparator()) {
@@ -410,7 +410,7 @@ void PropertyEditor::updateEditorMode(const App::Property& prop)
         return;
 
     bool hidden = PropertyView::isPropertyHidden(&prop);
-    bool readOnly = prop.testStatus(App::Property::ReadOnly);
+    bool readOnly = prop.testStatus(App::PropertyStatus::ReadOnly);
 
     int column = 1;
     int numRows = propertyModel->rowCount();
@@ -515,13 +515,9 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
 
         bool canRemove = !props.empty();
-        unsigned long propType = 0;
-        unsigned long propStatus = 0xffffffff;
-        for(auto prop : props) {
-            propType |= prop->getType();
-            propStatus &= prop->getStatus();
-            if(!prop->testStatus(App::Property::PropDynamic)
-                || prop->testStatus(App::Property::LockDynamic))
+        for(auto *prop : props) {
+            if(!prop->testStatus(App::PropertyStatus::Prop_Dynamic)
+                || prop->testStatus(App::PropertyStatus::LockDynamic))
             {
                 canRemove = false;
             }
@@ -532,10 +528,10 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         if(props.size() == 1) {
             auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
             auto prop = *props.begin();
-            if(item->isBound() 
+            if(item->isBound()
                 && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
-                && !prop->isReadOnly() 
-                && !(prop->getType() & App::Prop_ReadOnly))
+                && !prop->testStatus(App::PropertyStatus::ReadOnly)
+                && !prop->testStatus(App::PropertyStatus::Prop_ReadOnly))
             {
                 contextIndex = propertyModel->buddy(contextIndex);
                 setCurrentIndex(contextIndex);
@@ -544,7 +540,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             }
         }
 
-        if(props.size()) {
+        if(!props.empty()) {
+            auto propStatus = (*props.begin())->getStatus();
+            for(auto *prop : props) {
+                propStatus  &= prop->getStatus();
+            }
             menu.addSeparator();
 
             QAction *action;
@@ -554,12 +554,12 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
                 action = menu.addAction(text);\
                 action->setData(QVariant(MA_##_name));\
                 action->setCheckable(true);\
-                if(propStatus & (1<<App::Property::_name))\
+                if(propStatus.test(App::PropertyStatus::_name))\
                     action->setChecked(true);\
             }while(0)
 #define ACTION_SETUP(_name) do {\
                 _ACTION_SETUP(_name);\
-                if(propType & App::Prop_##_name) {\
+                if(propStatus.test(App::PropertyStatus::Prop_##_name)) {\
                     action->setText(text + QString::fromLatin1(" *"));\
                     action->setChecked(true);\
                 }\
@@ -591,7 +591,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
 #define ACTION_CHECK(_name) \
     case MA_##_name:\
         for(auto prop : props) \
-            prop->setStatus(App::Property::_name,action->isChecked());\
+            prop->setStatus(App::PropertyStatus::_name,action->isChecked());\
         break
     ACTION_CHECK(Transient);
     ACTION_CHECK(ReadOnly);
@@ -599,11 +599,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     ACTION_CHECK(Hidden);
     ACTION_CHECK(EvalOnRestore);
     case MA_Touched:
-        for(auto prop : props) {
-            if(action->isChecked())
-                prop->touch();
-            else
-                prop->purgeTouched();
+        for(auto *prop : props) {
+            prop->setStatus(App::PropertyStatus::Touched, action->isChecked());
         }
         break;
     case MA_Expression:

@@ -126,18 +126,17 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        const char *prop_name = object->getPropertyName(prop);
-        if(prop_name == 0)
+        if(!object->isOwnerOf(*prop))
             return;
         if (has__object__) {
             Py::Tuple args(1);
-            args.setItem(0, Py::String(prop_name));
+            args.setItem(0, Py::String(prop->getName()));
             Base::pyCall(py_onBeforeChange.ptr(),args.ptr());
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            args.setItem(1, Py::String(prop_name));
+            args.setItem(1, Py::String(prop->getName()));
             Base::pyCall(py_onBeforeChange.ptr(),args.ptr());
         }
     }
@@ -180,18 +179,17 @@ void FeaturePythonImp::onChanged(const Property* prop)
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        const char *prop_name = object->getPropertyName(prop);
-        if(prop_name == 0)
+        if(!object->isOwnerOf(*prop))
             return;
         if (has__object__) {
             Py::Tuple args(1);
-            args.setItem(0, Py::String(prop_name));
+            args.setItem(0, Py::String( prop->getName()));
             Base::pyCall(py_onChanged.ptr(),args.ptr());
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            args.setItem(1, Py::String(prop_name));
+            args.setItem(1, Py::String( prop->getName()));
             Base::pyCall(py_onChanged.ptr(),args.ptr());
         }
     }

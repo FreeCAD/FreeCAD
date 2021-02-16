@@ -44,7 +44,7 @@ OriginGroupExtension::OriginGroupExtension () {
 
     initExtensionType(OriginGroupExtension::getExtensionClassTypeId());
 
-    EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
+    EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), "" , Prop_Hidden, "Origin linked to the group" );
     Origin.setScope(LinkScope::Child);
 }
 

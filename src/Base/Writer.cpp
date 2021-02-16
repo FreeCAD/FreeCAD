@@ -162,7 +162,7 @@ std::vector<std::string> Writer::getErrors() const
     return Errors;
 }
 
-std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
+std::string Writer::addFile(const std::string& Name,const Base::Persistence *Object)
 {
     // always check isForceXML() before requesting a file!
     assert(isForceXML()==false);
@@ -179,10 +179,9 @@ std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
     return temp.FileName;
 }
 
-std::string Writer::getUniqueFileName(const char *Name)
+std::string Writer::getUniqueFileName(std::string CleanName)
 {
     // name in use?
-    std::string CleanName = (Name ? Name : "");
     std::vector<std::string>::const_iterator pos;
     pos = find(FileNames.begin(),FileNames.end(),CleanName);
 

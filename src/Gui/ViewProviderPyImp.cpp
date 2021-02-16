@@ -53,6 +53,7 @@
 #include <Base/PlacementPy.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+#include "App/LegacyPropertyStatus.h"
 
 using namespace Gui;
 
@@ -65,12 +66,24 @@ std::string ViewProviderPy::representation(void) const
 PyObject*  ViewProviderPy::addProperty(PyObject *args)
 {
     char *sType,*sName=0,*sGroup=0,*sDoc=0;
+    std::string sTypeStr, sNameStr, sGroupStr, sDocStr;
     short attr=0;
-    std::string sDocStr;
     PyObject *ro = Py_False, *hd = Py_False;
     if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
         &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
+
+    if (sType) {
+        sTypeStr = sType;
+    }
+
+    if (sName) {
+        sNameStr = sName;
+    }
+
+    if (sGroup) {
+        sGroupStr = sGroup;
+    }
 
     if (sDoc) {
         sDocStr = sDoc;
@@ -79,8 +92,10 @@ PyObject*  ViewProviderPy::addProperty(PyObject *args)
 
     App::Property* prop=0;
     try {
-        prop = getViewProviderPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
-            PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
+        prop = getViewProviderPtr()->addDynamicProperty(sTypeStr,sNameStr,sGroupStr,sDocStr);
+        prop->setStatus(App::fromLegacyAttributes(App::StatusCollection<App::LegacyPropertyStatus::Value>(attr)));
+        prop->setStatus(App::PropertyStatus::Prop_ReadOnly, PyObject_IsTrue(ro) );
+        prop->setStatus(App::PropertyStatus::Prop_Hidden ,PyObject_IsTrue(hd) );
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());

@@ -71,7 +71,7 @@ DrawProjGroup::DrawProjGroup(void) :
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoDist = hGrp->GetBool("AutoDist",true);
-    
+
     ADD_PROPERTY_TYPE(Source, (0), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
@@ -88,8 +88,8 @@ DrawProjGroup::DrawProjGroup(void) :
                                 App::Prop_None, "Distribute views automatically or manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "If AutoDistribute is on, this is the horizontal \nspacing between the borders of views \n(if label width is not wider than the object)");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "If AutoDistribute is on, this is the vertical \nspacing between the borders of views");
-    Rotation.setStatus(App::Property::Hidden, true);   //DPG does not rotate
-    Caption.setStatus(App::Property::Hidden, true);
+    Rotation.setStatus(App::PropertyStatus::Hidden, true);   //DPG does not rotate
+    Caption.setStatus(App::PropertyStatus::Hidden, true);
 }
 
 DrawProjGroup::~DrawProjGroup()
@@ -468,7 +468,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
                 Anchor.purgeTouched();
                 requestPaint();   //make sure the group object is on the Gui page
                 view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
-                view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
+                view->LockPosition.setStatus(App::PropertyStatus::ReadOnly,true); //Front should stay locked.
                 view->LockPosition.purgeTouched();
             }
         //        addView(view);                            //from DrawViewCollection
@@ -570,7 +570,7 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
     gp_Ax2 newCS;
     gp_Dir gNewDir;
     gp_Dir gNewXDir;
-    
+
     double angle = M_PI / 2.0;                        //90*
 
     if (viewType == "Right") {

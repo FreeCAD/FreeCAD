@@ -68,7 +68,7 @@ ViewProviderTemplate::ViewProviderTemplate()
 {
     sPixmap = "TechDraw_Tree_PageTemplate";
 
-    DisplayMode.setStatus(App::Property::Hidden,true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden,true);
 }
 
 ViewProviderTemplate::~ViewProviderTemplate()
@@ -124,7 +124,7 @@ void ViewProviderTemplate::onChanged(const App::Property *prop)
             hide();
         }
     }
-    
+
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
@@ -144,7 +144,7 @@ void ViewProviderTemplate::hide(void)
     if (qTemplate != nullptr) {
         qTemplate->hide();
     }
-    
+
     ViewProviderDocumentObject::hide();
 }
 

@@ -132,18 +132,18 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(Inverted, (false), "", App::Prop_Output, "The dimensional value is displayed inverted");
 
     // hide the DrawView properties that don't apply to Dimensions
-    ScaleType.setStatus(App::Property::ReadOnly, true);
-    ScaleType.setStatus(App::Property::Hidden, true);
-    Scale.setStatus(App::Property::ReadOnly, true);
-    Scale.setStatus(App::Property::Hidden, true);
-    Rotation.setStatus(App::Property::ReadOnly, true);
-    Rotation.setStatus(App::Property::Hidden, true);
-    Caption.setStatus(App::Property::Hidden, true);
-    LockPosition.setStatus(App::Property::Hidden, true);
+    ScaleType.setStatus(App::PropertyStatus::ReadOnly, true);
+    ScaleType.setStatus(App::PropertyStatus::Hidden, true);
+    Scale.setStatus(App::PropertyStatus::ReadOnly, true);
+    Scale.setStatus(App::PropertyStatus::Hidden, true);
+    Rotation.setStatus(App::PropertyStatus::ReadOnly, true);
+    Rotation.setStatus(App::PropertyStatus::Hidden, true);
+    Caption.setStatus(App::PropertyStatus::Hidden, true);
+    LockPosition.setStatus(App::PropertyStatus::Hidden, true);
 
     // by default EqualTolerance is true, thus make UnderTolerance read-only
-    UnderTolerance.setStatus(App::Property::ReadOnly, true);
-    FormatSpecUnderTolerance.setStatus(App::Property::ReadOnly, true);
+    UnderTolerance.setStatus(App::PropertyStatus::ReadOnly, true);
+    FormatSpecUnderTolerance.setStatus(App::PropertyStatus::ReadOnly, true);
 
     measurement = new Measure::Measurement();
     //TODO: should have better initial datumLabel position than (0,0) in the DVP?? something closer to the object being measured?
@@ -212,20 +212,20 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             if (TheoreticalExact.getValue()) {
                 OverTolerance.setValue(0.0);
                 UnderTolerance.setValue(0.0);
-                OverTolerance.setReadOnly(true);
-                UnderTolerance.setReadOnly(true);
-                FormatSpecOverTolerance.setReadOnly(true);
-                FormatSpecUnderTolerance.setReadOnly(true);
+                OverTolerance.setStatus(App::PropertyStatus::ReadOnly, true);
+                UnderTolerance.setStatus(App::PropertyStatus::ReadOnly, true);
+                FormatSpecOverTolerance.setStatus(App::PropertyStatus::ReadOnly, true);
+                FormatSpecUnderTolerance.setStatus(App::PropertyStatus::ReadOnly, true);
                 ArbitraryTolerances.setValue(false);
-                ArbitraryTolerances.setReadOnly(true);
+                ArbitraryTolerances.setStatus(App::PropertyStatus::ReadOnly, true);
             }
             else {
-                OverTolerance.setReadOnly(false);
-                FormatSpecOverTolerance.setReadOnly(false);
-                ArbitraryTolerances.setReadOnly(false);
+                OverTolerance.setStatus(App::PropertyStatus::ReadOnly, false);
+                FormatSpecOverTolerance.setStatus(App::PropertyStatus::ReadOnly, false);
+                ArbitraryTolerances.setStatus(App::PropertyStatus::ReadOnly, false);
                 if (!EqualTolerance.getValue()) {
-                    UnderTolerance.setReadOnly(false);
-                    FormatSpecUnderTolerance.setReadOnly(false);
+                    UnderTolerance.setStatus(App::PropertyStatus::ReadOnly, false);
+                    FormatSpecUnderTolerance.setStatus(App::PropertyStatus::ReadOnly, false);
                 }
             }
             requestPaint();
@@ -241,19 +241,19 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 OverTolerance.setConstraints(&PositiveConstraint);
                 UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
                 UnderTolerance.setUnit(OverTolerance.getUnit());
-                UnderTolerance.setReadOnly(true);
+                UnderTolerance.setStatus(App::PropertyStatus::ReadOnly, true);
                 FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
-                FormatSpecUnderTolerance.setReadOnly(true);
+                FormatSpecUnderTolerance.setStatus(App::PropertyStatus::ReadOnly, true);
             }
             else {
                 OverTolerance.setConstraints(&ToleranceConstraint);
                 if (!TheoreticalExact.getValue()) {
-                    UnderTolerance.setReadOnly(false);
-                    FormatSpecUnderTolerance.setReadOnly(false);
+                    UnderTolerance.setStatus(App::PropertyStatus::ReadOnly, false);
+                    FormatSpecUnderTolerance.setStatus(App::PropertyStatus::ReadOnly, false);
                 }
             }
             requestPaint();
-        } 
+        }
         else if (prop == &OverTolerance) {
             // if EqualTolerance set negated overtolerance for untertolerance
             if (EqualTolerance.getValue()) {
@@ -798,7 +798,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         if ((pos = rxUnits.indexIn(qUserString, 0)) != -1) {
             qUserStringUnits = rxUnits.cap(0); // entire capture - non numerics at end of qUserString
         }
-        
+
         // get value in the base unit with default decimals
         // for the conversion we use the same method as in DlgUnitsCalculator::valueChanged
         // get the conversion factor for the unit

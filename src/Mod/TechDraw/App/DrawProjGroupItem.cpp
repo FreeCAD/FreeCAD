@@ -68,11 +68,11 @@ DrawProjGroupItem::DrawProjGroupItem(void)
             App::Prop_None,"Deprecated. Use XDirection.");
 
     //projection group controls these
-//    Direction.setStatus(App::Property::ReadOnly,true);
-    RotationVector.setStatus(App::Property::ReadOnly,true);   //Use XDirection
+//    Direction.setStatus(App::PropertyStatus::ReadOnly,true);
+    RotationVector.setStatus(App::PropertyStatus::ReadOnly,true);   //Use XDirection
     ScaleType.setValue("Custom");
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
+    Scale.setStatus(App::PropertyStatus::Hidden,true);
+    ScaleType.setStatus(App::PropertyStatus::Hidden,true);
 }
 
 DrawProjGroupItem::~DrawProjGroupItem()
@@ -119,9 +119,9 @@ bool DrawProjGroupItem::showLock(void) const
     }
 
     if (isAnchor() &&                         //don't show lock for Front if DPG is not locked
-        !parentLock) { 
+        !parentLock) {
         result = false;
-    }   
+    }
 
     return result;
 }
@@ -204,7 +204,7 @@ bool DrawProjGroupItem::isAnchor(void) const
 
 /// get a coord system aligned with Direction and Rotation Vector
 gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
-                                 const Base::Vector3d& axis, 
+                                 const Base::Vector3d& axis,
                                  const bool flip) const
 {
     Base::Console().Message("DPGI::getViewAxis - deprecated. use getProjectionCS\n");
@@ -258,7 +258,7 @@ Base::Vector3d DrawProjGroupItem::getXDirection(void) const
         prop = getPropertyByName("RotationVector");
         if (prop != nullptr) {
             result = RotationVector.getValue();
-            
+
         } else {
             Base::Console().Message("DPGI::getXDirection - missing RotationVector and XDirection\n");
         }

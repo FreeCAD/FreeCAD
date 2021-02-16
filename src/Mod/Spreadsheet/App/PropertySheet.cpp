@@ -1190,7 +1190,7 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
 }
 
 void PropertySheet::slotChangedObject(const App::DocumentObject &obj, const App::Property &prop) {
-    recomputeDependants(&obj, prop.getName());
+    recomputeDependants(&obj, prop.getName().c_str());
 }
 
 void PropertySheet::onAddDep(App::DocumentObject *obj) {

@@ -51,9 +51,9 @@ bool ViewProviderBase::doubleClicked(void)
     // If the Placement is mutable then open the transform panel.
     // If the Placement can't be modified then just do nothing on double-click.
     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(getObject());
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
+    if (!base->Placement.testStatus(App::PropertyStatus::Immutable) &&
+        !base->Placement.testStatus(App::PropertyStatus::ReadOnly) &&
+        !base->Placement.testStatus(App::PropertyStatus::Hidden)) {
 
         try {
             std::string Msg("Edit ");
@@ -74,9 +74,9 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 {
     // If the Placement is mutable then show the context-menu of the base class.
     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(getObject());
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
+    if (!base->Placement.testStatus(App::PropertyStatus::Immutable) &&
+        !base->Placement.testStatus(App::PropertyStatus::ReadOnly) &&
+        !base->Placement.testStatus(App::PropertyStatus::Hidden)) {
         PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
     }
 }
@@ -84,9 +84,9 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 bool ViewProviderBase::setEdit(int ModNum)
 {
     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(getObject());
-    if (!base->Placement.testStatus(App::Property::Immutable) &&
-        !base->Placement.testStatus(App::Property::ReadOnly) &&
-        !base->Placement.testStatus(App::Property::Hidden)) {
+    if (!base->Placement.testStatus(App::PropertyStatus::Immutable) &&
+        !base->Placement.testStatus(App::PropertyStatus::ReadOnly) &&
+        !base->Placement.testStatus(App::PropertyStatus::Hidden)) {
         return PartGui::ViewProviderPart::setEdit(ModNum);
     }
 

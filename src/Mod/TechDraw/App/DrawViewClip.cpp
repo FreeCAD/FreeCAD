@@ -57,10 +57,10 @@ DrawViewClip::DrawViewClip(void)
     Views.setScope(App::LinkScope::Global);
 
     // hide N/A properties
-    ScaleType.setStatus(App::Property::ReadOnly,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::PropertyStatus::ReadOnly,true);
+    ScaleType.setStatus(App::PropertyStatus::Hidden,true);
+    Scale.setStatus(App::PropertyStatus::ReadOnly,true);
+    Scale.setStatus(App::PropertyStatus::Hidden,true);
 }
 
 DrawViewClip::~DrawViewClip()

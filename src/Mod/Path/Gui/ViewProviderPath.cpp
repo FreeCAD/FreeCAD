@@ -229,7 +229,7 @@ ViewProviderPath::ViewProviderPath()
     NormalColor.touch();
     MarkerColor.touch();
 
-    DisplayMode.setStatus(App::Property::Status::Hidden, true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden, true);
 
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox","None",0};
     SelectionStyle.setEnums(SelectionStyleEnum);

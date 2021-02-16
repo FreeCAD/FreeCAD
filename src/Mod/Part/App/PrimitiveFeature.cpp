@@ -191,7 +191,7 @@ void Primitive::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         // Do not support sphere, ellipsoid and torus because the creation
         // takes too long and thus is not feasible
-        std::string grp = (prop->getGroup() ? prop->getGroup() : "");
+        std::string grp = prop->getGroup();
         if (grp == "Plane" || grp == "Cylinder" || grp == "Cone") {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();

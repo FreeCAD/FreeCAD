@@ -112,7 +112,7 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintPulley* pcConstraint = static_cast<Fem::ConstraintPulley*>(this->getObject());
 
-    if (strcmp(prop->getName(),"BasePoint") == 0) {
+    if (prop->getName()  == "BasePoint") {
         if (pcConstraint->Height.getValue() > Precision::Confusion()) {
             // Remove and recreate the symbol
             Gui::coinRemoveAllChildren(pShapeSep);
@@ -152,7 +152,7 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             sep->addChild(createArrow(dia/8 + dia/2 * rat2, dia/8));
             pShapeSep->addChild(sep); // child 4
         }
-    } else if (strcmp(prop->getName(),"Diameter") == 0) {
+    } else if (prop->getName() == "Diameter") {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
             double radius = pcConstraint->Radius.getValue();
@@ -184,7 +184,7 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             subsep = static_cast<SoSeparator*>(sep->getChild(4));
             updateArrow(subsep, 0, dia/8 + dia/2 * rat2, dia/8);
         }
-    } else if ((strcmp(prop->getName(), "ForceAngle") == 0) || (strcmp(prop->getName(), "BeltAngle") == 0)) {
+    } else if ((prop->getName() == "ForceAngle") || (prop->getName() == "BeltAngle")) {
         if (pShapeSep->getNumChildren() > 0) {
             double radius = pcConstraint->Radius.getValue();
             double dia = pcConstraint->Diameter.getValue();
@@ -200,7 +200,7 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
             updatePlacement(sep, 0, SbVec3f(-dia/2 * sin(forceAngle-beltAngle), 0, -dia/2 * cos(forceAngle-beltAngle)),
                 SbRotation(SbVec3f(0,1,0), SbVec3f(-sin(forceAngle-beltAngle-M_PI_2),0,-cos(forceAngle-beltAngle-M_PI_2))));
         }
-    } else if ((strcmp(prop->getName(), "BeltForce1") == 0) || (strcmp(prop->getName(), "BeltForce2") == 0)) {
+    } else if ((prop->getName()  == "BeltForce1") || (prop->getName() == "BeltForce2")) {
         if (pShapeSep->getNumChildren() > 0) {
             double radius = pcConstraint->Radius.getValue();
             double dia = pcConstraint->Diameter.getValue();

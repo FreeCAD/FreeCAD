@@ -47,13 +47,13 @@ DrawTile::DrawTile(void)
 {
     static const char *group = "Tile";
 
-    ADD_PROPERTY_TYPE(TileParent,(0),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TileParent,(0),group,App::Prop_None,
                       "Object to which this tile is attached");
     ADD_PROPERTY_TYPE(TileRow, (0), group, App::Prop_None, "Row in parent object\n 0 for arrow side, -1 for other side");
     ADD_PROPERTY_TYPE(TileColumn, (0), group, App::Prop_None, "Column in parent object");
 
     // there is currently only one column, this don't allow to edit
-    TileColumn.setStatus(App::Property::ReadOnly, true);
+    TileColumn.setStatus(App::PropertyStatus::ReadOnly, true);
     // the row can only have the value 0 or -1
     // allow its editing because this way the tiles can be flipped
     TileRowConstraints.LowerBound = -1;

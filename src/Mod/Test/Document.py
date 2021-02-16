@@ -1794,6 +1794,14 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter2.pop() == 'Prop')
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
+    #Test two signals for a change in ReadOnly and in Hidden Status
+    pyobj.setEditorMode('Prop', [ 'Hidden'])
+    for i in range(2):
+      self.failUnless(self.Obs.signal.pop() == 'ObjChangePropEdit')
+      self.failUnless(self.Obs.parameter.pop() is pyobj)
+      self.failUnless(self.Obs.parameter2.pop() == 'Prop')
+    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+
     pyobj.removeProperty('Prop')
     self.failUnless(self.Obs.signal.pop() == 'ObjRemoveDynProp')
     self.failUnless(self.Obs.parameter.pop() is pyobj)

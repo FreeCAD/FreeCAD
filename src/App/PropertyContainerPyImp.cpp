@@ -102,16 +102,15 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
         return 0;
     }
 
-    short Type =  prop->getType();
-    if (Type & Prop_Hidden)
+    if (prop->testStatus(Prop_Hidden))
         ret.append(Py::String("Hidden"));
-    if (Type & Prop_ReadOnly)
+    if (prop->testStatus(Prop_ReadOnly))
         ret.append(Py::String("ReadOnly"));
-    if (Type & Prop_Output)
+    if (prop->testStatus(Prop_Output))
         ret.append(Py::String("Output"));
-    if (Type & Prop_NoRecompute)
+    if (prop->testStatus(Prop_NoRecompute))
         ret.append(Py::String("NoRecompute"));
-    if (Type & Prop_Transient)
+    if (prop->testStatus(Prop_Transient))
         ret.append(Py::String("Transient"));
 
     return Py::new_reference_to(ret);
@@ -144,10 +143,8 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             return 0;
         }
 
-        std::bitset<32> status(prop->getStatus());
-        status.set(Property::ReadOnly, (type & 1) > 0);
-        status.set(Property::Hidden, (type & 2) > 0);
-        prop->setStatusValue(status.to_ulong());
+        prop->setStatus(PropertyStatus::ReadOnly, (type & 1) > 0);
+        prop->setStatus(PropertyStatus::Hidden, (type & 2) > 0);
 
         Py_Return;
     }
@@ -163,18 +160,17 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
                 return 0;
             }
 
-            // reset all bits first
-            std::bitset<32> status(prop->getStatus());
-            status.reset(Property::ReadOnly);
-            status.reset(Property::Hidden);
+            bool readOnly=false;
+            bool hidden = false;
             for (Py::Sequence::iterator it = seq.begin();it!=seq.end();++it) {
                 std::string str = (std::string)Py::String(*it);
                 if (str == "ReadOnly")
-                    status.set(Property::ReadOnly);
+                    readOnly=true;
                 else if (str == "Hidden")
-                    status.set(Property::Hidden);
+                    hidden=true;
             }
-            prop->setStatusValue(status.to_ulong());
+            prop->setStatus(PropertyStatus::ReadOnly, readOnly);
+            prop->setStatus(PropertyStatus::Hidden, hidden);
 
             Py_Return;
         }
@@ -187,16 +183,16 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
 static const std::map<std::string, int> &getStatusMap() {
     static std::map<std::string,int> statusMap;
     if(statusMap.empty()) {
-        statusMap["Immutable"] = Property::Immutable;
-        statusMap["ReadOnly"] = Property::ReadOnly;
-        statusMap["Hidden"] = Property::Hidden;
-        statusMap["Transient"] = Property::Transient;
-        statusMap["MaterialEdit"] = Property::MaterialEdit;
-        statusMap["NoMaterialListEdit"] = Property::NoMaterialListEdit;
-        statusMap["Output"] = Property::Output;
-        statusMap["LockDynamic"] = Property::LockDynamic;
-        statusMap["NoModify"] = Property::NoModify;
-        statusMap["PartialTrigger"] = Property::PartialTrigger;
+        statusMap["Immutable"] = PropertyStatus::Immutable;
+        statusMap["ReadOnly"] = PropertyStatus::ReadOnly;
+        statusMap["Hidden"] = PropertyStatus::Hidden;
+        statusMap["Transient"] = PropertyStatus::Transient;
+        statusMap["MaterialEdit"] = PropertyStatus::MaterialEdit;
+        statusMap["NoMaterialListEdit"] = PropertyStatus::NoMaterialListEdit;
+        statusMap["Output"] = PropertyStatus::Output;
+        statusMap["LockDynamic"] = PropertyStatus::LockDynamic;
+        statusMap["NoModify"] = PropertyStatus::NoModify;
+        statusMap["PartialTrigger"] = PropertyStatus::PartialTrigger;
     }
     return statusMap;
 }
@@ -214,7 +210,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
     }
     auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
 
-    std::bitset<32> status(prop->getStatus());
+    auto status = prop->getStatus();
     size_t count = 1;
     bool isSeq = false;
     if(PyList_Check(pyValue) || PyTuple_Check(pyValue)) {
@@ -260,7 +256,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
         }
     }
 
-    prop->setStatusValue(status.to_ulong());
+    prop->setStatus(status);
     Py_Return;
 }
 
@@ -311,10 +307,9 @@ PyObject*  PropertyContainerPy::getEditorMode(PyObject *args)
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
     Py::List ret;
     if (prop) {
-        short Type =  prop->getType();
-        if ((prop->testStatus(Property::ReadOnly)) || (Type & Prop_ReadOnly))
+        if ((prop->testStatus(ReadOnly)) ||prop->testStatus(Prop_ReadOnly))
             ret.append(Py::String("ReadOnly"));
-        if ((prop->testStatus(Property::Hidden)) || (Type & Prop_Hidden))
+        if ((prop->testStatus(Hidden)) || prop->testStatus(Prop_Hidden))
             ret.append(Py::String("Hidden"));
     }
     return Py::new_reference_to(ret);
@@ -332,11 +327,7 @@ PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)
         return 0;
     }
 
-    const char* Group = getPropertyContainerPtr()->getPropertyGroup(prop);
-    if (Group)
-        return Py::new_reference_to(Py::String(Group));
-    else
-        return Py::new_reference_to(Py::String(""));
+    return Py::new_reference_to(Py::String(prop->getGroup()));
 }
 
 PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
@@ -351,11 +342,8 @@ PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
         return 0;
     }
 
-    const char* Group = getPropertyContainerPtr()->getPropertyDocumentation(prop);
-    if (Group)
-        return Py::new_reference_to(Py::String(Group));
-    else
-        return Py::new_reference_to(Py::String(""));
+
+    return Py::new_reference_to(Py::String(prop->getDocumentation()));
 }
 
 PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
@@ -575,7 +563,7 @@ int PropertyContainerPy::setCustomAttributes(const char* attr, PyObject *obj)
     Property *prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop) {
         // Read-only attributes must not be set over its Python interface
-        if(prop->testStatus(Property::Immutable)) {
+        if(prop->testStatus(PropertyStatus::Immutable)) {
             std::stringstream s;
             s << "Object attribute '" << attr << "' is read-only";
             throw Py::AttributeError(s.str());

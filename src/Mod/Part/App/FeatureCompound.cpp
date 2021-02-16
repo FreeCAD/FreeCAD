@@ -111,7 +111,7 @@ App::DocumentObjectExecReturn *Compound::execute(void)
 PROPERTY_SOURCE(Part::Compound2, Part::Compound)
 
 Compound2::Compound2() {
-    Shape.setStatus(App::Property::Transient,true);
+    Shape.setStatus(App::PropertyStatus::Transient,true);
 }
 
 void Compound2::onDocumentRestored() {

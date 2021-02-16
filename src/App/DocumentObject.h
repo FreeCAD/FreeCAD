@@ -92,7 +92,7 @@ public:
 
 /** Base class of all Classes handled in the Document
  */
-class AppExport DocumentObject: public App::TransactionalObject
+class AppExport DocumentObject: public App::TransactionalObject, public App::StatusContainer<ObjectStatus>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(App::DocumentObject);
 
@@ -157,25 +157,21 @@ public:
     bool mustRecompute(void) const;
     /// reset this document object touched
     void purgeTouched(void) {
-        StatusBits.reset(ObjectStatus::Touch);
-        StatusBits.reset(ObjectStatus::Enforce);
-        setPropertyStatus(0,false);
+       setStatus(ObjectStatus::Touch, false);
+       setStatus(ObjectStatus::Enforce, false);
+       setPropertyStatus(Touched,false);
     }
     /// set this feature to error
-    bool isError(void) const {return  StatusBits.test(ObjectStatus::Error);}
-    bool isValid(void) const {return !StatusBits.test(ObjectStatus::Error);}
+    bool isError(void) const {return testStatus(ObjectStatus::Error);}
+    bool isValid(void) const {return !testStatus(ObjectStatus::Error);}
     /// remove the error from the object
-    void purgeError(void){StatusBits.reset(ObjectStatus::Error);}
+    void purgeError(void){setStatus(ObjectStatus::Error, false);}
     /// returns true if this objects is currently recomputing
-    bool isRecomputing() const {return StatusBits.test(ObjectStatus::Recompute);}
+    bool isRecomputing() const {return testStatus(ObjectStatus::Recompute);}
     /// returns true if this objects is currently restoring from file
-    bool isRestoring() const {return StatusBits.test(ObjectStatus::Restore);}
+    bool isRestoring() const {return testStatus(ObjectStatus::Restore);}
     /// returns true if this objects is currently removed from the document
-    bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
-    /// return the status bits
-    unsigned long getStatus() const {return StatusBits.to_ulong();}
-    bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
-    void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
+    bool isRemoving() const {return testStatus(ObjectStatus::Remove);}
     //@}
 
     int isExporting() const;
@@ -434,12 +430,12 @@ public:
         return _pcViewProviderName.c_str();
     }
 
-    virtual bool removeDynamicProperty(const char* prop) override;
+    virtual bool removeDynamicProperty(const std::string& prop) override;
 
     virtual App::Property* addDynamicProperty(
-            const char* type, const char* name=0,
-            const char* group=0, const char* doc=0,
-            short attr=0, bool ro=false, bool hidden=false) override;
+            const std::string& type, const std::string& name,
+            const std::string& group = std::string(), const std::string& doc = std::string()
+            ) override;
 
     /** Resolve the last document object referenced in the subname
      *
@@ -573,26 +569,11 @@ protected:
      */
     App::DocumentObjectExecReturn *executeExtensions();
 
-    /** Status bits of the document object
-     * The first 8 bits are used for the base system the rest can be used in
-     * descendent classes to mark special statuses on the objects.
-     * The bits and their meaning are listed below:
-     *  0 - object is marked as 'touched'
-     *  1 - object is marked as 'erroneous'
-     *  2 - object is marked as 'new'
-     *  3 - object is marked as 'recompute', i.e. the object gets recomputed now
-     *  4 - object is marked as 'restoring', i.e. the object gets loaded at the moment
-     *  5 - object is marked as 'deleting', i.e. the object gets deleted at the moment
-     *  6 - reserved
-     *  7 - reserved
-     * 16 - object is marked as 'expanded' in the tree view
-     */
-    std::bitset<32> StatusBits;
-
-    void setError(void){StatusBits.set(ObjectStatus::Error);}
-    void resetError(void){StatusBits.reset(ObjectStatus::Error);}
+    void setError(void){testStatus(ObjectStatus::Error);}
+    void resetError(void){setStatus(ObjectStatus::Error, false);}
     void setDocument(App::Document* doc);
 
+    virtual void onStatusChanged(const ObjectStatus& pos, bool newValue);
     /// get called before the value is changed
     virtual void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
@@ -609,7 +590,7 @@ protected:
     virtual void unsetupObject();
 
     /// get called when a property status has changed
-    virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) override;
+    virtual void onPropertyStatusChanged(const Property &prop, const App::PropertyStatus& status) override;
 
      /// python object of this class and all descendent
 protected: // attributes

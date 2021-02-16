@@ -121,12 +121,12 @@ public:
     virtual void finishRestoring();
     //@}
 
-    virtual bool removeDynamicProperty(const char* prop) override;
+    virtual bool removeDynamicProperty(const std::string& prop) override;
 
     virtual App::Property* addDynamicProperty(
-            const char* type, const char* name=0,
-            const char* group=0, const char* doc=0,
-            short attr=0, bool ro=false, bool hidden=false) override;
+            const std::string& type, const std::string& name,
+            const std::string& group,const std::string& doc
+            ) override;
 
     /** Return the linked view object
      *
@@ -197,7 +197,7 @@ protected:
     virtual const char* detachFromDocument() override;
 
     /// get called when a property status has changed
-    virtual void onPropertyStatusChanged(const App::Property &prop, unsigned long oldStatus) override;
+    virtual void onPropertyStatusChanged(const App::Property &prop, const App::PropertyStatus& status) override;
 
     //@}
 

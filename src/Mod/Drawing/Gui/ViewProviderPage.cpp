@@ -64,8 +64,8 @@ ViewProviderDrawingPage::ViewProviderDrawingPage()
     ADD_PROPERTY(HintOffsetY,(10.0));
 
     // do not show this in the property editor
-    Visibility.setStatus(App::Property::Hidden, true);
-    DisplayMode.setStatus(App::Property::Hidden, true);
+    Visibility.setStatus(App::PropertyStatus::Hidden, true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden, true);
 }
 
 ViewProviderDrawingPage::~ViewProviderDrawingPage()

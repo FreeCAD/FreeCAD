@@ -37,7 +37,7 @@ MeasureDistance::MeasureDistance()
 {
     ADD_PROPERTY_TYPE(P1,(Base::Vector3d()),"Measurement",Prop_None,"First point of measurement");
     ADD_PROPERTY_TYPE(P2,(Base::Vector3d()),"Measurement",Prop_None,"Second point of measurement");
-    ADD_PROPERTY_TYPE(Distance,(0.0)       ,"Measurement",App::PropertyType(Prop_ReadOnly|Prop_Output),
+    ADD_PROPERTY_TYPE(Distance,(0.0)       ,"Measurement",Prop_ReadOnly+Prop_Output,
                                             "Distance between the points");
 
 }

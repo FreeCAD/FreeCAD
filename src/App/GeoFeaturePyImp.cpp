@@ -46,10 +46,10 @@ PyObject* GeoFeaturePy::getPaths(PyObject * /*args*/)
 }
 
 PyObject* GeoFeaturePy::getGlobalPlacement(PyObject * args) {
-    
+
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-    
+
     try {
         Base::Placement p = static_cast<GeoFeature*>(getDocumentObjectPtr())->globalPlacement();
         return new Base::PlacementPy(new Base::Placement(p));
@@ -66,9 +66,8 @@ PyObject* GeoFeaturePy::getPropertyNameOfGeometry(PyObject * args)
 
     GeoFeature* object = this->getGeoFeaturePtr();
     const PropertyComplexGeoData* prop = object->getPropertyOfGeometry();
-    const char* name = prop ? prop->getName() : 0;
-    if (name) {
-        return Py::new_reference_to(Py::String(std::string(name)));
+    if (prop) {
+        return Py::new_reference_to(Py::String(prop->getName()));
     }
     return Py::new_reference_to(Py::None());
 }
@@ -93,5 +92,5 @@ PyObject *GeoFeaturePy::getCustomAttributes(const char* /*attr*/) const
 
 int GeoFeaturePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

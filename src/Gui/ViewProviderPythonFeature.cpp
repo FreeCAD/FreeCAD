@@ -812,18 +812,16 @@ void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
     try {
         if (has__object__) {
             Py::Tuple args(1);
-            const char* prop_name = object->getObject()->getPropertyName(prop);
-            if (prop_name) {
-                args.setItem(0, Py::String(prop_name));
+            if (object->isOwnerOf(*prop)) {
+                args.setItem(0, Py::String(prop->getName()) );
                 Base::pyCall(py_updateData.ptr(),args.ptr());
             }
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getObject()->getPyObject(), true));
-            const char* prop_name = object->getObject()->getPropertyName(prop);
-            if (prop_name) {
-                args.setItem(1, Py::String(prop_name));
+            if (object->isOwnerOf(*prop)) {
+                args.setItem(1, Py::String(prop->getName()) );
                 Base::pyCall(py_updateData.ptr(),args.ptr());
             }
         }
@@ -844,18 +842,16 @@ void ViewProviderPythonFeatureImp::onChanged(const App::Property* prop)
     try {
         if (has__object__) {
             Py::Tuple args(1);
-            const char* prop_name = object->getPropertyName(prop);
-            if (prop_name) {
-                args.setItem(0, Py::String(prop_name));
+            if (object->isOwnerOf(*prop)) {
+                args.setItem(0, Py::String(prop->getName()) );
                 Base::pyCall(py_onChanged.ptr(),args.ptr());
             }
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            const char* prop_name = object->getPropertyName(prop);
-            if (prop_name) {
-                args.setItem(1, Py::String(prop_name));
+            if (object->isOwnerOf(*prop)) {
+                args.setItem(1, Py::String(prop->getName()) );
                 Base::pyCall(py_onChanged.ptr(),args.ptr());
             }
         }

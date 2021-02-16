@@ -57,9 +57,9 @@ LinkBaseExtension::LinkBaseExtension(void)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(_LinkTouched, (false), " Link",
-            PropertyType(Prop_Hidden|Prop_NoPersist),0);
+            (Prop_Hidden+Prop_NoPersist), "");
     EXTENSION_ADD_PROPERTY_TYPE(_ChildCache, (), " Link",
-            PropertyType(Prop_Hidden|Prop_NoPersist|Prop_ReadOnly),0);
+            (Prop_Hidden+Prop_NoPersist+Prop_ReadOnly), "");
     _ChildCache.setScope(LinkScope::Global);
     props.resize(PropMax,0);
 }
@@ -114,7 +114,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
         LINK_THROW(Base::RuntimeError,"App::LinkBaseExtension: property index out of range");
 
     if(props[idx]) {
-        props[idx]->setStatus(Property::LockDynamic,false);
+        props[idx]->setStatus(PropertyStatus::LockDynamic,false);
         props[idx] = 0;
     }
     if(!prop)
@@ -128,7 +128,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
     }
 
     props[idx] = prop;
-    props[idx]->setStatus(Property::LockDynamic,true);
+    props[idx]->setStatus(PropertyStatus::LockDynamic,true);
 
     switch(idx) {
     case PropLinkMode: {
@@ -145,37 +145,28 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
            getPlacementProperty())
         {
             bool transform = getLinkTransformValue();
-            getPlacementProperty()->setStatus(Property::Hidden,transform);
-            getLinkPlacementProperty()->setStatus(Property::Hidden,!transform);
+            getPlacementProperty()->setStatus(PropertyStatus::Hidden,transform);
+            getLinkPlacementProperty()->setStatus(PropertyStatus::Hidden,!transform);
         }
         break;
     case PropElementList:
-        getElementListProperty()->setStatus(Property::Hidden,true);
+        getElementListProperty()->setStatus(PropertyStatus::Hidden,true);
         // fall through
     case PropLinkedObject:
         // Make ElementList as read-only if we are not a group (i.e. having
         // LinkedObject property), because it is for holding array elements.
         if(getElementListProperty())
             getElementListProperty()->setStatus(
-                    Property::Immutable,getLinkedObjectProperty()!=0);
+                    PropertyStatus::Immutable,getLinkedObjectProperty()!=0);
         break;
     case PropVisibilityList:
-        getVisibilityListProperty()->setStatus(Property::Immutable,true);
-        getVisibilityListProperty()->setStatus(Property::Hidden,true);
+        getVisibilityListProperty()->setStatus(PropertyStatus::Immutable,true);
+        getVisibilityListProperty()->setStatus(PropertyStatus::Hidden,true);
         break;
     }
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE)) {
-        const char *propName;
-        if(!prop)
-            propName = "<null>";
-        else if(prop->getContainer())
-            propName = prop->getName();
-        else
-            propName = extensionGetPropertyName(prop);
-        if(!propName)
-            propName = "?";
-        FC_TRACE("set property " << infos[idx].name << ": " << propName);
+        FC_TRACE("set property " << infos[idx].name << ": " << prop->getName());
     }
 }
 
@@ -325,9 +316,9 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
             if(visible) return 1;
             propElementVis->setSize(index+1, true);
         }
-        propElementVis->setStatus(Property::User3,true);
+        propElementVis->setStatus(PropertyStatus::User3,true);
         propElementVis->set1Value(index,visible);
-        propElementVis->setStatus(Property::User3,false);
+        propElementVis->setStatus(PropertyStatus::User3,false);
         const auto &elements = _getElementListValue();
         if(index<(int)elements.size()) {
             if(!visible)
@@ -753,7 +744,7 @@ bool LinkBaseExtension::extensionGetLinkedObject(DocumentObject *&ret,
 
 void LinkBaseExtension::extensionOnChanged(const Property *prop) {
     auto parent = getContainer();
-    if(parent && !parent->isRestoring() && prop && !prop->testStatus(Property::User3))
+    if(parent && !parent->isRestoring() && prop && !prop->testStatus(PropertyStatus::User3))
         update(parent,prop);
     inherited::extensionOnChanged(prop);
 }
@@ -863,26 +854,26 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         auto dst = getPlacementProperty();
         if(src!=prop) std::swap(src,dst);
         if(src && dst) {
-            dst->setStatus(Property::User3,true);
+            dst->setStatus(PropertyStatus::User3,true);
             dst->setValue(src->getValue());
-            dst->setStatus(Property::User3,false);
+            dst->setStatus(PropertyStatus::User3,false);
         }
     }else if(prop == getScaleProperty()) {
-        if(!prop->testStatus(Property::User3) && getScaleVectorProperty()) {
+        if(!prop->testStatus(User3) && getScaleVectorProperty()) {
             auto s = getScaleValue();
             auto p = getScaleVectorProperty();
-            p->setStatus(Property::User3,true);
+            p->setStatus(User3,true);
             p->setValue(s,s,s);
-            p->setStatus(Property::User3,false);
+            p->setStatus(User3,false);
         }
     }else if(prop == getScaleVectorProperty()) {
-        if(!prop->testStatus(Property::User3) && getScaleProperty()) {
+        if(!prop->testStatus(PropertyStatus::User3) && getScaleProperty()) {
             const auto &v = getScaleVectorValue();
             if(v.x == v.y && v.x == v.z) {
                 auto p = getScaleProperty();
-                p->setStatus(Property::User3,true);
+                p->setStatus(User3,true);
                 p->setValue(v.x);
-                p->setStatus(Property::User3,false);
+                p->setStatus(User3,false);
             }
         }
     }else if(prop == _getShowElementProperty()) {
@@ -908,16 +899,16 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             }
             // touch the property again to make sure view provider has been
             // signaled before clearing the elements
-            getShowElementProperty()->setStatus(App::Property::User3,true);
+            getShowElementProperty()->setStatus(App::PropertyStatus::User3,true);
             getShowElementProperty()->touch();
-            getShowElementProperty()->setStatus(App::Property::User3,false);
+            getShowElementProperty()->setStatus(App::PropertyStatus::User3,false);
 
             getElementListProperty()->setValues(std::vector<App::DocumentObject*>());
 
             if(getPlacementListProperty()) {
-                getPlacementListProperty()->setStatus(Property::User3,getScaleListProperty()!=0);
+                getPlacementListProperty()->setStatus(PropertyStatus::User3,getScaleListProperty()!=0);
                 getPlacementListProperty()->setValue(placements);
-                getPlacementListProperty()->setStatus(Property::User3,false);
+                getPlacementListProperty()->setStatus(PropertyStatus::User3,false);
             }
             if(getScaleListProperty())
                 getScaleListProperty()->setValue(scales);
@@ -940,9 +931,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             if(getScaleListProperty()) {
                 auto scales = getScaleListValue();
                 scales.resize(elementCount,Base::Vector3d(1,1,1));
-                getScaleListProperty()->setStatus(Property::User3,true);
+                getScaleListProperty()->setStatus(User3,true);
                 getScaleListProperty()->setValue(scales);
-                getScaleListProperty()->setStatus(Property::User3,false);
+                getScaleListProperty()->setStatus(User3,false);
             }
             if(getPlacementListProperty()) {
                 auto placements = getPlacementListValue();
@@ -951,9 +942,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                         placements.emplace_back(Base::Vector3d(i%10,(i/10)%10,i/100),Base::Rotation());
                 }else
                     placements.resize(elementCount);
-                getPlacementListProperty()->setStatus(Property::User3,true);
+                getPlacementListProperty()->setStatus(PropertyStatus::User3,true);
                 getPlacementListProperty()->setValue(placements);
-                getPlacementListProperty()->setStatus(Property::User3,false);
+                getPlacementListProperty()->setStatus(PropertyStatus::User3,false);
             }
         }else if(getElementListProperty()) {
             auto objs = getElementListValue();
@@ -1041,9 +1032,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
     }else if(prop == getElementListProperty() || prop == &_ChildCache) {
 
         if(prop == getElementListProperty()) {
-            _ChildCache.setStatus(Property::User3,true);
+            _ChildCache.setStatus(User3,true);
             updateGroup();
-            _ChildCache.setStatus(Property::User3,false);
+            _ChildCache.setStatus(User3,false);
         }
 
         const auto &elements = _getElementListValue();
@@ -1068,9 +1059,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 myHiddenElements.swap(hiddenElements);
                 if(vis != getVisibilityListValue()) {
                     auto propVis = getVisibilityListProperty();
-                    propVis->setStatus(Property::User3,true);
+                    propVis->setStatus(PropertyStatus::User3,true);
                     propVis->setValue(vis);
-                    propVis->setStatus(Property::User3,false);
+                    propVis->setStatus(PropertyStatus::User3,false);
                 }
             }
         }
@@ -1086,9 +1077,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
     }else if(prop == getLinkedObjectProperty()) {
         auto group = linkedPlainGroup();
         if(getShowElementProperty())
-            getShowElementProperty()->setStatus(Property::Hidden, !!group);
+            getShowElementProperty()->setStatus(Hidden, !!group);
         if(getElementCountProperty())
-            getElementCountProperty()->setStatus(Property::Hidden, !!group);
+            getElementCountProperty()->setStatus(PropertyStatus::Hidden, !!group);
         if(group)
             updateGroup();
         else if(_ChildCache.getSize())
@@ -1100,8 +1091,8 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         auto placement = getPlacementProperty();
         if(linkPlacement && placement) {
             bool transform = getLinkTransformValue();
-            placement->setStatus(Property::Hidden,transform);
-            linkPlacement->setStatus(Property::Hidden,!transform);
+            placement->setStatus(PropertyStatus::Hidden,transform);
+            linkPlacement->setStatus(PropertyStatus::Hidden,!transform);
         }
         syncElementList();
     }
@@ -1144,13 +1135,13 @@ void LinkBaseExtension::syncElementList() {
 
         element->myOwner = ownerID;
 
-        element->LinkTransform.setStatus(Property::Hidden,transform!=0);
-        element->LinkTransform.setStatus(Property::Immutable,transform!=0);
+        element->LinkTransform.setStatus(PropertyStatus::Hidden,transform!=0);
+        element->LinkTransform.setStatus(PropertyStatus::Immutable,transform!=0);
         if(transform && element->LinkTransform.getValue()!=transform->getValue())
             element->LinkTransform.setValue(transform->getValue());
 
-        element->LinkedObject.setStatus(Property::Hidden,link!=0);
-        element->LinkedObject.setStatus(Property::Immutable,link!=0);
+        element->LinkedObject.setStatus(PropertyStatus::Hidden,link!=0);
+        element->LinkedObject.setStatus(PropertyStatus::Immutable,link!=0);
         if(xlink) {
             if(element->LinkedObject.getValue()!=xlink->getValue() ||
                element->LinkedObject.getSubValues()!=xlink->getSubValues())
@@ -1421,11 +1412,11 @@ static bool isExcludedProperties(const char *name) {
     return false;
 }
 
-Property *LinkBaseExtension::extensionGetPropertyByName(const char* name) const {
+Property *LinkBaseExtension::extensionGetPropertyByName(const string& name) const {
     if (checkingProperty)
         return inherited::extensionGetPropertyByName(name);
     Base::StateLocker guard(checkingProperty);
-    if(isExcludedProperties(name))
+    if(isExcludedProperties(name.c_str()))
         return nullptr;
     auto owner = getContainer();
     if (owner) {

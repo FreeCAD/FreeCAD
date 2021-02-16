@@ -44,9 +44,9 @@ FemResultObject::FemResultObject()
     ADD_PROPERTY_TYPE(Time,(0), "Data",Prop_None,"Time of analysis increment");
 
     // make read-only for property editor
-    NodeNumbers.setStatus(App::Property::ReadOnly, true);
-    Stats.setStatus(App::Property::ReadOnly, true);
-    Time.setStatus(App::Property::ReadOnly, true);
+    NodeNumbers.setStatus(App::PropertyStatus::ReadOnly, true);
+    Stats.setStatus(App::PropertyStatus::ReadOnly, true);
+    Time.setStatus(App::PropertyStatus::ReadOnly, true);
 }
 
 FemResultObject::~FemResultObject()

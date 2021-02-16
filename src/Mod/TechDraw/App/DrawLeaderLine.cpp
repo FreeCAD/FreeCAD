@@ -72,7 +72,7 @@ DrawLeaderLine::DrawLeaderLine(void)
 {
     static const char *group = "Leader";
 
-    ADD_PROPERTY_TYPE(LeaderParent,(0),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(LeaderParent,(0),group,App::Prop_None,
                       "View to which this leader is attached");
     LeaderParent.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(WayPoints,(Base::Vector3d()) ,group, App::Prop_None,
@@ -94,16 +94,16 @@ DrawLeaderLine::DrawLeaderLine(void)
     ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()),group,App::Prop_None,"Forces last line segment to be horizontal");
 
     //hide the DrawView properties that don't apply to Leader
-    ScaleType.setStatus(App::Property::ReadOnly,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,true);
-    Rotation.setStatus(App::Property::ReadOnly,true);
-    Rotation.setStatus(App::Property::Hidden,true);
-    Caption.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::PropertyStatus::ReadOnly,true);
+    ScaleType.setStatus(App::PropertyStatus::Hidden,true);
+    Scale.setStatus(App::PropertyStatus::ReadOnly,true);
+    Scale.setStatus(App::PropertyStatus::Hidden,true);
+    Rotation.setStatus(App::PropertyStatus::ReadOnly,true);
+    Rotation.setStatus(App::PropertyStatus::Hidden,true);
+    Caption.setStatus(App::PropertyStatus::Hidden,true);
 
     LockPosition.setValue(true);
-    LockPosition.setStatus(App::Property::Hidden,true);
+    LockPosition.setStatus(App::PropertyStatus::Hidden,true);
 }
 
 DrawLeaderLine::~DrawLeaderLine()

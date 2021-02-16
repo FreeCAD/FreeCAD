@@ -184,7 +184,7 @@ void ViewProvider::updateData(const App::Property* prop)
 {
     // TODO What's that? (2015-07-24, Fat-Zer)
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() &&
-        strcmp(prop->getName(),"AddSubShape") == 0) {
+        prop->getName() == "AddSubShape") {
         return;
     }
 
@@ -307,7 +307,7 @@ void ViewProvider::setBodyMode(bool bodymode) {
         if(!vp->getPropertyByName(prop->getName()))
             continue;
 
-        prop->setStatus(App::Property::Hidden, bodymode);
+        prop->setStatus(App::PropertyStatus::Hidden, bodymode);
     }
 }
 

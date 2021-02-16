@@ -81,7 +81,7 @@ ViewProviderDragger::~ViewProviderDragger()
 void ViewProviderDragger::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
-             strcmp(prop->getName(), "Placement") == 0) {
+             prop->getName() == "Placement") {
         // Note: If R is the rotation, c the rotation center and t the translation
         // vector then Inventor applies the following transformation: R*(x-c)+c+t
         // In FreeCAD a placement only has a rotation and a translation part but

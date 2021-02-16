@@ -125,7 +125,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
     float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
     std::string boundaryType = pcConstraint->BoundaryType.getValueAsString();
-    if (strcmp(prop->getName(),"BoundaryType") == 0)
+    if (prop->getName() == "BoundaryType")
     {
         if (boundaryType == "wall")
         {
@@ -161,7 +161,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
         }
 #endif
 
-        if (strcmp(prop->getName(),"Points") == 0) {
+        if (prop->getName() == "Points") {
             const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
 
 #ifdef USE_MULTIPLE_COPY
@@ -204,7 +204,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             cp->matrix.finishEditing();
 #endif
         }
-        else if (strcmp(prop->getName(),"DirectionVector") == 0) { // Note: "Reversed" also triggers "DirectionVector"
+        else if (prop->getName() == "DirectionVector") { // Note: "Reversed" also triggers "DirectionVector"
             // Re-orient all arrows
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
             Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
@@ -259,7 +259,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
         }
 #endif
 
-        if (strcmp(prop->getName(),"Points") == 0) {
+        if (prop->getName() == "Points") {
             const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
             const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
             if (points.size() != normals.size())

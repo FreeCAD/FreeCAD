@@ -130,10 +130,7 @@ public:
 protected:
     enum Status {New,Del,Chn} status;
 
-    struct PropData : DynamicProperty::PropData {
-        Base::Type propertyType;
-    };
-    std::unordered_map<const Property*, PropData> _PropChangeMap;
+    std::unordered_map<std::shared_ptr<const PropertySpec>, std::shared_ptr<Property> > _PropChangeMap;
 
     std::string _NameInDocument;
 };

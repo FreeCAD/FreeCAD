@@ -50,7 +50,7 @@ ViewProviderViewClip::ViewProviderViewClip()
 
     // Do not show in property editor
     //DisplayMode.StatusBits.set(3, true);
-    DisplayMode.setStatus(App::Property::ReadOnly,true);
+    DisplayMode.setStatus(App::PropertyStatus::ReadOnly,true);
 }
 
 ViewProviderViewClip::~ViewProviderViewClip()

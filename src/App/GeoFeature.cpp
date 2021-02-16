@@ -42,7 +42,7 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 
 GeoFeature::GeoFeature(void)
 {
-    ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
+    ADD_PROPERTY_TYPE(Placement,(Base::Placement()), "", Prop_NoRecompute,"");
 }
 
 GeoFeature::~GeoFeature(void)
@@ -63,7 +63,7 @@ Base::Placement GeoFeature::globalPlacement() const
         auto ext = group->getExtensionByType<GeoFeatureGroupExtension>();
         return ext->globalGroupPlacement() * Placement.getValue();
     }
-    return Placement.getValue();    
+    return Placement.getValue();
 }
 
 const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
@@ -93,9 +93,9 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
     return ret;
 }
 
-DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname, 
-        std::pair<std::string,std::string> &elementName, bool append, 
-        ElementNameType type, const DocumentObject *filter, 
+DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname,
+        std::pair<std::string,std::string> &elementName, bool append,
+        ElementNameType type, const DocumentObject *filter,
         const char **_element, GeoFeature **geoFeature)
 {
     if(!obj || !obj->getNameInDocument())
@@ -109,24 +109,24 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         return 0;
     obj = sobj->getLinkedObject(true);
     auto geo = dynamic_cast<GeoFeature*>(obj);
-    if(geoFeature) 
+    if(geoFeature)
         *geoFeature = geo;
     if(!obj || (filter && obj!=filter))
         return 0;
     if(!element || !element[0]) {
-        if(append) 
+        if(append)
             elementName.second = Data::ComplexGeoData::oldElementName(subname);
         return sobj;
     }
 
     if(!geo || hasHiddenMarker(element)) {
-        if(!append) 
+        if(!append)
             elementName.second = element;
         else
             elementName.second = Data::ComplexGeoData::oldElementName(subname);
         return sobj;
     }
-    if(!append) 
+    if(!append)
         elementName = geo->getElementName(element,type);
     else{
         const auto &names = geo->getElementName(element,type);

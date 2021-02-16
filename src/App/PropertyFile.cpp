@@ -80,9 +80,9 @@ void PropertyFileIncluded::aboutToSetValue(void)
     // If Copy() is directly called (e.g. to copy the file to
     // another document) a copy of the file needs to be created.
     // This copy will be deleted again in the class destructor.
-    this->StatusBits.set(10);
+    this->setStatus(PropertyStatus::PartialTrigger);
     Property::aboutToSetValue();
-    this->StatusBits.reset(10);
+    this->setStatus(PropertyStatus::PartialTrigger, false);
 }
 
 std::string PropertyFileIncluded::getDocTransientPath(void) const
@@ -199,7 +199,7 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             Base::FileInfo dst(_cValue);
             dst.setPermissions(Base::FileInfo::ReadOnly);
         }
-        // otherwise copy from origin location 
+        // otherwise copy from origin location
         else {
             // if file already exists in transient dir make a new unique name
             Base::FileInfo fi(_cValue);
@@ -318,7 +318,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
 #endif
     else if (PyTuple_Check(value)) {
         if (PyTuple_Size(value) != 2)
-            throw Base::TypeError("Tuple needs size of (filePath,newFileName)"); 
+            throw Base::TypeError("Tuple needs size of (filePath,newFileName)");
         PyObject* file = PyTuple_GetItem(value,0);
         PyObject* name = PyTuple_GetItem(value,1);
 
@@ -420,7 +420,7 @@ void PropertyFileIncluded::Save (Base::Writer &writer) const
         }
     }
     else {
-        // instead initiate an extra file 
+        // instead initiate an extra file
         if (!_cValue.empty()) {
             Base::FileInfo file(_cValue.c_str());
             std::string filename = writer.addFile(file.fileName().c_str(), this);
@@ -525,7 +525,7 @@ Property *PropertyFileIncluded::Copy(void) const
     if (file.exists()) {
         // create a new name in the document transient directory
         Base::FileInfo newName(getUniqueFileName(file.dirPath(), file.fileName()));
-        if (this->StatusBits.test(10)) {
+        if (this->testStatus(PropertyStatus::PartialTrigger)) {
             // rename the file
             bool done = file.renameFile(newName.filePath().c_str());
             if (!done) {

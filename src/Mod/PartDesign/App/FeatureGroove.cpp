@@ -62,7 +62,7 @@ Groove::Groove()
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
-    ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
+    ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",App::Prop_None,"Reference axis of Groove");
 }
 
 short Groove::mustExecute() const

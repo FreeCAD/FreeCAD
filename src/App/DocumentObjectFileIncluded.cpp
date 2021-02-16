@@ -36,7 +36,7 @@ PROPERTY_SOURCE(App::DocumentObjectFileIncluded, App::DocumentObject)
 
 DocumentObjectFileIncluded::DocumentObjectFileIncluded()
 {
-    ADD_PROPERTY_TYPE(File,(0),"",(App::PropertyType)(Prop_None),"File to include into Project File");
+    ADD_PROPERTY_TYPE(File,(0),"", Prop_None, "File to include into Project File");
 }
 
 DocumentObjectFileIncluded::~DocumentObjectFileIncluded()

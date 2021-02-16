@@ -84,9 +84,9 @@ ViewProviderLeader::ViewProviderLeader()
 
     static const char *group = "Line Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
+    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,App::Prop_None,"Line width");
     LineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
+    ADD_PROPERTY_TYPE(LineStyle,(1),group,App::Prop_None,"Line style");
     ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"Color of the Markup");
 }
 
@@ -180,7 +180,7 @@ std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren(void) const
             }
         }
         return temp;
-    } 
+    }
     catch (...) {
         std::vector<App::DocumentObject*> tmp;
         return tmp;
@@ -249,7 +249,7 @@ bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
 
     if (!childs.empty()) {
         QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage); 
+        QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this leader line because\nit has a weld symbol that would become broken.");
         QMessageBox::warning(Gui::getMainWindow(),

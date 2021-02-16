@@ -1272,7 +1272,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
     }
 
     auto prop = obj->getPropertyByName(propertyName);
-    if(prop && !prop->testStatus(Property::Hidden) && !(prop->getType() & PropertyType::Prop_Hidden))
+    if(prop && !prop->testStatus(PropertyStatus::Hidden) && !prop->testStatus(PropertyStatus::Prop_Hidden))
         return prop;
 
     auto linked = obj->getLinkedObject(true);

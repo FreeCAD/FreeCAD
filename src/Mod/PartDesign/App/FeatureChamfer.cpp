@@ -244,7 +244,7 @@ void Chamfer::updateProperties()
     auto chamferType = ChamferType.getValue();
 
     auto disableproperty = [](App::Property * prop, bool on) {
-        prop->setStatus(App::Property::ReadOnly, on);
+        prop->setStatus(App::PropertyStatus::ReadOnly, on);
     };
 
     switch (chamferType) {

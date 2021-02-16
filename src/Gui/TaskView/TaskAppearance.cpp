@@ -80,7 +80,7 @@ void TaskAppearance::changeEvent(QEvent *e)
 void TaskAppearance::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                               Gui::SelectionSingleton::MessageType Reason)
 {
-    Q_UNUSED(rCaller); 
+    Q_UNUSED(rCaller);
     if (Reason.Type == SelectionChanges::AddSelection ||
         Reason.Type == SelectionChanges::RmvSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
@@ -104,7 +104,7 @@ void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
         (Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) { return v == &obj; });
 
     if (vp != Provider.end()) {
-        std::string prop_name = obj.getPropertyName(&prop);
+        std::string prop_name = prop.getName();
         if (prop.getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
             long value = static_cast<const App::PropertyInteger&>(prop).getValue();
             if (prop_name == "Transparency") {

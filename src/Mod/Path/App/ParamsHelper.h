@@ -986,8 +986,10 @@
 #define PARAM_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
   do { \
     this->_prop_.setValue _defaultval_;\
+    this->_prop_.setStatus(App::PropertyStatus::Touched, false); \
+    this->_prop_.setStatus( _type_ ); \
     this->_prop_.setContainer(this); \
-    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), BOOST_PP_STRINGIZE(_prop_), &this->_prop_, (_group_),(_type_),(_Docu_)); \
+    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), BOOST_PP_STRINGIZE(_prop_), &this->_prop_, (_group_),(_Docu_)); \
   } while (0)
 
 /** Generic property adding */

@@ -202,7 +202,7 @@ public:
             if(idx>=0 && v) {
                 QString res;
                 if(prop)
-                    res = QString::fromLatin1(prop->getName());
+                    res = QString::fromStdString(prop->getName());
                 else if(obj) {
                     if(idx & 1)
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
@@ -260,7 +260,7 @@ public:
                 *count = propSize;
         }
         if(v)
-            *v = QString::fromLatin1(prop->getName());
+            *v = QString::fromStdString(prop->getName());
         return;
     }
 

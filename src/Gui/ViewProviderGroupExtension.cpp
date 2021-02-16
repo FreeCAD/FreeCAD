@@ -149,7 +149,7 @@ void ViewProviderGroupExtension::extensionHide(void) {
     // Property::User1 is used by ViewProviderDocumentObject to mark for
     // temporary visibility changes. Do not propagate the change to children.
     if (!getExtendedViewProvider()->isRestoring()
-            && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1))
+            && !getExtendedViewProvider()->Visibility.testStatus(App::PropertyStatus::User1))
     {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
         for(auto obj : group->Group.getValues()) {

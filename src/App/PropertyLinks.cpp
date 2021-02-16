@@ -181,7 +181,7 @@ PropertyLinkBase::updateLabelReferences(App::DocumentObject *obj, const char *ne
 static std::string propertyName(const Property *prop) {
     if(!prop)
         return std::string();
-    if(!prop->getContainer() || !prop->getName()) {
+    if(!prop->getContainer()) {
         auto xlink = Base::freecad_dynamic_cast<const PropertyXLink>(prop);
         if(xlink)
             return propertyName(xlink->parent());

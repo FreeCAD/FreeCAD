@@ -28,9 +28,10 @@
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
+#include "StatusContainer.h"
 #include <boost/any.hpp>
 #include <string>
-#include <bitset>
+#include <memory>
 
 namespace Py {
 class Object;
@@ -41,6 +42,60 @@ namespace App
 
 class PropertyContainer;
 class ObjectIdentifier;
+struct AppExport PropertySpec
+{
+    const std::string Name;
+    const std::string Group;
+    const std::string Docu;
+    const short Offset;
+
+    inline PropertySpec(const std::string& name,const std::string&  group, const std::string& doc, short offset)
+        :Name(name),Group(group),Docu(doc), Offset(offset)
+    {}
+};
+
+
+enum PropertyStatus //Do not edit values, they are persisted
+{
+    Touched = 0, // touched property
+    Immutable = 1, // can't modify property
+    ReadOnly = 2, // for property editor
+    Hidden = 3, // for property editor
+    Transient = 4, // for property container save
+    MaterialEdit = 5, // to turn ON PropertyMaterial edit
+    NoMaterialListEdit = 6, // to turn OFF PropertyMaterialList edit
+    Output = 7, // same effect as Prop_Output
+    LockDynamic = 8, // prevent being removed from dynamic property
+    NoModify = 9, // prevent causing Gui::Document::setModified()
+    PartialTrigger = 10, // allow change in partial doc
+    NoRecompute = 11, // touch owner for recompute on property change
+    Single = 12, // for save/load of floating point numbers
+    Ordered = 13, // for PropertyLists whether the order of the elements is
+                  // relevant for the container using it
+    EvalOnRestore = 14, // In case of expression binding, evaluate the
+                        // expression on restore and touch the object on value change.
+
+    // The following bits are corresponding to PropertyType set when the
+    // property added. These types are meant to be static, and cannot be
+    // changed in runtime.
+    
+    Prop_StaticBegin = 21,
+    Prop_Dynamic = 21, // indicating the property is dynamically added
+    Prop_NoPersist = 22, // corresponding to Prop_NoPersist
+    Prop_NoRecompute = 23, // corresponding to Prop_NoRecompute
+    Prop_ReadOnly = 24, // corresponding to Prop_ReadOnly
+    Prop_Transient= 25, // corresponding to Prop_Transient
+    Prop_Hidden   = 26, // corresponding to Prop_Hidden
+    Prop_Output   = 27, // corresponding to Prop_Output
+    Prop_StaticEnd = 28,
+
+    User1 = 28, // user-defined status
+    User2 = 29, // user-defined status
+    User3 = 30, // user-defined status
+    User4 = 31  // user-defined status
+};
+//Readability shortcut, it can be replaced by an empty initializer list: '{}'
+constexpr StatusCollection<PropertyStatus> Prop_None= StatusCollection<PropertyStatus>();
 
 /** Base class of all properties
  * This is the father of all properties. Properties are objects which are used
@@ -51,51 +106,11 @@ class ObjectIdentifier;
  * possible properties. It is also possible to define user properties
  * and use them in the framework...
  */
-class AppExport Property : public Base::Persistence
+class AppExport Property : public Base::Persistence , public StatusContainer<PropertyStatus>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    enum Status
-    {
-        Touched = 0, // touched property
-        Immutable = 1, // can't modify property
-        ReadOnly = 2, // for property editor
-        Hidden = 3, // for property editor
-        Transient = 4, // for property container save
-        MaterialEdit = 5, // to turn ON PropertyMaterial edit
-        NoMaterialListEdit = 6, // to turn OFF PropertyMaterialList edit
-        Output = 7, // same effect as Prop_Output
-        LockDynamic = 8, // prevent being removed from dynamic property
-        NoModify = 9, // prevent causing Gui::Document::setModified()
-        PartialTrigger = 10, // allow change in partial doc
-        NoRecompute = 11, // touch owner for recompute on property change
-        Single = 12, // for save/load of floating point numbers
-        Ordered = 13, // for PropertyLists whether the order of the elements is
-                      // relevant for the container using it
-        EvalOnRestore = 14, // In case of expression binding, evaluate the
-                            // expression on restore and touch the object on value change.
-
-        // The following bits are corresponding to PropertyType set when the
-        // property added. These types are meant to be static, and cannot be
-        // changed in runtime. It is mirrored here to save the linear search
-        // required in PropertyContainer::getPropertyType()
-        //
-        PropStaticBegin = 21,
-        PropDynamic = 21, // indicating the property is dynamically added
-        PropNoPersist = 22, // corresponding to Prop_NoPersist
-        PropNoRecompute = 23, // corresponding to Prop_NoRecompute
-        PropReadOnly = 24, // corresponding to Prop_ReadOnly
-        PropTransient= 25, // corresponding to Prop_Transient
-        PropHidden   = 26, // corresponding to Prop_Hidden
-        PropOutput   = 27, // corresponding to Prop_Output
-        PropStaticEnd = 28,
-
-        User1 = 28, // user-defined status
-        User2 = 29, // user-defined status
-        User3 = 30, // user-defined status
-        User4 = 31  // user-defined status
-    };
 
     Property();
     virtual ~Property();
@@ -111,25 +126,22 @@ public:
      */
     virtual unsigned int getMemSize (void) const override {
         // you have to implement this method in all property classes!
-        return sizeof(father) + sizeof(StatusBits);
+        return sizeof(father) + sizeof(StatusContainer<PropertyStatus>);
     }
 
     /// get the name of this property in the belonging container
-    const char* getName(void) const;
+    std::string getName(void) const;
 
     std::string getFullName() const;
 
     /// Get the class name of the associated property editor item
     virtual const char* getEditorName(void) const { return ""; }
 
-    /// Get the type of the property in the container
-    short getType(void) const;
-
     /// Get the group of this property
-    const char* getGroup(void) const;
+    const std::string getGroup(void) const;
 
     /// Get the documentation of this property
-    const char* getDocumentation(void) const;
+    const std::string getDocumentation(void) const;
 
     /// Is called by the framework to set the father (container)
     void setContainer(PropertyContainer *Father);
@@ -189,38 +201,13 @@ public:
      */
     //@{
     /// Set the property touched
-    void touch();
+    inline void touch() {setStatus(Touched); }
     /// Test if this property is touched
     inline bool isTouched(void) const {
-        return StatusBits.test(Touched);
+        return testStatus(Touched);
     }
     /// Reset this property touched
-    inline void purgeTouched(void) {
-        StatusBits.reset(Touched);
-    }
-    /// return the status bits
-    inline unsigned long getStatus() const {
-        return StatusBits.to_ulong();
-    }
-    inline bool testStatus(Status pos) const {
-        return StatusBits.test(static_cast<size_t>(pos));
-    }
-    void setStatus(Status pos, bool on);
-    void setStatusValue(unsigned long status);
-    ///Sets property editable/grayed out in property editor
-    void setReadOnly(bool readOnly);
-    inline bool isReadOnly() const {
-        return testStatus(App::Property::ReadOnly);
-    }
-    /// Sets precision of properties using floating point
-    /// numbers to single, the default is double.
-    void setSinglePrecision(bool single) {
-        setStatus(App::Property::Single, single);
-    }
-    /// Gets precision of properties using floating point numbers
-    inline bool isSinglePrecision() const {
-        return testStatus(App::Property::Single);
-    }
+    inline void purgeTouched(void) { setStatus(Touched, false); }
     //@}
 
     /// Returns a new copy of the property (mainly for Undo/Redo and transactions)
@@ -232,24 +219,10 @@ public:
     virtual void hasSetChildValue(Property &) {}
     /// Called before a child property changing value
     virtual void aboutToSetChildValue(Property &) {}
-
-    friend class PropertyContainer;
-    friend struct PropertyData;
-    friend class DynamicProperty;
-
+    void setPropertySpec(const std::shared_ptr<const PropertySpec> & spec) { if(!propertySpec) propertySpec=spec; }
+    std::shared_ptr<const PropertySpec> getPropertySpec() const {return propertySpec; }
 protected:
-    /** Status bits of the property
-     * The first 8 bits are used for the base system the rest can be used in
-     * descendent classes to mark special statuses on the objects.
-     * The bits and their meaning are listed below:
-     * 0 - object is marked as 'touched'
-     * 1 - object is marked as 'immutable'
-     * 2 - object is marked as 'read-only' (for property editor)
-     * 3 - object is marked as 'hidden' (for property editor)
-     */
-    std::bitset<32> StatusBits;
-
-protected:
+    virtual void onStatusChanged(const PropertyStatus& status, bool newValue ) override;
     /// Gets called by all setValue() methods after the value has changed
     virtual void hasSetValue(void);
     /// Gets called by all setValue() methods before the value has changed
@@ -263,12 +236,9 @@ private:
     Property(const Property&);
     Property& operator = (const Property&);
 
-    // Sync status with Property_Type
-    void syncType(unsigned type);
-
 private:
     PropertyContainer *father;
-    const char *myName;
+    std::shared_ptr<const PropertySpec> propertySpec;
 };
 
 
@@ -390,8 +360,8 @@ protected:
 class AppExport PropertyListsBase
 {
 public:
-    virtual void setSize(int newSize)=0;   
-    virtual int getSize(void) const =0;   
+    virtual void setSize(int newSize)=0;
+    virtual int getSize(void) const =0;
 
     const std::set<int> &getTouchList() const {
         return _touchList;
@@ -431,8 +401,8 @@ public:
     // if the order of the elements in the list relevant?
     // if yes, certain operations, like restoring must make sure that the
     // order is kept despite errors.
-    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
-    inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
+    inline void setOrderRelevant(bool on) { this->setStatus(Ordered,on); };
+    inline bool isOrderRelevant() const { return this->testStatus(Ordered);}
 
 };
 
@@ -484,7 +454,7 @@ public:
     // alias to getValues
     const ListT &getValue(void) const{return getValues();}
 
-    const_reference operator[] (int idx) const {return _lValueList[idx];} 
+    const_reference operator[] (int idx) const {return _lValueList[idx];}
 
     virtual void setPyObject(PyObject *value) override {
         try {
@@ -511,7 +481,7 @@ public:
 
 protected:
 
-    void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
+    void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override
     {
         if (indices.empty()) {
             ListT values;

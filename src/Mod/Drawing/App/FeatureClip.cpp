@@ -48,11 +48,10 @@ using namespace std;
 
 PROPERTY_SOURCE(Drawing::FeatureClip, App::DocumentObjectGroup)
 
-FeatureClip::FeatureClip(void) 
+FeatureClip::FeatureClip(void)
 {
     static const char *group = "Drawing view";
-    App::PropertyType hidden = (App::PropertyType)(App::Prop_Hidden);
-    ADD_PROPERTY_TYPE(ViewResult ,(""),group,hidden,"Resulting SVG view of this clip");
+    ADD_PROPERTY_TYPE(ViewResult ,(""),group,App::Prop_Hidden,"Resulting SVG view of this clip");
     ADD_PROPERTY_TYPE(X          ,(10),group,App::Prop_None  ,"The left margin of the view area of this clip");
     ADD_PROPERTY_TYPE(Y          ,(10),group,App::Prop_None  ,"The top margin of the view area of this clip");
     ADD_PROPERTY_TYPE(Height     ,(10),group,App::Prop_None  ,"The height of the view area of this clip");
@@ -60,8 +59,7 @@ FeatureClip::FeatureClip(void)
     ADD_PROPERTY_TYPE(ShowFrame  ,(0),group,App::Prop_None,"Specifies if the clip frame appears on the page or not");
     // The 'Visible' property is handled by the view provider exclusively. It has the 'Output' flag set to
     // avoid to call the execute() method. The view provider touches the page object, instead.
-    App::PropertyType propType = static_cast<App::PropertyType>(App::Prop_Hidden|App::Prop_Output);
-    ADD_PROPERTY_TYPE(Visible, (true),group,propType,"Control whether frame is visible in page object");
+    ADD_PROPERTY_TYPE(Visible, (true),group,App::Prop_Hidden+App::Prop_Output,"Control whether frame is visible in page object");
 }
 
 FeatureClip::~FeatureClip()
@@ -88,7 +86,7 @@ App::DocumentObjectExecReturn *FeatureClip::execute(void)
     // show clip frame on the page if needed
 
     if (ShowFrame.getValue()) {
-        svg << "<rect fill=\"None\" stroke=\"#ff0000\" stroke-width=\"1px\"" 
+        svg << "<rect fill=\"None\" stroke=\"#ff0000\" stroke-width=\"1px\""
             << " x=\"" << X.getValue() << "\""
             << " y=\"" << Y.getValue() << "\""
             << " width=\"" << Width.getValue() << "\""

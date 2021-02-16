@@ -66,18 +66,17 @@ DocumentObject::DocumentObject(void)
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label,("Unnamed"),"Base",Prop_Output,"User name of the object (UTF8)");
-    ADD_PROPERTY_TYPE(Label2,(""),"Base",Prop_Hidden,"User description of the object (UTF8)");
-    Label2.setStatus(App::Property::Output,true);
+    ADD_PROPERTY_TYPE(Label2,(""),"Base",Prop_Hidden+Output,"User description of the object (UTF8)");
     ADD_PROPERTY_TYPE(ExpressionEngine,(),"Base",Prop_Hidden,"Property expressions");
 
     ADD_PROPERTY(Visibility, (true));
 
     // default set Visibility status to hidden and output (no touch) for
-    // compatibitily reason. We use setStatus instead of PropertyType to 
+    // compatibitily reason. We use setStatus instead of PropertyType to
     // allow user to change its status later
-    Visibility.setStatus(Property::Output,true);
-    Visibility.setStatus(Property::Hidden,true);
-    Visibility.setStatus(Property::NoModify,true);
+    Visibility.setStatus(Output,true);
+    Visibility.setStatus(Hidden,true);
+    Visibility.setStatus(NoModify,true);
 }
 
 DocumentObject::~DocumentObject(void)
@@ -143,6 +142,12 @@ App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
     return StdReturn;
 }
 
+void DocumentObject::onStatusChanged(const ObjectStatus& pos, bool newValue)
+{
+    (void)newValue;
+    (void)pos;
+}
+
 bool DocumentObject::recomputeFeature(bool recursive)
 {
     Document* doc = this->getDocument();
@@ -161,8 +166,8 @@ bool DocumentObject::recomputeFeature(bool recursive)
 void DocumentObject::touch(bool noRecompute)
 {
     if(!noRecompute)
-        StatusBits.set(ObjectStatus::Enforce);
-    StatusBits.set(ObjectStatus::Touch);
+        setStatus(ObjectStatus::Enforce);
+    setStatus(ObjectStatus::Touch);
     if (_pDoc)
         _pDoc->signalTouchedObject(*this);
 }
@@ -173,7 +178,7 @@ void DocumentObject::touch(bool noRecompute)
  */
 bool DocumentObject::isTouched() const
 {
-    return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
+    return ExpressionEngine.isTouched() || testStatus(ObjectStatus::Touch);
 }
 
 /**
@@ -194,7 +199,7 @@ void DocumentObject::enforceRecompute(void)
  */
 bool DocumentObject::mustRecompute(void) const
 {
-    if (StatusBits.test(ObjectStatus::Enforce))
+    if (testStatus(ObjectStatus::Enforce))
         return true;
 
     return mustExecute() > 0;
@@ -410,7 +415,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 // More efficient algorithm to find the recursive inList of an object,
 // including possible external parents.  One shortcoming of this algorithm is
 // it does not detect cyclic reference, althgouth it won't crash either.
-void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet, 
+void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
         bool recursive, std::vector<App::DocumentObject*> *inList) const
 {
 #ifdef USE_OLD_DAG
@@ -438,7 +443,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
             auto &outList = v.second;
             // Check the outList to see if the object is there, and pend the
             // object for recursive check if it's not already in the inList
-            if(outList.find(obj)!=outList.end() && 
+            if(outList.find(obj)!=outList.end() &&
                inSet.insert(v.first).second &&
                recursive)
             {
@@ -658,13 +663,13 @@ void DocumentObject::setDocument(App::Document* doc)
     onSettingDocument();
 }
 
-bool DocumentObject::removeDynamicProperty(const char* name)
+bool DocumentObject::removeDynamicProperty(const std::string& name)
 {
-    if (!_pDoc) 
+    if (!_pDoc)
         return false;
 
     Property* prop = getDynamicPropertyByName(name);
-    if(!prop || prop->testStatus(App::Property::LockDynamic))
+    if(!prop || prop->testStatus(LockDynamic))
         return false;
 
     if(prop->isDerivedFrom(PropertyLinkBase::getClassTypeId()))
@@ -689,10 +694,9 @@ bool DocumentObject::removeDynamicProperty(const char* name)
 }
 
 App::Property* DocumentObject::addDynamicProperty(
-    const char* type, const char* name, const char* group, const char* doc,
-    short attr, bool ro, bool hidden)
+    const std::string& type, const std::string& name, const std::string& group, const std::string& doc)
 {
-    auto prop = TransactionalObject::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
+    auto *prop = TransactionalObject::addDynamicProperty(type,name,group,doc);
     if(prop && _pDoc)
         _pDoc->addOrRemovePropertyOfObject(this, prop, true);
     return prop;
@@ -717,9 +721,9 @@ void DocumentObject::onChanged(const Property* prop)
     if(GetApplication().isClosingAll())
         return;
 
-    if(!GetApplication().isRestoring() && 
-       !prop->testStatus(Property::PartialTrigger) &&
-       getDocument() && 
+    if(!GetApplication().isRestoring() &&
+       !prop->testStatus(PartialTrigger) &&
+       getDocument() &&
        getDocument()->testStatus(Document::PartialDoc))
     {
         static App::Document *warnedDoc;
@@ -739,17 +743,17 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->signalRelabelObject(*this);
 
     // set object touched if it is an input property
-    if (!testStatus(ObjectStatus::NoTouch) 
-            && !(prop->getType() & Prop_Output) 
-            && !prop->testStatus(Property::Output)) 
+    if (!testStatus(ObjectStatus::NoTouch)
+            && !prop->testStatus(Prop_Output)
+            && !prop->testStatus(Output))
     {
-        if(!StatusBits.test(ObjectStatus::Touch)) {
+        if(!testStatus(ObjectStatus::Touch)) {
             FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
-            StatusBits.set(ObjectStatus::Touch);
+            setStatus(ObjectStatus::Touch);
         }
         // must execute on document recompute
-        if (!(prop->getType() & Prop_NoRecompute))
-            StatusBits.set(ObjectStatus::Enforce);
+        if (!prop->testStatus(Prop_NoRecompute))
+            setStatus(ObjectStatus::Enforce);
     }
 
     //call the parent for appropriate handling
@@ -863,7 +867,7 @@ std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getPa
     for(auto parent : getInList()) {
         if(!parent || !parent->getNameInDocument())
             continue;
-        if(!parent->hasChildElement() && 
+        if(!parent->hasChildElement() &&
            !parent->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
             continue;
         if(!parent->getSubObject(name.c_str()))
@@ -873,9 +877,9 @@ std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getPa
         links.insert(parent);
         for(auto parent : links) {
             auto parents = parent->getParents(depth+1);
-            if(parents.empty()) 
+            if(parents.empty())
                 parents.emplace_back(parent,std::string());
-            for(auto &v : parents) 
+            for(auto &v : parents)
                 ret.emplace_back(v.first,v.second+name);
         }
     }
@@ -883,7 +887,7 @@ std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getPa
 }
 
 DocumentObject *DocumentObject::getLinkedObject(
-        bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
+        bool recursive, Base::Matrix4D *mat, bool transform, int depth) const
 {
     DocumentObject *ret = 0;
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
@@ -949,10 +953,10 @@ void DocumentObject::onDocumentRestored()
 {
     //call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
+    for(auto *ext : vector)
         ext->onExtendedDocumentRestored();
-    if(Visibility.testStatus(Property::Output))
-        Visibility.setStatus(Property::NoModify,true);
+    if(Visibility.testStatus(Output))
+        Visibility.setStatus(NoModify,true);
 }
 
 void DocumentObject::onUndoRedoFinished()
@@ -1002,12 +1006,12 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 #ifndef USE_OLD_DAG
     //we need to add all links, even if they are available multiple times. The reason for this is the
     //removal: If a link loses this object it removes the backlink. If we would have added it only once
-    //this removal would clear the object from the inlist, even though there may be other link properties 
+    //this removal would clear the object from the inlist, even though there may be other link properties
     //from this object that link to us.
     _inList.push_back(newObj);
 #else
     (void)newObj;
-#endif //USE_OLD_DAG    
+#endif //USE_OLD_DAG
 }
 
 int DocumentObject::setElementVisible(const char *element, bool visible) {
@@ -1036,8 +1040,8 @@ bool DocumentObject::hasChildElement() const {
     return false;
 }
 
-DocumentObject *DocumentObject::resolve(const char *subname, 
-        App::DocumentObject **parent, std::string *childName, const char **subElement, 
+DocumentObject *DocumentObject::resolve(const char *subname,
+        App::DocumentObject **parent, std::string *childName, const char **subElement,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     auto self = const_cast<DocumentObject*>(this);
@@ -1058,7 +1062,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     const char *dot=0;
     if(Data::ComplexGeoData::isMappedElement(subname) ||
        !(dot=strrchr(subname,'.')) ||
-       dot == subname) 
+       dot == subname)
     {
         if(subElement)
             *subElement = dot?dot+1:subname;
@@ -1081,7 +1085,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
                 const char *sub = dot==subname?dot:dot+1;
                 if(Data::ComplexGeoData::isMappedElement(sub)) {
                     lastDot = dot;
-                    if(dot==subname) 
+                    if(dot==subname)
                         break;
                     else
                         continue;
@@ -1138,7 +1142,7 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
             subcheck += '.';
             if(getSubObject(subcheck.c_str())==link) {
                 ret = getSubObject(std::string(sub,dot+1-sub).c_str());
-                if(!ret) 
+                if(!ret)
                     return 0;
                 subname = std::string(dot+1);
                 break;
@@ -1227,8 +1231,9 @@ bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, Doc
     return false;
 }
 
-void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) {
-    (void)oldStatus;
-    if(!Document::isAnyRestoring() && getNameInDocument() && getDocument())
+void DocumentObject::onPropertyStatusChanged(const Property &prop, const App::PropertyStatus& status) {
+    (void)status;
+    if(!Document::isAnyRestoring() && getNameInDocument() && getDocument()
+     && (status == PropertyStatus::ReadOnly || status == PropertyStatus::Hidden))
         getDocument()->signalChangePropertyEditor(*getDocument(),prop);
 }

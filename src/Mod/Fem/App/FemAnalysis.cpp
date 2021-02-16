@@ -41,7 +41,7 @@ PROPERTY_SOURCE(Fem::FemAnalysis, App::DocumentObjectGroup)
 FemAnalysis::FemAnalysis()
 {
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Analysis");
+    ADD_PROPERTY_TYPE(Uid,(id),"",App::Prop_None,"UUID of the Analysis");
 }
 
 FemAnalysis::~FemAnalysis()

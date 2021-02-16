@@ -192,7 +192,7 @@ void ViewProviderDatumCoordinateSystem::setupLabels() {
 
 void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
 {
-    if (strcmp(prop->getName(),"Placement") == 0) 
+    if (prop->getName() == "Placement")
         updateExtents ();
 
     ViewProviderDatum::updateData(prop);
@@ -205,7 +205,7 @@ void ViewProviderDatumCoordinateSystem::onChanged(const App::Property *prop) {
         else if(prop == &Zoom) {
             autoZoom->scaleFactor.setValue(Zoom.getValue());
             updateExtents ();
-        } else if(prop == &FontSize) 
+        } else if(prop == &FontSize)
             font->size = FontSize.getValue();
     }
     ViewProviderDatum::onChanged(prop);
@@ -214,7 +214,7 @@ void ViewProviderDatumCoordinateSystem::onChanged(const App::Property *prop) {
 void ViewProviderDatumCoordinateSystem::setExtents (Base::BoundBox3d bbox) {
     // Axis length of the CS is 1/3 of maximum bbox dimension, any smarter sizing will make it only worse
     double axisLength;
-    
+
     if(Zoom.getValue()) {
         axisLength = 6 * Zoom.getValue();
     }else{

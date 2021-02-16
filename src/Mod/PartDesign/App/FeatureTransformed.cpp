@@ -63,9 +63,9 @@ Transformed::Transformed()
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
-    Placement.setStatus(App::Property::ReadOnly, true);
+    Placement.setStatus(App::PropertyStatus::ReadOnly, true);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    ADD_PROPERTY_TYPE(Refine,(0),"SketchBased",App::Prop_None,"Refine shape (clean up redundant edges) after adding/subtracting");
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()

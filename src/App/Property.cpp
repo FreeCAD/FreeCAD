@@ -50,7 +50,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence)
 
 // Here is the implementation! Description should take place in the header file!
 Property::Property()
-  :father(0), myName(0)
+  :father(0), propertySpec()
 {
 
 }
@@ -60,57 +60,36 @@ Property::~Property()
 
 }
 
-const char* Property::getName(void) const
+std::string Property::getName(void) const
 {
-    return myName;
+    if(propertySpec)
+        return propertySpec->Name;
+    return "";
 }
 
 std::string Property::getFullName() const {
     std::string name;
-    if(myName) {
+    if (!getName().empty()) {
         if(father)
             name = father->getFullName() + ".";
-        name += myName;
+        name += getName();
     }else
         return "?";
     return name;
 }
 
-short Property::getType(void) const
+const std::string Property::getGroup(void) const
 {
-    short type = 0;
-#define GET_PTYPE(_name) do {\
-        if(testStatus(App::Property::Prop##_name)) type|=Prop_##_name;\
-    }while(0)
-    GET_PTYPE(ReadOnly);
-    GET_PTYPE(Hidden);
-    GET_PTYPE(Output);
-    GET_PTYPE(Transient);
-    GET_PTYPE(NoRecompute);
-    GET_PTYPE(NoPersist);
-    return type;
+    if(propertySpec)
+        return propertySpec->Group;
+    return "";
 }
 
-void Property::syncType(unsigned type) {
-#define SYNC_PTYPE(_name) do{\
-        if(type & Prop_##_name) StatusBits.set((size_t)Prop##_name);\
-    }while(0)
-    SYNC_PTYPE(ReadOnly);
-    SYNC_PTYPE(Transient);
-    SYNC_PTYPE(Hidden);
-    SYNC_PTYPE(Output);
-    SYNC_PTYPE(NoRecompute);
-    SYNC_PTYPE(NoPersist);
-}
-
-const char* Property::getGroup(void) const
+const std::string  Property::getDocumentation(void) const
 {
-    return father->getPropertyGroup(this);
-}
-
-const char* Property::getDocumentation(void) const
-{
-    return father->getPropertyDocumentation(this);
+    if(propertySpec)
+        return propertySpec->Docu;
+   return "";
 }
 
 void Property::setContainer(PropertyContainer *Father)
@@ -196,25 +175,10 @@ void Property::destroy(Property *p) {
     }
 }
 
-void Property::touch()
-{
-    PropertyCleaner guard(this);
-    if (father)
-        father->onChanged(this);
-    StatusBits.set(Touched);
-}
-
-void Property::setReadOnly(bool readOnly)
-{
-    this->setStatus(App::Property::ReadOnly, readOnly);
-}
-
 void Property::hasSetValue(void)
 {
-    PropertyCleaner guard(this);
-    if (father)
-        father->onChanged(this);
-    StatusBits.set(Touched);
+    setStatus(Touched,false);
+    setStatus(Touched);
 }
 
 void Property::aboutToSetValue(void)
@@ -241,32 +205,17 @@ void Property::Paste(const Property& /*from*/)
     assert(0);
 }
 
-void Property::setStatusValue(unsigned long status) {
-    static const unsigned long mask =
-        (1<<PropDynamic)
-        |(1<<PropNoRecompute)
-        |(1<<PropReadOnly)
-        |(1<<PropTransient)
-        |(1<<PropOutput)
-        |(1<<PropHidden);
-
-    status &= ~mask;
-    status |= StatusBits.to_ulong() & mask;
-    unsigned long oldStatus = StatusBits.to_ulong();
-    StatusBits = decltype(StatusBits)(status);
-
-    if(father) {
-        static unsigned long _signalMask = (1<<ReadOnly) | (1<<Hidden);
-        if((status & _signalMask) != (oldStatus & _signalMask))
-            father->onPropertyStatusChanged(*this,oldStatus);
+void Property::onStatusChanged(const PropertyStatus& status, bool newValue ) {
+    (void)newValue;
+    if( father )
+        father->onPropertyStatusChanged(*this,status);
+    if( father && status == Touched && newValue)
+    {
+        PropertyCleaner guard(this);
+        father->onChanged(this);
     }
 }
 
-void Property::setStatus(Status pos, bool on) {
-    auto bits = StatusBits;
-    bits.set(pos,on);
-    setStatusValue(bits.to_ulong());
-}
 //**************************************************************************
 //**************************************************************************
 // PropertyListsBase

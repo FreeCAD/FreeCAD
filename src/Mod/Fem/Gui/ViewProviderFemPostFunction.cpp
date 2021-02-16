@@ -113,7 +113,7 @@ void ViewProviderFemPostFunctionProvider::onChanged(const App::Property* prop) {
 void ViewProviderFemPostFunctionProvider::updateData(const App::Property* prop) {
     Gui::ViewProviderDocumentObject::updateData(prop);
 
-    if(strcmp(prop->getName(), "Functions") == 0) {
+    if (prop->getName() == "Functions") {
         updateSize();
     }
 }
@@ -428,13 +428,13 @@ void PlaneWidget::setViewProvider(ViewProviderFemPostFunction* view) {
 void PlaneWidget::onChange(const App::Property& p) {
 
     setBlockObjectUpdates(true);
-    if(strcmp(p.getName(), "Normal") == 0) {
+    if (p.getName() == "Normal") {
         const Base::Vector3d& vec = static_cast<const App::PropertyVector*>(&p)->getValue();
         ui->normalX->setValue(vec.x);
         ui->normalY->setValue(vec.y);
         ui->normalZ->setValue(vec.z);
     }
-    else if(strcmp(p.getName(), "Origin") == 0) {
+    else if (p.getName() == "Origin") {
         const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
         ui->originX->setValue(vec.x);
         ui->originY->setValue(vec.y);
@@ -587,11 +587,11 @@ void SphereWidget::setViewProvider(ViewProviderFemPostFunction* view) {
 void SphereWidget::onChange(const App::Property& p) {
 
     setBlockObjectUpdates(true);
-    if(strcmp(p.getName(), "Radius") == 0) {
+    if (p.getName() == "Radius") {
         double val = static_cast<const App::PropertyDistance*>(&p)->getValue();
         ui->radius->setValue(val);
     }
-    else if(strcmp(p.getName(), "Center") == 0) {
+    else if (p.getName() == "Center") {
         const Base::Vector3d& vec = static_cast<const App::PropertyVectorDistance*>(&p)->getValue();
         ui->centerX->setValue(vec.x);
         ui->centerY->setValue(vec.y);

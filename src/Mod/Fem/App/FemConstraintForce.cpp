@@ -46,12 +46,12 @@ PROPERTY_SOURCE(Fem::ConstraintForce, Fem::Constraint)
 ConstraintForce::ConstraintForce()
 {
     ADD_PROPERTY(Force,(0.0));
-    ADD_PROPERTY_TYPE(Direction,(0),"ConstraintForce",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Direction,(0),"ConstraintForce",App::Prop_None,
                       "Element giving direction of constraint");
     ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintForce",App::Prop_ReadOnly+App::Prop_Output,
                       "Points where arrows are drawn");
-    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"ConstraintForce",App::Prop_ReadOnly+App::Prop_Output,
                       "Direction of arrows");
     naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indicate an invalid value
     Points.setValues(std::vector<Base::Vector3d>());

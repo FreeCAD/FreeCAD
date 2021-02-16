@@ -61,13 +61,13 @@ public:
     {
         if (elem.first == propertyname) {
             //  flag set that property is read-only or hidden
-            if (elem.second->testStatus(App::Property::ReadOnly) || elem.second->testStatus(App::Property::Hidden))
+            if (elem.second->testStatus(App::PropertyStatus::ReadOnly) || elem.second->testStatus(App::PropertyStatus::Hidden))
                 return false;
             App::PropertyContainer* parent = elem.second->getContainer();
             if (parent) {
                 //  flag set that property is read-only or hidden
-                if (parent->isReadOnly(elem.second) ||
-                    parent->isHidden(elem.second))
+                if (elem.second->testStatus(App::PropertyStatus::Prop_ReadOnly) ||
+                    elem.second->testStatus(App::PropertyStatus::Prop_Hidden))
                     return false;
             }
             return elem.second->isDerivedFrom

@@ -57,10 +57,10 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 Feature::Feature()
 {
     ADD_PROPERTY(BaseFeature,(0));
-    ADD_PROPERTY_TYPE(_Body,(0),"Base",(App::PropertyType)(
-                App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
-    Placement.setStatus(App::Property::Hidden, true);
-    BaseFeature.setStatus(App::Property::Hidden, true);
+    ADD_PROPERTY_TYPE(_Body,(0),"Base",
+                App::Prop_ReadOnly+App::Prop_Hidden+App::Prop_Output+App::Prop_Transient,"");
+    Placement.setStatus(App::PropertyStatus::Hidden, true);
+    BaseFeature.setStatus(App::PropertyStatus::Hidden, true);
 }
 
 short Feature::mustExecute() const

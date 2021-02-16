@@ -52,8 +52,8 @@ Plane::Plane()
     ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_Output, "Length of the plane");
     ADD_PROPERTY_TYPE(Width,(20), "Size", App::Prop_Output, "Width of the plane");
 
-    Length.setReadOnly(true);
-    Width.setReadOnly(true);
+    Length.setStatus(App::PropertyStatus::ReadOnly,true);
+    Width.setStatus(App::PropertyStatus::ReadOnly,true);
 
     this->setAttacher(new AttachEnginePlane);
     // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
@@ -82,12 +82,12 @@ void Plane::onChanged(const App::Property *prop)
 {
     if (prop == &ResizeMode) {
         if (ResizeMode.getValue() == 0) {
-            Length.setReadOnly(true);
-            Width.setReadOnly(true);
+            Length.setStatus(App::PropertyStatus::ReadOnly,true);
+            Width.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else {
-            Length.setReadOnly(false);
-            Width.setReadOnly(false);
+            Length.setStatus(App::PropertyStatus::ReadOnly,false);
+            Width.setStatus(App::PropertyStatus::ReadOnly,false);
         }
     }
 

@@ -50,7 +50,7 @@ Line::Line()
     ADD_PROPERTY_TYPE(ResizeMode,(static_cast<long>(0)), "Size", App::Prop_Output, "Automatic or manual resizing");
     ResizeMode.setEnums(ResizeModeEnums);
     ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_Output, "Length of the line");
-    Length.setReadOnly(true);
+    Length.setStatus(App::PropertyStatus::ReadOnly,true);
 
     this->setAttacher(new AttachEngineLine);
     // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
@@ -81,10 +81,10 @@ void Line::onChanged(const App::Property *prop)
 {
     if (prop == &ResizeMode) {
         if (ResizeMode.getValue() == 0) {
-            Length.setReadOnly(true);
+            Length.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else {
-            Length.setReadOnly(false);
+            Length.setStatus(App::PropertyStatus::ReadOnly,false);
         }
     }
     Datum::onChanged(prop);

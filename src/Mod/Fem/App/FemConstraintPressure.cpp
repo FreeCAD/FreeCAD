@@ -44,10 +44,10 @@ ConstraintPressure::ConstraintPressure()
     ADD_PROPERTY(Pressure,(0.0));
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintPressure",
-        App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+       App::Prop_ReadOnly+App::Prop_Output,
         "Points where arrows are drawn");
     ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintPressure",
-        App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+        App::Prop_ReadOnly+App::Prop_Output,
         "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());

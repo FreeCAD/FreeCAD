@@ -132,10 +132,10 @@ const char* ViewProviderDocumentObject::detachFromDocument()
     return "";
 }
 
-bool ViewProviderDocumentObject::removeDynamicProperty(const char* name)
+bool ViewProviderDocumentObject::removeDynamicProperty(const std::string& name)
 {
     App::Property* prop = getDynamicPropertyByName(name);
-    if(!prop || prop->testStatus(App::Property::LockDynamic))
+    if(!prop || prop->testStatus(App::PropertyStatus::LockDynamic))
         return false;
 
     // transactions of view providers are also managed in App::Document.
@@ -148,10 +148,9 @@ bool ViewProviderDocumentObject::removeDynamicProperty(const char* name)
 }
 
 App::Property* ViewProviderDocumentObject::addDynamicProperty(
-    const char* type, const char* name, const char* group, const char* doc,
-    short attr, bool ro, bool hidden)
+    const std::string& type, const std::string& name, const std::string& group, const std::string& doc)
 {
-    auto prop = ViewProvider::addDynamicProperty(type,name,group,doc,attr,ro,hidden);
+    auto prop = ViewProvider::addDynamicProperty(type,name,group,doc);
     if(prop) {
         // transactions of view providers are also managed in App::Document.
         App::DocumentObject* docobject = getObject();
@@ -182,12 +181,12 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     }
     else if (prop == &Visibility) {
         // use this bit to check whether show() or hide() must be called
-        if (Visibility.testStatus(App::Property::User2) == false) {
-            Visibility.setStatus(App::Property::User2, true);
+        if (Visibility.testStatus(App::PropertyStatus::User2) == false) {
+            Visibility.setStatus(App::PropertyStatus::User2, true);
             Visibility.getValue() ? show() : hide();
-            Visibility.setStatus(App::Property::User2, false);
+            Visibility.setStatus(App::PropertyStatus::User2, false);
         }
-        if (!Visibility.testStatus(App::Property::User1)
+        if (!Visibility.testStatus(App::PropertyStatus::User1)
                 && getObject()
                 && getObject()->Visibility.getValue()!=Visibility.getValue())
         {
@@ -228,10 +227,10 @@ void ViewProviderDocumentObject::hide(void)
 {
     ViewProvider::hide();
     // use this bit to check whether 'Visibility' must be adjusted
-    if (Visibility.testStatus(App::Property::User2) == false) {
-        Visibility.setStatus(App::Property::User2, true);
+    if (Visibility.testStatus(App::PropertyStatus::User2) == false) {
+        Visibility.setStatus(App::PropertyStatus::User2, true);
         Visibility.setValue(false);
-        Visibility.setStatus(App::Property::User2, false);
+        Visibility.setStatus(App::PropertyStatus::User2, false);
     }
 }
 
@@ -273,10 +272,10 @@ void ViewProviderDocumentObject::show(void)
     }
 
     // use this bit to check whether 'Visibility' must be adjusted
-    if (Visibility.testStatus(App::Property::User2) == false) {
-        Visibility.setStatus(App::Property::User2, true);
+    if (Visibility.testStatus(App::PropertyStatus::User2) == false) {
+        Visibility.setStatus(App::PropertyStatus::User2, true);
         Visibility.setValue(true);
-        Visibility.setStatus(App::Property::User2, false);
+        Visibility.setStatus(App::PropertyStatus::User2, false);
     }
 }
 
@@ -293,7 +292,7 @@ void ViewProviderDocumentObject::updateView()
     Base::ObjectStatusLocker<ViewStatus,ViewProviderDocumentObject> lock(ViewStatus::UpdatingView,this);
 
     // Disable object visibility syncing
-    Base::ObjectStatusLocker<App::Property::Status,App::Property> lock2(App::Property::User1, &Visibility);
+    Base::ObjectStatusLocker<App::PropertyStatus,App::Property> lock2(App::PropertyStatus::User1, &Visibility);
 
     std::map<std::string, App::Property*> Map;
     pcObject->getPropertyMap(Map);
@@ -358,8 +357,8 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
             Visibility.setValue(!Visibility.getValue());
     } else {
         // Disable object visibility syncing
-        Base::ObjectStatusLocker<App::Property::Status,App::Property>
-            guard(App::Property::User1, &Visibility);
+        Base::ObjectStatusLocker<App::PropertyStatus,App::Property>
+            guard(App::PropertyStatus::User1, &Visibility);
         ViewProvider::update(prop);
     }
 }
@@ -638,10 +637,11 @@ bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *
 }
 
 void ViewProviderDocumentObject::onPropertyStatusChanged(
-        const App::Property &prop, unsigned long oldStatus)
+        const App::Property &prop, const App::PropertyStatus& status)
 {
-    (void)oldStatus;
-    if(!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument())
+    (void)status;
+    if(!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument()
+        && (status == App::PropertyStatus::ReadOnly || status == App::PropertyStatus::Hidden))
         pcObject->getDocument()->signalChangePropertyEditor(*pcObject->getDocument(),prop);
 }
 

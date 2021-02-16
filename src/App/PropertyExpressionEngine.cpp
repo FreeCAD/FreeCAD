@@ -63,7 +63,7 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document &doc) 
     // For use a private _ExprContainers to track all living
     // PropertyExpressionContainer including those inside undo/redo stack,
     // because document relabel is not undoable/redoable.
-    
+
     if(doc.getOldLabel() != doc.Label.getValue()) {
         for(auto prop : _ExprContainers)
             prop->onRelabeledDocument(doc);
@@ -172,11 +172,11 @@ void PropertyExpressionEngine::Save(Base::Writer &writer) const
         PropertyExpressionContainer::Save(writer);
     }
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Expression path=\"" 
-            << Property::encodeAttribute(it->first.toString()) <<"\" expression=\"" 
+        writer.Stream() << writer.ind() << "<Expression path=\""
+            << Property::encodeAttribute(it->first.toString()) <<"\" expression=\""
             << Property::encodeAttribute(it->second.expression->toString(true)) << "\"";
         if (it->second.expression->comment.size() > 0)
-            writer.Stream() << " comment=\"" 
+            writer.Stream() << " comment=\""
                 << Property::encodeAttribute(it->second.expression->comment) << "\"";
         writer.Stream() << "/>" << std::endl;
     }
@@ -320,7 +320,7 @@ void PropertyExpressionEngine::onContainerRestored() {
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
     for(auto &e : expressions) {
         auto expr = e.second.expression;
-        if(expr) 
+        if(expr)
             expr->visit(v);
     }
 }
@@ -407,7 +407,7 @@ struct cycle_detector : public boost::dfs_visitor<> {
  */
 
 void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
-                    boost::unordered_map<int, ObjectIdentifier> & revNodes, 
+                    boost::unordered_map<int, ObjectIdentifier> & revNodes,
                     DiGraph & g, ExecuteOption option) const
 {
     boost::unordered_map<ObjectIdentifier, int> nodes;
@@ -419,13 +419,13 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap & exprs,
             auto prop = it->first.getProperty();
             if(!prop)
                 throw Base::RuntimeError("Path does not resolve to a property.");
-            bool is_output = prop->testStatus(App::Property::Output)||(prop->getType()&App::Prop_Output);
+            bool is_output = prop->testStatus(App::PropertyStatus::Output)||prop->testStatus(Prop_Output);
             if((is_output && option==ExecuteNonOutput) || (!is_output && option==ExecuteOutput))
                 continue;
-            if(option == ExecuteOnRestore 
-                    && !prop->testStatus(Property::Transient)
-                    && !(prop->getType() & Prop_Transient)
-                    && !prop->testStatus(Property::EvalOnRestore))
+            if(option == ExecuteOnRestore
+                    && !prop->testStatus(PropertyStatus::Transient)
+                    && !prop->testStatus(Prop_Transient)
+                    && !prop->testStatus(PropertyStatus::EvalOnRestore))
                 continue;
         }
         buildGraphStructures(it->first, it->second.expression, nodes, revNodes, edges);
@@ -498,9 +498,9 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             auto prop = e.first.getProperty();
             if(!prop)
                 continue;
-            if(prop->testStatus(App::Property::Transient)
-                    || (prop->getType()&App::Prop_Transient)
-                    || prop->testStatus(App::Property::EvalOnRestore))
+            if(prop->testStatus(App::PropertyStatus::Transient)
+                    || prop->testStatus(App::Prop_Transient)
+                    || prop->testStatus(App::PropertyStatus::EvalOnRestore))
             {
                 found = true;
                 break;
@@ -553,7 +553,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         try {
             // Evaluate expression
             value = expressions[*it].expression->getValueAsAny();
-            if(option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore)) {
+            if(option == ExecuteOnRestore && prop->testStatus(PropertyStatus::EvalOnRestore)) {
                 if(isAnyEqual(value, prop->getPathValue(*it)))
                     continue;
                 if(touched)
@@ -598,7 +598,7 @@ void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
         auto it = deps.find(obj);
         if(it==deps.end())
             continue;
-        for(auto &dep : it->second) 
+        for(auto &dep : it->second)
             paths.insert(paths.end(),dep.second.begin(),dep.second.end());
     }
 }
@@ -789,7 +789,7 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inLis
     return true;
 }
 
-void PropertyExpressionEngine::updateElementReference(DocumentObject *feature, bool reverse, bool notify) 
+void PropertyExpressionEngine::updateElementReference(DocumentObject *feature, bool reverse, bool notify)
 {
     (void)notify;
     if(!feature)
@@ -814,7 +814,7 @@ bool PropertyExpressionEngine::referenceChanged() const {
 }
 
 Property *PropertyExpressionEngine::CopyOnImportExternal(
-        const std::map<std::string,std::string> &nameMap) const 
+        const std::map<std::string,std::string> &nameMap) const
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
@@ -823,7 +823,7 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
 #else
         boost::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap));
 #endif
-        if(!expr && !engine) 
+        if(!expr && !engine)
             continue;
         if(!engine) {
             engine.reset(new PropertyExpressionEngine);
@@ -841,7 +841,7 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
     return engine.release();
 }
 
-Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj, 
+Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
         const std::string &ref, const char *newLabel) const
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
@@ -851,7 +851,7 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
 #else
         boost::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel));
 #endif
-        if(!expr && !engine) 
+        if(!expr && !engine)
             continue;
         if(!engine) {
             engine.reset(new PropertyExpressionEngine);
@@ -869,7 +869,7 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
     return engine.release();
 }
 
-Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject *parent, 
+Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject *parent,
         App::DocumentObject *oldObj, App::DocumentObject *newObj) const
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
@@ -881,7 +881,7 @@ Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject 
         boost::shared_ptr<Expression> expr(
                 it->second.expression->replaceObject(parent,oldObj,newObj));
 #endif
-        if(!expr && !engine) 
+        if(!expr && !engine)
             continue;
         if(!engine) {
             engine.reset(new PropertyExpressionEngine);
@@ -899,11 +899,11 @@ Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject 
     return engine.release();
 }
 
-std::map<App::ObjectIdentifier, const App::Expression*> 
-PropertyExpressionEngine::getExpressions() const 
+std::map<App::ObjectIdentifier, const App::Expression*>
+PropertyExpressionEngine::getExpressions() const
 {
     std::map<App::ObjectIdentifier, const Expression*> res;
-    for(auto &v : expressions) 
+    for(auto &v : expressions)
         res[v.first] = v.second.expression.get();
     return res;
 }
@@ -924,6 +924,6 @@ void PropertyExpressionEngine::setExpressions(
 void PropertyExpressionEngine::onRelabeledDocument(const App::Document &doc)
 {
     RelabelDocumentExpressionVisitor v(doc);
-    for(auto &e : expressions) 
+    for(auto &e : expressions)
         e.second.expression->visit(v);
 }

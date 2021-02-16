@@ -233,6 +233,9 @@ SET(Properties_HPP_SRCS
     DynamicProperty.h
     ObjectIdentifier.h
     Property.h
+    LegacyPropertyStatus.h
+    StatusCollection.h
+    StatusContainer.h
     PropertyContainer.h
     PropertyFile.h
     PropertyGeo.h

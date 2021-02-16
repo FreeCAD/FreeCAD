@@ -40,7 +40,7 @@ PROPERTY_SOURCE(PartDesign::FeatureBase,PartDesign::Feature)
 FeatureBase::FeatureBase()
 {
     BaseFeature.setScope(App::LinkScope::Global);
-    BaseFeature.setStatus(App::Property::Hidden, false);
+    BaseFeature.setStatus(App::PropertyStatus::Hidden, false);
 }
 
 Part::Feature* FeatureBase::getBaseObject(bool) const {
@@ -96,7 +96,7 @@ void FeatureBase::onDocumentRestored()
     // if the base is not part of a body then show its placement property again
     auto body = getFeatureBody();
     if (!body)
-        Placement.setStatus(App::Property::Hidden, false);
+        Placement.setStatus(App::PropertyStatus::Hidden, false);
 }
 
 }//namespace PartDesign

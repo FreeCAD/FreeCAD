@@ -76,8 +76,8 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_Output | App::Prop_NoRecompute), "X position");
-    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_Output | App::Prop_NoRecompute), "Y position");
+    ADD_PROPERTY_TYPE(X, (0.0), group, App::Prop_Output+App::Prop_NoRecompute, "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, App::Prop_Output+App::Prop_NoRecompute, "Y position");
     ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_Output, "Lock View position to parent Page or Group");
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
@@ -131,7 +131,7 @@ void DrawView::onChanged(const App::Property* prop)
         if (prop == &ScaleType) {
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
-                Scale.setStatus(App::Property::ReadOnly,true);
+                Scale.setStatus(App::PropertyStatus::ReadOnly,true);
                 if (page != nullptr) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
@@ -140,9 +140,9 @@ void DrawView::onChanged(const App::Property* prop)
                 }
             } else if ( ScaleType.isValue("Custom") ) {
                 //don't change Scale
-                Scale.setStatus(App::Property::ReadOnly,false);
+                Scale.setStatus(App::PropertyStatus::ReadOnly,false);
             } else if ( ScaleType.isValue("Automatic") ) {
-                Scale.setStatus(App::Property::ReadOnly,true);
+                Scale.setStatus(App::PropertyStatus::ReadOnly,true);
                 if (!checkFit(page)) {
                     double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
                     if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
@@ -181,21 +181,21 @@ bool DrawView::showLock(void) const
 void DrawView::handleXYLock(void) 
 {
     if (isLocked()) {
-        if (!X.testStatus(App::Property::ReadOnly)) {
-            X.setStatus(App::Property::ReadOnly,true);
+        if (!X.testStatus(App::PropertyStatus::ReadOnly)) {
+            X.setStatus(App::PropertyStatus::ReadOnly,true);
             X.purgeTouched();
         }
-        if (!Y.testStatus(App::Property::ReadOnly)) {
-            Y.setStatus(App::Property::ReadOnly,true);
+        if (!Y.testStatus(App::PropertyStatus::ReadOnly)) {
+            Y.setStatus(App::PropertyStatus::ReadOnly,true);
             Y.purgeTouched();
         }
     } else {
-        if (X.testStatus(App::Property::ReadOnly)) {
-            X.setStatus(App::Property::ReadOnly,false);
+        if (X.testStatus(App::PropertyStatus::ReadOnly)) {
+            X.setStatus(App::PropertyStatus::ReadOnly,false);
             X.purgeTouched();
         }
-        if (Y.testStatus(App::Property::ReadOnly)) {
-            Y.setStatus(App::Property::ReadOnly,false);
+        if (Y.testStatus(App::PropertyStatus::ReadOnly)) {
+            Y.setStatus(App::PropertyStatus::ReadOnly,false);
             Y.purgeTouched();
         }
     }
@@ -391,7 +391,7 @@ void DrawView::handleChangedPropertyType(
         }
     }
     else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
-        && strcmp(prop->getName(), "Source") == 0) {
+        && prop->getName() == "Source") {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;
         if (strcmp(glink.getTypeId().getName(), TypeName) == 0) {            //property in file is plg

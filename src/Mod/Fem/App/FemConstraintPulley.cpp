@@ -50,11 +50,11 @@ ConstraintPulley::ConstraintPulley()
     ADD_PROPERTY(IsDriven,(0));
     ADD_PROPERTY(TensionForce,(0.0));
 
-    ADD_PROPERTY_TYPE(BeltAngle,(0),"ConstraintPulley",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(BeltAngle,(0),"ConstraintPulley",App::Prop_ReadOnly+App::Prop_Output,
                       "Angle of belt forces");
-    ADD_PROPERTY_TYPE(BeltForce1,(0.0),"ConstraintPulley",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(BeltForce1,(0.0),"ConstraintPulley",App::Prop_ReadOnly+App::Prop_Output,
                       "First belt force");
-    ADD_PROPERTY_TYPE(BeltForce2,(0.0),"ConstraintPulley",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(BeltForce2,(0.0),"ConstraintPulley",App::Prop_ReadOnly+App::Prop_Output,
                       "Second belt force");
     ForceAngle.setValue(00.0);
     Diameter.setValue(300.0);

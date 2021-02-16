@@ -49,13 +49,13 @@ ConstraintHeatflux::ConstraintHeatflux()
     /*ADD_PROPERTY(FaceTemp,(0.0));*/
     ADD_PROPERTY(FilmCoef,(0.0));
     ADD_PROPERTY(DFlux,(0.0));
-    ADD_PROPERTY_TYPE(ConstraintType,(1),"ConstraintHeatflux",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(ConstraintType,(1),"ConstraintHeatflux",App::Prop_None,
                       "Type of constraint, surface convection or surface heat flux");
     ConstraintType.setEnums(ConstraintTypes);
 
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintHeatflux",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintHeatflux",App::Prop_ReadOnly+App::Prop_Output,
                       "Points where symbols are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintHeatflux",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintHeatflux",App::Prop_ReadOnly+App::Prop_Output,
                                                                              "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());

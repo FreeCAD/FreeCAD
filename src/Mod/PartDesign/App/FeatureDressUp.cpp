@@ -48,13 +48,13 @@ PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::FeatureAddSub)
 DressUp::DressUp()
 {
     ADD_PROPERTY(Base,(0));
-    Placement.setStatus(App::Property::ReadOnly, true);
+    Placement.setStatus(App::PropertyStatus::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,
             "Include the base additive/subtractive shape when used in pattern features.\n"
             "If disabled, only the dressed part of the shape is used for patterning.");
 
-    AddSubShape.setStatus(App::Property::Output, true);
+    AddSubShape.setStatus(App::PropertyStatus::Output, true);
 }
 
 short DressUp::mustExecute() const
@@ -211,7 +211,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 for(Feature *current=this; ;current=static_cast<DressUp*>(base)) {
                     base = Base::freecad_dynamic_cast<FeatureAddSub>(current->getBaseObject(true));
                     if(!base)
-                        FC_THROWM(Base::CADKernelError, 
+                        FC_THROWM(Base::CADKernelError,
                                 "Cannot find additive or subtractive support for " << getFullName());
                     if(!base->isDerivedFrom(DressUp::getClassTypeId()))
                         break;

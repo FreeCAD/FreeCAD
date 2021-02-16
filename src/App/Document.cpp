@@ -1162,7 +1162,7 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                 const char *name = GetApplication().getActiveTransaction(&tid);
                 if(name && tid>0) {
                     bool ignore = false;
-                    if(What && What->testStatus(Property::NoModify))
+                    if(What && What->testStatus(App::PropertyStatus::NoModify))
                         ignore = true;
                     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
                         if(What)
@@ -1549,24 +1549,24 @@ Document::Document(const char *name)
         ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
     std::string AuthorComp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefCompany","");
-    ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
-    ADD_PROPERTY_TYPE(FileName,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),"The path to the file where the document is saved to");
-    ADD_PROPERTY_TYPE(CreatedBy,(Author.c_str()),0,Prop_None,"The creator of the document");
-    ADD_PROPERTY_TYPE(CreationDate,(CreationDateString.c_str()),0,Prop_ReadOnly,"Date of creation");
-    ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,Prop_None,0);
-    ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,Prop_ReadOnly,"Date of last modification");
-    ADD_PROPERTY_TYPE(Company,(AuthorComp.c_str()),0,Prop_None,"Additional tag to save the name of the company");
-    ADD_PROPERTY_TYPE(Comment,(""),0,Prop_None,"Additional tag to save a comment");
-    ADD_PROPERTY_TYPE(Meta,(),0,Prop_None,"Map with additional meta information");
-    ADD_PROPERTY_TYPE(Material,(),0,Prop_None,"Map with material properties");
+    ADD_PROPERTY_TYPE(Label,("Unnamed"),"",Prop_None,"The name of the document");
+    ADD_PROPERTY_TYPE(FileName,(""),"",Prop_Transient+Prop_ReadOnly,"The path to the file where the document is saved to");
+    ADD_PROPERTY_TYPE(CreatedBy,(Author.c_str()),"",Prop_None,"The creator of the document");
+    ADD_PROPERTY_TYPE(CreationDate,(CreationDateString.c_str()),"",Prop_ReadOnly,"Date of creation");
+    ADD_PROPERTY_TYPE(LastModifiedBy,(""),"",Prop_None,"");
+    ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),"",Prop_ReadOnly,"Date of last modification");
+    ADD_PROPERTY_TYPE(Company,(AuthorComp.c_str()),"",Prop_None,"Additional tag to save the name of the company");
+    ADD_PROPERTY_TYPE(Comment,(""),"", Prop_None,"Additional tag to save a comment");
+    ADD_PROPERTY_TYPE(Meta,(),"", Prop_None,"Map with additional meta information");
+    ADD_PROPERTY_TYPE(Material,(),"", Prop_None,"Map with material properties");
     // create the uuid for the document
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Id,(""),0,Prop_None,"ID of the document");
-    ADD_PROPERTY_TYPE(Uid,(id),0,Prop_ReadOnly,"UUID of the document");
+    ADD_PROPERTY_TYPE(Id,(""),"",Prop_None,"ID of the document");
+    ADD_PROPERTY_TYPE(Uid,(id),"",Prop_ReadOnly,"UUID of the document");
 
     // license stuff
-    ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
+    ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),"",Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),"", Prop_None,"URL to the license text/contract");
 
     // license stuff
     int licenseId = App::GetApplication().GetParameterGroupByPath
@@ -1618,17 +1618,17 @@ Document::Document(const char *name)
     licenseUrl = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
 
-    ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
-    ADD_PROPERTY_TYPE(ShowHidden,(false), 0,PropertyType(Prop_None),
+    ADD_PROPERTY_TYPE(License,(license.c_str()),"",Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),"",Prop_None,"URL to the license text/contract");
+    ADD_PROPERTY_TYPE(ShowHidden,(false), "",Prop_None,
                         "Whether to show hidden object items in the tree view");
 
     // this creates and sets 'TransientDir' in onChanged()
-    ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
+    ADD_PROPERTY_TYPE(TransientDir,(""),"",Prop_Transient+Prop_ReadOnly,
         "Transient directory, where the files live while the document is open");
-    ADD_PROPERTY_TYPE(Tip,(0),0,PropertyType(Prop_Transient),
+    ADD_PROPERTY_TYPE(Tip,(0),"",Prop_Transient,
         "Link of the tip object of the document");
-    ADD_PROPERTY_TYPE(TipName,(""),0,PropertyType(Prop_Hidden|Prop_ReadOnly),
+    ADD_PROPERTY_TYPE(TipName,(""),"",Prop_Hidden+Prop_ReadOnly,
         "Link of the tip object of the document");
     Uid.touch();
 }
@@ -4384,8 +4384,8 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
         propList.clear();
         obj->getPropertyList(propList);
         for(auto prop : propList) {
-            auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
-            if(linkProp && !prop->testStatus(Property::Immutable) && !obj->isReadOnly(prop)) {
+            auto *linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+            if(linkProp && !prop->testStatus(Immutable) && !prop->testStatus(Prop_ReadOnly)) {
                 auto copy = linkProp->CopyOnImportExternal(nameMap);
                 if(copy)
                     propMap[linkProp].reset(copy);

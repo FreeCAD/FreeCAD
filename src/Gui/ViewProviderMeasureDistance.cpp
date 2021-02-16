@@ -192,11 +192,11 @@ void ViewProviderMeasureDistance::updateData(const App::Property* prop)
 {
     if (prop->getTypeId() == App::PropertyVector::getClassTypeId() ||
         prop == &Mirror || prop == &DistFactor) {
-        if (strcmp(prop->getName(),"P1") == 0) {
+        if (prop->getName() == "P1") {
             Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
             pCoords->point.set1Value(0, SbVec3f(v.x,v.y,v.z));
         }
-        else if (strcmp(prop->getName(),"P2") == 0) {
+        else if (prop->getName() == "P2") {
             Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
             pCoords->point.set1Value(1, SbVec3f(v.x,v.y,v.z));
         }

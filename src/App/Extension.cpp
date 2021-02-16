@@ -119,47 +119,9 @@ std::string Extension::name() const {
         return std::string();
 }
 
-
-
-Property* Extension::extensionGetPropertyByName(const char* name) const {
+Property* Extension::extensionGetPropertyByName(const std::string& name) const {
 
     return extensionGetPropertyData().getPropertyByName(this, name);
-}
-
-short int Extension::extensionGetPropertyType(const Property* prop) const {
-
-    return extensionGetPropertyData().getType(this, prop);
-}
-
-short int Extension::extensionGetPropertyType(const char* name) const {
-
-    return extensionGetPropertyData().getType(this, name);
-}
-
-const char* Extension::extensionGetPropertyName(const Property* prop) const {
-
-    return extensionGetPropertyData().getName(this,prop);
-}
-
-const char* Extension::extensionGetPropertyGroup(const Property* prop) const {
-
-    return extensionGetPropertyData().getGroup(this,prop);
-}
-
-const char* Extension::extensionGetPropertyGroup(const char* name) const {
-
-    return extensionGetPropertyData().getGroup(this,name);
-}
-
-
-const char* Extension::extensionGetPropertyDocumentation(const Property* prop) const {
-
-    return extensionGetPropertyData().getDocumentation(this, prop);
-}
-
-const char* Extension::extensionGetPropertyDocumentation(const char* name) const {
-
-    return extensionGetPropertyData().getDocumentation(this, name);
 }
 
 void Extension::extensionGetPropertyList(std::vector< Property* >& List) const {

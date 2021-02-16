@@ -60,8 +60,7 @@ PROPERTY_SOURCE(PartDesign::ShapeBinder, Part::Feature)
 
 ShapeBinder::ShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (0,0), "",(App::PropertyType)(App::Prop_None),"Support of the geometry");
-    Placement.setStatus(App::Property::Hidden, true);
+    ADD_PROPERTY_TYPE(Support, (0,0), "",App::Hidden,"Support of the geometry");
     ADD_PROPERTY_TYPE(TraceSupport, (false), "", App::Prop_None, "Trace support shape");
 }
 
@@ -278,8 +277,7 @@ PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 
 SubShapeBinder::SubShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
-    Support.setStatus(App::Property::ReadOnly, true);
+    ADD_PROPERTY_TYPE(Support, (0), "",App::ReadOnly, "Support of the geometry");
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
@@ -288,10 +286,9 @@ SubShapeBinder::SubShapeBinder()
             "Synchronized: auto update binder shape on changed of bound object.\n"
             "Frozen: disable auto update, but can be updated manually using context menu.\n"
             "Detached: copy the shape of bound object and then remove the binding immediately.");
-    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::Prop_None,
+    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::PartialTrigger,
             "Enable partial loading, which disables auto loading of external document for"
             "external bound object.");
-    PartialLoad.setStatus(App::Property::PartialTrigger,true);
     static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
 
@@ -300,8 +297,7 @@ SubShapeBinder::SubShapeBinder()
             "the relative placement of the bound shape");
     Context.setScope(App::LinkScope::Hidden);
 
-    ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
-                App::Prop_Hidden|App::Prop_ReadOnly), "");
+    ADD_PROPERTY_TYPE(_Version,(0),"Base", App::Prop_Hidden+App::Prop_ReadOnly, "");
 }
 
 void SubShapeBinder::setupObject() {
@@ -567,7 +563,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         if(!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
             if(prop)
                 removeDynamicProperty(name);
-            prop = addDynamicProperty("App::PropertyMatrix",name,"Cache",0,0,false,true);
+            prop = addDynamicProperty("App::PropertyMatrix",name,"Cache");
+            prop->setStatus(App::PropertyStatus::Prop_Hidden);
         }
         caches.erase(name);
         static_cast<App::PropertyMatrix*>(prop)->setValue(v.second);

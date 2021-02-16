@@ -241,7 +241,7 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
     if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() &&
-        strcmp(prop->getName(),"LabelText") == 0) {
+        prop->getName() == "LabelText") {
         const std::vector<std::string> lines = static_cast<const App::PropertyStringList*>(prop)->getValues();
         int index=0;
         pLabel->string.setNum((int)lines.size());
@@ -263,7 +263,7 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
         }
     }
     else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
-        strcmp(prop->getName(),"Position") == 0) {
+        prop->getName() == "Position") {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pTranslation->translation.setValue(v.x,v.y,v.z);
     }
@@ -382,16 +382,16 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
 void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 {
     if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() &&
-        strcmp(prop->getName(),"LabelText") == 0) {
+        prop->getName() == "LabelText") {
         drawImage(static_cast<const App::PropertyStringList*>(prop)->getValues());
     }
     else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
-        strcmp(prop->getName(),"BasePosition") == 0) {
+        prop->getName() == "BasePosition") {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pBaseTranslation->translation.setValue(v.x,v.y,v.z);
     }
     else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
-        strcmp(prop->getName(),"TextPosition") == 0) {
+        prop->getName() == "TextPosition") {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pCoords->point.set1Value(1, SbVec3f(v.x,v.y,v.z));
         pTextTranslation->translation.setValue(v.x,v.y,v.z);

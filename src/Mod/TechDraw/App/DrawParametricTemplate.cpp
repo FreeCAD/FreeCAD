@@ -51,7 +51,7 @@ PROPERTY_SOURCE(TechDraw::DrawParametricTemplate, TechDraw::DrawTemplate)
 DrawParametricTemplate::DrawParametricTemplate(void)
 {
     static const char *group = "Page";
-    ADD_PROPERTY_TYPE(Template ,(""),group, (App::PropertyType) App::Prop_None,"Template script");
+    ADD_PROPERTY_TYPE(Template ,(""),group, App::Prop_None,"Template script");
 }
 
 DrawParametricTemplate::~DrawParametricTemplate()

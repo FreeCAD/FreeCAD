@@ -51,11 +51,11 @@ template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>
 GroupExtension::GroupExtension()
 {
     initExtensionType(GroupExtension::getExtensionClassTypeId());
-    
-    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_None),"List of referenced objects");
 
-    EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base", 
-            PropertyType(Prop_Hidden|Prop_Transient),0);
+    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base", Prop_None,"List of referenced objects");
+
+    EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base",
+            Prop_Hidden+Prop_Transient, "");
 }
 
 GroupExtension::~GroupExtension()
@@ -80,23 +80,23 @@ std::vector<DocumentObject*> GroupExtension::addObject(DocumentObject* obj)
 }
 
 std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentObject* > objs) {
-    
+
     std::vector<DocumentObject*> added;
     std::vector<DocumentObject*> grp = Group.getValues();
     for(auto obj : objs) {
-            
+
         if(!allowObject(obj))
             continue;
-        
+
         if (hasObject(obj))
             continue;
-            
+
         //only one group per object. Note that it is allowed to be in a group and geofeaturegroup. However,
         //getGroupOfObject() returns only normal groups, no GeoFeatureGroups. Hence this works.
         auto *group = App::GroupExtension::getGroupOfObject(obj);
         if(group && group != getExtendedObject())
             group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
-        
+
         //if we are in a geofeaturegroup we need to ensure the object is too
         auto geogrp = GeoFeatureGroupExtension::getGroupOfObject(getExtendedObject());
         auto objgrp = GeoFeatureGroupExtension::getGroupOfObject(obj);
@@ -104,16 +104,16 @@ std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentO
             //what to do depends on if we are in  geofeature group or not
             if(geogrp)
                 geogrp->getExtensionByType<GeoFeatureGroupExtension>()->addObject(obj);
-            else 
+            else
                 objgrp->getExtensionByType<GeoFeatureGroupExtension>()->removeObject(obj);
         }
-        
+
         grp.push_back(obj);
         added.push_back(obj);
     }
-    
+
     Group.setValues(grp);
-    
+
     return added;
 }
 
@@ -136,19 +136,19 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
     std::vector<DocumentObject*> removed;
 
     std::vector<DocumentObject*>::iterator end = newGrp.end();
-    for(auto obj : objs) {       
+    for(auto obj : objs) {
        auto res = std::remove(newGrp.begin(), end, obj);
        if(res != end) {
            end = res;
            removed.push_back(obj);
        }
     }
-    
+
     newGrp.erase(end, newGrp.end());
     if (grp.size() != newGrp.size()) {
         Group.setValues (newGrp);
     }
-    
+
     return removed;
 }
 
@@ -230,11 +230,11 @@ bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
     return false;
 }
 
-bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, 
+bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupExtension* group,
                                         std::vector< const GroupExtension* > history) const {
 
-    //the purpose is to prevent infinite recursion when groups form a cyclic graph. To do this 
-    //we store every group we processed on the current leave of the tree, and if we reach an 
+    //the purpose is to prevent infinite recursion when groups form a cyclic graph. To do this
+    //we store every group we processed on the current leave of the tree, and if we reach an
     //already processed group we know that it not really is a tree but a cycle.
     history.push_back(this);
 
@@ -252,7 +252,7 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupEx
         if ( child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
 
             auto ext = child->getExtensionByType<GroupExtension>();
-            
+
             if(std::find(history.begin(), history.end(), ext) != history.end())
                 Base::RuntimeError("Cyclic dependencies detected: Search cannot be performed");
 
@@ -328,11 +328,11 @@ void GroupExtension::extensionOnChanged(const Property* p) {
     //objects are only allowed in a single group. Note that this check must only be done for normal
     //groups, not any derived classes
     if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId())
-        && p == &Group && !Group.testStatus(Property::User3)) 
+        && p == &Group && !Group.testStatus(PropertyStatus::User3))
     {
         if(!getExtendedObject()->isRestoring() &&
            !getExtendedObject()->getDocument()->isPerformingTransaction()) {
-            
+
             bool error = false;
             auto corrected = Group.getValues();
             for(auto obj : Group.getValues()) {
@@ -351,7 +351,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
             //if an error was found we need to correct the values and inform the user
             if(error) {
-                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
+                Base::ObjectStatusLocker<PropertyStatus, Property> guard(PropertyStatus::User3, &Group);
                 Group.setValues(corrected);
                 throw Base::RuntimeError("Object can only be in a single Group");
             }
@@ -377,7 +377,7 @@ void GroupExtension::slotChildChanged(const DocumentObject &obj, const Property 
 }
 
 bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
-        PyObject **pyObj, Base::Matrix4D *mat, bool /*transform*/, int depth) const 
+        PyObject **pyObj, Base::Matrix4D *mat, bool /*transform*/, int depth) const
 {
     const char *dot;
     if(!subname || *subname==0) {
@@ -399,7 +399,7 @@ bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *sub
             }
         }
     }
-    if(!ret) 
+    if(!ret)
         return false;
     return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
 }
@@ -435,7 +435,7 @@ void GroupExtension::getAllChildren(std::vector<App::DocumentObject*> &res,
             continue;
         res.push_back(obj);
         auto ext = obj->getExtensionByType<GroupExtension>(true,false);
-        if(ext) 
+        if(ext)
             ext->getAllChildren(res,rset);
     }
 }

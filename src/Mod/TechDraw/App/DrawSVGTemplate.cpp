@@ -73,9 +73,9 @@ DrawSVGTemplate::DrawSVGTemplate()
     ADD_PROPERTY_TYPE(Template,   (""), group, App::Prop_Transient, "Template for the page");             //sb TemplateFileName???
 
     // Width and Height properties shouldn't be set by the user
-    Height.setStatus(App::Property::ReadOnly,true);
-    Width.setStatus(App::Property::ReadOnly,true);
-    Orientation.setStatus(App::Property::ReadOnly,true);
+    Height.setStatus(App::PropertyStatus::ReadOnly,true);
+    Width.setStatus(App::PropertyStatus::ReadOnly,true);
+    Orientation.setStatus(App::PropertyStatus::ReadOnly,true);
 
     std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
     Template.setFilter(svgFilter);

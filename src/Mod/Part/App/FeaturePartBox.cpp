@@ -98,8 +98,10 @@ void Box::Restore(Base::XMLReader &reader)
     for (int i=0;i<transientCount; ++i) {
         reader.readElement("_Property");
         App::Property* prop = getPropertyByName(reader.getAttribute("name"));
-        if(prop && reader.hasAttribute("status"))
-            prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
+        if(prop && reader.hasAttribute("status")) {
+            auto status= App::StatusCollection<App::PropertyStatus>(reader.getAttribute("status"));
+            prop->setStatus(status);
+    }
     }
 
     bool location_xyz = false;
@@ -118,17 +120,16 @@ void Box::Restore(Base::XMLReader &reader)
         if(!prop)
             prop = getPropertyByName(PropName);
 
-        std::bitset<32> status;
+
         if(reader.hasAttribute("status")) {
-            status = reader.getAttributeAsUnsigned("status");
-            if(prop)
-                prop->setStatusValue(status.to_ulong());
+            if(prop) {
+                auto status= App::StatusCollection<App::PropertyStatus>(reader.getAttribute("status"));
+                prop->setStatus(status);
+            }
         }
         if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-            if (!prop->testStatus(App::Property::Transient) 
-                    && !status.test(App::Property::Transient)
-                    && !status.test(App::Property::PropTransient)
-                    && !(getPropertyType(prop) & App::Prop_Transient))
+            if (!prop->testStatus(App::PropertyStatus::Transient)
+                    && !prop->testStatus(App::PropertyStatus::Prop_Transient))
             {
                 prop->Restore(reader);
             }
@@ -206,7 +207,7 @@ void Box::Restore(Base::XMLReader &reader)
     if (location_xyz) {
         plm.setPosition(Base::Vector3d(x.getValue(),y.getValue(),z.getValue()));
         this->Placement.setValue(this->Placement.getValue() * plm);
-        this->Shape.setStatus(App::Property::User1, true); // override the shape's location later on
+        this->Shape.setStatus(App::PropertyStatus::User1, true); // override the shape's location later on
     }
     // for 0.8 releases
     else if (location_axis) {
@@ -217,7 +218,7 @@ void Box::Restore(Base::XMLReader &reader)
         plm.setRotation(rot);
         plm.setPosition(Base::Vector3d(p.x,p.y,p.z));
         this->Placement.setValue(this->Placement.getValue() * plm);
-        this->Shape.setStatus(App::Property::User1, true); // override the shape's location later on
+        this->Shape.setStatus(App::PropertyStatus::User1, true); // override the shape's location later on
     }
 
     reader.readEndElement("Properties");
@@ -233,8 +234,8 @@ void Box::onChanged(const App::Property* prop)
     }
     else if (prop == &this->Shape) {
         // see Box::Restore
-        if (this->Shape.testStatus(App::Property::User1)) {
-            this->Shape.setStatus(App::Property::User1, false);
+        if (this->Shape.testStatus(App::PropertyStatus::User1)) {
+            this->Shape.setStatus(App::PropertyStatus::User1, false);
             App::DocumentObjectExecReturn *ret = recompute();
             delete ret;
             return;

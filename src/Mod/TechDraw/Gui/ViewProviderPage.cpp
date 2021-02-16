@@ -95,9 +95,9 @@ ViewProviderPage::ViewProviderPage()
 
     ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"NonGui! Show or hide View frames and Labels on this Page");
 
-    ShowFrames.setStatus(App::Property::Hidden,true);
-    Visibility.setStatus(App::Property::Hidden,true);
-    DisplayMode.setStatus(App::Property::Hidden,true);
+    ShowFrames.setStatus(App::PropertyStatus::Hidden,true);
+    Visibility.setStatus(App::PropertyStatus::Hidden,true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden,true);
 }
 
 ViewProviderPage::~ViewProviderPage()

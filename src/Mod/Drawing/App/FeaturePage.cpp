@@ -105,7 +105,7 @@ void FeaturePage::onChanged(const App::Property* prop)
 void FeaturePage::onDocumentRestored()
 {
     // Needs to be tmp. set because otherwise the custom text gets overridden (#0002064)
-    this->StatusBits.set(App::Restore); // the 'Restore' flag
+    this->setStatus(App::Restore); // the 'Restore' flag
 
     Base::FileInfo templateInfo(Template.getValue());
     if (!templateInfo.exists()) {
@@ -120,7 +120,7 @@ void FeaturePage::onDocumentRestored()
         Template.setValue(path);
     }
 
-    this->StatusBits.reset(App::Restore); // the 'Restore' flag
+    this->setStatus(App::Restore, false); // the 'Restore' flag
 }
 
 App::DocumentObjectExecReturn *FeaturePage::execute(void)

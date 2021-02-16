@@ -51,7 +51,7 @@ PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
 LinearPattern::LinearPattern()
 {
-    ADD_PROPERTY_TYPE(Direction,(0),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
+    ADD_PROPERTY_TYPE(Direction,(0),"LinearPattern",App::Prop_None,"Direction");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Occurrences,(3));

@@ -537,9 +537,8 @@ QString SelectionView::getProperty(App::DocumentObject* obj) const
     if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
         App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
         const App::PropertyComplexGeoData* data = geo->getPropertyOfGeometry();
-        const char* name = data ? data->getName() : nullptr;
-        if (name) {
-            property = QString::fromLatin1(name);
+        if(data) {
+            property = QString::fromStdString(data->getName());
         }
     }
 

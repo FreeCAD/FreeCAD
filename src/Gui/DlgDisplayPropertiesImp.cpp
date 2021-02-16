@@ -110,9 +110,9 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent,
 
     Gui::Selection().Attach(this);
 
-    d->connectChangedObject =
-    Gui::Application::Instance->signalChangedObject.connect(boost::bind
-        (&DlgDisplayPropertiesImp::slotChangedObject, this, bp::_1, bp::_2));
+   d->connectChangedObject =
+   Gui::Application::Instance->signalChangedObject.connect(boost::bind
+       (&DlgDisplayPropertiesImp::slotChangedObject, this, bp::_1, bp::_2));
 }
 
 /**
@@ -171,11 +171,10 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
         (Provider.begin(), Provider.end(), [&obj](Gui::ViewProvider* v) { return v == &obj; });
 
     if (vp != Provider.end()) {
-        const char* name = obj.getPropertyName(&prop);
         // this is not a property of the view provider but of the document object
-        if (!name)
+        if (!obj.isOwnerOf(prop))
             return;
-        std::string prop_name = name;
+        std::string prop_name = prop.getName();;
         if (prop.getTypeId() == App::PropertyColor::getClassTypeId()) {
             App::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
             if (prop_name == "ShapeColor") {

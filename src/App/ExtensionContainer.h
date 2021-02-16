@@ -155,26 +155,14 @@ public:
     /** @name Access properties */
     //@{
     /// find a property by its name
-    virtual Property *getPropertyByName(const char* name) const override;
-    /// get the name of a property
-    virtual const char* getPropertyName(const Property* prop) const override;
+    virtual Property *getPropertyByName(const std::string& name) const override;
     /// get all properties of the class (including properties of the parent)
     virtual void getPropertyMap(std::map<std::string,Property*> &Map) const override;
     /// get all properties of the class (including properties of the parent)
     virtual void getPropertyList(std::vector<Property*> &List) const override;
-
-    /// get the Type of a Property
-    virtual short getPropertyType(const Property* prop) const override;
-    /// get the Type of a named Property
-    virtual short getPropertyType(const char *name) const override;
-    /// get the Group of a Property
-    virtual const char* getPropertyGroup(const Property* prop) const override;
-    /// get the Group of a named Property
-    virtual const char* getPropertyGroup(const char *name) const override;
-    /// get the Group of a Property
-    virtual const char* getPropertyDocumentation(const Property* prop) const override;
-    /// get the Group of a named Property
-    virtual const char* getPropertyDocumentation(const char *name) const override;
+    /// test if a property is owned by this container
+    virtual bool isOwnerOf(const Property& prop) const override;
+   
     //@}
 
     virtual void onChanged(const Property*) override;

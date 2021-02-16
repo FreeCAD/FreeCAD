@@ -319,14 +319,14 @@ ViewProviderSketch::ViewProviderSketch()
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
 
-    ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
-    ADD_PROPERTY_TYPE(AvoidRedundant,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Avoid redundant autoconstraint");
-    ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
-    ADD_PROPERTY_TYPE(HideDependent,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects that depend on the sketch are hidden when opening editing.");
-    ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects used in links to external geometry are shown when opening sketch.");
-    ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects this sketch is attached to are shown when opening sketch.");
-    ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera position before entering sketch is remembered, and restored after closing it.");
-    ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_None),"Name of the workbench to activate when editing this sketch.");
+    ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",App::Prop_None,"Create auto constraints");
+    ADD_PROPERTY_TYPE(AvoidRedundant,(true),"Auto Constraints",App::Prop_None,"Avoid redundant autoconstraint");
+    ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",App::Prop_None,"Object that handles hiding and showing other objects when entering/leaving sketch.");
+    ADD_PROPERTY_TYPE(HideDependent,(true),"Visibility automation",App::Prop_None,"If true, all objects that depend on the sketch are hidden when opening editing.");
+    ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",App::Prop_None,"If true, all objects used in links to external geometry are shown when opening sketch.");
+    ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",App::Prop_None,"If true, all objects this sketch is attached to are shown when opening sketch.");
+    ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",App::Prop_None,"If true, camera position before entering sketch is remembered, and restored after closing it.");
+    ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",App::Prop_None,"Name of the workbench to activate when editing this sketch.");
 
     {//visibility automation: update defaults to follow preferences
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");

@@ -108,10 +108,10 @@ PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
 SketchObject::SketchObject()
 {
-    ADD_PROPERTY_TYPE(Geometry,        (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch geometry");
-    ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
-    ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
-    ADD_PROPERTY_TYPE(FullyConstrained, (false),"Sketch",(App::PropertyType)(App::Prop_Output|App::Prop_ReadOnly |App::Prop_Hidden),"Sketch is fully constrained");
+    ADD_PROPERTY_TYPE(Geometry,        (0)  ,"Sketch",App::Prop_None,"Sketch geometry");
+    ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",App::Prop_None,"Sketch constraints");
+    ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",App::Prop_None,"Sketch external geometry");
+    ADD_PROPERTY_TYPE(FullyConstrained, (false),"Sketch",App::Prop_Output+App::Prop_ReadOnly+App::Prop_Hidden,"Sketch is fully constrained");
 
     Geometry.setOrderRelevant(true);
 

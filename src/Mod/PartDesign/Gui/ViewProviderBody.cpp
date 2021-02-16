@@ -148,7 +148,7 @@ bool ViewProviderBody::doubleClicked(void)
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->setActiveView(this);
-    if(!activeView) 
+    if(!activeView)
         return false;
 
     if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
@@ -242,7 +242,7 @@ void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, co
 
     if(App::GetApplication().isRestoring())
         return;
-    
+
     if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ||
         obj.isDerivedFrom ( Part::BodyBase::getClassTypeId () )    ) { // we are interested only in Part::Features, not in bodies
         return;
@@ -358,7 +358,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
 
     if(prop == &DisplayModeBody) {
         auto body = dynamic_cast<PartDesign::Body*>(getObject());
-    
+
         if ( DisplayModeBody.getValue() == 0 )  {
             //if we are in an override mode we need to make sure to come out, because
             //otherwise the maskmode is blocked and won't go into "through"
@@ -450,9 +450,9 @@ bool ViewProviderBody::canDropObjects() const
     // if the BaseFeature property is marked as hidden or read-only then
     // it's not allowed to modify it.
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    if (body->BaseFeature.testStatus(App::Property::Status::Hidden))
+    if (body->BaseFeature.testStatus(App::PropertyStatus::Hidden))
         return false;
-    if (body->BaseFeature.testStatus(App::Property::Status::ReadOnly))
+    if (body->BaseFeature.testStatus(App::PropertyStatus::ReadOnly))
         return false;
     return true;
 }

@@ -232,7 +232,7 @@ bool ExpressionBinding::apply()
         throw Base::RuntimeError("Document object not found.");
 
     /* Skip updating read-only properties */
-    if (prop->isReadOnly())
+    if (prop->testStatus(App::PropertyStatus::ReadOnly))
         return true;
 
     std::string _path = getPath().toEscapedString();

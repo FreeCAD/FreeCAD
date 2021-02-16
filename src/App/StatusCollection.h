@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,45 +20,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#ifndef APP_STATUSCOLLECTION_H
+#define APP_STATUSCOLLECTION_H
 
-#include "Document.h"
-#include "Origin.h"
+#include <bitset>
+#include <cstdlib>
+#include <string>
 
-#include "OriginFeature.h"
-
-using namespace App;
-
-PROPERTY_SOURCE(App::OriginFeature, App::GeoFeature)
-PROPERTY_SOURCE(App::Plane, App::OriginFeature)
-PROPERTY_SOURCE(App::Line, App::OriginFeature)
-
-OriginFeature::OriginFeature()
+namespace App
 {
-    ADD_PROPERTY_TYPE ( Role, (""), "", Prop_ReadOnly, "Role of the feature in the Origin" ) ;
 
-    // Set placement to read-only
-    Placement.setStatus(Hidden, true);
-}
+template<typename ENUM>
+class StatusCollection : public std::bitset<sizeof(ENUM)*8>
+{
+public:
+    static const size_t StatusBitLength = sizeof(ENUM)*8;
 
-OriginFeature::~OriginFeature()
-{ }
+    constexpr StatusCollection() : std::bitset<StatusBitLength>() {}
+    explicit StatusCollection(unsigned long long val): std::bitset<StatusBitLength>(val) {}
+    StatusCollection(const char * str) : std::bitset<StatusBitLength>( strtoull(str,0,10)) {}
+    StatusCollection(const StatusCollection<ENUM> &col) : std::bitset<StatusBitLength>(col) {}
+    StatusCollection(ENUM status) { this->set(status);}
 
-Origin * OriginFeature::getOrigin () {
-    App::Document *doc = getDocument();
-    auto origins = doc->getObjectsOfType ( App::Origin::getClassTypeId() );
-
-    auto originIt= std::find_if (origins.begin(), origins.end(), [this] (DocumentObject *origin) {
-            assert ( origin->isDerivedFrom ( App::Origin::getClassTypeId() ) );
-            return static_cast<App::Origin *> (origin)->hasObject (this);
-        } );
-    if (originIt == origins.end()) {
-        return 0;
-    } else {
-        assert ( (*originIt)->isDerivedFrom ( App::Origin::getClassTypeId() ) );
-        return static_cast<App::Origin *> (*originIt);
+    StatusCollection<ENUM>& operator=(const StatusCollection<ENUM> & src) {
+        std::bitset<StatusBitLength>::operator=(src);
+        return *this;
     }
+};
+
+template<typename ENUM>
+StatusCollection<ENUM> operator+(ENUM status1, ENUM status2) {
+    StatusCollection<ENUM> collection;
+    collection.set(status1);
+    collection.set(status2);
+    return collection;
 }
+
+template<typename ENUM>
+StatusCollection<ENUM> operator+(const StatusCollection<ENUM>& c, ENUM status2) {
+    StatusCollection<ENUM> collection(c);
+    collection.set(status2);
+    return collection;
+}
+
+}
+
+#endif // APP_STATUSCOLLECTION_H

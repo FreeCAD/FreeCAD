@@ -258,17 +258,15 @@ void DocumentObserverPython::slotCloseTransaction(bool abort)
     }
 }
 
-void DocumentObserverPython::slotBeforeChangeDocument(const App::Document& Doc, const App::Property& Prop) 
-{   
+void DocumentObserverPython::slotBeforeChangeDocument(const App::Document& Doc, const App::Property& Prop)
+{
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(const_cast<App::Document&>(Doc).getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = Doc.getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if ( Doc.isOwnerOf(Prop) ) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyBeforeChangeDocument.ptr(),args.ptr());
         }
     }
@@ -278,17 +276,15 @@ void DocumentObserverPython::slotBeforeChangeDocument(const App::Document& Doc, 
     }
 }
 
-void DocumentObserverPython::slotChangedDocument(const App::Document& Doc, const App::Property& Prop) 
+void DocumentObserverPython::slotChangedDocument(const App::Document& Doc, const App::Property& Prop)
 {
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(const_cast<App::Document&>(Doc).getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = Doc.getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if (Doc.isOwnerOf(Prop)) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyChangedDocument.ptr(),args.ptr());
         }
     }
@@ -333,11 +329,9 @@ void DocumentObserverPython::slotBeforeChangeObject(const App::DocumentObject& O
     try {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(const_cast<App::DocumentObject&>(Obj).getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = Obj.getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if (Obj.isOwnerOf(Prop)) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyBeforeChangeObject.ptr(),args.ptr());
         }
     }
@@ -354,11 +348,9 @@ void DocumentObserverPython::slotChangedObject(const App::DocumentObject& Obj,
     try {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(const_cast<App::DocumentObject&>(Obj).getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = Obj.getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if (Obj.isOwnerOf(Prop)) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyChangedObject.ptr(),args.ptr());
         }
     }
@@ -460,11 +452,9 @@ void DocumentObserverPython::slotAppendDynamicProperty(const App::Property& Prop
         auto container = Prop.getContainer();
         Py::Tuple args(2);
         args.setItem(0, Py::Object(container->getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = container->getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if (container->isOwnerOf(Prop)) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyAppendDynamicProperty.ptr(),args.ptr());
         }
     }
@@ -481,18 +471,16 @@ void DocumentObserverPython::slotRemoveDynamicProperty(const App::Property& Prop
         auto container = Prop.getContainer();
         Py::Tuple args(2);
         args.setItem(0, Py::Object(container->getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = container->getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if (container->isOwnerOf(Prop)) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyRemoveDynamicProperty.ptr(),args.ptr());
         }
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
-    }    
+    }
 }
 
 void DocumentObserverPython::slotChangePropertyEditor(const App::Document &, const App::Property& Prop)
@@ -502,11 +490,9 @@ void DocumentObserverPython::slotChangePropertyEditor(const App::Document &, con
         auto container = Prop.getContainer();
         Py::Tuple args(2);
         args.setItem(0, Py::Object(container->getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = container->getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if (container->isOwnerOf(Prop)) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyChangePropertyEditor.ptr(),args.ptr());
         }
     }

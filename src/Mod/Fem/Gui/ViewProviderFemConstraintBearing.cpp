@@ -114,10 +114,10 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(this->getObject());
 
-    if (strcmp(prop->getName(),"References") == 0)
+    if (prop->getName() == "References")
         Base::Console().Error("\n"); // enable a breakpoint here
 
-    if (strcmp(prop->getName(),"BasePoint") == 0) {
+    if (prop->getName() == "BasePoint") {
         // Remove and recreate the symbol
         Gui::coinRemoveAllChildren(pShapeSep);
 
@@ -133,7 +133,7 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 
         createPlacement(pShapeSep, b, rot);
         pShapeSep->addChild(createFixed(radius/2, radius/2 * 1.5, pcConstraint->AxialFree.getValue()));
-    } else if (strcmp(prop->getName(),"AxialFree") == 0) {
+    } else if (prop->getName() == "AxialFree") {
         if (pShapeSep->getNumChildren() > 0) {
             // Change the symbol
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();

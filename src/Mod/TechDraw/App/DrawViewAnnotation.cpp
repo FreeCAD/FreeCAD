@@ -71,8 +71,8 @@ DrawViewAnnotation::DrawViewAnnotation(void)
     TextStyle.setEnums(TextStyleEnums);
     ADD_PROPERTY_TYPE(TextStyle,((long)0),vgroup,App::Prop_None,"Text style");
 
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
+    Scale.setStatus(App::PropertyStatus::Hidden,true);
+    ScaleType.setStatus(App::PropertyStatus::Hidden,true);
 }
 
 DrawViewAnnotation::~DrawViewAnnotation()
@@ -100,7 +100,7 @@ void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, cons
 {
 	// also check for changed properties of the base class
 	DrawView::handleChangedPropertyType(reader, TypeName, prop);
-	
+
 	// property LineSpace had the App::PropertyInteger and was changed to App::PropertyPercent
 	if (prop == &LineSpace && strcmp(TypeName, "App::PropertyInteger") == 0) {
 		App::PropertyInteger LineSpaceProperty;

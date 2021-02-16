@@ -52,7 +52,7 @@ DrawTileWeld::DrawTileWeld(void)
 {
     static const char *group = "TileWeld";
 
-    ADD_PROPERTY_TYPE(LeftText,(""),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(LeftText,(""),group,App::Prop_None,
                       "Text before symbol");
     ADD_PROPERTY_TYPE(RightText, (0), group, App::Prop_None, "Text after symbol");
     ADD_PROPERTY_TYPE(CenterText, (0), group, App::Prop_None, "Text above/below symbol");
@@ -94,7 +94,7 @@ short DrawTileWeld::mustExecute() const
 }
 
 App::DocumentObjectExecReturn *DrawTileWeld::execute(void)
-{ 
+{
 //    Base::Console().Message("DTW::execute()\n");
     return DrawTile::execute();
 }
@@ -111,7 +111,7 @@ void DrawTileWeld::replaceSymbolIncluded(std::string newSymbolFile)
     }
 }
 
-void DrawTileWeld::onDocumentRestored() 
+void DrawTileWeld::onDocumentRestored()
 {
 //    Base::Console().Message("DTW::onDocumentRestored()\n");
     if (SymbolIncluded.isEmpty()) {

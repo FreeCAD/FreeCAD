@@ -98,7 +98,7 @@ void ViewProviderSpline::toggleControlPoints(bool on)
 void ViewProviderSpline::updateData(const App::Property* prop)
 {
     ViewProviderPartExt::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && strcmp(prop->getName(), "Shape") == 0) {
+    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && prop->getName() == "Shape") {
         // update control points if there
         if (pcControlPoints) {
             Gui::coinRemoveAllChildren(pcControlPoints);
@@ -345,7 +345,7 @@ void ViewProviderSplineExtension::extensionSetupContextMenu(QMenu* menu, QObject
 void ViewProviderSplineExtension::extensionUpdateData(const App::Property* prop)
 {
     Gui::ViewProviderExtension::extensionUpdateData(prop);
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && strcmp(prop->getName(), "Shape") == 0) {
+    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && prop->getName() == "Shape") {
         // update control points if there
         if (pcControlPoints) {
             Gui::coinRemoveAllChildren(pcControlPoints);

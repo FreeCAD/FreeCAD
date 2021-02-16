@@ -91,7 +91,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Profile,(0),"SketchBased", App::Prop_None, "Reference to sketch");
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
-    ADD_PROPERTY_TYPE(UpToFace,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Face where feature will end");
+    ADD_PROPERTY_TYPE(UpToFace,(0),"SketchBased",App::Prop_None,"Face where feature will end");
     ADD_PROPERTY_TYPE(AllowMultiFace,(false),"SketchBased", App::Prop_None, "Allow multiple faces in profile");
 }
 
@@ -397,7 +397,7 @@ void ProfileBased::onChanged(const App::Property* prop)
 {
     if (prop == &Profile) {
         // if attached to a sketch then mark it as read-only
-        this->Placement.setStatus(App::Property::ReadOnly, Profile.getValue() != 0);
+        this->Placement.setStatus(App::PropertyStatus::ReadOnly, Profile.getValue() != 0);
     }
 
     FeatureAddSub::onChanged(prop);

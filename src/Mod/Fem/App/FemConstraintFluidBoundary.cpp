@@ -69,46 +69,46 @@ static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no he
 ConstraintFluidBoundary::ConstraintFluidBoundary()
 {
     /// momemtum boundary: pressure and velocity
-    ADD_PROPERTY_TYPE(BoundaryType,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(BoundaryType,(1),"FluidBoundary",App::Prop_None,
                       "Basic boundary type like inlet, wall, outlet,etc");
     BoundaryType.setEnums(BoundaryTypes);
-    ADD_PROPERTY_TYPE(Subtype,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Subtype,(1),"FluidBoundary",App::Prop_None,
                       "Subtype defines more specific boundary types");
     Subtype.setEnums(WallSubtypes);
-    ADD_PROPERTY_TYPE(BoundaryValue,(0.0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(BoundaryValue,(0.0),"FluidBoundary",App::Prop_None,
                       "Scaler value for the specific value subtype, like pressure, velocity magnitude");
     /// Direction should be allowed to edit in property editor, if no edge is available in CAD model
-    ADD_PROPERTY_TYPE(Direction,(0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Direction,(0),"FluidBoundary",App::Prop_None,
                       "Vector direction of BoundaryValue");
-    ADD_PROPERTY_TYPE(Reversed,(0),"FluidBoundary",(App::PropertyType)(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Reversed,(0),"FluidBoundary",App::Prop_ReadOnly+App::Prop_Output,
                       "To distinguish inlet (flow outward from solid) or outlet boundary condition");
     /// turbulence model setup for boundary
-    ADD_PROPERTY_TYPE(TurbulenceSpecification,(1),"Turbulence",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TurbulenceSpecification,(1),"Turbulence",App::Prop_None,
                       "Method to specify burbulence magnitude on the boundary");
     TurbulenceSpecification.setEnums(TurbulenceSpecifications); // Turbulence Specification Method
-    ADD_PROPERTY_TYPE(TurbulentIntensityValue,(0.0),"Turbulence",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TurbulentIntensityValue,(0.0),"Turbulence",App::Prop_None,
                       "Scaler value for Turbulent intensity etc");
-    ADD_PROPERTY_TYPE(TurbulentLengthValue,(0.0),"Turbulence",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TurbulentLengthValue,(0.0),"Turbulence",App::Prop_None,
                       "Scaler value for Turbulent length scale, hydraulic diameter etc");
     /// consider using the newly added Fem::ConstraintTemperature, but it is too hard to export the settings
-    ADD_PROPERTY_TYPE(ThermalBoundaryType,(1),"HeatTransfer",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(ThermalBoundaryType,(1),"HeatTransfer",App::Prop_None,
                       "Thermal boundary type");
     ThermalBoundaryType.setEnums(ThermalBoundaryTypes);
-    ADD_PROPERTY_TYPE(TemperatureValue,(0.0),"HeatTransfer",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TemperatureValue,(0.0),"HeatTransfer",App::Prop_None,
                       "Temperature value for thermal boundary condition");
-    ADD_PROPERTY_TYPE(HeatFluxValue,(0.0),"HeatTransfer",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(HeatFluxValue,(0.0),"HeatTransfer",App::Prop_None,
                       "Heat flux value for thermal boundary condition");
-    ADD_PROPERTY_TYPE(HTCoeffValue,(0.0),"HeatTransfer",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(HTCoeffValue,(0.0),"HeatTransfer",App::Prop_None,
                       "Heat transfer coefficient for convective boundary condition");
     /// geometry rendering related properties
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"FluidBoundary",App::Prop_ReadOnly+App::Prop_Output,
                       "Points where arrows are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
-    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"FluidBoundary",App::Prop_ReadOnly+App::Prop_Output,
                       "Direction of arrows");
     naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indicate an invalid value
     // property from: FemConstraintFixed object
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"FluidBoundary",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
+    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"FluidBoundary",App::Prop_ReadOnly+App::Prop_Output,
                       "Normals where symbols are drawn");
     Normals.setValues(std::vector<Base::Vector3d>());
 }

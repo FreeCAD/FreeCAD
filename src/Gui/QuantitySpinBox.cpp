@@ -465,7 +465,7 @@ bool QuantitySpinBox::apply(const std::string & propName)
             const Property * prop = path.getProperty();
 
             /* Skip update if property is bound and we know it is read-only */
-            if (prop && prop->isReadOnly())
+            if (prop && prop->testStatus(App::PropertyStatus::ReadOnly))
                 return true;
 
             if (prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {

@@ -1318,8 +1318,8 @@ void LinkView::onLinkedUpdateData(LinkInfoPtr info, const App::Property *prop) {
     if(info!=linkInfo || !linkOwner || !linkOwner->isLinked() || info==linkOwner)
         return;
     auto ext = linkOwner->pcLinked->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
-    if (ext && !(prop->getType() & App::Prop_Output) &&
-            !prop->testStatus(App::Property::Output))
+    if (ext && !prop->testStatus(App::PropertyStatus::Prop_Output) &&
+            !prop->testStatus(App::PropertyStatus::Output))
     {
         // propagate the signalChangedObject to potentially multiple levels
         // of links, to inform tree view of children change, and other
@@ -1605,14 +1605,14 @@ ViewProviderLink::ViewProviderLink()
 {
     sPixmap = _LinkIcon;
 
-    ADD_PROPERTY_TYPE(Selectable, (true), " Link", App::Prop_None, 0);
+    ADD_PROPERTY_TYPE(Selectable, (true), " Link", App::Prop_None, "");
 
     ADD_PROPERTY_TYPE(OverrideMaterial, (false), " Link", App::Prop_None, "Override linked object's material");
 
     App::Material mat(App::Material::DEFAULT);
     mat.diffuseColor.setPackedValue(ViewParams::instance()->getDefaultLinkColor());
-    ADD_PROPERTY_TYPE(ShapeMaterial, (mat), " Link", App::Prop_None, 0);
-    ShapeMaterial.setStatus(App::Property::MaterialEdit, true);
+    ADD_PROPERTY_TYPE(ShapeMaterial, (mat), " Link", App::Prop_None, "");
+    ShapeMaterial.setStatus(App::PropertyStatus::MaterialEdit, true);
 
     ADD_PROPERTY_TYPE(DrawStyle,((long int)0), " Link", App::Prop_None, "");
     static const char* DrawStyleEnums[]= {"None","Solid","Dashed","Dotted","Dashdot",NULL};
@@ -1628,15 +1628,15 @@ ViewProviderLink::ViewProviderLink()
     PointSize.setConstraints(&sizeRange);
 
     ADD_PROPERTY(MaterialList,());
-    MaterialList.setStatus(App::Property::NoMaterialListEdit, true);
+    MaterialList.setStatus(App::PropertyStatus::NoMaterialListEdit, true);
 
     ADD_PROPERTY(OverrideMaterialList,());
     ADD_PROPERTY(OverrideColorList,());
 
     ADD_PROPERTY(ChildViewProvider, (""));
-    ChildViewProvider.setStatus(App::Property::Hidden,true);
+    ChildViewProvider.setStatus(App::PropertyStatus::Hidden,true);
 
-    DisplayMode.setStatus(App::Property::Status::Hidden, true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden, true);
 
     linkView = new LinkView;
 }
@@ -1807,10 +1807,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
         applyColors();
         checkIcon(ext);
     }else if(prop==ext->getColoredElementsProperty()) {
-        if(!prop->testStatus(App::Property::User3))
+        if(!prop->testStatus(App::PropertyStatus::User3))
             applyColors();
     }else if(prop==ext->getScaleProperty() || prop==ext->getScaleVectorProperty()) {
-        if(!prop->testStatus(App::Property::User3)) {
+        if(!prop->testStatus(App::PropertyStatus::User3)) {
             const auto &v = ext->getScaleVector();
             pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
             linkView->renderDoubleSide(v.x*v.y*v.z < 0);
@@ -1826,7 +1826,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
         }
     }else if(prop == ext->getLinkedObjectProperty()) {
 
-        if(!prop->testStatus(App::Property::User3)) {
+        if(!prop->testStatus(App::PropertyStatus::User3)) {
             std::vector<std::string> subs;
             const char *subname = ext->getSubName();
             std::string sub;
@@ -1895,14 +1895,14 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 }
                 if(!overrideMaterial)
                     overrideMaterials.clear();
-                OverrideMaterialList.setStatus(App::Property::User3,true);
+                OverrideMaterialList.setStatus(App::PropertyStatus::User3,true);
                 OverrideMaterialList.setValue(overrideMaterials);
-                OverrideMaterialList.setStatus(App::Property::User3,false);
+                OverrideMaterialList.setStatus(App::PropertyStatus::User3,false);
                 if(!hasMaterial)
                     materials.clear();
-                MaterialList.setStatus(App::Property::User3,true);
+                MaterialList.setStatus(App::PropertyStatus::User3,true);
                 MaterialList.setValue(materials);
-                MaterialList.setStatus(App::Property::User3,false);
+                MaterialList.setStatus(App::PropertyStatus::User3,false);
 
                 linkView->setSize(ext->_getElementCountValue());
                 updateDataPrivate(ext,ext->getVisibilityListProperty());
@@ -1911,7 +1911,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             }
         }
     }else if(prop==ext->getScaleListProperty() || prop==ext->getPlacementListProperty()) {
-        if(!prop->testStatus(App::Property::User3) &&
+        if(!prop->testStatus(App::PropertyStatus::User3) &&
             linkView->getSize() &&
             !ext->_getShowElementValue())
         {
@@ -2981,18 +2981,18 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
 
     auto prop = ext->getColoredElementsProperty();
     if(subs!=prop->getSubValues() || colors!=OverrideColorList.getValues()) {
-        prop->setStatus(App::Property::User3,true);
+        prop->setStatus(App::PropertyStatus::User3,true);
         prop->setValue(getObject(),subs);
-        prop->setStatus(App::Property::User3,false);
+        prop->setStatus(App::PropertyStatus::User3,false);
         OverrideColorList.setValues(colors);
     }
     if(hasFaceColor) {
         auto mat = ShapeMaterial.getValue();
         mat.diffuseColor = faceColor;
         mat.transparency = faceColor.a;
-        ShapeMaterial.setStatus(App::Property::User3,true);
+        ShapeMaterial.setStatus(App::PropertyStatus::User3,true);
         ShapeMaterial.setValue(mat);
-        ShapeMaterial.setStatus(App::Property::User3,false);
+        ShapeMaterial.setStatus(App::PropertyStatus::User3,false);
     }
     OverrideMaterial.setValue(hasFaceColor);
 }
@@ -3078,13 +3078,13 @@ static bool isExcludedProperties(const char *name) {
     return false;
 }
 
-App::Property *ViewProviderLink::getPropertyByName(const char *name) const {
+App::Property *ViewProviderLink::getPropertyByName(const std::string& name) const {
     auto prop = inherited::getPropertyByName(name);
-    if(prop || isExcludedProperties(name))
+    if(prop || isExcludedProperties(name.c_str()))
         return prop;
     if(childVp) {
         prop = childVp->getPropertyByName(name);
-        if(prop && !prop->testStatus(App::Property::Hidden))
+        if(prop && !prop->testStatus(App::PropertyStatus::Hidden))
             return prop;
         prop = 0;
     }
@@ -3106,7 +3106,7 @@ void ViewProviderLink::getPropertyMap(std::map<std::string,App::Property*> &Map)
         auto ret = Map.insert(v);
         if(!ret.second) {
             auto myProp = ret.first->second;
-            if(myProp->testStatus(App::Property::Hidden))
+            if(myProp->testStatus(App::PropertyStatus::Hidden))
                 ret.first->second = v.second;
         }
     }

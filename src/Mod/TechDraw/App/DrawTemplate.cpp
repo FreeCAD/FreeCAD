@@ -60,11 +60,11 @@ DrawTemplate::DrawTemplate(void)
     ADD_PROPERTY(Orientation, ((long)0));
 
     // Physical Properties inherent to every template class
-    ADD_PROPERTY_TYPE(Width,     (0),  group, (App::PropertyType)(App::Prop_None), "Width of page");
-    ADD_PROPERTY_TYPE(Height,    (0),  group, (App::PropertyType)(App::Prop_None), "Height of page");
+    ADD_PROPERTY_TYPE(Width,     (0),  group, App::Prop_None, "Width of page");
+    ADD_PROPERTY_TYPE(Height,    (0),  group, App::Prop_None, "Height of page");
     //ADD_PROPERTY_TYPE(PaperSize, (""), group, (App::PropertyType)(App::Prop_None), "Paper Format");   //obs?
 
-    ADD_PROPERTY_TYPE(EditableTexts, (), group, (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(EditableTexts, (), group, App::Prop_None,
                       "Editable strings in the template");
 }
 

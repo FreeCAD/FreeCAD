@@ -46,7 +46,7 @@ FeatureAddSub::FeatureAddSub()
   :  addSubType(Additive)
 {
     ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
-    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",App::Prop_None,"Refine shape (clean up redundant edges) after adding/subtracting");
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");

@@ -80,10 +80,10 @@ DrawPage::DrawPage(void)
     forceRedraw(false);
 
     ADD_PROPERTY_TYPE(KeepUpdated, (Preferences::keepPagesUpToDate()),
-                                             group, (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
-    ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
+                                             group, App::Prop_Output, "Keep page in sync with model");
+    ADD_PROPERTY_TYPE(Template, (0), group, App::Prop_None, "Attached Template");
     Template.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
+    ADD_PROPERTY_TYPE(Views, (0), group,App::Prop_None, "Attached Views");
     Views.setScope(App::LinkScope::Global);
 
     // Projection Properties
@@ -94,9 +94,9 @@ DrawPage::DrawPage(void)
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/General");
     double defScale = hGrp->GetFloat("DefaultScale",1.0);
-    ADD_PROPERTY_TYPE(Scale, (defScale), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(Scale, (defScale), group,App::Prop_None, "Scale factor for this Page");
 
-    ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, App::Prop_None,
                      "Auto-numbering for Balloons");
 
     Scale.setConstraints(&scaleRange);

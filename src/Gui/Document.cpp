@@ -803,8 +803,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
                     && d->_editingObject
                     && d->_editViewProviderParent
                     && (Prop.isDerivedFrom(App::PropertyPlacement::getClassTypeId())
-                        // Issue ID 0004230 : getName() can return null in which case strstr() crashes
-                        || (Prop.getName() && strstr(Prop.getName(),"Scale")))
+                        || Prop.getName().find("Scale")!= std::string::npos)
                     && d->_editObjs.count(&Obj))
             {
                 Base::Matrix4D mat;
@@ -836,7 +835,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     }
 
     // a property of an object has changed
-    if(!Prop.testStatus(App::Property::NoModify) && !isModified()) {
+    if(!Prop.testStatus(App::PropertyStatus::NoModify) && !isModified()) {
         FC_LOG(Prop.getFullName() << " modified");
         setModified(true);
     }

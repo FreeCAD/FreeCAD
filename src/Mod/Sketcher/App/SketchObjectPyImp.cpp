@@ -1910,8 +1910,7 @@ int SketchObjectPy::setCustomAttributes(const char* attr, PyObject* obj)
     App::Property *prop = getSketchObjectPtr()->getPropertyByName(attr);
     if (prop) {
         // Read-only attributes must not be set over its Python interface
-        short Type =  getSketchObjectPtr()->getPropertyType(prop);
-        if (Type & App::Prop_ReadOnly) {
+        if (prop->testStatus(App::PropertyStatus::Prop_ReadOnly)) {
             std::stringstream s;
             s << "Object attribute '" << attr << "' is read-only";
             throw Py::AttributeError(s.str());

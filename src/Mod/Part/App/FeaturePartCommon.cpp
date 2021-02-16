@@ -63,11 +63,11 @@ MultiCommon::MultiCommon(void)
 {
     ADD_PROPERTY(Shapes,(0));
     Shapes.setSize(0);
-    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
-        (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
+    ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean",
+        App::Prop_Output+App::Prop_Transient+App::Prop_Hidden, "Shape history");
     History.setSize(0);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after this boolean operation");
+    ADD_PROPERTY_TYPE(Refine,(0),"Boolean",App::Prop_None,"Refine shape (clean up redundant edges) after this boolean operation");
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()

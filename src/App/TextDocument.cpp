@@ -38,7 +38,7 @@ PROPERTY_SOURCE(App::TextDocument, App::DocumentObject)
 TextDocument::TextDocument()
 {
     ADD_PROPERTY_TYPE(
-            Text, (""), 0, App::Prop_Hidden,
+            Text, (""), "", App::Prop_Hidden,
             "Content of the document.");
 }
 

@@ -325,7 +325,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
         SelectionStyle.setValue(1);
     }
 
-    Coloring.setStatus(App::Property::Hidden, true);
+    Coloring.setStatus(App::PropertyStatus::Hidden, true);
 }
 
 ViewProviderMesh::~ViewProviderMesh()
@@ -486,7 +486,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     if (getColorProperty()) {
-        Coloring.setStatus(App::Property::Hidden, false);
+        Coloring.setStatus(App::PropertyStatus::Hidden, false);
     }
 }
 
@@ -496,7 +496,7 @@ void ViewProviderMesh::updateData(const App::Property* prop)
     //if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
     //}
     if (prop->getTypeId() == App::PropertyColorList::getClassTypeId()) {
-        Coloring.setStatus(App::Property::Hidden, false);
+        Coloring.setStatus(App::PropertyStatus::Hidden, false);
     }
 }
 

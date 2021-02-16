@@ -76,7 +76,7 @@ public:
     /** @name additional file writing */
     //@{
     /// add a write request of a persistent object
-    std::string addFile(const char* Name, const Base::Persistence *Object);
+    std::string addFile(const std::string& Name, const Base::Persistence *Object);
     /// process the requested file storing
     virtual void writeFiles(void)=0;
     /// get all registered file names
@@ -119,7 +119,7 @@ public:
     std::string ObjectName;
 
 protected:
-    std::string getUniqueFileName(const char *Name);
+    std::string getUniqueFileName(std::string Name);
     struct FileEntry {
         std::string FileName;
         const Base::Persistence *Object;

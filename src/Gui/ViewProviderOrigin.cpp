@@ -63,9 +63,9 @@ PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderDocumentObject)
  */
 ViewProviderOrigin::ViewProviderOrigin()
 {
-    ADD_PROPERTY_TYPE ( Size, (Base::Vector3d(10,10,10)), 0, App::Prop_None,
+    ADD_PROPERTY_TYPE ( Size, (Base::Vector3d(10,10,10)), "", App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "The displayed size of the origin"));
-    Size.setStatus(App::Property::ReadOnly, true);
+    Size.setStatus(App::PropertyStatus::ReadOnly, true);
 
     sPixmap = "Std_CoordinateSystem";
     Visibility.setValue(false);

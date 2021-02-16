@@ -41,10 +41,9 @@ EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 AttachExtension::AttachExtension()
    :  _attacher(0)
 {
-    EXTENSION_ADD_PROPERTY_TYPE(AttacherType, ("Attacher::AttachEngine3D"), "Attachment",(App::PropertyType)(App::Prop_None),"Class name of attach engine object driving the attachment.");
-    this->AttacherType.setStatus(App::Property::Status::Hidden, true);
+    EXTENSION_ADD_PROPERTY_TYPE(AttacherType, ("Attacher::AttachEngine3D"), "Attachment",App::Prop_None+App::Hidden,"Class name of attach engine object driving the attachment.");
 
-    EXTENSION_ADD_PROPERTY_TYPE(Support, (0,0), "Attachment",(App::PropertyType)(App::Prop_None),"Support of the 2D geometry");
+    EXTENSION_ADD_PROPERTY_TYPE(Support, (0,0), "Attachment",App::Prop_None,"Support of the 2D geometry");
 
     EXTENSION_ADD_PROPERTY_TYPE(MapMode, (mmDeactivated), "Attachment", App::Prop_None, "Mode of attachment to other object");
     MapMode.setEditorName("PartGui::PropertyEnumAttacherItem");
@@ -59,9 +58,9 @@ AttachExtension::AttachExtension()
     EXTENSION_ADD_PROPERTY_TYPE(AttachmentOffset, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
 
     // Only show these properties when applicable. Controlled by extensionOnChanged
-    this->MapPathParameter.setStatus(App::Property::Status::Hidden, true);
-    this->MapReversed.setStatus(App::Property::Status::Hidden, true);
-    this->AttachmentOffset.setStatus(App::Property::Status::Hidden, true);
+    this->MapPathParameter.setStatus(App::PropertyStatus::Hidden, true);
+    this->MapReversed.setStatus(App::PropertyStatus::Hidden, true);
+    this->AttachmentOffset.setStatus(App::PropertyStatus::Hidden, true);
 
     setAttacher(new AttachEngine3D);//default attacher
     initExtensionType(AttachExtension::getExtensionClassTypeId());
@@ -203,10 +202,10 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
                 hasOneRef = true;
             }
 
-            this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
-            this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
-            this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
-            getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+            this->MapPathParameter.setStatus(App::PropertyStatus::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+            this->MapReversed.setStatus(App::PropertyStatus::Hidden, !bAttached);
+            this->AttachmentOffset.setStatus(App::PropertyStatus::Hidden, !bAttached);
+            getPlacement().setStatus(App::ReadOnly, bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
         }
 
     }
@@ -248,10 +247,10 @@ void AttachExtension::onExtendedDocumentRestored()
             hasOneRef = true;
         }
 
-        this->MapPathParameter.setStatus(App::Property::Status::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
-        this->MapReversed.setStatus(App::Property::Status::Hidden, !bAttached);
-        this->AttachmentOffset.setStatus(App::Property::Status::Hidden, !bAttached);
-        getPlacement().setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+        this->MapPathParameter.setStatus(App::PropertyStatus::Hidden, !bAttached || !(modeIsPointOnCurve && hasOneRef));
+        this->MapReversed.setStatus(App::PropertyStatus::Hidden, !bAttached);
+        this->AttachmentOffset.setStatus(App::PropertyStatus::Hidden, !bAttached);
+        getPlacement().setStatus(App::ReadOnly, bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
     }
     catch (Base::Exception&) {
     }
@@ -280,7 +279,7 @@ App::PropertyPlacement& AttachExtension::getPlacement() const {
 }
 
 PyObject* AttachExtension::getExtensionPyObject(void) {
-    
+
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
         ExtensionPythonObject = Py::Object(new AttachExtensionPy(this),true);

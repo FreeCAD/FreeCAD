@@ -200,11 +200,9 @@ void DocumentObserverPython::slotBeforeChangeObject(const Gui::ViewProvider& Obj
     try {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(const_cast<Gui::ViewProvider&>(Obj).getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = Obj.getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if (Obj.isOwnerOf(Prop)) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyBeforeChangeObject.ptr(),args.ptr());
         }
     }
@@ -221,11 +219,9 @@ void DocumentObserverPython::slotChangedObject(const Gui::ViewProvider& Obj,
     try {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(const_cast<Gui::ViewProvider&>(Obj).getPyObject(), true));
-        // If a property is touched but not part of a document object then its name is null.
-        // In this case the slot function must not be called.
-        const char* prop_name = Obj.getPropertyName(&Prop);
-        if (prop_name) {
-            args.setItem(1, Py::String(prop_name));
+
+        if (Obj.isOwnerOf(Prop)) {
+            args.setItem(1, Py::String(Prop.getName()));
             Base::pyCall(pyChangedObject.ptr(),args.ptr());
         }
     }

@@ -30,6 +30,7 @@
 #include "GeoFeature.h"
 #include "GroupExtension.h"
 #include "GeoFeatureGroupExtension.h"
+#include "LegacyPropertyStatus.h"
 
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
 #include <App/DocumentObjectPy.h>
@@ -76,12 +77,24 @@ Py::Object DocumentObjectPy::getDocument(void) const
 PyObject*  DocumentObjectPy::addProperty(PyObject *args)
 {
     char *sType,*sName=0,*sGroup=0,*sDoc=0;
+    std::string sTypeStr, sNameStr, sGroupStr, sDocStr;
     short attr=0;
-    std::string sDocStr;
     PyObject *ro = Py_False, *hd = Py_False;
     if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
         &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
+
+    if (sType) {
+        sTypeStr = sType;
+    }
+
+    if (sName) {
+        sNameStr = sName;
+    }
+
+    if (sGroup) {
+        sGroupStr = sGroup;
+    }
 
     if (sDoc) {
         sDocStr = sDoc;
@@ -90,8 +103,10 @@ PyObject*  DocumentObjectPy::addProperty(PyObject *args)
 
     App::Property* prop=0;
     try {
-        prop = getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
-            PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
+        prop = getDocumentObjectPtr()->addDynamicProperty(sTypeStr,sNameStr,sGroupStr,sDocStr);
+        prop->setStatus(App::fromLegacyAttributes(StatusCollection<App::LegacyPropertyStatus::Value>(attr)));
+        prop->setStatus(App::PropertyStatus::Prop_ReadOnly, PyObject_IsTrue(ro) );
+        prop->setStatus(App::PropertyStatus::Prop_Hidden, PyObject_IsTrue(hd) );
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -141,15 +156,15 @@ PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
 PyObject*  DocumentObjectPy::touch(PyObject * args)
 {
     char *propName = 0;
-    if (!PyArg_ParseTuple(args, "|s",&propName))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "|s",&propName))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
     if(propName) {
         if(!propName[0]) {
             getDocumentObjectPtr()->touch(true);
             Py_Return;
         }
         auto prop = getDocumentObjectPtr()->getPropertyByName(propName);
-        if(!prop) 
+        if(!prop)
             throw Py::RuntimeError("Property not found");
         prop->touch();
         Py_Return;
@@ -161,8 +176,8 @@ PyObject*  DocumentObjectPy::touch(PyObject * args)
 
 PyObject*  DocumentObjectPy::purgeTouched(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
     getDocumentObjectPtr()->purgeTouched();
     Py_Return;
 }
@@ -281,12 +296,12 @@ Py::List DocumentObjectPy::getInListRecursive(void) const
 
         for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
             ret.append(Py::Object((*It)->getPyObject(), true));
- 
+
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
     }
-    return ret;    
+    return ret;
 }
 
 Py::List DocumentObjectPy::getOutList(void) const
@@ -510,7 +525,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
                     sub.c_str(),retType!=0&&retType!=2?0:&pyObj,&info.mat,transform,depth);
             if(pyObj)
                 info.pyObj = Py::Object(pyObj,true);
-            if(info.sobj) 
+            if(info.sobj)
                 info.obj = Py::Object(info.sobj->getPyObject(),true);
         }
         if(ret.empty())
@@ -769,7 +784,7 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
         if (prop) {
             if(prop->testStatus(Property::Immutable)) {
                 std::stringstream s;
-                s << "'DocumentObject' attribute '" << attr << "' is read-only"; 
+                s << "'DocumentObject' attribute '" << attr << "' is read-only";
                 throw Py::AttributeError(s.str());
             }
             prop->setPyObject(obj);
@@ -802,7 +817,7 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
            (getDocumentObjectPtr()->getPropertyType(prop) & Prop_ReadOnly))
         {
             std::stringstream s;
-            s << "'DocumentObject' attribute '" << attr << "' is read-only"; 
+            s << "'DocumentObject' attribute '" << attr << "' is read-only";
             throw Py::AttributeError(s.str());
         }
 
@@ -815,7 +830,7 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
             throw Py::TypeError(s.str());
         }
         return 1;
-    } 
+    }
 #endif
 
     return 0;
@@ -833,7 +848,7 @@ PyObject *DocumentObjectPy::resolve(PyObject *args)
 {
     const char *subname;
     if (!PyArg_ParseTuple(args, "s",&subname))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     PY_TRY {
         std::string elementName;
@@ -858,7 +873,7 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
     PyObject *append = Py_False;
     int type = 0;
     if (!PyArg_ParseTuple(args, "s|Oi",&subname,&append,&type))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     PY_TRY {
         std::pair<std::string,std::string> elementName;

@@ -73,16 +73,15 @@ void SheetObserver::slotChangedObject(const DocumentObject &Obj, const Property 
     if (&Prop == &Obj.Label)
         sheet->renamedDocumentObject(&Obj);
     else {
-        const char * name = Obj.getPropertyName(&Prop);
-
-        if (name == 0)
+        if (!Obj.isOwnerOf(Prop))
             return;
 
+        const std::string& name=Prop.getName();
         if (isUpdating.find(name) != isUpdating.end())
             return;
 
         isUpdating.insert(name);
-        sheet->recomputeDependants(&Obj,Prop.getName());
+        sheet->recomputeDependants(&Obj,Prop.getName().c_str());
         isUpdating.erase(name);
     }
 }

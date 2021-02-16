@@ -258,7 +258,7 @@ public:
         return childVp;
     }
 
-    virtual App::Property *getPropertyByName(const char* name) const override;
+    virtual App::Property *getPropertyByName(const std::string& name) const override;
     virtual void getPropertyMap(std::map<std::string,App::Property*> &Map) const override;
     virtual void getPropertyList(std::vector<App::Property*> &List) const override;
 

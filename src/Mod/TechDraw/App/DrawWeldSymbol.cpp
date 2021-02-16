@@ -53,16 +53,16 @@ DrawWeldSymbol::DrawWeldSymbol(void)
 {
     static const char *group = "Weld Symbol";
 
-    ADD_PROPERTY_TYPE(Leader,(0),group,(App::PropertyType)(App::Prop_None), "Parent Leader");
+    ADD_PROPERTY_TYPE(Leader,(0),group,App::Prop_None, "Parent Leader");
     ADD_PROPERTY_TYPE(AllAround, (false), group, App::Prop_None, "All Around Symbol on/off");
     ADD_PROPERTY_TYPE(FieldWeld, (false), group, App::Prop_None, "Field Weld Symbol on/off");
     ADD_PROPERTY_TYPE(AlternatingWeld, (false), group, App::Prop_None, "Alternating Weld true/false");
     ADD_PROPERTY_TYPE(TailText, (""), group, App::Prop_None, "Text at tail of symbol");
 
-    Caption.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::Hidden,true);
-    ScaleType.setStatus(App::Property::Hidden,true);
-    Rotation.setStatus(App::Property::Hidden, true);
+    Caption.setStatus(App::PropertyStatus::Hidden,true);
+    Scale.setStatus(App::PropertyStatus::Hidden,true);
+    ScaleType.setStatus(App::PropertyStatus::Hidden,true);
+    Rotation.setStatus(App::PropertyStatus::Hidden, true);
 }
 
 DrawWeldSymbol::~DrawWeldSymbol()

@@ -289,7 +289,7 @@ void MeshFaceAddition::showMarker(SoPickedPoint* pp)
             int face_index = fd->getFaceIndex();
             if (face_index >= (int)facets.size())
                 return;
-            // is a border facet picked? 
+            // is a border facet picked?
             MeshCore::MeshFacet f = facets[face_index];
             if (!f.HasOpenEdge()) {
                 // check if a neighbour facet is at the border
@@ -418,7 +418,7 @@ namespace MeshGui {
     // for sorting of elements
     struct NofFacetsCompare
     {
-        bool operator () (const std::vector<unsigned long> &rclC1, 
+        bool operator () (const std::vector<unsigned long> &rclC1,
                           const std::vector<unsigned long> &rclC2)
         {
             return rclC1.size() < rclC2.size();
@@ -542,7 +542,7 @@ void MeshFillHole::closeBridge()
 
 void MeshFillHole::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
-    if (&Obj == myMesh && strcmp(Prop.getName(),"Mesh") == 0) {
+    if (&Obj == myMesh && Prop.getName() == "Mesh") {
         Gui::coinRemoveAllChildren(myBoundariesGroup);
         myVertex->point.setNum(0);
         myNumPoints = 0;
@@ -576,7 +576,7 @@ void MeshFillHole::createPolygons()
     borders.sort(NofFacetsCompare());
 
     int32_t count=0;
-    for (std::list<std::vector<unsigned long> >::iterator it = 
+    for (std::list<std::vector<unsigned long> >::iterator it =
         borders.begin(); it != borders.end(); ++it) {
         if (it->front() == it->back())
             it->pop_back();
@@ -589,7 +589,7 @@ void MeshFillHole::createPolygons()
 
     coords->point.setNum(count);
     int32_t index = 0;
-    for (std::list<std::vector<unsigned long> >::iterator it = 
+    for (std::list<std::vector<unsigned long> >::iterator it =
         borders.begin(); it != borders.end(); ++it) {
         SoPolygon* polygon = new SoPolygon();
         polygon->startIndex = index;

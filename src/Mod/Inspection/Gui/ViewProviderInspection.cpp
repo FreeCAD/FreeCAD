@@ -30,7 +30,7 @@
 
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/lists/SoPickedPointList.h> 
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -72,8 +72,8 @@ PROPERTY_SOURCE(InspectionGui::ViewProviderInspection, Gui::ViewProviderDocument
 
 ViewProviderInspection::ViewProviderInspection() : search_radius(FLT_MAX)
 {
-    ADD_PROPERTY_TYPE(OutsideGrayed,(false),"",(App::PropertyType) (App::Prop_Output|App::Prop_Hidden),"");
-    ADD_PROPERTY_TYPE(PointSize,(1.0),"Display",(App::PropertyType) (App::Prop_None/*App::Prop_Hidden*/),"");
+    ADD_PROPERTY_TYPE(OutsideGrayed,(false),"",App::Prop_Output+App::Prop_Hidden,"");
+    ADD_PROPERTY_TYPE(PointSize,(1.0),"Display",App::Prop_None/*App::Prop_Hidden*/,"");
     PointSize.setConstraints(&floatRange);
 
     pcColorRoot = new SoSeparator();
@@ -82,7 +82,7 @@ ViewProviderInspection::ViewProviderInspection() : search_radius(FLT_MAX)
     pcMatBinding->ref();
     pcColorMat = new SoMaterial;
     pcColorMat->ref();
-    pcColorStyle = new SoDrawStyle(); 
+    pcColorStyle = new SoDrawStyle();
     pcColorRoot->addChild(pcColorStyle);
     pcCoords = new SoCoordinate3;
     pcCoords->ref();
@@ -169,7 +169,7 @@ void ViewProviderInspection::attach(App::DocumentObject *pcFeat)
     if (pcBar) {
         float fMin = pcColorBar->getMinValue();
         float fMax = pcColorBar->getMaxValue();
-    
+
         // Attach to the foreign color bar and delete our own bar
         pcBar->Attach(this);
         pcBar->ref();
@@ -288,7 +288,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
         }
     }
     else if (prop->getTypeId() == App::PropertyFloat::getClassTypeId()) {
-        if (strcmp(prop->getName(), "SearchRadius") == 0) {
+        if (prop->getName() == "SearchRadius") {
             float fSearchRadius = ((App::PropertyFloat*)prop)->getValue();
             this->search_radius = fSearchRadius;
             pcColorBar->setRange( -fSearchRadius, fSearchRadius, 4 );
@@ -313,7 +313,7 @@ void ViewProviderInspection::setDistances()
         return;
     }
     if (pDistances->getTypeId() != Inspection::PropertyDistanceList::getClassTypeId()) {
-        SoDebugError::post("ViewProviderInspection::setDistances", 
+        SoDebugError::post("ViewProviderInspection::setDistances",
             "Property 'Distances' has type %s (Inspection::PropertyDistanceList was expected)", pDistances->getTypeId().getName());
         return;
     }
@@ -575,7 +575,7 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
             float fVal1 = (*dist)[index1];
             float fVal2 = (*dist)[index2];
             float fVal3 = (*dist)[index3];
-          
+
             App::Property* pActual = this->pcObject->getPropertyByName("Actual");
             if (pActual && pActual->getTypeId().isDerivedFrom( App::PropertyLink::getClassTypeId())) {
                 float fSearchRadius = this->search_radius;

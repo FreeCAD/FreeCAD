@@ -65,10 +65,10 @@ ViewProviderTextDocument::ViewProviderTextDocument()
     ADD_PROPERTY_TYPE(SyntaxHighlighter,(static_cast<long>(0)), "Editor", App::Prop_None, "Syntax highlighting");
     SyntaxHighlighter.setEnums(SyntaxEnums);
 
-    DisplayMode.setStatus(App::Property::Hidden, true);
-    OnTopWhenSelected.setStatus(App::Property::Hidden, true);
-    SelectionStyle.setStatus(App::Property::Hidden, true);
-    Visibility.setStatus(App::Property::Hidden, true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden, true);
+    OnTopWhenSelected.setStatus(App::PropertyStatus::Hidden, true);
+    SelectionStyle.setStatus(App::PropertyStatus::Hidden, true);
+    Visibility.setStatus(App::PropertyStatus::Hidden, true);
 }
 
 void ViewProviderTextDocument::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

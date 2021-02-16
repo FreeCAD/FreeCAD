@@ -64,14 +64,14 @@ PROPERTY_SOURCE(PartGui::ViewProvider2DObjectGrid, PartGui::ViewProvider2DObject
 
 ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
 {
-    ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid on/off");
-    ADD_PROPERTY_TYPE(ShowOnlyInEditMode,(true),"Grid",(App::PropertyType)(App::Prop_None),"Show only while in edit mode");
-    ADD_PROPERTY_TYPE(GridSize,(10.0),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
-    ADD_PROPERTY_TYPE(GridStyle,(0L),"Grid",(App::PropertyType)(App::Prop_None),"Appearance style of the grid");
-    ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
-    ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
-    ADD_PROPERTY_TYPE(GridAutoSize,(true),"Grid",(App::PropertyType)(App::Prop_Hidden),"Autosize grid based on shape boundbox");
-    ADD_PROPERTY_TYPE(maxNumberOfLines,(10000),"Grid",(App::PropertyType)(App::Prop_None),"Maximum Number of Lines in grid");
+    ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",App::Prop_None,"Switch the grid on/off");
+    ADD_PROPERTY_TYPE(ShowOnlyInEditMode,(true),"Grid",App::Prop_None,"Show only while in edit mode");
+    ADD_PROPERTY_TYPE(GridSize,(10.0),"Grid",App::Prop_None,"Gap size of the grid");
+    ADD_PROPERTY_TYPE(GridStyle,(0L),"Grid",App::Prop_None,"Appearance style of the grid");
+    ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",App::Prop_None,"Switch the tight grid mode on/off");
+    ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",App::Prop_None,"Switch the grid snap on/off");
+    ADD_PROPERTY_TYPE(GridAutoSize,(true),"Grid",App::Prop_Hidden,"Autosize grid based on shape boundbox");
+    ADD_PROPERTY_TYPE(maxNumberOfLines,(10000),"Grid",App::Prop_None,"Maximum Number of Lines in grid");
 
     GridRoot = new SoAnnotation();
     GridRoot->ref();

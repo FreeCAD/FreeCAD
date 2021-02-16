@@ -362,7 +362,7 @@ void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    if (!isSinglePrecision()) {
+    if (!testStatus(PropertyStatus::Single)) {
         for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             str << it->x << it->y << it->z;
         }
@@ -383,7 +383,7 @@ void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<Base::Vector3d> values(uCt);
-    if (!isSinglePrecision()) {
+    if (!testStatus(PropertyStatus::Single)) {
         for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
             str >> it->x >> it->y >> it->z;
         }
@@ -717,7 +717,7 @@ void PropertyPlacement::setPyObject(PyObject *value)
 void PropertyPlacement::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<PropertyPlacement";
-    writer.Stream() << " Px=\"" <<  _cPos.getPosition().x 
+    writer.Stream() << " Px=\"" <<  _cPos.getPosition().x
                     << "\" Py=\"" <<  _cPos.getPosition().y
                     << "\" Pz=\"" <<  _cPos.getPosition().z << "\"";
 
@@ -841,7 +841,7 @@ void PropertyPlacementList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    if (!isSinglePrecision()) {
+    if (!testStatus(PropertyStatus::Single)) {
         for (std::vector<Base::Placement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             str << it->getPosition().x << it->getPosition().y << it->getPosition().z
                 << it->getRotation()[0] << it->getRotation()[1] << it->getRotation()[2] << it->getRotation()[3] ;
@@ -867,7 +867,7 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<Base::Placement> values(uCt);
-    if (!isSinglePrecision()) {
+    if (!testStatus(PropertyStatus::Single)) {
         for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
             Base::Vector3d pos;
             double q0, q1, q2, q3;

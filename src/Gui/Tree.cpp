@@ -421,7 +421,7 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 
     ExpLineEdit *le = new ExpLineEdit(parent);
     le->setFrame(false);
-    le->setReadOnly(prop.isReadOnly());
+    le->setReadOnly(prop.testStatus(App::PropertyStatus::ReadOnly));
     le->bind(App::ObjectIdentifier(prop));
     le->setAutoApply(true);
     return le;
@@ -3612,8 +3612,8 @@ void TreeWidget::slotChangeObject(
     }
 
     auto &s = ChangedObjects[obj];
-    if(prop.testStatus(App::Property::Output)
-            || prop.testStatus(App::Property::NoRecompute))
+    if(prop.testStatus(App::PropertyStatus::Output)
+            || prop.testStatus(App::PropertyStatus::NoRecompute))
     {
         s.set(CS_Output);
     }

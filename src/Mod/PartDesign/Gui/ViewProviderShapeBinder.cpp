@@ -53,15 +53,15 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     sPixmap = "PartDesign_ShapeBinder.svg";
 
     //make the viewprovider more datum like
-    AngularDeflection.setStatus(App::Property::Hidden, true);
-    Deviation.setStatus(App::Property::Hidden, true);
-    DrawStyle.setStatus(App::Property::Hidden, true);
-    Lighting.setStatus(App::Property::Hidden, true);
-    LineColor.setStatus(App::Property::Hidden, true);
-    LineWidth.setStatus(App::Property::Hidden, true);
-    PointColor.setStatus(App::Property::Hidden, true);
-    PointSize.setStatus(App::Property::Hidden, true);
-    DisplayMode.setStatus(App::Property::Hidden, true);
+    AngularDeflection.setStatus(App::PropertyStatus::Hidden, true);
+    Deviation.setStatus(App::PropertyStatus::Hidden, true);
+    DrawStyle.setStatus(App::PropertyStatus::Hidden, true);
+    Lighting.setStatus(App::PropertyStatus::Hidden, true);
+    LineColor.setStatus(App::PropertyStatus::Hidden, true);
+    LineWidth.setStatus(App::PropertyStatus::Hidden, true);
+    PointColor.setStatus(App::PropertyStatus::Hidden, true);
+    PointSize.setStatus(App::PropertyStatus::Hidden, true);
+    DisplayMode.setStatus(App::PropertyStatus::Hidden, true);
 
     //get the datum coloring scheme
     // set default color for datums (golden yellow with 60% transparency)
@@ -206,7 +206,7 @@ ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
             "User parameter:BaseApp/Preferences/Mod/PartDesign");
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
     App::Color col ( (uint32_t) shcol );
-    
+
     ShapeColor.setValue(col);
     LineColor.setValue(col);
     PointColor.setValue(col);
@@ -214,7 +214,7 @@ ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
     LineWidth.setValue(1);
 }
 
-bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject *, 
+bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject *,
         App::DocumentObject *, const char *, const std::vector<std::string> &) const
 {
     return true;
@@ -228,7 +228,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, A
     std::map<App::DocumentObject *, std::vector<std::string> > values;
     if(!subname) subname = "";
     std::string sub(subname);
-    if(sub.empty()) 
+    if(sub.empty())
         values[owner?owner:obj] = elements;
     else {
         std::vector<std::string> subs;
@@ -253,7 +253,7 @@ bool ViewProviderSubShapeBinder::doubleClicked() {
     return true;
 }
 
-void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) 
+void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Synchronize"), receiver, member);
@@ -263,7 +263,7 @@ void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver
 }
 
 bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
-    
+
     switch(ModNum) {
     case 0:
         updatePlacement(true);
@@ -305,7 +305,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     if(relative && self->getParents().size()) {
         const auto &sel = Gui::Selection().getSelection("",0);
         if(sel.size()!=1 || !sel[0].pObject ||
-            sel[0].pObject->getSubObject(sel[0].SubName)!=self) 
+            sel[0].pObject->getSubObject(sel[0].SubName)!=self)
         {
             FC_WARN("invalid selection");
         } else {

@@ -49,7 +49,7 @@ PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 
 PolarPattern::PolarPattern()
 {
-    ADD_PROPERTY_TYPE(Axis,(0),"PolarPattern",(App::PropertyType)(App::Prop_None),"Direction");
+    ADD_PROPERTY_TYPE(Axis,(0),"PolarPattern",App::Prop_None,"Direction");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(Angle,(360.0));
     ADD_PROPERTY(Occurrences,(3));

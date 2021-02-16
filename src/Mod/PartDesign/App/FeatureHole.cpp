@@ -607,7 +607,7 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
-    ThreadDirection.setReadOnly(true);
+    ThreadDirection.setStatus(App::PropertyStatus::ReadOnly,true);
 
     ADD_PROPERTY_TYPE(HoleCutType, (0L), "Hole", App::Prop_None, "Head cut type");
     HoleCutType.setEnums(HoleCutType_None_Enums);
@@ -686,9 +686,9 @@ void Hole::updateHoleCutParams()
             }
             if (HoleCutDepth.getValue() == 0.0)
                 HoleCutDepth.setValue(dimen.depth);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(true);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else if (holeCutTypeStr == "Countersink") {
             // read ISO 10642 values
@@ -697,7 +697,7 @@ void Hole::updateHoleCutParams()
                 const CounterSinkDimension& dimen = counter.get_sink(threadSizeStr);
                 if (dimen.diameter != 0.0) {
                     HoleCutDiameter.setValue(dimen.diameter);
-                } 
+                }
                 else {
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
                 }
@@ -706,9 +706,9 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly, false);
         }
 
         // cut definition
@@ -718,37 +718,37 @@ void Hole::updateHoleCutParams()
             if (counter.cut_type == CutDimensionSet::Counterbore) {
                 // disable HoleCutCountersinkAngle and reset it to ISO's default
                 HoleCutCountersinkAngle.setValue(90.0);
-                HoleCutCountersinkAngle.setReadOnly(true);
+                HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly,true);
                 const CounterBoreDimension &dimen = counter.get_bore(threadSizeStr);
                 if (dimen.thread == "None") {
                     // valid values for visual feedback
                     HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
                     HoleCutDepth.setValue(0.1);
                     // we force custom values since there are no normed ones
-                    HoleCutCustomValues.setReadOnly(true);
+                    HoleCutCustomValues.setStatus(App::PropertyStatus::ReadOnly,true);
                     // important to set only if not already true, to avoid loop call of updateHoleCutParams()
                     if (!HoleCutCustomValues.getValue()) {
                         HoleCutCustomValues.setValue(true);
-                        HoleCutDiameter.setReadOnly(false);
-                        HoleCutDepth.setReadOnly(false);
+                        HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+                        HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
                     }
                 } else {
                     // set normed values if not overwritten or if previously there
                     // were no normed values available and thus HoleCutCustomValues is checked and read-only
                     if (!HoleCutCustomValues.getValue()
-                        || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())) {
+                        || (HoleCutCustomValues.getValue() && HoleCutCustomValues.testStatus(App::PropertyStatus::ReadOnly))) {
                         HoleCutDiameter.setValue(dimen.diameter);
                         HoleCutDepth.setValue(dimen.depth);
-                        HoleCutDiameter.setReadOnly(true);
-                        HoleCutDepth.setReadOnly(true);
-                        if (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())
+                        HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly,true);
+                        HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly,true);
+                        if (HoleCutCustomValues.getValue() && HoleCutCustomValues.testStatus(App::PropertyStatus::ReadOnly))
                             HoleCutCustomValues.setValue(false);
                     }
                     else {
-                        HoleCutDiameter.setReadOnly(false);
-                        HoleCutDepth.setReadOnly(false);
+                        HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+                        HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
                     }
-                    HoleCutCustomValues.setReadOnly(false);
+                    HoleCutCustomValues.setStatus(App::PropertyStatus::ReadOnly, false);
                 }
             } else if (counter.cut_type == CutDimensionSet::Countersink) {
                 const CounterSinkDimension &dimen = counter.get_sink(threadSizeStr);
@@ -760,33 +760,33 @@ void Hole::updateHoleCutParams()
                         HoleCutCountersinkAngle.setValue(counter.angle);
                     }
                     // we force custom values since there are no normed ones
-                    HoleCutCustomValues.setReadOnly(true);
+                    HoleCutCustomValues.setStatus(App::PropertyStatus::ReadOnly,true);
                     // important to set only if not already true, to avoid loop call of updateHoleCutParams()
                     if (!HoleCutCustomValues.getValue()) {
                         HoleCutCustomValues.setValue(true);
-                        HoleCutDiameter.setReadOnly(false);
-                        HoleCutDepth.setReadOnly(false);
-                        HoleCutCountersinkAngle.setReadOnly(false);
+                        HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+                        HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
+                        HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly, false);
                     }
                 } else {
                     // set normed values if not overwritten or if previously there
                     // were no normed values available and thus HoleCutCustomValues is checked and read-only
                     if (!HoleCutCustomValues.getValue()
-                        || (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())) {
+                        || (HoleCutCustomValues.getValue() && HoleCutCustomValues.testStatus(App::PropertyStatus::ReadOnly))) {
                         HoleCutDiameter.setValue(dimen.diameter);
-                        HoleCutDiameter.setReadOnly(true);
-                        HoleCutDepth.setReadOnly(true);
+                        HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly,true);
+                        HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly,true);
                         HoleCutCountersinkAngle.setValue(counter.angle);
-                        HoleCutCountersinkAngle.setReadOnly(true);
-                        if (HoleCutCustomValues.getValue() && HoleCutCustomValues.isReadOnly())
+                        HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly,true);
+                        if (HoleCutCustomValues.getValue() && HoleCutCustomValues.testStatus(App::PropertyStatus::ReadOnly))
                             HoleCutCustomValues.setValue(false);
                     }
                     else {
-                        HoleCutDiameter.setReadOnly(false);
-                        HoleCutDepth.setReadOnly(false);
-                        HoleCutCountersinkAngle.setReadOnly(false);
+                        HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+                        HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
+                        HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly, false);
                     }
-                    HoleCutCustomValues.setReadOnly(false);
+                    HoleCutCustomValues.setStatus(App::PropertyStatus::ReadOnly, false);
                 }
             }
         }
@@ -798,8 +798,8 @@ void Hole::updateHoleCutParams()
         else if (holeCutTypeStr == "Cheesehead (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.6);
             HoleCutDepth.setValue(diameterVal * 0.6);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
         }
         else if (holeCutTypeStr == "Countersink socket screw (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 2.0);
@@ -807,15 +807,15 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(90.0);
             }
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly, false);
         }
         else if (holeCutTypeStr == "Cap screw (deprecated)") {
             HoleCutDiameter.setValue(diameterVal * 1.5);
             HoleCutDepth.setValue(diameterVal * 1.25);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
         }
     }
     else { // we have an UTS profile or none
@@ -831,14 +831,14 @@ void Hole::updateHoleCutParams()
             }
             if (HoleCutDepth.getValue() == 0.0)
                 HoleCutDepth.setValue(diameterVal * 0.9);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
         }
         else if (holeCutTypeStr == "Countersink") {
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
                 HoleCutDiameter.setValue(diameterVal * 1.7);
                 // 82 degrees for UTS, 90 otherwise
-                if (threadTypeStr != "None")       
+                if (threadTypeStr != "None")
                     HoleCutCountersinkAngle.setValue(82.0);
                 else
                     HoleCutCountersinkAngle.setValue(90.0);
@@ -849,9 +849,9 @@ void Hole::updateHoleCutParams()
                 else
                     HoleCutCountersinkAngle.setValue(90.0);
             }
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly, false);
         }
     }
 }
@@ -902,7 +902,7 @@ void Hole::updateDiameterParam()
         if (threadType == "ISOMetricProfile" || threadType == "UNC"
             || threadType == "UNF" || threadType == "UNEF") {
             diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].CoreHole;
-        }     
+        }
         // if nothing available, we must calculate
         else {
             // this fits exactly the definition for ISO metric fine
@@ -1053,11 +1053,11 @@ void Hole::onChanged(const App::Property *prop)
             ThreadSize.setEnums(ThreadSize_None_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_None_Enums);
-            Threaded.setReadOnly(true);
-            ThreadSize.setReadOnly(true);
-            ThreadFit.setReadOnly(true);
-            ThreadClass.setReadOnly(true);
-            Diameter.setReadOnly(false);
+            Threaded.setStatus(App::PropertyStatus::ReadOnly,true);
+            ThreadSize.setStatus(App::PropertyStatus::ReadOnly,true);
+            ThreadFit.setStatus(App::PropertyStatus::ReadOnly,true);
+            ThreadClass.setStatus(App::PropertyStatus::ReadOnly,true);
+            Diameter.setStatus(App::PropertyStatus::ReadOnly, false);
             Threaded.setValue(0);
         }
         else if ( type == "ISOMetricProfile" ) {
@@ -1065,98 +1065,98 @@ void Hole::onChanged(const App::Property *prop)
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
             ThreadFit.setEnums(ClearanceMetricEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
+            Threaded.setStatus(App::PropertyStatus::ReadOnly, false);
+            ThreadSize.setStatus(App::PropertyStatus::ReadOnly, false);
             // thread class and direction are only sensible if threaded
             // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
+            ThreadFit.setStatus(App::PropertyStatus::ReadOnly, Threaded.getValue());
+            ThreadClass.setStatus(App::PropertyStatus::ReadOnly, !Threaded.getValue());
+            Diameter.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else if ( type == "ISOMetricFineProfile" ) {
             ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
             ThreadFit.setEnums(ClearanceMetricEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
+            Threaded.setStatus(App::PropertyStatus::ReadOnly, false);
+            ThreadSize.setStatus(App::PropertyStatus::ReadOnly, false);
             // thread class and direction are only sensible if threaded
             // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
+            ThreadFit.setStatus(App::PropertyStatus::ReadOnly, Threaded.getValue());
+            ThreadClass.setStatus(App::PropertyStatus::ReadOnly, !Threaded.getValue());
+            Diameter.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else if ( type == "UNC" ) {
             ThreadSize.setEnums(ThreadSize_UNC_Enums);
             ThreadClass.setEnums(ThreadClass_UNC_Enums);
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
+            Threaded.setStatus(App::PropertyStatus::ReadOnly, false);
+            ThreadSize.setStatus(App::PropertyStatus::ReadOnly, false);
             // thread class and direction are only sensible if threaded
             // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
+            ThreadFit.setStatus(App::PropertyStatus::ReadOnly, Threaded.getValue());
+            ThreadClass.setStatus(App::PropertyStatus::ReadOnly, !Threaded.getValue());
+            Diameter.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else if ( type == "UNF" ) {
             ThreadSize.setEnums(ThreadSize_UNF_Enums);
             ThreadClass.setEnums(ThreadClass_UNF_Enums);
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
+            Threaded.setStatus(App::PropertyStatus::ReadOnly, false);
+            ThreadSize.setStatus(App::PropertyStatus::ReadOnly, false);
             // thread class and direction are only sensible if threaded
             // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
+            ThreadFit.setStatus(App::PropertyStatus::ReadOnly, Threaded.getValue());
+            ThreadClass.setStatus(App::PropertyStatus::ReadOnly, !Threaded.getValue());
+            Diameter.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else if ( type == "UNEF" ) {
             ThreadSize.setEnums(ThreadSize_UNEF_Enums);
             ThreadClass.setEnums(ThreadClass_UNEF_Enums);
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
+            Threaded.setStatus(App::PropertyStatus::ReadOnly, false);
+            ThreadSize.setStatus(App::PropertyStatus::ReadOnly, false);
             // thread class and direction are only sensible if threaded
             // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());;
-            Diameter.setReadOnly(true);
+            ThreadFit.setStatus(App::PropertyStatus::ReadOnly, Threaded.getValue());
+            ThreadClass.setStatus(App::PropertyStatus::ReadOnly, !Threaded.getValue());
+            Diameter.setStatus(App::PropertyStatus::ReadOnly,true);
         }
 
         if (holeCutTypeStr == "None") {
-            HoleCutCustomValues.setReadOnly(true);
-            HoleCutDiameter.setReadOnly(true);
-            HoleCutDepth.setReadOnly(true);
-            HoleCutCountersinkAngle.setReadOnly(true);
+            HoleCutCustomValues.setStatus(App::PropertyStatus::ReadOnly,true);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly,true);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly,true);
+            HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else if (holeCutTypeStr == "Counterbore") {
-            HoleCutCustomValues.setReadOnly(true);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(true);
+            HoleCutCustomValues.setStatus(App::PropertyStatus::ReadOnly,true);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly,true);
         }
         else if (holeCutTypeStr == "Countersink") {
-            HoleCutCustomValues.setReadOnly(true);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
+            HoleCutCustomValues.setStatus(App::PropertyStatus::ReadOnly,true);
+            HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
+            HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly, false);
         }
         else { // screw definition
-            HoleCutCustomValues.setReadOnly(false);
+            HoleCutCustomValues.setStatus(App::PropertyStatus::ReadOnly, false);
             if (HoleCutCustomValues.getValue()) {
-                HoleCutDiameter.setReadOnly(false);
-                HoleCutDepth.setReadOnly(false);
+                HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly, false);
+                HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly, false);
                 // we must not set HoleCutCountersinkAngle here because the info if this can
                 // be enabled is first available in updateHoleCutParams and thus handled there
                 updateHoleCutParams();
             }
             else {
-                HoleCutDiameter.setReadOnly(true);
-                HoleCutDepth.setReadOnly(true);
-                HoleCutCountersinkAngle.setReadOnly(true);
+                HoleCutDiameter.setStatus(App::PropertyStatus::ReadOnly,true);
+                HoleCutDepth.setStatus(App::PropertyStatus::ReadOnly,true);
+                HoleCutCountersinkAngle.setStatus(App::PropertyStatus::ReadOnly,true);
             }
         }
 
@@ -1167,10 +1167,10 @@ void Hole::onChanged(const App::Property *prop)
         ProfileBased::onChanged(&Threaded);
 
         bool v = (type != "None") || !Threaded.getValue() || !ModelActualThread.getValue();
-        ThreadPitch.setReadOnly(v);
-        ThreadAngle.setReadOnly(v);
-        ThreadCutOffInner.setReadOnly(v);
-        ThreadCutOffOuter.setReadOnly(v);
+        ThreadPitch.setStatus(App::PropertyStatus::ReadOnly, v);
+        ThreadAngle.setStatus(App::PropertyStatus::ReadOnly, v);
+        ThreadCutOffInner.setStatus(App::PropertyStatus::ReadOnly, v);
+        ThreadCutOffOuter.setStatus(App::PropertyStatus::ReadOnly, v);
 
         // Diameter parameter depends on this
         if (type != "None" )
@@ -1182,19 +1182,19 @@ void Hole::onChanged(const App::Property *prop)
         // thread class and direction are only sensible if threaded
         // fit only sensible if not threaded
         if (Threaded.getValue()) {
-            ThreadClass.setReadOnly(false);
-            ThreadDirection.setReadOnly(false);
-            ThreadFit.setReadOnly(true);
-            ModelActualThread.setReadOnly(true); // For now set this one to read only
+            ThreadClass.setStatus(App::PropertyStatus::ReadOnly, false);
+            ThreadDirection.setStatus(App::PropertyStatus::ReadOnly, false);
+            ThreadFit.setStatus(App::PropertyStatus::ReadOnly,true);
+            ModelActualThread.setStatus(App::PropertyStatus::ReadOnly,true); // For now set this one to read only
         }
         else {
-            ThreadClass.setReadOnly(true);
-            ThreadDirection.setReadOnly(true);
+            ThreadClass.setStatus(App::PropertyStatus::ReadOnly,true);
+            ThreadDirection.setStatus(App::PropertyStatus::ReadOnly,true);
             if (type == "None")
-                ThreadFit.setReadOnly(true);
+                ThreadFit.setStatus(App::PropertyStatus::ReadOnly,true);
             else
-                ThreadFit.setReadOnly(false);
-            ModelActualThread.setReadOnly(true);
+                ThreadFit.setStatus(App::PropertyStatus::ReadOnly, false);
+            ModelActualThread.setStatus(App::PropertyStatus::ReadOnly,true);
         }
 
         // Diameter parameter depends on this
@@ -1202,29 +1202,29 @@ void Hole::onChanged(const App::Property *prop)
     }
     else if (prop == &ModelActualThread) {
         bool v =(!ModelActualThread.getValue()) ||
-                (Threaded.isReadOnly()) ||
+                (Threaded.testStatus(App::PropertyStatus::ReadOnly)) ||
                 (std::string(ThreadType.getValueAsString()) != "None");
 
-        ThreadPitch.setReadOnly(v);
-        ThreadAngle.setReadOnly(v);
-        ThreadCutOffInner.setReadOnly(v);
-        ThreadCutOffOuter.setReadOnly(v);
+        ThreadPitch.setStatus(App::PropertyStatus::ReadOnly, v);
+        ThreadAngle.setStatus(App::PropertyStatus::ReadOnly, v);
+        ThreadCutOffInner.setStatus(App::PropertyStatus::ReadOnly, v);
+        ThreadCutOffOuter.setStatus(App::PropertyStatus::ReadOnly, v);
     }
     else if (prop == &DrillPoint) {
         if (DrillPoint.getValue() == 1) {
-            DrillPointAngle.setReadOnly(false);
-            DrillForDepth.setReadOnly(false);
+            DrillPointAngle.setStatus(App::PropertyStatus::ReadOnly, false);
+            DrillForDepth.setStatus(App::PropertyStatus::ReadOnly, false);
         }
         else {
-            DrillPointAngle.setReadOnly(true);
-            DrillForDepth.setReadOnly(true);
+            DrillPointAngle.setStatus(App::PropertyStatus::ReadOnly,true);
+            DrillForDepth.setStatus(App::PropertyStatus::ReadOnly,true);
         }
     }
     else if (prop == &Tapered) {
         if (Tapered.getValue())
-            TaperedAngle.setReadOnly(false);
+            TaperedAngle.setStatus(App::PropertyStatus::ReadOnly, false);
         else
-            TaperedAngle.setReadOnly(true);
+            TaperedAngle.setStatus(App::PropertyStatus::ReadOnly,true);
     }
     else if (prop == &ThreadSize) {
         updateDiameterParam();
@@ -1253,10 +1253,10 @@ void Hole::onChanged(const App::Property *prop)
         updateHoleCutParams();
     }
     else if (prop == &DepthType) {
-        Depth.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
-        DrillPoint.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
-        DrillPointAngle.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
-        DrillForDepth.setReadOnly((std::string(DepthType.getValueAsString()) != "Dimension"));
+        Depth.setStatus(App::PropertyStatus::ReadOnly, (std::string(DepthType.getValueAsString()) != "Dimension"));
+        DrillPoint.setStatus(App::PropertyStatus::ReadOnly, (std::string(DepthType.getValueAsString()) != "Dimension"));
+        DrillPointAngle.setStatus(App::PropertyStatus::ReadOnly, (std::string(DepthType.getValueAsString()) != "Dimension"));
+        DrillForDepth.setStatus(App::PropertyStatus::ReadOnly, (std::string(DepthType.getValueAsString()) != "Dimension"));
     }
     ProfileBased::onChanged(prop);
 }

@@ -57,7 +57,7 @@ Boolean::Boolean()
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",App::Prop_None,"Refine shape (clean up redundant edges) after adding/subtracting");
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
@@ -164,7 +164,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
 
 void Boolean::onChanged(const App::Property* prop) {
     
-    if(strcmp(prop->getName(), "Group") == 0)
+    if(prop->getName() == "Group")
         touch();
 
     PartDesign::Feature::onChanged(prop);
