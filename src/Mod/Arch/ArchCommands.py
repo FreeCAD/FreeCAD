@@ -753,7 +753,8 @@ def pruneIncluded(objectslist,strict=False):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
                 for parent in obj.InList:
                     if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]):
-                        if not parent.isDerivedFrom("Part::Part2DObject"):
+                        if not parent.isDerivedFrom("Part::Part2DObject") \
+                                and not parent.isDerivedFrom("Part::SubShapeBinder"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"Host") and (parent.Host == obj):
                                 pass
