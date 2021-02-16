@@ -51,6 +51,8 @@ public:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg)=0;
     const QString onAddSelection(const Gui::SelectionChanges& msg);
+    virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
+    virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar);
     void exitSelectionMode();
     QVariant setUpToFace(const QString& text);
