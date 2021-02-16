@@ -126,7 +126,7 @@ void TaskPolarPatternParameters::setupUI()
     updateViewTimer->setInterval(getUpdateViewTimeout());
     connect(updateViewTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateViewTimer()));
-    
+
     connect(ui->comboAxis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
@@ -247,7 +247,7 @@ void TaskPolarPatternParameters::removeObject(App::DocumentObject* obj)
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
-        
+
         if (originalSelected(msg)) {
             exitSelectionMode();
         }
@@ -258,7 +258,7 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             getReferencedSelection(pcPolarPattern, msg, selObj, axes);
             if(!selObj)
                     return;
-            
+
             if (selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
                 setupTransaction();
                 pcPolarPattern->Axis.setValue(selObj, axes);
@@ -319,7 +319,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(true, false);
+            addReferenceSelectionGate(true, false, false, false, true);
         } else {
             exitSelectionMode();
             pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());
