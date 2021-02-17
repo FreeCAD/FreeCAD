@@ -24,6 +24,7 @@ import FreeCAD
 import Path
 import PathScripts.PathJob as PathJob
 import PathScripts.PathSlot as PathSlot
+import PathScripts.PathGeom as PathGeom
 from PathTests.PathTestUtils import PathTestBase
 
 
@@ -118,7 +119,7 @@ class TestPathSlot(PathTestBase):
         return "({}, {})".format(x, y)
 
     def test00(self):
-        '''Test Slot on horizontal rectangular face: ReverseDirection=True; LayerMode=Single-pass'''
+        '''Test horizontal rectangular face: ReverseDirection=True; LayerMode=Single-pass'''
 
         # Identify base feature(s) to be used for operation's Base Geometry
         base = self.doc.Cut
