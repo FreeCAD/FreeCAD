@@ -1537,7 +1537,7 @@ void CmdFemPostFunctions::languageChange()
 
     cmd = a[1];
     cmd->setText(QApplication::translate("CmdFemPostFunctions","Sphere"));
-    cmd->setToolTip(QApplication::translate("FEM_PostCreateFunctions","Create a phere function, defined by its center and radius"));
+    cmd->setToolTip(QApplication::translate("FEM_PostCreateFunctions","Create a sphere function, defined by its center and radius"));
     cmd->setStatusTip(cmd->toolTip());
 
 }
