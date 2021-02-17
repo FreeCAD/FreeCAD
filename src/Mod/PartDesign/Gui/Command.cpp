@@ -1727,7 +1727,7 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
 
         // If the initial helix creation fails then it leaves the base object invisible which makes things
         // more difficult for the user.
-        // To avoid this the base obejct will be made tmp. visible again.
+        // To avoid this the base object will be made tmp. visible again.
         if (Feat->isError()) {
             App::DocumentObject* base = static_cast<PartDesign::Feature*>(Feat)->BaseFeature.getValue();
             if (base) {
