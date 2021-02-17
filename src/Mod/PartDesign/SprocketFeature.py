@@ -156,8 +156,8 @@ class SprocketTaskPanel:
         QtCore.QObject.connect(self.form.Quantity_Pitch, QtCore.SIGNAL("valueChanged(double)"), self.pitchChanged)
         QtCore.QObject.connect(self.form.Quantity_RollerDiameter, QtCore.SIGNAL("valueChanged(double)"), self.rollerDiameterChanged)
         QtCore.QObject.connect(self.form.spinBox_NumberOfTeeth, QtCore.SIGNAL("valueChanged(int)"), self.numTeethChanged)
-        QtCore.QObject.connect(self.form.comboBox_SprocketReference, QtCore.SIGNAL("currentTextChanged(const QString)"), self.SprocketReferenceChanged)
-        QtCore.QObject.connect(self.form.Quantity_Thickness, QtCore.SIGNAL("valueChanged(double)"), self.ThicknessChanged)
+        QtCore.QObject.connect(self.form.comboBox_SprocketReference, QtCore.SIGNAL("currentTextChanged(const QString)"), self.sprocketReferenceChanged)
+        QtCore.QObject.connect(self.form.Quantity_Thickness, QtCore.SIGNAL("valueChanged(double)"), self.thicknessChanged)
         
         self.update()
         
@@ -190,7 +190,7 @@ class SprocketTaskPanel:
         self.obj.Proxy.execute(self.obj)
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
-    def SprocketReferenceChanged(self, size):
+    def sprocketReferenceChanged(self, size):
         """
         ANSI B29.1-2011 standard roller chain sizes in USCS units (inches)
         {size: [Pitch, Roller Diameter]}
@@ -245,7 +245,7 @@ class SprocketTaskPanel:
         self.obj.Proxy.execute(self.obj)
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
-    def ThicknessChanged(self, value):
+    def thicknessChanged(self, value):
         self.obj.Thickness = str(value)
         self.obj.Proxy.execute(self.obj)
         
