@@ -22,6 +22,7 @@
 
 import FreeCAD
 import PySide
+import re
 
 __title__ = 'Generic property container to store some values.'
 __author__ = 'sliptonic (Brad Collette)'
@@ -70,7 +71,7 @@ class PropertyBag(object):
     def __sanitizePropertyName(self, name):
         if(len(name) == 0):
             return
-        clean = name[0].lower()
+        clean = name[0]
         for i in range(1, len(name)):
             if (name[i] == ' '):
                 clean += name[i + 1].upper()
@@ -96,6 +97,8 @@ class PropertyBag(object):
         groups = self.obj.CustomPropertyGroups
 
         name = self.__sanitizePropertyName(name)
+        if not re.match("^[A-Za-z0-9_]*$", name):
+            raise ValueError('Property Name can only contain letters and numbers')
 
         if not group in groups:
             groups.append(group)
