@@ -300,6 +300,11 @@ ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(
 
 ViewProviderPythonFeatureImp::~ViewProviderPythonFeatureImp()
 {
+    Base::PyGILStateLocker lock;
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) py_##_name = Py::None();
+
+    FC_PY_VIEW_OBJECT
 }
 
 void ViewProviderPythonFeatureImp::init(PyObject *pyobj) {

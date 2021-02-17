@@ -305,7 +305,6 @@ void TaskHelixParameters::updateUI()
 void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-
         exitSelectionMode();
         std::vector<std::string> axis;
         App::DocumentObject* selObj;
@@ -363,12 +362,15 @@ void TaskHelixParameters::onAxisChanged(int num)
     if (lnk.getValue() == 0) {
         // enter reference selection mode
         TaskSketchBasedParameters::onSelectReference(true, true, false, true);
+        return;
     } else {
         if (!pcHelix->getDocument()->isIn(lnk.getValue())){
             Base::Console().Error("Object was deleted\n");
             return;
         }
         propReferenceAxis->Paste(lnk);
+
+        // in case user is in selection mode, but changed his mind before selecting anything.
         exitSelectionMode();
     }
 
@@ -474,6 +476,32 @@ void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj, std::vecto
 
         obj = lnk.getValue();
         sub = lnk.getSubValues();
+    }
+}
+
+void TaskHelixParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+{
+    PartDesign::ProfileBased* pcHelix = dynamic_cast<PartDesign::Helix*>(vp->getObject());
+    if (pcHelix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
+        Gui::Document* doc = vp->getDocument();
+        if (doc) {
+            doc->setHide(profile->getNameInDocument());
+        }
+    } else {
+        TaskSketchBasedParameters::startReferenceSelection(profile, base);
+    }
+}
+
+void TaskHelixParameters::finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+{
+    PartDesign::ProfileBased* pcHelix = dynamic_cast<PartDesign::Helix*>(vp->getObject());
+    if (pcHelix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
+        Gui::Document* doc = vp->getDocument();
+        if (doc) {
+            doc->setShow(profile->getNameInDocument());
+        }
+    } else {
+        TaskSketchBasedParameters::finishReferenceSelection(profile, base);
     }
 }
 

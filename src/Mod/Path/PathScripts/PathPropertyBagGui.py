@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPropertyBag as PathPropertyBag
