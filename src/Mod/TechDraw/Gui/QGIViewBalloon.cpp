@@ -153,13 +153,13 @@ void QGIBalloonLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
     QGIViewBalloon* qgivBalloon = dynamic_cast<QGIViewBalloon*>(parentItem());
-    if (qgivBalloon == nullptr) {
+    if (!qgivBalloon) {
         qWarning() << "QGIBalloonLabel::mouseDoubleClickEvent: No parent item";
         return;
     }
 
     auto ViewProvider = dynamic_cast<ViewProviderBalloon*>(qgivBalloon->getViewProvider(qgivBalloon->getViewObject()));
-    if (ViewProvider == nullptr) {
+    if (!ViewProvider) {
         qWarning() << "QGIBalloonLabel::mouseDoubleClickEvent: No valid view provider";
         return;
     }
@@ -408,13 +408,12 @@ void QGIViewBalloon::updateView(bool update)
 //    Base::Console().Message("QGIVB::updateView()\n");
     Q_UNUSED(update);
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if( balloon == nullptr )
+    if (!balloon)
         return;
 
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp)
         return;
-    }
 
     if (update) {
         QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
@@ -437,15 +436,15 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
 //    Base::Console().Message("QGIVB::updateBalloon()\n");
     (void) obtuse;
     const auto balloon( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
-    if( balloon == nullptr ) {
+    if (!balloon) {
         return;
     }
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp) {
         return;
     }
     const TechDraw::DrawViewPart *refObj = balloon->getViewPart();
-    if (refObj == nullptr) {
+    if (!refObj) {
         return;
     }
 
@@ -476,10 +475,9 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
 
 void QGIViewBalloon::balloonLabelDragged(bool ctrl)
 {
-//    Base::Console().Message("QGIVB::bLabelDragged(%d)\n", ctrl);
     m_ctrl = ctrl;
     auto dvb( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
-    if (dvb == nullptr)
+    if (!dvb)
         return;
 
     if (!m_dragInProgress) {           //first drag movement
@@ -489,34 +487,52 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
         }
     }
 
+    DrawView* balloonParent = getSourceView();
+    if (balloonParent)
+        // redraw the balloon at the new position
+        // note that we don't store the new position to the X/Y properties
+        // since the dragging is not yet finished
+        drawBalloon(true);
+
+    // store if origin is also moving to be able to later calc new origin and update feature
+    if (ctrl)
+        m_originDragged = true;
+}
+
+void QGIViewBalloon::balloonLabelDragFinished()
+{
+    // stores the final drag position for undo
+
+    auto dvb(dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()));
+    if (!dvb)
+        return;
+
     double scale = 1.0;
     DrawView* balloonParent = getSourceView();
-    if (balloonParent != nullptr) {
+    if (balloonParent)
         scale = balloonParent->getScale();
-    }
 
     //set feature position (x,y) from graphic position
     double x = Rez::appX(balloonLabel->X() / scale),
            y = Rez::appX(balloonLabel->Y() / scale);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Balloon"));
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dvb->getNameInDocument(), x);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dvb->getNameInDocument(), -y);
-    //if origin is also moving, calc new origin and update feature
-    if (ctrl) {
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f", dvb->getNameInDocument(), x);
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f", dvb->getNameInDocument(), -y);
+
+    // for the case that origin was also dragged, calc new origin and update feature
+    if (m_originDragged) {
         Base::Vector3d pos(x, -y, 0.0);
         Base::Vector3d newOrg = pos - m_saveOffset;
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.OriginX = %f",
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.OriginX = %f",
                                 dvb->getNameInDocument(), newOrg.x);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.OriginY = %f",
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.OriginY = %f",
                                 dvb->getNameInDocument(), newOrg.y);
     }
+    
     Gui::Command::commitCommand();
-}
 
-void QGIViewBalloon::balloonLabelDragFinished()
-{
-    //really nothing to do here. position has been update by drag already
     m_dragInProgress = false;
+    m_originDragged = false;
 }
 
 //from QGVP::mouseReleaseEvent - pos = eventPos in scene coords?
@@ -525,22 +541,22 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
 //    Base::Console().Message("QGIVB::placeBalloon(%s)\n",
 //                            DrawUtil::formatVector(pos).c_str());
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if( balloon == nullptr ) {
+    if (!balloon) {
         return;
     }
 
     DrawView* balloonParent = dynamic_cast<DrawView*>(balloon->SourceView.getValue());
-    if (balloonParent == nullptr) {
+    if (!balloonParent) {
         return;
     }
     
     auto featPage = balloonParent->findParentPage();
-    if (featPage == nullptr) {
+    if (!featPage) {
         return;
     }
     
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp) {
         return;
     }
 
@@ -549,9 +565,9 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
     QPointF viewPos;
     Gui::ViewProvider* objVp = QGIView::getViewProvider(balloonParent);
     auto partVP = dynamic_cast<ViewProviderViewPart*>(objVp);
-    if ( partVP != nullptr ) {
+    if (partVP) {
         qgivParent = partVP->getQView();
-        if (qgivParent != nullptr) {
+        if (qgivParent) {
         //tip position is mouse release pos in parentView coords ==> OriginX, OriginY
         //bubble pos is some arbitrary shift from tip position ==> X,Y
             viewPos = qgivParent->mapFromScene(pos);
@@ -581,6 +597,12 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
 
 void QGIViewBalloon::draw()
 {
+    // just redirect
+    drawBalloon(false);
+}
+
+void QGIViewBalloon::drawBalloon(bool dragged)
+{
 //    Base::Console().Message("QGIVB::draw()\n");
     if (!isVisible()) {
         return;
@@ -598,7 +620,7 @@ void QGIViewBalloon::draw()
     show();
 
     const TechDraw::DrawViewPart *refObj = balloon->getViewPart();
-    if (refObj == nullptr) {
+    if (!refObj) {
         return;
     }
     if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
@@ -608,7 +630,7 @@ void QGIViewBalloon::draw()
     }
 
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp) {
         return;
     }
 
@@ -616,8 +638,16 @@ void QGIViewBalloon::draw()
 
     double textWidth = balloonLabel->getDimText()->boundingRect().width();
     double textHeight = balloonLabel->getDimText()->boundingRect().height();
-    float x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
-    float y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
+    float x, y;
+    // when not dragging take the X/Y properties otherwise the current label position
+    if (!dragged) {
+        x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
+        y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
+    }
+    else {
+        x = balloonLabel->X();
+        y = -balloonLabel->Y();
+    }
     Base::Vector3d lblCenter(x, -y, 0.0);
 
     float arrowTipX = Rez::guiX(balloon->OriginX.getValue() * refObj->getScale());
@@ -871,11 +901,11 @@ QColor QGIViewBalloon::getNormalColor()
     m_colNormal = PreferencesGui::dimQColor();
 
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if( balloon == nullptr )
+    if(!balloon)
         return m_colNormal;
 
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    if (!vp) {
         return m_colNormal;
     }
 
@@ -905,7 +935,7 @@ DrawView* QGIViewBalloon::getSourceView() const
     DrawView* balloonParent = nullptr;
     App::DocumentObject* docObj = getViewObject();
     DrawViewBalloon* dvb = dynamic_cast<DrawViewBalloon*>(docObj);
-    if (dvb != nullptr) {
+    if (dvb) {
         balloonParent = dynamic_cast<DrawView*>(dvb->SourceView.getValue());
     }
     return balloonParent;
