@@ -450,19 +450,19 @@ bool isFeatureMovable(App::DocumentObject* const feat)
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
             App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            if (axis && !isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
                 return false;
         }
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
-            App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            App::DocumentObject* spine = prop->getValue();
+            if (spine && !isFeatureMovable(static_cast<App::DocumentObject*>(spine)))
                 return false;
         }
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
-            App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            App::DocumentObject* auxSpine = prop->getValue();
+            if (auxSpine && !isFeatureMovable(static_cast<App::DocumentObject*>(auxSpine)))
                 return false;
         }
 
