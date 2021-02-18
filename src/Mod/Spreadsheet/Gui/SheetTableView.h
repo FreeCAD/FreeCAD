@@ -67,8 +67,10 @@ protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(App::CellAddress address);
     void insertRows();
+    void insertRowsAfter();
     void removeRows();
     void insertColumns();
+    void insertColumnsAfter();
     void removeColumns();
     void cellProperties();
 protected:
