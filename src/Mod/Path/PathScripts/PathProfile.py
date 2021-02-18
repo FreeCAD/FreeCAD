@@ -37,6 +37,7 @@ from PySide import QtCore
 from lazy_loader.lazy_loader import LazyLoader
 ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
 Part = LazyLoader('Part', globals(), 'Part')
+DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
 
 
 __title__ = "Path Profile Operation"
@@ -589,7 +590,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     # Edges pre-processing
     def _processEdges(self, obj):
-        import DraftGeomUtils
         shapes = list()
         basewires = list()
         delPairs = list()
