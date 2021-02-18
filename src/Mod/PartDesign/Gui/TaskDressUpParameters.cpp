@@ -284,9 +284,11 @@ void TaskDressUpParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         auto history = pcDressUp->getElementHistory(pcDressUp,msg.pSubName);
         const char *element = 0;
         for(auto &hist : history) {
-            if(hist.obj != base
-                    || (!allowFaces && boost::starts_with(hist.element,"Face"))
-                    || (!allowEdges && boost::starts_with(hist.element,"Edge")))
+            if(hist.obj != base)
+                continue;
+            auto name = pcDressUp->getElementName(hist.element.c_str());
+            if ((!allowFaces && boost::starts_with(name.second.c_str(),"Face"))
+                || (!allowEdges && boost::starts_with(name.second.c_str(),"Edge")))
             {
                 continue;
             }
@@ -297,9 +299,8 @@ void TaskDressUpParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             element = hist.element.c_str();
         }
         if(element) {
-            std::string subname = Data::ComplexGeoData::elementMapPrefix()+element;
             std::vector<App::SubObjectT> sels;
-            sels.emplace_back(base, subname.c_str());
+            sels.emplace_back(base, element);
 
             // base element found, check if it is already in the list widget
             auto items = listWidget->findItems(
@@ -343,7 +344,7 @@ void TaskDressUpParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 std::string sub;
                 auto obj = getInEdit(sub);
                 if(obj) {
-                    sub += subname;
+                    sub += element;
                     Gui::Selection().addSelection(obj->getDocument()->getName(),
                             obj->getNameInDocument(), sub.c_str());
                 }
