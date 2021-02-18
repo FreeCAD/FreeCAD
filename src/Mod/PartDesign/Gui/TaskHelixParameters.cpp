@@ -479,28 +479,41 @@ void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj, std::vecto
     }
 }
 
+bool TaskHelixParameters::showPreview(PartDesign::Helix* helix)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/PartDesign");
+    if ((hGrp->GetBool("SubractiveHelixPreview", true) && helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) ||
+        (hGrp->GetBool("AdditiveHelixPreview", false) && helix->getAddSubType() == PartDesign::FeatureAddSub::Additive)) {
+        return true;
+    }
+
+    return false;
+}
+
 void TaskHelixParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
 {
-    PartDesign::ProfileBased* pcHelix = dynamic_cast<PartDesign::Helix*>(vp->getObject());
-    if (pcHelix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
+    PartDesign::Helix* pcHelix = dynamic_cast<PartDesign::Helix*>(vp->getObject());
+    if (pcHelix && showPreview(pcHelix)) {
         Gui::Document* doc = vp->getDocument();
         if (doc) {
             doc->setHide(profile->getNameInDocument());
         }
-    } else {
+    }
+    else {
         TaskSketchBasedParameters::startReferenceSelection(profile, base);
     }
 }
 
 void TaskHelixParameters::finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
 {
-    PartDesign::ProfileBased* pcHelix = dynamic_cast<PartDesign::Helix*>(vp->getObject());
-    if (pcHelix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
+    PartDesign::Helix* pcHelix = dynamic_cast<PartDesign::Helix*>(vp->getObject());
+    if (pcHelix && showPreview(pcHelix)) {
         Gui::Document* doc = vp->getDocument();
         if (doc) {
             doc->setShow(profile->getNameInDocument());
         }
-    } else {
+    }
+    else {
         TaskSketchBasedParameters::finishReferenceSelection(profile, base);
     }
 }

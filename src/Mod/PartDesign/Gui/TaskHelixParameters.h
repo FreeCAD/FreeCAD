@@ -31,8 +31,6 @@
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHelix.h"
 
-class Ui_TaskHelixParameters;
-
 namespace App {
 class Property;
 }
@@ -42,6 +40,7 @@ class ViewProvider;
 }
 
 namespace PartDesignGui {
+class Ui_TaskHelixParameters;
 
 
 
@@ -54,6 +53,8 @@ public:
     ~TaskHelixParameters();
 
     virtual void apply() override;
+
+    static bool showPreview(PartDesign::Helix*);
 
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to
