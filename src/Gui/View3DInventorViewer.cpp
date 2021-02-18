@@ -4275,29 +4275,28 @@ View3DInventorViewer::Private::checkElementIntersection(ViewProviderDocumentObje
         return -1;
     auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
     int res = -1;
-    for(auto type : data->getElementTypes()) {
-        size_t count = data->countSubElements(type);
-        if(!count)
-            continue;
+    size_t count = data->countSubElements("Face");
+    // Try face first. And only try edge if there is no face.
+    if(count) {
+        std::string element("Face");
+        Base::Polygon2d loop;
+        std::vector<Base::Vector3d> points;
+        std::vector<Base::Vector3d> pointNormals; // not used
+        std::vector<Data::ComplexGeoData::Facet> faces;
         for(size_t i=1;i<=count;++i) {
-            std::string element(type);
+            element.resize(4);
             element += std::to_string(i);
             std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
             if(!segment)
                 continue;
-            std::vector<Base::Vector3d> points;
-            std::vector<Base::Vector3d> pointNormals; // not used
-            std::vector<Data::ComplexGeoData::Facet> faces;
-
-            // Call getFacesFromSubelement to obtain the triangulation of
-            // the segment.
+            points.clear();
+            pointNormals.clear();
+            faces.clear();
+            // Call getFacesFromSubelement to obtain the triangulation of this face.
             data->getFacesFromSubelement(segment.get(),points,pointNormals,faces);
             if(faces.empty())
                 continue;
-
             res = 0;
-
-            Base::Polygon2d loop;
             for(auto &facet : faces) {
                 loop.DeleteAll();
                 auto v = proj(points[facet.I1]);
@@ -4307,6 +4306,48 @@ View3DInventorViewer::Private::checkElementIntersection(ViewProviderDocumentObje
                 v = proj(points[facet.I3]);
                 loop.Add(Base::Vector2d(v.x, v.y));
                 if(polygon.Intersect(loop))
+                    return 1;
+            }
+        }
+    }
+    // res < 0 means no face found
+    if (res < 0 && (count = data->countSubElements("Edge"))) {
+        std::string element("Edge");
+        Base::Polygon2d loop;
+        std::vector<Base::Vector3d> points;
+        std::vector<Data::ComplexGeoData::Line> lines;
+        for(size_t i=1;i<=count;++i) {
+            element.resize(4);
+            element += std::to_string(i);
+            std::unique_ptr<Data::Segment> segment(data->getSubElementByName(element.c_str()));
+            if(!segment)
+                continue;
+            points.clear();
+            lines.clear();
+            data->getLinesFromSubelement(segment.get(),points,lines);
+            if(lines.empty())
+                continue;
+            res = 0;
+            for(auto &line : lines) {
+                loop.DeleteAll();
+                auto v = proj(points[line.I1]);
+                loop.Add(Base::Vector2d(v.x, v.y));
+                v = proj(points[line.I2]);
+                loop.Add(Base::Vector2d(v.x, v.y));
+                if(polygon.Intersect(loop))
+                    return 1;
+            }
+        }
+    }
+    if (res < 0) {
+        std::vector<Base::Vector3d> pointNormals; // not used
+        std::vector<Base::Vector3d> points;
+        data->getPoints(points,pointNormals,100);
+        if (points.size()) {
+            res = 0;
+            for (auto &pt : points) {
+                auto v = proj(pt);
+                if(polygon.Contains(Base::Vector2d(v.x, v.y)))
                     return 1;
             }
         }
