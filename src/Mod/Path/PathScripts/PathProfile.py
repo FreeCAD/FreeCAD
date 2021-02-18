@@ -407,13 +407,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             tup = shapeEnv, True, 'pathProfile', angle, axis, strDep, finDep
                             shapes.append(tup)
 
-                if obj.processPerimeter:
+                if faces and obj.processPerimeter:
                     if obj.HandleMultipleFeatures == 'Collectively':
                         custDepthparams = self.depthparams
                         cont = True
-
-                        if len(faces) > 0:
-                            profileshape = Part.makeCompound(faces)
+                        profileshape = Part.makeCompound(faces)
 
                         if obj.LimitDepthToFace is True and obj.EnableRotation != 'Off':
                             if profileshape.BoundBox.ZMin > obj.FinalDepth.Value:
