@@ -31,13 +31,17 @@ from PathTests.PathTestUtils import PathTestBase
 class TestPathSlot(PathTestBase):
     """Unit tests for the Slot operation."""
 
-    @staticmethod
-    def _setup_test_environment():
-        """_setup_test_environment()...
-        This method is upon instantiation of this test class.  Add code and objects here
-        that are needed for the duration of the test() methods in this class.
-        This method does not have access to the class `self` reference.
+    @classmethod
+    def setUpClass(cls):
+        """setUpClass()...
+        This method is called upon instantiation of this test class.  Add code and objects here
+        that are needed for the duration of the test() methods in this class.  In other words,
+        set up the 'global' test environment here; use the `setUp()` method to set up a 'local'
+        test environment. 
+        This method does not have access to the class `self` reference, but it
+        is able to call static methods within this same class.
         """
+
         # doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_slot_01.fcstd')
         doc_title = "TestSlot"
         doc = FreeCAD.newDocument(doc_title)
@@ -56,22 +60,12 @@ class TestPathSlot(PathTestBase):
         cut = doc.addObject('Part::Cut', 'Cut')
         cut.Base = box0
         cut.Tool = box1
+        cut.Placement = FreeCAD.Placement(FreeCAD.Vector(10.0, 10.0, 0.0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
         doc.recompute()
 
         # Create Job object
         PathJob.Create('Job', [doc.Cut], None)
         doc.recompute()
-
-    @classmethod
-    def setUpClass(cls):
-        """setUpClass()...
-        This method is called upon instantiation of this test class.  Add code and objects here
-        that are needed for the duration of the test() methods in this class.
-        This method does not have access to the class `self` reference.  This method
-        is able to call static methods within this same class.
-        """
-        # FreeCAD.Console.PrintMessage("TestPathSlot.setUpClass()\n")
-        cls._setup_test_environment()
 
     @classmethod
     def tearDownClass(cls):
@@ -81,8 +75,9 @@ class TestPathSlot(PathTestBase):
         This method does not have access to the class `self` reference.  This method
         is able to call static methods within this same class.
         """
-        # FreeCAD.Console.PrintMessage("TestPathSlot.tearDownClass()\n")
+        # Comment out to leave test file open and objects and paths intact after all tests finish
         FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
+        pass
 
     def setUp(self):
         """setUp()...
@@ -101,22 +96,45 @@ class TestPathSlot(PathTestBase):
 
     def _set_depths_and_heights(self, op):
         # Set Depths
-        # set start and final depth in order to eliminate effects of stock (and its default values)
+        # Set start and final depth in order to eliminate effects of stock (and its default values)
         op.setExpression('StartDepth', None)
         op.StartDepth.Value = 10.0
         op.setExpression('FinalDepth', None)
         op.FinalDepth.Value = 5.0
+
+        # Set step down so as to only produce one layer path
         op.setExpression('StepDown', None)
         op.StepDown.Value = 5.0
 
         # Set Heights
         # default values used
+        pass
 
-    def _format_point(self, cmd):
+    def _format_point(self, cmd, z=0.0):
         """Accepts command dict and returns point string coordinate"""
         x = round(cmd["X"], 2)
         y = round(cmd["Y"], 2)
-        return "({}, {})".format(x, y)
+        if z:
+            z = round(z, 2)
+        return "({}, {}, {})".format(x, y, z)
+
+    def _find_slot_points(self, slot):
+        pnts = list()
+        pnt_params = list()
+        z = -1.0
+        for c in slot.Path.Commands:
+            p = c.Parameters
+            if p.get("Z"):
+                if len(pnt_params) > 1:
+                    break
+                else:
+                    z = p.get("Z")
+            elif p.get("X") and p.get("Y"):
+                pnt_params.append(p)
+        for p in pnt_params:
+            pnts.append(self._format_point(p, z))
+        pnts.sort()
+        return pnts
 
     def test00(self):
         '''Test horizontal rectangular face: ReverseDirection=True; LayerMode=Single-pass'''
@@ -144,24 +162,18 @@ class TestPathSlot(PathTestBase):
         slot.recompute()
         self.doc.recompute()
         
-        pnts = list()
-        for c in slot.Path.Commands:
-            p = c.Parameters
-            keys = str(p.keys())[9:]
-            if "'X'" in keys and "'Y'" in keys:
-                pnts.append(self._format_point(p))
-        pnts.sort()
-        # print("pnts: {}\n".format(pnts))
+        pnts = self._find_slot_points(slot)
+        # self.con.PrintMessage("pnts: {}\n".format(pnts))
 
         # Verify point count
         if len(pnts) != 2:
             for c in slot.Path.Commands:
                 p = c.Parameters
-                print("Parameters: {}".format(p))
+                self.con.PrintMessage("Parameters: {}\n".format(p, z))
             self.assertEqual(len(pnts), 2)
 
         # Verify each line-segment point, excluding arcs
-        verify_points = ['(7.5, 0.0)', '(7.5, 15.0)']
+        verify_points = ['(17.5, 10.0, 5.0)', '(17.5, 25.0, 5.0)']
         for i in range(2):
             self.assertEqual(pnts[i], verify_points[i])
 
@@ -191,24 +203,18 @@ class TestPathSlot(PathTestBase):
         slot.recompute()
         self.doc.recompute()
         
-        pnts = list()
-        for c in slot.Path.Commands:
-            p = c.Parameters
-            keys = str(p.keys())[9:]
-            if "'X'" in keys and "'Y'" in keys:
-                pnts.append(self._format_point(p))
-        pnts.sort()
-        # print("pnts: {}\n".format(pnts))
+        pnts = self._find_slot_points(slot)
+        # self.con.PrintMessage("pnts: {}\n".format(pnts))
 
         # Verify point count
         if len(pnts) != 2:
             for c in slot.Path.Commands:
                 p = c.Parameters
-                print("Parameters: {}".format(p))
+                self.con.PrintMessage("Parameters: {}".format(p))
             self.assertEqual(len(pnts), 2)
 
         # Verify each line-segment point, excluding arcs
-        verify_points = ['(7.5, 0.0)', '(7.5, 15.0)']
+        verify_points = ['(17.5, 10.0, 5.0)', '(17.5, 25.0, 5.0)']
         for i in range(2):
             self.assertEqual(pnts[i], verify_points[i])
 
@@ -242,24 +248,18 @@ class TestPathSlot(PathTestBase):
         slot.recompute()
         self.doc.recompute()
         
-        pnts = list()
-        for c in slot.Path.Commands:
-            p = c.Parameters
-            keys = str(p.keys())[9:]
-            if "'X'" in keys and "'Y'" in keys:
-                pnts.append(self._format_point(p))
-        pnts.sort()
-        # print("pnts: {}\n".format(pnts))
+        pnts = self._find_slot_points(slot)
+        # self.con.PrintMessage("pnts: {}\n".format(pnts))
 
         # Verify point count
         if len(pnts) != 2:
             for c in slot.Path.Commands:
                 p = c.Parameters
-                print("Parameters: {}".format(p))
+                self.con.PrintMessage("Parameters: {}".format(p, z))
             self.assertEqual(len(pnts), 2)
 
         # Verify each line-segment point, excluding arcs
-        verify_points = ['(7.5, 0.0)', '(7.5, 15.0)']
+        verify_points = ['(17.5, 10.0, 5.0)', '(17.5, 25.0, 5.0)']
         for i in range(2):
             self.assertEqual(pnts[i], verify_points[i])
 
