@@ -1447,6 +1447,12 @@ SoBoxSelectionRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
 
 void SoBoxSelectionRenderAction::beginTraversal(SoNode *node)
 {
+    if (!node) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("invalid node");
+        return;
+    }
+
     if (!PRIVATE(this)->busy && PRIVATE(this)->delayedpathcount) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
             FC_WARN("stray delay path");
