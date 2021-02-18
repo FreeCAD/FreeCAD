@@ -116,6 +116,11 @@ public:
     static void restoreDocumentItem(Gui::Document *gdoc, Base::XMLReader &reader);
     static bool saveDocumentItem(const Gui::Document *gdoc, Base::Writer &writer, const char *key);
     static void synchronizeSelectionCheckBoxes();
+    static QTreeWidgetItem *findItem(const App::SubObjectT &objT,
+                                     QTreeWidgetItem *context = nullptr,
+                                     App::SubObjectT *resT = nullptr,
+                                     bool sync = false,
+                                     bool select = false);
 
     static int iconSize();
 

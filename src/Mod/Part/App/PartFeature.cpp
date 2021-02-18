@@ -267,7 +267,11 @@ Feature::getElementHistory(App::DocumentObject *feature,
     int depth = 0;
     do {
         std::string original;
-        ret.emplace_back(feature,mapped.c_str());
+        if (boost::starts_with(mapped, Data::ComplexGeoData::elementMapPrefix()))
+            ret.emplace_back(feature, mapped.c_str());
+        else
+            ret.emplace_back(feature,
+                    (Data::ComplexGeoData::elementMapPrefix() + mapped).c_str());
         long tag = shape.getElementHistory(mapped.c_str(),&original,&ret.back().intermediates);
         App::DocumentObject *obj = nullptr;
         if (tag) {
@@ -283,7 +287,7 @@ Feature::getElementHistory(App::DocumentObject *feature,
             obj = doc->getObjectByID(std::abs(tag));
         }
         if(!recursive) {
-            ret.emplace_back(obj,original.c_str());
+            ret.emplace_back(obj, (Data::ComplexGeoData::elementMapPrefix() + original).c_str());
             ret.back().tag = tag;
             return ret;
         }

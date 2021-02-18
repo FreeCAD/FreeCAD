@@ -57,6 +57,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/SelectionView.h>
 
 #include "../App/PartFeature.h"
 #include "../App/BodyBase.h"
@@ -80,6 +81,8 @@
 #include "PartParams.h"
 
 using namespace Gui;
+
+FC_LOG_LEVEL_INIT("Part", false)
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -2584,6 +2587,126 @@ bool CmdPartSubShapeBinder::isActive(void) {
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Part_GeometryHistory
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartGeometryHistory)
+
+CmdPartGeometryHistory::CmdPartGeometryHistory()
+  :Command("Part_GeometryHistory")
+{
+    sAppModule      = "Part";
+    sGroup          = QT_TR_NOOP("Part");
+    sMenuText       = QT_TR_NOOP("Show geometry history");
+    sMenuText       = QT_TR_NOOP("Show a menu listing the history of the (pre)selected geometry");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "Part_GeometryHistory";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdPartGeometryHistory::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto sel = Gui::Selection().getPreselection().Object;
+    if (sel.getObjectName().empty()) {
+        auto sels = Gui::Selection().getSelectionT("", 0);
+        if (sels.empty()) {
+            FC_ERR("No selection");
+            return;
+        }
+        sel = sels.front();
+    }
+    auto element = sel.getNewElementName(false);
+    if (element.empty()) {
+        FC_ERR("No geometry element selection");
+        return;
+    }
+    auto sobj = sel.getSubObject();
+    if (!sobj) {
+        FC_ERR("Cannot find selected object: " << sel.getSubObjectFullName());
+        return;
+    }
+
+    std::vector<App::SubObjectT> sels;
+    for (auto &hist : Part::Feature::getElementHistory(sobj, element.c_str()))
+        sels.emplace_back(hist.obj, hist.element.c_str());
+
+    Gui::SelectionMenu menu;
+    menu.doPick(sels, sel);
+}
+
+bool CmdPartGeometryHistory::isActive(void)
+{
+    return Gui::Selection().hasSelection()
+        || Gui::Selection().hasPreselection();
+}
+
+//===========================================================================
+// Part_GeometryDerived
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartGeometryDerived)
+
+CmdPartGeometryDerived::CmdPartGeometryDerived()
+  :Command("Part_GeometryDerived")
+{
+    sAppModule      = "Part";
+    sGroup          = QT_TR_NOOP("Part");
+    sMenuText       = QT_TR_NOOP("Show derived geometries");
+    sMenuText       = QT_TR_NOOP("Show a menu listing all geometries that are derived from\n"
+                                 "the (pre)selected geometry");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "Part_GeometryDerived";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdPartGeometryDerived::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto sel = Gui::Selection().getPreselection().Object;
+    if (sel.getObjectName().empty()) {
+        auto sels = Gui::Selection().getSelectionT("", 0);
+        if (sels.empty()) {
+            FC_ERR("No selection");
+            return;
+        }
+        sel = sels.front();
+    }
+    auto element = sel.getNewElementName(false);
+    if (element.empty()) {
+        FC_ERR("No geometry element selection");
+        return;
+    }
+    auto sobj = sel.getSubObject();
+    if (!sobj) {
+        FC_ERR("Cannot find selected object: " << sel.getSubObjectFullName());
+        return;
+    }
+
+    std::vector<App::SubObjectT> sels;
+    auto inlist = sobj->getInListEx(true);
+    std::vector<App::DocumentObject*> objs(inlist.begin(), inlist.end());
+    for (auto obj : App::Document::getDependencyList(objs, App::Document::DepSort)) {
+        if (!obj->isDerivedFrom(Part::Feature::getClassTypeId()) || !inlist.count(obj))
+            continue;
+        for (auto &elementName : Part::Feature::getElementFromSource(obj, "", sobj, element.c_str()))
+            sels.emplace_back(obj, elementName.second.c_str());
+    }
+
+    Gui::SelectionMenu menu;
+    menu.doPick(sels, sel);
+}
+
+bool CmdPartGeometryDerived::isActive(void)
+{
+    return Gui::Selection().hasSelection()
+        || Gui::Selection().hasPreselection();
+}
+
+
 /////////////////////////////////////////////////////////////////////////
 
 void CreatePartCommands(void)
@@ -2637,4 +2760,6 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdMeasureToggleDelta());
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
+    rcCmdMgr.addCommand(new CmdPartGeometryHistory());
+    rcCmdMgr.addCommand(new CmdPartGeometryDerived());
 }

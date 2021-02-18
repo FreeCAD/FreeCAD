@@ -73,6 +73,7 @@
 #include "MetaTypes.h"
 #include "Action.h"
 #include "SelectionView.h"
+#include "PieMenu.h"
 #include "TreeParams.h"
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true)
@@ -1122,6 +1123,62 @@ TreeWidget::~TreeWidget()
         if(gdoc)
             slotDeleteDocument(*gdoc);
     }
+}
+
+QTreeWidgetItem *TreeWidget::findItem(const App::SubObjectT &objT,
+                                      QTreeWidgetItem *context,
+                                      App::SubObjectT *resT,
+                                      bool sync,
+                                      bool select)
+{
+    auto tree = instance();
+    if (!tree)
+        return nullptr;
+    auto obj = objT.getObject();
+    if (!obj)
+        return nullptr;
+    auto sobj = objT.getSubObject();
+    if (!sobj)
+        return nullptr;
+    auto docItem = tree->getDocumentItem(Application::Instance->getDocument(obj->getDocument()));
+    if (!docItem)
+        return nullptr;
+
+    DocumentObjectItem *item = nullptr;
+    std::string sub = obj->getNameInDocument();
+    sub += ".";
+    sub += objT.getSubName();
+    for (auto citem = context; citem; citem = citem->parent()) {
+        if (citem->type() == ObjectType) {
+            item = docItem->findItem(
+                    sync, static_cast<DocumentObjectItem*>(citem), sub.c_str(), select);
+            if (item) {
+                if (item->object()->getObject() != sobj)
+                    item = nullptr;
+                else
+                    break;
+            }
+        }
+    }
+        
+    if (!item) {
+        item = docItem->findItemByObject(sync, obj, objT.getSubName().c_str(), select);
+        if (item && item->object()->getObject() != sobj)
+            return nullptr;
+    }
+    if (item && resT) {
+        App::DocumentObject *topParent = 0;
+        std::ostringstream ss;
+        static_cast<DocumentObjectItem*>(item)->getSubName(ss, topParent);
+        if(!topParent)
+            topParent = obj;
+        else
+            ss << obj->getNameInDocument() << '.';
+        ss << objT.getElementName();
+        *resT = topParent;
+        resT->setSubName(ss.str().c_str());
+    }
+    return item;
 }
 
 const char *TreeWidget::getTreeName() const {
@@ -4582,23 +4639,17 @@ static QIcon getItemIcon(App::Document *doc, const ViewProviderDocumentObject *v
     return getItemIcon(currentStatus, vp);
 }
 
-static QString getItemStatus(App::DocumentObject *obj)
+static QString getItemStatus(const App::SubObjectT objT)
 {
-    QString status;
-    if (obj->isError()) {
-#if (QT_VERSION >= 0x050000)
-        status = QApplication::translate(obj->getTypeId().getName(), obj->getStatusString());
-#else
-        status = QApplication::translate(obj->getTypeId().getName(), obj->getStatusString(), 0, QApplication::UnicodeUTF8);
-#endif
-    }
-    if (status.isEmpty()) {
-        if(obj->Label2.getStrValue().size())
-            status = QString::fromLatin1("%1\n\n").arg(QString::fromUtf8(obj->Label2.getValue()));
-        status += QObject::tr("Left click to select. Right click to show children.\n"
-                              "Shift + Left click to edit. Shift + Right click for edit menu.");
-    }
-    return status;
+    auto sobj = objT.getSubObject();
+    return QString::fromLatin1("%1%2\n\n%3").arg(
+            QString::fromUtf8(objT.getSubObjectFullName().c_str()),
+            sobj && sobj->Label2.getStrValue().size() ?
+                QString::fromLatin1("\n") + QString::fromUtf8(sobj->Label2.getValue()) : QString(),
+            QObject::tr("Left click to select.\n"
+                        "Right click to show children.\n"
+                        "Shift + Left click to edit.\n"
+                        "Shift + Right click show the edit menu."));
 }
 
 void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
@@ -4785,7 +4836,7 @@ void TreeWidget::populateSelUpMenu(QMenu *menu, const App::SubObjectT *pObjT)
         }
         QAction *action = menu->addAction(getItemIcon(doc, item->object()), text);
         action->setData(QVariant::fromValue(objT));
-        action->setToolTip(getItemStatus(item->object()->getObject()));
+        action->setToolTip(getItemStatus(objT));
     }
     return;
 }
@@ -4934,7 +4985,7 @@ void TreeWidget::_setupSelUpSubMenu(QMenu *parentMenu,
                 sobjT = App::SubObjectT(citem->object()->getObject(), "");
             QAction *action = menu.addAction(getItemIcon(doc, citem->object()), citem->text(0));
             action->setData(QVariant::fromValue(sobjT));
-            action->setToolTip(getItemStatus(citem->object()->getObject()));
+            action->setToolTip(getItemStatus(sobjT));
         }
     }
 
@@ -4945,6 +4996,7 @@ void TreeWidget::execSelUpMenu(SelUpMenu *menu, const QPoint &pos)
 {
     if (!menu)
         return;
+    PieMenu::deactivate();
     SelUpMenuGuard guard(menu);
     if(menu->exec(pos)) {
         for(QWidget *w=menu->parentWidget(); w; w=w->parentWidget()) {
@@ -6041,7 +6093,7 @@ DocumentObjectItem *DocumentItem::findItemByObject(
     std::string sub(subname);
     getTopParent(obj,sub,&item);
     if(item)
-        item = findItem(sync,item,subname,select);
+        item = findItem(sync,item,sub.c_str(),select);
     return item;
 }
 

@@ -752,6 +752,32 @@ void PieMenu::setEnabled(const char *name, bool enabled)
         Private::getParameterGroup()->SetInt(name, -1);
 }
 
+PieMenu *_ActivePieMenu;
+struct PieMenuGuard {
+    PieMenuGuard(PieMenu *menu)
+        :_menu(_ActivePieMenu)
+    {
+        _ActivePieMenu = menu;
+    }
+    ~PieMenuGuard()
+    {
+        _ActivePieMenu = _menu;
+    }
+    PieMenu *_menu;
+};
+
+void PieMenu::deactivate(bool all)
+{
+    if (_ActivePieMenu) {
+        if (all) {
+            for (auto child : _ActivePieMenu->findChildren<QMenu*>())
+                child->hide();
+        }
+        _ActivePieMenu->hide();
+        _ActivePieMenu = nullptr;
+    }
+}
+
 QAction *PieMenu::exec(QMenu *menu,
                        const QPoint &pt,
                        const char *name,
@@ -759,6 +785,8 @@ QAction *PieMenu::exec(QMenu *menu,
                        bool resetOffset)
 {
     PieMenu pmenu(menu, name, getMainWindow());
+    PieMenuGuard guard(&pmenu);
+
     pmenu.pimpl->forwardKeyPress = forwardKeyPress;
     if (pmenu.pimpl->buttons.empty())
         return nullptr;

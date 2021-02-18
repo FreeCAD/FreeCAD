@@ -117,7 +117,26 @@ class GuiExport SelectionMenu : public QMenu {
     Q_OBJECT
 public:
     SelectionMenu(QWidget *parent=0);
-    void doPick(const std::vector<App::SubObjectT> &sels);
+
+    /** Populate and show the menu for picking geometry elements.
+     *
+     * @param sels: a list of geometry element references
+     * @return Return the picked geometry reference
+     *
+     * The menu will be dividied into submenus that are grouped by element type.
+     */
+    App::SubObjectT doPick(const std::vector<App::SubObjectT> &sels);
+
+    /** Populate and show the menu for geometry histroy tracing,
+     *
+     * @param sels: a list of geometry element references
+     * @return Return the picked geometry reference
+     *
+     * The menu will be not be grouped using element type, but may group by
+     * objects if there are more than one element per object.
+     */
+    App::SubObjectT doPick(const std::vector<App::SubObjectT> &sels,
+                           const App::SubObjectT &context);
 
 public Q_SLOTS:
     void onHover(QAction *);
@@ -128,12 +147,11 @@ public Q_SLOTS:
 
 protected:
     bool eventFilter(QObject *, QEvent *);
-    void showToolTip();
+    App::SubObjectT onPicked(QAction *);
 
 private:
-    const std::vector<App::SubObjectT> *pSelList;
-    int tooltipIndex;
     QPointer<QMenu> activeMenu;
+    QPointer<QAction> activeAction;
 };
 
 
