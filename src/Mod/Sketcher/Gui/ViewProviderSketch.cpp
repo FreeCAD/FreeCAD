@@ -3985,8 +3985,32 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                             // proportional to the length of the bspline
                             // inversely proportional to the number of poles
                             double scalefactor = bspline->length(bspline->getFirstParameter(), bspline->getLastParameter())/10.0/weights.size();
-                            //double scalefactor = getScaleFactor();
+
                             double vradius = weight*scalefactor;
+                            if(!bspline->isRational()) {
+                                // OCCT sets the weights to 1.0 if a bspline is non-rational, but if the user has a weight constraint on any
+                                // pole it would cause a visual artifact of having a constraint with a different radius and an unscaled circle
+                                // so better scale the circles.
+                                std::vector<int> polegeoids;
+                                polegeoids.reserve(weights.size());
+
+                                for ( auto ic : getSketchObject()->Constraints.getValues()) {
+                                    if( ic->Type == InternalAlignment && ic->AlignmentType == BSplineControlPoint && ic->Second == c->Second) {
+                                        polegeoids.push_back(ic->First);
+                                    }
+                                }
+
+                                for ( auto ic : getSketchObject()->Constraints.getValues()) {
+                                    if( ic->Type == Weight ) {
+                                        auto pos = std::find(polegeoids.begin(), polegeoids.end(), ic->First);
+
+                                        if(pos != polegeoids.end()) {
+                                            vradius = ic->getValue() * scalefactor;
+                                            break; // one is enough, otherwise it would not be non-rational
+                                        }
+                                    }
+                                }
+                            }
 
                             // virtual circle or radius vradius
                             auto mcurve = [&center, vradius](double param, double &x, double &y) {
