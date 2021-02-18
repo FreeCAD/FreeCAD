@@ -532,6 +532,7 @@ void QGIViewBalloon::balloonLabelDragFinished()
     Gui::Command::commitCommand();
 
     m_dragInProgress = false;
+    m_originDragged = false;
 }
 
 //from QGVP::mouseReleaseEvent - pos = eventPos in scene coords?
