@@ -159,8 +159,8 @@ public:
     void checkGroupOnTop(const SelectionChanges &Reason, bool alt=false);
     void clearGroupOnTop(bool alt=false);
 
-    bool isInGroupOnTop(const char *objname, const char *subname) const;
-    bool isInGroupOnTop(const std::string &key) const;
+    bool isInGroupOnTop(const char *objname, const char *subname, bool altOnly=true) const;
+    bool isInGroupOnTop(const std::string &key, bool altOnly=true) const;
 
     SoDirectionalLight* getBacklight(void) const;
     void setBacklight(SbBool on);

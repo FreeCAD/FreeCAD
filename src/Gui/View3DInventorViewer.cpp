@@ -1091,7 +1091,10 @@ void View3DInventorViewer::clearGroupOnTop(bool alt) {
     tmpPath.unrefNoDelete();
 }
 
-bool View3DInventorViewer::isInGroupOnTop(const char *objname, const char *subname) const {
+bool View3DInventorViewer::isInGroupOnTop(const char *objname,
+                                          const char *subname,
+                                          bool altOnly) const
+{
     if(!objname)
         return false;
     std::string key(objname);
@@ -1099,12 +1102,12 @@ bool View3DInventorViewer::isInGroupOnTop(const char *objname, const char *subna
     auto element = Data::ComplexGeoData::findElementName(subname);
     if(subname)
         key.insert(key.end(),subname,element);
-    return isInGroupOnTop(key);
+    return isInGroupOnTop(key, altOnly);
 }
 
-bool View3DInventorViewer::isInGroupOnTop(const std::string &key) const {
+bool View3DInventorViewer::isInGroupOnTop(const std::string &key, bool altOnly) const {
     auto it = objectsOnTopSel.find(key);
-    return it!=objectsOnTopSel.end() && it->second.alt;
+    return it!=objectsOnTopSel.end() && (!altOnly || it->second.alt);
 }
 
 void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool alt) {
@@ -4217,7 +4220,7 @@ View3DInventorViewer::Private::checkElementIntersection(ViewProviderDocumentObje
         sobj = obj->resolve(subname,&parent,&childName);
         if(!sobj)
             return -1;
-        if(!owner->isInGroupOnTop(obj->getNameInDocument(), subname)
+        if(!owner->isInGroupOnTop(obj->getNameInDocument(), subname, false)
                 && !sobj->testStatus(App::ObjEditing)) {
             int vis;
             if(!parent || (vis=parent->isElementVisibleEx(
@@ -4226,7 +4229,7 @@ View3DInventorViewer::Private::checkElementIntersection(ViewProviderDocumentObje
             if(!vis)
                 return -1;
         }
-    } else if (!owner->isInGroupOnTop(obj->getNameInDocument(), "")
+    } else if (!owner->isInGroupOnTop(obj->getNameInDocument(), "", false)
             && !obj->testStatus(App::ObjEditing)
             && !obj->Visibility.getValue())
     {
