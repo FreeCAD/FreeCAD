@@ -26,6 +26,7 @@
 # include <QAction>
 # include <QApplication>
 # include <QClipboard>
+# include <QMenu>
 # include <QMessageBox>
 # include <QMimeData>
 #endif
@@ -73,34 +74,73 @@ bool SheetViewHeader::viewportEvent(QEvent *e) {
     return QHeaderView::viewportEvent(e);
 }
 
+static bool isSelectionConsecutiveRows(QModelIndexList list)
+{
+    int min = std::numeric_limits<int>::max();
+    int max = 0;
+    for (const auto & item : list) {
+        int row = item.row();
+        min = std::min(row, min);
+        max = std::max(row, max);
+    }
+    return max - min == list.size() - 1;
+}
+
+static bool isSelectionConsecutiveColumns(QModelIndexList list)
+{
+    int min = std::numeric_limits<int>::max();
+    int max = 0;
+    for (const auto & item : list) {
+        int column = item.column();
+        min = std::min(column, min);
+        max = std::max(column, max);
+    }
+    return max - min == list.size() - 1;
+}
+
 SheetTableView::SheetTableView(QWidget *parent)
     : QTableView(parent)
     , sheet(0)
 {
-    QAction * insertRows = new QAction(tr("Insert rows"), this);
-    QAction * removeRows = new QAction(tr("Remove rows"), this);
-    QAction * insertColumns = new QAction(tr("Insert columns"), this);
-    QAction * removeColumns = new QAction(tr("Remove columns"), this);
-
     setHorizontalHeader(new SheetViewHeader(this,Qt::Horizontal));
     setVerticalHeader(new SheetViewHeader(this,Qt::Vertical));
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
 
-    horizontalHeader()->addAction(insertColumns);
-    horizontalHeader()->addAction(removeColumns);
-    horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+    horizontalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
+    verticalHeader()->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    verticalHeader()->addAction(insertRows);
-    verticalHeader()->addAction(removeRows);
-    verticalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+    connect(verticalHeader(), &QWidget::customContextMenuRequested,
+       [this](const QPoint &point){
+            auto selection = selectionModel()->selectedRows();
+            QMenu menu(this);
+            if (isSelectionConsecutiveRows(selection)) {
+                /*: This is shown in the context menu for the vertical header in a spreadsheet.
+                    The number refers to how many lines are selected and will be inserted. */
+                auto insertAbove = menu.addAction(tr("Insert %n row(s) above", "", selection.size()));
+                connect(insertAbove, SIGNAL(triggered()), this, SLOT(insertRows()));
+            }
+            auto remove = menu.addAction(tr("Remove row(s)", "this will remove the selected rows", selection.size()));
+            connect(remove, SIGNAL(triggered()), this, SLOT(removeRows()));
+            menu.exec(verticalHeader()->mapToGlobal(point));
+       });
 
-    connect(insertRows, SIGNAL(triggered()), this, SLOT(insertRows()));
-    connect(insertColumns, SIGNAL(triggered()), this, SLOT(insertColumns()));
-    connect(removeRows, SIGNAL(triggered()), this, SLOT(removeRows()));
-    connect(removeColumns, SIGNAL(triggered()), this, SLOT(removeColumns()));
-
-    QAction * cellProperties = new QAction(tr("Properties..."), this);
+    connect(horizontalHeader(), &QWidget::customContextMenuRequested,
+       [this](const QPoint &point){
+            auto selection = selectionModel()->selectedColumns();
+            QMenu menu(this);
+            if (isSelectionConsecutiveColumns(selection)) {
+                /*: This is shown in the context menu for the horizontal header in a spreadsheet.
+                    The number refers to how many lines are selected and will be inserted. */
+                auto insertAbove = menu.addAction(tr("Insert %n columns(s) left", "", selection.size()));
+                connect(insertAbove, SIGNAL(triggered()), this, SLOT(insertColumns()));
+            }
+            auto remove = menu.addAction(tr("Remove columns(s)", "this will remove the selected columns", selection.size()));
+            connect(remove, SIGNAL(triggered()), this, SLOT(removeColumns()));
+            menu.exec(horizontalHeader()->mapToGlobal(point));
+       });
+       
+    auto cellProperties = new QAction(tr("Properties..."), this);
     addAction(cellProperties);
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
