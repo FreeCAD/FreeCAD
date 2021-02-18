@@ -146,7 +146,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return {
             'AttemptInverseAngle': True,
             'Direction': 'CW',
-            'HandleMultipleFeatures': 'Individually',
+            'HandleMultipleFeatures': 'Collectively',
             'InverseAngle': False,
             'JoinType': 'Round',
             'LimitDepthToFace': True,
