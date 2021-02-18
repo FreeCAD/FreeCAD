@@ -1263,7 +1263,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 nt = 4  # desired + 1
             mid = LE / nt
             spc = self.radius / 10
-            for i in range(0, nt):
+            for i in range(0, int(nt)):
                 if i == 0:
                     if e == 0:
                         if LE > 0.2:
