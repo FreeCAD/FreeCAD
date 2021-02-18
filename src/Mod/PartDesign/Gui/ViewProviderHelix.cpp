@@ -81,7 +81,14 @@ bool ViewProviderHelix::setEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default ) {
         auto* prim = static_cast<PartDesign::Helix*>(getObject());
-        setPreviewDisplayMode(prim->getAddSubType() == PartDesign::FeatureAddSub::Subtractive);
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/PartDesign");
+        if((hGrp->GetBool("AdditiveHelixPreview", false) && prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) ||
+           (hGrp->GetBool("SubractiveHelixPreview", true) && prim->getAddSubType() == PartDesign::FeatureAddSub::Subtractive))
+        {
+            setPreviewDisplayMode(true);
+        } else {
+            setPreviewDisplayMode(false);
+        }
     }
     return ViewProviderAddSub::setEdit(ModNum);
 }
