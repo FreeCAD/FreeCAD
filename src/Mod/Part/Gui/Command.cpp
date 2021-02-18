@@ -889,15 +889,13 @@ void CmdPartCompound::activated(int iMsg)
 
     std::stringstream str;
 
-    // avoid duplicates without changing the order
-    str << "Links = [";
     for (auto & s : sels)
         str << s.getObject()->getFullName(true) << ", ";
-    str << "]";
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
     cmdAppDocument(sel, std::ostringstream() << "addObject(\"Part::Compound\",\"" << FeatName << "\")");
     auto feat = sel->getDocument()->getObject(FeatName.c_str());
+    cmdAppObjectArgs(feat, "Links = [%s]", str.str().c_str());
     finishFeature(feat, sels);
     updateActive();
     commitCommand();
