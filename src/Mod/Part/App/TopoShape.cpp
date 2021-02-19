@@ -3429,7 +3429,15 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
 
     // sample inner points of all free edges
     for (TopExp_Explorer xp(_Shape, TopAbs_EDGE, TopAbs_FACE); xp.More(); xp.Next()) {
+
         BRepAdaptor_Curve curve(TopoDS::Edge(xp.Current()));
+        if (xp.Current().Infinite() && Accuracy < 0) {
+            gp_Pnt p = curve.Value((curve.FirstParameter() + curve.LastParameter()) * 0.5);
+            Points.push_back(Base::convertTo<Base::Vector3d>(p));
+            Normals.emplace_back(0,0,0);
+            continue;
+        }
+
         GCPnts_UniformAbscissa discretizer(curve, lateralDistance, curve.FirstParameter(), curve.LastParameter());
         if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
             int nbPoints = discretizer.NbPoints();
@@ -3458,6 +3466,19 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
         Standard_Real vFirst = surface.FirstVParameter();
         Standard_Real vLast = surface.LastVParameter();
         Standard_Real vMid = (vFirst+vLast)/2;
+
+        if (face.Infinite() && Accuracy < 0) {
+            gp_Pnt p = surface.Value(uMid,vMid);
+            Points.push_back(Base::convertTo<Base::Vector3d>(p));
+            gp_Dir normal;
+            if (GeomLib::NormEstim(aSurf, gp_Pnt2d(uMid, vMid), Precision::Confusion(), normal) <= 1) {
+                Normals.push_back(Base::convertTo<Base::Vector3d>(normal));
+            }
+            else {
+                Normals.emplace_back(0,0,0);
+            }
+            continue;
+        }
 
         // get geometrical length and width of the surface
         //

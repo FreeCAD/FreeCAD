@@ -4342,7 +4342,7 @@ View3DInventorViewer::Private::checkElementIntersection(ViewProviderDocumentObje
     if (res < 0) {
         std::vector<Base::Vector3d> pointNormals; // not used
         std::vector<Base::Vector3d> points;
-        data->getPoints(points,pointNormals,100);
+        data->getPoints(points,pointNormals,-1.0);
         if (points.size()) {
             res = 0;
             for (auto &pt : points) {
