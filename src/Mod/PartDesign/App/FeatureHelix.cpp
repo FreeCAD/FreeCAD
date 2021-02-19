@@ -429,22 +429,8 @@ TopoDS_Shape Helix::generateHelixPath(void)
     TopLoc_Location loc(mov);
     path.Move(loc.Inverted());
 
-
-# if OCC_VERSION_HEX < 0x70500
-    /* I initially tried using path.Move(invObjLoc) like usual. But it does not give the right result
-     * The starting point of the helix is not correct and I don't know why! With below hack it works.
-     */
-    Base::Vector3d placeAxis;
-    double placeAngle;
-    this->Placement.getValue().getRotation().getValue(placeAxis, placeAngle);
-    gp_Dir placeDir(placeAxis.x, placeAxis.y, placeAxis.z);
-    mov.SetRotation(gp_Ax1(origo, placeDir), placeAngle);
-    TopLoc_Location loc2(mov);
-    path.Move(loc2.Inverted());
-# else
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     path.Move(invObjLoc);
-# endif
 
     return path;
 }
