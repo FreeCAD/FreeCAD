@@ -150,10 +150,14 @@ def getlinks(html):
         rg = re.findall('href=.*?php\?title=(.*?)"',l)
         if not rg:
             rg = re.findall('href="\/wiki\/(.*?)"',l)
-            if "images" in rg:
-                rg = None
-            elif "mediawiki" in rg:
-                rg = None
+            if not rg:
+                rg = re.findall('href=".*?wiki.freecadweb.org\/(.*?)"',l)
+                if not rg:
+                    rg = re.findall('href="\/(.*?)"',l)
+        if "images" in rg:
+            rg = None
+        elif "mediawiki" in rg:
+            rg = None
         if rg:
             rg = rg[0]
             if not "Command_Reference" in rg:
