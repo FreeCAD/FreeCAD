@@ -192,6 +192,7 @@ SET(Tools_Shape_SRCS
 SET(PathTests_SRCS
     PathTests/__init__.py
     PathTests/PathTestUtils.py
+    PathTests/TestPathAdaptive.py
     PathTests/TestPathCore.py
     PathTests/TestPathDeburr.py
     PathTests/TestPathDepthParams.py
@@ -217,6 +218,7 @@ SET(PathTests_SRCS
     PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
     PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
+    PathTests/test_adaptive.fcstd
     PathTests/boxtest.fcstd
     PathTests/test_centroid_00.ngc
     PathTests/test_geomop.fcstd
