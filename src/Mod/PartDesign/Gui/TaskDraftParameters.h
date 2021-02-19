@@ -61,6 +61,7 @@ protected:
 
 private:
     std::unique_ptr<Ui_TaskDraftParameters> ui;
+    void hideOnError();
 };
 
 /// simulation dialog for the TaskView

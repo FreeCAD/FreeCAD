@@ -54,6 +54,7 @@ protected:
 
 private:
     std::unique_ptr<Ui_TaskFilletParameters> ui;
+    void hideOnError();
 };
 
 /// simulation dialog for the TaskView

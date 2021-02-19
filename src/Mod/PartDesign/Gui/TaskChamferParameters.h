@@ -66,6 +66,7 @@ protected:
 
 private:
     void setUpUI(PartDesign::Chamfer* pcChamfer);
+    void hideOnError();
 
     std::unique_ptr<Ui_TaskChamferParameters> ui;
 };
