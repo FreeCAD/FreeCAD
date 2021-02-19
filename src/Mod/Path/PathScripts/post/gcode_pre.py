@@ -50,6 +50,7 @@ import re
 import PathScripts.PathCustom as PathCustom
 import PathScripts.PathCustomGui as PathCustomGui
 import PathScripts.PathOpGui as PathOpGui
+from PySide import QtCore
 
 # LEVEL = PathLog.Level.DEBUG
 LEVEL = PathLog.Level.INFO
@@ -114,7 +115,8 @@ def insert(filename, docname):
         obj = PathCustom.Create("Custom")
         res = PathOpGui.CommandResources('Custom', PathCustom.Create,
                 PathCustomGui.TaskPanelOpPage,
-                'Path_Custom', 'Custom', '', '')
+                'Path_Custom',
+                QtCore.QT_TRANSLATE_NOOP('Path_Custom', 'Custom'), '', '')
         obj.ViewObject.Proxy = PathOpGui.ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Proxy.setDeleteObjectsOnReject(False)
 
