@@ -2665,39 +2665,92 @@ public:
             }
 
             if ((!name || !name[0]) && PyObject_HasAttrString(pyobj, "__module__")) {
-                _name = Py::Object(pyobj).getAttr("__module__").as_string();
-                name = _name.c_str();
-            }
-
-            if (!name || !name[0]) {
-                Py::Object pymod;
-                PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
-                if (module) {
-                    pymod = Py::asObject(module);
-                    name = PyModule_GetName(module);
-                }
-                if (!name || !name[0]) {
-                    name = nullptr;
-                    module = nullptr;
+                try {
+                    _name = Py::Object(pyobj).getAttr("__module__").as_string();
+                    if (_name != "None")
+                        name = _name.c_str();
+                } catch (Py::Exception &) {
                     Base::PyException e;
                     if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
                         e.ReportException();
-                    PyObject * self = PyObject_GetAttrString(pyobj, "__self__");
-                    if (self && PyObject_TypeCheck(self, &BaseClassPy::Type)) {
+                }
+            }
+            if (!name || !name[0]) {
+                const char *dot = strrchr(pyobj->ob_type->tp_name, '.');
+                if (dot) {
+                    _name = std::string(pyobj->ob_type->tp_name, dot);
+                    name = _name.c_str();
+                } else
+                    name = nullptr;
+            }
+
+            if (!name || !name[0]) {
+                PyObject * module = PyObject_CallFunction(this->inspect.ptr(), "O", pyobj);
+                if (module) {
+                    name = PyModule_GetName(module);
+                    if (!name || strcmp(name, "None")==0)
+                        name = nullptr;
+                    else {
+                        _name = name;
+                        name = _name.c_str();
+                    }
+                    Py_DECREF(module);
+                    module = nullptr;
+                } else {
+                    Base::PyException e;
+                    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+                        e.ReportException();
+                }
+            }
+
+            if (!name || !name[0]) {
+                PyObject * self = PyObject_GetAttrString(pyobj, "__self__");
+                Py::Object pyself;
+                if (!self) {
+                    PyErr_Clear();
+                } else {
+                    pyself = Py::asObject(self);
+                    if (PyObject_TypeCheck(self, &BaseClassPy::Type)) {
                         auto pybase = static_cast<BaseClassPy*>(self);
                         _name = pybase->getModule();
                         name = _name.c_str();
-                    } else if (self && PyObject_HasAttrString(self, "__module__")) {
-                        _name = Py::Object(self).getAttr("__module__").as_string();
-                        name = _name.c_str();
+                    } else if (PyObject_HasAttrString(self, "__module__")) {
+                        try {
+                            _name = Py::Object(self).getAttr("__module__").as_string();
+                            if (_name != "None")
+                                name = _name.c_str();
+                        } catch (Py::Exception &) {
+                            Base::PyException e;
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+                                e.ReportException();
+                        }
                     }
                     if (!name || !name[0]) {
-                        module = PyObject_CallFunction(this->inspect.ptr(), "O", self->ob_type);
+                        const char *dot = strrchr(self->ob_type->tp_name, '.');
+                        if (dot) {
+                            _name = std::string(self->ob_type->tp_name, dot);
+                            name = _name.c_str();
+                        } else
+                            name = nullptr;
+                    }
+                    if (!name || !name[0]) {
+                        PyObject *module = PyObject_CallFunction(
+                                this->inspect.ptr(), "O", self->ob_type);
                         if (module) {
-                            pymod = Py::asObject(module);
                             name = PyModule_GetName(module);
+                            if (!name || strcmp(name, "None")==0)
+                                name = nullptr;
+                            else {
+                                _name = name;
+                                name = _name.c_str();
+                            }
+                            Py_DECREF(module);
+                            module = nullptr;
+                        } else {
+                            Base::PyException e;
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+                                e.ReportException();
                         }
-                        Py_DECREF(self);
                     }
                 }
             }
