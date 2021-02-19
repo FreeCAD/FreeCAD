@@ -183,7 +183,6 @@ class DraftTool:
             self.ui.sourceCmd = None
         if self.planetrack:
             self.planetrack.finalize()
-        App.DraftWorkingPlane.restore()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.off()
         if self.call:
