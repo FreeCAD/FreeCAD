@@ -402,7 +402,7 @@ public:
      *  @param obj: if not zero, then request the unique name in the document of
      *  the given object.
      */
-    std::string getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj=0) const;
+    static std::string getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj=0);
     //@}
 
     /** @name Helper methods for the Undo/Redo and Update handling */

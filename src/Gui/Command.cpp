@@ -560,7 +560,7 @@ Gui::SelectionSingleton&  Command::getSelection(void)
     return Gui::Selection();
 }
 
-std::string Command::getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj) const
+std::string Command::getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj)
 {
     auto doc = obj?obj->getDocument():App::GetApplication().getActiveDocument();
     assert(doc);
