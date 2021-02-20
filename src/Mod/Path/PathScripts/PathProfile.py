@@ -936,7 +936,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             osArea = ofstShp.Area
         except Exception as ee:
             PathLog.error('No area to offset shape returned.\n{}'.format(ee))
-            return False
+            return list()
 
         self._addDebugObject('OffsetShape', ofstShp)
 
