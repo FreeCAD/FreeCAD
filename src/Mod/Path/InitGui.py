@@ -87,8 +87,7 @@ class PathWorkbench (Workbench):
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop",
                        "Path_Custom", "Path_Probe"]
         twodopcmdlist = ["Path_Profile", "Path_Pocket_Shape", "Path_Drilling",
-                         "Path_MillFace", "Path_Helix", "Path_Adaptive",
-                         "Path_Slot"]
+                         "Path_MillFace", "Path_Helix", "Path_Adaptive"]
         threedopcmdlist = ["Path_Pocket_3D"]
         engravecmdlist = ["Path_Engrave", "Path_Deburr", "Path_Vcarve"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy"]
@@ -120,6 +119,7 @@ class PathWorkbench (Workbench):
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append('Path_Thread_Milling')
+            twodopcmdlist.append("Path_Slot")
 
         if PathPreferences.advancedOCLFeaturesEnabled():
             try:
