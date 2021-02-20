@@ -660,8 +660,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 else:
                                     PathLog.error(self.inaccessibleMsg)
 
-                            tup = openEdges, False, 'OpenEdge', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
-                            shapes.append(tup)
+                            if openEdges:
+                                tup = openEdges, False, 'OpenEdge', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
+                                shapes.append(tup)
                         else:
                             PathLog.error(self.inaccessibleMsg)
                     # Eif
