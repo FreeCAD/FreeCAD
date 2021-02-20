@@ -635,7 +635,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 else:
                     # Attempt open-edges profile
                     if self.JOB.GeometryTolerance.Value == 0.0:
-                        msg = self.JOB.Label + '.GeometryTolerance = 0.0.'
+                        msg = self.JOB.Label + '.GeometryTolerance = 0.0. '
                         msg += translate('PathProfile', 'Please set to an acceptable value greater than zero.')
                         PathLog.error(msg)
                     else:
