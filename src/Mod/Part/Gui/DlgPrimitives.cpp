@@ -328,7 +328,9 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         if (type == Part::Plane::getClassTypeId()) {
             Part::Plane* plane = static_cast<Part::Plane*>(feature);
             ui->planeLength->setValue(plane->Length.getQuantityValue());
+            ui->planeLength->bind(plane->Length);
             ui->planeWidth->setValue(plane->Width.getQuantityValue());
+            ui->planeWidth->bind(plane->Width);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangePlane(QWidget*)));
@@ -338,8 +340,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Box::getClassTypeId()) {
             Part::Box* box = static_cast<Part::Box*>(feature);
             ui->boxLength->setValue(box->Length.getQuantityValue());
+            ui->boxLength->bind(box->Length);
             ui->boxWidth->setValue(box->Width.getQuantityValue());
+            ui->boxWidth->bind(box->Width);
             ui->boxHeight->setValue(box->Height.getQuantityValue());
+            ui->boxHeight->bind(box->Height);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeBox(QWidget*)));
@@ -350,8 +355,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Cylinder::getClassTypeId()) {
             Part::Cylinder* cyl = static_cast<Part::Cylinder*>(feature);
             ui->cylinderRadius->setValue(cyl->Radius.getQuantityValue());
+            ui->cylinderRadius->bind(cyl->Radius);
             ui->cylinderHeight->setValue(cyl->Height.getQuantityValue());
+            ui->cylinderHeight->bind(cyl->Height);
             ui->cylinderAngle->setValue(cyl->Angle.getQuantityValue());
+            ui->cylinderAngle->bind(cyl->Angle);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCylinder(QWidget*)));
@@ -362,9 +370,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Cone::getClassTypeId()) {
             Part::Cone* cone = static_cast<Part::Cone*>(feature);
             ui->coneRadius1->setValue(cone->Radius1.getQuantityValue());
+            ui->coneRadius1->bind(cone->Radius1);
             ui->coneRadius2->setValue(cone->Radius2.getQuantityValue());
+            ui->coneRadius2->bind(cone->Radius2);
             ui->coneHeight->setValue(cone->Height.getQuantityValue());
+            ui->coneHeight->bind(cone->Height);
             ui->coneAngle->setValue(cone->Angle.getQuantityValue());
+            ui->coneAngle->bind(cone->Angle);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCone(QWidget*)));
@@ -376,9 +388,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Sphere::getClassTypeId()) {
             Part::Sphere* sphere = static_cast<Part::Sphere*>(feature);
             ui->sphereRadius->setValue(sphere->Radius.getQuantityValue());
+            ui->sphereRadius->bind(sphere->Radius);
             ui->sphereAngle1->setValue(sphere->Angle1.getQuantityValue());
+            ui->sphereAngle1->bind(sphere->Angle1);
             ui->sphereAngle2->setValue(sphere->Angle2.getQuantityValue());
+            ui->sphereAngle2->bind(sphere->Angle2);
             ui->sphereAngle3->setValue(sphere->Angle3.getQuantityValue());
+            ui->sphereAngle3->bind(sphere->Angle3);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeSphere(QWidget*)));
@@ -390,11 +406,17 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Ellipsoid::getClassTypeId()) {
             Part::Ellipsoid* ell = static_cast<Part::Ellipsoid*>(feature);
             ui->ellipsoidRadius1->setValue(ell->Radius1.getQuantityValue());
+            ui->ellipsoidRadius1->bind(ell->Radius1);
             ui->ellipsoidRadius2->setValue(ell->Radius2.getQuantityValue());
+            ui->ellipsoidRadius2->bind(ell->Radius2);
             ui->ellipsoidRadius3->setValue(ell->Radius3.getQuantityValue());
+            ui->ellipsoidRadius3->bind(ell->Radius3);
             ui->ellipsoidAngle1->setValue(ell->Angle1.getQuantityValue());
+            ui->ellipsoidAngle1->bind(ell->Angle1);
             ui->ellipsoidAngle2->setValue(ell->Angle2.getQuantityValue());
+            ui->ellipsoidAngle2->bind(ell->Angle2);
             ui->ellipsoidAngle3->setValue(ell->Angle3.getQuantityValue());
+            ui->ellipsoidAngle3->bind(ell->Angle3);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeEllipsoid(QWidget*)));
@@ -408,10 +430,15 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Torus::getClassTypeId()) {
             Part::Torus* torus = static_cast<Part::Torus*>(feature);
             ui->torusRadius1->setValue(torus->Radius1.getQuantityValue());
+            ui->torusRadius1->bind(torus->Radius1);
             ui->torusRadius2->setValue(torus->Radius2.getQuantityValue());
+            ui->torusRadius2->bind(torus->Radius2);
             ui->torusAngle1->setValue(torus->Angle1.getQuantityValue());
+            ui->torusAngle1->bind(torus->Angle1);
             ui->torusAngle2->setValue(torus->Angle2.getQuantityValue());
+            ui->torusAngle2->bind(torus->Angle2);
             ui->torusAngle3->setValue(torus->Angle3.getQuantityValue());
+            ui->torusAngle3->bind(torus->Angle3);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeTorus(QWidget*)));
@@ -425,9 +452,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             Part::Prism* prism = static_cast<Part::Prism*>(feature);
             ui->prismPolygon->setValue(prism->Polygon.getValue());
             ui->prismCircumradius->setValue(prism->Circumradius.getQuantityValue());
+            ui->prismCircumradius->bind(prism->Circumradius);
             ui->prismHeight->setValue(prism->Height.getQuantityValue());
+            ui->prismHeight->bind(prism->Height);
             ui->prismXSkew->setValue(prism->FirstAngle.getQuantityValue());
+            ui->prismXSkew->bind(prism->FirstAngle);
             ui->prismYSkew->setValue(prism->SecondAngle.getQuantityValue());
+            ui->prismYSkew->bind(prism->SecondAngle);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangePrism(QWidget*)));
@@ -440,15 +471,25 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Wedge::getClassTypeId()) {
             Part::Wedge* wedge = static_cast<Part::Wedge*>(feature);
             ui->wedgeXmin->setValue(wedge->Xmin.getQuantityValue());
+            ui->wedgeXmin->bind(wedge->Xmin);
             ui->wedgeYmin->setValue(wedge->Ymin.getQuantityValue());
+            ui->wedgeYmin->bind(wedge->Ymin);
             ui->wedgeZmin->setValue(wedge->Zmin.getQuantityValue());
+            ui->wedgeZmin->bind(wedge->Zmin);
             ui->wedgeX2min->setValue(wedge->X2min.getQuantityValue());
+            ui->wedgeX2min->bind(wedge->X2min);
             ui->wedgeZ2min->setValue(wedge->Z2min.getQuantityValue());
+            ui->wedgeZ2min->bind(wedge->Z2min);
             ui->wedgeXmax->setValue(wedge->Xmax.getQuantityValue());
+            ui->wedgeXmax->bind(wedge->Xmax);
             ui->wedgeYmax->setValue(wedge->Ymax.getQuantityValue());
+            ui->wedgeYmax->bind(wedge->Ymax);
             ui->wedgeZmax->setValue(wedge->Zmax.getQuantityValue());
+            ui->wedgeZmax->bind(wedge->Zmax);
             ui->wedgeX2max->setValue(wedge->X2max.getQuantityValue());
+            ui->wedgeX2max->bind(wedge->X2max);
             ui->wedgeZ2max->setValue(wedge->Z2max.getQuantityValue());
+            ui->wedgeZ2max->bind(wedge->Z2max);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeWedge(QWidget*)));
@@ -466,9 +507,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Helix::getClassTypeId()) {
             Part::Helix* helix = static_cast<Part::Helix*>(feature);
             ui->helixPitch->setValue(helix->Pitch.getQuantityValue());
+            ui->helixPitch->bind(helix->Pitch);
             ui->helixHeight->setValue(helix->Height.getQuantityValue());
+            ui->helixHeight->bind(helix->Height);
             ui->helixRadius->setValue(helix->Radius.getQuantityValue());
+            ui->helixRadius->bind(helix->Radius);
             ui->helixAngle->setValue(helix->Angle.getQuantityValue());
+            ui->helixAngle->bind(helix->Angle);
             ui->helixLocalCS->setCurrentIndex(helix->LocalCoord.getValue());
 
             QSignalMapper* mapper = new QSignalMapper(this);
@@ -482,8 +527,10 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Spiral::getClassTypeId()) {
             Part::Spiral* spiral = static_cast<Part::Spiral*>(feature);
             ui->spiralGrowth->setValue(spiral->Growth.getQuantityValue());
+            ui->spiralGrowth->bind(spiral->Growth);
             ui->spiralRotation->setValue(spiral->Rotations.getQuantityValue().getValue());
             ui->spiralRadius->setValue(spiral->Radius.getQuantityValue());
+            ui->spiralRadius->bind(spiral->Radius);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeSpiral(QWidget*)));
@@ -494,8 +541,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Circle::getClassTypeId()) {
             Part::Circle* circle = static_cast<Part::Circle*>(feature);
             ui->circleRadius->setValue(circle->Radius.getQuantityValue());
+            ui->circleRadius->bind(circle->Radius);
             ui->circleAngle0->setValue(circle->Angle0.getQuantityValue());
+            ui->circleAngle0->bind(circle->Angle0);
             ui->circleAngle1->setValue(circle->Angle1.getQuantityValue());
+            ui->circleAngle1->bind(circle->Angle1);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCircle(QWidget*)));
@@ -506,9 +556,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Ellipse::getClassTypeId()) {
             Part::Ellipse* ell = static_cast<Part::Ellipse*>(feature);
             ui->ellipseMajorRadius->setValue(ell->MajorRadius.getQuantityValue());
+            ui->ellipseMajorRadius->bind(ell->MajorRadius);
             ui->ellipseMinorRadius->setValue(ell->MinorRadius.getQuantityValue());
+            ui->ellipseMinorRadius->bind(ell->MinorRadius);
             ui->ellipseAngle0->setValue(ell->Angle0.getQuantityValue());
+            ui->ellipseAngle0->bind(ell->Angle0);
             ui->ellipseAngle1->setValue(ell->Angle1.getQuantityValue());
+            ui->ellipseAngle1->bind(ell->Angle1);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeEllipse(QWidget*)));
@@ -520,8 +574,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Vertex::getClassTypeId()) {
             Part::Vertex* v = static_cast<Part::Vertex*>(feature);
             ui->vertexX->setValue(v->X.getQuantityValue());
+            ui->vertexX->bind(v->X);
             ui->vertexY->setValue(v->Y.getQuantityValue());
+            ui->vertexY->bind(v->Y);
             ui->vertexZ->setValue(v->Z.getQuantityValue());
+            ui->vertexZ->bind(v->Z);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeVertex(QWidget*)));
@@ -532,11 +589,17 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Line::getClassTypeId()) {
             Part::Line* line = static_cast<Part::Line*>(feature);
             ui->edgeX1->setValue(line->X1.getQuantityValue());
+            ui->edgeX1->bind(line->X1);
             ui->edgeY1->setValue(line->Y1.getQuantityValue());
+            ui->edgeY1->bind(line->Y1);
             ui->edgeZ1->setValue(line->Z1.getQuantityValue());
+            ui->edgeZ1->bind(line->Z1);
             ui->edgeX2->setValue(line->X2.getQuantityValue());
+            ui->edgeX2->bind(line->X2);
             ui->edgeY2->setValue(line->Y2.getQuantityValue());
+            ui->edgeY2->bind(line->Y2);
             ui->edgeZ2->setValue(line->Z2.getQuantityValue());
+            ui->edgeZ2->bind(line->Z2);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeLine(QWidget*)));
@@ -551,6 +614,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             Part::RegularPolygon* poly = static_cast<Part::RegularPolygon*>(feature);
             ui->regularPolygonPolygon->setValue(poly->Polygon.getValue());
             ui->regularPolygonCircumradius->setValue(poly->Circumradius.getQuantityValue());
+            ui->regularPolygonCircumradius->bind(poly->Circumradius);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeRegularPolygon(QWidget*)));
