@@ -422,10 +422,7 @@ void Command::invoke(int i, TriggerSource trigger)
                     // Cancel the above pending line first
                     pending.cancel();
                     ss << "Gui.runCommand('" << sName << "'," << i << ')';
-                    if(eType & AlterDoc)
-                        manager->addLine(MacroManager::App, ss.str().c_str());
-                    else
-                        manager->addLine(MacroManager::Gui, ss.str().c_str());
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
                 }else{
                     // In case the command has any output to the console, lets
                     // mark the end of the command here
