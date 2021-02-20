@@ -172,7 +172,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     if isinstance(val, int) or isinstance(val, float):
                         setVal = True
                 if setVal:
-                    propVal = getattr(prop, 'Value')
+                    # propVal = getattr(prop, 'Value')
+                    # Need to check if `val` below should be `propVal` commented out above
                     setattr(prop, 'Value', val)
                 else:
                     setattr(obj, n, val)
@@ -215,7 +216,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             return 'Contour'
 
         # return first geometry type selected
-        (base, subsList) = obj.Base[0]
+        (_, subsList) = obj.Base[0]
         return subsList[0][:4]
 
     def areaOpOnDocumentRestored(self, obj):
@@ -296,7 +297,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         shapes = []
         baseSubsTuples = list()
         allTuples = list()
-        edgeFaces = list()
         remainingObjBaseFeatures = list()
         subCount = 0
         self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
@@ -349,7 +349,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 subList = []
                 for o in range(0, len(Tags)):
                     subList = []
-                    for (base, sub, tag, angle, axis, stock) in Grps[o]:
+                    for (base, sub, _, angle, axis, stock) in Grps[o]:
                         subList.append(sub)
 
                     pair = base, subList, angle, axis, stock
@@ -381,7 +381,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     else:
                         ignoreSub = base.Name + '.' + sub
                         msg = translate('PathProfile', "Found a selected object which is not a face. Ignoring:")
-                        # FreeCAD.Console.PrintWarning(msg + " {}\n".format(ignoreSub))
+                        PathLog.warning(msg + " {}".format(ignoreSub))
 
                 # Identify initial Start and Final Depths
                 finDep = obj.FinalDepth.Value
@@ -705,14 +705,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     # Open-edges methods
     def _getCutAreaCrossSection(self, obj, base, origWire, flatWire):
         PathLog.debug('_getCutAreaCrossSection()')
-        FCAD = FreeCAD.ActiveDocument
+        # FCAD = FreeCAD.ActiveDocument
         tolerance = self.JOB.GeometryTolerance.Value
         toolDiam = 2 * self.radius  # self.radius defined in PathAreaOp or PathProfileBase modules
         minBfr = toolDiam * 1.25
         bbBfr = (self.ofstRadius * 2) * 1.25
         if bbBfr < minBfr:
             bbBfr = minBfr
-        fwBB = flatWire.BoundBox
+        # fwBB = flatWire.BoundBox
         wBB = origWire.BoundBox
         minArea = (self.ofstRadius - tolerance)**2 * math.pi
 
@@ -741,10 +741,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         pe = FreeCAD.Vector(Ve.X, Ve.Y, fdv)
 
         # Identify endpoints connecting circle center and diameter
-        vectDist = pe.sub(pb)
-        diam = vectDist.Length
-        cntr = vectDist.multiply(0.5).add(pb)
-        R = diam / 2
+        # vectDist = pe.sub(pb)
+        # diam = vectDist.Length
+        # cntr = vectDist.multiply(0.5).add(pb)
+        # R = diam / 2
 
         # Obtain beginning point perpendicular points
         if blen > 0.1:
@@ -940,6 +940,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         try:
             if hasattr(ofstShp, "Area"):
                 osArea = ofstShp.Area
+                if osArea:  # Make LGTM parser happy
+                    pass
             else:
                 PathLog.error('No area to offset shape returned.')
                 return list()
@@ -962,7 +964,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if N[4] < min0:
                 min0 = N[4]
                 min0i = n
-        (w0, vi0, pnt0, vrt0, d0) = NEAR0[0]  # min0i
+        (w0, vi0, pnt0, _, _) = NEAR0[0]  # min0i
         near0Shp = Part.makeLine(cent0, pnt0)
         self._addDebugObject('Near0', near0Shp)
 
@@ -974,7 +976,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if N[4] < min1:
                 min1 = N[4]
                 min1i = n
-        (w1, vi1, pnt1, vrt1, d1) = NEAR1[0]  # min1i
+        (w1, vi1, pnt1, _, _) = NEAR1[0]  # min1i
         near1Shp = Part.makeLine(cent1, pnt1)
         self._addDebugObject('Near1', near1Shp)
 
@@ -1301,7 +1303,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         tagCnt += nt
                         intTags.append(intTObj)
                         extTags.append(extTObj)
-        tagArea = math.pi * tagRad**2 * tagCnt
+        # tagArea = math.pi * tagRad**2 * tagCnt
         iTAG = Part.makeCompound(intTags)
         eTAG = Part.makeCompound(extTags)
 
@@ -1338,7 +1340,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def _makeStop(self, sType, pA, pB, lbl):
         # PathLog.debug('_makeStop()')
-        rad = self.radius
         ofstRad = self.ofstRadius
         extra = self.radius / 5.0
         lng = 0.05
@@ -1347,7 +1348,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         E = FreeCAD.Vector(pB.x, pB.y, 0)  # endpoint
         C = FreeCAD.Vector(pA.x, pA.y, 0)  # checkpoint
-        lenEC = E.sub(C).Length
 
         if self.useComp is True or (self.useComp is False and self.offsetExtra != 0):
             # 'L' stop shape and edge map
