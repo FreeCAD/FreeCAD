@@ -640,7 +640,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         PathLog.error(msg)
                     else:
                         flattened = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-                        if flattened:
+                        zDiff = math.fabs(wire.BoundBox.ZMin - obj.FinalDepth.Value)
+                        if flattened and zDiff >= self.JOB.GeometryTolerance.Value:
                             cutWireObjs = False
                             openEdges = list()
                             passOffsets = [self.ofstRadius]
@@ -664,7 +665,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 tup = openEdges, False, 'OpenEdge', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
                                 shapes.append(tup)
                         else:
-                            PathLog.error(self.inaccessibleMsg)
+                            if zDiff < self.JOB.GeometryTolerance.Value:
+                                msg = translate('PathProfile', 'Check edge selection and Final Depth requirements for profiling open edge(s).')
+                                PathLog.error(msg)
+                            else:
+                                PathLog.error(self.inaccessibleMsg)
                     # Eif
                 # Eif
             # Efor
