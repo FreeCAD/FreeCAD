@@ -520,7 +520,7 @@ def Execute(op, obj):
         GenerateGCode(op, obj, adaptiveResults, helixDiameter)
 
         if not obj.StopProcessing:
-            Console.PrintMessage("*** Done. Elapsed time: %f sec\n\n" %(time.time()-start))
+            Console.PrintMessage("*** Done. Elapsed time: %f sec\n\n" % (time.time()-start))
             obj.AdaptiveOutputState = adaptiveResults
             obj.AdaptiveInputState = inputStateObject
 
