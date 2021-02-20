@@ -98,7 +98,8 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property *prop) {
             pointColor = shapeColor;
             transparency = 60;
             linewidth = 1;
-            mapFace = mapLine = mapPoint = mapTrans = false;
+            mapLine = mapPoint = mapTrans = false;
+            mapFace = true;
         } else {
             shapeColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeColor());
             lineColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeLineColor());
