@@ -193,6 +193,10 @@ private:
 
 private:
     QMenu* _menu = nullptr;
+
+    class Private;
+    friend class Private;
+    std::unique_ptr<Private> _pimpl;
 };
 
 // --------------------------------------------------------------------

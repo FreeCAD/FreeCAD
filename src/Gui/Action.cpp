@@ -536,10 +536,40 @@ void WorkbenchComboBox::onWorkbenchActivated(const QString& name)
     }
 }
 
+// --------------------------------------------------------------------
+
+class WorkbenchGroup::Private: public ParameterGrp::ObserverType
+{
+public:
+    Private(WorkbenchGroup *master, const char *path):master(master)
+    {
+        handle = App::GetApplication().GetParameterGroupByPath(path);
+        handle->Attach(this);
+    }
+
+    virtual ~Private()
+    {
+        handle->Detach(this);
+    }
+
+    void OnChange(Base::Subject<const char*> &, const char *reason)
+    {
+        if (reason && strcmp(reason, "Disabled")==0) {
+            master->refreshWorkbenchList();
+        }
+    }
+
+public:
+    WorkbenchGroup *master;
+    ParameterGrp::handle handle;
+};
+
 /* TRANSLATOR Gui::WorkbenchGroup */
 WorkbenchGroup::WorkbenchGroup (  Command* pcCmd, QObject * parent )
   : ActionGroup( pcCmd, parent )
 {
+    _pimpl.reset(new Private(this, "User parameter:BaseApp/Workbenches"));
+
     // Start a list with 50 elements but extend it when requested
     for (int i=0; i<50; i++) {
         QAction* action = _group->addAction(QLatin1String(""));
