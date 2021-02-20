@@ -61,6 +61,7 @@
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "TaskFeaturePick.h"
@@ -1889,6 +1890,15 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
     FCMD_OBJ_CMD(Feat,"Base = " << str.str());
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     finishFeature(cmd, Feat, base);
+
+    App::DocumentObject* baseFeature = static_cast<PartDesign::DressUp*>(Feat)->Base.getValue();
+    if (baseFeature) {
+        PartDesignGui::ViewProvider* view = dynamic_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
+        // in case there is an error, for example when a fillet is larger than the available space
+        // display the base feature to avoid that the user sees nothing
+        if (view && Feat->isError())
+            view->Visibility.setValue(true);
+    }
 }
 
 void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)

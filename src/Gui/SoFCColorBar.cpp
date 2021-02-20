@@ -42,7 +42,7 @@ SO_NODE_ABSTRACT_SOURCE(SoFCColorBarBase)
 /*!
   Constructor.
 */
-SoFCColorBarBase::SoFCColorBarBase()
+SoFCColorBarBase::SoFCColorBarBase(): _windowSize(0,0)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorBarBase);
 }

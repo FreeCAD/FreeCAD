@@ -370,7 +370,7 @@ class FilterStatusBar : public QObject
 //    Q_OBJECT
 
 public:
-    FilterStatusBar(Action * action):QObject() {this->action = action;}
+    FilterStatusBar(Action * action):QObject(action) {this->action = action;}
 //    virtual ~FilterStatusBar() {}
 protected:
     Action * action;

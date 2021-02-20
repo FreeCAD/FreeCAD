@@ -22,12 +22,13 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui
+#import PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPropertyBag as PathPropertyBag
 import PathScripts.PathPropertyEditor as PathPropertyEditor
 import PathScripts.PathUtil as PathUtil
+import re
 
 from PySide import QtCore, QtGui
 
@@ -153,6 +154,7 @@ class PropertyCreate(object):
         self.form.propertyEnum.textChanged.connect(self.updateUI)
 
     def updateUI(self):
+
         typeSet = True
         if self.propertyIsEnumeration():
             self.form.labelEnum.setEnabled(True)
@@ -166,7 +168,10 @@ class PropertyCreate(object):
 
         ok = self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok)
 
-        if typeSet and self.propertyName() and self.propertyGroup():
+        if not re.match("^[A-Za-z0-9_]*$", self.form.propertyName.text()):
+            typeSet = False
+
+        if typeSet and self.propertyGroup():
             ok.setEnabled(True)
         else:
             ok.setEnabled(False)
@@ -299,10 +304,10 @@ class TaskPanel(object):
         typ  = dialog.propertyType()
         grp  = dialog.propertyGroup()
         info = dialog.propertyInfo()
-        self.obj.Proxy.addCustomProperty(typ, name, grp, info)
+        propname = self.obj.Proxy.addCustomProperty(typ, name, grp, info)
         if dialog.propertyIsEnumeration():
             setattr(self.obj, name, dialog.propertyEnumerations())
-        return (name, info)
+        return (propname, info)
 
     def propertyAdd(self):
         PathLog.track()

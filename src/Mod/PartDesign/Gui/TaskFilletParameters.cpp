@@ -96,6 +96,9 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
         this, SLOT(doubleClicked(QListWidgetItem*)));
+
+    // the dialog can be called on a broken fillet, then hide the fillet
+    hideOnError();
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -186,6 +189,8 @@ void TaskFilletParameters::onRefDeleted(void)
     pcFillet->Base.setValue(base, refs);
     // recompute the feature
     pcFillet->recomputeFeature();
+    // hide the fillet if there was a computation error
+    hideOnError();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
@@ -203,6 +208,8 @@ void TaskFilletParameters::onLengthChanged(double len)
     setupTransaction();
     pcFillet->Radius.setValue(len);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
+    // hide the fillet if there was a computation error
+    hideOnError();   
 }
 
 double TaskFilletParameters::getLength(void) const
@@ -274,7 +281,6 @@ TaskDlgFilletParameters::~TaskDlgFilletParameters()
 //}
 bool TaskDlgFilletParameters::accept()
 {
-    parameter->showObject();
     parameter->apply();
 
     return TaskDlgDressUpParameters::accept();

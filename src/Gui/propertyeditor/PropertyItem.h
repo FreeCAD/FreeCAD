@@ -466,20 +466,34 @@ private:
     PropertyFloatItem* m_z;
 };
 
-class VectorListButton : public Gui::LabelButton
+class VectorListWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    VectorListButton(int decimals, QWidget * parent = 0);
-    ~VectorListButton();
+    VectorListWidget (int decimals, QWidget * parent = nullptr);
+    virtual ~VectorListWidget();
 
-private:
-    void browse();
-    void showValue(const QVariant& d);
+    QVariant value() const;
+
+public Q_SLOTS:
+    void setValue(const QVariant&);
+
+protected:
+    void showValue(const QVariant& data);
+    void resizeEvent(QResizeEvent*);
+
+private Q_SLOTS:
+    void buttonClicked();
+
+Q_SIGNALS:
+    void valueChanged(const QVariant &);
 
 private:
     int decimals;
+    QVariant variant;
+    QLineEdit *lineEdit;
+    QPushButton *button;
 };
 
 /**

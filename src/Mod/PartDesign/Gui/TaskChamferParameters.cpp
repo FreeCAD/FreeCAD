@@ -102,6 +102,9 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
         this, SLOT(doubleClicked(QListWidgetItem*)));
+
+    // the dialog can be called on a broken chamfer, then hide the chamfer
+    hideOnError();
 }
 
 void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
@@ -231,6 +234,8 @@ void TaskChamferParameters::onRefDeleted(void)
     pcChamfer->Base.setValue(base, refs);
     // recompute the feature
     pcChamfer->recomputeFeature();
+    // hide the chamfer if there was a computation error
+    hideOnError();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
@@ -248,6 +253,8 @@ void TaskChamferParameters::onTypeChanged(int index)
     ui->stackedWidget->setCurrentIndex(index);
     ui->flipDirection->setEnabled(index != 0); // Enable if type is not "Equal distance"
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 void TaskChamferParameters::onSizeChanged(double len)
@@ -256,6 +263,8 @@ void TaskChamferParameters::onSizeChanged(double len)
     setupTransaction();
     pcChamfer->Size.setValue(len);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 void TaskChamferParameters::onSize2Changed(double len)
@@ -264,6 +273,8 @@ void TaskChamferParameters::onSize2Changed(double len)
     setupTransaction();
     pcChamfer->Size2.setValue(len);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 void TaskChamferParameters::onAngleChanged(double angle)
@@ -272,6 +283,8 @@ void TaskChamferParameters::onAngleChanged(double angle)
     setupTransaction();
     pcChamfer->Angle.setValue(angle);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 void TaskChamferParameters::onFlipDirection(bool flip)
@@ -280,6 +293,8 @@ void TaskChamferParameters::onFlipDirection(bool flip)
     setupTransaction();
     pcChamfer->FlipDirection.setValue(flip);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // hide the chamfer if there was a computation error
+    hideOnError();
 }
 
 int TaskChamferParameters::getType(void) const
@@ -389,7 +404,6 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters()
 //}
 bool TaskDlgChamferParameters::accept()
 {
-    parameter->showObject();
     parameter->apply();
 
     return TaskDlgDressUpParameters::accept();

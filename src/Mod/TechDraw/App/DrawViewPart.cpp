@@ -298,11 +298,6 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
             double newScale = autoScale();
             Scale.setValue(newScale);
             Scale.purgeTouched();
-            if (geometryObject != nullptr) {
-                delete geometryObject;
-                geometryObject = nullptr;
-//                partExec(shape);
-            }
             partExec(shape);
         }
     }
@@ -348,6 +343,8 @@ void DrawViewPart::onChanged(const App::Property* prop)
 void DrawViewPart::partExec(TopoDS_Shape shape)
 {
 //    Base::Console().Message("DVP::partExec()\n");
+    if (geometryObject)
+        delete geometryObject;
     geometryObject = makeGeometryForShape(shape);
     if (geometryObject == nullptr) {
         return;
