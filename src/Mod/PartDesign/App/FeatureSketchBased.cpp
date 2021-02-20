@@ -555,7 +555,8 @@ double ProfileBased::getThroughAllLength() const
     box.SetGap(0.0);
     // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
     // co-planar issues, gives a length that is guaranteed to go through all.
-    return 1.01 * sqrt(box.SquareExtent());
+    // The result is multiplied by 2 for the guarantee to work also for the midplane option.
+    return 2.02 * sqrt(box.SquareExtent());
 }
 
 void ProfileBased::generatePrism(TopoDS_Shape& prism,
