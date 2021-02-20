@@ -474,7 +474,7 @@ void WorkbenchComboBox::populate()
 {
     clear();
     auto actions = group->actions();
-    if (ViewParams::getSortWBList()) {
+    if (ViewParams::getAutoSortWBList()) {
         std::sort(actions.begin(), actions.end(),
             [](const QAction *a, const QAction *b) {
                 return a->text().compare(b->text(), Qt::CaseInsensitive) < 0;
@@ -576,6 +576,7 @@ void WorkbenchGroup::addTo(QWidget *w)
         QMenu* menu = qobject_cast<QMenu*>(w);
         if (!_menu) {
             _menu = new QMenu(_action->text());
+            onShowMenu();
             connect(_menu, SIGNAL(aboutToShow()), this, SLOT(onShowMenu()));
         }
         menu->addMenu(_menu);
@@ -586,7 +587,7 @@ void WorkbenchGroup::onShowMenu()
 {
     _menu->clear();
     auto actions = _group->actions();
-    if (ViewParams::getSortWBList()) {
+    if (ViewParams::getAutoSortWBList()) {
         std::sort(actions.begin(), actions.end(),
             [](const QAction *a, const QAction *b) {
                 return a->text().compare(b->text(), Qt::CaseInsensitive) < 0;

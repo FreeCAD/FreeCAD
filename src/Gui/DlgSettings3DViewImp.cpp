@@ -103,7 +103,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->radioPerspective->onSave();
     ui->radioOrthographic->onSave();
     ui->spinPreselectionDelay->onSave();
-    ViewParams::setSortWBList(ui->CheckBox_SortWbList->isChecked());
+    ViewParams::setAutoSortWBList(ui->CheckBox_SortWbList->isChecked());
 }
 
 void DlgSettings3DViewImp::loadSettings()
@@ -122,7 +122,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();
     ui->spinPreselectionDelay->onRestore();
-    ui->CheckBox_SortWbList->setChecked(ViewParams::getSortWBList());
+    ui->CheckBox_SortWbList->setChecked(ViewParams::getAutoSortWBList());
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
