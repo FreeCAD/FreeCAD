@@ -524,6 +524,16 @@ bool TaskPipeParameters::accept()
     }
 
     try {
+        //TODO: Add helper functions to do this in the Command class
+        App::DocumentObject* spine = pcPipe->Spine.getValue();
+        std::vector<std::string> subNames = pcPipe->Spine.getSubValues();
+        std::ostringstream str;
+        str << "(" << Gui::Command::getObjectCmd(spine) << ",[";
+        for(const auto& it : subNames)
+            str << "'" << it << "',";
+        str << "])";
+        Gui::cmdAppObjectArgs(pcPipe, "Spine = %s", str.str());
+
         Gui::cmdAppDocument(pcPipe, "recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());
