@@ -46,6 +46,7 @@ namespace App
 class DocumentObject;
 class Document;
 class GeoFeature;
+class SubObjectT;
 
 class DocInfo;
 typedef std::shared_ptr<DocInfo> DocInfoPtr;
@@ -270,7 +271,7 @@ public:
 
     /// Helper function to return a map of linked object and its subname references
     void getLinkedElements(std::map<App::DocumentObject*, std::vector<std::string> > &elements,
-            bool newStyle=true, bool all=true) const
+            bool newStyle=true, bool all=false) const
     {
         std::vector<App::DocumentObject*> ret;
         std::vector<std::string> subs;
@@ -283,12 +284,14 @@ public:
 
     /// Helper function to return a map of linked object and its subname references
     std::map<App::DocumentObject*, std::vector<std::string> >
-        linkedElements(bool newStyle=true, bool all=true) const
+        linkedElements(bool newStyle=true, bool all=false) const
     {
         std::map<App::DocumentObject*, std::vector<std::string> > ret;
         getLinkedElements(ret,newStyle,all);
         return ret;
     }
+
+    std::vector<App::SubObjectT> linkedElementsT(bool all) const;
     //@}
 
     virtual bool isSame(const Property &other) const override;

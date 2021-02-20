@@ -48,6 +48,7 @@
 #include "DocumentObject.h"
 #include "DocumentObjectPy.h"
 #include "Document.h"
+#include "DocumentObserver.h"
 #include "GeoFeature.h"
 
 #include "PropertyLinks.h"
@@ -227,6 +228,20 @@ static std::string propertyName(const Property *prop) {
             return propertyName(xlink->parent());
     }
     return prop->getFullName();
+}
+
+std::vector<App::SubObjectT>
+PropertyLinkBase::linkedElementsT(bool all) const
+{
+    std::vector<App::DocumentObject*> objs;
+    std::vector<std::string> subs;
+    getLinks(objs,all,&subs,true);
+    std::vector<App::SubObjectT> res;
+    res.reserve(objs.size());
+    assert(objs.size() == subs.size());
+    for (unsigned i=0; i<objs.size(); ++i)
+        res.emplace_back(objs[i], subs[i].c_str());
+    return res;
 }
 
 const std::unordered_set<PropertyLinkBase*>&
