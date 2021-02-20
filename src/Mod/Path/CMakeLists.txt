@@ -203,6 +203,7 @@ SET(PathTests_SRCS
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py
     PathTests/TestPathPreferences.py
+    PathTests/TestPathProfile.py
     PathTests/TestPathPropertyBag.py
     PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
@@ -222,6 +223,7 @@ SET(PathTests_SRCS
     PathTests/test_geomop.fcstd
     PathTests/test_holes00.fcstd
     PathTests/test_linuxcnc_00.ngc
+    PathTests/test_profile.fcstd
 )
 
 SET(PathImages_Ops
