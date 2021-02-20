@@ -933,7 +933,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # CHECK for ZERO area of offset shape
         try:
-            osArea = ofstShp.Area
+            if hasattr(ofstShp, "Area"):
+                osArea = ofstShp.Area
+            else:
+                PathLog.error('No area to offset shape returned.\n')
+                return list()
         except Exception as ee:
             PathLog.error('No area to offset shape returned.\n{}'.format(ee))
             return list()
