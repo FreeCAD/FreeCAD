@@ -6224,9 +6224,9 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
 
 bool SketchObject::evaluateSupport(void)
 {
-    // returns false if the shape if broken, null or non-planar
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+    // returns false if the shape is broken, null or non-planar
+    App::DocumentObject *link = Support.getValue();
+    if (!link || !link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return false;
     return true;
 }
