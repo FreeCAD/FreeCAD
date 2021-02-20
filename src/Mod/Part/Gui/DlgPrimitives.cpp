@@ -1832,6 +1832,14 @@ Location::Location(QWidget* parent, Part::Feature* feature)
         // the angle is rad, transform it for display to degrees
         ui->AngleQSB->setValue(Base::toDegrees<double>(rotationAngle));
 
+        ui->XPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.x")));
+        ui->YPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.y")));
+        ui->ZPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.z")));
+        ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.x")));
+        ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.y")));
+        ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.z")));
+        ui->AngleQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Angle")));
+
         //connect signals
         connect(ui->XPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
         connect(ui->YPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
