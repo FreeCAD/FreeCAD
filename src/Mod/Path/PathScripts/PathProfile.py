@@ -297,6 +297,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         baseSubsTuples = list()
         allTuples = list()
         edgeFaces = list()
+        remainingObjBaseFeatures = list()
         subCount = 0
         self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
         self.inaccessibleMsg = translate('PathProfile', 'The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.')
@@ -323,12 +324,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Pre-process Base Geometry to process edges
         if obj.Base and len(obj.Base) > 0:  # The user has selected subobjects from the base.  Process each.
-            shapes.extend(self._processEdges(obj))
+            shapes.extend(self._processEdges(obj, remainingObjBaseFeatures))
 
-        if obj.Base and len(obj.Base) > 0:  # The user has selected subobjects from the base.  Process each.
+        if obj.Base and len(obj.Base) > 0 and not remainingObjBaseFeatures:
+            # Edges were already processed, or whole model targeted.
+            PathLog.debug("remainingObjBaseFeatures is False")
+        elif remainingObjBaseFeatures and len(remainingObjBaseFeatures) > 0:  # Process remaining features after edges processed above.
             if obj.EnableRotation != 'Off':
-                for p in range(0, len(obj.Base)):
-                    (base, subsList) = obj.Base[p]
+                for p in range(0, len(remainingObjBaseFeatures)):
+                    (base, subsList) = remainingObjBaseFeatures[p]
                     for sub in subsList:
                         subCount += 1
                         shape = getattr(base.Shape, sub)
@@ -353,12 +357,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 # Efor
             else:
                 stock = PathUtils.findParentJob(obj).Stock
-                for (base, subList) in obj.Base:
+                for (base, subList) in remainingObjBaseFeatures:
                     baseSubsTuples.append((base, subList, 0.0, 'X', stock))
             # Eif
 
-            # for base in obj.Base:
-            finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
+            # for base in remainingObjBaseFeatures:
             for (base, subsList, angle, axis, stock) in baseSubsTuples:
                 holes = []
                 faces = []
@@ -587,16 +590,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return shapeTups
 
     # Edges pre-processing
-    def _processEdges(self, obj):
+    def _processEdges(self, obj, remainingObjBaseFeatures):
         shapes = list()
         basewires = list()
-        delPairs = list()
         ezMin = None
         self.cutOut = self.tool.Diameter
 
         for p in range(0, len(obj.Base)):
             (base, subsList) = obj.Base[p]
-            tmpSubs = list()
+            keepFaces = list()
             edgelist = list()
             for sub in subsList:
                 shape = getattr(base.Shape, sub)
@@ -605,16 +607,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     edgelist.append(getattr(base.Shape, sub))
                 # save faces for regular processing
                 if isinstance(shape, Part.Face):
-                    tmpSubs.append(sub)
+                    keepFaces.append(sub)
             if len(edgelist) > 0:
                 basewires.append((base, DraftGeomUtils.findWires(edgelist)))
                 if ezMin is None or base.Shape.BoundBox.ZMin < ezMin:
                     ezMin = base.Shape.BoundBox.ZMin
-            # If faces
-            if len(tmpSubs) == 0:  # all edges in subsList = remove pair in obj.Base
-                delPairs.append(p)
-            elif len(edgelist) > 0:  # some edges in subsList were extracted, return faces only to subsList
-                obj.Base[p] = (base, tmpSubs)
+
+            if len(keepFaces) > 0:  # save faces for returning and processing
+                remainingObjBaseFeatures.append((base, keepFaces))
 
         for base, wires in basewires:
             for wire in wires:
@@ -668,11 +668,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 # Eif
             # Efor
         # Efor
-
-        delPairs.sort(reverse=True)
-        for p in delPairs:
-            # obj.Base.pop(p)
-            pass
 
         return shapes
 
