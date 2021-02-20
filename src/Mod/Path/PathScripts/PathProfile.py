@@ -941,7 +941,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if hasattr(ofstShp, "Area"):
                 osArea = ofstShp.Area
             else:
-                PathLog.error('No area to offset shape returned.\n')
+                PathLog.error('No area to offset shape returned.')
                 return list()
         except Exception as ee:
             PathLog.error('No area to offset shape returned.\n{}'.format(ee))
