@@ -51,6 +51,7 @@
 #include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
+#include <App/Part.h>
 
 #include "Tree.h"
 #include "Command.h"
@@ -3702,7 +3703,11 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
             std::ostringstream ss;
             item->getSubName(ss,topParent);
             if(!topParent) {
-                if(parent!=obj.getObject())
+                if(parent!=obj.getObject()) {
+                    continue;
+                }
+            }else if(topParent!=parent) {
+                if (!topParent->isDerivedFrom(App::Part::getClassTypeId()))
                     continue;
             }
         }
