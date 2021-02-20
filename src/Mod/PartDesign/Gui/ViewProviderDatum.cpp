@@ -280,7 +280,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
 
 bool ViewProviderDatum::doubleClicked(void)
 {
-    return PartDesignGui::setEdit(pcObject);
+    return getDocument()->setEdit(this, ViewProvider::Default);
 }
 
 void ViewProviderDatum::unsetEdit(int ModNum)

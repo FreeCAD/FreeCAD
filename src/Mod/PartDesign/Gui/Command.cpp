@@ -110,35 +110,78 @@ static bool commandOverride(Gui::Command *cmd, int idx, const char *, int)
 void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
 {
     try{
-        std::string fullTypeName (type.getName());
+        App::DocumentObject *topParent = 0;
+        std::string parentSub;
 
-        App::PropertyLinkSubList support;
-        cmd.getSelection().getAsPropertyLinkSubList(support);
+        std::set<App::DocumentObject *> valueSet;
+        auto sels = Gui::Selection().getSelectionT("*", 0);
+        for (auto &sel : sels)
+            valueSet.insert(sel.getSubObject());
 
-        bool bEditSelected = false;
-        if (support.getSize() == 1 && support.getValue() ) {
-            if (support.getValue()->isDerivedFrom(type))
-                bEditSelected = true;
-        }
+        Part::Datum *pcDatum = nullptr;
+        if (valueSet.size() == 1 && (*valueSet.begin())->isDerivedFrom(type))
+            pcDatum = static_cast<Part::Datum*>(*valueSet.begin());
 
-        PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+        auto checkContainer = [&](App::DocumentObject *container) {
+            // Check the potential container to add in the newly created datum.
+            // We check if the container or any of its parent objects is selected
+            // (i.e. for attaching), and exclude the container if it causes cyclic
+            // reference.
+            
+            if (!container)
+                return 0;
 
-        if (bEditSelected) {
-            std::string tmp = std::string("Edit ")+name;
-            cmd.openCommand(tmp.c_str());
-            PartDesignGui::setEdit(support.getValue(),pcActiveBody);
+            if (valueSet.size() == 1 && (*valueSet.begin()) == container) {
+                sels.clear();
+                valueSet.clear();
+                return 1;
+            }
+
+            if (pcDatum && pcDatum->getInListEx(false).count(container)) {
+                std::string tmp = std::string("Edit ")+name;
+                cmd.openCommand(tmp.c_str());
+                Gui::cmdSetEdit(pcDatum);
+                return -1;
+            }
+
+            auto inlist = container->getInListEx(true);
+            for (auto obj : valueSet) {
+                if (inlist.count(obj)) {
+                    topParent = nullptr;
+                    parentSub.clear();
+                    return 0;
+                }
+            }
+            return 1;
+        };
+
+        Gui::MDIView *activeView = Gui::Application::Instance->activeView();
+        Part::BodyBase *pcActiveBody = nullptr;
+        if (activeView)
+            pcActiveBody = activeView->getActiveObject<Part::BodyBase*>(
+                    PDBODYKEY, &topParent, &parentSub);
+        int res = checkContainer(pcActiveBody);
+        if (res < 0)
             return;
+        if (res == 0)
+            pcActiveBody = nullptr;
+        App::Part *pcActivePart = nullptr;
+        if (!pcActiveBody && activeView) {
+            pcActivePart = activeView->getActiveObject<App::Part*>(
+                    PARTKEY, &topParent, &parentSub);
+            res = checkContainer(pcActivePart);
+            if (res < 0)
+                return;
+            if (res == 0)
+                pcActivePart = nullptr;
         }
 
-        App::DocumentObject *pcActiveContainer;
-        if(pcActiveBody)
-            pcActiveContainer = pcActiveBody;
-        else
-            pcActiveContainer = PartDesignGui::getActivePart();
+        App::DocumentObject *pcActiveContainer = pcActiveBody;
+        if (!pcActiveContainer)
+            pcActiveContainer = pcActivePart;
 
         std::string FeatName;
         App::Document *doc = 0;
-
         FeatName = cmd.getUniqueObjectName(name.c_str(), pcActiveContainer);
 
         std::string tmp = std::string("Create ")+name;
@@ -147,28 +190,62 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
 
         if(pcActiveContainer) {
             Gui::cmdAppObject(pcActiveContainer, std::ostringstream()
-                    << "newObject('" << fullTypeName << "','" << FeatName << "')");
+                    << "newObject('" << type.getName() << "','" << FeatName << "')");
             doc = pcActiveContainer->getDocument();
         } else {
             doc = App::GetApplication().getActiveDocument();
             Gui::cmdAppDocument(doc, std::ostringstream()
-                    << "addObject('" << fullTypeName << "','" << FeatName << "')");
+                    << "addObject('" << type.getName() << "','" << FeatName << "')");
         }
-
-        support.removeValue(pcActiveContainer);
 
         auto Feat = doc->getObject(FeatName.c_str());
         if(!Feat) return;
 
+        App::SubObjectT containerT(topParent ? topParent : pcActiveContainer, parentSub.c_str());
+        App::SubObjectT editObjT;
+        if (pcActiveContainer)
+            editObjT = containerT.getChild(Feat);
+        else
+            editObjT = Feat;
+
+        for (auto it = sels.begin(); it != sels.end();) {
+            auto &sel = *it;
+            if (topParent) {
+                std::string sub = sel.getSubName();
+                if (sub.empty()) {
+                    ++it;
+                    continue;
+                }
+                auto link = sel.getObject();
+                auto psub = parentSub;
+                topParent->resolveRelativeLink(psub,link,sub);
+                if (!link) {
+                    FC_WARN("Failed to resolve relative link "
+                            << sel.getSubObjectFullName() << " v.s. "
+                            << containerT.getSubObjectFullName());
+                    it = sels.erase(it);
+                    continue;
+                }
+                sel = App::SubObjectT(link, sub.c_str());
+            }
+
+            sel = Part::SubShapeBinder::import(sel, editObjT, true);
+            ++it;
+        }
+
+
         //test if current selection fits a mode.
-        if (support.getSize() > 0) {
+        if (sels.size() > 0) {
             Part::AttachExtension* pcDatum = Feat->getExtensionByType<Part::AttachExtension>();
-            pcDatum->attacher().setReferences(support);
+            pcDatum->attacher().setReferences(sels);
             SuggestResult sugr;
             pcDatum->attacher().suggestMapModes(sugr);
             if (sugr.message == Attacher::SuggestResult::srOK) {
+                std::ostringstream ss;
+                for (auto &sel : sels)
+                    ss << sel.getSubObjectPython() << ", ";
                 //fits some mode. Populate support property.
-                Gui::cmdAppObject(Feat, std::ostringstream() << "Support = " << support.getPyReprString());
+                Gui::cmdAppObject(Feat, std::ostringstream() << "Support = [" << ss.str() << "]");
                 Gui::cmdAppObject(Feat, std::ostringstream() << "MapMode = '" << AttachEngine::getModeName(sugr.bestFitMode) << "'");
             } else {
                 QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
@@ -176,8 +253,10 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
         }
         cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
 
-        if(pcActiveContainer)
-            PartDesignGui::setEdit(Feat,pcActiveContainer,pcActiveBody?PDBODYKEY:PARTKEY);
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearSelection();
+        Gui::Selection().addSelection(editObjT);
+        Gui::cmdSetEdit(Feat);
 
     } catch (Base::Exception &e) {
         QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.what()));

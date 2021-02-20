@@ -76,6 +76,8 @@ public:
 
     bool isCompleted() const { return completed; }
 
+    void setupTransaction();
+
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
     void onAttachmentOffsetXChanged(double);
@@ -138,6 +140,7 @@ private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskAttacher> ui;
     VisibilityFunction visibilityFunc;
+    int transactionID = 0;
 
     // TODO fix documentation here (2015-11-10, Fat-Zer)
     int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-3 means a reference is being picked.

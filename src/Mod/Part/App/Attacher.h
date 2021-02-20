@@ -40,6 +40,11 @@
 #include <gp_Vec.hxx>
 #include <GProp_GProps.hxx>
 
+namespace App
+{
+class SubObjectT;
+}
+
 namespace Attacher
 {
 
@@ -234,6 +239,7 @@ public: //methods
             const Base::Placement &origPlacement) const = 0;
 
     void setReferences(const App::PropertyLinkSubList &references);
+    void setReferences(const std::vector<App::SubObjectT> &references);
 
     /**
      * @brief placementFactory calculates placement from Z axis direction,

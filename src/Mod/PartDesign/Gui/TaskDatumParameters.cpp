@@ -110,11 +110,6 @@ bool TaskDlgDatumParameters::reject() {
 
 bool TaskDlgDatumParameters::accept() {
 
-    Part::Datum* pcDatum = static_cast<Part::Datum*>(ViewProvider->getObject());
-    auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
-    auto pcActivePart = PartDesignGui::getPartFor(pcDatum, false);
-    std::vector<App::DocumentObject*> copies;
-
     //see if we are able to assign a mode
     if (parameter->getActiveMapMode() == mmDeactivated) {
         QMessageBox msg;
@@ -132,63 +127,8 @@ bool TaskDlgDatumParameters::accept() {
             return false;
     }
 
-    //see what to do with external references
-    //check the prerequisites for the selected objects
-    //the user has to decide which option we should take if external references are used
-    std::set<App::DocumentObject*> externals;
-    for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
-        if (pcActiveBody) {
-            if(!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
-                externals.insert(obj);
-        } else if (pcActivePart && !pcActivePart->hasObject(obj) && !pcActivePart->getOrigin()->hasObject(obj))
-            externals.insert(obj);
-    }
-
-    if(externals.size()) {
-        // TODO: rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
-        QDialog dia(Gui::getMainWindow());
-        PartDesignGui::Ui_DlgReference dlg;
-        dlg.setupUi(&dia);
-        dia.setModal(true);
-        int result = dia.exec();
-        if (result == QDialog::DialogCode::Rejected)
-            return false;
-        else if (!dlg.radioXRef->isChecked()) {
-            std::vector<App::DocumentObject*> copyObjects;
-            std::vector<std::string> copySubValues;
-            std::vector<std::string> subs = pcDatum->Support.getSubValues();
-            int index = 0;
-            for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
-                if (externals.count(obj)) {
-                    auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked());
-                    if (copy) {
-                        copyObjects.push_back(copy);
-                        copies.push_back(copyObjects.back());
-                        copySubValues.push_back(std::string());
-                    }
-                }
-                else {
-                    copyObjects.push_back(obj);
-                    copySubValues.push_back(subs[index]);
-                }
-
-                index++;
-            }
-
-            pcDatum->Support.setValues(copyObjects, copySubValues);
-        }
-    }
-
     if (!PartGui::TaskDlgAttacher::accept())
         return false;
-
-    //we need to add the copied features to the body after the command action, as otherwise FreeCAD crashes unexplainably
-    for(auto obj : copies) {
-        if (pcActiveBody)
-            pcActiveBody->addObject(obj);
-        else if (pcActivePart)
-            pcActivePart->addObject(obj);
-    }
 
     return true;
 }

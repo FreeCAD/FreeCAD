@@ -125,7 +125,7 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
 void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames) {
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
-    refnames = pcAttach->Support.getSubValues();
+    refnames = pcAttach->Support.getSubValues(false);
 
     for (size_t r = 0; r < 4; r++) {
         if ((r < refs.size()) && (refs[r] != NULL)) {
@@ -145,6 +145,8 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     , ui(new Ui_TaskAttacher)
     , visibilityFunc(visFunc)
 {
+    App::GetApplication().getActiveTransaction(&transactionID);
+
     //check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
         throw Base::RuntimeError("Object has no Part::AttachExtension");
@@ -399,6 +401,7 @@ bool TaskAttacher::updatePreview()
     if (!ViewProvider)
         return false;
 
+    setupTransaction();
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     QString errMessage;
     bool attached = false;
@@ -465,34 +468,41 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (!selObj)
             return;
 
-        // Remove subname for planes and datum features
-        if (selObj->getLinkedObject(true)->isDerivedFrom(App::OriginFeature::getClassTypeId()))
-            sel.setSubName(sel.getSubNameNoElement());
+        try {
+            setupTransaction();
 
-        if (editObjT.getSubObject())
-            sel = Part::SubShapeBinder::import(sel, editObjT, true);
-        selObj = sel.getSubObject();
-        auto selElement = sel.getOldElementName();
+            // Remove subname for planes and datum features
+            if (selObj->getLinkedObject(true)->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                sel.setSubName(sel.getSubNameNoElement());
 
-        // eliminate duplicate selections
-        for (size_t r = 0; r < refs.size(); r++) {
-            if (selObj == refs[r]) {
-                if (refnames[r].empty() || refnames[r] == selElement)
-                    return;
-                if (selElement.empty()) {
-                    if (autoNext && iActiveRef > 0 && iActiveRef == (ssize_t) refnames.size())
-                        --iActiveRef;
-                    refs.erase(refs.begin() + r);
-                    refnames.erase(refnames.begin() + r);
-                    break;
+            if (editObjT.getSubObject())
+                sel = Part::SubShapeBinder::import(sel, editObjT, true);
+            selObj = sel.getSubObject();
+            auto selElement = sel.getOldElementName();
+
+            // eliminate duplicate selections
+            for (size_t r = 0; r < refs.size(); r++) {
+                if (selObj == refs[r]) {
+                    if (refnames[r] == selElement)
+                        return;
+                    if (selElement.empty() || refnames[r].empty()) {
+                        if (autoNext && iActiveRef > 0 && iActiveRef == (ssize_t) refnames.size()) {
+                            --iActiveRef;
+                            refs.pop_back();
+                            refnames.pop_back();
+                        }
+                        break;
+                    }
                 }
             }
-        }
-        refs.push_back(selObj);
-        refnames.push_back(selElement);
+            if (iActiveRef < (ssize_t) refs.size()) {
+                refs[iActiveRef] = selObj;
+                refnames[iActiveRef] = selElement;
+            } else {
+                refs.push_back(selObj);
+                refnames.push_back(selElement);
+            }
 
-        //bool error = false;
-        try {
             pcAttach->Support.setValues(refs, refnames);
             updateListOfModes();
             eMapMode mmode = getActiveMapMode();//will be mmDeactivated, if selected or if no modes are available
@@ -505,32 +515,34 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
             pcAttach->MapMode.setValue(mmode);
             selectMapMode(mmode);
             updatePreview();
-        }
-        catch(Base::Exception& e) {
+
+            QLineEdit* line = getLine(iActiveRef);
+            if (line != NULL) {
+                line->blockSignals(true);
+                line->setText(makeRefString(selObj, selElement));
+                line->setProperty("RefName", QByteArray(selElement.c_str()));
+                line->blockSignals(false);
+            }
+
+            if (autoNext) {
+                if (iActiveRef == -1){
+                    //nothing to do
+                } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.size() == 0){
+                    iActiveRef = -1;
+                } else {
+                    iActiveRef++;
+                }
+            }
+
+            updateReferencesUI();
+
+        } catch(Base::Exception& e) {
+            e.ReportException();
             //error = true;
             ui->message->setText(QString::fromLatin1(e.what()));
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
         }
 
-        QLineEdit* line = getLine(iActiveRef);
-        if (line != NULL) {
-            line->blockSignals(true);
-            line->setText(makeRefString(selObj, selElement));
-            line->setProperty("RefName", QByteArray(selElement.c_str()));
-            line->blockSignals(false);
-        }
-
-        if (autoNext) {
-            if (iActiveRef == -1){
-                //nothing to do
-            } else if (iActiveRef == 4 || this->lastSuggestResult.nextRefTypeHint.size() == 0){
-                iActiveRef = -1;
-            } else {
-                iActiveRef++;
-            }
-        }
-
-        updateReferencesUI();
     }
 }
 
@@ -566,8 +578,15 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
         pl.setRotation(rot);
     }
 
-    pcAttach->AttachmentOffset.setValue(pl);
-    updatePreview();
+    try {
+        setupTransaction();
+        pcAttach->AttachmentOffset.setValue(pl);
+        updatePreview();
+    } catch(Base::Exception& e) {
+        e.ReportException();
+        ui->message->setText(QString::fromLatin1(e.what()));
+        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+    }
 }
 
 void TaskAttacher::onAttachmentOffsetXChanged(double val)
@@ -605,9 +624,16 @@ void TaskAttacher::onCheckFlip(bool on)
     if (!ViewProvider)
         return;
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-    pcAttach->MapReversed.setValue(on);
-    ViewProvider->getObject()->getDocument()->recomputeFeature(ViewProvider->getObject());
+    try {
+        setupTransaction();
+        Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+        pcAttach->MapReversed.setValue(on);
+        updatePreview();
+    } catch(Base::Exception& e) {
+        e.ReportException();
+        ui->message->setText(QString::fromLatin1(e.what()));
+        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+    }
 }
 
 void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
@@ -646,9 +672,16 @@ void TaskAttacher::onModeSelect()
     if (!ViewProvider)
         return;
 
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-    pcAttach->MapMode.setValue(getActiveMapMode());
-    updatePreview();
+    try {
+        setupTransaction();
+        Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+        pcAttach->MapMode.setValue(getActiveMapMode());
+        updatePreview();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        ui->message->setText(QString::fromLatin1(e.what()));
+        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
+    }
 }
 
 void TaskAttacher::onRefName(const QString& text, unsigned idx)
@@ -659,108 +692,125 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     QLineEdit* line = getLine(idx);
     if (line == NULL) return;
 
-    if (text.length() == 0) {
-        // Reference was removed
-        // Update the reference list
+    try {
+        if (text.length() == 0) {
+            // Reference was removed
+            // Update the reference list
+            Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
+            std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
+            std::vector<std::string> refnames = pcAttach->Support.getSubValues();
+            std::vector<App::DocumentObject*> newrefs;
+            std::vector<std::string> newrefnames;
+            for (size_t r = 0; r < refs.size(); r++) {
+                if (r != idx) {
+                    newrefs.push_back(refs[r]);
+                    newrefnames.push_back(refnames[r]);
+                }
+            }
+
+            setupTransaction();
+            pcAttach->Support.setValues(newrefs, newrefnames);
+            updateListOfModes();
+            pcAttach->MapMode.setValue(getActiveMapMode());
+            selectMapMode(getActiveMapMode());
+
+            updatePreview();
+
+            // Update the UI
+            std::vector<QString> refstrings;
+            makeRefStrings(refstrings, newrefnames);
+            ui->lineRef1->setText(refstrings[0]);
+            ui->lineRef1->setProperty("RefName", QByteArray(newrefnames[0].c_str()));
+            ui->lineRef2->setText(refstrings[1]);
+            ui->lineRef2->setProperty("RefName", QByteArray(newrefnames[1].c_str()));
+            ui->lineRef3->setText(refstrings[2]);
+            ui->lineRef3->setProperty("RefName", QByteArray(newrefnames[2].c_str()));
+            ui->lineRef4->setText(refstrings[3]);
+            ui->lineRef4->setProperty("RefName", QByteArray(newrefnames[3].c_str()));
+            updateReferencesUI();
+            return;
+        }
+
+        QStringList parts = text.split(QChar::fromLatin1(':'));
+        if (parts.length() < 2)
+            parts.push_back(QString::fromLatin1(""));
+        // Check whether this is the name of an App::Plane or Part::Datum feature
+        App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
+        if (obj == NULL) return;
+
+        std::string subElement;
+
+        if (obj->getLinkedObject(true)->isDerivedFrom(App::Plane::getClassTypeId())) {
+            // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
+            subElement = "";
+        } else if (obj->getLinkedObject(true)->isDerivedFrom(App::Line::getClassTypeId())) {
+            // everything is OK (we assume a Part can only have exactly 3 App::Line objects located at the base of the feature tree)
+            subElement = "";
+        } else if (obj->getLinkedObject(true)->isDerivedFrom(Part::Datum::getClassTypeId())) {
+            subElement = "";
+        } else {
+            // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
+
+            // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
+            QRegExp rx;
+            std::stringstream ss;
+
+            rx.setPattern(QString::fromLatin1("^") + tr("Face") + QString::fromLatin1("(\\d+)$"));
+            if (parts[1].indexOf(rx) >= 0) {
+                int faceId = rx.cap(1).toInt();
+                ss << "Face" << faceId;
+            } else {
+                rx.setPattern(QString::fromLatin1("^") + tr("Edge") + QString::fromLatin1("(\\d+)$"));
+                if (parts[1].indexOf(rx) >= 0) {
+                    int lineId = rx.cap(1).toInt();
+                    ss << "Edge" << lineId;
+                } else {
+                    rx.setPattern(QString::fromLatin1("^") + tr("Vertex") + QString::fromLatin1("(\\d+)$"));
+                    if (parts[1].indexOf(rx) >= 0) {
+                        int vertexId = rx.cap(1).toInt();
+                        ss << "Vertex" << vertexId;
+                    } else {
+                        //none of Edge/Vertex/Face. May be empty string.
+                        //Feed in whatever user supplied, even if invalid.
+                        ss << parts[1].toLatin1().constData();
+                    }
+                }
+            }
+
+            line->setProperty("RefName", QByteArray(ss.str().c_str()));
+            subElement = ss.str();
+        }
+
+        setupTransaction();
+
+        if (editObjT.getSubObject()) {
+            App::SubObjectT objT(obj, subElement.c_str());
+            objT = Part::SubShapeBinder::import(objT, editObjT, true);
+            obj = objT.getObject();
+            subElement = objT.getSubName();
+        }
+
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
         std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
         std::vector<std::string> refnames = pcAttach->Support.getSubValues();
-        std::vector<App::DocumentObject*> newrefs;
-        std::vector<std::string> newrefnames;
-        for (size_t r = 0; r < refs.size(); r++) {
-            if (r != idx) {
-                newrefs.push_back(refs[r]);
-                newrefnames.push_back(refnames[r]);
-            }
+        if (idx < refs.size()) {
+            refs[idx] = obj;
+            refnames[idx] = subElement.c_str();
+        } else {
+            refs.push_back(obj);
+            refnames.push_back(subElement.c_str());
         }
-        pcAttach->Support.setValues(newrefs, newrefnames);
+        pcAttach->Support.setValues(refs, refnames);
         updateListOfModes();
         pcAttach->MapMode.setValue(getActiveMapMode());
         selectMapMode(getActiveMapMode());
-
-        updatePreview();
-
-        // Update the UI
-        std::vector<QString> refstrings;
-        makeRefStrings(refstrings, newrefnames);
-        ui->lineRef1->setText(refstrings[0]);
-        ui->lineRef1->setProperty("RefName", QByteArray(newrefnames[0].c_str()));
-        ui->lineRef2->setText(refstrings[1]);
-        ui->lineRef2->setProperty("RefName", QByteArray(newrefnames[1].c_str()));
-        ui->lineRef3->setText(refstrings[2]);
-        ui->lineRef3->setProperty("RefName", QByteArray(newrefnames[2].c_str()));
-        ui->lineRef4->setText(refstrings[3]);
-        ui->lineRef4->setProperty("RefName", QByteArray(newrefnames[3].c_str()));
         updateReferencesUI();
-        return;
+        updatePreview();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        ui->message->setText(QString::fromLatin1(e.what()));
+        ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: red;}"));
     }
-
-    QStringList parts = text.split(QChar::fromLatin1(':'));
-    if (parts.length() < 2)
-        parts.push_back(QString::fromLatin1(""));
-    // Check whether this is the name of an App::Plane or Part::Datum feature
-    App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (obj == NULL) return;
-
-    std::string subElement;
-
-    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-        // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
-        subElement = "";
-    } else if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
-        // everything is OK (we assume a Part can only have exactly 3 App::Line objects located at the base of the feature tree)
-        subElement = "";
-    } else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        subElement = "";
-    } else {
-        // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
-
-        // We must expect that "text" is the translation of "Face", "Edge" or "Vertex" followed by an ID.
-        QRegExp rx;
-        std::stringstream ss;
-
-        rx.setPattern(QString::fromLatin1("^") + tr("Face") + QString::fromLatin1("(\\d+)$"));
-        if (parts[1].indexOf(rx) >= 0) {
-            int faceId = rx.cap(1).toInt();
-            ss << "Face" << faceId;
-        } else {
-            rx.setPattern(QString::fromLatin1("^") + tr("Edge") + QString::fromLatin1("(\\d+)$"));
-            if (parts[1].indexOf(rx) >= 0) {
-                int lineId = rx.cap(1).toInt();
-                ss << "Edge" << lineId;
-            } else {
-                rx.setPattern(QString::fromLatin1("^") + tr("Vertex") + QString::fromLatin1("(\\d+)$"));
-                if (parts[1].indexOf(rx) >= 0) {
-                    int vertexId = rx.cap(1).toInt();
-                    ss << "Vertex" << vertexId;
-                } else {
-                    //none of Edge/Vertex/Face. May be empty string.
-                    //Feed in whatever user supplied, even if invalid.
-                    ss << parts[1].toLatin1().constData();
-                }
-            }
-        }
-
-        line->setProperty("RefName", QByteArray(ss.str().c_str()));
-        subElement = ss.str();
-    }
-
-    Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-    std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
-    std::vector<std::string> refnames = pcAttach->Support.getSubValues();
-    if (idx < refs.size()) {
-        refs[idx] = obj;
-        refnames[idx] = subElement.c_str();
-    } else {
-        refs.push_back(obj);
-        refnames.push_back(subElement.c_str());
-    }
-    pcAttach->Support.setValues(refs, refnames);
-    updateListOfModes();
-    pcAttach->MapMode.setValue(getActiveMapMode());
-    selectMapMode(getActiveMapMode());
-
-    updateReferencesUI();
 }
 
 void TaskAttacher::updateRefButton(int idx)
@@ -1128,6 +1178,31 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
     }
 }
 
+void TaskAttacher::setupTransaction()
+{
+    if (!ViewProvider || !ViewProvider->getObject())
+        return;
+
+    auto obj = ViewProvider->getObject();
+    if (!obj)
+        return;
+
+    int tid = 0;
+    const char *name = App::GetApplication().getActiveTransaction(&tid);
+    if(tid && tid == transactionID)
+        return;
+
+    std::string n(QT_TRANSLATE_NOOP("Command", "Attach"));
+    n += " ";
+    n += obj->Label.getValue();
+    if(!name || n!=name)
+        tid = App::GetApplication().setActiveTransaction(n.c_str());
+
+    if(!transactionID)
+        transactionID = tid;
+}
+
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -1158,8 +1233,6 @@ TaskDlgAttacher::~TaskDlgAttacher()
 
 void TaskDlgAttacher::open()
 {
-    Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
-    document->openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
 }
 
 void TaskDlgAttacher::clicked(int)
@@ -1174,6 +1247,8 @@ bool TaskDlgAttacher::accept()
         Gui::Document* document = doc.getDocument();
         if (!document || !ViewProvider)
             return true;
+
+        parameter->setupTransaction();
 
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
         auto obj = ViewProvider->getObject();
@@ -1194,7 +1269,7 @@ bool TaskDlgAttacher::accept()
         Gui::cmdAppObjectArgs(obj, "MapPathParameter = %f", pcAttach->MapPathParameter.getValue());
 
         Gui::cmdAppObjectArgs(obj, "MapMode = '%s'", AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
-        Gui::cmdAppObject(obj, "recompute()");
+        Gui::Command::updateActive();
 
         Gui::cmdGuiDocument(obj, "resetEdit()");
         document->commitCommand();
@@ -1215,7 +1290,6 @@ bool TaskDlgAttacher::reject()
         // roll back the done things
         document->abortCommand();
         Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 
     return true;
