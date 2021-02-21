@@ -549,11 +549,13 @@ QVariant PropertyItem::data(int column, int role) const
             }
             return QVariant();
         }
-        if (role == Qt::DisplayRole)
+        if (role == Qt::DisplayRole) {
             return displayName();
+        }
         // no properties set
-        if (propertyItems.empty())
+        if (propertyItems.empty()) {
             return QVariant();
+        }
         else if (role == Qt::ToolTipRole) {
             if(!PropertyView::showAll())
                 return toolTip(propertyItems[0]);
@@ -563,17 +565,17 @@ QVariant PropertyItem::data(int column, int role) const
             if(doc.size())
                 return type + QLatin1String("\n\n") + doc;
             return type;
-        } else if (role == Qt::TextColorRole && linked)
-            return QVariant::fromValue(QColor(0,0x80,0));
-        else
-            return QVariant();
+        }
+
+        return QVariant();
     }
     else {
         // no properties set
         if (propertyItems.empty()) {
             PropertyItem* parent = this->parent();
-            if (!parent || !parent->parent())
+            if (!parent || !parent->parent()) {
                 return QVariant();
+            }
             if (role == Qt::EditRole) {
                 return parent->property(qPrintable(objectName()));
             }
@@ -585,27 +587,33 @@ QVariant PropertyItem::data(int column, int role) const
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
             } 
-            else if( role == Qt::TextColorRole) {
-                if(hasExpression())
+            else if (role == Qt::TextColorRole) {
+                if (hasExpression())
                     return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
                 return QVariant();
-            } else
-                return QVariant();
+            }
+
+            return QVariant();
         }
-        if (role == Qt::EditRole)
+        if (role == Qt::EditRole) {
             return value(propertyItems[0]);
-        else if (role == Qt::DecorationRole)
+        }
+        else if (role == Qt::DecorationRole) {
             return decoration(value(propertyItems[0]));
-        else if (role == Qt::DisplayRole)
+        }
+        else if (role == Qt::DisplayRole) {
             return toString(value(propertyItems[0]));
-        else if (role == Qt::ToolTipRole)
+        }
+        else if (role == Qt::ToolTipRole) {
             return toolTip(propertyItems[0]);
+        }
         else if( role == Qt::TextColorRole) {
-            if(hasExpression())
+            if (hasExpression())
                 return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
             return QVariant();
-        } else
-            return QVariant();
+        }
+
+        return QVariant();
     }
 }
 
