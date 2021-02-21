@@ -440,33 +440,34 @@ class ObjectSlot(PathOp.ObjectOp):
                 return False
             elif p1.z == p2.z:
                 pnts = (p1, p2)
+                featureCount = 2
             else:
                 msg = translate('PathSlot',
                         'Custom points not at same Z height.')
                 FreeCAD.Console.PrintError(msg + '\n')
                 return False
-
-        baseGeom = obj.Base[0]
-        base, subsList = baseGeom
-        self.base = base
-
-        featureCount = len(subsList)
-        if  featureCount == 1:
-            PathLog.debug('Reference 1: {}'.format(obj.Reference1))
-            sub1 = subsList[0]
-            shape_1 = getattr(base.Shape, sub1)
-            self.shape1 = shape_1
-            pnts = self._processSingle(obj, shape_1, sub1)
         else:
-            PathLog.debug('Reference 1: {}'.format(obj.Reference1))
-            PathLog.debug('Reference 2: {}'.format(obj.Reference2))
-            sub1 = subsList[0]
-            sub2 = subsList[1]
-            shape_1 = getattr(base.Shape, sub1)
-            shape_2 = getattr(base.Shape, sub2)
-            self.shape1 = shape_1
-            self.shape2 = shape_2
-            pnts = self._processDouble(obj, shape_1, sub1, shape_2, sub2)
+            baseGeom = obj.Base[0]
+            base, subsList = baseGeom
+            self.base = base
+
+            featureCount = len(subsList)
+            if  featureCount == 1:
+                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+                sub1 = subsList[0]
+                shape_1 = getattr(base.Shape, sub1)
+                self.shape1 = shape_1
+                pnts = self._processSingle(obj, shape_1, sub1)
+            else:
+                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+                PathLog.debug('Reference 2: {}'.format(obj.Reference2))
+                sub1 = subsList[0]
+                sub2 = subsList[1]
+                shape_1 = getattr(base.Shape, sub1)
+                shape_2 = getattr(base.Shape, sub2)
+                self.shape1 = shape_1
+                self.shape2 = shape_2
+                pnts = self._processDouble(obj, shape_1, sub1, shape_2, sub2)
 
         if not pnts:
             return False
