@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Navigation</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
     <widget class="QGroupBox" name="groupBoxNaviCube">
      <property name="title">
       <string>Navigation cube</string>
@@ -23,6 +23,38 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="stepLabel">
+        <property name="text">
+         <string>Steps by turn</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefSpinBox" name="prefStepByTurn">
+        <property name="toolTip">
+         <string>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="minimum">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <number>36</number>
+        </property>
+        <property name="value">
+         <number>8</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NaviStepByTurn</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -38,13 +70,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="stepLabel">
-        <property name="text">
-         <string>Steps by turn</string>
-        </property>
-       </widget>
       </item>
       <item row="0" column="3">
        <widget class="QLabel" name="cornerLabel">
@@ -86,84 +111,61 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefSpinBox" name="prefStepByTurn">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
+      <item row="1" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="naviCubeToNearest">
         <property name="toolTip">
-         <string>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</string>
+         <string>Rotates to nearest possible state when clicking a cube face</string>
         </property>
-        <property name="minimum">
-         <number>4</number>
+        <property name="text">
+         <string>Rotate to nearest</string>
         </property>
-        <property name="maximum">
-         <number>36</number>
-        </property>
-        <property name="value">
-         <number>8</number>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>NaviStepByTurn</cstring>
+         <cstring>NaviRotateToNearest</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>NaviCube</cstring>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Size</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="naviCubeSize">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>40</width>
-          <height>0</height>
-         </size>
-        </property>
+      <item row="2" column="1">
+       <widget class="Gui::PrefSpinBox" name="prefCubeSize">
         <property name="toolTip">
-         <string>Change the navigation cube size in pixel.
-
-It will only take effect on newly opened or created document.</string>
+         <string>Size of the navigation cube</string>
         </property>
         <property name="minimum">
-         <number>32</number>
+         <number>10</number>
         </property>
         <property name="maximum">
-         <number>99999</number>
+         <number>1024</number>
         </property>
         <property name="singleStep">
          <number>10</number>
         </property>
         <property name="value">
-         <number>128</number>
+         <number>132</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CubeSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NaviCube</cstring>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="GroupBox12">
      <property name="enabled">
       <bool>true</bool>
@@ -334,7 +336,7 @@ Turntable: the part will be rotated around the z-axis.</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="3">
+        <item row="3" column="3">
          <widget class="QComboBox" name="comboNewDocView">
           <property name="minimumSize">
            <size>
@@ -353,14 +355,14 @@ Turntable: the part will be rotated around the z-axis.</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>New document scale</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="3">
+        <item row="4" column="3">
          <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
           <property name="minimumSize">
            <size>
@@ -398,7 +400,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="5" column="0">
          <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
           <property name="enabled">
            <bool>true</bool>
@@ -420,7 +422,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="6" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
           <property name="toolTip">
            <string>Zoom operations will be performed at position of mouse pointer</string>
@@ -439,7 +441,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="3">
+        <item row="6" column="3">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QLabel" name="label">
@@ -507,7 +509,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
           </item>
          </layout>
         </item>
-        <item row="8" column="0">
+        <item row="7" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
           <property name="toolTip">
            <string>Direction of zoom operations will be inverted</string>
@@ -526,7 +528,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="8" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
           <property name="toolTip">
            <string>Prevents view tilting when pinch-zooming.
@@ -569,7 +571,7 @@ If ALT key is down, then does the oppsite of the above long press action.</strin
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -586,6 +588,11 @@ If ALT key is down, then does the oppsite of the above long press action.</strin
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -600,11 +607,6 @@ If ALT key is down, then does the oppsite of the above long press action.</strin
    <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
