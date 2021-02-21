@@ -53,7 +53,7 @@ public:
     /// unique identifier of the Item
     App::PropertyUUID    Uid;
     /// material descriptions
-    App::PropertyMap     Material;
+    App::PropertyLink    Material;
     /// Meta descriptions
     App::PropertyMap     Meta;
 
@@ -83,6 +83,9 @@ public:
     virtual const char* getViewProviderName(void) const override {
         return "Gui::ViewProviderPart";
     }
+
+
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop) override;
 
     /**
      * Returns the part which contains this object.
