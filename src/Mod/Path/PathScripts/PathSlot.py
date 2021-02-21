@@ -159,7 +159,7 @@ class ObjectSlot(PathOp.ObjectOp):
             'CustomPoint1': FreeCAD.Vector(0.0, 0.0, 0.0),
             'ExtendPathStart': 0.0,
             'Reference1': 'Center of Mass',
-            'CustomPoint2': FreeCAD.Vector(10.0, 10.0, 0.0),
+            'CustomPoint2': FreeCAD.Vector(0.0, 0.0, 0.0),
             'ExtendPathEnd': 0.0,
             'Reference2': 'Center of Mass',
             'LayerMode': 'Multi-pass',
