@@ -551,7 +551,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     if(infos.size()>1) {
         for(auto &info : infos) {
             if(!info.vpd) continue;
+
             SelectionSingleton::SelObj sel;
+            sel.pResolvedObject = nullptr;
             sel.pObject = info.vpd->getObject();
             sel.pDoc = sel.pObject->getDocument();
             sel.DocName = sel.pDoc->getName();
