@@ -186,16 +186,23 @@ def offsetWire(wire, base, offset, forward, Side = None):
                 start_angle *= -1
             if edge.Vertexes[1].Point.y < curve.Center.y:
                 end_angle *= -1
+            
+            if (edge.Vertexes[0].Point.x > curve.Center.x or edge.Vertexes[1].Point.x > curve.Center.x) and curve.AngleXU < 0:
+                tmp = start_angle
+                start_angle = end_angle
+                end_angle = tmp
 
             # Inside / Outside
             if base.isInside(edge.Vertexes[0].Point, offset/2, True):
                 offset *= -1
                 if Side:
-                    print("inside")
                     Side[0] = "Inside"
 
             # Create new arc
-            edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius+offset), start_angle, end_angle).toShape()
+            if curve.AngleXU > 0:
+                edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius+offset), start_angle, end_angle).toShape()
+            else:
+                edge = Part.ArcOfCircle(Part.Circle(curve.Center, FreeCAD.Vector(0,0,1), curve.Radius-offset), start_angle, end_angle).toShape()
 
             return Part.Wire([edge])
         
