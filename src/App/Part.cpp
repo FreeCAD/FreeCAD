@@ -46,7 +46,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::GeoFeature)
 Part::Part(void)
 {
     ADD_PROPERTY(Type,(""));
-    ADD_PROPERTY_TYPE(Material, (), 0, App::Prop_None, "Map with material properties");
+    ADD_PROPERTY_TYPE(Material, (0), 0, App::Prop_None, "The Material for this Part");
     ADD_PROPERTY_TYPE(Meta, (), 0, App::Prop_None, "Map with additional meta information");
 
     // create the uuid for the document
@@ -107,6 +107,21 @@ PyObject *Part::getPyObject()
         PythonObject = Py::Object(new PartPy(this),true);
     }
     return Py::new_reference_to(PythonObject);
+}
+
+void Part::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    // Migrate Material from App::PropertyMap to App::PropertyLink
+    if (!strcmp(TypeName, "App::PropertyMap")) {
+        App::PropertyMap oldvalue;
+        oldvalue.Restore(reader);
+        if (oldvalue.getSize()) {
+            auto oldprop = static_cast<App::PropertyMap*>(addDynamicProperty("App::PropertyMap", "Material_old", "Base"));
+            oldprop->setValues(oldvalue.getValues());
+        }
+    } else {
+        App::GeoFeature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 // Python feature ---------------------------------------------------------
