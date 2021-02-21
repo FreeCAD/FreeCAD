@@ -433,7 +433,12 @@ class ObjectSlot(PathOp.ObjectOp):
             # Use custom inputs here
             p1 = obj.CustomPoint1
             p2 = obj.CustomPoint2
-            if p1.z == p2.z:
+            if p1 == p2:
+                msg = translate('PathSlot',
+                        'Custom points are identical.')
+                FreeCAD.Console.PrintError(msg + '\n')
+                return False
+            elif p1.z == p2.z:
                 pnts = (p1, p2)
             else:
                 msg = translate('PathSlot',
