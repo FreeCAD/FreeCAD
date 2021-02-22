@@ -1887,6 +1887,25 @@ PyObject*  TopoShapePy::isInfinite(PyObject *args)
     PY_CATCH_OCC
 }
 
+PyObject*  TopoShapePy::isLinearEdge(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(getTopoShapePtr()->isLinearEdge()));
+    }PY_CATCH_OCC
+}
+
+PyObject*  TopoShapePy::isPlanarFace(PyObject *args)
+{
+    double tol = 1e-7;
+    if (!PyArg_ParseTuple(args, "|d", &tol))
+        return NULL;
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(getTopoShapePtr()->isPlanarFace(tol)));
+    }PY_CATCH_OCC
+}
+
 PyObject*  TopoShapePy::findPlane(PyObject *args)
 {
     double tol = -1;

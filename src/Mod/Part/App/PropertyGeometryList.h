@@ -71,6 +71,11 @@ public:
 
     void moveValues(PropertyGeometryList &&other);
 
+    /** Convert all linear curve to line segments
+     * @return Return the count of conversion
+     */
+    int linearize();
+
     /// index operator
     Geometry *operator[] (const int idx) const {
         return _lValueList[idx];

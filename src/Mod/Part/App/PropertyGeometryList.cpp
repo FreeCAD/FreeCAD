@@ -81,6 +81,25 @@ int PropertyGeometryList::getSize(void) const
     return static_cast<int>(_lValueList.size());
 }
 
+int PropertyGeometryList::linearize()
+{
+    int count = 0;
+    for (auto &geo : _lValueList) {
+        if (auto curve = Base::freecad_dynamic_cast<GeomCurve>(geo)) {
+            auto line = curve->toLineSegment();
+            if (line) {
+                if (count++ == 0)
+                    aboutToSetValue();
+                delete geo;
+                geo = line;
+            }
+        }
+    }
+    if (count)
+        hasSetValue();
+    return count;
+}
+
 void PropertyGeometryList::setValue(const Geometry* lValue)
 {
     if (lValue) {
@@ -132,6 +151,8 @@ void PropertyGeometryList::setValues(std::vector<Geometry*> &&lValue)
 
 void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue)
 {
+    if (!lValue)
+        return;
     if(idx>=(int)_lValueList.size())
         throw Base::IndexError("Index out of bound");
     aboutToSetValue();

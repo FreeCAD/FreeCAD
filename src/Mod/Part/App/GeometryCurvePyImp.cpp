@@ -70,6 +70,8 @@
 #include "PlanePy.h"
 #include "PointPy.h"
 #include "BSplineCurvePy.h"
+#include "LinePy.h"
+#include "LineSegmentPy.h"
 
 #include "OCCError.h"
 #include "TopoShape.h"
@@ -1168,4 +1170,39 @@ PyObject* GeometryCurvePy::isClosed(PyObject *args)
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
+}
+
+PyObject* GeometryCurvePy::isLinear(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(getGeomCurvePtr()->isLinear()));
+    } PY_CATCH_OCC;
+}
+
+PyObject* GeometryCurvePy::toLine(PyObject *args)
+{
+    PyObject *clone = Py_True;
+    if (!PyArg_ParseTuple(args, "|O", &clone))
+        return 0;
+    PY_TRY {
+        auto res = getGeomCurvePtr()->toLine(PyObject_IsTrue(clone));
+        if (!res)
+            Py_Return;
+        return new LinePy(res);
+    } PY_CATCH_OCC;
+}
+
+PyObject* GeometryCurvePy::toLineSegment(PyObject *args)
+{
+    PyObject *clone = Py_True;
+    if (!PyArg_ParseTuple(args, "|O", &clone))
+        return 0;
+    PY_TRY {
+        auto res = getGeomCurvePtr()->toLineSegment(PyObject_IsTrue(clone));
+        if (!res)
+            Py_Return;
+        return new LineSegmentPy(res);
+    } PY_CATCH_OCC;
 }

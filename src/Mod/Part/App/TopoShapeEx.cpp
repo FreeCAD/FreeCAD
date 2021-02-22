@@ -4291,3 +4291,20 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner,
     }
     return TopoShape();
 }
+
+bool TopoShape::isLinearEdge() const
+{
+    if (isNull() || getShape().ShapeType() != TopAbs_EDGE)
+        return false;
+
+    return GeomCurve::isLinear(BRepAdaptor_Curve(TopoDS::Edge(getShape())).Curve().Curve());
+}
+
+bool TopoShape::isPlanarFace(double tol) const
+{
+    if (isNull() || getShape().ShapeType() != TopAbs_FACE)
+        return false;
+
+    return GeomSurface::isPlanar(
+            BRepAdaptor_Surface(TopoDS::Face(getShape())).Surface().Surface(), nullptr, tol);
+}

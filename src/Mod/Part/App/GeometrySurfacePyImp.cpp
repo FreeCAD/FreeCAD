@@ -59,6 +59,7 @@
 
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
+#include <Mod/Part/App/PlanePy.h>
 #include <Mod/Part/App/BezierCurvePy.h>
 #include <Mod/Part/App/BSplineCurvePy.h>
 #include <Mod/Part/App/CirclePy.h>
@@ -873,3 +874,16 @@ Py::Object GeometrySurfacePy::getRotation(void) const
     return Py::Rotation(Base::Rotation(q.X(),q.Y(),q.Z(),q.W()));
 }
 
+PyObject* GeometrySurfacePy::toPlane(PyObject *args)
+{
+    PyObject *clone = Py_True;
+    double tol = 1e-7;
+    if (!PyArg_ParseTuple(args, "|Od", &clone, &tol))
+        return 0;
+    PY_TRY {
+        auto res = getGeomSurfacePtr()->toPlane(PyObject_IsTrue(clone), tol);
+        if (!res)
+            Py_Return;
+        return new PlanePy(res);
+    } PY_CATCH_OCC;
+}

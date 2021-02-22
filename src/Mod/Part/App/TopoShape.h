@@ -222,6 +222,10 @@ public:
     bool findPlane(gp_Pln &pln, double tol=-1, double atol=-1) const;
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
+    /// Check if this shape is a single linear edge, works on BSplineCurve and BezierCurve
+    bool isLinearEdge() const;
+    /// Check if this shape is a single planar face, works on BSplineSurface and BezierSurface
+    bool isPlanarFace(double tol=1e-7) const;
     //@}
 
     /** @name Boolean operation*/

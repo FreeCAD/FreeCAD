@@ -205,5 +205,12 @@ The required arguments are:
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="toPlane" Const="true">
+          <Documentation>
+            <UserDocu>
+              toPlane(clone=True, tol=1e-7) -- Convert the surface to a plane if it is planar, or else return None.
+            </UserDocu>
+          </Documentation>
+        </Methode>
 	</PythonExport>
 </GenerateModel>

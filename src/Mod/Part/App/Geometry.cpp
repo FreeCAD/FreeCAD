@@ -30,6 +30,7 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <BRepAdaptor_HSurface.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Curve.hxx>
@@ -60,6 +61,7 @@
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <GeomLProp_SLProps.hxx>
+# include <GeomLib_IsPlanarSurface.hxx>
 # include <gp.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>
@@ -633,6 +635,82 @@ TopoDS_Shape GeomCurve::toShape() const
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     BRepBuilderAPI_MakeEdge mkBuilder(c, c->FirstParameter(), c->LastParameter());
     return mkBuilder.Shape();
+}
+
+// Copied from OCC BRepBndLib_1.cxx
+//=======================================================================
+// Function : IsLinear
+// purpose : Returns TRUE if theC is line-like.
+//=======================================================================
+static Standard_Boolean IsLinear(const Adaptor3d_Curve& theC)
+{
+    const GeomAbs_CurveType aCT = theC.GetType();
+    if(aCT == GeomAbs_OffsetCurve)
+    {
+        return IsLinear(GeomAdaptor_Curve(theC.OffsetCurve()->BasisCurve()));
+    }
+
+    if((aCT == GeomAbs_BSplineCurve) || (aCT == GeomAbs_BezierCurve))
+    {
+        // Indeed, curves with C0-continuity and degree==1, may be 
+        // represented with set of points. It will be possible made
+        // in the future.
+
+        return ((theC.Degree() == 1) &&
+                (theC.Continuity() != GeomAbs_C0));
+    }
+
+    if(aCT == GeomAbs_Line)
+    {
+        return Standard_True;
+    }
+
+    return Standard_False;
+}
+
+bool GeomCurve::isLinear() const
+{
+    Handle(Geom_Curve) s = Handle(Geom_Curve)::DownCast(handle());
+    return isLinear(s);
+}
+
+bool GeomCurve::isLinear(const Handle(Geom_Curve) &s)
+{
+    return IsLinear(GeomAdaptor_Curve(s));
+}
+
+GeomLine* GeomCurve::toLine(bool clone) const
+{
+    if (!isLinear())
+        return nullptr;
+
+    auto res = new GeomLine(pointAtParameter(getFirstParameter()),
+                          pointAtParameter(getLastParameter()));
+    res->copyNonTag(this);
+    if (clone)
+        res->tag = this->tag;
+    return res;
+}
+
+GeomLineSegment* GeomCurve::toLineSegment(bool clone) const
+{
+    if (!isLinear())
+        return nullptr;
+
+    Base::Vector3d start, end;
+    if (isDerivedFrom(GeomBoundedCurve::getClassTypeId())) {
+        start = static_cast<const GeomBoundedCurve*>(this)->getStartPoint();
+        end = static_cast<const GeomBoundedCurve*>(this)->getEndPoint();
+    } else {
+        start = pointAtParameter(getFirstParameter());
+        end = pointAtParameter(getLastParameter());
+    }
+    auto res = new GeomLineSegment;
+    res->setPoints(start, end);
+    res->copyNonTag(this);
+    if (clone)
+        res->tag = this->tag;
+    return res;
 }
 
 GeomBSplineCurve* GeomCurve::toBSpline(double first, double last) const
@@ -3973,7 +4051,6 @@ GeomLine::GeomLine(const Base::Vector3d& Pos, const Base::Vector3d& Dir)
     this->myCurve = new Geom_Line(gp_Pnt(Pos.x,Pos.y,Pos.z),gp_Dir(Dir.x,Dir.y,Dir.z));
 }
 
-
 GeomLine::~GeomLine()
 {
 }
@@ -4337,6 +4414,80 @@ GeomSurface::GeomSurface()
 
 GeomSurface::~GeomSurface()
 {
+}
+
+// Copied from OCC BRepBndLib_1.cxx
+//=======================================================================
+// Function : IsPlanar
+// purpose : Returns TRUE if theS is plane-like.
+//=======================================================================
+static Standard_Boolean IsPlanar(const Adaptor3d_Surface& theS)
+{
+    const GeomAbs_SurfaceType aST = theS.GetType();
+    if(aST == GeomAbs_OffsetSurface)
+    {
+        return IsPlanar(theS.BasisSurface()->Surface());
+    }
+
+    if(aST == GeomAbs_SurfaceOfExtrusion)
+    {
+        return IsLinear(theS.BasisCurve()->Curve());
+    }
+
+    if((aST == GeomAbs_BSplineSurface) || (aST == GeomAbs_BezierSurface))
+    {
+        if((theS.UDegree() != 1) || (theS.VDegree() != 1))
+            return Standard_False;
+
+        // Indeed, surfaces with C0-continuity and degree==1, may be 
+        // represented with set of points. It will be possible made
+        // in the future.
+
+        return ((theS.UContinuity() != GeomAbs_C0) && (theS.VContinuity() != GeomAbs_C0));
+    }
+
+    if(aST == GeomAbs_Plane)
+    {
+        return Standard_True;
+    }
+
+    return Standard_False;
+}
+
+bool GeomSurface::isPlanar(gp_Pln *pln, double tol) const
+{
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
+    return isPlanar(s, pln, tol);
+}
+
+bool GeomSurface::isPlanar(const Handle(Geom_Surface) &s, gp_Pln *pln, double tol)
+{
+    GeomLib_IsPlanarSurface check(s, tol);
+    if (!check.IsPlanar())
+        return false;
+    if (pln)
+        *pln = check.Plan();
+    return true;
+}
+
+GeomPlane* GeomSurface::toPlane(bool clone, double tol) const
+{
+    if (isDerivedFrom(GeomPlane::getClassTypeId())) {
+        if (clone)
+            return static_cast<GeomPlane*>(this->clone());
+        else
+            return static_cast<GeomPlane*>(this->copy());
+    }
+
+    gp_Pln pln;
+    if (!isPlanar(&pln, tol))
+        return nullptr;
+
+    auto res = new GeomPlane(pln);
+    res->copyNonTag(this);
+    if (clone)
+        res->tag = this->tag;
+    return res;
 }
 
 TopoDS_Shape GeomSurface::toShape() const
@@ -4971,6 +5122,12 @@ TYPESYSTEM_SOURCE(Part::GeomPlane,Part::GeomElementarySurface)
 GeomPlane::GeomPlane()
 {
     Handle(Geom_Plane) s = new Geom_Plane(gp_Pln());
+    this->mySurface = s;
+}
+
+GeomPlane::GeomPlane(const gp_Pln &pln)
+{
+    Handle(Geom_Plane) s = new Geom_Plane(pln);
     this->mySurface = s;
 }
 

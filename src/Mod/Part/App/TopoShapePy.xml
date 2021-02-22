@@ -911,6 +911,16 @@ avoidtype: optional shape type to skip when exploring
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="isLinearEdge" Const="true">
+      <Documentation>
+          <UserDocu>Check if the shape is a linear edge</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPlanarFace" Const="true">
+      <Documentation>
+          <UserDocu>isPlanarFace(tol=1e-7) -- Check if the shape is a planar face</UserDocu>
+      </Documentation>
+    </Methode>
     <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>

@@ -223,6 +223,27 @@ or raises an exception if it is not periodic.</UserDocu>
             </UserDocu>
           </Documentation>
         </Methode>
+        <Methode Name="isLinear" Const="true">
+          <Documentation>
+            <UserDocu>
+              Returns true if the curve is linear.
+            </UserDocu>
+          </Documentation>
+        </Methode>
+        <Methode Name="toLine" Const="true">
+          <Documentation>
+            <UserDocu>
+              toLine(clone=True) -- Convert the curve to a line if it is linear, or else return None.
+            </UserDocu>
+          </Documentation>
+        </Methode>
+        <Methode Name="toLineSegment" Const="true">
+          <Documentation>
+            <UserDocu>
+              toLineSegment(clone=True) -- Convert the curve to a line segment if it is linear, or else return None.
+            </UserDocu>
+          </Documentation>
+        </Methode>
         <Attribute Name="Continuity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
