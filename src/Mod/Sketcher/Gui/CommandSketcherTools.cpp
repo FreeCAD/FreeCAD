@@ -2279,7 +2279,7 @@ static void exportSketch(Gui::Command &cmd, bool compound)
                 Selection().addSelection(sketchT);
             }
         }
-        TreeWidget::scrollItemToTop();
+        Application::Instance->commandManager().runCommandByName("Std_TreeSelection");
         Selection().selStackGoBack();
     }catch (const Base::Exception& e) {
         committer.close(true);
