@@ -50,7 +50,11 @@ NORETRIEVE += ['Constraint_Concentric','Constraint_EqualLength','Constraint_Exte
                'Constraint_PointOnObject','Constraint_PointOnPoint','Constraint_PointOnStart',
                'Constraint_PointToObject','Constraint_Radius','Constraint_SnellsLaw',
                'Constraint_Symmetric','Constraint_Tangent','Constraint_TangentToEnd',
-               'Constraint_TangentToStart','Constraint_Vertical'] # pages that have been renamed but still dangle around...
+               'Constraint_TangentToStart','Constraint_Vertical',
+               'Join_Cutout','Join_Embed','Part_BooleanFragment','Part_Sections','Curves_HelicalSweep',
+               'CurvedShapes_FlyingWingS800','CurvedShapes_HortenHIX','CurvedShapes_SurfaceCut',
+               'CurvedShapes_InterpolatedMiddle','CurvedShapes_CurvedSegment','Arch_Cell',
+               'Std_ClippingPlane','Std_AboutQt'] # pages that have been renamed but still dangle around...
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
