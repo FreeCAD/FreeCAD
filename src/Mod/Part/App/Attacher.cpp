@@ -1131,7 +1131,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (need one vertex).");
         const TopoDS_Shape &sh = *shapes[0];
         if (sh.IsNull())
-            throw Base::ValueError("Null face in AttachEngine3D::calculateAttachedPlacement()!");
+            throw Base::ValueError("Null shape in AttachEngine3D::calculateAttachedPlacement()!");
         if (sh.ShapeType() != TopAbs_VERTEX)
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (need one vertex).");
         gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(sh));
@@ -1237,28 +1237,30 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (needed one planar face).");
 
         TopoDS_Face face;
-        try { face = TopoDS::Face(*(shapes[0])); } catch(...) {}
-        if (face.IsNull())
-            throw Base::ValueError("Null face in AttachEngine3D::calculateAttachedPlacement()!");
-
         gp_Pln plane;
-        BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() == GeomAbs_Plane) {
-            plane = adapt.Plane();
-        }
-        else {
-            TopLoc_Location loc;
-            Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-            GeomLib_IsPlanarSurface check(surf);
-            if (check.IsPlanar())
-                plane = check.Plan();
-            else
-                throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
-        }
-
         bool Reverse = false;
-        if (face.Orientation() == TopAbs_REVERSED)
-            Reverse = true;
+        try { face = TopoDS::Face(*(shapes[0])); } catch(...) {}
+        if (face.IsNull()) {
+            if (!TopoShape(*shapes[0]).findPlane(plane))
+                throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+        } else {
+            BRepAdaptor_Surface adapt(face);
+            if (adapt.GetType() == GeomAbs_Plane) {
+                plane = adapt.Plane();
+            }
+            else {
+                TopLoc_Location loc;
+                Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                GeomLib_IsPlanarSurface check(surf);
+                if (check.IsPlanar())
+                    plane = check.Plan();
+                else
+                    throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+            }
+
+            if (face.Orientation() == TopAbs_REVERSED)
+                Reverse = true;
+        }
 
         Standard_Boolean ok = plane.Direct();
         if (!ok) {
