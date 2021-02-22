@@ -825,6 +825,10 @@ UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
 {
     _url = QString::fromLatin1("http://localhost");
     setToolTip(this->_url);
+
+    if (qApp->styleSheet().isEmpty()) {
+        setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
+    }
 }
 
 UrlLabel::~UrlLabel()

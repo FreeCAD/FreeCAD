@@ -115,7 +115,10 @@
            <item>
             <widget class="Gui::UrlLabel" name="labelAuthor">
              <property name="text">
-              <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family: MS Shell Dlg 2; font-weight:600; text-decoration: underline; color:#0000ff;"&gt; Unknown Application (c) Unknown Author&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string notr="true">Unknown Application (c) Unknown Author</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::PlainText</enum>
              </property>
             </widget>
            </item>
