@@ -69,24 +69,6 @@ class TestMirrored(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.Mirrored.Shape.Volume, 2.0)
 
-    def testMirroredOffsetFailureCase(self):
-        self.Body = self.Doc.addObject('PartDesign::Body','Body')
-        self.Rect = self.Doc.addObject('Sketcher::SketchObject','Rect')
-        self.Body.addObject(self.Rect)
-        TestSketcherApp.CreateRectangleSketch(self.Rect, (0, 1), (1, 1))
-        self.Doc.recompute()
-        self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
-        self.Pad.Profile = self.Rect
-        self.Pad.Length = 1
-        self.Body.addObject(self.Pad)
-        self.Doc.recompute()
-        self.Mirrored = self.Doc.addObject("PartDesign::Mirrored","Mirrored")
-        self.Mirrored.Originals = [self.Pad]
-        self.Mirrored.MirrorPlane = (self.Rect, ["H_Axis"])
-        self.Body.addObject(self.Mirrored)
-        self.Doc.recompute()
-        self.assertIn("Invalid", self.Mirrored.State)
-
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartDesignTestMirrored")
