@@ -100,7 +100,8 @@ Sheet::Sheet()
 
 Sheet::~Sheet()
 {
-    clearAll();
+    if (!cleanupComplete)
+        FC_WARN("Sheet's destructor called without a prior call to cleanup()");
 }
 
 /**
@@ -750,6 +751,12 @@ void Sheet::touchCells(Range range) {
     do {
         cells.setDirty(*range);
     }while(range.next());
+}
+
+void Spreadsheet::Sheet::cleanup()
+{
+    clearAll();
+    cleanupComplete = true; // As long as the destructor is called immediately afterwards
 }
 
 /**

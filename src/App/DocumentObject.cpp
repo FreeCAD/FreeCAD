@@ -95,6 +95,10 @@ DocumentObject::~DocumentObject(void)
     }
 }
 
+void App::DocumentObject::cleanup()
+{
+}
+
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute

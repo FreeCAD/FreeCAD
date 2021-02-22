@@ -1649,6 +1649,10 @@ Document::~Document()
     Console().Log("-Delete Features of %s \n",getName());
 #endif
 
+    for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
+        it->second->cleanup();
+    }
+
     d->objectArray.clear();
     for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
         it->second->setStatus(ObjectStatus::Destroy, true);

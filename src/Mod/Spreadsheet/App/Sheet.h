@@ -175,6 +175,8 @@ public:
 
     void touchCells(App::Range range);
 
+    void cleanup() override;
+
     // Signals
 
     boost::signals2::signal<void (App::CellAddress)> cellUpdated;
@@ -252,6 +254,8 @@ protected:
 
     int currentRow = -1;
     int currentCol = -1;
+
+    bool cleanupComplete = false;
 
     friend class SheetObserver;
 

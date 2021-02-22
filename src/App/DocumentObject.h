@@ -129,7 +129,12 @@ public:
 
     /// Constructor
     DocumentObject(void);
+
+    /// Destructor - call cleanup() prior to destroying
     virtual ~DocumentObject();
+
+    /// Allow subclasses to remove links and references to objects being destroyed, prior to their destruction
+    virtual void cleanup();
 
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument(void) const;
