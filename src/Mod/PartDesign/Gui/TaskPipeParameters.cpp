@@ -133,8 +133,10 @@ public:
                 && !boost::starts_with(sSubName, "Wire")
                 && !boost::starts_with(sSubName, "Face"))
         {
-            this->notAllowedReason = QT_TR_NOOP("No edge found in selection.");
-            return false;
+            if (!Part::Feature::getTopoShape(pObj, sSubName, true).hasSubShape(TopAbs_EDGE)) {
+                this->notAllowedReason = QT_TR_NOOP("No edge found in selection.");
+                return false;
+            }
         }
         return true;
     }
