@@ -103,7 +103,7 @@ def createCollProjectFile():
     <assistant>
         <title>FreeCAD User Manual</title>
         <applicationIcon>freecad-icon-64.png</applicationIcon>
-        <cacheDirectory>freecad/freecad</cacheDirectory>
+        <cacheDirectory base="collection">freecad/freecad</cacheDirectory>
         <startPage>qthelp://org.freecad.usermanual/doc/Online_Help_Startpage.html</startPage>
         <aboutMenuText>
             <text>About FreeCAD</text>
@@ -177,10 +177,17 @@ def buildtoc():
         if "<a" in line:
             title = re.findall('<a[^>]*>(.*?)</a>',line)[0].strip()
             link = re.findall('href="(.*?)"',line)[0].strip()
+        if link:
+            if not link.endswith(".html"):
+                link  = link + ".html"
+            if link.startswith("/"):
+                link = link[1:]
         if not link: link = 'default.html'
         if title.startswith("<img"):
-            title=None
-            link=None
+            # workbenches
+            wb = re.findall("Workbench\_(.*?)\.svg",title)[0]
+            title = wb + " Workbench"
+            link = wb + "_Workbench.html"
         return title,link
 
     if VERBOSE: print ("Building table of contents...")
