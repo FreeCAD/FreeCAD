@@ -7000,11 +7000,9 @@ void SketchObject::rebuildExternalGeometry(bool defining)
             switch (refSubShape.ShapeType())
             {
             case TopAbs_FACE: {
-                const TopoDS_Face& face = TopoDS::Face(refSubShape);
-                BRepAdaptor_Surface surface(face);
-                if (surface.GetType() == GeomAbs_Plane) {
+                gp_Pln plane;
+                if (Part::TopoShape(refSubShape).findPlane(plane)) {
                     // Check that the plane is perpendicular to the sketch plane
-                    Geom_Plane plane = surface.Plane();
                     gp_Dir dnormal = plane.Axis().Direction();
                     gp_Dir snormal = sketchPlane.Axis().Direction();
                     if (fabs(dnormal.Angle(snormal) - M_PI_2) < Precision::Confusion()) {
@@ -7035,7 +7033,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
             case TopAbs_EDGE: {
                 const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
                 BRepAdaptor_Curve curve(edge);
-                if (curve.GetType() == GeomAbs_Line) {
+                if (Part::GeomCurve::isLinear(curve.Curve().Curve())) {
                     geos.emplace_back(projectLine(curve, gPlane, invPlm));
                 }
                 else if (curve.GetType() == GeomAbs_Circle) {
@@ -7311,7 +7309,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         TopLoc_Location loc(mov);
                         projEdge.Location(loc);
                         BRepAdaptor_Curve projCurve(projEdge);
-                        if (projCurve.GetType() == GeomAbs_Line) {
+                        if (Part::GeomCurve::isLinear(projCurve.Curve().Curve())) {
                             gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
                             gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
                             Base::Vector3d p1(P1.X(),P1.Y(),P1.Z());
