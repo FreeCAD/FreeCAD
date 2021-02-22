@@ -482,6 +482,10 @@ void AboutDialog::setupLabels()
     // we use replace() to keep label formatting, so a label with text "<b>Unknown</b>"
     // gets replaced to "<b>FreeCAD</b>", for example
 
+    // expose to stylesheet
+    // https://forum.freecadweb.org/viewtopic.php?f=34&t=55844&p=480924#p480924 
+    ui->labelAuthor->setProperty("haslink", QByteArray("true"));
+    
     QString author = ui->labelAuthor->text();
     author.replace(QString::fromLatin1("Unknown Application"), exeName);
     author.replace(QString::fromLatin1("(c) Unknown Author"), banner);
