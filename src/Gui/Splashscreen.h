@@ -102,6 +102,7 @@ public:
 protected:
     void setupLabels();
     void showLicenseInformation();
+    void showLibraryInformation();
     void showCollectionInformation();
 
 protected Q_SLOTS:
