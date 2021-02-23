@@ -397,6 +397,32 @@ void SubObjectT::setSubName(const char *s) {
     subname = s?s:"";
 }
 
+bool SubObjectT::normalize()
+{
+    std::ostringstream ss;
+    auto objs = getSubObjectList();
+    for (unsigned i=1; i<objs.size(); ++i)
+        ss << objs[i]->getNameInDocument() << ".";
+    if (objs.front()->getSubObject(ss.str().c_str()) != objs.back()) {
+        // something went wrong
+        return false;
+    }
+    ss << getOldElementName();
+    std::string sub = ss.str();
+    if (subname != sub) {
+        subname = std::move(sub);
+        return true;
+    }
+    return false;
+}
+
+SubObjectT App::SubObjectT::normalized() const
+{
+    SubObjectT res(*this);
+    res.normalize();
+    return res;
+}
+
 const std::string &SubObjectT::getSubName() const {
     return subname;
 }

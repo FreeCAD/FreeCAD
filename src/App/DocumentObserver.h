@@ -257,9 +257,24 @@ public:
 
     bool operator<(const SubObjectT &other) const;
 
+    /** Obtain a string to access the sub object using DocumentObject.getSubObject() API
+     *
+     * @param force: whether to call getSubObject() even if there is no subname
+     */
     std::string getSubObjectPython(bool force=true) const;
 
+    /** Normalize the subname path to use only the object internal name and old style element name
+     * @return Return whether the subname has been changed
+     */
+    bool normalize();
+
+    /// Return a normalize copy of itself
+    SubObjectT normalized() const;
+
+    /// Return the parent object
     SubObjectT getParent() const;
+
+    /// Return the child object
     SubObjectT getChild(const App::DocumentObject *) const;
 
     PyObject *getPyObject() const;
