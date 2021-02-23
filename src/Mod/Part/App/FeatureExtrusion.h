@@ -55,6 +55,7 @@ public:
     App::PropertyAngle InnerTaperAngle;
     App::PropertyAngle InnerTaperAngleRev;
     App::PropertyString FaceMakerClass;
+    App::PropertyBool UsePipeForDraft;
 
     /**
      * @brief The ExtrusionParameters struct is supposed to be filled with final
@@ -67,6 +68,7 @@ public:
         double lengthRev;
         bool solid;
         bool innertaper;
+        bool usepipe;
         double taperAngleFwd; //in radians
         double taperAngleRev;
         double innerTaperAngleFwd; //in radians
@@ -76,6 +78,8 @@ public:
             : lengthFwd(0)
             , lengthRev(0)
             , solid(false)
+            , innertaper(false)
+            , usepipe(false)
             , taperAngleFwd(0)
             , taperAngleRev(0)
             , innerTaperAngleFwd(0)

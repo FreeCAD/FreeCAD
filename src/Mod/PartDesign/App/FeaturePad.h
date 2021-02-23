@@ -50,6 +50,7 @@ public:
     App::PropertyAngle       TaperAngleRev;
     App::PropertyAngle       InnerTaperAngle;
     App::PropertyAngle       InnerTaperAngleRev;
+    App::PropertyBool        UsePipeForDraft;
 
     /** @name methods override feature */
     //@{
@@ -68,6 +69,7 @@ public:
       */
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
+    void setupObject();
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderPad";

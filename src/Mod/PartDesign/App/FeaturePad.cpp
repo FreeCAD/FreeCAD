@@ -53,6 +53,7 @@
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
+#include <Mod/Part/App/PartParams.h>
 
 #include "FeaturePad.h"
 
@@ -88,6 +89,8 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Pad", App::Prop_None, "Taper angle of reverse part of padding.");
     ADD_PROPERTY_TYPE(InnerTaperAngle,(0.0), "Pad", App::Prop_None, "Taper angle of inner holes.");
     ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Pad", App::Prop_None, "Taper angle of the reverse part for inner holes.");
+
+    ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Pad", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
 }
 
 short Pad::mustExecute() const
@@ -99,7 +102,8 @@ short Pad::mustExecute() const
         UseCustomVector.isTouched() ||
         Direction.isTouched() ||
         Offset.isTouched() ||
-        UpToFace.isTouched())
+        UpToFace.isTouched() ||
+        UsePipeForDraft.isTouched())
         return 1;
     return ProfileBased::mustExecute();
 }
@@ -107,6 +111,12 @@ short Pad::mustExecute() const
 App::DocumentObjectExecReturn *Pad::execute(void)
 {
     return _execute(true, true);
+}
+
+void Pad::setupObject()
+{
+    ProfileBased::setupObject();
+    UsePipeForDraft.setValue(Part::PartParams::UsePipeForExtrusionDraft());
 }
 
 App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
@@ -382,6 +392,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
                 if (Reversed.getValue())
                     params.dir.Reverse();
                 std::vector<TopoShape> drafts;
+                params.usepipe = this->UsePipeForDraft.getValue();
                 Part::Extrusion::makeDraft(params, sketchshape, drafts, getDocument()->getStringHasher());
                 if (drafts.empty())
                     return new App::DocumentObjectExecReturn("Padding with draft angle failed");

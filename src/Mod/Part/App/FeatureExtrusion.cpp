@@ -32,7 +32,10 @@
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_ThruSections.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
+# include <BRepClass3d_SolidClassifier.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis.hxx>
 # include <ShapeFix_Wire.hxx>
@@ -53,7 +56,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include "Part2DObject.h"
-
+#include "Geometry.h"
+#include "PartParams.h"
 
 
 using namespace Part;
@@ -83,6 +87,7 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Extrude", App::Prop_None, "Taper angle of reverse part of extrusion.");
     ADD_PROPERTY_TYPE(InnerTaperAngle,(0.0), "Extrude", App::Prop_None, "Taper angle of inner holes.");
     ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Extrude", App::Prop_None, "Taper angle of the reverse part for inner holes.");
+    ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Extrude", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
     ADD_PROPERTY_TYPE(FaceMakerClass,("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
 }
 
@@ -141,6 +146,7 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
 Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 {
     Extrusion::ExtrusionParameters result;
+    result.usepipe = this->UsePipeForDraft.getValue();
     Base::Vector3d dir;
     switch(this->DirMode.getValue()){
         case dmCustom:
@@ -322,6 +328,78 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
     }
 }
 
+static TopoShape makeDraftUsingPipe(const std::vector<TopoShape> &wires,
+                                    App::StringHasherRef hasher)
+{
+    std::vector<TopoShape> shells;
+    std::vector<TopoShape> frontwires, backwires;
+    
+    if (wires.size() < 2)
+        throw Base::CADKernelError("Not enough wire section");
+
+    GeomLineSegment line;
+    Base::Vector3d pstart, pend;
+    wires.front().getCenterOfGravity(pstart);
+    wires.back().getCenterOfGravity(pend);
+    line.setPoints(pstart, pend);
+
+    BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(line.toShape()));
+    BRepOffsetAPI_MakePipeShell mkPS(mkWire.Wire());
+    mkPS.SetTolerance(Precision::Confusion());
+    mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
+    mkPS.SetMode(true);
+
+    for(auto &wire : wires)
+        mkPS.Add(TopoDS::Wire(wire.getShape()));
+
+    if (!mkPS.IsReady())
+        throw Base::CADKernelError("Shape could not be built");
+
+    TopoShape result(0,hasher);
+    result.makEShape(mkPS,wires);
+
+    if (!mkPS.Shape().Closed()) {
+        // shell is not closed - use simulate to get the end wires
+        TopTools_ListOfShape sim;
+        mkPS.Simulate(2, sim);
+
+        TopoShape front(sim.First());
+        if(front.countSubShapes(TopAbs_EDGE)==wires.front().countSubShapes(TopAbs_EDGE)) {
+            front = wires.front();
+            front.setShape(sim.First(),false);
+        }else
+            front.Tag = -wires.front().Tag;
+        TopoShape back(sim.Last());
+        if(back.countSubShapes(TopAbs_EDGE)==wires.back().countSubShapes(TopAbs_EDGE)) {
+            back = wires.back();
+            back.setShape(sim.Last(),false);
+        }else
+            back.Tag = -wires.back().Tag;
+
+        // build the end faces, sew the shell and build the final solid
+        front = front.makEFace();
+        back = back.makEFace();
+
+        BRepBuilderAPI_Sewing sewer;
+        sewer.SetTolerance(Precision::Confusion());
+        sewer.Add(front.getShape());
+        sewer.Add(back.getShape());
+        sewer.Add(result.getShape());
+
+        sewer.Perform();
+        result = result.makEShape(sewer);
+    }
+
+    result = result.makESolid();
+
+    BRepClass3d_SolidClassifier SC(result.getShape());
+    SC.PerformInfinitePoint(Precision::Confusion());
+    if (SC.State() == TopAbs_IN) {
+        result.setShape(result.getShape().Reversed(),false);
+    }
+    return result;
+}
+
 void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _shape, 
         std::vector<TopoShape>& drafts, App::StringHasherRef hasher)
 {
@@ -435,15 +513,21 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
             }
         }
 
-        //make loft
-        BRepOffsetAPI_ThruSections mkGenerator(params.solid ? Standard_True : Standard_False, /*ruled=*/Standard_True);
-        for(auto &shape : list_of_sections)
-            mkGenerator.AddWire(TopoDS::Wire(shape.getShape()));
-
         try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
             Base::SignalException se;
 #endif
+            if (params.usepipe) {
+                drafts.push_back(makeDraftUsingPipe(list_of_sections, hasher));
+                return;
+            }
+
+            //make loft
+            BRepOffsetAPI_ThruSections mkGenerator(
+                    params.solid ? Standard_True : Standard_False, /*ruled=*/Standard_True);
+            for(auto &shape : list_of_sections)
+                mkGenerator.AddWire(TopoDS::Wire(shape.getShape()));
+
             mkGenerator.Build();
             drafts.push_back(TopoShape(0,hasher).makEShape(mkGenerator,list_of_sections));
         }
@@ -530,5 +614,6 @@ void FaceMakerExtrusion::Build()
 void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
+    UsePipeForDraft.setValue(PartParams::UsePipeForExtrusionDraft());
     this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
 }

@@ -48,6 +48,7 @@
 #include <Base/Placement.h>
 #include <App/Document.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
+#include <Mod/Part/App/PartParams.h>
 
 #include "FeaturePocket.h"
 
@@ -82,6 +83,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Pocket", App::Prop_None, "Taper angle of reverse part of pocketing.");
     ADD_PROPERTY_TYPE(InnerTaperAngle,(0.0), "Pocket", App::Prop_None, "Taper angle of inner holes.");
     ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Pocket", App::Prop_None, "Taper angle of the reverse part for inner holes.");
+    ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Pocket", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
 }
 
 short Pocket::mustExecute() const
@@ -296,3 +298,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 }
+
+void Pocket::setupObject()
+{
+    ProfileBased::setupObject();
+    UsePipeForDraft.setValue(Part::PartParams::UsePipeForExtrusionDraft());
+}
+
