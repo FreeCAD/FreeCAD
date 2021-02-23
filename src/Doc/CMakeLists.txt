@@ -1,6 +1,8 @@
 
 configure_file(ThirdPartyLibraries.html
     ${CMAKE_BINARY_DIR}/doc/ThirdPartyLibraries.html COPYONLY)
+configure_file(LICENSE.html
+	${CMAKE_BINARY_DIR}/doc/LICENSE.html COPYONLY)
 
 
 
