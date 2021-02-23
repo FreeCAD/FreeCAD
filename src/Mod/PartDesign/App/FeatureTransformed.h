@@ -50,12 +50,13 @@ public:
     App::PropertyLinkList Originals;
 
     App::PropertyBool Refine;
+    App::PropertyEnumeration Overlap;
 
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,
      *         which serves as "Support" for old style workflows
      * @param silent if couldn't determine the base feature and silent == true,
-     *               silently return a nullptr, otherwise throw Base::Exception. 
+     *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
     virtual Part::Feature* getBaseObject(bool silent=false) const;
@@ -93,9 +94,12 @@ protected:
     virtual void positionBySupport(void);
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
-		     TopoDS_Compound &compoundOut) const; 
+		     TopoDS_Compound &compoundOut) const;
 
     rejectedMap rejected;
+
+private:
+    static const char* OverlapEnums[];
 };
 
 } //namespace PartDesign

@@ -60,6 +60,8 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
+const char* Transformed::OverlapEnums[] = { "Detect", "Overlap mode", "Non-overlap mode", NULL};
+
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
 
 Transformed::Transformed()
@@ -69,6 +71,8 @@ Transformed::Transformed()
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    ADD_PROPERTY_TYPE(Overlap, (0L), "Transform", App::Prop_None, "Feature overlapping behaviour");
+    Overlap.setEnums(OverlapEnums);
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -201,6 +205,8 @@ short Transformed::mustExecute() const
 
 App::DocumentObjectExecReturn *Transformed::execute(void)
 {
+    std::string overlapMode = Overlap.getValueAsString();
+    bool overlapDetectionMode = overlapMode == "Detect";
 
 #ifndef FC_DEBUG
     std::clock_t start0;
@@ -302,27 +308,24 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             shapes.emplace_back(shape);
             builder.Add(compShape, shape);
 
-            overlapping =  overlapping || (countSolids(TopoShape(origShape).fuse(shape))==1);
+            if (overlapDetectionMode)
+                overlapping =  overlapping || (countSolids(TopoShape(origShape).fuse(shape))==1);
 
         }
 
         TopoDS_Shape toolShape;
 
-        if (overlapping) {
-
 #ifndef FC_DEBUG
+        if (overlapping || overlapMode == "Overlap mode")
             Base::Console().Message("Transformed: Overlapping feature mode (fusing tool shapes)\n");
-#endif
-
-            toolShape = TopoShape(origShape).fuse(shapes, Precision::Confusion());
-        } else {
-
-#ifndef FC_DEBUG
+        else
             Base::Console().Message("Transformed: Non-Overlapping feature mode (compound of tool shapes)\n");
 #endif
 
+        if (overlapping || overlapMode == "Overlap mode")
+            toolShape = TopoShape(origShape).fuse(shapes, Precision::Confusion());
+        else
             toolShape = compShape;
-        }
 
         if (!fuseShape.isNull()) {
             std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse(current, toolShape));
