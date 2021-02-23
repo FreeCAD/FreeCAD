@@ -363,9 +363,11 @@ TaskDlgThicknessParameters::~TaskDlgThicknessParameters()
 
 bool TaskDlgThicknessParameters::accept()
 {
-    TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
-
     auto obj = vp->getObject();
+    if (!obj->isError())
+        parameter->showObject();
+
+    TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
 
     FCMD_OBJ_CMD(obj,"Value = " << draftparameter->getValue());
     FCMD_OBJ_CMD(obj,"Reversed = " << draftparameter->getReversed());
