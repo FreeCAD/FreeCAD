@@ -24,9 +24,7 @@
 import os
 import re
 import shutil
-import stat
 import sys
-import tempfile
 
 from PySide import QtCore, QtGui
 

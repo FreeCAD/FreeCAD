@@ -51,7 +51,7 @@ LastFileToolShape               = "LastFileToolShape"
 
 UseLegacyTools                  = "UseLegacyTools"
 UseAbsoluteToolPaths            = "UseAbsoluteToolPaths"
-OpenLastLibrary                 = "OpenLastLibrary"
+# OpenLastLibrary                 = "OpenLastLibrary"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance               = "GeometryTolerance"
@@ -62,6 +62,7 @@ WarningSuppressAllSpeeds        = "WarningSuppressAllSpeeds"
 WarningSuppressSelectionMode    = "WarningSuppressSelectionMode"
 WarningSuppressOpenCamLib       = "WarningSuppressOpenCamLib"
 EnableExperimentalFeatures      = "EnableExperimentalFeatures"
+EnableAdvancedOCLFeatures      = "EnableAdvancedOCLFeatures"
 
 
 def preferences():
@@ -161,23 +162,19 @@ def toolsUseLegacyTools():
     return preferences().GetBool(UseLegacyTools, False)
 
 
-def toolsReallyUseLegacyTools():
-    return toolsUseLegacyTools()
-
-
 def toolsStoreAbsolutePaths():
     return preferences().GetBool(UseAbsoluteToolPaths, False)
 
 
-def toolsOpenLastLibrary():
-    return preferences().GetBool(OpenLastLibrary, False)
+# def toolsOpenLastLibrary():
+#     return preferences().GetBool(OpenLastLibrary, False)
 
 
-def setToolsSettings(legacy, relative, lastlibrary):
+def setToolsSettings(legacy, relative):
     pref = preferences()
     pref.SetBool(UseLegacyTools, legacy)
     pref.SetBool(UseAbsoluteToolPaths, relative)
-    pref.SetBool(OpenLastLibrary, lastlibrary)
+    # pref.SetBool(OpenLastLibrary, lastlibrary)
 
 
 def defaultJobTemplate():
@@ -243,6 +240,10 @@ def setDefaultTaskPanelLayout(style):
     preferences().SetInt(DefaultTaskPanelLayout, style)
 
 
+def advancedOCLFeaturesEnabled():
+    return preferences().GetBool(EnableAdvancedOCLFeatures, False)
+
+
 def experimentalFeaturesEnabled():
     return preferences().GetBool(EnableExperimentalFeatures, False)
 
@@ -251,8 +252,8 @@ def suppressAllSpeedsWarning():
     return preferences().GetBool(WarningSuppressAllSpeeds, True)
 
 
-def suppressRapidSpeedsWarning():
-    return suppressAllSpeedsWarning() or preferences().GetBool(WarningSuppressRapidSpeeds, True)
+def suppressRapidSpeedsWarning(user=True):
+    return (user and suppressAllSpeedsWarning()) or preferences().GetBool(WarningSuppressRapidSpeeds, True)
 
 
 def suppressSelectionModeWarning():
@@ -262,6 +263,12 @@ def suppressSelectionModeWarning():
 def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
+def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL):
+    preferences().SetBool(EnableAdvancedOCLFeatures,    ocl)
+    preferences().SetBool(WarningSuppressAllSpeeds,     warnSpeeds)
+    preferences().SetBool(WarningSuppressRapidSpeeds,   warnRapids)
+    preferences().SetBool(WarningSuppressSelectionMode, warnModes)
+    preferences().SetBool(WarningSuppressOpenCamLib,    warnOCL)
 
 def lastFileToolLibrary():
     filename = preferences().GetString(LastFileToolLibrary)

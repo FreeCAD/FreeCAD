@@ -35,7 +35,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
 
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 
 # UTILITIES -----------------------------------------------------------------
@@ -106,18 +106,15 @@ class Draft_Snap_Lock(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Lock, self).__init__(name=_tr("Main toggle snap"))
+        super(Draft_Snap_Lock, self).__init__(name=translate("draft","Main toggle snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Main snapping toggle On/Off"
-        _tip = ("Activates or deactivates "
-                "all snap methods at once.")
 
         return {'Pixmap': 'Snap_Lock',
                 'Accel': "Shift+S",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Lock", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Lock", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Main snapping toggle On/Off"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Activates or deactivates all snap methods at once.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -140,16 +137,14 @@ class Draft_Snap_Midpoint(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Midpoint, self).__init__(name=_tr("Midpoint snap"))
+        super(Draft_Snap_Midpoint, self).__init__(name=translate("draft","Midpoint snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Midpoint"
-        _tip = "Set snapping to the midpoint of an edge."
 
         return {'Pixmap': 'Snap_Midpoint',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Midpoint"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Set snapping to the midpoint of an edge.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -172,18 +167,14 @@ class Draft_Snap_Perpendicular(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Perpendicular, self).__init__(name=_tr("Perpendicular snap"))
+        super(Draft_Snap_Perpendicular, self).__init__(name=translate("draft","Perpendicular snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Perpendicular"
-        _tip = "Set snapping to a direction that is perpendicular to an edge."
 
         return {'Pixmap': 'Snap_Perpendicular',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular",
-                                              _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular",
-                                             _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Perpendicular"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Set snapping to a direction that is perpendicular to an edge.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -206,15 +197,14 @@ class Draft_Snap_Grid(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Grid, self).__init__(name=_tr("Grid snap"))
+        super(Draft_Snap_Grid, self).__init__(name=translate("draft","Grid snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Set snapping to the intersection of grid lines."
 
         return {'Pixmap': 'Snap_Grid',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Grid"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Grid", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Set snapping to the intersection of grid lines.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -237,18 +227,14 @@ class Draft_Snap_Intersection(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Intersection, self).__init__(name=_tr("Intersection snap"))
+        super(Draft_Snap_Intersection, self).__init__(name=translate("draft","Intersection snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Intersection"
-        _tip = "Set snapping to the intersection of edges."
 
         return {'Pixmap': 'Snap_Intersection',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Intersection",
-                                              _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Intersection",
-                                             _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Intersection","Intersection"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Intersection","Set snapping to the intersection of edges.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -271,16 +257,14 @@ class Draft_Snap_Parallel(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Parallel, self).__init__(name=_tr("Parallel snap"))
+        super(Draft_Snap_Parallel, self).__init__(name=translate("draft","Parallel snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Parallel"
-        _tip = "Set snapping to a direction that is parallel to an edge."
 
         return {'Pixmap': 'Snap_Parallel',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Parallel", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Parallel", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Parallel"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Set snapping to a direction that is parallel to an edge.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -303,16 +287,14 @@ class Draft_Snap_Endpoint(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Endpoint, self).__init__(name=_tr("Endpoint snap"))
+        super(Draft_Snap_Endpoint, self).__init__(name=translate("draft","Endpoint snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Endpoint"
-        _tip = "Set snapping to endpoints of an edge."
 
         return {'Pixmap': 'Snap_Endpoint',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Endpoint"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Set snapping to endpoints of an edge.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -336,17 +318,14 @@ class Draft_Snap_Angle(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Angle, self).__init__(name=_tr("Angle snap (30 and 45 degrees)"))
+        super(Draft_Snap_Angle, self).__init__(name=translate("draft","Angle snap (30 and 45 degrees)"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Angles (30 and 45 degrees)"
-        _tip = ("Set snapping to points in a circular arc located "
-                "at multiples of 30 and 45 degree angles.")
 
         return {'Pixmap': 'Snap_Angle',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Angle", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Angle", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Angle"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -369,15 +348,14 @@ class Draft_Snap_Center(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Center, self).__init__(name=_tr("Arc center snap"))
+        super(Draft_Snap_Center, self).__init__(name=translate("draft","Arc center snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Set snapping to the center of a circular arc."
 
         return {'Pixmap': 'Snap_Center',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Center", "Center"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Center", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Center", "Set snapping to the center of a circular arc.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -400,16 +378,14 @@ class Draft_Snap_Extension(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Extension, self).__init__(name=_tr("Edge extension snap"))
+        super(Draft_Snap_Extension, self).__init__(name=translate("draft","Edge extension snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Extension"
-        _tip = "Set snapping to the extension of an edge."
 
         return {'Pixmap': 'Snap_Extension',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Extension", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Extension", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Extension"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Set snapping to the extension of an edge.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -432,15 +408,14 @@ class Draft_Snap_Near(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Near, self).__init__(name=_tr("Near snap"))
+        super(Draft_Snap_Near, self).__init__(name=translate("draft","Near snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Set snapping to the nearest point of an edge."
 
         return {'Pixmap': 'Snap_Near',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Near", "Nearest"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Near", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Near", "Set snapping to the nearest point of an edge.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -464,17 +439,14 @@ class Draft_Snap_Ortho(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Ortho, self).__init__(name=_tr("Orthogonal snap"))
+        super(Draft_Snap_Ortho, self).__init__(name=translate("draft","Orthogonal snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Orthogonal angles (45 degrees)"
-        _tip = ("Set snapping to a direction that is a multiple "
-                "of 45 degrees from a point.")
 
         return {'Pixmap': 'Snap_Ortho',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Ortho", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Ortho", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Orthogonal"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Set snapping to a direction that is a multiple of 45 degrees from a point.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -497,16 +469,14 @@ class Draft_Snap_Special(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Special, self).__init__(name=_tr("Special point snap"))
+        super(Draft_Snap_Special, self).__init__(name=translate("draft","Special point snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Special"
-        _tip = "Set snapping to the special points defined inside an object."
 
         return {'Pixmap': 'Snap_Special',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Special", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Special", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Special", "Special"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Special", "Set snapping to the special points defined inside an object.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -530,17 +500,14 @@ class Draft_Snap_Dimensions(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_Dimensions, self).__init__(name=_tr("Dimension display"))
+        super(Draft_Snap_Dimensions, self).__init__(name=translate("draft","Dimension display"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Show dimensions"
-        _tip = ("Show temporary linear dimensions when editing an object "
-                "and using other snapping methods.")
 
         return {'Pixmap': 'Snap_Dimensions',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Show dimensions"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Show temporary linear dimensions when editing an object and using other snapping methods.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -566,23 +533,14 @@ class Draft_Snap_WorkingPlane(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Draft_Snap_WorkingPlane, self).__init__(name=_tr("Working plane snap"))
+        super(Draft_Snap_WorkingPlane, self).__init__(name=translate("draft","Working plane snap"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Working plane"
-        _tip = ("Restricts snapping to a point in the current "
-                "working plane.\n"
-                "If you select a point outside the working plane, "
-                "for example, by using other snapping methods,\n"
-                "it will snap to that point's projection "
-                "in the current working plane.")
 
         return {'Pixmap': 'Snap_WorkingPlane',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane",
-                                              _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane",
-                                             _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane","Working plane"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane","Restricts snapping to a point in the current working plane.\nIf you select a point outside the working plane, for example, by using other snapping methods,\nit will snap to that point's projection in the current working plane.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -605,17 +563,14 @@ class ShowSnapBar(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(ShowSnapBar, self).__init__(name=_tr("Show snap toolbar"))
+        super(ShowSnapBar, self).__init__(name=translate("draft","Show snap toolbar"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Show the snap toolbar if it is hidden."
 
         return {'Pixmap': 'Draft_Snap',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_ShowSnapBar",
-                                              "Show snap toolbar"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_ShowSnapBar",
-                                             _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_ShowSnapBar","Show snap toolbar"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_ShowSnapBar","Show the snap toolbar if it is hidden.")}
 
     def Activated(self):
         """Execute when the command is called."""

@@ -77,6 +77,7 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg);
     bool wasDoubleClicked = false;
     bool KeyEvent(QEvent *e);
+    void hideOnError();
 
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };

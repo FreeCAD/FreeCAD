@@ -269,7 +269,7 @@ TaskDlgFemConstraintPressure::TaskDlgFemConstraintPressure(ViewProviderFemConstr
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintPressure(ConstraintView);;
+    this->parameter = new TaskFemConstraintPressure(ConstraintView);
 
     Content.push_back(parameter);
 }

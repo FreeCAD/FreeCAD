@@ -93,6 +93,40 @@ private Q_SLOTS:
     void onChangeRegularPolygon(QWidget*);
 
 private:
+    QString createPlane(const QString& objectName, const QString& placement) const;
+    QString createBox(const QString& objectName, const QString& placement) const;
+    QString createCylinder(const QString& objectName, const QString& placement) const;
+    QString createCone(const QString& objectName, const QString& placement) const;
+    QString createSphere(const QString& objectName, const QString& placement) const;
+    QString createEllipsoid(const QString& objectName, const QString& placement) const;
+    QString createTorus(const QString& objectName, const QString& placement) const;
+    QString createPrism(const QString& objectName, const QString& placement) const;
+    QString createWedge(const QString& objectName, const QString& placement) const;
+    QString createHelix(const QString& objectName, const QString& placement) const;
+    QString createSpiral(const QString& objectName, const QString& placement) const;
+    QString createCircle(const QString& objectName, const QString& placement) const;
+    QString createEllipse(const QString& objectName, const QString& placement) const;
+    QString createVertex(const QString& objectName, const QString& placement) const;
+    QString createLine(const QString& objectName, const QString& placement) const;
+    QString createRegularPolygon(const QString& objectName, const QString& placement) const;
+
+    QString changePlane(const QString& objectName, const QString& placement) const;
+    QString changeBox(const QString& objectName, const QString& placement) const;
+    QString changeCylinder(const QString& objectName, const QString& placement) const;
+    QString changeCone(const QString& objectName, const QString& placement) const;
+    QString changeSphere(const QString& objectName, const QString& placement) const;
+    QString changeEllipsoid(const QString& objectName, const QString& placement) const;
+    QString changeTorus(const QString& objectName, const QString& placement) const;
+    QString changePrism(const QString& objectName, const QString& placement) const;
+    QString changeWedge(const QString& objectName, const QString& placement) const;
+    QString changeHelix(const QString& objectName, const QString& placement) const;
+    QString changeSpiral(const QString& objectName, const QString& placement) const;
+    QString changeCircle(const QString& objectName, const QString& placement) const;
+    QString changeEllipse(const QString& objectName, const QString& placement) const;
+    QString changeVertex(const QString& objectName, const QString& placement) const;
+    QString changeLine(const QString& objectName, const QString& placement) const;
+    QString changeRegularPolygon(const QString& objectName, const QString& placement) const;
+
     static void pickCallback(void * ud, SoEventCallback * n);
     void executeCallback(Picker*);
     void connectSignalMapper(QWidget *sender, const char *signal, QSignalMapper* mapper);

@@ -440,7 +440,7 @@ bool isFeatureMovable(App::DocumentObject* const feat)
         auto prim = static_cast<PartDesign::ProfileBased*>(feat);
         auto sk = prim->getVerifiedSketch(true);
 
-        if (!isFeatureMovable(static_cast<App::DocumentObject*>(sk)))
+        if (!isFeatureMovable(sk))
             return false;
 
         if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
@@ -450,19 +450,19 @@ bool isFeatureMovable(App::DocumentObject* const feat)
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
             App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            if (axis && !isFeatureMovable(axis))
                 return false;
         }
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
-            App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            App::DocumentObject* spine = prop->getValue();
+            if (spine && !isFeatureMovable(spine))
                 return false;
         }
 
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
-            App::DocumentObject* axis = prop->getValue();
-            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+            App::DocumentObject* auxSpine = prop->getValue();
+            if (auxSpine && !isFeatureMovable(auxSpine))
                 return false;
         }
 

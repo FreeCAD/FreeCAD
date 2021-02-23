@@ -35,7 +35,7 @@ import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
 
 from FreeCAD import Units as U
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftutils.utils import ANNOTATION_STYLE as DEFAULT
 
 param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -65,7 +65,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(AnnotationStyleEditor, self).__init__(name=_tr("Annotation style editor"))
+        super(AnnotationStyleEditor, self).__init__(name=translate("draft","Annotation style editor"))
         self.doc = None
         self.styles = {}
         self.renamed = {}
@@ -289,9 +289,9 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """imports styles from a json file"""
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            _tr("Open styles file"),
+            translate("draft","Open styles file"),
             None,
-            _tr("JSON file (*.json)"))
+            translate("draft","JSON file (*.json)"))
         if filename and filename[0]:
             with open(filename[0]) as f:
                 nstyles = json.load(f)
@@ -311,9 +311,9 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         """exports styles to a json file"""
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
-            _tr("Save styles file"),
+            translate("draft","Save styles file"),
             None,
-            _tr("JSON file (*.json)"))
+            translate("draft","JSON file (*.json)"))
         if filename and filename[0]:
             with open(filename[0],"w") as f:
                 json.dump(self.styles,f,indent=4)

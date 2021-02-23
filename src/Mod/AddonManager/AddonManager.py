@@ -26,14 +26,11 @@
 from __future__ import print_function
 
 import os
-import re
 import shutil
 import stat
-import sys
 import tempfile
 
 from PySide import QtGui, QtCore
-import AddonManager_rc
 import FreeCADGui
 
 from addonmanager_utilities import translate  # this needs to be as is for pylupdate

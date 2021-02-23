@@ -61,12 +61,14 @@
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "ViewProvider.h"
 #include "ViewProviderBody.h"
 
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
@@ -1723,6 +1725,19 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
         }
 
         finishProfileBased(cmd, sketch, Feat);
+
+        // If the initial helix creation fails then it leaves the base object invisible which makes things
+        // more difficult for the user.
+        // To avoid this the base object will be made tmp. visible again.
+        if (Feat->isError()) {
+            App::DocumentObject* base = static_cast<PartDesign::Feature*>(Feat)->BaseFeature.getValue();
+            if (base) {
+                PartDesignGui::ViewProvider* view = dynamic_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(base));
+                if (view)
+                    view->makeTemporaryVisible(true);
+            }
+        }
+
         cmd->adjustCameraPosition();
     };
 
@@ -1875,6 +1890,15 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
     FCMD_OBJ_CMD(Feat,"Base = " << str.str());
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     finishFeature(cmd, Feat, base);
+
+    App::DocumentObject* baseFeature = static_cast<PartDesign::DressUp*>(Feat)->Base.getValue();
+    if (baseFeature) {
+        PartDesignGui::ViewProvider* view = dynamic_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
+        // in case there is an error, for example when a fillet is larger than the available space
+        // display the base feature to avoid that the user sees nothing
+        if (view && Feat->isError())
+            view->Visibility.setValue(true);
+    }
 }
 
 void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
