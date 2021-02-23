@@ -74,6 +74,7 @@ public:
     FC_UI_CHECKBOX(ViewParams, PieMenuTriggerAction, "Trigger action") \
     FC_UI_SPINBOX(ViewParams, PieMenuAnimationDuration, "Animation duration (ms)", 0, 5000, 100) \
     FC_UI_COMBOBOX(ViewParams, PieMenuAnimationCurve, "Animation curve type") \
+    FC_UI_CHECKBOX(ViewParams, PieMenuPopup, "Show pie menu as popup") \
 
 #define FC_OVERLAY_PARAMS \
     FC_UI_CHECKBOX(ViewParams, DockOverlayHideTabBar,"Hide tab bar") \

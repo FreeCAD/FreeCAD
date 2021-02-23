@@ -647,7 +647,14 @@ PieMenu::PieMenu(QMenu *menu, const char *param, QWidget *parent)
     this->setAttribute(Qt::WA_TranslucentBackground, true);
 
 #if QT_VERSION  >= 0x050000
-    this->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    if (ViewParams::PieMenuPopup())
+        this->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+    else {
+        this->setFocusPolicy(Qt::StrongFocus);
+        this->setWindowFlags(Qt::FramelessWindowHint | Qt::NoDropShadowWindowHint);
+        connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),
+                this, SLOT(onFocusChanged(QWidget*,QWidget*)));
+    }
 
     QString stylesheet = qApp->styleSheet();
     if (stylesheet.isEmpty() || stylesheet.indexOf(QLatin1String("Gui--PieButton")) < 0) {
@@ -812,13 +819,28 @@ QAction *PieMenu::exec(QMenu *menu,
     }
 
     pmenu.createWinId();
-    pmenu.move(pt - QPoint(pmenu.width()/2, pmenu.height()/2));
+    QPoint point;
+    if (ViewParams::PieMenuPopup())
+        point = pt;
+    else
+        point = getMainWindow()->mapFromGlobal(pt);
+    pmenu.move(point - QPoint(pmenu.width()/2, pmenu.height()/2));
     pmenu.show();
+    pmenu.setFocus();
     QEventLoop eventLoop;
     pmenu.pimpl->eventLoop = &eventLoop;
     eventLoop.exec();
     pmenu.pimpl->eventLoop = nullptr;
     return pmenu.pimpl->action;
+}
+
+void PieMenu::onFocusChanged(QWidget *, QWidget *now)
+{
+    for (auto w=now; w; w=w->parentWidget()) {
+        if (w == this || qobject_cast<QMenu*>(w))
+            return;
+    }
+    hide();
 }
 
 int PieMenu::radius() const
@@ -877,9 +899,12 @@ void PieMenu::setOffset(qreal offset)
 
 void PieMenu::keyPressEvent(QKeyEvent *ev)
 {
-    if (ev->key() == Qt::Key_Escape)
-        QWidget::keyPressEvent(ev);
-    else
+    if (ev->key() == Qt::Key_Escape) {
+        if (ViewParams::PieMenuPopup())
+            QWidget::keyPressEvent(ev);
+        else
+            hide();
+    } else
         pimpl->keyPressEvent(ev);
 }
 
@@ -919,6 +944,14 @@ bool PieButton::event(QEvent *ev)
 {
     return QToolButton::event(ev);
         
+}
+
+void PieButton::keyPressEvent(QKeyEvent *ev)
+{
+    if (ev->key() == Qt::Key_Escape)
+        PieMenu::deactivate();
+    else
+        QToolButton::keyPressEvent(ev);
 }
 
 #include "moc_PieMenu.cpp"

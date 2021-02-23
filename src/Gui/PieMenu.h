@@ -44,6 +44,7 @@ public:
 
 protected:
     bool event(QEvent *);
+    void keyPressEvent(QKeyEvent *);
 };
 
 /** Implements the pie menu
@@ -99,6 +100,7 @@ protected Q_SLOTS:
     void onTriggered(QAction *);
     void onStateChanged();
     void onTimer();
+    void onFocusChanged(QWidget*, QWidget*);
 
 private:
     friend class PieButton;
