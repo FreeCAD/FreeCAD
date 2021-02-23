@@ -276,6 +276,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     ui->tabWidget->setCurrentIndex(0); // always start on the About tab
     setupLabels();
     showLicenseInformation();
+    showLibraryInformation();
     showCollectionInformation();
 }
 
@@ -548,11 +549,37 @@ public:
 
 void AboutDialog::showLicenseInformation()
 {
-    QWidget *tab_license = new QWidget();
+    QString licenseFileURL = QString::fromLatin1("%1/LICENSE.html")
+        .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+    QFile licenseFile(licenseFileURL);
+
+    if (!licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return; // Leave the existing license placeholder there if we can't find our license html file
+    }
+
+    ui->tabWidget->setTabVisible(2, false); // Hide the license placeholder widget
+
+    QWidget* tab_license = new QWidget();
     tab_license->setObjectName(QString::fromLatin1("tab_license"));
-    ui->tabWidget->addTab(tab_license, tr("Libraries"));
+    ui->tabWidget->addTab(tab_license, tr("License"));
     QVBoxLayout* hlayout = new QVBoxLayout(tab_license);
     QTextBrowser* textField = new QTextBrowser(tab_license);
+    textField->setOpenExternalLinks(true);
+    textField->setOpenLinks(true);
+    hlayout->addWidget(textField);
+
+    QString licenseHTML = QString::fromUtf8(licenseFile.readAll());
+    textField->setHtml(licenseHTML);
+
+}
+
+void AboutDialog::showLibraryInformation()
+{
+    QWidget *tab_library = new QWidget();
+    tab_library->setObjectName(QString::fromLatin1("tab_library"));
+    ui->tabWidget->addTab(tab_library, tr("Libraries"));
+    QVBoxLayout* hlayout = new QVBoxLayout(tab_library);
+    QTextBrowser* textField = new QTextBrowser(tab_library);
     textField->setOpenExternalLinks(false);
     textField->setOpenLinks(false);
     hlayout->addWidget(textField);
