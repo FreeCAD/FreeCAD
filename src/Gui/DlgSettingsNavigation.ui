@@ -415,7 +415,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
             </property>
             <property name="toolTip">
              <string>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
+Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
             </property>
             <property name="minimum">
              <double>0.010000000000000</double>
