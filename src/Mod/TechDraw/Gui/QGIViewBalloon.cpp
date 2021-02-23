@@ -487,16 +487,16 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
         }
     }
 
+    // store if origin is also moving to be able to later calc new origin and update feature
+    if (ctrl)
+        m_originDragged = true;
+
     DrawView* balloonParent = getSourceView();
     if (balloonParent)
         // redraw the balloon at the new position
         // note that we don't store the new position to the X/Y properties
         // since the dragging is not yet finished
-        drawBalloon(true);
-
-    // store if origin is also moving to be able to later calc new origin and update feature
-    if (ctrl)
-        m_originDragged = true;
+        drawBalloon(true); 
 }
 
 void QGIViewBalloon::balloonLabelDragFinished()
@@ -623,7 +623,7 @@ void QGIViewBalloon::drawBalloon(bool dragged)
     if (!refObj) {
         return;
     }
-    if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
+    if(!refObj->hasGeometry()) { // nothing to draw yet (restoring)
         balloonLabel->hide();
         hide();
         return;
@@ -638,20 +638,30 @@ void QGIViewBalloon::drawBalloon(bool dragged)
 
     double textWidth = balloonLabel->getDimText()->boundingRect().width();
     double textHeight = balloonLabel->getDimText()->boundingRect().height();
-    float x, y;
+    float x, y, arrowTipX, arrowTipY;
     // when not dragging take the X/Y properties otherwise the current label position
     if (!dragged) {
         x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
         y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
+        arrowTipX = Rez::guiX(balloon->OriginX.getValue() * refObj->getScale());
+        arrowTipY = -Rez::guiX(balloon->OriginY.getValue() * refObj->getScale());
     }
     else {
         x = balloonLabel->X();
         y = -balloonLabel->Y();
+        if (m_originDragged) {
+            double scale = Rez::guiX(refObj->getScale());
+            Base::Vector3d pos(x / scale, y / scale, 0.0);
+            Base::Vector3d newOrg = pos - m_saveOffset;
+            arrowTipX = newOrg.x * scale;
+            arrowTipY = -newOrg.y * scale;
+        }
+        else {
+            arrowTipX = Rez::guiX(balloon->OriginX.getValue() * refObj->getScale());
+            arrowTipY = -Rez::guiX(balloon->OriginY.getValue() * refObj->getScale());
+        }
     }
     Base::Vector3d lblCenter(x, -y, 0.0);
-
-    float arrowTipX = Rez::guiX(balloon->OriginX.getValue() * refObj->getScale());
-    float arrowTipY = - Rez::guiX(balloon->OriginY.getValue() * refObj->getScale());
 
     if (balloon->isLocked()) {
         balloonLabel->setFlag(QGraphicsItem::ItemIsMovable, false);
