@@ -112,7 +112,9 @@ public:
                                      QMenu *parentMenu=nullptr,
                                      bool select=true);
     static void expandSelectedItems(TreeItemMode mode);
-    static bool setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj=nullptr);
+    static bool setupObjectMenu(QMenu &menu,
+                                const App::SubObjectT *sobj=nullptr,
+                                App::SubObjectT *ctxobj=nullptr);
     static void restoreDocumentItem(Gui::Document *gdoc, Base::XMLReader &reader);
     static bool saveDocumentItem(const Gui::Document *gdoc, Base::Writer &writer, const char *key);
     static void synchronizeSelectionCheckBoxes();

@@ -357,25 +357,31 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     if(!subname || !subname[0]) {
         // No subname reference is given, we try to extract one from the current
         // selection in order to obtain the correct transformation matrix below
-        auto sels = Gui::Selection().getCompleteSelection(false);
         App::DocumentObject *parentObj = 0;
-        for(auto &sel : sels) {
-            if(!sel.pObject || !sel.pObject->getNameInDocument())
-                continue;
-            if(!parentObj)
-                parentObj = sel.pObject;
-            else if(parentObj!=sel.pObject) {
-                FC_LOG("Cannot deduce subname for editing, more than one parent?");
-                parentObj = 0;
-                break;
+        auto ctxobj = Gui::Selection().getContext().getSubObject();
+        if (ctxobj && (ctxobj == obj || ctxobj->getLinkedObject(true) == obj)) {
+            parentObj = Gui::Selection().getContext().getObject();
+            _subname = Gui::Selection().getContext().getSubName();
+        } else {
+            auto sels = Gui::Selection().getCompleteSelection(false);
+            for(auto &sel : sels) {
+                if(!sel.pObject || !sel.pObject->getNameInDocument())
+                    continue;
+                if(!parentObj)
+                    parentObj = sel.pObject;
+                else if(parentObj!=sel.pObject) {
+                    FC_LOG("Cannot deduce subname for editing, more than one parent?");
+                    parentObj = 0;
+                    break;
+                }
+                auto sobj = parentObj->getSubObject(sel.SubName);
+                if(!sobj || (sobj!=obj && sobj->getLinkedObject(true)!= obj)) {
+                    FC_LOG("Cannot deduce subname for editing, subname mismatch");
+                    parentObj = 0;
+                    break;
+                }
+                _subname = sel.SubName;
             }
-            auto sobj = parentObj->getSubObject(sel.SubName);
-            if(!sobj || (sobj!=obj && sobj->getLinkedObject(true)!= obj)) {
-                FC_LOG("Cannot deduce subname for editing, subname mismatch");
-                parentObj = 0;
-                break;
-            }
-            _subname = sel.SubName;
         }
         if(parentObj) {
             FC_LOG("deduced editing reference " << parentObj->getFullName() << '.' << _subname);

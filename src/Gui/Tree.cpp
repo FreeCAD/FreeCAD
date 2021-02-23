@@ -228,6 +228,8 @@ public:
 
     void restoreBackground();
 
+    App::SubObjectT getSubObjectT() const;
+
     // Get the parent document (where the object is stored) of this item
     DocumentItem *getParentDocument() const;
     // Get the owner document (where the object is displayed, either stored or
@@ -1452,6 +1454,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 
     // get the current item
     this->contextItem = itemAt(e->pos());
+    SelectionContext sctx;
 
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
@@ -1461,6 +1464,8 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     else if (this->contextItem && this->contextItem->type() == ObjectType) {
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
             (this->contextItem);
+
+        Selection().setContext(objitem->getSubObjectT());
 
         App::Document* doc = objitem->object()->getObject()->getDocument();
         showHiddenAction->setChecked(doc->ShowHidden.getValue());
@@ -1931,7 +1936,9 @@ void TreeWidget::_selectAllLinks(App::DocumentObject *obj) {
     }
 }
 
-bool TreeWidget::setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj)
+bool TreeWidget::setupObjectMenu(QMenu &menu,
+                                 const App::SubObjectT *sobj,
+                                 App::SubObjectT *ctxObj)
 {
     std::vector<App::SubObjectT> sels;
     if(!sobj) {
@@ -1943,9 +1950,11 @@ bool TreeWidget::setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj)
             auto item = tree->itemAt(tree->viewport()->mapFromGlobal(pos));
             if (item) {
                 contextItem = item;
-                if (item->type() == ObjectType)
+                if (item->type() == ObjectType) {
+                    if (ctxObj)
+                        *ctxObj = static_cast<DocumentObjectItem*>(item)->getSubObjectT();
                     return tree->_setupObjectMenu(static_cast<DocumentObjectItem*>(item), menu);
-                else if (item->type() == DocumentType) {
+                } else if (item->type() == DocumentType) {
                     tree->_setupDocumentMenu(static_cast<DocumentItem*>(item), menu);
                     return !menu.actions().isEmpty();
                 }
@@ -1977,6 +1986,8 @@ bool TreeWidget::setupObjectMenu(QMenu &menu, const App::SubObjectT *sobj)
     if(!item)
         return false;
     contextItem = item;
+    if (ctxObj)
+        *ctxObj = item->getSubObjectT();
     return tree->_setupObjectMenu(item, menu);
 }
 
@@ -2290,6 +2301,8 @@ bool TreeWidget::onDoubleClickItem(QTreeWidgetItem *item)
             ss << Command::getObjectCmd(vp->getObject())
                 << ".ViewObject.doubleClicked()";
 
+            SelectionContext sctx(objitem->getSubObjectT());
+
             const char* commandText = vp->getTransactionText();
             if (commandText) {
                 auto editDoc = Application::Instance->editDocument();
@@ -2355,6 +2368,7 @@ void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
     QByteArray tag;
     auto oitem = pimpl->itemHitTest(event->pos(), &tag);
     if (oitem) {
+        SelectionContext sctx(oitem->getSubObjectT());
         ViewProviderDocumentObject* vp = oitem->object();
         vp->iconMouseEvent(event, tag);
         toolTipTimer->start(300);
@@ -2599,6 +2613,7 @@ void TreeWidget::mousePressEvent(QMouseEvent *event) {
             auto editDoc = Application::Instance->editDocument();
             App::AutoTransaction committer("Item clicked", true);
             try {
+                SelectionContext sctx(oitem->getSubObjectT());
                 if(vp->iconMouseEvent(event, tag)) {
                     // If the icon click starts an editing, let the transaction persist
                     if (!editDoc && Application::Instance->editDocument())
@@ -2632,6 +2647,7 @@ void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
             App::AutoTransaction committer("Item right clicked", true);
             bool handled = false;
             try {
+                SelectionContext sctx(oitem->getSubObjectT());
                 handled = vp->iconMouseEvent(ev, tag);
                 if (!handled
                         && !pimpl->skipMouseRelease
@@ -4971,14 +4987,17 @@ void TreeWidget::_setupSelUpSubMenu(QMenu *parentMenu,
                                     QTreeWidgetItem *item,
                                     const App::SubObjectT *objT)
 {
+    SelectionContext sctx;
     SelUpMenu menu(parentMenu);
 
     auto modifier = (QApplication::queryKeyboardModifiers()
             & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
     if(modifier == Qt::ShiftModifier) {
-        if (item && item->type() == ObjectType)
-            _setupObjectMenu(static_cast<DocumentObjectItem*>(item), menu);
-        else
+        if (item && item->type() == ObjectType) {
+            auto oitem = static_cast<DocumentObjectItem*>(item);
+            Selection().setContext(oitem->getSubObjectT());
+            _setupObjectMenu(oitem, menu);
+        } else
             _setupDocumentMenu(docItem, menu);
     } else {
         if (item)
@@ -6425,6 +6444,19 @@ DocumentObjectItem::~DocumentObjectItem()
         if(requiredAtRoot(true,true))
             myOwner->slotNewObject(*object());
     }
+}
+
+App::SubObjectT DocumentObjectItem::getSubObjectT() const
+{
+    auto obj = object()->getObject();
+    std::ostringstream ss;
+    App::DocumentObject *parent = 0;
+    this->getSubName(ss,parent);
+    if(!parent)
+        parent = obj;
+    else if(!obj->redirectSubName(ss,parent,0))
+        ss << obj->getNameInDocument() << '.';
+    return App::SubObjectT(parent, ss.str().c_str());
 }
 
 void DocumentObjectItem::restoreBackground() {

@@ -385,6 +385,17 @@ bool SelectionNoTopParentCheck::enabled() {
 
 // -------------------------------------------
 
+SelectionContext::SelectionContext(const App::SubObjectT &sobj)
+    :_sobj(Selection().getContext())
+{
+    Selection().setContext(sobj);
+}
+
+SelectionContext::~SelectionContext()
+{
+}
+
+// -------------------------------------------
 bool SelectionSingleton::hasSelection() const
 {
     return !_SelList.empty();
@@ -788,6 +799,16 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
             Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
         }
     }
+}
+
+void SelectionSingleton::setContext(const App::SubObjectT &sobj)
+{
+    ContextObject = sobj;
+}
+
+const App::SubObjectT &SelectionSingleton::getContext() const
+{
+    return ContextObject;
 }
 
 int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,
@@ -1982,6 +2003,12 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "checkTopParent(obj, subname='')\n\n"
      "Check object hierarchy to find the top parent of the given (sub)object.\n"
      "Returns (topParent,subname)\n"},
+    {"setContext",   (PyCFunction) SelectionSingleton::sSetContext, METH_VARARGS,
+     "setContext(obj, subname='')\n\n"
+     "Set the context sub-object when calling ViewObject.doubleClicked/setupContextMenu()."},
+    {"getContext",   (PyCFunction) SelectionSingleton::sSetContext, METH_VARARGS,
+     "getContext() -> (obj, subname)\n\n"
+     "Obtain the context sub-object for ViewObject.doubleClicked/setupContextMenu()."},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
@@ -2504,4 +2531,26 @@ PyObject* SelectionSingleton::sCheckTopParent(PyObject *, PyObject *args) {
         checkTopParent(obj,sub);
         return Py::new_reference_to(Py::TupleN(Py::asObject(obj->getPyObject()),Py::String(sub)));
     } PY_CATCH;
+}
+
+PyObject *SelectionSingleton::sGetContext(PyObject *, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    auto obj = Selection().ContextObject.getObject();
+    if (!obj)
+        Py_Return;
+    return Py::new_reference_to(Py::TupleN(Py::asObject(obj->getPyObject()),
+                                           Py::String(Selection().ContextObject.getSubName().c_str())));
+}
+
+PyObject *SelectionSingleton::sSetContext(PyObject *, PyObject *args)
+{
+    PyObject *pyObj;
+    char *subname = "";
+    if (!PyArg_ParseTuple(args, "O!|s", &App::DocumentObjectPy::Type,&pyObj,&subname))
+        return 0;
+    Selection().ContextObject = App::SubObjectT(
+            static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr(), subname);
+    Py_Return;
 }

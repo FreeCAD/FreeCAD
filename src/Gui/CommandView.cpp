@@ -3450,7 +3450,10 @@ void StdCmdItemMenu::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     QMenu menu;
-    TreeWidget::setupObjectMenu(menu);
+    App::SubObjectT ctxobj;
+    SelectionContext sctx;
+    TreeWidget::setupObjectMenu(menu, &ctxobj);
+    Selection().setContext(ctxobj);
     PieMenu::exec(&menu, QCursor::pos());
 }
 

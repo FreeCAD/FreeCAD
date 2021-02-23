@@ -1652,9 +1652,12 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     auto selList = viewer->getPickedList(position, true);
 
     QMenu objMenu(&contextMenu);
-    if(TreeWidget::setupObjectMenu(objMenu, selList.size()?&selList.front():nullptr)) {
+    App::SubObjectT ctxobj;
+    SelectionContext sctx;
+    if(TreeWidget::setupObjectMenu(objMenu, selList.size()?&selList.front():nullptr, &ctxobj)) {
         separator = true;
         contextMenu.insertMenu(posAction, &objMenu);
+        Selection().setContext(ctxobj);
     }
 
     QAction *pickAction = 0;

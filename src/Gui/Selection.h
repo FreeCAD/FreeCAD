@@ -419,6 +419,10 @@ public:
 
     void setFormatDecimal(int);
 
+    /// Used by tree view to set context object of double clicking and context menu
+    void setContext(const App::SubObjectT &sobj);
+    const App::SubObjectT &getContext() const;
+
     /// set the preselected object (mostly by the 3D view)
     int setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,
                      float x=0.f, float y=0.f, float z=0.f, int signal=0, bool msg=false);
@@ -701,6 +705,8 @@ protected:
     static PyObject *sHasSubSelection     (PyObject *self,PyObject *args);
     static PyObject *sGetSelectionFromStack(PyObject *self,PyObject *args);
     static PyObject *sCheckTopParent      (PyObject *self,PyObject *args);
+    static PyObject *sGetContext          (PyObject *self,PyObject *args);
+    static PyObject *sSetContext          (PyObject *self,PyObject *args);
 
 protected:
     /// Construction
@@ -772,6 +778,8 @@ protected:
     bool logHasSelection = false;
 
     int fmtDecimal = -1;
+
+    App::SubObjectT ContextObject;
 };
 
 /**
@@ -814,6 +822,15 @@ public:
     SelectionNoTopParentCheck();
     ~SelectionNoTopParentCheck();
     static bool enabled();
+};
+
+/// Helper class to set and auto unset selection context
+class GuiExport SelectionContext {
+public:
+    SelectionContext(const App::SubObjectT &sobj = App::SubObjectT());
+    ~SelectionContext();
+private:
+    App::SubObjectT _sobj;
 };
 
 } //namespace Gui

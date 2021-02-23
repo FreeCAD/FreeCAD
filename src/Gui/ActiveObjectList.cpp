@@ -82,6 +82,16 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
         info.obj = obj;
         info.subname = subname;
     }else{
+        // No subname is given, try Selection().getContext() first
+        auto ctxobj = Gui::Selection().getContext().getSubObject();
+        if (ctxobj && (ctxobj == obj || ctxobj->getLinkedObject(true) == obj)) {
+            info.obj = Gui::Selection().getContext().getObject();
+            if (info.obj->getDocument() == _Doc->getDocument()) {
+                info.subname = Gui::Selection().getContext().getSubName();
+                return info;
+            }
+        }
+
         // If the input object is not from this document, it must be brought in
         // by some link type object of this document. We only accept the object
         // if we can find such object in the current selection.
