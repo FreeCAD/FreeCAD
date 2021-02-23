@@ -957,6 +957,9 @@ std::string DrawViewDimension::getFormattedDimensionValue(int partial)
 
         return result.toStdString();
     }
+    if (Arbitrary.getValue()) {
+        return FormatSpec.getStrValue();
+    }
 
     return formatValue(getDimValue(), qFormatSpec, partial);
 }
