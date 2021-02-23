@@ -231,6 +231,7 @@ protected Q_SLOTS:
     void onHideInTree();
     void onSearchObjects();
     void onToolTipTimer();
+    void onColumnResized(int idx, int oldsize, int newsize);
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);

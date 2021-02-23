@@ -1027,6 +1027,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
 
     setupResizableColumn(this);
     this->header()->setStretchLastSection(false);
+    connect(this->header(), SIGNAL(sectionResized(int,int,int)),
+            this, SLOT(onColumnResized(int,int,int)));
 
     // Add the first main label
     this->rootItem = new QTreeWidgetItem(this);
@@ -1816,8 +1818,23 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
             inst->header()->setResizeMode(0, mode);
             inst->header()->setResizeMode(1, mode);
 #endif
+            if (TreeParams::ResizableColumn()) {
+                QSignalBlocker blocker(inst);
+                if (TreeParams::ColumnSize1() > 0)
+                    inst->header()->resizeSection(0, TreeParams::ColumnSize1());
+                if (TreeParams::ColumnSize2() > 0)
+                    inst->header()->resizeSection(1, TreeParams::ColumnSize2());
+            }
         }
     }
+}
+
+void TreeWidget::onColumnResized(int idx, int, int newsize)
+{
+    if (idx)
+        TreeParams::setColumnSize2(newsize);
+    else
+        TreeParams::setColumnSize1(newsize);
 }
 
 std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document *doc)

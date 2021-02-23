@@ -120,6 +120,8 @@ public:
         QT_TRANSLATE_NOOP("TreeParams", "Hide tree view header view in dock overlay"))\
     FC_TREE_PARAM2(ResizableColumn,bool,Bool,false, \
        QT_TRANSLATE_NOOP("TreeParams", "Allow tree view columns to be manually resized"))\
+    FC_TREE_PARAM(ColumnSize1,int,Int,0, "") \
+    FC_TREE_PARAM(ColumnSize2,int,Int,0, "") \
 
 #undef FC_TREE_PARAM
 #define FC_TREE_PARAM(_name,_ctype,_type,_def,_doc) \
