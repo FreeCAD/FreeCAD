@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Additive loft</source>
-      <translation type="unfinished">Additive loft</translation>
+      <translation>Lisäävä profiilivenytys</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>Venytä valittu profiili muiden profiilileikkausten kanssa muodoksi</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Additive pipe</source>
-      <translation type="unfinished">Additive pipe</translation>
+      <translation>Lisäävä putkimuoto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Pyyhkäise valitulla luonnoksella pitkin polkua tai toiseen profiiliin</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
       <source>Create body</source>
-      <translation type="unfinished">Create body</translation>
+      <translation>Luo kappale</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="93"/>
       <source>Create a new body and make it active</source>
-      <translation type="unfinished">Create a new body and make it active</translation>
+      <translation>Luo uusi kappale ja tee siitä aktiivinen</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="2237"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation type="unfinished">Boolean operation with two or more bodies</translation>
+      <translation>Joukko-operaatio kahdella tai useammalla kappaleella</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Luo paikallinen koordinaatisto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Luo uusi paikallinen koordinaatisto</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Luo klooni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Luo uusi klooni</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="1665"/>
       <source>Draft</source>
-      <translation>Vedos (vesirajasta pohjaan)</translation>
+      <translation>Syväys (vesirajasta pohjaan)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1666"/>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
       <source>Duplicate selected object</source>
-      <translation type="unfinished">Duplicate selected object</translation>
+      <translation>Monista valittu objekti</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="634"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation type="unfinished">Duplicates the selected object and adds it to the active body</translation>
+      <translation>Monistaa valitun objektin ja lisää sen aktiiviseen runkoon</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1130"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Reikä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1131"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>Luo reikä valitulla luonnoksella</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Create a datum line</source>
-      <translation type="unfinished">Create a datum line</translation>
+      <translation>Luo apuviiva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Create a new datum line</source>
-      <translation type="unfinished">Create a new datum line</translation>
+      <translation>Luo uusi apuviiva</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="1943"/>
       <source>Create a linear pattern feature</source>
-      <translation type="unfinished">Create a linear pattern feature</translation>
+      <translation>Luo lineaarinen toistopiirre</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="339"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Siirrä</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Siirrä asiakirja uudentyyppiseen OsanSuunnittelu-työtapaan</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1879"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>Luo peilattu piirre</translation>
     </message>
   </context>
   <context>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="689"/>
       <source>Move object to other body</source>
-      <translation type="unfinished">Move object to other body</translation>
+      <translation>Siirrä objekti toiseen runkoon</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="690"/>
       <source>Moves the selected object to another body</source>
-      <translation type="unfinished">Moves the selected object to another body</translation>
+      <translation>Siirtää valitun objektit toiseen runkoon</translation>
     </message>
   </context>
   <context>
@@ -317,12 +317,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
       <source>Move object after other object</source>
-      <translation type="unfinished">Move object after other object</translation>
+      <translation>Siirrä objekti toisen perään</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="853"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation type="unfinished">Moves the selected object and insert it after another object</translation>
+      <translation>Siirtää valitun objektin toisen objektin perään</translation>
     </message>
   </context>
   <context>
@@ -335,12 +335,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="553"/>
       <source>Set tip</source>
-      <translation type="unfinished">Set tip</translation>
+      <translation>Aseta kärki</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="554"/>
       <source>Move the tip of the body</source>
-      <translation type="unfinished">Move the tip of the body</translation>
+      <translation>Siirrä kappaleen kärkikohdistin</translation>
     </message>
   </context>
   <context>
@@ -353,12 +353,12 @@
     <message>
       <location filename="../../Command.cpp" line="2115"/>
       <source>Create MultiTransform</source>
-      <translation type="unfinished">Create MultiTransform</translation>
+      <translation>Luo monimuunnos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2116"/>
       <source>Create a multitransform feature</source>
-      <translation type="unfinished">Create a multitransform feature</translation>
+      <translation>Luo monimuunnospiirre</translation>
     </message>
   </context>
   <context>
@@ -407,12 +407,12 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Create a datum plane</source>
-      <translation type="unfinished">Create a datum plane</translation>
+      <translation>Luo aputaso</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
       <source>Create a new datum plane</source>
-      <translation type="unfinished">Create a new datum plane</translation>
+      <translation>Luo uusi aputaso</translation>
     </message>
   </context>
   <context>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1084"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation type="unfinished">Create a pocket with the selected sketch</translation>
+      <translation>Leikkaa kuoppa valitulla luonnoksella</translation>
     </message>
   </context>
   <context>
@@ -443,12 +443,12 @@
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Create a datum point</source>
-      <translation type="unfinished">Create a datum point</translation>
+      <translation>Luo apupiste</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="216"/>
       <source>Create a new datum point</source>
-      <translation type="unfinished">Create a new datum point</translation>
+      <translation>Luo uusi apupiste</translation>
     </message>
   </context>
   <context>
@@ -461,12 +461,12 @@
     <message>
       <location filename="../../Command.cpp" line="2008"/>
       <source>PolarPattern</source>
-      <translation>suuntakuvio</translation>
+      <translation>Ympyräsäännöllinen toistokuvio</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2009"/>
       <source>Create a polar pattern feature</source>
-      <translation type="unfinished">Create a polar pattern feature</translation>
+      <translation>Luo ympyräsäännöllinen toistopiirre</translation>
     </message>
   </context>
   <context>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../Command.cpp" line="2076"/>
       <source>Create a scaled feature</source>
-      <translation type="unfinished">Create a scaled feature</translation>
+      <translation>Luo skaalattu piirre</translation>
     </message>
   </context>
   <context>
@@ -515,12 +515,12 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>Luo muodonliimaaja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>Luo uusi muodonliittäjä</translation>
     </message>
   </context>
   <context>
@@ -533,12 +533,12 @@
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>Poistava profiilivenytys</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>Venytä valittu profiili muiden profiilileikkausten kanssa ja leikkaa tulos irti kappaleesta</translation>
     </message>
   </context>
   <context>
@@ -551,12 +551,12 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Subtractive pipe</source>
-      <translation type="unfinished">Subtractive pipe</translation>
+      <translation>Leikkaava putkimuoto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>Pyyhkäise valitulla luonnoksella pitkin polkua tai toiseen profiiliin, ja leikkaa tulos irti kappaleesta</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation type="unfinished">Make a thick solid</translation>
+      <translation>Luo paksunnettu kappale</translation>
     </message>
   </context>
   <context>
@@ -588,47 +588,47 @@
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation type="unfinished">Create an additive primitive</translation>
+      <translation>Luo lisäävä alkeiskappale</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="191"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Lisäävä laatikko</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="195"/>
       <source>Additive Cylinder</source>
-      <translation type="unfinished">Additive Cylinder</translation>
+      <translation>Lisäävä lieriö</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="199"/>
       <source>Additive Sphere</source>
-      <translation type="unfinished">Additive Sphere</translation>
+      <translation>Lisäävä pallo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>Lisäävä kartio</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Ellipsoid</source>
-      <translation type="unfinished">Additive Ellipsoid</translation>
+      <translation>Lisäävä ellipsoidi</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Torus</source>
-      <translation type="unfinished">Additive Torus</translation>
+      <translation>Lisäävä torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Prism</source>
-      <translation type="unfinished">Additive Prism</translation>
+      <translation>Lisäävä prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Wedge</source>
-      <translation type="unfinished">Additive Wedge</translation>
+      <translation>Lisäävä kiila</translation>
     </message>
   </context>
   <context>
@@ -642,47 +642,47 @@
       <location filename="../../CommandPrimitive.cpp" line="236"/>
       <location filename="../../CommandPrimitive.cpp" line="237"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Luo leikkaava alkeiskappale</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Leikkaava laatikko</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Subtractive Cylinder</source>
-      <translation type="unfinished">Subtractive Cylinder</translation>
+      <translation>Leikkaava lieriö</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Subtractive Sphere</source>
-      <translation type="unfinished">Subtractive Sphere</translation>
+      <translation>Leikkaava pallo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Subtractive Cone</source>
-      <translation type="unfinished">Subtractive Cone</translation>
+      <translation>Leikkaava kartio</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Subtractive Ellipsoid</source>
-      <translation type="unfinished">Subtractive Ellipsoid</translation>
+      <translation>Leikkaava ellipsoidi</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Subtractive Torus</source>
-      <translation type="unfinished">Subtractive Torus</translation>
+      <translation>Leikkaava torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Subtractive Prism</source>
-      <translation type="unfinished">Subtractive Prism</translation>
+      <translation>Leikkaava prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Subtractive Wedge</source>
-      <translation type="unfinished">Subtractive Wedge</translation>
+      <translation>Leikkaava kiila</translation>
     </message>
   </context>
   <context>
@@ -690,37 +690,37 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="45"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Voimassaoleva</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="46"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Virheellinen muoto</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="47"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Luonnoksesta ei löydy lankaa</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Luonnos on jo toisen piirteen käytössä</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation type="unfinished">Sketch belongs to another Body feature</translation>
+      <translation>Luonnos kuuluu jo kappaleen toiseen piirteeseen</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Perustaso</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
       <source>Feature is located after the Tip feature</source>
-      <translation type="unfinished">Feature is located after the Tip feature</translation>
+      <translation>Piirre on sijoitettu kärkipiirteen jälkeen</translation>
     </message>
   </context>
   <context>
@@ -795,11 +795,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+      <translation>Pyydettyä piirrettä ei voida luoda.  Syy voi olla: aktiivinen kappale ei sisällä perustavaa muotoa, joten mitään ei voida leikata; tai valittu luonnos ei kuulu aktiiviseen kappaleeseen.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +807,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+      <translation>Pyydettyä piirrettä ei voida luoda.  Syy voi olla: aktiivinen kappale ei sisällä perustavaa muotoa, joten mitään ei voida leikata; tai valittu luonnos ei kuulu aktiiviseen kappaleeseen.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +819,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+      <translation>Pyydettyä piirrettä ei voida luoda.  Syy voi olla: aktiivinen kappale ei sisällä perustavaa muotoa, joten mitään ei voida leikata; tai valittu luonnos ei kuulu aktiiviseen kappaleeseen.</translation>
     </message>
   </context>
   <context>
@@ -1060,12 +1048,12 @@
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Tee riippumaton kopio (suositeltava)</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="52"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Tee riippuvainen kopio</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="59"/>
@@ -1091,17 +1079,17 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
-      <translation type="unfinished">Add body</translation>
+      <translation>Lisää kappale</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove body</source>
-      <translation type="unfinished">Remove body</translation>
+      <translation>Poista kappale</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Yhdistä</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
@@ -1111,7 +1099,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Yhteinen</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
@@ -1129,12 +1117,12 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="54"/>
       <source>Primitive parameters</source>
-      <translation type="unfinished">Primitive parameters</translation>
+      <translation>Alkeiskappaleen parametrit</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="646"/>
       <source>Create primitive</source>
-      <translation type="unfinished">Create primitive</translation>
+      <translation>Luo alkeiskappale</translation>
     </message>
   </context>
   <context>
@@ -1178,12 +1166,12 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="327"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Tyhjennä kappalelista</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="328"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Kappalelista ei voi olla tyhjä</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
@@ -1201,7 +1189,7 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="122"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation type="unfinished">There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</translation>
+      <translation>Ei ole olemassa liitostapaa, joka sopii valittujen viitteiden ominaisuuksille. Jos toimintoa jatketaan, olemassaoleva piirre säilytetään, ja sitä ei siirretä jos viitteet muuttuvat. Jatketaanko?</translation>
     </message>
   </context>
   <context>
@@ -1281,32 +1269,32 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
-      <translation type="unfinished">Allow used features</translation>
+      <translation>Salli jo käytetyt piirteet</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="30"/>
       <source>Allow external features</source>
-      <translation type="unfinished">Allow external features</translation>
+      <translation>Salli ulkoiset piirteet</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>Saman osan toisista kappaleista</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
       <source>From different parts or free features</source>
-      <translation type="unfinished">From different parts or free features</translation>
+      <translation>Eri osista tai vapaista piirteistä</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="66"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Tee riippumaton kopio (suositeltava)</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="79"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Tee riippuvainen kopio</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="89"/>
@@ -1316,52 +1304,52 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="65"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Voimassaoleva</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="66"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Virheellinen muoto</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="67"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Luonnoksesta ei löydy lankaa</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="68"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Luonnos on jo toisen piirteen käytössä</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Belongs to another body</source>
-      <translation type="unfinished">Belongs to another body</translation>
+      <translation>Kuuluu toiseen kappaleeseen</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
       <source>Belongs to another part</source>
-      <translation type="unfinished">Belongs to another part</translation>
+      <translation>Kuuluu toiseen osaan</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="71"/>
       <source>Doesn't belong to any body</source>
-      <translation type="unfinished">Doesn't belong to any body</translation>
+      <translation>Ei kuulu mihinkää kappaleeseen</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Perustaso</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
       <source>Feature is located after the tip feature</source>
-      <translation type="unfinished">Feature is located after the tip feature</translation>
+      <translation>Piirre sijaitsee kärkipiirteen jälkeen</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="83"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Valitse piirre</translation>
     </message>
   </context>
   <context>
@@ -1440,12 +1428,12 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Lisää piirre</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Poista piirre</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="49"/>
@@ -1518,12 +1506,12 @@
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Lisää osio</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Poista osio</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="113"/>
@@ -1533,7 +1521,7 @@
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation type="unfinished">Loft parameters</translation>
+      <translation>Profiilivenytyksen parametrit</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="80"/>
@@ -1551,12 +1539,12 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Lisää piirre</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Poista piirre</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="49"/>
@@ -1594,12 +1582,12 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Lisää piirre</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Poista piirre</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="47"/>
@@ -1839,7 +1827,7 @@
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="365"/>
       <source>Section orientation</source>
-      <translation type="unfinished">Section orientation</translation>
+      <translation>Osion orientaatio</translation>
     </message>
   </context>
   <context>
@@ -1863,27 +1851,27 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
       <source>Corner Transition</source>
-      <translation type="unfinished">Corner Transition</translation>
+      <translation>Siirtymistapa kulmissa</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
       <source>Transformed</source>
-      <translation type="unfinished">Transformed</translation>
+      <translation>Muunnettu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right Corner</source>
-      <translation type="unfinished">Right Corner</translation>
+      <translation>Suora kulma</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round Corner</source>
-      <translation type="unfinished">Round Corner</translation>
+      <translation>Pyöristetty kulma</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Seurattava polku</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -1898,7 +1886,7 @@
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="74"/>
       <source>Pipe parameters</source>
-      <translation type="unfinished">Pipe parameters</translation>
+      <translation>Putken parametrit</translation>
     </message>
   </context>
   <context>
@@ -1911,32 +1899,32 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
-      <translation type="unfinished">Transform mode</translation>
+      <translation>Siirroksien tyyppi</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>Vakioitu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation type="unfinished">Multisection</translation>
+      <translation>Moniosainen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Lisää osio</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Poista osio</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="617"/>
       <source>Section transformation</source>
-      <translation type="unfinished">Section transformation</translation>
+      <translation>Osioiden välinen muunnos</translation>
     </message>
   </context>
   <context>
@@ -2041,12 +2029,12 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Lisää piirre</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Poista piirre</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="49"/>
@@ -2105,19 +2093,19 @@
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="181"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Perustan X-akseli</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Perustan Y-akseli</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="183"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Perustan Z-akseli</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
@@ -2171,12 +2159,12 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Lisää piirre</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Poista piirre</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="49"/>
@@ -2219,17 +2207,17 @@
     <message>
       <location filename="../../TaskShapeBinder.ui" line="48"/>
       <source>Add Geometry</source>
-      <translation type="unfinished">Add Geometry</translation>
+      <translation>Lisää muotoja</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="67"/>
       <source>Remove Geometry</source>
-      <translation type="unfinished">Remove Geometry</translation>
+      <translation>Poista muotoja</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
       <source>Datum shape parameters</source>
-      <translation type="unfinished">Datum shape parameters</translation>
+      <translation>Apumuotojen parametrit</translation>
     </message>
   </context>
   <context>
@@ -2270,7 +2258,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="82"/>
       <source>Join Type</source>
-      <translation type="unfinished">Join Type</translation>
+      <translation>Liitostyyppi</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="90"/>
@@ -2285,7 +2273,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="100"/>
       <source>Recto Verso</source>
-      <translation type="unfinished">Recto Verso</translation>
+      <translation>Etu- ja takapuoli</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="109"/>
@@ -2300,7 +2288,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="124"/>
       <source>Make thickness inwards</source>
-      <translation type="unfinished">Make thickness inwards</translation>
+      <translation>Tee paksuus sisäänpäin</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="98"/>
@@ -2337,22 +2325,22 @@
       <location filename="../../TaskTransformedParameters.cpp" line="198"/>
       <location filename="../../TaskTransformedParameters.cpp" line="234"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Rakennuslinja %1</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="212"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Perustan X-akseli</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="213"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Perustan Y-akseli</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="214"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Perustan Z-akseli</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="221"/>
@@ -2363,17 +2351,17 @@
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="248"/>
       <source>Base XY plane</source>
-      <translation type="unfinished">Base XY plane</translation>
+      <translation>Perustan XY-taso</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="249"/>
       <source>Base YZ plane</source>
-      <translation type="unfinished">Base YZ plane</translation>
+      <translation>Perustan YZ-taso</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="250"/>
       <source>Base XZ plane</source>
-      <translation type="unfinished">Base XZ plane</translation>
+      <translation>Perustan XZ-taso</translation>
     </message>
   </context>
   <context>
@@ -2381,7 +2369,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation type="unfinished">Toggle active body</translation>
+      <translation>Vaihda aktiivista kappaletta</translation>
     </message>
   </context>
   <context>
@@ -2389,42 +2377,42 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="192"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Luo lisäävä laatikko käyttäen leveyttä, korkeutta, ja pituutta</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height and angle</translation>
+      <translation>Luo lisäävä lieriö käyttäen sädettä, korkeutta, ja kulmaa</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Luo lisäävä pallo käyttäen sädettä ja useita kulmia</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cone</source>
-      <translation type="unfinished">Create an additive cone</translation>
+      <translation>Luo lisäävä kartio</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive ellipsoid</source>
-      <translation type="unfinished">Create an additive ellipsoid</translation>
+      <translation>Luo lisäävä ellipsoidi</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive torus</source>
-      <translation type="unfinished">Create an additive torus</translation>
+      <translation>Luo lisäävä torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive prism</source>
-      <translation type="unfinished">Create an additive prism</translation>
+      <translation>Luo lisäävä prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive wedge</source>
-      <translation type="unfinished">Create an additive wedge</translation>
+      <translation>Luo lisäävä kiila</translation>
     </message>
   </context>
   <context>
@@ -2432,42 +2420,42 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="357"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Luo leikkaava laatikko käyttäen leveyttä, korkeutta, ja pituutta</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="361"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Luo leikkaava lieriö käyttäen sädettä, korkeutta, ja kulmaa</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="365"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Luo leikkaava pallo käyttäen sädettä ja useita kulmia</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="369"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Luo leikkaava kartio</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="373"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Luo leikkaava ellipsoidi</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="377"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Luo leikkaava torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="381"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Luo leikkaava prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="385"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Luo leikkaava kiila</translation>
     </message>
   </context>
   <context>
@@ -2475,12 +2463,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="755"/>
       <source>Select body</source>
-      <translation type="unfinished">Select body</translation>
+      <translation>Valitse kappale</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="756"/>
       <source>Select a body from the list</source>
-      <translation type="unfinished">Select a body from the list</translation>
+      <translation>Valitse kappale listasta</translation>
     </message>
   </context>
   <context>
@@ -2488,12 +2476,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="906"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Valitse piirre</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="907"/>
       <source>Select a feature from the list</source>
-      <translation type="unfinished">Select a feature from the list</translation>
+      <translation>Valitse piirre listalta</translation>
     </message>
   </context>
   <context>
@@ -2501,12 +2489,12 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Invalid selection</source>
-      <translation type="unfinished">Invalid selection</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>Valituille kohteille ei ole soveltuvaa kiinnitystapaa. Valitse jotain muuta.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="141"/>
@@ -2518,7 +2506,7 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Aktiivista kappaletta ei ole valittu. Aktivoi jokin kappale ennenkuin luot apumuodon.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="475"/>
@@ -2553,12 +2541,12 @@
     <message>
       <location filename="../../Command.cpp" line="679"/>
       <source>No valid planes in this document</source>
-      <translation type="unfinished">No valid planes in this document</translation>
+      <translation>Asiakirjassa ei ole soveltuvaa tasomuotoa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="680"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Please create a plane first or select a face to sketch on</translation>
+      <translation>Luo ensin taso tai valitse pinta jolle luonnos tehdään</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="693"/>
@@ -2589,7 +2577,7 @@
     <message>
       <location filename="../../Command.cpp" line="907"/>
       <source>No sketch to work on</source>
-      <translation type="unfinished">No sketch to work on</translation>
+      <translation>Ei työstettävää luonnosta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="908"/>
@@ -2607,23 +2595,23 @@
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select an edge, face or body.</source>
-      <translation type="unfinished">Select an edge, face or body.</translation>
+      <translation>Valitse särmä, tahko tai kappale.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face or body from a single body.</translation>
+      <translation>Valitse särmä, tahko tai kappale yhdestä kappaleesta.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1522"/>
       <location filename="../../Command.cpp" line="1855"/>
       <source>Selection is not in Active Body</source>
-      <translation type="unfinished">Selection is not in Active Body</translation>
+      <translation>Valittu objekti ei ole aktiivisessa kappaleessa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1523"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face or body from an active body.</translation>
+      <translation>Valitse särmä, tahko tai kappale aktiivisesta kappaleesta.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1533"/>
@@ -2653,32 +2641,32 @@
     <message>
       <location filename="../../Command.cpp" line="1843"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation type="unfinished">Please create a subtractive or additive feature first.</translation>
+      <translation>Luo ensin leikkaava tai lisäävä piirre.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>Useita piirteitä valittu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>Valitse ensin vain yksi leikkaava tai lisäävä piirre.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1856"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>Valitse ensin vain yksi leikkaava tai lisäävä piirre aktiivisesta kappaleesta.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
       <source>Part creation failed</source>
-      <translation type="unfinished">Part creation failed</translation>
+      <translation>Osan luominen epäonnistui</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="74"/>
       <source>Failed to create a part object.</source>
-      <translation type="unfinished">Failed to create a part object.</translation>
+      <translation>Osa-objektin luominen epäonnistui.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="122"/>
@@ -2687,17 +2675,17 @@
       <location filename="../../CommandBody.cpp" line="142"/>
       <location filename="../../CommandBody.cpp" line="191"/>
       <source>Bad base feature</source>
-      <translation type="unfinished">Bad base feature</translation>
+      <translation>Virheellinen piirre pohjana</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="123"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation type="unfinished">Body can't be based on a PartDesign feature.</translation>
+      <translation>Kappale ei voi perustua OsaSuunnittelu-piirteeseen.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="128"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body, can't use it as base feature for another body.</translation>
+      <translation>%1 kuuluu jo kappaleeseen, joten sitä ei voi käyttää toisen kappaleen pohjapiirteenä.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
@@ -2707,7 +2695,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+      <translation>Pohjapiirre (%1) kuuluu toiseen osaan.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
@@ -2740,32 +2728,32 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Pohjapiirre</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="192"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation type="unfinished">Body may be based on no more than one feature.</translation>
+      <translation>Kappale ei voi perustua kuin yhteen pohjapiirteeseen.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="368"/>
       <source>Nothing to migrate</source>
-      <translation type="unfinished">Nothing to migrate</translation>
+      <translation>Ei mitään muunnettavaa</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
+      <translation>Yhtään johonkin kappaleeseen kuulumatonta OsaSuunnittelu-piirrettä ei löydy. Ei ole mitään muunnettavaa.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation type="unfinished">Sketch plane cannot be migrated</translation>
+      <translation>Luonnoksen tasopintaa ei voida muuntaa</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="518"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation type="unfinished">Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</translation>
+      <translation>Muokkaa objektia '%1' ja määritä sille perustaso tai aputaso luonnoksen tasopinnaksi.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="580"/>
@@ -2779,64 +2767,64 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="581"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation type="unfinished">Select exactly one PartDesign feature or a body.</translation>
+      <translation>Valitse täsmälleen yksi OsaSuunnittelun piirre tai kappale.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="585"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determine a body for the selected feature '%s'.</translation>
+      <translation>Piirteelle '%s' ei löydy kappaletta johon se kuuluisi.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="590"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation type="unfinished">Only a solid feature can be the tip of a body.</translation>
+      <translation>Vain piirre joka muodostaa kiinteän muodon voi olla kappaleen kärkipiirre.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="706"/>
       <location filename="../../CommandBody.cpp" line="728"/>
       <location filename="../../CommandBody.cpp" line="743"/>
       <source>Features cannot be moved</source>
-      <translation type="unfinished">Features cannot be moved</translation>
+      <translation>Piirteitä ei voida siirtää</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="707"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation type="unfinished">Some of the selected features have dependencies in the source body</translation>
+      <translation>Jotkut valituista piirteistä ovat riippuvaisia lähtökappaleesta</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="729"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>Piirteitä voidaan siirtää vain yhdestä lähtökappaleesta</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="744"/>
       <source>There are no other bodies to move to</source>
-      <translation type="unfinished">There are no other bodies to move to</translation>
+      <translation>Ei ole muita kappaleita joihin voitaisiin siirtää</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="879"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation type="unfinished">Impossible to move the base feature of a body.</translation>
+      <translation>Kappaleen peruspiirrettä on mahdoton siirtää.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="886"/>
       <source>Select one or more features from the same body.</source>
-      <translation type="unfinished">Select one or more features from the same body.</translation>
+      <translation>Valitse yksi tai useampi piirre samasta kappaleesta.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="899"/>
       <source>Beginning of the body</source>
-      <translation type="unfinished">Beginning of the body</translation>
+      <translation>Kappaleen alku</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="261"/>
       <source>No previous feature found</source>
-      <translation type="unfinished">No previous feature found</translation>
+      <translation>Aiempaa piirrettä ei löydy</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="262"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
+      <translation>Ei ole mahdollista tehdä leikkaavaa piirrettä ilman olemassaolevaa peruspiirrettä</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="303"/>
@@ -2863,7 +2851,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="167"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Rakennuslinja %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="84"/>
@@ -2873,46 +2861,46 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../Utils.cpp" line="88"/>
       <source>No active Body</source>
-      <translation type="unfinished">No active Body</translation>
+      <translation>Ei aktiivista kappaletta</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="89"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Jotta OsanSuunnittelua voi käyttää, asiakirjassa pitää olla aktiivinen kappale-objekti. Tee yhdestä kappaleesta aktiivinen (tuplaklikkaus) tai luo uusi.
 
-If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
+Jos asiakirja on vanhentunutta tyyppiä OsanSuunnittelu-objekteilla ilman kappaleita, valitse muunnostoiminto OsanSuunnittelussa ja sijoita objektit kappaleeseen.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="104"/>
       <source>Active Body Required</source>
-      <translation type="unfinished">Active Body Required</translation>
+      <translation>Tarvitaan aktiivinen kappale</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="105"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>Jotta uudeen OsanSuunnittelu-objektin voisi luoda, asiakirjassa pitäisi olla aktiivinen kappale. Tee kappaleesta aktiivinen (tuplaklikkaus) tai luo uusi.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="142"/>
       <source>Feature is not in a body</source>
-      <translation type="unfinished">Feature is not in a body</translation>
+      <translation>Piirre ei ole kappaleessa</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="143"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a body object in the document.</translation>
+      <translation>Jotta tätä piirrettä voitaisiin käyttää, sen pitäisi kuulua asiakirjaan sisältyvään kappale-objektiin.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="175"/>
       <source>Feature is not in a part</source>
-      <translation type="unfinished">Feature is not in a part</translation>
+      <translation>Piirre ei kuulu osaan</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="176"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
+      <translation>Jotta tätä piirrettä voitaisiin käyttää, sen pitäisi kuulua asiakirjaan sisältyvään osa-objektiin.</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="96"/>
@@ -2961,14 +2949,13 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="70"/>
       <source>Feature error</source>
-      <translation type="unfinished">Feature error</translation>
+      <translation>Virhe piirteessä</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and can't be edited.</translation>
+      <translation>%1 ei sisällä peruspiirrettä. Tämä piirre on siis rikki ja sitä ei voi muokata.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="51"/>
@@ -2983,7 +2970,7 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>
       <source>Edit loft</source>
-      <translation type="unfinished">Edit loft</translation>
+      <translation>Muokkaa profiilivenytystä</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
@@ -3003,7 +2990,7 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="76"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Muokkaa alkeiskappaletta</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="51"/>
@@ -3038,7 +3025,7 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="147"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
+      <translation>Haluatko muuntaa asiakirjan, jotta modernin OsanSuunnittelun piirteitä voidaan käyttää?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>
@@ -3055,9 +3042,7 @@ This feature is broken and can't be edited.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Huomaa: Jos haluat tehdä muunnoksen, asiakirjaa ei voi enää muokata vanhemmalla FreeCAD-versiolla. Jos muunnosta ei tehdä, asiakirjassa ei voi käyttää modernin OsanSuunnittelun ominaisuuksia kuten kappaleita ja osia. Tämän johdosta vanhoja objekteja ei voi myöskään käyttää kokoamis-työpöytälaajennuksissa. Muunnoksen voi tehdä minä tahansa myöhempänäkin hetkenä valitsemalla 'OsanSuunnittelu-&gt;Muunna...'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>

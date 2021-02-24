@@ -137,7 +137,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="101"/>
       <source>Close shape</source>
-      <translation type="unfinished">Close shape</translation>
+      <translation>Vorm sluiten</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="102"/>
@@ -356,22 +356,22 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5341"/>
       <source>Fillets</source>
-      <translation type="unfinished">Fillets</translation>
+      <translation>Afrondingen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5342"/>
       <source>Create a fillet between two lines</source>
-      <translation type="unfinished">Create a fillet between two lines</translation>
+      <translation>Maakt een afronding tussen twee lijnen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5417"/>
       <source>Sketch fillet</source>
-      <translation type="unfinished">Sketch fillet</translation>
+      <translation>Schets afronding</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5421"/>
       <source>Constraint-preserving sketch fillet</source>
-      <translation type="unfinished">Constraint-preserving sketch fillet</translation>
+      <translation>Constraint-behoudende schets afronding</translation>
     </message>
   </context>
   <context>
@@ -465,7 +465,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="212"/>
       <source>Connect edges</source>
-      <translation type="unfinished">Connect edges</translation>
+      <translation>Randen verbinden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="213"/>
@@ -1209,12 +1209,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5310"/>
       <source>Create corner-preserving fillet</source>
-      <translation type="unfinished">Create corner-preserving fillet</translation>
+      <translation>Maak hoek-behoudende afronding</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5311"/>
       <source>Fillet that preserves intersection point and most constraints</source>
-      <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
+      <translation>Afronding dat snijpunt behoudt en meeste constraints</translation>
     </message>
   </context>
   <context>
@@ -1407,7 +1407,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2034"/>
       <source>Delete all geometry</source>
-      <translation type="unfinished">Delete all geometry</translation>
+      <translation>Alle geometrie verwijderen</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2035"/>
@@ -1547,7 +1547,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="561"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</translation>
+      <translation>Sommige van de geselecteerde objecten zijn afhankelijk van de in kaart te brengen schets. Cirkelvormige afhankelijkheden zijn niet toegestaan.</translation>
     </message>
   </context>
   <context>
@@ -1762,7 +1762,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="824"/>
       <source>Select unconstrained DoF</source>
-      <translation type="unfinished">Select unconstrained DoF</translation>
+      <translation>Selecteer onbegrensde DoF</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="825"/>
@@ -1799,7 +1799,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="548"/>
       <location filename="../../CommandSketcherTools.cpp" line="549"/>
       <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <translation>Selecteer foutieve randvoorwaarde</translation>
     </message>
   </context>
   <context>
@@ -1812,7 +1812,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="369"/>
       <source>Select origin</source>
-      <translation type="unfinished">Select origin</translation>
+      <translation>Selecteer oorsprong</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="370"/>
@@ -1831,7 +1831,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="600"/>
       <location filename="../../CommandSketcherTools.cpp" line="601"/>
       <source>Select partially redundant constraints</source>
-      <translation type="unfinished">Select partially redundant constraints</translation>
+      <translation>Schets bevat overbodige beperkingen</translation>
     </message>
   </context>
   <context>
@@ -1858,7 +1858,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="413"/>
       <source>Select vertical axis</source>
-      <translation type="unfinished">Select vertical axis</translation>
+      <translation>Selecteer verticale as</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="414"/>
@@ -2073,7 +2073,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1259"/>
       <location filename="../../CommandConstraints.cpp" line="1494"/>
       <source>Add horizontal alignment</source>
-      <translation type="unfinished">Add horizontal alignment</translation>
+      <translation>Horizontale uitleining toevoegen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1395"/>
@@ -2314,7 +2314,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="489"/>
       <source>Reorient sketch</source>
-      <translation type="unfinished">Reorient sketch</translation>
+      <translation>Schets heroriënteren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="644"/>
@@ -2324,7 +2324,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>Detach sketch</source>
-      <translation type="unfinished">Detach sketch</translation>
+      <translation>Schets loskoppelen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="789"/>
@@ -2344,7 +2344,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="319"/>
       <source>Add sketch line</source>
-      <translation type="unfinished">Add sketch line</translation>
+      <translation>Schetslijn toevoegen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="493"/>
@@ -2401,7 +2401,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4895"/>
       <source>Add sketch point</source>
-      <translation type="unfinished">Add sketch point</translation>
+      <translation>Schetspunt toevoegen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5144"/>
@@ -2422,12 +2422,12 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5992"/>
       <source>Add external geometry</source>
-      <translation type="unfinished">Add external geometry</translation>
+      <translation>Externe geometrie toevoegen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6173"/>
       <source>Add carbon copy</source>
-      <translation type="unfinished">Add carbon copy</translation>
+      <translation>CC toevoegen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6354"/>
@@ -2437,12 +2437,12 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6567"/>
       <source>Add hexagon</source>
-      <translation type="unfinished">Add hexagon</translation>
+      <translation>Zeshoek toevoegen</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
       <source>Convert to NURBS</source>
-      <translation type="unfinished">Convert to NURBS</translation>
+      <translation>Converteren naar NURBS</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="479"/>
@@ -2487,7 +2487,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2060"/>
       <source>Delete all geometry</source>
-      <translation type="unfinished">Delete all geometry</translation>
+      <translation>Alle geometrie verwijderen</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2120"/>
@@ -2523,7 +2523,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="840"/>
       <source>Drag Point</source>
-      <translation type="unfinished">Drag Point</translation>
+      <translation>Sleeppunt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="871"/>
@@ -2579,47 +2579,47 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Autoconstrain error: Defecte schets tijdens aanleggen van gelijkheids-constraint.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2034"/>
+      <location filename="../../../App/SketchObject.cpp" line="1966"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Niet in staat om het snijpunt van de bochten te raden. Probeer een samenvallende beperking toe te voegen tussen de vertexen van de curven die u wilt afronden.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5667"/>
+      <location filename="../../../App/SketchObject.cpp" line="5606"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Deze versie van OCE/OCC ondersteunt de knoopbewerking niet. U hebt 6.9.0 of hoger nodig.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5671"/>
+      <location filename="../../../App/SketchObject.cpp" line="5610"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline Geometrie Index (GeoID) buiten bereik.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5674"/>
+      <location filename="../../../App/SketchObject.cpp" line="5613"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>U vraagt geen verandering in de knobbelmultipliciteit.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5679"/>
+      <location filename="../../../App/SketchObject.cpp" line="5618"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>De Geometrie Index (Geold) aangeleverd is geen B-spline lijn.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5686"/>
+      <location filename="../../../App/SketchObject.cpp" line="5625"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>De knoop-index is buiten de grenzen. Merk op dat volgens de OCC-notatie de eerste knoop index 1 heeft en niet nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5693"/>
+      <location filename="../../../App/SketchObject.cpp" line="5632"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>De veelvouds-getal mag niet groter zijn dan het aantal graden van de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5696"/>
+      <location filename="../../../App/SketchObject.cpp" line="5635"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>De multipliciteit kan niet lager zijn dan nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5708"/>
+      <location filename="../../../App/SketchObject.cpp" line="5647"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC is niet in staat om de multipliciteit binnen de maximale tolerantie te verlagen.</translation>
     </message>
@@ -3803,7 +3803,7 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
       <location filename="../../CommandConstraints.cpp" line="5168"/>
       <location filename="../../EditDatumDialog.cpp" line="115"/>
       <source>Weight:</source>
-      <translation type="unfinished">Weight:</translation>
+      <translation>Gewicht:</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5014"/>
@@ -4257,12 +4257,12 @@ Hiervoor is het nodig om de bewerkingsmodus opnieuw in te schakelen.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="244"/>
       <source>Invalid Sketch</source>
-      <translation type="unfinished">Invalid Sketch</translation>
+      <translation>Ongeldige schets</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="251"/>
       <source>Color of geometry indicating an invalid sketch</source>
-      <translation type="unfinished">Color of geometry indicating an invalid sketch</translation>
+      <translation>Kleur van geometrie die een ongeldige schets aangeeft</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="278"/>
@@ -4342,12 +4342,12 @@ Hiervoor is het nodig om de bewerkingsmodus opnieuw in te schakelen.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="514"/>
       <source>Dimensional constraint color</source>
-      <translation type="unfinished">Dimensional constraint color</translation>
+      <translation>Maat beperkings kleur</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="521"/>
       <source>Color of dimensional driving constraints</source>
-      <translation type="unfinished">Color of dimensional driving constraints</translation>
+      <translation>Kleur van maatgedreven beperkingen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="541"/>
@@ -4474,12 +4474,12 @@ Ondersteunt alle eenheidssystemen behalve de 'US customary' en VS/Euro-gebouwsys
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="347"/>
       <source>View scale ratio</source>
-      <translation type="unfinished">View scale ratio</translation>
+      <translation>Bekijk schaal verhouding</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="354"/>
       <source>The 3D view is scaled based on this factor</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor</translation>
+      <translation>De 3D-weergave is geschaald op basis van deze factor</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="214"/>
@@ -5152,22 +5152,22 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6421"/>
       <source>The following constraint is partially redundant:</source>
-      <translation type="unfinished">The following constraint is partially redundant:</translation>
+      <translation>De volgende beperking is gedeeltelijk overbodig:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6422"/>
       <source>The following constraints are partially redundant:</source>
-      <translation type="unfinished">The following constraints are partially redundant:</translation>
+      <translation>De volgende beperkingen zijn gedeeltelijk overbodig:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6428"/>
       <source>Please remove the following malformed constraint:</source>
-      <translation type="unfinished">Please remove the following malformed constraint:</translation>
+      <translation>Verwijder de volgende conflicterende beperking:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6429"/>
       <source>Please remove the following malformed constraints:</source>
-      <translation type="unfinished">Please remove the following malformed constraints:</translation>
+      <translation>Verwijder de volgende conflicterende beperkingen:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6464"/>
@@ -5191,7 +5191,7 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6478"/>
       <source>Sketch contains malformed constraints </source>
-      <translation type="unfinished">Sketch contains malformed constraints </translation>
+      <translation>Schets bevat conflicterende beperkingen </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6485"/>
@@ -5206,7 +5206,7 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6502"/>
       <source>Sketch contains partially redundant constraints </source>
-      <translation type="unfinished">Sketch contains partially redundant constraints </translation>
+      <translation>Sketch bevat gedeeltelijk overbodige beperkingen </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6514"/>
@@ -5216,12 +5216,12 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6521"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
+      <translation>Onderbeperkte schets met &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 graad&lt;/span&gt;&lt;/a&gt; van vrijheid. %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6524"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
+      <translation>Onderbeperkte schets met &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 graad&lt;/span&gt;&lt;/a&gt; van vrijheid. %2</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6529"/>
@@ -5452,7 +5452,7 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
       <location filename="../../CommandCreateGeo.cpp" line="5418"/>
       <location filename="../../CommandCreateGeo.cpp" line="5419"/>
       <source>Creates a radius between two lines</source>
-      <translation type="unfinished">Creates a radius between two lines</translation>
+      <translation>Maakt een afronding tussen twee lijnen</translation>
     </message>
   </context>
   <context>
@@ -5503,7 +5503,7 @@ De punten moeten dichter dan een vijfde van de rastergrootte bij een rasterlijn 
       <location filename="../../CommandCreateGeo.cpp" line="5422"/>
       <location filename="../../CommandCreateGeo.cpp" line="5423"/>
       <source>Fillet that preserves constraints and intersection point</source>
-      <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
+      <translation>Afronding dat beperkingen en het snijpunt behoudt</translation>
     </message>
   </context>
   <context>
@@ -6020,6 +6020,11 @@ om te bepalen of een oplossing al dan niet samenvalt</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
+      <source>Sketcher B-spline tools</source>
+      <translation type="unfinished">Sketcher B-spline tools</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher virtual space</source>
       <translation>Virtuele ruimte van de schetser</translation>
     </message>

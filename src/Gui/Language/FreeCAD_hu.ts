@@ -140,11 +140,11 @@
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Hivatkozás csoport létrehozása</translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Hivatkozás létrehozása</translation>
     </message>
     <message>
       <source>Make sub-link</source>
@@ -152,11 +152,11 @@
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Hivatkozások importálása</translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Összes hivatkozás importálása</translation>
     </message>
     <message>
       <source>Insert measurement</source>
@@ -172,7 +172,7 @@
     </message>
     <message>
       <source>Add a group</source>
-      <translation type="unfinished">Add a group</translation>
+      <translation>Csoport hozzáadása</translation>
     </message>
     <message>
       <source>Align</source>
@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Átalakítások hivatkozása</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -318,7 +318,7 @@
     </message>
     <message>
       <source>Fixed object</source>
-      <translation>Fix tárgy</translation>
+      <translation>Rögzített tárgy</translation>
     </message>
   </context>
   <context>
@@ -3250,23 +3250,23 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <translation>Betöltetlen munkafelületek</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A kijelölt munkafelületek betöltése, a beállítási ablakaik hozzáadása a beállítások párbeszédpanelhez.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Kiválasztottak betöltése</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Elérhető betöltetlen munkafelületek&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az erőforrások megőrzése érdekében a FreeCAD nem tölti be a munkafelületeket, amíg nem használják őket. A betöltésük hozzáférést biztosíthat a funkciójukhoz kapcsolódó további beállításokhoz.&lt;/p&gt;&lt;p&gt;A következő munkafelületek érhetők el a telepítéshez, de még nincsenek betöltve:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3601,7 +3601,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
-      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
+      <translation>Jelölőnégyzetek hozzáadása kijelöléshez a dokumentumfában</translation>
     </message>
   </context>
   <context>
@@ -4573,7 +4573,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <name>Gui::DlgObjectSelection</name>
     <message>
       <source>Object selection</source>
-      <translation type="unfinished">Object selection</translation>
+      <translation>Objektumok kijelölése</translation>
     </message>
     <message>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
@@ -5373,6 +5373,10 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     <message>
       <source>Expression...</source>
       <translation type="unfinished">Expression...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
     </message>
   </context>
   <context>
@@ -6747,19 +6751,19 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Simple group</source>
-      <translation type="unfinished">Simple group</translation>
+      <translation>Egyszerű csoport</translation>
     </message>
     <message>
       <source>Group with links</source>
-      <translation type="unfinished">Group with links</translation>
+      <translation>Csoport hivatkozásokkal</translation>
     </message>
     <message>
       <source>Group with transform links</source>
-      <translation type="unfinished">Group with transform links</translation>
+      <translation>Csoport átalakított hivatkozásokkal</translation>
     </message>
     <message>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>Hivatkozás csoport létrehozása nem sikerült</translation>
     </message>
     <message>
       <source>Create link failed</source>
@@ -6775,7 +6779,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Replace link failed</source>
-      <translation type="unfinished">Replace link failed</translation>
+      <translation>Hivatkozás cseréje nem sikerült</translation>
     </message>
     <message>
       <source>Failed to import links</source>
@@ -6913,7 +6917,7 @@ Document: </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>A fájl betöltése közben súlyos hibák történtek. Előfordulhat, hogy néhány adat módosult, vagy egyáltalán nem állt helyre. A terv mentése valószínűleg adatvesztést eredményez.</translation>
     </message>
     <message>
       <source>Workbenches</source>
@@ -7363,7 +7367,7 @@ Document: </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Az Exportálás gomb kiválasztása előtt jelölje ki az exportálandó objektumokat.</translation>
     </message>
   </context>
   <context>
@@ -7404,7 +7408,7 @@ Document: </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Adományozás a FreeCAD fejlesztőknek</translation>
     </message>
   </context>
   <context>
@@ -7585,7 +7589,7 @@ Document: </translation>
     </message>
     <message>
       <source>Link actions</source>
-      <translation type="unfinished">Link actions</translation>
+      <translation>Hivatkozás műveletek</translation>
     </message>
   </context>
   <context>
@@ -7596,11 +7600,11 @@ Document: </translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Hivatkozások importálása</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
-      <translation type="unfinished">Import selected external link(s)</translation>
+      <translation>Kiválasztott külső hivatkozás(ok) importálása</translation>
     </message>
   </context>
   <context>
@@ -7611,11 +7615,11 @@ Document: </translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Összes hivatkozás importálása</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
-      <translation type="unfinished">Import all links of the active document</translation>
+      <translation>Összes hivatkozás importálása az aktív dokumentumba</translation>
     </message>
   </context>
   <context>
@@ -7626,11 +7630,11 @@ Document: </translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Hivatkozás létrehozása</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
-      <translation type="unfinished">Create a link to the selected object(s)</translation>
+      <translation>Hivatkozás létrehozása a kiválasztott objektum(ok)-hoz</translation>
     </message>
   </context>
   <context>
@@ -7641,11 +7645,11 @@ Document: </translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Hivatkozás csoport létrehozása</translation>
     </message>
     <message>
       <source>Create a group of links</source>
-      <translation type="unfinished">Create a group of links</translation>
+      <translation>Hivatkozások csoportjának létrehozása</translation>
     </message>
   </context>
   <context>
@@ -7671,11 +7675,11 @@ Document: </translation>
     </message>
     <message>
       <source>Replace with link</source>
-      <translation type="unfinished">Replace with link</translation>
+      <translation>Csere hivatkozással</translation>
     </message>
     <message>
       <source>Replace the selected object(s) with link</source>
-      <translation type="unfinished">Replace the selected object(s) with link</translation>
+      <translation>Kiválasztott objektum(ok) cseréje hivatkozással</translation>
     </message>
   </context>
   <context>
@@ -7701,11 +7705,11 @@ Document: </translation>
     </message>
     <message>
       <source>Select all links</source>
-      <translation type="unfinished">Select all links</translation>
+      <translation>Összes hivatkozás kijelölése</translation>
     </message>
     <message>
       <source>Select all links to the current selected object</source>
-      <translation type="unfinished">Select all links to the current selected object</translation>
+      <translation>Kiválasztott objektum összes hivatkozásának a kiválasztása</translation>
     </message>
   </context>
   <context>
@@ -7716,7 +7720,7 @@ Document: </translation>
     </message>
     <message>
       <source>Go to linked object</source>
-      <translation type="unfinished">Go to linked object</translation>
+      <translation>Ugrás a hivatkozott objektumra</translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
@@ -7731,7 +7735,7 @@ Document: </translation>
     </message>
     <message>
       <source>Go to the deepest linked object</source>
-      <translation type="unfinished">Go to the deepest linked object</translation>
+      <translation>Ugrás a legmélyebben hivatkozott objektumra</translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
@@ -7746,7 +7750,7 @@ Document: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>Hivatkozás megszüntetése</translation>
     </message>
     <message>
       <source>Strip on level of link</source>

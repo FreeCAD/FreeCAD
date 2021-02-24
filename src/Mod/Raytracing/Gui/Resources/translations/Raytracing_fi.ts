@@ -103,7 +103,7 @@
     <message>
       <location filename="../../Command.cpp" line="590"/>
       <source>&amp;Render</source>
-      <translation>&amp;Tee kuvalaskenta/ render</translation>
+      <translation>&amp;Tee kuvalaskenta/ renderöi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="591"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../../Command.cpp" line="871"/>
       <source>Sets the camera of the selected Raytracing project to match the current view</source>
-      <translation>Määrittää kameran valittuun sädeseuranta- projektin nykyiseen näkymään</translation>
+      <translation>Asettaa valitun Raytracing-projektin kameran vastaamaan nykyistä näkymää</translation>
     </message>
   </context>
   <context>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Export camera to POV-Ray...</source>
-      <translation>Vie kameran POV-Ray...</translation>
+      <translation>Vie kamera POV-Ray:hin...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation type="unfinished">Export the camera position of the active 3D view in POV-Ray format to a file</translation>
+      <translation>Vie aktiivisen 3D-näkymän kameran sijainti POV-Ray -muodossa tiedostoon</translation>
     </message>
   </context>
   <context>
@@ -157,7 +157,7 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Export part to POV-Ray...</source>
-      <translation>Vie osan POV-Ray...</translation>
+      <translation>Vie osan POV-Ray:hin...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
@@ -181,8 +181,8 @@
       <location filename="../../Command.cpp" line="338"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Nykyisessä näkymässä kamera ei ole näkökulman mukainen ja siten POV-Ray kuva saattaa myöhemmin näyttää erilaiselta kuin odotat. 
+Haluatko jatkaa?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -192,7 +192,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Export view to POV-Ray...</source>
-      <translation>Näkymän vieminen POV-Ray...</translation>
+      <translation>Näkymän vieminen POV-Ray: hin...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="223"/>
@@ -209,14 +209,14 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="353"/>
       <location filename="../../Command.cpp" line="788"/>
       <source>Cannot create a project because there is no template installed.</source>
-      <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
+      <translation>Projektia ei voi luoda, koska mitään mallia ei ole asennettu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Nykyisessä näkymässä kamera ei ole näkökulman mukainen ja siten Pov-Ray kuva saattaa myöhemmin näyttää erilaiselta kuin odotat. 
+Haluatko jatkaa?</translation>
     </message>
   </context>
   <context>
@@ -227,7 +227,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="248"/>
       <location filename="../../Command.cpp" line="546"/>
       <source>POV-Ray</source>
-      <translation type="unfinished">POV-Ray</translation>
+      <translation>POV-Ray</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="136"/>
@@ -285,7 +285,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="542"/>
       <source>Luxrender</source>
-      <translation type="unfinished">Luxrender</translation>
+      <translation>Luxrender</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="621"/>
@@ -362,7 +362,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="52"/>
       <source>Max mesh deviation:</source>
-      <translation type="unfinished">Max mesh deviation:</translation>
+      <translation>Suurin verkkopinnan poikkeama:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="80"/>
@@ -454,7 +454,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="291"/>
       <source>Default Project dir:</source>
-      <translation>Oletus projektihakemisto:</translation>
+      <translation>Projektin oletushakemisto:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="301"/>
@@ -472,7 +472,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>POV-Ray suoritettavan ohjelman kansio, jos haluat renderöidä kohteesta %1</translation>
     </message>
   </context>
   <context>
@@ -480,7 +480,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="68"/>
       <source>Edit LuxRender project</source>
-      <translation>Muokaka LuxRender -projektia</translation>
+      <translation>Muokkaa LuxRender -projektia</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="99"/>
@@ -490,7 +490,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <source>Select a LuxRender template</source>
-      <translation>Vaölitse LuxRender malli</translation>
+      <translation>Valitse LuxRender malli</translation>
     </message>
   </context>
   <context>

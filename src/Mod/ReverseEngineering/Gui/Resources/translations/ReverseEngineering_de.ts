@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation>Polynomfläche</translation>
+      <translation>Polynomialfläche</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Approximate a polynomial surface</source>
-      <translation>Eine Polynomfläche annähern</translation>
+      <translation>Eine Polynomialfläche annähern</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Erstelle Draht aus Netzgrenzen</translation>
+      <translation>Erstelle Draht aus Netzbegrenzungen</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation>Netz Segmentierung...</translation>
+      <translation>Netz-Segmentierung...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="381"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation>Manuelle Segmentation...</translation>
+      <translation>Manuelle Segmentierung...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="413"/>
@@ -220,7 +220,7 @@
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Fit polynomial surface</source>
-      <translation>Polynomfläche einpassen</translation>
+      <translation>Polynomialfläche einpassen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
       <source>Poisson reconstruction</source>
-      <translation>Poisson-Wiederherstellung</translation>
+      <translation>Poisson-Rekonstruktion</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="234"/>
@@ -320,12 +320,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="346"/>
       <source>User-defined u/v directions</source>
-      <translation>Nutzer-definierte u/v Richtungen</translation>
+      <translation>Nutzer-definierte u/v-Richtungen</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation>Platzierung erstellen</translation>
+      <translation>Placement erstellen</translation>
     </message>
   </context>
   <context>
@@ -362,7 +362,7 @@
     <message>
       <location filename="../../Poisson.ui" line="26"/>
       <source>Octree depth</source>
-      <translation>Octree Tiefe</translation>
+      <translation>Octree-Tiefe</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="46"/>
@@ -404,7 +404,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>View triangulation failed</source>
-      <translation>Triangulation anzeigen fehlgeschlagen</translation>
+      <translation>Ansichts-Triangulation fehlgeschlagen</translation>
     </message>
   </context>
   <context>

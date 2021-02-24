@@ -420,12 +420,12 @@
     <message>
       <location filename="_CommandFemMeshClear.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation>Lösche FEM-Netz</translation>
+      <translation>FEM-Netz leeren</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshClear.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Lösche das Netz eines FEM-Mesh-Objekts</translation>
+      <translation>Leere das Netz eines FEM-Mesh-Objekts</translation>
     </message>
   </context>
   <context>
@@ -739,12 +739,12 @@
     <message>
       <location filename="_CommandClearMesh.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation>Lösche FEM-Netz</translation>
+      <translation>FEM-Netz leeren</translation>
     </message>
     <message>
       <location filename="_CommandClearMesh.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Lösche das Netz eines FEM-Mesh-Objekts</translation>
+      <translation>Leere das Netz eines FEM-Mesh-Objekts</translation>
     </message>
   </context>
   <context>

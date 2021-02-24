@@ -5370,6 +5370,10 @@ sağ görünümde %2 nokta seçili.</translation>
       <source>Expression...</source>
       <translation>İfade...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>

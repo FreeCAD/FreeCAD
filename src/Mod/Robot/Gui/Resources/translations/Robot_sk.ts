@@ -368,7 +368,7 @@
       <location filename="../../CommandTrajectory.cpp" line="184"/>
       <location filename="../../CommandTrajectory.cpp" line="412"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
@@ -409,7 +409,7 @@
       <location filename="../../CommandExport.cpp" line="89"/>
       <location filename="../../CommandExport.cpp" line="151"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Všetky súbory</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="90"/>

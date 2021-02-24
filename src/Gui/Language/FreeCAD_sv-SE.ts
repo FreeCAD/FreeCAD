@@ -140,11 +140,11 @@
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Skapa länkgrupp</translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Skapa länk</translation>
     </message>
     <message>
       <source>Make sub-link</source>
@@ -152,11 +152,11 @@
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Importera länkar</translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Importera alla länkar</translation>
     </message>
     <message>
       <source>Insert measurement</source>
@@ -164,7 +164,7 @@
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>Infoga textdokument</translation>
     </message>
     <message>
       <source>Add a part</source>
@@ -172,7 +172,7 @@
     </message>
     <message>
       <source>Add a group</source>
-      <translation type="unfinished">Add a group</translation>
+      <translation>Lägg till en grupp</translation>
     </message>
     <message>
       <source>Align</source>
@@ -512,7 +512,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -677,7 +677,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Lägg till egenskap</translation>
     </message>
     <message>
       <source>Type</source>
@@ -1930,7 +1930,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Sök grupp</translation>
     </message>
   </context>
   <context>
@@ -2012,7 +2012,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
       <source>Search Group</source>
-      <translation type="unfinished">Search Group</translation>
+      <translation>Sök grupp</translation>
     </message>
   </context>
   <context>
@@ -4690,7 +4690,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Normala meddelanden</translation>
     </message>
     <message>
       <source>Log messages</source>
@@ -5359,7 +5359,7 @@ Hur vill du fortsätta?</translation>
     </message>
     <message>
       <source>property</source>
-      <translation type="unfinished">property</translation>
+      <translation>egenskap</translation>
     </message>
     <message>
       <source>Show all</source>
@@ -5367,15 +5367,19 @@ Hur vill du fortsätta?</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Lägg till egenskap</translation>
     </message>
     <message>
       <source>Remove property</source>
-      <translation type="unfinished">Remove property</translation>
+      <translation>Ta bort egenskap</translation>
     </message>
     <message>
       <source>Expression...</source>
       <translation>Uttryck...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
     </message>
   </context>
   <context>
@@ -6080,7 +6084,7 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
       <source>Reload document</source>
-      <translation type="unfinished">Reload document</translation>
+      <translation>Ladda om dokument</translation>
     </message>
     <message>
       <source>Reload a partially loaded document</source>
@@ -6807,7 +6811,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Add property</source>
-      <translation type="unfinished">Add property</translation>
+      <translation>Lägg till egenskap</translation>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
@@ -6896,8 +6900,8 @@ Pyhsical path: </translation>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>
+Dokument: </translation>
     </message>
     <message>
       <source>
@@ -7602,7 +7606,7 @@ Document: </translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>Importera länkar</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
@@ -7617,7 +7621,7 @@ Document: </translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>Importera alla länkar</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
@@ -7632,7 +7636,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>Skapa länk</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
@@ -7647,11 +7651,11 @@ Document: </translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>Skapa länkgrupp</translation>
     </message>
     <message>
       <source>Create a group of links</source>
-      <translation type="unfinished">Create a group of links</translation>
+      <translation>Skapa en grupp länkar</translation>
     </message>
   </context>
   <context>
@@ -7677,7 +7681,7 @@ Document: </translation>
     </message>
     <message>
       <source>Replace with link</source>
-      <translation type="unfinished">Replace with link</translation>
+      <translation>Ersätt med länk</translation>
     </message>
     <message>
       <source>Replace the selected object(s) with link</source>
@@ -9065,7 +9069,7 @@ Document: </translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Spara aktuell kamera</translation>
     </message>
     <message>
       <source>Save current camera settings</source>

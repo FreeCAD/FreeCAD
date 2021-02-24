@@ -329,7 +329,7 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>%1 archivos de ayuda no encontrados (%2). Puede necesitar instalar el %1 de paquetes de la documentación.</translation>
+      <translation>%1 archivos de ayuda no encontrados (%2). Puede necesitar instalar el paquete de documentación %1.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
@@ -486,7 +486,7 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Este software utiliza componentes de código abierto cuyos derechos de autor y otros derechos de propiedad pertenecen a sus respectivos propietarios:</translation>
+      <translation>Este software utiliza componentes de código abierto, cuyos derechos de autor y otros derechos de propiedad pertenecen a sus respectivos propietarios:</translation>
     </message>
     <message>
       <source>License</source>
@@ -583,7 +583,7 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     </message>
     <message>
       <source>Adjust to view direction</source>
-      <translation>Ajustar para ver la dirección</translation>
+      <translation>Ajuste a la dirección de la vista</translation>
     </message>
     <message>
       <source>Direction</source>
@@ -737,7 +737,7 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Site:</source>
-      <translation>Sitio:</translation>
+      <translation>Sitio web:</translation>
     </message>
     <message>
       <source>%1 at %2</source>
@@ -806,7 +806,7 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Tool tip:</source>
-      <translation>Punta de la herramienta:</translation>
+      <translation>sugerencia:</translation>
     </message>
     <message>
       <source>Menu text:</source>
@@ -1171,11 +1171,11 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Ancho de la línea:</translation>
+      <translation>Ancho de línea:</translation>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Tamaño del punto:</translation>
+      <translation>Tamaño de punto:</translation>
     </message>
     <message>
       <source>Material</source>
@@ -1270,7 +1270,7 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
     <message>
       <source>Obsidian</source>
-      <translation>Obsidian</translation>
+      <translation>Obsidiana</translation>
     </message>
     <message>
       <source>Pewter</source>
@@ -3251,23 +3251,23 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <translation>Bancos de trabajo descargados</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cargar los bancos de trabajo seleccionados, añadiendo sus ventanas de preferencia al diálogo de preferencias.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Cargar Seleccionado</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bancos de trabajo disponibles&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para preservar recursos, FreeCAD no carga los bancos de trabajo hasta que se usen. Cargarlos puede proporcionar acceso a preferencias adicionales relacionadas con su funcionalidad.&lt;/p&gt;&lt;p&gt;Los siguientes bancos de trabajo están disponibles en su instalación, pero aún no están cargados:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3600,7 +3600,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
-      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
+      <translation>Añadir casillas de selección en el árbol del documentos</translation>
     </message>
   </context>
   <context>
@@ -5368,6 +5368,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Expresión...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Auto expandir</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5708,11 +5712,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>Tamaño del punto:</translation>
+      <translation>Tamaño de punto:</translation>
     </message>
     <message>
       <source>Line width:</source>
-      <translation>Ancho de la línea:</translation>
+      <translation>Ancho de línea:</translation>
     </message>
     <message>
       <source>Transparency:</source>
@@ -5854,7 +5858,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Afrikaans</source>
-      <translation>Africaans</translation>
+      <translation>Africano</translation>
     </message>
     <message>
       <source>Norwegian</source>
@@ -6907,7 +6911,7 @@ Documento: </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Hubo errores graves al cargar el archivo. Algunos datos pueden haber sido modificados o no recuperados. Guardar el proyecto muy probablemente resultará en la pérdida de datos.</translation>
     </message>
     <message>
       <source>Workbenches</source>
@@ -7357,7 +7361,7 @@ Documento: </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Seleccione los objetos a exportar antes de elegir Exportar.</translation>
     </message>
   </context>
   <context>
@@ -7398,7 +7402,7 @@ Documento: </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Donar para apoyar el desarrollo</translation>
     </message>
   </context>
   <context>

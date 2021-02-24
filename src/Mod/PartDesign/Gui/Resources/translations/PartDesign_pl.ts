@@ -1654,7 +1654,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="110"/>
       <source>Move down</source>
-      <translation>Przesuń w dół</translation>
+      <translation>Przenieś w dół</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="137"/>
@@ -2922,7 +2922,7 @@ Jeśli masz starszy dokument z obiektami PartDesign bez obiektu Body, użyj funk
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="68"/>
       <source>Edit boolean</source>
-      <translation>Edytuj wartość logiczna</translation>
+      <translation>Edytuj wynik działania funkcji logicznej</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
