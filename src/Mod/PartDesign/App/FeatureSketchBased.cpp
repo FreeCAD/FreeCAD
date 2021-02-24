@@ -440,8 +440,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
                               const TopoDS_Face& supportface,
                               const TopoDS_Shape& sketchshape,
                               const std::string& method,
-                              const gp_Dir& dir,
-                              const double offset)
+                              const gp_Dir& dir)
 {
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
@@ -528,10 +527,14 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
     BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
     if (distSS.Value() < Precision::Confusion())
         throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+}
 
+void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset)
+{
     // Move the face in the extrusion direction
     // TODO: For non-planar faces, we could consider offsetting the surface
     if (fabs(offset) > Precision::Confusion()) {
+        BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
         if (adapt2.GetType() == GeomAbs_Plane) {
             gp_Trsf mov;
             mov.SetTranslation(offset * gp_Vec(dir));

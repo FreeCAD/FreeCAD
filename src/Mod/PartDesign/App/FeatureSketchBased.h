@@ -129,8 +129,13 @@ protected:
                             const TopoDS_Face& supportface,
                             const TopoDS_Shape& sketchshape,
                             const std::string& method,
-                            const gp_Dir& dir,
-                            const double offset);
+                            const gp_Dir& dir);
+
+    /// Add an offset to the face
+    static void addOffsetToFace(TopoDS_Face& upToFace,
+                                const gp_Dir& dir,
+                                double offset);
+
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
