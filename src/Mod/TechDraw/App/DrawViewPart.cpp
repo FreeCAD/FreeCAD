@@ -335,6 +335,13 @@ short DrawViewPart::mustExecute() const
 
 void DrawViewPart::onChanged(const App::Property* prop)
 {
+    // If the user has set PropertyVector Direction to zero, set it along the default value instead (Front View).
+    // Otherwise bad things will happen because there'll be a normalization for direction calculations later.
+    Base::Vector3d dir = Direction.getValue();
+    if (DrawUtil::fpCompare(dir.Length(), 0.0)) {
+        Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
+    }
+
     DrawView::onChanged(prop);
 
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
