@@ -448,7 +448,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                 # Ensure StartDepth is above FinalDepth
                                 if start_dep <= adj_final_dep:
                                     start_dep = adj_final_dep + 1.0
-                                    msg = translate('PathPocketShape', 'Start Depth is lower than face depth. Setting to ')
+                                    msg = translate('PathPocketShape', 'Start Depth is lower than face depth. Setting to:')
                                     PathLog.warning(msg + ' {} mm.'.format(start_dep))
                                 PathLog.debug('LimitDepthToFace adj_final_dep: {}'.format(adj_final_dep))
                     # Eif
