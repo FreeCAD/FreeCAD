@@ -183,7 +183,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.ThreadOrientation = self.ThreadOrientations
         obj.addProperty("App::PropertyEnumeration", "ThreadType", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Currently only internal"))
         obj.ThreadType = self.ThreadTypes
-        obj.addProperty("App::PropertyString", "ThreadName", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Devfines which standard thread was chosen"))
+        obj.addProperty("App::PropertyString", "ThreadName", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Defines which standard thread was chosen"))
         obj.addProperty("App::PropertyLength", "MajorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's major diameter"))
         obj.addProperty("App::PropertyLength", "MinorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's minor diameter"))
         obj.addProperty("App::PropertyLength", "Pitch", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's pitch - used for metric threads"))
