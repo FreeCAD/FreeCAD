@@ -540,6 +540,12 @@ void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, dou
             mov.SetTranslation(offset * gp_Vec(dir));
             TopLoc_Location loc(mov);
             upToFace.Move(loc);
+
+            // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
+            // then the algorithm expects that the 'NaturalRestriction' flag is set in order
+            // to work as expected (see generatePrism())
+            BRep_Builder builder;
+            builder.NaturalRestriction(upToFace, Standard_True);
         } else {
             throw Base::TypeError("SketchBased: Up to Face: Offset not supported yet for non-planar faces");
         }
@@ -617,7 +623,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
                                  const TopoDS_Face& supportface,
                                  const TopoDS_Face& uptoface,
                                  const gp_Dir& direction,
-                                 Standard_Integer Mode,
+                                 PrismMode Mode,
                                  Standard_Boolean Modify)
 {
     if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
@@ -630,8 +636,8 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
                 throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
 
             base = PrismMaker.Shape();
-            if (Mode == 2)
-                Mode = 1;
+            if (Mode == PrismMode::None)
+                Mode = PrismMode::FuseWithBase;
         }
 
         prism = base;
