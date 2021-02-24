@@ -116,28 +116,32 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
         setAttribute(Qt::WA_NoSystemBackground, true);
         setAttribute(Qt::WA_TranslucentBackground, true);
-        layout()->setContentsMargins(4,4,4,4);
+        layout()->setContentsMargins(4,10,4,4);
 
-        uint checkboxColor;
+        uint borderColor;
         if (darkstyle) {
-            this->background = QString::fromLatin1("background:#6e6e6e");
-            checkboxColor = 0x505050;
+            this->msgStyle = QString::fromLatin1("background:#6e6e6e");
+            this->backgroundColor.setRgb(0x6e6e6e);
+            borderColor = 0x505050;
         } else {
-            this->background = QString::fromLatin1("background:#f5f5f5");
-            checkboxColor = 0xc3c3c3;
+            this->msgStyle = QString::fromLatin1("background:#f5f5f5");
+            borderColor = 0xc3c3c3;
+            this->backgroundColor.setRgb(0xf5f5f5);
         }
         QString checkboxStyle = QString::fromLatin1(
                 "%1;border:1px solid #%2;border-radius:3px")
-            .arg(background).arg(checkboxColor,6,16,QLatin1Char('0'));
+            .arg(msgStyle).arg(borderColor,6,16,QLatin1Char('0'));
         ui->checkBoxWantReturn->setStyleSheet(checkboxStyle);
         ui->checkBoxEvalFunc->setStyleSheet(checkboxStyle);
+        this->borderColor.setRgb(borderColor);
+        msgStyle += QString::fromLatin1(";border:none");
     } else
-        this->background = QString::fromLatin1("background:transparent");
+        this->msgStyle = QString::fromLatin1("background:transparent");
 
     /// Some qt version seems having trouble apply the stylesheet on creation
     QTimer::singleShot(300, this, SLOT(applyStylesheet()));
 
-    ui->msg->setStyleSheet(this->background);
+    ui->msg->setStyleSheet(this->msgStyle);
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/OutputWindow");
@@ -230,7 +234,7 @@ void DlgExpressionInput::onTimer()
             expression = expr;
             ui->okBtn->setEnabled(true);
             ui->msg->setPlainText(QString());
-            ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorLog));
+            ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(msgStyle,colorLog));
 
             NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
@@ -249,7 +253,7 @@ void DlgExpressionInput::onTimer()
                 }
                 else if (!value.getUnit().isEmpty()) {
                     msg += QString::fromUtf8(" (Warning: unit discarded)");
-                    ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorWarning));
+                    ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(msgStyle,colorWarning));
                 }
 
                 ui->msg->setPlainText(msg);
@@ -259,7 +263,7 @@ void DlgExpressionInput::onTimer()
         }
     }
     catch (App::ExpressionFunctionDisabledException &) {
-        ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorWarning));
+        ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(msgStyle,colorWarning));
         ui->msg->setPlainText(tr("Function evaluation and attribute writing are disabled while editing. "
                                  "You can enable it by checking 'Evaluate function' here. "
                                  "Be aware that invoking function may cause unexpected change "
@@ -267,7 +271,7 @@ void DlgExpressionInput::onTimer()
         ui->okBtn->setDisabled(false);
     }
     catch (Base::Exception & e) {
-        ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(background,colorError));
+        ui->msg->setStyleSheet(QString::fromLatin1("*{%1;%2}").arg(msgStyle,colorError));
         ui->msg->setPlainText(QString::fromUtf8(e.what()));
         ui->okBtn->setDisabled(true);
     }
@@ -513,6 +517,10 @@ void DlgExpressionInput::adjustPosition()
     Base::StateLocker lock(adjustingPosition);
 
     QPoint pos = parent->mapToGlobal(QPoint(0, 0));
+    auto mw = getMainWindow();
+    QPoint topLeft = mw->mapToGlobal(QPoint(0, 0));
+    QPoint rightBottom = mw->mapToGlobal(QPoint(mw->width(), mw->height()));
+    pos.setX(std::min(std::max(pos.x(), topLeft.x()), rightBottom.x()));
     if (this->leftAligned) {
         QPoint offset = ui->expression->mapTo(this, 
                 QPoint(ui->expression->frameWidth(),ui->expression->frameWidth()));
@@ -521,14 +529,15 @@ void DlgExpressionInput::adjustPosition()
         QPoint offset = ui->expression->mapTo(this, 
                 QPoint(-ui->expression->frameWidth(),-ui->expression->frameWidth()));
         pos -= offset;
+        QPoint parentRightPos = parent->mapToGlobal(QPoint(parent->width(), parent->height()));
+        parentRightPos.setX(std::min(parentRightPos.x(), rightBottom.x()));
         if (this->noBackground) {
-            QPoint parentPos = QPoint(parent->width(), parent->height());
+            parentRightPos = parent->mapFromGlobal(parentRightPos);
             QSize sz = ui->expression->frameGeometry().size();
-            pos += parentPos - QPoint(sz.width(), sz.height());
+            pos += parentRightPos - QPoint(sz.width(), sz.height());
         } else {
-            QPoint parentPos = parent->mapToGlobal(QPoint(parent->width(), parent->height()));
-            if (pos.x() + this->width() > parentPos.x())
-                pos.setX(parentPos.x() - this->width());
+            if (pos.x() + this->width() > parentRightPos.x())
+                pos.setX(parentRightPos.x() - this->width());
         }
     }
     this->move(pos);
@@ -598,12 +607,26 @@ void DlgExpressionInput::adjustExpressionSize()
     }
 }
 
-void ProxyWidget::paintEvent(QPaintEvent*)
+void ProxyWidget::paintEvent(QPaintEvent *)
 {
-    QColor backgroundColor(0,0,0);
+    QColor backgroundColor(master->backgroundColor);
     backgroundColor.setAlpha(ExprParams::EditDialogBGAlpha());
     QPainter painter(this);
-    painter.fillRect(rect(),backgroundColor);
+    QBrush brush(backgroundColor);
+    painter.setBrush(brush);
+    painter.setPen(master->borderColor);
+    painter.drawRoundedRect(0, 0, width()-1, height()-1, 3, 3);
+
+    painter.setPen(Qt::NoPen);
+    backgroundColor.setAlpha(255);
+    brush.setColor(backgroundColor);
+    painter.setBrush(brush);
+    painter.drawRoundedRect(0, 0, width()-1, 8, 3, 3);
+
+    brush.setStyle(Qt::Dense4Pattern);
+    brush.setColor(QColor(0,0,0));
+    painter.setBrush(brush);
+    painter.drawRoundedRect(0, 0, width()-1, 8, 3, 3);
 }
 
 #include "moc_DlgExpressionInput.cpp"

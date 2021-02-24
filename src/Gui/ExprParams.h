@@ -80,7 +80,8 @@ public:
     FC_EXPR_PARAM(EditDialogWidth,int,Int,0,"")\
     FC_EXPR_PARAM(EditDialogHeight,int,Int,0,"")\
     FC_EXPR_PARAM(EditDialogTextHeight,int,Int,0,"")\
-    FC_EXPR_PARAM(EditDialogBGAlpha,int,Int,FC_EXPR_PARAM_EDIT_BG_ALPHA,"")\
+    FC_EXPR_PARAM(EditDialogBGAlpha,int,Int,FC_EXPR_PARAM_EDIT_BG_ALPHA, \
+       QT_TRANSLATE_NOOP("ExprParams","Expression editor background opacity value when using in place editing")) \
 
 #undef FC_EXPR_PARAM
 #define FC_EXPR_PARAM(_name,_ctype,_type,_def,_doc) \

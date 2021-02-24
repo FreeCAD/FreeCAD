@@ -100,8 +100,10 @@ private:
     bool discarded;
     const Base::Unit impliedUnit;
 
+    QColor borderColor;
+    QColor backgroundColor;
     QString stylesheet;
-    QString background;
+    QString msgStyle;
     QString colorLog;
     QString colorError;
     QString colorWarning;
