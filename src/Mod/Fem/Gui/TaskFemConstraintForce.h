@@ -41,6 +41,7 @@ class Property;
 }
 
 namespace Gui {
+class SelectionObject;
 class ViewProvider;
 }
 
@@ -72,6 +73,7 @@ protected:
     virtual void changeEvent(QEvent *e);
 
 private:
+    std::pair<App::DocumentObject*, std::string> getDirection(const std::vector<Gui::SelectionObject>&) const;
     void updateUI();
 
 private:
