@@ -83,8 +83,8 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
 
     connect(ui->spinForce, SIGNAL(valueChanged(double)),
             this, SLOT(onForceChanged(double)));
-    connect(ui->buttonDirection, SIGNAL(pressed()),
-            this, SLOT(onButtonDirection()));
+    connect(ui->buttonDirection, SIGNAL(clicked(bool)),
+            this, SLOT(onButtonDirection(bool)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
             this, SLOT(onCheckReverse(bool)));
     connect(ui->listReferences, SIGNAL(itemClicked(QListWidgetItem*)),

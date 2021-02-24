@@ -62,7 +62,7 @@ public:
 private Q_SLOTS:
     void onReferenceDeleted(void);
     void onForceChanged(double);
-    void onButtonDirection(const bool pressed = true);
+    void onButtonDirection(const bool pressed = false);
     void onCheckReverse(bool);
     void addToSelection();
     void removeFromSelection();
