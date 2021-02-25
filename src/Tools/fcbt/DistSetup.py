@@ -1,17 +1,12 @@
 
 
 # shell and operating system
-import os,sys
+import os
+
+#import sys
 #sys.path.append( "E:\\Develop\\Projekte\\FreeCADWin\\src\\Tools" )
 
-import DistTools,FileTools
-
-# line separator 
-ls = os.linesep
-# path separator
-ps = os.pathsep
-# dir separator
-ds = os.sep
+from . import DistTools,FileTools
 
 DistName = DistTools.BuildDistName()
 
