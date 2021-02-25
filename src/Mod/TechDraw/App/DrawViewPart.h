@@ -246,6 +246,8 @@ protected:
 
 private:
     bool nowUnsetting;
+    Base::Vector3d prev_Direction;
+    Base::Vector3d prev_XDirection;
 
 };
 
