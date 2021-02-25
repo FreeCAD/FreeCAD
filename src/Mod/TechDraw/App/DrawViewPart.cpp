@@ -343,8 +343,10 @@ void DrawViewPart::onChanged(const App::Property* prop)
 void DrawViewPart::partExec(TopoDS_Shape shape)
 {
 //    Base::Console().Message("DVP::partExec()\n");
-    if (geometryObject)
+    if (geometryObject) {
         delete geometryObject;
+        geometryObject = nullptr;
+    }
     geometryObject = makeGeometryForShape(shape);
     if (geometryObject == nullptr) {
         return;
