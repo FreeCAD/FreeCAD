@@ -868,16 +868,16 @@ class ObjectSlot(PathOp.ObjectOp):
     def _processSingleComplexFace(self, obj, shape):
         """Determine slot path endpoints from a single complex face."""
         PathLog.debug('_processSingleComplexFace()')
-        PNTS = list()
+        pnts = list()
 
-        def zVal(V):
-            return V.z
+        def zVal(p):
+            return p.z
 
         for E in shape.Wires[0].Edges:
             p = self._findLowestEdgePoint(E)
-            PNTS.append(p)
-        PNTS.sort(key=zVal)
-        return (PNTS[0], PNTS[1])
+            pnts.append(p)
+        pnts.sort(key=zVal)
+        return (pnts[0], pnts[1])
 
     def _processSingleVertFace(self, obj, shape):
         """Determine slot path endpoints from a single vertically oriented face
