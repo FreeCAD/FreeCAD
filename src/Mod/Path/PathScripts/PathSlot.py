@@ -931,7 +931,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Check that all Z values are equal (isRoughly same)
             if (abs(z1 - z2) > tolrnc or
                 abs(z1 - z3) > tolrnc ):
-#                abs(z2 - z3) > tolrnc):  3rd test redundant.
+                # abs(z2 - z3) > tolrnc):  3rd test redundant.
                 return False
             return True
 
@@ -1315,13 +1315,13 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _isParallel(self, dYdX1, dYdX2):
         """Determine if two orientation vectors are parallel."""
+        # if dYdX1.add(dYdX2).Length == 0:
+        #    return True
+        # if ((dYdX1.x + dYdX2.x) / 2.0 == dYdX1.x and
+        #    (dYdX1.y + dYdX2.y) / 2.0 == dYdX1.y):
+        #    return True
+        # return False
         return (dYdX1.cross(dYdX2) == FreeCAD.Vector(0,0,0) )
- #       if dYdX1.add(dYdX2).Length == 0:
- #           return True
- #       if ((dYdX1.x + dYdX2.x) / 2.0 == dYdX1.x and
- #               (dYdX1.y + dYdX2.y) / 2.0 == dYdX1.y):
- #           return True
- #       return False
 
     def _makePerpendicular(self, p1, p2, length):
         """_makePerpendicular(p1, p2, length)...
