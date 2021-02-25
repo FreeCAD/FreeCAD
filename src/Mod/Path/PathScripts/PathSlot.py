@@ -41,6 +41,7 @@ import math
 from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader('Part', globals(), 'Part')
 Arcs = LazyLoader('draftgeoutils.arcs', globals(), 'draftgeoutils.arcs')
+PathGeom = LazyLoader('PathScripts.PathGeom', globals(), 'PathScripts.PathGeom')
 if FreeCAD.GuiUp:
     FreeCADGui = LazyLoader('FreeCADGui', globals(), 'FreeCADGui')
 
@@ -353,6 +354,7 @@ class ObjectSlot(PathOp.ObjectOp):
         self.arcMidPnt = None
         self.arcRadius = 0.0
         self.newRadius = 0.0
+        self.featureDetails = ["", ""]
         self.isDebug = False if PathLog.getLevel(PathLog.thisModule()) != 4 else True
         self.showDebugObjects = False
         self.stockZMin = self.job.Stock.Shape.BoundBox.ZMin
@@ -614,21 +616,26 @@ class ObjectSlot(PathOp.ObjectOp):
                     PathLog.debug('_finishLine() Perp, featureCnt == 2')
             if perpZero:
                 (p1, p2) = pnts
-                pnts = self._makePerpendicular(p1, p2, 10.0)  # 10.0 offset below
+                initPerpDist = p1.sub(p2).Length
+                pnts = self._makePerpendicular(p1, p2, initPerpDist)  # 10.0 offset below
         else:
             # Modify path points if user selected two parallel edges
             if (featureCnt == 2 and self.shapeType1 == 'Edge' and 
-                    self.shapeType2 == 'Edge' and self._isParallel(self.dYdX1, self.dYdX2)):
-                (p1, p2) = pnts
-                edg1_len = self.shape1.Length
-                edg2_len = self.shape2.Length
-                set_length = max(edg1_len, edg2_len)
-                pnts = self._makePerpendicular(p1, p2, 10.0 + set_length)  # 10.0 offset below
-                if edg1_len != edg2_len:
-                    msg = obj.Label + ' '
-                    msg += translate('PathSlot',
-                            'Verify slot path start and end points.')
-                    FreeCAD.Console.PrintWarning(msg + '\n')
+                    self.shapeType2 == 'Edge'):
+                if self.featureDetails[0] == "arc" and self.featureDetails[1] == "arc":
+                    perpZero = False
+                elif self._isParallel(self.dYdX1, self.dYdX2):
+                    PathLog.debug('_finishLine() StE, featureCnt == 2 // edges')
+                    (p1, p2) = pnts
+                    edg1_len = self.shape1.Length
+                    edg2_len = self.shape2.Length
+                    set_length = max(edg1_len, edg2_len)
+                    pnts = self._makePerpendicular(p1, p2, 10.0 + set_length)  # 10.0 offset below
+                    if edg1_len != edg2_len:
+                        msg = obj.Label + ' '
+                        msg += translate('PathSlot',
+                                'Verify slot path start and end points.')
+                        FreeCAD.Console.PrintWarning(msg + '\n')
             else:
                 perpZero = False
 
@@ -718,21 +725,30 @@ class ObjectSlot(PathOp.ObjectOp):
             pnts = False
             norm = shape_1.normalAt(0.0, 0.0)
             PathLog.debug('{}.normalAt(): {}'.format(sub1, norm))
-            if norm.z == 1 or norm.z == -1:
-                pnts = self._processSingleHorizFace(obj, shape_1)
-            elif norm.z == 0:
-                faceType = self._getVertFaceType(shape_1)
-                if faceType:
-                    (geo, shp) = faceType
-                    if geo == 'Face':
-                        pnts = self._processSingleComplexFace(obj, shp)
-                    if geo == 'Wire':
-                        pnts = self._processSingleVertFace(obj, shp)
-                    if geo == 'Edge':
-                        pnts = self._processSingleVertFace(obj, shp)
+            
+            if PathGeom.isRoughly(shape_1.BoundBox.ZMax, shape_1.BoundBox.ZMin):
+                # Horizontal face
+                if norm.z == 1 or norm.z == -1:
+                    pnts = self._processSingleHorizFace(obj, shape_1)
+                elif norm.z == 0:
+                    faceType = self._getVertFaceType(shape_1)
+                    if faceType:
+                        (geo, shp) = faceType
+                        if geo == 'Face':
+                            pnts = self._processSingleComplexFace(obj, shp)
+                        if geo == 'Wire':
+                            pnts = self._processSingleVertFace(obj, shp)
+                        if geo == 'Edge':
+                            pnts = self._processSingleVertFace(obj, shp)
             else:
+                if len(shape_1.Edges) == 4:
+                    pnts = self._processSingleHorizFace(obj, shape_1)
+                else: 
+                    pnts = self._processSingleComplexFace(obj, shape_1)
+
+            if not pnts:
                 msg = translate('PathSlot',
-                    'The selected face is not oriented horizontally or vertically.')
+                    'The selected face is inaccessible.')
                 FreeCAD.Console.PrintError(msg + '\n')
                 return False
 
@@ -1188,6 +1204,9 @@ class ObjectSlot(PathOp.ObjectOp):
                 p = self._getHighestPoint(shape)
 
         elif cat == 'Edge':
+            featDetIdx = pNum - 1
+            if shape.Curve.TypeId == 'Part::GeomCircle':
+                self.featureDetails[featDetIdx] = "arc"
             # calculate slope between end vertexes
             v0 = shape.Edges[0].Vertexes[0]
             v1 = shape.Edges[0].Vertexes[1]
@@ -1373,7 +1392,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _findLowestEdgePoint(self, E):
         zMin = E.BoundBox.ZMin
         eLen = E.Length
-        L0 = 0
+        L0 = 0.0
         L1 = eLen
         p0 = None
         p1 = None
