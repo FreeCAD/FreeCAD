@@ -606,11 +606,16 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             auto shape = Part::Feature::getTopoShape(reference.getObject(),
                                                      reference.getSubName().c_str(),
                                                      true);
-            gp_Pln pln;
-            if (!shape.findPlane(pln)) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
-                        QObject::tr("You need a planar face as support for a sketch!"));
-                return;
+            if (shape.isNull() && obj == pcActiveBody) {
+                obj = nullptr;
+                reference = App::SubObjectT();
+            } else {
+                gp_Pln pln;
+                if (!shape.findPlane(pln)) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
+                            QObject::tr("You need a planar face as support for a sketch!"));
+                    return;
+                }
             }
         }
 
@@ -619,7 +624,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // to be used as support because otherwise it would cause a cyclic
         // dependency. So, instead we use the tip object as reference.
         // https://forum.freecadweb.org/viewtopic.php?f=3&t=37448
-        if (obj == pcActiveBody) {
+        if (obj && obj == pcActiveBody) {
             App::DocumentObject* tip = pcActiveBody->Tip.getValue();
             if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId())) {
                 reference.setSubName(reference.getSubNameNoElement()
