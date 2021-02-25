@@ -71,6 +71,7 @@ class Dimension(gui_base_original.Creator):
     """
 
     def __init__(self):
+        super().__init__()
         self.max = 2
         self.cont = None
         self.dir = None

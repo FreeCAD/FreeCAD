@@ -212,6 +212,7 @@ class Edit(gui_base_original.Modifier):
     """
 
     def __init__(self):
+        super().__init__()
         """Initialize Draft_Edit Command."""
         self.running = False
         self.trackers = {'object': []}

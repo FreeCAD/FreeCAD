@@ -48,6 +48,7 @@ class SubelementHighlight(gui_base_original.Modifier):
     """Gui Command for the SubelementHighlight tool."""
 
     def __init__(self):
+        super().__init__()
         self.is_running = False
         self.editable_objects = []
         self.original_view_settings = {}
