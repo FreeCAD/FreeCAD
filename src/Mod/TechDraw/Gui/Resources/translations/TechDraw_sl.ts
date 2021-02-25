@@ -271,7 +271,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1257"/>
       <source>Change Appearance of selected Lines</source>
-      <translation type="unfinished">Change Appearance of selected Lines</translation>
+      <translation>Spremeni videz črt</translation>
     </message>
   </context>
   <context>
@@ -948,7 +948,7 @@
     <message>
       <location filename="../../TaskSectionView.cpp" line="354"/>
       <source>Apply Quick</source>
-      <translation type="unfinished">Apply Quick</translation>
+      <translation>Uveljavi hitro</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="380"/>
@@ -5115,12 +5115,12 @@ s pomočjo podanih X/Y odmikov</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Add Lines</source>
-      <translation type="unfinished">Add Lines</translation>
+      <translation>Dodaj linije</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Add Vertices</source>
-      <translation type="unfinished">Add Vertices</translation>
+      <translation>Dodaj oglišča</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5130,42 +5130,42 @@ s pomočjo podanih X/Y odmikov</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>TechDraw Pages</source>
-      <translation type="unfinished">TechDraw Pages</translation>
+      <translation>TechDraw Strani</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>TechDraw Views</source>
-      <translation type="unfinished">TechDraw Views</translation>
+      <translation>TechDraw Pogledi</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>TechDraw Clips</source>
-      <translation type="unfinished">TechDraw Clips</translation>
+      <translation>TechDraw Izrezek</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>TechDraw Dimensions</source>
-      <translation type="unfinished">TechDraw Dimensions</translation>
+      <translation>TechDraw kote</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>TechDraw File Access</source>
-      <translation type="unfinished">TechDraw File Access</translation>
+      <translation>TechDraw datotečni dostop</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>TechDraw Decoration</source>
-      <translation type="unfinished">TechDraw Decoration</translation>
+      <translation>TechDraw Dekoracija</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw Annotation</source>
-      <translation type="unfinished">TechDraw Annotation</translation>
+      <translation>TechDraw anotacija</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Views</source>
-      <translation type="unfinished">Views</translation>
+      <translation>Pogledi</translation>
     </message>
   </context>
 </TS>

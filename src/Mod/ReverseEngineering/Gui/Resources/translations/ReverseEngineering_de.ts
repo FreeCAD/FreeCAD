@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation>Polynomialfläche</translation>
+      <translation>Polynomfläche</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Approximate a polynomial surface</source>
-      <translation>Eine Polynomialfläche annähern</translation>
+      <translation>Eine Polynomfläche annähern</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Erstelle Draht aus Netzbegrenzungen</translation>
+      <translation>Erstelle Kantenzug aus Netzbegrenzungen</translation>
     </message>
   </context>
   <context>
@@ -220,7 +220,7 @@
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Fit polynomial surface</source>
-      <translation>Polynomialfläche einpassen</translation>
+      <translation>Polynomfläche einpassen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>

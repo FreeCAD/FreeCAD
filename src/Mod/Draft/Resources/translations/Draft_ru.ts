@@ -128,7 +128,7 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</sourc
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes  the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes  the circular array will have.</translation>
+      <translation>Допустимое количество плоскостей симметрии для кругового массива.</translation>
     </message>
     <message>
       <location filename="array.py" line="309"/>
@@ -140,7 +140,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>Показать элементы массива (только для массивов ссылок)</translation>
     </message>
     <message>
       <location filename="block.py" line="43"/>
@@ -278,34 +278,35 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Значение измерения.
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+Только для чтения, т.к. значение вычисляется по свойствам
+'Начало' и 'Конец'.
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+Если 'Связанная геометрия' является дугой или окружностью,
+то данное значение будет радиусом или диаметром
+в зависимости от свойства 'Диаметр'.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>При измерении дуги отображать значение радиуса или
+диаметра</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Начальный угол размерной линии (дуги).
+Направление дуги против часовой стрелки.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Конечный угол размерной линии (дуги).
+Направление дуги против часовой стрелки.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -313,10 +314,10 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>Точка центра размерной линии (дуги).
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+Обычно точка пересечения двух сегментов линий или
+их продолжений, для измерения 'Угла' между ними.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="547"/>
@@ -324,27 +325,27 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Значение измерения.
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+Только для чтения, т.к. значение вычисляется по свойствам
+'Начальный угол' и 'Конечный угол'.</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>Размещение базовой точки первой линии</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>Текст отображаемый объектом.
+Список строк, каждая из которых будет отображена отдельной строкой.</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
       <source>Start angle of the arc</source>
-      <translation type="unfinished">Start angle of the arc</translation>
+      <translation>Начальный угол дуги</translation>
     </message>
     <message>
       <location filename="circle.py" line="50"/>
@@ -391,7 +392,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="layer.py" line="59"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>Объекты, являющиеся частью этого слоя</translation>
     </message>
     <message>
       <location filename="label.py" line="65"/>
@@ -459,12 +460,12 @@ depending on the value of 'Straight Direction'.</translation>
     <message>
       <location filename="label.py" line="156"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>Размещение элемента 'Текст' в 3D-пространстве</translation>
     </message>
     <message>
       <location filename="label.py" line="166"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>Отображаемый текст, если 'Тип метки' установлен в 'Пользовательский'</translation>
     </message>
     <message>
       <location filename="label.py" line="181"/>
@@ -501,12 +502,12 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="47"/>
       <source>Text string</source>
-      <translation type="unfinished">Text string</translation>
+      <translation>Текстовая строка</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="50"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>Имя файла шрифта</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="53"/>
@@ -516,17 +517,17 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="56"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Межсимвольное расстояние</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>Показать отдельные элементы массива</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>Базовый объект, который будет дублироваться</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
@@ -545,7 +546,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="pointarray.py" line="139"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation type="unfinished">Additional placement, shift and rotation, that will be applied to each copy</translation>
+      <translation>Дополнительные размещение, сдвиг и вращение, применяемые к каждой копии</translation>
     </message>
     <message>
       <location filename="bspline.py" line="46"/>
@@ -560,27 +561,27 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bspline.py" line="54"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>Создать грань, если сплайн замкнут</translation>
     </message>
     <message>
       <location filename="bspline.py" line="67"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Коэффициент параметризации</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="49"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>Базовый объект представляемый 2D-видом</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="54"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>Вектор проекции объекта</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="59"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>Способ проецирования отображаемого объекта</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="64"/>
@@ -626,7 +627,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="ellipse.py" line="45"/>
       <source>Start angle of the elliptical arc</source>
-      <translation type="unfinished">Start angle of the elliptical arc</translation>
+      <translation>Начальный угол эллиптической дуги</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="49"/>
@@ -640,27 +641,27 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>Малая полуось эллипса</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>Большая полуось эллипса</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="61"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>Площадь объекта</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>Точки кривой Безье</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>Степень функции Безье</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -670,22 +671,22 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>Должна ли кривая Безье быть замкнутой или нет</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>Создать грань, если кривая замкнута</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>Длина этого объекта</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
       <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation type="unfinished">The object along which the copies will be distributed. It must contain 'Edges'.</translation>
+      <translation>Объект вдоль которого будут распространяться копии. Он должен содержать 'Рёбра'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="192"/>
@@ -699,7 +700,7 @@ Leave this property empty to create copies along the entire 'Path Object'.</tran
     <message>
       <location filename="patharray.py" line="200"/>
       <source>Number of copies to create</source>
-      <translation type="unfinished">Number of copies to create</translation>
+      <translation>Количество копий для создания</translation>
     </message>
     <message>
       <location filename="patharray.py" line="219"/>
@@ -758,7 +759,7 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="80"/>
       <source>The width of the lines inside this object</source>
-      <translation type="unfinished">The width of the lines inside this object</translation>
+      <translation>Толщина линий внутри объекта</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="88"/>
@@ -768,17 +769,17 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="96"/>
       <source>The spacing between lines of text</source>
-      <translation type="unfinished">The spacing between lines of text</translation>
+      <translation>Интервал между строками текста</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="103"/>
       <source>The color of the projected objects</source>
-      <translation type="unfinished">The color of the projected objects</translation>
+      <translation>Цвет проектируемых объектов</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="110"/>
       <source>Shape Fill Style</source>
-      <translation type="unfinished">Shape Fill Style</translation>
+      <translation>Стиль заполнения</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="118"/>
@@ -803,12 +804,12 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="49"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Дополнительное значение выдавливания применяемое ко всем граням</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="52"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>Дополнительное значение смещения применяемое ко всем граням</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="55"/>
@@ -937,7 +938,7 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
     <message>
       <location filename="view_dimension.py" line="196"/>
       <source>The number of decimals to show</source>
-      <translation type="unfinished">The number of decimals to show</translation>
+      <translation>Отображаемые цифры после запятой</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="205"/>
@@ -964,36 +965,34 @@ Leave blank for system default</translation>
     <message>
       <location filename="view_dimension.py" line="248"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>Повернуть размерные стрелки на 180°</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="259"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>Расширение размерной линии за выносные линии</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="268"/>
       <source>Length of the extension lines</source>
-      <translation type="unfinished">Length of the extension lines</translation>
+      <translation>Длина выносных линий</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="278"/>
       <source>Length of the extension line
 beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension line
-beyond the dimension line</translation>
+      <translation>Длина выносной линии за размерной линией</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="287"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>Отображать размерную линию и стрелки</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="77"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Если истина, объекты данного слоя будут иметь цвет линий слоя</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
@@ -1053,7 +1052,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="view_label.py" line="119"/>
       <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
+      <translation>Вертикальное выравнивание текста</translation>
     </message>
     <message>
       <location filename="view_label.py" line="102"/>
@@ -1063,12 +1062,12 @@ beyond the dimension line</translation>
     <message>
       <location filename="view_label.py" line="128"/>
       <source>Line spacing (relative to font size)</source>
-      <translation type="unfinished">Line spacing (relative to font size)</translation>
+      <translation>Межстрочный интервал (относительно размера шрифта)</translation>
     </message>
     <message>
       <location filename="view_label.py" line="111"/>
       <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
+      <translation>Максимальное количество символов в строке текстового поля</translation>
     </message>
     <message>
       <location filename="view_label.py" line="139"/>
@@ -1078,17 +1077,17 @@ beyond the dimension line</translation>
     <message>
       <location filename="view_label.py" line="148"/>
       <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
+      <translation>Тип стрелки данной метки</translation>
     </message>
     <message>
       <location filename="view_label.py" line="159"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>Тип рамки вокруг текста данного объекта</translation>
     </message>
     <message>
       <location filename="view_label.py" line="168"/>
       <source>Display a leader line or not</source>
-      <translation type="unfinished">Display a leader line or not</translation>
+      <translation>Отображать выносную линию или нет</translation>
     </message>
   </context>
   <context>
@@ -2319,7 +2318,7 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
     <message>
       <location filename="gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>Преобразовать из Draft в Sketch</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="60"/>
@@ -2409,14 +2408,14 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Обратить размер</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flip the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Обратить обычное направление выбранных размеров (линейный, радиальный, угловой).
+Другие выбранные объекты игнорируются.</translation>
     </message>
   </context>
   <context>
@@ -2424,7 +2423,7 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="gui_heal.py" line="58"/>
       <source>Heal</source>
-      <translation type="unfinished">Heal</translation>
+      <translation>Исцелить</translation>
     </message>
     <message>
       <location filename="gui_heal.py" line="61"/>
@@ -2505,7 +2504,7 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Создать линию по двум точкам. CTRL для привязки, SHIFT для ограничения.</translation>
     </message>
   </context>
   <context>
@@ -2513,14 +2512,14 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_array_simple.py" line="119"/>
       <source>LinkArray</source>
-      <translation type="unfinished">LinkArray</translation>
+      <translation>Массив ссылок</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="122"/>
       <source>Like the Array tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Подобен инструменту Массив, но создаёт массив ссылок.
+Массив ссылок более эффективен при обработке множества копий, но опция 'Слияние' не применима.</translation>
     </message>
   </context>
   <context>
@@ -2528,12 +2527,12 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_mirror.py" line="63"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Отразить</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="66"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points.</translation>
+      <translation>Отразить выбранные объекты относительно линии, заданной двумя точками.</translation>
     </message>
   </context>
   <context>
@@ -3003,7 +3002,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="417"/>
       <source>Nearest</source>
-      <translation type="unfinished">Nearest</translation>
+      <translation>Ближайший</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="420"/>
@@ -3016,7 +3015,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="448"/>
       <source>Orthogonal</source>
-      <translation type="unfinished">Orthogonal</translation>
+      <translation>Ортогональный</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="451"/>
@@ -3055,7 +3054,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="478"/>
       <source>Special</source>
-      <translation type="unfinished">Special</translation>
+      <translation>Специальный</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="481"/>
@@ -3068,7 +3067,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="542"/>
       <source>Working plane</source>
-      <translation type="unfinished">Working plane</translation>
+      <translation>Рабочая плоскость</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="545"/>
@@ -3119,7 +3118,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_subelements.py" line="62"/>
       <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
+      <translation>Подсветка подэлемента</translation>
     </message>
     <message>
       <location filename="gui_subelements.py" line="65"/>
@@ -3160,7 +3159,7 @@ When this is active, the following objects created will be included in the const
     <message>
       <location filename="gui_togglemodes.py" line="131"/>
       <source>Toggle continue mode</source>
-      <translation type="unfinished">Toggle continue mode</translation>
+      <translation>Переключить непрерывный режим</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="133"/>
@@ -3194,12 +3193,12 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_grid.py" line="58"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>Переключить сетку</translation>
     </message>
     <message>
       <location filename="gui_grid.py" line="59"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>Включить или выключить сетку чертежа.</translation>
     </message>
   </context>
   <context>
@@ -3222,12 +3221,12 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_lineops.py" line="151"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Undo last segment</translation>
+      <translation>Отменить последний сегмент</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="152"/>
       <source>Undoes the last drawn segment of the line being drawn.</source>
-      <translation type="unfinished">Undoes the last drawn segment of the line being drawn.</translation>
+      <translation>Отменить последний нарисованный сегмент рисуемой линии.</translation>
     </message>
   </context>
   <context>
@@ -6574,7 +6573,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_subelements.py" line="70"/>
       <source>Subelement highlight</source>
-      <translation type="unfinished">Subelement highlight</translation>
+      <translation>Подсветка подэлемента</translation>
     </message>
     <message>
       <location filename="gui_subelements.py" line="109"/>
@@ -6824,7 +6823,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_mirror.py" line="124"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Отразить</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="74"/>
@@ -6934,7 +6933,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_dimension_ops.py" line="55"/>
       <source>Flip dimension</source>
-      <translation type="unfinished">Flip dimension</translation>
+      <translation>Обратить размер</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="470"/>
@@ -6974,7 +6973,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_grid.py" line="51"/>
       <source>Toggle grid</source>
-      <translation type="unfinished">Toggle grid</translation>
+      <translation>Переключить сетку</translation>
     </message>
     <message>
       <location filename="gui_rectangles.py" line="60"/>
@@ -7014,7 +7013,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_heal.py" line="51"/>
       <source>Heal</source>
-      <translation type="unfinished">Heal</translation>
+      <translation>Исцелить</translation>
     </message>
     <message>
       <location filename="gui_labels.py" line="81"/>

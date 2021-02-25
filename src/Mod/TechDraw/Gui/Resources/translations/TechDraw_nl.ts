@@ -271,7 +271,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1257"/>
       <source>Change Appearance of selected Lines</source>
-      <translation type="unfinished">Change Appearance of selected Lines</translation>
+      <translation>Wijzig uiterlijk van geselecteerde lijnen</translation>
     </message>
   </context>
   <context>
@@ -714,7 +714,7 @@
     <message>
       <location filename="../../Command.cpp" line="1058"/>
       <source>Insert symbol from an SVG file</source>
-      <translation type="unfinished">Insert symbol from an SVG file</translation>
+      <translation>Symbool invoegen van een SVG-bestand</translation>
     </message>
   </context>
   <context>
@@ -794,7 +794,7 @@
       <location filename="../../Command.cpp" line="132"/>
       <location filename="../../Command.cpp" line="204"/>
       <source>Drawing create page</source>
-      <translation type="unfinished">Drawing create page</translation>
+      <translation>Toekennen maken pagina</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="380"/>
@@ -809,17 +809,17 @@
     <message>
       <location filename="../../Command.cpp" line="877"/>
       <source>Create Clip</source>
-      <translation type="unfinished">Create Clip</translation>
+      <translation>Maak Doorsnede</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="950"/>
       <source>ClipGroupAdd</source>
-      <translation type="unfinished">ClipGroupAdd</translation>
+      <translation>DoorsnedeGroepToevoeger</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
       <source>ClipGroupRemove</source>
-      <translation type="unfinished">ClipGroupRemove</translation>
+      <translation>DoorsnedeGroepVerwijder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1084"/>
@@ -829,12 +829,12 @@
     <message>
       <location filename="../../Command.cpp" line="1148"/>
       <source>Create DraftView</source>
-      <translation type="unfinished">Create DraftView</translation>
+      <translation>Draftweergave maken</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1223"/>
       <source>Create ArchView</source>
-      <translation type="unfinished">Create ArchView</translation>
+      <translation>Maak Arch Weergave</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1271"/>
@@ -845,7 +845,7 @@
       <location filename="../../Command.cpp" line="1392"/>
       <location filename="../../MDIViewPage.cpp" line="985"/>
       <source>Save page to dxf</source>
-      <translation type="unfinished">Save page to dxf</translation>
+      <translation>Pagina in dxf opslaan</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="551"/>
@@ -872,7 +872,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="354"/>
       <source>Create GeomHatch</source>
-      <translation type="unfinished">Create GeomHatch</translation>
+      <translation>GeomHatch aanmaken</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="422"/>
@@ -882,7 +882,7 @@
     <message>
       <location filename="../../QGIViewBalloon.cpp" line="495"/>
       <source>Drag Balloon</source>
-      <translation type="unfinished">Drag Balloon</translation>
+      <translation>Sleep de ballon</translation>
     </message>
     <message>
       <location filename="../../QGIViewDimension.cpp" line="681"/>
@@ -898,12 +898,12 @@
     <message>
       <location filename="../../TaskActiveView.cpp" line="195"/>
       <source>Create ActiveView</source>
-      <translation type="unfinished">Create ActiveView</translation>
+      <translation>Maak Actiefweergave</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="346"/>
       <source>Create CenterLine</source>
-      <translation type="unfinished">Create CenterLine</translation>
+      <translation>Maak een middenlijn</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="391"/>
@@ -928,37 +928,37 @@
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="400"/>
       <source>Create Leader</source>
-      <translation type="unfinished">Create Leader</translation>
+      <translation>Maak Leider</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="454"/>
       <source>Edit Leader</source>
-      <translation type="unfinished">Edit Leader</translation>
+      <translation>Bewerk leider</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="357"/>
       <source>Create Anno</source>
-      <translation type="unfinished">Create Anno</translation>
+      <translation>Maak Annotatie</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="416"/>
       <source>Edit Anno</source>
-      <translation type="unfinished">Edit Anno</translation>
+      <translation>Annotatie bewerken</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="354"/>
       <source>Apply Quick</source>
-      <translation type="unfinished">Apply Quick</translation>
+      <translation>Snel toepassen</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="380"/>
       <source>Apply Aligned</source>
-      <translation type="unfinished">Apply Aligned</translation>
+      <translation>Pas uitgelijnd toe</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="403"/>
       <source>Create SectionView</source>
-      <translation type="unfinished">Create SectionView</translation>
+      <translation>Sectie Weergave maken</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="652"/>
@@ -1622,12 +1622,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1052"/>
       <source>Not enough points in selection.</source>
-      <translation type="unfinished">Not enough points in selection.</translation>
+      <translation>Niet genoeg punten in selectie.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1072"/>
       <source>Selection is not a Cosmetic Line.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Line.</translation>
+      <translation>Selectie is geen cosmetische lijn.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1109"/>
@@ -1772,7 +1772,7 @@
       <location filename="../../ViewProviderProjGroup.cpp" line="214"/>
       <location filename="../../ViewProviderTemplate.cpp" line="200"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Weet u zeker dat u wilt doorgaan?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="249"/>
@@ -1874,7 +1874,7 @@
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="185"/>
       <source>Edit Cosmetic Line</source>
-      <translation type="unfinished">Edit Cosmetic Line</translation>
+      <translation>Bewerk Cosmetische lijn</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="125"/>
@@ -1893,8 +1893,8 @@
       <location filename="../../ViewProviderLeader.cpp" line="253"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
-      <translation type="unfinished">You cannot delete this leader line because
-it has a weld symbol that would become broken.</translation>
+      <translation>U kunt deze leiderslijn niet verwijderen omdat het
+een Lassymbool heeft dat kapot zou gaan.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLeader.cpp" line="256"/>
@@ -1940,34 +1940,34 @@ it has a weld symbol that would become broken.</translation>
       <location filename="../../ViewProviderPage.cpp" line="224"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
-      <translation type="unfinished">The page is not empty, therefore the
-following referencing objects might be lost:</translation>
+      <translation>De pagina is niet leeg, daarom kunnen de
+de volgende verwijzingen naar objecten verloren gaan:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="195"/>
       <source>The group cannot be deleted because its items have the following
 section or detail views, or leader lines that would get broken:</source>
-      <translation type="unfinished">The group cannot be deleted because its items have the following
-section or detail views, or leader lines that would get broken:</translation>
+      <translation>De groep kan niet worden verwijderd omdat de items ervan de volgende
+sectie of detail weergave hebben, of leiderslijnen die kapot zouden worden:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="209"/>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
-      <translation type="unfinished">The projection group is not empty, therefore
-the following referencing objects might be lost:</translation>
+      <translation>De projectiegroep is niet leeg, daarom
+de volgende gerefereerde objecten kunnen verloren gaan:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="197"/>
       <source>The following referencing object might break:</source>
-      <translation type="unfinished">The following referencing object might break:</translation>
+      <translation>Het volgende gerefereerde object kan breken:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderWeld.cpp" line="194"/>
       <source>You cannot delete this weld symbol because
 it has a tile weld that would become broken.</source>
-      <translation type="unfinished">You cannot delete this weld symbol because
-it has a tile weld that would become broken.</translation>
+      <translation>Je kunt dit Lassymbool niet verwijderen omdat het
+een Lastegel heeft die kapot gaat.</translation>
     </message>
   </context>
   <context>
@@ -2591,12 +2591,12 @@ Elke eenheid is ca. 0,1 mm breed</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="699"/>
       <source>Line group used to set line widths</source>
-      <translation type="unfinished">Line group used to set line widths</translation>
+      <translation>Lijn groep wordt gebruikt om lijnbreedtes in te stellen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="702"/>
       <source>Line Width Group</source>
-      <translation type="unfinished">Line Width Group</translation>
+      <translation>Lijn breedte groep</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="616"/>
@@ -2815,7 +2815,7 @@ Elke eenheid is ca. 0,1 mm breed</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="503"/>
       <source>Default color for leader lines</source>
-      <translation type="unfinished">Default color for leader lines</translation>
+      <translation>Standaardkleur voor Leidingslijnen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="551"/>
@@ -2980,8 +2980,8 @@ Vermenigvuldiger van &apos;lettergrootte&apos;</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation type="unfinished">Whether or not a page&apos;s &apos;Keep Updated&apos; property
-can override the global &apos;Update With 3D&apos; parameter</translation>
+      <translation>Of een pagina&apos;s &apos;Bewaar Bijgewerkt&apos; eigenschap
+de globale &apos;Update met 3D&apos; parameter kan overschrijven</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
@@ -4362,9 +4362,9 @@ gebruikt in plaats van de maatwaarde</translation>
       <source>First pick the start point of the line,
 then at least a second point.
 You can pick further points to get line segments.</source>
-      <translation type="unfinished">First pick the start point of the line,
-then at least a second point.
-You can pick further points to get line segments.</translation>
+      <translation>Kies eerst het startpunt van de lijn,
+en dan ten minste een tweede punt.
+Je kan meer punten kiezen om lijnsegmenten te krijgen.</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="199"/>
@@ -5130,17 +5130,17 @@ met behulp van de gegeven X/Y afstand</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>TechDraw Pages</source>
-      <translation type="unfinished">TechDraw Pages</translation>
+      <translation>TechDraw Pagina's</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>TechDraw Views</source>
-      <translation type="unfinished">TechDraw Views</translation>
+      <translation>TechDraw Weergaven</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>TechDraw Clips</source>
-      <translation type="unfinished">TechDraw Clips</translation>
+      <translation>TechDraw Doorsneden</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -5150,17 +5150,17 @@ met behulp van de gegeven X/Y afstand</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>TechDraw File Access</source>
-      <translation type="unfinished">TechDraw File Access</translation>
+      <translation>TechDraw BestandsToegang</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>TechDraw Decoration</source>
-      <translation type="unfinished">TechDraw Decoration</translation>
+      <translation>TechDraw Versiering</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw Annotation</source>
-      <translation type="unfinished">TechDraw Annotation</translation>
+      <translation>TechDraw Annotatie</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

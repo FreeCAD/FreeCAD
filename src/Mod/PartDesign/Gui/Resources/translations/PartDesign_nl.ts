@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Create a new datum line</source>
-      <translation>Maak een nieuwe referentie lijn</translation>
+      <translation>Maak een nieuwe referentielijn</translation>
     </message>
   </context>
   <context>

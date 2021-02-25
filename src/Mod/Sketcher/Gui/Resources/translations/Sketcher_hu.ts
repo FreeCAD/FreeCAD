@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6205"/>
       <source>Carbon copy</source>
-      <translation type="unfinished">Carbon copy</translation>
+      <translation>Másolat</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6206"/>
@@ -591,7 +591,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3061"/>
       <source>Constrain vertical distance</source>
-      <translation type="unfinished">Constrain vertical distance</translation>
+      <translation>Függőleges távolság kényszerítése</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3062"/>
@@ -1067,7 +1067,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5282"/>
       <source>Create a fillet between two lines or at a coincident point</source>
-      <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
+      <translation>Lekerekítés létrehozása két vonal között vagy egybeeső pontok közt</translation>
     </message>
   </context>
   <context>
@@ -2234,7 +2234,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="4591"/>
       <location filename="../../CommandConstraints.cpp" line="4617"/>
       <source>Add tangent constraint point</source>
-      <translation type="unfinished">Add tangent constraint point</translation>
+      <translation>Érintő pont kényszerítést ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4881"/>
@@ -2242,7 +2242,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="4965"/>
       <location filename="../../CommandConstraints.cpp" line="5123"/>
       <source>Add radius constraint</source>
-      <translation type="unfinished">Add radius constraint</translation>
+      <translation>Sugár kényszerítést ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5382"/>
@@ -2250,7 +2250,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="5453"/>
       <location filename="../../CommandConstraints.cpp" line="5608"/>
       <source>Add diameter constraint</source>
-      <translation type="unfinished">Add diameter constraint</translation>
+      <translation>Átmérőhöz kényszerítést ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5940"/>
@@ -2260,13 +2260,13 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="6240"/>
       <location filename="../../CommandConstraints.cpp" line="6294"/>
       <source>Add angle constraint</source>
-      <translation type="unfinished">Add angle constraint</translation>
+      <translation>Szöghöz kényszerítést ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6508"/>
       <location filename="../../CommandConstraints.cpp" line="6560"/>
       <source>Add equality constraint</source>
-      <translation type="unfinished">Add equality constraint</translation>
+      <translation>Egyenlőség kényszerítést ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6681"/>
@@ -2275,33 +2275,33 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="6835"/>
       <location filename="../../CommandConstraints.cpp" line="6870"/>
       <source>Add symmetric constraint</source>
-      <translation type="unfinished">Add symmetric constraint</translation>
+      <translation>Szimetrikus kényszerítést ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7009"/>
       <source>Add Snell's law constraint</source>
-      <translation type="unfinished">Add Snell's law constraint</translation>
+      <translation>Fénytörés (Snellius-törvény) kényszerítést ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7218"/>
       <location filename="../../CommandConstraints.cpp" line="7396"/>
       <source>Add internal alignment constraint</source>
-      <translation type="unfinished">Add internal alignment constraint</translation>
+      <translation>Belső kényszerítő igazítást ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7602"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation type="unfinished">Toggle constraint to driving/reference</translation>
+      <translation>Kényszerítés váltása megvezetés/hivatkozás közt</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7686"/>
       <source>Activate/Deactivate constraint</source>
-      <translation type="unfinished">Activate/Deactivate constraint</translation>
+      <translation>Kényszerítés bekapcsolása/kikapcsolása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
       <source>Create a new sketch on a face</source>
-      <translation type="unfinished">Create a new sketch on a face</translation>
+      <translation>Új vázlat létrehozása a felületen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="239"/>
@@ -2311,22 +2311,22 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="489"/>
       <source>Reorient sketch</source>
-      <translation type="unfinished">Reorient sketch</translation>
+      <translation>Vázlat elforgatása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="644"/>
       <source>Attach sketch</source>
-      <translation type="unfinished">Attach sketch</translation>
+      <translation>Vázlat csatolás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>Detach sketch</source>
-      <translation type="unfinished">Detach sketch</translation>
+      <translation>Vázlat leválasztás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="789"/>
       <source>Create a mirrored sketch for each selected sketch</source>
-      <translation type="unfinished">Create a mirrored sketch for each selected sketch</translation>
+      <translation>Tükrözött vázlat létrehozása minden kijelölt vázlathoz</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="888"/>
@@ -2336,69 +2336,69 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="137"/>
       <source>Toggle draft from/to draft</source>
-      <translation type="unfinished">Toggle draft from/to draft</translation>
+      <translation>Vázlat váltása piszkozatról/vázlatra</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="319"/>
       <source>Add sketch line</source>
-      <translation type="unfinished">Add sketch line</translation>
+      <translation>Vázlat egyenest ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="493"/>
       <source>Add sketch box</source>
-      <translation type="unfinished">Add sketch box</translation>
+      <translation>Vázlat téglatestet ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="981"/>
       <source>Add line to sketch wire</source>
-      <translation type="unfinished">Add line to sketch wire</translation>
+      <translation>Vázlat hálóhoz egyenes ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1001"/>
       <source>Add arc to sketch wire</source>
-      <translation type="unfinished">Add arc to sketch wire</translation>
+      <translation>Vázlat hálóhoz ívet ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1444"/>
       <location filename="../../CommandCreateGeo.cpp" line="1713"/>
       <source>Add sketch arc</source>
-      <translation type="unfinished">Add sketch arc</translation>
+      <translation>Vázlat ívet ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1982"/>
       <location filename="../../CommandCreateGeo.cpp" line="4668"/>
       <source>Add sketch circle</source>
-      <translation type="unfinished">Add sketch circle</translation>
+      <translation>Vázlat kört ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2741"/>
       <source>Add sketch ellipse</source>
-      <translation type="unfinished">Add sketch ellipse</translation>
+      <translation>Vázlat ellipszist ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3110"/>
       <source>Add sketch arc of ellipse</source>
-      <translation type="unfinished">Add sketch arc of ellipse</translation>
+      <translation>Ellipszis vázlatívét adja hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3448"/>
       <source>Add sketch arc of hyperbola</source>
-      <translation type="unfinished">Add sketch arc of hyperbola</translation>
+      <translation>Hiperbola vázlatívét adja hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3750"/>
       <source>Add sketch arc of Parabola</source>
-      <translation type="unfinished">Add sketch arc of Parabola</translation>
+      <translation>Parabola vázlatívét adja hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4073"/>
       <source>Add Pole circle</source>
-      <translation type="unfinished">Add Pole circle</translation>
+      <translation>Pólus kört ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4895"/>
       <source>Add sketch point</source>
-      <translation type="unfinished">Add sketch point</translation>
+      <translation>Vázlat pontot ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5144"/>
@@ -2419,37 +2419,37 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5992"/>
       <source>Add external geometry</source>
-      <translation type="unfinished">Add external geometry</translation>
+      <translation>Külső geometriát ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6173"/>
       <source>Add carbon copy</source>
-      <translation type="unfinished">Add carbon copy</translation>
+      <translation>Másolatot ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6354"/>
       <source>Add slot</source>
-      <translation type="unfinished">Add slot</translation>
+      <translation>Hornyot ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6567"/>
       <source>Add hexagon</source>
-      <translation type="unfinished">Add hexagon</translation>
+      <translation>Hatszöget ad hozzá</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
       <source>Convert to NURBS</source>
-      <translation type="unfinished">Convert to NURBS</translation>
+      <translation>Konvertálás NURBS-re</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="479"/>
       <source>Increase spline degree</source>
-      <translation type="unfinished">Increase spline degree</translation>
+      <translation>Növelje a görbe mértékét</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
       <source>Decrease spline degree</source>
-      <translation type="unfinished">Decrease spline degree</translation>
+      <translation>Csökkentse a görbe mértékét</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="647"/>
@@ -2464,22 +2464,22 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="964"/>
       <source>Exposing Internal Geometry</source>
-      <translation type="unfinished">Exposing Internal Geometry</translation>
+      <translation>Belső geometria felfedése</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1174"/>
       <source>Create symmetric geometry</source>
-      <translation type="unfinished">Create symmetric geometry</translation>
+      <translation>Szimmetrikus geometria létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1316"/>
       <source>Copy/clone/move geometry</source>
-      <translation type="unfinished">Copy/clone/move geometry</translation>
+      <translation>Geometria másolása/klónozása/áthelyezése</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1840"/>
       <source>Create copy of geometry</source>
-      <translation type="unfinished">Create copy of geometry</translation>
+      <translation>Geometria másolatának létrehozása</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2060"/>
@@ -2494,18 +2494,18 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
       <source>Toggle constraints to the other virtual space</source>
-      <translation type="unfinished">Toggle constraints to the other virtual space</translation>
+      <translation>Kényszerítések átkapcsolása a másik virtuális térre</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="163"/>
       <location filename="../../TaskSketcherConstrains.cpp" line="862"/>
       <source>Update constraint's virtual space</source>
-      <translation type="unfinished">Update constraint's virtual space</translation>
+      <translation>A kényszerítés virtuális helyének frissítése</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandler.cpp" line="601"/>
       <source>Add auto constraints</source>
-      <translation type="unfinished">Add auto constraints</translation>
+      <translation>Automatikus kényszerítést ad hozzá</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="625"/>
@@ -2515,27 +2515,27 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="847"/>
       <source>Rename sketch constraint</source>
-      <translation type="unfinished">Rename sketch constraint</translation>
+      <translation>Vázlat kényszerítés átnevezése</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="840"/>
       <source>Drag Point</source>
-      <translation type="unfinished">Drag Point</translation>
+      <translation>Pont húzása</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="871"/>
       <source>Drag Curve</source>
-      <translation type="unfinished">Drag Curve</translation>
+      <translation>Ív húzása</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="922"/>
       <source>Drag Constraint</source>
-      <translation type="unfinished">Drag Constraint</translation>
+      <translation>Kényszerítés húzása</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1099"/>
       <source>Modify sketch constraints</source>
-      <translation type="unfinished">Modify sketch constraints</translation>
+      <translation>Vázlat kényszerítést módosít</translation>
     </message>
   </context>
   <context>
@@ -2982,17 +2982,17 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="128"/>
       <source>Cannot add a constraint between two external geometries.</source>
-      <translation type="unfinished">Cannot add a constraint between two external geometries.</translation>
+      <translation>Két külső geometria között nem lehet kényszerítés hozzáadni.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="134"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <translation>Nem adhat hozzá kényszerítést két rögzített geometria között. Rögzített geometriák külső geometriát, blokk geometriát vagy speciális pontokat, mint B-görbe csomópontot foglalnak magukba.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1795"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation type="unfinished">A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
+      <translation>Egy blokk kényszerítést nem adhat hozzá, ha a vázlat megoldatlan vagy felesleges és ellentmondó kényszerítései vannak.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1813"/>
@@ -3105,12 +3105,12 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="6288"/>
       <location filename="../../CommandConstraints.cpp" line="6978"/>
       <source>Select an edge that is not a B-spline weight</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight</translation>
+      <translation>Olyan él kiválasztása, amely nem jelöl B-görbe súlyt</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2696"/>
       <source>None of the selected points were constrained onto the respective curves, because they are parts of the same element, because they are both external geometry, or because the edge is not eligible.</source>
-      <translation type="unfinished">None of the selected points were constrained onto the respective curves, because they are parts of the same element, because they are both external geometry, or because the edge is not eligible.</translation>
+      <translation>A kijelölt pontok egyike sem volt korlátozva a megfelelő görbékre, mivel ugyanannak az elemnek a részei, valamint mindkettő külső geometria, vagy mert az éle nem megfelelő.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2851"/>
@@ -3268,7 +3268,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../CommandConstraints.cpp" line="4871"/>
       <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation type="unfinished">Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</translation>
+      <translation>Jelöljön ki csak egy vagy több B-görbe pólust, vagy csak egy vagy több ívet vagy kört a vázlatból, de ne keverje.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4927"/>
@@ -3356,7 +3356,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <location filename="../../CommandConstraints.cpp" line="6675"/>
       <location filename="../../CommandConstraints.cpp" line="6829"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint between a line and its end points.</translation>
+      <translation>Nem lehet hozzáadni a szimmetria kényszerítést a vonalhoz és annak végpontjaihoz.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6727"/>
@@ -3368,33 +3368,33 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <location filename="../../CommandConstraints.cpp" line="6907"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</translation>
+      <translation>Jelöljön ki két vonalvégpontot sugarakként, és egy szegélyt jelölő élt. Az első kijelölt pont megfelel az n1 indexnek, a második az n2-nek, és a méretadat állítja be az n2/n1 arányt.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6955"/>
       <source>Cannot create constraint with external geometry only.</source>
-      <translation type="unfinished">Cannot create constraint with external geometry only.</translation>
+      <translation>Nem lehet csak külső geometriával kényszerítést létrehozni.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6962"/>
       <source>Incompatible geometry is selected.</source>
-      <translation type="unfinished">Incompatible geometry is selected.</translation>
+      <translation>Inkompatibilis geometriát jelölt ki.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6972"/>
       <source>SnellsLaw on B-spline edge is currently unsupported.</source>
-      <translation type="unfinished">SnellsLaw on B-spline edge is currently unsupported.</translation>
+      <translation>SnellsTörv a B-görbe élén jelenleg nem támogatott.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7156"/>
       <source>You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</source>
-      <translation type="unfinished">You cannot internally constrain an ellipse on another ellipse. Select only one ellipse.</translation>
+      <translation>Nem kényszeríthet belsőleg egy ellipszist egy másik ellipszishez. Csak egy ellipszist jelöljön be.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7209"/>
       <location filename="../../CommandConstraints.cpp" line="7387"/>
       <source>Currently all internal geometrical elements of the ellipse are already exposed.</source>
-      <translation type="unfinished">Currently all internal geometrical elements of the ellipse are already exposed.</translation>
+      <translation>Jelenleg az ellipszis összes belső geometriai eleme már fel van fedve.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7557"/>
@@ -3403,7 +3403,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <location filename="../../CommandConstraints.cpp" line="7670"/>
       <location filename="../../CommandConstraints.cpp" line="7681"/>
       <source>Select constraints from the sketch.</source>
-      <translation type="unfinished">Select constraints from the sketch.</translation>
+      <translation>Válasszon kényszerítéseket a vázlatból.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6923"/>
@@ -3597,7 +3597,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2049"/>
       <source>Are you really sure you want to delete all geometry and constraints?</source>
-      <translation type="unfinished">Are you really sure you want to delete all geometry and constraints?</translation>
+      <translation>Tényleg biztos benne, hogy törölni szeretné az összes geometriát és kényszerítést?</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2108"/>
@@ -3765,7 +3765,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location filename="../../EditDatumDialog.cpp" line="114"/>
       <source>Insert weight</source>
-      <translation type="unfinished">Insert weight</translation>
+      <translation>Súly beszúrása</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="119"/>
@@ -3793,14 +3793,14 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <location filename="../../CommandConstraints.cpp" line="5009"/>
       <location filename="../../CommandConstraints.cpp" line="5167"/>
       <source>Change weight</source>
-      <translation type="unfinished">Change weight</translation>
+      <translation>Súly módosítása</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5010"/>
       <location filename="../../CommandConstraints.cpp" line="5168"/>
       <location filename="../../EditDatumDialog.cpp" line="115"/>
       <source>Weight:</source>
-      <translation type="unfinished">Weight:</translation>
+      <translation>Súly:</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5014"/>
@@ -4237,12 +4237,12 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="190"/>
       <source>Internal alignment edge color</source>
-      <translation type="unfinished">Internal alignment edge color</translation>
+      <translation>Belső igazítás élének színe</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="197"/>
       <source>Color of edges of internal alignment geometry</source>
-      <translation type="unfinished">Color of edges of internal alignment geometry</translation>
+      <translation>A belső nyomvonal geometria élének színe</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="224"/>
@@ -4267,42 +4267,42 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="298"/>
       <source>Fully constrained edit edge color</source>
-      <translation type="unfinished">Fully constrained edit edge color</translation>
+      <translation>Teljesen kényszerített élek szerkesztési színe</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="305"/>
       <source>Color of fully constrained edge color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained edge color in edit mode</translation>
+      <translation>Teljesen kényszerített geometria éleinek színe szerkesztési módban</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="325"/>
       <source>Fully constrained edit construction edge color</source>
-      <translation type="unfinished">Fully constrained edit construction edge color</translation>
+      <translation>Teljesen kényszerített szerkesztési peremszín</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="332"/>
       <source>Color of fully constrained construction edge color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained construction edge color in edit mode</translation>
+      <translation>Teljesen kényszerített szerkesztési élszín színe szerkesztési módban</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="352"/>
       <source>Fully constrained edit internal alignment edge color</source>
-      <translation type="unfinished">Fully constrained edit internal alignment edge color</translation>
+      <translation>Teljesen kényszerített belső igazítási élszín szerkesztése</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="359"/>
       <source>Color of fully constrained internal alignment edge color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained internal alignment edge color in edit mode</translation>
+      <translation>Teljesen kényszerített belső igazítási élszín színe szerkesztési módban</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="379"/>
       <source>Fully constrained edit vertex color</source>
-      <translation type="unfinished">Fully constrained edit vertex color</translation>
+      <translation>Teljesen kényszerített végpont szerkesztési színe</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="386"/>
       <source>Color of fully constrained vertex color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained vertex color in edit mode</translation>
+      <translation>Teljesen kényszerített végpontszín színe szerkesztési módban</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="413"/>
@@ -4337,12 +4337,12 @@ A hatályba lépéshez újra be kell lépnie a szerkesztési módba.</translatio
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="514"/>
       <source>Dimensional constraint color</source>
-      <translation type="unfinished">Dimensional constraint color</translation>
+      <translation>Méretezett illesztés színe</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="521"/>
       <source>Color of dimensional driving constraints</source>
-      <translation type="unfinished">Color of dimensional driving constraints</translation>
+      <translation>Szín a méretkényszerek beállításhoz</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="541"/>
@@ -4459,22 +4459,22 @@ Az 'USA szokásos' és az 'USA/Euro építés' kivételével minden egységrends
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="198"/>
       <source>Show objects that the sketch is attached to</source>
-      <translation type="unfinished">Show objects that the sketch is attached to</translation>
+      <translation>Olyan tárgyak megtekintése, amelyekhez a vázlat csatolva van</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="239"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
-      <translation type="unfinished">Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</translation>
+      <translation>Megjegyzés: Ezek az új vázlatok alapértelmezett beállításai. A rendszer minden vázlathoz külön-külön tárolja a viselkedést tulajdonságokként a Nézet lapon.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="347"/>
       <source>View scale ratio</source>
-      <translation type="unfinished">View scale ratio</translation>
+      <translation>Méretezési arány megtekintése</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="354"/>
       <source>The 3D view is scaled based on this factor</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor</translation>
+      <translation>A 3D nézet mérete e tényező alapján kerül méretezésre</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="214"/>
@@ -4980,7 +4980,7 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="145"/>
       <source>Rendering order (global):</source>
-      <translation type="unfinished">Rendering order (global):</translation>
+      <translation>Igazítási sorrend (globális):</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="164"/>
@@ -5147,22 +5147,22 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6421"/>
       <source>The following constraint is partially redundant:</source>
-      <translation type="unfinished">The following constraint is partially redundant:</translation>
+      <translation>A következő kényszerítés részben felesleges:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6422"/>
       <source>The following constraints are partially redundant:</source>
-      <translation type="unfinished">The following constraints are partially redundant:</translation>
+      <translation>A következő kényszerítések részben feleslegesek:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6428"/>
       <source>Please remove the following malformed constraint:</source>
-      <translation type="unfinished">Please remove the following malformed constraint:</translation>
+      <translation>Távolítsa el a következő hibás kényszerítést:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6429"/>
       <source>Please remove the following malformed constraints:</source>
-      <translation type="unfinished">Please remove the following malformed constraints:</translation>
+      <translation>Távolítsa el a következő hibás kényszerítéseket:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6464"/>
@@ -5186,7 +5186,7 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6478"/>
       <source>Sketch contains malformed constraints </source>
-      <translation type="unfinished">Sketch contains malformed constraints </translation>
+      <translation>A vázlat hibásan formázott kényszerítéseket tartalmaz </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6485"/>
@@ -5201,7 +5201,7 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6502"/>
       <source>Sketch contains partially redundant constraints </source>
-      <translation type="unfinished">Sketch contains partially redundant constraints </translation>
+      <translation>A vázlat részlegesen felesleges kényszerítéseket tartalmaz </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6514"/>
@@ -5211,12 +5211,12 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6521"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
+      <translation>Alul korlátozott vázlat &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 fok&lt;/span&gt;&lt;/a&gt; szabadsággal. %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6524"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
+      <translation>Alul korlátozott vázlat &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 fokkos&lt;/span&gt;&lt;/a&gt; szabadsággal. %2</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6529"/>
@@ -5379,7 +5379,7 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
       <location filename="../../CommandCreateGeo.cpp" line="3984"/>
       <location filename="../../CommandCreateGeo.cpp" line="3985"/>
       <source>Create an arc of ellipse by its center, major radius, and endpoints</source>
-      <translation type="unfinished">Create an arc of ellipse by its center, major radius, and endpoints</translation>
+      <translation>Ellipszisív létrehozása a középpontjával, a fő sugarával és a végpontjaival</translation>
     </message>
   </context>
   <context>
@@ -5388,7 +5388,7 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
       <location filename="../../CommandCreateGeo.cpp" line="3988"/>
       <location filename="../../CommandCreateGeo.cpp" line="3989"/>
       <source>Create an arc of hyperbola by its center, major radius, and endpoints</source>
-      <translation type="unfinished">Create an arc of hyperbola by its center, major radius, and endpoints</translation>
+      <translation>Hiperbola ív létrehozása középpontjával, fő sugarával és végpontjaival</translation>
     </message>
   </context>
   <context>
@@ -5397,7 +5397,7 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
       <location filename="../../CommandCreateGeo.cpp" line="3992"/>
       <location filename="../../CommandCreateGeo.cpp" line="3993"/>
       <source>Create an arc of parabola by its focus, vertex, and endpoints</source>
-      <translation type="unfinished">Create an arc of parabola by its focus, vertex, and endpoints</translation>
+      <translation>Létrehoz egy parabola ívet fókusszal, csúcsponttal, és végpontokkal</translation>
     </message>
   </context>
   <context>
@@ -5447,7 +5447,7 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
       <location filename="../../CommandCreateGeo.cpp" line="5418"/>
       <location filename="../../CommandCreateGeo.cpp" line="5419"/>
       <source>Creates a radius between two lines</source>
-      <translation type="unfinished">Creates a radius between two lines</translation>
+      <translation>Sugarat hoz létre két vonal között</translation>
     </message>
   </context>
   <context>
@@ -5498,7 +5498,7 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
       <location filename="../../CommandCreateGeo.cpp" line="5422"/>
       <location filename="../../CommandCreateGeo.cpp" line="5423"/>
       <source>Fillet that preserves constraints and intersection point</source>
-      <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
+      <translation>Kényszerítéseket és metszéspontokat fenntartó lekerekítés</translation>
     </message>
   </context>
   <context>
@@ -5579,8 +5579,8 @@ A pontokat a rácsméret ötödénél közelebb kell beállítani egy rácsvonal
       <location filename="../../Command.cpp" line="615"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
-      <translation type="unfinished">Current attachment mode is incompatible with the new selection.
-Select the method to attach this sketch to selected objects.</translation>
+      <translation>Az aktuális csatolási mód nem kompatibilis az új kijelölésre.
+Jelölje ki azt a módszert, amely a vázlatot a kijelölt tárgyakhoz csatolja.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="619"/>
@@ -6015,7 +6015,7 @@ annak meghatározásához, hogy egy megoldás konvergál-e vagy sem</translation
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher B-spline tools</source>
-      <translation type="unfinished">Sketcher B-spline tools</translation>
+      <translation>Vázlatkészítő B-görbe eszközök</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>

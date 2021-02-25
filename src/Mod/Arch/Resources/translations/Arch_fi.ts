@@ -946,42 +946,42 @@
     <message>
       <location filename="ArchStructure.py" line="1216"/>
       <source>If true the element are aligned with axes</source>
-      <translation type="unfinished">If true the element are aligned with axes</translation>
+      <translation>Jos tosi, elementti on linjattu akselien kanssa</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="714"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
-      <translation type="unfinished">The length of this wall. Not used if this wall is based on an underlying object</translation>
+      <translation>Seinän pituus. Ei käytössä, jos tämä seinä perustuu taustalla olevaan objektiin</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="716"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
-      <translation type="unfinished">The width of this wall. Not used if this wall is based on a face</translation>
+      <translation>Seinän pituus. Ei käytetä, jos tämä seinä pohjautuu pintamuotoon</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="726"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
-      <translation type="unfinished">The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</translation>
+      <translation>Seinän korkeus. Pidä nollassa, jos haluat automaattisen korkeuden. Ei käytössä, jos seinä pohjautuu solidiin</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="731"/>
       <source>The alignment of this wall on its base object, if applicable</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable</translation>
+      <translation>Seinän linjaus perusobjektin mukaan, jos se on sovellettavissa</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="736"/>
       <source>The face number of the base object used to build this wall</source>
-      <translation type="unfinished">The face number of the base object used to build this wall</translation>
+      <translation>Seinän luomisessa käytettävien perusobjektin pintojen määrä</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="738"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
-      <translation type="unfinished">The offset between this wall and its baseline (only for left and right alignments)</translation>
+      <translation>Tämän seinän ja sen peruslinjan välinen siirtymä (vain vasempaan ja oikeaan tasaukseen)</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="551"/>
       <source>The normal direction of this window</source>
-      <translation type="unfinished">The normal direction of this window</translation>
+      <translation>Tämän ikkunan normaalisuunta</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="560"/>
@@ -991,22 +991,22 @@
     <message>
       <location filename="ArchComponent.py" line="228"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
-      <translation type="unfinished">An optional higher-resolution mesh or shape for this object</translation>
+      <translation>Valinnainen korkeamman resoluution verkkopinta tai muoto tälle objektille</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="122"/>
       <source>An optional additional placement to add to the profile before extruding it</source>
-      <translation type="unfinished">An optional additional placement to add to the profile before extruding it</translation>
+      <translation>Valinnainen lisäpaikoitus lisättäväksi profiiliin ennen sen pursotusta</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="566"/>
       <source>Opens the subcomponents that have a hinge defined</source>
-      <translation type="unfinished">Opens the subcomponents that have a hinge defined</translation>
+      <translation>Avaa alikomponentit, joilla on sarana määriteltynä</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="295"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
-      <translation type="unfinished">A standard code (MasterFormat, OmniClass,...)</translation>
+      <translation>Standardikoodi (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="716"/>

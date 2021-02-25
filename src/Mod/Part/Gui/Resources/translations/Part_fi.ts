@@ -425,7 +425,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Muokkaa %1</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="210"/>

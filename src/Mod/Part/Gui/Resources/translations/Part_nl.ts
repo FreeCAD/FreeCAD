@@ -132,10 +132,10 @@
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Objecten filteren van een geselecteerde samenstelling door kenmerken zoals volume,
+gebied of lengte, of door te kiezen voor specifieke items.
+Als een tweede object is geselecteerd, wordt het gebruikt als referentie, bijvoorbeeld,
+voor botsing of afstandsfiltering.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
@@ -150,7 +150,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="73"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Selecteer eerst een vorm die een samenstelling is. Als een tweede object is geselecteerd (optioneel) wordt het behandeld als een stencil.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -195,8 +195,8 @@ Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt 
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="58"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation type="unfinished">Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</translation>
+      <translation>Splits een samenstelling van vormen op in afzonderlijke objecten.
+Het maakt een 'Samengesteld Filter' voor elke vorm.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
@@ -211,7 +211,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>First select a shape that is a compound.</source>
-      <translation type="unfinished">First select a shape that is a compound.</translation>
+      <translation>Selecteer eerst een vorm die samengestelling is.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -272,11 +272,11 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Maak een 'Booleaanse Fragments' object uit twee of meer geselecteerde objecten,
+of uit de vormen binnen een samenstelling.
+Dit is een booleaanse unie die vervolgens wordt gesneden in de snijpunten
+van de oorspronkelijke vormen.
+Een 'SamenstellingsFilter' kan worden gebruikt om de afzonderlijke segmenten uit te pakken.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
@@ -324,7 +324,7 @@ Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annu
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Selecteer ten minste twee objecten, of een of meer samenstellingen. Als er slechts één samenstelling is geselecteerd, worden de samengestelde vormen tussen elkaar (anders zijn samenstellingen met snijpunten ongeldig).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
@@ -346,9 +346,9 @@ Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annu
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Snij een geselecteerd object door andere objecten te gebruiken als gereedschap.
+De resulterende stukken worden opgeslagen in een samenstelling.
+Een 'SamenstellingsFilter' kan worden gebruikt om de afzonderlijke segmenten uit te pakken.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
@@ -359,8 +359,8 @@ A 'Compound Filter' can be used to extract the individual slices.</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Snij een geselecteerd object door andere objecten en splits het.
+Het maakt een 'SamenstellingsFilter' voor elke snee.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
@@ -373,10 +373,10 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Voer een 'exclusieve OR' booleaanse bewerking uit met twee of meer geselecteerde objecten,
+of met de vormen in een samenstelling.
+Dit betekent dat de overlappende volumes van de vormen worden verwijderd.
+Een 'Samengestelde Filter' kan worden gebruikt om de resterende stukken uit te pakken.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
@@ -390,11 +390,11 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation>De berekening van het resultaat is mislukt met een fout: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt annuleren.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -906,11 +906,11 @@ Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annu
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error:
+      <translation>De berekening van het resultaat is mislukt met een fout: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt annuleren.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
@@ -925,7 +925,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
       <source>Select at least two objects, or one or more compounds</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds</translation>
+      <translation>Selecteer ten minste twee objecten, of een of meer samenstellingen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
@@ -935,7 +935,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
       <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and then invoke this tool.</translation>
+      <translation>Selecteer basisobject, vervolgens het object om in te sluiten en activeer dan dit gereedschap.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
@@ -950,7 +950,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+      <translation>Selecteer het object waarin je een uitsnijding maakt, vervolgens het object dat in de uitsnijding moet passen, en activeer vervolgens dit Gereedschap.</translation>
     </message>
   </context>
   <context>

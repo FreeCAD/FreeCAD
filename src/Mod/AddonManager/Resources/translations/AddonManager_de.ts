@@ -49,7 +49,7 @@
     <message>
       <location filename="AddonManager.py" line="264"/>
       <source>update(s)</source>
-      <translation>update(s)</translation>
+      <translation>Update(s)</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="267"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="AddonManager.py" line="436"/>
       <source>Unable to install</source>
-      <translation>Kann nicht installiert werden</translation>
+      <translation>Installation nicht möglich</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="495"/>
@@ -94,7 +94,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="177"/>
       <source>Workbenches list was updated.</source>
-      <translation>Die Liste der Arbeitsumgebungen wurde aktualisiert.</translation>
+      <translation>Die Liste der Arbeitsbereiche wurde aktualisiert.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="735"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="854"/>
       <source>Some errors were found that prevent to install this workbench</source>
-      <translation>Es wurden einige Fehler gefunden, die die Installation dieses Arbeitsbereiches verhindern</translation>
+      <translation>Einige Fehler verhindern die Installation dieses Arbeitsbereiches</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="856"/>
@@ -189,7 +189,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="311"/>
       <source>GitPython not installed! Cannot retrieve macros from git</source>
-      <translation>GitPython is nicht installiert! Makros können nicht von git abgerufen werden</translation>
+      <translation>GitPython is nicht installiert! Makros können nicht von Git abgerufen werden</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="568"/>
@@ -219,12 +219,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="548"/>
       <source>This addon is marked as obsolete</source>
-      <translation>Dieses Add-on ist als veraltet markiert</translation>
+      <translation>Dieses Addon ist als veraltet markiert</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="552"/>
       <source>This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.</source>
-      <translation>Dies bedeutet normalerweise, dass es nicht mehr gewartet wird, und einige erweiterte Add-on in dieser Liste die gleiche Funktionalität bieten.</translation>
+      <translation>Dies bedeutet normalerweise, dass es nicht mehr gewartet wird und ein fortschrittlicheres Addon in dieser Liste die gleiche Funktionalität bietet.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="870"/>
@@ -244,12 +244,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="565"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation>Diese Workbench wird möglicherweise nicht mehr gewartet und die Installation auf einem Python-3-System wird höchstwahrscheinlich zu Fehlern beim Start oder während der Nutzung führen.</translation>
+      <translation>Dieser Arbeitsbereich wird möglicherweise nicht mehr gewartet und die Installation auf einem Python-3-System wird höchstwahrscheinlich zu Fehlern beim Start oder während der Nutzung führen.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="724"/>
       <source>User requested updating a Python 2 workbench on a system running Python 3 - </source>
-      <translation>Der Benutzer hat die Aktualisierung einer Python-2-Workbench auf einem System mit Python 3 angefordert - </translation>
+      <translation>Der Benutzer hat die Aktualisierung eines Python-2-Arbeitsbereichs auf einem System mit Python 3 angefordert - </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="760"/>
@@ -259,7 +259,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="768"/>
       <source>User requested installing a Python 2 workbench on a system running Python 3 - </source>
-      <translation>Der Benutzer hat die Installation einer Python-2-Workbench auf einem System mit Python 3 angefordert - </translation>
+      <translation>Der Benutzer hat die Installation eines Python-2-Arbeitsbereichs auf einem System mit Python 3 angefordert - </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="344"/>
@@ -307,12 +307,12 @@
     <message>
       <location filename="AddonManager.ui" line="56"/>
       <source>Executes the selected macro, if installed</source>
-      <translation>Führt das ausgewählte Makro aus, wenn es installiert ist</translation>
+      <translation>Führt das ausgewählte Makro aus, sofern installiert</translation>
     </message>
     <message>
       <location filename="AddonManager.ui" line="127"/>
       <source>Uninstalls a selected macro or workbench</source>
-      <translation>Deinstalliert ein ausgewähltes Makro oder Arbeitsbereich</translation>
+      <translation>Deinstalliert ein ausgewähltes Makro oder einen Arbeitsbereich</translation>
     </message>
     <message>
       <location filename="AddonManager.ui" line="137"/>
@@ -332,12 +332,12 @@
     <message>
       <location filename="AddonManager.ui" line="89"/>
       <source>Sets configuration options for the Addon Manager</source>
-      <translation>Setzt Konfigurationsoptionen für den Addon Manager</translation>
+      <translation>Setzt Konfigurationsoptionen für den Addon-Manager</translation>
     </message>
     <message>
       <location filename="AddonManager.ui" line="92"/>
       <source>Configure...</source>
-      <translation>Einstellungen</translation>
+      <translation>Konfigurieren...</translation>
     </message>
     <message>
       <location filename="AddonManagerOptions.ui" line="14"/>
@@ -364,7 +364,7 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation>Wenn diese Option ausgewählt ist, werden installierte Addons beim Starten des Addon-Manager auf verfügbare Updates überprüft. (benötigt das installierte GitPython Paket auf ihrem System)</translation>
+      <translation>Wenn diese Option ausgewählt ist, werden installierte Addons beim Starten des Addon-Manager auf verfügbare Updates überprüft. (Das GitPython Paket muss dazu auf ihrem System installiert sein)</translation>
     </message>
     <message>
       <location filename="AddonManagerOptions.ui" line="25"/>

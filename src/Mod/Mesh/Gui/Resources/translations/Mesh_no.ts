@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation type="unfinished">Decimation...</translation>
+      <translation>Desimering...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
       <location filename="../../Command.cpp" line="1466"/>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Decimates a mesh</source>
-      <translation type="unfinished">Decimates a mesh</translation>
+      <translation>Desimer en maske</translation>
     </message>
   </context>
   <context>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../../Command.cpp" line="1156"/>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Evaluer og reparer maske...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1157"/>
@@ -354,12 +354,12 @@
     <message>
       <location filename="../../Command.cpp" line="1788"/>
       <source>Merge</source>
-      <translation type="unfinished">Merge</translation>
+      <translation>Slå sammen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1789"/>
       <source>Merges selected meshes into one</source>
-      <translation type="unfinished">Merges selected meshes into one</translation>
+      <translation>Slår sammen valgte masker til en</translation>
     </message>
   </context>
   <context>
@@ -448,7 +448,7 @@
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>Trim mesh</source>
-      <translation type="unfinished">Trim mesh</translation>
+      <translation>Trim maske</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="957"/>

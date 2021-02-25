@@ -11,13 +11,13 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Convert to points...</source>
-      <translation>In Punkte konvertieren...</translation>
+      <translation>Zu Punkten konvertieren...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <location filename="../../Command.cpp" line="193"/>
       <source>Convert to points</source>
-      <translation>In Punkte konvertieren</translation>
+      <translation>Zu Punkten konvertieren</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="322"/>
       <location filename="../../Command.cpp" line="324"/>
       <source>Merge several point clouds into one</source>
-      <translation>Mehrere Punktwolken in eine zusammenführen</translation>
+      <translation>Mehrere Punktwolken zu einer zusammenführen</translation>
     </message>
   </context>
   <context>
@@ -149,13 +149,13 @@
     <message>
       <location filename="../../Command.cpp" line="208"/>
       <source>Convert to points</source>
-      <translation>In Punkte konvertieren</translation>
+      <translation>Zu Punkten konvertieren</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="468"/>
       <location filename="../../ViewProvider.cpp" line="627"/>
       <source>Cut points</source>
-      <translation>Punkte schneiden</translation>
+      <translation>Punkte ausschneiden</translation>
     </message>
   </context>
   <context>

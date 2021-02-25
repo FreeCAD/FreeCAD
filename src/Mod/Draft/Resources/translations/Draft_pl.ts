@@ -537,13 +537,13 @@ Szkic lub związek musi zawierać co najmniej jeden wyraźny punkt lub obiekt wi
       <location filename="pointarray.py" line="95"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the points contained within 'Point Object'.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the points contained within 'Point Object'.</translation>
+      <translation>Całkowita liczba elementów w tablicy.
+Ta właściwość jest tylko do odczytu, ponieważ liczba zależy od parametrów tablicy.</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="139"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
-      <translation type="unfinished">Additional placement, shift and rotation, that will be applied to each copy</translation>
+      <translation>Dodatkowe rozmieszczenie, przesunięcie i obrót, które zostaną zastosowane do każdej kopii</translation>
     </message>
     <message>
       <location filename="bspline.py" line="46"/>
@@ -563,7 +563,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bspline.py" line="67"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Współczynnik parametryzacji</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="49"/>
@@ -573,17 +573,17 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="shape2dview.py" line="54"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>Wektor rzutowania tego obiektu</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="59"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>Sposób rzutowania oglądanego obiektu</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="64"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>Wskaźniki powierzchni będą wyświetlane w trybie indywidualnych powierzchni</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="69"/>
@@ -593,12 +593,12 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="shape2dview.py" line="74"/>
       <source>Fuse wall and structure objects of same type and material</source>
-      <translation type="unfinished">Fuse wall and structure objects of same type and material</translation>
+      <translation>Powiąż ścianę i obiekty struktury tego samego typu i materiału</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="79"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
+      <translation>Elipsy Mozaikowe i Krzywe B-sklejone w segmentach liniowych</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="85"/>
@@ -611,15 +611,14 @@ This property is read-only, as the number depends on the points contained within
       <location filename="shape2dview.py" line="91"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                 into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                into line segments</translation>
+      <translation>Długość segmentów liniowych, jeśli mozaikowe elipsy lub krzywe B-sklejone są
+                w segmentach liniowych</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="97"/>
       <source>If this is True, this object will be recomputed only if it is 
                 visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is 
-                visible</translation>
+      <translation>Jeśli to jest Prawda, obiekt ten zostanie przeliczony tylko wtedy, gdy będzie widoczny</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="45"/>
@@ -709,17 +708,17 @@ Jest to użyteczne, aby dostosować się do różnicy między środkiem kształt
     <message>
       <location filename="patharray.py" line="227"/>
       <source>Alignment vector for 'Tangent' mode</source>
-      <translation type="unfinished">Alignment vector for 'Tangent' mode</translation>
+      <translation>Wektor wyrównania dla trybu 'Tangent'</translation>
     </message>
     <message>
       <location filename="patharray.py" line="235"/>
       <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</translation>
+      <translation>Wymuś użycie „Pionowego wektora” jako lokalnego kierunku Z podczas używania trybu wyrównania „Oryginał” lub „Tangent”</translation>
     </message>
     <message>
       <location filename="patharray.py" line="243"/>
       <source>Direction of the local Z axis when 'Force Vertical' is true</source>
-      <translation type="unfinished">Direction of the local Z axis when 'Force Vertical' is true</translation>
+      <translation>Kierunek lokalnej osi Z, gdy 'Wymuszenie pionowe' jest prawdą</translation>
     </message>
     <message>
       <location filename="patharray.py" line="251"/>
@@ -729,19 +728,18 @@ Jest to użyteczne, aby dostosować się do różnicy między środkiem kształt
 - Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
 
 To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
-      <translation type="unfinished">Method to orient the copies along the path.
-- Original: X is curve tangent, Y is normal, and Z is the cross product.
-- Frenet: aligns the object following the local coordinate system along the path.
-- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
-
-To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</translation>
+      <translation>Metoda kierowania duplikatów wzdłuż ścieżki.
+- Oryginał: X to styczna do krzywej, Y to normalna, a Z to ich iloczyn wektorowy.
+- Frenet: wyrównuje obiekt zgodnie z lokalnym układem współrzędnych wzdłuż ścieżki.
+- Styczny: podobny do „Oryginalnego”, z tą różnicą, że lokalna oś X jest wstępnie wyrównana do „Stycznego wektora”.
+Aby uzyskać lepsze wyniki w trybach „Oryginal” i „Tangent”, najprawdopodobniej trzeba będzie włączyć opcję „Wymuszenie pionowe”.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="262"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation type="unfinished">Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</translation>
+      <translation>Prowadź duplikaty wzdłuż ścieżki zgodnie z „Trybem wyrównania”.
+W przeciwnym razie duplikaty będą miały taką samą orientację jak oryginalna linia bazowa.</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="66"/>
@@ -811,12 +809,12 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="55"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>Oznacza to, że kształty są zszywane razem</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="58"/>
       <source>The area of the faces of this Facebinder</source>
-      <translation type="unfinished">The area of the faces of this Facebinder</translation>
+      <translation>Pole powierzchni tego spoiwa powierzchniowego</translation>
     </message>
     <message>
       <location filename="clone.py" line="46"/>

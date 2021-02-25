@@ -113,9 +113,9 @@ Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
       <translation>Geben Sie den Namen des aufrufbaren Objekts ein, das wenn aufgerufen einen TestCase zurückgibt.
-Drücken Sie 'start' und der somit erzeugte Test wird ausgeführt.
+Drücken Sie 'start' und der somit erzeugte Test wird durchlaufen.
 
-Doppelklick auf eine Fehlermeldung in der Strukturansicht zeigt mehr Informationen, einschließlich eines Stacktrace.</translation>
+Doppelklick auf eine Fehlermeldung in der Baumstrukturansicht zeigt mehr Informationen, einschließlich eines Stacktrace.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="176"/>

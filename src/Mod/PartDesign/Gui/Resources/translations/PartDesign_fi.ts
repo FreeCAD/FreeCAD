@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="1943"/>
       <source>Create a linear pattern feature</source>
-      <translation>Luo lineaarinen toistopiirre</translation>
+      <translation>Luo lineaarinen piirresarja</translation>
     </message>
   </context>
   <context>
@@ -1043,7 +1043,7 @@
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</translation>
+      <translation>Valitsit piirteet, jotka eivät ole osana aktiivista rakennetta. Valitse miten haluat käsitellä nämä. Jos et halua valitsemiasi piirteitä, keskeytä toiminta.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1058,7 +1058,7 @@
     <message>
       <location filename="../../DlgReference.ui" line="59"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Luo ristireferenssi</translation>
     </message>
   </context>
   <context>
@@ -1066,7 +1066,7 @@
     <message>
       <location filename="../../ReferenceSelection.cpp" line="183"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation type="unfinished">Selecting this will cause circular dependency.</translation>
+      <translation>Tällä valinnalla aiheutuu päättymätön silmukkariippuvuus.</translation>
     </message>
   </context>
   <context>
@@ -1104,7 +1104,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
       <source>Boolean parameters</source>
-      <translation type="unfinished">Boolean parameters</translation>
+      <translation>Boolean -parametrit</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
@@ -1135,12 +1135,12 @@
     <message>
       <location filename="../../TaskChamferParameters.ui" line="22"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Lisää referenssi</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="32"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Poista referenssi</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="50"/>
@@ -1158,7 +1158,7 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="73"/>
       <source> parameters</source>
-      <translation type="unfinished"> parameters</translation>
+      <translation> parametrit</translation>
     </message>
   </context>
   <context>
@@ -1176,7 +1176,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
       <source>Boolean: Accept: Input error</source>
-      <translation type="unfinished">Boolean: Accept: Input error</translation>
+      <translation>Boolean: Hyväksy: Virhe syöttöarvoissa</translation>
     </message>
   </context>
   <context>
@@ -1184,7 +1184,7 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="121"/>
       <source>Incompatible reference set</source>
-      <translation type="unfinished">Incompatible reference set</translation>
+      <translation>Epäyhteensopiva referenssisetti</translation>
     </message>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="122"/>
@@ -1299,7 +1299,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="89"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Luo ristireferenssi</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="65"/>
@@ -1362,12 +1362,12 @@
     <message>
       <location filename="../../TaskFilletParameters.ui" line="22"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Lisää referenssi</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="32"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Poista referenssi</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="49"/>
@@ -1385,7 +1385,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="48"/>
       <source>Hole parameters</source>
-      <translation type="unfinished">Hole parameters</translation>
+      <translation>Reikäparametrit</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
@@ -1395,27 +1395,27 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>ISO metric coarse profile</source>
-      <translation type="unfinished">ISO metric coarse profile</translation>
+      <translation>ISO metrinen karkea profiili</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric fine profile</source>
-      <translation type="unfinished">ISO metric fine profile</translation>
+      <translation>ISO metrinen hieno profiili</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>UTS coarse profile</source>
-      <translation type="unfinished">UTS coarse profile</translation>
+      <translation>UTS karkea profiili</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS fine profile</source>
-      <translation type="unfinished">UTS fine profile</translation>
+      <translation>UTS hieno profiili</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS extra fine profile</source>
-      <translation type="unfinished">UTS extra fine profile</translation>
+      <translation>UTS erittäin hieno profiili</translation>
     </message>
   </context>
   <context>
@@ -1752,7 +1752,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
-      <translation type="unfinished">Orientation mode</translation>
+      <translation>Orientointimoodi</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
@@ -1772,7 +1772,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Lisäarvot</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
@@ -1782,7 +1782,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
       <source>Curvelinear equivalence</source>
-      <translation type="unfinished">Curvelinear equivalence</translation>
+      <translation>Kurvilineaarinen vastaavuus</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
@@ -1797,17 +1797,17 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="117"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Lisää särmä</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="136"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Poista särmä</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="158"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>Aseta vakio binormaalinen vektori, jota käytetään profiilien suunnan laskemiseen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="182"/>
@@ -1876,12 +1876,12 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Lisää särmä</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Poista särmä</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="74"/>
@@ -2582,7 +2582,7 @@
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>No sketch is available in the document</source>
-      <translation type="unfinished">No sketch is available in the document</translation>
+      <translation>Dokumentissa ei ole käytettävissä luonnoksia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1513"/>
@@ -2621,17 +2621,17 @@
     <message>
       <location filename="../../Command.cpp" line="1534"/>
       <source>%1 works only on parts.</source>
-      <translation type="unfinished">%1 works only on parts.</translation>
+      <translation>%1 toimii ainoastaan osille.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1544"/>
       <source>Shape of the selected Part is empty</source>
-      <translation type="unfinished">Shape of the selected Part is empty</translation>
+      <translation>Valitun osan muoto on tyhjä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1556"/>
       <source> not possible on selected faces/edges.</source>
-      <translation type="unfinished"> not possible on selected faces/edges.</translation>
+      <translation> ei ole mahdollista valituilla pinnoilla/särmillä.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1842"/>
@@ -2690,7 +2690,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
       <source>Body can't be based on another body.</source>
-      <translation type="unfinished">Body can't be based on another body.</translation>
+      <translation>Runko ei voi perustua toiseen runkoon.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
@@ -2701,29 +2701,29 @@
       <location filename="../../CommandBody.cpp" line="167"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>Valittu muoto koostuu useista solideista.
+Tämä voi johtaa odottamattomiin tuloksiin.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="171"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>Valittu muoto koostuu useista kuorista.
+Tämä voi johtaa odottamattomiin tuloksiin.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="175"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>Valittu muoto koostuu vain kuoresta.
+Tämä voi johtaa odottamattomiin tuloksiin.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="179"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>Valittu muoto koostuu useista kuorista tai solideista.
+Tämä voi johtaa odottamattomiin tuloksiin.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
@@ -2910,7 +2910,7 @@ Jos asiakirja on vanhentunutta tyyppiä OsanSuunnittelu-objekteilla ilman kappal
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="68"/>
       <source>Edit boolean</source>
-      <translation type="unfinished">Edit boolean</translation>
+      <translation>Muokkaa booleania</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
@@ -2933,18 +2933,18 @@ Jos asiakirja on vanhentunutta tyyppiä OsanSuunnittelu-objekteilla ilman kappal
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="133"/>
       <source>Coordinate System</source>
-      <translation type="unfinished">Coordinate System</translation>
+      <translation>Koordinaattijärjestelmä</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="232"/>
       <source>Edit datum</source>
-      <translation type="unfinished">Edit datum</translation>
+      <translation>Muokkaa datumia</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Muokkaa %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="70"/>
@@ -2965,7 +2965,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="64"/>
       <source>Edit hole</source>
-      <translation type="unfinished">Edit hole</translation>
+      <translation>Muokkaa reikää</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>
@@ -2980,7 +2980,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="80"/>
       <source>Edit pipe</source>
-      <translation type="unfinished">Edit pipe</translation>
+      <translation>Muokkaa putkea</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="53"/>
@@ -3000,7 +3000,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="184"/>
       <source>Edit shape binder</source>
-      <translation type="unfinished">Edit shape binder</translation>
+      <translation>Muokkaa muodon sitojaa</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="152"/>
@@ -3020,7 +3020,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../WorkflowManager.cpp" line="144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of PartDesign workbench.</translation>
+      <translation>Asiakirja "%1" jota olet muokkaamassa, on suunniteltu vanhalla versiolla PartDesign -työkalulla.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="147"/>
@@ -3030,12 +3030,12 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
+      <translation>Dokumentti "%1" näyttää olevan joko migroitumassa vanhasta PartDesignista tai sillä on osittain rikkinäinen rakenne.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="154"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation type="unfinished">Do you want to make the migration automatically?</translation>
+      <translation>Haluatko tehdä migraation automaattisesti?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="156"/>
@@ -3047,7 +3047,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>
       <source>Migrate manually</source>
-      <translation type="unfinished">Migrate manually</translation>
+      <translation>Tee migraatio manuaalisesti</translation>
     </message>
   </context>
   <context>
@@ -3087,38 +3087,38 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="145"/>
       <source>Through</source>
-      <translation type="unfinished">Through</translation>
+      <translation>Läpi</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="152"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="492"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Syvyys</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="161"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Kierteytetty</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
       <source>Countersink</source>
-      <translation type="unfinished">Countersink</translation>
+      <translation>Senkkikanta</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="175"/>
       <source>Counterbore</source>
-      <translation type="unfinished">Counterbore</translation>
+      <translation>Tasapohjaupotus</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="196"/>
       <source>Hole norm</source>
-      <translation type="unfinished">Hole norm</translation>
+      <translation>Reikänormi</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
       <source>Custom dimensions</source>
-      <translation type="unfinished">Custom dimensions</translation>
+      <translation>Mukautetut mitat</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
@@ -3135,13 +3135,13 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
       <source>Bolt/Washer</source>
-      <translation type="unfinished">Bolt/Washer</translation>
+      <translation>Ruuvi/Aluslevy</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="329"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="337"/>
       <source>Thread norm</source>
-      <translation type="unfinished">Thread norm</translation>
+      <translation>Kierrenormi</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="399"/>
@@ -3202,7 +3202,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location filename="../../TaskHoleParameters.ui" line="47"/>
       <location filename="../../TaskHoleParameters.ui" line="332"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Syvyys</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="57"/>
@@ -3262,7 +3262,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="247"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Kierteytetty</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="257"/>

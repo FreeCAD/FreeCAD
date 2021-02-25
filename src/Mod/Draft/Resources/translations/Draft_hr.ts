@@ -21,12 +21,12 @@
     <message>
       <location filename="fillet.py" line="71"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation type="unfinished">Radius to use to fillet the corner.</translation>
+      <translation>Radijus za zaobljivanje ugla.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="169"/>
       <source>The base object that will be duplicated</source>
-      <translation type="unfinished">The base object that will be duplicated</translation>
+      <translation>Osnovni objekt koji će biti dupliciran</translation>
     </message>
     <message>
       <location filename="array.py" line="98"/>
@@ -34,118 +34,118 @@
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</translation>
+      <translation>Vrsta niza za izradu.
+ - Ortogonalni: stavlja kopije u smjerovima globalnih X, Y, Z osi.
+ - Polarni: stavlja kopije duž krućnog luka, do određenog kuta, u određenoj orijentaciji defniranonoj s centrom i osi.
+ - Kručni: stavlja kopije u koncentrične kružne slojeve oko osnovnog objekta.</translation>
     </message>
     <message>
       <location filename="array.py" line="109"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
+      <translation>Određuje dali kopije trebaju srasti ako se dodiruju (sporije)</translation>
     </message>
     <message>
       <location filename="array.py" line="122"/>
       <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
+      <translation>Broj kopije u X smjeru</translation>
     </message>
     <message>
       <location filename="array.py" line="131"/>
       <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
+      <translation>Broj kopija u Y smjeru</translation>
     </message>
     <message>
       <location filename="array.py" line="140"/>
       <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
+      <translation>Broj kopija u Z smjeru</translation>
     </message>
     <message>
       <location filename="array.py" line="150"/>
       <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <translation>Razmak i orijentacija intervala u X smjeru</translation>
     </message>
     <message>
       <location filename="array.py" line="160"/>
       <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <translation>Razmak i orijentacija intervala u Y smjeru</translation>
     </message>
     <message>
       <location filename="array.py" line="170"/>
       <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <translation>Razmak i orijentacija intervala u Z smjeru</translation>
     </message>
     <message>
       <location filename="array.py" line="185"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation type="unfinished">The axis direction around which the elements in a polar or a circular array will be created</translation>
+      <translation>Smjer osi oko koje će se elementi polarnom ili kružnom nizu izraditi</translation>
     </message>
     <message>
       <location filename="array.py" line="196"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation type="unfinished">Center point for polar and circular arrays.
-The 'Axis' passes through this point.</translation>
+      <translation>Centralna točka polarnog ili kružnog niza.
+'Os' prolazi kroz tu točku.</translation>
     </message>
     <message>
       <location filename="array.py" line="215"/>
       <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation type="unfinished">The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</translation>
+      <translation>Objekt osi koji prepisuje vrijednost 'Osi' i 'Centra', na primjer, datum linija.
+Njegovo postavljanje, pozicija i orijentacija če se koristiti kada se kreiraju polarni i kružni nizovi.
+Ostavite ovo svojstvo prazno kako bi ste mogli postaviti 'Os' i 'Centar' ručno.</translation>
     </message>
     <message>
       <location filename="array.py" line="228"/>
       <source>Number of copies in the polar direction</source>
-      <translation type="unfinished">Number of copies in the polar direction</translation>
+      <translation>Broj kopija u polarnom smjeru</translation>
     </message>
     <message>
       <location filename="array.py" line="238"/>
       <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in 'Axis' direction</translation>
+      <translation>Razmak i orijentacija intervala u smjeru osi</translation>
     </message>
     <message>
       <location filename="array.py" line="247"/>
       <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
+      <translation>Kut za pokrivanje sa kopijama</translation>
     </message>
     <message>
       <location filename="array.py" line="260"/>
       <source>Distance between circular layers</source>
-      <translation type="unfinished">Distance between circular layers</translation>
+      <translation>Udaljenost između kružnih slojeva</translation>
     </message>
     <message>
       <location filename="array.py" line="270"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation type="unfinished">Distance between copies in the same circular layer</translation>
+      <translation>Udaljenost između kopija u istom kružnom sloju</translation>
     </message>
     <message>
       <location filename="array.py" line="280"/>
       <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation type="unfinished">Number of circular layers. The 'Base' object counts as one layer.</translation>
+      <translation>Broj kružnih slojeva. Osnovni objekt se broji kao jedan sloj.</translation>
     </message>
     <message>
       <location filename="array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes  the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes  the circular array will have.</translation>
+      <translation>Postavka koja određuje koliko će simetričnih ravnina kružni niz imati.</translation>
     </message>
     <message>
       <location filename="array.py" line="309"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</translation>
+      <translation>Ukupan broj elemenata u nizu.
+Ovo svojstvo je samo za čitanje, jer broj ovisi o svojstvima niza.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>Prikaži pojedinačne elemente niza (samo za vezane nizove)</translation>
     </message>
     <message>
       <location filename="block.py" line="43"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>Sastavni dijelovi ovog bloka</translation>
     </message>
     <message>
       <location filename="wpproxy.py" line="42"/>
@@ -155,37 +155,37 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>Duljina pravokutnika</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>Visina pravokutnika</translation>
     </message>
     <message>
       <location filename="wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>Radijus koji se koristi za zaobljivanje uglova</translation>
     </message>
     <message>
       <location filename="wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>Veličina oluka obljivanje uglova</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="58"/>
       <source>Create a face</source>
-      <translation type="unfinished">Create a face</translation>
+      <translation>Napravite naličje</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="61"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>Horizontalne podjele ovog pravokutnika</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="64"/>
       <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
+      <translation>Vertikalne podjele ovog pravokutnika</translation>
     </message>
     <message>
       <location filename="wire.py" line="93"/>
@@ -195,12 +195,12 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="dimension.py" line="137"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation type="unfinished">The normal direction of the text of the dimension</translation>
+      <translation>Smjer normale teksta dimenzije</translation>
     </message>
     <message>
       <location filename="dimension.py" line="150"/>
       <source>The object measured by this dimension object</source>
-      <translation type="unfinished">The object measured by this dimension object</translation>
+      <translation>Objekt mjeren ovim mjernim objektom</translation>
     </message>
     <message>
       <location filename="dimension.py" line="167"/>
@@ -212,13 +212,13 @@ There are various possibilities:
 - An object, and two of its vertices.
 - An arc object, and its edge.
 </source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
+      <translation>Objekt, i njegovi specifični pod-elementi,
+koje ovja mjerni objekt mjeri.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.
+Postoje razne mogućnosti:
+ - Objekt i jedan njegov rub.
+ - Objekt i dva njegova vrha.
+ - Luk i njegov rub.
 </translation>
     </message>
     <message>
@@ -231,14 +231,14 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>Točka kroz koju će mjerna linija, ili njena ekstrapolacija, proći.
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- Za linearne mjere, ovo svojstvo kontrolira koliko blizu mjerenog objekta
+je mjerna linija.
+- Za radijalne mjere, ovo kontrolira smjer mjerne linije
+koja prikazuje mjereni radijus ili promjer.
+- Za kutne mjere, ovo kontrolira radijus jernog luka
+koji prikazuje mjereni kut.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="233"/>
@@ -246,10 +246,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>Početna točka mjerne linije.
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+Ako se mjeri radijus ona će biti centar luka.
+Ako se mjeri promjer ona će biti tička koja leži na luku.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -257,17 +257,17 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>Krajnja točka mjerne linije.
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+Ako se mjeri radijus ili promjer
+biti će točka koja leži na luku.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>Smjer mjerne linije.
+Ako ovo ostane '(0,0,0)', smjer će se izračunati automatski.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -278,34 +278,34 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Rezultat mjerenja.
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+Ovo svojstvo je samo za čitanje jer se vrijednost računa
+iz 'Početnih' i 'Krajnjih' svojstava.
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+Ako je 'Povezana Geometrija' luk ili krug, ova 'Udaljenost'
+je radijus ili promjer, ovisno o svojstvu 'Promjer'.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>Kada se mjere kružni lukovi, ono određuje dali će se prikazati
+radijus ili promjer</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Početni kut mjerne linije ( kružnog luka).
+Luk se iscrtava smjeru suprotnom od kazaljke na satu.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Krajni kut mjerne linije (kružni luk).
+Luk se iscrtava u smjeru suprotnom od kazaljke na satu.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -313,10 +313,10 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>Središnja točka mjerne linije, koja je kružni luk.
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+Ovo je uobičajeno točka gdje se dva segmenta linije, ili njihova proširenja
+sijeku, rezultirajući izmjerenim 'Kutom' među njima.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="547"/>
@@ -324,49 +324,48 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>Rezultat mjerenja.
 
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+Ovo svojstvo je samo za čitanje jer se vrijednost računa iz
+svojstava 'Prvi Kut' i 'Posljednji Kut'.</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>Postavljanje osnovne točke prve linije</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>Tekst prikazan ovim objektom.
+To je niz tekstova; avaki element u listi će biti prikazan u vlastitoj liniji.</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
       <source>Start angle of the arc</source>
-      <translation type="unfinished">Start angle of the arc</translation>
+      <translation>Početni kut luka</translation>
     </message>
     <message>
       <location filename="circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Krajnji kut luka (za puni krug, dodaj istu vrijednost kao za prvi kut)</translation>
     </message>
     <message>
       <location filename="circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Polumjer kruga</translation>
     </message>
     <message>
       <location filename="polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Broj naličja</translation>
     </message>
     <message>
       <location filename="polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Radijus kontrolnog kruga</translation>
     </message>
     <message>
       <location filename="polygon.py" line="56"/>
@@ -716,12 +715,12 @@ This is useful to adjust for the difference between shape centre and shape refer
     <message>
       <location filename="patharray.py" line="235"/>
       <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
-      <translation type="unfinished">Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</translation>
+      <translation>Forsiraj korištenje 'Vertikalnog Vektora' kao lokalni Z smjer kada se koristi 'Originalni' ili 'Tangencijalni' način poravnanja</translation>
     </message>
     <message>
       <location filename="patharray.py" line="243"/>
       <source>Direction of the local Z axis when 'Force Vertical' is true</source>
-      <translation type="unfinished">Direction of the local Z axis when 'Force Vertical' is true</translation>
+      <translation>Smjer lokalne Z osi kada je 'Forsiraj Vertikalni' označen</translation>
     </message>
     <message>
       <location filename="patharray.py" line="251"/>
@@ -731,19 +730,19 @@ This is useful to adjust for the difference between shape centre and shape refer
 - Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
 
 To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</source>
-      <translation type="unfinished">Method to orient the copies along the path.
-- Original: X is curve tangent, Y is normal, and Z is the cross product.
-- Frenet: aligns the object following the local coordinate system along the path.
-- Tangent: similar to 'Original' but the local X axis is pre-aligned to 'Tangent Vector'.
+      <translation>Način orijentacije kopija duž puta.
+- Originalni: X je tangenta na krivulju, Y je noramla, a Z je vektorski produkt.
+- Frenet: poravnava objekt prateći lokalne koordinatni sustav duž puta.
+- Tangencijalni: slično 'Originalnom' ali lokalna X os je unaprijed poravnata s 'Tangencijalnim Vektorom'.
 
-To get better results with 'Original' or 'Tangent' you may have to set 'Force Vertical' to true.</translation>
+Kako bi dobili bolje rezultate s 'Originalnim' ili 'Tangencijalnim' moguće je da će te morati označiti 'Forsiraj Vertikani'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="262"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
-      <translation type="unfinished">Orient the copies along the path depending on the 'Align Mode'.
-Otherwise the copies will have the same orientation as the original Base object.</translation>
+      <translation>Orijentiraj kopije duž puta ovisno o 'Načinu Poravnanja'.
+Inače kopije će imati istu orijetaciju kao i originalni Osnovni objekt.</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="66"/>
@@ -753,12 +752,12 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="73"/>
       <source>Projection direction</source>
-      <translation type="unfinished">Projection direction</translation>
+      <translation>Smjer projekcije</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="80"/>
       <source>The width of the lines inside this object</source>
-      <translation type="unfinished">The width of the lines inside this object</translation>
+      <translation>Duljina linija unutar objekta</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="88"/>
@@ -768,22 +767,22 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="96"/>
       <source>The spacing between lines of text</source>
-      <translation type="unfinished">The spacing between lines of text</translation>
+      <translation>Razmaci između linija teksta</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="103"/>
       <source>The color of the projected objects</source>
-      <translation type="unfinished">The color of the projected objects</translation>
+      <translation>Boja projiciranog objekta</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="110"/>
       <source>Shape Fill Style</source>
-      <translation type="unfinished">Shape Fill Style</translation>
+      <translation>Stil ispune oblika</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="118"/>
       <source>Line Style</source>
-      <translation type="unfinished">Line Style</translation>
+      <translation>Stil crte</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="127"/>
@@ -793,112 +792,112 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="43"/>
       <source>Linked faces</source>
-      <translation type="unfinished">Linked faces</translation>
+      <translation>Povezana naličja</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="46"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>Određuje dali razmakne linije moraju biti uklonjene</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="49"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Opcionalna vrijednost izguravanja za primjenu na svim naličjima</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="52"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>Opcionalna vrijednost izguravanja za primjenu na svim naličjima</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="55"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>Određuje dali se oblici sastavljaju</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="58"/>
       <source>The area of the faces of this Facebinder</source>
-      <translation type="unfinished">The area of the faces of this Facebinder</translation>
+      <translation>Površina naličja ovog Facebindera</translation>
     </message>
     <message>
       <location filename="clone.py" line="46"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>Objekti uljučeni u ovaj klon</translation>
     </message>
     <message>
       <location filename="clone.py" line="51"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>Faktor promjene veličine ovog klona</translation>
     </message>
     <message>
       <location filename="clone.py" line="57"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation type="unfinished">If Clones includes several objects,
-set True for fusion or False for compound</translation>
+      <translation>Ako Klonovi uključuju nekoliko objekata,
+označi spajanje ili odznači složeni</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="82"/>
       <source>General scaling factor that affects the annotation consistently
 because it scales the text, and the line decorations, if any,
 in the same proportion.</source>
-      <translation type="unfinished">General scaling factor that affects the annotation consistently
-because it scales the text, and the line decorations, if any,
-in the same proportion.</translation>
+      <translation>Općeniti faktor skaliranja utječe na anotiranje kozistentno
+jer skalira tekst, i udeđivanja linija, ako postoje,
+u jednakoj mjeri.</translation>
     </message>
     <message>
       <location filename="view_draft_annotation.py" line="100"/>
       <source>Annotation style to apply to this object.
 When using a saved style some of the view properties will become read-only;
 they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
-      <translation type="unfinished">Annotation style to apply to this object.
-When using a saved style some of the view properties will become read-only;
-they will only be editable by changing the style through the 'Annotation style editor' tool.</translation>
+      <translation>Stil anotiranja koji će se primjeniti na ovaj objekt.
+Kada se koristi spremljeni stil neka od svojstava pregleda će se moći samo čitati;
+ona će se moći mijenjati samo promjenom stila pomoću 'Urednika za Anotacijske Stilove'.</translation>
     </message>
     <message>
       <location filename="wire.py" line="49"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>Vrhovi žice</translation>
     </message>
     <message>
       <location filename="wire.py" line="53"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>Dali je žica zatvorena ili ne</translation>
     </message>
     <message>
       <location filename="wire.py" line="57"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>Osnovni objekt je žica, sastoji se od 2 objekta</translation>
     </message>
     <message>
       <location filename="wire.py" line="61"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>Osnovni objekt je žica, sastoji se od 2 objekta</translation>
     </message>
     <message>
       <location filename="wire.py" line="65"/>
       <source>The start point of this line</source>
-      <translation type="unfinished">The start point of this line</translation>
+      <translation>Početna točka ove linije</translation>
     </message>
     <message>
       <location filename="wire.py" line="69"/>
       <source>The end point of this line</source>
-      <translation type="unfinished">The end point of this line</translation>
+      <translation>Krajnja točka ove linije</translation>
     </message>
     <message>
       <location filename="wire.py" line="73"/>
       <source>The length of this line</source>
-      <translation type="unfinished">The length of this line</translation>
+      <translation>Dužina ove linije</translation>
     </message>
     <message>
       <location filename="wire.py" line="85"/>
       <source>Create a face if this object is closed</source>
-      <translation type="unfinished">Create a face if this object is closed</translation>
+      <translation>Stvaranje lice ako je ovaj objekt zatvoren</translation>
     </message>
     <message>
       <location filename="wire.py" line="89"/>
       <source>The number of subdivisions of each edge</source>
-      <translation type="unfinished">The number of subdivisions of each edge</translation>
+      <translation>Broj podjeljaka svakog ruba</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="137"/>
@@ -913,31 +912,31 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="view_dimension.py" line="155"/>
       <source>Spacing between text and dimension line</source>
-      <translation type="unfinished">Spacing between text and dimension line</translation>
+      <translation>Razmak između teksta i mjerne linije</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="164"/>
       <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
+      <translation>Rotiraj tekst mjerenja za 180 stupnjeva</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="174"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
-      <translation type="unfinished">Text Position.
-Leave '(0,0,0)' for automatic position</translation>
+      <translation>Pozicija teksta.
+Ostavite '(0,0,0)' za automatsko pozicioniranje</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="185"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
-      <translation type="unfinished">Text override.
-Write '$dim' so that it is replaced by the dimension length.</translation>
+      <translation>Prijepis teksta.
+Upišite '$dim' kako bi se zamijenilo s mjerenom duljinom.</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="196"/>
       <source>The number of decimals to show</source>
-      <translation type="unfinished">The number of decimals to show</translation>
+      <translation>Broj decimalnih mjesta za prikaz</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="205"/>
@@ -948,8 +947,7 @@ Write '$dim' so that it is replaced by the dimension length.</translation>
       <location filename="view_dimension.py" line="215"/>
       <source>A unit to express the measurement.
 Leave blank for system default</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default</translation>
+      <translation>Jedinica za mjerenje. Ostavite prazno za sistemski zadani način</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="229"/>
@@ -964,71 +962,71 @@ Leave blank for system default</translation>
     <message>
       <location filename="view_dimension.py" line="248"/>
       <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <translation>Rotirajte strelice mjerenja za 180 stupnjeva</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="259"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended
-past the extension lines</translation>
+      <translation>Duljina mjerne linije je proširena
+izvan linija protezanja</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="268"/>
       <source>Length of the extension lines</source>
-      <translation type="unfinished">Length of the extension lines</translation>
+      <translation>Dužina linija produžetaka</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="278"/>
       <source>Length of the extension line
 beyond the dimension line</source>
-      <translation type="unfinished">Length of the extension line
-beyond the dimension line</translation>
+      <translation>Duljina linije protezanja
+izvan mjerne linije</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="287"/>
       <source>Shows the dimension line and arrows</source>
-      <translation type="unfinished">Shows the dimension line and arrows</translation>
+      <translation>Prikazuje mjernu liniju i strelice</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="77"/>
       <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the line color of the layer</translation>
+      <translation>Ako je označeno, objekti unutar ovog sloja će pokupiti boju linija sloja</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
       <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation type="unfinished">If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</translation>
+      <translation>Ako je označeno, boja prinatanja će se koristiti kada se objekti u ovom sloju postave na stranicu TehničkoCrtanje</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="102"/>
       <source>The line color of the objects contained within this layer</source>
-      <translation type="unfinished">The line color of the objects contained within this layer</translation>
+      <translation>Boja linija objekata sadržanih u ovom sloju</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="116"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation type="unfinished">The shape color of the objects contained within this layer</translation>
+      <translation>Boja oblika objekata sadržanih u ovom sloju</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="130"/>
       <source>The line width of the objects contained within this layer</source>
-      <translation type="unfinished">The line width of the objects contained within this layer</translation>
+      <translation>Širina linija objekata sadržanih u ovom sloju</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="142"/>
       <source>The draw style of the objects contained within this layer</source>
-      <translation type="unfinished">The draw style of the objects contained within this layer</translation>
+      <translation>Stil crtanja objekata u ovom sloju</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="153"/>
       <source>The transparency of the objects contained within this layer</source>
-      <translation type="unfinished">The transparency of the objects contained within this layer</translation>
+      <translation>Prozirnost objekata sadržanih u ovom sloju</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="164"/>
       <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation type="unfinished">The line color of the objects contained within this layer, when used on a TechDraw page</translation>
+      <translation>Boja linija objekata sadržanih u ovom sloju kada se koristi stranica za TehničkoCrtanje</translation>
     </message>
     <message>
       <location filename="view_label.py" line="177"/>
@@ -1043,7 +1041,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="view_label.py" line="74"/>
       <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
+      <translation>Veličina teksta</translation>
     </message>
     <message>
       <location filename="view_label.py" line="83"/>

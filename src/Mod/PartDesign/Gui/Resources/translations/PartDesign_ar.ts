@@ -497,12 +497,12 @@
     <message>
       <location filename="../../Command.cpp" line="2075"/>
       <source>Scaled</source>
-      <translation type="unfinished">Scaled</translation>
+      <translation>السلم</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2076"/>
       <source>Create a scaled feature</source>
-      <translation type="unfinished">Create a scaled feature</translation>
+      <translation>انشاء شكل مكبر او مصغر</translation>
     </message>
   </context>
   <context>
@@ -515,12 +515,12 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>إنشاء غلاف للشكل</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>إنشاء غلاف جديد للشكل</translation>
     </message>
   </context>
   <context>
@@ -533,7 +533,7 @@
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>دور ثغري</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
@@ -551,12 +551,12 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Subtractive pipe</source>
-      <translation type="unfinished">Subtractive pipe</translation>
+      <translation>أنبوب ثغري</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>كشط رسمة محددة على طول مسار أو إلى مظهر آخر وإزالتها من الجسم</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation type="unfinished">Make a thick solid</translation>
+      <translation>اصنع جسما سميك</translation>
     </message>
   </context>
   <context>

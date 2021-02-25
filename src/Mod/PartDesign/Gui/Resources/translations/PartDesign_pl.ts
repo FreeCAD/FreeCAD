@@ -1291,12 +1291,12 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation>Z innych części tej samej bryły</translation>
+      <translation>Z innych zawartości tej samej bryły</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
       <source>From different parts or free features</source>
-      <translation>Z różnych części lub bezpłatne funkcje</translation>
+      <translation>Z różnych części lub swobodnych obiektów</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="66"/>

@@ -5918,7 +5918,7 @@ Vil du angi en annen mappe?</translation>
     </message>
     <message>
       <source>Turkish</source>
-      <translation>Turkisk</translation>
+      <translation>Tyrkisk</translation>
     </message>
     <message>
       <source>Slovenian</source>

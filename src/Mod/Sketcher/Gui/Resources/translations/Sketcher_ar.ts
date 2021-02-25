@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="163"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>إظهار/إخفاء مشط الانحناء للمنحنى-ب</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="164"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the curvature comb for all B-splines</translation>
+      <translation>التبديل بين إظهار وإخفاء مشط الانحناء بين كل منحنيات-ب</translation>
     </message>
   </context>
   <context>
@@ -170,7 +170,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="345"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>إظهار/إخفاء مشط الانحناء للمنحنى-ب</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="352"/>
@@ -5240,7 +5240,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="347"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the curvature comb for all B-splines</translation>
+      <translation>التبديل بين إظهار وإخفاء مشط الانحناء بين كل منحنيات-ب</translation>
     </message>
   </context>
   <context>

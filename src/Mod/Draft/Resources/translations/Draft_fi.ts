@@ -175,7 +175,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="ellipse.py" line="58"/>
       <source>Create a face</source>
-      <translation type="unfinished">Create a face</translation>
+      <translation>Luo pinta</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="61"/>
@@ -356,17 +356,17 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Ympyrän säde</translation>
     </message>
     <message>
       <location filename="polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Pintojen määrä</translation>
     </message>
     <message>
       <location filename="polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Ohjausympyrän säde (control circle)</translation>
     </message>
     <message>
       <location filename="polygon.py" line="56"/>
@@ -376,17 +376,17 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="point.py" line="45"/>
       <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
+      <translation>X-piste</translation>
     </message>
     <message>
       <location filename="point.py" line="48"/>
       <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
+      <translation>Y-piste</translation>
     </message>
     <message>
       <location filename="point.py" line="51"/>
       <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
+      <translation>Z-piste</translation>
     </message>
     <message>
       <location filename="layer.py" line="59"/>
@@ -2387,7 +2387,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_facebinders.py" line="60"/>
       <source>Facebinder</source>
-      <translation type="unfinished">Facebinder</translation>
+      <translation>Liitä pinnat</translation>
     </message>
     <message>
       <location filename="gui_facebinders.py" line="62"/>
@@ -2696,7 +2696,7 @@ A 'Point link array' is more efficient when handling many copies.</translation>
     <message>
       <location filename="gui_polygons.py" line="57"/>
       <source>Polygon</source>
-      <translation type="unfinished">Polygon</translation>
+      <translation>Polygoni</translation>
     </message>
     <message>
       <location filename="gui_polygons.py" line="60"/>
@@ -3343,7 +3343,7 @@ view each time a command is started</translation>
     <message>
       <location filename="TaskSelectPlane.ui" line="78"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automaattinen</translation>
     </message>
     <message>
       <location filename="TaskSelectPlane.ui" line="87"/>
@@ -6579,7 +6579,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_facebinders.py" line="66"/>
       <source>Facebinder</source>
-      <translation type="unfinished">Facebinder</translation>
+      <translation>Liitä pinnat</translation>
     </message>
     <message>
       <location filename="gui_facebinders.py" line="71"/>
@@ -6609,7 +6609,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_dimensions.py" line="294"/>
       <source>Create Dimension</source>
-      <translation>Luo mitta</translation>
+      <translation>Luo Mitta</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="309"/>
@@ -6819,7 +6819,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="gui_polygons.py" line="63"/>
       <source>Polygon</source>
-      <translation type="unfinished">Polygon</translation>
+      <translation>Polygoni</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="88"/>

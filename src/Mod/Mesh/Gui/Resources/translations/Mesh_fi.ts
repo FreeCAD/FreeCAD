@@ -1655,7 +1655,7 @@ sileämpään ulkonäköön.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automaattinen</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>

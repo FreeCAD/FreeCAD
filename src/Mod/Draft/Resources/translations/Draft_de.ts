@@ -21,12 +21,12 @@
     <message>
       <location filename="fillet.py" line="71"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation>Zu verwendender Radius der Rundung.</translation>
+      <translation>Zu verwendender Radius der Abrundung.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="169"/>
       <source>The base object that will be duplicated</source>
-      <translation>Das Grundobjekt, das dupliziert wird</translation>
+      <translation>Das Basisobjekt, das dupliziert wird</translation>
     </message>
     <message>
       <location filename="array.py" line="98"/>
@@ -36,7 +36,7 @@
 - Circular: places the copies in concentric circular layers around the base object.</source>
       <translation>Der Typ der zu erstellenden Anordnung.
 - Ortho: platziert die Kopien in Richtung der globalen X-Y, Z-Achsen.
-- Polar: platziert die Kopien auf einem Kreisbogen, bis zu einem bestimmten Winkel, und mit einer bestimmten Orientierung, die mittels eines Zentrum und einer Achse definiert wird.
+- Polar: platziert die Kopien auf einem Kreisbogen, bis zu einem festgelegten Winkel und mit einer bestimmten Orientierung, die mittels eines Zentrum und einer Achse festgelegt wird.
 - Circular: platziert die Kopien in konzentrischen Kreislagen um das Basisobjekt.</translation>
     </message>
     <message>
@@ -77,13 +77,13 @@
     <message>
       <location filename="array.py" line="185"/>
       <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation>Die Achsenrichtung um welche die Elemente in einer Polar oder einem kreisförmigen Anordnung erstellt werden</translation>
+      <translation>Die Achsenrichtung um welche die Elemente in einer Polar oder einer kreisförmigen Anordnung erstellt werden</translation>
     </message>
     <message>
       <location filename="array.py" line="196"/>
       <source>Center point for polar and circular arrays.
 The 'Axis' passes through this point.</source>
-      <translation>Zentrumspunkt für polare und kreisförmige Arrays.
+      <translation>Zentrumspunkt für polare und kreisförmige Anordnungen.
 Die 'Achse' geht durch diesen Punkt.</translation>
     </message>
     <message>
@@ -113,12 +113,12 @@ Lassen Sie diese Eigenschaft leer, um 'Achse' und 'Zentrum' manuell setzen zu k�
     <message>
       <location filename="array.py" line="260"/>
       <source>Distance between circular layers</source>
-      <translation>Abstand zwischen Kreisschichten</translation>
+      <translation>Abstand zwischen kreisförmigen Ebenen</translation>
     </message>
     <message>
       <location filename="array.py" line="270"/>
       <source>Distance between copies in the same circular layer</source>
-      <translation>Abstand zwischen Kopien in der gleichen Kreisschicht</translation>
+      <translation>Abstand zwischen Kopien in der gleichen Kreisebene</translation>
     </message>
     <message>
       <location filename="array.py" line="280"/>
@@ -134,13 +134,13 @@ Lassen Sie diese Eigenschaft leer, um 'Achse' und 'Zentrum' manuell setzen zu k�
       <location filename="array.py" line="309"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation>Gesamtzahl der Elemente im Array.
+      <translation>Gesamtzahl der Elemente in der Anordnung.
 Diese Eigenschaft ist nur lesbar, da die Zahl von den Parametern der Anordnung abhängt.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="208"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation>Zeige die einzelnen Anordnungs Elemente (nur für Verknüpfte Anordnungen)</translation>
+      <translation>Zeige die einzelnen Anordnungs-Elemente (nur für verknüpfte Anordnungen)</translation>
     </message>
     <message>
       <location filename="block.py" line="43"/>
@@ -165,7 +165,7 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Parametern der Anordnung a
     <message>
       <location filename="wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation>Zu verwendender Radius der Rundung</translation>
+      <translation>Zu verwendender Radius der Abrundung</translation>
     </message>
     <message>
       <location filename="wire.py" line="81"/>
@@ -195,7 +195,7 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Parametern der Anordnung a
     <message>
       <location filename="dimension.py" line="137"/>
       <source>The normal direction of the text of the dimension</source>
-      <translation>Die Richtung der Normale dieses Maß</translation>
+      <translation>Die Richtung der Normale des Textes dieses Maßes</translation>
     </message>
     <message>
       <location filename="dimension.py" line="150"/>
@@ -213,11 +213,11 @@ There are various possibilities:
 - An arc object, and its edge.
 </source>
       <translation>Das Objekt und spezifische Unterelemente,
-dass dieses Massobjekt misst.
+das dieses Massobjekt misst.
 
 Es gibt verschiedene Möglichkeiten:
-- ein Objekt und eine seiner Kanten.
-- Ein Objekt und zwei seiner Punkte.
+- Ein Objekt und eine seiner Kanten.
+- Ein Objekt und zwei seiner Knotenpunkte.
 - Ein Bogenobjekt und seine Kante.
 </translation>
     </message>
@@ -233,11 +233,11 @@ that displays the measured radius or diameter.
 that displays the measured angle.</source>
       <translation>Ein Punkt, durch den die Masslinie, oder eine Extrapolation davon, führt.
 
-- Für lineare Masse legt diese Eigenschaft fest, wie nahe die Bemassungslinie
+- Für lineare Maße legt diese Eigenschaft fest, wie nahe die Bemaßungslinie
 zum gemessenen Objekt ist.
-- Bei radialen Massen steuert dies die Richtung der Bemassungslinie, 
+- Bei radialen Maßen steuert dies die Richtung der Bemaßungslinie, 
 die den gemessenen Radius oder den gemessenen Durchmesser anzeigt.
-- Bei Winkelabmessungen wird der Radius des Massbogens
+- Bei Winkelmaßen wird der Radius des Maßbogens
 kontrolliert, der den gemessenen Winkel anzeigt.</translation>
     </message>
     <message>
@@ -527,7 +527,7 @@ oder aus dem Unterelement 'VertexN', 'EdgeN' bzw. 'FaceN', falls angegeben.</tra
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation>Grundobjekt, das dupliziert wird</translation>
+      <translation>Das Basisobjekt, das dupliziert wird</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
@@ -1435,7 +1435,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="init_draft_statusbar.py" line="294"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation>Schaltet visuelle Hilfsmasse ein/aus</translation>
+      <translation>Schaltet visuelle Hilfsmaße ein/aus</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="314"/>

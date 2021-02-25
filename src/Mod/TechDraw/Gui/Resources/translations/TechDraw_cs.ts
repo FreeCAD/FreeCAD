@@ -3731,7 +3731,7 @@ Chcete pokračovat?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="209"/>
       <source>Rotate</source>
-      <translation>Rotace</translation>
+      <translation>Otočit</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="222"/>

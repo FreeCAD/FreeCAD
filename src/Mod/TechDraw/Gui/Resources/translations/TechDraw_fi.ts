@@ -6,7 +6,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="651"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation>Lisää keskiviiva 2:n rivin väliin</translation>
+      <translation>Lisää keskilinja 2:n viivan väliin</translation>
     </message>
   </context>
   <context>
@@ -14,7 +14,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Add Centerline between 2 Points</source>
-      <translation>Lisää keskiviiva 2: n pisteen väliin</translation>
+      <translation>Lisää keskilinja 2:n pisteen väliin</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="787"/>
       <source>Add Centerline between 2 Lines</source>
-      <translation>Lisää keskiviiva 2:n rivin väliin</translation>
+      <translation>Lisää keskilinja 2:n viivan väliin</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="864"/>
       <source>Add Centerline between 2 Points</source>
-      <translation>Lisää keskiviiva 2: n pisteen väliin</translation>
+      <translation>Lisää keskilinja 2:n pisteen väliin</translation>
     </message>
   </context>
   <context>
@@ -170,7 +170,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="647"/>
       <source>Add Centerline to Faces</source>
-      <translation>Lisää keskiviiva näkymäpintoihin</translation>
+      <translation>Lisää keskilinja alueisiin</translation>
     </message>
   </context>
   <context>
@@ -346,12 +346,12 @@
     <message>
       <location filename="../../Command.cpp" line="1383"/>
       <source>Save Dxf File </source>
-      <translation type="unfinished">Save Dxf File </translation>
+      <translation>Tallenna Dxf-tiedosto </translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Dxf (*.dxf)</source>
-      <translation type="unfinished">Dxf (*.dxf)</translation>
+      <translation>Dxf (*.dxf)</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="677"/>
       <source>Add Centerline to Faces</source>
-      <translation>Lisää keskiviiva näkymäpintoihin</translation>
+      <translation>Lisää keskilinja alueisiin</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="327"/>
       <source>Apply Geometric Hatch to Face</source>
-      <translation type="unfinished">Apply Geometric Hatch to Face</translation>
+      <translation>Tee alueelle geometrinen viivoitus</translation>
     </message>
   </context>
   <context>
@@ -507,7 +507,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <source>Add Leaderline to View</source>
-      <translation>Lisää ohjausviiva näkymään</translation>
+      <translation>Lisää Reittiviiva näkymään</translation>
     </message>
   </context>
   <context>
@@ -767,12 +767,12 @@
     <message>
       <location filename="../../Command.cpp" line="292"/>
       <source>Insert View</source>
-      <translation>Lisää näkymä</translation>
+      <translation>Lisää Näkymä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="293"/>
       <source>Insert a View</source>
-      <translation>Lisää yksi näkymä</translation>
+      <translation>Lisää Näkymä</translation>
     </message>
   </context>
   <context>
@@ -785,7 +785,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1400"/>
       <source>Add Welding Information to Leaderline</source>
-      <translation>Lisää hitsaustiedot ohjausviivaan</translation>
+      <translation>Lisää hitsaustiedot Reittiviivaan</translation>
     </message>
   </context>
   <context>
@@ -862,7 +862,7 @@
       <location filename="../../CommandCreateDims.cpp" line="935"/>
       <location filename="../../CommandCreateDims.cpp" line="1362"/>
       <source>Create Dimension</source>
-      <translation>Luo mitta</translation>
+      <translation>Luo Mitta</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="251"/>
@@ -903,7 +903,7 @@
     <message>
       <location filename="../../TaskCenterLine.cpp" line="346"/>
       <source>Create CenterLine</source>
-      <translation>Luo Keskiviiva</translation>
+      <translation>Luo Keskilinja</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="391"/>
@@ -928,12 +928,12 @@
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="400"/>
       <source>Create Leader</source>
-      <translation>Luo johtaja</translation>
+      <translation>Luo Reittiviiva</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="454"/>
       <source>Edit Leader</source>
-      <translation>Muokkaa johtajaa</translation>
+      <translation>Muokkaa Reittiviivaa</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="357"/>
@@ -1082,12 +1082,12 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="362"/>
       <source>Bullet list (CTRL+-)</source>
-      <translation type="unfinished">Bullet list (CTRL+-)</translation>
+      <translation>Lista (CTRL+-)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="388"/>
       <source>Ordered list (CTRL+=)</source>
-      <translation type="unfinished">Ordered list (CTRL+=)</translation>
+      <translation>Numeroitu lista (CTRL+=)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="414"/>
@@ -1112,12 +1112,12 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="473"/>
       <source>Text foreground color</source>
-      <translation type="unfinished">Text foreground color</translation>
+      <translation>Tekstin väri</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="496"/>
       <source>Text background color</source>
-      <translation type="unfinished">Text background color</translation>
+      <translation>Taustaväri</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="499"/>
@@ -1307,7 +1307,7 @@
     <message>
       <location filename="../../Command.cpp" line="1162"/>
       <source>There were no DraftWB objects in the selection.</source>
-      <translation type="unfinished">There were no DraftWB objects in the selection.</translation>
+      <translation>Valinnassa ei ole DraftWB-kohteita.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1211"/>
@@ -1558,7 +1558,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="131"/>
       <source>Can not attach leader.  No base View selected.</source>
-      <translation>Nuoliviivaa ei voida kiinnittää mihinkään, koska Näkymää ei ole valittuna.</translation>
+      <translation>Reittiviivaa ei voida kiinnittää mihinkään, koska Näkymää ei ole valittuna.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="136"/>
@@ -1585,19 +1585,19 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="750"/>
       <source>You must select Faces or an existing CenterLine.</source>
-      <translation>On valittava joko alue tai olemassaoleva keskiviiva.</translation>
+      <translation>On valittava joko alue tai olemassaoleva keskilinja.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="760"/>
       <source>No CenterLine in selection.</source>
-      <translation>Valintaan ei kuulu KeskiViivaa.</translation>
+      <translation>Valintaan ei kuulu Keskilinjaa.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="766"/>
       <location filename="../../CommandAnnotate.cpp" line="838"/>
       <location filename="../../CommandAnnotate.cpp" line="951"/>
       <source>Selection is not a CenterLine.</source>
-      <translation>Valinta ei ole KeskiViiva.</translation>
+      <translation>Valinta ei ole Keskilinja.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="848"/>
@@ -1607,12 +1607,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="939"/>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>
-      <translation type="unfinished">You must select 2 Vertexes or an existing CenterLine.</translation>
+      <translation>On valittava joko 2 pistettä tai olemassaoleva keskilinja.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="961"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
-      <translation type="unfinished">Need 2 Vertices or 1 CenterLine.</translation>
+      <translation>Tarvitaan 2 pistettä tai 1 keskilinja.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1038"/>
@@ -1622,7 +1622,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1052"/>
       <source>Not enough points in selection.</source>
-      <translation type="unfinished">Not enough points in selection.</translation>
+      <translation>Ei tarpeeksi pisteitä valinnassa.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1072"/>
@@ -1688,7 +1688,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="471"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation type="unfinished">Need a TechDraw Page for this command</translation>
+      <translation>Tätä komentoa varten tarvitaan TechDraw-sivu</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="504"/>
@@ -1792,12 +1792,12 @@
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="274"/>
       <source>New Leader Line</source>
-      <translation>Uusi Nuoliviiva</translation>
+      <translation>Uusi Reittiviiva</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="317"/>
       <source>Edit Leader Line</source>
-      <translation>Muokkaa Nuoliviivaa</translation>
+      <translation>Muokkaa Reittiviivaa</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="195"/>
@@ -1828,12 +1828,12 @@
     <message>
       <location filename="../../TaskCenterLine.cpp" line="177"/>
       <source>Create Center Line</source>
-      <translation type="unfinished">Create Center Line</translation>
+      <translation>Luo Keskilinja</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="217"/>
       <source>Edit Center Line</source>
-      <translation type="unfinished">Edit Center Line</translation>
+      <translation>Muokkaa keskilinjaa</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="160"/>
@@ -1869,12 +1869,12 @@
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="150"/>
       <source>Create Cosmetic Line</source>
-      <translation type="unfinished">Create Cosmetic Line</translation>
+      <translation>Luo kosmeettinen linja</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="185"/>
       <source>Edit Cosmetic Line</source>
-      <translation type="unfinished">Edit Cosmetic Line</translation>
+      <translation>Muokkaa kosmeettista linjaa</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="125"/>
@@ -1893,8 +1893,7 @@
       <location filename="../../ViewProviderLeader.cpp" line="253"/>
       <source>You cannot delete this leader line because
 it has a weld symbol that would become broken.</source>
-      <translation type="unfinished">You cannot delete this leader line because
-it has a weld symbol that would become broken.</translation>
+      <translation>Tätä Reittiviivaa ei voi poistaa, koska siihen on liitetty hitsaussymboli, joka rikkoutuisi.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLeader.cpp" line="256"/>
@@ -1916,7 +1915,7 @@ it has a weld symbol that would become broken.</translation>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
       <source>You cannot delete the anchor view of a projection group.</source>
-      <translation type="unfinished">You cannot delete the anchor view of a projection group.</translation>
+      <translation>Projektioryhmän ankkurinäkymää ei voi poistaa.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="185"/>
@@ -1947,20 +1946,18 @@ following referencing objects might be lost:</translation>
       <location filename="../../ViewProviderProjGroup.cpp" line="195"/>
       <source>The group cannot be deleted because its items have the following
 section or detail views, or leader lines that would get broken:</source>
-      <translation>Ryhmää ei voi poistaa, koska siihen on liitetty seuraavat
-Poikkileikkausnäkymät, Detaljinäkymät, tai Nuoliviivat, jotka rikkoutuisivat:</translation>
+      <translation>Ryhmää ei voi poistaa, koska siihen on liitetty seuraavat poikkileikkausnäkymät, detaljinäkymät tai reittiviivat, jotka rikkoutuisivat:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="209"/>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
-      <translation type="unfinished">The projection group is not empty, therefore
-the following referencing objects might be lost:</translation>
+      <translation>Projektioryhmä ei ole tyhjä, joten seuraavat liitetyt objektit voisivat hävitä:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="197"/>
       <source>The following referencing object might break:</source>
-      <translation type="unfinished">The following referencing object might break:</translation>
+      <translation>Seuraava liitetty objekti voisi rikkoutua:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderWeld.cpp" line="194"/>
@@ -2398,7 +2395,7 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="45"/>
       <source>Center Line Style</source>
-      <translation type="unfinished">Center Line Style</translation>
+      <translation>Keskilinjan tyyli</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="64"/>
@@ -2410,21 +2407,21 @@ Each unit is approx. 0.1 mm wide</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="287"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="780"/>
       <source>NeverShow</source>
-      <translation type="unfinished">NeverShow</translation>
+      <translation>Älä näytä</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="86"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="296"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="789"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Jatkuva</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="95"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="305"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="798"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>Katkoviiva</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="104"/>
@@ -2495,22 +2492,22 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="243"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>Puhekuplan reittiviivan kiinnitysosan pituus</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="274"/>
       <source>Type for centerlines</source>
-      <translation type="unfinished">Type for centerlines</translation>
+      <translation>Keskilinjojen tyyppi</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="356"/>
       <source>Shape of balloon annotations</source>
-      <translation type="unfinished">Shape of balloon annotations</translation>
+      <translation>Puhekuplan merkintöjen muoto</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="366"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>Pyöreä</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="375"/>
@@ -2525,7 +2522,7 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="393"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>Tarkastus</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="402"/>
@@ -2546,7 +2543,7 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="437"/>
       <source>Balloon Leader End</source>
-      <translation type="unfinished">Balloon Leader End</translation>
+      <translation>Puhekuplan Reittiviivan pää</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="456"/>
@@ -2606,12 +2603,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="635"/>
       <source>Style for balloon leader line ends</source>
-      <translation type="unfinished">Style for balloon leader line ends</translation>
+      <translation>Puhekuplan reittiviivan pään tyyli</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="653"/>
       <source>Length of horizontal portion of Balloon leader</source>
-      <translation type="unfinished">Length of horizontal portion of Balloon leader</translation>
+      <translation>Puhekuplasta alkavan vaakasuoran reittiviivan osan pituus</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="656"/>
@@ -2631,7 +2628,7 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="714"/>
       <source>Balloon Shape</source>
-      <translation type="unfinished">Balloon Shape</translation>
+      <translation>Puhekuplan muoto</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="733"/>
@@ -2770,12 +2767,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="378"/>
       <source>Centerline</source>
-      <translation type="unfinished">Centerline</translation>
+      <translation>Keskilinja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="385"/>
       <source>Centerline color</source>
-      <translation type="unfinished">Centerline color</translation>
+      <translation>Keskilinjan väri</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="405"/>
@@ -2810,12 +2807,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="496"/>
       <source>Leaderline</source>
-      <translation>Nuoliviiva</translation>
+      <translation>Reittiviiva</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="503"/>
       <source>Default color for leader lines</source>
-      <translation>Nuoliviivojen vakioväri</translation>
+      <translation>Reittiviivojen vakioväri</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="551"/>
@@ -3062,12 +3059,12 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="410"/>
       <source>First</source>
-      <translation type="unfinished">First</translation>
+      <translation>Ensimmäinen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="415"/>
       <source>Third</source>
-      <translation type="unfinished">Third</translation>
+      <translation>Kolmas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="420"/>
@@ -3087,7 +3084,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="457"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Jatkuva</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="466"/>
@@ -3097,7 +3094,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="495"/>
       <source>Files</source>
-      <translation type="unfinished">Files</translation>
+      <translation>Tiedostot</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="509"/>
@@ -3132,7 +3129,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="637"/>
       <source>Line Group File</source>
-      <translation type="unfinished">Line Group File</translation>
+      <translation>Viivaryhmän tiedosto</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="650"/>
@@ -3152,7 +3149,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="714"/>
       <source>PAT File</source>
-      <translation type="unfinished">PAT File</translation>
+      <translation>PAT-tiedosto</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="727"/>
@@ -3162,7 +3159,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="751"/>
       <source>Pattern Name</source>
-      <translation type="unfinished">Pattern Name</translation>
+      <translation>Viivoituskuvioinnin nimi</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="770"/>
@@ -3266,12 +3263,12 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="55"/>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Näkyvissä</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="325"/>
       <source>Hidden</source>
-      <translation type="unfinished">Hidden</translation>
+      <translation>Piilotettu</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="216"/>
@@ -3305,7 +3302,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
       <source>Page Scale</source>
-      <translation type="unfinished">Page Scale</translation>
+      <translation>Sivun skaalaus</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
@@ -3418,7 +3415,7 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="147"/>
       <source>Export DXF</source>
-      <translation type="unfinished">Export DXF</translation>
+      <translation>Vie DXF-tiedostoon</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="150"/>
@@ -3457,17 +3454,17 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="795"/>
       <source>Can not open file %1 for writing.</source>
-      <translation type="unfinished">Can not open file %1 for writing.</translation>
+      <translation>Tiedostoon ”%1” ei voida tallentaa.</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="969"/>
       <source>Save Dxf File </source>
-      <translation type="unfinished">Save Dxf File </translation>
+      <translation>Tallenna Dxf-tiedosto </translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="971"/>
       <source>Dxf (*.dxf)</source>
-      <translation type="unfinished">Dxf (*.dxf)</translation>
+      <translation>Dxf (*.dxf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1456"/>
@@ -3503,52 +3500,52 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="14"/>
       <source>Balloon</source>
-      <translation type="unfinished">Balloon</translation>
+      <translation>Puhekupla</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="22"/>
       <source>Text:</source>
-      <translation type="unfinished">Text:</translation>
+      <translation>Teksti:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="29"/>
       <source>Text to be displayed</source>
-      <translation type="unfinished">Text to be displayed</translation>
+      <translation>Näytettävä teksti</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="36"/>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>Tekstin väri:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Color for &apos;Text&apos;</source>
-      <translation type="unfinished">Color for &apos;Text&apos;</translation>
+      <translation>&apos;Tekstin&apos; väri</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="76"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation>&apos;Tekstin&apos; fonttikoko</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>Fonttikoko:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble Shape:</source>
-      <translation type="unfinished">Bubble Shape:</translation>
+      <translation>Kuplan muoto:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
       <source>Shape of the balloon bubble</source>
-      <translation type="unfinished">Shape of the balloon bubble</translation>
+      <translation>Puhekuplan muoto</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="106"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>Pyöreä</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="115"/>
@@ -3563,7 +3560,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="133"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>Tarkastus</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="142"/>
@@ -3583,42 +3580,42 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="172"/>
       <source>Shape Scale:</source>
-      <translation type="unfinished">Shape Scale:</translation>
+      <translation>Muodon skaalaus:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="185"/>
       <source>Bubble shape scale factor</source>
-      <translation type="unfinished">Bubble shape scale factor</translation>
+      <translation>Kuplan muodon skaalauskerroin</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="204"/>
       <source>End Symbol:</source>
-      <translation type="unfinished">End Symbol:</translation>
+      <translation>Loppupään symboli:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="211"/>
       <source>End symbol for the balloon line</source>
-      <translation type="unfinished">End symbol for the balloon line</translation>
+      <translation>Puhekuplan viivan pään symboli</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="218"/>
       <source>End Symbol Scale:</source>
-      <translation type="unfinished">End Symbol Scale:</translation>
+      <translation>Loppupään symbolin skaalaus:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="231"/>
       <source>End symbol scale factor</source>
-      <translation type="unfinished">End symbol scale factor</translation>
+      <translation>Päädyn symbolin skaalauskerroin</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="250"/>
       <source>Line Visible:</source>
-      <translation type="unfinished">Line Visible:</translation>
+      <translation>Viiva näkyvissä:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="257"/>
       <source>Whether the leader line is visible or not</source>
-      <translation type="unfinished">Whether the leader line is visible or not</translation>
+      <translation>Reittiviivan näkyvyys tai näkymättömyys</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="264"/>
@@ -3633,22 +3630,22 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="277"/>
       <source>Line Width:</source>
-      <translation type="unfinished">Line Width:</translation>
+      <translation>Viivan leveys:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="296"/>
       <source>Leader line width</source>
-      <translation type="unfinished">Leader line width</translation>
+      <translation>Reittiviivan leveys</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="315"/>
       <source>Leader Kink Length:</source>
-      <translation type="unfinished">Leader Kink Length:</translation>
+      <translation>Reittiviivan kiinnitysosan pituus:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="334"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>Puhekuplan reittiviivan kiinnitysosan pituus</translation>
     </message>
   </context>
   <context>
@@ -3656,12 +3653,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="29"/>
       <source>Center Line</source>
-      <translation type="unfinished">Center Line</translation>
+      <translation>Keskilinja</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="41"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>Perusnäkymä</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="64"/>
@@ -3707,12 +3704,12 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="142"/>
       <source>Aligned</source>
-      <translation type="unfinished">Aligned</translation>
+      <translation>Tasattu</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="157"/>
       <source>Shift Horizontal</source>
-      <translation type="unfinished">Shift Horizontal</translation>
+      <translation>Siirrä vaakatasossa</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="170"/>
@@ -3747,7 +3744,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="296"/>
       <source>Weight</source>
-      <translation type="unfinished">Weight</translation>
+      <translation>Paksuus</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="316"/>
@@ -3757,7 +3754,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="327"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Jatkuva</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="380"/>
@@ -3769,27 +3766,27 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="384"/>
       <source>Flip Ends</source>
-      <translation type="unfinished">Flip Ends</translation>
+      <translation>Vaihda päädyt</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="336"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>Katkoviiva</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="345"/>
       <source>Dot</source>
-      <translation>Piste</translation>
+      <translation>Pisteviiva</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="354"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>Katkopisteviiva</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="363"/>
       <source>DashDotDot</source>
-      <translation type="unfinished">DashDotDot</translation>
+      <translation>Katkopistepisteviiva</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="249"/>
@@ -3817,7 +3814,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCosVertex.ui" line="54"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>Perusnäkymä</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="78"/>
@@ -3865,7 +3862,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="26"/>
       <source>Cosmetic Line</source>
-      <translation type="unfinished">Cosmetic Line</translation>
+      <translation>Kosmeettinen Viiva</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="34"/>
@@ -3913,7 +3910,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="54"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>Perusnäkymä</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="61"/>
@@ -3959,7 +3956,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="275"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automaattinen</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="280"/>
@@ -4022,7 +4019,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="20"/>
       <source>Tolerancing</source>
-      <translation type="unfinished">Tolerancing</translation>
+      <translation>Tolerointi</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
@@ -4032,7 +4029,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="31"/>
       <source>Theoretically Exact</source>
-      <translation type="unfinished">Theoretically Exact</translation>
+      <translation>Teoreettisesti tarkka arvo</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="38"/>
@@ -4043,68 +4040,65 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="41"/>
       <source>Equal Tolerance</source>
-      <translation type="unfinished">Equal Tolerance</translation>
+      <translation>Yhtäsuuret toleranssit</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="48"/>
       <source>Overtolerance:</source>
-      <translation type="unfinished">Overtolerance:</translation>
+      <translation>Yläpuolinen toleranssi:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="61"/>
       <source>Overtolerance value
 If &apos;Equal Tolerance&apos; is checked this is also
 the negated value for &apos;Under Tolerance&apos;.</source>
-      <translation type="unfinished">Overtolerance value
-If &apos;Equal Tolerance&apos; is checked this is also
-the negated value for &apos;Under Tolerance&apos;.</translation>
+      <translation>Yläpuolisen toleranssin numeroarvo
+Jos &apos;Yhtäsuuret toleranssit&apos; on valittu, tämä arvo on sama kuin &apos;Alapuolisen toleranssin&apos; arvo negatiivisena.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="79"/>
       <source>Undertolerance:</source>
-      <translation type="unfinished">Undertolerance:</translation>
+      <translation>Alapuolinen toleranssi:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="92"/>
       <source>Undertolerance value
 If &apos;Equal Tolerance&apos; is checked it will be replaced
 by negative value of &apos;Over Tolerance&apos;.</source>
-      <translation type="unfinished">Undertolerance value
-If &apos;Equal Tolerance&apos; is checked it will be replaced
-by negative value of &apos;Over Tolerance&apos;.</translation>
+      <translation>Alapuolisen toleranssin numeroarvo
+Jos &apos;Yhtäsuuret toleranssit&apos; on valittu, tämä arvo korvaantuu &apos;Yläpuolisen toleranssin&apos; negatiivisella numeroarvolla.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="115"/>
       <source>Formatting</source>
-      <translation type="unfinished">Formatting</translation>
+      <translation>Muotoilu</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="123"/>
       <source>Format Specifier:</source>
-      <translation type="unfinished">Format Specifier:</translation>
+      <translation>Muotoilun Määrityskenttä:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="130"/>
       <source>Text to be displayed</source>
-      <translation type="unfinished">Text to be displayed</translation>
+      <translation>Näytettävä teksti</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="137"/>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
 be used instead if the dimension value</source>
-      <translation type="unfinished">If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</translation>
+      <translation>Tällä valinnalla &apos;Muotoilun Määrityskentän&apos; sisältö korvaa Mitan numeerisen arvon</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="141"/>
       <source>Arbitrary Text</source>
-      <translation type="unfinished">Arbitrary Text</translation>
+      <translation>Vapaavalintainen teksti</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="148"/>
       <source>OverTolerance Format Specifier:</source>
-      <translation type="unfinished">OverTolerance Format Specifier:</translation>
+      <translation>Yläpuolisen toleranssin Määrityskenttä:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="155"/>
@@ -4114,7 +4108,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="162"/>
       <source>UnderTolerance Format Specifier:</source>
-      <translation type="unfinished">UnderTolerance Format Specifier:</translation>
+      <translation>Alapuolisen toleranssin Määrityskenttä:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="169"/>
@@ -4124,7 +4118,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="180"/>
       <source>Arbitrary Tolerance Text</source>
-      <translation type="unfinished">Arbitrary Tolerance Text</translation>
+      <translation>Vapaavalintainen toleranssiteksti</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="192"/>
@@ -4134,7 +4128,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="203"/>
       <source>Flip Arrowheads</source>
-      <translation type="unfinished">Flip Arrowheads</translation>
+      <translation>Käännä nuolenpäät</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="210"/>
@@ -4144,17 +4138,17 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="217"/>
       <source>Color of the dimension</source>
-      <translation type="unfinished">Color of the dimension</translation>
+      <translation>Mitan väri</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="231"/>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>Fonttikoko:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="250"/>
       <source>Fontsize for &apos;Text&apos;</source>
-      <translation type="unfinished">Fontsize for &apos;Text&apos;</translation>
+      <translation>&apos;Tekstin&apos; fonttikoko</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="272"/>
@@ -4200,12 +4194,12 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="26"/>
       <source>Apply Geometric Hatch to Face</source>
-      <translation type="unfinished">Apply Geometric Hatch to Face</translation>
+      <translation>Tee alueelle geometrinen viivoitus</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="38"/>
       <source>Define your pattern</source>
-      <translation type="unfinished">Define your pattern</translation>
+      <translation>Määritä viivoituskuviointi</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="52"/>
@@ -4215,47 +4209,47 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="59"/>
       <source>Pattern File</source>
-      <translation type="unfinished">Pattern File</translation>
+      <translation>Viivoituskuvioinnin lähdetiedosto</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="70"/>
       <source>Pattern Name</source>
-      <translation type="unfinished">Pattern Name</translation>
+      <translation>Viivoituskuvioinnin nimi</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="77"/>
       <source>Line Weight</source>
-      <translation type="unfinished">Line Weight</translation>
+      <translation>Viivan paksuus</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="84"/>
       <source>Pattern Scale</source>
-      <translation type="unfinished">Pattern Scale</translation>
+      <translation>Viivoituskuvionnin skaalaus</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
       <source>Line Color</source>
-      <translation type="unfinished">Line Color</translation>
+      <translation>Viivan väri</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="117"/>
       <source>Name of pattern within file</source>
-      <translation type="unfinished">Name of pattern within file</translation>
+      <translation>Viivoituskuvionnin nimi tiedostossa</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="130"/>
       <source>Color of pattern lines</source>
-      <translation type="unfinished">Color of pattern lines</translation>
+      <translation>Viivoituskuvioinnin väri</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="143"/>
       <source>Enlarges/shrinks the pattern</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern</translation>
+      <translation>Suurenna/kutista viivoituskuviointia</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="171"/>
       <source>Thickness of lines within the pattern</source>
-      <translation type="unfinished">Thickness of lines within the pattern</translation>
+      <translation>Viivoituskuvioinnin viivanpaksuus</translation>
     </message>
   </context>
   <context>
@@ -4263,12 +4257,12 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="26"/>
       <source>Apply Hatch to Face</source>
-      <translation type="unfinished">Apply Hatch to Face</translation>
+      <translation>Tee alueelle viivoitus</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="38"/>
       <source>Define your pattern</source>
-      <translation type="unfinished">Define your pattern</translation>
+      <translation>Määritä viivoituskuviointi</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="52"/>
@@ -4278,27 +4272,27 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="59"/>
       <source>Pattern File</source>
-      <translation type="unfinished">Pattern File</translation>
+      <translation>Viivoituskuvioinnin lähdetiedosto</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="76"/>
       <source>Color of pattern lines</source>
-      <translation type="unfinished">Color of pattern lines</translation>
+      <translation>Viivoituskuvioinnin väri</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="83"/>
       <source>Line Color</source>
-      <translation type="unfinished">Line Color</translation>
+      <translation>Viivan väri</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="96"/>
       <source>Enlarges/shrinks the pattern</source>
-      <translation type="unfinished">Enlarges/shrinks the pattern</translation>
+      <translation>Suurenna/kutista viivoituskuviointia</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="131"/>
       <source>Pattern Scale</source>
-      <translation type="unfinished">Pattern Scale</translation>
+      <translation>Viivoituskuvionnin skaalaus</translation>
     </message>
   </context>
   <context>
@@ -4306,17 +4300,17 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="26"/>
       <source>Leader Line</source>
-      <translation type="unfinished">Leader Line</translation>
+      <translation>Reittiviiva</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="38"/>
       <source>Base View</source>
-      <translation type="unfinished">Base View</translation>
+      <translation>Perusnäkymä</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="93"/>
       <source>Discard Changes</source>
-      <translation type="unfinished">Discard Changes</translation>
+      <translation>Hylkää muutokset</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="118"/>
@@ -4326,7 +4320,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="149"/>
       <source>Start Symbol</source>
-      <translation type="unfinished">Start Symbol</translation>
+      <translation>Alun symboli</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="212"/>
@@ -4346,7 +4340,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="287"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Jatkuva</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="305"/>
@@ -4356,7 +4350,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="169"/>
       <source>End Symbol</source>
-      <translation type="unfinished">End Symbol</translation>
+      <translation>Lopun symboli</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="113"/>
@@ -4390,7 +4384,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="296"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>Katkoviiva</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="314"/>
@@ -4454,12 +4448,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="105"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Jatkuva</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="110"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>Katkoviiva</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="115"/>
@@ -4484,7 +4478,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="151"/>
       <source>Weight</source>
-      <translation type="unfinished">Weight</translation>
+      <translation>Paksuus</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="158"/>
@@ -4494,7 +4488,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="171"/>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Näkyvissä</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="191"/>
@@ -4512,7 +4506,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLinkDim.ui" line="26"/>
       <source>Link Dimension</source>
-      <translation type="unfinished">Link Dimension</translation>
+      <translation>Linkitä Mitta</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="54"/>
@@ -4522,12 +4516,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLinkDim.ui" line="80"/>
       <source>Feature2:</source>
-      <translation type="unfinished">Feature2:</translation>
+      <translation>Piirre2:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="113"/>
       <source>Feature1:</source>
-      <translation type="unfinished">Feature1:</translation>
+      <translation>Piirre1:</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="133"/>
@@ -4601,7 +4595,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="83"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Automaattinen</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="88"/>
@@ -4611,22 +4605,22 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="100"/>
       <source>Custom Scale</source>
-      <translation type="unfinished">Custom Scale</translation>
+      <translation>Omavalintainen skaalaus</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="120"/>
       <source>Scale Numerator</source>
-      <translation type="unfinished">Scale Numerator</translation>
+      <translation>Skaalausmurtoluvun osoittaja</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="136"/>
       <source>:</source>
-      <translation type="unfinished">:</translation>
+      <translation>:</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="143"/>
       <source>Scale Denominator</source>
-      <translation type="unfinished">Scale Denominator</translation>
+      <translation>Skaalausmurtoluvun nimittäjä</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="179"/>
@@ -4716,12 +4710,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="595"/>
       <source>Spin CW</source>
-      <translation type="unfinished">Spin CW</translation>
+      <translation>Pyöritä myötäpäivään</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="623"/>
       <source>Spin CCW</source>
-      <translation type="unfinished">Spin CCW</translation>
+      <translation>Pyöritä vastapäivään</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="653"/>
@@ -4733,7 +4727,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="657"/>
       <source>Auto Distribute</source>
-      <translation type="unfinished">Auto Distribute</translation>
+      <translation>Automaattinen jaottelu</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="691"/>
@@ -4776,12 +4770,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="36"/>
       <source>CenterLine</source>
-      <translation type="unfinished">CenterLine</translation>
+      <translation>Keskilinja</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="43"/>
       <source>Cosmetic</source>
-      <translation type="unfinished">Cosmetic</translation>
+      <translation>Kosmeettinen</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="50"/>
@@ -4789,7 +4783,7 @@ using the given X/Y Spacing</translation>
       <location filename="../../TaskRestoreLines.ui" line="70"/>
       <location filename="../../TaskRestoreLines.ui" line="80"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
   </context>
   <context>
@@ -4802,12 +4796,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="67"/>
       <source>Max Width</source>
-      <translation type="unfinished">Max Width</translation>
+      <translation>Enimmäisleveys</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="53"/>
       <source>Base Feature</source>
-      <translation type="unfinished">Base Feature</translation>
+      <translation>Pohjapiirre</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="74"/>
@@ -4857,12 +4851,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="210"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Jatkuva</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="215"/>
       <source>Dash</source>
-      <translation type="unfinished">Dash</translation>
+      <translation>Katkoviiva</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="220"/>
@@ -5004,14 +4998,14 @@ using the given X/Y Spacing</translation>
       <location filename="../../TaskWeldingSymbol.cpp" line="295"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="435"/>
       <source>arrow</source>
-      <translation type="unfinished">arrow</translation>
+      <translation>nuoli</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="308"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="318"/>
       <location filename="../../TaskWeldingSymbol.cpp" line="436"/>
       <source>other</source>
-      <translation type="unfinished">other</translation>
+      <translation>muu</translation>
     </message>
   </context>
   <context>
@@ -5019,7 +5013,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../DlgTemplateField.ui" line="17"/>
       <source>Change Editable Field</source>
-      <translation type="unfinished">Change Editable Field</translation>
+      <translation>Muuta muokattavissa olevaa kenttää</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="28"/>
@@ -5050,7 +5044,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="656"/>
       <source>Adds a Centerline between 2 Points</source>
-      <translation>Lisää keskiviivan 2:n pisteen väliin</translation>
+      <translation>Lisää keskilinjan 2:n pisteen väliin</translation>
     </message>
   </context>
   <context>
@@ -5066,7 +5060,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="648"/>
       <source>Adds a Centerline to Faces</source>
-      <translation type="unfinished">Adds a Centerline to Faces</translation>
+      <translation>Lisää keskilinjan alueisiin</translation>
     </message>
   </context>
   <context>
@@ -5131,12 +5125,12 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>TechDraw Pages</source>
-      <translation type="unfinished">TechDraw Pages</translation>
+      <translation>TechDraw-sivu</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>TechDraw Views</source>
-      <translation type="unfinished">TechDraw Views</translation>
+      <translation>TechDraw-Näkymä</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
@@ -5151,22 +5145,22 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>TechDraw File Access</source>
-      <translation type="unfinished">TechDraw File Access</translation>
+      <translation>TechDraw-tiedostonkäsittely</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>TechDraw Decoration</source>
-      <translation type="unfinished">TechDraw Decoration</translation>
+      <translation>TechDraw-koristelu</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>TechDraw Annotation</source>
-      <translation type="unfinished">TechDraw Annotation</translation>
+      <translation>TechDraw-merkinnät</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Views</source>
-      <translation type="unfinished">Views</translation>
+      <translation>Näkymät</translation>
     </message>
   </context>
 </TS>

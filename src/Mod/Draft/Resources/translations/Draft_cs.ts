@@ -356,7 +356,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Poloměr kružnice</translation>
     </message>
     <message>
       <location filename="polygon.py" line="48"/>
@@ -366,7 +366,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Poloměr řídící kružnice</translation>
     </message>
     <message>
       <location filename="polygon.py" line="56"/>
@@ -501,12 +501,12 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="47"/>
       <source>Text string</source>
-      <translation type="unfinished">Text string</translation>
+      <translation>Textový řetězec</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="50"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>Název souboru písma</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="53"/>
@@ -516,17 +516,17 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="56"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Rozestupy mezi znaky</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>Zobrazit jednotlivé prvky pole</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
-      <translation type="unfinished">Base object that will be duplicated</translation>
+      <translation>Základní objekt který bude duplikován</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="87"/>
@@ -640,12 +640,12 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="ellipse.py" line="52"/>
       <source>Minor radius of the ellipse</source>
-      <translation type="unfinished">Minor radius of the ellipse</translation>
+      <translation>Vedlejší poloměr elipsy</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="55"/>
       <source>Major radius of the ellipse</source>
-      <translation type="unfinished">Major radius of the ellipse</translation>
+      <translation>Hlavní poloměr elipsy</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="61"/>
@@ -655,12 +655,12 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>Body Beziérovy křivky</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>Stupeň Beziérovy funkce</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -680,7 +680,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>Délka tohoto objektu</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
@@ -699,7 +699,7 @@ Leave this property empty to create copies along the entire 'Path Object'.</tran
     <message>
       <location filename="patharray.py" line="200"/>
       <source>Number of copies to create</source>
-      <translation type="unfinished">Number of copies to create</translation>
+      <translation>Počet kopií k vytvoření</translation>
     </message>
     <message>
       <location filename="patharray.py" line="219"/>
@@ -768,12 +768,12 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="96"/>
       <source>The spacing between lines of text</source>
-      <translation type="unfinished">The spacing between lines of text</translation>
+      <translation>Mezery mezi řádky textu</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="103"/>
       <source>The color of the projected objects</source>
-      <translation type="unfinished">The color of the projected objects</translation>
+      <translation>Barva promítnutých objektů</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="110"/>
@@ -798,17 +798,17 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="46"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>Specifikuje, jestli mají být odstraněny dělící čáry</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="49"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Hodnota volitelného vysunutí pro všechny plochy</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="52"/>
       <source>An optional offset value to be applied to all faces</source>
-      <translation type="unfinished">An optional offset value to be applied to all faces</translation>
+      <translation>Hodnota volitelného odsazení pro všechny plochy</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="55"/>
@@ -1601,17 +1601,17 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_fillets.py" line="89"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>Odstranit původní objekty</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="95"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Vytvořit sražení</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="326"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>Směr odsazení není definován. Prosím, přesuňte myš na jednu nebo druhou stranu objektu pro naznačení směru</translation>
     </message>
   </context>
   <context>
@@ -2060,7 +2060,7 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_groups.py" line="72"/>
       <source>Move to group</source>
-      <translation type="unfinished">Move to group</translation>
+      <translation>Přesunout do skupiny</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="74"/>
@@ -2083,7 +2083,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>Použít aktuální styl</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="50"/>
@@ -2111,12 +2111,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_arcs.py" line="598"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Nástroje oblouků</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="601"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>Vytvořte různé typy kruhových oblouků.</translation>
     </message>
   </context>
   <context>
@@ -2132,10 +2132,10 @@ CTRL to snap, SHIFT to constrain.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation type="unfinished">Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</translation>
+      <translation>Vytvoří pole z vybraného objektu.
+Ve výchozím nastavení se jedná o ortogonální pole 2x2.
+Jakmile je pole vytvořeno, jeho typ může být změněn
+na polární nebo kruhové a jeho vlastnosti lze upravit.</translation>
     </message>
   </context>
   <context>
@@ -2169,7 +2169,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
-      <translation type="unfinished">Bezier curve</translation>
+      <translation>Beziérova křivka</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -2655,7 +2655,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pointarray.py" line="76"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Pole bodů</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="79"/>
@@ -2723,7 +2723,7 @@ CTRL to snap, SHIFT to constrain</translation>
     <message>
       <location filename="gui_rotate.py" line="62"/>
       <source>Rotate</source>
-      <translation>Rotace</translation>
+      <translation>Otočit</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="65"/>
@@ -6685,7 +6685,7 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
     <message>
       <location filename="gui_pointarray.py" line="123"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Pole bodů</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="105"/>
@@ -7405,7 +7405,7 @@ Chcete umožnit FreeCADu stáhnout tyto knihovny?</translation>
     <message>
       <location filename="gui_rotate.py" line="280"/>
       <source>Rotate</source>
-      <translation>Rotace</translation>
+      <translation>Otočit</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="79"/>

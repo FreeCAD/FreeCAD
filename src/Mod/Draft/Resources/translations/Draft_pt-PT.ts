@@ -231,14 +231,14 @@ is to the measured object.
 that displays the measured radius or diameter.
 - For angular dimensions, this controls the radius of the dimension arc
 that displays the measured angle.</source>
-      <translation type="unfinished">A point through which the dimension line, or an extrapolation of it, will pass.
+      <translation>Um ponto através do qual a linha de cotagem, ou uma extrapolação dela, passará.
 
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</translation>
+- Para cotagens lineares, esta propriedade controla o quão perto a linha de cotagem
+está do objeto medido.
+- Para cotagens radiais, isto controla a direção da linha de cotagem
+que exibe o raio medido ou diâmetro.
+- Para cotagens angulares, isto controla o raio do arco de cotagem
+que exibe o ângulo medido.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="233"/>
@@ -246,10 +246,10 @@ that displays the measured angle.</translation>
 
 If it is a radius dimension it will be the center of the arc.
 If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Starting point of the dimension line.
+      <translation>Ponto inicial da linha de cotagem.
 
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</translation>
+Numa cotagem de raio, será o centro do arco.
+Numa cotagem de diâmetro, será um ponto sobre o arco.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="247"/>
@@ -257,17 +257,17 @@ If it is a diameter dimension it will be a point that lies on the arc.</translat
 
 If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
-      <translation type="unfinished">Ending point of the dimension line.
+      <translation>Ponto final da linha de cotagem.
 
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</translation>
+Se for uma cotagem de raio ou diâmetro
+será um ponto sobre o arco.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>A direção da linha de cotagem.
+Se permanecer '(0,0,0)', a direção será calculada automaticamente.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -278,34 +278,34 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>O valor da medida.
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+Esta propriedade é apenas-de-leitura porque o valor é calculado
+a partir das propriedades 'Início' e 'Fim'.
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+Se a 'Geometria Ligada' for um arco ou círculo, esta 'Distância'
+é o raio ou diâmetro, dependendo da propriedade 'Diâmetro'.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>Ao medir arcos circulares, determina se deve exibir
+o raio ou o valor do diâmetro</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
       <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Ângulo inicial da linha de cotagem (arco circular).
+O arco é desenhado no sentido anti-horário.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="518"/>
       <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
-      <translation type="unfinished">Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</translation>
+      <translation>Ângulo final da linha de cotagem (arco circular).
+O arco é desenhado no sentido anti-horário.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="533"/>
@@ -313,10 +313,10 @@ The arc is drawn counter-clockwise.</translation>
 
 This is normally the point where two line segments, or their extensions
 intersect, resulting in the measured 'Angle' between them.</source>
-      <translation type="unfinished">The center point of the dimension line, which is a circular arc.
+      <translation>O ponto central da linha de cotagem, que é um arco circular.
 
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</translation>
+Normalmente este é o ponto onde dois segmentos de linha, ou suas extensões
+se cruzam, resultando no 'Ângulo' medido entre eles.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="547"/>
@@ -324,22 +324,20 @@ intersect, resulting in the measured 'Angle' between them.</translation>
 
 This property is read-only because the value is calculated from
 the 'First Angle' and 'Last Angle' properties.</source>
-      <translation type="unfinished">The value of the measurement.
-
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</translation>
+      <translation>Esta propriedade é apenas-de-leitura porque é calculada a partir
+do ângulo inicial e do ângulo final.</translation>
     </message>
     <message>
       <location filename="text.py" line="54"/>
       <source>The placement of the base point of the first line</source>
-      <translation type="unfinished">The placement of the base point of the first line</translation>
+      <translation>A posição do ponto base da primeira linha</translation>
     </message>
     <message>
       <location filename="text.py" line="66"/>
       <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation type="unfinished">The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</translation>
+      <translation>O texto exibido por este objeto.
+É uma lista de texto; cada elemento na lista será exibido na sua própria linha.</translation>
     </message>
     <message>
       <location filename="circle.py" line="45"/>
@@ -350,55 +348,55 @@ It is a list of strings; each element in the list will be displayed in its own l
       <location filename="circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Ângulo final do arco (para um círculo completo, 
+                use o mesmo valor do ângulo inicial)</translation>
     </message>
     <message>
       <location filename="circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Raio do círculo</translation>
     </message>
     <message>
       <location filename="polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Número de faces</translation>
     </message>
     <message>
       <location filename="polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Raio do círculo de controlo</translation>
     </message>
     <message>
       <location filename="polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Como o polígono deve ser desenhado a partir do círculo de controle</translation>
     </message>
     <message>
       <location filename="point.py" line="45"/>
       <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
+      <translation>Localização X</translation>
     </message>
     <message>
       <location filename="point.py" line="48"/>
       <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
+      <translation>Localização Y</translation>
     </message>
     <message>
       <location filename="point.py" line="51"/>
       <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
+      <translation>Localização Z</translation>
     </message>
     <message>
       <location filename="layer.py" line="59"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>Os objetos que fazem parte desta camada</translation>
     </message>
     <message>
       <location filename="label.py" line="65"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>A posição da ponta da linha de chamada.
+Este ponto pode ser decorado com uma seta ou outro símbolo.</translation>
     </message>
     <message>
       <location filename="label.py" line="79"/>
@@ -406,10 +404,10 @@ This point can be decorated with an arrow or another symbol.</translation>
 as 'Text', depending on 'Label Type'.
 
 'Target' won't be used if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">Object, and optionally subelement, whose properties will be displayed
-as 'Text', depending on 'Label Type'.
+      <translation>Objeto e opcionalmente subelemento, cujas propriedades serão exibidas
+como 'Texto', dependendo de 'Tipo de etiqueta'.
 
-'Target' won't be used if 'Label Type' is set to 'Custom'.</translation>
+'Alvo' não será usado se 'Tipo de etiqueta' estiver definido como 'Personalizado'.</translation>
     </message>
     <message>
       <location filename="label.py" line="109"/>
@@ -422,15 +420,15 @@ The middle point is calculated automatically depending on the chosen
 
 If 'Straight Direction' is set to 'Custom', the 'Points' property
 can be set as a list of arbitrary points.</source>
-      <translation type="unfinished">The list of points defining the leader line; normally a list of three points.
+      <translation>Lista de pontos que definem a linha de chamada; normalmente uma lista de três pontos.
 
-The first point should be the position of the text, that is, the 'Placement',
-and the last point should be the tip of the line, that is, the 'Target Point'.
-The middle point is calculated automatically depending on the chosen
-'Straight Direction' and the 'Straight Distance' value and sign.
+O primeiro ponto deve ser a posição do texto, ou seja, do 'Posicionamento',
+e o último ponto deve ser a ponta da linha, ou seja, o "Ponto Alvo".
+O ponto do meio é calculado automaticamente dependendo da
+'Direção Direta' escolhida e do valor e sinal da 'Distância Direta'.
 
-If 'Straight Direction' is set to 'Custom', the 'Points' property
-can be set as a list of arbitrary points.</translation>
+Se 'Direção Direta' estiver definida como 'Personalizada', a propriedade 'Pontos'
+pode ser definida como uma lista de pontos arbitrários.</translation>
     </message>
     <message>
       <location filename="label.py" line="124"/>
@@ -438,10 +436,10 @@ can be set as a list of arbitrary points.</translation>
 
 If 'Custom' is chosen, the points of the leader can be specified by
 assigning a custom list to the 'Points' attribute.</source>
-      <translation type="unfinished">The direction of the straight segment of the leader line.
+      <translation>A direção do segmento reto da linha de chamada.
 
-If 'Custom' is chosen, the points of the leader can be specified by
-assigning a custom list to the 'Points' attribute.</translation>
+Se 'Personalizado' for escolhido, os pontos da linha de chamada podem ser especificados
+atribuindo uma lista personalizada ao atributo 'Pontos'.</translation>
     </message>
     <message>
       <location filename="label.py" line="142"/>
@@ -450,21 +448,21 @@ assigning a custom list to the 'Points' attribute.</translation>
 This is an oriented distance; if it is negative, the line will be drawn
 to the left or below the 'Text', otherwise to the right or above it,
 depending on the value of 'Straight Direction'.</source>
-      <translation type="unfinished">The length of the straight segment of the leader line.
+      <translation>O comprimento do segmento reto da linha de chamada.
 
-This is an oriented distance; if it is negative, the line will be drawn
-to the left or below the 'Text', otherwise to the right or above it,
-depending on the value of 'Straight Direction'.</translation>
+Esta é uma distância orientada; se for negativo, a linha será desenhada
+para a esquerda ou abaixo do 'Texto', caso contrário ao direito ou superior,
+dependendo do valor de 'Direção Direta'.</translation>
     </message>
     <message>
       <location filename="label.py" line="156"/>
       <source>The placement of the 'Text' element in 3D space</source>
-      <translation type="unfinished">The placement of the 'Text' element in 3D space</translation>
+      <translation>A posição do elemento 'texto' no espaço 3D</translation>
     </message>
     <message>
       <location filename="label.py" line="166"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
-      <translation type="unfinished">The text to display when 'Label Type' is set to 'Custom'</translation>
+      <translation>O texto a ser exibido quando 'Tipo de etiqueta' é definido como 'Personalizado'</translation>
     </message>
     <message>
       <location filename="label.py" line="181"/>
@@ -473,11 +471,11 @@ depending on the value of 'Straight Direction'.</translation>
 This property is read-only, as the final text depends on 'Label Type',
 and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
-      <translation type="unfinished">The text displayed by this label.
+      <translation>O texto exibido por esta etiqueta.
 
-This property is read-only, as the final text depends on 'Label Type',
-and the object defined in 'Target'.
-The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</translation>
+Esta propriedade é apenas-de-leitura, já que o texto final depende de 'Tipo de etiqueta',
+e o objeto definido no 'Alvo'.
+O 'Texto personalizado' é exibido apenas se 'Tipo de etiqueta' estiver definido como 'Personalizado'.</translation>
     </message>
     <message>
       <location filename="label.py" line="216"/>

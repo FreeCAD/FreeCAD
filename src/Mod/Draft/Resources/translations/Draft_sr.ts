@@ -2903,7 +2903,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="357"/>
       <source>Center</source>
-      <translation>Центар</translation>
+      <translation>По средини</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="360"/>

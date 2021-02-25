@@ -93,7 +93,7 @@ Its placement, position and rotation, will be used when creating polar and circu
 Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
       <translation>L'oggetto asse che sovrascrive il valore di 'Asse' e 'Centro', ad esempio, una linea di riferimento.
 Il suo posizionamento, posizione e rotazione, verranno utilizzati durante la creazione di serie polari e circolari.
-Lascia vuota questa proprietà per poter impostare manualmente "Asse" e "Centro".</translation>
+Lascia vuota questa proprietà per poter impostare manualmente 'Asse' e 'Centro'.</translation>
     </message>
     <message>
       <location filename="array.py" line="228"/>

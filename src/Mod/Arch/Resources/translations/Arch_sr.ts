@@ -3217,7 +3217,7 @@
     <message>
       <location filename="ArchWall.py" line="508"/>
       <source>Center</source>
-      <translation>Центар</translation>
+      <translation>По средини</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1141"/>
