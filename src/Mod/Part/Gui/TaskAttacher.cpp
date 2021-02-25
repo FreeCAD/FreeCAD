@@ -312,14 +312,14 @@ TaskAttacher::~TaskAttacher()
 
     if (editOnClose) {
         try {
-            if (editObjT.getObjectName().size()) {
+            if (editObjT.getSubObject()) {
                 Gui::Selection().selStackPush();
                 Gui::Selection().addSelection(editObjT);
+                Gui::cmdGuiDocument(editObjT.getObject(),
+                        std::ostringstream() << "setEdit("
+                        << editObjT.getObjectPython() << ",0,u'"
+                        << editObjT.getSubName() << "')");
             }
-            Gui::cmdGuiDocument(editObjT.getObject(),
-                    std::ostringstream() << "setEdit("
-                    << editObjT.getObjectPython() << ",0,u'"
-                    << editObjT.getSubName() << "')");
         } catch (Base::Exception &e) {
             e.ReportException();
         }
