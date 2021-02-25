@@ -76,38 +76,6 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {
-    auto modifiers = QApplication::queryKeyboardModifiers();
-    if (modifiers & Qt::ShiftModifier) {
-        auto feat = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
-        auto bodyVp = Base::freecad_dynamic_cast<ViewProviderBody>(
-                Gui::Application::Instance->getViewProvider(
-                    PartDesign::Body::findBodyOf(getObject())));
-
-        App::SubObjectT objT;
-        if (feat && bodyVp) {
-            auto sels = Gui::Selection().getSelectionT("*", 0);
-            if (sels.size() && sels[0].getSubObject() == feat) {
-                auto parent = sels[0].getParent();
-                if (parent.getSubObject() == bodyVp->getObject())
-                    objT = sels[0];
-                else {
-                    parent = parent.getParent();
-                    if (parent.getSubObject() == bodyVp->getObject()) {
-                        objT = parent;
-                        objT.setSubName(objT.getSubName()
-                                + feat->getNameInDocument() + ".");
-                    }
-                }
-            }
-            Gui::Selection().clearSelection();
-            bodyVp->groupSiblings(feat, feat->_Siblings.getSize() == 0, false);
-            if (objT.getObjectName().size())
-                Gui::Selection().addSelection(objT);
-            return true;
-        }
-        return false;
-    }
-
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
     App::AutoTransaction committer(Msg.c_str());
