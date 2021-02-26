@@ -421,7 +421,17 @@ public:
 
     /// Used by tree view to set context object of double clicking and context menu
     void setContext(const App::SubObjectT &sobj);
-    const App::SubObjectT &getContext() const;
+    /// Obtain the selection context set by calling setContext()
+    const App::SubObjectT & getContext() const;
+    /** Obtain the current selection context with fallback
+     *
+     * This function will try returning the context in the following order,
+     * * Explicitly set context by calling setContext(),
+     * * Current pre-selected object,
+     * * If there is only one selection in the active document,
+     * * If the active document is in editing, then return the editing object.
+     */
+    App::SubObjectT getExtendedContext() const;
 
     /// set the preselected object (mostly by the 3D view)
     int setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,

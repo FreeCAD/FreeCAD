@@ -811,6 +811,25 @@ const App::SubObjectT &SelectionSingleton::getContext() const
     return ContextObject;
 }
 
+App::SubObjectT SelectionSingleton::getExtendedContext() const
+{
+    if (ContextObject.getSubObject())
+        return ContextObject;
+
+    if (CurrentPreselection.Object.getSubObject())
+        return CurrentPreselection.Object;
+
+    auto sels = getSelectionT(nullptr, 0, true);
+    if (sels.size())
+        return sels.front();
+
+    auto gdoc = Application::Instance->editDocument();
+    if (gdoc && gdoc == Application::Instance->activeDocument())
+        return gdoc->getInEditT();
+
+    return App::SubObjectT();
+}
+
 int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,
                                      float x, float y, float z, int signal, bool msg)
 {
@@ -2006,9 +2025,14 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"setContext",   (PyCFunction) SelectionSingleton::sSetContext, METH_VARARGS,
      "setContext(obj, subname='')\n\n"
      "Set the context sub-object when calling ViewObject.doubleClicked/setupContextMenu()."},
-    {"getContext",   (PyCFunction) SelectionSingleton::sSetContext, METH_VARARGS,
-     "getContext() -> (obj, subname)\n\n"
-     "Obtain the context sub-object for ViewObject.doubleClicked/setupContextMenu()."},
+    {"getContext",   (PyCFunction) SelectionSingleton::sGetContext, METH_VARARGS,
+     "getContext(extended = False) -> (obj, subname)\n\n"
+     "Obtain the current context sub-object.\n"
+     "If extended is True, then try various options in the following order,\n"
+     " * Explicitly set context by calling setContext(),\n"
+     " * Current pre-selected object,\n"
+     " * If there is only one selection in the active document,\n"
+     " * If the active document is in editing, then return the editing object."},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
@@ -2535,13 +2559,19 @@ PyObject* SelectionSingleton::sCheckTopParent(PyObject *, PyObject *args) {
 
 PyObject *SelectionSingleton::sGetContext(PyObject *, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    PyObject *extended = Py_False;
+    if (!PyArg_ParseTuple(args, "|O", &extended))
         return 0;
-    auto obj = Selection().ContextObject.getObject();
+    App::SubObjectT sobjT;
+    if (PyObject_IsTrue(extended))
+        sobjT = Selection().getExtendedContext();
+    else
+        sobjT = Selection().ContextObject;
+    auto obj = sobjT.getObject();
     if (!obj)
         Py_Return;
     return Py::new_reference_to(Py::TupleN(Py::asObject(obj->getPyObject()),
-                                           Py::String(Selection().ContextObject.getSubName().c_str())));
+                                           Py::String(sobjT.getSubName().c_str())));
 }
 
 PyObject *SelectionSingleton::sSetContext(PyObject *, PyObject *args)
