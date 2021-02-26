@@ -30,8 +30,7 @@ __url__ = "http://www.freecadweb.org"
 This script builds qhrlp files from a local copy of the wiki
 """
 
-import sys, os, re, tempfile, getopt, shutil
-from urllib.request import urlopen, HTTPError
+import os, re, shutil
 
 #    CONFIGURATION       #################################################
 

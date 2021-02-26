@@ -32,7 +32,7 @@ __url__ = "http://www.freecadweb.org"
 This script retrieves the contents of a wiki site from a pages list
 """
 
-import sys, os, re, tempfile, getopt
+import os, re
 from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
@@ -159,9 +159,9 @@ def crawl():
     for l in lfile: locallist.append(l.replace("\n",""))
     lfile.close()
     todolist = locallist[:]
-    print ("getting",len(todolist),"files...")
+    print ("getting ",len(todolist)," files...")
     count = 1
-    indexpages = get(INDEX)
+    get(INDEX)
     while todolist:
         targetpage = todolist.pop()
         if VERBOSE: print (count,(3-len(str(count)))*" ", ": Fetching ", targetpage)
@@ -172,7 +172,7 @@ def crawl():
     return 0
 
 def get(page):
-    "downloads a single page, returns the other pages it links to"
+    "downloads a single page"
     localpage = page
     if "Command_Reference" in localpage:
         localpage = localpage.replace("Category:","")
@@ -188,7 +188,7 @@ def get(page):
         html = cleanimagelinks(html)
         output(html,page)
     else:
-        if VERBOSE: print ("       skipping",page)
+        if VERBOSE: print ("       skipping ",page)
 
 def getlinks(html):
     "returns a list of wikipage links in html file"
@@ -302,15 +302,15 @@ def fetchimage(imagelink):
                 file = open(path,'wb')
                 file.write(data)
                 file.close()
-            except:
+            except Exception:
                 failcount += 1
             else:
                 processed.append(filename)
-                if VERBOSE: print ("       saving",local(filename,image=True))
+                if VERBOSE: print ("       saving ",local(filename,image=True))
                 return
         print ('Error: unable to fetch file ' + filename)
     else:
-        if VERBOSE: print ("       skipping",filename)
+        if VERBOSE: print ("       skipping ",filename)
 
 def local(page,image=False):
     "returns a local path for a given page/image"
@@ -345,7 +345,7 @@ def output(html,page):
         filename = filename.replace("&pagefrom=","+")
         filename = filename.replace("#mw-pages","")
         filename = filename.replace(".html.html",".html")
-    print ("       saving",filename)
+    print ("       saving ",filename)
     file = open(filename,'wb')
     file.write(html)
     file.close()

@@ -33,7 +33,7 @@ This script parses the contents of a wiki site and saves a file containing
 names of pages and images to be downloaded.
 """
 
-import sys, os, re, tempfile, getopt
+import sys, os, re
 from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
@@ -155,7 +155,7 @@ def getlinks(html):
         if not rg:
             rg = re.findall('href="\/wiki\/(.*?)"',l)
             if not rg:
-                rg = re.findall('href=".*?wiki.freecadweb.org\/(.*?)"',l)
+                rg = re.findall('href=".*?wiki\\.freecadweb\\.org\/(.*?)"',l)
                 if not rg:
                     rg = re.findall('href="\/(.*?)"',l)
         if "images" in rg:

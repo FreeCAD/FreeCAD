@@ -70,9 +70,8 @@ Embedding_FreeCAD
 Embedding_FreeCADGui
 Code_snippets"""
 
-import sys, os, re, tempfile, getopt, shutil, time
+import sys, os, shutil, time
 from urllib.request import urlopen
-from urllib.error import HTTPError
 
 #    CONFIGURATION       #################################################
 
@@ -99,7 +98,7 @@ def crawl():
     if PDFCONVERTOR == 'pisa':
         try:
             import ho.pisa as pisa
-        except:
+        except Exception:
             "Error: Python-pisa not installed, exiting."
             return 1
     elif PDFCONVERTOR == 'htmldoc':
@@ -108,7 +107,7 @@ def crawl():
             return 1
     try:
         from PyPDF2 import PdfFileReader,PdfFileWriter
-    except:
+    except Exception:
         print("Error: Python-pypdf2 not installed, exiting.")
 
     # run ########################################################
@@ -229,7 +228,7 @@ def joinpdf():
             if page == "end":
                 parent = False
                 continue
-            if VERBOSE: print('Appending',page, "at position",count)
+            if VERBOSE: print('Appending ',page, " at position ",count)
             title = page.replace("_"," ")
             pdffile = page + ".pdf"
             if exists(pdffile,True):
@@ -245,7 +244,7 @@ def joinpdf():
                     result.addBookmark(title,count,parent)
                 count += numpages
             else:
-                print("page",pdffile,"not found, aborting.")
+                print("page ",pdffile," not found, aborting.")
                 sys.exit()
 
     if VERBOSE: print("Writing...")
