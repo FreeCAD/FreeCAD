@@ -111,6 +111,9 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
                     receiver, member);
         act->setData(QVariant((int)EditToggleSupress));
 
+        act = menu->addAction(QObject::tr("Toggle export"), receiver, member);
+        act->setData(QVariant((int)Gui::ViewProvider::ExportInGroup));
+
         if (!body->AutoGroupSolids.getValue() && feat->_Siblings.getSize()) {
             act = menu->addAction(QObject::tr("Ungroup solid feature"), receiver, member);
             act->setData(QVariant((int)EditExpandSiblings));
@@ -248,20 +251,19 @@ bool ViewProvider::setEdit(int ModNum)
     case EditSelectSiblings: {
         auto body = PartDesign::Body::findBodyOf(getObject());
         if (body) {
-            ViewProviderDocumentObject *vpParent = 0;
-            std::string subname;
-            auto doc = Gui::Application::Instance->editDocument();
-            if(!doc)
+            auto ctx = Gui::Selection().getExtendedContext();
+            if (ctx.getSubObject() != getObject())
                 return false;
-            doc->getInEdit(&vpParent,&subname);
-            if (!vpParent)
-                return false;
-
-            App::SubObjectT objT(vpParent->getObject(), subname.c_str());
-            objT = objT.getParent();
-
-            for (auto obj : body->getSiblings(getObject()))
-                Gui::Selection().addSelection(objT.getChild(obj));
+            do {
+                ctx = ctx.getParent();
+                if (ctx.getObjectName().empty())
+                    break;
+                if (ctx.getSubObject() == body) {
+                    for (auto obj : body->getSiblings(getObject()))
+                        Gui::Selection().addSelection(ctx.getChild(obj));
+                    break;
+                }
+            } while(1);
         }
         return false;
     }

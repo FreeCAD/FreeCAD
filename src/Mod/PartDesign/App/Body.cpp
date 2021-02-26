@@ -522,6 +522,16 @@ void Body::onSettingDocument() {
     Part::BodyBase::onSettingDocument();
 }
 
+bool Body::getChildDefaultExport(App::DocumentObject *) const
+{
+    return false;
+}
+
+const App::PropertyLinkList& Body::getExportGroupProperty(int reason) const
+{
+    return reason == GS_DEFAULT ? Group : _ExportChildren;
+}
+
 void Body::onChanged (const App::Property* prop) {
     // we neither load a project nor perform undo/redo
     if (!this->isRestoring()
@@ -597,7 +607,7 @@ PyObject *Body::getPyObject(void)
 }
 
 std::vector<std::string> Body::getSubObjects(int reason) const {
-    if(reason==GS_SELECT && !showTip)
+    if (reason != GS_DEFAULT || ExportMode.getValue() == ExportByChildQuery)
         return Part::BodyBase::getSubObjects(reason);
     return {};
 }
