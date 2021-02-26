@@ -106,6 +106,11 @@ public:
      * like GeoFeatureGroups or OriginGroups. To retrieve those please use their appropriate functions
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
+    /** Returns any group that contains GroupExtension that owns a given object.
+     * If both a non geo group and a geo group contains the given object, this
+     * function will return the non geo group.
+     */
+    static DocumentObject* getAnyGroupOfObject(const DocumentObject* obj);
     //@}
     
     virtual PyObject* getExtensionPyObject(void) override;
@@ -138,10 +143,10 @@ public:
     PropertyInteger _GroupVersion;
 
     enum ExportModeValue {
-        EXPORT_DISABLED,
-        EXPORT_BY_VISIBILITY,
-        EXPORT_BY_CHILD_QUERY,
-        EXPORT_BOTH,
+        ExportDisabled,
+        ExportByVisibility,
+        ExportByChildQuery,
+        ExportBoth,
     };
     PropertyEnumeration ExportMode;
 
@@ -151,14 +156,26 @@ public:
         ~ ToggleNestedVisibility();
     };
 
-protected:
-
-    virtual const PropertyLinkList& getExportGroupProperty() const {
+    /** Return the link list property for holding the children for export
+     * @param reason: specify the reason for export. @sa App::DocumentObject::GSReason
+     */
+    virtual const PropertyLinkList& getExportGroupProperty(int reason) const {
+        (void)reason;
         return Group;
     }
 
+    virtual bool getChildDefaultExport(App::DocumentObject *obj) const {
+       (void)obj;
+       return true;
+    }
+    
     bool queryChildExport(App::DocumentObject *obj) const;
+    bool toggleChildExport(App::DocumentObject *obj, bool toggleGroup = true);
+    static PropertyBool *getChildExportProperty(App::DocumentObject *obj,
+                                                bool force = false,
+                                                bool defvalue = false);
 
+protected:
     void initSetup();
 
 private:

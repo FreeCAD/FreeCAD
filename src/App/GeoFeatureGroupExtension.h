@@ -131,7 +131,7 @@ public:
     static void getInvalidLinkObjects(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
     
 protected:
-    virtual const PropertyLinkList& getExportGroupProperty() const override {
+    virtual const PropertyLinkList& getExportGroupProperty(int /*reason*/) const override {
         return _ExportChildren;
     }
 

@@ -1350,7 +1350,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             if(groupLinks.size()) {
                 auto group = App::GeoFeatureGroupExtension::getNonGeoGroup(parentGrp);
                 if(group) {
-                    if(group->ExportMode.getValue()==App::GroupExtension::EXPORT_BY_CHILD_QUERY)
+                    if(group->ExportMode.getValue() == App::GroupExtension::ExportByVisibility)
                         vis = 1;
                     else
                         vis = groupLinks.back()->isElementVisibleEx(childName.c_str());

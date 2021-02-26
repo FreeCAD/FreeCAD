@@ -43,7 +43,7 @@ DocumentObjectGroup::DocumentObjectGroup(void): DocumentObject(), GroupExtension
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preference/Group");
     if(hGrp->GetBool("ExportChildren",true)) {
         ExportMode.setStatus(Property::Hidden,false);
-        ExportMode.setValue(EXPORT_BY_VISIBILITY);
+        ExportMode.setValue(ExportByVisibility);
     }
 }
 
@@ -69,7 +69,7 @@ PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGrou
 
 template<> void App::DocumentObjectGroupPython::setupObject() {
     ExportMode.setStatus(Property::Hidden,true);
-    ExportMode.setValue(EXPORT_DISABLED);
+    ExportMode.setValue(ExportDisabled);
 }
 
 template<> const char* App::DocumentObjectGroupPython::getViewProviderName(void) const {

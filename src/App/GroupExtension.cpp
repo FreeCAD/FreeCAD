@@ -67,7 +67,7 @@ GroupExtension::GroupExtension()
     static const char *ExportModeEnum[] = {"Disabled", "By Visibility", "Child Query", "Both", 0};
     ExportMode.setEnums(ExportModeEnum);
     ExportMode.setStatus(Property::Hidden,true);
-    EXTENSION_ADD_PROPERTY_TYPE(ExportMode,(EXPORT_DISABLED),"Base",(App::PropertyType)(Prop_None),
+    EXTENSION_ADD_PROPERTY_TYPE(ExportMode,(ExportDisabled),"Base",(App::PropertyType)(Prop_None),
             "Disabled: do not export any child.\n\n"
             "By Visibility: export all children with their current visibility. Note, depending\n"
             "on your exporter setting, invisible object may or may not be exported.\n\n"
@@ -85,25 +85,55 @@ bool GroupExtension::queryChildExport(App::DocumentObject *obj) const {
     if(!obj || !obj->getNameInDocument())
         return false;
     switch(ExportMode.getValue()) {
-    case EXPORT_DISABLED:
+    case ExportDisabled:
         return false;
-    case EXPORT_BY_VISIBILITY:
+    case ExportByVisibility:
         return true;
     default:
         break;
     }
+    bool defvalue = getChildDefaultExport(obj);
+    auto prop = getChildExportProperty(obj, true, defvalue);
+    return prop ? prop->getValue() : defvalue;
+}
+
+App::PropertyBool *GroupExtension::getChildExportProperty(App::DocumentObject *obj,
+                                                          bool force,
+                                                          bool defvalue)
+{
     auto prop = obj->getPropertyByName("Group_EnableExport");
-    if(prop && prop->getContainer()==obj) {
-        if(!prop->isDerivedFrom(PropertyBool::getClassTypeId())) {
-            if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                FC_WARN("Unexpected property type of " <<  prop->getFullName());
-            return true;
-        }
-        return static_cast<PropertyBool*>(prop)->getValue();
+    if(prop && prop->getContainer()!=obj)
+        prop = nullptr;
+    else if (prop && !prop->isDerivedFrom(PropertyBool::getClassTypeId())) {
+        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Unexpected property type of " <<  prop->getFullName());
+        return nullptr;
     }
-    prop = obj->addDynamicProperty("App::PropertyBool","Group_EnableExport","Group");
-    static_cast<App::PropertyBool*>(prop)->setValue(true);
-    return true;
+    if (!prop && force) {
+        prop = obj->addDynamicProperty("App::PropertyBool","Group_EnableExport","Group");
+        static_cast<App::PropertyBool*>(prop)->setValue(defvalue);
+    }
+    return static_cast<App::PropertyBool*>(prop);
+}
+
+bool GroupExtension::toggleChildExport(App::DocumentObject *obj, bool toggleGroup)
+{
+    auto prop = getChildExportProperty(obj, toggleGroup, getChildDefaultExport(obj));
+    if (!prop)
+        return false;
+    if (prop->getValue()) {
+        prop->setValue(false);
+        if (!toggleGroup)
+            return false;
+        if (ExportMode.getValue() != ExportDisabled
+                && getExtendedObject()->getSubObjects(DocumentObject::GS_DEFAULT).empty())
+            ExportMode.setValue(ExportDisabled);
+        return false;
+    } else {
+        prop->setValue(true);
+        ExportMode.setValue(ExportByChildQuery);
+        return true;
+    }
 }
 
 DocumentObject* GroupExtension::addObject(const char* sType, const char* pObjectName)
@@ -358,6 +388,20 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
     return nullptr;
 }
 
+DocumentObject* GroupExtension::getAnyGroupOfObject(const DocumentObject* obj)
+{
+    DocumentObject *geoGroup = nullptr;
+    for (auto o : obj->getInList()) {
+        if (o->hasExtension(GroupExtension::getExtensionClassTypeId())) {
+            if (o->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+                geoGroup = o;
+            else
+                return o;
+        }
+    }
+    return geoGroup;
+}
+
 PyObject* GroupExtension::getExtensionPyObject(void) {
 
     if (ExtensionPythonObject.is(Py::_None())){
@@ -441,9 +485,9 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         }
     }
 
-    if(p == &getExportGroupProperty() || p == &ExportMode) {
+    if(p == &getExportGroupProperty(DocumentObject::GS_DEFAULT) || p == &ExportMode) {
         _Conns.clear();
-        for(auto obj : getExportGroupProperty().getValues()) {
+        for(auto obj : getExportGroupProperty(DocumentObject::GS_DEFAULT).getValues()) {
             if(!obj || !obj->getNameInDocument())
                 continue;
             queryChildExport(obj);
@@ -534,7 +578,7 @@ void GroupExtension::slotChildChanged(const Property &prop) {
            && !obj->getDocument()->testStatus(Document::Restoring) 
            && !obj->getDocument()->isPerformingTransaction())
     {
-        if(ExportMode.getValue() == EXPORT_BY_VISIBILITY
+        if(ExportMode.getValue() == ExportByVisibility
                 || _GroupTouched.testStatus(Property::Output))
         {
             _GroupTouched.touch();
@@ -594,12 +638,12 @@ bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *sub
 }
 
 bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int reason) const {
-    if(reason == DocumentObject::GS_DEFAULT && ExportMode.getValue() == EXPORT_DISABLED)
+    if(reason == DocumentObject::GS_DEFAULT && ExportMode.getValue() == ExportDisabled)
         return true;
 
-    for(auto obj : getExportGroupProperty().getValues()) {
+    for(auto obj : getExportGroupProperty(reason).getValues()) {
         if(obj && obj->getNameInDocument()) {
-            if(reason!=DocumentObject::GS_DEFAULT || queryChildExport(obj))
+            if(reason != DocumentObject::GS_DEFAULT || queryChildExport(obj))
                 ret.push_back(std::string(obj->getNameInDocument())+'.');
         }
     }
@@ -613,7 +657,7 @@ int GroupExtension::extensionIsElementVisibleEx(const char *subname, int reason)
             return -1;
         return 0;
     }
-    if(reason == DocumentObject::GS_DEFAULT && ExportMode.getValue()==EXPORT_BY_CHILD_QUERY)
+    if(reason == DocumentObject::GS_DEFAULT && ExportMode.getValue()==ExportByChildQuery)
         return 1;
     return extensionIsElementVisible(element);
 }

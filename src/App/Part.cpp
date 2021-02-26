@@ -63,7 +63,7 @@ Part::Part(void)
     OriginGroupExtension::initExtension(this);
 
     ExportMode.setStatus(Property::Hidden,false);
-    ExportMode.setValue(EXPORT_BY_VISIBILITY);
+    ExportMode.setValue(ExportByVisibility);
 }
 
 Part::~Part(void)
