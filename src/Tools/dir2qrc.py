@@ -29,8 +29,8 @@ Version:
   0.1
 """
 
-import os,sys,string,re,getopt,codecs
-from os.path import join, getsize
+import os,sys,string,getopt
+from os.path import join
 
 # Globals
 Verbose = False

@@ -43,7 +43,7 @@ def cpall(dirFrom, dirTo):
                 if verbose > 1: print('copying', pathFrom, 'to', pathTo)
                 cpfile(pathFrom, pathTo)
                 fcount = fcount+1
-            except:
+            except Exception:
                 print('Error copying', pathFrom, to, pathTo, '--skipped')
                 print(sys.exc_type, sys.exc_value)
         else:
@@ -52,7 +52,7 @@ def cpall(dirFrom, dirTo):
                 os.mkdir(pathTo)                          # make new subdir
                 cpall(pathFrom, pathTo)                   # recur into subdirs
                 dcount = dcount+1
-            except:
+            except Exception:
                 print('Error creating', pathTo, '--skipped')
                 print(sys.exc_type, sys.exc_value)
 
@@ -82,7 +82,7 @@ def cpallWithFilter(dirFrom, dirTo,MatchList):
                     if verbose > 1: print('copying', pathFrom, 'to', pathTo)
                     cpfile(pathFrom, pathTo)
                     fcount = fcount+1
-                except:
+                except Exception:
                     print('Error copying', pathFrom, to, pathTo, '--skipped')
                     print(sys.exc_type, sys.exc_value)
             else:
@@ -91,7 +91,7 @@ def cpallWithFilter(dirFrom, dirTo,MatchList):
                     os.mkdir(pathTo)                            # make new subdir
                     cpallWithFilter(pathFrom, pathTo,MatchList) # recur into subdirs
                     dcount = dcount+1
-                except:
+                except Exception:
                     print('Error creating', pathTo, '--skipped')
                     print(sys.exc_type, sys.exc_value)
 
@@ -119,13 +119,6 @@ def rmall(dirPath):                             # delete dirPath and below
     dcount = dcount + 1
 
 def BuildDistName():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
@@ -133,13 +126,6 @@ def BuildDistName():
 
     return DistName
 def BuildSetupName():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
@@ -148,39 +134,18 @@ def BuildSetupName():
     return DistName
 
 def GetVersion():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
     return  FCVersionMajor[23:-1] + '.' +FCVersionMinor[23:-1] 
 
 def GetBuildNbr():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
     return  FCVersionBuild[23:-1] 
 
 def GetBuildDate():
-    # line separator 
-    ls = os.linesep
-    # path separator
-    ps = os.pathsep
-    # dir separator
-    ds = os.sep
-
     # Building dist name
     # reading the last Version information
     [FCVersionMajor,FCVersionMinor,FCVersionBuild,FCVersionDisDa] = open("../Version.h",'r').readlines()
@@ -236,12 +201,12 @@ BinFilter = ["^Plugin\\.*$",
           "^.*\\.lib$",
           "^.*\\.exp$",
           "^.*\\.bsc$",
-          "^.*\\CADD.exe$",
-          "^.*\\CADAppD.dll$",
-          "^.*\\CmdD.exe$",
-          "^.*\\BaseD.dll$",
-          "^.*\\CADDCmdPy.dll$",
-          "^.*\\GuiD.dll$",
+          "^.*CADD.exe$",
+          "^.*CADAppD.dll$",
+          "^.*CmdD.exe$",
+          "^.*BaseD.dll$",
+          "^.*CADDCmdPy.dll$",
+          "^.*GuiD.dll$",
           "^.*\\.bsc$",
           "^.*\\.FCScript\\..*$",
           "^.*\\.FCParam$",
@@ -256,11 +221,11 @@ LibFilter = ["^Plugin\\.*$",
           "^.*\\.exe$",
           "^.*\\.exp$",
           "^.*\\.bsc$",
-          "^.*\\CADD.lib$",
-          "^.*\\CADAppD.lib$",
-          "^.*\\CmdD.lib$",
-          "^.*\\BaseD.lib$",
-          "^.*\\GuiD.lib$",
+          "^.*CADD.lib$",
+          "^.*CADAppD.lib$",
+          "^.*CmdD.lib$",
+          "^.*BaseD.lib$",
+          "^.*GuiD.lib$",
           "^.*\\.FCScript\\..*$",
           "^.*\\.FCParam$"]
 
@@ -278,7 +243,7 @@ ModFilter = ["^.*\\.o$",
           "^CVS$",
           "^Attic$",
           "^.*\\.opt$",
-          "^.*\\_d\.pyd$",
+          "^.*_d\.pyd$",
           "^.*\\.opt$",
           "^.*\\.ilg$",
           "^.*\\.ps$",
@@ -299,7 +264,7 @@ ModFilter = ["^.*\\.o$",
           "^.*\\.exp$",
           "^.*\\.lib$",
           "^.*\\.ui$",
-          "^.*\\Makefile$",
+          "^.*Makefile$",
           "^.*\\.plg$",]
 
 DocFilter = ["^.*\\.o$",
