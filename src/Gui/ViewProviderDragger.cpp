@@ -145,7 +145,8 @@ bool ViewProviderDragger::checkLink() {
 
 bool ViewProviderDragger::setEdit(int ModNum)
 {
-  Q_UNUSED(ModNum);
+  if (ModNum != ViewProvider::Transform && ModNum != ViewProvider::Default)
+      return ViewProviderDocumentObject::setEdit(ModNum);
 
   if(checkLink())
       return true;

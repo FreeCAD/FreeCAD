@@ -83,6 +83,10 @@ public:
     /// If null is returned then no transaction will be opened.
     virtual const char* getTransactionText() const override;
 
+    virtual void getExtraIcons(std::vector<std::pair<QByteArray, QPixmap> > &icons) const override;
+    virtual QString getToolTip(const QByteArray &iconTag) const override;
+    virtual bool iconMouseEvent(QMouseEvent *ev, const QByteArray &iconTag) override;
+
     virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *,
             const char *, const std::vector<std::string> &) const override;
 
@@ -183,7 +187,12 @@ public:
      */
     SoGroup* getChildrenGroup() const;
 
+    virtual void updateData(const App::Property*) override;
+    virtual void setupContextMenu(QMenu*, QObject*, const char*) override;
+
 protected:
+    virtual bool setEdit(int ModNum) override;
+
     virtual Base::BoundBox3d _getBoundingBox(const char *subname=0, 
             const Base::Matrix4D *mat=0, bool transform=true,
             const View3DInventorViewer *viewer=0, int depth=0) const override;

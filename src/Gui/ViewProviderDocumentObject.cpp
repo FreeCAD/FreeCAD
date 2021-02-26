@@ -25,6 +25,9 @@
 
 #ifndef _PreComp_
 # include <QByteArray>
+# include <QMouseEvent>
+# include <QMenu>
+# include <QAction>
 # include <qpixmap.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -50,6 +53,7 @@
 #include <App/DocumentObserver.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
+#include <App/AutoTransaction.h>
 #include "Application.h"
 #include "Document.h"
 #include "Selection.h"
@@ -65,6 +69,7 @@
 #include "ViewParams.h"
 #include "Tree.h"
 #include "ViewProviderLink.h"
+#include "BitmapFactory.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
@@ -919,7 +924,7 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
 
     //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children
     //of the geofeaturegroup depends on what the childs claim
-    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+    auto grp = App::GeoFeatureGroupExtension::getAnyGroupOfObject(obj);
     if(grp) {
         auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                 Application::Instance->getViewProvider(grp));
@@ -1015,3 +1020,101 @@ bool ViewProviderDocumentObject::isShowable(bool refresh) {
     return _Showable;
 }
 
+bool ViewProviderDocumentObject::setEdit(int ModNum)
+{
+    if (ModNum == ExportInGroup) {
+        auto group = App::GroupExtension::getAnyGroupOfObject(getObject());
+        if (group) {
+            auto ext = group->getExtensionByType<App::GroupExtension>(true);
+            if (ext) {
+                std::string name(QT_TRANSLATE_NOOP("Command", "Toggle export "));
+                name += getObject()->Label.getValue();
+                App::AutoTransaction committer(name.c_str());
+                try {
+                    ext->toggleChildExport(getObject(), true);
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            }
+        }
+        return false;
+    }
+    return ViewProvider::setEdit(ModNum);
+}
+
+static QByteArray _iconTagExport("group:Export");
+
+void ViewProviderDocumentObject::getExtraIcons(
+        std::vector<std::pair<QByteArray,QPixmap> > &icons) const
+{
+    ViewProvider::getExtraIcons(icons);
+
+    auto prop = App::GroupExtension::getChildExportProperty(getObject());
+    if (prop && prop->getValue()) {
+        auto group = App::GroupExtension::getAnyGroupOfObject(getObject());
+        if (group) {
+            auto ext = group->getExtensionByType<App::GroupExtension>(true);
+            if (ext && ext->ExportMode.getValue() == App::GroupExtension::ExportByChildQuery) {
+                icons.emplace_back(_iconTagExport, 
+                                    Gui::BitmapFactory().pixmap("Std_Export"));
+            }
+        }
+    }
+}
+
+QString ViewProviderDocumentObject::getToolTip(const QByteArray &tag) const
+{
+    if (tag == _iconTagExport) {
+        return QObject::tr("This object is marked for export for its owner group.\n"
+                           "ALT + click this icon to disable. You can re-enable it\n"
+                           "by right click and choose menu action 'Toggle export'.");
+    }
+    return ViewProvider::getToolTip(tag);
+}
+
+bool ViewProviderDocumentObject::iconMouseEvent(QMouseEvent *ev, const QByteArray &tag)
+{
+    if (ev->type() == QEvent::MouseButtonPress) {
+        if (tag == _iconTagExport) {
+            setEdit(ExportInGroup);
+            return true;
+        }
+    }
+    return ViewProvider::iconMouseEvent(ev, tag);
+}
+
+void ViewProviderDocumentObject::updateData(const App::Property *prop)
+{
+    if (getObject() && !getObject()->isRestoring()) {
+        if (prop == App::GroupExtension::getChildExportProperty(getObject()))
+            signalChangeIcon();
+    }
+    ViewProvider::updateData(prop);
+}
+
+void ViewProviderDocumentObject::setupContextMenu(QMenu* menu, QObject* receiver, const char* method)
+{
+    ViewProvider::setupContextMenu(menu, receiver, method);
+
+    // Show export menu action if this object is part of a group that is
+    // exporting its children, but not exporting by visibility.
+    if (App::GroupExtension::getChildExportProperty(getObject())) {
+        auto group = App::GroupExtension::getGroupOfObject(getObject());
+        if (group) {
+            auto ext = group->getExtensionByType<App::GroupExtension>(true);
+            if (ext && ext->ExportMode.getValue() != App::GroupExtension::ExportByVisibility) {
+                bool found = false;
+                for (auto action : menu->actions()) {
+                    if (action->data().toInt() == ExportInGroup) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    QAction *act = menu->addAction(QObject::tr("Toggle export"), receiver, method);
+                    act->setData(QVariant((int)ExportInGroup));
+                }
+            }
+        }
+    }
+}

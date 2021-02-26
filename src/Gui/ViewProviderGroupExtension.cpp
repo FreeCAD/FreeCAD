@@ -113,6 +113,21 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
 
+void ViewProviderGroupExtension::extensionUpdateData(const App::Property *prop)
+{
+    App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
+    if (!grp->isRestoring()) {
+        auto ext = grp->getExtensionByType<App::GroupExtension>(true);
+        if (ext && prop == &ext->ExportMode) {
+            for (auto obj : ext->getExportGroupProperty(App::DocumentObject::GS_DEFAULT).getValues()) {
+                auto vp = Application::Instance->getViewProvider(obj);
+                if (vp)
+                    vp->signalChangeIcon();
+            }
+        }
+    }
+}
+
 void ViewProviderGroupExtension::extensionClaimChildren(std::vector<App::DocumentObject*> &children) const {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();

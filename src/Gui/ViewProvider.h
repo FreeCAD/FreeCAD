@@ -427,6 +427,7 @@ public:
                    Transform,
                    Cutting,
                    Color,
+                   ExportInGroup,
                    UserEditMode = 100,
     };
 protected:
