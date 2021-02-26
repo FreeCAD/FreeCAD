@@ -11,7 +11,7 @@ Gui=FreeCADGui
 def proceed():
     try:
         compute()
-    except:
+    except Exception:
         hide()
         QtGui.QApplication.restoreOverrideCursor()
 

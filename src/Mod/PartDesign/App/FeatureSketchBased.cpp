@@ -440,8 +440,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
                               const TopoDS_Face& supportface,
                               const TopoDS_Shape& sketchshape,
                               const std::string& method,
-                              const gp_Dir& dir,
-                              const double offset)
+                              const gp_Dir& dir)
 {
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
@@ -528,19 +527,45 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
     BRepExtrema_DistShapeShape distSS(sketchshape, upToFace);
     if (distSS.Value() < Precision::Confusion())
         throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+}
 
+void ProfileBased::addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset)
+{
     // Move the face in the extrusion direction
     // TODO: For non-planar faces, we could consider offsetting the surface
     if (fabs(offset) > Precision::Confusion()) {
+        BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace));
         if (adapt2.GetType() == GeomAbs_Plane) {
             gp_Trsf mov;
             mov.SetTranslation(offset * gp_Vec(dir));
             TopLoc_Location loc(mov);
             upToFace.Move(loc);
+
+            // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
+            // then the algorithm expects that the 'NaturalRestriction' flag is set in order
+            // to work as expected (see generatePrism())
+            BRep_Builder builder;
+            builder.NaturalRestriction(upToFace, Standard_True);
         } else {
             throw Base::TypeError("SketchBased: Up to Face: Offset not supported yet for non-planar faces");
         }
     }
+}
+
+double ProfileBased::getThroughAllLength() const
+{
+    TopoDS_Shape profileshape;
+    TopoDS_Shape base;
+    profileshape = getVerifiedFace();
+    base = getBaseShape();
+    Bnd_Box box;
+    BRepBndLib::Add(base, box);
+    BRepBndLib::Add(profileshape, box);
+    box.SetGap(0.0);
+    // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
+    // co-planar issues, gives a length that is guaranteed to go through all.
+    // The result is multiplied by 2 for the guarantee to work also for the midplane option.
+    return 2.02 * sqrt(box.SquareExtent());
 }
 
 void ProfileBased::generatePrism(TopoDS_Shape& prism,
@@ -556,9 +581,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
         double Ltotal = L;
         double Loffset = 0.;
         if (method == "ThroughAll")
-            // "ThroughAll" is modelled as a very long, but finite prism to avoid problems with pockets
-            // Note: 1E6 created problems once...
-            Ltotal = 1E4;
+            Ltotal = getThroughAllLength();
 
 
         if (method == "TwoLengths") {
@@ -600,7 +623,7 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
                                  const TopoDS_Face& supportface,
                                  const TopoDS_Face& uptoface,
                                  const gp_Dir& direction,
-                                 Standard_Integer Mode,
+                                 PrismMode Mode,
                                  Standard_Boolean Modify)
 {
     if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
@@ -613,8 +636,8 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
                 throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
 
             base = PrismMaker.Shape();
-            if (Mode == 2)
-                Mode = 1;
+            if (Mode == PrismMode::None)
+                Mode = PrismMode::FuseWithBase;
         }
 
         prism = base;

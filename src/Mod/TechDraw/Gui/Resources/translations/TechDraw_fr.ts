@@ -268,6 +268,11 @@
       <source>Change Appearance of Lines</source>
       <translation>Changer l'apparence des lignes</translation>
     </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1257"/>
+      <source>Change Appearance of selected Lines</source>
+      <translation>Changer l'apparence des lignes sélectionnées</translation>
+    </message>
   </context>
   <context>
     <name>CmdTechDrawDetailView</name>
@@ -502,7 +507,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="102"/>
       <source>Add Leaderline to View</source>
-      <translation>Insérer une ligne de référence à la vue</translation>
+      <translation>Insérer une ligne d'attache à la vue</translation>
     </message>
   </context>
   <context>
@@ -809,12 +814,12 @@
     <message>
       <location filename="../../Command.cpp" line="950"/>
       <source>ClipGroupAdd</source>
-      <translation type="unfinished">ClipGroupAdd</translation>
+      <translation>Ajout groupe de rognage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
       <source>ClipGroupRemove</source>
-      <translation type="unfinished">ClipGroupRemove</translation>
+      <translation>Supprimer le groupe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1084"/>
@@ -893,22 +898,22 @@
     <message>
       <location filename="../../TaskActiveView.cpp" line="195"/>
       <source>Create ActiveView</source>
-      <translation type="unfinished">Create ActiveView</translation>
+      <translation>Créer une vue active</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="346"/>
       <source>Create CenterLine</source>
-      <translation type="unfinished">Create CenterLine</translation>
+      <translation>Créer une trait d'axe</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="391"/>
       <source>Edit CenterLine</source>
-      <translation type="unfinished">Edit CenterLine</translation>
+      <translation>Editer un trait d'axe</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="271"/>
       <source>Update CosmeticLine</source>
-      <translation type="unfinished">Update CosmeticLine</translation>
+      <translation>Mettre à jour CosmeticLine</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="472"/>
@@ -933,22 +938,22 @@
     <message>
       <location filename="../../TaskRichAnno.cpp" line="357"/>
       <source>Create Anno</source>
-      <translation type="unfinished">Create Anno</translation>
+      <translation>Créer une annotation</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="416"/>
       <source>Edit Anno</source>
-      <translation type="unfinished">Edit Anno</translation>
+      <translation>Editer une annotation</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="354"/>
       <source>Apply Quick</source>
-      <translation type="unfinished">Apply Quick</translation>
+      <translation>Appliquer Rapide</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="380"/>
       <source>Apply Aligned</source>
-      <translation type="unfinished">Apply Aligned</translation>
+      <translation>Appliquer Aligné</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="403"/>
@@ -2216,7 +2221,7 @@ Ce répertoire sera utilisé pour la sélection des symboles.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="105"/>
       <source>Edge Fuzz</source>
-      <translation type="unfinished">Edge Fuzz</translation>
+      <translation>Détection d'arêtes</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>
@@ -2355,21 +2360,21 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="450"/>
       <source>Mark Fuzz</source>
-      <translation type="unfinished">Mark Fuzz</translation>
+      <translation>Détection des centrages</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="475"/>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Size of selection area around edges
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>Taille de la zone de sélection autour des arêtes
+Une unité correspond à environ 0,1 mm de largeur</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="516"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Selection area around center marks
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>Zone de sélection autour des marques centrales
+Une unité correspond environ à 0,1 mm de largeur</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="550"/>
@@ -2581,12 +2586,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="699"/>
       <source>Line group used to set line widths</source>
-      <translation type="unfinished">Line group used to set line widths</translation>
+      <translation>Groupe de lignes utilisé pour définir les épaisseurs de ligne</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="702"/>
       <source>Line Width Group</source>
-      <translation type="unfinished">Line Width Group</translation>
+      <translation>Groupe d'épaisseur de ligne</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="616"/>
@@ -2611,7 +2616,7 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="675"/>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
-      <translation type="unfinished">Restrict Filled Triangle line end to vertical or horizontal directions</translation>
+      <translation>Restreindre la fin de ligne du triangle plein aux directions verticale ou horizontale</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="678"/>
@@ -2864,14 +2869,14 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="413"/>
       <source>Tolerance Text Scale</source>
-      <translation type="unfinished">Tolerance Text Scale</translation>
+      <translation>Échelle du texte de tolérance</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="438"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
-      <translation type="unfinished">Tolerance text scale
-Multiplier of &apos;Font Size&apos;</translation>
+      <translation>Échelle du texte de tolérances
+Multiplicateur de &apos;Taille de police&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="215"/>
@@ -2970,8 +2975,8 @@ Multiplier of &apos;Font Size&apos;</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="92"/>
       <source>Whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update With 3D&apos; parameter</source>
-      <translation type="unfinished">Whether or not a page&apos;s &apos;Keep Updated&apos; property
-can override the global &apos;Update With 3D&apos; parameter</translation>
+      <translation>Qu'il s'agisse ou non d'une page &apos;s, la propriété &apos;Garder la page à jour&apos;
+peut remplacer le paramètre global &apos;Mettre à jour avec la 3D&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="96"/>
@@ -3011,13 +3016,13 @@ pour les ProjectionGroups</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="233"/>
       <source>* this font is also used for dimensions
    Changes have no effect on existing dimensions.</source>
-      <translation type="unfinished">* this font is also used for dimensions
-   Changes have no effect on existing dimensions.</translation>
+      <translation>* cette police est également utilisée pour les cotes
+   Les modifications n'ont pas d'effet sur les dimensions existantes.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="237"/>
       <source>Label Font*</source>
-      <translation type="unfinished">Label Font*</translation>
+      <translation>Police d'annotation</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="244"/>
@@ -3037,27 +3042,27 @@ pour les ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="360"/>
       <source>Conventions</source>
-      <translation type="unfinished">Conventions</translation>
+      <translation>Conventions</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="381"/>
       <source>Projection Group Angle</source>
-      <translation type="unfinished">Projection Group Angle</translation>
+      <translation>Convention de projection</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="400"/>
       <source>Use first- or third-angle multiview projection convention</source>
-      <translation type="unfinished">Use first- or third-angle multiview projection convention</translation>
+      <translation>Utiliser la convention de projection Européenne ou Américaine</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="410"/>
       <source>First</source>
-      <translation type="unfinished">First</translation>
+      <translation>Européenne</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="415"/>
       <source>Third</source>
-      <translation type="unfinished">Third</translation>
+      <translation>Américaine</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="420"/>
@@ -3067,12 +3072,12 @@ pour les ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="428"/>
       <source>Hidden Line Style</source>
-      <translation type="unfinished">Hidden Line Style</translation>
+      <translation>Style des lignes cachées</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="447"/>
       <source>Style for hidden lines</source>
-      <translation type="unfinished">Style for hidden lines</translation>
+      <translation>Style des lignes cachées</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="457"/>
@@ -3344,7 +3349,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="265"/>
       <source>Size of template field click handles</source>
-      <translation type="unfinished">Size of template field click handles</translation>
+      <translation>Taille des repères de champ personnalisable</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="246"/>
@@ -3520,12 +3525,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>Taille de police:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble Shape:</source>
-      <translation type="unfinished">Bubble Shape:</translation>
+      <translation>Forme de bulle :</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
@@ -3575,7 +3580,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="185"/>
       <source>Bubble shape scale factor</source>
-      <translation type="unfinished">Bubble shape scale factor</translation>
+      <translation>Facteur d'échelle d'annotation bulle</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="204"/>
@@ -3590,22 +3595,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="218"/>
       <source>End Symbol Scale:</source>
-      <translation type="unfinished">End Symbol Scale:</translation>
+      <translation>Échelle du symbole de fin:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="231"/>
       <source>End symbol scale factor</source>
-      <translation type="unfinished">End symbol scale factor</translation>
+      <translation>Facteur d'échelle du symbole de fin</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="250"/>
       <source>Line Visible:</source>
-      <translation type="unfinished">Line Visible:</translation>
+      <translation>Ligne visible:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="257"/>
       <source>Whether the leader line is visible or not</source>
-      <translation type="unfinished">Whether the leader line is visible or not</translation>
+      <translation>Si la ligne d'attache est visible ou non</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="264"/>
@@ -3630,7 +3635,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="315"/>
       <source>Leader Kink Length:</source>
-      <translation type="unfinished">Leader Kink Length:</translation>
+      <translation>Longueur horizontale de la ligne de la bulle:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="334"/>
@@ -3686,10 +3691,10 @@ Do you want to continue?</source>
 - lines: in equal distance to the lines and with
   half of the angle the lines have to each other
 - points: in equal distance to the points</source>
-      <translation type="unfinished">centerline between
-- lines: in equal distance to the lines and with
-  half of the angle the lines have to each other
-- points: in equal distance to the points</translation>
+      <translation>trait d'axe entre
+- lignes : à égale distance des deux lignes
+  et à la moitié de l'angle des deux lignes
+- points : à égale distance des deux points</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="142"/>
@@ -3750,8 +3755,8 @@ Do you want to continue?</source>
       <location filename="../../TaskCenterLine.ui" line="380"/>
       <source>Flips endpoints of selected lines for centerline creation,
 see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</source>
-      <translation type="unfinished">Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
+      <translation>Inverser les points d'extrémité des lignes sélectionnées pour la création du trait d'axe,
+voir le Wiki FreeCAD &apos;ligne centrale entre 2 arêtes&apos; pour une description</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="384"/>
@@ -3814,7 +3819,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCosVertex.ui" line="107"/>
       <source>Position from the view center</source>
-      <translation type="unfinished">Position from the view center</translation>
+      <translation>Position par rapport à la vue de face</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="110"/>
@@ -3895,7 +3900,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="26"/>
       <source>Detail Anchor</source>
-      <translation type="unfinished">Detail Anchor</translation>
+      <translation>Ancrage de vue détaillée</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="54"/>
@@ -4009,66 +4014,66 @@ Personnalisé : un facteur d'échelle personnalisé est utilisé</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="20"/>
       <source>Tolerancing</source>
-      <translation type="unfinished">Tolerancing</translation>
+      <translation>Tolérancement</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
       <source>If theoretical exact (basic) dimension</source>
-      <translation type="unfinished">If theoretical exact (basic) dimension</translation>
+      <translation>Si dimension théorique exact (de référence)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="31"/>
       <source>Theoretically Exact</source>
-      <translation type="unfinished">Theoretically Exact</translation>
+      <translation>Théoriquement exact</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="38"/>
       <location filename="../../TaskDimension.ui" line="200"/>
       <source>Reverses usual direction of dimension line terminators</source>
-      <translation type="unfinished">Reverses usual direction of dimension line terminators</translation>
+      <translation>Inverse la direction habituelle des terminaisons de lignes de cote</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="41"/>
       <source>Equal Tolerance</source>
-      <translation type="unfinished">Equal Tolerance</translation>
+      <translation>Tolérance symétrique</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="48"/>
       <source>Overtolerance:</source>
-      <translation type="unfinished">Overtolerance:</translation>
+      <translation>Tolérance supérieure:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="61"/>
       <source>Overtolerance value
 If &apos;Equal Tolerance&apos; is checked this is also
 the negated value for &apos;Under Tolerance&apos;.</source>
-      <translation type="unfinished">Overtolerance value
-If &apos;Equal Tolerance&apos; is checked this is also
-the negated value for &apos;Under Tolerance&apos;.</translation>
+      <translation>Valeur de tolérance supérieure
+Si &apos;Tolérance symétrique&apos; est cochée, c'est
+également la valeur négative pour &apos;Tolérance inférieure&apos;.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="79"/>
       <source>Undertolerance:</source>
-      <translation type="unfinished">Undertolerance:</translation>
+      <translation>Tolérance inférieure:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="92"/>
       <source>Undertolerance value
 If &apos;Equal Tolerance&apos; is checked it will be replaced
 by negative value of &apos;Over Tolerance&apos;.</source>
-      <translation type="unfinished">Undertolerance value
-If &apos;Equal Tolerance&apos; is checked it will be replaced
-by negative value of &apos;Over Tolerance&apos;.</translation>
+      <translation>Valeur de tolérance inférieure
+Si &apos;Tolérance symétrique&apos; est cochée, elle sera remplacée
+par la valeur négative de &apos;la tolérance supérieure&apos;.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="115"/>
       <source>Formatting</source>
-      <translation type="unfinished">Formatting</translation>
+      <translation>Mise en forme</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="123"/>
       <source>Format Specifier:</source>
-      <translation type="unfinished">Format Specifier:</translation>
+      <translation>Nombre de décimales:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="130"/>
@@ -4080,63 +4085,65 @@ by negative value of &apos;Over Tolerance&apos;.</translation>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
 be used instead if the dimension value</source>
-      <translation type="unfinished">If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</translation>
+      <translation>Si coché, le contenu de &apos;Nombre de déciamles&apos; sera utilisé
+à la place de la valeur de la cote</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="141"/>
       <source>Arbitrary Text</source>
-      <translation type="unfinished">Arbitrary Text</translation>
+      <translation>Texte arbitraire</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="148"/>
       <source>OverTolerance Format Specifier:</source>
-      <translation type="unfinished">OverTolerance Format Specifier:</translation>
+      <translation>Précision de Tolérance supérieure:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="155"/>
       <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
-      <translation type="unfinished">Specifies the overtolerance format in printf() style, or arbitrary text</translation>
+      <translation>Spécifie le nombre de décimales de Tolérance supérieure
+au format printf() , ou du texte arbitraire</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="162"/>
       <source>UnderTolerance Format Specifier:</source>
-      <translation type="unfinished">UnderTolerance Format Specifier:</translation>
+      <translation>Précision de tolérance inférieure:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="169"/>
       <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
-      <translation type="unfinished">Specifies the undertolerance format in printf() style, or arbitrary text</translation>
+      <translation>Spécifie le nombre de décimales de Tolérance inférieure
+au format printf() , ou du texte arbitraire</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="180"/>
       <source>Arbitrary Tolerance Text</source>
-      <translation type="unfinished">Arbitrary Tolerance Text</translation>
+      <translation>Tolérance de texte arbitraire</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="192"/>
       <source>Display Style</source>
-      <translation type="unfinished">Display Style</translation>
+      <translation>Style d'affichage</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="203"/>
       <source>Flip Arrowheads</source>
-      <translation type="unfinished">Flip Arrowheads</translation>
+      <translation>Inverser les flèches</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="210"/>
       <source>Color:</source>
-      <translation>Couleur:</translation>
+      <translation>Couleur :</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="217"/>
       <source>Color of the dimension</source>
-      <translation type="unfinished">Color of the dimension</translation>
+      <translation>Couleur de la cote</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="231"/>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>Taille de police:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="250"/>
@@ -4146,12 +4153,12 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="272"/>
       <source>Drawing Style:</source>
-      <translation type="unfinished">Drawing Style:</translation>
+      <translation>Style de représentation:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="279"/>
       <source>Standard and style according to which dimension is drawn</source>
-      <translation type="unfinished">Standard and style according to which dimension is drawn</translation>
+      <translation>Norme et style selon le type de cote tracée</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="283"/>
@@ -4937,7 +4944,7 @@ en utilisant l'espacement X/Y donné</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="283"/>
       <source>Position from the 3D origin of the object in the view</source>
-      <translation type="unfinished">Position from the 3D origin of the object in the view</translation>
+      <translation>Position à partir de l'origine 3D de l'objet dans la vue</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="286"/>
@@ -5086,6 +5093,74 @@ en utilisant l'espacement X/Y donné</translation>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Insérer une dimension d'extension verticale</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Dimensions</source>
+      <translation>Dimensions</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Annotations</source>
+      <translation>Annotations</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Add Lines</source>
+      <translation>Ajouter des lignes</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="40"/>
+      <source>Add Vertices</source>
+      <translation>Ajouter des sommets</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="41"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
+      <source>TechDraw Pages</source>
+      <translation>Pages TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="43"/>
+      <source>TechDraw Views</source>
+      <translation>Vues TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="44"/>
+      <source>TechDraw Clips</source>
+      <translation>Rognages TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="45"/>
+      <source>TechDraw Dimensions</source>
+      <translation>Cotations TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="46"/>
+      <source>TechDraw File Access</source>
+      <translation>Accès fichier TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
+      <source>TechDraw Decoration</source>
+      <translation>Décoration TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="48"/>
+      <source>TechDraw Annotation</source>
+      <translation>Annotation TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="49"/>
+      <source>Views</source>
+      <translation>Vues</translation>
     </message>
   </context>
 </TS>

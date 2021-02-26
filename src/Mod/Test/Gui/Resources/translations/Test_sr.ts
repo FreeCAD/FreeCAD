@@ -112,10 +112,10 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
-Click 'start', and the test thus produced will be run.
+      <translation>Упишите назив позовивог објекта који ће, када је позван, дати случај тестирања.
+Кликните на „покрени“, и тест који производи биће покренут.
 
-Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+Два пута кликните на грешку у прегледу стаблом да видите више информација о њему, укључујући праћење спремника.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="176"/>
@@ -127,9 +127,9 @@ Double click on an error in the tree view to see more information about it, incl
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation type="unfinished">Copyright (c) Werner Mayer
+      <translation>Ауторска права © Werner Mayer
 
-FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+„FreeCAD UnitTest“ је део FreeCAD-а и подржава писање тестирања јединице за њихове личне модуле.</translation>
     </message>
   </context>
 </TS>

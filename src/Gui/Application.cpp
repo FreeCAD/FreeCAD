@@ -970,8 +970,8 @@ void Application::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
 
 void Application::onLastWindowClosed(Gui::Document* pcDoc)
 {
-    if (!d->isClosing && pcDoc) {
-        try {
+    try {
+        if (!d->isClosing && pcDoc) {
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last open document.
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
             if (!d->activeDocument && d->documents.size()) {
@@ -996,13 +996,20 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
                 }
             }
         }
-        catch (const Base::Exception& e) {
-            e.ReportException();
-        }
-        catch (const Py::Exception&) {
-            Base::PyException e;
-            e.ReportException();
-        }
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("Unhandled std::exception caught in Application::onLastWindowClosed.\n"
+                              "The error message is: %s\n", e.what());
+    }
+    catch (...) {
+        Base::Console().Error("Unhandled unknown exception caught in Application::onLastWindowClosed.\n");
     }
 }
 

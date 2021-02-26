@@ -118,7 +118,7 @@
     <text freecad:editable="TITLELINE-1" x="442" y="388"><tspan>FreeCAD</tspan></text>
     <text freecad:editable="TITLELINE-2" x="442" y="392"><tspan></tspan></text>
     <text freecad:editable="TITLELINE-3" x="442" y="396"><tspan></tspan></text>
-    <text freecad:editable="DOCUMENT_TYPE" x="464" y="401">Mechanical assembly drawing<tspan></tspan></text>
+    <text freecad:editable="DOCUMENT_TYPE" x="464" y="401"><tspan>Mechanical assembly drawing</tspan></text>
     <text freecad:editable="SHEET" x="567" y="375"><tspan>99 of 99</tspan></text>
     <text freecad:editable="SCALE" x="537" y="375"><tspan>M x:x</tspan></text>
     <text freecad:editable="TOLERANCE" x="537" y="379"><tspan>+/- ?</tspan></text>

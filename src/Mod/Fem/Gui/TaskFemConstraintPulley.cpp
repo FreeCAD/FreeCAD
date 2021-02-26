@@ -182,7 +182,7 @@ TaskDlgFemConstraintPulley::TaskDlgFemConstraintPulley(ViewProviderFemConstraint
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintPulley(ConstraintView);;
+    this->parameter = new TaskFemConstraintPulley(ConstraintView);
 
     Content.push_back(parameter);
 }

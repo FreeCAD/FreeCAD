@@ -61,12 +61,14 @@
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "ViewProvider.h"
 #include "ViewProviderBody.h"
 
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
@@ -614,7 +616,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             supportString = faceSelObject.getAsPropertyLinkSubString();
         }
         else {
-            obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+            obj = PlaneFilter.Result[0][0].getObject();
             supportString = getObjectCmd(obj,"(",",'')");
         }
 
@@ -1480,7 +1482,7 @@ bool CmdPartDesignGroove::isActive(void)
 }
 
 //===========================================================================
-// PartDesign_Additive_Pipe
+// PartDesign_AdditivePipe
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignAdditivePipe)
 
@@ -1493,7 +1495,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
     sWhatsThis    = "PartDesign_AdditivePipe";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Additive_Pipe";
+    sPixmap       = "PartDesign_AdditivePipe";
 }
 
 void CmdPartDesignAdditivePipe::activated(int iMsg)
@@ -1530,7 +1532,7 @@ bool CmdPartDesignAdditivePipe::isActive(void)
 
 
 //===========================================================================
-// PartDesign_Subtractive_Pipe
+// PartDesign_SubtractivePipe
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignSubtractivePipe)
 
@@ -1543,7 +1545,7 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
     sWhatsThis    = "PartDesign_SubtractivePipe";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Subtractive_Pipe";
+    sPixmap       = "PartDesign_SubtractivePipe";
 }
 
 void CmdPartDesignSubtractivePipe::activated(int iMsg)
@@ -1580,7 +1582,7 @@ bool CmdPartDesignSubtractivePipe::isActive(void)
 
 
 //===========================================================================
-// PartDesign_Additive_Loft
+// PartDesign_AdditiveLoft
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignAdditiveLoft)
 
@@ -1593,7 +1595,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections");
     sWhatsThis    = "PartDesign_AdditiveLoft";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Additive_Loft";
+    sPixmap       = "PartDesign_AdditiveLoft";
 }
 
 void CmdPartDesignAdditiveLoft::activated(int iMsg)
@@ -1630,7 +1632,7 @@ bool CmdPartDesignAdditiveLoft::isActive(void)
 
 
 //===========================================================================
-// PartDesign_Subtractive_Loft
+// PartDesign_SubtractiveLoft
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignSubtractiveLoft)
 
@@ -1643,7 +1645,7 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections and remove it from the body");
     sWhatsThis    = "PartDesign_SubtractiveLoft";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Subtractive_Loft";
+    sPixmap       = "PartDesign_SubtractiveLoft";
 }
 
 void CmdPartDesignSubtractiveLoft::activated(int iMsg)
@@ -1679,7 +1681,7 @@ bool CmdPartDesignSubtractiveLoft::isActive(void)
 }
 
 //===========================================================================
-// PartDesign_Additive_Helix
+// PartDesign_AdditiveHelix
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignAdditiveHelix)
 
@@ -1692,7 +1694,7 @@ CmdPartDesignAdditiveHelix::CmdPartDesignAdditiveHelix()
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a helix");
     sWhatsThis    = "PartDesign_AdditiveHelix";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Additive_Helix";
+    sPixmap       = "PartDesign_AdditiveHelix";
 }
 
 void CmdPartDesignAdditiveHelix::activated(int iMsg)
@@ -1723,6 +1725,19 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
         }
 
         finishProfileBased(cmd, sketch, Feat);
+
+        // If the initial helix creation fails then it leaves the base object invisible which makes things
+        // more difficult for the user.
+        // To avoid this the base object will be made tmp. visible again.
+        if (Feat->isError()) {
+            App::DocumentObject* base = static_cast<PartDesign::Feature*>(Feat)->BaseFeature.getValue();
+            if (base) {
+                PartDesignGui::ViewProvider* view = dynamic_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(base));
+                if (view)
+                    view->makeTemporaryVisible(true);
+            }
+        }
+
         cmd->adjustCameraPosition();
     };
 
@@ -1736,7 +1751,7 @@ bool CmdPartDesignAdditiveHelix::isActive(void)
 
 
 //===========================================================================
-// PartDesign_Subtractive_Helix
+// PartDesign_SubtractiveHelix
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignSubtractiveHelix)
 
@@ -1749,7 +1764,7 @@ CmdPartDesignSubtractiveHelix::CmdPartDesignSubtractiveHelix()
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a helix and remove it from the body");
     sWhatsThis    = "PartDesign_SubtractiveHelix";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Subtractive_Helix";
+    sPixmap       = "PartDesign_SubtractiveHelix";
 }
 
 void CmdPartDesignSubtractiveHelix::activated(int iMsg)
@@ -1875,6 +1890,15 @@ void finishDressupFeature(const Gui::Command* cmd, const std::string& which,
     FCMD_OBJ_CMD(Feat,"Base = " << str.str());
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
     finishFeature(cmd, Feat, base);
+
+    App::DocumentObject* baseFeature = static_cast<PartDesign::DressUp*>(Feat)->Base.getValue();
+    if (baseFeature) {
+        PartDesignGui::ViewProvider* view = dynamic_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
+        // in case there is an error, for example when a fillet is larger than the available space
+        // display the base feature to avoid that the user sees nothing
+        if (view && Feat->isError())
+            view->Visibility.setValue(true);
+    }
 }
 
 void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)

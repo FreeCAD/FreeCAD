@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="en">
   <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <source>Scale image plane</source>
+      <translation>Bildebene skalieren</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>Skaliert eine Bildebene durch Festlegen des Abstandes zweier Punkte</translation>
+    </message>
+  </context>
+  <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
@@ -11,7 +24,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation>Distanz [mm]</translation>
+      <translation>Abstand in [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
@@ -40,19 +53,6 @@
     </message>
   </context>
   <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
-      <source>Scale image plane</source>
-      <translation>Bildebene skalieren</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Skalieren einer Bildebene durch Festlegen des Abstandes zweier Punkte</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdCreateImagePlane</name>
     <message>
       <location filename="../../Command.cpp" line="101"/>
@@ -67,7 +67,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Ein planare Grafik im 3D-Raum erzeugen</translation>
+      <translation>Erstelle ein planares Bild im 3D-Raum</translation>
     </message>
   </context>
   <context>

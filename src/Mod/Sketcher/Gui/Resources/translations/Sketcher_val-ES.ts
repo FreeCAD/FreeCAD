@@ -2579,47 +2579,47 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Error de restricció: esbós irresoluble si s'apliquen restriccions d'igualtat.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2034"/>
+      <location filename="../../../App/SketchObject.cpp" line="1966"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>No s'ha trobat la intersecció de les corbes. Intenteu afegir una restricció coincident entre els vèrtexs de les corbes que esteu intentant arrodonir.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5667"/>
+      <location filename="../../../App/SketchObject.cpp" line="5606"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Aquesta versió d' OCE/OCC no permet operacions de nus. Necessiteu 6.9.0 o posteriors.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5671"/>
+      <location filename="../../../App/SketchObject.cpp" line="5610"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'índex de geometria BSpline (GeoID) està fora de les restriccions.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5674"/>
+      <location filename="../../../App/SketchObject.cpp" line="5613"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Se us ha demanat que no canvieu la multiplicitat del nus.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5679"/>
+      <location filename="../../../App/SketchObject.cpp" line="5618"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>L'índex de geometria (GeoId) proporcionat no és una corba de B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5686"/>
+      <location filename="../../../App/SketchObject.cpp" line="5625"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L'índex del nus és fora dels límits. Tingueu en compte que d'acord amb la notació d'OCC, el primer nus té l'índex 1 i no zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5693"/>
+      <location filename="../../../App/SketchObject.cpp" line="5632"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicitat no es pot augmentar més enllà del grau del B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5696"/>
+      <location filename="../../../App/SketchObject.cpp" line="5635"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicitat no es pot reduir més enllà de zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5708"/>
+      <location filename="../../../App/SketchObject.cpp" line="5647"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC no pot reduir la multiplicitat dins de la tolerància màxima.</translation>
     </message>
@@ -6000,6 +6000,11 @@ to determine whether a solution converges or not</source>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
+      <source>Sketcher B-spline tools</source>
+      <translation type="unfinished">Sketcher B-spline tools</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher virtual space</source>
       <translation>Espai virtual de l'esbós</translation>
     </message>

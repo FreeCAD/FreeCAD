@@ -50,7 +50,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 from draftutils.messages import _msg, _wrn
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -65,23 +65,16 @@ class Drawing(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a 2D projection on a Drawing Workbench page "
-                "from the selected objects.\n"
-                "This command is OBSOLETE since the Drawing Workbench "
-                "became obsolete in 0.17.\n"
-                "Use TechDraw Workbench instead for generating "
-                "technical drawings.")
 
         return {'Pixmap': 'Draft_Drawing',
                 # 'Accel': "D, D",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Drawing", "Drawing"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Drawing", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Drawing", "Creates a 2D projection on a Drawing Workbench page from the selected objects.\nThis command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.\nUse TechDraw Workbench instead for generating technical drawings.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Drawing, self).Activated(name=_tr("Drawing"))
-        _wrn(_tr("The Drawing Workbench is obsolete since 0.17, "
-                 "consider using the TechDraw Workbench instead."))
+        super(Drawing, self).Activated(name=translate("draft","Drawing"))
+        _wrn(translate("draft","The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead."))
         if not Gui.Selection.getSelection():
             self.ghost = None
             self.ui.selectUi()

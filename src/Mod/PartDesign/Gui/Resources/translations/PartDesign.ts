@@ -1133,16 +1133,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskChamferParameters.ui" line="22"/>
-        <source>Add ref</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskChamferParameters.ui" line="32"/>
-        <source>Remove ref</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../TaskChamferParameters.ui" line="50"/>
         <source>Size:</source>
         <translation type="unfinished"></translation>

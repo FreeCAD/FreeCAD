@@ -113,6 +113,9 @@ public:
     //backwards compatibility: profile property was renamed and has different type now
     virtual void Restore(Base::XMLReader& reader);
 
+    // calculate the through all length
+    double getThroughAllLength() const;
+
 protected:
     void remapSupportShape(const TopoDS_Shape&);
 
@@ -126,20 +129,31 @@ protected:
                             const TopoDS_Face& supportface,
                             const TopoDS_Shape& sketchshape,
                             const std::string& method,
-                            const gp_Dir& dir,
-                            const double offset);
+                            const gp_Dir& dir);
+
+    /// Add an offset to the face
+    static void addOffsetToFace(TopoDS_Face& upToFace,
+                                const gp_Dir& dir,
+                                double offset);
+
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
       */
-    static void generatePrism(TopoDS_Shape& prism,
-                              const TopoDS_Shape& sketchshape,
-                              const std::string& method,
-                              const gp_Dir& direction,
-                              const double L,
-                              const double L2,
-                              const bool midplane,
-                              const bool reversed);
+    void generatePrism(TopoDS_Shape& prism,
+                       const TopoDS_Shape& sketchshape,
+                       const std::string& method,
+                       const gp_Dir& direction,
+                       const double L,
+                       const double L2,
+                       const bool midplane,
+                       const bool reversed);
+    // See BRepFeat_MakePrism
+    enum PrismMode {
+        CutFromBase = 0,
+        FuseWithBase = 1,
+        None = 2
+    };
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepFeat_MakePrism
@@ -151,7 +165,7 @@ protected:
                               const TopoDS_Face& sketchface,
                               const TopoDS_Face& uptoface,
                               const gp_Dir& direction,
-                              Standard_Integer Mode,
+                              PrismMode Mode,
                               Standard_Boolean Modify);
 
     /// Check whether the wire after projection on the face is inside the face

@@ -111,7 +111,7 @@ class ProjectImporter:
             # this method; otherwise a simple function (not tied to a class)
             # should be used.
             ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
-        except:
+        except Exception:
             # This scenario occurs validly in IFC2X3,
             # as the mapConversion does not exist
             return

@@ -356,22 +356,22 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5341"/>
       <source>Fillets</source>
-      <translation type="unfinished">Fillets</translation>
+      <translation>Congés</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5342"/>
       <source>Create a fillet between two lines</source>
-      <translation type="unfinished">Create a fillet between two lines</translation>
+      <translation>Créer un congé entre deux lignes</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5417"/>
       <source>Sketch fillet</source>
-      <translation type="unfinished">Sketch fillet</translation>
+      <translation>Congé d'esquisse</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5421"/>
       <source>Constraint-preserving sketch fillet</source>
-      <translation type="unfinished">Constraint-preserving sketch fillet</translation>
+      <translation>Congé d'esquisse conservant la contrainte</translation>
     </message>
   </context>
   <context>
@@ -1206,12 +1206,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5310"/>
       <source>Create corner-preserving fillet</source>
-      <translation type="unfinished">Create corner-preserving fillet</translation>
+      <translation>Crée un congé conservant l'angle</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5311"/>
       <source>Fillet that preserves intersection point and most constraints</source>
-      <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
+      <translation>Congé qui préserve les points d'intersection et la plupart des contraintes</translation>
     </message>
   </context>
   <context>
@@ -1793,7 +1793,7 @@ Cela effacera la propriété 'Support', le cas échéant.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="548"/>
       <location filename="../../CommandSketcherTools.cpp" line="549"/>
       <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <translation>Sélectionne les contraintes malformées</translation>
     </message>
   </context>
   <context>
@@ -1825,7 +1825,7 @@ Cela effacera la propriété 'Support', le cas échéant.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="600"/>
       <location filename="../../CommandSketcherTools.cpp" line="601"/>
       <source>Select partially redundant constraints</source>
-      <translation type="unfinished">Select partially redundant constraints</translation>
+      <translation>Sélectionne les contraintes partiellement redondantes</translation>
     </message>
   </context>
   <context>
@@ -2573,47 +2573,47 @@ les contraintes invalides, la géométrie dégénérée, etc.</translation>
       <translation>Erreur de contrainte automatique : esquisse insoluble après l'application des contraintes d'égalité.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2034"/>
+      <location filename="../../../App/SketchObject.cpp" line="1966"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>L'intersection des courbes n'a pas pu être trouvée. Essayez d’ajouter une contrainte de coïncidence entre les sommets des courbes sur lesquels vous souhaitez appliquer un congé.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5667"/>
+      <location filename="../../../App/SketchObject.cpp" line="5606"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Cette version de OCE/OCC ne supporte pas l’opération de noeud. Vous avez besoin de la version 6.9.0 ou supérieure.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5671"/>
+      <location filename="../../../App/SketchObject.cpp" line="5610"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'Index de la géométrie de la B-spline (GeoID) est hors limites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5674"/>
+      <location filename="../../../App/SketchObject.cpp" line="5613"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Vous ne demandez aucun changement dans la multiplicité du nœud.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5679"/>
+      <location filename="../../../App/SketchObject.cpp" line="5618"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>L’Index de la géométrie (GeoID) fourni n’est pas une courbe B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5686"/>
+      <location filename="../../../App/SketchObject.cpp" line="5625"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L’index du nœud est hors limites. Notez que, conformément à la notation OCC, le premier nœud a un indice de 1 et non pas de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5693"/>
+      <location filename="../../../App/SketchObject.cpp" line="5632"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicité ne peut pas être augmentée au-delà du degré de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5696"/>
+      <location filename="../../../App/SketchObject.cpp" line="5635"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicité ne peut pas être diminuée au-delà de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5708"/>
+      <location filename="../../../App/SketchObject.cpp" line="5647"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ne parvient pas à diminuer la multiplicité selon la tolérance maximale.</translation>
     </message>
@@ -4247,12 +4247,12 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="244"/>
       <source>Invalid Sketch</source>
-      <translation type="unfinished">Invalid Sketch</translation>
+      <translation>Esquisse non valide</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="251"/>
       <source>Color of geometry indicating an invalid sketch</source>
-      <translation type="unfinished">Color of geometry indicating an invalid sketch</translation>
+      <translation>Couleur de la géométrie indiquant une esquisse invalide</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="278"/>
@@ -4332,12 +4332,12 @@ Requiert de ré-entrer en mode édition pour prendre effet.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="514"/>
       <source>Dimensional constraint color</source>
-      <translation type="unfinished">Dimensional constraint color</translation>
+      <translation>Couleur de contrainte dimensionnelle</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="521"/>
       <source>Color of dimensional driving constraints</source>
-      <translation type="unfinished">Color of dimensional driving constraints</translation>
+      <translation>Couleur des contraintes dimensionnelles pilotes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="541"/>
@@ -4464,12 +4464,12 @@ Supporte tous les systèmes d'unité sauf 'US customary' et 'Building US/Euro'.<
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="347"/>
       <source>View scale ratio</source>
-      <translation type="unfinished">View scale ratio</translation>
+      <translation>Voir le ratio d'échelle</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="354"/>
       <source>The 3D view is scaled based on this factor</source>
-      <translation type="unfinished">The 3D view is scaled based on this factor</translation>
+      <translation>La vue 3D est mise à l'échelle en fonction de ce facteur</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="214"/>
@@ -5142,22 +5142,22 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6421"/>
       <source>The following constraint is partially redundant:</source>
-      <translation type="unfinished">The following constraint is partially redundant:</translation>
+      <translation>La contrainte suivante est partiellement redondante :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6422"/>
       <source>The following constraints are partially redundant:</source>
-      <translation type="unfinished">The following constraints are partially redundant:</translation>
+      <translation>Les contraintes suivantes sont partiellement redondantes :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6428"/>
       <source>Please remove the following malformed constraint:</source>
-      <translation type="unfinished">Please remove the following malformed constraint:</translation>
+      <translation>Veuillez supprimer la contrainte malformée suivante :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6429"/>
       <source>Please remove the following malformed constraints:</source>
-      <translation type="unfinished">Please remove the following malformed constraints:</translation>
+      <translation>Veuillez supprimer les contraintes malformées suivantes :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6464"/>
@@ -5181,7 +5181,7 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6478"/>
       <source>Sketch contains malformed constraints </source>
-      <translation type="unfinished">Sketch contains malformed constraints </translation>
+      <translation>L'esquisse contient des contraintes malformées </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6485"/>
@@ -5196,7 +5196,7 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6502"/>
       <source>Sketch contains partially redundant constraints </source>
-      <translation type="unfinished">Sketch contains partially redundant constraints </translation>
+      <translation>L'esquisse contient des contraintes partiellement redondantes </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6514"/>
@@ -5206,12 +5206,12 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6521"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
+      <translation>Esquisse sous-contrainte avec &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degré&lt;/span&gt;&lt;/a&gt; de liberté</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6524"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
+      <translation>Esquisse sous-contrainte avec &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrés&lt;/span&gt;&lt;/a&gt; de liberté</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6529"/>
@@ -5442,7 +5442,7 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
       <location filename="../../CommandCreateGeo.cpp" line="5418"/>
       <location filename="../../CommandCreateGeo.cpp" line="5419"/>
       <source>Creates a radius between two lines</source>
-      <translation type="unfinished">Creates a radius between two lines</translation>
+      <translation>Créer un congé entre deux lignes</translation>
     </message>
   </context>
   <context>
@@ -5493,7 +5493,7 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
       <location filename="../../CommandCreateGeo.cpp" line="5422"/>
       <location filename="../../CommandCreateGeo.cpp" line="5423"/>
       <source>Fillet that preserves constraints and intersection point</source>
-      <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
+      <translation>Congé qui préserve les contraintes et le point d'intersection</translation>
     </message>
   </context>
   <context>
@@ -6008,6 +6008,11 @@ to determine whether a solution converges or not</source>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
+      <source>Sketcher B-spline tools</source>
+      <translation>Outils d'esquisse B-spline</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher virtual space</source>
       <translation>Espace virtuel de l'esquisse</translation>
     </message>

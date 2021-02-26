@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>بناء النموذج المختار عبر مسار نموذج أخر</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Create a datum line</source>
-      <translation type="unfinished">Create a datum line</translation>
+      <translation>انجز خطا مرجعيا</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Create a new datum line</source>
-      <translation type="unfinished">Create a new datum line</translation>
+      <translation>انجز خطا مرجعيا جديدا</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="1942"/>
       <source>LinearPattern</source>
-      <translation type="unfinished">LinearPattern</translation>
+      <translation>نموذج مستقيم</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1943"/>
       <source>Create a linear pattern feature</source>
-      <translation type="unfinished">Create a linear pattern feature</translation>
+      <translation>انشاء شكل نموذج خطي</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="339"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>تحويل</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>تحويل الملف الى النمط العملي الحديث لتصميم القطع</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1879"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>انشاء شكل متناظر</translation>
     </message>
   </context>
   <context>
@@ -317,7 +317,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
       <source>Move object after other object</source>
-      <translation type="unfinished">Move object after other object</translation>
+      <translation>تحويل الكائن بعد كائن آخر</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="853"/>
@@ -335,12 +335,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="553"/>
       <source>Set tip</source>
-      <translation type="unfinished">Set tip</translation>
+      <translation>طرفي</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="554"/>
       <source>Move the tip of the body</source>
-      <translation type="unfinished">Move the tip of the body</translation>
+      <translation>تحريك طرف الجسم</translation>
     </message>
   </context>
   <context>
@@ -353,12 +353,12 @@
     <message>
       <location filename="../../Command.cpp" line="2115"/>
       <source>Create MultiTransform</source>
-      <translation type="unfinished">Create MultiTransform</translation>
+      <translation>انجاز تحويلات متعددة</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2116"/>
       <source>Create a multitransform feature</source>
-      <translation type="unfinished">Create a multitransform feature</translation>
+      <translation>انشاء شكل بتحويلات متعددة</translation>
     </message>
   </context>
   <context>
@@ -376,7 +376,7 @@
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create a new sketch</source>
-      <translation type="unfinished">Create a new sketch</translation>
+      <translation>انشاء رسم جديد</translation>
     </message>
   </context>
   <context>
@@ -389,12 +389,12 @@
     <message>
       <location filename="../../Command.cpp" line="1032"/>
       <source>Pad</source>
-      <translation type="unfinished">Pad</translation>
+      <translation>قائم</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1033"/>
       <source>Pad a selected sketch</source>
-      <translation type="unfinished">Pad a selected sketch</translation>
+      <translation>تبطين الشكل المحدد</translation>
     </message>
   </context>
   <context>
@@ -407,12 +407,12 @@
     <message>
       <location filename="../../Command.cpp" line="159"/>
       <source>Create a datum plane</source>
-      <translation type="unfinished">Create a datum plane</translation>
+      <translation>انشاء مستوي مرجعي</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
       <source>Create a new datum plane</source>
-      <translation type="unfinished">Create a new datum plane</translation>
+      <translation>إنشاء معطيات تخطيط جديد</translation>
     </message>
   </context>
   <context>
@@ -443,12 +443,12 @@
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Create a datum point</source>
-      <translation type="unfinished">Create a datum point</translation>
+      <translation>إنشاء نقطة إسناد</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="216"/>
       <source>Create a new datum point</source>
-      <translation type="unfinished">Create a new datum point</translation>
+      <translation>إنشاء نقطة إسناد جديدة</translation>
     </message>
   </context>
   <context>
@@ -461,12 +461,12 @@
     <message>
       <location filename="../../Command.cpp" line="2008"/>
       <source>PolarPattern</source>
-      <translation type="unfinished">PolarPattern</translation>
+      <translation>نمط دائري</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2009"/>
       <source>Create a polar pattern feature</source>
-      <translation type="unfinished">Create a polar pattern feature</translation>
+      <translation>إنشاء سمة نمط دائري</translation>
     </message>
   </context>
   <context>
@@ -479,12 +479,12 @@
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Revolution</source>
-      <translation type="unfinished">Revolution</translation>
+      <translation>تدوير</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Revolve a selected sketch</source>
-      <translation type="unfinished">Revolve a selected sketch</translation>
+      <translation>تدوير رسم مختار</translation>
     </message>
   </context>
   <context>
@@ -497,12 +497,12 @@
     <message>
       <location filename="../../Command.cpp" line="2075"/>
       <source>Scaled</source>
-      <translation type="unfinished">Scaled</translation>
+      <translation>السلم</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2076"/>
       <source>Create a scaled feature</source>
-      <translation type="unfinished">Create a scaled feature</translation>
+      <translation>انشاء شكل مكبر او مصغر</translation>
     </message>
   </context>
   <context>
@@ -515,12 +515,12 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>إنشاء غلاف للشكل</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>إنشاء غلاف جديد للشكل</translation>
     </message>
   </context>
   <context>
@@ -533,12 +533,12 @@
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>دور ثغري</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>بناء النموذج المختار من خلال مسار لنموذج اخر ثم ازالته من الجسم</translation>
     </message>
   </context>
   <context>
@@ -551,12 +551,12 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Subtractive pipe</source>
-      <translation type="unfinished">Subtractive pipe</translation>
+      <translation>أنبوب ثغري</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>كشط رسمة محددة على طول مسار أو إلى مظهر آخر وإزالتها من الجسم</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation type="unfinished">Make a thick solid</translation>
+      <translation>اصنع جسما سميك</translation>
     </message>
   </context>
   <context>

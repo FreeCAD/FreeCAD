@@ -534,7 +534,7 @@ class _ArchMaterialTaskPanel:
         self.fillExistingCombo()
         try:
             import BimClassification
-        except:
+        except Exception:
             self.form.ButtonCode.hide()
         else:
             import os
@@ -917,7 +917,7 @@ class _ArchMultiMaterialTaskPanel:
             d = self.model.item(row,2).text()
             try:
                 d = float(d)
-            except:
+            except Exception:
                 thick = FreeCAD.Units.Quantity(d).Value
             else:
                 thick = FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).Value
@@ -950,7 +950,7 @@ class _ArchMultiMaterialTaskPanel:
                 d = self.model.item(row,2).text()
                 try:
                     d = float(d)
-                except:
+                except Exception:
                     thick = FreeCAD.Units.Quantity(d).Value
                 else:
                     thick = FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).Value

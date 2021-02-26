@@ -89,6 +89,11 @@ public:
 
     bool validate(QString& input, Base::Quantity& result) const
     {
+        // Do not accept empty strings because the parser will consider
+        // " unit" as "1 unit" which is not the desired behaviour (see #0004104)
+        if (input.isEmpty())
+            return false;
+
         bool success = false;
         QString tmp = input;
         int pos = 0;

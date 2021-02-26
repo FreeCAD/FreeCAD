@@ -26,6 +26,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -38,6 +40,7 @@
 #include <App/DocumentObject.h>
 
 #include <Gui/Application.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
@@ -101,6 +104,33 @@ std::vector<std::string> ViewProviderBalloon::getDisplayModes(void) const
     return StrList;
 }
 
+bool ViewProviderBalloon::doubleClicked(void)
+{
+    startDefaultEditMode();
+    return true;
+}
+
+void ViewProviderBalloon::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    act->setData(QVariant((int)ViewProvider::Default));
+    func->trigger(act, boost::bind(&ViewProviderBalloon::startDefaultEditMode, this));
+
+    ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
+}
+
+void ViewProviderBalloon::startDefaultEditMode()
+{
+    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+    Gui::Command::openCommand(text.toUtf8());
+
+    Gui::Document* document = this->getDocument();
+    if (document) {
+        document->setEdit(this, ViewProvider::Default);
+    }
+}
+
 bool ViewProviderBalloon::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
@@ -128,12 +158,6 @@ void ViewProviderBalloon::unsetEdit(int ModNum)
     else {
         ViewProviderDrawingView::unsetEdit(ModNum);
     }
-}
-
-bool ViewProviderBalloon::doubleClicked(void)
-{
-    setEdit(ViewProvider::Default);
-    return true;
 }
 
 void ViewProviderBalloon::updateData(const App::Property* p)

@@ -2573,47 +2573,47 @@ bozulmuş geometriye vb. bakarak bir eskizi doğrulayın.</translation>
       <translation>Otomatik kısıtlama hatası: Eşitlik kısıtlamaları uygulandıktan sonra eskiz çözülemez.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2034"/>
+      <location filename="../../../App/SketchObject.cpp" line="1966"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Eğrilerin kesişimini tahmin edemiyoruz. Dilimlemeyi planladığınız eğrilerin köşeleri arasında çakışan bir kısıtlama eklemeyi deneyin.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5667"/>
+      <location filename="../../../App/SketchObject.cpp" line="5606"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>OCE/OCC'NİN bu sürümü düğüm işlemini desteklemez. 6.9.0 veya daha yüksek gerekir.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5671"/>
+      <location filename="../../../App/SketchObject.cpp" line="5610"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>BSpline Geometri Dizini (GeoID) sınırların dışında.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5674"/>
+      <location filename="../../../App/SketchObject.cpp" line="5613"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Düğüm çokluğunda herhangi bir değişiklik istemiyorsunuz.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5679"/>
+      <location filename="../../../App/SketchObject.cpp" line="5618"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Sağlanan Geometri Dizini (GeoId) bir B-spline eğrisi değil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5686"/>
+      <location filename="../../../App/SketchObject.cpp" line="5625"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Düğüm endeksi sınırların dışındadır. OCC gösterimine göre, ilk düğümün indeks 1'i olduğunu ve sıfır olmadığını unutmayın.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5693"/>
+      <location filename="../../../App/SketchObject.cpp" line="5632"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Çeşitlilik, B-spline'nın derecesinin ötesinde artırılamaz.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5696"/>
+      <location filename="../../../App/SketchObject.cpp" line="5635"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Çokluk sıfırdan aşağıya düşürülemez.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5708"/>
+      <location filename="../../../App/SketchObject.cpp" line="5647"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC, maksimum tolerans dahilinde çokluğu azaltamıyor.</translation>
     </message>
@@ -6010,6 +6010,11 @@ to determine whether a solution converges or not</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
+      <source>Sketcher B-spline tools</source>
+      <translation type="unfinished">Sketcher B-spline tools</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher virtual space</source>
       <translation>Sketcher sanal alanı</translation>
     </message>

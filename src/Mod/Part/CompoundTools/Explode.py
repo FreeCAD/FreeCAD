@@ -20,7 +20,8 @@ def explodeCompound(compound_obj, b_group = None):
         cf.Base = compound_obj
         cf.FilterType = 'specific items'
         cf.items = str(i)
-        cf.ViewObject.DontUnhideOnDelete = True
+        if cf.ViewObject is not None:
+            cf.ViewObject.DontUnhideOnDelete = True
         features_created.append(cf)
     return (group, features_created)
 

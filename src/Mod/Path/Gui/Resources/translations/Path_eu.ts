@@ -9,26 +9,6 @@
       <translation>Erakutsi aldi baterako bide-eraikuntzaren objektuak modulua ARAZKETA moduan dagoenean.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
-      <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek prozesatze-denbora asko handitzen dute.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
-      <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek ez dute prozesatze-denbora asko handitzen.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="135"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Gelditzeko indizea (angelua) biraketa-eskaneatzerako</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="131"/>
-      <source>Dropcutter lines are created parallel to this axis.</source>
-      <translation>Erortze-ebakigailuaren lerroak ardatz honen paraleloan sortzen dira.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="73"/>
       <source>The direction along which dropcutter lines are created</source>
       <translation>Erortze-ebakigailuaren lerroak zein norabidetan sortuko diren</translation>
@@ -37,11 +17,6 @@
       <location filename="../../../PathScripts/PathSurface.py" line="74"/>
       <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
       <translation>Eragiketa objektu gordinak ala oinarri-objektuaren muga-kutxak mugatuko duen</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Hautatutako muga-kutxaren desplazamendu gehigarria</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="76"/>
@@ -64,6 +39,16 @@
       <translation>Gaitu optimizazioa, beharrezkoak ez diren puntuak G-Code irteeratik kentzeko</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
+      <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek prozesatze-denbora asko handitzen dute.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
+      <translation>Balio txikiagoek amaraun estuago eta zehatzagoa sortzen dute. Balio txikiagoek ez dute prozesatze-denbora asko handitzen.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="129"/>
       <source>The completion mode for the operation: single or multi-pass</source>
       <translation>Eragiketa osatzeko modua: pasaldi bakarrean edo anitzetan</translation>
@@ -72,6 +57,36 @@
       <location filename="../../../PathScripts/PathSurface.py" line="130"/>
       <source>The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)</source>
       <translation>Tresna-bideak piezaren inguruan izan behar duen norabidea: erlojuaren noranzkoan edo aurka</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="135"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Gelditzeko indizea (angelua) biraketa-eskaneatzerako</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
+      <source>Ignore areas that proceed below specified depth.</source>
+      <translation>Ezikusi adierazitako sakoneraren azpitik dauden areak.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
+      <source>Depth used to identify waste areas to ignore.</source>
+      <translation>Ezikusiko diren hondar-areak identifikatzeko erabiliko den sakonera.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
+      <source>Cut through waste to depth at model edge, releasing the model.</source>
+      <translation>Moztu gehiegizko materiala ereduaren ertzeraino, eredua garbitzeko.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="131"/>
+      <source>Dropcutter lines are created parallel to this axis.</source>
+      <translation>Erortze-ebakigailuaren lerroak ardatz honen paraleloan sortzen dira.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Hautatutako muga-kutxaren desplazamendu gehigarria</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="132"/>
@@ -84,24 +99,9 @@
       <translation>Abiarazteko indizea (angelua) biraketa-eskaneatzerako</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="141"/>
-      <source>Ignore areas that proceed below specified depth.</source>
-      <translation>Ezikusi adierazitako sakoneraren azpitik dauden areak.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="128"/>
       <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
       <translation>Planarra: Laua, 3D gainazal eskaneatzea. Birakaria: 4. ardatzeko eskaneatze birakaria.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="142"/>
-      <source>Depth used to identify waste areas to ignore.</source>
-      <translation>Ezikusiko diren hondar-areak identifikatzeko erabiliko den sakonera.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="143"/>
-      <source>Cut through waste to depth at model edge, releasing the model.</source>
-      <translation>Moztu gehiegizko materiala ereduaren ertzeraino, eredua garbitzeko.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="129"/>
@@ -242,6 +242,11 @@
       <location filename="PathCopy.py" line="45"/>
       <source>The path to be copied</source>
       <translation>Kopiatuko den bidea</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>Tresna-bide honen oinarri-geometria</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="70"/>
@@ -419,6 +424,11 @@
       <translation>Tresna nola atzeratzen den kontrolatzen du. Lehenetsia=G98</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
+      <source>The height where feed starts and height during retract tool when path is finished</source>
+      <translation>Elikatzea hasten den altuera eta bidea amaituta dagoenean tresna atzeratzen den altuera</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="73"/>
       <source>Controls how tool retracts Default=G99</source>
       <translation>Tresna nola atzeratzen den kontrolatzen du. Lehenetsia=G99</translation>
@@ -432,11 +442,6 @@
       <location filename="../../../PathScripts/PathDrilling.py" line="76"/>
       <source>How far the drill depth is extended</source>
       <translation>Noraino luzatuko den zulatze-sakonera</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
-      <source>The height where feed starts and height during retract tool when path is finished</source>
-      <translation>Elikatzea hasten den altuera eta bidea amaituta dagoenean tresna atzeratzen den altuera</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="71"/>
@@ -584,11 +589,6 @@
       <translation>Eragiketari aplikatuko zaion desplazamendu gehigarria. Norabidea eragiketaren menpekoa da.</translation>
     </message>
     <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>Bidea sortzeko erabiliko den liburutegia</translation>
-    </message>
-    <message>
       <location filename="PathPocket.py" line="78"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Hasi poltsaren sorrera erdian edo mugan</translation>
@@ -639,11 +639,6 @@
       <translation>Tresnak izkinen inguruan nola mugitzen diren kontrolatzen du. Lehenetsia=Biribila</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="104"/>
-      <source>Extend the profile clearing beyond the Extra Offset.</source>
-      <translation>Hedatu profilaren garbidetza desplazamendu estra baino haratago.</translation>
-    </message>
-    <message>
       <location filename="PathProfileBase.py" line="64"/>
       <source>Maximum distance before a miter join is truncated</source>
       <translation>Elkartze zorrotz bat trunkatzen hasteko distantzia maximoa</translation>
@@ -679,9 +674,14 @@
       <translation>Markatu 'Egia', ebakigailuaren erradio-konpentsazioa erabili nahi bada</translation>
     </message>
     <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>Tresna-bide honen oinarri-geometria</translation>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>Bidea sortzeko erabiliko den liburutegia</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="104"/>
+      <source>Extend the profile clearing beyond the Extra Offset.</source>
+      <translation>Hedatu profilaren garbidetza desplazamendu estra baino haratago.</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -917,11 +917,6 @@
       <translation>Ez da %s lana aurkitu</translation>
     </message>
     <message>
-      <location filename="PathUtils.py" line="762"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
-      <translation>Mozte-ertzaren angelu baliogabea %.2f, izan behar du &lt;90Â° eta &gt;=0Â°</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="541"/>
       <source>Illegal arc: Start and end radii not equal</source>
       <translation>Legez kanpoko arkua: Hasierako eta amaierako erradioak ez dira berdinak</translation>
@@ -932,14 +927,19 @@
       <translation>Mozte-ertzaren angelu baliogabea (%.2f), &gt;0° and &lt;=180° artekoa izan behar du</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+      <translation>Mozte-ertzaren angelu baliogabea (%.2f), &gt;0Â° and &lt;=180Â° artekoa izan behar du</translation>
+    </message>
+    <message>
       <location filename="PathUtils.py" line="767"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>Mozte-ertzaren angeluak (%.2f) tresna-puntaren luzera negatiboa ematen du</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
-      <translation>Mozte-ertzaren angelu baliogabea (%.2f), &gt;0Â° and &lt;=180Â° artekoa izan behar du</translation>
+      <location filename="PathUtils.py" line="762"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
+      <translation>Mozte-ertzaren angelu baliogabea %.2f, izan behar du &lt;90Â° eta &gt;=0Â°</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="397"/>
@@ -1037,19 +1037,24 @@
       <translation>Aukeratu hasiera-puntua</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
+      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
+      <translation>Kontuan hartu alderantzizko angeluaren propietatea txandakatu eta eragiketa birkalkulatu ahal dela.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
       <source>Verify final depth of pocket shaped by vertical faces.</source>
       <translation>Egiaztatu aurpegi bertikalez mugatutako poltsaren azken sakonera.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
+      <source>Depth Warning</source>
+      <translation>Sakoneraren abisua</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
       <source>Processing model as a whole ...</source>
       <translation>Eredua osotasun gisa prozesatzen...</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
-      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
-      <translation>Kontuan hartu alderantzizko angeluaren propietatea txandakatu eta eragiketa birkalkulatu ahal dela.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="781"/>
@@ -1083,11 +1088,6 @@
       <location filename="../../../PathScripts/PathPocketShape.py" line="413"/>
       <source>Processing subs individually ...</source>
       <translation>Azpiformak banaka prozesatzen...</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
-      <source>Depth Warning</source>
-      <translation>Sakoneraren abisua</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="835"/>
@@ -1150,6 +1150,11 @@
       <translation>Biratu alderantzizko angelura.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>Alderantzizko angelura biratu da atzipena lortu ahal izateko.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
       <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
       <translation>Hautatutako elementua(e) k 'Gaitu biraketa: A(x)' behar du(te) atzipenerako.</translation>
@@ -1173,11 +1178,6 @@
       <location filename="PathCircularHoleBase.py" line="120"/>
       <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
       <translation>%s.%s elementua ezin da prozesatu zulo zirkular gisa - kendu oinarri-geometrien zerrendatik.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>Alderantzizko angelura biratu da atzipena lortu ahal izateko.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
@@ -1259,7 +1259,7 @@ Pieza gordinaren goialdera handitua.</translation>
     <message>
       <location filename="../../../InitGui.py" line="158"/>
       <source>Utils</source>
-      <translation type="unfinished">Utils</translation>
+      <translation>Utilitateak</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1591,6 +1591,11 @@ Pieza gordinaren goialdera handitua.</translation>
       <translation>Post-prozesadorerako argumentuak (script-erako espezifikoak)</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathJob.py" line="105"/>
+      <source>Collection of tool controllers available for this job.</source>
+      <translation>Lan honetarako erabilgarri dauden tresna-kontrolatzaileen bilduma.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathJob.py" line="108"/>
       <source>Last Time the Job was post-processed</source>
       <translation>Lana post-prozesatu zen azken aldia</translation>
@@ -1614,11 +1619,6 @@ Pieza gordinaren goialdera handitua.</translation>
       <location filename="../../../PathScripts/PathJob.py" line="104"/>
       <source>Compound path of all operations in the order they are processed.</source>
       <translation>Eragiketa guztien bide konposatua, prozesatuak diren ordenan.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="105"/>
-      <source>Collection of tool controllers available for this job.</source>
-      <translation>Lan honetarako erabilgarri dauden tresna-kontrolatzaileen bilduma.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="110"/>
@@ -1648,7 +1648,7 @@ Pieza gordinaren goialdera handitua.</translation>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="200"/>
       <source>Collection of all tool controllers for the job</source>
-      <translation type="unfinished">Collection of all tool controllers for the job</translation>
+      <translation>Lanerako tresna-kontrolagailu guztien bilduma</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="244"/>
@@ -1902,16 +1902,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Azken sakonera hautatutako aurpegi(ar)en ZMin azpitik ezarrita.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Pocket Shape</source>
-      <translation>Poltsa-forma</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Creates a Path Pocket object from a face or faces</source>
-      <translation>Bide-poltsa bat sortzen du aurpegi batetik edo batzuetatik</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
       <source>Normal</source>
       <translation>Normala</translation>
@@ -1925,6 +1915,16 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
       <source>Y</source>
       <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Pocket Shape</source>
+      <translation>Poltsa-forma</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Creates a Path Pocket object from a face or faces</source>
+      <translation>Bide-poltsa bat sortzen du aurpegi batetik edo batzuetatik</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
@@ -2030,11 +2030,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>huts egin du irekitze mota itzultzean.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="767"/>
-      <source>Please set to an acceptable value greater than zero.</source>
-      <translation>Ezarri balio onargarria, zero baino handiagoa dena.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="683"/>
       <source>Failed to extract offset(s) for expanded profile.</source>
       <translation>Huts egin du profil hedatuen desplazamendua(k) erauzteak.</translation>
@@ -2043,6 +2038,11 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="../../../PathScripts/PathProfile.py" line="685"/>
       <source>Failed to expand profile.</source>
       <translation>Huts egin du profila hedatzeak.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="767"/>
+      <source>Please set to an acceptable value greater than zero.</source>
+      <translation>Ezarri balio onargarria, zero baino handiagoa dena.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="860"/>
@@ -2218,27 +2218,27 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../../../PathScripts/PathPropertyBagGui.py" line="230"/>
       <source>Edit PropertyBag</source>
-      <translation type="unfinished">Edit PropertyBag</translation>
+      <translation>Editatu propietate-zorroa</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPropertyBagGui.py" line="387"/>
       <source>Create PropertyBag</source>
-      <translation type="unfinished">Create PropertyBag</translation>
+      <translation>Sortu propietate-zorroa</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPropertyBagGui.py" line="401"/>
       <source>Property Bag</source>
-      <translation type="unfinished">Property Bag</translation>
+      <translation>Propietate-zorroa</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPropertyBagGui.py" line="402"/>
       <source>Creates an object which can be used to store reference properties.</source>
-      <translation type="unfinished">Creates an object which can be used to store reference properties.</translation>
+      <translation>Erreferentzia-propietateak biltegiratzeko erabili daitekeen objektu bat sortzen du.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPropertyBag.py" line="61"/>
       <source>List of custom property groups</source>
-      <translation type="unfinished">List of custom property groups</translation>
+      <translation>Propietate-talde pertsonalizatuen zerrenda</translation>
     </message>
   </context>
   <context>
@@ -2327,6 +2327,11 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Uneko desplazamendu-balioa ezin da erabili.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="493"/>
+      <source>Current Extend Radius value produces negative arc radius.</source>
+      <translation>Uneko hedadura-erradioaren balioak arku-erradio negatiboak sortzen ditu.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSlot.py" line="520"/>
       <source>No path extensions available for full circles.</source>
       <translation>Ez dago bide-luzapenik erabilgarri zirkulu osoetarako.</translation>
@@ -2372,6 +2377,11 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Uneko trensa arku-diametroa baino luzeagoa da.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="1005"/>
+      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
+      <translation>Huts egitea, ertzaren artekak lerroak, arkuak eta zirkuluak soilik onartzen ditu.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSlot.py" line="994"/>
       <source>Failed to determine point 1 from</source>
       <translation>Huts egin du 1. puntua zehazteak hemendik:</translation>
@@ -2390,6 +2400,11 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="../../../PathScripts/PathSlot.py" line="1128"/>
       <source>The selected face is not oriented vertically:</source>
       <translation>Hautatutako aurpegia ez dago bertikalean orientatuta:</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1688"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>Uneko desplazamendu-balioak erradio negatiboak sortzen ditu.</translation>
     </message>
   </context>
   <context>
@@ -2837,12 +2852,12 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="175"/>
       <source>List of all properties inherited from the bit</source>
-      <translation type="unfinished">List of all properties inherited from the bit</translation>
+      <translation>Ataletik heredatutako propietate guztien zerrenda</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="327"/>
       <source>Did not find a PropertyBag in {} - not a ToolBit shape?</source>
-      <translation type="unfinished">Did not find a PropertyBag in {} - not a ToolBit shape?</translation>
+      <translation>Ez da propietate-zorrorik aurkitu hemen: {} - ez da tresna-atalen forma bat?</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="352"/>
@@ -3105,6 +3120,13 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Trontzatu segmentu lerrokideak kentzeko (graduak).                         Lehenetsia=10.0.</translation>
     </message>
     <message>
+      <location filename="PathVcarve.py" line="222"/>
+      <source>Cutoff for removing colinear segments (degrees). 
+                        default=10.0.</source>
+      <translation>Trontzatu segmentu lerrokideak kentzeko (graduak). 
+                        Lehenetsia=10.0.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="322"/>
       <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
       <translation>Lanaren oinarri-objektuak ez du grabatuko den elementurik. Grabazio-eragiketak ez du irteerarik emango.</translation>
@@ -3112,7 +3134,7 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="340"/>
       <source>Error processing Base object. Engraving operation will produce no output.</source>
-      <translation type="unfinished">Error processing Base object. Engraving operation will produce no output.</translation>
+      <translation>Errorea oinarri-objektua prozesatzean. Grabatze-eragiketak ez du irteerarik ekoiztuko.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
@@ -3286,6 +3308,16 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
   <context>
     <name>Path_Dressup</name>
     <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Jantzi</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Bideak janzteko objektu bat sortzen du hautatutako bide bat erabiliz</translation>
+    </message>
+    <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
 </source>
@@ -3303,16 +3335,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Hautatu bide-objektu bat</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Jantzi</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Bideak janzteko objektu bat sortzen du hautatutako bide bat erabiliz</translation>
     </message>
   </context>
   <context>
@@ -3469,7 +3491,7 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="475"/>
       <source>Edit LeadInOut Dress-up</source>
-      <translation type="unfinished">Edit LeadInOut Dress-up</translation>
+      <translation>Editatu sarrera-irteeraren jantzia</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="338"/>
@@ -3787,13 +3809,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Bide-jauziko objektu bat sortzen du</translation>
     </message>
     <message>
-      <location filename="PathHop.py" line="119"/>
-      <source>The selected object is not a path
-</source>
-      <translation>Hautatutako objektua ez da bide bat
-</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
       <source>Please select one path object</source>
       <translation>Hautatu bide-objektu bat</translation>
@@ -3807,6 +3822,13 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="PathHop.py" line="122"/>
       <source>Create Hop</source>
       <translation>Sortu jauzia</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="119"/>
+      <source>The selected object is not a path
+</source>
+      <translation>Hautatutako objektua ez da bide bat
+</translation>
     </message>
   </context>
   <context>
@@ -4058,9 +4080,39 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation>Lanak ez du hautatutako oinarri-objekturik.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSanity.py" line="71"/>
       <source>Check the path job for common errors</source>
       <translation>Aztertu bide-lana errore arruntak bilatzeko</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="76"/>
+      <source>A Postprocessor has not been selected.</source>
+      <translation>Ez da postprozesagailurik hautatu.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="80"/>
+      <source>No output file is named. You'll be prompted during postprocessing.</source>
+      <translation>Ez da izenik eman irteera-fitxategirako. Izena eskatuko zaizu postprozesuan.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="136"/>
+      <source>No active operations was found. Post processing will not result in any tooling.</source>
+      <translation>Ez da eragiketa aktiborik aurkitu. Postprozesatzeak ez du tresnarik sortuko.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="140"/>
+      <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
+      <translation>Ez da tresna-kontrolatzailerik aurkitu. Balio lehenetsiak erabiliko dira, eta hori arriskutsua da. Mesedez, gehitu tresna-kontrolatzaile bat.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="144"/>
+      <source>No issues detected, {} has passed basic sanity check.</source>
+      <translation>Ez da arazorik detektatu, {} elementuak oinarrizko osasun-egiaztapenak gainditu ditu.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="189"/>
@@ -4111,36 +4163,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="../../../PathScripts/PathSanity.py" line="223"/>
       <source>Minimum Z Height</source>
       <translation>Z altuera minimoa</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation>Lanak ez du hautatutako oinarri-objekturik.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="76"/>
-      <source>A Postprocessor has not been selected.</source>
-      <translation>Ez da postprozesagailurik hautatu.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="80"/>
-      <source>No output file is named. You'll be prompted during postprocessing.</source>
-      <translation>Ez da izenik eman irteera-fitxategirako. Izena eskatuko zaizu postprozesuan.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="136"/>
-      <source>No active operations was found. Post processing will not result in any tooling.</source>
-      <translation>Ez da eragiketa aktiborik aurkitu. Postprozesatzeak ez du tresnarik sortuko.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="140"/>
-      <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
-      <translation>Ez da tresna-kontrolatzailerik aurkitu. Balio lehenetsiak erabiliko dira, eta hori arriskutsua da. Mesedez, gehitu tresna-kontrolatzaile bat.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="144"/>
-      <source>No issues detected, {} has passed basic sanity check.</source>
-      <translation>Ez da arazorik detektatu, {} elementuak oinarrizko osasun-egiaztapenak gainditu ditu.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="224"/>
@@ -4364,13 +4386,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
   <context>
     <name>Path_SimpleCopy</name>
     <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Hautatu bide-objektu bakar bat
-</translation>
-    </message>
-    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>Kopia sinplea</translation>
@@ -4379,6 +4394,13 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="PathSimpleCopy.py" line="47"/>
       <source>Creates a non-parametric copy of another path</source>
       <translation>Beste bide baten kopia ez parametriko bat sortzen du</translation>
+    </message>
+    <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Hautatu bide-objektu bakar bat
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
@@ -4474,11 +4496,6 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
   <context>
     <name>Path_ToolController</name>
     <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Kargatuko den tresnaren zenbakia</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Gehitu tresna-kontrolatzailea lanari</translation>
@@ -4487,6 +4504,11 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Gehitu tresna-kontrolatzailea</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Kargatuko den tresnaren zenbakia</translation>
     </message>
   </context>
   <context>
@@ -4515,19 +4537,19 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Erdiko lerroko grabatze-bide bat sortzen du</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
-      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
-      <translation>VCarve aplikazioak CuttingEdgeAngle                            duen grabatze-ebakigailua behar du</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="309"/>
       <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
-      <translation type="unfinished">VCarve requires an engraving cutter with CuttingEdgeAngle</translation>
+      <translation>VCarve aplikazioak CuttingEdgeAngle duen grabatze-ebakigailua behar du</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
       <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
       <translation>Grabagailuaren mozte-ertzaren angeluak &lt; 180 gradu izan behar du.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
+      <translation>VCarve aplikazioak CuttingEdgeAngle                            duen grabatze-ebakigailua behar du</translation>
     </message>
   </context>
   <context>
@@ -4564,54 +4586,9 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <translation>Gorde tresna-atalaren liburutegia</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>JSON tresna-mahaia (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCAD tresna-mahaia (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNC tresna-mahaia (*.tbl)</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Ireki tresna-mahaia</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Gorde tresna-mahaia</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Rename Tooltable</source>
-      <translation>Aldatu tresna-mahaiaren izena</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Enter Name:</source>
-      <translation>Sartu izena:</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Gehitu tresna-mahai berria</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Ezabatu hautatutako tresna-mahaia</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Aldatu izena hautatutako taula-mahaiari</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4825,6 +4802,11 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Gorde tresna-mahaia</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>XML tresna-mahaia (*.xml)</translation>
     </message>
@@ -4837,6 +4819,46 @@ Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat
       <location filename="TooltableEditor.py" line="653"/>
       <source>Object doesn't have a tooltable property</source>
       <translation>Objektuak ez du tresna-mahai propietate bat</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Rename Tooltable</source>
+      <translation>Aldatu tresna-mahaiaren izena</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Enter Name:</source>
+      <translation>Sartu izena:</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Gehitu tresna-mahai berria</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Ezabatu hautatutako tresna-mahaia</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Aldatu izena hautatutako taula-mahaiari</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>JSON tresna-mahaia (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCAD tresna-mahaia (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNC tresna-mahaia (*.tbl)</translation>
     </message>
     <message>
       <location filename="PathToolLibraryManager.py" line="514"/>

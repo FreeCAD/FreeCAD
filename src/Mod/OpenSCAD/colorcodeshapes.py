@@ -106,7 +106,7 @@ def colorcodeshapes(objs):
                         st = mostbasiccompound(obj.Shape)
                     color=shapecolors[st]
                 obj.ViewObject.ShapeColor = color
-            except:
+            except Exception:
                 raise
 
 #colorcodeshapes(App.ActiveDocument.Objects)

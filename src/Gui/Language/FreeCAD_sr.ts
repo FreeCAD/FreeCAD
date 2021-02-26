@@ -5377,6 +5377,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation type="unfinished">Expression...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5819,27 +5823,27 @@ Do you want to specify another directory?</source>
     <name>Gui::Translator</name>
     <message>
       <source>English</source>
-      <translation type="unfinished">English</translation>
+      <translation>Енглески</translation>
     </message>
     <message>
       <source>German</source>
-      <translation type="unfinished">German</translation>
+      <translation>Немачки</translation>
     </message>
     <message>
       <source>Spanish</source>
-      <translation type="unfinished">Spanish</translation>
+      <translation>Шпански</translation>
     </message>
     <message>
       <source>French</source>
-      <translation type="unfinished">French</translation>
+      <translation>Француски</translation>
     </message>
     <message>
       <source>Italian</source>
-      <translation type="unfinished">Italian</translation>
+      <translation>Италијански</translation>
     </message>
     <message>
       <source>Japanese</source>
-      <translation type="unfinished">Japanese</translation>
+      <translation>Јапански</translation>
     </message>
     <message>
       <source>Chinese Simplified</source>
@@ -5855,19 +5859,19 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Russian</source>
-      <translation type="unfinished">Russian</translation>
+      <translation>Руски</translation>
     </message>
     <message>
       <source>Swedish</source>
-      <translation type="unfinished">Swedish</translation>
+      <translation>Шведски</translation>
     </message>
     <message>
       <source>Afrikaans</source>
-      <translation type="unfinished">Afrikaans</translation>
+      <translation>Африкански</translation>
     </message>
     <message>
       <source>Norwegian</source>
-      <translation type="unfinished">Norwegian</translation>
+      <translation>Норвешки</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
@@ -5875,51 +5879,51 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Portuguese</source>
-      <translation type="unfinished">Portuguese</translation>
+      <translation>Португалски</translation>
     </message>
     <message>
       <source>Dutch</source>
-      <translation type="unfinished">Dutch</translation>
+      <translation>Холандски</translation>
     </message>
     <message>
       <source>Ukrainian</source>
-      <translation type="unfinished">Ukrainian</translation>
+      <translation>Украински</translation>
     </message>
     <message>
       <source>Finnish</source>
-      <translation type="unfinished">Finnish</translation>
+      <translation>Фински</translation>
     </message>
     <message>
       <source>Croatian</source>
-      <translation type="unfinished">Croatian</translation>
+      <translation>Хрватски</translation>
     </message>
     <message>
       <source>Polish</source>
-      <translation type="unfinished">Polish</translation>
+      <translation>Пољски</translation>
     </message>
     <message>
       <source>Czech</source>
-      <translation type="unfinished">Czech</translation>
+      <translation>Чешки</translation>
     </message>
     <message>
       <source>Hungarian</source>
-      <translation type="unfinished">Hungarian</translation>
+      <translation>Мађарски</translation>
     </message>
     <message>
       <source>Romanian</source>
-      <translation type="unfinished">Romanian</translation>
+      <translation>Румунски</translation>
     </message>
     <message>
       <source>Slovak</source>
-      <translation type="unfinished">Slovak</translation>
+      <translation>Словачки</translation>
     </message>
     <message>
       <source>Turkish</source>
-      <translation type="unfinished">Turkish</translation>
+      <translation>Турски</translation>
     </message>
     <message>
       <source>Slovenian</source>
-      <translation type="unfinished">Slovenian</translation>
+      <translation>Словеначки</translation>
     </message>
     <message>
       <source>Basque</source>
@@ -6915,7 +6919,7 @@ Document: </translation>
     </message>
     <message>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
+      <translation>Дошло је до грешака приликом учитавања датотеке. Неки подаци су можда измењени или уопште нису опорављени. У приказу извештаја потражите одређеније информације о предметима у питању.</translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
@@ -7406,7 +7410,7 @@ Document: </translation>
     </message>
     <message>
       <source>Donate</source>
-      <translation type="unfinished">Donate</translation>
+      <translation>Прилози</translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>

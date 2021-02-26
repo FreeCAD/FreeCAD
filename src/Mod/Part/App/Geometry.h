@@ -324,6 +324,16 @@ private:
     bool calculateBiArcPoints(const gp_Pnt& p0, gp_Vec v_start,
                               const gp_Pnt& p4, gp_Vec v_end,
                               gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const;
+
+    // If during assignment of weights (during the for loop iteratively setting the poles) all weights
+    // become (temporarily) equal even though weights does not have equal values
+    // OCCT will convert all the weights (the already assigned and those not yet assigned)
+    // to 1.0 (nonrational b-splines have 1.0 weights). This may lead to the assignment of wrong
+    // of weight values.
+    //
+    // The work-around is to temporarily set the last weight to be assigned to a value different from
+    // the current value and the to-be-assigned value for the weight at position last-to-be-assign but one.
+    void workAroundOCCTBug(const std::vector<double>& weights);
 private:
     Handle(Geom_BSplineCurve) myCurve;
 };

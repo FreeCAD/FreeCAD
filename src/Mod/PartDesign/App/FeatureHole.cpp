@@ -1696,7 +1696,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
             Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
 
-            const gp_Pnt& loc = circle->Axis().Location();
+            gp_Pnt loc = circle->Axis().Location();
 
             gp_Trsf sketchTransformation;
             gp_Trsf localSketchTransformation;

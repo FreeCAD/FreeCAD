@@ -47,7 +47,7 @@ class PartDesignWorkbench ( Workbench ):
             print("Wizard shaft module cannot be loaded")
             try:
                 from FeatureHole import HoleGui
-            except:
+            except Exception:
                 pass
 
         import PartDesignGui

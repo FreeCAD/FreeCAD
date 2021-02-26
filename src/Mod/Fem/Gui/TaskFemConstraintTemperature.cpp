@@ -324,7 +324,7 @@ TaskDlgFemConstraintTemperature::TaskDlgFemConstraintTemperature(ViewProviderFem
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintTemperature(ConstraintView);;
+    this->parameter = new TaskFemConstraintTemperature(ConstraintView);
 
     Content.push_back(parameter);
 }

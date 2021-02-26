@@ -21,16 +21,12 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPropertyBag as PathPropertyBag
-import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 import PySide
-import Sketcher
 import json
-import math
 import os
 import zipfile
 
@@ -324,7 +320,7 @@ class ToolBit(object):
                 self._setupProperty(obj, prop, attributes)
                 propNames.append(prop)
         if not propNames:
-            PathLog.error(translate('PathToolBit', 'Did not find a PropertyBag in {} - not a ToolBit shape?').format(docName))
+            PathLog.error(translate('PathToolBit', 'Did not find a PropertyBag in {} - not a ToolBit shape?'.format(docName)))
 
         # has to happen last because it could trigger op.execute evaluations
         obj.BitPropertyNames = propNames

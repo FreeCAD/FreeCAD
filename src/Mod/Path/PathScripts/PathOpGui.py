@@ -1177,6 +1177,7 @@ class TaskPanel(object):
     def panelSetFields(self):
         '''panelSetFields() ... invoked to trigger a complete transfer of the model's properties to the UI.'''
         PathLog.track()
+        self.obj.Proxy.sanitizeBase(self.obj)
         for page in self.featurePages:
             page.pageSetFields()
 

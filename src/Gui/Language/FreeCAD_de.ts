@@ -1478,8 +1478,8 @@ Siehe FreeCAD Wiki für Details über das Bild.</translation>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Wählen Sie Ihre Präferenz für die Größe der Symbolleiste aus. Sie können
-entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen</translation>
+      <translation>Legt die Größe der Schaltflächen innerhalb der Symbolleisten fest. Sie können diese
+entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen.</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
@@ -1546,7 +1546,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation>BaumAnsicht und EigenschaftsAnsicht</translation>
+      <translation>Baumansicht und Eigenschaftsansicht</translation>
     </message>
     <message>
       <source>Both</source>
@@ -3240,23 +3240,23 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <translation>Nicht geladene Arbeitsbereiche</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Laden Sie die ausgewählten Arbeitsbereich und fügen Sie ihre Einstellungs-Fenster dem Einstellungs-Dialog hinzu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Lädt die Auswahl</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deaktivierte Arbeitsbereiche&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Um Ressourcen zu schonen, lädt FreeCAD keine Arbeitsbereiche solange sie nicht verwendet werden. Wenn sie geladen werden, haben Sie Zugriff auf die zusätzlichen Einstellungen.&lt;/p&gt;&lt;p&gt;Die folgenden Arbeitsbereiche sind in Ihrer Installation verfügbar, aber noch nicht geladen:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3591,7 +3591,7 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
-      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
+      <translation>Checkboxen für die Auswahl im Dokumentenbaum hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -5359,6 +5359,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Ausdruck...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Automatisch erweitern</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -6901,7 +6905,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Es gab schwerwiegende Fehler beim Laden der Datei. Einige Daten wurden möglicherweise geändert oder konnten nicht wiederhergestellt werden. Das Speichern des Projekts wird höchstwahrscheinlich zu Datenverlust führen.</translation>
     </message>
     <message>
       <source>Workbenches</source>
@@ -7351,7 +7355,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Wählen Sie die Objekte aus, bevor Sie Export wählen.</translation>
     </message>
   </context>
   <context>
@@ -7392,7 +7396,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Spende, um Entwicklung zu unterstützen</translation>
     </message>
   </context>
   <context>

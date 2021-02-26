@@ -266,7 +266,7 @@ class _ArchPipe(ArchComponent.Component):
                 for pw in p.Wires:
                     sh = w.makePipeShell([pw],True,False,2)
                     shapes.append(sh)
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe")+"\n")
         else:
             if len(shapes) == 0:
@@ -311,7 +311,7 @@ class _ArchPipe(ArchComponent.Component):
             if not obj.Profile.Shape.Wires[0].isClosed():
                 FreeCAD.Console.PrintError(translate("Arch","The profile is not closed")+"\n")
                 return
-            p = obj.Profile.Shape
+            p = obj.Profile.Shape.Wires[0]
         else:
             if obj.Diameter.Value == 0:
                 return
