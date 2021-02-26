@@ -432,6 +432,10 @@ Base::Vector3d Constraint::getBasePoint(const Base::Vector3d& base, const Base::
 const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direction)
 {
     App::DocumentObject* obj = direction.getValue();
+    if (!obj) {
+        return Base::Vector3d(0,0,0);
+    }
+
     if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
         Base::Vector3d vec(1.0, 0.0, 0.0);
         static_cast<App::Line*>(obj)->Placement.getValue().multVec(vec, vec);
