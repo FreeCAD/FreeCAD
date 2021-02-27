@@ -464,11 +464,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgStartPreferences.ui" line="610"/>
-        <source>Close &amp; switch on file open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../DlgStartPreferences.ui" line="617"/>
         <source>If FreeCAD is started by opening a file, apply the two settings above</source>
         <translation type="unfinished"></translation>
