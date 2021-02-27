@@ -568,9 +568,11 @@ void setupMenuStyle(QWidget *menu)
         return;
 
     menu->setStyleSheet(_Stylesheet);
-    menu->setWindowFlags(menu->windowFlags() | Qt::FramelessWindowHint);
-    menu->setAttribute(Qt::WA_NoSystemBackground, true);
-    menu->setAttribute(Qt::WA_TranslucentBackground, true);
+    if (_Stylesheet.indexOf(QLatin1String("background")) >= 0) {
+        menu->setWindowFlags(menu->windowFlags() | Qt::FramelessWindowHint);
+        menu->setAttribute(Qt::WA_NoSystemBackground, true);
+        menu->setAttribute(Qt::WA_TranslucentBackground, true);
+    }
 #else
     if (menu->styleSheet() != _DefaultStyle)
         menu->setStyleSheet(_DefaultStyle);
