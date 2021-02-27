@@ -1532,8 +1532,7 @@ void SelectionSingleton::setVisible(VisibleState vis, const std::vector<App::Sub
             // prevent setting the same object visibility more than once
             if (!filter.insert(std::make_pair(obj,parent)).second)
                 continue;
-            int visElement = parent->hasChildElement()?
-                parent->isElementVisible(elementName.c_str()):-1;
+            int visElement = parent->isElementVisible(elementName.c_str());
             if (visElement >= 0) {
                 if (visElement > 0)
                     visElement = 1;
