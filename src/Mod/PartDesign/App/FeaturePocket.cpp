@@ -61,8 +61,6 @@ PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 
 Pocket::Pocket()
 {
-    addSubType = FeatureAddSub::Subtractive;
-
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
@@ -75,6 +73,10 @@ Pocket::Pocket()
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
+
+    // add FeatureAddSub features at last  to keep the sorting right
+    // see https://forum.freecadweb.org/viewtopic.php?f=3&t=56065#p482274
+    addSubType = FeatureAddSub::Subtractive;
 }
 
 short Pocket::mustExecute() const

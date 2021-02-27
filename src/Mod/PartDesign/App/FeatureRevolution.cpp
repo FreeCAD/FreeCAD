@@ -55,12 +55,14 @@ PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::ProfileBased)
 
 Revolution::Revolution()
 {
-    addSubType = FeatureAddSub::Additive;
-    
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Revolution",(App::Prop_None),"Reference axis of revolution");
+
+    // add FeatureAddSub features at last  to keep the sorting right
+    // see https://forum.freecadweb.org/viewtopic.php?f=3&t=56065#p482274
+    addSubType = FeatureAddSub::Subtractive;
 }
 
 short Revolution::mustExecute() const
