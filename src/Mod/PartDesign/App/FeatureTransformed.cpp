@@ -65,7 +65,7 @@ Transformed::Transformed()
     Originals.setSize(0);
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -89,7 +89,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
 
     const char* err = nullptr;
     const std::vector<App::DocumentObject*> & originals = Originals.getValues();
-    // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here first 
+    // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here first
     App::DocumentObject* firstOriginal = originals.empty() ? NULL : originals.front();
     if (firstOriginal) {
         if(firstOriginal->isDerivedFrom(Part::Feature::getClassTypeId())) {
@@ -272,7 +272,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 fuseShape = fuseShape.makETransform(trsf);
             if (!cutShape.isNull())
                 cutShape = cutShape.makETransform(trsf);
-        } 
+        }
         else {
             return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");
         }
@@ -323,17 +323,17 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     //
                     // Therefore, if the transformation succeeded, then we fuse it with the support now, before checking the intersection
                     // of the next transformation.
-                    
+
                     /*v_transformations.push_back(t);
                     v_transformedShapes.push_back(mkTrf.Shape());*/
-    
+
                     // Note: Transformations that do not intersect the support are ignored in the overlap tests
-                    
+
                     //insert scheme here.
                     /*TopoDS_Compound compoundTool;
                     std::vector<TopoDS_Shape> individualTools;
                     divideTools(v_transformedShapes, individualTools, compoundTool);*/
-                    
+
                     // Fuse/Cut the compounded transformed shapes with the support
                     //TopoDS_Shape result;
 
@@ -361,7 +361,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         shape = copy.Shape();
                         if (shape.IsNull())
                             return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
-            
+
                         BRepBuilderAPI_Transform mkTrf(shape, *t, false); // No need to copy, now
                         if (!mkTrf.IsDone())
                             return new App::DocumentObjectExecReturn("Transformation failed", (*o));
@@ -378,7 +378,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             } catch (Standard_Failure& e) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
                 // fuse operation of the transformation result will also fail
-        
+
                 std::string msg("Transformation: Intersection check failed");
                 if (e.GetMessageString() != NULL)
                     msg += std::string(": '") + e.GetMessageString() + "'";
