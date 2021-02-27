@@ -340,6 +340,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
     // Translate module
     PyObject* pTranslateModule = (new Base::Translate)->module().ptr();
+    Py_INCREF(pTranslateModule);
     PyModule_AddObject(pAppModule, "Qt", pTranslateModule);
 
     //insert Units module
