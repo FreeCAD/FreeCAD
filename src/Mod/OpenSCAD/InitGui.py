@@ -91,3 +91,7 @@ class OpenSCADWorkbench ( Workbench ):
 
 
 Gui.addWorkbench(OpenSCADWorkbench())
+
+openscadfilename = OpenSCADUtils.searchforopenscadexe()
+if openscadfilename: #automatic search was succsessful
+    FreeCAD.__unit_test__ += ["TestOpenSCADGui"]
