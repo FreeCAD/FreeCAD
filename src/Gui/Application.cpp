@@ -450,7 +450,6 @@ Application::Application(bool GUIenabled)
 
         // PySide additions
         PySideUicModule* pySide = new PySideUicModule();
-        Py_INCREF(pySide->module().ptr());
         PyModule_AddObject(module, "PySideUic", pySide->module().ptr());
 
         ExpressionBindingPy::init_type();

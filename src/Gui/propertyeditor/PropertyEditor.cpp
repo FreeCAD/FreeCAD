@@ -83,6 +83,9 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
 PropertyEditor::~PropertyEditor()
 {
+    QItemEditorFactory* f = delegate->itemEditorFactory();
+    delegate->setItemEditorFactory(nullptr);
+    delete f;
 }
 
 void PropertyEditor::setAutomaticExpand(bool v)
