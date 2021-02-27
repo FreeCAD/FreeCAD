@@ -289,11 +289,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgStartPreferences.ui" line="110"/>
-        <source>An optional custom folder to be displayed at the bottom of the first page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../DlgStartPreferences.ui" line="126"/>
         <source>Show notepad</source>
         <translation type="unfinished"></translation>
