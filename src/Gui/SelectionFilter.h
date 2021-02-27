@@ -24,6 +24,7 @@
 #ifndef GUI_SelectionFilter_H
 #define GUI_SelectionFilter_H
 
+#include <memory>
 #include <string>
 #include <CXX/Extensions.hxx>
 #include "Selection.h"
@@ -87,8 +88,7 @@ protected:
     std::string Errors;
     bool parse(void);
 
-    Node_Block *Ast;
-
+    std::shared_ptr<Node_Block> Ast;
 };
 
 /** Filter object for the SelectionSengleton
@@ -220,11 +220,14 @@ struct Node_Object
     Node_Slice  *Slice;
     std::string SubName;
 };
+typedef std::shared_ptr<Node_Object> Node_ObjectPtr;
 
 struct Node_Block
 {
-    Node_Block(Node_Object* obj){Objects.push_back(obj);}
-    std::vector< Node_Object *> Objects;
+    Node_Block(Node_Object* obj){
+        Objects.emplace_back(obj);
+    }
+    std::vector<Node_ObjectPtr> Objects;
 };
 
 
