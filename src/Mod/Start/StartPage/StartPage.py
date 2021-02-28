@@ -173,8 +173,13 @@ def getInfo(filename):
             import gnomevfs
         except Exception:
             # alternative method
-            import hashlib
-            fhash = hashlib.md5(("file://"+path).encode("utf8")).hexdigest()
+            key = "file://"+path
+            try:
+                # will raise exception in python2
+                key = key.encode('utf8')
+            except Exception:
+                pass
+            fhash = hashlib.md5(key).hexdigest()
             thumb = os.path.join(os.path.expanduser("~"),".thumbnails","normal",fhash+".png")
         else:
             uri = gnomevfs.get_uri_from_local_path(path)
