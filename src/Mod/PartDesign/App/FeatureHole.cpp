@@ -2190,10 +2190,9 @@ void from_json(const nlohmann::json &j, Hole::CutDimensionSet &t)
 
 void Hole::readCutDefinitions()
 {
-    const char subpath[] = "Mod/PartDesign/Resources/Hole";
     std::vector<std::string> dirs {
-        ::App::Application::getResourceDir() + subpath,
-        ::App::Application::getUserAppDataDir() + subpath,
+        ::App::Application::getResourceDir() + "Mod/PartDesign/Resources/Hole",
+        ::App::Application::getUserAppDataDir() + "PartDesign/Hole"
     };
 
     std::clog << "Looking for thread definitions in: ";
