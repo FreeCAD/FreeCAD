@@ -83,20 +83,18 @@ public:
     short mustExecute() const;
     //@}
 
-    /** returns a list of the transformations that where rejected during the last execute
+    /** returns the compound of the shapes that were rejected during the last execute
       * because they did not overlap with the support
       */
-    typedef std::map<App::DocumentObject*, std::list<gp_Trsf> > rejectedMap;
-    const rejectedMap getRejectedTransformations(void) { return rejected; }
+    TopoDS_Shape rejected;
 
 protected:
     void Restore(Base::XMLReader &reader);
     virtual void positionBySupport(void);
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
-		     TopoDS_Compound &compoundOut) const;
-
-    rejectedMap rejected;
+                     TopoDS_Compound &compoundOut) const;
+    static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
     static const char* OverlapEnums[];
