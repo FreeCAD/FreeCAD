@@ -70,6 +70,13 @@ class Tracker:
             drawstyle.lineWeight = 3
             drawstyle.linePattern = 0x0f0f  # 0xaa
         node = coin.SoSeparator()
+        # prevent the tracker to cast any shadow
+        try:
+            shadowstyle = coin.SoType.fromName('SoShadowStyle').createInstance()
+            shadowstyle.style = 0
+            node.addChild(shadowstyle)
+        except Exception:
+            pass
         for c in [drawstyle, self.color] + children:
             node.addChild(c)
         self.switch = coin.SoSwitch()  # this is the on/off switch
