@@ -73,11 +73,15 @@ class Tracker:
         # prevent the tracker to cast any shadow
         try:
             shadowstyle = coin.SoType.fromName('SoShadowStyle').createInstance()
-            shadowstyle.style = 0
+            shadowstyle.style = 'NO_SHADOWING'
             node.addChild(shadowstyle)
         except Exception:
             pass
-        for c in [drawstyle, self.color] + children:
+        lightmodel = coin.SoLightModel()
+        lightmodel.model = 'BASE_COLOR'
+        resetbbox = coin.SoResetTransform()
+        resetbbox.whatToReset = 'BBOX'
+        for c in [lightmodel, drawstyle, self.color] + children + [resetbbox]:
             node.addChild(c)
         self.switch = coin.SoSwitch()  # this is the on/off switch
         if name:
