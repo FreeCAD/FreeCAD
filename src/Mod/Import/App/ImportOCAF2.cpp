@@ -50,6 +50,7 @@
 
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/range/algorithm/replace_if.hpp>
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
@@ -541,11 +542,41 @@ App::Document *ImportOCAF2::getDocument(App::Document *doc, TDF_Label label) {
             break;
         }
     }
+    std::string fname = newDoc->Label.getValue();
+    // First, try save file using more descriptive label name.
+    // Replace some common invalid characters
+    boost::replace_if(fname, boost::is_any_of("<>:\"/\\|?*"), '_');
     for(int i=0;i<1000;++i) {
         ss.str("");
-        ss << path << '/' << newDoc->getName() << ".fcstd";
+        ss << path << '/' << fname;
         if(i>0) 
             ss << '_' << std::setfill('0') << std::setw(3) << i;
+        ss << ".fcstd";
+        Base::FileInfo fi(ss.str());
+        if(!fi.exists()) {
+            try {
+                // No way to be sure the file name is legal, so just create one.
+                std::ofstream ofs(fi.filePath());
+                ofs << "test";
+                ofs.close();
+                if (!fi.exists())
+                    continue;
+                fi.deleteFile();
+            } catch (...)
+            {}
+            if(!newDoc->saveAs(fi.filePath().c_str()))
+                break;
+            return newDoc;
+        }
+    }
+
+    // Using label as file name failed, fall back to internal name
+    for(int i=0;i<1000;++i) {
+        ss.str("");
+        ss << path << '/' << newDoc->getName();
+        if(i>0) 
+            ss << '_' << std::setfill('0') << std::setw(3) << i;
+        ss << ".fcstd";
         Base::FileInfo fi(ss.str());
         if(!fi.exists()) {
             if(!newDoc->saveAs(fi.filePath().c_str()))
