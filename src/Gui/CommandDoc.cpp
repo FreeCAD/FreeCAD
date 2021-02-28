@@ -343,12 +343,13 @@ QString createDefaultExportBasename()
     QFileInfo fi(docFilename);
     QString fcstdBasename = fi.completeBaseName();
     if (fcstdBasename.isEmpty()) 
-        fcstdBasename = QString::fromStdString(App::GetApplication().getActiveDocument()->Label.getStrValue());
+        fcstdBasename = QString::fromUtf8(
+                App::GetApplication().getActiveDocument()->Label.getValue());
 
     // %L - the label of the selected object(s)
     QStringList objectLabels;
     for (const auto& object : selection)
-        objectLabels.push_back(QString::fromStdString(object->Label.getStrValue()));
+        objectLabels.push_back(QString::fromUtf8(object->Label.getValue()));
 
     // %P - the label of the selected objects and their first parent
     QStringList parentLabels;
@@ -356,8 +357,8 @@ QString createDefaultExportBasename()
         auto parents = object->getParents();
         QString firstParent;
         if (!parents.empty())
-            firstParent = QString::fromStdString(parents.front().first->Label.getStrValue());
-        parentLabels.append(firstParent + QString::fromStdString(object->Label.getStrValue()));
+            firstParent = QString::fromUtf8(parents.front().first->Label.getValue());
+        parentLabels.append(firstParent + QString::fromUtf8(object->Label.getValue()));
     }
 
     // %U - the date and time, in UTC, ISO 8601
