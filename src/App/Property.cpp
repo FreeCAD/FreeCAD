@@ -144,10 +144,9 @@ namespace App {
  * Make deleting dynamic property safer by postponing its destruction.
  *
  * Dynamic property can be removed at any time, even during triggering of
- * onChanged() signal of the removing property. This patch introduced
- * static function Property::destroy() to make it safer by queueing any
- * removed property, and only deleting them when no onChanged() call is
- * active.
+ * on(Before)Changed() signal of the removing property. This patch introduced
+ * static function Property::destroy() to make it safer by queueing any removed
+ * property, and only deleting them when no on(Before)Changed() call is active.
  */
 struct PropertyCleaner {
     PropertyCleaner(Property *p)
@@ -219,6 +218,7 @@ void Property::hasSetValue(void)
 
 void Property::aboutToSetValue(void)
 {
+    PropertyCleaner guard(this);
     if (father)
         father->onBeforeChange(this);
 }
