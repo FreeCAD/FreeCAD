@@ -296,7 +296,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         bool overlapping = false;
 
         std::vector<gp_Trsf>::const_iterator t = transformations.begin();
-        //++t; // Skip first transformation, which is always the identity transformation
         bool first = true;
         for (; t != transformations.end(); ++t) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
@@ -372,6 +371,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     }
 
     this->Shape.setValue(getSolid(support));  // picking the first solid
+    rejected = getRemainingSolids(support);
 
 #ifndef FC_DEBUG
     Base::Console().Message("Transformed: Elapsed CPU time: %f s\n", (std::clock() - start0  ) / (double)(CLOCKS_PER_SEC));
@@ -452,6 +452,25 @@ void Transformed::divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vec
                 individualsOut.push_back((*groupIt).first);
         }
     }
+}
+
+TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
+{
+    BRep_Builder builder;
+    TopoDS_Compound compShape;
+    builder.MakeCompound(compShape);
+
+    if (shape.IsNull())
+        Standard_Failure::Raise("Shape is null");
+    TopExp_Explorer xp;
+    xp.Init(shape,TopAbs_SOLID);
+    xp.Next();  // skip the first
+
+    for (; xp.More(); xp.Next()) {
+        builder.Add(compShape, xp.Current());
+    }
+
+    return compShape;
 }
 
 }
