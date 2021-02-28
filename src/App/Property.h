@@ -41,6 +41,7 @@ namespace App
 
 class PropertyContainer;
 class ObjectIdentifier;
+struct DynamicPropData;
 
 /** Base class of all properties
  * This is the father of all properties. Properties are objects which are used
@@ -101,7 +102,7 @@ public:
     virtual ~Property();
 
     /// For safe deleting of a dynamic property
-    static void destroy(Property *p);
+    static void destroy(const DynamicPropData &p);
 
     /** This method is used to get the size of objects
      * It is not meant to have the exact size, it is more or less an estimation

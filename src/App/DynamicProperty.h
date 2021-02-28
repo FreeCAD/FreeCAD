@@ -61,6 +61,59 @@ struct CStringHasher {
     }
 };
 
+struct DynamicPropData {
+    DynamicPropData()
+        :property(nullptr)
+        ,pName(nullptr)
+        ,attr(0)
+        ,readonly(false)
+        ,hidden(false)
+    {}
+
+    DynamicPropData(Property *prop, std::string &&n=std::string(), const char *pn=0,
+            const char *g=0, const char *d=0, short a=0, bool ro=false, bool h=false)
+        :property(prop)
+        ,pName(pn)
+        ,attr(a)
+        ,readonly(ro)
+        ,hidden(h)
+        ,sdata(new StringData(std::move(n), g, d))
+    {}
+
+    const char *getName() const {
+        return pName ? pName : (sdata ? sdata->name.c_str() : "");
+    }
+
+    bool hasOwnName() const {
+        return sdata && !sdata->name.empty();
+    }
+
+    const char *getGroupName() const {
+        return sdata ? sdata->group.c_str() : "";
+    }
+
+    const char *getDocumentation() const {
+        return sdata ? sdata->doc.c_str() : "";
+    }
+
+    Property* property;
+    const char *pName;
+    short attr;
+    bool readonly;
+    bool hidden;
+
+private:
+    struct StringData {
+        std::string name;
+        std::string group;
+        std::string doc;
+        StringData(std::string &&n, const char *g, const char *d)
+            :name(std::move(n)), group(g?g:""), doc(d?d:"")
+        {}
+    };
+    std::shared_ptr<StringData> sdata;
+};
+
 /** This class implements an interface to add properties at run-time to an object
  * derived from PropertyContainer. The additional properties are made persistent.
  * @author Werner Mayer
@@ -145,27 +198,8 @@ public:
     Property *restore(PropertyContainer &pc, 
         const char *PropName, const char *TypeName, Base::XMLReader &reader);
 
-    struct PropData {
-        Property* property;
-        std::string name;
-        const char *pName;
-        std::string group;
-        std::string doc;
-        short attr;
-        bool readonly;
-        bool hidden;
 
-        PropData(Property *prop=0, std::string &&n=std::string(), const char *pn=0,
-                const char *g=0, const char *d=0, short a=0, bool ro=false, bool h=false)
-            :property(prop),name(std::move(n)),pName(pn)
-            ,group(g?g:""),doc(d?d:""),attr(a),readonly(ro),hidden(h)
-        {}
-
-        const char *getName() const {
-            return pName?pName:name.c_str();
-        }
-    };
-
+    typedef DynamicPropData PropData;
     PropData getDynamicPropertyData(const Property* prop) const;
 
 private:
