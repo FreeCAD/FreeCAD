@@ -172,6 +172,8 @@ DrawViewPart::DrawViewPart(void) :
     geometryObject = nullptr;
     //initialize bbox to non-garbage
     bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
+    prev_Direction = Direction.getValue();
+    prev_XDirection = XDirection.getValue();
 }
 
 DrawViewPart::~DrawViewPart()
@@ -335,11 +337,34 @@ short DrawViewPart::mustExecute() const
 
 void DrawViewPart::onChanged(const App::Property* prop)
 {
-    // If the user has set PropertyVector Direction to zero, set it along the default value instead (Front View).
-    // Otherwise bad things will happen because there'll be a normalization for direction calculations later.
-    Base::Vector3d dir = Direction.getValue();
-    if (DrawUtil::fpCompare(dir.Length(), 0.0)) {
-        Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
+    if (prop == &Direction || prop == &XDirection) {
+        // If the user has set PropertyVector Direction to zero, set it back to the previous (non-zero) value.
+        // Otherwise a crash will happen, because there'll be normalization or other div-by-zero stuff in calculations later.
+        if (DrawUtil::fpCompare(Direction.getValue().Length(), 0.0)) {
+            Direction.setValue(prev_Direction);
+        }
+
+        // Note that XDirection is allowed to be zero length for legacy reasons, see DrawViewPart::getXDirection().
+        // Fixing zero XDirection here would likely ruin the legacy file handling later, so allow for it temporarily and let legacy algorithm handle it.
+        // However, if XDirection is not zero, it must not be colinear to Direction, or else the projection will fail.
+        // In the colinear case, revert the change in the Property causing it, or if nothing else helps due to the legacy case, set XDirection to negative Y.
+        if (!DrawUtil::fpCompare(XDirection.getValue().Length(), 0.0) &&
+                DrawUtil::fpCompare(fabs(Direction.getValue().Dot(XDirection.getValue())),
+                                    Direction.getValue().Length()*XDirection.getValue().Length())) {
+            if (prop == &XDirection) {
+                if (DrawUtil::fpCompare(prev_XDirection.Length(), 0.0)) {
+                    // Special case for legacy file handling quirk
+                    XDirection.setValue(Base::Vector3d(0.0, -1.0, 0.0));
+                } else {
+                    XDirection.setValue(prev_XDirection);
+                }
+            } else {
+                Direction.setValue(prev_Direction);
+            }
+        }
+
+        prev_Direction = Direction.getValue();
+        prev_XDirection = XDirection.getValue();
     }
 
     DrawView::onChanged(prop);
