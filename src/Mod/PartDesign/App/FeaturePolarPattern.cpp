@@ -71,10 +71,19 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     if (angle < Precision::Confusion())
         throw Base::ValueError("Pattern angle too small");
     int occurrences = Occurrences.getValue();
-    if (occurrences < 2)
-        throw Base::ValueError("At least two occurrences required");
-    bool reversed = Reversed.getValue();
+    if (occurrences < 1)
+        throw Base::ValueError("At least one occurrence required");
 
+    // Note: The original feature is NOT included in the list of transformations! Therefore
+    // we start with occurrence number 1, not number 0
+    std::list<gp_Trsf> transformations;
+    gp_Trsf trans;
+    transformations.push_back(trans); // identity transformation
+
+    if (occurrences < 2)
+        return transformations;
+
+    bool reversed = Reversed.getValue();
     double offset;
     if (std::fabs(angle - 360.0) < Precision::Confusion())
         offset = Base::toRadians<double>(angle) / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
@@ -150,12 +159,6 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
 
     if (reversed)
         axis.SetDirection(axis.Direction().Reversed());
-
-    // Note: The original feature is NOT included in the list of transformations! Therefore
-    // we start with occurrence number 1, not number 0
-    std::list<gp_Trsf> transformations;
-    gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
 
     for (int i = 1; i < occurrences; i++) {
         trans.SetRotation(axis.Axis(), i * offset);

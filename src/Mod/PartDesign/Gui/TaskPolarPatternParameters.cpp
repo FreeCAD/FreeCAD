@@ -121,6 +121,9 @@ void TaskPolarPatternParameters::setupUI()
     connect(ui->listWidgetFeatures->model(),
         SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
+    ui->spinOccurrences->setMaximum(INT_MAX);
+    ui->spinOccurrences->setMinimum(1);
+
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
@@ -155,8 +158,6 @@ void TaskPolarPatternParameters::setupUI()
     // ---------------------
 
     ui->polarAngle->bind(pcPolarPattern->Angle);
-    ui->spinOccurrences->setMaximum(INT_MAX);
-    ui->spinOccurrences->setMinimum(2);
     ui->spinOccurrences->bind(pcPolarPattern->Occurrences);
 
     ui->comboAxis->setEnabled(true);
