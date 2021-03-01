@@ -83,7 +83,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="spinForce" native="true">
+      <widget class="Gui::QuantitySpinBox" name="spinForce">
        <property name="value" stdset="0">
         <double>500.000000000000000</double>
        </property>
