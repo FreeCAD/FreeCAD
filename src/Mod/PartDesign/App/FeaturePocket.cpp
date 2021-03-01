@@ -166,7 +166,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, profileshape, method, dir, Offset.getValue());
+            getUpToFace(upToFace, base, supportface, profileshape, method, dir);
+            addOffsetToFace(upToFace, dir, Offset.getValue());
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
             // prism that is being created is contained completely inside the base solid
@@ -188,7 +189,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoDS_Shape prism = PrismMaker.Shape();
 #else
             TopoDS_Shape prism;
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, Standard_True);
+            PrismMode mode = PrismMode::CutFromBase;
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
 #endif
 
             // And the really expensive way to get the SubShape...

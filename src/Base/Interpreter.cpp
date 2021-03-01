@@ -587,7 +587,7 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
 
 #if PY_MAJOR_VERSION >= 3
         size_t size = argc;
-        wchar_t **_argv = new wchar_t*[size];
+        static std::vector<wchar_t *> _argv(size);
         for (int i = 0; i < argc; i++) {
 #if PY_MINOR_VERSION >= 5
             _argv[i] = Py_DecodeLocale(argv[i],NULL);
@@ -595,7 +595,7 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
             _argv[i] = _Py_char2wchar(argv[i],NULL);
 #endif
         }
-        PySys_SetArgv(argc, _argv);
+        PySys_SetArgv(argc, _argv.data());
 #else
         PySys_SetArgv(argc, argv);
 #endif

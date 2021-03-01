@@ -120,7 +120,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Insert a new View of a Part in the active drawing</source>
-      <translation>Lisää uusi näkymä aktiivisen piirustuksen osasta</translation>
+      <translation>Lisää uusi näkymä aktiivisen piirustuksen osaan</translation>
     </message>
   </context>
   <context>
@@ -170,12 +170,12 @@
     <message>
       <location filename="../../Command.cpp" line="394"/>
       <source>Insert orthographic views</source>
-      <translation>Lisää Ortografisia näkymiä</translation>
+      <translation>Lisää ortografisia näkymiä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="395"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Lisää ortografinen projektio aktiivisen teknisen piirroksen osasta</translation>
+      <translation>Lisää ortografinen projektio aktiivisen teknisen piirroksen osaan</translation>
     </message>
   </context>
   <context>
@@ -213,7 +213,7 @@
       <location filename="../../Command.cpp" line="761"/>
       <location filename="../../Command.cpp" line="763"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+      <translation>Lisää valitun kohteen vedosnäkymän aktiivisessa piirroksessa</translation>
     </message>
   </context>
   <context>
@@ -431,7 +431,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="561"/>
       <source>Show hidden lines</source>
-      <translation>Näytä piilotetut tiedostot</translation>
+      <translation>Näytä piilotetut viivat</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="568"/>
@@ -446,7 +446,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="587"/>
       <source>Axis out and right</source>
-      <translation type="unfinished">Axis out and right</translation>
+      <translation>Akseli ulos ja oikealle</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="594"/>
@@ -516,7 +516,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="667"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>Näytä projekti</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="674"/>
@@ -625,7 +625,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="92"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation type="unfinished">There is currently no active document to complete the operation</translation>
+      <translation>Toiminnon loppuun saattamiseen ei tällä hetkellä ole aktiivista asiakirjaa</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="97"/>
@@ -635,7 +635,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="98"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation type="unfinished">There is currently no active view to complete the operation</translation>
+      <translation>Toiminnon loppuun saattamiseen ei tällä hetkellä ole aktiivista näkymää</translation>
     </message>
   </context>
   <context>
@@ -744,7 +744,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Valitse täsmälleen yksi kohde.</translation>
+      <translation>Valitse täsmälleen yksi taulukkokohde.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="54"/>

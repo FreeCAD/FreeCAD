@@ -84,7 +84,7 @@ def parsefile(fn):
                     return
 
         print ("Missing license text in file %s") % (fn)
-    except:
+    except Exception:
         pass
 
 if __name__ == "__main__":

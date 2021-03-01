@@ -386,6 +386,10 @@ TaskDlgDraftParameters::~TaskDlgDraftParameters()
 
 bool TaskDlgDraftParameters::accept()
 {
+    auto tobj = vp->getObject();
+    if (!tobj->isError())
+        parameter->showObject();
+
     std::vector<std::string> strings;
     App::DocumentObject* obj;
     TaskDraftParameters* draftparameter = static_cast<TaskDraftParameters*>(parameter);
@@ -403,7 +407,6 @@ bool TaskDlgDraftParameters::accept()
     //     return false;
     // }
 
-    auto tobj = vp->getObject();
     FCMD_OBJ_CMD(tobj,"Angle = " << draftparameter->getAngle());
     FCMD_OBJ_CMD(tobj,"Reversed = " << draftparameter->getReversed());
     if(neutralPlane.empty())

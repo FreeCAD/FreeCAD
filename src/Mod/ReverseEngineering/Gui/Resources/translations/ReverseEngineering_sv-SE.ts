@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Från komponenter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
@@ -561,7 +561,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Dölj segment</translation>
     </message>
   </context>
   <context>

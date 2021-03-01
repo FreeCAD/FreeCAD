@@ -2358,10 +2358,13 @@ def getUID(obj,preferences):
     if not uid:
         uid = ifcopenshell.guid.new()
         # storing the uid for further use
-        if preferences['STORE_UID'] and hasattr(obj,"IfcData"):
-            d = obj.IfcData
-            d["IfcUID"] = uid
-            obj.IfcData = d
+        if preferences["STORE_UID"]:
+            if hasattr(obj, "IfcData"):
+                d = obj.IfcData
+                d["IfcUID"] = uid
+                obj.IfcData = d
+            if hasattr(obj, "GlobalId"):
+                obj.GlobalId = uid
     return uid
 
 

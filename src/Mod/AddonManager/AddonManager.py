@@ -36,6 +36,7 @@ import FreeCADGui
 from addonmanager_utilities import translate  # this needs to be as is for pylupdate
 from addonmanager_workers import *
 import addonmanager_utilities as utils
+import AddonManager_rc
 
 __title__ = "FreeCAD Addon Manager Module"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann", "Kurt Kremitzki"

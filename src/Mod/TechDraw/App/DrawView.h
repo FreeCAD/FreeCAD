@@ -66,6 +66,7 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
+    virtual App::DocumentObjectExecReturn *recompute() override;
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual void onDocumentRestored() override;
     virtual short mustExecute() const override;

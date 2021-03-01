@@ -3,7 +3,7 @@
 # (c) 2006 Werner Mayer LGPL
 # FreeCAD report memory leaks script to get provide the log file of Visual Studio in more readable file.
 
-import os,sys,string,re
+import string,re
 
 # Open the memory leak file
 file = open("MemLog.txt")

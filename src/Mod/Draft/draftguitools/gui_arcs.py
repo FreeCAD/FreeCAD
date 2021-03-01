@@ -55,6 +55,7 @@ class Arc(gui_base_original.Creator):
     """Gui command for the Circular Arc tool."""
 
     def __init__(self):
+        super().__init__()
         self.closedCircle = False
         self.featureName = "Arc"
 

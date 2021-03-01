@@ -5425,6 +5425,10 @@ Kako želite nastaviti?</translation>
       <source>Expression...</source>
       <translation>Izraz...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>

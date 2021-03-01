@@ -404,6 +404,10 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters()
 //}
 bool TaskDlgChamferParameters::accept()
 {
+    auto obj = vp->getObject();
+    if (!obj->isError())
+        parameter->showObject();
+
     parameter->apply();
 
     return TaskDlgDressUpParameters::accept();
