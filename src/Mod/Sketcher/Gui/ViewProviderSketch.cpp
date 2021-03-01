@@ -5879,8 +5879,11 @@ Restart:
 
     }
 
-    this->drawConstraintIcons();
-    this->updateColor();
+    // Avoids unneeded calls to pixmapFromSvg
+    if(Mode==STATUS_NONE) {
+       this->drawConstraintIcons();
+       this->updateColor();
+    }
 
     // delete the cloned objects
     if (temp) {
