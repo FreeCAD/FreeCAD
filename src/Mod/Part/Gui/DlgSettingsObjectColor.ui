@@ -250,7 +250,7 @@
           </property>
           <property name="toolTip">
            <string>Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option &quot;Backlight color&quot;
+If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</string>
           </property>
