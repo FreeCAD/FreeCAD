@@ -554,16 +554,12 @@ App::Document *ImportOCAF2::getDocument(App::Document *doc, TDF_Label label) {
         ss << ".fcstd";
         Base::FileInfo fi(ss.str());
         if(!fi.exists()) {
-            try {
-                // No way to be sure the file name is legal, so just create one.
-                std::ofstream ofs(fi.filePath());
-                ofs << "test";
-                ofs.close();
-                if (!fi.exists())
-                    continue;
-                fi.deleteFile();
-            } catch (...)
-            {}
+            // No way to be sure the file name is legal, so just create one.
+            Base::ofstream of(fi);
+            if (!of)
+                continue;
+            of.close();
+            fi.deleteFile();
             if(!newDoc->saveAs(fi.filePath().c_str()))
                 break;
             return newDoc;
