@@ -232,12 +232,13 @@ void AboutDialogFactory::setDefaultFactory(AboutDialogFactory *f)
  *  The dialog will be modal.
  */
 AboutDialog::AboutDialog(bool showLic, QWidget* parent)
-  : QDialog(parent, Qt::FramelessWindowHint), ui(new Ui_AboutApplication)
+  : QDialog(parent), ui(new Ui_AboutApplication)
 {
     Q_UNUSED(showLic);
 
     setModal(true);
     ui->setupUi(this);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QRect rect = QApplication::primaryScreen()->availableGeometry();
 #else
