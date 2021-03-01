@@ -270,7 +270,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
             );
 #endif
         QString lictext = ui->textBrowserLicense->toHtml();
-        lictext.replace(QString::fromLatin1("SUCH DAMAGES."),info);
+        lictext.replace(QString::fromLatin1("SUCH DAMAGES.<hr/>"),info);
         ui->textBrowserLicense->setHtml(lictext);
 //    }
     ui->tabWidget->setCurrentIndex(0); // always start on the About tab
@@ -557,7 +557,7 @@ void AboutDialog::showLicenseInformation()
         return; // Leave the existing license placeholder there if we can't find our license html file
     }
 
-    ui->tabWidget->setTabVisible(2, false); // Hide the license placeholder widget
+    ui->tabWidget->removeTab (2); // Hide the license placeholder widget
 
     QWidget* tab_license = new QWidget();
     tab_license->setObjectName(QString::fromLatin1("tab_license"));
