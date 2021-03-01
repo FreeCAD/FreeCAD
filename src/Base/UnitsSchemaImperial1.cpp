@@ -294,7 +294,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         }
         else if( inches>0 && num!=0 ) // case 2
         {
-            output << inches << "+" << num << "/" << den << "\"";
+            output << inches << "\" " << num << "/" << den;
         }
         else if( inches==0 && num!=0 ) // case 3
         {
