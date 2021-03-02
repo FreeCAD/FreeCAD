@@ -816,7 +816,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             file = open(dat_result_file, "r")
             obj.Text = file.read()
             file.close()
-            # TODO make the Text of obj read only, or the obj itself
+            obj.setPropertyStatus("Text", "ReadOnly")        # set property editor readonly
+            if hasattr(obj, "ViewObject"):
+                obj.ViewObject.ReadOnly = True               # set editor view readonly
+            print(self.analysis)
         else:
             raise Exception("FEM: No .dat results found at {}!".format(dat_result_file))
 
