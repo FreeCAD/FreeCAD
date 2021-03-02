@@ -48,12 +48,17 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 
+const App::PropertyIntegerConstraint::Constraints intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyAngle::Constraints floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+
 PolarPattern::PolarPattern()
 {
-    ADD_PROPERTY_TYPE(Axis,(0),"PolarPattern",(App::PropertyType)(App::Prop_None),"Direction");
-    ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY(Angle,(360.0));
-    ADD_PROPERTY(Occurrences,(3));
+    ADD_PROPERTY_TYPE(Axis, (0), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
+    ADD_PROPERTY(Reversed, (0));
+    ADD_PROPERTY(Angle, (360.0));
+    Angle.setConstraints(&floatAngle);
+    ADD_PROPERTY(Occurrences, (3));
+    Occurrences.setConstraints(&intOccurrences);
 }
 
 short PolarPattern::mustExecute() const
@@ -171,6 +176,18 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     }
 
     return transformations;
+}
+
+void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+// transforms properties that had been changed
+{
+    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger OccurrencesProperty;
+        // restore the PropertyInteger to be able to set its value
+        OccurrencesProperty.Restore(reader);
+        Occurrences.setValue(OccurrencesProperty.getValue());
+    }
 }
 
 }

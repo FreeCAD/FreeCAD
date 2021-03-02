@@ -42,7 +42,7 @@ public:
     App::PropertyLinkSub Axis;
     App::PropertyBool    Reversed;
     App::PropertyAngle   Angle;
-    App::PropertyInteger Occurrences;
+    App::PropertyIntegerConstraint Occurrences;
 
    /** @name methods override feature */
     //@{
@@ -65,6 +65,9 @@ public:
       * If Reversed is true, the direction of rotation will be opposite.
       */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>);
+
+protected:
+    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
 };
 
 } //namespace PartDesign
