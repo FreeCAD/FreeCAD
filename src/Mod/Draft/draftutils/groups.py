@@ -146,9 +146,8 @@ def get_windows(obj):
     if utils.get_type(obj) in ("Wall", "Structure"):
         for o in obj.OutList:
             out.extend(get_windows(o))
-
         for i in obj.InList:
-            if (utils.get_type(i) == "Window"
+            if (utils.get_type(i.getLinkedObject()) == "Window"
                     or utils.is_clone(obj, "Window")):
                 if hasattr(i, "Hosts"):
                     if obj in i.Hosts:
@@ -158,8 +157,7 @@ def get_windows(obj):
                 if hasattr(i, "Host"):
                     if obj == i.Host:
                         out.append(i)
-
-    elif (utils.get_type(obj) in ("Window", "Rebar")
+    elif (utils.get_type(obj.getLinkedObject()) in ("Window", "Rebar")
           or utils.is_clone(obj, ["Window", "Rebar"])):
         out.append(obj)
 

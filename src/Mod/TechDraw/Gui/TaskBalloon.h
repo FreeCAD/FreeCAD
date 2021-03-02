@@ -27,16 +27,13 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
-
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
-
-class Ui_TaskBalloon;
 
 namespace TechDrawGui
 {
 
+class Ui_TaskBalloon;
 class TaskBalloon : public QWidget
 {
     Q_OBJECT

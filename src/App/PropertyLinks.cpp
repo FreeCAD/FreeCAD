@@ -4618,10 +4618,14 @@ void PropertyXLinkContainer::clearDeps() {
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument())
         return;
-    for(auto obj : _Deps) {
-        if(obj && obj->getNameInDocument() && obj->getDocument()==owner->getDocument())
-            obj->_removeBackLink(owner);
+#ifndef USE_OLD_DAG
+    if (!owner->testStatus(ObjectStatus::Destroy)) {
+        for(auto obj : _Deps) {
+            if(obj && obj->getNameInDocument() && obj->getDocument()==owner->getDocument())
+                obj->_removeBackLink(owner);
+        }
     }
+#endif
     _Deps.clear();
     _XLinks.clear();
     _LinkRestored = false;

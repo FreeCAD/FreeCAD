@@ -54,12 +54,11 @@ class Text(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates a multi-line annotation. CTRL to snap."
 
         return {'Pixmap': 'Draft_Text',
                 'Accel': "T, E",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Text", "Text"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Text", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Text", "Creates a multi-line annotation. CTRL to snap.")}
 
     def Activated(self):
         """Execute when the command is called."""

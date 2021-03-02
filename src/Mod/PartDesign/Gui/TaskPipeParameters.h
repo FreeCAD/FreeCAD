@@ -32,10 +32,6 @@
 #include "ViewProviderPipe.h"
 #include "TaskDressUpParameters.h"
 
-class Ui_TaskPipeParameters;
-class Ui_TaskPipeOrientation;
-class Ui_TaskPipeScaling;
-
 
 namespace App {
 class Property;
@@ -47,6 +43,9 @@ class ViewProvider;
 
 namespace PartDesignGui { 
 
+class Ui_TaskPipeParameters;
+class Ui_TaskPipeOrientation;
+class Ui_TaskPipeScaling;
 
 
 class TaskPipeParameters : public TaskSketchBasedParameters
@@ -57,7 +56,8 @@ public:
     TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
     ~TaskPipeParameters();
 
- 
+    bool accept();
+
 private Q_SLOTS:
     void onTangentChanged(bool checked);
     void onTransitionChanged(int);
@@ -79,6 +79,9 @@ private:
     void updateUI();
     void clearButtons();
     void exitSelectionMode();
+
+    ViewProviderPipe* getPipeView() const
+    { return static_cast<ViewProviderPipe*>(vp); }
 
     bool spineShow = false;
     
@@ -135,7 +138,6 @@ public:
     TaskPipeScaling(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
     virtual ~TaskPipeScaling();
 
- 
 private Q_SLOTS:
     void onScalingChanged(int);
     void onButtonRefAdd(bool checked);
@@ -169,10 +171,6 @@ class TaskDlgPipeParameters : public TaskDlgSketchBasedParameters
 public:
     TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool newObj=false);
     ~TaskDlgPipeParameters();
-
-    ViewProviderPipe* getPipeView() const
-    { return static_cast<ViewProviderPipe*>(vp); }
-
 
 public:
     /// is called by the framework if the dialog is accepted (Ok)

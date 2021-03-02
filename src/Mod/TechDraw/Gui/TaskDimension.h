@@ -26,16 +26,13 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskDimension.h>
-
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
-
-class Ui_TaskDimension;
 
 namespace TechDrawGui
 {
 
+class Ui_TaskDimension;
 class TaskDimension : public QWidget
 {
     Q_OBJECT

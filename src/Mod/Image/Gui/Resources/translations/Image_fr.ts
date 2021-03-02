@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr" sourcelanguage="en">
   <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <source>Scale image plane</source>
+      <translation>Mettre à l'échelle le plan de l'image</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>Met le plan de l'image à l'échelle en définissant une distance entre deux points</translation>
+    </message>
+  </context>
+  <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
@@ -37,19 +50,6 @@
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
       <translation>Sélectionnez le plan de l'image et entrez la distance</translation>
-    </message>
-  </context>
-  <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
-      <source>Scale image plane</source>
-      <translation>Mettre à l'échelle le plan de l'image</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>Met le plan de l'image à l'échelle en définissant une distance entre deux points</translation>
     </message>
   </context>
   <context>

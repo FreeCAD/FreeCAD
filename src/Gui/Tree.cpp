@@ -3704,8 +3704,7 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
             if(!topParent) {
                 if(parent!=obj.getObject())
                     continue;
-            }else if(topParent!=parent)
-                continue;
+            }
         }
         item->setHighlight(set,high);
         if(parent)

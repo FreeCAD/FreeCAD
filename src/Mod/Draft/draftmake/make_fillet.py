@@ -35,7 +35,7 @@ import draftutils.gui_utils as gui_utils
 import draftobjects.fillet as fillet
 
 from draftutils.messages import _msg, _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 if App.GuiUp:
     import draftviewproviders.view_fillet as view_fillet
@@ -55,7 +55,7 @@ def _print_obj_length(obj, edge, num=1):
         name = num
 
     _msg("({0}): {1}; {2} {3}".format(num, name,
-                                      _tr("length:"), edge.Length))
+                                      translate("draft","length:"), edge.Length))
 
 
 def _extract_edges(objs):
@@ -129,20 +129,20 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
     utils.print_header(_name, "Fillet")
 
     if len(objs) != 2:
-        _err(_tr("Two elements are needed."))
+        _err(translate("draft","Two elements are needed."))
         return None
 
     e1, e2 = _extract_edges(objs)
 
     edges = DraftGeomUtils.fillet([e1, e2], radius, chamfer)
     if len(edges) < 3:
-        _err(_tr("Radius is too large") + ", r={}".format(radius))
+        _err(translate("draft","Radius is too large") + ", r={}".format(radius))
         return None
 
     lengths = [edges[0].Length, edges[1].Length, edges[2].Length]
-    _msg(_tr("Segment") + " 1, " + _tr("length:") + " {}".format(lengths[0]))
-    _msg(_tr("Segment") + " 2, " + _tr("length:") + " {}".format(lengths[1]))
-    _msg(_tr("Segment") + " 3, " + _tr("length:") + " {}".format(lengths[2]))
+    _msg(translate("draft","Segment") + " 1, " + translate("draft","length:") + " {}".format(lengths[0]))
+    _msg(translate("draft","Segment") + " 2, " + translate("draft","length:") + " {}".format(lengths[1]))
+    _msg(translate("draft","Segment") + " 3, " + translate("draft","length:") + " {}".format(lengths[2]))
 
     try:
         wire = Part.Wire(edges)
@@ -162,7 +162,7 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
     if delete:
         _doc.removeObject(objs[0].Name)
         _doc.removeObject(objs[1].Name)
-        _msg(_tr("Removed original objects."))
+        _msg(translate("draft","Removed original objects."))
 
     if App.GuiUp:
         view_fillet.ViewProviderFillet(obj.ViewObject)

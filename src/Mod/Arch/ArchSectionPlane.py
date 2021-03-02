@@ -211,11 +211,11 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
 
     cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(cutplane,shapes,clip)
     shapes = []
-    if cutvolume:
-        for o, shapeList in objectShapes:
-            tmpSshapes = []
-            for sh in shapeList:
-                for sol in sh.Solids:
+    for o, shapeList in objectShapes:
+        tmpSshapes = []
+        for sh in shapeList:
+            for sol in sh.Solids:
+                if cutvolume:
                     if sol.Volume < 0:
                         sol.reverse()
                     c = sol.cut(cutvolume)
@@ -235,6 +235,8 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                     if showHidden:
                         c = sol.cut(invcutvolume)
                         hshapes.append(c)
+                else:
+                    shapes.extend(sol.Solids)
 
             if len(tmpSshapes) > 0:
                 sshapes.extend(tmpSshapes)
@@ -379,7 +381,7 @@ def getSVG(source,
             drafts.append(o)
         elif not o.isDerivedFrom("App::DocumentObjectGroup"):
             nonspaces.append(o)
-        if Draft.getType(o) == "Window":
+        if Draft.getType(o.getLinkedObject()) == "Window":  # To support Link of Windows(Doors)
             windows.append(o)
     objs = nonspaces
 
@@ -580,11 +582,12 @@ def getSVG(source,
     if windows:
         sh = []
         for w in windows:
-            if not hasattr(w.Proxy,"sshapes"):
-                w.Proxy.execute(w)
-            if hasattr(w.Proxy,"sshapes"):
-                if w.Proxy.sshapes and (w.Name in cutwindows):
-                    c = Part.makeCompound(w.Proxy.sshapes)
+            wlo = w.getLinkedObject()  # To support Link of Windows(Doors)
+            if not hasattr(wlo.Proxy,"sshapes"):
+                wlo.Proxy.execute(wlo)
+            if hasattr(wlo.Proxy,"sshapes"):
+                if wlo.Proxy.sshapes and (w.Name in cutwindows):
+                    c = Part.makeCompound(wlo.Proxy.sshapes)
                     c.Placement = w.Placement
                     sh.append(c)
             # buggy for now...

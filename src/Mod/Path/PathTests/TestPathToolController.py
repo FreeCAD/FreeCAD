@@ -37,7 +37,7 @@ class TestPathToolController(PathTestBase):
         FreeCAD.closeDocument(self.doc.Name)
 
     def createTool(self, name='t1', diameter=1.75):
-        if PathPreferences.toolsReallyUseLegacyTools():
+        if PathPreferences.toolsUseLegacyTools():
             return Path.Tool(name=name, diameter=diameter)
         attrs = {'shape': None, 'name': name, 'parameter': {'Diameter': diameter}, 'attribute': []}
         return PathToolBit.Factory.CreateFromAttrs(attrs, name)
@@ -68,7 +68,7 @@ class TestPathToolController(PathTestBase):
         self.assertEqual(attrs['hrapid'], '28.0 mm/s')
         self.assertEqual(attrs['dir'], 'Reverse')
         self.assertEqual(attrs['speed'], 12000)
-        if PathPreferences.toolsReallyUseLegacyTools():
+        if PathPreferences.toolsUseLegacyTools():
             self.assertEqual(attrs['tool'], t.templateAttrs())
         else:
             self.assertEqual(attrs['tool'], t.Proxy.templateAttrs(t))

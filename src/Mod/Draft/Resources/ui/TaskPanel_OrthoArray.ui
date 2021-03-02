@@ -135,7 +135,7 @@ Negative values will result in copies produced in the negative direction.</strin
          <widget class="QCheckBox" name="checkbox_fuse">
           <property name="toolTip">
            <string>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if &quot;Link array&quot; is off.</string>
+This only works if "Link array" is off.</string>
           </property>
           <property name="text">
            <string>Fuse</string>
@@ -145,7 +145,7 @@ This only works if &quot;Link array&quot; is off.</string>
         <item>
          <widget class="QCheckBox" name="checkbox_link">
           <property name="toolTip">
-           <string>If checked, the resulting object will be a &quot;Link array&quot; instead of a regular array.
+           <string>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</string>
           </property>
           <property name="text">

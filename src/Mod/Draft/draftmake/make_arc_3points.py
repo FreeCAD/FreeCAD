@@ -34,7 +34,7 @@ import Part
 import Draft
 import draftutils.utils as utils
 from draftutils.messages import _msg, _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 import draftutils.gui_utils as gui_utils
 
@@ -122,23 +122,21 @@ def make_arc_3points(points, placement=None, face=False,
     try:
         utils.type_check([(points, (list, tuple))], name=_name)
     except TypeError:
-        _err(_tr("Points: ") + "{}".format(points))
-        _err(_tr("Wrong input: "
-                 "must be list or tuple of three points exactly."))
+        _err(translate("draft","Points: ") + "{}".format(points))
+        _err(translate("draft","Wrong input: must be list or tuple of three points exactly."))
         return None
 
     if len(points) != 3:
-        _err(_tr("Points: ") + "{}".format(points))
-        _err(_tr("Wrong input: "
-                 "must be list or tuple of three points exactly."))
+        _err(translate("draft","Points: ") + "{}".format(points))
+        _err(translate("draft","Wrong input: must be list or tuple of three points exactly."))
         return None
 
     if placement is not None:
         try:
             utils.type_check([(placement, App.Placement)], name=_name)
         except TypeError:
-            _err(_tr("Placement: ") + "{}".format(placement))
-            _err(_tr("Wrong input: incorrect type of placement."))
+            _err(translate("draft","Placement: ") + "{}".format(placement))
+            _err(translate("draft","Wrong input: incorrect type of placement."))
             return None
 
     p1, p2, p3 = points
@@ -152,24 +150,24 @@ def make_arc_3points(points, placement=None, face=False,
                           (p2, App.Vector),
                           (p3, App.Vector)], name=_name)
     except TypeError:
-        _err(_tr("Wrong input: incorrect type of points."))
+        _err(translate("draft","Wrong input: incorrect type of points."))
         return None
 
     try:
         _edge = Part.Arc(p1, p2, p3)
     except Part.OCCError as error:
-        _err(_tr("Cannot generate shape: ") + "{}".format(error))
+        _err(translate("draft","Cannot generate shape: ") + "{}".format(error))
         return None
 
     edge = _edge.toShape()
     radius = edge.Curve.Radius
     center = edge.Curve.Center
 
-    _msg(_tr("Radius: ") + "{}".format(radius))
-    _msg(_tr("Center: ") + "{}".format(center))
+    _msg(translate("draft","Radius:") + " " + "{}".format(radius))
+    _msg(translate("draft","Center:") + " " + "{}".format(center))
 
     if primitive:
-        _msg(_tr("Create primitive object"))
+        _msg(translate("draft","Create primitive object"))
         obj = App.ActiveDocument.addObject("Part::Feature", "Arc")
         obj.Shape = edge
         return obj
@@ -192,18 +190,18 @@ def make_arc_3points(points, placement=None, face=False,
 
     if placement and not support:
         obj.Placement.Base = placement.Base
-        _msg(_tr("Final placement: ") + "{}".format(obj.Placement))
+        _msg(translate("draft","Final placement:") + " " + "{}".format(obj.Placement))
     if face:
-        _msg(_tr("Face: True"))
+        _msg(translate("draft","Face: True"))
     if support:
-        _msg(_tr("Support: ") + "{}".format(support))
-        _msg(_tr("Map mode: " + "{}".format(map_mode)))
+        _msg(translate("draft","Support:") + " " + "{}".format(support))
+        _msg(translate("draft","Map mode:") + " " + "{}".format(map_mode))
         obj.MapMode = map_mode
         if placement:
             obj.AttachmentOffset.Base = placement.Base
             obj.AttachmentOffset.Rotation = original_placement.Rotation
-            _msg(_tr("Attachment offset: {}".format(obj.AttachmentOffset)))
-        _msg(_tr("Final placement: ") + "{}".format(obj.Placement))
+            _msg(translate("draft","Attachment offset: {}".format(obj.AttachmentOffset)))
+        _msg(translate("draft","Final placement:") + " " + "{}".format(obj.Placement))
 
     return obj
 

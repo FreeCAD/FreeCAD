@@ -93,6 +93,10 @@ class TaskTubeUI:
         self.form.tubeInnerRadius.valueChanged.connect(lambda x: self.onChangeInnerRadius(x))
         self.form.tubeHeight.valueChanged.connect(lambda x: self.onChangeHeight(x))
 
+        FreeCADGui.ExpressionBinding(self.form.tubeOuterRadius).bind(object,"OuterRadius")
+        FreeCADGui.ExpressionBinding(self.form.tubeInnerRadius).bind(object,"InnerRadius")
+        FreeCADGui.ExpressionBinding(self.form.tubeHeight).bind(object,"Height")
+
     def onChangeOuterRadius(self, radius):
         object = self.viewObject.Object
         object.OuterRadius = radius

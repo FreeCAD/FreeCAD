@@ -655,7 +655,6 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
     sWhatsThis      = "Sketcher_SelectConflictingConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectConflictingConstraints";
-    sAccel          = "CTRL+SHIFT+E";
     eType           = ForEdit;
 }
 
@@ -909,7 +908,6 @@ CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignment
     sWhatsThis      = "Sketcher_RestoreInternalAlignmentGeometry";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Element_Ellipse_All";
-    sAccel          = "CTRL+SHIFT+E";
     eType           = ForEdit;
 }
 

@@ -9,7 +9,7 @@
 # 2012/02/01: The script was extended to support git
 # 2011/02/05: The script was extended to support also Bazaar
 
-import os,sys,string,re,time,getopt
+import os,sys,re,time,getopt
 import xml.sax
 import xml.sax.handler
 import xml.sax.xmlreader
@@ -21,6 +21,7 @@ except ImportError:
 # SAX handler to parse the subversion output
 class SvnHandler(xml.sax.handler.ContentHandler):
     def __init__(self):
+        super().__init__()
         self.inUrl = 0
         self.inDate = 0
         self.mapping = {}
@@ -91,7 +92,7 @@ class DebianChangelog(VersionControl):
             return False
         try:
             f = open(srcdir+"/debian/changelog")
-        except:
+        except Exception:
             return False
         c = f.readline()
         f.close()
@@ -134,7 +135,7 @@ class DebianGitHub(VersionControl):
     def extractInfo(self, srcdir, bindir):
         try:
             f = open(srcdir+"/debian/git-build-recipe.manifest")
-        except:
+        except Exception:
             return False
 
         # Read the first two lines
@@ -157,7 +158,7 @@ class DebianGitHub(VersionControl):
 
             commit_date = commit_req.headers.get('last-modified')
 
-        except:
+        except Exception:
             # if connection fails then use the date of the file git-build-recipe.manifest
             commit_date = recipe[recipe.rfind('~') + 1 : -1]
 
@@ -166,7 +167,7 @@ class DebianGitHub(VersionControl):
             # Try to convert into the same format as GitControl
             t = time.strptime(commit_date, "%a, %d %b %Y %H:%M:%S GMT")
             commit_date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
-        except:
+        except Exception:
             t = time.strptime(commit_date, "%Y%m%d%H%M")
             commit_date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
 
@@ -192,7 +193,7 @@ class DebianGitHub(VersionControl):
             beg = link.rfind("&page=") + 6
             end = link.rfind(">")
             self.rev = link[beg:end] + " (GitHub)"
-        except:
+        except Exception:
             pass
 
         self.url = "git://github.com/{}/{}.git {}".format(owner, repo, self.branch)
@@ -395,7 +396,7 @@ class Subversion(VersionControl):
             strio=StringIO.StringIO(Info)
             inpsrc.setByteStream(strio)
             parser.parse(inpsrc)
-        except:
+        except Exception:
             return False
 
         #Information of the Subversion stuff

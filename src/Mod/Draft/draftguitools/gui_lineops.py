@@ -41,7 +41,7 @@ import Draft_rc
 import draftguitools.gui_base as gui_base
 
 from draftutils.messages import _msg
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -70,7 +70,7 @@ class LineAction(gui_base.GuiCommandSimplest):
         if hasattr(App, "activeDraftCommand"):
             _command = App.activeDraftCommand
         else:
-            _msg(_tr("No active command."))
+            _msg(translate("draft","No active command."))
             return
 
         if (_command is not None
@@ -89,15 +89,14 @@ class FinishLine(LineAction):
     """GuiCommand to finish any running line drawing operation."""
 
     def __init__(self):
-        super(FinishLine, self).__init__(name=_tr("Finish line"))
+        super(FinishLine, self).__init__(name=translate("draft","Finish line"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Finishes a line without closing it."
 
         d = {'Pixmap': 'Draft_Finish',
              'MenuText': QT_TRANSLATE_NOOP("Draft_FinishLine", "Finish line"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_FinishLine", _tip),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_FinishLine", "Finishes a line without closing it."),
              'CmdType': 'ForEdit'}
         return d
 
@@ -116,15 +115,14 @@ class CloseLine(LineAction):
     """GuiCommand to close the line being drawn and finish the operation."""
 
     def __init__(self):
-        super(CloseLine, self).__init__(name=_tr("Close line"))
+        super(CloseLine, self).__init__(name=translate("draft","Close line"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Closes the line being drawn, and finishes the operation."
 
         d = {'Pixmap': 'Draft_Lock',
              'MenuText': QT_TRANSLATE_NOOP("Draft_CloseLine", "Close Line"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_CloseLine", _tip),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_CloseLine", "Closes the line being drawn, and finishes the operation."),
              'CmdType': 'ForEdit'}
         return d
 
@@ -143,16 +141,15 @@ class UndoLine(LineAction):
     """GuiCommand to undo the last drawn segment of a line."""
 
     def __init__(self):
-        super(UndoLine, self).__init__(name=_tr("Undo line"))
+        super(UndoLine, self).__init__(name=translate("draft","Undo line"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Undoes the last drawn segment of the line being drawn."
 
         d = {'Pixmap': 'Draft_Rotate',
              'MenuText': QT_TRANSLATE_NOOP("Draft_UndoLine",
                                            "Undo last segment"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_UndoLine", _tip),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_UndoLine", "Undoes the last drawn segment of the line being drawn."),
              'CmdType': 'ForEdit'}
         return d
 

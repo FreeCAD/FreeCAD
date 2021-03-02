@@ -182,10 +182,6 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         // generate the helix path
         TopoDS_Shape path = generateHelixPath();
 
-        // Below is basically a copy paste (with some simplification) from  FeaturePipe.cpp Pipe::execute
-        // TODO: find a way to reduce code repetition. E.g can I rip out this functionality of Pipe:execute to a static helper
-        // function and call from here?
-
         std::vector<TopoDS_Wire> wires;
         try {
             wires = getProfileWires();
@@ -197,9 +193,6 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         for(TopoDS_Wire& wire : wires)
             wiresections.emplace_back(1, wire);
 
-        //maybe we need a scaling law
-        Handle(Law_Function) scalinglaw;
-
         //build all shells
         std::vector<TopoDS_Shape> shells;
         std::vector<TopoDS_Wire> frontwires, backwires;
@@ -209,29 +202,17 @@ App::DocumentObjectExecReturn *Helix::execute(void)
 
             mkPS.SetTolerance(Precision::Confusion());
             mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-
             mkPS.SetMode(true);  //This is for frenet
-            //mkPipeShell.SetMode(TopoDS::Wire(auxpath), true);  // this is for two rails
 
-
-            if(!scalinglaw) {
-                for(TopoDS_Wire& wire : wires) {
-                    wire.Move(invObjLoc);
-                    mkPS.Add(wire);
-                }
-            }
-            else {
-                for(TopoDS_Wire& wire : wires)  {
-                    wire.Move(invObjLoc);
-                    mkPS.SetLaw(wire, scalinglaw);
-                }
+            for(TopoDS_Wire& wire : wires) {
+                wire.Move(invObjLoc);
+                mkPS.Add(wire);
             }
 
             if (!mkPS.IsReady())
                 return new App::DocumentObjectExecReturn("Error: Could not build");
 
             shells.push_back(mkPS.Shape());
-
 
             if (!mkPS.Shape().Closed()) {
                 // shell is not closed - use simulate to get the end wires
@@ -271,13 +252,13 @@ App::DocumentObjectExecReturn *Helix::execute(void)
             return new App::DocumentObjectExecReturn("Error: Result is not a solid");
 
         TopoDS_Shape result = mkSolid.Shape();
+
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
         if (SC.State() == TopAbs_IN)
             result.Reverse();
 
         AddSubShape.setValue(result);
-
 
         if(base.IsNull()) {
 
@@ -299,6 +280,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
                 return new App::DocumentObjectExecReturn("Error: Adding the helix failed");
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Error: Result is not a solid");
@@ -447,22 +429,8 @@ TopoDS_Shape Helix::generateHelixPath(void)
     TopLoc_Location loc(mov);
     path.Move(loc.Inverted());
 
-
-# if OCC_VERSION_HEX < 0x70500
-    /* I initially tried using path.Move(invObjLoc) like usual. But it does not give the right result
-     * The starting point of the helix is not correct and I don't know why! With below hack it works.
-     */
-    Base::Vector3d placeAxis;
-    double placeAngle;
-    this->Placement.getValue().getRotation().getValue(placeAxis, placeAngle);
-    gp_Dir placeDir(placeAxis.x, placeAxis.y, placeAxis.z);
-    mov.SetRotation(gp_Ax1(origo, placeDir), placeAngle);
-    TopLoc_Location loc2(mov);
-    path.Move(loc2.Inverted());
-# else
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     path.Move(invObjLoc);
-# endif
 
     return path;
 }
@@ -504,7 +472,12 @@ double Helix::safePitch()
 void Helix::proposeParameters(bool force)
 {
     if (force || !HasBeenEdited.getValue()) {
-        double pitch = 1.1*safePitch();
+        TopoDS_Shape sketchshape = getVerifiedFace();
+        Bnd_Box bb;
+        BRepBndLib::Add(sketchshape, bb);
+        bb.SetGap(0.0);
+        double pitch = 1.1 * sqrt(bb.SquareExtent());
+
         Pitch.setValue(pitch);
         Height.setValue(pitch*3.0);
         HasBeenEdited.setValue(1);

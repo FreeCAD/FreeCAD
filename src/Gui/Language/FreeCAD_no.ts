@@ -5376,6 +5376,10 @@ How do you want to proceed?</translation>
       <source>Expression...</source>
       <translation type="unfinished">Expression...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5914,7 +5918,7 @@ Vil du angi en annen mappe?</translation>
     </message>
     <message>
       <source>Turkish</source>
-      <translation>Turkisk</translation>
+      <translation>Tyrkisk</translation>
     </message>
     <message>
       <source>Slovenian</source>

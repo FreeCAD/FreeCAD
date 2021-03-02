@@ -5297,6 +5297,10 @@ How do you want to proceed?</source>
         <source>Expression...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Auto expand</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::PropertyEditor::PropertyModel</name>

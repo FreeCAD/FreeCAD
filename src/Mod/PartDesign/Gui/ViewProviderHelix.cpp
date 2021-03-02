@@ -68,9 +68,9 @@ QIcon ViewProviderHelix::getIcon(void) const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Helix*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive_");
+        str += QString::fromLatin1("Additive");
     else
-        str += QString::fromLatin1("Subtractive_");
+        str += QString::fromLatin1("Subtractive");
 
     str += QString::fromLatin1("Helix.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
