@@ -53,6 +53,8 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::ProfileBased)
 
+const App::PropertyAngle::Constraints Revolution::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+
 Revolution::Revolution()
 {
     addSubType = FeatureAddSub::Additive;
@@ -60,6 +62,7 @@ Revolution::Revolution()
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
+    Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Revolution",(App::Prop_None),"Reference axis of revolution");
 }
 
