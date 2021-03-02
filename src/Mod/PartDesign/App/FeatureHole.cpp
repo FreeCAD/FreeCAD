@@ -645,7 +645,7 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", NULL};
 
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
-const App::PropertyAngle::Constraints floatAngle = { FLT_MIN, 360, 1.0 };
+const App::PropertyAngle::Constraints floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360, 1.0 };
 
 Hole::Hole()
 {
