@@ -6546,21 +6546,24 @@ void ViewProviderSketch::UpdateSolverInformation()
         std::string msg;
         SketchObject::appendConflictMsg(getSketchObject()->getLastConflicting(), msg);
         signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                    .arg(tr("Over-constrained sketch "))
+                    .arg(tr("Over-constrained sketch"))
+                    .arg(" ")
                     .arg(tr("(click to select)"))
                     .arg(QString::fromStdString(msg)));
         signalSolved(QString());
     }
     else if (hasMalformed) { // malformed constraints
         signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#malformed\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                    .arg(tr("Sketch contains malformed constraints "))
+                    .arg(tr("Sketch contains malformed constraints"))
+                    .arg(" ")
                     .arg(tr("(click to select)"))
                     .arg(appendMalformedMsg(getSketchObject()->getLastMalformedConstraints())));
         signalSolved(QString());
     }
     else if (hasConflicts) { // conflicting constraints
         signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                    .arg(tr("Sketch contains conflicting constraints "))
+                    .arg(tr("Sketch contains conflicting constraints"))
+                    .arg(" ")
                     .arg(tr("(click to select)"))
                     .arg(appendConflictMsg(getSketchObject()->getLastConflicting())));
         signalSolved(QString());
@@ -6568,7 +6571,8 @@ void ViewProviderSketch::UpdateSolverInformation()
     else {
         if (hasRedundancies) { // redundant constraints
             signalSetUp(QString::fromLatin1("<font color='orangered'>%1<a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
-                        .arg(tr("Sketch contains redundant constraints "))
+                        .arg(tr("Sketch contains redundant constraints"))
+                        .arg(" ")
                         .arg(tr("(click to select)"))
                         .arg(appendRedundantMsg(getSketchObject()->getLastRedundant())));
         }
@@ -6577,7 +6581,8 @@ void ViewProviderSketch::UpdateSolverInformation()
 
         if(hasPartiallyRedundant) {
             partiallyRedundantString = QString::fromLatin1("<br/><font color='royalblue'><span style=\"background-color: #ececec;\">%1<a href=\"#partiallyredundant\"><span style=\" text-decoration:  underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</span></font><br/>")
-                                .arg(tr("Sketch contains partially redundant constraints "))
+                                .arg(tr("Sketch contains partially redundant constraints"))
+                                .arg(" ")
                                 .arg(tr("(click to select)"))
                                 .arg(appendPartiallyRedundantMsg(getSketchObject()->getLastPartiallyRedundant()));
         }

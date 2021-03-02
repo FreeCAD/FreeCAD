@@ -321,13 +321,13 @@ class _Stairs(ArchComponent.Component):
         if not hasattr(obj,"LastSegment"):
             obj.addProperty("App::PropertyLink","LastSegment","Segment and Parts","Last Segment (Flight or Landing) of Arch Stairs connecting to This Segment")
         if not hasattr(obj,"AbsTop"):
-            obj.addProperty("App::PropertyVector","AbsTop","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'absolute' top level of a flight of stairs leads to "))
+            obj.addProperty("App::PropertyVector","AbsTop","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'absolute' top level of a flight of stairs leads to"))
             obj.setEditorMode("AbsTop",1)
         if not hasattr(obj,"OutlineLeft"):
-            obj.addProperty("App::PropertyVectorList","OutlineLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs ")) # Used for Outline of Railing
+            obj.addProperty("App::PropertyVectorList","OutlineLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs")) # Used for Outline of Railing
             obj.setEditorMode("OutlineLeft",1)
         if not hasattr(obj,"OutlineRight"):
-            obj.addProperty("App::PropertyVectorList","OutlineRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs "))
+            obj.addProperty("App::PropertyVectorList","OutlineRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs"))
             obj.setEditorMode("OutlineRight",1)
 
         # Can't accept 'None' in list, need NaN
@@ -364,10 +364,10 @@ class _Stairs(ArchComponent.Component):
                     pass
 
         if not hasattr(obj,"OutlineLeftAll"):
-            obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs "))
+            obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs"))
             obj.setEditorMode("OutlineLeftAll",1) # Used for Outline of Railing
         if not hasattr(obj,"OutlineRightAll"):
-            obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' of all segments of stairs "))
+            obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' of all segments of stairs"))
             obj.setEditorMode("OutlineRightAll",1)
 
         # Can't accept 'None' in list, need NaN

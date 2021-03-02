@@ -135,7 +135,7 @@ def make_arc_3points(points, placement=None, face=False,
         try:
             utils.type_check([(placement, App.Placement)], name=_name)
         except TypeError:
-            _err(translate("draft","Placement: ") + "{}".format(placement))
+            _err(translate("draft","Placement:") + " {}".format(placement))
             _err(translate("draft","Wrong input: incorrect type of placement."))
             return None
 
