@@ -178,11 +178,15 @@ void TaskBooleanParameters::onItemMoved()
     if (group == pcBoolean->Group.getValues())
         return;
 
-    setupTransaction();
-    Gui::Selection().clearSelection();
-    pcBoolean->Group.setValues(group);
-    pcBoolean->recomputeFeature(true);
-    populate();
+    try {
+        setupTransaction();
+        Gui::Selection().clearSelection();
+        pcBoolean->Group.setValues(group);
+        pcBoolean->recomputeFeature(true);
+        populate();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskBooleanParameters::preselect(QListWidgetItem *item) {
@@ -341,9 +345,13 @@ void TaskBooleanParameters::onButtonAdd()
         return;
     }
 
-    pcBoolean->addObject(ref);
-    pcBoolean->recomputeFeature(true);
-    populate();
+    try {
+        pcBoolean->addObject(ref);
+        pcBoolean->recomputeFeature(true);
+        populate();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskBooleanParameters::setupTransaction() {
@@ -365,16 +373,21 @@ void TaskBooleanParameters::onTypeChanged(int index)
 {
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
 
-    setupTransaction();
-    switch (index) {
-        case 0: pcBoolean->Type.setValue("Fuse"); break;
-        case 1: pcBoolean->Type.setValue("Cut"); break;
-        case 2: pcBoolean->Type.setValue("Common"); break;
-        case 3: pcBoolean->Type.setValue("Compound"); break;
-        default: pcBoolean->Type.setValue("Fuse");
+    try {
+        setupTransaction();
+        switch (index) {
+            case 0: pcBoolean->Type.setValue("Fuse"); break;
+            case 1: pcBoolean->Type.setValue("Cut"); break;
+            case 2: pcBoolean->Type.setValue("Common"); break;
+            case 3: pcBoolean->Type.setValue("Compound"); break;
+            default: pcBoolean->Type.setValue("Fuse");
+        }
+
+        pcBoolean->recomputeFeature(true);
+    } catch (Base::Exception &e) {
+        e.ReportException();
     }
 
-    pcBoolean->recomputeFeature(true);
 }
 
 const std::vector<std::string> TaskBooleanParameters::getBodies(void) const
@@ -411,12 +424,17 @@ void TaskBooleanParameters::onButtonRemove()
             ++it;
     }
     Gui::Selection().clearSelection();
-    setupTransaction();
-    pcBoolean->Group.setValues(group);
-    for(auto &name : removed) 
-        pcBoolean->getDocument()->removeObject(name.c_str());
-    pcBoolean->recomputeFeature(true);
-    populate();
+
+    try {
+        setupTransaction();
+        pcBoolean->Group.setValues(group);
+        for(auto &name : removed) 
+            pcBoolean->getDocument()->removeObject(name.c_str());
+        pcBoolean->recomputeFeature(true);
+        populate();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 TaskBooleanParameters::~TaskBooleanParameters()
@@ -436,10 +454,14 @@ void TaskBooleanParameters::changeEvent(QEvent *e)
 
 void TaskBooleanParameters::onNewSolidChanged(bool on)
 {
-    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
-    setupTransaction();
-    pcBoolean->NewSolid.setValue(on);
-    pcBoolean->recomputeFeature();
+    try {
+        PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+        setupTransaction();
+        pcBoolean->NewSolid.setValue(on);
+        pcBoolean->recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 
