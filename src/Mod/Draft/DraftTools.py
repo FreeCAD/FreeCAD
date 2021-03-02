@@ -56,10 +56,6 @@ from draftutils.translate import translate
 import draftguitools.gui_snapper as gui_snapper
 import draftguitools.gui_trackers as trackers
 
-# The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
-True if DraftGui.__name__ else False
-
 __title__ = "FreeCAD Draft Workbench GUI Tools"
 __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin")
@@ -231,3 +227,119 @@ from draftguitools.gui_snaps import ShowSnapBar
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None
+
+
+# Silence complaints from static analyzers about the several hundred unused imports
+# by "using" each of them in turn.
+True if math.__name__ else False #pylint: disable=W0104
+True if sys.__name__ else False #pylint: disable=W0104
+True if QtCore.__name__ else False #pylint: disable=W0104
+True if QtGui.__name__ else False #pylint: disable=W0104
+True if coin.__name__ else False #pylint: disable=W0104
+True if FreeCAD.__name__ else False #pylint: disable=W0104
+True if FreeCADGui.__name__ else False #pylint: disable=W0104
+True if Vector.__name__ else False #pylint: disable=W0104
+True if Draft.__name__ else False #pylint: disable=W0104
+True if Draft_rc.__name__ else False #pylint: disable=W0104
+True if DraftGui.__name__ else False #pylint: disable=W0104
+True if DraftVecUtils.__name__ else False #pylint: disable=W0104
+True if WorkingPlane.__name__ else False #pylint: disable=W0104
+True if ToDo.__name__ else False #pylint: disable=W0104
+True if translate.__name__ else False #pylint: disable=W0104
+True if gui_snapper.__name__ else False #pylint: disable=W0104
+True if trackers.__name__ else False #pylint: disable=W0104
+True if draftguitools.gui_edit.__name__ else False #pylint: disable=W0104
+True if draftguitools.gui_selectplane.__name__ else False #pylint: disable=W0104
+True if draftguitools.gui_setstyle.__name__ else False #pylint: disable=W0104
+True if draftguitools.gui_planeproxy.__name__ else False #pylint: disable=W0104
+True if FinishLine.__name__ else False #pylint: disable=W0104
+True if CloseLine.__name__ else False #pylint: disable=W0104
+True if UndoLine.__name__ else False #pylint: disable=W0104
+True if ToggleConstructionMode.__name__ else False #pylint: disable=W0104
+True if ToggleContinueMode.__name__ else False #pylint: disable=W0104
+True if ToggleDisplayMode.__name__ else False #pylint: disable=W0104
+True if AddToGroup.__name__ else False #pylint: disable=W0104
+True if SelectGroup.__name__ else False #pylint: disable=W0104
+True if SetAutoGroup.__name__ else False #pylint: disable=W0104
+True if Draft_AddConstruction.__name__ else False #pylint: disable=W0104
+True if ToggleGrid.__name__ else False #pylint: disable=W0104
+True if Heal.__name__ else False #pylint: disable=W0104
+True if Draft_FlipDimension.__name__ else False #pylint: disable=W0104
+True if Draft_Slope.__name__ else False #pylint: disable=W0104
+True if draftguitools.gui_arrays.__name__ else False #pylint: disable=W0104
+True if draftguitools.gui_annotationstyleeditor.__name__ else False #pylint: disable=W0104
+True if Layer.__name__ else False #pylint: disable=W0104
+True if MODCONSTRAIN else False #pylint: disable=W0104
+True if MODSNAP else False #pylint: disable=W0104
+True if MODALT else False #pylint: disable=W0104
+True if formatUnit.__name__ else False #pylint: disable=W0104
+True if selectObject.__name__ else False #pylint: disable=W0104
+True if getPoint.__name__ else False #pylint: disable=W0104
+True if getSupport.__name__ else False #pylint: disable=W0104
+True if setWorkingPlaneToObjectUnderCursor.__name__ else False #pylint: disable=W0104
+True if setWorkingPlaneToSelectedObject.__name__ else False #pylint: disable=W0104
+True if hasMod.__name__ else False #pylint: disable=W0104
+True if setMod.__name__ else False #pylint: disable=W0104
+True if DraftTool.__name__ else False #pylint: disable=W0104
+True if redraw3DView.__name__ else False #pylint: disable=W0104
+True if Creator.__name__ else False #pylint: disable=W0104
+True if Line.__name__ else False #pylint: disable=W0104
+True if Wire.__name__ else False #pylint: disable=W0104
+True if Fillet.__name__ else False #pylint: disable=W0104
+True if BSpline.__name__ else False #pylint: disable=W0104
+True if BezCurve.__name__ else False #pylint: disable=W0104
+True if CubicBezCurve.__name__ else False #pylint: disable=W0104
+True if BezierGroup.__name__ else False #pylint: disable=W0104
+True if Rectangle.__name__ else False #pylint: disable=W0104
+True if Arc.__name__ else False #pylint: disable=W0104
+True if Draft_Arc_3Points.__name__ else False #pylint: disable=W0104
+True if Circle.__name__ else False #pylint: disable=W0104
+True if Polygon.__name__ else False #pylint: disable=W0104
+True if Ellipse.__name__ else False #pylint: disable=W0104
+True if Text.__name__ else False #pylint: disable=W0104
+True if Dimension.__name__ else False #pylint: disable=W0104
+True if ShapeString.__name__ else False #pylint: disable=W0104
+True if Point.__name__ else False #pylint: disable=W0104
+True if Draft_Facebinder.__name__ else False #pylint: disable=W0104
+True if Draft_Label.__name__ else False #pylint: disable=W0104
+True if Modifier.__name__ else False #pylint: disable=W0104
+True if SubelementHighlight.__name__ else False #pylint: disable=W0104
+True if Move.__name__ else False #pylint: disable=W0104
+True if ApplyStyle.__name__ else False #pylint: disable=W0104
+True if Rotate.__name__ else False #pylint: disable=W0104
+True if Offset.__name__ else False #pylint: disable=W0104
+True if Stretch.__name__ else False #pylint: disable=W0104
+True if Join.__name__ else False #pylint: disable=W0104
+True if Split.__name__ else False #pylint: disable=W0104
+True if Upgrade.__name__ else False #pylint: disable=W0104
+True if Downgrade.__name__ else False #pylint: disable=W0104
+True if Trimex.__name__ else False #pylint: disable=W0104
+True if Scale.__name__ else False #pylint: disable=W0104
+True if Drawing.__name__ else False #pylint: disable=W0104
+True if WireToBSpline.__name__ else False #pylint: disable=W0104
+True if Shape2DView.__name__ else False #pylint: disable=W0104
+True if Draft2Sketch.__name__ else False #pylint: disable=W0104
+True if Array.__name__ else False #pylint: disable=W0104
+True if LinkArray.__name__ else False #pylint: disable=W0104
+True if PathArray.__name__ else False #pylint: disable=W0104
+True if PathLinkArray.__name__ else False #pylint: disable=W0104
+True if PointArray.__name__ else False #pylint: disable=W0104
+True if draftguitools.gui_arrays.__name__ else False #pylint: disable=W0104
+True if Draft_Clone.__name__ else False #pylint: disable=W0104
+True if Mirror.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Lock.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Midpoint.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Perpendicular.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Grid.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Intersection.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Parallel.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Endpoint.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Angle.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Center.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Extension.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Near.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Ortho.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Special.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_Dimensions.__name__ else False #pylint: disable=W0104
+True if Draft_Snap_WorkingPlane.__name__ else False #pylint: disable=W0104
+True if ShowSnapBar.__name__ else False #pylint: disable=W0104
