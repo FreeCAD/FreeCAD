@@ -761,9 +761,8 @@ void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
 
 bool PropertyExpressionEngine::depsAreTouched() const
 {
-    for(auto &v : _Deps) {
-        // v.second inidcates if it is a hidden reference
-        if(!v.second && v.first->isTouched())
+    for (auto &v : expressions) {
+        if (v.second.expression->isTouched())
             return true;
     }
     return false;
