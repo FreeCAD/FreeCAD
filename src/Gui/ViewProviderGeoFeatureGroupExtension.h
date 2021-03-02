@@ -70,6 +70,8 @@ public:
     virtual int extensionCanReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
     virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
 
+    virtual void extensionModeSwitchChange(void) override;
+
 protected:
     void buildExport() const;
     virtual void buildChildren3D();

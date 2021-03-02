@@ -339,6 +339,17 @@ int ViewProviderGeoFeatureGroupExtension::extensionReplaceObject(
     return 1;
 }
 
+void ViewProviderGeoFeatureGroupExtension::extensionModeSwitchChange(void)
+{
+    auto vp = getExtendedViewProvider();
+    if (auto obj = vp->getObject()) {
+        auto ext = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
+        int mode = vp->getDefaultMode(true);
+        ext->enableSelectionSubObjects(
+                mode >= 0 && pcGroupChildren == vp->getModeSwitch()->getChild(mode));
+    }
+}
+
 namespace Gui {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGeoFeatureGroupExtensionPython, Gui::ViewProviderGeoFeatureGroupExtension)
 

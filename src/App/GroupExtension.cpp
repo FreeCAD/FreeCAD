@@ -641,6 +641,9 @@ bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int r
     if(reason == DocumentObject::GS_DEFAULT && ExportMode.getValue() == ExportDisabled)
         return true;
 
+    if (reason == DocumentObject::GS_SELECT && !_enableSubObjects)
+        return true;
+
     for(auto obj : getExportGroupProperty(reason).getValues()) {
         if(obj && obj->getNameInDocument()) {
             if(reason != DocumentObject::GS_DEFAULT || queryChildExport(obj))

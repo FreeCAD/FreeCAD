@@ -122,6 +122,10 @@ public:
 
     virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
 
+    void enableSelectionSubObjects(bool enable) {
+        _enableSubObjects = enable;
+    }
+
     virtual int extensionIsElementVisible(const char *element) const override;
 
     virtual int extensionIsElementVisibleEx(const char *element, int reason) const override;
@@ -189,6 +193,8 @@ private:
     std::vector<boost::signals2::scoped_connection> _Conns;
 
     bool _togglingVisibility = false;
+
+    bool _enableSubObjects = true;
 };
 
 
