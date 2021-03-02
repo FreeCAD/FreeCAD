@@ -65,7 +65,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_3" native="true">
+            <widget class="QWidget" name="widget_3">
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <item>
                <spacer name="horizontalSpacer_2">
@@ -449,7 +449,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="widget_2" native="true">
+            <widget class="QWidget" name="widget_2">
              <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
                <widget class="QComboBox" name="stock">
@@ -893,7 +893,7 @@
           </property>
           <layout class="QGridLayout" name="gridLayout_6">
            <item row="0" column="1">
-            <widget class="QWidget" name="widget_5" native="true">
+            <widget class="QWidget" name="widget_5">
              <layout class="QVBoxLayout" name="verticalLayout_18">
               <property name="leftMargin">
                <number>0</number>
@@ -1243,7 +1243,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_4" native="true">
+            <widget class="QWidget" name="widget_4">
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
                <widget class="QPushButton" name="toolControllerEdit">
@@ -1370,7 +1370,7 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <widget class="QWidget" name="activeToolGroup" native="true">
+     <widget class="QWidget" name="activeToolGroup">
       <layout class="QFormLayout" name="formLayout_3">
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -1389,7 +1389,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="widget" native="true">
+     <widget class="QWidget" name="widget">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QListWidget" name="operationsList">
@@ -1399,7 +1399,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="operationMove" native="true">
+        <widget class="QWidget" name="operationMove">
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <property name="leftMargin">
            <number>0</number>
@@ -1468,7 +1468,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="operationModify" native="true">
+     <widget class="QWidget" name="operationModify">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QPushButton" name="operationEdit">

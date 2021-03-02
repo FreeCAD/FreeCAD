@@ -51,7 +51,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="widget">
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="3">
        <widget class="QComboBox" name="boundBoxSelect">
@@ -244,7 +244,7 @@
        </widget>
       </item>
       <item row="9" column="3">
-       <widget class="Gui::InputField" name="sampleInterval" native="true">
+       <widget class="Gui::InputField" name="sampleInterval">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the sampling resolution. Smaller values quickly increase processing time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>

@@ -15,13 +15,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QWidget" name="extensionEdit" native="true">
+    <widget class="QWidget" name="extensionEdit">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="margin">
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget_2" native="true">
+       <widget class="QWidget" name="widget_2">
         <layout class="QGridLayout" name="gridLayout">
          <item row="1" column="0">
           <widget class="QLabel" name="label">
@@ -92,7 +92,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="widget">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QPushButton" name="buttonEnable">

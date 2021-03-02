@@ -99,7 +99,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="widget">
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0" rowspan="2" colspan="2">
        <widget class="QToolButton" name="angle">
@@ -393,7 +393,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="value_widget" native="true">
+    <widget class="QWidget" name="value_widget">
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <widget class="QLabel" name="value_label">
@@ -552,7 +552,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="orientation_widget" native="true">
+    <widget class="QWidget" name="orientation_widget">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="QToolButton" name="parallel">

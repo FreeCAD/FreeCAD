@@ -21,7 +21,7 @@
     <number>1</number>
    </property>
    <item>
-    <widget class="QWidget" name="f_toolbar" native="true">
+    <widget class="QWidget" name="f_toolbar">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
        <number>2</number>

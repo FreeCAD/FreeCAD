@@ -24,7 +24,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget_2" native="true">
+       <widget class="QWidget" name="widget_2">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QComboBox" name="stock">
