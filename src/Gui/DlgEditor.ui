@@ -193,7 +193,7 @@
          <enum>Qt::TabFocus</enum>
         </property>
         <property name="toolTip">
-         <string>Code lines will be numbered </string>
+         <string>Code lines will be numbered</string>
         </property>
         <property name="text">
          <string>Enable line numbers</string>
