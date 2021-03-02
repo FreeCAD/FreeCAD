@@ -193,54 +193,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lePrimary">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::NoFocus</enum>
-       </property>
-       <property name="toolTip">
-        <string>Current primary view direction</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="butRightRotate">
-       <property name="toolTip">
-        <string>Rotate right</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normalon>:/icons/arrow-right.svg</normalon>
-        </iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="butTopRotate">
        <property name="sizePolicy">
@@ -289,7 +241,68 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lePrimary">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Current primary view direction</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="butRightRotate">
+       <property name="toolTip">
+        <string>Rotate right</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>:/icons/arrow-right.svg</normalon>
+        </iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <spacer name="horizontalSpacer_8">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    <item row="2" column="1">
       <widget class="QPushButton" name="butDownRotate">
        <property name="toolTip">
         <string>Rotate down</string>
@@ -323,20 +336,7 @@
        </property>
       </spacer>
      </item>
-     <item row="2" column="0">
-      <spacer name="horizontalSpacer_8">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
+     </layout>
    </item>
    <item>
     <widget class="Line" name="line_2">
@@ -361,13 +361,50 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="5" column="2">
-      <widget class="QCheckBox" name="chkView8">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="chkView0">
        <property name="toolTip">
-        <string>Bottom</string>
+        <string>LeftFrontTop</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    <item row="2" column="2">
+      <widget class="QCheckBox" name="chkView1">
+       <property name="toolTip">
+        <string>Top</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QCheckBox" name="chkView2">
+       <property name="toolTip">
+        <string>RightFrontTop</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QCheckBox::indicator {
@@ -393,6 +430,23 @@ height: 24px;
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="chkView3">
+       <property name="toolTip">
+        <string>Left</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </item>
      <item row="3" column="2">
       <widget class="QCheckBox" name="chkView4">
@@ -434,23 +488,10 @@ height: 24px;
        </property>
       </widget>
      </item>
-     <item row="3" column="5">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="3" column="1">
-      <widget class="QCheckBox" name="chkView3">
+     <item row="3" column="4">
+      <widget class="QCheckBox" name="chkView6">
        <property name="toolTip">
-        <string>Left</string>
+        <string>Rear</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QCheckBox::indicator {
@@ -463,6 +504,19 @@ height: 24px;
         <string/>
        </property>
       </widget>
+     </item>
+     <item row="3" column="5">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item row="5" column="1">
       <widget class="QCheckBox" name="chkView7">
@@ -481,10 +535,13 @@ height: 24px;
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
-      <widget class="QCheckBox" name="chkView1">
+     <item row="5" column="2">
+      <widget class="QCheckBox" name="chkView8">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="toolTip">
-        <string>Top</string>
+        <string>Bottom</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QCheckBox::indicator {
@@ -515,64 +572,7 @@ height: 24px;
        </property>
       </widget>
      </item>
-     <item row="2" column="3">
-      <widget class="QCheckBox" name="chkView2">
-       <property name="toolTip">
-        <string>RightFrontTop</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QCheckBox::indicator {
-width: 24px;
-height: 24px;
-}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="4">
-      <widget class="QCheckBox" name="chkView6">
-       <property name="toolTip">
-        <string>Rear</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QCheckBox::indicator {
-width: 24px;
-height: 24px;
-}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="chkView0">
-       <property name="toolTip">
-        <string>LeftFrontTop</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QCheckBox::indicator {
-width: 24px;
-height: 24px;
-}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -660,6 +660,25 @@ using the given X/Y Spacing</string>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>X Spacing</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <spacer name="horizontalSpacer_10">
        <property name="orientation">
@@ -698,25 +717,6 @@ using the given X/Y Spacing</string>
        </property>
        <property name="minimum">
         <double>0.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_10">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>X Spacing</string>
        </property>
       </widget>
      </item>

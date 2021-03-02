@@ -20,22 +20,6 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <item row="1" column="0">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>373</width>
-       <height>291</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBoxOther">
      <property name="title">
@@ -68,7 +52,23 @@
      </layout>
     </widget>
    </item>
-  </layout>
+  <item row="1" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>373</width>
+       <height>291</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

@@ -53,6 +53,43 @@
    <item>
     <widget class="QWidget" name="widget">
      <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="algorithmSelect_label">
+        <property name="text">
+         <string>Algorithm</string>
+        </property>
+       </widget>
+      </item>
+     <item row="0" column="3">
+       <widget class="QComboBox" name="algorithmSelect">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>OCL Dropcutter</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Experimental</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="boundBoxSelect_label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>BoundBox</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="3">
        <widget class="QComboBox" name="boundBoxSelect">
         <property name="font">
@@ -75,16 +112,10 @@
         </item>
        </widget>
       </item>
-      <item row="4" column="3">
-       <widget class="QLineEdit" name="boundaryAdjustment">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <item row="2" column="0">
+       <widget class="QLabel" name="layerMode_label">
+        <property name="text">
+         <string>Layer Mode</string>
         </property>
        </widget>
       </item>
@@ -110,43 +141,10 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="3">
-       <widget class="QComboBox" name="algorithmSelect">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>OCL Dropcutter</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Experimental</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="11" column="3">
-       <widget class="QCheckBox" name="optimizeEnabled">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
+      <item row="3" column="0">
+       <widget class="QLabel" name="cutPattern_label">
         <property name="text">
-         <string>Optimize Linear Paths</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="boundaryAdjustment_label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Boundary Adjustment</string>
+         <string>Cut Pattern</string>
         </property>
        </widget>
       </item>
@@ -197,6 +195,39 @@
         </item>
        </widget>
       </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="boundaryAdjustment_label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Boundary Adjustment</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QLineEdit" name="boundaryAdjustment">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="stepOver_label">
+        <property name="text">
+         <string>Step over</string>
+        </property>
+       </widget>
+      </item>
       <item row="8" column="3">
        <widget class="QSpinBox" name="stepOver">
         <property name="sizePolicy">
@@ -216,30 +247,10 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="layerMode_label">
+      <item row="9" column="0">
+       <widget class="QLabel" name="sampleInterval_label">
         <property name="text">
-         <string>Layer Mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="boundBoxSelect_label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>BoundBox</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="stepOver_label">
-        <property name="text">
-         <string>Step over</string>
+         <string>Sample interval</string>
         </property>
        </widget>
       </item>
@@ -253,28 +264,17 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="cutPattern_label">
+      <item row="11" column="3">
+       <widget class="QCheckBox" name="optimizeEnabled">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
-         <string>Cut Pattern</string>
+         <string>Optimize Linear Paths</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="sampleInterval_label">
-        <property name="text">
-         <string>Sample interval</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="algorithmSelect_label">
-        <property name="text">
-         <string>Algorithm</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item>
