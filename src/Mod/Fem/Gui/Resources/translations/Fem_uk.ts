@@ -620,7 +620,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Редактор матеріалів</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>

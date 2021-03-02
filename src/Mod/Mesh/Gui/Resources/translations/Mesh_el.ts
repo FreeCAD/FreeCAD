@@ -1522,7 +1522,7 @@ is used when writing a file in AMF format</source>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
+      <translation>The bottom side of surface will be rendered the same way than top side.
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</translation>
@@ -1566,7 +1566,7 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
+      <translation>If this option is set Phong shading is used, otherwise flat shading.
 Shading defines the appearance of surfaces.
 
 With flat shading the surface normals are not defined per vertex that leads
@@ -1585,7 +1585,7 @@ to a smoother appearance.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation type="unfinished">Crease angle is a threshold angle between two faces.
+      <translation>Crease angle is a threshold angle between two faces.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</translation>
@@ -1664,17 +1664,17 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>Frontal</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal Quad</source>
-      <translation type="unfinished">Frontal Quad</translation>
+      <translation>Frontal Quad</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Parallelograms</source>
-      <translation type="unfinished">Parallelograms</translation>
+      <translation>Parallelograms</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="175"/>
@@ -1685,12 +1685,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="220"/>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Running gmsh...</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="242"/>
       <source>Failed to start</source>
-      <translation type="unfinished">Failed to start</translation>
+      <translation>Failed to start</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="249"/>
@@ -1782,27 +1782,27 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by gmsh</source>
-      <translation type="unfinished">Remesh by gmsh</translation>
+      <translation>Remesh by gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>
       <source>Remeshing Parameter</source>
-      <translation type="unfinished">Remeshing Parameter</translation>
+      <translation>Remeshing Parameter</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation type="unfinished">Meshing:</translation>
+      <translation>Meshing:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+      <translation>Max element size (0.0 = Auto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+      <translation>Min element size (0.0 = Auto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1812,7 +1812,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
@@ -1822,7 +1822,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
       <source>Kill</source>
-      <translation type="unfinished">Kill</translation>
+      <translation>Kill</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
@@ -2236,12 +2236,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Compressed X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -2266,7 +2266,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Asymptote Format</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
@@ -2336,7 +2336,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../ViewProvider.cpp" line="746"/>
       <source>Display segments</source>
-      <translation type="unfinished">Display segments</translation>
+      <translation>Display segments</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1577"/>

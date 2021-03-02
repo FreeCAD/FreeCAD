@@ -199,10 +199,10 @@ def export(exportList, filename, colors=None, preferences=None):
         import json
         try:
             from ifcjson import ifc2json5a
-        except:
+        except Exception:
             try:
                 import ifc2json5a
-            except:
+            except Exception:
                 _err("Error: Unable to locate ifc2json5a module. Aborting.")
                 return
 
@@ -1615,10 +1615,10 @@ def getPropertyData(key,value,preferences):
     else:
         try:
             pvalue = float(pvalue)
-        except:
+        except Exception:
             try:
                 pvalue = FreeCAD.Units.Quantity(pvalue).Value
-            except:
+            except Exception:
                 if six.PY2:
                     pvalue = pvalue.encode("utf8")
                 if preferences['DEBUG']:print("      warning: unable to export property as numeric value:",pname,pvalue)
@@ -2358,10 +2358,13 @@ def getUID(obj,preferences):
     if not uid:
         uid = ifcopenshell.guid.new()
         # storing the uid for further use
-        if preferences['STORE_UID'] and hasattr(obj,"IfcData"):
-            d = obj.IfcData
-            d["IfcUID"] = uid
-            obj.IfcData = d
+        if preferences["STORE_UID"]:
+            if hasattr(obj, "IfcData"):
+                d = obj.IfcData
+                d["IfcUID"] = uid
+                obj.IfcData = d
+            if hasattr(obj, "GlobalId"):
+                obj.GlobalId = uid
     return uid
 
 
@@ -2415,10 +2418,10 @@ def writeJson(filename,ifcfile):
     import json
     try:
         from ifcjson import ifc2json5a
-    except:
+    except Exception:
         try:
             import ifc2json5a
-        except:
+        except Exception:
             print("Error: Unable to locate ifc2json5a module. Aborting.")
             return
     print("Converting IFC to JSON...")

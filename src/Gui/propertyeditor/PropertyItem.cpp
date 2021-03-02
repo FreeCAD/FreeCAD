@@ -600,11 +600,13 @@ QVariant PropertyItem::data(int column, int role) const
             }
             return QVariant();
         }
-        if (role == Qt::DisplayRole)
+        if (role == Qt::DisplayRole) {
             return displayName();
+        }
         // no properties set
-        if (propertyItems.empty())
+        if (propertyItems.empty()) {
             return QVariant();
+        }
         else if (role == Qt::ToolTipRole) {
             QString type = QString::fromLatin1("Type: %1\nName: %2").arg(
                     QString::fromLatin1(propertyItems[0]->getTypeId().getName()), objectName());
@@ -612,15 +614,17 @@ QVariant PropertyItem::data(int column, int role) const
             if(doc.size())
                 return type + QLatin1String("\n\n") + doc;
             return type;
-        } else
-            return QVariant();
+        }
+
+        return QVariant();
     }
     else {
         // no properties set
         if (propertyItems.empty()) {
             PropertyItem* parent = this->parent();
-            if (!parent || !parent->parent())
+            if (!parent || !parent->parent()) {
                 return QVariant();
+            }
             if (role == Qt::EditRole) {
                 return parent->property(qPrintable(objectName()));
             }
@@ -631,28 +635,34 @@ QVariant PropertyItem::data(int column, int role) const
             else if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
-            }
-            else if( role == Qt::TextColorRole) {
-                if(hasExpression(false))
+            } 
+            else if (role == Qt::TextColorRole) {
+                if (hasExpression(false))
                     return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
                 return QVariant();
-            } else
-                return QVariant();
+            }
+
+            return QVariant();
         }
-        if (role == Qt::EditRole)
+        if (role == Qt::EditRole) {
             return value(propertyItems[0]);
-        else if (role == Qt::DecorationRole)
+        }
+        else if (role == Qt::DecorationRole) {
             return decoration(value(propertyItems[0]));
-        else if (role == Qt::DisplayRole)
+        }
+        else if (role == Qt::DisplayRole) {
             return toString(value(propertyItems[0]));
-        else if (role == Qt::ToolTipRole)
+        }
+        else if (role == Qt::ToolTipRole) {
             return toolTip(propertyItems[0]);
+        }
         else if( role == Qt::TextColorRole) {
-            if(hasExpression(false))
+            if (hasExpression(false))
                 return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
             return QVariant();
-        } else
-            return QVariant();
+        }
+
+        return QVariant();
     }
 }
 
@@ -1479,17 +1489,39 @@ void PropertyVectorItem::propertyBound()
 
 // ---------------------------------------------------------------
 
-VectorListButton::VectorListButton(int decimals, QWidget * parent)
-    : LabelButton(parent)
-    , decimals(decimals)
+VectorListWidget::VectorListWidget (int decimals, QWidget * parent)
+  : QWidget(parent)
+  , decimals(decimals)
+{
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(0);
+    layout->setSpacing(2);
+
+    lineEdit = new QLineEdit(this);
+    lineEdit->setReadOnly(true);
+    layout->addWidget(lineEdit);
+
+    button = new QPushButton(QLatin1String("..."), this);
+#if defined (Q_OS_MAC)
+    button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
+#endif
+    layout->addWidget(button);
+
+    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+    setFocusProxy(lineEdit);
+}
+
+VectorListWidget::~VectorListWidget()
 {
 }
 
-VectorListButton::~VectorListButton()
+void VectorListWidget::resizeEvent(QResizeEvent* e)
 {
+    button->setFixedWidth(e->size().height());
+    button->setFixedHeight(e->size().height());
 }
 
-void VectorListButton::browse()
+void VectorListWidget::buttonClicked()
 {
     VectorListEditor dlg(decimals, this);
     dlg.setValues(value().value<QList<Base::Vector3d>>());
@@ -1502,7 +1534,7 @@ void VectorListButton::browse()
     }
 }
 
-void VectorListButton::showValue(const QVariant& d)
+void VectorListWidget::showValue(const QVariant& d)
 {
     QLocale loc;
     QString data;
@@ -1516,8 +1548,22 @@ void VectorListButton::showValue(const QVariant& d)
                  loc.toString(value[0].y, 'f', 2),
                  loc.toString(value[0].z, 'f', 2));
     }
-    getLabel()->setText(data);
+    lineEdit->setText(data);
 }
+
+QVariant VectorListWidget::value() const
+{
+    return variant;
+}
+
+void VectorListWidget::setValue(const QVariant& val)
+{
+    variant = val;
+    showValue(variant);
+    valueChanged(variant);
+}
+
+// ---------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorListItem)
 
@@ -1575,7 +1621,7 @@ void PropertyVectorListItem::setValue(const QVariant& value)
 
 QWidget* PropertyVectorListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    VectorListButton *pe = new VectorListButton(decimals(), parent);
+    VectorListWidget *pe = new VectorListWidget(decimals(), parent);
     QObject::connect(pe, SIGNAL(valueChanged(const QVariant &)), receiver, method);
     pe->setDisabled(isReadOnly());
     return pe;
@@ -1583,13 +1629,13 @@ QWidget* PropertyVectorListItem::createEditor(QWidget* parent, const QObject* re
 
 void PropertyVectorListItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
-    VectorListButton *pe = qobject_cast<VectorListButton*>(editor);
+    VectorListWidget *pe = qobject_cast<VectorListWidget*>(editor);
     pe->setValue(data);
 }
 
 QVariant PropertyVectorListItem::editorData(QWidget *editor) const
 {
-    VectorListButton *pe = qobject_cast<VectorListButton*>(editor);
+    VectorListWidget *pe = qobject_cast<VectorListWidget*>(editor);
     return pe->value();
 }
 

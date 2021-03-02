@@ -75,7 +75,7 @@ def get_line_style(line_style, scale):
             # scale dashes
             style = ",".join([str(float(d)/scale) for d in style])
             # print("lstyle ", style)
-        except:
+        except Exception:
             # TODO: trap only specific exception; what is the problem?
             # Bad string specification?
             return "none"
@@ -468,6 +468,8 @@ def get_svg(obj,
                 plane.alignToPointAndAxis_SVG(App.Vector(0, 0, 0),
                                               direction.negative().negative(),
                                               0)
+            else:
+                raise ValueError("'direction' cannot be: Vector(0, 0, 0)")
         elif isinstance(direction, WorkingPlane.plane):
             plane = direction
 

@@ -63,6 +63,7 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <App/Document.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true);
 
@@ -362,6 +363,13 @@ App::DocumentObjectExecReturn *Pipe::_execute(ProfileBased *feat,
         }
         else if(feat->getAddSubType() == FeatureAddSub::Subtractive) {
             try {
+                // Outside property from FeatureHelix, maybe we should offer this for all ProfileBased?
+                auto prop = Base::freecad_dynamic_cast<App::PropertyBool>(
+                        feat->getPropertyByName("Outside"));
+                if (prop && prop->getValue())
+                    boolOp.makEShape(TOPOP_COMMON,{base,result});
+                else
+                    boolOp.makECut({base,result});
                 boolOp.makECut({base,result});
             }catch(Standard_Failure&) {
                 return new App::DocumentObjectExecReturn("Solid subtracting failed");

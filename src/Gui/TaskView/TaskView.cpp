@@ -581,12 +581,22 @@ void TaskView::slotDeletedDocument()
 
 void TaskView::slotUndoDocument(const App::Document&)
 {
+    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
+        ActiveDialog->autoClosedOnTransactionChange();
+        removeDialog();
+    }
+
     if (!ActiveDialog)
         updateWatcher();
 }
 
 void TaskView::slotRedoDocument(const App::Document&)
 {
+    if (ActiveDialog && ActiveDialog->isAutoCloseOnTransactionChange()) {
+        ActiveDialog->autoClosedOnTransactionChange();
+        removeDialog();
+    }
+
     if (!ActiveDialog)
         updateWatcher();
 }

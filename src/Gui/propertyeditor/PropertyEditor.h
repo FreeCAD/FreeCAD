@@ -37,6 +37,7 @@
 
 namespace App {
 class Property;
+class Document;
 }
 
 namespace Gui {
@@ -76,6 +77,8 @@ public:
     void buildUp(PropertyModel::PropertyList &&props = PropertyModel::PropertyList(), bool checkDocument=false);
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
+    void setAutomaticExpand(bool);
+    bool isAutomaticExpand(bool) const;
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
     /*! Reset the internal state of the view. */
@@ -114,6 +117,7 @@ protected:
 private:
     void setEditorMode(const QModelIndex & parent, int start, int end);
     void closeTransaction();
+    void recomputeDocument(App::Document*);
 
 private:
     PropertyItemDelegate *delegate;
@@ -121,6 +125,7 @@ private:
     QStringList selectedProperty;
     PropertyModel::PropertyList propList;
     std::unordered_set<const App::PropertyContainer*> propOwners;
+    bool autoexpand;
     bool autoupdate;
     bool committing;
     bool delaybuild;

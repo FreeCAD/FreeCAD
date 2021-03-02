@@ -259,6 +259,8 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
         GetApplication().signalRemoveDynamicProperty(*prop);
         Property::destroy(prop);
         index.erase(it);
+        // memory of myName has been freed
+        prop->myName = nullptr;
         return true;
     }
 

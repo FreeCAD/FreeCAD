@@ -349,7 +349,7 @@ class _Stairs(ArchComponent.Component):
                 try:
                     obj.RailingLeft = outlineWireLeftObject.InList[0].Name
                     obj.removeProperty("OutlineWireLeft")
-                except:
+                except Exception:
                     pass
         if not hasattr(obj,"RailingRight"):
             obj.addProperty("App::PropertyString","RailingRight","Segment and Parts","Name of Railing object (right) created")
@@ -359,7 +359,7 @@ class _Stairs(ArchComponent.Component):
                 try:
                     obj.RailingRight = outlineWireRightObject.InList[0].Name
                     obj.removeProperty("OutlineWireRight")
-                except:
+                except Exception:
                     pass
 
         if not hasattr(obj,"OutlineLeftAll"):
@@ -683,7 +683,7 @@ class _Stairs(ArchComponent.Component):
                         netWidthI = widthOtherSegments[i-1] - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
                     else: # i.e. elif widthFirstSegmentDefault:
                         netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
-                except:
+                except Exception:
                     if widthFirstSegmentDefault:
                         netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
 
@@ -847,7 +847,7 @@ class _Stairs(ArchComponent.Component):
                     foundStart = edges[0].Vertexes[1].Point
                 else: # if distFrom2ndParameter = / < distFrom1stParameter (i.e. if equal, Vertexes[0].Point is taken ?)
                     foundStart = edges[0].Vertexes[0].Point
-            except:
+            except Exception:
                 print('Intersection point Not on this edge')
 
             ''' Guessing the last End Point based on Intersection '''
@@ -860,7 +860,7 @@ class _Stairs(ArchComponent.Component):
                     foundEnd = edges[i].Vertexes[1].Point
                 else:
                     foundEnd = edges[i].Vertexes[0].Point
-            except:
+            except Exception:
                 print('Intersection point Not on this edge')
 
             outlineP1P2Ordered[0] = foundStart

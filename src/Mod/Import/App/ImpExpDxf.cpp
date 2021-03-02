@@ -35,6 +35,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
+#include <GeomAPI_Interpolate.hxx>
 #include <GeomAdaptor_Curve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
@@ -157,9 +158,119 @@ void ImpExpDxfRead::OnReadCircle(const double* s, const double* c, bool dir, boo
 }
 
 
-void ImpExpDxfRead::OnReadSpline(struct SplineData& /*sd*/)
+Handle(Geom_BSplineCurve) getSplineFromPolesAndKnots(struct SplineData& sd)
 {
-    // not yet implemented
+    std::size_t numPoles = sd.control_points;
+    if (sd.controlx.size() > numPoles || sd.controly.size() > numPoles ||
+        sd.controlz.size() > numPoles || sd.weight.size() > numPoles) {
+        return nullptr;
+    }
+
+    // handle the poles
+    TColgp_Array1OfPnt occpoles(1, sd.control_points);
+    int index = 1;
+    for (auto x : sd.controlx) {
+        occpoles(index++).SetX(x);
+    }
+
+    index = 1;
+    for (auto y : sd.controly) {
+        occpoles(index++).SetY(y);
+    }
+
+    index = 1;
+    for (auto z : sd.controlz) {
+        occpoles(index++).SetZ(z);
+    }
+
+    // handle knots and mults
+    std::set<double> unique;
+    unique.insert(sd.knot.begin(), sd.knot.end());
+
+    int numKnots = int(unique.size());
+    TColStd_Array1OfInteger occmults(1, numKnots);
+    TColStd_Array1OfReal occknots(1, numKnots);
+    index = 1;
+    for (auto k : unique) {
+        size_t m = std::count(sd.knot.begin(), sd.knot.end(), k);
+        occknots(index) = k;
+        occmults(index) = m;
+        index++;
+    }
+
+    // handle weights
+    TColStd_Array1OfReal occweights(1, sd.control_points);
+    if (sd.weight.size() == std::size_t(sd.control_points)) {
+        index = 1;
+        for (auto w : sd.weight) {
+            occweights(index++) = w;
+        }
+    }
+    else {
+        // non-rational
+        for (int i=occweights.Lower(); i<=occweights.Upper(); i++) {
+            occweights(i) = 1.0;
+        }
+    }
+
+    Standard_Boolean periodic = sd.flag == 2;
+    Handle(Geom_BSplineCurve) geom = new Geom_BSplineCurve(occpoles, occweights, occknots, occmults, sd.degree, periodic);
+    return geom;
+}
+
+Handle(Geom_BSplineCurve) getInterpolationSpline(struct SplineData& sd)
+{
+    std::size_t numPoints = sd.fit_points;
+    if (sd.fitx.size() > numPoints || sd.fity.size() > numPoints || sd.fitz.size() > numPoints) {
+        return nullptr;
+    }
+
+    // handle the poles
+    Handle(TColgp_HArray1OfPnt) fitpoints = new TColgp_HArray1OfPnt(1, sd.fit_points);
+    int index = 1;
+    for (auto x : sd.fitx) {
+        fitpoints->ChangeValue(index++).SetX(x);
+    }
+
+    index = 1;
+    for (auto y : sd.fity) {
+        fitpoints->ChangeValue(index++).SetY(y);
+    }
+
+    index = 1;
+    for (auto z : sd.fitz) {
+        fitpoints->ChangeValue(index++).SetZ(z);
+    }
+
+    Standard_Boolean periodic = sd.flag == 2;
+    GeomAPI_Interpolate interp(fitpoints, periodic, Precision::Confusion());
+    interp.Perform();
+    return interp.Curve();
+}
+
+void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
+{
+    // https://documentation.help/AutoCAD-DXF/WS1a9193826455f5ff18cb41610ec0a2e719-79e1.htm
+    // Flags:
+    // 1: Closed, 2: Periodic, 4: Rational, 8: Planar, 16: Linear
+
+    try {
+        Handle(Geom_BSplineCurve) geom;
+        if (sd.fit_points > 0)
+            geom = getInterpolationSpline(sd);
+        else
+            geom = getSplineFromPolesAndKnots(sd);
+
+        if (geom.IsNull())
+            throw Standard_Failure();
+
+        BRepBuilderAPI_MakeEdge makeEdge(geom);
+        TopoDS_Edge edge = makeEdge.Edge();
+        AddObject(new Part::TopoShape(edge));
+    }
+    catch (const Standard_Failure&) {
+        Base::Console().Warning("ImpExpDxf - failed to create bspline\n");
+    }
 }
 
 

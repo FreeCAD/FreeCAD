@@ -278,7 +278,7 @@ bool TaskDlgFeatureParameters::reject()
             param->detachSelection();
     }
 
-    // roll back the done things
+    // roll back the done things which may delete the feature
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     return true;

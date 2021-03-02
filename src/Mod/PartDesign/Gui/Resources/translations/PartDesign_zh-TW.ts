@@ -376,7 +376,7 @@
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create a new sketch</source>
-      <translation type="unfinished">Create a new sketch</translation>
+      <translation>建立一個新的sketch</translation>
     </message>
   </context>
   <context>
@@ -1188,7 +1188,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
       <source>Boolean: Accept: Input error</source>
-      <translation type="unfinished">Boolean: Accept: Input error</translation>
+      <translation>布林值: 接受: 輸出錯誤</translation>
     </message>
   </context>
   <context>
@@ -1868,7 +1868,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
       <source>Transformed</source>
-      <translation type="unfinished">Transformed</translation>
+      <translation>變換</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
@@ -2381,7 +2381,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation type="unfinished">Toggle active body</translation>
+      <translation>切換active的實體</translation>
     </message>
   </context>
   <context>
@@ -2740,7 +2740,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>基本特性</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="192"/>
@@ -2750,7 +2750,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="368"/>
       <source>Nothing to migrate</source>
-      <translation type="unfinished">Nothing to migrate</translation>
+      <translation>沒有內容要合併</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>

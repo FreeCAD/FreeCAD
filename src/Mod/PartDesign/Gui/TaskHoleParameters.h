@@ -47,7 +47,7 @@ namespace PartDesign {
 class Hole;
 }
 
-namespace PartDesignGui { 
+namespace PartDesignGui {
 
 
 
@@ -58,7 +58,7 @@ class TaskHoleParameters : public TaskSketchBasedParameters
 public:
     TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = 0);
     ~TaskHoleParameters();
-    
+
     void apply() override;
     void refresh() override;
 
@@ -81,6 +81,11 @@ public:
     bool   getDrillForDepth() const;
     bool   getTapered() const;
     Base::Quantity getTaperedAngle() const;
+    bool getUseCustomThreadClearance() const;
+    double getCustomThreadClearance() const;
+    bool getModelThread() const;
+    long getThreadDepthType() const;
+    double getThreadDepth() const;
 
 private Q_SLOTS:
     void threadedChanged();
@@ -88,11 +93,7 @@ private Q_SLOTS:
     void threadSizeChanged(int index);
     void threadClassChanged(int index);
     void threadFitChanged(int index);
-    void modelActualThreadChanged();
     void threadPitchChanged(double value);
-    void threadCutOffOuterChanged(double value);
-    void threadCutOffInnerChanged(double value);
-    void threadAngleChanged(double value);    
     void threadDiameterChanged(double value);
     void threadDirectionChanged();
     void holeCutTypeChanged(int index);
@@ -106,8 +107,14 @@ private Q_SLOTS:
     void drillPointAngledValueChanged(double value);
     void drillForDepthChanged();
     void taperedChanged();
+    void taperedAngleChanged(double value);
     void reversedChanged();
-    void taperedAngleChanged(double value);   
+    void modelThreadChanged();
+    void useCustomThreadClearanceChanged();
+    void customThreadClearanceChanged(double value);
+    void threadDepthTypeChanged(int index);
+    void threadDepthChanged(double value);
+
 private:
     class Observer : public App::DocumentObserver {
     public:

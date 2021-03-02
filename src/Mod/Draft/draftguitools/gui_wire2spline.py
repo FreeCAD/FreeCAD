@@ -44,7 +44,7 @@ import Draft
 import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -54,17 +54,15 @@ class WireToBSpline(gui_base_original.Modifier):
     """Gui Command for the Wire to BSpline tool."""
 
     def __init__(self):
+        super().__init__()
         self.running = False
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Wire to B-spline"
-        _tip = ("Converts a selected polyline to a B-spline, "
-                "or a B-spline to a polyline.")
 
         return {'Pixmap': 'Draft_WireToBSpline',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_WireToBSpline", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_WireToBSpline", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Wire to B-spline"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts a selected polyline to a B-spline, or a B-spline to a polyline.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -79,7 +77,7 @@ class WireToBSpline(gui_base_original.Modifier):
         selection = Gui.Selection.getSelection()
         if selection:
             if utils.getType(selection[0]) in ['Wire', 'BSpline']:
-                super(WireToBSpline, self).Activated(name=_tr("Convert polyline/B-spline"))
+                super(WireToBSpline, self).Activated(name=translate("draft","Convert polyline/B-spline"))
                 if self.doc:
                     self.obj = Gui.Selection.getSelection()
                     if self.obj:

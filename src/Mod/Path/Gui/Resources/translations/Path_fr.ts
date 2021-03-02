@@ -9,26 +9,6 @@
       <translation>Afficher les objets de construction de chemin temporaire lorsque le module est en mode DEBUG.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="124"/>
-      <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
-      <translation>De plus petites valeurs génèrent un maillage plus fin et plus précis. Les plus petites valeurs augmentent considérablement le temps de traitement.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="126"/>
-      <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
-      <translation>De plus petites valeurs génèrent un maillage plus fin et plus précis. Les plus petites valeurs n’augmentent pas sensiblement le temps de traitement.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="135"/>
-      <source>Stop index(angle) for rotational scan</source>
-      <translation>Index(angle) d’arrêt pour le balayage en rotation</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="131"/>
-      <source>Dropcutter lines are created parallel to this axis.</source>
-      <translation>Des lignes de découpe sont créées parallèlement à cet axe.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="73"/>
       <source>The direction along which dropcutter lines are created</source>
       <translation>La direction le long de laquelle les lignes de coupe sont créées</translation>
@@ -37,11 +17,6 @@
       <location filename="../../../PathScripts/PathSurface.py" line="74"/>
       <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
       <translation>L'opération doit-elle être limitée par le brut ou par la boîte englobante de l'objet de base</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
-      <source>Additional offset to the selected bounding box</source>
-      <translation>Décalage supplémentaire pour la boîte englobante selectionnée</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="76"/>
@@ -64,6 +39,16 @@
       <translation>Activer l'optimisation supprimant les points inutiles du G-Code</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="124"/>
+      <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
+      <translation>De plus petites valeurs génèrent un maillage plus fin et plus précis. Les plus petites valeurs augmentent considérablement le temps de traitement.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="126"/>
+      <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
+      <translation>De plus petites valeurs génèrent un maillage plus fin et plus précis. Les plus petites valeurs n’augmentent pas sensiblement le temps de traitement.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="129"/>
       <source>The completion mode for the operation: single or multi-pass</source>
       <translation>Mode d’achèvement de l’opération : simple ou multi-passes</translation>
@@ -74,14 +59,9 @@
       <translation>Direction que le parcours d’outils doit effectuer autour de la pièce : monter(sens des aiguille d’une montre) ou conventionnel(sens inverse des aiguille d’une montre)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="132"/>
-      <source>The model will be rotated around this axis.</source>
-      <translation>Le modèle sera pivoter autour de cet axe.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="133"/>
-      <source>Start index(angle) for rotational scan</source>
-      <translation>Index(angle) de départ pour le balayage en rotation</translation>
+      <location filename="../../../PathScripts/PathSurface.py" line="135"/>
+      <source>Stop index(angle) for rotational scan</source>
+      <translation>Index(angle) d’arrêt pour le balayage en rotation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="141"/>
@@ -97,6 +77,26 @@
       <location filename="../../../PathScripts/PathSurface.py" line="143"/>
       <source>Cut through waste to depth at model edge, releasing the model.</source>
       <translation>Couper au travers de la chute jusqu’à la profondeur en bordure du modèle, libérant le modèle.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="131"/>
+      <source>Dropcutter lines are created parallel to this axis.</source>
+      <translation>Des lignes de découpe sont créées parallèlement à cet axe.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>Décalage supplémentaire pour la boîte englobante selectionnée</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="132"/>
+      <source>The model will be rotated around this axis.</source>
+      <translation>Le modèle sera pivoter autour de cet axe.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="133"/>
+      <source>Start index(angle) for rotational scan</source>
+      <translation>Index(angle) de départ pour le balayage en rotation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="128"/>
@@ -419,6 +419,11 @@
       <translation>Calculer la longueur de l’extrémité et la soustraire de la profondeur finale</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathDrilling.py" line="69"/>
+      <source>Controls how tool retracts Default=G98</source>
+      <translation>Contrôle la façon dont l’outil se rétracte. Par défaut = G98</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
       <source>The height where feed starts and height during retract tool when path is finished</source>
       <translation>La hauteur de départ et la hauteur de retrait de l'outil quand son parcours est terminé</translation>
@@ -437,11 +442,6 @@
       <location filename="../../../PathScripts/PathDrilling.py" line="76"/>
       <source>How far the drill depth is extended</source>
       <translation>Distance d’extension de la profondeur de perçage</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="69"/>
-      <source>Controls how tool retracts Default=G98</source>
-      <translation>Contrôle la façon dont l’outil se rétracte. Par défaut = G98</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="71"/>
@@ -634,11 +634,6 @@
       <translation>Un matériau pour cet objet</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="104"/>
-      <source>Extend the profile clearing beyond the Extra Offset.</source>
-      <translation>Étendez le dégagement de profil au-delà du décalage supplémentaire.</translation>
-    </message>
-    <message>
       <location filename="PathProfileBase.py" line="62"/>
       <source>Controls how tool moves around corners. Default=Round</source>
       <translation>Contrôle la façon dont l’outil se déplace dans les coins. Par défaut = arrondi</translation>
@@ -682,6 +677,11 @@
       <location filename="PathPocket.py" line="55"/>
       <source>The library to use to generate the path</source>
       <translation>La bibliothèque à utiliser pour générer la trajectoire</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="104"/>
+      <source>Extend the profile clearing beyond the Extra Offset.</source>
+      <translation>Étendez le dégagement de profil au-delà du décalage supplémentaire.</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -917,14 +917,9 @@
       <translation>Ne peux trouver la tâche %s</translation>
     </message>
     <message>
-      <location filename="PathUtils.py" line="762"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
-      <translation>Angle d'arête de coupe invalide %.2f, doit être entre &lt;90Â° et &gt;=0Â°</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathUtils.py" line="541"/>
       <source>Illegal arc: Start and end radii not equal</source>
-      <translation type="unfinished">Illegal arc: Start and end radii not equal</translation>
+      <translation>Arc illégal : rayons de départ et de fin non égaux</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="708"/>
@@ -942,9 +937,14 @@
       <translation>Angle d'arrête tranchante (%.2f) cause une longueur négative de la pointe de l'outil</translation>
     </message>
     <message>
+      <location filename="PathUtils.py" line="762"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
+      <translation>Angle d'arête de coupe invalide %.2f, doit être entre &lt;90Â° et &gt;=0Â°</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="397"/>
       <source>Choose a writable location for your toolbits</source>
-      <translation type="unfinished">Choose a writable location for your toolbits</translation>
+      <translation>Choisissez un emplacement accessible en écriture pour vos outils de travail</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="232"/>
@@ -1037,14 +1037,19 @@
       <translation>Sélectionner le point de départ</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
+      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
+      <translation>Envisagez de basculer la propriété InverseAngle et de recalculer l'opération.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
       <source>Verify final depth of pocket shaped by vertical faces.</source>
       <translation>Vérifiez la profondeur finale de la poche formée de faces verticales.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
-      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
-      <translation>Envisagez de basculer la propriété InverseAngle et de recalculer l'opération.</translation>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
+      <source>Depth Warning</source>
+      <translation>Avertissement de Profondeur</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
@@ -1085,14 +1090,9 @@
       <translation>Traitement individuel des subs...</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
-      <source>Depth Warning</source>
-      <translation>Avertissement de Profondeur</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="835"/>
       <source>Selected faces form loop. Processing looped faces.</source>
-      <translation type="unfinished">Selected faces form loop. Processing looped faces.</translation>
+      <translation>Les faces sélectionnées forment une boucle. Traitement des faces.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
@@ -1142,7 +1142,7 @@
     <message>
       <location filename="../../../PathScripts/PathToolBitGui.py" line="203"/>
       <source>Invalid Filename</source>
-      <translation type="unfinished">Invalid Filename</translation>
+      <translation>Nom de fichier incorrect</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAreaOp.py" line="934"/>
@@ -1188,8 +1188,8 @@
       <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
       <source>Start depth &lt;= face depth.
 Increased to stock top.</source>
-      <translation type="unfinished">Start depth &lt;= face depth.
-Increased to stock top.</translation>
+      <translation>Début de la profondeur &lt;= profondeur de la face.
+Augmenté au dessus du stock.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
@@ -1254,7 +1254,12 @@ Increased to stock top.</translation>
     <message>
       <location filename="../../../InitGui.py" line="152"/>
       <source>Specialty Operations</source>
-      <translation type="unfinished">Specialty Operations</translation>
+      <translation>Opérations spécialisées</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="158"/>
+      <source>Utils</source>
+      <translation>Utilitaires</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -1323,14 +1328,14 @@ Increased to stock top.</translation>
       <location filename="../../../PathScripts/PathDeburr.py" line="73"/>
       <source>The selected tool has no FlatRadius and no TipDiameter property. Assuming {}
 </source>
-      <translation type="unfinished">The selected tool has no FlatRadius and no TipDiameter property. Assuming {}
+      <translation>L'outil sélectionné n'a pas de propriété FlatRadius et TipDiameter. En supposant {}
 </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDeburr.py" line="79"/>
       <source>The selected tool has no CuttingEdgeAngle property. Assuming Endmill
 </source>
-      <translation type="unfinished">The selected tool has no CuttingEdgeAngle property. Assuming Endmill
+      <translation>L'outil sélectionné n'a pas de propriété CuttingEdgeAngle . En supposant la fin de l'outil
 </translation>
     </message>
     <message>
@@ -1516,6 +1521,11 @@ Increased to stock top.</translation>
       <translation>Direction des coupes circulaires, Sens des aiguilles d’une montre (CW), ou Sens inverse des aiguille d’une montre (CCW)</translation>
     </message>
     <message>
+      <location filename="PathHelix.py" line="52"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>La direction des découpes circulaires, dans le sens horaire (CW), ou anti horaire (CCW)</translation>
+    </message>
+    <message>
       <location filename="PathHelix.py" line="55"/>
       <source>Start cutting from the inside or outside</source>
       <translation>Commencer l'usinage de l’intérieur ou l’extérieur</translation>
@@ -1539,11 +1549,6 @@ Increased to stock top.</translation>
       <location filename="PathHelixGui.py" line="83"/>
       <source>Creates a Path Helix object from a features of a base object</source>
       <translation>Crée un objet percours Helix à partir d'une fonction de l'objet de base</translation>
-    </message>
-    <message>
-      <location filename="PathHelix.py" line="52"/>
-      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
-      <translation>La direction des découpes circulaires, dans le sens horaire (CW), ou anti horaire (CCW)</translation>
     </message>
   </context>
   <context>
@@ -1589,6 +1594,11 @@ Increased to stock top.</translation>
       <translation>Arguments pour le post-processeur (spécifique au script)</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathJob.py" line="105"/>
+      <source>Collection of tool controllers available for this job.</source>
+      <translation>Collection des contrôleurs outil disponibles pour cette tâche.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathJob.py" line="108"/>
       <source>Last Time the Job was post-processed</source>
       <translation>La dernière fois que la tâche a été post-traitée</translation>
@@ -1614,11 +1624,6 @@ Increased to stock top.</translation>
       <translation>Parcours combiné de toutes les opérations dans l’ordre où elles sont traitées.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="105"/>
-      <source>Collection of tool controllers available for this job.</source>
-      <translation>Collection des contrôleurs outil disponibles pour cette tâche.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathJob.py" line="110"/>
       <source>Split output into multiple gcode files</source>
       <translation>Diviser la sortie en plusieurs fichiers gcode</translation>
@@ -1642,6 +1647,11 @@ Increased to stock top.</translation>
       <location filename="../../../PathScripts/PathJob.py" line="166"/>
       <source>The base objects for all operations</source>
       <translation>L’objet de base pour toutes les opérations</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="200"/>
+      <source>Collection of all tool controllers for the job</source>
+      <translation>Liste de tous les contrôleurs d'outils pour la tâche</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="244"/>
@@ -1895,16 +1905,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation>Profondeur finale définie sous ZMin de face(s) sélectionnée(s).</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Pocket Shape</source>
-      <translation>Forme de poche</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
-      <source>Creates a Path Pocket object from a face or faces</source>
-      <translation>Crée un objet poche à partir d'arêtes ou d'une surface</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
       <source>Normal</source>
       <translation>Normal</translation>
@@ -1918,6 +1918,16 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="146"/>
       <source>Y</source>
       <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Pocket Shape</source>
+      <translation>Forme de poche</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
+      <source>Creates a Path Pocket object from a face or faces</source>
+      <translation>Crée un objet poche à partir d'arêtes ou d'une surface</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
@@ -2207,6 +2217,34 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     </message>
   </context>
   <context>
+    <name>PathPropertyBag</name>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBagGui.py" line="230"/>
+      <source>Edit PropertyBag</source>
+      <translation>Editer les attributs de l'outil</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBagGui.py" line="387"/>
+      <source>Create PropertyBag</source>
+      <translation>Créer les attributs de l'outil</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBagGui.py" line="401"/>
+      <source>Property Bag</source>
+      <translation>Attributs de l'outil</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBagGui.py" line="402"/>
+      <source>Creates an object which can be used to store reference properties.</source>
+      <translation>Crée un objet qui peut être utilisé pour enregistrer les propriétés de référence.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBag.py" line="61"/>
+      <source>List of custom property groups</source>
+      <translation>Liste de groupes de propriétés personnalisés</translation>
+    </message>
+  </context>
+  <context>
     <name>PathSetupSheet</name>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="97"/>
@@ -2292,6 +2330,11 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation>La valeur de décalage actuelle n'est pas possible.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="493"/>
+      <source>Current Extend Radius value produces negative arc radius.</source>
+      <translation>La valeur du rayon d'extension actuel produit un rayon d'arc négatif.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSlot.py" line="520"/>
       <source>No path extensions available for full circles.</source>
       <translation>Aucune extension de parcours disponible pour les cercles complets.</translation>
@@ -2304,7 +2347,7 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="905"/>
       <source>Verify slot path start and end points.</source>
-      <translation type="unfinished">Verify slot path start and end points.</translation>
+      <translation>Vérifier les points de début et de fin de la rainure.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="720"/>
@@ -2337,6 +2380,11 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation>L'outil actuel est plus grand que le diamètre de l'arc.</translation>
     </message>
     <message>
+      <location filename="PathSlot.py" line="1005"/>
+      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
+      <translation>Échec, Rainure sur arête n'accepte que les lignes, les arcs et les cercles.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSlot.py" line="994"/>
       <source>Failed to determine point 1 from</source>
       <translation>Impossible de déterminer le point 1 à partir de</translation>
@@ -2355,6 +2403,11 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathSlot.py" line="1128"/>
       <source>The selected face is not oriented vertically:</source>
       <translation>La face sélectionnée n'est pas orientée verticalement :</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1688"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation>La valeur du décalage actuel produit un rayon d'arc négatif.</translation>
     </message>
   </context>
   <context>
@@ -2714,67 +2767,67 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     <message>
       <location filename="../../../PathScripts/PathThreadMillingGui.py" line="203"/>
       <source>Thread Milling</source>
-      <translation type="unfinished">Thread Milling</translation>
+      <translation>Usinage d'un filet</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMillingGui.py" line="203"/>
       <source>Creates a Path Thread Milling operation from features of a base object</source>
-      <translation type="unfinished">Creates a Path Thread Milling operation from features of a base object</translation>
+      <translation>Crée une opération de trajectoire de filetage à partir des fonctions d'un objet de base</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="182"/>
       <source>Set thread orientation</source>
-      <translation type="unfinished">Set thread orientation</translation>
+      <translation>Positionne l'orientation du filetage</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="184"/>
       <source>Currently only internal</source>
-      <translation type="unfinished">Currently only internal</translation>
+      <translation>Actuellement, seulement interne</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="186"/>
       <source>Devfines which standard thread was chosen</source>
-      <translation type="unfinished">Devfines which standard thread was chosen</translation>
+      <translation>Définit quel filetage standard a été choisi</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="187"/>
       <source>Set thread's major diameter</source>
-      <translation type="unfinished">Set thread's major diameter</translation>
+      <translation>Définir le diamètre principal du filetage</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="188"/>
       <source>Set thread's minor diameter</source>
-      <translation type="unfinished">Set thread's minor diameter</translation>
+      <translation>Définir le diamètre mineur du filetage</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="189"/>
       <source>Set thread's pitch - used for metric threads</source>
-      <translation type="unfinished">Set thread's pitch - used for metric threads</translation>
+      <translation>Définir le pas du filetage - utilisé pour les filetage métriques</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="190"/>
       <source>Set thread's tpi - used for imperial threads</source>
-      <translation type="unfinished">Set thread's tpi - used for imperial threads</translation>
+      <translation>Définir le pas du filetage - utilisé pour les filetage impériaux</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="192"/>
       <source>Set how many passes are used to cut the thread</source>
-      <translation type="unfinished">Set how many passes are used to cut the thread</translation>
+      <translation>Définir combien de tours sont utilisées pour couper le filetage</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="193"/>
       <source>Direction of thread cutting operation</source>
-      <translation type="unfinished">Direction of thread cutting operation</translation>
+      <translation>Direction de l'opération de l'usinage du filetage</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="194"/>
       <source>Set to True to get lead in and lead out arcs at the start and end of the thread cut</source>
-      <translation type="unfinished">Set to True to get lead in and lead out arcs at the start and end of the thread cut</translation>
+      <translation>Positionner à vrai pour faire dépasser des arcs au début et à la fin du filetage</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathThreadMilling.py" line="195"/>
       <source>Operation to clear the inside of the thread</source>
-      <translation type="unfinished">Operation to clear the inside of the thread</translation>
+      <translation>Opération pour effacer l'intérieur du filetage</translation>
     </message>
   </context>
   <context>
@@ -2798,6 +2851,16 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathToolBit.py" line="154"/>
       <source>The name of the shape file</source>
       <translation>Le nom du fichier de forme</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBit.py" line="175"/>
+      <source>List of all properties inherited from the bit</source>
+      <translation>Liste de toutes les propriétés héritées de l'outil</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBit.py" line="327"/>
+      <source>Did not find a PropertyBag in {} - not a ToolBit shape?</source>
+      <translation>N'a pas trouvé de PropertyBag dans {} - pas une forme d'outil ?</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="352"/>
@@ -2827,12 +2890,12 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="404"/>
       <source>Whether Spindle Power should be allowed</source>
-      <translation type="unfinished">Whether Spindle Power should be allowed</translation>
+      <translation>Si la puissance de la broche doit être autorisée</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitGui.py" line="120"/>
       <source>Toolbit cannot be edited: Shapefile not found</source>
-      <translation type="unfinished">Toolbit cannot be edited: Shapefile not found</translation>
+      <translation>L'outil ne peut pas être édité : fichier de définition introuvable</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitGui.py" line="128"/>
@@ -2890,12 +2953,12 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="39"/>
       <source>ToolBit Dock</source>
-      <translation type="unfinished">ToolBit Dock</translation>
+      <translation>Magasin d'outils</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="40"/>
       <source>Toggle the Toolbit Dock</source>
-      <translation type="unfinished">Toggle the Toolbit Dock</translation>
+      <translation>Changer de magasin d'outils</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="40"/>
@@ -2915,7 +2978,7 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="69"/>
       <source>ToolBit Library editor</source>
-      <translation type="unfinished">ToolBit Library editor</translation>
+      <translation>Éditeur de bibliothèque ToolBit</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="41"/>
@@ -3057,12 +3120,23 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="224"/>
       <source>Cutoff for removing colinear segments (degrees).                         default=10.0.</source>
-      <translation type="unfinished">Cutoff for removing colinear segments (degrees).                         default=10.0.</translation>
+      <translation>Limite pour supprimer les segments colinéaires (degrés). Par défaut=10.0.</translation>
+    </message>
+    <message>
+      <location filename="PathVcarve.py" line="222"/>
+      <source>Cutoff for removing colinear segments (degrees). 
+                        default=10.0.</source>
+      <translation>Seuil de suppression des segments colinéaires (degrés). Par défaut=10.0.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="322"/>
       <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
       <translation>L'objet de base du travail n'a pas d'élément gravable. L'opération de gravure ne produira aucune sortie.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="340"/>
+      <source>Error processing Base object. Engraving operation will produce no output.</source>
+      <translation>Erreur lors du traitement de l'objet de base. L'opération de gravure ne produira aucune sortie.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
@@ -3417,6 +3491,11 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation>Le mode de point de décalage de rayon ou de centre</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="475"/>
+      <source>Edit LeadInOut Dress-up</source>
+      <translation>Editer la trajectoire additionnelle du point d'entrée-sortie</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="338"/>
       <source>LeadInOut Dressup</source>
       <translation>Trajectoire additionnelle LeadInOut</translation>
@@ -3732,13 +3811,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation>Crée un object saut</translation>
     </message>
     <message>
-      <location filename="PathHop.py" line="119"/>
-      <source>The selected object is not a path
-</source>
-      <translation>L'objet sélectionné n'est pas un parcours
-</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
       <source>Please select one path object</source>
       <translation>Veuillez sélectionner une objet parcours</translation>
@@ -3752,6 +3824,13 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="PathHop.py" line="122"/>
       <source>Create Hop</source>
       <translation>Crée un saut</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="119"/>
+      <source>The selected object is not a path
+</source>
+      <translation>L'objet sélectionné n'est pas un parcours
+</translation>
     </message>
   </context>
   <context>
@@ -4003,9 +4082,39 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
   <context>
     <name>Path_Sanity</name>
     <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation>La tâche n'a pas d'objet de Base sélectionné.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSanity.py" line="71"/>
       <source>Check the path job for common errors</source>
       <translation>Vérifier le travail path pour les erreurs courantes</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="76"/>
+      <source>A Postprocessor has not been selected.</source>
+      <translation>Aucun Post-traitement n’a été sélectionné.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="80"/>
+      <source>No output file is named. You'll be prompted during postprocessing.</source>
+      <translation>Le fichier de sortie n’est pas nommé. Il vous sera demandé lors du post-traitement.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="136"/>
+      <source>No active operations was found. Post processing will not result in any tooling.</source>
+      <translation>Aucune opération active n'a été trouvée. Le post-traitement n'entraînera aucun outillage.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="140"/>
+      <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
+      <translation>Aucun outil contrôleur trouvé. Des valeurs par défaut sont utilisées, ce qui est dangereux. Veuillez ajouter un outil contrôleur.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="144"/>
+      <source>No issues detected, {} has passed basic sanity check.</source>
+      <translation>Aucun problème détecté, {} a passé une vérification basique.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="189"/>
@@ -4056,36 +4165,6 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <location filename="../../../PathScripts/PathSanity.py" line="223"/>
       <source>Minimum Z Height</source>
       <translation>Hauteur minimale de Z</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation>La tâche n'a pas d'objet de Base sélectionné.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="76"/>
-      <source>A Postprocessor has not been selected.</source>
-      <translation>Aucun Post-traitement n’a été sélectionné.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="80"/>
-      <source>No output file is named. You'll be prompted during postprocessing.</source>
-      <translation>Le fichier de sortie n’est pas nommé. Il vous sera demandé lors du post-traitement.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="136"/>
-      <source>No active operations was found. Post processing will not result in any tooling.</source>
-      <translation>Aucune opération active n'a été trouvée. Le post-traitement n'entraînera aucun outillage.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="140"/>
-      <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
-      <translation>Aucun outil contrôleur trouvé. Des valeurs par défaut sont utilisées, ce qui est dangereux. Veuillez ajouter un outil contrôleur.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="144"/>
-      <source>No issues detected, {} has passed basic sanity check.</source>
-      <translation>Aucun problème détecté, {} a passé une vérification basique.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="224"/>
@@ -4319,16 +4398,16 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation>Crée une copie non paramétrique d'un autre parcours</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
-      <source>Please select exactly one path object</source>
-      <translation>Veuillez sélectionner exactement un objet trajectoire</translation>
-    </message>
-    <message>
       <location filename="PathSimpleCopy.py" line="59"/>
       <source>Please select exactly one path object
 </source>
       <translation>Veuillez sélectionner seulement un parcours
 </translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
+      <source>Please select exactly one path object</source>
+      <translation>Veuillez sélectionner exactement un objet trajectoire</translation>
     </message>
   </context>
   <context>
@@ -4460,14 +4539,19 @@ S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner un
       <translation>Crée une ligne médiane de gravure</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
-      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
-      <translation>VCarve nécessite un outil de gravure avec angle de coupe</translation>
+      <location filename="../../../PathScripts/PathVcarve.py" line="309"/>
+      <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
+      <translation>Gravure en V nécessite une fraise à graver avec CuttingEdgeAngle</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
       <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
       <translation>L'angle de coupe du graveur doit être &lt;180 degrés.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
+      <translation>VCarve nécessite un outil de gravure avec angle de coupe</translation>
     </message>
   </context>
   <context>

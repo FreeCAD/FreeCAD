@@ -181,8 +181,8 @@
       <location filename="../../Command.cpp" line="338"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Aktywnym widokiem nie jest perspektywa co powoduje, że obraz POV-Ray może wyglądać inaczej niż oczekiwano.
+Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -215,8 +215,8 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="773"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Aktywnym widokiem nie jest perspektywa co powoduje, że obraz luxrender może wyglądać inaczej niż oczekiwano.
+Czy chcesz kontynuować?</translation>
     </message>
   </context>
   <context>
@@ -362,7 +362,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="52"/>
       <source>Max mesh deviation:</source>
-      <translation>Odchylenie maksymalne siatki:</translation>
+      <translation>Maksymalne odchylenie siatki:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="80"/>
@@ -472,7 +472,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Ścieżka do pliku wykonywalnego POV-Ray, jeśli chcesz wyrenderować %1</translation>
     </message>
   </context>
   <context>

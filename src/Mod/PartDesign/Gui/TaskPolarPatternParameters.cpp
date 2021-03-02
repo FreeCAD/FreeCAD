@@ -119,7 +119,6 @@ void TaskPolarPatternParameters::setupUI()
 
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     ui->polarAngle->bind(pcPolarPattern->Angle);
-    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcPolarPattern->Occurrences);
 
     ui->comboAxis->setEnabled(true);
@@ -242,7 +241,7 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(true, false);
+            addReferenceSelectionGate(true, false, false, false, true);
         } else {
             exitSelectionMode();
             pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());

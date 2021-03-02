@@ -34,7 +34,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCADGui as Gui
 import draftguitools.gui_base_original as gui_base_original
 
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 
 class ApplyStyle(gui_base_original.Modifier):
@@ -42,21 +42,17 @@ class ApplyStyle(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Apply current style"
-        _tip = ("Applies the current style defined in the toolbar "
-                "(line width and colors) "
-                "to the selected objects and groups.")
 
         return {'Pixmap': 'Draft_Apply',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_ApplyStyle", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_ApplyStyle", _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Apply current style"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_ApplyStyle", "Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.")}
 
     def Activated(self):
         """Execute when the command is called.
 
         Activate the specific BSpline tracker.
         """
-        super(ApplyStyle, self).Activated(name=_tr("Apply style"))
+        super(ApplyStyle, self).Activated(name=translate("draft","Apply style"))
         if self.ui:
             self.sel = Gui.Selection.getSelection()
             if len(self.sel) > 0:

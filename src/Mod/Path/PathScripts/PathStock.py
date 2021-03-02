@@ -23,7 +23,6 @@
 '''Used to create material stock around a machined part - for visualization'''
 
 import FreeCAD
-import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import math
 
@@ -227,7 +226,8 @@ def SetupStockObject(obj, stockType):
         obj.StockType = stockType
         obj.setEditorMode('StockType', 2) # hide
 
-        PathIconViewProvider.ViewProvider(obj.ViewObject, 'Stock')
+        import PathScripts.PathIconViewProvider
+        PathScripts.PathIconViewProvider.ViewProvider(obj.ViewObject, 'Stock')
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = 'Wireframe'
 

@@ -184,7 +184,7 @@ def getDXFlibs():
         import dxfColorMap
         try:
             import dxfReader
-        except:
+        except Exception:
             libsok = False
     except ImportError:
         libsok = False
@@ -2045,10 +2045,10 @@ def addText(text, attrib=False):
         # better store as utf8 always.
         # try:
         #    val = val.decode("utf8").encode("Latin1")
-        # except:
+        # except Exception:
         #    try:
         #        val = val.encode("latin1")
-        #    except:
+        #    except Exception:
         #        pass
         newob = Draft.makeText(val.split("\n"))
         if hasattr(lay, "addObject"):
@@ -3537,7 +3537,7 @@ def getStr(l):
             # dxf R12 files are rather over-sensitive with utf8...
             try:
                 import unicodedata
-            except:
+            except Exception:
                 # fallback
                 return l.encode("ascii", errors="replace")
             else:

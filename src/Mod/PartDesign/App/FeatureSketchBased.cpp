@@ -46,6 +46,7 @@
 # include <TopExp_Explorer.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Pln.hxx>
+# include <gp_Circ.hxx>
 # include <ShapeFix_Face.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <ShapeAnalysis.hxx>
@@ -520,8 +521,7 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
                               const TopoShape& supportface,
                               const TopoShape& sketchshape,
                               const std::string& method,
-                              const gp_Dir& dir,
-                              const double offset)
+                              const gp_Dir& dir)
 {
     if ((method == "UpToLast") || (method == "UpToFirst")) {
         // Check for valid support object
@@ -612,19 +612,43 @@ void ProfileBased::getUpToFace(TopoShape& upToFace,
     BRepExtrema_DistShapeShape distSS(sketchshape.getShape(), face);
     if (distSS.Value() < Precision::Confusion())
         throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+}
 
+void ProfileBased::addOffsetToFace(TopoShape& upToFace, const gp_Dir& dir, double offset)
+{
     // Move the face in the extrusion direction
     // TODO: For non-planar faces, we could consider offsetting the surface
     if (fabs(offset) > Precision::Confusion()) {
+        BRepAdaptor_Surface adapt2(TopoDS::Face(upToFace.getShape()));
         if (adapt2.GetType() == GeomAbs_Plane) {
             gp_Trsf mov;
             mov.SetTranslation(offset * gp_Vec(dir));
             TopLoc_Location loc(mov);
             upToFace.move(loc);
+
+            // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
+            // then the algorithm expects that the 'NaturalRestriction' flag is set in order
+            // to work as expected (see generatePrism())
+            BRep_Builder builder;
+            builder.NaturalRestriction(TopoDS::Face(upToFace.getShape()), Standard_True);
         } else {
             throw Base::TypeError("SketchBased: Up to Face: Offset not supported yet for non-planar faces");
         }
     }
+}
+
+double ProfileBased::getThroughAllLength() const
+{
+    auto profileshape = getVerifiedFace();
+    auto base = getBaseShape();
+    Bnd_Box box;
+    BRepBndLib::Add(base.getShape(), box);
+    BRepBndLib::Add(profileshape.getShape(), box);
+    box.SetGap(0.0);
+    // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
+    // co-planar issues, gives a length that is guaranteed to go through all.
+    // The result is multiplied by 2 for the guarantee to work also for the midplane option.
+    return 2.02 * sqrt(box.SquareExtent());
 }
 
 void ProfileBased::generatePrism(TopoShape& prism,
@@ -641,9 +665,7 @@ void ProfileBased::generatePrism(TopoShape& prism,
         double Ltotal = L;
         double Loffset = 0.;
         if (method == "ThroughAll")
-            // "ThroughAll" is modelled as a very long, but finite prism to avoid problems with pockets
-            // Note: 1E6 created problems once...
-            Ltotal = 1E4;
+            Ltotal = getThroughAllLength();
 
 
         if (method == "TwoLengths") {
@@ -685,7 +707,7 @@ void ProfileBased::generatePrism(TopoShape& prism,
                                  const TopoShape& supportface,
                                  const TopoShape& uptoface,
                                  const gp_Dir& direction,
-                                 Standard_Integer Mode,
+                                 PrismMode Mode,
                                  Standard_Boolean Modify)
 {
     if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
@@ -1187,12 +1209,18 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
             if (refEdge.IsNull())
                 throw Base::ValueError("Failed to extract rotation edge");
             BRepAdaptor_Curve adapt(refEdge);
-            if (adapt.GetType() != GeomAbs_Line)
-                throw Base::TypeError("Rotation edge must be a straight line");
-
-            gp_Pnt b = adapt.Line().Location();
+            gp_Pnt b;
+            gp_Dir d;
+            if (adapt.GetType() == GeomAbs_Line) {
+                b = adapt.Line().Location();
+                d = adapt.Line().Direction();
+            } else if (adapt.GetType() == GeomAbs_Circle) {
+                b = adapt.Circle().Location();
+                d = adapt.Circle().Axis().Direction();
+            } else {
+                throw Base::TypeError("Rotation edge must be a straight line, circle or arc of circle");
+            }
             base = Base::Vector3d(b.X(), b.Y(), b.Z());
-            gp_Dir d = adapt.Line().Direction();
             dir = Base::Vector3d(d.X(), d.Y(), d.Z());
             // Check that axis is co-planar with sketch plane!
             // Check that axis is perpendicular with sketch plane!

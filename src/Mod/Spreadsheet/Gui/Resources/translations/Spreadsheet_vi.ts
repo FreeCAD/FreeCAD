@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>Nội dung căn chỉnh chính giữa của các ô đã chọn</translation>
     </message>
   </context>
   <context>
@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Ô canh lề trái</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Ô trung tâm</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Ô canh lề phải</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Ô canh lề phía trên</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Ô canh lề phía dưới</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Ô trung tâm chiều dọc</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Tô đậm văn bản</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Chuyển sang chữ in nghiêng</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Gạch chân chữ</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Tạo bảng tính</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Đặt thuộc tính ô</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Hiệu chỉnh ô</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Tẩy ô</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Đặt màu nổi</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Đặt màu chìm</translation>
     </message>
   </context>
   <context>
@@ -440,22 +440,20 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Bảng tính không hỗ trợ khoảng chọn khi dán. Xin chỉ chọn một ô.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Copy &amp; dán thất bại</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Tên đại diện chứa các ký tự không hợp lệ!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Liên hệ tới ô bằng tên đại diện, ví dụ: Bảng_tính.tên_đại_diện thay vì Bảng_tính.B1</translation>
     </message>
   </context>
   <context>
@@ -541,17 +539,16 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Nội dung:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Tên đại diện:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Liên hệ tới ô bằng tên đại diện, ví dụ: Bảng_tính.tên_đại_diện thay vì Bảng_tính.B1</translation>
     </message>
   </context>
   <context>

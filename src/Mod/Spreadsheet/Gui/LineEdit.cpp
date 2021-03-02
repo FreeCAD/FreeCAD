@@ -32,7 +32,7 @@
 using namespace SpreadsheetGui;
 
 LineEdit::LineEdit(QWidget *parent)
-    : Gui::ExpressionLineEdit(parent)
+    : Gui::ExpressionLineEdit(parent, false, '=')
     , current()
     , deltaCol(0)
     , deltaRow(0)

@@ -753,7 +753,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
         for(auto &info : infos) {
             if(!info.vpd || !objSet.insert(std::make_pair(info.vpd, info.subname)).second)
                 continue;
+
             SelectionSingleton::SelObj sel;
+            sel.pResolvedObject = nullptr;
             sel.pObject = info.vpd->getObject();
             sel.pDoc = sel.pObject->getDocument();
             sel.DocName = sel.pDoc->getName();

@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Zelle links ausrichten</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Zelle zentrieren</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Zelle rechts ausrichten</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Zelle oben ausrichten</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Zelle unten ausrichten</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Zellen Vertikal zentrieren</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Text in Fettdruck</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Text in Kursivdruck</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Text unterstreichen</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Kalkulationstabelle erstellen</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Zelleneigenschaften festlegen</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Zelle bearbeiten</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Zell(en) löschen</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Vordergrundfarbe wählen</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Hintergrundfarbe wählen</translation>
     </message>
   </context>
   <context>
@@ -423,7 +423,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Vordergrundfarbe der Tabellen Zelle(n) einstellen</translation>
+      <translation>Vordergrundfarbe der Tabellen-Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
@@ -431,7 +431,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Hintergrundfarbe der Tabellen Zelle(n) einstellen</translation>
+      <translation>Hintergrundfarbe der Tabellen-Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Spreadsheet</source>
@@ -440,7 +440,7 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation>Tabellenblatt unterstützt beim Einfügen keine Bereichsauswahl.
+      <translation>Kalkulationstabelle unterstützt beim Einfügen keine Bereichsauswahl.
 Bitte nur eine Zelle auswählen.</translation>
     </message>
     <message>

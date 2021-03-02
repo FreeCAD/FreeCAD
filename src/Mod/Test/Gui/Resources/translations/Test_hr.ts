@@ -11,7 +11,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="31"/>
       <source>Failures and errors</source>
-      <translation>Kvarovi i pogreške</translation>
+      <translation>Kvarovi i greške</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="47"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="82"/>
       <source>&amp;Start</source>
-      <translation>&amp;Kreni</translation>
+      <translation>&amp;Početak</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="85"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="161"/>
       <source>Idle</source>
-      <translation>Besposlen</translation>
+      <translation>Mirovanje</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="168"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="197"/>
       <source>Remaining:</source>
-      <translation>Preostali:</translation>
+      <translation>Preostalo:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="214"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="248"/>
       <source>Run:</source>
-      <translation>Pokretanje:</translation>
+      <translation>Pokreni:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="258"/>
@@ -113,14 +113,14 @@ Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
       <translation>Unesite naziv od opozivog objekta koji kad se pozove, vratiti će TestCase.
-Kliknite 'start' i tako pokrenite test.
+Pritisnite 'start' i tako pokrenite test.
 
-Duplo kliknite na pogreške u prikazu stabla za više informacija o tome, uključujući i stog praćenje.</translation>
+Dvostruk pritisnite na pogrešku u prikazu stabla za više informacija o njoj, uključujući i stablo poziva.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>O FreeCAD UnitTest</translation>
+      <translation>O FreeCAD UnitTest-u</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="176"/>

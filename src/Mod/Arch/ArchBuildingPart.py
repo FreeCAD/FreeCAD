@@ -711,7 +711,7 @@ class ViewProviderBuildingPart:
                         u = q.getUserPreferred()[2]
                     try:
                         q = q.getValueAs(u)
-                    except:
+                    except Exception:
                         q = q.getValueAs(q.getUserPreferred()[2])
                     d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
                     fmt = "{0:."+ str(d) + "f}"

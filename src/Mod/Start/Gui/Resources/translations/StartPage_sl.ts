@@ -208,6 +208,11 @@
       <source>Notes</source>
       <translation>Opombe</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Open start page preferences</source>
+      <translation>Odpri prednastavitve začetne strani</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>

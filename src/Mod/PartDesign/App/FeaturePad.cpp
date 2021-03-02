@@ -249,8 +249,8 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.move(invObjLoc);
             }
-            getUpToFace(upToFace, base, supportface, 
-                    sketchshape, method, dir, Offset.getValue());
+            getUpToFace(upToFace, base, supportface, sketchshape, method, dir);
+            addOffsetToFace(upToFace, dir, Offset.getValue());
 
             // TODO: Write our own PrismMaker which does not depend on a solid base shape
             if (base.isNull()) {
@@ -328,8 +328,8 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
                 prism.makEShape(PrismMaker,{base,sketchshape});
 #else
-                Standard_Integer fuse = fabs(Offset.getValue()) > Precision::Confusion() ? 1 : 2;
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, fuse, Standard_True);
+                PrismMode mode = PrismMode::None;
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
 #endif
                 base = TopoShape();
             } else {
@@ -355,9 +355,8 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
                     return new App::DocumentObjectExecReturn("Pad: Resulting shape is empty");
                 prism.makEShape(PrismMaker,{base,sketchshape});
 #else
-
-                Standard_Integer fuse = fabs(Offset.getValue()) > Precision::Confusion() ? 1 : 2;
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, fuse, Standard_True);
+                PrismMode mode = PrismMode::None;
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
 #endif
             }
         } else {

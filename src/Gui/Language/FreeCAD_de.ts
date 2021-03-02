@@ -136,7 +136,7 @@
     </message>
     <message>
       <source>Paste expressions</source>
-      <translation type="unfinished">Paste expressions</translation>
+      <translation>Ausdrücke einfügen</translation>
     </message>
     <message>
       <source>Make link group</source>
@@ -160,19 +160,19 @@
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>Messung einfügen</translation>
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>Textdokument einfügen</translation>
     </message>
     <message>
       <source>Add a part</source>
-      <translation type="unfinished">Add a part</translation>
+      <translation>Ein Teil hinzufügen</translation>
     </message>
     <message>
       <source>Add a group</source>
-      <translation type="unfinished">Add a group</translation>
+      <translation>Gruppe hinzufügen</translation>
     </message>
     <message>
       <source>Align</source>
@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Transformation verknüpfen</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -1478,8 +1478,8 @@ Siehe FreeCAD Wiki für Details über das Bild.</translation>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation>Wählen Sie Ihre Präferenz für die Größe der Symbolleiste aus. Sie können
-entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen</translation>
+      <translation>Legt die Größe der Schaltflächen innerhalb der Symbolleisten fest. Sie können diese
+entsprechend Ihrer Bildschirmgröße oder Ihrem persönlichen Geschmack anpassen.</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
@@ -1546,7 +1546,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation>BaumAnsicht und EigenschaftsAnsicht</translation>
+      <translation>Baumansicht und Eigenschaftsansicht</translation>
     </message>
     <message>
       <source>Both</source>
@@ -2609,13 +2609,13 @@ Größere Werte erleichtern das Selektieren von Dingen, können aber die Auswahl
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+      <translation>Diese Option ist nützlich für die Fehlerbehebung von Grafikkarten- und Treiberproblemen.
 
-Changing this option requires a restart of the application.</translation>
+Das Ändern dieser Option erfordert einen Neustart der Anwendung.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
+      <translation>Software OpenGL verwenden</translation>
     </message>
   </context>
   <context>
@@ -3237,6 +3237,29 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation>Nicht geladene Arbeitsbereiche</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Laden Sie die ausgewählten Arbeitsbereich und fügen Sie ihre Einstellungs-Fenster dem Einstellungs-Dialog hinzu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Lädt die Auswahl</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deaktivierte Arbeitsbereiche&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Um Ressourcen zu schonen, lädt FreeCAD keine Arbeitsbereiche solange sie nicht verwendet werden. Wenn sie geladen werden, haben Sie Zugriff auf die zusätzlichen Einstellungen.&lt;/p&gt;&lt;p&gt;Die folgenden Arbeitsbereiche sind in Ihrer Installation verfügbar, aber noch nicht geladen:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
@@ -3280,7 +3303,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <source>Run macros in local environment</source>
-      <translation>Makro in lokaler Umgebung ausführen</translation>
+      <translation>Makros in lokaler Umgebung ausführen</translation>
     </message>
     <message>
       <source>Record GUI commands</source>
@@ -3529,19 +3552,46 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     </message>
     <message>
       <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
+      <translation>Art der Drehung</translation>
     </message>
     <message>
       <source>Window center</source>
-      <translation type="unfinished">Window center</translation>
+      <translation>Um die Fenstermitte</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>Um den Mauszeiger</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>Um das Objektzentrum</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Auswahl</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Automatischer Wechsel zur 3D-Ansicht mit dem ausgewählten Element</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Baum automatisch ausdehnen, wenn das zugehörige Objekt in der 3D-Ansicht ausgewählt wird</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Vorauswählen des Objekts in 3D -ansicht, wenn die Maus über das Baumelement fährt</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Auswahl in der Baumansicht aufzeichnen. Mit den Navigationstasten vor/zurück gehen</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Checkboxen für die Auswahl im Dokumentenbaum hinzufügen</translation>
     </message>
   </context>
   <context>
@@ -5309,6 +5359,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Ausdruck...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Automatisch erweitern</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -6841,6 +6895,22 @@ Dokument: </translation>
       <source>Identical physical path</source>
       <translation>Identischer physischer Pfad</translation>
     </message>
+    <message>
+      <source>Error</source>
+      <translation>Fehlermeldungen</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Beim Laden der Datei sind Fehler aufgetreten. Einige Daten wurden möglicherweise geändert oder gar nicht wiederhergestellt. In der Berichtansicht finden Sie genauere Informationen zu den betroffenen Objekten.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Es gab schwerwiegende Fehler beim Laden der Datei. Einige Daten wurden möglicherweise geändert oder konnten nicht wiederhergestellt werden. Das Speichern des Projekts wird höchstwahrscheinlich zu Datenverlust führen.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Arbeitsbereiche</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7284,8 +7354,8 @@ Dokument: </translation>
       <translation>Keine Auswahl</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Bitte das erste, zu exportierende, Objekt auswählen.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Wählen Sie die Objekte aus, bevor Sie Export wählen.</translation>
     </message>
   </context>
   <context>
@@ -7312,6 +7382,21 @@ Dokument: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Feature oder Dokument neu berechnen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Hilfe</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Spenden</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Spende, um Entwicklung zu unterstützen</translation>
     </message>
   </context>
   <context>
@@ -8906,11 +8991,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Gespeicherte Kamera wiederherstellen</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Gespeicherte Kameraeinstellungen wiederherstellen</translation>
     </message>
   </context>
   <context>
@@ -8966,11 +9051,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Aktuelle Kamera speichern</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Aktuelle Kameraeinstellungen speichern</translation>
     </message>
   </context>
   <context>

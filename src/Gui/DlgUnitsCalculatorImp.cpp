@@ -142,7 +142,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
     // since it expects then a scientific notation number like "1e3"
     if ( (ui->UnitInput->text().mid(0, 2) == QString::fromLatin1("ee")) ||
         Base::Unit(ui->UnitInput->text()).getTypeString().isEmpty()) {
-        ui->ValueOutput->setText(tr("unknown unit: ") + ui->UnitInput->text());
+        ui->ValueOutput->setText(QString::fromLatin1("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));
         ui->pushButton_Copy->setEnabled(false);
     } else { // the unit is valid
         // we can only convert units of the same type, thus check

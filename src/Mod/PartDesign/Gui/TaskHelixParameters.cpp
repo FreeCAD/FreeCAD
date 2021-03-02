@@ -61,7 +61,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskHelixParameters */
 
 TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *HelixView, QWidget *parent)
-    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_Additive_Helix", tr("Helix parameters")),
+    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_AdditiveHelix", tr("Helix parameters")),
     ui (new Ui_TaskHelixParameters)
 {
     // we need a separate container widget to add all controls to
@@ -297,7 +297,6 @@ void TaskHelixParameters::updateUI()
 void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-
         exitSelectionMode();
         std::vector<std::string> axis;
         App::DocumentObject* selObj;
@@ -354,13 +353,16 @@ void TaskHelixParameters::onAxisChanged(int num)
     App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
         // enter reference selection mode
-        TaskSketchBasedParameters::onSelectReference(true, true, false, true);
+        TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
+        return;
     } else {
         if (!pcHelix->getDocument()->isIn(lnk.getValue())){
             Base::Console().Error("Object was deleted\n");
             return;
         }
         propReferenceAxis->Paste(lnk);
+
+        // in case user is in selection mode, but changed his mind before selecting anything.
         exitSelectionMode();
     }
 

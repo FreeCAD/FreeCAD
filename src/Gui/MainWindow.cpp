@@ -1310,6 +1310,10 @@ void MainWindow::closeEvent (QCloseEvent * e)
             (*it)->hide();
             (*it)->deleteLater();
         }
+
+        if (Workbench* wb = WorkbenchManager::instance()->active())
+            wb->removeTaskWatcher();
+
         d->activityTimer->stop();
         saveWindowSettings();
         delete d->assistant;

@@ -142,7 +142,7 @@ public:
     App::DocumentObject *getBaseObject() const;
 
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
-    App::DocumentObject* getSketchObject() const;   
+    App::DocumentObject* getSketchObject() const;
 
     void exitSelectionMode();
     void changeVisibility();
@@ -202,7 +202,7 @@ protected:
 
     void kickUpdateViewTimer() const;
 
-    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false);    
+    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false, bool circle=false);
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
@@ -239,8 +239,6 @@ protected:
     /// Flag indicating whether this object is a container for MultiTransform
     bool insideMultiTransform;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
-    bool blockUpdate;    
-
     QCheckBox *checkBoxSubTransform = nullptr;
     QCheckBox *checkBoxNewSolid = nullptr;
 
@@ -251,6 +249,8 @@ protected:
 
     int transactionID = 0;
     bool onTopEnabled = true;
+
+    bool blockUpdate;
 };
 
 /// simulation dialog for the TaskView

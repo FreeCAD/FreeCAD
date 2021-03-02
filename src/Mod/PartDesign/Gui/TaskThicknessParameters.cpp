@@ -199,7 +199,6 @@ int TaskThicknessParameters::getMode(void) const {
     return ui->modeComboBox->currentIndex();
 }
 
-
 TaskThicknessParameters::~TaskThicknessParameters()
 {
     Gui::Selection().rmvSelectionGate();
@@ -252,7 +251,6 @@ TaskDlgThicknessParameters::~TaskDlgThicknessParameters()
 bool TaskDlgThicknessParameters::accept()
 {
     TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
-
     auto obj = vp->getObject();
 
     FCMD_OBJ_CMD(obj,"Value = " << draftparameter->getValue());

@@ -533,8 +533,6 @@ namespace Base {
             void NotifyError  (const char *sMsg);
             void NotifyLog    (const char *sMsg);
 
-            /// Delivers a time/date string
-            const char* Time(void);
             /// Attaches an Observer to FCConsole
             void AttachObserver(ILogger *pcObserver);
             /// Detaches an Observer from FCConsole

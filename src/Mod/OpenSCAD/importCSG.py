@@ -50,12 +50,45 @@ from OpenSCADUtils import *
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
-
+hassetcolor=[]
+alreadyhidden=[]
 printverbose = True
 
 # Get the token map from the lexer.  This is required.
 import tokrules
 from tokrules import tokens
+
+def shallHide(subject):
+    for obj in subject.OutListRecursive:
+        if "Matrix_Union" in str(obj.FullName):
+            return False
+        if "Extrude" in str(obj.FullName):
+            return True
+    return False
+
+def setColorRecursively(obj,color,transp):
+    if(obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse"):
+                for currentObject in obj.OutList:
+                    if (currentObject.TypeId=="Part::Fuse" or currentObject.TypeId=="Part::MultiFuse"):
+                        setColorRecursively(currentObject,color,transp)
+                    else:
+                        print("Fixing up colors for: "+str(currentObject.FullName))
+                    if(currentObject not in hassetcolor):
+                        currentObject.ViewObject.ShapeColor=color
+                        currentObject.ViewObject.Transparency=transp
+                        setColorRecursively(currentObject,color,transp)
+                    else:
+                        setColorRecursively(currentObject,color,transp)
+
+def fixVisibility():
+    for obj in FreeCAD.ActiveDocument.Objects:
+         if(( obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse") and shallHide(obj)):
+            if "Group" in obj.FullName:
+                alreadyhidden.append(obj)
+                obj.ViewObject.Visibility=False
+                for currentObject in obj.OutList:
+                    if(currentObject not in alreadyhidden):
+                        currentObject.ViewObject.Visibility=True
 
 if gui:
     try:
@@ -146,6 +179,9 @@ def processcsg(filename):
     if printverbose:
         print('End Parser')
         print(result)
+    fixVisibility()
+    hassetcolor.clear()
+    alreadyhidden.clear()
     FreeCAD.Console.PrintMessage('End processing CSG file\n')
     doc.recompute()
 
@@ -178,6 +214,7 @@ def p_group_action1(p):
         p[0] = [fuse(p[5],"Group")]
     else :
         p[0] = p[5]
+
 
 def p_group_action2(p) :
     'group_action2 : group LPAREN RPAREN SEMICOL'
@@ -490,8 +527,27 @@ def p_color_action(p):
     transp = 100 - int(math.floor(100*float(p[3][3]))) #Alpha
     if gui:
         for obj in p[6]:
-            obj.ViewObject.ShapeColor =color
-            obj.ViewObject.Transparency = transp
+            if shallHide(obj):
+                if "Group" in obj.FullName:
+                    obj.ViewObject.Visibility=False
+                    alreadyhidden.append(obj)
+                if(obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse"):
+                    for currentObject in obj.OutList:
+                        if (currentObject.TypeId=="Part::Fuse" or   currentObject.TypeId=="Part::MultiFuse"):
+                            setColorRecursively(currentObject,color,transp)
+                        if(currentObject not in hassetcolor):
+                            currentObject.ViewObject.ShapeColor=color
+                            currentObject.ViewObject.Transparency=transp
+                            setColorRecursively(currentObject,color,transp)
+                        else:
+                            setColorRecursively(currentObject,color,transp)
+                else:
+                    obj.ViewObject.ShapeColor =color
+                    obj.ViewObject.Transparency = transp
+            else:
+                obj.ViewObject.ShapeColor =color
+                obj.ViewObject.Transparency = transp
+            hassetcolor.append(obj)
     p[0] = p[6]
 
 # Error rule for syntax errors
@@ -794,6 +850,10 @@ def p_multmatrix_action(p):
     transform_matrix = FreeCAD.Matrix()
     if printverbose: print("Multmatrix")
     if printverbose: print(p[3])
+    if gui:
+        parentcolor=p[6][0].ViewObject.ShapeColor
+        parenttransparency=p[6][0].ViewObject.Transparency
+
     m1l=sum(p[3],[])
     if any('x' in me for me in m1l): #hexfloats
         m1l=[float.fromhex(me) for me in m1l]
@@ -873,6 +933,9 @@ def p_multmatrix_action(p):
         p[0] = [newobj]
     else :
         p[0] = [new_part]
+    if gui:
+        new_part.ViewObject.ShapeColor=parentcolor
+        new_part.ViewObject.Transparency = parenttransparency
     if printverbose: print("Multmatrix applied")
     
 def p_matrix(p):
@@ -944,7 +1007,7 @@ def p_cylinder_action(p):
                     try :
                         import Draft
                         mycyl.Base = Draft.makePolygon(n,r1,face=True)
-                    except :
+                    except Exception:
                         # If Draft can't import (probably due to lack of Pivy on Mac and
                         # Linux builds of FreeCAD), this is a fallback.
                         # or old level of FreeCAD
@@ -1182,7 +1245,7 @@ def p_polyhedron_action(p) :
         print(w)
         try:
            f = Part.Face(w)
-        except:
+        except Exception:
             secWireList = w.Edges[:]
             f = Part.makeFilledFace(Part.__sortEdges__(secWireList))
         #f = make_face(v[int(i[0])],v[int(i[1])],v[int(i[2])])

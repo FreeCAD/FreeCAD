@@ -522,7 +522,13 @@ PartGui::TaskMeasureLinear::TaskMeasureLinear()
 
 PartGui::TaskMeasureLinear::~TaskMeasureLinear()
 {
-  Gui::Selection().clearSelection();
+  try {
+    Gui::Selection().clearSelection();
+  }
+  catch (const Py::Exception&) {
+    Base::PyException e; // extract the Python error text
+    e.ReportException();
+  }
 }
 
 void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -532,6 +538,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
     if (msg.Type == Gui::SelectionChanges::AddSelection)
     {
       DimSelections::DimSelection newSelection;
+      newSelection.shapeType = DimSelections::None;
       newSelection.documentName = msg.pDocName;
       newSelection.objectName = msg.pObjectName;
       newSelection.subObjectName = msg.pSubName;
@@ -551,6 +558,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
     if (msg.Type == Gui::SelectionChanges::AddSelection)
     {
       DimSelections::DimSelection newSelection;
+      newSelection.shapeType = DimSelections::None;
       newSelection.documentName = msg.pDocName;
       newSelection.objectName = msg.pObjectName;
       newSelection.subObjectName = msg.pSubName;
@@ -1513,7 +1521,13 @@ PartGui::TaskMeasureAngular::TaskMeasureAngular()
 
 PartGui::TaskMeasureAngular::~TaskMeasureAngular()
 {
-  Gui::Selection().clearSelection();
+  try {
+    Gui::Selection().clearSelection();
+  }
+  catch (const Py::Exception&) {
+    Base::PyException e; // extract the Python error text
+    e.ReportException();
+  }
 }
 
 void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -1525,6 +1539,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
     return;
   mat.inverse();
   DimSelections::DimSelection newSelection;
+  newSelection.shapeType = DimSelections::None;
   newSelection.documentName = msg.pDocName;
   newSelection.objectName = msg.pObjectName;
   newSelection.subObjectName = msg.pSubName;

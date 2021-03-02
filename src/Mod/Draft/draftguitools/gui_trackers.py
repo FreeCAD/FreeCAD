@@ -1121,7 +1121,7 @@ class gridTracker(Tracker):
                 try:
                     import BimProject
                     hpts = BimProject.getHuman(loc)
-                except:
+                except Exception:
                     # BIM not installed
                     pass
                 else:

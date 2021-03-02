@@ -33,7 +33,7 @@ This script parses the contents of a wiki site and saves a file containing
 names of pages and images to be downloaded.
 """
 
-import sys, os, re, tempfile, getopt
+import sys, os, re
 from urllib2 import urlopen, HTTPError
 
 #    CONFIGURATION       #################################################
@@ -50,7 +50,11 @@ NORETRIEVE += ['Constraint_Concentric','Constraint_EqualLength','Constraint_Exte
                'Constraint_PointOnObject','Constraint_PointOnPoint','Constraint_PointOnStart',
                'Constraint_PointToObject','Constraint_Radius','Constraint_SnellsLaw',
                'Constraint_Symmetric','Constraint_Tangent','Constraint_TangentToEnd',
-               'Constraint_TangentToStart','Constraint_Vertical'] # pages that have been renamed but still dangle around...
+               'Constraint_TangentToStart','Constraint_Vertical',
+               'Join_Cutout','Join_Embed','Part_BooleanFragment','Part_Sections','Curves_HelicalSweep',
+               'CurvedShapes_FlyingWingS800','CurvedShapes_HortenHIX','CurvedShapes_SurfaceCut',
+               'CurvedShapes_InterpolatedMiddle','CurvedShapes_CurvedSegment','Arch_Cell',
+               'Std_ClippingPlane','Std_AboutQt'] # pages that have been renamed but still dangle around...
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
@@ -150,10 +154,14 @@ def getlinks(html):
         rg = re.findall('href=.*?php\?title=(.*?)"',l)
         if not rg:
             rg = re.findall('href="\/wiki\/(.*?)"',l)
-            if "images" in rg:
-                rg = None
-            elif "mediawiki" in rg:
-                rg = None
+            if not rg:
+                rg = re.findall('href=".*?wiki\\.freecadweb\\.org\/(.*?)"',l)
+                if not rg:
+                    rg = re.findall('href="\/(.*?)"',l)
+        if "images" in rg:
+            rg = None
+        elif "mediawiki" in rg:
+            rg = None
         if rg:
             rg = rg[0]
             if not "Command_Reference" in rg:

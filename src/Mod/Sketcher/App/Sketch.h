@@ -397,6 +397,10 @@ protected:
     float SolveTime;
     bool RecalculateInitialSolutionWhileMovingPoint;
 
+    // regulates a second solve for cases where there result of having update the geometry (e.g. via OCCT)
+    // needs to be taken into account by the solver (for example to provide the right value of non-driving constraints)
+    bool resolveAfterGeometryUpdated;
+
 protected:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef {
@@ -497,6 +501,8 @@ private:
     void calculateDependentParametersElements(void);
 
     void clearTemporaryConstraints(void);
+
+    int internalSolve(std::string & solvername, int level = 0);
 
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId) const;

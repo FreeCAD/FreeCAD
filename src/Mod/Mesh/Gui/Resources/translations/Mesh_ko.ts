@@ -1714,7 +1714,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="381"/>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
@@ -1760,7 +1760,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -1833,7 +1833,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
   </context>
   <context>
@@ -2075,7 +2075,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="46"/>
       <source>Clear</source>
-      <translation type="unfinished">Clear</translation>
+      <translation>지우기</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>

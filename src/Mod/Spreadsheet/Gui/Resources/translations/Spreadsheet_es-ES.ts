@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Crear una hoja de cálculo nueva</translation>
+      <translation>Crear hoja de cálculo nueva</translation>
     </message>
   </context>
   <context>
@@ -24,11 +24,11 @@
     </message>
     <message>
       <source>Align bottom</source>
-      <translation>Alineación inferior</translation>
+      <translation>Alinear inferior</translation>
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Alineado inferior del contenido de las celdas seleccionadas</translation>
+      <translation>Alinear inferior celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Alineado centrado</translation>
+      <translation>Alinear centro</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Alineado centrado del contenido de las celdas seleccionadas</translation>
+      <translation>Alinear al centro celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -54,11 +54,11 @@
     </message>
     <message>
       <source>Align left</source>
-      <translation>Alineado izquierdo</translation>
+      <translation>Alinear izquierda</translation>
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation>Alineado izquierdo del contenido de las celdas seleccionadas</translation>
+      <translation>Alinear izquierda celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -69,11 +69,11 @@
     </message>
     <message>
       <source>Align right</source>
-      <translation>Alineado derecho</translation>
+      <translation>Alinear derecha</translation>
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation>Alineado derecho del contenido de las celdas seleccionadas</translation>
+      <translation>Alinear derecha celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Alineado superior del contenido de las celdas seleccionadas</translation>
+      <translation>Alineado superior en celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Alineado verticalmente centrado del contenido de las celdas seleccionadas</translation>
+      <translation>Contenido alineado verticalmente centrado en celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -163,7 +163,7 @@
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Establecer alias para la celda selecionada</translation>
+      <translation>Establecer alias para celda seleccionada</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation>Dividir celdas previamente fusionadas</translation>
+      <translation>Dividir celdas combinadas previamente</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation>Establecer texto en las celdas seleccionadas en negrita</translation>
+      <translation>Establecer texto en negrita en celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Izquierda</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Centro</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Derecha</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Superior</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Inferior</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Vertical</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Negrita</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Cursiva</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Subrayado</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Crear hoja de cálculo</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Propiedades</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Modificar</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Borrar</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Color de celda</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Color de fondo</translation>
     </message>
   </context>
   <context>

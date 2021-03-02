@@ -4,7 +4,7 @@
 import os,sys
 #sys.path.append( "E:\\Develop\\Projekte\\FreeCADWin\\src\\Tools" )
 
-import DistTools, FileTools
+from . import DistTools, FileTools
 
 # line separator 
 ls = os.linesep
@@ -23,7 +23,7 @@ DistDir  = "../../DistTemp/"
 
 DistTools.EnsureDir(DistDir)
 if (DistTools.EnsureDir(DistDir+DistSrc) == 1):
-    raise "Dist path already there!!"
+    raise RuntimeError("Dist path already there!!")
 
 #====================================================================
 # copy src 

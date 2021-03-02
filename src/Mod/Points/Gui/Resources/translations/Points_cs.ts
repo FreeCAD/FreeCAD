@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Importovat body</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>Transformovat body</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>

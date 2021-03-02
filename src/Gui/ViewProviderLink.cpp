@@ -3076,9 +3076,14 @@ void ViewProviderLink::dragMotionCallback(void *data, SoDragger *) {
 }
 
 void ViewProviderLink::updateLinks(ViewProvider *vp) {
-    auto ext = vp->getExtensionByType<ViewProviderLinkObserver>(true);
-    if(ext && ext->linkInfo)
-        ext->linkInfo->update();
+    try {
+        auto ext = vp->getExtensionByType<ViewProviderLinkObserver>(true);
+        if (ext && ext->linkInfo)
+            ext->linkInfo->update();
+    }
+    catch (const Base::TypeError &e) {
+        e.ReportException();
+    }
 }
 
 PyObject *ViewProviderLink::getPyObject() {

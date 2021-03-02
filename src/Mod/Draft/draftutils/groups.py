@@ -147,8 +147,13 @@ def get_windows(obj):
 
     if isinstance(item, tuple):
         obj = item[0].getSubObject(item[1], retType=1)
+        if not obj:
+            return out
 
-    if utils.get_type(obj) in ("Wall", "Structure"):
+    # getLinkedObject() will return the obj itself if it is not a link
+    linked = obj.getLinkedObject()
+
+    if utils.get_type(linked) in ("Wall", "Structure"):
         if obj is not item:
             for o in obj.OutList:
                 for child, sub in get_windows((o, '')):
@@ -157,22 +162,22 @@ def get_windows(obj):
             for o in obj.OutList:
                 out.extend(get_windows(o))
 
-    elif (utils.get_type(obj) in ("Window", "Rebar")
-          or utils.is_clone(obj, ["Window", "Rebar"])):
-        out.append(item)
+            for i in obj.InList:
+                ilinked = i.getLinkedObject()
+                if (utils.get_type(ilinked) == "Window"
+                        or utils.is_clone(ilinked, "Window")):
+                    if hasattr(i, "Hosts"):
+                        if obj in i.Hosts:
+                            out.append(i)
+                elif (utils.get_type(ilinked) == "Rebar"
+                    or utils.is_clone(ilinked, "Rebar")):
+                    if hasattr(i, "Host"):
+                        if obj == i.Host:
+                            out.append(i)
 
-    elif obj is item:
-        for i in obj.InList:
-            if (utils.get_type(i) == "Window"
-                    or utils.is_clone(obj, "Window")):
-                if hasattr(i, "Hosts"):
-                    if obj in i.Hosts:
-                        out.append(i)
-            elif (utils.get_type(i) == "Rebar"
-                  or utils.is_clone(obj, "Rebar")):
-                if hasattr(i, "Host"):
-                    if obj == i.Host:
-                        out.append(i)
+    elif (utils.get_type(linked) in ("Window", "Rebar")
+          or utils.is_clone(linked, ["Window", "Rebar"])):
+        out.append(item)
 
     return out
 

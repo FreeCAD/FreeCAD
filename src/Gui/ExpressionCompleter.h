@@ -52,7 +52,10 @@ class GuiExport ExpressionCompleter : public QCompleter
     Q_OBJECT
 public:
     ExpressionCompleter(const App::DocumentObject * currentDocObj,
-            QObject *parent = 0, bool noProperty = false, bool checkInList = true);
+                        QObject *parent = nullptr,
+                        bool noProperty = false,
+                        bool checkInList = true,
+                        char leadChar = 0);
 
     void getPrefixRange(QString &prefix, int &start, int &end, int &offset) const;
 
@@ -63,6 +66,7 @@ public:
     void setDocumentObject(const App::DocumentObject*, bool checkInList=true);
 
     void setNoProperty(bool enabled=true);
+    void setRequireLeadingEqualSign(bool enabled);
 
     void setSearchUnit(bool enabled=true);
 
@@ -91,15 +95,16 @@ private:
     bool noProperty = false;
     bool checkInList = true;
     bool searchUnit = false;
+    char leadChar = 0;
 };
 
 class GuiExport ExpressionLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    ExpressionLineEdit(QWidget *parent = 0, bool noProperty=false,
-            char checkPrefix=0, bool checkInList=true);
+    ExpressionLineEdit(QWidget *parent = nullptr, bool noProperty=false,
+            char leadChar=0, bool checkInList=true);
     void setDocumentObject(const App::DocumentObject *currentDocObj, bool checkInList=true);
-    void setPrefix(char prefix);
+    void setLeadChar(char lead);
     bool completerActive() const;
     void hideCompleter();
     void setNoProperty(bool enabled=true);
@@ -118,7 +123,7 @@ private:
     ExpressionCompleter * completer;
     bool noProperty;
     bool checkInList;
-    char checkPrefix;
+    char leadChar;
     bool searchUnit;
     bool exactMatch;
 };
@@ -126,7 +131,7 @@ private:
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {
     Q_OBJECT
 public:
-    ExpressionTextEdit(QWidget *parent = 0);
+    ExpressionTextEdit(QWidget *parent = nullptr);
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();

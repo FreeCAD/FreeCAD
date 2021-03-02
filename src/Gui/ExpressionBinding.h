@@ -44,6 +44,7 @@ public:
     virtual void bind(const App::ObjectIdentifier & _path);
     virtual void bind(const App::Property & prop);
     bool isBound() const;
+    void unbind();
     virtual bool apply(const std::string &propName);
     virtual bool apply();
 
@@ -54,8 +55,8 @@ public:
 
     //auto apply means that the python code is issued not only on apply() but
     //also on setExpression
-    bool autoApply() const {return m_autoApply;};
-    void setAutoApply(bool value) {m_autoApply = value;};
+    bool autoApply() const {return m_autoApply;}
+    void setAutoApply(bool value) {m_autoApply = value;}
 
 protected:
     const App::ObjectIdentifier & getPath() const { return path; }
@@ -66,7 +67,7 @@ protected:
     bool setExpressionString(const char *str, bool no_throw=false);
 
     //gets called when the bound expression is changed, either by this binding or any external action
-    virtual void onChange() {};
+    virtual void onChange() {}
 
 private:
     App::ObjectIdentifier path;
@@ -78,7 +79,9 @@ protected:
     int iconHeight;
 
     void expressionChange(const App::ObjectIdentifier& id);
-    boost::signals2::scoped_connection connection;
+    void objectDeleted(const App::DocumentObject&);
+    boost::signals2::scoped_connection expressionchanged;
+    boost::signals2::scoped_connection objectdeleted;
     bool m_autoApply;
 };
 

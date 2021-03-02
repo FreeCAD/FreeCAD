@@ -83,7 +83,6 @@ protected:
     void changeEvent(QEvent *e) override;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
 
-
     //mirrors of helixes's properties
     App::PropertyLength*      propPitch;
     App::PropertyLength*      propHeight;

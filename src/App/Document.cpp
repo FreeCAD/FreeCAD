@@ -3781,7 +3781,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
             if(canAbort)
                 seq.reset(new Base::SequencerLauncher("Recompute...", topoSortedObjects.size()));
             FC_LOG("Recompute pass " << passes);
-            for (;idx<topoSortedObjects.size();(seq?seq->next(true):true),++idx) {
+            for (; idx < topoSortedObjects.size(); ++idx) {
                 auto obj = topoSortedObjects[idx];
                 if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
                     continue;
@@ -3822,6 +3822,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                     // those objects.
                     obj->afterRecompute();
                 }
+                if (seq)
+                    seq->next(true);
             }
             // check if all objects are recomputed but still thouched
             for (size_t i=0;i<topoSortedObjects.size();++i) {
@@ -4479,6 +4481,11 @@ void Document::removeObject(const char* sName)
         TipName.setValue("");
     }
 
+    // remove the ID before possibly deleting the object
+    d->objectIdMap.erase(pos->second->_Id);
+    // Unset the bit to be on the safe side
+    pos->second->setStatus(ObjectStatus::Remove, false);
+
     // do no transactions if we do a rollback!
     std::unique_ptr<DocumentObject> tobedestroyed;
     if (!d->rollback) {
@@ -4502,8 +4509,6 @@ void Document::removeObject(const char* sName)
         }
     }
 
-    pos->second->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
-    d->objectIdMap.erase(pos->second->_Id);
     d->objectMap.erase(pos);
 }
 

@@ -482,10 +482,6 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
     {                                                               \
         R;                                                          \
     }                                                               \
-    catch(const char *e)                                            \
-    {                                                               \
-        _Py_Error(R,Base::BaseExceptionFreeCADError,e);             \
-    }                                                               \
 
 #ifndef DONT_CATCH_CXX_EXCEPTIONS
 /// see docu of PY_TRY

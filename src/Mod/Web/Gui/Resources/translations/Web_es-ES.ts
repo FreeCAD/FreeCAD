@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="745"/>
+      <location filename="../../BrowserView.cpp" line="748"/>
       <source>Browser</source>
       <translation>Navegador</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="560"/>
+      <location filename="../../BrowserView.cpp" line="563"/>
       <source>File does not exist!</source>
       <translation>¡El archivo no existe!</translation>
     </message>
@@ -144,6 +144,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="551"/>
       <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -153,7 +154,12 @@
       <translation>Hubo errores al cargar el archivo. Algunos datos pueden haber sido modificados o no recuperados en absoluto. Busque en la vista de informe para obtener información más específica sobre los objetos involucrados.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="716"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Hubo errores graves al cargar el archivo. Algunos datos pueden haber sido modificados o no recuperados. Guardar el proyecto muy probablemente resultará en la pérdida de datos.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="719"/>
       <source>Loading %1...</source>
       <translation>Cargando %1...</translation>
     </message>

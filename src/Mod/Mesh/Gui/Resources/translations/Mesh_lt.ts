@@ -30,13 +30,13 @@
     <message>
       <location filename="../../Command.cpp" line="1563"/>
       <source>Boundings info...</source>
-      <translation>Informacija apie ribas...</translation>
+      <translation>Ribiniai matmenys...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1564"/>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Rodyti pasirinkto tinklo ribas</translation>
+      <translation>Rodyti pasirinkto tinklo ribinius matmenis</translation>
     </message>
   </context>
   <context>
@@ -133,13 +133,13 @@
     <message>
       <location filename="../../Command.cpp" line="1198"/>
       <source>Face info</source>
-      <translation>Paviršiaus duomenys</translation>
+      <translation>Daugiakampio duomenys</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1199"/>
       <location filename="../../Command.cpp" line="1201"/>
       <source>Information about face</source>
-      <translation>Duomenys apie paviršių</translation>
+      <translation>Duomenys apie daugiakampį</translation>
     </message>
   </context>
   <context>
@@ -152,13 +152,13 @@
     <message>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Check solid mesh</source>
-      <translation>Patikrinti tūrinį tinklą</translation>
+      <translation>Tikrinti tinklo vientisumą</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1364"/>
       <location filename="../../Command.cpp" line="1366"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Tikrina, ar tinklas yra tūrinis (pilnaviduris) objektas</translation>
+      <translation>Tikrinti, ar tinklas sudaro pilnavidurį kūną</translation>
     </message>
   </context>
   <context>
@@ -171,13 +171,13 @@
     <message>
       <location filename="../../Command.cpp" line="1156"/>
       <source>Evaluate and repair mesh...</source>
-      <translation>Patikrinti ir pataisyti tinklą...</translation>
+      <translation>Tinklo patikra ir taisa...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1157"/>
       <location filename="../../Command.cpp" line="1159"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Atveria langą tinklo tikrinimui ir pataisymui</translation>
+      <translation>Atveria tinklo patikros ir taisos įrankį</translation>
     </message>
   </context>
   <context>
@@ -940,12 +940,12 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Patikrinti ir pataisyti tinklą</translation>
+      <translation>Tinklo patikra ir taisa</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="23"/>
       <source>Mesh information</source>
-      <translation>Tinklo informacija</translation>
+      <translation>Tinklo duomenys</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="43"/>
@@ -975,7 +975,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="77"/>
       <source>Number of edges:</source>
-      <translation>Briaunų kiekis:</translation>
+      <translation>Kraštinių kiekis:</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="160"/>
@@ -998,7 +998,7 @@
       <location filename="../../DlgEvaluateMesh.ui" line="773"/>
       <location filename="../../DlgEvaluateMesh.ui" line="853"/>
       <source>Analyze</source>
-      <translation>Nagrinėti</translation>
+      <translation>Tikrinti</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="244"/>
@@ -1051,12 +1051,12 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="806"/>
       <source>All above tests together</source>
-      <translation>Visi išvardinti bandymai vienu kartu</translation>
+      <translation>Atlikti visas išvardintas patikras kartu</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="830"/>
       <source>Repetitive repair</source>
-      <translation>Pasikartojantysis taisymas</translation>
+      <translation>Pasikartojančioji taisa</translation>
     </message>
   </context>
   <context>
@@ -1102,7 +1102,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-      <translation>Tikrinimas nepavyko dėl paviršiaus klosčių. Prašome pirmiausia atlikti klosčių taisymo veiksmą</translation>
+      <translation>Tikrinimas nepavyko dėl esamų paviršiaus klosčių. Prašome pirmiausia atlikti klosčių taisymo veiksmą</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
@@ -1244,7 +1244,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation settings</source>
-      <translation>Tikrinimo nustatymai</translation>
+      <translation>Patikros nustatymai</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1448,12 +1448,12 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
       <source>Width:</source>
-      <translation type="unfinished">Width:</translation>
+      <translation>Plotis:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
       <source>Height:</source>
-      <translation type="unfinished">Height:</translation>
+      <translation>Aukštis:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="37"/>
@@ -1503,12 +1503,12 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="148"/>
       <source>A bounding box will be displayed</source>
-      <translation>Bus atvaizduojami ribinių matmenų gretasienis</translation>
+      <translation>Bus rodomas gaubiantysis stačiakampis gretasienis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="151"/>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Rodyti paryškintų tinklų ribinį stačiakampį gretasienį</translation>
+      <translation>Rodyti paryškintų tinklų gaubiantį stačiakampį gretasienį</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="187"/>
@@ -1548,7 +1548,7 @@ Jei nepasirinkta, tai priklauso nuo parinkties „Įgalinti galinį pašvietimą
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="292"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tai yra mažiausias kampas tarp dviejų daugiakampių, kai iš jų paskaičiuotų normalių gaunamas plokščias šešėlis.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jei kampas tarp kaimyninių normalių yra mažesnis už nelygumo kampą, ant paviršių, turinčių bendrą briauną kris tolygus šešėlis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tai yra mažiausias kampas tarp dviejų daugiakampių, kai iš jų paskaičiuotų normalių gaunamas plokščias šešėlis.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jei kampas tarp kaimyninių normalių yra mažesnis už nelygumo kampą, ant paviršių, turinčių bendrą kraštinę kris tolygus šešėlis.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="295"/>
@@ -2111,7 +2111,7 @@ Naudojant plokštuminį šešėliavimą, paviršiaus normalės nėra skaičiuoja
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Boundings of %1:</source>
-      <translation>%1 ribos:</translation>
+      <translation>%1 gaubiančiojo stačiakampio gretasienio ribos:</translation>
     </message>
   </context>
   <context>
@@ -2148,7 +2148,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1239"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Patikrinti ir pataisyti tinklą</translation>
+      <translation>Tinklo patikra ir taisa</translation>
     </message>
   </context>
   <context>
@@ -2280,7 +2280,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>Tinklas '%1' nėra pilnaviduris.</translation>
+      <translation>Tinklas '%1' nesudaro pilnavidurio kūno.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
@@ -2290,12 +2290,12 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <location filename="../../Command.cpp" line="1382"/>
       <source>Solid Mesh</source>
-      <translation>Pilnaviduris (vientisinis) tinklas</translation>
+      <translation>Tinklo vientisumas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1585"/>
       <source>Boundings</source>
-      <translation>Apribojimai</translation>
+      <translation>Ribiniai matmenys</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1647"/>
@@ -2305,7 +2305,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <location filename="../../Command.cpp" line="1648"/>
       <source>Fill holes with maximum number of edges:</source>
-      <translation>Užpildyti skyles, turinčias daugiausiai briaunų:</translation>
+      <translation>Užpildyti skyles, turinčias daugiausiai tiek kraštinių:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1891"/>
@@ -2320,7 +2320,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="77"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation>[Taškų: %1, briaunų: %2, daugiakampių: %3]</translation>
+      <translation>[Taškų: %1, kraštinių: %2, daugiakampių: %3]</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="740"/>
@@ -2374,7 +2374,7 @@ Norėdami įdiegti programą, prašome aplankyti http://www.openscad.org/index.h
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Analyze</source>
-      <translation>Nagrinėti</translation>
+      <translation>Tikrinti</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

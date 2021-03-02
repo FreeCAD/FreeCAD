@@ -46,7 +46,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
 from draftutils.messages import _msg, _wrn, _err
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -57,20 +57,16 @@ class Offset(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Offsets of the selected object.\n"
-                "It can also create an offset copy of the original object.\n"
-                "CTRL to snap, SHIFT to constrain. "
-                "Hold ALT and click to create a copy with each click.")
 
         return {'Pixmap': 'Draft_Offset',
                 'Accel': "O, S",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Offset", "Offset"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Offset", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Offset", "Offsets of the selected object.\nIt can also create an offset copy of the original object.\nCTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.")}
 
     def Activated(self):
         """Execute when the command is called."""
         self.running = False
-        super(Offset, self).Activated(name=_tr("Offset"))
+        super(Offset, self).Activated(name=translate("draft","Offset"))
         self.ghost = None
         self.linetrack = None
         self.arctrack = None
@@ -327,9 +323,7 @@ class Offset(gui_base_original.Modifier):
             self.finish()
         else:
             _err(translate("Draft",
-                           "Offset direction is not defined. "
-                           "Please move the mouse on either side "
-                           "of the object first to indicate a direction"))
+                           "Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction"))
 
 
 Gui.addCommand('Draft_Offset', Offset())

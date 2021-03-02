@@ -72,14 +72,14 @@ Transformed::Transformed()
     ADD_PROPERTY(OriginalSubs,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"Base",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
 
-    ADD_PROPERTY_TYPE(SubTransform,(true),"Base",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(SubTransform,(true),"Part Design",(App::PropertyType)(App::Prop_None),
         "Transform sub feature instead of the solid if it is an additive or substractive feature (e.g. Pad, Pocket)");
-    ADD_PROPERTY_TYPE(CopyShape,(true),"Base",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(CopyShape,(true),"Part Design",(App::PropertyType)(App::Prop_None),
         "Make a copy of each transformed shape");
 
-    ADD_PROPERTY_TYPE(TransformOffset,(Base::Placement()),"Base",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TransformOffset,(Base::Placement()),"Part Design",(App::PropertyType)(App::Prop_None),
         "Offset placement applied to the source shape before pattern transformation.");
 
     //init Refine property
@@ -447,17 +447,17 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     //
                     // Therefore, if the transformation succeeded, then we fuse it with the support now, before checking the intersection
                     // of the next transformation.
-                    
+
                     /*v_transformations.push_back(t);
                     v_transformedShapes.push_back(mkTrf.Shape());*/
-    
+
                     // Note: Transformations that do not intersect the support are ignored in the overlap tests
-                    
+
                     //insert scheme here.
                     /*TopoDS_Compound compoundTool;
                     std::vector<TopoDS_Shape> individualTools;
                     divideTools(v_transformedShapes, individualTools, compoundTool);*/
-                    
+
                     // Fuse/Cut the compounded transformed shapes with the support
                     //TopoDS_Shape result;
                     
@@ -478,7 +478,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             } catch (Standard_Failure& e) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
                 // fuse operation of the transformation result will also fail
-        
+
                 std::string msg("Transformation: Intersection check failed");
                 if (e.GetMessageString() != NULL)
                     msg += std::string(": '") + e.GetMessageString() + "'";

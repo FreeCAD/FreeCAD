@@ -116,16 +116,16 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
         import ladybug
         from ladybug import location
         from ladybug import sunpath
-    except:
+    except Exception:
         # TODO - remove pysolar dependency
         # FreeCAD.Console.PrintWarning("Ladybug module not found, using pysolar instead. Warning, this will be deprecated in the future\n")
         ladybug = False
         try:
             import pysolar
-        except:
+        except Exception:
             try:
                 import Pysolar as pysolar
-            except:
+            except Exception:
                 FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
                 return None
             else:
@@ -296,7 +296,7 @@ def makeWindRose(epwfile,scale=1,sectors=24):
     try:
         import ladybug
         from ladybug import epw
-    except:
+    except Exception:
         FreeCAD.Console.PrintError("The ladybug module was not found. Unable to generate solar diagrams\n")
         return None
     if not epwfile:
@@ -1046,7 +1046,7 @@ class _ViewProviderSite:
                     if hasattr(vobj.Object,"EPWFile") and vobj.Object.EPWFile:
                         try:
                             import ladybug
-                        except:
+                        except Exception:
                             pass
                         else:
                             self.windrosenode = makeWindRose(vobj.Object.EPWFile,vobj.SolarDiagramScale)

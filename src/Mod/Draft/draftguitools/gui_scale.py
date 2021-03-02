@@ -65,13 +65,11 @@ class Scale(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Scales the selected objects from a base point.\n"
-                "CTRL to snap, SHIFT to constrain, ALT to copy.")
 
         return {'Pixmap': 'Draft_Scale',
                 'Accel': "S, C",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Scale", "Scale"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Scale", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Scale", "Scales the selected objects from a base point.\nCTRL to snap, SHIFT to constrain, ALT to copy.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -224,13 +222,26 @@ class Scale(gui_base_original.Modifier):
         else:
             _cmd_name = translate("draft", "Scale")
 
+        # the correction translation of the clone placement is
+        # (node[0] - clone.Placement.Base) - (node[0] - clone.Placement.Base)\
+        #   .scale(delta.x,delta.y,delta.z)
+        # equivalent to:
+        # (node[0] - clone.Placement.Base)\
+        #   .scale(1-delta.x,1-delta.y,1-delta.z)
+        str_node0 = DraftVecUtils.toString(self.node[0])
+        str_delta = DraftVecUtils.toString(self.delta)
+        str_delta_corr = DraftVecUtils.toString(App.Vector(1,1,1) - self.delta)
+
         _cmd = 'Draft.clone'
         _cmd += '('
         _cmd += objects + ', '
         _cmd += 'forcedraft=True'
         _cmd += ')'
         _cmd_list = ['clone = ' + _cmd,
-                     'clone.Scale = ' + DraftVecUtils.toString(self.delta),
+                     'clone.Scale = ' + str_delta,
+                     'clone_corr = (' + str_node0 + ' - clone.Placement.Base)'\
+                        + '.scale(*'+ str_delta_corr + ')',
+                     'clone.Placement.move(clone_corr)',
                      'FreeCAD.ActiveDocument.recompute()']
         self.commit(_cmd_name, _cmd_list)
 
@@ -324,9 +335,7 @@ class Scale(gui_base_original.Modifier):
             else:
                 m = translate("draft", "Unable to scale objects: ")
                 m += ", ".join([o.Label for o in bads])
-            m += " - " + translate("draft",
-                                   "This object type cannot be scaled "
-                                   "directly. Please use the clone method.")
+            m += " - " + translate("draft","This object type cannot be scaled directly. Please use the clone method.")
             _err(m)
         if goods:
             _doc = 'FreeCAD.ActiveDocument.'

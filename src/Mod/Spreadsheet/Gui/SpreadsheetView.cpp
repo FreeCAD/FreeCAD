@@ -235,10 +235,8 @@ void SheetView::updateContentLine()
 
     if (i.isValid()) {
         std::string str;
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-
-        if (cell)
-            cell->getStringContent(str);
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
+            (void)cell->getStringContent(str);
         ui->cellContent->setText(QString::fromUtf8(str.c_str()));
         ui->cellContent->setIndex(i);
         ui->cellContent->setEnabled(true);
@@ -254,10 +252,8 @@ void SheetView::updateAliasLine()
 
     if (i.isValid()) {
         std::string str;
-        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-
-        if (cell)
-            cell->getAlias(str);
+        if (const auto * cell = sheet->getCell(CellAddress(i.row(), i.column())))
+            (void)cell->getAlias(str);
         ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
         ui->cellAlias->setIndex(i);
         ui->cellAlias->setEnabled(true);
@@ -365,10 +361,12 @@ void SheetView::editingFinished()
                 Base::Console().Error("Unable to set alias: %s\n", str.c_str());
             }
         }
-        std::string address = CellAddress(i.row(), i.column()).toString();
-        Gui::cmdAppObjectArgs(sheet, "setAlias('%s', u'%s')",
-                              address, Base::Tools::escapedUnicodeFromUtf8(str.c_str()));
-        Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+        if (aliasOkay) {
+            std::string address = CellAddress(i.row(), i.column()).toString();
+            Gui::cmdAppObjectArgs(sheet, "setAlias('%s', u'%s')",
+                                address, Base::Tools::escapedUnicodeFromUtf8(str.c_str()));
+            Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
+        }
         ui->cells->setCurrentIndex(ui->cellContent->next());
         ui->cells->setFocus();
     } catch (Base::Exception & e) {

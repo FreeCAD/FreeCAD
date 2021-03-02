@@ -38,7 +38,9 @@ using namespace Gui::TaskView;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDialog::TaskDialog()
-    : QObject(0), pos(North), escapeButton(true)
+    : QObject(nullptr), pos(North)
+    , escapeButton(true)
+    , autoCloseTransaction(false)
 {
 
 }
@@ -80,6 +82,11 @@ void TaskDialog::open()
 }
 
 void TaskDialog::closed()
+{
+
+}
+
+void TaskDialog::autoClosedOnTransactionChange()
 {
 
 }

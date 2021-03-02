@@ -11,6 +11,7 @@ SET(Stylesheets_Files
     "Light-green.qss"
     "Light-orange.qss"
     "Dark-contrast.qss"
+    "ProDark.qss"
 )
 
 SET(Overlay_Stylesheets_Files

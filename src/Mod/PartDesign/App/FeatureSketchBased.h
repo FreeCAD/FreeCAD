@@ -127,6 +127,9 @@ public:
     
     virtual bool isElementGenerated(const TopoShape &shape, const char *name) const;
 
+    // calculate the through all length
+    double getThroughAllLength() const;
+
 protected:
     void remapSupportShape(const TopoDS_Shape&);
 
@@ -140,20 +143,31 @@ protected:
                             const TopoShape& supportface,
                             const TopoShape& sketchshape,
                             const std::string& method,
-                            const gp_Dir& dir,
-                            const double offset);
+                            const gp_Dir& dir);
+
+    /// Add an offset to the face
+    static void addOffsetToFace(TopoShape& upToFace,
+                                const gp_Dir& dir,
+                                double offset);
+
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepPrimAPI_MakePrism
       */
-    static void generatePrism(TopoShape& prism,
-                              TopoShape sketchshape,
-                              const std::string& method,
-                              const gp_Dir& direction,
-                              const double L,
-                              const double L2,
-                              const bool midplane,
-                              const bool reversed);
+    void generatePrism(TopoShape& prism,
+                       TopoShape sketchshape,
+                       const std::string& method,
+                       const gp_Dir& direction,
+                       const double L,
+                       const double L2,
+                       const bool midplane,
+                       const bool reversed);
+    // See BRepFeat_MakePrism
+    enum PrismMode {
+        CutFromBase = 0,
+        FuseWithBase = 1,
+        None = 2
+    };
     /**
       * Generate a linear prism
       * It will be a stand-alone solid created with BRepFeat_MakePrism
@@ -165,7 +179,7 @@ protected:
                               const TopoShape& sketchface,
                               const TopoShape& uptoface,
                               const gp_Dir& direction,
-                              Standard_Integer Mode,
+                              PrismMode Mode,
                               Standard_Boolean Modify);
 
     /// Check whether the wire after projection on the face is inside the face

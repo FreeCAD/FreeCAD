@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="211"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="212"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>Przybliżenie cylindra</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="111"/>
@@ -42,17 +42,17 @@
     <message>
       <location filename="../../Command.cpp" line="324"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>Powierzchnia wielomianowa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Approximate a polynomial surface</source>
-      <translation type="unfinished">Approximate a polynomial surface</translation>
+      <translation>Przybliżenie powierzchni B-splajnu</translation>
     </message>
   </context>
   <context>
@@ -60,17 +60,17 @@
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Sphere</source>
-      <translation>Kula</translation>
+      <translation>Sfera</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Przybliżenie sfery</translation>
     </message>
   </context>
   <context>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../Command.cpp" line="490"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="491"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>Linia łamana z obwiedni siatki...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>Utwórz linię łamaną z obwiedni siatki</translation>
     </message>
   </context>
   <context>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="556"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="557"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="379"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="380"/>
@@ -150,17 +150,17 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Z komponentów</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Utwórz segmenty siatki z komponentów</translation>
     </message>
   </context>
   <context>
@@ -168,17 +168,17 @@
     <message>
       <location filename="../../Command.cpp" line="411"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Segmentacja samodzielna...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="413"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>Utwórz samodzielnie segmenty siatki</translation>
     </message>
   </context>
   <context>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="590"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="591"/>
@@ -205,27 +205,27 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>Dopasuj do płaszczyzny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>Dopasuj cylinder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>Dopasuj sferę</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>Dopasuj powierzchnię wielomianową</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Widok triangulacji</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="156"/>
@@ -235,17 +235,17 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="228"/>
       <source>Fit B-Spline</source>
-      <translation type="unfinished">Fit B-Spline</translation>
+      <translation>Dopasuj B-Spline</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>Rekonstrukcja powierzchni Poissona</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="234"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Segmentacja</translation>
     </message>
   </context>
   <context>
@@ -275,7 +275,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>v-Direction</source>
-      <translation>v-Direction</translation>
+      <translation>kierunek - v</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -325,7 +325,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>Utwórz umieszczenie</translation>
     </message>
   </context>
   <context>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="208"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Proszę wybrać pojedynczy obiekt miejsca końcowego, aby uzyskać lokalną orientację.</translation>
+      <translation>Proszę wybrać pojedynczy obiekt, aby poznać orientację lokalną.</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="167"/>
@@ -391,7 +391,7 @@
     <message>
       <location filename="../../Command.cpp" line="90"/>
       <source>Please select a point cloud or mesh.</source>
-      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+      <translation>Proszę wybrać chmurę punktów lub siatkę.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="570"/>
@@ -427,7 +427,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="44"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="53"/>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>Segmentacja samodzielna</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -500,7 +500,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
       <source>Plane</source>
-      <translation>Plan</translation>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="128"/>
@@ -531,12 +531,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>Kula</translation>
+      <translation>Sfera</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region options</source>
-      <translation>Opcje</translation>
+      <translation>opcje regionalne</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Segmentacja</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria odwrotna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
   </context>
 </TS>

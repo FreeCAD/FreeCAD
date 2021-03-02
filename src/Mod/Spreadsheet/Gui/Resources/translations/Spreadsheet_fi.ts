@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>Tasaa keskelle valittujen solujen sisältö</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>Yhdistä valitut solut</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>Aseta vaihtoehtoinen nimi /alias</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>Aseta vaihtoehtoinen nimi (alias) valitulle solulle</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>Jaa aiemmin yhdistetyt solut</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>Lihavoi valittujen solujen teksti</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>Muuta valittujen solujen teksti kursiiviksi</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>Alleviivaa teksti valituissa soluissa</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Mukautettu väri</translation>
     </message>
   </context>
   <context>
@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Vasemman tasauksen solu</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Keskitetyn tasauksen solu</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Oikean tasauksen solu</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Yläreunaan tasattu solu</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Alareunaan tasattu solu</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Pystysuoraan keskelle tasatut solut</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Aseta lihavointi</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Aseta kursivoitu teksti</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Aseta alleviivausteksti</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Luo laskentataulukko</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Aseta solun ominaisuudet</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Muokkaa solua</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Tyhjennä solu(t)</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Etualan väri</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Taustaväri</translation>
     </message>
   </context>
   <context>
@@ -419,19 +419,19 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Aseta solun(solujen) edustan väri</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Asettaa tulostaulun solun(solujen) edustan värin</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Aseta solun(solujen) taustan väri</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Asettaa laskentataulun(-taulujen) taustavärin</translation>
     </message>
     <message>
       <source>Spreadsheet</source>
@@ -440,22 +440,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Laskentataulu ei tue alueen valintaa liittämisen yhteydessä.
+Valitse vain yksi solu.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Kopioi ja liitä epäonnistui</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Vaihtoehtoinen nimi (alias) sisältää virheellisiä merkkejä!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Viittaa soluihin vaihtoehtoisella nimellä (alias), esimerkiksi
+Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -530,7 +530,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Mukautettu väri</translation>
     </message>
   </context>
   <context>
@@ -541,17 +541,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Sisältö:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Alias (vaihtoehtoinen nimi):</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Viittaa soluihin vaihtoehtoisella nimellä (alias), esimerkiksi
+Spreadsheet.my_alias_name sijasta Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

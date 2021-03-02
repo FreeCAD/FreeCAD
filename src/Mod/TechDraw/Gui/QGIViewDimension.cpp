@@ -36,6 +36,8 @@
   # include <BRepAdaptor_Curve.hxx>
   # include <Precision.hxx>
 
+  # include <QApplication>
+  # include <QDebug>
   # include <QGraphicsScene>
   # include <QGraphicsSceneMouseEvent>
   # include <QPainter>
@@ -52,7 +54,6 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
-#include <Gui/Control.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
@@ -76,7 +77,6 @@
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
 #include "DrawGuiUtil.h"
-#include "TaskDimension.h"
 
 #define NORMAL 0
 #define PRE 1
@@ -99,6 +99,8 @@ QGIDatumLabel::QGIDatumLabel()
     verticalSep = false;
     posX = 0;
     posY = 0;
+
+    parent = nullptr;
 
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(ItemSendsGeometryChanges, true);
@@ -149,10 +151,7 @@ void QGIDatumLabel::mousePressEvent(QGraphicsSceneMouseEvent * event)
         m_ctrl = true;
     }
 
-    if(scene() && this == scene()->mouseGrabberItem()) {
-        Q_EMIT dragFinished();
-    }
-      QGraphicsItem::mousePressEvent(event);
+    QGraphicsItem::mousePressEvent(event);
 }
 
 void QGIDatumLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -164,8 +163,11 @@ void QGIDatumLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIDL::mouseReleaseEvent()\n");
     m_ctrl = false;
-    if(scene() && this == scene()->mouseGrabberItem()) {
-        Q_EMIT dragFinished();
+    if (QLineF(event->screenPos(), event->buttonDownScreenPos(Qt::LeftButton))
+        .length() > 0) {
+        if (scene() && this == scene()->mouseGrabberItem()) {
+            Q_EMIT dragFinished();
+        }
     }
 
     QGraphicsItem::mouseReleaseEvent(event);
@@ -175,13 +177,17 @@ void QGIDatumLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
     QGIViewDimension* qgivDimension = dynamic_cast<QGIViewDimension*>(parentItem());
     if (qgivDimension == nullptr) {
+        qWarning() << "QGIDatumLabel::mouseDoubleClickEvent: No parent item";
         return;
     }
-    auto ViewProvider = static_cast<ViewProviderDimension*>(qgivDimension->getViewProvider(qgivDimension->getViewObject()));
+
+    auto ViewProvider = dynamic_cast<ViewProviderDimension*>(qgivDimension->getViewProvider(qgivDimension->getViewObject()));
     if (ViewProvider == nullptr) {
+        qWarning() << "QGIDatumLabel::mouseDoubleClickEvent: No valid view provider";
         return;
     }
-    Gui::Control().showDialog(new TaskDlgDimension(qgivDimension, ViewProvider));
+
+    ViewProvider->startDefaultEditMode();
     QGraphicsItem::mouseDoubleClickEvent(event);
 }
 

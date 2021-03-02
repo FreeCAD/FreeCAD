@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation>Decimacija...</translation>
+      <translation>Desetkanje ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
       <location filename="../../Command.cpp" line="1466"/>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Decimates a mesh</source>
-      <translation>Decimacija ploskovja</translation>
+      <translation>Zdesetka ploskovje</translation>
     </message>
   </context>
   <context>
@@ -618,12 +618,12 @@
     <message>
       <location filename="../../Command.cpp" line="1831"/>
       <source>Split by components</source>
-      <translation type="unfinished">Split by components</translation>
+      <translation>Razcepi na sestavine</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1832"/>
       <source>Split selected mesh into its components</source>
-      <translation type="unfinished">Split selected mesh into its components</translation>
+      <translation>Razcepi izbrano ploskovje na sestavine</translation>
     </message>
   </context>
   <context>
@@ -740,7 +740,7 @@
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
       <source>Mesh Mesh Create</source>
-      <translation type="unfinished">Mesh Mesh Create</translation>
+      <translation>Ustvari ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -750,68 +750,68 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Mesh union</source>
-      <translation type="unfinished">Mesh union</translation>
+      <translation>Seštevek ploskovja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh difference</source>
-      <translation type="unfinished">Mesh difference</translation>
+      <translation>Razlika ploskovja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="383"/>
       <source>Mesh intersection</source>
-      <translation type="unfinished">Mesh intersection</translation>
+      <translation>Presek ploskovja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Import Mesh</source>
-      <translation type="unfinished">Import Mesh</translation>
+      <translation>Uvozi ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
       <source>Mesh VertexCurvature</source>
-      <translation type="unfinished">Mesh VertexCurvature</translation>
+      <translation>OgliščnaUkrivljenost ploskovja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1414"/>
       <location filename="../../DlgSmoothing.cpp" line="178"/>
       <source>Mesh Smoothing</source>
-      <translation type="unfinished">Mesh Smoothing</translation>
+      <translation>Glajenje ploskovja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1505"/>
       <source>Harmonize mesh normals</source>
-      <translation type="unfinished">Harmonize mesh normals</translation>
+      <translation>Uskladi normale ploskovja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Flip mesh normals</source>
-      <translation type="unfinished">Flip mesh normals</translation>
+      <translation>Obrni normale ploskovja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Fill up holes</source>
-      <translation type="unfinished">Fill up holes</translation>
+      <translation>Zapolni luknje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
       <source>Mesh merge</source>
-      <translation type="unfinished">Mesh merge</translation>
+      <translation>Združi ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
       <source>Mesh split</source>
-      <translation type="unfinished">Mesh split</translation>
+      <translation>Razcepi ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1896"/>
       <source>Mesh scale</source>
-      <translation type="unfinished">Mesh scale</translation>
+      <translation>Velikost ploskovja</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
       <source>Mesh Decimating</source>
-      <translation type="unfinished">Mesh Decimating</translation>
+      <translation>Desetkanje ploskovja</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
@@ -821,47 +821,47 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
       <source>Remove non-manifolds</source>
-      <translation type="unfinished">Remove non-manifolds</translation>
+      <translation>Odstrani nemnogoterosti</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
       <source>Fix indices</source>
-      <translation type="unfinished">Fix indices</translation>
+      <translation>Popravi kazala</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
       <source>Remove degenerated faces</source>
-      <translation type="unfinished">Remove degenerated faces</translation>
+      <translation>Odstrani izrojene ploskve</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
       <source>Remove duplicated faces</source>
-      <translation type="unfinished">Remove duplicated faces</translation>
+      <translation>Odstrani podvojene ploskve</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
       <source>Remove duplicated points</source>
-      <translation type="unfinished">Remove duplicated points</translation>
+      <translation>Odstrani podvojene točke</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
       <source>Fix self-intersections</source>
-      <translation type="unfinished">Fix self-intersections</translation>
+      <translation>Popravi samosečnosti</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
       <source>Remove folds</source>
-      <translation type="unfinished">Remove folds</translation>
+      <translation>Odstrani pregibe</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
       <source>Repair mesh</source>
-      <translation type="unfinished">Repair mesh</translation>
+      <translation>Popravi ploskovje</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="130"/>
       <source>Delete selection</source>
-      <translation type="unfinished">Delete selection</translation>
+      <translation>Izbriši izbor</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="874"/>
@@ -883,7 +883,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1131"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Odsek</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1726"/>
@@ -893,7 +893,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1833"/>
       <source>Fill hole</source>
-      <translation type="unfinished">Fill hole</translation>
+      <translation>Zapolni luknjo</translation>
     </message>
   </context>
   <context>
@@ -901,7 +901,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Decimiranje</translation>
+      <translation>Desetkanje</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
@@ -922,7 +922,7 @@
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="91"/>
       <source>Absolute number</source>
-      <translation>Absolutno število</translation>
+      <translation>Neodnosno število</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -932,7 +932,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation>Absolutno število (Maksimalno: %1)</translation>
+      <translation>Neodnosno število (Največ: %1)</translation>
     </message>
   </context>
   <context>

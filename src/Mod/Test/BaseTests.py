@@ -37,7 +37,7 @@ class ConsoleTestCase(unittest.TestCase):
         # http://python-kurs.eu/threads.php
         try:
             import _thread as thread, time
-        except:
+        except Exception:
             import thread, time
         def adder():
             lock.acquire()
@@ -58,7 +58,7 @@ class ConsoleTestCase(unittest.TestCase):
         # http://python-kurs.eu/threads.php
         try:
             import _thread as thread, time
-        except:
+        except Exception:
             import thread, time
         def adder():
             self.count=self.count+1

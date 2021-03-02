@@ -236,7 +236,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="551"/>
       <location filename="../../Command.cpp" line="665"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Všetky súbory</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="137"/>
@@ -252,7 +252,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="605"/>
       <location filename="../../Command.cpp" line="883"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="451"/>

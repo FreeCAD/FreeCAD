@@ -484,7 +484,7 @@
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Revolve a selected sketch</source>
-      <translation type="unfinished">Revolve a selected sketch</translation>
+      <translation>Padaryti pasirinkto brėžinio sukinį</translation>
     </message>
   </context>
   <context>
@@ -839,13 +839,13 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation type="unfinished">Geometric Primitives</translation>
+      <translation>Geometriniai kūnai</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="54"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="161"/>
       <source>Width:</source>
-      <translation type="unfinished">Width:</translation>
+      <translation>Plotis:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="61"/>
@@ -860,7 +860,7 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="913"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1152"/>
       <source>Height:</source>
-      <translation type="unfinished">Height:</translation>
+      <translation>Aukštis:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="198"/>
@@ -1129,12 +1129,12 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="54"/>
       <source>Primitive parameters</source>
-      <translation type="unfinished">Primitive parameters</translation>
+      <translation>Kūno matai</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="646"/>
       <source>Create primitive</source>
-      <translation type="unfinished">Create primitive</translation>
+      <translation>Sukurti paprastąjį geometrinį kūną</translation>
     </message>
   </context>
   <context>
@@ -2612,7 +2612,7 @@
     <message>
       <location filename="../../Command.cpp" line="1518"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face or body from a single body.</translation>
+      <translation>Pasirinkite kraštinę, sieną ar kūną.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1522"/>

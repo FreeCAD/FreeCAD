@@ -131,7 +131,7 @@ class DocumentBasicCases(unittest.TestCase):
     # test read only mechanismus
     try:
       self.Doc.UndoCount = 3
-    except:
+    except Exception:
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:
       self.fail("no exception thrown")
@@ -176,7 +176,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(L1.Enum  == "Two",     "Different value to 'Two'")
     try:
       L1.Enum = "SurelyNotInThere!"
-    except:
+    except Exception:
       FreeCAD.Console.PrintLog("   exception thrown, OK\n")
     else:
       self.fail("no exception thrown")
@@ -231,7 +231,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.removeObject(L1.Name)
     try:
       L1.Name
-    except:
+    except Exception:
       self.failUnless(True)
     else:
       self.failUnless(False)
@@ -245,7 +245,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.undo()
     try:
       L2.Name
-    except:
+    except Exception:
       self.failUnless(True)
     else:
       self.failUnless(False)
@@ -264,7 +264,7 @@ class DocumentBasicCases(unittest.TestCase):
       grp.addObject(obj)
       self.failUnless(len(grp.Group) == 1)
       self.failUnless(grp.Group[0] == obj)
-    except:
+    except Exception:
       self.failUnless(False)
 
     #test if the method override works
@@ -281,7 +281,7 @@ class DocumentBasicCases(unittest.TestCase):
       self.failUnless(grp2.hasExtension("App::GroupExtension"))
       grp2.addObject(obj)
       self.failUnless(len(grp2.Group) == 0)
-    except:
+    except Exception:
       self.failUnless(True)
 
     self.Doc.removeObject(grp.Name)
@@ -469,7 +469,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
         Active = FreeCAD.activeDocument()
         # Second is still a valid object
         self.failUnless(Second != Active)
-    except:
+    except Exception:
         # Okay, no document open
         self.failUnless(True)
 
@@ -979,7 +979,7 @@ class DocumentGroupCases(unittest.TestCase):
     # Adding the group to itself must fail
     try:
       G1.addObject(G1)
-    except:
+    except Exception:
       FreeCAD.Console.PrintLog("Cannot add group to itself, OK\n")
     else:
       self.fail("Adding the group to itself must not be possible")
@@ -1081,7 +1081,7 @@ class DocumentGroupCases(unittest.TestCase):
         grp = prt1.Group
         grp.append(obj1)
         prt1.Group = grp
-    except:
+    except Exception:
         grp.remove(obj1)
         self.failUnless(prt1.Group == grp)
     else:
@@ -1093,7 +1093,7 @@ class DocumentGroupCases(unittest.TestCase):
     grp.append(obj1)
     try:
         grp1.Group = grp
-    except:
+    except Exception:
         pass
     else:
         self.fail("No exception thrown when object is in multiple Groups")
@@ -1134,7 +1134,7 @@ class DocumentGroupCases(unittest.TestCase):
     prt2.Group = []
     try:
         prt2.Group = [prt2]
-    except:
+    except Exception:
         pass
     else:
         self.fail("Exception is expected")
@@ -1221,7 +1221,7 @@ class DocumentPlatformCases(unittest.TestCase):
       self.Doc = FreeCAD.open(self.DocName)
 
       self.failUnless(self.Doc.Points.Points.count() == 0)
-    except:
+    except Exception:
       pass
 
   def tearDown(self):

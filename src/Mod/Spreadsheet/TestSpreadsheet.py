@@ -773,7 +773,7 @@ class SpreadsheetCases(unittest.TestCase):
         try:
             sheet.setAlias("A2","Test")
             self.fail("An ambiguous alias was set which shouldn't be allowed")
-        except:
+        except Exception:
             self.assertEqual(sheet.getAlias("A2"),None)
 
     def testClearAlias(self):
@@ -788,7 +788,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject("Spreadsheet::Sheet","Calc")
         try:
             sheet.setAlias("A1","B1")
-        except:
+        except Exception:
             self.assertEqual(sheet.getAlias("A1"),None)
         else:
             self.fail("A cell address was used as alias which shouldn't be allowed")
@@ -798,7 +798,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject("Spreadsheet::Sheet","Calc")
         try:
             sheet.setAlias("A1","mA")
-        except:
+        except Exception:
             self.fail("A unit (reserved word) was used as alias which should be allowed by now")
         else:
             self.assertEqual(sheet.getAlias("A1"), "mA")

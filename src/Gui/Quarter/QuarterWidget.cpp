@@ -289,7 +289,7 @@ QuarterWidget::QuarterWidget(QtGLContext * context, QWidget * parent, const QtGL
 void
 QuarterWidget::constructor(const QtGLFormat & format, const QtGLWidget * sharewidget)
 {
-  QGraphicsScene* scene = new QGraphicsScene;
+  QGraphicsScene* scene = new QGraphicsScene(this);
   setScene(scene);
   setViewport(new CustomGLWidget(format, this, sharewidget)); 
   

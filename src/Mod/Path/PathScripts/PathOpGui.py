@@ -1094,6 +1094,8 @@ class TaskPanel(object):
         self.selectionFactory = selectionFactory
         self.obj = obj
         self.isdirty = deleteOnReject
+        self.visibility = obj.ViewObject.Visibility
+        obj.ViewObject.Visibility = True
 
     def isDirty(self):
         '''isDirty() ... returns true if the model is not in sync with the UI anymore.'''
@@ -1137,6 +1139,7 @@ class TaskPanel(object):
         PathSelection.clear()
         FreeCADGui.Selection.removeObserver(self)
         self.obj.ViewObject.Proxy.clearTaskPanel()
+        self.obj.ViewObject.Visibility = self.visibility
 
     def cleanup(self, resetEdit):
         '''cleanup() ... implements common cleanup tasks.'''
@@ -1174,6 +1177,7 @@ class TaskPanel(object):
     def panelSetFields(self):
         '''panelSetFields() ... invoked to trigger a complete transfer of the model's properties to the UI.'''
         PathLog.track()
+        self.obj.Proxy.sanitizeBase(self.obj)
         for page in self.featurePages:
             page.pageSetFields()
 
@@ -1265,7 +1269,8 @@ class CommandSetStartPoint:
         obj.StartPoint.z = obj.ClearanceHeight.Value
 
     def Activated(self):
-        import DraftTools
+        if not hasattr(FreeCADGui, 'Snapper'):
+            import DraftTools
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)
 
 
@@ -1278,6 +1283,7 @@ def Create(res):
     obj = res.objFactory(res.name)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
+        obj.ViewObject.Visibility = False
 
         FreeCAD.ActiveDocument.commitTransaction()
         obj.ViewObject.Document.setEdit(obj.ViewObject, 0)

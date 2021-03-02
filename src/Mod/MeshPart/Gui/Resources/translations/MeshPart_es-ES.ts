@@ -99,12 +99,12 @@ Este comando solo funciona con un objeto 'malla'.</translation>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Trim with plane</source>
-      <translation type="unfinished">Trim with plane</translation>
+      <translation>Cortar con plano</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
-      <translation type="unfinished">Section with plane</translation>
+      <translation>Sección con planos</translation>
     </message>
   </context>
   <context>

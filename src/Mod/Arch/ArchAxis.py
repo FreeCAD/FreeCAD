@@ -461,7 +461,7 @@ class _ViewProviderAxis:
                                     cin = coin.SoInput()
                                     cin.setBuffer(buf)
                                     cob = coin.SoDB.readAll(cin)
-                                except:
+                                except Exception:
                                     import re
                                     # workaround for pivy SoInput.setBuffer() bug
                                     buf = buf.replace("\n","")
@@ -492,7 +492,7 @@ class _ViewProviderAxis:
                                     if vobj.FontName:
                                         try:
                                             fn = str(vobj.FontName)
-                                        except:
+                                        except Exception:
                                             pass
                                 fo.name = fn
                                 fo.size = fs
@@ -560,7 +560,7 @@ class _ViewProviderAxis:
                                     if vobj.FontName:
                                         try:
                                             fn = str(vobj.FontName)
-                                        except:
+                                        except Exception:
                                             pass
                                 fo.name = fn
                                 fo.size = fs

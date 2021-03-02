@@ -21,7 +21,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheet as PathSetupSheet
@@ -87,7 +86,8 @@ def createResourceClone(obj, orig, name, icon):
     clone.addProperty('App::PropertyString', 'PathResource')
     clone.PathResource = name
     if clone.ViewObject:
-        PathIconViewProvider.Attach(clone.ViewObject, icon)
+        import PathScripts.PathIconViewProvider
+        PathScripts.PathIconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
         clone.ViewObject.Transparency = 80
     obj.Document.recompute()  # necessary to create the clone shape
@@ -175,7 +175,8 @@ class ObjectJob:
             obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'SetupSheet holding the settings for this job'))
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
-                PathIconViewProvider.Attach(obj.SetupSheet.ViewObject, 'SetupSheet')
+                import PathScripts.PathIconViewProvider
+                PathScripts.PathIconViewProvider.Attach(obj.SetupSheet.ViewObject, 'SetupSheet')
         self.setupSheet = obj.SetupSheet.Proxy
 
     def setupBaseModel(self, obj, models=None):

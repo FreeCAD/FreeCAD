@@ -156,6 +156,7 @@ SketchObject::SketchObject()
     lastDoF=0;
     lastHasConflict=false;
     lastHasRedundancies=false;
+    lastHasPartialRedundancies=false;
     lastHasMalformedConstraints=false;
     lastSolverStatus=0;
     lastSolveTime=0;
@@ -1573,84 +1574,16 @@ void SketchObject::addGeometryState(const Constraint* cstr) const
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
-    if(cstr->Type == InternalAlignment) {
+    Sketcher::InternalType::InternalType constraintInternalAlignment = InternalType::None;
+    bool constraintBlockedState = false;
 
-        switch(cstr->AlignmentType){
-            case Undef:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::None);
-                break;
-            }
-            case EllipseMajorDiameter:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::EllipseMajorDiameter);
-                break;
-            }
-            case EllipseMinorDiameter:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::EllipseMinorDiameter);
-                break;
-            }
-            case EllipseFocus1:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::EllipseFocus1);
-                break;
-            }
-            case EllipseFocus2:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::EllipseFocus2);
-                break;
-            }
-            case HyperbolaMajor:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::HyperbolaMajor);
-                break;
-            }
-            case HyperbolaMinor:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::HyperbolaMinor);
-                break;
-            }
-            case HyperbolaFocus:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::HyperbolaFocus);
-                break;
-            }
-            case ParabolaFocus:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::ParabolaFocus);
-                break;
-            }
-            case BSplineControlPoint:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::BSplineControlPoint);
-
-                // handle constraint as adimensional
-
-                break;
-            }
-            case BSplineKnotPoint:
-            {
-                auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-                gf->setInternalType(InternalType::BSplineKnotPoint);
-                break;
-            }
-        }
-    }
-    // Assign Blocked geometry mode
-    if(cstr->Type == Block){
+    if (getInternalTypeState(cstr, constraintInternalAlignment)) {
         auto gf = GeometryFacade::getFacade(vals[cstr->First]);
-        gf->setBlocked();
+        gf->setInternalType(constraintInternalAlignment);
+    }
+    else if (getBlockedState(cstr, constraintBlockedState)) {
+        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        gf->setBlocked(constraintBlockedState);
     }
 }
 
@@ -5949,14 +5882,21 @@ bool SketchObject::convertToNURBS(int GeoId)
             std::vector< Constraint * > newcVals(cvals);
 
             int index = cvals.size()-1;
-            // delete constraints on this elements other than coincident constraints (bspline does not support them currently)
+            // delete constraints on this elements other than coincident constraints (bspline does not support them currently), except
+            // for coincidents on mid point of the to-be-converted curve.
             for (; index >= 0; index--) {
-                if (cvals[index]->Type != Sketcher::Coincident && ( cvals[index]->First == GeoId || cvals[index]->Second == GeoId || cvals[index]->Third == GeoId)) {
+                auto otherthancoincident =  cvals[index]->Type != Sketcher::Coincident &&
+                                            (cvals[index]->First == GeoId || cvals[index]->Second == GeoId || cvals[index]->Third == GeoId);
 
+                auto coincidentonmidpoint = cvals[index]->Type == Sketcher::Coincident &&
+                                            (   (cvals[index]->First == GeoId && cvals[index]->FirstPos == Sketcher::mid) ||
+                                                (cvals[index]->Second == GeoId && cvals[index]->SecondPos == Sketcher::mid) );
+
+                if (otherthancoincident || coincidentonmidpoint)
                     newcVals.erase(newcVals.begin()+index);
 
-                }
             }
+
             this->Constraints.setValues(std::move(newcVals));
         }
 
@@ -6868,9 +6808,9 @@ Part::Geometry* projectLine(const BRepAdaptor_Curve& curve, const Handle(Geom_Pl
 
 bool SketchObject::evaluateSupport(void)
 {
-    // returns false if the shape if broken, null or non-planar
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+    // returns false if the shape is broken, null or non-planar
+    App::DocumentObject *link = Support.getValue();
+    if (!link || !link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return false;
     return true;
 }
@@ -7211,86 +7151,86 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                     gp_Dir origAxisMinorDir = elipsOrig.YAxis().Direction();
                     gp_Vec origAxisMinor = elipsOrig.MinorRadius() * gp_Vec(origAxisMinorDir);
 
-                    if (sketchPlane.Position().Direction().IsParallel(elipsOrig.Position().Direction(), Precision::Angular())) {
-                        elipsDest = elipsOrig.Translated(origCenter, destCenter);
-                        Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
-                        Part::GeomEllipse* ellipse = new Part::GeomEllipse();
-                        ellipse->setHandle(curve);
-                        GeometryFacade::setConstruction(ellipse, true);
+                    // Here, it used to be a test for parallel direction between the sketchplane and the elipsOrig, in which
+                    // the original ellipse would be copied and translated to the new position.
+                    // The problem with that approach is that for the sketcher the normal vector is always (0,0,1). If the original
+                    // ellipse was not on the XY plane, the copy will not be either. Then, the dimensions would be wrong because of the
+                    // different major axis direction (which is not projected on the XY plane). So here, we default to the more general
+                    // ellipse construction algorithm.
+                    //
+                    // Doing that solves:
+                    // https://forum.freecadweb.org/viewtopic.php?f=3&t=55284#p477522
 
-                        geos.emplace_back(ellipse);
+                    // GENERAL ELLIPSE CONSTRUCTION ALGORITHM
+                    //
+                    // look for major axis of projected ellipse
+                    //
+                    // t is the parameter along the origin ellipse
+                    //   OM(t) = origCenter
+                    //           + majorRadius * cos(t) * origAxisMajorDir
+                    //           + minorRadius * sin(t) * origAxisMinorDir
+                    gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajor, sketchPlane);
+                    gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
+                    double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
+                    t_max = 0.5 * atan(t_max);  // gives new major axis is most cases, but not all
+                    double t_min = t_max + 0.5 * M_PI;
+
+                    // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
+                    //     becomes the apoapse of the pojected ellipse.
+                    gp_Vec ON_max = origAxisMajor * cos(t_max) + origAxisMinor * sin(t_max);
+                    gp_Vec ON_min = origAxisMajor * cos(t_min) + origAxisMinor * sin(t_min);
+                    gp_Vec destAxisMajor = ProjVecOnPlane_UVN(ON_max, sketchPlane);
+                    gp_Vec destAxisMinor = ProjVecOnPlane_UVN(ON_min, sketchPlane);
+
+                    double RDest = destAxisMajor.Magnitude();
+                    double rDest = destAxisMinor.Magnitude();
+
+                    if (RDest < rDest) {
+                        double rTmp = rDest;
+                        rDest = RDest;
+                        RDest = rTmp;
+                        gp_Vec axisTmp = destAxisMajor;
+                        destAxisMajor = destAxisMinor;
+                        destAxisMinor = axisTmp;
+                    }
+
+                    double sens = sketchAx3.Direction().Dot(elipsOrig.Position().Direction());
+                    gp_Ax2 destCurveAx2(destCenter,
+                            gp_Dir(0, 0, sens > 0.0 ? 1.0 : -1.0),
+                            gp_Dir(destAxisMajor));
+
+                    if ((RDest - rDest) < (double) Precision::Confusion()) {  // projection is a circle
+                        Handle(Geom_Circle) curve = new Geom_Circle(destCurveAx2, 0.5 * (rDest + RDest));
+                        Part::GeomCircle* circle = new Part::GeomCircle();
+                        circle->setHandle(curve);
+                        GeometryFacade::setConstruction(circle, true);
+
+                        geos.emplace_back(circle);
                     }
                     else {
+                        if (sketchPlane.Position().Direction().IsNormal(elipsOrig.Position().Direction(), Precision::Angular())) {
+                            gp_Vec start = gp_Vec(destCenter.XYZ()) + destAxisMajor;
+                            gp_Vec end = gp_Vec(destCenter.XYZ()) - destAxisMajor;
 
-                        // look for major axis of projected ellipse
-                        //
-                        // t is the parameter along the origin ellipse
-                        //   OM(t) = origCenter
-                        //           + majorRadius * cos(t) * origAxisMajorDir
-                        //           + minorRadius * sin(t) * origAxisMinorDir
-                        gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajor, sketchPlane);
-                        gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
-                        double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
-                        t_max = 0.5 * atan(t_max);  // gives new major axis is most cases, but not all
-                        double t_min = t_max + 0.5 * M_PI;
-
-                        // ON_max = OM(t_max) gives the point, which projected on the sketch plane,
-                        //     becomes the apoapse of the pojected ellipse.
-                        gp_Vec ON_max = origAxisMajor * cos(t_max) + origAxisMinor * sin(t_max);
-                        gp_Vec ON_min = origAxisMajor * cos(t_min) + origAxisMinor * sin(t_min);
-                        gp_Vec destAxisMajor = ProjVecOnPlane_UVN(ON_max, sketchPlane);
-                        gp_Vec destAxisMinor = ProjVecOnPlane_UVN(ON_min, sketchPlane);
-
-                        double RDest = destAxisMajor.Magnitude();
-                        double rDest = destAxisMinor.Magnitude();
-
-                        if (RDest < rDest) {
-                            double rTmp = rDest;
-                            rDest = RDest;
-                            RDest = rTmp;
-                            gp_Vec axisTmp = destAxisMajor;
-                            destAxisMajor = destAxisMinor;
-                            destAxisMinor = axisTmp;
-                        }
-
-                        double sens = sketchAx3.Direction().Dot(elipsOrig.Position().Direction());
-                        gp_Ax2 destCurveAx2(destCenter,
-                              gp_Dir(0, 0, sens > 0.0 ? 1.0 : -1.0),
-                              gp_Dir(destAxisMajor));
-
-                        if ((RDest - rDest) < (double) Precision::Confusion()) {  // projection is a circle
-                            Handle(Geom_Circle) curve = new Geom_Circle(destCurveAx2, 0.5 * (rDest + RDest));
-                            Part::GeomCircle* circle = new Part::GeomCircle();
-                            circle->setHandle(curve);
-                            GeometryFacade::setConstruction(circle, true);
-
-                           geos.emplace_back(circle);
+                            Part::GeomLineSegment * projectedSegment = new Part::GeomLineSegment();
+                            projectedSegment->setPoints(Base::Vector3d(start.X(), start.Y(), start.Z()),
+                                                        Base::Vector3d(end.X(), end.Y(), end.Z()));
+                            GeometryFacade::setConstruction(projectedSegment, true);
+                            geos.emplace_back(projectedSegment);
                         }
                         else {
-                            if (sketchPlane.Position().Direction().IsNormal(elipsOrig.Position().Direction(), Precision::Angular())) {
-                                gp_Vec start = gp_Vec(destCenter.XYZ()) + destAxisMajor;
-                                gp_Vec end = gp_Vec(destCenter.XYZ()) - destAxisMajor;
 
-                                Part::GeomLineSegment * projectedSegment = new Part::GeomLineSegment();
-                                projectedSegment->setPoints(Base::Vector3d(start.X(), start.Y(), start.Z()),
-                                                            Base::Vector3d(end.X(), end.Y(), end.Z()));
-                                GeometryFacade::setConstruction(projectedSegment, true);
-                                geos.emplace_back(projectedSegment);
-                            }
-                            else {
-
-                                elipsDest.SetPosition(destCurveAx2);
-                                elipsDest.SetMajorRadius(destAxisMajor.Magnitude());
-                                elipsDest.SetMinorRadius(destAxisMinor.Magnitude());
+                            elipsDest.SetPosition(destCurveAx2);
+                            elipsDest.SetMajorRadius(destAxisMajor.Magnitude());
+                            elipsDest.SetMinorRadius(destAxisMinor.Magnitude());
 
 
-                                Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
-                                Part::GeomEllipse* ellipse = new Part::GeomEllipse();
-                                ellipse->setHandle(curve);
-                                GeometryFacade::setConstruction(ellipse, true);
+                            Handle(Geom_Ellipse) curve = new Geom_Ellipse(elipsDest);
+                            Part::GeomEllipse* ellipse = new Part::GeomEllipse();
+                            ellipse->setHandle(curve);
+                            GeometryFacade::setConstruction(ellipse, true);
 
-                                geos.emplace_back(ellipse);
-                            }
+                            geos.emplace_back(ellipse);
                         }
                     }
                 }
@@ -8677,7 +8617,93 @@ void SketchObject::onUndoRedoFinished()
     // such a recompute
     Constraints.checkConstraintIndices(getHighestCurveIndex(),-getExternalGeometryCount()); // in case it is redoing an operation with invalid data.
     acceptGeometry();
+    synchroniseGeometryState();
     solve();
+}
+
+void SketchObject::synchroniseGeometryState()
+{
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    for(size_t i = 0 ; i < vals.size() ; i++) {
+        auto gf = GeometryFacade::getFacade(vals[i]);
+
+        auto facadeInternalAlignment = gf->getInternalType();
+        auto facadeBlockedState = gf->getBlocked();
+
+        Sketcher::InternalType::InternalType constraintInternalAlignment = InternalType::None;
+        bool constraintBlockedState = false;
+
+        for (auto cstr : Constraints.getValues()) {
+            if(cstr->First == int(i)) {
+                getInternalTypeState(cstr, constraintInternalAlignment);
+                getBlockedState(cstr, constraintBlockedState);
+            }
+        }
+
+        if(constraintInternalAlignment != facadeInternalAlignment)
+            gf->setInternalType(constraintInternalAlignment);
+
+        if(constraintBlockedState != facadeBlockedState)
+            gf->setBlocked(constraintBlockedState);
+
+    }
+}
+
+bool SketchObject::getInternalTypeState(const Constraint * cstr, Sketcher::InternalType::InternalType & internaltypestate) const
+{
+    if(cstr->Type == InternalAlignment) {
+
+        switch(cstr->AlignmentType){
+            case Undef:
+                internaltypestate = InternalType::None;
+                break;
+            case EllipseMajorDiameter:
+                internaltypestate = InternalType::EllipseMajorDiameter;
+                break;
+            case EllipseMinorDiameter:
+                internaltypestate = InternalType::EllipseMinorDiameter;
+                break;
+            case EllipseFocus1:
+                internaltypestate = InternalType::EllipseFocus1;
+                break;
+            case EllipseFocus2:
+                internaltypestate = InternalType::EllipseFocus2;
+                break;
+            case HyperbolaMajor:
+                internaltypestate = InternalType::HyperbolaMajor;
+                break;
+            case HyperbolaMinor:
+                internaltypestate = InternalType::HyperbolaMinor;
+                break;
+            case HyperbolaFocus:
+                internaltypestate = InternalType::HyperbolaFocus;
+                break;
+            case ParabolaFocus:
+                internaltypestate = InternalType::ParabolaFocus;
+                break;
+            case BSplineControlPoint:
+                internaltypestate = InternalType::BSplineControlPoint;
+                break;
+            case BSplineKnotPoint:
+                internaltypestate = InternalType::BSplineKnotPoint;
+                break;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+bool SketchObject::getBlockedState(const Constraint * cstr, bool & blockedstate) const
+{
+    if(cstr->Type == Block) {
+        blockedstate = true;
+        return true;
+    }
+
+    return false;
 }
 
 void SketchObject::onDocumentRestored()
@@ -8735,6 +8761,8 @@ void SketchObject::restoreFinished()
                 FC_WARN("Failed to restore some external geometry in " << getFullName());
         }else
             acceptGeometry();
+
+        synchroniseGeometryState();
 
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before

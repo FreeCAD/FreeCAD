@@ -78,9 +78,9 @@ DlgBindSheet::DlgBindSheet(Sheet *sheet, const std::vector<Range> &ranges, QWidg
     ui->lineEditFromEnd->setText(QString::fromLatin1(range.to().toString().c_str()));
 
     ui->lineEditToStart->setDocumentObject(sheet,false);
-    ui->lineEditToStart->setPrefix('=');
+    ui->lineEditToStart->setLeadChar('=');
     ui->lineEditToEnd->setDocumentObject(sheet,false);
-    ui->lineEditToEnd->setPrefix('=');
+    ui->lineEditToEnd->setLeadChar('=');
 
     ui->lineEditToStart->setText(QLatin1String(toStart.c_str()));
     ui->lineEditToEnd->setText(QLatin1String(toEnd.c_str()));

@@ -2012,9 +2012,16 @@ public:
  * @param parent Parent object owning the completer.
  */
 ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj,
-        QObject *parent, bool noProperty, bool checkInList)
-    : QCompleter(parent), currentObj(currentDocObj)
-    , noProperty(noProperty), checkInList(checkInList), searchUnit(false)
+                                         QObject *parent,
+                                         bool noProperty,
+                                         bool checkInList,
+                                         char leadChar)
+    : QCompleter(parent)
+    , currentObj(currentDocObj)
+    , noProperty(noProperty)
+    , checkInList(checkInList)
+    , searchUnit(false)
+    , leadChar(leadChar)
 {
     setCaseSensitivity(ExprParams::CompleterCaseSensitive()
             ? Qt::CaseSensitive : Qt::CaseInsensitive);
@@ -2213,7 +2220,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     std::string completionPrefix;
 
     // Compute start; if prefix starts with =, start parsing from offset 1.
-    int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
+    int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1(leadChar ? leadChar : '=')) ? 1 : 0;
 
     std::string expression = Base::Tools::toStdString(prefix.mid(start));
 
@@ -2221,9 +2228,9 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
 
     // No tokens
-    if (tokens.empty()) {
-        if (popup())
-            popup()->setVisible(false);
+    if (tokens.size() == 0) {
+        if (auto p = popup())
+            p->setVisible(false);
         return;
     }
 
@@ -2491,12 +2498,12 @@ bool ExpressionCompleter::eventFilter(QObject *o, QEvent *e) {
     return QCompleter::eventFilter(o, e);
 }
 
-ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char checkPrefix, bool checkInList)
+ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char leadChar, bool checkInList)
     : QLineEdit(parent)
-    , completer(0)
+    , completer(nullptr)
     , noProperty(noProperty)
     , checkInList(checkInList)
-    , checkPrefix(checkPrefix)
+    , leadChar(leadChar)
     , searchUnit(false)
     , exactMatch(false)
 {
@@ -2504,8 +2511,8 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char ch
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
 
-void ExpressionLineEdit::setPrefix(char prefix) {
-    checkPrefix = prefix;
+void ExpressionLineEdit::setLeadChar(char lead) {
+    leadChar = lead;
 }
 
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj, bool _checkInList)
@@ -2516,7 +2523,7 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         return;
     }
     if (currentDocObj != 0) {
-        completer = new ExpressionCompleter(currentDocObj, this, noProperty, checkInList);
+        completer = new ExpressionCompleter(currentDocObj, this, noProperty, checkInList, leadChar);
         completer->setSearchUnit(searchUnit);
         completer->setWidget(this);
 #if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
@@ -2562,7 +2569,7 @@ void ExpressionLineEdit::hideCompleter()
 
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
-    if(!text.size() || (checkPrefix && text[0]!=QLatin1Char(checkPrefix)))
+    if(!text.size() || (leadChar && text[0]!=QLatin1Char(leadChar)))
         return;
     if (!text.startsWith(QLatin1Char('\'')))
         Q_EMIT textChanged2(text,cursorPosition());
@@ -2619,7 +2626,7 @@ void ExpressionLineEdit::resizeEvent(QResizeEvent *ev)
 
 ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     : QPlainTextEdit(parent)
-    , completer(0)
+    , completer(nullptr)
     , block(true)
     , exactMatch(false)
 {
@@ -2642,7 +2649,7 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
         return;
     }
 
-    if (currentDocObj != 0) {
+    if (currentDocObj != nullptr) {
         completer = new ExpressionCompleter(currentDocObj, this);
 #if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)

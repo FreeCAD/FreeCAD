@@ -2056,7 +2056,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="391"/>
       <source>Center</source>
-      <translation>Центар</translation>
+      <translation>По средини</translation>
     </message>
   </context>
   <context>

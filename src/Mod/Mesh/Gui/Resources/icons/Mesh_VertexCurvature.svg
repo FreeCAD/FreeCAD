@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg3020"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="Mesh_Curvature_Plot.svg">
+  <title
+     id="title3751">Mesh_Curvature_Plot</title>
+  <defs
+     id="defs3022">
+    <linearGradient
+       gradientTransform="matrix(1.941149,0,0,1.0357143,-54.928788,-2.8197163)"
+       inkscape:collect="always"
+       xlink:href="#linearGradient3800"
+       id="linearGradient3806"
+       x1="56.115623"
+       y1="61.619038"
+       x2="56.115623"
+       y2="5.6190362"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3800">
+      <stop
+         style="stop-color:#010cf9;stop-opacity:1;"
+         offset="0"
+         id="stop3802" />
+      <stop
+         id="stop3818"
+         offset="0.15384617"
+         style="stop-color:#229bb7;stop-opacity:1;" />
+      <stop
+         id="stop3816"
+         offset="0.30769232"
+         style="stop-color:#44cb75;stop-opacity:1;" />
+      <stop
+         id="stop3814"
+         offset="0.5"
+         style="stop-color:#36fa0c;stop-opacity:1;" />
+      <stop
+         id="stop3812"
+         offset="0.65384614"
+         style="stop-color:#f7f501;stop-opacity:1;" />
+      <stop
+         id="stop3808"
+         offset="0.88461536"
+         style="stop-color:#f57f01;stop-opacity:1;" />
+      <stop
+         style="stop-color:#f90b01;stop-opacity:1;"
+         offset="1"
+         id="stop3804" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="10.442839"
+     inkscape:cx="14.715428"
+     inkscape:cy="32"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="800"
+     inkscape:window-height="836"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3028"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       spacingx="1px"
+       spacingy="1px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata3025">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Mesh_Curvature_Plot</dc:title>
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:description>Mesh with color coded faces and a multicolored bar shaped legend</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>color</rdf:li>
+            <rdf:li>plot</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh_Curvature_Plot.svg</dc:identifier>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>Fri Dec 20 16:28:14 2013 +0100</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <g
+       id="g3033"
+       transform="matrix(1,0,0,1.0717579,3.427026,6.2507587)"
+       style="stroke-width:1.93188667">
+      <path
+         style="fill:#cc0000;fill-opacity:1;stroke:#280000;stroke-width:1.93188667;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 19.572974,49.217497 4,-29.857489 16,-3.732186 z"
+         id="path4460"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <path
+         style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 24,56 42,24"
+         id="path3788"
+         inkscape:connector-curvature="0"
+         transform="matrix(1,0,0,0.93304654,-4.427026,-6.7652953)"
+         sodipodi:nodetypes="cc" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path4452"
+         d="m 19.572974,-3.0331087 20,18.6609317 -16,3.732185 z"
+         style="fill:#fce94f;fill-opacity:1;stroke:#2c2700;stroke-width:1.93188667;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         style="fill:none;stroke:#ef2929;stroke-width:1.93188667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 23.572974,21.226101 14,-3.732186"
+         id="path3788-4"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ef2929;stroke-width:1.93188667;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 25.572974,19.360008 22.408646,43.039711"
+         id="path3024"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#280000;stroke-width:1.93188667;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 19.572974,49.217498 4,-29.85749 16,-3.732186 z"
+         id="path4460-1"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+    </g>
+    <path
+       style="fill:#3465a4;fill-opacity:1;stroke:#0b1521;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 23,59 3,19 27,27 z"
+       id="path4460-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 5,21 22,8"
+       id="path3801-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:url(#linearGradient3806);fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="M 61,2.9999999 61,61 47,61 47,2.9999999 z"
+       id="path3030"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 23,55 5,19"
+       id="path3801"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 25,27 21.449977,54.950207"
+       id="path3004"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#0b1521;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 23,59 3,19 27,27 z"
+       id="path4460-3-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#8ae234;fill-opacity:1;stroke:#172a04;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 3,19.000001 23,3 27,27 z"
+       id="path3029"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+  </g>
+</svg>

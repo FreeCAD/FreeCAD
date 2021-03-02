@@ -1477,7 +1477,9 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
 
     switch(Reason.Type) {
     case SelectionChanges::RmvPreselect: {
-        SoFCHighlightAction cAct(SelectionChanges::RmvPreselect);
+        //Hint: do not create a tmp. instance of SelectionChanges
+        SelectionChanges selChanges(SelectionChanges::RmvPreselect);
+        SoFCHighlightAction cAct(selChanges);
         cAct.apply(pcViewProviderRoot);
         break;
     }

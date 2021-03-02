@@ -265,7 +265,7 @@
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Cellen verticaal centreren</translation>
     </message>
     <message>
       <source>Set bold text</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Cursieve tekst instellen</translation>
     </message>
     <message>
       <source>Set underline text</source>
@@ -285,11 +285,11 @@
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Celeigenschappen instellen</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Cel bewerken</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -309,11 +309,11 @@
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Voorgrondkleur instellen</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Achtergrondkleur instellen</translation>
     </message>
   </context>
   <context>

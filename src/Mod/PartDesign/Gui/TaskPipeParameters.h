@@ -34,10 +34,6 @@
 #include "ViewProviderPipe.h"
 #include "TaskDressUpParameters.h"
 
-class Ui_TaskPipeParameters;
-class Ui_TaskPipeOrientation;
-class Ui_TaskPipeScaling;
-
 
 namespace App {
 class Property;
@@ -49,6 +45,9 @@ class ViewProvider;
 
 namespace PartDesignGui { 
 
+class Ui_TaskPipeParameters;
+class Ui_TaskPipeOrientation;
+class Ui_TaskPipeScaling;
 
 
 class TaskPipeParameters : public TaskSketchBasedParameters
@@ -82,6 +81,9 @@ private:
 
 public:
     void exitSelectionMode();
+
+    ViewProviderPipe* getPipeView() const
+    { return static_cast<ViewProviderPipe*>(vp); }
 
 private:
     QWidget* proxy;
@@ -143,7 +145,6 @@ public:
     TaskPipeScaling(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
     virtual ~TaskPipeScaling();
 
- 
 private Q_SLOTS:
     void onScalingChanged(int);
     void onButtonRefAdd(bool checked);
