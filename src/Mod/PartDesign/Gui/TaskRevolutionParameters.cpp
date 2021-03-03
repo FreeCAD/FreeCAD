@@ -93,6 +93,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         this->propMidPlane = &(rev->Midplane);
         this->propReferenceAxis = &(rev->ReferenceAxis);
         this->propReversed = &(rev->Reversed);
+        ui->revolveAngle->bind(rev->Angle);
     } else {
         assert(pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId()));
         PartDesign::Groove* rev = static_cast<PartDesign::Groove*>(vp->getObject());
@@ -100,25 +101,22 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         this->propMidPlane = &(rev->Midplane);
         this->propReferenceAxis = &(rev->ReferenceAxis);
         this->propReversed = &(rev->Reversed);
+        ui->revolveAngle->bind(rev->Angle);
     }
 
-    double l = propAngle->getValue();
     bool mirrored = propMidPlane->getValue();
     bool reversed = propReversed->getValue();
 
-    ui->revolveAngle->setValue(l);
+    ui->revolveAngle->setValue(propAngle->getValue());
+    ui->revolveAngle->setMaximum(propAngle->getMaximum());
+    ui->revolveAngle->setMinimum(propAngle->getMinimum());
+
     blockUpdate = false;
     updateUI();
 
 
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);
-
-    if (pcFeat->isDerivedFrom(PartDesign::Revolution::getClassTypeId())) {
-        ui->revolveAngle->bind(static_cast<PartDesign::Revolution *>(pcFeat)->Angle);
-    } else if (pcFeat->isDerivedFrom(PartDesign::Groove::getClassTypeId())) {
-        ui->revolveAngle->bind(static_cast<PartDesign::Groove *> (pcFeat)->Angle);
-    }
 
     ui->revolveAngle->blockSignals(false);
     ui->axis->blockSignals(false);
