@@ -53,7 +53,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::ProfileBased)
 
-const App::PropertyAngle::Constraints floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360, 1.0 };
+const App::PropertyAngle::Constraints Revolution::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
 
 Revolution::Revolution()
 {
