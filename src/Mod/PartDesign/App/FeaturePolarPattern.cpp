@@ -74,7 +74,8 @@ short PolarPattern::mustExecute() const
 const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     double angle = Angle.getValue();
-    if (angle < Precision::Confusion())
+    double radians = Base::toRadians<double>(angle);
+    if (radians < Precision::Angular())
         throw Base::ValueError("Pattern angle too small");
     int occurrences = Occurrences.getValue();
     if (occurrences < 1)
@@ -92,9 +93,9 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     bool reversed = Reversed.getValue();
     double offset;
     if (std::fabs(angle - 360.0) < Precision::Confusion())
-        offset = Base::toRadians<double>(angle) / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
+        offset = radians / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
     else
-        offset = Base::toRadians<double>(angle) / (occurrences - 1);
+        offset = radians / (occurrences - 1);
 
     App::DocumentObject* refObject = Axis.getValue();
     if (refObject == NULL)
