@@ -135,6 +135,9 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *Helix
     ui->height->setValue(height);
     ui->turns->setValue(turns);
     ui->coneAngle->setValue(angle);
+    ui->coneAngle->setMinimum(propAngle->getMinimum());
+    ui->coneAngle->setMaximum(propAngle->getMaximum());
+    ui->coneAngle->setSingleStep(propAngle->getStepSize());
     ui->checkBoxLeftHanded->setChecked(leftHanded);
     ui->checkBoxReversed->setChecked(reversed);
     ui->inputMode->setCurrentIndex(index);
