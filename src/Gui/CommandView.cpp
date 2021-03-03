@@ -3452,9 +3452,9 @@ void StdCmdItemMenu::activated(int iMsg)
     QMenu menu;
     App::SubObjectT ctxobj;
     SelectionContext sctx;
-    TreeWidget::setupObjectMenu(menu, &ctxobj);
+    TreeWidget::setupObjectMenu(menu, nullptr, &ctxobj);
     Selection().setContext(ctxobj);
-    PieMenu::exec(&menu, QCursor::pos());
+    PieMenu::exec(&menu, QCursor::pos(), getName());
 }
 
 //=======================================================================
