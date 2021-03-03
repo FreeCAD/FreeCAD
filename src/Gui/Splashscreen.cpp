@@ -276,6 +276,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 //    }
     ui->tabWidget->setCurrentIndex(0); // always start on the About tab
     setupLabels();
+    showCredits();
     showLicenseInformation();
     showLibraryInformation();
     showCollectionInformation();
@@ -548,6 +549,43 @@ public:
     QString url;
 };
 
+void AboutDialog::showCredits()
+{
+    QString creditsFileURL = QString::fromLatin1("%1/CONTRIBUTORS")
+        .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+    QFile creditsFile(creditsFileURL);
+
+    if (!creditsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+
+    QWidget* tab_credits = new QWidget();
+    tab_credits->setObjectName(QString::fromLatin1("tab_credits"));
+    ui->tabWidget->addTab(tab_credits, tr("Credits"));
+    QVBoxLayout* hlayout = new QVBoxLayout(tab_credits);
+    QTextBrowser* textField = new QTextBrowser(tab_credits);
+    textField->setOpenExternalLinks(false);
+    textField->setOpenLinks(false);
+    hlayout->addWidget(textField);
+
+    QString creditsHTML = QString::fromLatin1("<html><body><h1>Credits</h1><p>FreeCAD would not be possible without the contributions of:</p><ul>");
+
+    QTextStream stream(&creditsFile);
+    QString line;
+    while (stream.readLineInto(&line)) {
+        if (!line.isEmpty()) {
+            if (line == QString::fromLatin1("Firms")) {
+                creditsHTML += QString::fromLatin1("</ul><h2>Firms</h2><ul>");
+            } 
+            else {
+                creditsHTML += QString::fromLatin1("<li>") + line + QString::fromLatin1("</li>");
+            }
+        }
+    }
+    creditsHTML += QString::fromLatin1("</ul></body></html>");
+    textField->setHtml(creditsHTML);
+}
+
 void AboutDialog::showLicenseInformation()
 {
     QString licenseFileURL = QString::fromLatin1("%1/LICENSE.html")
@@ -558,7 +596,7 @@ void AboutDialog::showLicenseInformation()
         return; // Leave the existing license placeholder there if we can't find our license html file
     }
 
-    ui->tabWidget->removeTab (2); // Hide the license placeholder widget
+    ui->tabWidget->removeTab (1); // Hide the license placeholder widget
 
     QWidget* tab_license = new QWidget();
     tab_license->setObjectName(QString::fromLatin1("tab_license"));

@@ -101,6 +101,7 @@ public:
 
 protected:
     void setupLabels();
+    void showCredits();
     void showLicenseInformation();
     void showLibraryInformation();
     void showCollectionInformation();
