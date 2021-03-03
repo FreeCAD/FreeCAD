@@ -1468,21 +1468,6 @@ void SoBoxSelectionRenderAction::beginTraversal(SoNode *node)
     inherited::beginTraversal(node);
 }
 
-static std::string pathToSubname(const SoPath *path)
-{
-    std::ostringstream ss;
-    auto doc = Gui::Application::Instance->activeDocument();
-    for (int i=0, c=path->getLength(); i<c; ++i) {
-        auto node = path->getNode(i);
-        if (node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
-            auto vp = doc->getViewProvider(node);
-            if (vp)
-                ss << vp->getObject()->getNameInDocument() << ".";
-        }
-    }
-    return ss.str();
-}
-
 bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool copy, int priority)
 {
     int current = PRIVATE(this)->currentdelayedpath;
@@ -1505,7 +1490,21 @@ bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool cop
     // arbitary order traversing with its head/tailChild field. Other node will
     // likely cause crash because of insufficient checking in
     // SoChildList::traverseInPath() and SoSeparator::GLRenderInPath().
-#if 0
+#if 1
+    auto pathToSubname = [](const SoPath *path) {
+        std::ostringstream ss;
+        auto doc = Gui::Application::Instance->activeDocument();
+        for (int i=0, c=path->getLength(); i<c; ++i) {
+            auto node = path->getNode(i);
+            if (node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+                auto vp = doc->getViewProvider(node);
+                if (vp)
+                    ss << vp->getObject()->getNameInDocument() << ".";
+            }
+        }
+        return ss.str();
+    };
+
     if (pathlist.getLength()) {
         for (int i=1; i<path->getLength(); ++i) {
             SoNode *node = path->getNode(i-1);
