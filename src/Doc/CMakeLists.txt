@@ -3,6 +3,8 @@ configure_file(ThirdPartyLibraries.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html COPYONLY)
 configure_file(LICENSE.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/LICENSE.html COPYONLY)
+configure_file(CONTRIBUTORS
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/CONTRIBUTORS COPYONLY)
 
 
 
@@ -31,6 +33,7 @@ INSTALL(FILES
     freecad.qhc
     ThirdPartyLibraries.html
     LICENSE.html
+    CONTRIBUTORS
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 
