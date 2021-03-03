@@ -103,7 +103,7 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
     setupUI();
 }
 
-void TaskPolarPatternParameters::setupUI()
+void TaskPolarPatternParameters::connectSignals()
 {
     connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
     connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
@@ -121,9 +121,6 @@ void TaskPolarPatternParameters::setupUI()
     connect(ui->listWidgetFeatures->model(),
         SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this, SLOT(indexesMoved()));
 
-    ui->spinOccurrences->setMaximum(INT_MAX);
-    ui->spinOccurrences->setMinimum(1);
-
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     updateViewTimer->setInterval(getUpdateViewTimeout());
@@ -140,7 +137,10 @@ void TaskPolarPatternParameters::setupUI()
             this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
+}
 
+void TaskPolarPatternParameters::setupUI()
+{
     // Get the feature data
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
     std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
@@ -159,6 +159,8 @@ void TaskPolarPatternParameters::setupUI()
 
     ui->polarAngle->bind(pcPolarPattern->Angle);
     ui->spinOccurrences->bind(pcPolarPattern->Occurrences);
+    ui->spinOccurrences->setMaximum(pcPolarPattern->Occurrences.getMaximum());
+    ui->spinOccurrences->setMinimum(pcPolarPattern->Occurrences.getMinimum());
 
     ui->comboAxis->setEnabled(true);
     ui->checkReverse->setEnabled(true);
@@ -189,6 +191,7 @@ void TaskPolarPatternParameters::setupUI()
     }
 
     updateUI();
+    connectSignals();
 }
 
 void TaskPolarPatternParameters::updateUI()
