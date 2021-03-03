@@ -149,7 +149,7 @@ private:
     void renderShape(SoGLRenderAction *action);
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
-    void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
+    void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true, bool checkOnTop=false);
     void _renderSelection(SoGLRenderAction *action, SbColor color, int push);
 
     int overrideMaterialBinding(SoGLRenderAction *action,

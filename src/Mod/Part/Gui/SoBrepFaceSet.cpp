@@ -665,7 +665,7 @@ void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)
                 return;
             }
             if(inpath)
-                renderSelection(action,ctx); 
+                renderSelection(action,ctx,true,true); 
         }
         if(ctx2) {
             if (!inpath)
@@ -713,7 +713,7 @@ void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)
         if(notify) enableNotify(notify);
         state->pop();
     }else if(inpath) {
-        renderSelection(action,ctx); 
+        renderSelection(action,ctx,true,true); 
         renderHighlight(action,ctx);
     }
 
@@ -1694,10 +1694,17 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
             return;
     }
 
-    _renderSelection(action, color, action->isRenderingDelayedPaths() ? 2 : 1);
+    if (action->isRenderingDelayedPaths()
+            && Gui::ViewParams::ShowPreSelectedFaceOnTop())
+        _renderSelection(action, color, 2);
+    else
+        _renderSelection(action, color, 1);
 }
 
-void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
+void SoBrepFaceSet::renderSelection(SoGLRenderAction *action,
+                                    SelContextPtr ctx,
+                                    bool push,
+                                    bool checkOnTop)
 {
     if(!ctx || !ctx->isSelected())
         return;
@@ -1732,19 +1739,27 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     } else
         push = false;
 
-    _renderSelection(action, color, push ? 1 : 0);
+    int pushType = push ? 1 : 0;
+    if (action->isRenderingDelayedPaths()
+            && push
+            && checkOnTop
+            && Gui::ViewParams::getShowSelectionOnTop()
+            && Gui::ViewParams::getShowSelectionBoundingBox())
+        pushType = 2;
+
+    _renderSelection(action, color, pushType);
 }
 
-void SoBrepFaceSet::_renderSelection(SoGLRenderAction *action, SbColor color, int push)
+void SoBrepFaceSet::_renderSelection(SoGLRenderAction *action, SbColor color, int pushType)
 {
     bool resetMatIndices = false;
     SoState * state = action->getState();
 
     Gui::FCDepthFunc guard;
-    if(push) {
+    if(pushType) {
         state->push();
 
-        if (push > 1 && Gui::ViewParams::ShowPreSelectedFaceOnTop()) {
+        if (pushType > 1) {
             guard.set(GL_ALWAYS);
             highlightTransparency = Gui::ViewParams::getSelectionTransparency();
             SoLazyElement::setTransparency(state,this,1,&highlightTransparency,&packer);
@@ -1807,7 +1822,7 @@ void SoBrepFaceSet::_renderSelection(SoGLRenderAction *action, SbColor color, in
 
     renderShape(action);
 
-    if(push) {
+    if(pushType) {
         if(resetMatIndices) {
             SbBool notify = enableNotify(FALSE);
             materialIndex.setNum(0);
