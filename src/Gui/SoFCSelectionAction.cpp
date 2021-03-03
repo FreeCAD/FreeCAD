@@ -57,15 +57,8 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
-#include "SoFCUnifiedSelection.h"
-#include "SoFCSelectionAction.h"
-#include "SoFCSelection.h"
-#include "SoFCUnifiedSelection.h"
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoSwitchElement.h>
-#include "Selection.h"
-#include "ViewParams.h"
-
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -94,6 +87,16 @@
 #include <Inventor/nodes/SoProfileCoordinate3.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTransformation.h>
+
+#include "SoFCUnifiedSelection.h"
+#include "SoFCSelectionAction.h"
+#include "SoFCSelection.h"
+#include "SoFCUnifiedSelection.h"
+#include "Application.h"
+#include "Document.h"
+#include "Selection.h"
+#include "ViewProviderDocumentObject.h"
+#include "ViewParams.h"
 
 FC_LOG_LEVEL_INIT("Gui", true, true);
 
@@ -1465,6 +1468,21 @@ void SoBoxSelectionRenderAction::beginTraversal(SoNode *node)
     inherited::beginTraversal(node);
 }
 
+static std::string pathToSubname(const SoPath *path)
+{
+    std::ostringstream ss;
+    auto doc = Gui::Application::Instance->activeDocument();
+    for (int i=0, c=path->getLength(); i<c; ++i) {
+        auto node = path->getNode(i);
+        if (node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+            auto vp = doc->getViewProvider(node);
+            if (vp)
+                ss << vp->getObject()->getNameInDocument() << ".";
+        }
+    }
+    return ss.str();
+}
+
 bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool copy, int priority)
 {
     int current = PRIVATE(this)->currentdelayedpath;
@@ -1497,9 +1515,10 @@ bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool cop
                 if (i >= p->getLength() || p->getNode(i-1) != node)
                     continue;
                 if (p->getIndex(i) > index
-                        && !node->isOfType(SoFCSwitch::getClassTypeId()))
+                        && !node->isOfType(SoFCSwitch::getClassTypeId())
+                        && !node->isOfType(SoFCSelectionRoot::getClassTypeId()))
                 {
-                    FC_ERR("found");
+                    FC_ERR("found " << pathToSubname(p) << " v.s " << pathToSubname(path));
                 }
             }
         }

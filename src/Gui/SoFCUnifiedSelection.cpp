@@ -1976,6 +1976,7 @@ void SoFCSeparator::finish()
     atexit_cleanup();
 }
 
+
 // ---------------------------------------------------------------------------------
 // Thread local data for bounding box rendering
 //
@@ -2334,6 +2335,60 @@ struct SelectionRootPathCode {
     int &code;
 };
 
+static void _GLRenderInPath(SoNode *node, SoGLRenderAction * action)
+{
+    int numindices;
+    const int * indices;
+
+    SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+
+    if (pathcode == SoAction::IN_PATH) {
+        SoState * state = action->getState();
+        SoChildList * children = node->getChildren();
+        if (!children)
+            return;
+        SoNode ** childarray = (SoNode**) children->getArrayPtr();
+        state->push();
+        int childidx = 0;
+        for (int i = 0; i < numindices; i++) {
+            int stop = indices[i];
+            // This whole function is copied from SoSeparator::GLRenderInPath()
+            // except the following if statement. This extra check make is
+            // possible to traverse in a path list out of order without
+            // expensive sorting.
+            if (childidx > stop)
+                continue;
+            for (; childidx < stop && !action->hasTerminated(); childidx++) {
+                SoNode * offpath = childarray[childidx];
+                if (offpath->affectsState()) {
+                    action->pushCurPath(childidx, offpath);
+                    if (!action->abortNow()) {
+                        offpath->GLRenderOffPath(action); // traversal call
+                    }
+                    else {
+                        SoCacheElement::invalidate(state);
+                    }
+                    action->popCurPath(pathcode);
+                }
+            }
+            SoNode * inpath = childarray[childidx];
+            action->pushCurPath(childidx, inpath);
+            if (!action->abortNow()) {
+                inpath->GLRenderInPath(action); // traversal call
+            }
+            else {
+                SoCacheElement::invalidate(state);
+            }
+            action->popCurPath(pathcode);
+            childidx++;
+        }
+        state->pop();
+    }
+    else if (pathcode == SoAction::BELOW_PATH) {
+        node->GLRenderBelowPath(action);
+    }
+}
+
 void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
     if(renderPathCode) {
         std::time_t t = std::time(0);
@@ -2350,7 +2405,7 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
     SelStack.push_back(this);
     if(_renderPrivate(action,inPath,pushed)) {
         if(inPath)
-            inherited::GLRenderInPath(action);
+            _GLRenderInPath(this, action);
         else
             inherited::GLRenderBelowPath(action);
     }
@@ -2383,7 +2438,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
         } else {
             if(!SoFCSwitch::testTraverseState(SoFCSwitch::TraverseInvisible)) {
                 if(inPath)
-                    inherited::GLRenderInPath(action);
+                    _GLRenderInPath(this, action);
                 else
                     inherited::GLRenderBelowPath(action);
             }
@@ -2442,7 +2497,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
 
     if(!ctx) {
         if(inPath)
-            inherited::GLRenderInPath(action);
+            _GLRenderInPath(this, action);
         else
             inherited::GLRenderBelowPath(action);
     } else {
@@ -2475,7 +2530,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
         }
 
         if(inPath)
-            inherited::GLRenderInPath(action);
+            _GLRenderInPath(this, action);
         else
             inherited::GLRenderBelowPath(action);
 
