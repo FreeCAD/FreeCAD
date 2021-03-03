@@ -263,6 +263,7 @@ bool TaskDlgSketchBasedParameters::accept() {
 bool TaskDlgSketchBasedParameters::reject()
 {
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    App::DocumentObjectWeakPtrT weakptr(pcSketchBased);
     // get the Sketch
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Profile.getValue());
     bool rv;
@@ -272,7 +273,7 @@ bool TaskDlgSketchBasedParameters::reject()
 
     // if abort command deleted the object the sketch is visible again.
     // The previous one feature already should be made visible
-    if (!Gui::Application::Instance->getViewProvider(pcSketchBased)) {
+    if (weakptr.expired()) {
         // Make the sketch visible
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
