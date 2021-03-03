@@ -96,8 +96,8 @@ class GuiExport AboutDialog : public QDialog
     Q_OBJECT
 
 public:
-    AboutDialog(bool showLic, QWidget* parent = 0);
-    ~AboutDialog();
+    AboutDialog(QWidget* parent = 0);
+    ~AboutDialog() = default;
 
 protected:
     void setupLabels();
@@ -105,13 +105,15 @@ protected:
     void showLicenseInformation();
     void showLibraryInformation();
     void showCollectionInformation();
+    
+    QString getAdditionalLicenseInformation();
 
 protected Q_SLOTS:
     virtual void on_copyButton_clicked();
     void linkActivated(const QUrl& link);
 
 private:
-    Ui_AboutApplication* ui;
+    std::unique_ptr<Ui_AboutApplication> ui;
     class LibraryInfo;
 };
 
