@@ -81,12 +81,13 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
 {
     // Validate parameters
     double angle = Angle.getValue();
-    if (angle < Precision::Confusion())
-        return new App::DocumentObjectExecReturn("Angle of revolution too small");
     if (angle > 360.0)
         return new App::DocumentObjectExecReturn("Angle of revolution too large");
 
     angle = Base::toRadians<double>(angle);
+    if (angle < Precision::Angular())
+        return new App::DocumentObjectExecReturn("Angle of revolution too small");
+
     // Reverse angle if selected
     if (Reversed.getValue() && !Midplane.getValue())
         angle *= (-1.0);
