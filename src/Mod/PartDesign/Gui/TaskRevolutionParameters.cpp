@@ -65,25 +65,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     proxy = new QWidget(this);
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
-
-    connect(ui->revolveAngle, SIGNAL(valueChanged(double)),
-            this, SLOT(onAngleChanged(double)));
-    connect(ui->axis, SIGNAL(activated(int)),
-            this, SLOT(onAxisChanged(int)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplane(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversed(bool)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
-
     this->groupLayout()->addWidget(proxy);
-
-    // Temporarily prevent unnecessary feature recomputes
-    ui->revolveAngle->blockSignals(true);
-    ui->axis->blockSignals(true);
-    ui->checkBoxMidplane->blockSignals(true);
-    ui->checkBoxReversed->blockSignals(true);
 
     //bind property mirrors
     PartDesign::ProfileBased* pcFeat = static_cast<PartDesign::ProfileBased*>(vp->getObject());
@@ -104,8 +86,8 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         ui->revolveAngle->bind(rev->Angle);
     }
 
-    bool mirrored = propMidPlane->getValue();
-    bool reversed = propReversed->getValue();
+    ui->checkBoxMidplane->setChecked(propMidPlane->getValue());
+    ui->checkBoxReversed->setChecked(propReversed->getValue());
 
     ui->revolveAngle->setValue(propAngle->getValue());
     ui->revolveAngle->setMaximum(propAngle->getMaximum());
@@ -113,15 +95,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
 
     blockUpdate = false;
     updateUI();
-
-
-    ui->checkBoxMidplane->setChecked(mirrored);
-    ui->checkBoxReversed->setChecked(reversed);
-
-    ui->revolveAngle->blockSignals(false);
-    ui->axis->blockSignals(false);
-    ui->checkBoxMidplane->blockSignals(false);
-    ui->checkBoxReversed->blockSignals(false);
+    connectSignals();
 
     setFocus ();
 
@@ -219,6 +193,20 @@ void TaskRevolutionParameters::addAxisToCombo(App::DocumentObject* linkObj,
     this->axesInList.push_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &lnk = *(axesInList[axesInList.size()-1]);
     lnk.setValue(linkObj,std::vector<std::string>(1,linkSubname));
+}
+
+void TaskRevolutionParameters::connectSignals()
+{
+    connect(ui->revolveAngle, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngleChanged(double)));
+    connect(ui->axis, SIGNAL(activated(int)),
+            this, SLOT(onAxisChanged(int)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplane(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversed(bool)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
 }
 
 void TaskRevolutionParameters::updateUI()
