@@ -68,6 +68,8 @@ public:
 
 protected:
     virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+    static const App::PropertyIntegerConstraint::Constraints intOccurrences;
+    static const App::PropertyAngle::Constraints floatAngle;
 };
 
 } //namespace PartDesign
