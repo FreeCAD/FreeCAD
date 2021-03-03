@@ -100,9 +100,9 @@ QIcon ViewProviderPipe::getIcon(void) const {
     auto prim = Base::freecad_dynamic_cast<PartDesign::Pipe>(getObject());
     if (prim) {
         if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-            const_cast<ViewProviderPipe*>(this)->sPixmap = "PartDesign_Additive_Pipe";
+            const_cast<ViewProviderPipe*>(this)->sPixmap = "PartDesign_AdditivePipe";
         else
-            const_cast<ViewProviderPipe*>(this)->sPixmap = "PartDesign_Subtractive_Pipe";
+            const_cast<ViewProviderPipe*>(this)->sPixmap = "PartDesign_SubtractivePipe";
     }
     return ViewProvider::getIcon();
 }

@@ -1416,7 +1416,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
     sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
     sWhatsThis    = "PartDesign_AdditivePipe";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Additive_Pipe";
+    sPixmap       = "PartDesign_AdditivePipe";
 
     Gui::Application::Instance->commandManager().registerCallback(
             boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Sweep");
@@ -1517,7 +1517,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections");
     sWhatsThis    = "PartDesign_AdditiveLoft";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Additive_Loft";
+    sPixmap       = "PartDesign_AdditiveLoft";
 
     Gui::Application::Instance->commandManager().registerCallback(
             boost::bind(&commandOverride, this, 0, bp::_1, bp::_2), "Part_Loft");
