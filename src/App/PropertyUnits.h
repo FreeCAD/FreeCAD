@@ -106,6 +106,10 @@ public:
     const Constraints*  getConstraints(void) const;
     //@}
 
+    double getMinimum() const;
+    double getMaximum() const;
+    double getStepSize() const;
+
     virtual const char* getEditorName(void) const;
     virtual void setPyObject(PyObject *);
 
