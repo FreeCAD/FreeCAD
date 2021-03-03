@@ -29,6 +29,7 @@
 # include <QTextStream>
 #endif
 
+#include <Inventor/misc/SoChildList.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
 #include "SceneInspector.h"
@@ -178,14 +179,13 @@ QModelIndex SceneModel::index(int row, int column, const QModelIndex &parent) co
             child.parent = parent;
         }
         return index;
-    } else if (node->isOfType(SoGroup::getClassTypeId())) {
-        auto group = static_cast<SoGroup*>(node);
-        if (row < 0 || row >= group->getNumChildren())
+    } else if (auto children = node->getChildren()) {
+        if (row < 0 || row >= children->getLength())
             return QModelIndex();
 
         auto &child = items[index];
         if (!child.node) {
-            child.node = group->getChild(row);
+            child.node = (*children)[row];
             child.parent = parent;
         }
         return index;
@@ -207,8 +207,8 @@ int SceneModel::rowCount(const QModelIndex & parent) const
     if (node->isOfType(SoFCPathAnnotation::getClassTypeId())) {
         auto path = static_cast<SoFCPathAnnotation*>(node)->getPath();
         return path ? path->getLength() : 0;
-    } else if (node->isOfType(SoGroup::getClassTypeId())) {
-        int count = static_cast<SoGroup*>(node)->getNumChildren();
+    } else if (auto children = node->getChildren()) {
+        int count = children->getLength();
         if (count==1 && !item->expand)
             return 0;
         return count;
