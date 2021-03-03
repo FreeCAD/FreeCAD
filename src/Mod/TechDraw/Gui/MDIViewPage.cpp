@@ -124,6 +124,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     m_orientation(QPrinter::Landscape),
     m_paperSize(QPrinter::A4),
 #endif
+    pagewidth(0.0),
+    pageheight(0.0),
     m_vpPage(pageVp)
 {
 

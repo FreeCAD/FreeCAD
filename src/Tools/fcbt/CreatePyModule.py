@@ -27,8 +27,7 @@
 #*   Werner Mayer 2003                                                     *
 #***************************************************************************
 
-import os,sys,string
-import FCFileTools
+import os,sys
 import MakeAppTools
 import re
 
@@ -110,7 +109,7 @@ def validateApp(AppName):
 	clName="class "+AppName+": self=0"
 	try:
 		exec(clName)
-	except:
+	except Exception:
 		# Invalid class name
 		sys.stdout.write("Invalid name: '"+AppName+"'\n")
 		sys.exit()

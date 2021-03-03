@@ -515,7 +515,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="667"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>Lihat proyeksi</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="674"/>

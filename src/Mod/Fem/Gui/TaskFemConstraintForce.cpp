@@ -50,6 +50,7 @@
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/OriginFeature.h>
 #include <App/PropertyGeo.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -83,8 +84,8 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
 
     connect(ui->spinForce, SIGNAL(valueChanged(double)),
             this, SLOT(onForceChanged(double)));
-    connect(ui->buttonDirection, SIGNAL(pressed()),
-            this, SLOT(onButtonDirection()));
+    connect(ui->buttonDirection, SIGNAL(clicked(bool)),
+            this, SLOT(onButtonDirection(bool)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
             this, SLOT(onCheckReverse(bool)));
     connect(ui->listReferences, SIGNAL(itemClicked(QListWidgetItem*)),
@@ -258,65 +259,81 @@ void TaskFemConstraintForce::onReferenceDeleted() {
     TaskFemConstraintForce::removeFromSelection(); //OvG: On right-click face is automatically selected, so just remove
 }
 
+std::pair<App::DocumentObject*, std::string>
+TaskFemConstraintForce::getDirection(const std::vector<Gui::SelectionObject>& selection) const
+{
+    std::pair<App::DocumentObject*, std::string> link;
+    if (selection.empty()) {
+        return link;
+    }
+
+    // we only handle the first selected object
+    Gui::SelectionObject selectionElement = selection.at(0);
+
+    // Line or Plane
+    Base::Type line = Base::Type::fromName("PartDesign::Line");
+    Base::Type plane = Base::Type::fromName("PartDesign::Plane");
+    if (selectionElement.isObjectTypeOf(App::Line::getClassTypeId()) ||
+        selectionElement.isObjectTypeOf(App::Plane::getClassTypeId())) {
+        link = std::make_pair(selectionElement.getObject(), std::string());
+    }
+    else if (selectionElement.isObjectTypeOf(line)) {
+        link = std::make_pair(selectionElement.getObject(), std::string("Edge1"));
+    }
+    else if (selectionElement.isObjectTypeOf(plane)) {
+        link = std::make_pair(selectionElement.getObject(), std::string("Face1"));
+    }
+    // Sub-element of Part object
+    else if (selectionElement.isObjectTypeOf(Part::Feature::getClassTypeId())) {
+        const std::vector<std::string>& subNames = selectionElement.getSubNames();
+        if (subNames.size() != 1) {
+            return link;
+        }
+
+        std::string subNamesElement = subNames[0];
+
+        const Part::Feature* feat = static_cast<const Part::Feature*>(selectionElement.getObject());
+        TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNamesElement.c_str());
+
+        if (ref.ShapeType() == TopAbs_EDGE) {
+            if (Fem::Tools::isLinear(TopoDS::Edge(ref))) {
+                link = std::make_pair(selectionElement.getObject(), subNamesElement);
+            }
+        }
+        else if (ref.ShapeType() == TopAbs_FACE) {
+            if (Fem::Tools::isPlanar(TopoDS::Face(ref))) {
+                link = std::make_pair(selectionElement.getObject(), subNamesElement);
+            }
+        }
+    }
+
+    return link;
+}
+
 void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 {
     // sets the normal vector of the currently selecteed planar face as direction
-
     Q_UNUSED(pressed)
-    //get vector of selected objects of active document
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); 
-    if (selection.size() == 0) {
-        QMessageBox::warning(this, tr("Empty selection"), tr("Select an edge or a face, please."));
-        return;
-    }
-    Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
 
-    // we only handle the first selected object
-    Gui::SelectionObject& selectionElement = selection.at(0);
-
-    // we can only handle part objects
-    if (!selectionElement.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-        QMessageBox::warning(this, tr("Wrong selection"), tr("Selected object is not a part object!"));
-        return;
-    }
-    // get the names of the subobjects
-    const std::vector<std::string>& subNames = selectionElement.getSubNames();
-
-    if (subNames.size() != 1) {
-        QMessageBox::warning(this, tr("Wrong selection"), tr("Only one planar face or edge can be selected!"));
-        return;
-    }
-    // we are now sure we only have one object
-    std::string subNamesElement = subNames[0];
-    // vector for the direction
-    std::vector<std::string> direction(1, subNamesElement);
-
-    Part::Feature* feat = static_cast<Part::Feature*>(selectionElement.getObject());
-    TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNamesElement.c_str());
-
-    if (subNamesElement.substr(0, 4) == "Face") {
-        if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
-            QMessageBox::warning(this, tr("Wrong selection"), tr("Only planar faces can be picked for 3D"));
-            return;
-        }
-    }
-    else if (subNamesElement.substr(0, 4) == "Edge") { // 2D or 3D can use edge as direction vector
-        if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
-            QMessageBox::warning(this, tr("Wrong selection"), tr("Only planar edges can be picked for 2D"));
-            return;
-        }
-    }
-    else {
-        QMessageBox::warning(this, tr("Wrong selection"), tr("Only faces for 3D part or edges for 2D can be picked"));
+    auto link = getDirection(Gui::Selection().getSelectionEx());
+    if (!link.first) {
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Select an edge or a face, please."));
         return;
     }
 
-    // update the direction
-    pcConstraint->Direction.setValue(feat, direction);
-    ui->lineDirection->setText(makeRefText(feat, subNamesElement));
+    try {
+        std::vector<std::string> direction(1, link.second);
+        Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
 
-    //Update UI
-    updateUI(); 
+        // update the direction
+        pcConstraint->Direction.setValue(link.first, direction);
+        ui->lineDirection->setText(makeRefText(link.first, link.second));
+
+        updateUI();
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(this, tr("Wrong selection"), QString::fromLatin1(e.what()));
+    }
 }
 
 void TaskFemConstraintForce::onCheckReverse(const bool pressed)
@@ -394,7 +411,7 @@ TaskDlgFemConstraintForce::TaskDlgFemConstraintForce(ViewProviderFemConstraintFo
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintForce(ConstraintView);;
+    this->parameter = new TaskFemConstraintForce(ConstraintView);
 
     Content.push_back(parameter);
 }

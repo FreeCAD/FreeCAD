@@ -309,7 +309,7 @@ Turntable: the part will be rotated around the z-axis.</string>
          </widget>
         </item>
         <item row="4" column="3">
-         <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
+         <widget class="PrefUnitSpinBox" name="qspinNewDocScale">
           <property name="minimumSize">
            <size>
             <width>120</width>
@@ -415,7 +415,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
             </property>
             <property name="toolTip">
              <string>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
+Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
             </property>
             <property name="minimum">
              <double>0.010000000000000</double>

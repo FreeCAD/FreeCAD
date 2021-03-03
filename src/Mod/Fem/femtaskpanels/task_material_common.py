@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD FEM material task panel for the document object"
+__title__ = "FreeCAD FEM material task panel for the document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
-__url__    = "https://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package task_material_common
 #  \ingroup FEM
@@ -518,13 +518,21 @@ class _TaskPanel:
 
     def update_material_property(self, input_field, matProperty, qUnit, variation=0.001):
         # this update property works for all Gui::InputField widgets
-        value = Units.Quantity(input_field.text()).getValueAs(qUnit)
-        old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
+        if qUnit != "":
+            value = Units.Quantity(input_field.text()).getValueAs(qUnit)
+            old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
+        else:
+            # for example PoissonRatio
+            value = float(input_field.text())
+            old_value = float(self.material[matProperty])
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
                 material = self.material
                 # unicode() is an alias to str for py3
-                material[matProperty] = unicode(value) + " " + qUnit
+                if qUnit != "":
+                    material[matProperty] = unicode(value) + " " + qUnit
+                else:
+                    material[matProperty] = unicode(value)
                 self.material = material
                 if self.has_transient_mat is False:
                     self.add_transient_material()

@@ -38,7 +38,7 @@ import draftutils.utils as utils
 
 from FreeCAD import Units as U
 from draftutils.messages import _msg, _wrn, _err, _log
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 bool(Draft_rc.__name__)
@@ -80,7 +80,7 @@ class TaskPanelPolarArray:
 
     def __init__(self):
         self.name = "Polar array"
-        _log(_tr("Task panel:") + " {}".format(_tr(self.name)))
+        _log(translate("draft","Task panel:") + " {}".format(self.name))
 
         # The .ui file must be loaded into an attribute
         # called `self.form` so that it is displayed in the task panel.
@@ -92,7 +92,7 @@ class TaskPanelPolarArray:
         pix = QtGui.QPixmap(svg)
         icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
         self.form.setWindowIcon(icon)
-        self.form.setWindowTitle(_tr(self.name))
+        self.form.setWindowTitle(translate("draft","Polar array"))
 
         self.form.label_icon.setPixmap(pix.scaled(32, 32))
 
@@ -188,28 +188,26 @@ class TaskPanelPolarArray:
         the interface may not allow to input wrong data.
         """
         if not selection:
-            _err(_tr("At least one element must be selected."))
+            _err(translate("draft","At least one element must be selected."))
             return False
 
         # TODO: this should handle multiple objects.
         # Each of the elements of the selection should be tested.
         obj = selection[0]
         if obj.isDerivedFrom("App::FeaturePython"):
-            _err(_tr("Selection is not suitable for array."))
-            _err(_tr("Object:") + " {}".format(selection[0].Label))
+            _err(translate("draft","Selection is not suitable for array."))
+            _err(translate("draft","Object:") + " {}".format(selection[0].Label))
             return False
 
         if number < 2:
-            _err(_tr("Number of elements must be at least 2."))
+            _err(translate("draft","Number of elements must be at least 2."))
             return False
 
         if angle > 360:
-            _wrn(_tr("The angle is above 360 degrees. "
-                     "It is set to this value to proceed."))
+            _wrn(translate("draft","The angle is above 360 degrees. It is set to this value to proceed."))
             self.angle = 360
         elif angle < -360:
-            _wrn(_tr("The angle is below -360 degrees. "
-                     "It is set to this value to proceed."))
+            _wrn(translate("draft","The angle is below -360 degrees. It is set to this value to proceed."))
             self.angle = -360
 
         # The other arguments are not tested but they should be present.
@@ -261,7 +259,7 @@ class TaskPanelPolarArray:
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(_tr(self.name), _cmd_list)
+        self.source_command.commit(translate("draft","Polar array"), _cmd_list)
 
     def get_number_angle(self):
         """Get the number and angle parameters from the widgets."""
@@ -288,7 +286,7 @@ class TaskPanelPolarArray:
         self.form.input_c_z.setProperty('rawValue', 0)
 
         self.center = self.get_center()
-        _msg(_tr("Center reset:")
+        _msg(translate("draft","Center reset:")
              + " ({0}, {1}, {2})".format(self.center.x,
                                          self.center.y,
                                          self.center.z))
@@ -299,7 +297,7 @@ class TaskPanelPolarArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(_tr("Fuse:") + " {}".format(state))
+        _msg(translate("draft","Fuse:") + " {}".format(state))
 
     def set_fuse(self):
         """Execute as a callback when the fuse checkbox changes."""
@@ -313,7 +311,7 @@ class TaskPanelPolarArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(_tr("Create Link array:") + " {}".format(state))
+        _msg(translate("draft","Create Link array:") + " {}".format(state))
 
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""
@@ -330,10 +328,10 @@ class TaskPanelPolarArray:
             # For example, it could take the shapes of all objects,
             # make a compound and then use it as input for the array function.
             sel_obj = self.selection[0]
-        _msg(_tr("Object:") + " {}".format(sel_obj.Label))
-        _msg(_tr("Number of elements:") + " {}".format(self.number))
-        _msg(_tr("Polar angle:") + " {}".format(self.angle))
-        _msg(_tr("Center of rotation:")
+        _msg(translate("draft","Object:") + " {}".format(sel_obj.Label))
+        _msg(translate("draft","Number of elements:") + " {}".format(self.number))
+        _msg(translate("draft","Polar angle:") + " {}".format(self.angle))
+        _msg(translate("draft","Center of rotation:")
              + " ({0}, {1}, {2})".format(self.center.x,
                                          self.center.y,
                                          self.center.z))
@@ -437,7 +435,7 @@ class TaskPanelPolarArray:
 
     def reject(self):
         """Execute when clicking the Cancel button or pressing Escape."""
-        _msg(_tr("Aborted:") + " {}".format(_tr(self.name)))
+        _msg(translate("draft","Aborted:") + " {}".format(translate("draft","Polar array")))
         self.finish()
 
     def finish(self):

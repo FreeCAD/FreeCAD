@@ -276,7 +276,7 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
         // enter reference selection mode
-        TaskSketchBasedParameters::onSelectReference(true, true, false, true);
+        TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
     } else {
         if (!pcRevolution->getDocument()->isIn(lnk.getValue())){
             Base::Console().Error("Object was deleted\n");

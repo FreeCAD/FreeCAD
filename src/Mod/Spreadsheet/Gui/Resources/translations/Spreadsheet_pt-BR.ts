@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Alinhar a célula à esquerda</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Centralizar célula</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Alinhar a célula à direita</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Alinhar a célula no topo</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Alinhar a célula em baixo</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Centralizar as células verticalmente</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Definir texto em negrito</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Definir texto em itálico</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Definir texto sublinhado</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Criar planilha</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Definir propriedades da célula</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Editar célula</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Limpar célula(s)</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Definir cor do primeiro plano</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Definir cor de fundo</translation>
     </message>
   </context>
   <context>
@@ -440,22 +440,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>A planilha não suporta seleção de intervalo ao colar.
+Por favor, selecione apenas uma célula.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>Falha ao copiar e colar</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>O nome contém caracteres inválidos!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Busque a célula pelo nome, por exemplo
+Planilha.meu_nome em vez de Planilha.B1</translation>
     </message>
   </context>
   <context>
@@ -541,17 +541,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Conteúdo:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Alias:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Busque a célula pelo nome, por exemplo
+Planilha.meu_nome em vez de Planilha.B1</translation>
     </message>
   </context>
   <context>

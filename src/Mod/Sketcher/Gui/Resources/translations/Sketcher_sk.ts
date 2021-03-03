@@ -221,7 +221,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1634"/>
       <source>Copy</source>
-      <translation>Kópia</translation>
+      <translation>Kopírovať</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1635"/>
@@ -356,17 +356,17 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5341"/>
       <source>Fillets</source>
-      <translation type="unfinished">Fillets</translation>
+      <translation>Zaoblenie</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5342"/>
       <source>Create a fillet between two lines</source>
-      <translation type="unfinished">Create a fillet between two lines</translation>
+      <translation>Vytvoriť zaoblenie medzi dvoma čiarami</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5417"/>
       <source>Sketch fillet</source>
-      <translation type="unfinished">Sketch fillet</translation>
+      <translation>Zaobliť náčrt</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5421"/>
@@ -578,7 +578,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2808"/>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Stanoviť horizontálnu vzdialenosť medzi dvoma bodmi alebo priamkami</translation>
+      <translation>Stanoviť vodorovnú vzdialenosť medzi dvoma bodmi alebo koncami čiar</translation>
     </message>
   </context>
   <context>
@@ -596,7 +596,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3062"/>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Stanoviť vertikálnu vzdialenosť medzi dvoma bodmi alebo priamkami</translation>
+      <translation>Stanoviť zvislú vzdialenosť medzi dvoma bodmi alebo koncami čiar</translation>
     </message>
   </context>
   <context>
@@ -669,7 +669,7 @@
       <location filename="../../CommandConstraints.cpp" line="1530"/>
       <source>Lock constraint: create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation>Väzba uzamknutím: vytvorí horizontálnu aj vertikálnu väzbu vzdialenosti na vybranom bode</translation>
+      <translation>Väzba uzamknutím: vytvorí vodorovnú aj zvislú väzbu vzdialenosti pre vybraný bod</translation>
     </message>
   </context>
   <context>
@@ -779,7 +779,7 @@ and an edge as an interface.</source>
       <location filename="../../CommandConstraints.cpp" line="6594"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation>Vytvorí väzbu symetrie medzi dvoma bodmi vzhľadom k priamke alebo k tretiemu bodu</translation>
+      <translation>Vytvorí väzbu symetrie medzi dvoma bodmi s ohľadom na čiaru alebo tretí bod</translation>
     </message>
   </context>
   <context>
@@ -815,7 +815,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1296"/>
       <source>Create a vertical constraint on the selected item</source>
-      <translation>Vytvoriť vertikálne obmedzenie pre vybratú položku</translation>
+      <translation>Vytvorí zvislé obmedzenie pre vybranú položku</translation>
     </message>
   </context>
   <context>
@@ -846,7 +846,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1515"/>
       <source>Copy</source>
-      <translation>Kópia</translation>
+      <translation>Kopírovať</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1516"/>
@@ -1567,7 +1567,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="878"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="879"/>
@@ -1599,7 +1599,7 @@ as mirroring reference.</translation>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="774"/>
@@ -1909,12 +1909,12 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1001"/>
       <source>Symmetry</source>
-      <translation type="unfinished">Symmetry</translation>
+      <translation>Symetria</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1002"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
-      <translation type="unfinished">Creates symmetric geometry with respect to the last selected line or point</translation>
+      <translation>Vytvorí symetrickú geometriu s ohľadom na poslednú vybranú čiaru alebo bod</translation>
     </message>
   </context>
   <context>
@@ -2018,7 +2018,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="734"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
   </context>
   <context>
@@ -2576,47 +2576,47 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2034"/>
+      <location filename="../../../App/SketchObject.cpp" line="1966"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5667"/>
+      <location filename="../../../App/SketchObject.cpp" line="5606"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation type="unfinished">This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5671"/>
+      <location filename="../../../App/SketchObject.cpp" line="5610"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5674"/>
+      <location filename="../../../App/SketchObject.cpp" line="5613"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation type="unfinished">You are requesting no change in knot multiplicity.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5679"/>
+      <location filename="../../../App/SketchObject.cpp" line="5618"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5686"/>
+      <location filename="../../../App/SketchObject.cpp" line="5625"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5693"/>
+      <location filename="../../../App/SketchObject.cpp" line="5632"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5696"/>
+      <location filename="../../../App/SketchObject.cpp" line="5635"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation type="unfinished">The multiplicity cannot be decreased beyond zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5708"/>
+      <location filename="../../../App/SketchObject.cpp" line="5647"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation type="unfinished">OCC is unable to decrease the multiplicity within the maximum tolerance.</translation>
     </message>
@@ -2837,7 +2837,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="123"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="146"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="124"/>
@@ -3886,7 +3886,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../InsertDatum.ui" line="79"/>
       <source>Reference</source>
-      <translation>Odkaz</translation>
+      <translation>Referencia</translation>
     </message>
   </context>
   <context>
@@ -3904,22 +3904,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchMirrorDialog.ui" line="14"/>
       <location filename="../../SketchMirrorDialog.ui" line="20"/>
       <source>Select Mirror Axis/Point</source>
-      <translation>Zvoľ zrkadľujúcu os/bod</translation>
+      <translation>Voľba osi/bodu zrkadlenia</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
       <source>X-Axis</source>
-      <translation>Osi X</translation>
+      <translation>Os X</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="36"/>
       <source>Y-Axis</source>
-      <translation>Osi Y</translation>
+      <translation>Os Y</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="43"/>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Pôvodné</translation>
     </message>
   </context>
   <context>
@@ -3965,7 +3965,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="17"/>
       <source>Create array</source>
-      <translation>Vytvoriť pole</translation>
+      <translation>Tvorba poľa</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="25"/>
@@ -3990,12 +3990,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="77"/>
       <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-      <translation type="unfinished">Makes the inter-row and inter-col spacing the same if clicked</translation>
+      <translation>Ak je vybraté, budú vytvorené rovnaké rozstupy medzi riadkami a medzi stĺpcami</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="80"/>
       <source>Equal vertical/horizontal spacing</source>
-      <translation type="unfinished">Equal vertical/horizontal spacing</translation>
+      <translation>Rovnaký zvislý/vodorovný rozstup</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
@@ -4016,7 +4016,7 @@ reflected on copies</translation>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="100"/>
       <source>Constrain inter-element separation</source>
-      <translation type="unfinished">Constrain inter-element separation</translation>
+      <translation>Obmedziť oddeľovanie medzi prvkami</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="121"/>
@@ -4053,7 +4053,7 @@ reflected on copies</translation>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="17"/>
       <source>Create array</source>
-      <translation>Vytvoriť pole</translation>
+      <translation>Tvorba poľa</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
@@ -4374,7 +4374,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="14"/>
       <source>Display</source>
-      <translation>Obrazovka</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="33"/>
@@ -4709,7 +4709,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="65"/>
       <source>Reference</source>
-      <translation>Odkaz</translation>
+      <translation>Referencia</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="75"/>
@@ -5313,7 +5313,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1711"/>
       <source>Copy</source>
-      <translation>Kópia</translation>
+      <translation>Kopírovať</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1715"/>
@@ -5449,7 +5449,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="5418"/>
       <location filename="../../CommandCreateGeo.cpp" line="5419"/>
       <source>Creates a radius between two lines</source>
-      <translation type="unfinished">Creates a radius between two lines</translation>
+      <translation>Vytvoriť polomer medzi dvoma čiarami</translation>
     </message>
   </context>
   <context>
@@ -6008,7 +6008,7 @@ to determine whether a solution converges or not</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Sketcher constraints</source>
-      <translation>Obmedziť náčrt</translation>
+      <translation>Obmedzenia náčrtu</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -6017,6 +6017,11 @@ to determine whether a solution converges or not</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
+      <source>Sketcher B-spline tools</source>
+      <translation type="unfinished">Sketcher B-spline tools</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher virtual space</source>
       <translation type="unfinished">Sketcher virtual space</translation>
     </message>

@@ -407,11 +407,11 @@
     </message>
     <message>
       <source>Import file</source>
-      <translation>Import súboru</translation>
+      <translation>Importovať súbor</translation>
     </message>
     <message>
       <source>Export file</source>
-      <translation>Export súboru</translation>
+      <translation>Exportovať súbor</translation>
     </message>
     <message>
       <source>Show spreadsheet</source>

@@ -92,7 +92,27 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     return refStr;
 }
 
-void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
+void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+{
+    Gui::Document* doc = vp->getDocument();
+    if (doc) {
+        doc->setHide(profile->getNameInDocument());
+        if (base)
+            doc->setShow(base->getNameInDocument());
+    }
+}
+
+void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+{
+    Gui::Document* doc = vp->getDocument();
+    if (doc) {
+        doc->setShow(profile->getNameInDocument());
+        if (base)
+            doc->setHide(base->getNameInDocument());
+    }
+}
+
+void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar, const bool circle) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
 
     PartDesign::ProfileBased* pcSketchBased = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
@@ -101,26 +121,17 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
         App::DocumentObject* prevSolid = pcSketchBased->getBaseObject( /* silent =*/ true );
 
         if (pressed) {
-            Gui::Document* doc = vp->getDocument();
-            if (doc) {
-                doc->setHide(pcSketchBased->getNameInDocument());
-                if (prevSolid)
-                    doc->setShow(prevSolid->getNameInDocument());
-            }
+            startReferenceSelection(pcSketchBased, prevSolid);
             Gui::Selection().clearSelection();
             Gui::Selection().addSelectionGate
-                (new ReferenceSelection(prevSolid, edge, face, planar));
+                (new ReferenceSelection(prevSolid, edge, face, planar, false, false, circle));
         } else {
             Gui::Selection().rmvSelectionGate();
-            Gui::Document* doc = vp->getDocument();
-            if (doc) {
-                doc->setShow(pcSketchBased->getNameInDocument());
-                if (prevSolid)
-                    doc->setHide(prevSolid->getNameInDocument());
-            }
+            finishReferenceSelection(pcSketchBased, prevSolid);
         }
     }
 }
+
 
 void TaskSketchBasedParameters::exitSelectionMode()
 {

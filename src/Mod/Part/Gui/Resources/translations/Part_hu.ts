@@ -4,6 +4,16 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
+      <source>Attachment...</source>
+      <translation>Melléklet...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>A kijelölt objektum csatolmányának szerkesztése.</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
       <translation>Nincs {name} nevű tárgy</translation>
@@ -24,14 +34,14 @@
       <translation>{obj} nem csatlakoztatható. Még mindíg használhatja a melléklet szerkesztő párbeszédpanelt a tárgy igazításához, de a mellékletet nem lesz változós.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
-      <source>Attachment</source>
-      <translation>Melléklet</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
       <translation>Tovább</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <source>Attachment</source>
+      <translation>Melléklet</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -99,24 +109,14 @@
       <translation>Csatolás eltolás:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Csatolás eltolása (helyi koordinátákban):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Csatolás eltolás (inaktív - nem csatolt):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
-      <source>Attachment...</source>
-      <translation>Melléklet...</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
-      <source>Edit attachment of selected object.</source>
-      <translation>A kijelölt objektum csatolmányának szerkesztése.</translation>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Csatolás eltolása (helyi koordinátákban):</translation>
     </message>
   </context>
   <context>
@@ -258,99 +258,7 @@ Ez létrehoz egy 'Összetett szűrő'-t minden alakzathoz.</translation>
     </message>
   </context>
   <context>
-    <name>Part_JoinFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Az eredmény kiszámítása hiba miatt meghiúsult:
-
-{err}
-
-Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakítás' gombra a megszakításhoz.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Rossz kiválasztás</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Tovább</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Az eredmény kiszámítása nem sikerült, hiba: 
-
-{err}
-
-kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a 'Leállítás ' gombbal megszakítja.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
-      <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation>Előbb jelöljön ki legalább két objektumot, vagy egy vagy több összetevőt!</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation>Jelöljön ki legalább két objektumot vagy egy vagy több összetevőt</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Válassza ki az alap objektumot, majd a beágyazandó objektumot, és használja ezt az eszközt.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation>Jelölje ki az alapobjektumot, majd a beágyazandó objektumot, majd hívja meg az eszközt.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation>Kimetszésre szánt objektum kijelölése, majd a kimetszésre beilleszteni kívánt objektumot, és használja ezt az eszközt.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation>Jelölje ki azt az objektumot, amelyben ki szeretné vágni, majd jelölje ki azt az objektumot, amelynek illeszkednie kell a kivágásba, majd hívja meg ezt az eszközt.</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Az eredmény kiszámítása hiba miatt meghiúsult:
-
-{err}
-
-Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakítás' gombra a megszakításhoz.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Rossz kiválasztás</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Tovább</translation>
-    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
@@ -369,45 +277,6 @@ Ez egy logikai egyesülés, amit aztán az eredeti formák metszéspontjai szeln
 Az 'összetett szűrő' használható az egyes szeletek kibontásához.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Jelöljön ki legalább két objektumot, vagy egy vagy több összetevőt. Ha csak egy összetevő van kijelölve, az összetett alakzatok metszik egymást (ellenkező esetben az önmetszéssel rendelkező összetevők érvénytelenek).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Szeletelje összetevőkre</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>A kijelölt objektumot más objektumokkal mint vágóeszközzel szeletelje.
-A kapott darabokat egy összetevőként tárolja.
-Az 'Összetevő szűrő' használható az egyes szeletek kibontásához.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Jelöljön ki legalább két objektumot. Az első a szeletelendő objektum; a többi olyan tárgy, amivel szeletelni kell.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Részekre szeletel</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Logikai töredékek</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
       <translation>Felosztja a tárgyaz a másik tárgy keresztezésénél, és egyesíti a darabokat.</translation>
@@ -423,11 +292,9 @@ Az 'Összetevő szűrő' használható az egyes szeletek kibontásához.</transl
       <translation>Először, válasszon ki legalább két objektumot! Az első a szeletelt tárgy; a többi objektum a szeletelő.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>A kijelölt objektumot más objektumokkal szeletelje fel, és ossza részekre.
-Ez létrehoz egy 'Összetevő szűrő'-t minden szeletre.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Jelöljön ki legalább két objektumot. Az első a szeletelendő objektum; a többi olyan tárgy, amivel szeletelni kell.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -453,6 +320,47 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <translation>Előbb jelöljön ki legalább két tárgyat, vagy egy vagy több összetevőt! Ha csak egyetlen összetevő van megjelölve, az összetett alakzatok egymást keresztezni fogják (ellenkező esetben az önálló kereszteződéssel rendelkező összetett alakzatok érvénytelenek).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Jelöljön ki legalább két objektumot, vagy egy vagy több összetevőt. Ha csak egy összetevő van kijelölve, az összetett alakzatok metszik egymást (ellenkező esetben az önmetszéssel rendelkező összetevők érvénytelenek).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Szeletelje összetevőkre</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Logikai töredékek</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>A kijelölt objektumot más objektumokkal mint vágóeszközzel szeletelje.
+A kapott darabokat egy összetevőként tárolja.
+Az 'Összetevő szűrő' használható az egyes szeletek kibontásához.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Részekre szeletel</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>A kijelölt objektumot más objektumokkal szeletelje fel, és ossza részekre.
+Ez létrehoz egy 'Összetevő szűrő'-t minden szeletre.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation>Logikai XOR</translation>
@@ -467,6 +375,29 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 vagy az összetevőn belüli alakzatokkal.
 Ez azt jelenti, hogy az alakzatok egymást átfedő formái törlődnek.
 A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Rossz kiválasztás</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Az eredmény kiszámítása hiba miatt meghiúsult:
+
+{err}
+
+Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakítás' gombra a megszakításhoz.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Tovább</translation>
     </message>
   </context>
   <context>
@@ -948,6 +879,75 @@ Do you want to continue?</source>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
       <translation>Ellenőrző pontok megjelenítése</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Az eredmény kiszámítása nem sikerült, hiba: 
+
+{err}
+
+kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a 'Leállítás ' gombbal megszakítja.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Az eredmény kiszámítása hiba miatt meghiúsult:
+
+{err}
+
+Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakítás' gombra a megszakításhoz.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation>Tovább</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Előbb jelöljön ki legalább két objektumot, vagy egy vagy több összetevőt!</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Jelöljön ki legalább két objektumot vagy egy vagy több összetevőt</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Válassza ki az alap objektumot, majd a beágyazandó objektumot, és használja ezt az eszközt.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Jelölje ki az alapobjektumot, majd a beágyazandó objektumot, majd hívja meg az eszközt.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Kimetszésre szánt objektum kijelölése, majd a kimetszésre beilleszteni kívánt objektumot, és használja ezt az eszközt.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation>Rossz kiválasztás</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Jelölje ki azt az objektumot, amelyben ki szeretné vágni, majd jelölje ki azt az objektumot, amelynek illeszkednie kell a kivágásba, majd hívja meg ezt az eszközt.</translation>
     </message>
   </context>
   <context>

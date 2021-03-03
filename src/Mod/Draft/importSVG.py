@@ -643,6 +643,7 @@ class svgHandler(xml.sax.ContentHandler):
     """Parse SVG files and create FreeCAD objects."""
 
     def __init__(self):
+        super().__init__()
         """Retrieve Draft parameters and initialize."""
         _prefs = "User parameter:BaseApp/Preferences/Mod/Draft"
         params = FreeCAD.ParamGet(_prefs)

@@ -45,7 +45,7 @@ import draftutils.utils as utils
 
 from FreeCAD import Units as U
 from draftutils.messages import _msg, _err
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -55,22 +55,21 @@ class Arc(gui_base_original.Creator):
     """Gui command for the Circular Arc tool."""
 
     def __init__(self):
+        super().__init__()
         self.closedCircle = False
         self.featureName = "Arc"
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a circular arc by a center point and a radius.\n"
-                "CTRL to snap, SHIFT to constrain.")
 
         return {'Pixmap': 'Draft_Arc',
                 'Accel': "A, R",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Arc", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Arc, self).Activated(name=_tr(self.featureName))
+        super(Arc, self).Activated(name=translate("draft","Arc"))
         if self.ui:
             self.step = 0
             self.center = None
@@ -480,7 +479,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
     """GuiCommand for the Draft_Arc_3Points tool."""
 
     def __init__(self):
-        super(Arc_3Points, self).__init__(name=_tr("Arc by 3 points"))
+        super(Arc_3Points, self).__init__(name=translate("draft","Arc by 3 points"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -596,11 +595,9 @@ class ArcGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Arc tools"
-        _tip = ("Create various types of circular arcs.")
 
-        return {'MenuText': QT_TRANSLATE_NOOP("Draft_ArcTools", _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_ArcTools", _tip)}
+        return {'MenuText': QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc tools"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_ArcTools", "Create various types of circular arcs.")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""

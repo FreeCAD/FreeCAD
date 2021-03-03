@@ -235,7 +235,7 @@ double Voronoi::diagram_type::angleOfSegment(int i, Voronoi::diagram_type::angle
     Voronoi::point_type p1 = high(segments[i]);
     double ang = 0;
     if (p0.x() == p1.x()) {
-      if ((p0.y() > 0 && p1.y() > 0) || (p0.y() > 0 && p1.y() > 0)) {
+      if (p0.y() < p1.y()) {
         ang = M_PI_2;
       } else {
         ang = -M_PI_2;

@@ -37,7 +37,7 @@ import Draft_rc  # include resources, icons, ui files
 import draftutils.todo as todo
 
 from draftutils.messages import _msg, _log
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftguitools import gui_base
 from drafttaskpanels import task_polararray
 
@@ -61,16 +61,10 @@ class PolarArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates copies of the selected object, "
-                "and places the copies in a polar pattern\n"
-                "defined by a center of rotation and its angle.\n"
-                "\n"
-                "The array can be turned into an orthogonal "
-                "or a circular array by changing its type.")
 
         d = {'Pixmap': 'Draft_PolarArray',
              'MenuText': QT_TRANSLATE_NOOP("Draft", "Polar array"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft", _tip)}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft", "Creates copies of the selected object, and places the copies in a polar pattern\ndefined by a center of rotation and its angle.\n\nThe array can be turned into an orthogonal or a circular array by changing its type.")}
         return d
 
     def Activated(self):
@@ -79,9 +73,9 @@ class PolarArray(gui_base.GuiCommandBase):
         We add callbacks that connect the 3D view with
         the widgets of the task panel.
         """
-        _log("GuiCommand: {}".format(_tr(self.command_name)))
-        _msg("{}".format(16*"-"))
-        _msg("GuiCommand: {}".format(_tr(self.command_name)))
+        _log("GuiCommand: {}".format(self.command_name))
+        #_msg("{}".format(16*"-"))
+        #_msg("GuiCommand: {}".format(self.command_name))
 
         self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()

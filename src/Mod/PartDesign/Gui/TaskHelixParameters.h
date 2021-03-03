@@ -82,7 +82,8 @@ protected:
     void changeEvent(QEvent *e) override;
     bool updateView() const;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
-
+    void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
+    void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
 
     //mirrors of helixes's properties
     App::PropertyLength*      propPitch;

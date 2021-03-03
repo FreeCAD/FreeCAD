@@ -4157,6 +4157,11 @@ void Document::removeObject(const char* sName)
         TipName.setValue("");
     }
 
+    // remove the ID before possibly deleting the object
+    d->objectIdMap.erase(pos->second->_Id);
+    // Unset the bit to be on the safe side
+    pos->second->setStatus(ObjectStatus::Remove, false);
+
     // do no transactions if we do a rollback!
     std::unique_ptr<DocumentObject> tobedestroyed;
     if (!d->rollback) {
@@ -4180,8 +4185,6 @@ void Document::removeObject(const char* sName)
         }
     }
 
-    pos->second->setStatus(ObjectStatus::Remove, false); // Unset the bit to be on the safe side
-    d->objectIdMap.erase(pos->second->_Id);
     d->objectMap.erase(pos);
 }
 

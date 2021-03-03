@@ -43,7 +43,7 @@
         <item>
          <layout class="QGridLayout" name="gl_01">
           <item row="1" column="1">
-           <widget class="Gui::PrefFileChooser" name="fc_grid_binary_path" native="true">
+           <widget class="Gui::PrefFileChooser" name="fc_grid_binary_path">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -161,7 +161,7 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="Gui::PrefFileChooser" name="fc_elmer_binary_path" native="true">
+           <widget class="Gui::PrefFileChooser" name="fc_elmer_binary_path">
             <property name="enabled">
              <bool>false</bool>
             </property>

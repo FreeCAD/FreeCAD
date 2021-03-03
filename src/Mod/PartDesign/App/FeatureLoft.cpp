@@ -179,6 +179,9 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         AddSubShape.setValue(result);
 
         if(base.IsNull()) {
+            if (getAddSubType() == FeatureAddSub::Subtractive)
+                return new App::DocumentObjectExecReturn("Loft: There is nothing to subtract from\n");
+
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }

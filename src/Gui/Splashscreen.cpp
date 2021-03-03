@@ -270,12 +270,13 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
             );
 #endif
         QString lictext = ui->textBrowserLicense->toHtml();
-        lictext.replace(QString::fromLatin1("SUCH DAMAGES."),info);
+        lictext.replace(QString::fromLatin1("SUCH DAMAGES.<hr/>"),info);
         ui->textBrowserLicense->setHtml(lictext);
 //    }
     ui->tabWidget->setCurrentIndex(0); // always start on the About tab
     setupLabels();
     showLicenseInformation();
+    showLibraryInformation();
     showCollectionInformation();
 }
 
@@ -488,6 +489,10 @@ void AboutDialog::setupLabels()
     ui->labelAuthor->setText(author);
     ui->labelAuthor->setUrl(mturl);
 
+    if (qApp->styleSheet().isEmpty()) {
+        ui->labelAuthor->setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;font-family: MS Shell Dlg 2;}"));
+    }
+
     QString version = ui->labelBuildVersion->text();
     version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2").arg(major, minor));
     ui->labelBuildVersion->setText(version);
@@ -544,11 +549,37 @@ public:
 
 void AboutDialog::showLicenseInformation()
 {
-    QWidget *tab_license = new QWidget();
+    QString licenseFileURL = QString::fromLatin1("%1/LICENSE.html")
+        .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+    QFile licenseFile(licenseFileURL);
+
+    if (!licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return; // Leave the existing license placeholder there if we can't find our license html file
+    }
+
+    ui->tabWidget->removeTab (2); // Hide the license placeholder widget
+
+    QWidget* tab_license = new QWidget();
     tab_license->setObjectName(QString::fromLatin1("tab_license"));
-    ui->tabWidget->addTab(tab_license, tr("Libraries"));
+    ui->tabWidget->addTab(tab_license, tr("License"));
     QVBoxLayout* hlayout = new QVBoxLayout(tab_license);
     QTextBrowser* textField = new QTextBrowser(tab_license);
+    textField->setOpenExternalLinks(true);
+    textField->setOpenLinks(true);
+    hlayout->addWidget(textField);
+
+    QString licenseHTML = QString::fromUtf8(licenseFile.readAll());
+    textField->setHtml(licenseHTML);
+
+}
+
+void AboutDialog::showLibraryInformation()
+{
+    QWidget *tab_library = new QWidget();
+    tab_library->setObjectName(QString::fromLatin1("tab_library"));
+    ui->tabWidget->addTab(tab_library, tr("Libraries"));
+    QVBoxLayout* hlayout = new QVBoxLayout(tab_library);
+    QTextBrowser* textField = new QTextBrowser(tab_library);
     textField->setOpenExternalLinks(false);
     textField->setOpenLinks(false);
     hlayout->addWidget(textField);
@@ -557,9 +588,6 @@ void AboutDialog::showLicenseInformation()
     LibraryInfo li;
     QString baseurl = QString::fromLatin1("file:///%1/ThirdPartyLibraries.html")
             .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
-
-    //FIXME: Put all needed information into LibraryVersions.h
-    //
 
     // Boost
     li.name = QLatin1String("Boost");
@@ -579,14 +607,14 @@ void AboutDialog::showLicenseInformation()
     li.name = QLatin1String("Eigen3");
     li.href = baseurl + QLatin1String("#_TocEigen3");
     li.url = QLatin1String("http://eigen.tuxfamily.org/");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_EIGEN3_VERSION);
     libInfo << li;
 
     // FreeType
     li.name = QLatin1String("FreeType");
     li.href = baseurl + QLatin1String("#_TocFreeType");
     li.url = QLatin1String("http://freetype.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_FREETYPE_VERSION);
     libInfo << li;
 
     // KDL
@@ -616,14 +644,14 @@ void AboutDialog::showLicenseInformation()
     li.name = QLatin1String("Point Cloud Library");
     li.href = baseurl + QLatin1String("#_TocPcl");
     li.url = QLatin1String("http://www.pointclouds.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_PCL_VERSION);
     libInfo << li;
 
     // PyCXX
     li.name = QLatin1String("PyCXX");
     li.href = baseurl + QLatin1String("#_TocPyCXX");
     li.url = QLatin1String("http://cxx.sourceforge.net");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_PYCXX_VERSION);
     libInfo << li;
 
     // Python
@@ -637,7 +665,7 @@ void AboutDialog::showLicenseInformation()
     li.name = QLatin1String("PySide");
     li.href = baseurl + QLatin1String("#_TocPySide");
     li.url = QLatin1String("http://www.pyside.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_PYSIDE_VERSION);
     libInfo << li;
 
     // Qt
@@ -658,21 +686,21 @@ void AboutDialog::showLicenseInformation()
     li.name = QLatin1String("Shiboken");
     li.href = baseurl + QLatin1String("#_TocPySide");
     li.url = QLatin1String("http://www.pyside.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_SHIBOKEN_VERSION);
     libInfo << li;
 
     // vtk
     li.name = QLatin1String("vtk");
     li.href = baseurl + QLatin1String("#_TocVtk");
     li.url = QLatin1String("https://www.vtk.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_VTK_VERSION);
     libInfo << li;
 
     // Xerces-C
     li.name = QLatin1String("Xerces-C");
     li.href = baseurl + QLatin1String("#_TocXercesC");
     li.url = QLatin1String("https://xerces.apache.org/xerces-c");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_XERCESC_VERSION);
     libInfo << li;
 
     // Zipios++

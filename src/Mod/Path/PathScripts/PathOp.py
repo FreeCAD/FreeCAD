@@ -300,6 +300,13 @@ class ObjectOp(object):
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
+
+        # there's a bit of cycle going on here, if sanitizeBase causes the transaction to
+        # be cancelled we end right here again with the unsainitized Base - if that is the
+        # case, stop the cycle and return immediately
+        if prop == 'Base' and self.sanitizeBase(obj):
+            return
+
         if 'Restore' not in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
             self.updateDepths(obj, True)
 
@@ -463,6 +470,19 @@ class ObjectOp(object):
 
         self.opUpdateDepths(obj)
 
+    def sanitizeBase(self, obj):
+        '''sanitizeBase(obj) ... check if Base is valid and clear on errors.'''
+        if hasattr(obj, 'Base'):
+            try:
+                for (o, sublist) in obj.Base:
+                    for sub in sublist:
+                        e = o.Shape.getElement(sub)
+            except Part.OCCError as e:
+                PathLog.error("{} - stale base geometry detected - clearing.".format(obj.Label))
+                obj.Base = []
+                return True
+        return False
+
     @waiting_effects
     def execute(self, obj):
         '''execute(obj) ... base implementation - do not overwrite!
@@ -493,6 +513,9 @@ class ObjectOp(object):
 
         if not self._setBaseAndStock(obj):
             return
+
+        # make sure Base is still valid or clear it
+        self.sanitizeBase(obj)
 
         if FeatureCoolant & self.opFeatures(obj):
             if not hasattr(obj, 'CoolantMode'):

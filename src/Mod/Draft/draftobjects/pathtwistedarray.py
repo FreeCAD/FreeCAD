@@ -48,8 +48,8 @@ object in the Arch Workbench.
 # \brief Provides the object code for the TwistedArray object.
 
 import draftgeoutils.geo_arrays as geo
-from draftutils.translate import _tr
-
+from draftutils.translate import translate
+def QT_TRANSLATE_NOOP(ctx,txt): return txt
 from draftobjects.draftlink import DraftLink
 
 ## \addtogroup draftobjects
@@ -80,46 +80,38 @@ class PathTwistedArray(DraftLink):
             properties = []
 
         if "Base" not in properties:
-            _tip = _tr("The base object that will be duplicated.")
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
-                            _tip)
+                            QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."))
             obj.Base = None
 
         if "PathObject" not in properties:
-            _tip = _tr("The object along which "
-                       "the copies will be distributed. "
-                       "It must contain 'Edges'.")
             obj.addProperty("App::PropertyLink",
                             "PathObject",
                             "Objects",
-                            _tip)
+                            QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."))
             obj.PathObject = None
 
         if "Count" not in properties:
-            _tip = _tr("Number of copies to create.")
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
-                            _tip)
+                            QT_TRANSLATE_NOOP("App::Property","Number of copies to create."))
             obj.Count = 15
 
         if "RotationFactor" not in properties:
-            _tip = _tr("Rotation factor of the twisted array.")
             obj.addProperty("App::PropertyFloat",
                             "RotationFactor",
                             "Objects",
-                            _tip)
+                            QT_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."))
             obj.RotationFactor = 0.25
 
         if self.use_link and "ExpandArray" not in properties:
-            _tip = _tr("Show the individual array elements "
-                       "(only for Link arrays)")
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
-                            _tip)
+                            QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"))
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape', 'Transient')
 

@@ -268,6 +268,11 @@
       <source>Change Appearance of Lines</source>
       <translation type="unfinished">Change Appearance of Lines</translation>
     </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1257"/>
+      <source>Change Appearance of selected Lines</source>
+      <translation type="unfinished">Change Appearance of selected Lines</translation>
+    </message>
   </context>
   <context>
     <name>CmdTechDrawDetailView</name>
@@ -1017,7 +1022,7 @@
     <message>
       <location filename="../../mrichtextedit.ui" line="171"/>
       <source>Copy</source>
-      <translation>Kópia</translation>
+      <translation>Kopírovať</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="191"/>
@@ -1235,7 +1240,7 @@
       <location filename="../../CommandCreateDims.cpp" line="1335"/>
       <location filename="../../CommandCreateDims.cpp" line="1343"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="373"/>
@@ -1287,12 +1292,12 @@
     <message>
       <location filename="../../Command.cpp" line="1077"/>
       <source>Scalable Vector Graphic</source>
-      <translation type="unfinished">Scalable Vector Graphic</translation>
+      <translation>SVG</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Všetky súbory</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1137"/>
@@ -1458,7 +1463,7 @@
       <location filename="../../Command.cpp" line="786"/>
       <location filename="../../CommandCreateDims.cpp" line="1448"/>
       <source>Create a page first.</source>
-      <translation type="unfinished">Create a page first.</translation>
+      <translation>Najskôr vytvorte stránku.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="798"/>
@@ -1709,7 +1714,7 @@
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="116"/>
       <source>No page found</source>
-      <translation type="unfinished">No page found</translation>
+      <translation>Nenašla sa žiadna stránka</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="117"/>
@@ -1772,7 +1777,7 @@
     <message>
       <location filename="../../ViewProviderPage.cpp" line="249"/>
       <source>Show drawing</source>
-      <translation>Zobraziť nákres</translation>
+      <translation>Zobraziť výkres</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="251"/>
@@ -3418,12 +3423,12 @@ Fast, but result is a collection of short straight lines.</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="150"/>
       <source>Export PDF</source>
-      <translation>Export do PDF</translation>
+      <translation>Exportovať PDF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="774"/>
       <source>Different orientation</source>
-      <translation>Orientácia obrazovky</translation>
+      <translation>Odlišná orientácia</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="775"/>
@@ -3435,19 +3440,19 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../MDIViewPage.cpp" line="782"/>
       <source>Different paper size</source>
-      <translation type="unfinished">Different paper size</translation>
+      <translation>Odlišná veľkosť papiera</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="783"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+      <translation>Tlačiareň používa odlišnú veľkosť papiera ako nákres.
+Chcete pokračovať?</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="794"/>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Otvorenie zlyhalo</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="795"/>
@@ -3865,7 +3870,7 @@ see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</translation>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="34"/>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
@@ -4004,7 +4009,7 @@ Custom: custom scale factor is used</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="126"/>
       <source>Reference</source>
-      <translation>Odkaz</translation>
+      <translation>Referencia</translation>
     </message>
   </context>
   <context>
@@ -4434,7 +4439,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="34"/>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="57"/>
@@ -4560,7 +4565,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="34"/>
       <source>Projection</source>
-      <translation type="unfinished">Projection</translation>
+      <translation>Projekcia</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="41"/>
@@ -4576,12 +4581,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskProjGroup.ui" line="45"/>
       <source>First Angle</source>
-      <translation type="unfinished">First Angle</translation>
+      <translation>Prvý uhol</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="50"/>
       <source>Third Angle</source>
-      <translation type="unfinished">Third Angle</translation>
+      <translation>Tretí uhol</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="67"/>
@@ -5094,6 +5099,74 @@ using the given X/Y Spacing</translation>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation type="unfinished">Insert Vertical Extent Dimension</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Dimensions</source>
+      <translation>Rozmery</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Annotations</source>
+      <translation>Poznámky</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Add Lines</source>
+      <translation type="unfinished">Add Lines</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="40"/>
+      <source>Add Vertices</source>
+      <translation type="unfinished">Add Vertices</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="41"/>
+      <source>TechDraw</source>
+      <translation type="unfinished">TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
+      <source>TechDraw Pages</source>
+      <translation type="unfinished">TechDraw Pages</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="43"/>
+      <source>TechDraw Views</source>
+      <translation type="unfinished">TechDraw Views</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="44"/>
+      <source>TechDraw Clips</source>
+      <translation type="unfinished">TechDraw Clips</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="45"/>
+      <source>TechDraw Dimensions</source>
+      <translation type="unfinished">TechDraw Dimensions</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="46"/>
+      <source>TechDraw File Access</source>
+      <translation type="unfinished">TechDraw File Access</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
+      <source>TechDraw Decoration</source>
+      <translation type="unfinished">TechDraw Decoration</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="48"/>
+      <source>TechDraw Annotation</source>
+      <translation type="unfinished">TechDraw Annotation</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="49"/>
+      <source>Views</source>
+      <translation type="unfinished">Views</translation>
     </message>
   </context>
 </TS>

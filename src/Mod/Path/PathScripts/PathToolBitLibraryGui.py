@@ -736,7 +736,7 @@ class ToolBitLibrary(object):
                 if bit:
                     PathLog.track(bit)
 
-                    pocket = bit.Pocket if hasattr(bit, "Pocket") else ""
+                    pocket = bit.Pocket if hasattr(bit, "Pocket") else "0"
                     xoffset = bit.Xoffset if hasattr(bit, "Xoffset") else "0"
                     yoffset = bit.Yoffset if hasattr(bit, "Yoffset") else "0"
                     zoffset = bit.Zoffset if hasattr(bit, "Zoffset") else "0"
