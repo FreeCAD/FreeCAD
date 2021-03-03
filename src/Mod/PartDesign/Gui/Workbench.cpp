@@ -490,33 +490,33 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // datums
     Gui::MenuItem* datums = new Gui::MenuItem;
-    datums->setCommand("Create a datum");
+    datums->setCommand(QT_TR_NOOP("Create a datum"));
     *datums << "PartDesign_Point" << "PartDesign_Line"
         << "PartDesign_Plane";
 
     // additives
     Gui::MenuItem* additives = new Gui::MenuItem;
-    additives->setCommand("Create an additive feature");
+    additives->setCommand(QT_TR_NOOP("Create an additive feature"));
     *additives << "PartDesign_Pad" << "PartDesign_Revolution"
         << "PartDesign_AdditiveLoft" << "PartDesign_AdditivePipe" << "PartDesign_AdditiveHelix";
 
     // subtractives
     Gui::MenuItem* subtractives = new Gui::MenuItem;
-    subtractives->setCommand("Create a subtractive feature");
+    subtractives->setCommand(QT_TR_NOOP("Create a subtractive feature"));
     *subtractives << "PartDesign_Pocket" << "PartDesign_Hole"
         << "PartDesign_Groove" << "PartDesign_SubtractiveLoft"
         << "PartDesign_SubtractivePipe" << "PartDesign_SubtractiveHelix";
 
     // transformations
     Gui::MenuItem* transformations = new Gui::MenuItem;
-    transformations->setCommand("Apply a pattern");
+    transformations->setCommand(QT_TR_NOOP("Apply a pattern"));
     *transformations << "PartDesign_Mirrored" << "PartDesign_LinearPattern"
         << "PartDesign_PolarPattern" << "PartDesign_MultiTransform";
         //<< "PartDesign_Scaled"
 
     // dressups
     Gui::MenuItem* dressups = new Gui::MenuItem;
-    dressups->setCommand("Apply a dress-up feature");
+    dressups->setCommand(QT_TR_NOOP("Apply a dress-up feature"));
     *dressups << "PartDesign_Fillet" << "PartDesign_Chamfer"
         << "PartDesign_Draft" << "PartDesign_Thickness";
 
