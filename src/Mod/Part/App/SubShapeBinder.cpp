@@ -1094,7 +1094,8 @@ App::SubObjectT
 SubShapeBinder::import(const App::SubObjectT &feature, 
                        const App::SubObjectT &editObjT,
                        bool importWholeObject,
-                       bool noSubObject)
+                       bool noSubObject,
+                       bool compatible)
 {
     App::DocumentObject *editObj = nullptr;
     App::DocumentObject *container = nullptr;
@@ -1114,6 +1115,7 @@ SubShapeBinder::import(const App::SubObjectT &feature,
                 first = false;
             else
                 ss << obj->getNameInDocument() << ".";
+            obj = obj->getLinkedObject();
             if (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
                 subname = ss.str();
                 container = obj;
@@ -1210,7 +1212,8 @@ SubShapeBinder::import(const App::SubObjectT &feature,
     }
 
     auto binder = static_cast<Part::SubShapeBinder*>(
-            doc->addObject("Part::SubShapeBinder", "Import"));
+            doc->addObject(compatible ?
+                "PartDesign::SubShapeBinder" : "Part::SubShapeBinder", "Import"));
     binder->Visibility.setValue(false);
     if (group)
         group->addObject(binder);

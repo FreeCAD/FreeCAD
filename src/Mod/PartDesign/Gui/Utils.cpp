@@ -1189,7 +1189,7 @@ public:
                 }
                 editObjT = activeBodyT;
             }
-            return PartDesign::SubShapeBinder::import(feature, editObjT, true);
+            return PartDesign::SubShapeBinder::import(feature, editObjT, true, false, true);
         } catch (Base::Exception & e) {
             if (!report)
                 throw;
