@@ -844,6 +844,9 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
                         boost::function<void (Part::Feature*, App::DocumentObject*)> func,
                         bool needSubElement = false)
 {
+    //if a profile is selected we can make our life easy and fast
+    auto sels = Gui::Selection().getSelectionT("*", 0);
+
     auto base_worker = [=](App::DocumentObject* feature, const std::vector<string> &subs) {
 
         if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
@@ -881,16 +884,16 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         //for additive and subtractive lofts allow the user to preselect the sections
         if (which.compare("AdditiveLoft") == 0 || which.compare("SubtractiveLoft") == 0) {
             std::ostringstream ss;
-            int i = -1;
             int count = 0;
             ss << "Sections = [";
-            for (auto & objT : Gui::Selection().getSelectionT()) {
-                auto obj = objT.getObject();
-                if (PartDesign::Body::findBodyOf(obj) != pcActiveBody)
+            std::set<App::DocumentObject*> objSet;
+            for (unsigned i=1; i<sels.size(); ++i) {
+                if (!objSet.insert(sels[i].getSubObject()).second)
                     continue;
-                if (++i == 0)
+                auto objT = PartDesignGui::importExternalObject(sels[i], false);
+                if (objT.getObjectName().empty())
                     continue;
-                ss << obj->getFullName(true) << ", ";
+                ss << objT.getObjectPython() << ", ";
                 ++count;
             }
             if (count)
@@ -899,20 +902,31 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         // for additive and subtractive pipes allow the user to preselect the spines
         if (which.compare("AdditivePipe") == 0 || which.compare("SubtractivePipe") == 0) {
-            std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-            if (selection.size() == 2) { //treat additional selected object as spine
-                std::vector <string> subnames = selection[1].getSubNames();
-                auto objCmdSpine = Gui::Command::getObjectCmd(selection[1].getObject());
-                if (selection[1].getObject()->isDerivedFrom(Part::Part2DObject::getClassTypeId()) && subnames.empty()) {
-                    Gui::cmdAppObject(Feat, std::ostringstream() <<"Spine = " << objCmdSpine);
+            if (sels.size() > 1) {
+                //treat additional selected object as spine
+                App::DocumentObject *spine = nullptr;
+                App::SubObjectT ref;
+                std::vector<std::string> subs;
+                for (unsigned i=1; i<sels.size(); ++i) {
+                    if (!spine) {
+                        ref = PartDesignGui::importExternalObject(sels[i], false);
+                        if (ref.getObjectName().empty())
+                            continue;
+                        spine = sels[i].getSubObject();
+                        if (!spine)
+                            continue;
+                    } else if (spine != sels[i].getSubObject())
+                        continue;
+                    auto sub = sels[i].getOldElementName();
+                    if (sub.size())
+                        subs.push_back(std::move(sub));
                 }
-                else {
+                if (spine) {
                     std::ostringstream ss;
-                    for(auto &s : subnames) {
-                        if (s.find("Edge") != std::string::npos)
-                            ss << "'" << s << "',";
-                    }
-                    Gui::cmdAppObject(Feat, std::ostringstream() <<"Spine = (" << objCmdSpine << ", [" << ss.str() << "])");
+                    for(auto &s : subs)
+                        ss << "'" << s << "',";
+                    Gui::cmdAppObject(Feat, std::ostringstream()
+                            <<"Spine = (" << ref.getObjectPython() << ", [" << ss.str() << "])");
                 }
             }
         }
@@ -938,38 +952,37 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
     }
 
 
-    //if a profile is selected we can make our life easy and fast
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (!selection.empty()) {
-        bool validSelection = true;
-        for (auto & sel : cmd->getSelection().getSelectionEx()) {
-            if (PartDesign::Body::findBodyOf(sel.getObject()) != pcActiveBody) {
-                validSelection = false;
-                break;
+    if (!sels.empty()) {
+        App::SubObjectT ref;
+        for (unsigned i=0; i<sels.size(); ++i) {
+            auto sobj = sels[i].getSubObject();
+            if (!sobj)
+                continue;
+            ref = PartDesignGui::importExternalObject(sels[i], false);
+            if (auto obj = ref.getSubObject()) {
+                std::vector<std::string> subs;
+                if (sels[i].hasSubElement())
+                    subs.push_back(sels[i].getOldElementName());
+                for (unsigned j=i+1; j<sels.size(); ++j) {
+                    if (sels[j].getSubObject() == sobj && sels[j].hasSubElement())
+                        subs.push_back(sels[j].getOldElementName());
+                }
+                base_worker(obj, subs);
+                if (PartGui::PartParams::AdjustCameraForNewFeature())
+                    cmd->adjustCameraPosition();
+                return;
             }
-        }
-        if (validSelection) {
-            base_worker(selection.front().getObject(), selection.front().getSubNames());
-            if (PartGui::PartParams::AdjustCameraForNewFeature())
-                cmd->adjustCameraPosition();
-            return;
         }
     }
 
     //no face profile was selected, do the extended sketch logic
 
-    bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
     // First check selections
-    std::vector<App::DocumentObject*> sketches = cmd->getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    if (sketches.empty()) {//no sketches were selected. Let user pick an object from valid ones available in document
-        sketches = cmd->getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
-        bNoSketchWasSelected = true;
-    }
-
+    std::vector<App::DocumentObject*> sketches = pcActiveBody->getObjectsOfType(Part::Part2DObject::getClassTypeId());
     if (sketches.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No sketch to work on"),
-            QObject::tr("No sketch is available in the document"));
+            QObject::tr("No sketch is available in the body"));
         return;
     }
 
@@ -989,56 +1002,9 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         base_worker(features.front(), {});
     };
 
-    //if there is a sketch selected which is from another body or part we need to bring up the
-    //pick task dialog to decide how those are handled
-    bool extReference = std::find_if( status.begin(), status.end(),
-            [] (const PartDesignGui::TaskFeaturePick::featureStatus& s) {
-                return s == PartDesignGui::TaskFeaturePick::otherBody ||
-                    s == PartDesignGui::TaskFeaturePick::otherPart ||
-                    s == PartDesignGui::TaskFeaturePick::notInBody;
-            }
-        ) != status.end();
-
-    // TODO Clean this up (2015-10-20, Fat-Zer)
-    if (pcActiveBody && !bNoSketchWasSelected && extReference) {
-
-        // Hint: In an older version the function expected the body to be inside
-        // a Part container and if not an error was raised and the function aborted.
-        // First of all, for the user this wasn't obvious because the error message
-        // was quite confusing (and thus the user may have done the wrong thing since
-        // he may have assumed the that the sketch was meant) and second there is no need
-        // that the body must be inside a Part container.
-        // For more details see: https://forum.freecadweb.org/viewtopic.php?f=19&t=32164
-        // The function has been modified not to expect the body to be in the Part
-        // and it now directly invokes the 'makeCopy' dialog.
-        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
-
-        QDialog dia(Gui::getMainWindow());
-        PartDesignGui::Ui_DlgReference dlg;
-        dlg.setupUi(&dia);
-        dia.setModal(true);
-        int result = dia.exec();
-        if (result == QDialog::DialogCode::Rejected)
-            return;
-
-        if (!dlg.radioXRef->isChecked()) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make copy"));
-            auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
-            auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
-            if (oBody)
-                pcActiveBody->addObject(copy);
-            else if (pcActivePart)
-                pcActivePart->addObject(copy);
-
-            sketches[0] = copy;
-            firstFreeSketch = sketches.begin();
-        }
-    }
-
     // Show sketch choose dialog and let user pick sketch if no sketch was selected and no free one available or
     // multiple free ones are available
-    if (bNoSketchWasSelected && (freeSketches != 1) ) {
-
+    if (freeSketches != 1) {
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
@@ -1059,20 +1025,10 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         Gui::Selection().clearSelection();
         pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker, true);
-        // Logically dead code because 'bNoSketchWasSelected' must be true
-        //if (!bNoSketchWasSelected && extReference)
-        //    pickDlg->showExternal(true);
-
         Gui::Control().showDialog(pickDlg);
     }
     else {
-        std::vector<App::DocumentObject*> theSketch;
-        if (!bNoSketchWasSelected)
-            theSketch.push_back(sketches[0]);
-        else
-            theSketch.push_back(*firstFreeSketch);
-
-        sketch_worker(theSketch);
+        sketch_worker({*firstFreeSketch});
     }
 }
 
