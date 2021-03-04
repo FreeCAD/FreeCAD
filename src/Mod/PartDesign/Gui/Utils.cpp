@@ -136,18 +136,33 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
 
             if (!activeBody && autoActivate) {
                 auto doc = activeView->getAppDocument();
+                App::SubObjectT ref;
                 for (auto & sel : Gui::Selection().getSelectionT(doc->getName(), 0)) {
                     auto objs = sel.getSubObjectList();
                     for (auto it = objs.begin(); it != objs.end(); ++it) {
                         auto linked = (*it)->getLinkedObject(true);
                         if (linked->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-                            App::SubObjectT sobjT(objs.begin(), it+1);
-                            Gui::cmdGuiDocument(doc, std::ostringstream()
-                                    << "ActiveView.setActiveObject('" << PDBODYKEY << "',"
-                                    << sobjT.getObjectPython() << ",'" << sobjT.getSubName() << "')");
-                            return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
+                            ref = App::SubObjectT(objs.begin(), it+1);
+                            break;
                         }
                     }
+                }
+
+                if (ref.getObjectName().empty()) {
+                    auto bodies = doc->getObjectsOfType<PartDesign::Body>();
+                    if (bodies.size() == 1) {
+                        auto parents = bodies[0]->getParents();
+                        if (parents.size() == 1)
+                            ref = App::SubObjectT(parents[0].first, parents[0].second.c_str());
+                        else if (parents.empty())
+                            ref = App::SubObjectT(bodies[0], "");
+                    }
+                }
+                if (ref.getObjectName().size()) {
+                    Gui::cmdGuiDocument(doc, std::ostringstream()
+                            << "ActiveView.setActiveObject('" << PDBODYKEY << "',"
+                            << ref.getObjectPython() << ",'" << ref.getSubName() << "')");
+                    return activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,topParent,subname);
                 }
             }
             if (!activeBody && messageIfNot) {
