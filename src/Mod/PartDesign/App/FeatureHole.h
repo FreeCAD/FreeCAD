@@ -37,6 +37,9 @@ class XMLReader;
 namespace PartDesign
 {
 
+static constexpr size_t ThreadClass_ISOmetric_data_size = 25;
+static constexpr size_t ThreadRunout_size = 24;
+
 class PartDesignExport Hole : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Hole);
@@ -45,11 +48,8 @@ public:
     Hole();
 
     App::PropertyBool           Threaded;
-    App::PropertyBool           ModelActualThread;
+    App::PropertyBool           ModelThread;
     App::PropertyLength         ThreadPitch;
-    App::PropertyAngle          ThreadAngle;
-    App::PropertyLength         ThreadCutOffInner;
-    App::PropertyLength         ThreadCutOffOuter;
     App::PropertyEnumeration    ThreadType;
     App::PropertyEnumeration    ThreadSize;
     App::PropertyEnumeration    ThreadClass;
@@ -63,11 +63,15 @@ public:
     App::PropertyAngle          HoleCutCountersinkAngle;
     App::PropertyEnumeration    DepthType;
     App::PropertyLength         Depth;
+    App::PropertyEnumeration    ThreadDepthType;
+    App::PropertyLength         ThreadDepth;
     App::PropertyEnumeration    DrillPoint;
     App::PropertyAngle          DrillPointAngle;
     App::PropertyBool           DrillForDepth;
     App::PropertyBool           Tapered;
     App::PropertyAngle          TaperedAngle;
+    App::PropertyBool           UseCustomThreadClearance;
+    App::PropertyLength         CustomThreadClearance;
 
     /** @name methods override feature */
     //@{
@@ -105,8 +109,11 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
+    static const App::PropertyAngle::Constraints floatAngle;
+
 private:
     static const char* DepthTypeEnums[];
+    static const char* ThreadDepthTypeEnums[];
     static const char* ThreadTypeEnums[];
     static const char* ClearanceMetricEnums[];
     static const char* ClearanceUTSEnums[];
@@ -122,6 +129,7 @@ private:
     static std::vector<std::string> HoleCutType_ISOmetric_Enums;
     static const char* ThreadSize_ISOmetric_Enums[];
     static const char* ThreadClass_ISOmetric_Enums[];
+    static const double ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size][2];
 
     /* ISO metric fine profile */
     static std::vector<std::string> HoleCutType_ISOmetricfine_Enums;
@@ -142,6 +150,8 @@ private:
     static const char* HoleCutType_UNEF_Enums[];
     static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
+
+    static const double ThreadRunout[ThreadRunout_size][2];
 
     /* Counter-xxx */
 //public:
@@ -203,7 +213,12 @@ private:
     bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
     void updateHoleCutParams();
     void updateDiameterParam();
+    void updateThreadDepthParam();
     void readCutDefinitions();
+
+    double getThreadClassClearance();
+    double getThreadRunout(int mode = 1);
+    double getThreadPitch();
 
     // helpers for nlohmann json
     friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);

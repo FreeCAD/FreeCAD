@@ -438,9 +438,10 @@ class _Roof(ArchComponent.Component):
         rel = profilCurr["idrel"]
         if i != rel and 0 <= rel < numEdges:
             profilRel = self.profilsDico[rel]
-            # do not use data from the relative profile if it in turn references a relative profile
-            # other than itself:
-            if 0 <= profilRel["idrel"] < numEdges and rel != profilRel["idrel"]:
+            # do not use data from the relative profile if it in turn references a relative profile:
+            if (0 <= profilRel["idrel"] < numEdges                           # idrel of profilRel points to a profile
+                and rel != profilRel["idrel"]                                # profilRel does not reference itself
+                and (profilRel["angle"] == 0.0 or profilRel["run"] == 0.0)): # run or angle of profilRel is zero
                 hgt = self.calcHeight(i)
                 profilCurr["height"] = hgt
             elif ang == 0.0 and run == 0.0:

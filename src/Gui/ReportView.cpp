@@ -240,6 +240,7 @@ private:
  */
 
 ReportOutputObserver::ReportOutputObserver(ReportOutput *report)
+  : QObject(report)
 {
     this->reportView = report;
 }

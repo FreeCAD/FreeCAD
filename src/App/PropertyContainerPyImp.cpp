@@ -519,23 +519,15 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         // get the properties to the C++ PropertyContainer class
         std::map<std::string,App::Property*> Map;
         getPropertyContainerPtr()->getPropertyMap(Map);
-        PyObject *dict = PyDict_New();
-        if (dict) {
-            for ( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it )
-#if PY_MAJOR_VERSION >= 3
-                PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
-#else
-                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
-#endif
-            if (PyErr_Occurred()) {
-                Py_DECREF(dict);
-                dict = NULL;
-            }
+
+        Py::Dict dict;
+        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
+            dict.setItem(it->first, Py::String(""));
         }
-        return dict;
-    } else if(Base::streq(attr,"Shape")
-            && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-    {
+        return Py::new_reference_to(dict);
+    }
+    ///FIXME: For v0.20: Do not use stuff from Part module here!
+    else if(Base::streq(attr,"Shape") && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         // Special treatment of Shape property
         static PyObject *_getShape = 0;
         if(!_getShape) {

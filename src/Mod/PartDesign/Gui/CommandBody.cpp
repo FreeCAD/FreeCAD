@@ -127,9 +127,7 @@ void CmdPartDesignBody::activated(int iMsg)
                 baseFeature = nullptr;
             }
             else if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
-                // Prevent creating bodies based on bodies
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body can't be based on another body."));
+                // Prevent creating bodies based on bodies (but don't pop-up a dialog)
                 baseFeature = nullptr;
             }
             else {

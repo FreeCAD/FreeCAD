@@ -44,7 +44,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="maxSize" native="true">
+       <widget class="Gui::QuantitySpinBox" name="maxSize">
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
         </property>
@@ -70,7 +70,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="minSize" native="true">
+       <widget class="Gui::QuantitySpinBox" name="minSize">
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
         </property>
@@ -96,7 +96,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::QuantitySpinBox" name="angle" native="true">
+       <widget class="Gui::QuantitySpinBox" name="angle">
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
@@ -136,7 +136,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="fileChooser" native="true">
+         <widget class="Gui::PrefFileChooser" name="fileChooser">
           <property name="prefEntry" stdset="0">
            <cstring>gmshExe</cstring>
           </property>

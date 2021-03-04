@@ -51,7 +51,7 @@ class GuiExport ExpressionCompleter : public QCompleter
     Q_OBJECT
 public:
     ExpressionCompleter(const App::DocumentObject * currentDocObj,
-            QObject *parent = 0, bool noProperty = false);
+            QObject *parent = nullptr, bool noProperty = false);
 
     void getPrefixRange(int &start, int &end) const {
         start = prefixStart;
@@ -65,6 +65,7 @@ public:
     void setDocumentObject(const App::DocumentObject*);
 
     void setNoProperty(bool enabled=true);
+    void setRequireLeadingEqualSign(bool enabled);
 
 public Q_SLOTS:
     void slotUpdate(const QString &prefix, int pos);
@@ -76,6 +77,7 @@ private:
 
     int prefixStart = 0;
     int prefixEnd = 0;
+    bool requireLeadingEqualSign = false;
 
     App::DocumentObjectT currentObj;
     bool noProperty;
@@ -85,7 +87,7 @@ private:
 class GuiExport ExpressionLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    ExpressionLineEdit(QWidget *parent = 0, bool noProperty=false);
+    ExpressionLineEdit(QWidget *parent = nullptr, bool noProperty = false, bool requireLeadingEqualSign = false);
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();
@@ -104,12 +106,13 @@ private:
     bool block;
     bool noProperty;
     bool exactMatch;
+    bool requireLeadingEqualSign;
 };
 
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {
     Q_OBJECT
 public:
-    ExpressionTextEdit(QWidget *parent = 0);
+    ExpressionTextEdit(QWidget *parent = nullptr);
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();

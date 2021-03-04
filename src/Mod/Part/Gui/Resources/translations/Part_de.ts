@@ -4,6 +4,16 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
+      <source>Attachment...</source>
+      <translation>Anhang...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Anhang des ausgewählten Objekts bearbeiten.</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
       <translation>Kein Objekt namens {name}</translation>
@@ -24,14 +34,14 @@
       <translation>{obj} kann nicht angehängt werden. Sie können den Anhangseditor weiterhin zum Ausrichten des Objekts verwenden, der Anhang wird jedoch nicht parametrisch sein.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
-      <source>Attachment</source>
-      <translation>Anhang</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
       <translation>Fortsetzen</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <source>Attachment</source>
+      <translation>Anhang</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -99,24 +109,14 @@
       <translation>Befestigungsversatz:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Versatz der Anhänge (in lokalen Koordinaten):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Befestigungsversatz (Inaktiv - nicht gebunden):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
-      <source>Attachment...</source>
-      <translation>Anhang...</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
-      <source>Edit attachment of selected object.</source>
-      <translation>Anhang des ausgewählten Objekts bearbeiten.</translation>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Versatz der Anhänge (in lokalen Koordinaten):</translation>
     </message>
   </context>
   <context>
@@ -259,91 +259,7 @@ Es wird einen 'Compound-Filter' für jede Form erzeugen.</translation>
     </message>
   </context>
   <context>
-    <name>Part_JoinFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Ungültige Auswahl</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Fortsetzen</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Berechnung des Ergebnis mit dem Fehler fehlgeschlagen: 
-
-{err}
-
-klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
-      <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation>Wählen Sie mindestens zwei Objekte oder eine oder mehrere Verbunde aus!</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation>Wählen Sie mindestens zwei Objekte oder eine oder mehrere Verbundobjekte</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Wählen Sie zuerst das Basisobjekt und dann das einzubettende Objekt aus. Rufen Sie danach dieses Werkzeug auf.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation>Wählen Sie ein Basisobjekt, dann das einzubettende Objekt und rufen Sie dieses Werkzeug auf.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation>Wählen Sie zuerst das Objekt aus, in dem ein Ausschnitt erstellt werden soll. Danach das Objekt zu welchem der Ausschnitt passen soll, und rufen Sie zum Schluss dieses Werkzeug auf.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation>Wählen Sie das Objekt, in dem ein Ausschnitt erstellt werden soll, dann das Objekt, das in den Ausschnitt passt, und rufen Sie dieses Werkzeug auf.</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Ungültige Auswahl</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Fortsetzen</translation>
-    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
@@ -363,45 +279,6 @@ der ursprünglichen Formen zerlegt wird.
 Ein 'Compound Filter' kann verwendet werden, um die einzelnen Scheiben zu extrahieren.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Wählen Sie zuerst mindestens zwei Objekte oder eine oder mehrere Verbindungen aus. Wenn nur eine Verbindung ausgewählt wird, werden die zusammengesetzten Formen untereinander geschnitten (andernfalls wären Verbindungen mit Selbstschnittpunkten ungültig).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Teilen zu einem Verbund</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Schneiden Sie ein ausgewähltes Objekt auf, indem Sie andere Objekte als Schneidewerkzeuge verwenden.
-Die resultierenden Stücke werden in einem Verbundobjekt gespeichert.
-Ein 'Verbundobjekt-Filter' kann verwendet werden, um die einzelnen Scheiben zu extrahieren.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Mindestens zwei Objekte auswählen. Das erste ist das zu schneidende Objekt; die weiteren Objekte sind die, mit denen geschnitten wird.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Auseinanderschneiden</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Boolesche Fragmente</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
       <translation>Auftrennen eines Objekts an Schnittstellen mit anderen Objekten und Verknüpfung der Einzelteile zu einem Verbund.</translation>
@@ -417,10 +294,9 @@ Ein 'Verbundobjekt-Filter' kann verwendet werden, um die einzelnen Scheiben zu e
       <translation>Wählen Sie mindestens zwei Objekte aus! Das erste ist das zu schneidende Objekt; der Rest sind Objekte, mit denen geschnitten werden soll.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Teilen sie ein ausgewähltes Objekt, durch schneiden mit anderen Objekten, in getrennte Objekte. Es wird für jedes Teil ein zusammengesetzter Verbund erzeugt.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Mindestens zwei Objekte auswählen. Das erste ist das zu schneidende Objekt; die weiteren Objekte sind die, mit denen geschnitten wird.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -446,6 +322,46 @@ klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen"
       <translation>Wählen Sie zuerst mindestens zwei Objekte oder eine oder mehrere Verbunde aus! Wenn nur ein Verbund ausgewählt wird, werden die zusammengesetzten Formen untereinander geschnitten (andernfalls wären Verbindungen mit Selbstschnittpunkten ungültig).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Wählen Sie zuerst mindestens zwei Objekte oder eine oder mehrere Verbindungen aus. Wenn nur eine Verbindung ausgewählt wird, werden die zusammengesetzten Formen untereinander geschnitten (andernfalls wären Verbindungen mit Selbstschnittpunkten ungültig).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Teilen zu einem Verbund</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Boolesche Fragmente</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Auftrennen von Objekten an deren Schnittstellen</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Schneiden Sie ein ausgewähltes Objekt auf, indem Sie andere Objekte als Schneidewerkzeuge verwenden.
+Die resultierenden Stücke werden in einem Verbundobjekt gespeichert.
+Ein 'Verbundobjekt-Filter' kann verwendet werden, um die einzelnen Scheiben zu extrahieren.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Auseinanderschneiden</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Teilen sie ein ausgewähltes Objekt, durch schneiden mit anderen Objekten, in getrennte Objekte. Es wird für jedes Teil ein zusammengesetzter Verbund erzeugt.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation>Boolesche XOR</translation>
@@ -460,6 +376,25 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 oder mit den Formen innerhalb einer Verbindung durchführen.
 Das bedeutet, dass die sich überschneidenden Volumen der Formen entfernt werden.
 Ein 'Compoundfilter' kann verwendet werden, um die restlichen Stücke zu extrahieren.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Ungültige Auswahl</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Fortsetzen</translation>
     </message>
   </context>
   <context>
@@ -941,6 +876,71 @@ Do you want to continue?</source>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
       <translation>Kontrollpunkte anzeigen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Berechnung des Ergebnis mit dem Fehler fehlgeschlagen: 
+
+{err}
+
+klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation>Fortsetzen</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Wählen Sie mindestens zwei Objekte oder eine oder mehrere Verbunde aus!</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Wählen Sie mindestens zwei Objekte oder eine oder mehrere Verbundobjekte</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Wählen Sie zuerst das Basisobjekt und dann das einzubettende Objekt aus. Rufen Sie danach dieses Werkzeug auf.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Wählen Sie ein Basisobjekt, dann das einzubettende Objekt und rufen Sie dieses Werkzeug auf.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Wählen Sie zuerst das Objekt aus, in dem ein Ausschnitt erstellt werden soll. Danach das Objekt zu welchem der Ausschnitt passen soll, und rufen Sie zum Schluss dieses Werkzeug auf.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation>Ungültige Auswahl</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Wählen Sie das Objekt, in dem ein Ausschnitt erstellt werden soll, dann das Objekt, das in den Ausschnitt passt, und rufen Sie dieses Werkzeug auf.</translation>
     </message>
   </context>
   <context>

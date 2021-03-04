@@ -37,6 +37,7 @@
 
 namespace App {
 class Property;
+class Document;
 }
 
 namespace Gui {
@@ -110,6 +111,7 @@ private:
     void updateItemEditor(bool enable, int column, const QModelIndex& parent);
     void setupTransaction(const QModelIndex &);
     void closeTransaction();
+    void recomputeDocument(App::Document*);
 
 private:
     PropertyItemDelegate *delegate;

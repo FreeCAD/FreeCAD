@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation>Crear un nuevo sistema de coordenadas</translation>
+      <translation>Crear un nuevo sistema de coordenadas locales</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>Groove a selected sketch</source>
-      <translation>Ranura generada mediante revolución de un croquis seleccionado</translation>
+      <translation>Ranura generada mediante revolución de un boceto seleccionado</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="1943"/>
       <source>Create a linear pattern feature</source>
-      <translation>Crear un patrón de repetición lineal</translation>
+      <translation>Crear una operación de patrón lineal</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Migrar documentos al banco de trabajo PartDesign</translation>
+      <translation>Migrar documentos al flujo de trabajo PartDesign moderno</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Mirrored</source>
-      <translation>Simetrico</translation>
+      <translation>Simetría</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1879"/>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../Command.cpp" line="2009"/>
       <source>Create a polar pattern feature</source>
-      <translation>Crear patrón de repetición polar</translation>
+      <translation>Crear una operación de patrón polar</translation>
     </message>
   </context>
   <context>
@@ -1440,7 +1440,7 @@ material para ser eliminado;
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Añadir una caracteristica</translation>
+      <translation>Añadir una operación</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="32"/>
@@ -1551,7 +1551,7 @@ material para ser eliminado;
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Añadir una caracteristica</translation>
+      <translation>Añadir una operación</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="32"/>
@@ -1594,7 +1594,7 @@ material para ser eliminado;
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Añadir una caracteristica</translation>
+      <translation>Añadir una operación</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
@@ -1629,7 +1629,7 @@ material para ser eliminado;
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="90"/>
       <source>Add mirrored transformation</source>
-      <translation>Añadir transformación de reflexión</translation>
+      <translation>Añadir transformación de simetría</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
@@ -2041,7 +2041,7 @@ material para ser eliminado;
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Añadir una caracteristica</translation>
+      <translation>Añadir una operación</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
@@ -2171,7 +2171,7 @@ material para ser eliminado;
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation>Añadir una caracteristica</translation>
+      <translation>Añadir una operación</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>

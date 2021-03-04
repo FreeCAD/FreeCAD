@@ -31,7 +31,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="114"/>
       <source>&amp;Help</source>
-      <translation>Pomoc</translation>
+      <translation>&amp;Pomocník</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="117"/>
@@ -41,12 +41,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="127"/>
       <source>&amp;About</source>
-      <translation>&amp;O</translation>
+      <translation>&amp;O aplikácii</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="130"/>
       <source>Alt+A</source>
-      <translation>Alt + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="140"/>
@@ -104,7 +104,7 @@
     <message>
       <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="164"/>

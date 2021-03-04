@@ -268,6 +268,11 @@
       <source>Change Appearance of Lines</source>
       <translation>Ändra utseende på linjer</translation>
     </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1257"/>
+      <source>Change Appearance of selected Lines</source>
+      <translation type="unfinished">Change Appearance of selected Lines</translation>
+    </message>
   </context>
   <context>
     <name>CmdTechDrawDetailView</name>
@@ -2187,7 +2192,7 @@ Denna katalog kommer att användas för symbolvalet.</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="275"/>
       <source>*.svg</source>
-      <translation type="unfinished">*.svg</translation>
+      <translation>*.svg</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="288"/>
@@ -2551,12 +2556,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="469"/>
       <source>ANSI</source>
-      <translation type="unfinished">ANSI</translation>
+      <translation>ANSI</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="474"/>
       <source>ISO</source>
-      <translation type="unfinished">ISO</translation>
+      <translation>ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="507"/>
@@ -2921,7 +2926,7 @@ Multiplier of &apos;Font Size&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="187"/>
       <source>⌀</source>
-      <translation type="unfinished">⌀</translation>
+      <translation>⌀</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="102"/>
@@ -3042,7 +3047,7 @@ för ProjektionGrupper</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="360"/>
       <source>Conventions</source>
-      <translation type="unfinished">Conventions</translation>
+      <translation>Konventioner</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="381"/>
@@ -4042,7 +4047,7 @@ Anpassad: anpassad skalfaktor används</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="48"/>
       <source>Overtolerance:</source>
-      <translation type="unfinished">Overtolerance:</translation>
+      <translation>Övertolerans:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="61"/>
@@ -4056,7 +4061,7 @@ the negated value for &apos;Under Tolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="79"/>
       <source>Undertolerance:</source>
-      <translation type="unfinished">Undertolerance:</translation>
+      <translation>Undertolerans:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="92"/>
@@ -4070,7 +4075,7 @@ by negative value of &apos;Over Tolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="115"/>
       <source>Formatting</source>
-      <translation type="unfinished">Formatting</translation>
+      <translation>Formatering</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="123"/>
@@ -4093,7 +4098,7 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="141"/>
       <source>Arbitrary Text</source>
-      <translation type="unfinished">Arbitrary Text</translation>
+      <translation>Godtycklig text</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="148"/>
@@ -5093,6 +5098,74 @@ med hjälp av det givna X/Y-avstånden</translation>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Dimension för infoga vertikal omfattning</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Dimensions</source>
+      <translation>Dimensioner</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Annotations</source>
+      <translation>Annoteringar</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Add Lines</source>
+      <translation type="unfinished">Add Lines</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="40"/>
+      <source>Add Vertices</source>
+      <translation type="unfinished">Add Vertices</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="41"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
+      <source>TechDraw Pages</source>
+      <translation type="unfinished">TechDraw Pages</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="43"/>
+      <source>TechDraw Views</source>
+      <translation type="unfinished">TechDraw Views</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="44"/>
+      <source>TechDraw Clips</source>
+      <translation type="unfinished">TechDraw Clips</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="45"/>
+      <source>TechDraw Dimensions</source>
+      <translation type="unfinished">TechDraw Dimensions</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="46"/>
+      <source>TechDraw File Access</source>
+      <translation type="unfinished">TechDraw File Access</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
+      <source>TechDraw Decoration</source>
+      <translation type="unfinished">TechDraw Decoration</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="48"/>
+      <source>TechDraw Annotation</source>
+      <translation type="unfinished">TechDraw Annotation</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="49"/>
+      <source>Views</source>
+      <translation type="unfinished">Views</translation>
     </message>
   </context>
 </TS>

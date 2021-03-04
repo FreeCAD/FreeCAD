@@ -51,7 +51,7 @@ LastFileToolShape               = "LastFileToolShape"
 
 UseLegacyTools                  = "UseLegacyTools"
 UseAbsoluteToolPaths            = "UseAbsoluteToolPaths"
-OpenLastLibrary                 = "OpenLastLibrary"
+# OpenLastLibrary                 = "OpenLastLibrary"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance               = "GeometryTolerance"
@@ -166,15 +166,15 @@ def toolsStoreAbsolutePaths():
     return preferences().GetBool(UseAbsoluteToolPaths, False)
 
 
-def toolsOpenLastLibrary():
-    return preferences().GetBool(OpenLastLibrary, False)
+# def toolsOpenLastLibrary():
+#     return preferences().GetBool(OpenLastLibrary, False)
 
 
-def setToolsSettings(legacy, relative, lastlibrary):
+def setToolsSettings(legacy, relative):
     pref = preferences()
     pref.SetBool(UseLegacyTools, legacy)
     pref.SetBool(UseAbsoluteToolPaths, relative)
-    pref.SetBool(OpenLastLibrary, lastlibrary)
+    # pref.SetBool(OpenLastLibrary, lastlibrary)
 
 
 def defaultJobTemplate():

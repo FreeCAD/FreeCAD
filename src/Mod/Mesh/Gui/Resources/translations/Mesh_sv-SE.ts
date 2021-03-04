@@ -2236,12 +2236,12 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Komprimerad X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -2336,7 +2336,7 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="746"/>
       <source>Display segments</source>
-      <translation type="unfinished">Display segments</translation>
+      <translation>Visa segment</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1577"/>

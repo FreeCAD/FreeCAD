@@ -54,6 +54,7 @@ class WireToBSpline(gui_base_original.Modifier):
     """Gui Command for the Wire to BSpline tool."""
 
     def __init__(self):
+        super().__init__()
         self.running = False
 
     def GetResources(self):

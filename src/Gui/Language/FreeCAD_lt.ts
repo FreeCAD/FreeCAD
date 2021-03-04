@@ -5376,6 +5376,10 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
       <source>Expression...</source>
       <translation>Išraiška...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
