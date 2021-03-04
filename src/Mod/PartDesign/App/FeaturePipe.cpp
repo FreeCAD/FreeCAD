@@ -502,7 +502,7 @@ TopoShape Pipe::buildPipePath(const App::PropertyLinkSub &link, const gp_Trsf &t
         if(shapes.back().isNull())
             return result;
     }else{
-        for(auto &sub : link.getSubValues(true)) {
+        for(auto &sub : subs) {
             shapes.push_back(getTopoShape(obj,sub.c_str(),true));
             if(shapes.back().isNull())
                 return result;
