@@ -217,6 +217,9 @@ static inline bool isLinkSub(QList<App::SubObjectT> links)
 }
 
 void DlgPropertyLink::setItemLabel(QTreeWidgetItem *item, std::size_t idx) {
+
+    item->setCheckState(0, idx ? Qt::Checked : Qt::Unchecked);
+
     if(singleSelect)
         return;
 
@@ -865,10 +868,8 @@ QTreeWidgetItem *DlgPropertyLink::selectionChanged(const Gui::SelectionChanges& 
 
 void DlgPropertyLink::clearSelection(QTreeWidgetItem *itemKeep) {
     ui->treeWidget->selectionModel()->clearSelection();
-    for(auto item : checkedItems) {
-        item->setCheckState(0, Qt::Unchecked);
+    for(auto item : checkedItems)
         setItemLabel(item, item==itemKeep?1:0);
-    }
     checkedItems.clear();
     if(itemKeep)
         checkedItems.push_back(itemKeep);
@@ -983,9 +984,8 @@ void DlgPropertyLink::onTimer() {
 
 QList<App::SubObjectT> DlgPropertyLink::currentLinks() const
 {
-    auto items = ui->treeWidget->selectedItems();
     QList<App::SubObjectT> res;
-    for(auto item : items)
+    for(auto item : checkedItems)
         res.append(getLinkFromItem(item));
     return res;
 }

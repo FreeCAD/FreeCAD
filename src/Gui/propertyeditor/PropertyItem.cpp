@@ -3982,19 +3982,21 @@ void LinkLabel::onEditClicked ()
     if(!dlg) {
         dlg = new PropertyLinkEditor(this);
         dlg->getProxy()->init(objProp,true);
-        connect(dlg, SIGNAL(finished(int)), this, SLOT(onLinkChanged()));
+        connect(dlg, SIGNAL(finished(int)), this, SLOT(onLinkChanged(int)));
     } else
         dlg->getProxy()->init(objProp,false);
     dlg->show();
 }
 
-void LinkLabel::onLinkChanged() {
+void LinkLabel::onLinkChanged(int code) {
     if(dlg) {
-        auto links = dlg->getProxy()->currentLinks();
-        if(links != dlg->getProxy()->originalLinks()) {
-            link = QVariant::fromValue(links);
-            /*emit*/ linkChanged(link);
-            updatePropertyLink();
+        if (code == QDialog::Accepted) {
+            auto links = dlg->getProxy()->currentLinks();
+            if(links != dlg->getProxy()->originalLinks()) {
+                link = QVariant::fromValue(links);
+                /*emit*/ linkChanged(link);
+                updatePropertyLink();
+            }
         }
         this->deleteLater();
     }
