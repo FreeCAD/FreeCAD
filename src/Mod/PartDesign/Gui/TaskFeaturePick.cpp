@@ -124,6 +124,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
                     .arg(getFeatureStatusString(*statusIt)
                 )
         );
+        if (*statusIt != validFeature)
+            item->setForeground(Qt::red);
         item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument()));
         ui->listWidget->addItem(item);
 
@@ -177,6 +179,8 @@ TaskFeaturePick::~TaskFeaturePick()
 void TaskFeaturePick::updateList()
 {
     int index = 0;
+    bool hasExternal = false;
+    unsigned used = 0;
 
     for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
         QListWidgetItem* item = ui->listWidget->item(index);
@@ -184,17 +188,19 @@ void TaskFeaturePick::updateList()
         switch (*st) {
             case validFeature: item->setHidden(false); break;
             case invalidShape: item->setHidden(true); break;
-            case isUsed: item->setHidden(!ui->checkUsed->isChecked()); break;
+            case isUsed: item->setHidden(!ui->checkUsed->isChecked()); used++; break;
             case noWire: item->setHidden(true); break;
-            case otherBody: item->setHidden(!ui->checkOtherBody->isChecked()); break;
-            case otherPart: item->setHidden(!ui->checkOtherPart->isChecked()); break;
-            case notInBody: item->setHidden(!ui->checkOtherPart->isChecked()); break;
+            case otherBody: item->setHidden(!ui->checkOtherBody->isChecked()); hasExternal = true; break;
+            case otherPart: item->setHidden(!ui->checkOtherPart->isChecked()); hasExternal = true; break;
+            case notInBody: item->setHidden(!ui->checkOtherPart->isChecked()); hasExternal = true; break;
             case basePlane: item->setHidden(false); break;
             case afterTip:  item->setHidden(true); break;
         }
-
         index++;
     }
+    ui->checkExternal->setVisible(hasExternal);
+    if (!ui->checkUsed->isChecked() && used == statuses.size())
+        ui->checkUsed->setChecked(true);
 }
 
 void TaskFeaturePick::onUpdate(bool)
