@@ -850,16 +850,15 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
-        //Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
-        TopoShape helix;
+        Standard_Real nbTurns = myHeight / myPitch;
+        
+        Standard_Real myRadiusTop = myRadius + myHeight * tan(Base::toRadians(myAngle));
+        TopoShape spirhelix;
         // work around for OCC bug #23314 (FC #0954)
         // the exact conditions for failure are unknown.  building the helix 1 turn at a time
         // seems to always work.
-        this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
-//        if (myHeight / myPitch > 50.0)
-//            this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
-//        else
-//            this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
+        TopoDS_Shape myHelix = spirhelix.makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, 2, myLocalCS);
+        this->Shape.setValue(myHelix);
     }
     catch (Standard_Failure& e) {
 
@@ -913,30 +912,16 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         Standard_Real myNumRot = Rotations.getValue();
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myGrowth = Growth.getValue();
-        Standard_Real myAngle  = 45.0;
-        Standard_Real myPitch  = myGrowth / tan(Base::toRadians(myAngle));
-        Standard_Real myHeight = myPitch * myNumRot;
-        TopoShape helix;
+        Standard_Real myRadiusTop = myRadius + myGrowth * myNumRot;
+        TopoShape spirhelix;
 
         if (myGrowth < Precision::Confusion())
             Standard_Failure::Raise("Growth too small");
-
         if (myNumRot < Precision::Confusion())
             Standard_Failure::Raise("Number of rotations too small");
-        // spiral suffers from same bug as helix (FC bug #0954)
-        // So, we use same work around for OCC bug #23314
-        TopoDS_Shape myHelix = helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, Standard_False);
-
-        Handle(Geom_Plane) aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
-        Standard_Real range = (myNumRot+1) * myGrowth + 1 + myRadius;
-        BRepBuilderAPI_MakeFace mkFace(aPlane, -range, range, -range, range
-#if OCC_VERSION_HEX >= 0x060502
-        , Precision::Confusion()
-#endif
-        );
-        BRepProj_Projection proj(myHelix, mkFace.Face(), gp::DZ());
-        this->Shape.setValue(proj.Shape());
-
+        
+        TopoDS_Shape mySpiral = spirhelix.makeSpiralHelix(myRadius, myRadiusTop, 0, myNumRot, 2, Standard_False);
+        this->Shape.setValue(mySpiral);
         return Primitive::execute();
     }
     catch (Standard_Failure& e) {
