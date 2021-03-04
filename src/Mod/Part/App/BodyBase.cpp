@@ -44,7 +44,6 @@ BodyBase::BodyBase()
     Tip.setScope(App::LinkScope::Child);
 
     ADD_PROPERTY(BaseFeature , (0) );
-    ADD_PROPERTY_TYPE(Material, (0), 0, App::Prop_None, "The Material for this Part");
 
     App::OriginGroupExtension::initExtension(this);
 }
