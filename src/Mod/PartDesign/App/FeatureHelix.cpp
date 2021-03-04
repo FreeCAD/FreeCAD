@@ -73,7 +73,7 @@ PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
 // we purposely use not FLT_MAX because this would not be computable
 const App::PropertyFloatConstraint::Constraints floatTurns = { Precision::Confusion(), INT_MAX, 1.0 };
-const App::PropertyAngle::Constraints floatAngle = { -89.0, 89.0, 5.0 };
+const App::PropertyAngle::Constraints floatAngle = { -89.0, 89.0, 1.0 };
 
 Helix::Helix()
 {
