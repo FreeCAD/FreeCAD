@@ -333,7 +333,9 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
 {
     try {
         if (doc) {
-            if (!doc->isTransactionEmpty()) {
+            if (!doc->isTransactionEmpty()
+                    && !doc->testStatus(App::Document::Recomputing)
+                    && doc->mustExecute()) {
                 // Between opening and committing a transaction a recompute
                 // could already have been done
                 if (doc->mustExecute())
@@ -358,6 +360,7 @@ void PropertyEditor::closeTransaction()
 {
     int tid = 0;
     if (App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
+        transactionID = 0;
         if (autoupdate) {
             App::Document* doc = App::GetApplication().getActiveDocument();
             recomputeDocument(doc);
