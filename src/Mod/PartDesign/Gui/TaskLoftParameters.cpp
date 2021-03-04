@@ -30,6 +30,7 @@
 # include <QTextStream>
 # include <QMessageBox>
 # include <Precision.hxx>
+# include <QKeyEvent>
 #endif
 
 #include "ui_TaskLoftParameters.h"
@@ -454,6 +455,18 @@ bool TaskLoftParameters::eventFilter(QObject *o, QEvent *ev)
                 PartDesignGui::highlightObjectOnTop(obj);
         }
         break;
+    case QEvent::ShortcutOverride:
+    case QEvent::KeyPress: {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(ev);
+        if (o == ui->listWidgetReferences && kevent->modifiers() == Qt::NoModifier) {
+            if (kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                if (ev->type() == QEvent::KeyPress)
+                    onDeleteSection();
+            }
+        }
+        break;
+    }
     default:
         break;
     }

@@ -31,6 +31,7 @@
 # include <QMessageBox>
 # include <QGenericReturnArgument>
 # include <QMetaObject>
+# include <QKeyEvent>
 # include <Precision.hxx>
 #endif
 
@@ -355,6 +356,18 @@ bool TaskPipeParameters::eventFilter(QObject *o, QEvent *ev)
     case QEvent::Leave:
         Gui::Selection().rmvPreselect();
         break;
+    case QEvent::ShortcutOverride:
+    case QEvent::KeyPress: {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(ev);
+        if (o == ui->listWidgetReferences && kevent->modifiers() == Qt::NoModifier) {
+            if (kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                if (ev->type() == QEvent::KeyPress)
+                    onDeleteEdge();
+            }
+        }
+        break;
+    }
     case QEvent::Enter:
         if (vp) {
             PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
@@ -668,6 +681,18 @@ void TaskPipeOrientation::onItemEntered(QListWidgetItem *item)
 bool TaskPipeOrientation::eventFilter(QObject *o, QEvent *ev)
 {
     switch(ev->type()) {
+    case QEvent::ShortcutOverride:
+    case QEvent::KeyPress: {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(ev);
+        if (o == ui->listWidgetReferences && kevent->modifiers() == Qt::NoModifier) {
+            if (kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                if (ev->type() == QEvent::KeyPress)
+                    onDeleteItem();
+            }
+        }
+        break;
+    }
     case QEvent::FocusIn:
         if (o == ui->profileBaseEdit || o == ui->listWidgetReferences)
             toggleShowOnTop(vp, lastAuxSpine, "AuxillerySpine", true);

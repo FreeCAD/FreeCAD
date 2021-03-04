@@ -666,10 +666,26 @@ bool TaskDressUpParameters::event(QEvent *e)
 bool TaskDressUpParameters::eventFilter(QObject *o, QEvent *e)
 {
     if(listWidget && o == listWidget) {
-        if(e->type() == QEvent::Leave) {
+        switch(e->type()) {
+        case QEvent::Leave:
             enteredObject = nullptr;
             timer->stop();
             Gui::Selection().rmvPreselect();
+            break;
+        case QEvent::ShortcutOverride:
+        case QEvent::KeyPress: {
+            QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+            if (kevent->modifiers() == Qt::NoModifier) {
+                if (kevent->key() == Qt::Key_Delete) {
+                    kevent->accept();
+                    if (e->type() == QEvent::KeyPress)
+                        onRefDeleted();
+                }
+            }
+            break;
+        }
+        default:
+            break;
         }
     }
     return Gui::TaskView::TaskBox::eventFilter(o,e);

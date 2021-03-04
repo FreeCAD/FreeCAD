@@ -27,6 +27,7 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QAction>
+# include <QKeyEvent>
 #endif
 
 #include "ui_TaskBooleanParameters.h"
@@ -143,8 +144,27 @@ void TaskBooleanParameters::populate() {
 }
 
 bool TaskBooleanParameters::eventFilter(QObject *watched, QEvent *event) {
-    if(watched == ui->listWidgetBodies && event->type()==QEvent::Leave)
-        Gui::Selection().rmvPreselect();
+    if(watched == ui->listWidgetBodies) {
+        switch (event->type()) {
+        case QEvent::Leave:
+            Gui::Selection().rmvPreselect();
+            break;
+        case QEvent::ShortcutOverride:
+        case QEvent::KeyPress: {
+            QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+            if (kevent->modifiers() == Qt::NoModifier) {
+                if (kevent->key() == Qt::Key_Delete) {
+                    kevent->accept();
+                    if (event->type() == QEvent::KeyPress)
+                        onButtonRemove();
+                }
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
     return false;
 }
 
