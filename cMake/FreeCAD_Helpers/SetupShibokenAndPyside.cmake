@@ -15,7 +15,7 @@ macro(SetupShibokenAndPyside)
     if (Shiboken2_FOUND)
         # Shiboken2 config file was found but it may use the wrong Python version
         # Try to get the matching config suffix and repeat finding the package
-        set(SHIBOKEN_PATTERN .cpython-${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+        set(SHIBOKEN_PATTERN .cpython-${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR})
 
         file(GLOB SHIBOKEN_CONFIG "${Shiboken2_DIR}/Shiboken2Config${SHIBOKEN_PATTERN}*.cmake")
         if (SHIBOKEN_CONFIG)

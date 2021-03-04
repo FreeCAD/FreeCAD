@@ -123,21 +123,27 @@ macro(SetupPython)
         else (NOT DEFINED PYTHON_VERSION_STRING)
             find_package(PythonLibs ${PYTHON_VERSION_STRING} EXACT)
         endif(NOT DEFINED PYTHON_VERSION_STRING)
+        if(NOT PYTHONLIBS_FOUND)
+            message(FATAL_ERROR "=================================\n"
+                                "Python not found, install Python!\n"
+                                "=================================\n")
+        endif()
     else()
-        find_package(Python3 COMPONENTS Interpreter Development)
+        find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+
+        # For compatibility with old CMake scripts
+        set(PYTHON_LIBRARIES ${Python3_LIBRARIES})
+        set(PYTHON_INCLUDE_DIRS ${Python3_INCLUDE_DIRS})
+        set(PYTHON_LIBRARY_DIRS ${Python3_LIBRARY_DIRS})
+        set(PYTHON_VERSION_STRING ${Python3_VERSION})
+        set(PYTHON_VERSION_MAJOR ${Python3_VERSION_MAJOR})
+        set(PYTHON_VERSION_MINOR ${Python3_VERSION_MINOR})
+        set(PYTHON_VERSION_PATCH ${Python3_VERSION_PATCH})
     endif()
     
-    if(NOT PYTHONLIBS_FOUND)
-        message(FATAL_ERROR "=================================\n"
-                            "Python not found, install Python!\n"
-                            "=================================\n")
-    else(NOT PYTHONLIBS_FOUND)
-        # prevent python3 lower than 3.6 (not enough utf8<->unicode tools)
-        if(PYTHON_VERSION_MAJOR EQUAL 3)
-            if(PYTHON_VERSION_MINOR LESS 6)
-                message(FATAL_ERROR "To build FreeCAD you need at least Python 3.6\n")
-            endif(PYTHON_VERSION_MINOR LESS 6)
-        endif(PYTHON_VERSION_MAJOR EQUAL 3)
-    endif(NOT PYTHONLIBS_FOUND)
+    # prevent python3 lower than 3.6
+    if (${PYTHON_VERSION_STRING} VERSION_LESS "3.6")
+         message(FATAL_ERROR "To build FreeCAD you need at least Python 3.6\n")
+    endif()
 
 endmacro(SetupPython)
