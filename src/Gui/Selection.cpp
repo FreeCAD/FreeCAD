@@ -811,21 +811,35 @@ const App::SubObjectT &SelectionSingleton::getContext() const
     return ContextObject;
 }
 
-App::SubObjectT SelectionSingleton::getExtendedContext() const
+App::SubObjectT SelectionSingleton::getExtendedContext(App::DocumentObject *obj) const
 {
-    if (ContextObject.getSubObject())
+    auto sobj = ContextObject.getSubObject();
+    if (!obj || obj == sobj)
         return ContextObject;
 
-    if (CurrentPreselection.Object.getSubObject())
+    sobj = CurrentPreselection.Object.getSubObject();
+    if (!obj || obj == sobj)
         return CurrentPreselection.Object;
 
-    auto sels = getSelectionT(nullptr, 0, true);
-    if (sels.size())
-        return sels.front();
+    if (!obj) {
+        auto sels = getSelectionT(nullptr, 0, true);
+        if (sels.size())
+            return sels.front();
+    } else {
+        for (auto &sel : getSelectionT(nullptr, 0)) {
+            sobj = sel.getSubObject();
+            if (sobj == obj)
+                return sel;
+        }
+    }
 
     auto gdoc = Application::Instance->editDocument();
-    if (gdoc && gdoc == Application::Instance->activeDocument())
-        return gdoc->getInEditT();
+    if (gdoc && gdoc == Application::Instance->activeDocument()) {
+        auto objT = gdoc->getInEditT();
+        sobj = objT.getSubObject();
+        if (!obj || sobj == obj)
+            return objT;
+    }
 
     return App::SubObjectT();
 }

@@ -425,13 +425,16 @@ public:
     const App::SubObjectT & getContext() const;
     /** Obtain the current selection context with fallback
      *
+     * @param obj: optional object to check. If given, then will only return
+     * the context if it is pointing to the given object.
+     *
      * This function will try returning the context in the following order,
      * * Explicitly set context by calling setContext(),
      * * Current pre-selected object,
      * * If there is only one selection in the active document,
      * * If the active document is in editing, then return the editing object.
      */
-    App::SubObjectT getExtendedContext() const;
+    App::SubObjectT getExtendedContext(App::DocumentObject *obj = nullptr) const;
 
     /// set the preselected object (mostly by the 3D view)
     int setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,

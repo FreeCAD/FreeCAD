@@ -151,22 +151,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidge
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
         throw Base::RuntimeError("Object has no Part::AttachExtension");
 
-    auto editDoc = Gui::Application::Instance->editDocument();
-    if (editDoc) {
-        auto objT = editDoc->getInEditT();
-        auto sobj = objT.getSubObject();
-        if (sobj && sobj->getLinkedObject(true) == ViewProvider->getObject())
-            editObjT = objT;
-    }
-    if (editObjT.getObjectName().empty()) {
-        for (auto &sel : Gui::Selection().getSelectionT(nullptr, 0)) {
-            auto sobj = sel.getSubObject();
-            if (sobj && sobj->getLinkedObject(true) == ViewProvider->getObject()) {
-                editObjT = sel;
-                break;
-            }
-        }
-    }
+    editObjT = Gui::Selection().getExtendedContext(ViewProvider->getObject());
 
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -310,11 +295,14 @@ TaskAttacher::~TaskAttacher()
     if (originVp)
         originVp->resetTemporaryVisibility();
 
+    Gui::Selection().selStackPush();
+    Gui::Selection().clearSelection();
+
     if (editOnClose) {
         try {
             if (editObjT.getSubObject()) {
-                Gui::Selection().selStackPush();
                 Gui::Selection().addSelection(editObjT);
+                Gui::Selection().selStackPush();
                 Gui::cmdGuiDocument(editObjT.getObject(),
                         std::ostringstream() << "setEdit("
                         << editObjT.getObjectPython() << ",0,u'"
@@ -784,7 +772,11 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         setupTransaction();
 
         if (editObjT.getSubObject()) {
-            App::SubObjectT objT(obj, subElement.c_str());
+            std::vector<App::DocumentObject*> objs;
+            objs.push_back(obj);
+            while (auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(objs.front()))
+                objs.insert(objs.begin(), grp);
+            App::SubObjectT objT(objs, subElement.c_str());
             objT = Part::SubShapeBinder::import(objT, editObjT, true);
             obj = objT.getObject();
             subElement = objT.getSubName();
@@ -1287,11 +1279,11 @@ bool TaskDlgAttacher::reject()
     Gui::DocumentT doc(getDocumentName());
     Gui::Document* document = doc.getDocument();
     if (document) {
-        // roll back the done things
-        document->abortCommand();
         Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
     }
 
+    // roll back the done things
+    App::GetApplication().closeActiveTransaction(true);
     return true;
 }
 
