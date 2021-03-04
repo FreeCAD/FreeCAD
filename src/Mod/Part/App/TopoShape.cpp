@@ -2505,7 +2505,7 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
 TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Real radiustop,
                                   Standard_Real height, Standard_Real nbturns,
-                                  Standard_Real breakperiod) const
+                                  Standard_Real breakperiod, Standard_Boolean leftHanded) const
 {
     // 1000 periods is an OCCT limit. The 3D curve gets truncated
     // if he 2D curve spans beyond this limit.
@@ -2516,8 +2516,9 @@ TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Rea
     if (nbturns <= 0)
         Standard_Failure::Raise("Number of turns must be greater than 0");
 
-    Standard_Real nbFullTurns = floor(nbturns/breakperiod);
-    Standard_Real partTurn = nbturns - nbFullTurns*breakperiod;
+    Standard_Real nbPeriods = nbturns/breakperiod;
+    Standard_Real nbFullPeriods = floor(nbPeriods);
+    Standard_Real partPeriod = nbPeriods - nbFullPeriods;
 
     // A Bezier curve is used below, to get a periodic surface also for spirals.
     TColgp_Array1OfPnt poles(1,2);
@@ -2532,19 +2533,21 @@ TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Rea
 
     gp_Pnt2d beg(0, 0);
     gp_Pnt2d end(0, 0);
-    gp_Vec2d dir(2.0 * M_PI, height / nbturns);
+    gp_Vec2d dir(breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+    if (leftHanded == Standard_True)
+        dir = gp_Vec2d(-breakperiod * 2.0 * M_PI, 1 / nbPeriods);
     Handle(Geom2d_TrimmedCurve) segm;
     TopoDS_Edge edgeOnSurf;
     BRepBuilderAPI_MakeWire mkWire;
-    for (unsigned long i = 0; i < nbFullTurns; i++) {
+    for (unsigned long i = 0; i < nbFullPeriods; i++) {
         end = beg.Translated(dir);
         segm = GCE2d_MakeSegment(beg , end);
         edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
         mkWire.Add(edgeOnSurf);
         beg = end;
     }
-    if (partTurn > Precision::Confusion()) {
-        dir.Scale(partTurn);
+    if (partPeriod > Precision::Confusion()) {
+        dir.Scale(partPeriod);
         end = beg.Translated(dir);
         segm = GCE2d_MakeSegment(beg , end);
         edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
