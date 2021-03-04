@@ -203,10 +203,10 @@ void TaskBooleanParameters::onItemMoved()
         Gui::Selection().clearSelection();
         pcBoolean->Group.setValues(group);
         pcBoolean->recomputeFeature(true);
-        populate();
     } catch (Base::Exception &e) {
         e.ReportException();
     }
+    populate();
 }
 
 void TaskBooleanParameters::preselect(QListWidgetItem *item) {
@@ -248,16 +248,21 @@ void TaskBooleanParameters::syncSelection() {
     auto parent = getInEdit(subname);
     if(!parent)
         return;
-    bool blocked = ui->listWidgetBodies->blockSignals(true);
+    QSignalBlocker blocker(ui->listWidgetBodies);
+    bool hasSelection = false;
     for(int i=0,count=ui->listWidgetBodies->count();i<count;++i) {
         auto item = ui->listWidgetBodies->item(i);
         QString name = item->data(Qt::UserRole).toString();
         std::string sub = subname + name.toLatin1().constData() + ".";
+        auto sobj = parent->getSubObject(sub.c_str());
         bool selected = item->isSelected();
-        if(selected != Gui::Selection().isSelected(parent,sub.c_str(),0))
+        if(selected != Gui::Selection().isSelected(sobj))
             item->setSelected(!selected);
+        if (selected)
+            hasSelection = true;
     }
-    ui->listWidgetBodies->blockSignals(blocked);
+    ui->buttonAdd->setEnabled(!hasSelection && Gui::Selection().hasSelection());
+    ui->buttonRemove->setEnabled(hasSelection);
 }
 
 void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -266,9 +271,10 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         return;
     switch(msg.Type) {
     case Gui::SelectionChanges::ClrSelection: {
-        bool blocked = ui->listWidgetBodies->blockSignals(true);
+        QSignalBlocker blocker(ui->listWidgetBodies);
         ui->listWidgetBodies->clearSelection();
-        ui->listWidgetBodies->blockSignals(blocked);
+        ui->buttonAdd->setEnabled(false);
+        ui->buttonRemove->setEnabled(false);
         break;
     }
     case Gui::SelectionChanges::SetSelection:
@@ -279,9 +285,6 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     default:
         return;
     }
-
-    ui->buttonAdd->setEnabled(Gui::Selection().hasSelection());
-    ui->buttonRemove->setEnabled(ui->listWidgetBodies->selectionModel()->hasSelection());
 }
 
 void TaskBooleanParameters::onButtonAdd()
@@ -368,10 +371,10 @@ void TaskBooleanParameters::onButtonAdd()
     try {
         pcBoolean->addObject(ref);
         pcBoolean->recomputeFeature(true);
-        populate();
     } catch (Base::Exception &e) {
         e.ReportException();
     }
+    populate();
 }
 
 void TaskBooleanParameters::setupTransaction() {
@@ -451,10 +454,10 @@ void TaskBooleanParameters::onButtonRemove()
         for(auto &name : removed) 
             pcBoolean->getDocument()->removeObject(name.c_str());
         pcBoolean->recomputeFeature(true);
-        populate();
     } catch (Base::Exception &e) {
         e.ReportException();
     }
+    populate();
 }
 
 TaskBooleanParameters::~TaskBooleanParameters()

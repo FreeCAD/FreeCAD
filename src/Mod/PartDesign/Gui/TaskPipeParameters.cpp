@@ -234,7 +234,7 @@ public:
             if (wireCount>0 && Part::Feature::getTopoShape(
                                     pObj).countSubShapes(TopAbs_WIRE) != wireCount)
             {
-                this->notAllowedReason = QT_TR_NOOP("Section must have the same number of wires.");
+                this->notAllowedReason = QT_TR_NOOP("Section object must have the same number of wires.");
                 return false;
             }
         } else
@@ -272,6 +272,9 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj
     ui->spineBaseEdit->setMouseTracking(true);
     ui->listWidgetReferences->installEventFilter(this);
     ui->listWidgetReferences->setMouseTracking(true);
+
+    ui->profileBaseEdit->setReadOnly(true);
+    ui->spineBaseEdit->setReadOnly(true);
 
     connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
             this, SLOT(onProfileButton(bool)));
@@ -443,9 +446,13 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         auto refObj = ref.getSubObject();
         if (refObj) {
             ui->profileBaseEdit->setText(QString::fromUtf8(refObj->Label.getValue()));
-            setupTransaction();
-            pipe->Profile.setValue(refObj);
-            recomputeFeature();
+            try {
+                setupTransaction();
+                pipe->Profile.setValue(refObj);
+                recomputeFeature();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
             exitSelectionMode();
         }
         break;
@@ -461,8 +468,13 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto refObj = ref.getSubObject();
             if (!refObj)
                 break;
-            setupTransaction();
-            pipe->Spine.setValue(refObj);
+            try {
+                setupTransaction();
+                pipe->Spine.setValue(refObj);
+                recomputeFeature();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
             ui->spineBaseEdit->setText(QString::fromUtf8(refObj->Label.getValue()));
             ui->listWidgetReferences->clear();
         }
@@ -479,9 +491,13 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listWidgetReferences->setCurrentItem(item);
             auto subs = pipe->Spine.getSubValues();
             subs.push_back(msg.pSubName);
-            setupTransaction();
-            pipe->Spine.setValue(pipe->Spine.getValue(), std::move(subs));
-            recomputeFeature();
+            try {
+                setupTransaction();
+                pipe->Spine.setValue(pipe->Spine.getValue(), std::move(subs));
+                recomputeFeature();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
         } else {
             QSignalBlocker blocker(ui->listWidgetReferences);
             ui->listWidgetReferences->setCurrentItem(items[0]);
@@ -495,9 +511,13 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskPipeParameters::onTransitionChanged(int idx) {
 
-    setupTransaction();
-    static_cast<PartDesign::Pipe*>(vp->getObject())->Transition.setValue(idx);
-    recomputeFeature();
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Pipe*>(vp->getObject())->Transition.setValue(idx);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskPipeParameters::onButtonRefAdd(bool checked) {
@@ -539,9 +559,13 @@ void TaskPipeParameters::onProfileButton(bool checked)
 }
 
 void TaskPipeParameters::onTangentChanged(bool checked) {
-    setupTransaction();
-    static_cast<PartDesign::Pipe*>(vp->getObject())->SpineTangent.setValue(checked);
-    recomputeFeature();
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Pipe*>(vp->getObject())->SpineTangent.setValue(checked);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskPipeParameters::onDeleteEdge()
@@ -559,9 +583,13 @@ void TaskPipeParameters::onDeleteEdge()
     }
 
     if (subs.size() != pipe->Spine.getSubValues().size()) {
-        setupTransaction();
-        pipe->Spine.setValue(pipe->Spine.getValue(), std::move(subs));
-        recomputeFeature();
+        try {
+            setupTransaction();
+            pipe->Spine.setValue(pipe->Spine.getValue(), std::move(subs));
+            recomputeFeature();
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
     }
 }
 
@@ -595,6 +623,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
     ui->profileBaseEdit->setMouseTracking(true);
     ui->listWidgetReferences->installEventFilter(this);
     ui->listWidgetReferences->setMouseTracking(true);
+    ui->profileBaseEdit->setReadOnly(true);
 
     connect(ui->comboBoxMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onOrientationChanged(int)));
@@ -752,11 +781,15 @@ void TaskPipeOrientation::onOrientationChanged(int idx) {
     if (!vp)
         return;
     ui->stackedWidget->setCurrentIndex(idx);
-    setupTransaction();
-    auto pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-    pipe->Mode.setValue(idx);
-    if (idx != 3 || pipe->AuxillerySpine.getValue())
-        recomputeFeature();
+    try {
+        setupTransaction();
+        auto pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
+        pipe->Mode.setValue(idx);
+        if (idx != 3 || pipe->AuxillerySpine.getValue())
+            recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
     if (idx == 3) {
         ui->buttonRefAdd->setChecked(true);
         onButtonRefAdd(true);
@@ -804,16 +837,25 @@ void TaskPipeOrientation::onClearButton()
 {
     ui->listWidgetReferences->clear();
     ui->profileBaseEdit->clear();
-    setupTransaction();
-    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.setValue(nullptr);
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.setValue(nullptr);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
     exitSelectionMode();
 }
 
 void TaskPipeOrientation::onCurvelinearChanged(bool checked)
 {
-    setupTransaction();
-    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxilleryCurvelinear.setValue(checked);
-    recomputeFeature();
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Pipe*>(vp->getObject())->AuxilleryCurvelinear.setValue(checked);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskPipeOrientation::onBinormalChanged(double)
@@ -822,9 +864,13 @@ void TaskPipeOrientation::onBinormalChanged(double)
                        ui->doubleSpinBoxY->value(),
                        ui->doubleSpinBoxZ->value());
 
-    setupTransaction();
-    static_cast<PartDesign::Pipe*>(vp->getObject())->Binormal.setValue(vec);
-    recomputeFeature();
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Pipe*>(vp->getObject())->Binormal.setValue(vec);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
@@ -858,8 +904,13 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
             auto refObj = ref.getSubObject();
             if (!refObj)
                 break;
-            setupTransaction();
-            pipe->AuxillerySpine.setValue(refObj);
+            try {
+                setupTransaction();
+                pipe->AuxillerySpine.setValue(refObj);
+                recomputeFeature();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
             ui->profileBaseEdit->setText(QString::fromUtf8(refObj->Label.getValue()));
             ui->listWidgetReferences->clear();
         }
@@ -876,9 +927,13 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
             ui->listWidgetReferences->setCurrentItem(item);
             auto subs = pipe->AuxillerySpine.getSubValues();
             subs.push_back(msg.pSubName);
-            setupTransaction();
-            pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), std::move(subs));
-            recomputeFeature();
+            try {
+                setupTransaction();
+                pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), std::move(subs));
+                recomputeFeature();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
         } else {
             QSignalBlocker blocker(ui->listWidgetReferences);
             ui->listWidgetReferences->setCurrentItem(items[0]);
@@ -906,9 +961,13 @@ void TaskPipeOrientation::onDeleteItem()
     }
 
     if (subs.size() != pipe->AuxillerySpine.getSubValues().size()) {
-        setupTransaction();
-        pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), std::move(subs));
-        recomputeFeature();
+        try {
+            setupTransaction();
+            pipe->AuxillerySpine.setValue(pipe->AuxillerySpine.getValue(), std::move(subs));
+            recomputeFeature();
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
     }
 }
 
@@ -1031,8 +1090,13 @@ void TaskPipeScaling::onScalingChanged(int idx) {
         return;
     ui->stackedWidget->setCurrentIndex(idx);
     updateUI(idx);
-    setupTransaction();
-    static_cast<PartDesign::Pipe*>(vp->getObject())->Transformation.setValue(idx);
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Pipe*>(vp->getObject())->Transformation.setValue(idx);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
     if (idx == 1) {
         ui->buttonRefAdd->setChecked(true);
         onButtonRefAdd(true);
@@ -1087,9 +1151,13 @@ void TaskPipeScaling::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto sections = pipe->Sections.getValues();
             sections.push_back(refObj);
             addItem(refObj, true);
-            setupTransaction();
-            pipe->Sections.setValues(sections);
-            recomputeFeature();
+            try {
+                setupTransaction();
+                pipe->Sections.setValues(sections);
+                recomputeFeature();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
         }
         break;
     }
@@ -1113,9 +1181,13 @@ void TaskPipeScaling::onDeleteSection()
     }
 
     if (refs.size() != pipe->Sections.getValues().size()) {
-        setupTransaction();
-        pipe->Sections.setValues(refs);
-        recomputeFeature();
+        try {
+            setupTransaction();
+            pipe->Sections.setValues(refs);
+            recomputeFeature();
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
     }
 }
 

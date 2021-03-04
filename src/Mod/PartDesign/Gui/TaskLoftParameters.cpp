@@ -144,7 +144,7 @@ public:
             if (wireCount>0 && Part::Feature::getTopoShape(
                                     pObj).countSubShapes(TopAbs_WIRE) != wireCount)
             {
-                this->notAllowedReason = QT_TR_NOOP("Section must have the same number of wires.");
+                this->notAllowedReason = QT_TR_NOOP("Section object must have the same number of wires.");
                 return false;
             }
         } else
@@ -175,6 +175,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView,bool /*newObj*
     ui->profileBaseEdit->setMouseTracking(true);
     ui->listWidgetReferences->installEventFilter(this);
     ui->listWidgetReferences->setMouseTracking(true);
+
+    ui->profileBaseEdit->setReadOnly(true);
 
     connect(ui->buttonProfileBase, SIGNAL(clicked(bool)),
             this, SLOT(onProfileButton(bool)));
@@ -304,9 +306,13 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         auto refObj = ref.getSubObject();
         if (refObj) {
             ui->profileBaseEdit->setText(QString::fromUtf8(refObj->Label.getValue()));
-            setupTransaction();
-            loft->Profile.setValue(refObj);
-            recomputeFeature();
+            try {
+                setupTransaction();
+                loft->Profile.setValue(refObj);
+                recomputeFeature();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
             exitSelectionMode();
         }
         break;
@@ -320,9 +326,13 @@ void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto sections = loft->Sections.getValues();
             sections.push_back(refObj);
             addItem(refObj, true);
-            setupTransaction();
-            loft->Sections.setValues(sections);
-            recomputeFeature();
+            try {
+                setupTransaction();
+                loft->Sections.setValues(sections);
+                recomputeFeature();
+            } catch (Base::Exception &e) {
+                e.ReportException();
+            }
         }
         break;
     }
@@ -347,9 +357,13 @@ void TaskLoftParameters::onDeleteSection()
     }
 
     if (refs.size() != loft->Sections.getValues().size()) {
-        setupTransaction();
-        loft->Sections.setValues(refs);
-        recomputeFeature();
+        try {
+            setupTransaction();
+            loft->Sections.setValues(refs);
+            recomputeFeature();
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
     }
 }
 
@@ -373,9 +387,13 @@ void TaskLoftParameters::indexesMoved()
         originals[i] = loft->getDocument()->getObject(name.constData());
     }
 
-    setupTransaction();
-    loft->Sections.setValues(originals);
-    recomputeFeature();
+    try {
+        setupTransaction();
+        loft->Sections.setValues(originals);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskLoftParameters::exitSelectionMode() {
@@ -396,17 +414,25 @@ void TaskLoftParameters::changeEvent(QEvent * /*e*/)
 void TaskLoftParameters::onClosed(bool val) {
     if (!vp)
         return;
-    setupTransaction();
-    static_cast<PartDesign::Loft*>(vp->getObject())->Closed.setValue(val);
-    recomputeFeature();
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Loft*>(vp->getObject())->Closed.setValue(val);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskLoftParameters::onRuled(bool val) {
     if (!vp)
         return;
-    setupTransaction();
-    static_cast<PartDesign::Loft*>(vp->getObject())->Ruled.setValue(val);
-    recomputeFeature();
+    try {
+        setupTransaction();
+        static_cast<PartDesign::Loft*>(vp->getObject())->Ruled.setValue(val);
+        recomputeFeature();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskLoftParameters::onProfileButton(bool checked)

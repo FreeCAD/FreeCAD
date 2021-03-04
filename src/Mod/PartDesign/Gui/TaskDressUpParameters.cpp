@@ -469,9 +469,13 @@ bool TaskDressUpParameters::syncItems(const std::vector<App::SubObjectT> &sels, 
     if(subs == pcDressUp->Base.getSubValues())
         return false;
 
-    setupTransaction();
-    pcDressUp->Base.setValue(base, subs);
-    recompute();
+    try {
+        setupTransaction();
+        pcDressUp->Base.setValue(base, subs);
+        recompute();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
     return true;
 }
 
