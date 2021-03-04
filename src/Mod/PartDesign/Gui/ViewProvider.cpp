@@ -44,6 +44,7 @@
 #include <Gui/ViewParams.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/PartParams.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/SoBrepPointSet.h>
@@ -68,6 +69,13 @@ ViewProvider::ViewProvider()
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     ADD_PROPERTY(IconColor,((long)0));
+
+    if (Gui::ViewParams::instance()->getRandomColor()){
+        MapFaceColor.setValue(false);
+        MapLineColor.setValue(false);
+        MapPointColor.setValue(false);
+        MapTransparency.setValue(false);
+    }
 }
 
 ViewProvider::~ViewProvider()
@@ -477,6 +485,115 @@ void ViewProvider::onChanged(const App::Property* prop) {
                 if (siblings.size() && siblings.front() == feature)
                     MapFaceColor.setValue(false);
                 ShapeColor.setValue(IconColor.getValue());
+            }
+        }
+    }
+    else if (auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(
+                const_cast<App::Property*>(prop)))
+    {
+        if (autoCorrectingLink || !Part::PartParams::AutoCorrectLink()) {
+            PartGui::ViewProviderPartExt::onChanged(prop);
+            return;
+        }
+
+        Base::StateLocker guard(autoCorrectingLink);
+
+        auto body = PartDesign::Body::findBodyOf(getObject());
+        auto editDoc = Gui::Application::Instance->editDocument();
+        if (body && editDoc && editDoc->getInEdit() == this
+                 && linkProp->getScope() == App::LinkScope::Local
+                 && (prop->isDerivedFrom(App::PropertyLink::getClassTypeId())
+                     || prop->isDerivedFrom(App::PropertyLinkSub::getClassTypeId())
+                     || prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())))
+        {
+            // Auto import cross coordinate link to body using sub shape binder
+            auto links = linkProp->linkedElements();
+            std::map<App::DocumentObject*, App::DocumentObject*> imports;
+            std::vector<App::SubObjectT> sels;
+            try {
+                App::AutoTransaction committer(
+                        QT_TRANSLATE_NOOP("Command", "Auto import to body"), true);
+                for (auto &v : links) {
+                    bool invalid = false;
+                    for (auto & sub : v.second) {
+                        App::SubObjectT sobjT(v.first, sub.c_str());
+                        if (sobjT.getSubObject() != v.first) {
+                            invalid = true;
+                            break;
+                        }
+                        // Make sure all element name are old style, so that we
+                        // can transfer it to binder
+                        sub = sobjT.getOldElementName();
+                    }
+                    if (invalid) // Do not support converting sub object link yet
+                        continue;
+                    App::DocumentObject *otherGroup = nullptr;
+                    for (auto obj : v.first->getInList()) {
+                        if (obj != body)
+                            continue;
+                        if (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+                            otherGroup = obj;
+                            break;
+                        }
+                    }
+                    if (otherGroup) {
+                        if (sels.empty())
+                            sels = Gui::Selection().getSelectionT("*", 0);
+                        App::SubObjectT ref;
+                        for (auto &sel : sels) {
+                            if (sel.getSubObject() == v.first) {
+                                ref = App::SubObjectT(sel.getObject(), sel.getSubNameNoElement().c_str());
+                                break;
+                            }
+                        }
+                        if (ref.getObjectName().empty()) {
+                            std::vector<App::DocumentObject*> objs;
+                            objs.push_back(otherGroup);
+                            objs.push_back(v.first);
+                            while (auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(otherGroup)) {
+                                objs.insert(objs.begin(), grp);
+                                otherGroup = grp;
+                            }
+                            ref = App::SubObjectT(objs);
+                        }
+                        ref = PartDesignGui::importExternalObject(ref, false);
+                        imports.emplace(v.first, ref.getSubObject());
+                    }
+                }
+                if (imports.size()) {
+                    if (auto link = Base::freecad_dynamic_cast<App::PropertyLink>(linkProp)) {
+                        link->setValue(imports.begin()->second);
+                    } else if (auto linksub = Base::freecad_dynamic_cast<App::PropertyLinkSub>(linkProp)) {
+                        auto it = links.find(imports.begin()->first);
+                        if (it != links.end())
+                            linksub->setValue(imports.begin()->second, it->second);
+                    } else if (auto linksubs = Base::freecad_dynamic_cast<App::PropertyLinkSubList>(linkProp)) {
+                        std::vector<App::DocumentObject*> objs;
+                        std::vector<std::string> subs;
+                        for (auto &v : links) {
+                            auto it = imports.find(v.first);
+                            if (it != imports.end())
+                                objs.push_back(it->second);
+                            else
+                                objs.push_back(v.first);
+                            if (v.second.empty())
+                                subs.emplace_back();
+                            else {
+                                bool first = true;
+                                for (auto &sub : v.second) {
+                                    if (first)
+                                        first = false;
+                                    else
+                                        objs.push_back(objs.back());
+                                    subs.push_back(std::move(sub));
+                                }
+                            }
+                        }
+                        linksubs->setValues(objs, subs);
+                    }
+                }
+            } catch (Base::Exception &e) {
+                e.ReportException();
             }
         }
     }

@@ -113,6 +113,8 @@ protected:
     mutable QPixmap pxTipIcon;
 
     std::unique_ptr<PartGui::ViewProviderPart> pSuppressedView;
+
+    bool autoCorrectingLink = false;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProvider> ViewProviderPython;
