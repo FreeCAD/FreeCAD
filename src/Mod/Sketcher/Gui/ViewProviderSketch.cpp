@@ -6429,6 +6429,7 @@ void ViewProviderSketch::attach(App::DocumentObject *pcFeat)
 void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const char *member)
 {
     menu->addAction(tr("Edit sketch"), receiver, member);
+    PartGui::ViewProviderAttachExtension::extensionSetupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderSketch::setEdit(int ModNum)
