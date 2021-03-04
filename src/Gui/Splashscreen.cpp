@@ -568,14 +568,25 @@ void AboutDialog::showCredits()
     textField->setOpenLinks(false);
     hlayout->addWidget(textField);
 
-    QString creditsHTML = QString::fromLatin1("<html><body><h1>Credits</h1><p>FreeCAD would not be possible without the contributions of:</p><ul>");
+    QString creditsHTML = QString::fromLatin1("<html><body><h1>");
+    //: Header for the Credits tab of the About screen
+    creditsHTML += tr("Credits");
+    creditsHTML += QString::fromLatin1("</h1><p>");
+    creditsHTML += tr("FreeCAD would not be possible without the contributions of");
+    creditsHTML += QString::fromLatin1(":</p><h2>"); 
+    //: Header for the list of individual people in the Credits list.
+    creditsHTML += tr("Individuals");
+    creditsHTML += QString::fromLatin1("</h2><ul>");
 
     QTextStream stream(&creditsFile);
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {
             if (line == QString::fromLatin1("Firms")) {
-                creditsHTML += QString::fromLatin1("</ul><h2>Firms</h2><ul>");
+                creditsHTML += QString::fromLatin1("</ul><h2>");
+                //: Header for the list of companies/organizations in the Credits list.
+                creditsHTML += tr("Organizations");
+                creditsHTML += QString::fromLatin1("</h2><ul>");
             } 
             else {
                 creditsHTML += QString::fromLatin1("<li>") + line + QString::fromLatin1("</li>");

@@ -57,6 +57,14 @@ public:
      */
     App::PropertyLink BaseFeature;
 
+
+    /**
+     * A material card this body is associated with
+     *
+     */
+    App::PropertyLink Material;
+
+
     /// Returns all Group objects prepanded by BaseFeature (if any)
     std::vector<App::DocumentObject *> getFullModel () {
         std::vector<App::DocumentObject *> rv;
