@@ -461,13 +461,13 @@ public:
             reset();
         }
     }
-    void createdObject(const App::DocumentObject& obj) noexcept {
+    void createdObject(const App::DocumentObject& obj) {
         // When undoing the removal
         if (object == &obj) {
             indocument = true;
         }
     }
-    void deletedObject(const App::DocumentObject& obj) noexcept {
+    void deletedObject(const App::DocumentObject& obj) {
         if (object == &obj) {
             indocument = false;
         }
