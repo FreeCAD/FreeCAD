@@ -2503,6 +2503,59 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     return TopoDS_Shape(std::move(wire));
 }
 
+TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Real radiustop,
+                                  Standard_Real height, Standard_Real nbturns,
+                                  Standard_Real breakperiod) const
+{
+    // 1000 periods is an OCCT limit. The 3D curve gets truncated
+    // if he 2D curve spans beyond this limit.
+    if ((breakperiod < 0) || (breakperiod > 1000))
+        Standard_Failure::Raise("Break period must be in [0, 1000]");
+    if (breakperiod == 0)
+        breakperiod = 1000;
+    if (nbturns <= 0)
+        Standard_Failure::Raise("Number of turns must be greater than 0");
+
+    Standard_Real nbFullTurns = floor(nbturns/breakperiod);
+    Standard_Real partTurn = nbturns - nbFullTurns*breakperiod;
+
+    // A Bezier curve is used below, to get a periodic surface also for spirals.
+    TColgp_Array1OfPnt poles(1,2);
+    poles(1) = gp_Pnt(fabs(radiusbottom), 0, 0);
+    poles(2) = gp_Pnt(fabs(radiustop), 0, height);
+    Handle(Geom_BezierCurve) meridian;
+    meridian = new Geom_BezierCurve(poles);
+
+    gp_Ax1 axis(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
+    Handle(Geom_Surface) surf;
+    surf = new Geom_SurfaceOfRevolution(meridian, axis);
+
+    gp_Pnt2d beg(0, 0);
+    gp_Pnt2d end(0, 0);
+    gp_Vec2d dir(2.0 * M_PI, height / nbturns);
+    Handle(Geom2d_TrimmedCurve) segm;
+    TopoDS_Edge edgeOnSurf;
+    BRepBuilderAPI_MakeWire mkWire;
+    for (unsigned long i = 0; i < nbFullTurns; i++) {
+        end = beg.Translated(dir);
+        segm = GCE2d_MakeSegment(beg , end);
+        edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+        mkWire.Add(edgeOnSurf);
+        beg = end;
+    }
+    if (partTurn > Precision::Confusion()) {
+        dir.Scale(partTurn);
+        end = beg.Translated(dir);
+        segm = GCE2d_MakeSegment(beg , end);
+        edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
+        mkWire.Add(edgeOnSurf);
+    }
+
+    TopoDS_Wire wire = mkWire.Wire();
+    BRepLib::BuildCurves3d(wire, Precision::Confusion(), GeomAbs_Shape::GeomAbs_C1, 14, 10000);
+    return TopoDS_Shape(std::move(wire));
+}
+
 TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
                                    Standard_Real depth,
                                    Standard_Real height,
