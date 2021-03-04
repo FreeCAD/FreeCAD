@@ -118,7 +118,7 @@
      <item>
       <widget class="QLabel" name="labelTaperAngle">
        <property name="text">
-        <string>Tape angle</string>
+        <string>Taper angle</string>
        </property>
       </widget>
      </item>
@@ -145,7 +145,7 @@
      <item>
       <widget class="QLabel" name="labelTaperAngle2">
        <property name="text">
-        <string>2nd tape angle</string>
+        <string>2nd taper angle</string>
        </property>
       </widget>
      </item>
@@ -172,7 +172,7 @@
      <item>
       <widget class="QLabel" name="labelInnerTaperAngle">
        <property name="text">
-        <string>Inner tape angle</string>
+        <string>Inner taper angle</string>
        </property>
       </widget>
      </item>
@@ -199,7 +199,7 @@
      <item>
       <widget class="QLabel" name="labelInnerTaperAngle2">
        <property name="text">
-        <string>2nd inner tape angle</string>
+        <string>2nd inner taper angle</string>
        </property>
       </widget>
      </item>
