@@ -26,6 +26,7 @@
 # include <unistd.h>
 #endif
 
+#include <memory>
 #include <QString>
 #include "Exception.h"
 #include "UnitsApi.h"
@@ -35,7 +36,6 @@
 #include "UnitsSchemaCentimeters.h"
 #include "UnitsSchemaMmMin.h"
 #include "UnitsSchemaFemMilliMeterNewton.h"
-#include "StdStlTools.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846

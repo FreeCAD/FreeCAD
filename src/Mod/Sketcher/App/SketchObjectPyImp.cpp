@@ -27,8 +27,6 @@
 # include <boost/shared_ptr.hpp>
 #endif
 
-#include <Base/StdStlTools.h>
-
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/Geometry.h>

@@ -48,6 +48,7 @@
 #include <assert.h>
 #include <string>
 #include <map>
+#include <memory>
 #include <vector>
 #include <set>
 #include <bitset>
