@@ -29,6 +29,7 @@ __url__ = "https://www.freecadweb.org"
 
 import subprocess
 import sys
+import os
 
 import FreeCAD
 from FreeCAD import Console
@@ -821,11 +822,11 @@ class GmshTools():
         geo.close()
 
     def run_gmsh_with_geo(self):
-        comandlist = [self.gmsh_bin, "-", self.temp_file_geo]
-        # print(comandlist)
+        command_list = [self.gmsh_bin, "-", self.temp_file_geo]
+        # print(command_list)
         try:
             p = subprocess.Popen(
-                comandlist,
+                command_list,
                 shell=False,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
@@ -839,7 +840,10 @@ class GmshTools():
             # print(output)
             # print(error)
         except Exception:
-            error = "Error executing: {}\n".format(" ".join(comandlist))
+            if os.path.exists(self.gmsh_bin):
+                error = "Error executing: {}\n".format(" ".join(command_list))
+            else:
+                error = "Gmsh executable not found: {}\n".format(self.gmsh_bin)
             Console.PrintError(error)
             self.error = True
 
