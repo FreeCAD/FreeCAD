@@ -70,7 +70,6 @@
 #include <vector>
 #include <set>
 #include <stack>
-#include <sstream>
 #include <queue>
 #include <bitset>
 #include <exception>
@@ -78,6 +77,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <iterator>
+#include <functional>
 
 // Boost
 #include <boost_signals2.hpp>
