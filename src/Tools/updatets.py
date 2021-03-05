@@ -112,7 +112,7 @@ PyCommands = [["src/Mod/Draft",
 
 # add python folders to exclude list
 for c in PyCommands:
-    DirFilter.append(c[0])
+    DirFilter.append(c[0]+"$")
 
 QMAKE = ""
 LUPDATE = ""
