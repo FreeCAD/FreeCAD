@@ -801,6 +801,8 @@ Helix::Helix(void)
     Height.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Helix",App::Prop_None,"The radius of the helix");
     Radius.setConstraints(&quantityRange);
+    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Helix",App::Prop_None,"The number of turns per helix subdivision");
+    SegmentLength.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is != 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
     ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
@@ -813,7 +815,8 @@ void Helix::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if (prop == &Pitch || prop == &Height || prop == &Radius ||
-            prop == &Angle || prop == &LocalCoord || prop == &Style) {
+            prop == &Angle || prop == &LocalCoord || prop == &Style ||
+            prop == &SegmentLength) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -851,13 +854,12 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myAngle  = Angle.getValue();
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
         Standard_Real nbTurns = myHeight / myPitch;
+        Standard_Real mySegLen = SegmentLength.getValue();
         
         Standard_Real myRadiusTop = myRadius + myHeight * tan(Base::toRadians(myAngle));
         TopoShape spirhelix;
-        // work around for OCC bug #23314 (FC #0954)
-        // the exact conditions for failure are unknown.  building the helix 1 turn at a time
-        // seems to always work.
-        TopoDS_Shape myHelix = spirhelix.makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, 2, myLocalCS);
+
+        TopoDS_Shape myHelix = spirhelix.makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, mySegLen, myLocalCS);
         this->Shape.setValue(myHelix);
     }
     catch (Standard_Failure& e) {
@@ -878,12 +880,15 @@ Spiral::Spiral(void)
     Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Rotations,(2.0),"Spiral",App::Prop_None,"The number of rotations");
     Rotations.setConstraints(&quantityRange);
+    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Spiral",App::Prop_None,"The number of turns per spiral subdivision");
+    SegmentLength.setConstraints(&quantityRange);
 }
 
 void Spiral::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &Growth || prop == &Rotations || prop == &Radius) {
+        if (prop == &Growth || prop == &Rotations || prop == &Radius ||
+            prop == &SegmentLength) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -913,6 +918,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myGrowth = Growth.getValue();
         Standard_Real myRadiusTop = myRadius + myGrowth * myNumRot;
+        Standard_Real mySegLen = SegmentLength.getValue();
         TopoShape spirhelix;
 
         if (myGrowth < Precision::Confusion())
@@ -920,7 +926,7 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         if (myNumRot < Precision::Confusion())
             Standard_Failure::Raise("Number of rotations too small");
         
-        TopoDS_Shape mySpiral = spirhelix.makeSpiralHelix(myRadius, myRadiusTop, 0, myNumRot, 2, Standard_False);
+        TopoDS_Shape mySpiral = spirhelix.makeSpiralHelix(myRadius, myRadiusTop, 0, myNumRot, mySegLen, Standard_False);
         this->Shape.setValue(mySpiral);
         return Primitive::execute();
     }
