@@ -150,7 +150,7 @@ macro(InitializeFreeCADBuildOptions)
 
     if(MSVC)
         option(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
-        option(FREECAD_USE_PCL "Build the features that use PCL libs" ON)
+        option(FREECAD_USE_PCL "Build the features that use PCL libs" OFF) # 3/5/2021 current LibPack uses non-C++17 FLANN
         option(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
     elseif(APPLE)
         find_library(3DCONNEXIONCLIENT_FRAMEWORK 3DconnexionClient)
