@@ -2507,6 +2507,8 @@ TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Rea
                                   Standard_Real height, Standard_Real nbturns,
                                   Standard_Real breakperiod, Standard_Boolean leftHanded) const
 {
+    // 1000 periods is an OCCT limit. The 3D curve gets truncated
+    // if he 2D curve spans beyond this limit.
     if ((breakperiod < 0) || (breakperiod > 1000))
         Standard_Failure::Raise("Break period must be in [0, 1000]");
     if (breakperiod == 0)
