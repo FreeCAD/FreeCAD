@@ -357,7 +357,7 @@ void Cell::setContent(const char * value, bool eval)
             const bool isStartingWithNumber = value != end;
             if (!newExpr && isStartingWithNumber) {
                 try {
-                    auto parsedExpr = owner->parse(value + 1, 0, true);
+                    auto parsedExpr = owner->parse(value, 0, true);
                     if (App::isSimpleExpression(parsedExpr.get()))
                         newExpr = std::move(parsedExpr);
                 }
