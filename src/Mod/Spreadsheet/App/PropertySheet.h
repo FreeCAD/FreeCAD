@@ -97,7 +97,7 @@ public:
 
     void setDisplayUnit(App::CellAddress address, const std::string & unit);
 
-    void setAlias(App::CellAddress address, const std::string &alias);
+    void setAlias(App::CellAddress address, const std::string &alias, bool force=false);
 
     void setComputedUnit(App::CellAddress address, const Base::Unit & unit);
 

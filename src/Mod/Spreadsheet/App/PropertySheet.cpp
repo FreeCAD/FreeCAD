@@ -360,9 +360,8 @@ void PropertySheet::Restore(Base::XMLReader &reader)
         reader.readElement("Cell");
 
         const char* strAddress = reader.getAttribute("address","");
-
+        CellAddress address(strAddress);
         try {
-            CellAddress address(strAddress);
             Cell * cell = createCell(address);
 
             cell->restore(reader);
@@ -372,10 +371,16 @@ void PropertySheet::Restore(Base::XMLReader &reader)
                 mergeCells(address, CellAddress(address.row() + rows - 1, address.col() + cols - 1));
             }
         }
-        catch (const Base::Exception &) {
+        catch (const Base::Exception &e) {
             // Something is wrong, skip this cell
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_ERR("failed to restore " << getFullName() << "." << address.toString());
+                e.ReportException();
+            }
         }
         catch (...) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_ERR("failed to restore " << getFullName() << "." << address.toString());
         }
     }
     reader.readEndElement("Cells");
@@ -636,7 +641,7 @@ void PropertySheet::setDisplayUnit(CellAddress address, const std::string &unit)
 }
 
 
-void PropertySheet::setAlias(CellAddress address, const std::string &alias)
+void PropertySheet::setAlias(CellAddress address, const std::string &alias, bool force)
 {
     if (alias.size() > 0 && !isValidAlias(alias))
         throw Base::ValueError("Invalid alias");
@@ -669,7 +674,10 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 
     std::string oldAlias;
     cell->getAlias(oldAlias);
-    cell->setAlias(alias);
+    if (force)
+        cell->_setAlias(alias);
+    else
+        cell->setAlias(alias);
 
     if (oldAlias.size() > 0) {
         std::map<App::ObjectIdentifier, App::ObjectIdentifier> m;
