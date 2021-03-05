@@ -99,12 +99,12 @@ Cette commande ne fonctionne qu'avec un objet 'mesh'.</translation>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Trim with plane</source>
-      <translation type="unfinished">Trim with plane</translation>
+      <translation>Ajuster avec un plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
-      <translation type="unfinished">Section with plane</translation>
+      <translation>Section avec un plan</translation>
     </message>
   </context>
   <context>

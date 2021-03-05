@@ -376,7 +376,7 @@
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create a new sketch</source>
-      <translation type="unfinished">Create a new sketch</translation>
+      <translation>Vytvor nový náčrt</translation>
     </message>
   </context>
   <context>
@@ -425,7 +425,7 @@
     <message>
       <location filename="../../Command.cpp" line="1083"/>
       <source>Pocket</source>
-      <translation>Vtlač</translation>
+      <translation>Kapsa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1084"/>
@@ -556,7 +556,7 @@
     <message>
       <location filename="../../Command.cpp" line="1355"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>Posuňte vybranú skicu pozdĺž cesty alebo k iným profilom a vyberte ju z tela</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation type="unfinished">Make a thick solid</translation>
+      <translation>Vytvoriť hrubé teleso</translation>
     </message>
   </context>
   <context>
@@ -588,47 +588,47 @@
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation type="unfinished">Create an additive primitive</translation>
+      <translation>Vytvor aditívny útvar</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="191"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Aditívna kocka</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="195"/>
       <source>Additive Cylinder</source>
-      <translation type="unfinished">Additive Cylinder</translation>
+      <translation>Aditívny valec</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="199"/>
       <source>Additive Sphere</source>
-      <translation type="unfinished">Additive Sphere</translation>
+      <translation>Aditívna guľa</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>Aditívny kužeľ</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Ellipsoid</source>
-      <translation type="unfinished">Additive Ellipsoid</translation>
+      <translation>Aditívny elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
       <source>Additive Torus</source>
-      <translation type="unfinished">Additive Torus</translation>
+      <translation>Aditívny toroid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Prism</source>
-      <translation type="unfinished">Additive Prism</translation>
+      <translation>Aditívny polygón</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Wedge</source>
-      <translation type="unfinished">Additive Wedge</translation>
+      <translation>Aditívny zrezaný ihlan</translation>
     </message>
   </context>
   <context>
@@ -642,47 +642,47 @@
       <location filename="../../CommandPrimitive.cpp" line="236"/>
       <location filename="../../CommandPrimitive.cpp" line="237"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Vytvor subtraktívny útvar</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Subtraktívna kocka</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Subtractive Cylinder</source>
-      <translation type="unfinished">Subtractive Cylinder</translation>
+      <translation>Subtraktívny valec</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Subtractive Sphere</source>
-      <translation type="unfinished">Subtractive Sphere</translation>
+      <translation>Subtraktívna guľa</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Subtractive Cone</source>
-      <translation type="unfinished">Subtractive Cone</translation>
+      <translation>Subtraktívny kužeľ</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Subtractive Ellipsoid</source>
-      <translation type="unfinished">Subtractive Ellipsoid</translation>
+      <translation>Subtraktívny elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Subtractive Torus</source>
-      <translation type="unfinished">Subtractive Torus</translation>
+      <translation>Subtraktívny toroid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Subtractive Prism</source>
-      <translation type="unfinished">Subtractive Prism</translation>
+      <translation>Subtraktívny polygón</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Subtractive Wedge</source>
-      <translation type="unfinished">Subtractive Wedge</translation>
+      <translation>Subtraktívny zrezaný ihlan</translation>
     </message>
   </context>
   <context>
@@ -690,37 +690,37 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="45"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Platný</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="46"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Neplatný tvar</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="47"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Nie je spoj v náčrte</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Náčrt už používa iná funkcia</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation type="unfinished">Sketch belongs to another Body feature</translation>
+      <translation>Skica patrí k inej funkcii Body</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="50"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Základná rovina</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
       <source>Feature is located after the Tip feature</source>
-      <translation type="unfinished">Feature is located after the Tip feature</translation>
+      <translation>Objekt sa nachádza za funkciou Tip</translation>
     </message>
   </context>
   <context>
@@ -746,7 +746,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute parameter</source>
-      <translation type="unfinished">Involute parameter</translation>
+      <translation>Neplatný parameter</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -795,11 +795,9 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+      <translation>Požadovanú funkciu nie je možné vytvoriť. Môže to byť preto, že:
+• aktívne telo neobsahuje základný tvar, takže tu nie je žiadny materiál, ktorý sa má odstrániť;
+• vybraný náčrt nepatrí k aktívnemu telu.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +809,9 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+      <translation>Požadovanú funkciu nie je možné vytvoriť. Môže to byť preto, že:
+• aktívne telo neobsahuje základný tvar, takže tu nie je žiadny materiál, ktorý sa má odstrániť;
+• vybraný náčrt nepatrí k aktívnemu telu.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +823,9 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+      <translation>Požadovanú funkciu nie je možné vytvoriť. Môže to byť preto, že:
+• aktívne telo neobsahuje základný tvar, takže tu nie je žiadny materiál, ktorý sa má odstrániť;
+• vybraný náčrt nepatrí k aktívnemu telu.</translation>
     </message>
   </context>
   <context>
@@ -845,7 +839,7 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="54"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="161"/>
       <source>Width:</source>
-      <translation>šírka:</translation>
+      <translation>Šírka:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="61"/>
@@ -883,14 +877,14 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="585"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="839"/>
       <source>Radius 1:</source>
-      <translation>Polomer 1:</translation>
+      <translation>Polomer č. 1:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="392"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="592"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="832"/>
       <source>Radius 2:</source>
-      <translation>Polomer 2:</translation>
+      <translation>Polomer č. 2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="455"/>
@@ -1050,27 +1044,27 @@
     <message>
       <location filename="../../DlgReference.ui" line="14"/>
       <source>Reference</source>
-      <translation>Odkaz</translation>
+      <translation>Referencia</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</translation>
+      <translation>Vybrali ste geometrie, ktoré nie sú súčasťou aktívneho tela. Definujte, ako sa má s týmito výbermi zaobchádzať. Ak tieto odkazy nechcete, zrušte príkaz.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Make independent copy (recommended)</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="52"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Vytvorte závislú kópiu</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="59"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Vytvorte krížový odkaz</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1072,7 @@
     <message>
       <location filename="../../ReferenceSelection.cpp" line="183"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation type="unfinished">Selecting this will cause circular dependency.</translation>
+      <translation>Výber tejto možnosti spôsobí cyklickú závislosť.</translation>
     </message>
   </context>
   <context>
@@ -1111,7 +1105,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Spoločný</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
@@ -1129,12 +1123,12 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="54"/>
       <source>Primitive parameters</source>
-      <translation type="unfinished">Primitive parameters</translation>
+      <translation>Parametre prvku</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="646"/>
       <source>Create primitive</source>
-      <translation type="unfinished">Create primitive</translation>
+      <translation>Vytvoriť prvok</translation>
     </message>
   </context>
   <context>
@@ -1147,12 +1141,12 @@
     <message>
       <location filename="../../TaskChamferParameters.ui" line="22"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Pridanie referencie</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="32"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Odobrať referenciu</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="50"/>
@@ -1178,17 +1172,17 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="327"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Prázdny zoznam tiel</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="328"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Zoznam tiel nemôže byť prázdny</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
       <source>Boolean: Accept: Input error</source>
-      <translation type="unfinished">Boolean: Accept: Input error</translation>
+      <translation>Boolean: Prijať: Chyba vstupu</translation>
     </message>
   </context>
   <context>
@@ -1196,12 +1190,12 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="121"/>
       <source>Incompatible reference set</source>
-      <translation type="unfinished">Incompatible reference set</translation>
+      <translation>Nekompatibilná referenčná sada</translation>
     </message>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="122"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation type="unfinished">There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</translation>
+      <translation>Pre aktuálnu množinu odkazov neexistuje žiadne nastavenie referencií - odkazov. Ak sa rozhodnete pokračovať, objekt zostane tam, kde je teraz, a nebude sa premiestňovať, pretože sa zmenia referencie. Ďalej?</translation>
     </message>
   </context>
   <context>
@@ -1248,7 +1242,7 @@
     <message>
       <location filename="../../TaskDraftParameters.ui" line="49"/>
       <source>Draft angle</source>
-      <translation type="unfinished">Draft angle</translation>
+      <translation>Uhol nákresu</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="79"/>
@@ -1258,12 +1252,12 @@
     <message>
       <location filename="../../TaskDraftParameters.ui" line="96"/>
       <source>Pull direction</source>
-      <translation type="unfinished">Pull direction</translation>
+      <translation>Smer ťahu</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="111"/>
       <source>Reverse pull direction</source>
-      <translation type="unfinished">Reverse pull direction</translation>
+      <translation>Opačný smer ťahu</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="100"/>
@@ -1281,87 +1275,87 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
-      <translation type="unfinished">Allow used features</translation>
+      <translation>Povoliť použité funkcie</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="30"/>
       <source>Allow external features</source>
-      <translation type="unfinished">Allow external features</translation>
+      <translation>Povoliť externé funkcie</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>Z iných tiel tej istej časti</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
       <source>From different parts or free features</source>
-      <translation type="unfinished">From different parts or free features</translation>
+      <translation>Z rôznych častí alebo voľných funkcií</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="66"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Make independent copy (recommended)</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="79"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Vytvorte závislú kópiu</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="89"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Vytvorte krížový odkaz</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="65"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Platný</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="66"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Neplatný tvar</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="67"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Nie je spoj v náčrte</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="68"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Náčrt už používa iná funkcia</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Belongs to another body</source>
-      <translation type="unfinished">Belongs to another body</translation>
+      <translation>Patrí do iného tela</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
       <source>Belongs to another part</source>
-      <translation type="unfinished">Belongs to another part</translation>
+      <translation>Patrí do inej časti</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="71"/>
       <source>Doesn't belong to any body</source>
-      <translation type="unfinished">Doesn't belong to any body</translation>
+      <translation>Nepatrí k žiadnemu telu</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Základná rovina</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
       <source>Feature is located after the tip feature</source>
-      <translation type="unfinished">Feature is located after the tip feature</translation>
+      <translation>Objekt sa nachádza za funkciou tip</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="83"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Vyberte funkciu</translation>
     </message>
   </context>
   <context>
@@ -1374,12 +1368,12 @@
     <message>
       <location filename="../../TaskFilletParameters.ui" line="22"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Pridanie referencie</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="32"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Odobrať referenciu</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="49"/>
@@ -1397,7 +1391,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="48"/>
       <source>Hole parameters</source>
-      <translation type="unfinished">Hole parameters</translation>
+      <translation>Parametre otvoru</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
@@ -1407,27 +1401,27 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>ISO metric coarse profile</source>
-      <translation type="unfinished">ISO metric coarse profile</translation>
+      <translation>ISO metrický hrubý profil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric fine profile</source>
-      <translation type="unfinished">ISO metric fine profile</translation>
+      <translation>ISO metrický jemný profil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
       <source>UTS coarse profile</source>
-      <translation type="unfinished">UTS coarse profile</translation>
+      <translation>Hrubý profil UTS</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>UTS fine profile</source>
-      <translation type="unfinished">UTS fine profile</translation>
+      <translation>Jemný profil UTS</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>UTS extra fine profile</source>
-      <translation type="unfinished">UTS extra fine profile</translation>
+      <translation>UTS extra jemný profil</translation>
     </message>
   </context>
   <context>
@@ -1440,12 +1434,12 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Pridať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Odobrať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="49"/>
@@ -1475,7 +1469,7 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="114"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="114"/>
@@ -1518,22 +1512,22 @@
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Pridať sekciu</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Odstrániť sekciu</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="113"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
       <source>Loft parameters</source>
-      <translation type="unfinished">Loft parameters</translation>
+      <translation>Parametre vytiahnutia</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="80"/>
@@ -1551,12 +1545,12 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Pridať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Odobrať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="49"/>
@@ -1571,7 +1565,7 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="72"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="111"/>
@@ -1594,12 +1588,12 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Pridať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Odobrať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="47"/>
@@ -1609,7 +1603,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="64"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="76"/>
@@ -1634,17 +1628,17 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="94"/>
       <source>Add linear pattern</source>
-      <translation type="unfinished">Add linear pattern</translation>
+      <translation>Pridať lineárny vzor</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="98"/>
       <source>Add polar pattern</source>
-      <translation type="unfinished">Add polar pattern</translation>
+      <translation>Pridajte polárny vzor</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="102"/>
       <source>Add scaled transformation</source>
-      <translation type="unfinished">Add scaled transformation</translation>
+      <translation>Pridajte zmenšenú transformáciu</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="106"/>
@@ -1659,7 +1653,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="137"/>
       <source>Right-click to add</source>
-      <translation>Pridajte pravým tlačidlom myši</translation>
+      <translation>Pridáte kliknutím pravým tlačidlom myši</translation>
     </message>
   </context>
   <context>
@@ -1716,7 +1710,7 @@
     <message>
       <location filename="../../TaskPadParameters.ui" line="128"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
@@ -1764,7 +1758,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
-      <translation type="unfinished">Orientation mode</translation>
+      <translation>Režim orientácie</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
@@ -1784,7 +1778,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Pomocný</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
@@ -1794,7 +1788,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
       <source>Curvelinear equivalence</source>
-      <translation type="unfinished">Curvelinear equivalence</translation>
+      <translation>Krivočiara ekvivalencia</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
@@ -1809,17 +1803,17 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="117"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Pridať hranu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="136"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Odstrániť hranu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="158"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>Nastavte konštantný binormálny vektor použitý na výpočet orientácie profilov</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="182"/>
@@ -1839,7 +1833,7 @@
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="365"/>
       <source>Section orientation</source>
-      <translation type="unfinished">Section orientation</translation>
+      <translation>Orientácia rezu</translation>
     </message>
   </context>
   <context>
@@ -1863,42 +1857,42 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
       <source>Corner Transition</source>
-      <translation type="unfinished">Corner Transition</translation>
+      <translation>Rohový prechod</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
       <source>Transformed</source>
-      <translation type="unfinished">Transformed</translation>
+      <translation>Transformovaný</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right Corner</source>
-      <translation type="unfinished">Right Corner</translation>
+      <translation>Pravý roh</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round Corner</source>
-      <translation type="unfinished">Round Corner</translation>
+      <translation>Zaoblený roh</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Cesta, po ktorej treba prejsť</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Pridať hranu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Odstrániť hranu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="74"/>
       <source>Pipe parameters</source>
-      <translation type="unfinished">Pipe parameters</translation>
+      <translation>Parametre potrubia</translation>
     </message>
   </context>
   <context>
@@ -1911,32 +1905,32 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
-      <translation type="unfinished">Transform mode</translation>
+      <translation>Režim transformácie</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>Konštanta</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation type="unfinished">Multisection</translation>
+      <translation>Multioddiel</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Pridať sekciu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Odstrániť sekciu</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="617"/>
       <source>Section transformation</source>
-      <translation type="unfinished">Section transformation</translation>
+      <translation>Transformácia oddielu</translation>
     </message>
   </context>
   <context>
@@ -1993,7 +1987,7 @@
     <message>
       <location filename="../../TaskPocketParameters.ui" line="128"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="56"/>
@@ -2041,12 +2035,12 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Pridať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Odobrať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="49"/>
@@ -2076,7 +2070,7 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
@@ -2153,7 +2147,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="119"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="61"/>
@@ -2171,12 +2165,12 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Pridať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="32"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Odobrať funkciu</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="49"/>
@@ -2196,7 +2190,7 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="86"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="98"/>
@@ -2219,17 +2213,17 @@
     <message>
       <location filename="../../TaskShapeBinder.ui" line="48"/>
       <source>Add Geometry</source>
-      <translation type="unfinished">Add Geometry</translation>
+      <translation>Pridať geometriu</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="67"/>
       <source>Remove Geometry</source>
-      <translation type="unfinished">Remove Geometry</translation>
+      <translation>Odstrániť geometriu</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
       <source>Datum shape parameters</source>
-      <translation type="unfinished">Datum shape parameters</translation>
+      <translation>Parametre referenčného tvaru</translation>
     </message>
   </context>
   <context>
@@ -2270,7 +2264,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="82"/>
       <source>Join Type</source>
-      <translation type="unfinished">Join Type</translation>
+      <translation>Typ spojenia</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="90"/>
@@ -2280,12 +2274,12 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="95"/>
       <source>Pipe</source>
-      <translation>Trubka</translation>
+      <translation>Potrubie</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="100"/>
       <source>Recto Verso</source>
-      <translation type="unfinished">Recto Verso</translation>
+      <translation>Recto Verso</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="109"/>
@@ -2300,7 +2294,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="124"/>
       <source>Make thickness inwards</source>
-      <translation type="unfinished">Make thickness inwards</translation>
+      <translation>Hrúbku urobte dovnútra</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="98"/>
@@ -2337,7 +2331,7 @@
       <location filename="../../TaskTransformedParameters.cpp" line="198"/>
       <location filename="../../TaskTransformedParameters.cpp" line="234"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Konštrukčná čiara% 1</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="212"/>
@@ -2381,7 +2375,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation type="unfinished">Toggle active body</translation>
+      <translation>Prepnúť aktívne telo</translation>
     </message>
   </context>
   <context>
@@ -2389,42 +2383,42 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="192"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Vytvoriť aditívnu kocku podľa jeho šírky, výšky a dĺžky</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height and angle</translation>
+      <translation>Vytvoriť aditívny valec podľa jeho polomeru, výšky a uhla</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Vytvoriť aditívnu guľu podľa jej polomeru a rôznych uhlov</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cone</source>
-      <translation type="unfinished">Create an additive cone</translation>
+      <translation>Vytvoriť aditívny kužeľ</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive ellipsoid</source>
-      <translation type="unfinished">Create an additive ellipsoid</translation>
+      <translation>Vytvoriť aditívny elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive torus</source>
-      <translation type="unfinished">Create an additive torus</translation>
+      <translation>Vytvoriť aditívny toroid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive prism</source>
-      <translation type="unfinished">Create an additive prism</translation>
+      <translation>Vytvoriť aditívny hranol</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive wedge</source>
-      <translation type="unfinished">Create an additive wedge</translation>
+      <translation>Vytvoriť aditívny zrezaný ihlan</translation>
     </message>
   </context>
   <context>
@@ -2432,42 +2426,42 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="357"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Vytvoriť subtraktívnu kocku podľa jej šírky, výšky a dĺžky</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="361"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Vytvoriť subtraktívny valec podľa jeho polomeru, výšky a uhla</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="365"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Vytvoriť subtraktívnu guľu podľa jej polomeru a rôznych uhlov</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="369"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Vytvoriť subtraktívny kužeľ</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="373"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Vytvoriť subtraktívny elipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="377"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Vytvoriť subtraktívny toroid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="381"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Vytvoriť subtraktívny polygón</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="385"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Vytvoriť subtraktívny zrezaný ihlan</translation>
     </message>
   </context>
   <context>
@@ -2475,12 +2469,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="755"/>
       <source>Select body</source>
-      <translation type="unfinished">Select body</translation>
+      <translation>Vyberte telo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="756"/>
       <source>Select a body from the list</source>
-      <translation type="unfinished">Select a body from the list</translation>
+      <translation>Vyberte telo zo zonamu</translation>
     </message>
   </context>
   <context>
@@ -2488,12 +2482,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="906"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Vyberte funkciu</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="907"/>
       <source>Select a feature from the list</source>
-      <translation type="unfinished">Select a feature from the list</translation>
+      <translation>Vyberte funkciu zo zoznamu</translation>
     </message>
   </context>
   <context>
@@ -2501,12 +2495,12 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Invalid selection</source>
-      <translation type="unfinished">Invalid selection</translation>
+      <translation>Neplatný výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>K vybraným objektom nie sú žiadne módy pripojenia. Vyberte niečo iné.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="141"/>
@@ -2518,12 +2512,12 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Nie je aktívne telo. Pred vložením referenčnej entity aktivujte telo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Several sub-elements selected</source>
-      <translation>Je vybraných niekoľko sub-prvkov</translation>
+      <translation>Je vybraných niekoľko pod-prvkov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="476"/>
@@ -2553,12 +2547,12 @@
     <message>
       <location filename="../../Command.cpp" line="679"/>
       <source>No valid planes in this document</source>
-      <translation type="unfinished">No valid planes in this document</translation>
+      <translation>V tomto dokumente nie sú platné roviny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="680"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Please create a plane first or select a face to sketch on</translation>
+      <translation>Najskôr vytvorte rovinu alebo vyberte plochu, na ktorej chcete niečo načrtnúť</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="693"/>
@@ -2589,12 +2583,12 @@
     <message>
       <location filename="../../Command.cpp" line="907"/>
       <source>No sketch to work on</source>
-      <translation type="unfinished">No sketch to work on</translation>
+      <translation>Žiadna skica, na ktorej by sa dalo pracovať</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>No sketch is available in the document</source>
-      <translation type="unfinished">No sketch is available in the document</translation>
+      <translation>V dokumente nie je k dispozícii žiadna skica</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1513"/>
@@ -2602,28 +2596,28 @@
       <location filename="../../Command.cpp" line="1543"/>
       <location filename="../../Command.cpp" line="1555"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1514"/>
       <source>Select an edge, face or body.</source>
-      <translation type="unfinished">Select an edge, face or body.</translation>
+      <translation>Vyberte hranu, povrch alebo telo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1518"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face or body from a single body.</translation>
+      <translation>Vyberte hranu, povrch alebo telo z jedného tela.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1522"/>
       <location filename="../../Command.cpp" line="1855"/>
       <source>Selection is not in Active Body</source>
-      <translation type="unfinished">Selection is not in Active Body</translation>
+      <translation>Výber nie je v aktívnom tele</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1523"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face or body from an active body.</translation>
+      <translation>Vyberte hranu, povrch alebo telo z aktívneho tela.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1533"/>
@@ -2633,17 +2627,17 @@
     <message>
       <location filename="../../Command.cpp" line="1534"/>
       <source>%1 works only on parts.</source>
-      <translation type="unfinished">%1 works only on parts.</translation>
+      <translation>% 1 funguje iba na častiach.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1544"/>
       <source>Shape of the selected Part is empty</source>
-      <translation type="unfinished">Shape of the selected Part is empty</translation>
+      <translation>Tvar vybranej časti je prázdny</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1556"/>
       <source> not possible on selected faces/edges.</source>
-      <translation type="unfinished"> not possible on selected faces/edges.</translation>
+      <translation>na vybraných plochách / hranách nie je možné.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1842"/>
@@ -2653,32 +2647,32 @@
     <message>
       <location filename="../../Command.cpp" line="1843"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation type="unfinished">Please create a subtractive or additive feature first.</translation>
+      <translation>Najskôr vytvorte subtraktívnu alebo doplnkovú funkciu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>Je vybraných viac funkcií</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>Najskôr vyberte iba jednu subtraktívnu alebo doplnkovú funkciu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1856"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>Vyberte iba jednu subtraktívnu alebo doplnkovú funkciu v aktívnom tele.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
       <source>Part creation failed</source>
-      <translation type="unfinished">Part creation failed</translation>
+      <translation>Vytvorenie časti zlyhalo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="74"/>
       <source>Failed to create a part object.</source>
-      <translation type="unfinished">Failed to create a part object.</translation>
+      <translation>Nepodarilo sa vytvoriť súčasť objektu.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="122"/>
@@ -2687,85 +2681,85 @@
       <location filename="../../CommandBody.cpp" line="142"/>
       <location filename="../../CommandBody.cpp" line="191"/>
       <source>Bad base feature</source>
-      <translation type="unfinished">Bad base feature</translation>
+      <translation>Zlá základná vlastnosť</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="123"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation type="unfinished">Body can't be based on a PartDesign feature.</translation>
+      <translation>Telo nemôže byť založené na funkcii PartDesign.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="128"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body, can't use it as base feature for another body.</translation>
+      <translation>% 1 už patrí do tela, nemôže ho použiť ako základnú funkciu pre iné telo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
       <source>Body can't be based on another body.</source>
-      <translation type="unfinished">Body can't be based on another body.</translation>
+      <translation>Telo nemôže byť založené na inom tele.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+      <translation>Základný objekt (% 1) patrí k inej časti.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>Vybraný tvar sa skladá z viacerých telies.
+To môže viesť k neočakávaným výsledkom.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="171"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>Vybraný tvar sa skladá z viacerých plášťov.
+To môže viesť k neočakávaným výsledkom.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="175"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>Vybraný tvar pozostáva iba z plášťa.
+To môže viesť k neočakávaným výsledkom.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="179"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>Vybraný tvar sa skladá z viacerých telies alebo plášťov.
+To môže viesť k neočakávaným výsledkom.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Základná vlastnosť</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="192"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation type="unfinished">Body may be based on no more than one feature.</translation>
+      <translation>Text môže byť založený iba na jednej funkcii.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="368"/>
       <source>Nothing to migrate</source>
-      <translation type="unfinished">Nothing to migrate</translation>
+      <translation>Niet čo migrovať</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
+      <translation>Nenašli sa žiadne funkcie programu PartDesign, ktoré by nepatrili k telu. Nie je čo migrovať.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation type="unfinished">Sketch plane cannot be migrated</translation>
+      <translation>Rovinu náčrtu nemožno migrovať</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="518"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation type="unfinished">Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</translation>
+      <translation>Upravte '% 1' a predefinujte ho, aby sa ako rovina náčrtu použila základná alebo referenčná rovina.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="580"/>
@@ -2779,64 +2773,64 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="581"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation type="unfinished">Select exactly one PartDesign feature or a body.</translation>
+      <translation>Vyberte presne jednu funkciu PartDesign alebo telo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="585"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determine a body for the selected feature '%s'.</translation>
+      <translation>Nepodarilo sa určiť telo vybranej funkcie '% s'.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="590"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation type="unfinished">Only a solid feature can be the tip of a body.</translation>
+      <translation>Pripojením tela môže byť iba pevný prvok.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="706"/>
       <location filename="../../CommandBody.cpp" line="728"/>
       <location filename="../../CommandBody.cpp" line="743"/>
       <source>Features cannot be moved</source>
-      <translation type="unfinished">Features cannot be moved</translation>
+      <translation>Prvok nie je možné presunúť</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="707"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation type="unfinished">Some of the selected features have dependencies in the source body</translation>
+      <translation>Niektoré z vybraných prvkov závisia od tela zdroja</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="729"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>Presunúť možno iba prvky tela jedného zdroja</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="744"/>
       <source>There are no other bodies to move to</source>
-      <translation type="unfinished">There are no other bodies to move to</translation>
+      <translation>Nie sú žiadne ďalšie telá na presunutie</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="879"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation type="unfinished">Impossible to move the base feature of a body.</translation>
+      <translation>Nie je možné presunúť základný prvok tela.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="886"/>
       <source>Select one or more features from the same body.</source>
-      <translation type="unfinished">Select one or more features from the same body.</translation>
+      <translation>Vyberte jeden alebo viac prvkov z rovnakého tela.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="899"/>
       <source>Beginning of the body</source>
-      <translation type="unfinished">Beginning of the body</translation>
+      <translation>Začiatok tela</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="261"/>
       <source>No previous feature found</source>
-      <translation type="unfinished">No previous feature found</translation>
+      <translation>Nenašiel sa žiaden predchádzajúci prvok</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="262"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
+      <translation>Nie je možné vytvoriť subtraktívny prvok bez dostupného základného prvku</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="303"/>
@@ -2863,7 +2857,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="167"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Konštrukčná čiara% 1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="84"/>
@@ -2873,46 +2867,46 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../Utils.cpp" line="88"/>
       <source>No active Body</source>
-      <translation type="unfinished">No active Body</translation>
+      <translation>Žiadne aktívne telo</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="89"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Aby ste mohli používať PartDesign, potrebujete v dokumente aktívny objekt Body. Aktivujte jednu (dvojitým kliknutím) alebo ju vytvorte.
 
-If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
+Ak máte starší dokument s objektmi PartDesign bez tela, pomocou funkcie migrácie v PartDesign ich umiestnite do tela.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="104"/>
       <source>Active Body Required</source>
-      <translation type="unfinished">Active Body Required</translation>
+      <translation>Vyžaduje sa aktívne telo</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="105"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>Ak chcete vytvoriť nový objekt PartDesign, musí byť v dokumente aktívny objekt Body. Jeden z nich aktivujte (dvojitým kliknutím) alebo vytvorte nové telo.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="142"/>
       <source>Feature is not in a body</source>
-      <translation type="unfinished">Feature is not in a body</translation>
+      <translation>Objekt nie je v tele</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="143"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a body object in the document.</translation>
+      <translation>Aby bolo možné túto funkciu použiť, musí patriť k objektu tela v dokumente.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="175"/>
       <source>Feature is not in a part</source>
-      <translation type="unfinished">Feature is not in a part</translation>
+      <translation>Objekt nie je súčasťou</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="176"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
+      <translation>Aby bolo možné túto funkciu použiť, musí patriť k časti objektu v dokumente.</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="96"/>
@@ -2922,7 +2916,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="68"/>
       <source>Edit boolean</source>
-      <translation type="unfinished">Edit boolean</translation>
+      <translation>Upraviť logickú hodnotu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>
@@ -2945,30 +2939,30 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="133"/>
       <source>Coordinate System</source>
-      <translation type="unfinished">Coordinate System</translation>
+      <translation>Súradnicový systém</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="232"/>
       <source>Edit datum</source>
-      <translation type="unfinished">Edit datum</translation>
+      <translation>Upraviť referenciu</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="68"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Upraviť %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="70"/>
       <source>Feature error</source>
-      <translation type="unfinished">Feature error</translation>
+      <translation>Chyba prvku</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="71"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and can't be edited.</translation>
+      <translation>% 1 chýba základný prvok.
+Tento prvok je nefunkčný a nedá sa upraviť.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="51"/>
@@ -2978,12 +2972,12 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="64"/>
       <source>Edit hole</source>
-      <translation type="unfinished">Edit hole</translation>
+      <translation>Upraviť dieru</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>
       <source>Edit loft</source>
-      <translation type="unfinished">Edit loft</translation>
+      <translation>Upraviť vytiahnutie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
@@ -2993,7 +2987,7 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="80"/>
       <source>Edit pipe</source>
-      <translation type="unfinished">Edit pipe</translation>
+      <translation>Upraviť potrubie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="53"/>
@@ -3003,17 +2997,17 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="76"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Upraviť prvok</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="51"/>
       <source>Edit revolution</source>
-      <translation>Uprav orotovanie</translation>
+      <translation>Upraviť orotovanie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="184"/>
       <source>Edit shape binder</source>
-      <translation type="unfinished">Edit shape binder</translation>
+      <translation>Upravte spojenie tvaru</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="152"/>
@@ -3033,36 +3027,36 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of PartDesign workbench.</translation>
+      <translation>Dokument "% 1", ktorý upravujete, bol navrhnutý so starou verziou pracovného dielu PartDesign.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="147"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
+      <translation>Chcete migrovať, aby ste mohli využívať moderné funkcie PartDesignu?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
+      <translation>Zdá sa, že dokument „% 1“ je buď uprostred procesu migrácie zo staršieho PartDesignu, alebo má mierne narušenú štruktúru.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="154"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation type="unfinished">Do you want to make the migration automatically?</translation>
+      <translation>Chcete vykonať migráciu automaticky?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="156"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Poznámka: Ak sa rozhodnete migrovať, nebudete môcť súbor upravovať v staršej verzii FreeCADu.
+Ak odmietnete migráciu, nebudete môcť používať nové funkcie PartDesignu, ako sú telá a diely. Vo výsledku tiež nebudete môcť použiť svoje diely na montážnom pracovnom stole.
+Aj keď neskôr budete môcť migrovať pomocou „Dizajnu diel-&gt; Migrovať ...“.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>
       <source>Migrate manually</source>
-      <translation type="unfinished">Migrate manually</translation>
+      <translation>Migrujte manuálne</translation>
     </message>
   </context>
   <context>
@@ -3102,38 +3096,38 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="145"/>
       <source>Through</source>
-      <translation type="unfinished">Through</translation>
+      <translation>Cez, skrz</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="152"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="492"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Hĺbka</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="161"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Závitové</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
       <source>Countersink</source>
-      <translation type="unfinished">Countersink</translation>
+      <translation>Záhlb</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="175"/>
       <source>Counterbore</source>
-      <translation type="unfinished">Counterbore</translation>
+      <translation>Zahĺbenie</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="196"/>
       <source>Hole norm</source>
-      <translation type="unfinished">Hole norm</translation>
+      <translation>Norma otvoru</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
       <source>Custom dimensions</source>
-      <translation type="unfinished">Custom dimensions</translation>
+      <translation>Vlastné rozmery</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
@@ -3150,23 +3144,23 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
       <source>Bolt/Washer</source>
-      <translation type="unfinished">Bolt/Washer</translation>
+      <translation>Skrutka / podložka</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="329"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="337"/>
       <source>Thread norm</source>
-      <translation type="unfinished">Thread norm</translation>
+      <translation>Norma vlákna</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="399"/>
       <source> Custom thread length</source>
-      <translation type="unfinished"> Custom thread length</translation>
+      <translation> Vlastná dĺžka závitu</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="423"/>
       <source>Finish depth</source>
-      <translation type="unfinished">Finish depth</translation>
+      <translation>Dokončite hĺbku</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="466"/>
@@ -3176,22 +3170,22 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
       <source>Counterbore/sink dia</source>
-      <translation type="unfinished">Counterbore/sink dia</translation>
+      <translation>Zahĺbenie / priehlbina cez</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="528"/>
       <source>Counterbore depth</source>
-      <translation type="unfinished">Counterbore depth</translation>
+      <translation>Hĺbka zahĺbenia</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
       <source>Countersink angle</source>
-      <translation type="unfinished">Countersink angle</translation>
+      <translation>Uhol zahĺbenia</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="564"/>
       <source>Thread length</source>
-      <translation type="unfinished">Thread length</translation>
+      <translation>Dĺžka vlákna</translation>
     </message>
   </context>
   <context>
@@ -3199,7 +3193,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="14"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>Parametre otvoru úlohy</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="33"/>
@@ -3217,22 +3211,22 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location filename="../../TaskHoleParameters.ui" line="47"/>
       <location filename="../../TaskHoleParameters.ui" line="332"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Hĺbka</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="57"/>
       <source>Cutoff inner</source>
-      <translation type="unfinished">Cutoff inner</translation>
+      <translation>Výrez vnútorný</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="70"/>
       <source>Class</source>
-      <translation type="unfinished">Class</translation>
+      <translation>Trieda</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="77"/>
       <source>Tapered</source>
-      <translation type="unfinished">Tapered</translation>
+      <translation>Zúžené</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="97"/>
@@ -3242,42 +3236,42 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="110"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Prichytený</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="158"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>Plochý</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="173"/>
       <source>Angled</source>
-      <translation type="unfinished">Angled</translation>
+      <translation>Uhlový</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="195"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Sklon</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="220"/>
       <source>Right hand</source>
-      <translation type="unfinished">Right hand</translation>
+      <translation>Pravá ruka</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="227"/>
       <source>Left hand</source>
-      <translation type="unfinished">Left hand</translation>
+      <translation>Ľavá ruka</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="240"/>
       <source>Model actual thread</source>
-      <translation type="unfinished">Model actual thread</translation>
+      <translation>Modelovať skutočné vlákno</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="247"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Závitové</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="257"/>
@@ -3292,7 +3286,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="293"/>
       <source>Countersink angle</source>
-      <translation type="unfinished">Countersink angle</translation>
+      <translation>Uhol zahĺbenia</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="353"/>
@@ -3312,37 +3306,37 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="380"/>
       <source>Standard fit</source>
-      <translation type="unfinished">Standard fit</translation>
+      <translation>Štandardné prichytenie</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="385"/>
       <source>Close fit</source>
-      <translation type="unfinished">Close fit</translation>
+      <translation>Tesné prichytenie</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="396"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>Výrez vonkajší</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="449"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt; Miesto vŕtania &lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="459"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Misc&lt;/b&gt;</translation>
+      <translation>&lt;b&gt; Rôzne &lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="466"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Hole cut&lt;/b&gt;</translation>
+      <translation>&lt;b&gt; Vyrezanie otvoru &lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="473"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading and size&lt;/b&gt;</translation>
+      <translation>&lt;b&gt; Závitovanie a veľkosť &lt;/b&gt;</translation>
     </message>
   </context>
   <context>

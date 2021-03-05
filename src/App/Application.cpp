@@ -1499,6 +1499,23 @@ int Application::_argc;
 char ** Application::_argv;
 
 
+void Application::cleanupUnits()
+{
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Module mod (Py::Module("FreeCAD").getAttr("Units").ptr());
+
+        Py::List attr(mod.dir());
+        for (Py::List::iterator it = attr.begin(); it != attr.end(); ++it) {
+            mod.delAttr(Py::String(*it));
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyGILStateLocker lock;
+        e.clear();
+    }
+}
+
 void Application::destruct(void)
 {
     // saving system parameter
@@ -1528,6 +1545,11 @@ void Application::destruct(void)
     paramMgr.clear();
     _pcSysParamMngr = 0;
     _pcUserParamMngr = 0;
+
+#ifdef FC_DEBUG
+    // Do this only in debug mode for memory leak checkers
+    cleanupUnits();
+#endif
 
     // not initialized or double destruct!
     assert(_pcSingleton);

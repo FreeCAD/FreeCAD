@@ -62,6 +62,6 @@ try:
     thumb.write(image)
     thumb.close()
 
-except:
+except Exception:
     print("Error creating FreeCAD thumbnail for file ", input_file)
     sys.exit(1)

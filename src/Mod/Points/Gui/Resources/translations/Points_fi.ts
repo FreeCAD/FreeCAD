@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Convert to points...</source>
-      <translation type="unfinished">Convert to points...</translation>
+      <translation>Muunna pisteiksi...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Strukturoitu pistepilvi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <location filename="../../Command.cpp" line="367"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Muunna pisteet jäsenneltyyn pistepilveen</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
       <location filename="../../Command.cpp" line="154"/>
       <location filename="../../Command.cpp" line="156"/>
       <source>Test to transform a point cloud</source>
-      <translation>Testaa muuttaa pistepilvi</translation>
+      <translation>Testaa pistepilveksi muuntamista</translation>
     </message>
   </context>
   <context>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Tuo pisteet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>Muuta pisteet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>
@@ -155,7 +155,7 @@
       <location filename="../../ViewProvider.cpp" line="468"/>
       <location filename="../../ViewProvider.cpp" line="627"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Leikkaa pisteet</translation>
     </message>
   </context>
   <context>
@@ -238,12 +238,12 @@
       <location filename="../../DlgPointsRead.ui" line="196"/>
       <location filename="../../DlgPointsRead.ui" line="253"/>
       <source>I (Gray value)</source>
-      <translation>I (Gray arvo)</translation>
+      <translation>I (harmaa arvo)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="204"/>
       <source>Number separator:</source>
-      <translation>Numero erotin:</translation>
+      <translation>Numeron erotin:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="211"/>
@@ -309,7 +309,7 @@
       <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Pisteen muodot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="81"/>

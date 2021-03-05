@@ -84,6 +84,7 @@ SET(PathScripts_SRCS
     PathScripts/PathPost.py
     PathScripts/PathPostProcessor.py
     PathScripts/PathPreferences.py
+    PathScripts/PathPreferencesAdvanced.py
     PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
     PathScripts/PathProbe.py

@@ -99,12 +99,12 @@ Komando honek 'amarauna' objektuetan soilik funtzionatzen du.</translation>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Trim with plane</source>
-      <translation type="unfinished">Trim with plane</translation>
+      <translation>Ebaki planoarekin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
       <source>Section with plane</source>
-      <translation type="unfinished">Section with plane</translation>
+      <translation>Sekzioa planoarekin</translation>
     </message>
   </context>
   <context>

@@ -107,7 +107,7 @@ void CmdMeshTransform::activated(int)
   std::string fName = getUniqueObjectName("Move");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
 
-  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Mesh Create"));
+  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Create"));
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::Transform\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
@@ -146,7 +146,7 @@ void CmdMeshDemolding::activated(int)
   std::string fName = getUniqueObjectName("Demolding");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
 
-  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Mesh Create"));
+  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Create"));
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::TransformDemolding\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
@@ -625,7 +625,7 @@ CmdMeshFromPartShape::CmdMeshFromPartShape()
     sToolTipText  = QT_TR_NOOP("Tessellate shape");
     sWhatsThis    = "Mesh_FromPartShape";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Mesh_Mesh_from_Shape.svg";
+    sPixmap       = "Mesh_FromPartShape.svg";
 }
 
 void CmdMeshFromPartShape::activated(int)
@@ -896,7 +896,7 @@ CmdMeshPolyCut::CmdMeshPolyCut()
     sToolTipText  = QT_TR_NOOP("Cuts a mesh with a picked polygon");
     sWhatsThis    = "Mesh_PolyCut";
     sStatusTip    = QT_TR_NOOP("Cuts a mesh with a picked polygon");
-    sPixmap       = "Mesh_Cut";
+    sPixmap       = "Mesh_PolyCut";
 }
 
 void CmdMeshPolyCut::activated(int)
@@ -957,7 +957,7 @@ CmdMeshPolyTrim::CmdMeshPolyTrim()
     sToolTipText  = QT_TR_NOOP("Trims a mesh with a picked polygon");
     sWhatsThis    = "Mesh_PolyTrim";
     sStatusTip    = QT_TR_NOOP("Trims a mesh with a picked polygon");
-    sPixmap       = "Mesh_Poly_Trim";
+    sPixmap       = "Mesh_PolyTrim";
 }
 
 void CmdMeshPolyTrim::activated(int)
@@ -1017,7 +1017,7 @@ CmdMeshTrimByPlane::CmdMeshTrimByPlane()
     sMenuText     = QT_TR_NOOP("Trim mesh with a plane");
     sToolTipText  = QT_TR_NOOP("Trims a mesh with a plane");
     sStatusTip    = QT_TR_NOOP("Trims a mesh with a plane");
-    sPixmap       = "Mesh_Trim_by_Plane";
+    sPixmap       = "Mesh_TrimByPlane";
 }
 
 void CmdMeshTrimByPlane::activated(int)
@@ -1046,7 +1046,7 @@ CmdMeshSectionByPlane::CmdMeshSectionByPlane()
     sMenuText     = QT_TR_NOOP("Create section from mesh and plane");
     sToolTipText  = QT_TR_NOOP("Section from mesh and plane");
     sStatusTip    = QT_TR_NOOP("Section from mesh and plane");
-    sPixmap       = "Mesh_Section_by_Plane";
+    sPixmap       = "Mesh_SectionByPlane";
 }
 
 void CmdMeshSectionByPlane::activated(int)
@@ -1199,7 +1199,7 @@ CmdMeshEvaluateFacet::CmdMeshEvaluateFacet()
     sToolTipText  = QT_TR_NOOP("Information about face");
     sWhatsThis    = "Mesh_EvaluateFacet";
     sStatusTip    = QT_TR_NOOP("Information about face");
-    sPixmap       = "Mesh_Pipette";
+    sPixmap       = "Mesh_EvaluateFacet";
 }
 
 void CmdMeshEvaluateFacet::activated(int)
@@ -1242,7 +1242,7 @@ CmdMeshRemoveComponents::CmdMeshRemoveComponents()
     sToolTipText  = QT_TR_NOOP("Remove topologic independent components from the mesh");
     sWhatsThis    = "Mesh_RemoveComponents";
     sStatusTip    = QT_TR_NOOP("Remove topologic independent components from the mesh");
-    sPixmap       = "Mesh_Remove_Components";
+    sPixmap       = "Mesh_RemoveComponents";
 }
 
 void CmdMeshRemoveComponents::activated(int)
@@ -1287,7 +1287,7 @@ CmdMeshRemeshGmsh::CmdMeshRemeshGmsh()
     sToolTipText  = QT_TR_NOOP("Refine existing mesh");
     sStatusTip    = QT_TR_NOOP("Refine existing mesh");
     sWhatsThis    = "Mesh_RemeshGmsh";
-    sPixmap       = "Mesh_Remesh_Gmsh";
+    sPixmap       = "Mesh_RemeshGmsh";
 }
 
 void CmdMeshRemeshGmsh::activated(int)
@@ -1320,7 +1320,7 @@ CmdMeshRemoveCompByHand::CmdMeshRemoveCompByHand()
     sToolTipText  = QT_TR_NOOP("Mark a component to remove it from the mesh");
     sWhatsThis    = "Mesh_RemoveCompByHand";
     sStatusTip    = QT_TR_NOOP("Mark a component to remove it from the mesh");
-    sPixmap       = "Mesh_Remove_Comp_by_Hand";
+    sPixmap       = "Mesh_RemoveCompByHand";
 }
 
 void CmdMeshRemoveCompByHand::activated(int)
@@ -1606,7 +1606,7 @@ CmdMeshBuildRegularSolid::CmdMeshBuildRegularSolid()
     sToolTipText  = QT_TR_NOOP("Builds a regular solid");
     sWhatsThis    = "Mesh_BuildRegularSolid";
     sStatusTip    = QT_TR_NOOP("Builds a regular solid");
-    sPixmap       = "Mesh_Regular_Solid";
+    sPixmap       = "Mesh_BuildRegularSolid";
 }
 
 void CmdMeshBuildRegularSolid::activated(int)
@@ -1675,7 +1675,7 @@ CmdMeshFillInteractiveHole::CmdMeshFillInteractiveHole()
     sToolTipText  = QT_TR_NOOP("Close holes interactively");
     sWhatsThis    = "Mesh_FillInteractiveHole";
     sStatusTip    = QT_TR_NOOP("Close holes interactively");
-    sPixmap       = "Mesh_Boundary";
+    sPixmap       = "Mesh_FillInteractiveHole";
 }
 
 void CmdMeshFillInteractiveHole::activated(int)
@@ -1753,7 +1753,7 @@ CmdMeshSegmentationBestFit::CmdMeshSegmentationBestFit()
     sToolTipText  = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
     sWhatsThis    = "Mesh_SegmentationBestFit";
     sStatusTip    = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
-    sPixmap       = "Mesh_Segmentation_Best_Fit";
+    sPixmap       = "Mesh_SegmentationBestFit";
 }
 
 void CmdMeshSegmentationBestFit::activated(int)

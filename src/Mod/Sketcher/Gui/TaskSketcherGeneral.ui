@@ -46,7 +46,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefQuantitySpinBox" name="gridSize" native="true">
+      <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
        <property name="toolTip">
         <string>Distance between two subsequent grid lines</string>
        </property>

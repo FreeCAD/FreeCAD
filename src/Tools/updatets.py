@@ -65,9 +65,9 @@ DirFilter = ["^Attic$",
 
 # python folders that need a special pylupdate command
 PyCommands = [["src/Mod/Draft",
-               "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/Draft.ts"],
+               'pylupdate `find ./ -name "*.py"` Resources/ui/*.ui -ts Resources/translations/Draft.ts'],
               ["src/Mod/Arch",
-               "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/Arch.ts"],
+               'pylupdate `find ./ -name "*.py"` Resources/ui/*.ui -ts Resources/translations/Arch.ts'],
               ["src/Mod/OpenSCAD",
                "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/OpenSCAD.ts"],
               ["src/Mod/Start",
@@ -112,7 +112,7 @@ PyCommands = [["src/Mod/Draft",
 
 # add python folders to exclude list
 for c in PyCommands:
-    DirFilter.append(c[0])
+    DirFilter.append(c[0]+"$")
 
 QMAKE = ""
 LUPDATE = ""
@@ -146,7 +146,9 @@ def find_tools(noobsolete=True):
             LUPDATE += " -noobsolete"
     else:
         raise Exception("Cannot find lupdate")
-    if (os.system("pylupdate -version") == 0):
+    if (os.system("pyside2-lupdate -version") == 0):
+        PYLUPDATE = "pyside2-lupdate"
+    elif (os.system("pylupdate -version") == 0):
         PYLUPDATE = "pylupdate"
     elif (os.system("pylupdate5 -version") == 0):
         PYLUPDATE = "pylupdate5"

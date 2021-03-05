@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #***************************************************************************
 #*                                                                         *
@@ -30,8 +30,7 @@ __url__ = "http://www.freecadweb.org"
 This script builds qhrlp files from a local copy of the wiki
 """
 
-import sys, os, re, tempfile, getopt, shutil
-from urllib2 import urlopen, HTTPError
+import os, re, shutil
 
 #    CONFIGURATION       #################################################
 
@@ -39,8 +38,7 @@ FOLDER = "./localwiki"
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
 QHELPCOMPILER = 'qhelpgenerator'
-QCOLLECTIOMGENERATOR = 'qcollectiongenerator'
-RELEASE = '0.18'
+RELEASE = '0.19'
 
 #    END CONFIGURATION      ##############################################
 
@@ -54,25 +52,25 @@ def crawl():
     if os.system(QHELPCOMPILER +' -v'):
         print ("Error: QAssistant not fully installed, exiting.")
         return 1
-    if os.system(QCOLLECTIOMGENERATOR +' -v'):
-        print ("Error: QAssistant not fully installed, exiting.")
-        return 1
 
     # run ########################################################
 
     qhp = buildtoc()
     qhcp = createCollProjectFile()
     shutil.copy("../../Gui/Icons/freecad-icon-64.png","localwiki/freecad-icon-64.png")
-    if generate(qhcp) or compile(qhp):
-        print ("Error at compiling")
+    if generate(qhcp):
+        print ("Error while generating")
+        return 1
+    if compile(qhp):
+        print ("Error while compiling")
         return 1
     if VERBOSE: print ("All done!")
-    i=raw_input("Copy the files to their correct location in the source tree? y/n (default=no) ")
-    if i.upper() in ["Y","YES"]:
-        shutil.copy("localwiki/freecad.qch","../../Doc/freecad.qch")
-        shutil.copy("localwiki/freecad.qhc","../../Doc/freecad.qhc")
-    else:
-        print ('Files are in localwiki. Test with "assistant -collectionFile localwiki/freecad.qhc"')
+    #i=raw_input("Copy the files to their correct location in the source tree? y/n (default=no) ")
+    #if i.upper() in ["Y","YES"]:
+    #    shutil.copy("localwiki/freecad.qch","../../Doc/freecad.qch")
+    #    shutil.copy("localwiki/freecad.qhc","../../Doc/freecad.qhc")
+    #else:
+    print ('Files freecad.qch and freecad.qhc are in localwiki. Test with "assistant -collectionFile localwiki/freecad.qhc"')
     return 0
     
 def compile(qhpfile):
@@ -81,6 +79,7 @@ def compile(qhpfile):
     if not os.system(QHELPCOMPILER + ' '+qhpfile+' -o '+qchfile):
         if VERBOSE: print ("Successfully created",qchfile)
         return 0
+    return 1
 
 def generate(qhcpfile):
     "generates qassistant-specific settings like icon, title, ..."
@@ -92,9 +91,10 @@ def generate(qhcpfile):
     about.write(txt)
     about.close()
     qhcfile = FOLDER + os.sep + "freecad.qhc"
-    if not os.system(QCOLLECTIOMGENERATOR+' '+qhcpfile+' -o '+qhcfile):
+    if not os.system(QHELPCOMPILER+' '+qhcpfile+' -o '+qhcfile):
         if VERBOSE: print ("Successfully created ",qhcfile)
         return 0
+    return 1
 
 def createCollProjectFile():
     qprojectfile = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -102,16 +102,13 @@ def createCollProjectFile():
     <assistant>
         <title>FreeCAD User Manual</title>
         <applicationIcon>freecad-icon-64.png</applicationIcon>
-        <cacheDirectory>freecad/freecad</cacheDirectory>
+        <cacheDirectory base="collection">freecad/freecad</cacheDirectory>
         <startPage>qthelp://org.freecad.usermanual/doc/Online_Help_Startpage.html</startPage>
         <aboutMenuText>
             <text>About FreeCAD</text>
         </aboutMenuText>
         <aboutDialog>
             <file>about.txt</file>
-            <!--
-            <icon>images/icon.png</icon>
-            -->
             <icon>freecad-icon-64.png</icon>
         </aboutDialog>
         <enableDocumentationManager>true</enableDocumentationManager>
@@ -136,7 +133,7 @@ def createCollProjectFile():
     f = open(qfilename,'w')
     f.write(qprojectfile)
     f.close()
-    if VERBOSE: print ("Done writing qhcp file",qfilename)
+    if VERBOSE: print ("Done writing qhcp file:",qfilename)
     return qfilename
 
 def buildtoc():
@@ -179,7 +176,17 @@ def buildtoc():
         if "<a" in line:
             title = re.findall('<a[^>]*>(.*?)</a>',line)[0].strip()
             link = re.findall('href="(.*?)"',line)[0].strip()
+        if link:
+            if not link.endswith(".html"):
+                link  = link + ".html"
+            if link.startswith("/"):
+                link = link[1:]
         if not link: link = 'default.html'
+        if title.startswith("<img"):
+            # workbenches
+            wb = re.findall("Workbench\_(.*?)\.svg",title)[0]
+            title = wb + " Workbench"
+            link = wb + "_Workbench.html"
         return title,link
 
     if VERBOSE: print ("Building table of contents...")
@@ -196,14 +203,15 @@ def buildtoc():
     for item in items:
         if not ("<ul>" in item):
             if ("</ul>" in item):
-                inserttoc += '</section>\n'
+                inserttoc += '            </section>\n'
             else:
                 link = ''
                 title,link=getname(item)
                 if link:
                     link='" ref="'+link
                     insertkeywords += ('<keyword name="'+title+link+'"/>\n')
-                inserttoc += ('<section title="'+title+link+'"></section>\n')
+                if link and title:
+                    inserttoc += ('            <section title="'+title+link+'"></section>\n')
         else:
             subitems = item.split("<ul>")
             for i in range(len(subitems)):
@@ -214,7 +222,8 @@ def buildtoc():
                     insertkeywords += ('<keyword name="'+title+link+'"/>\n')
                 trail = ''
                 if i == len(subitems)-1: trail = '</section>'
-                inserttoc += ('<section title="'+title+link+'">'+trail+'\n')
+                if link and title:
+                    inserttoc += ('            <section title="'+title+link+'">'+trail+'\n')
     inserttoc += '</section>\n'
 
     insertfiles = "<files>\n"
@@ -226,10 +235,10 @@ def buildtoc():
     qhelpfile = re.compile('<inserttoc>').sub(inserttoc,qhelpfile)
     qhelpfile = re.compile('<insertfiles>').sub(insertfiles,qhelpfile)
     qfilename = FOLDER + os.sep + "freecad.qhp"
-    f = open(qfilename,'wb')
+    f = open(qfilename,'w')
     f.write(qhelpfile)
     f.close()
-    if VERBOSE: print ("Done writing qhp file",qfilename)
+    if VERBOSE: print ("Done writing qhp file:",qfilename)
     return qfilename
     
 if __name__ == "__main__":

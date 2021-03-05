@@ -25,6 +25,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QMenu>
 #endif
 
 #include <QColor>
@@ -38,6 +40,8 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Material.h>
+#include <Gui/ActionFunction.h>
+#include <Gui/Command.h>
 #include <Gui/Control.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
@@ -115,6 +119,33 @@ std::vector<std::string> ViewProviderDimension::getDisplayModes(void) const
     return StrList;
 }
 
+bool ViewProviderDimension::doubleClicked(void)
+{
+    startDefaultEditMode();
+    return true;
+}
+
+void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue())));
+    act->setData(QVariant((int)ViewProvider::Default));
+    func->trigger(act, boost::bind(&ViewProviderDimension::startDefaultEditMode, this));
+
+    ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
+}
+
+void ViewProviderDimension::startDefaultEditMode()
+{
+    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
+    Gui::Command::openCommand(text.toUtf8());
+
+    Gui::Document* document = this->getDocument();
+    if (document) {
+        document->setEdit(this, ViewProvider::Default);
+    }
+}
+
 bool ViewProviderDimension::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
@@ -143,12 +174,6 @@ void ViewProviderDimension::unsetEdit(int ModNum)
     else {
         ViewProviderDrawingView::unsetEdit(ModNum);
     }
-}
-
-bool ViewProviderDimension::doubleClicked(void)
-{
-    setEdit(ViewProvider::Default);
-    return true;
 }
 
 void ViewProviderDimension::updateData(const App::Property* p)

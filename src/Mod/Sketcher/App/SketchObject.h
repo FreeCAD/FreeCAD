@@ -65,8 +65,8 @@ public:
 
     /// Property
     /**
-     The Geometry list contains the non-external Part::Geometry objects in the sketch.  The list 
-     may be accessed directly, or indirectly via getInternalGeometry(). 
+     The Geometry list contains the non-external Part::Geometry objects in the sketch.  The list
+     may be accessed directly, or indirectly via getInternalGeometry().
 
      Many of the methods in this class take geoId and posId parameters.  A GeoId is a unique identifier for
      geometry in the Sketch. geoId >= 0 means an index in the Geometry list. geoId < 0 refers to sketch
@@ -242,7 +242,7 @@ public:
      \param radius - fillet radius
      \param trim - if false, leaves the original lines untouched
      \param createCorner - keep geoId/pos as a Point and keep as many constraints as possible
-     \retval - 0 on success, -1 on failure 
+     \retval - 0 on success, -1 on failure
      */
     int fillet(int geoId, PointPos pos, double radius, bool trim=true, bool preserveCorner=false);
     /*!
@@ -253,7 +253,7 @@ public:
      \param trim - if false, leaves the original lines untouched
      \param preserveCorner - if the lines are coincident, place a Point where they meet and keep as many
      of the existing constraints as possible
-     \retval - 0 on success, -1 on failure 
+     \retval - 0 on success, -1 on failure
      */
     int fillet(int geoId1, int geoId2,
                const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
@@ -543,6 +543,18 @@ protected:
 
     // retrieves redundant, conflicting and malformed constraint information from the solver
     void retrieveSolverDiagnostics();
+
+    // retrieves whether a geometry blocked state corresponds to this constraint
+    // returns true of the constraint is of Block type, false otherwise
+    bool getBlockedState(const Constraint * cstr, bool & blockedstate) const;
+
+    // retrieves the geometry blocked state corresponding to this constraint
+    // returns true of the constraint is of InternalAlignment type, false otherwise
+    bool getInternalTypeState(const Constraint * cstr, Sketcher::InternalType::InternalType & internaltypestate) const;
+
+    // Checks whether the geometry state stored in the geometry extension matches the current sketcher situation (e.g. constraints)
+    // and corrects the state if not matching.
+    void synchroniseGeometryState();
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to

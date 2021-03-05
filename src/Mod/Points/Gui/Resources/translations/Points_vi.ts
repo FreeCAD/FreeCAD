@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Structured point cloud</source>
-      <translation type="unfinished">Structured point cloud</translation>
+      <translation>Mây lưới cấu trúc</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <location filename="../../Command.cpp" line="367"/>
       <source>Convert points to structured point cloud</source>
-      <translation type="unfinished">Convert points to structured point cloud</translation>
+      <translation>Chuyển đổi nhóm điểm thành mây lưới cấu trúc</translation>
     </message>
   </context>
   <context>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Nhập điểm</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>Chuyển đổi điểm</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>
@@ -155,7 +155,7 @@
       <location filename="../../ViewProvider.cpp" line="468"/>
       <location filename="../../ViewProvider.cpp" line="627"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Cắt điểm</translation>
     </message>
   </context>
   <context>

@@ -45,6 +45,11 @@ FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o)
 
 FeaturePythonImp::~FeaturePythonImp()
 {
+    Base::PyGILStateLocker lock;
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) py_##_name = Py::None();
+
+    FC_PY_FEATURE_PYTHON
 }
 
 void FeaturePythonImp::init(PyObject *pyobj) {

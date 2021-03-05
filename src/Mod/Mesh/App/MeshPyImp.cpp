@@ -972,6 +972,38 @@ PyObject*  MeshPy::hasNonManifolds(PyObject *args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False)); 
 }
 
+PyObject*  MeshPy::hasInvalidNeighbourhood(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasInvalidNeighbourhood();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject*  MeshPy::hasPointsOutOfRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasPointsOutOfRange();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject*  MeshPy::hasFacetsOutOfRange(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasFacetsOutOfRange();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
+PyObject*  MeshPy::hasCorruptedFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasFacetsOutOfRange();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
+}
+
 PyObject*  MeshPy::removeNonManifolds(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

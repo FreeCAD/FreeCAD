@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="745"/>
+      <location filename="../../BrowserView.cpp" line="748"/>
       <source>Browser</source>
       <translation>Περιηγητής</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="560"/>
+      <location filename="../../BrowserView.cpp" line="563"/>
       <source>File does not exist!</source>
       <translation>Το αρχείο δεν υπάρχει!</translation>
     </message>
@@ -144,6 +144,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="551"/>
       <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
       <source>Error</source>
       <translation>Σφάλμα</translation>
     </message>
@@ -153,7 +154,12 @@
       <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="716"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="719"/>
       <source>Loading %1...</source>
       <translation>Πραγματοποιείται φόρτωση του %1...</translation>
     </message>

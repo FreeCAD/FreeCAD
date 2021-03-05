@@ -460,18 +460,18 @@ class Nester:
                         edges = [e[0] for e in lut.values() if len(e) == 1]
                         try:
                             pol = Part.Face(Part.Wire(edges))
-                        except:
+                        except Exception:
                             # above method can fail sometimes. Try a slower method
                             w = DraftGeomUtils.findWires(edges)
                             if len(w) == 1:
                                 if w[0].isClosed():
                                     try:
                                         pol = Part.Face(w[0])
-                                    except:
+                                    except Exception:
                                         print("Error merging polygons. Aborting")
                                         try:
                                             Part.show(Part.Wire(edges))
-                                        except:
+                                        except Exception:
                                             for e in edges:
                                                 Part.show(e)
                                         return

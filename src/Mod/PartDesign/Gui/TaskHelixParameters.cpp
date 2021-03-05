@@ -61,7 +61,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskHelixParameters */
 
 TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *HelixView, QWidget *parent)
-    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_Additive_Helix", tr("Helix parameters")),
+    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_AdditiveHelix", tr("Helix parameters")),
     ui (new Ui_TaskHelixParameters)
 {
     // we need a separate container widget to add all controls to
@@ -135,6 +135,8 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *Helix
     ui->height->setValue(height);
     ui->turns->setValue(turns);
     ui->coneAngle->setValue(angle);
+    ui->coneAngle->setMinimum(propAngle->getMinimum());
+    ui->coneAngle->setMaximum(propAngle->getMaximum());
     ui->checkBoxLeftHanded->setChecked(leftHanded);
     ui->checkBoxReversed->setChecked(reversed);
     ui->inputMode->setCurrentIndex(index);
@@ -305,7 +307,6 @@ void TaskHelixParameters::updateUI()
 void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-
         exitSelectionMode();
         std::vector<std::string> axis;
         App::DocumentObject* selObj;
@@ -362,13 +363,16 @@ void TaskHelixParameters::onAxisChanged(int num)
     App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (lnk.getValue() == 0) {
         // enter reference selection mode
-        TaskSketchBasedParameters::onSelectReference(true, true, false, true);
+        TaskSketchBasedParameters::onSelectReference(true, true, false, true, true);
+        return;
     } else {
         if (!pcHelix->getDocument()->isIn(lnk.getValue())){
             Base::Console().Error("Object was deleted\n");
             return;
         }
         propReferenceAxis->Paste(lnk);
+
+        // in case user is in selection mode, but changed his mind before selecting anything.
         exitSelectionMode();
     }
 
@@ -474,6 +478,45 @@ void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj, std::vecto
 
         obj = lnk.getValue();
         sub = lnk.getSubValues();
+    }
+}
+
+bool TaskHelixParameters::showPreview(PartDesign::Helix* helix)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/PartDesign");
+    if ((hGrp->GetBool("SubractiveHelixPreview", true) && helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) ||
+        (hGrp->GetBool("AdditiveHelixPreview", false) && helix->getAddSubType() == PartDesign::FeatureAddSub::Additive)) {
+        return true;
+    }
+
+    return false;
+}
+
+void TaskHelixParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+{
+    PartDesign::Helix* pcHelix = dynamic_cast<PartDesign::Helix*>(vp->getObject());
+    if (pcHelix && showPreview(pcHelix)) {
+        Gui::Document* doc = vp->getDocument();
+        if (doc) {
+            doc->setHide(profile->getNameInDocument());
+        }
+    }
+    else {
+        TaskSketchBasedParameters::startReferenceSelection(profile, base);
+    }
+}
+
+void TaskHelixParameters::finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
+{
+    PartDesign::Helix* pcHelix = dynamic_cast<PartDesign::Helix*>(vp->getObject());
+    if (pcHelix && showPreview(pcHelix)) {
+        Gui::Document* doc = vp->getDocument();
+        if (doc) {
+            doc->setShow(profile->getNameInDocument());
+        }
+    }
+    else {
+        TaskSketchBasedParameters::finishReferenceSelection(profile, base);
     }
 }
 

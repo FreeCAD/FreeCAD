@@ -261,7 +261,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     ui->helixPitch->setRange(0, INT_MAX);
     ui->helixHeight->setRange(0, INT_MAX);
     ui->helixRadius->setRange(0, INT_MAX);
-    ui->helixAngle->setRange(0, 90);
+    ui->helixAngle->setRange(-90, 90);
     // circle
     ui->circleRadius->setRange(0, INT_MAX);
     ui->circleAngle0->setRange(0, 360);
@@ -328,7 +328,9 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         if (type == Part::Plane::getClassTypeId()) {
             Part::Plane* plane = static_cast<Part::Plane*>(feature);
             ui->planeLength->setValue(plane->Length.getQuantityValue());
+            ui->planeLength->bind(plane->Length);
             ui->planeWidth->setValue(plane->Width.getQuantityValue());
+            ui->planeWidth->bind(plane->Width);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangePlane(QWidget*)));
@@ -338,8 +340,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Box::getClassTypeId()) {
             Part::Box* box = static_cast<Part::Box*>(feature);
             ui->boxLength->setValue(box->Length.getQuantityValue());
+            ui->boxLength->bind(box->Length);
             ui->boxWidth->setValue(box->Width.getQuantityValue());
+            ui->boxWidth->bind(box->Width);
             ui->boxHeight->setValue(box->Height.getQuantityValue());
+            ui->boxHeight->bind(box->Height);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeBox(QWidget*)));
@@ -350,8 +355,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Cylinder::getClassTypeId()) {
             Part::Cylinder* cyl = static_cast<Part::Cylinder*>(feature);
             ui->cylinderRadius->setValue(cyl->Radius.getQuantityValue());
+            ui->cylinderRadius->bind(cyl->Radius);
             ui->cylinderHeight->setValue(cyl->Height.getQuantityValue());
+            ui->cylinderHeight->bind(cyl->Height);
             ui->cylinderAngle->setValue(cyl->Angle.getQuantityValue());
+            ui->cylinderAngle->bind(cyl->Angle);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCylinder(QWidget*)));
@@ -362,9 +370,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Cone::getClassTypeId()) {
             Part::Cone* cone = static_cast<Part::Cone*>(feature);
             ui->coneRadius1->setValue(cone->Radius1.getQuantityValue());
+            ui->coneRadius1->bind(cone->Radius1);
             ui->coneRadius2->setValue(cone->Radius2.getQuantityValue());
+            ui->coneRadius2->bind(cone->Radius2);
             ui->coneHeight->setValue(cone->Height.getQuantityValue());
+            ui->coneHeight->bind(cone->Height);
             ui->coneAngle->setValue(cone->Angle.getQuantityValue());
+            ui->coneAngle->bind(cone->Angle);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCone(QWidget*)));
@@ -376,9 +388,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Sphere::getClassTypeId()) {
             Part::Sphere* sphere = static_cast<Part::Sphere*>(feature);
             ui->sphereRadius->setValue(sphere->Radius.getQuantityValue());
+            ui->sphereRadius->bind(sphere->Radius);
             ui->sphereAngle1->setValue(sphere->Angle1.getQuantityValue());
+            ui->sphereAngle1->bind(sphere->Angle1);
             ui->sphereAngle2->setValue(sphere->Angle2.getQuantityValue());
+            ui->sphereAngle2->bind(sphere->Angle2);
             ui->sphereAngle3->setValue(sphere->Angle3.getQuantityValue());
+            ui->sphereAngle3->bind(sphere->Angle3);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeSphere(QWidget*)));
@@ -390,11 +406,17 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Ellipsoid::getClassTypeId()) {
             Part::Ellipsoid* ell = static_cast<Part::Ellipsoid*>(feature);
             ui->ellipsoidRadius1->setValue(ell->Radius1.getQuantityValue());
+            ui->ellipsoidRadius1->bind(ell->Radius1);
             ui->ellipsoidRadius2->setValue(ell->Radius2.getQuantityValue());
+            ui->ellipsoidRadius2->bind(ell->Radius2);
             ui->ellipsoidRadius3->setValue(ell->Radius3.getQuantityValue());
+            ui->ellipsoidRadius3->bind(ell->Radius3);
             ui->ellipsoidAngle1->setValue(ell->Angle1.getQuantityValue());
+            ui->ellipsoidAngle1->bind(ell->Angle1);
             ui->ellipsoidAngle2->setValue(ell->Angle2.getQuantityValue());
+            ui->ellipsoidAngle2->bind(ell->Angle2);
             ui->ellipsoidAngle3->setValue(ell->Angle3.getQuantityValue());
+            ui->ellipsoidAngle3->bind(ell->Angle3);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeEllipsoid(QWidget*)));
@@ -408,10 +430,15 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Torus::getClassTypeId()) {
             Part::Torus* torus = static_cast<Part::Torus*>(feature);
             ui->torusRadius1->setValue(torus->Radius1.getQuantityValue());
+            ui->torusRadius1->bind(torus->Radius1);
             ui->torusRadius2->setValue(torus->Radius2.getQuantityValue());
+            ui->torusRadius2->bind(torus->Radius2);
             ui->torusAngle1->setValue(torus->Angle1.getQuantityValue());
+            ui->torusAngle1->bind(torus->Angle1);
             ui->torusAngle2->setValue(torus->Angle2.getQuantityValue());
+            ui->torusAngle2->bind(torus->Angle2);
             ui->torusAngle3->setValue(torus->Angle3.getQuantityValue());
+            ui->torusAngle3->bind(torus->Angle3);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeTorus(QWidget*)));
@@ -425,9 +452,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             Part::Prism* prism = static_cast<Part::Prism*>(feature);
             ui->prismPolygon->setValue(prism->Polygon.getValue());
             ui->prismCircumradius->setValue(prism->Circumradius.getQuantityValue());
+            ui->prismCircumradius->bind(prism->Circumradius);
             ui->prismHeight->setValue(prism->Height.getQuantityValue());
+            ui->prismHeight->bind(prism->Height);
             ui->prismXSkew->setValue(prism->FirstAngle.getQuantityValue());
+            ui->prismXSkew->bind(prism->FirstAngle);
             ui->prismYSkew->setValue(prism->SecondAngle.getQuantityValue());
+            ui->prismYSkew->bind(prism->SecondAngle);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangePrism(QWidget*)));
@@ -440,15 +471,25 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Wedge::getClassTypeId()) {
             Part::Wedge* wedge = static_cast<Part::Wedge*>(feature);
             ui->wedgeXmin->setValue(wedge->Xmin.getQuantityValue());
+            ui->wedgeXmin->bind(wedge->Xmin);
             ui->wedgeYmin->setValue(wedge->Ymin.getQuantityValue());
+            ui->wedgeYmin->bind(wedge->Ymin);
             ui->wedgeZmin->setValue(wedge->Zmin.getQuantityValue());
+            ui->wedgeZmin->bind(wedge->Zmin);
             ui->wedgeX2min->setValue(wedge->X2min.getQuantityValue());
+            ui->wedgeX2min->bind(wedge->X2min);
             ui->wedgeZ2min->setValue(wedge->Z2min.getQuantityValue());
+            ui->wedgeZ2min->bind(wedge->Z2min);
             ui->wedgeXmax->setValue(wedge->Xmax.getQuantityValue());
+            ui->wedgeXmax->bind(wedge->Xmax);
             ui->wedgeYmax->setValue(wedge->Ymax.getQuantityValue());
+            ui->wedgeYmax->bind(wedge->Ymax);
             ui->wedgeZmax->setValue(wedge->Zmax.getQuantityValue());
+            ui->wedgeZmax->bind(wedge->Zmax);
             ui->wedgeX2max->setValue(wedge->X2max.getQuantityValue());
+            ui->wedgeX2max->bind(wedge->X2max);
             ui->wedgeZ2max->setValue(wedge->Z2max.getQuantityValue());
+            ui->wedgeZ2max->bind(wedge->Z2max);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeWedge(QWidget*)));
@@ -466,9 +507,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Helix::getClassTypeId()) {
             Part::Helix* helix = static_cast<Part::Helix*>(feature);
             ui->helixPitch->setValue(helix->Pitch.getQuantityValue());
+            ui->helixPitch->bind(helix->Pitch);
             ui->helixHeight->setValue(helix->Height.getQuantityValue());
+            ui->helixHeight->bind(helix->Height);
             ui->helixRadius->setValue(helix->Radius.getQuantityValue());
+            ui->helixRadius->bind(helix->Radius);
             ui->helixAngle->setValue(helix->Angle.getQuantityValue());
+            ui->helixAngle->bind(helix->Angle);
             ui->helixLocalCS->setCurrentIndex(helix->LocalCoord.getValue());
 
             QSignalMapper* mapper = new QSignalMapper(this);
@@ -482,8 +527,10 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Spiral::getClassTypeId()) {
             Part::Spiral* spiral = static_cast<Part::Spiral*>(feature);
             ui->spiralGrowth->setValue(spiral->Growth.getQuantityValue());
+            ui->spiralGrowth->bind(spiral->Growth);
             ui->spiralRotation->setValue(spiral->Rotations.getQuantityValue().getValue());
             ui->spiralRadius->setValue(spiral->Radius.getQuantityValue());
+            ui->spiralRadius->bind(spiral->Radius);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeSpiral(QWidget*)));
@@ -494,8 +541,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Circle::getClassTypeId()) {
             Part::Circle* circle = static_cast<Part::Circle*>(feature);
             ui->circleRadius->setValue(circle->Radius.getQuantityValue());
+            ui->circleRadius->bind(circle->Radius);
             ui->circleAngle0->setValue(circle->Angle0.getQuantityValue());
+            ui->circleAngle0->bind(circle->Angle0);
             ui->circleAngle1->setValue(circle->Angle1.getQuantityValue());
+            ui->circleAngle1->bind(circle->Angle1);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCircle(QWidget*)));
@@ -506,9 +556,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Ellipse::getClassTypeId()) {
             Part::Ellipse* ell = static_cast<Part::Ellipse*>(feature);
             ui->ellipseMajorRadius->setValue(ell->MajorRadius.getQuantityValue());
+            ui->ellipseMajorRadius->bind(ell->MajorRadius);
             ui->ellipseMinorRadius->setValue(ell->MinorRadius.getQuantityValue());
+            ui->ellipseMinorRadius->bind(ell->MinorRadius);
             ui->ellipseAngle0->setValue(ell->Angle0.getQuantityValue());
+            ui->ellipseAngle0->bind(ell->Angle0);
             ui->ellipseAngle1->setValue(ell->Angle1.getQuantityValue());
+            ui->ellipseAngle1->bind(ell->Angle1);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeEllipse(QWidget*)));
@@ -520,8 +574,11 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Vertex::getClassTypeId()) {
             Part::Vertex* v = static_cast<Part::Vertex*>(feature);
             ui->vertexX->setValue(v->X.getQuantityValue());
+            ui->vertexX->bind(v->X);
             ui->vertexY->setValue(v->Y.getQuantityValue());
+            ui->vertexY->bind(v->Y);
             ui->vertexZ->setValue(v->Z.getQuantityValue());
+            ui->vertexZ->bind(v->Z);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeVertex(QWidget*)));
@@ -532,11 +589,17 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
         else if (type == Part::Line::getClassTypeId()) {
             Part::Line* line = static_cast<Part::Line*>(feature);
             ui->edgeX1->setValue(line->X1.getQuantityValue());
+            ui->edgeX1->bind(line->X1);
             ui->edgeY1->setValue(line->Y1.getQuantityValue());
+            ui->edgeY1->bind(line->Y1);
             ui->edgeZ1->setValue(line->Z1.getQuantityValue());
+            ui->edgeZ1->bind(line->Z1);
             ui->edgeX2->setValue(line->X2.getQuantityValue());
+            ui->edgeX2->bind(line->X2);
             ui->edgeY2->setValue(line->Y2.getQuantityValue());
+            ui->edgeY2->bind(line->Y2);
             ui->edgeZ2->setValue(line->Z2.getQuantityValue());
+            ui->edgeZ2->bind(line->Z2);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeLine(QWidget*)));
@@ -551,6 +614,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             Part::RegularPolygon* poly = static_cast<Part::RegularPolygon*>(feature);
             ui->regularPolygonPolygon->setValue(poly->Polygon.getValue());
             ui->regularPolygonCircumradius->setValue(poly->Circumradius.getQuantityValue());
+            ui->regularPolygonCircumradius->bind(poly->Circumradius);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeRegularPolygon(QWidget*)));
@@ -560,7 +624,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     }
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 DlgPrimitives::~DlgPrimitives()
@@ -641,6 +705,319 @@ void DlgPrimitives::on_buttonCircleFromThreePoints_clicked()
     executeCallback(&pp);
 }
 
+QString DlgPrimitives::createPlane(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Plane\",\"%1\")\n"
+        "App.ActiveDocument.%1.Length=%2\n"
+        "App.ActiveDocument.%1.Width=%3\n"
+        "App.ActiveDocument.%1.Placement=%4\n"
+        "App.ActiveDocument.%1.Label='%5'\n")
+        .arg(objectName)
+        .arg(ui->planeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->planeWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Plane"));
+}
+
+QString DlgPrimitives::createBox(const QString& objectName, const QString& placement) const
+{
+   return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Box\",\"%1\")\n"
+        "App.ActiveDocument.%1.Length=%2\n"
+        "App.ActiveDocument.%1.Width=%3\n"
+        "App.ActiveDocument.%1.Height=%4\n"
+        "App.ActiveDocument.%1.Placement=%5\n"
+        "App.ActiveDocument.%1.Label='%6'\n")
+        .arg(objectName)
+        .arg(ui->boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Box"));
+}
+
+QString DlgPrimitives::createCylinder(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Cylinder\",\"%1\")\n"
+        "App.ActiveDocument.%1.Radius=%2\n"
+        "App.ActiveDocument.%1.Height=%3\n"
+        "App.ActiveDocument.%1.Angle=%4\n"
+        "App.ActiveDocument.%1.Placement=%5\n"
+        "App.ActiveDocument.%1.Label='%6'\n")
+        .arg(objectName)
+        .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Cylinder"));
+}
+
+QString DlgPrimitives::createCone(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Cone\",\"%1\")\n"
+        "App.ActiveDocument.%1.Radius1=%2\n"
+        "App.ActiveDocument.%1.Radius2=%3\n"
+        "App.ActiveDocument.%1.Height=%4\n"
+        "App.ActiveDocument.%1.Angle=%5\n"
+        "App.ActiveDocument.%1.Placement=%6\n"
+        "App.ActiveDocument.%1.Label='%7'\n")
+        .arg(objectName)
+        .arg(ui->coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Cone"));
+}
+
+QString DlgPrimitives::createSphere(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Sphere\",\"%1\")\n"
+        "App.ActiveDocument.%1.Radius=%2\n"
+        "App.ActiveDocument.%1.Angle1=%3\n"
+        "App.ActiveDocument.%1.Angle2=%4\n"
+        "App.ActiveDocument.%1.Angle3=%5\n"
+        "App.ActiveDocument.%1.Placement=%6\n"
+        "App.ActiveDocument.%1.Label='%7'\n")
+        .arg(objectName)
+        .arg(ui->sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Sphere"));
+}
+
+QString DlgPrimitives::createEllipsoid(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Ellipsoid\",\"%1\")\n"
+        "App.ActiveDocument.%1.Radius1=%2\n"
+        "App.ActiveDocument.%1.Radius2=%3\n"
+        "App.ActiveDocument.%1.Radius3=%4\n"
+        "App.ActiveDocument.%1.Angle1=%5\n"
+        "App.ActiveDocument.%1.Angle2=%6\n"
+        "App.ActiveDocument.%1.Angle3=%7\n"
+        "App.ActiveDocument.%1.Placement=%8\n"
+        "App.ActiveDocument.%1.Label='%9'\n")
+        .arg(objectName)
+        .arg(ui->ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Ellipsoid"));
+}
+
+QString DlgPrimitives::createTorus(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
+        "App.ActiveDocument.%1.Radius1=%2\n"
+        "App.ActiveDocument.%1.Radius2=%3\n"
+        "App.ActiveDocument.%1.Angle1=%4\n"
+        "App.ActiveDocument.%1.Angle2=%5\n"
+        "App.ActiveDocument.%1.Angle3=%6\n"
+        "App.ActiveDocument.%1.Placement=%7\n"
+        "App.ActiveDocument.%1.Label='%8'\n")
+        .arg(objectName)
+        .arg(ui->torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Torus"));
+}
+
+QString DlgPrimitives::createPrism(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
+        "App.ActiveDocument.%1.Polygon=%2\n"
+        "App.ActiveDocument.%1.Circumradius=%3\n"
+        "App.ActiveDocument.%1.Height=%4\n"
+        "App.ActiveDocument.%1.FirstAngle=%5\n"
+        "App.ActiveDocument.%1.SecondAngle=%6\n"
+        "App.ActiveDocument.%1.Placement=%7\n"
+        "App.ActiveDocument.%1.Label='%8'\n")
+        .arg(objectName)
+        .arg(ui->prismPolygon->value())
+        .arg(ui->prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(ui->prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Prism"));
+}
+
+QString DlgPrimitives::createWedge(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Wedge\",\"%1\")\n"
+        "App.ActiveDocument.%1.Xmin=%2\n"
+        "App.ActiveDocument.%1.Ymin=%3\n"
+        "App.ActiveDocument.%1.Zmin=%4\n"
+        "App.ActiveDocument.%1.X2min=%5\n"
+        "App.ActiveDocument.%1.Z2min=%6\n"
+        "App.ActiveDocument.%1.Xmax=%7\n"
+        "App.ActiveDocument.%1.Ymax=%8\n"
+        "App.ActiveDocument.%1.Zmax=%9\n"
+        "App.ActiveDocument.%1.X2max=%10\n"
+        "App.ActiveDocument.%1.Z2max=%11\n"
+        "App.ActiveDocument.%1.Placement=%12\n"
+        "App.ActiveDocument.%1.Label='%13'\n")
+        .arg(objectName)
+        .arg(ui->wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Wedge"));
+}
+
+QString DlgPrimitives::createHelix(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Helix\",\"%1\")\n"
+        "App.ActiveDocument.%1.Pitch=%2\n"
+        "App.ActiveDocument.%1.Height=%3\n"
+        "App.ActiveDocument.%1.Radius=%4\n"
+        "App.ActiveDocument.%1.Angle=%5\n"
+        "App.ActiveDocument.%1.LocalCoord=%6\n"
+        "App.ActiveDocument.%1.Style=1\n"
+        "App.ActiveDocument.%1.Placement=%7\n"
+        "App.ActiveDocument.%1.Label='%8'\n")
+        .arg(objectName)
+        .arg(ui->helixPitch->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->helixHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->helixRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->helixAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->helixLocalCS->currentIndex())
+        .arg(placement)
+        .arg(tr("Helix"));
+}
+
+QString DlgPrimitives::createSpiral(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Spiral\",\"%1\")\n"
+        "App.ActiveDocument.%1.Growth=%2\n"
+        "App.ActiveDocument.%1.Rotations=%3\n"
+        "App.ActiveDocument.%1.Radius=%4\n"
+        "App.ActiveDocument.%1.Placement=%5\n"
+        "App.ActiveDocument.%1.Label='%6'\n")
+        .arg(objectName)
+        .arg(ui->spiralGrowth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->spiralRotation->value(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->spiralRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Spiral"));
+}
+
+QString DlgPrimitives::createCircle(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
+        "App.ActiveDocument.%1.Radius=%2\n"
+        "App.ActiveDocument.%1.Angle0=%3\n"
+        "App.ActiveDocument.%1.Angle1=%4\n"
+        "App.ActiveDocument.%1.Placement=%5\n"
+        "App.ActiveDocument.%1.Label='%6'\n")
+        .arg(objectName)
+        .arg(ui->circleRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->circleAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->circleAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Circle"));
+}
+
+QString DlgPrimitives::createEllipse(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
+        "App.ActiveDocument.%1.MajorRadius=%2\n"
+        "App.ActiveDocument.%1.MinorRadius=%3\n"
+        "App.ActiveDocument.%1.Angle0=%4\n"
+        "App.ActiveDocument.%1.Angle1=%5\n"
+        "App.ActiveDocument.%1.Placement=%6\n"
+        "App.ActiveDocument.%1.Label='%7'\n")
+        .arg(objectName)
+        .arg(ui->ellipseMajorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipseMinorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipseAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipseAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Ellipse"));
+}
+
+QString DlgPrimitives::createVertex(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
+        "App.ActiveDocument.%1.X=%2\n"
+        "App.ActiveDocument.%1.Y=%3\n"
+        "App.ActiveDocument.%1.Z=%4\n"
+        "App.ActiveDocument.%1.Placement=%5\n"
+        "App.ActiveDocument.%1.Label='%6'\n")
+        .arg(objectName)
+        .arg(ui->vertexX->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->vertexY->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->vertexZ->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Vertex"));
+}
+
+QString DlgPrimitives::createLine(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
+        "App.ActiveDocument.%1.X1=%2\n"
+        "App.ActiveDocument.%1.Y1=%3\n"
+        "App.ActiveDocument.%1.Z1=%4\n"
+        "App.ActiveDocument.%1.X2=%5\n"
+        "App.ActiveDocument.%1.Y2=%6\n"
+        "App.ActiveDocument.%1.Z2=%7\n"
+        "App.ActiveDocument.%1.Placement=%8\n"
+        "App.ActiveDocument.%1.Label='%9'\n")
+        .arg(objectName)
+        .arg(ui->edgeX1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeY1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeZ1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeX2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeY2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeZ2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Line"));
+}
+
+QString DlgPrimitives::createRegularPolygon(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
+        "App.ActiveDocument.%1.Polygon=%2\n"
+        "App.ActiveDocument.%1.Circumradius=%3\n"
+        "App.ActiveDocument.%1.Placement=%4\n"
+        "App.ActiveDocument.%1.Label='%5'\n")
+        .arg(objectName)
+        .arg(ui->regularPolygonPolygon->value())
+        .arg(ui->regularPolygonCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement)
+        .arg(tr("Regular polygon"));
+}
+
 void DlgPrimitives::createPrimitive(const QString& placement)
 {
     try {
@@ -653,300 +1030,67 @@ void DlgPrimitives::createPrimitive(const QString& placement)
         }
         if (ui->PrimitiveTypeCB->currentIndex() == 0) {         // plane
             name = QString::fromLatin1(doc->getUniqueObjectName("Plane").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Plane\",\"%1\")\n"
-                "App.ActiveDocument.%1.Length=%2\n"
-                "App.ActiveDocument.%1.Width=%3\n"
-                "App.ActiveDocument.%1.Placement=%4\n"
-                "App.ActiveDocument.%1.Label='%5'\n")
-                .arg(name)
-                .arg(ui->planeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->planeWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Plane"));
+            cmd = createPlane(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 1) {         // box
             name = QString::fromLatin1(doc->getUniqueObjectName("Box").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Box\",\"%1\")\n"
-                "App.ActiveDocument.%1.Length=%2\n"
-                "App.ActiveDocument.%1.Width=%3\n"
-                "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui->boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Box"));
+            cmd = createBox(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 2) {  // cylinder
             name = QString::fromLatin1(doc->getUniqueObjectName("Cylinder").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Cylinder\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius=%2\n"
-                "App.ActiveDocument.%1.Height=%3\n"
-                "App.ActiveDocument.%1.Angle=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Cylinder"));
+            cmd = createCylinder(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 3) {  // cone
             name = QString::fromLatin1(doc->getUniqueObjectName("Cone").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Cone\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius1=%2\n"
-                "App.ActiveDocument.%1.Radius2=%3\n"
-                "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Angle=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n"
-                "App.ActiveDocument.%1.Label='%7'\n")
-                .arg(name)
-                .arg(ui->coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Cone"));
+            cmd = createCone(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 4) {  // sphere
             name = QString::fromLatin1(doc->getUniqueObjectName("Sphere").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Sphere\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius=%2\n"
-                "App.ActiveDocument.%1.Angle1=%3\n"
-                "App.ActiveDocument.%1.Angle2=%4\n"
-                "App.ActiveDocument.%1.Angle3=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n"
-                "App.ActiveDocument.%1.Label='%7'\n")
-                .arg(name)
-                .arg(ui->sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Sphere"));
+            cmd = createSphere(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 5) {  // ellipsoid
             name = QString::fromLatin1(doc->getUniqueObjectName("Ellipsoid").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Ellipsoid\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius1=%2\n"
-                "App.ActiveDocument.%1.Radius2=%3\n"
-                "App.ActiveDocument.%1.Radius3=%4\n"
-                "App.ActiveDocument.%1.Angle1=%5\n"
-                "App.ActiveDocument.%1.Angle2=%6\n"
-                "App.ActiveDocument.%1.Angle3=%7\n"
-                "App.ActiveDocument.%1.Placement=%8\n"
-                "App.ActiveDocument.%1.Label='%9'\n")
-                .arg(name)
-                .arg(ui->ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Ellipsoid"));
+            cmd = createEllipsoid(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 6) {  // torus
             name = QString::fromLatin1(doc->getUniqueObjectName("Torus").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius1=%2\n"
-                "App.ActiveDocument.%1.Radius2=%3\n"
-                "App.ActiveDocument.%1.Angle1=%4\n"
-                "App.ActiveDocument.%1.Angle2=%5\n"
-                "App.ActiveDocument.%1.Angle3=%6\n"
-                "App.ActiveDocument.%1.Placement=%7\n"
-                "App.ActiveDocument.%1.Label='%8'\n")
-                .arg(name)
-                .arg(ui->torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Torus"));
+            cmd = createTorus(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 7) {  // prism
             name = QString::fromLatin1(doc->getUniqueObjectName("Prism").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
-                "App.ActiveDocument.%1.Polygon=%2\n"
-                "App.ActiveDocument.%1.Circumradius=%3\n"
-                "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.FirstAngle=%5\n"
-                "App.ActiveDocument.%1.SecondAngle=%6\n"
-                "App.ActiveDocument.%1.Placement=%7\n"
-                "App.ActiveDocument.%1.Label='%8'\n")
-                .arg(name)
-                .arg(ui->prismPolygon->value())
-                .arg(ui->prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-                .arg(ui->prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Prism"));
+            cmd = createPrism(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 8) {  // wedge
             name = QString::fromLatin1(doc->getUniqueObjectName("Wedge").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Wedge\",\"%1\")\n"
-                "App.ActiveDocument.%1.Xmin=%2\n"
-                "App.ActiveDocument.%1.Ymin=%3\n"
-                "App.ActiveDocument.%1.Zmin=%4\n"
-                "App.ActiveDocument.%1.X2min=%5\n"
-                "App.ActiveDocument.%1.Z2min=%6\n"
-                "App.ActiveDocument.%1.Xmax=%7\n"
-                "App.ActiveDocument.%1.Ymax=%8\n"
-                "App.ActiveDocument.%1.Zmax=%9\n"
-                "App.ActiveDocument.%1.X2max=%10\n"
-                "App.ActiveDocument.%1.Z2max=%11\n"
-                "App.ActiveDocument.%1.Placement=%12\n"
-                "App.ActiveDocument.%1.Label='%13'\n")
-                .arg(name)
-                .arg(ui->wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Wedge"));
+            cmd = createWedge(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 9) {  // helix
             name = QString::fromLatin1(doc->getUniqueObjectName("Helix").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Helix\",\"%1\")\n"
-                "App.ActiveDocument.%1.Pitch=%2\n"
-                "App.ActiveDocument.%1.Height=%3\n"
-                "App.ActiveDocument.%1.Radius=%4\n"
-                "App.ActiveDocument.%1.Angle=%5\n"
-                "App.ActiveDocument.%1.LocalCoord=%6\n"
-                "App.ActiveDocument.%1.Style=1\n"
-                "App.ActiveDocument.%1.Placement=%7\n"
-                "App.ActiveDocument.%1.Label='%8'\n")
-                .arg(name)
-                .arg(ui->helixPitch->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->helixHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->helixRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->helixAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->helixLocalCS->currentIndex())
-                .arg(placement)
-                .arg(tr("Helix"));
+            cmd = createHelix(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 10) {  // spiral
             name = QString::fromLatin1(doc->getUniqueObjectName("Spiral").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Spiral\",\"%1\")\n"
-                "App.ActiveDocument.%1.Growth=%2\n"
-                "App.ActiveDocument.%1.Rotations=%3\n"
-                "App.ActiveDocument.%1.Radius=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui->spiralGrowth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->spiralRotation->value(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->spiralRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Spiral"));
+            cmd = createSpiral(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 11) {  // circle
             name = QString::fromLatin1(doc->getUniqueObjectName("Circle").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius=%2\n"
-                "App.ActiveDocument.%1.Angle0=%3\n"
-                "App.ActiveDocument.%1.Angle1=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui->circleRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->circleAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->circleAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Circle"));
+            cmd = createCircle(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 12) {  // ellipse
             name = QString::fromLatin1(doc->getUniqueObjectName("Ellipse").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
-                "App.ActiveDocument.%1.MajorRadius=%2\n"
-                "App.ActiveDocument.%1.MinorRadius=%3\n"
-                "App.ActiveDocument.%1.Angle0=%4\n"
-                "App.ActiveDocument.%1.Angle1=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n"
-                "App.ActiveDocument.%1.Label='%7'\n")
-                .arg(name)
-                .arg(ui->ellipseMajorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipseMinorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipseAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->ellipseAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Ellipse"));
+            cmd = createEllipse(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 13) {  // vertex
             name = QString::fromLatin1(doc->getUniqueObjectName("Vertex").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
-                "App.ActiveDocument.%1.X=%2\n"
-                "App.ActiveDocument.%1.Y=%3\n"
-                "App.ActiveDocument.%1.Z=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui->vertexX->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->vertexY->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->vertexZ->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Vertex"));
+            cmd = createVertex(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 14) {  // line
             name = QString::fromLatin1(doc->getUniqueObjectName("Line").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
-                "App.ActiveDocument.%1.X1=%2\n"
-                "App.ActiveDocument.%1.Y1=%3\n"
-                "App.ActiveDocument.%1.Z1=%4\n"
-                "App.ActiveDocument.%1.X2=%5\n"
-                "App.ActiveDocument.%1.Y2=%6\n"
-                "App.ActiveDocument.%1.Z2=%7\n"
-                "App.ActiveDocument.%1.Placement=%8\n"
-                "App.ActiveDocument.%1.Label='%9'\n")
-                .arg(name)
-                .arg(ui->edgeX1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->edgeY1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->edgeZ1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->edgeX2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->edgeY2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(ui->edgeZ2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Line"));
+            cmd = createLine(name, placement);
         }
         else if (ui->PrimitiveTypeCB->currentIndex() == 15) {  // RegularPolygon
             name = QString::fromLatin1(doc->getUniqueObjectName("RegularPolygon").c_str());
-            cmd = QString::fromLatin1(
-                "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
-                "App.ActiveDocument.%1.Polygon=%2\n"
-                "App.ActiveDocument.%1.Circumradius=%3\n"
-                "App.ActiveDocument.%1.Placement=%4\n"
-                "App.ActiveDocument.%1.Label='%5'\n")
-                .arg(name)
-                .arg(ui->regularPolygonPolygon->value())
-                .arg(ui->regularPolygonCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                .arg(placement)
-                .arg(tr("Regular polygon"));
+            cmd = createRegularPolygon(name, placement);
         }
 
         // Execute the Python block
@@ -963,6 +1107,270 @@ void DlgPrimitives::createPrimitive(const QString& placement)
     }
 }
 
+QString DlgPrimitives::changePlane(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Length=%2\n"
+        "%1.Width=%3\n"
+        "%1.Placement=%4\n")
+        .arg(objectName)
+        .arg(ui->planeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->planeWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeBox(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Length=%2\n"
+        "%1.Width=%3\n"
+        "%1.Height=%4\n"
+        "%1.Placement=%5\n")
+        .arg(objectName)
+        .arg(ui->boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeCylinder(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Radius=%2\n"
+        "%1.Height=%3\n"
+        "%1.Angle=%4\n"
+        "%1.Placement=%5\n")
+        .arg(objectName)
+        .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeCone(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Radius1=%2\n"
+        "%1.Radius2=%3\n"
+        "%1.Height=%4\n"
+        "%1.Angle=%5\n"
+        "%1.Placement=%6\n")
+        .arg(objectName)
+        .arg(ui->coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeSphere(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Radius=%2\n"
+        "%1.Angle1=%3\n"
+        "%1.Angle2=%4\n"
+        "%1.Angle3=%5\n"
+        "%1.Placement=%6\n")
+        .arg(objectName)
+        .arg(ui->sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeEllipsoid(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Radius1=%2\n"
+        "%1.Radius2=%3\n"
+        "%1.Radius3=%4\n"
+        "%1.Angle1=%5\n"
+        "%1.Angle2=%6\n"
+        "%1.Angle3=%7\n"
+        "%1.Placement=%8\n")
+        .arg(objectName)
+        .arg(ui->ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeTorus(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Radius1=%2\n"
+        "%1.Radius2=%3\n"
+        "%1.Angle1=%4\n"
+        "%1.Angle2=%5\n"
+        "%1.Angle3=%6\n"
+        "%1.Placement=%7\n")
+        .arg(objectName)
+        .arg(ui->torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changePrism(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Polygon=%2\n"
+        "%1.Circumradius=%3\n"
+        "%1.Height=%4\n"
+        "%1.FirstAngle=%5\n"
+        "%1.SecondAngle=%6\n"
+        "%1.Placement=%7\n")
+        .arg(objectName)
+        .arg(ui->prismPolygon->value())
+        .arg(ui->prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(ui->prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeWedge(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Xmin=%2\n"
+        "%1.Ymin=%3\n"
+        "%1.Zmin=%4\n"
+        "%1.X2min=%5\n"
+        "%1.Z2min=%6\n"
+        "%1.Xmax=%7\n"
+        "%1.Ymax=%8\n"
+        "%1.Zmax=%9\n"
+        "%1.X2max=%10\n"
+        "%1.Z2max=%11\n"
+        "%1.Placement=%12\n")
+        .arg(objectName)
+        .arg(ui->wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeHelix(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Pitch=%2\n"
+        "%1.Height=%3\n"
+        "%1.Radius=%4\n"
+        "%1.Angle=%5\n"
+        "%1.LocalCoord=%6\n"
+        "%1.Placement=%7\n")
+        .arg(objectName)
+        .arg(ui->helixPitch->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(ui->helixHeight->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(ui->helixRadius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(ui->helixAngle->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
+        .arg(ui->helixLocalCS->currentIndex())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeSpiral(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Growth=%2\n"
+        "%1.Rotations=%3\n"
+        "%1.Radius=%4\n"
+        "%1.Placement=%5\n")
+        .arg(objectName)
+        .arg(ui->spiralGrowth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->spiralRotation->value(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->spiralRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeCircle(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Radius=%2\n"
+        "%1.Angle0=%3\n"
+        "%1.Angle1=%4\n"
+        "%1.Placement=%5\n")
+        .arg(objectName)
+        .arg(ui->circleRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->circleAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->circleAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeEllipse(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.MajorRadius=%2\n"
+        "%1.MinorRadius=%3\n"
+        "%1.Angle0=%4\n"
+        "%1.Angle1=%5\n"
+        "%1.Placement=%6\n")
+        .arg(objectName)
+        .arg(ui->ellipseMajorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipseMinorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipseAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->ellipseAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeVertex(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.X=%2\n"
+        "%1.Y=%3\n"
+        "%1.Z=%4\n"
+        "%1.Placement=%5\n")
+        .arg(objectName)
+        .arg(ui->vertexX->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->vertexY->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->vertexZ->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeLine(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.X1=%2\n"
+        "%1.Y1=%3\n"
+        "%1.Z1=%4\n"
+        "%1.X2=%5\n"
+        "%1.Y2=%6\n"
+        "%1.Z2=%7\n"
+        "%1.Placement=%8\n")
+        .arg(objectName)
+        .arg(ui->edgeX1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeY1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeZ1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeX2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeY2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->edgeZ2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
+QString DlgPrimitives::changeRegularPolygon(const QString& objectName, const QString& placement) const
+{
+    return QString::fromLatin1(
+        "%1.Polygon=%2\n"
+        "%1.Circumradius=%3\n"
+        "%1.Placement=%4\n")
+        .arg(objectName)
+        .arg(ui->regularPolygonPolygon->value())
+        .arg(ui->regularPolygonCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(placement);
+}
+
 void DlgPrimitives::accept(const QString& placement)
 {
     if (featurePtr.expired())
@@ -976,236 +1384,52 @@ void DlgPrimitives::accept(const QString& placement)
 
     // read values from the properties
     if (type == Part::Plane::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Length=%2\n"
-            "%1.Width=%3\n"
-            "%1.Placement=%4\n")
-            .arg(objectName)
-            .arg(ui->planeLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->planeWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changePlane(objectName, placement);
     }
     else if (type == Part::Box::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Length=%2\n"
-            "%1.Width=%3\n"
-            "%1.Height=%4\n"
-            "%1.Placement=%5\n")
-            .arg(objectName)
-            .arg(ui->boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeBox(objectName, placement);
     }
     else if (type == Part::Cylinder::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Radius=%2\n"
-            "%1.Height=%3\n"
-            "%1.Angle=%4\n"
-            "%1.Placement=%5\n")
-            .arg(objectName)
-            .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeCylinder(objectName, placement);
     }
     else if (type == Part::Cone::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Radius1=%2\n"
-            "%1.Radius2=%3\n"
-            "%1.Height=%4\n"
-            "%1.Angle=%5\n"
-            "%1.Placement=%6\n")
-            .arg(objectName)
-            .arg(ui->coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeCone(objectName, placement);
     }
     else if (type == Part::Sphere::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Radius=%2\n"
-            "%1.Angle1=%3\n"
-            "%1.Angle2=%4\n"
-            "%1.Angle3=%5\n"
-            "%1.Placement=%6\n")
-            .arg(objectName)
-            .arg(ui->sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeSphere(objectName, placement);
     }
     else if (type == Part::Ellipsoid::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Radius1=%2\n"
-            "%1.Radius2=%3\n"
-            "%1.Radius3=%4\n"
-            "%1.Angle1=%5\n"
-            "%1.Angle2=%6\n"
-            "%1.Angle3=%7\n"
-            "%1.Placement=%8\n")
-            .arg(objectName)
-            .arg(ui->ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeEllipsoid(objectName, placement);
     }
     else if (type == Part::Torus::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Radius1=%2\n"
-            "%1.Radius2=%3\n"
-            "%1.Angle1=%4\n"
-            "%1.Angle2=%5\n"
-            "%1.Angle3=%6\n"
-            "%1.Placement=%7\n")
-            .arg(objectName)
-            .arg(ui->torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeTorus(objectName, placement);
     }
     else if (type == Part::Prism::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Polygon=%2\n"
-            "%1.Circumradius=%3\n"
-            "%1.Height=%4\n"
-            "%1.FirstAngle=%5\n"
-            "%1.SecondAngle=%6\n"
-            "%1.Placement=%7\n")
-            .arg(objectName)
-            .arg(ui->prismPolygon->value())
-            .arg(ui->prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-            .arg(ui->prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changePrism(objectName, placement);
     }
     else if (type == Part::Wedge::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Xmin=%2\n"
-            "%1.Ymin=%3\n"
-            "%1.Zmin=%4\n"
-            "%1.X2min=%5\n"
-            "%1.Z2min=%6\n"
-            "%1.Xmax=%7\n"
-            "%1.Ymax=%8\n"
-            "%1.Zmax=%9\n"
-            "%1.X2max=%10\n"
-            "%1.Z2max=%11\n"
-            "%1.Placement=%12\n")
-            .arg(objectName)
-            .arg(ui->wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeWedge(objectName, placement);
     }
     else if (type == Part::Helix::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Pitch=%2\n"
-            "%1.Height=%3\n"
-            "%1.Radius=%4\n"
-            "%1.Angle=%5\n"
-            "%1.LocalCoord=%6\n"
-            "%1.Placement=%7\n")
-            .arg(objectName)
-            .arg(ui->helixPitch->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-            .arg(ui->helixHeight->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-            .arg(ui->helixRadius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-            .arg(ui->helixAngle->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-            .arg(ui->helixLocalCS->currentIndex())
-            .arg(placement);
+        command = changeHelix(objectName, placement);
     }
     else if (type == Part::Spiral::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Growth=%2\n"
-            "%1.Rotations=%3\n"
-            "%1.Radius=%4\n"
-            "%1.Placement=%5\n")
-            .arg(objectName)
-            .arg(ui->spiralGrowth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->spiralRotation->value(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->spiralRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeSpiral(objectName, placement);
     }
     else if (type == Part::Circle::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Radius=%2\n"
-            "%1.Angle0=%3\n"
-            "%1.Angle1=%4\n"
-            "%1.Placement=%5\n")
-            .arg(objectName)
-            .arg(ui->circleRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->circleAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->circleAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeCircle(objectName, placement);
     }
     else if (type == Part::Ellipse::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.MajorRadius=%2\n"
-            "%1.MinorRadius=%3\n"
-            "%1.Angle0=%4\n"
-            "%1.Angle1=%5\n"
-            "%1.Placement=%6\n")
-            .arg(objectName)
-            .arg(ui->ellipseMajorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->ellipseMinorRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->ellipseAngle0->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->ellipseAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeEllipse(objectName, placement);
     }
     else if (type == Part::Vertex::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.X=%2\n"
-            "%1.Y=%3\n"
-            "%1.Z=%4\n"
-            "%1.Placement=%5\n")
-            .arg(objectName)
-            .arg(ui->vertexX->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->vertexY->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->vertexZ->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeVertex(objectName, placement);
     }
     else if (type == Part::Line::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.X1=%2\n"
-            "%1.Y1=%3\n"
-            "%1.Z1=%4\n"
-            "%1.X2=%5\n"
-            "%1.Y2=%6\n"
-            "%1.Z2=%7\n"
-            "%1.Placement=%8\n")
-            .arg(objectName)
-            .arg(ui->edgeX1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->edgeY1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->edgeZ1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->edgeX2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->edgeY2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(ui->edgeZ2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeLine(objectName, placement);
     }
     else if (type == Part::RegularPolygon::getClassTypeId()) {
-        command = QString::fromLatin1(
-            "%1.Polygon=%2\n"
-            "%1.Circumradius=%3\n"
-            "%1.Placement=%4\n")
-            .arg(objectName)
-            .arg(ui->regularPolygonPolygon->value())
-            .arg(ui->regularPolygonCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-            .arg(placement);
+        command = changeRegularPolygon(objectName, placement);
     }
 
     // execute command, a transaction is already opened
@@ -1608,6 +1832,14 @@ Location::Location(QWidget* parent, Part::Feature* feature)
         // the angle is rad, transform it for display to degrees
         ui->AngleQSB->setValue(Base::toDegrees<double>(rotationAngle));
 
+        ui->XPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.x")));
+        ui->YPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.y")));
+        ui->ZPositionQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Base.z")));
+        ui->XDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.x")));
+        ui->YDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.y")));
+        ui->ZDirectionEdit->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Axis.z")));
+        ui->AngleQSB->bind(App::ObjectIdentifier::parse(feature, std::string("Placement.Rotation.Angle")));
+
         //connect signals
         connect(ui->XPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
         connect(ui->YPositionQSB, SIGNAL(valueChanged(double)), this,  SLOT(onChangePosRot()));
@@ -1777,7 +2009,7 @@ TaskPrimitives::~TaskPrimitives()
 }
 
 QDialogButtonBox::StandardButtons TaskPrimitives::getStandardButtons() const
-{ 
+{
     return QDialogButtonBox::Close|
            QDialogButtonBox::Ok;
 }

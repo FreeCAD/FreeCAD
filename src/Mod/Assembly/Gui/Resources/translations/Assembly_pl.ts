@@ -212,7 +212,7 @@
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Import one or more files and create a assembly structure.</source>
-      <translation>Importuj jeden lub więcej plików i stwórz strukturę złożenia.</translation>
+      <translation>Importuj jeden lub więcej plików i stwórz złożenie.</translation>
     </message>
   </context>
   <context>
@@ -243,7 +243,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="71"/>
       <source>You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click).</source>
-      <translation>Potrzebujesz aktywnego (niebieskiego) Złożenia aby wstawić Wiązanie. Proszę stwórz nowe lub uaktywnij istniejące (podwójne kliknięcie).</translation>
+      <translation>Potrzebujesz aktywnego (niebieskiego) złożenia aby wstawić wiązanie. Proszę stwórz nowe lub uaktywnij istniejące (podwójne kliknięcie).</translation>
     </message>
   </context>
   <context>

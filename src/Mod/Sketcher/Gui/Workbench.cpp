@@ -38,6 +38,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");
     qApp->translate("Workbench", "Sketcher tools");
+    qApp->translate("Workbench", "Sketcher B-spline tools");
     qApp->translate("Workbench", "Sketcher virtual space");
 #endif
 
@@ -385,25 +386,25 @@ template <>
 inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
 {
     bspline << "Sketcher_BSplineDegree"
-        << "Sketcher_BSplinePolygon"
-        << "Sketcher_BSplineComb"
-        << "Sketcher_BSplineKnotMultiplicity"
-        << "Sketcher_BSplinePoleWeight"
-        << "Sketcher_BSplineConvertToNURB"
-        << "Sketcher_BSplineIncreaseDegree"
-        << "Sketcher_BSplineDecreaseDegree"
-        << "Sketcher_BSplineIncreaseKnotMultiplicity"
-        << "Sketcher_BSplineDecreaseKnotMultiplicity";
+            << "Sketcher_BSplinePolygon"
+            << "Sketcher_BSplineComb"
+            << "Sketcher_BSplineKnotMultiplicity"
+            << "Sketcher_BSplinePoleWeight"
+            << "Sketcher_BSplineConvertToNURB"
+            << "Sketcher_BSplineIncreaseDegree"
+            << "Sketcher_BSplineDecreaseDegree"
+            << "Sketcher_BSplineIncreaseKnotMultiplicity"
+            << "Sketcher_BSplineDecreaseKnotMultiplicity";
 }
 
 template <>
 inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline)
 {
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
-    << "Sketcher_BSplineConvertToNURB"
-    << "Sketcher_BSplineIncreaseDegree"
-    << "Sketcher_BSplineDecreaseDegree"
-    << "Sketcher_CompModifyKnotMultiplicity";
+            << "Sketcher_BSplineConvertToNURB"
+            << "Sketcher_BSplineIncreaseDegree"
+            << "Sketcher_BSplineDecreaseDegree"
+            << "Sketcher_CompModifyKnotMultiplicity";
 }
 
 template <typename T>

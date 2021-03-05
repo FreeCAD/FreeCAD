@@ -22,13 +22,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD result mechanical task panel"
+__title__ = "FreeCAD result mechanical task panel"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package view_result_mechanical
 #  \ingroup FEM
 #  \brief task panel for mechanical ResultObjectPython
+
+try:
+    import matplotlib
+    matplotlib.use("Qt5Agg")
+except Exception:
+    print("Failed to set matplotlib backend to Qt5Agg")
 
 import matplotlib.pyplot as plt
 import numpy as np

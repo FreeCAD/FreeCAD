@@ -623,6 +623,29 @@ const PropertyIntegerConstraint::Constraints*  PropertyIntegerConstraint::getCon
     return _ConstStruct;
 }
 
+long PropertyIntegerConstraint::getMinimum() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->LowerBound;
+    // return the min of int, not long
+    return std::numeric_limits<int>::min();
+}
+
+long PropertyIntegerConstraint::getMaximum() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->UpperBound;
+    // return the max of int, not long
+    return std::numeric_limits<int>::max();
+}
+
+long PropertyIntegerConstraint::getStepSize() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->StepSize;
+    return 1;
+}
+
 void PropertyIntegerConstraint::setPyObject(PyObject *value)
 {
 #if PY_MAJOR_VERSION < 3
@@ -1100,6 +1123,27 @@ void PropertyFloatConstraint::setConstraints(const Constraints* sConstrain)
 const PropertyFloatConstraint::Constraints*  PropertyFloatConstraint::getConstraints(void) const
 {
     return _ConstStruct;
+}
+
+double PropertyFloatConstraint::getMinimum() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->LowerBound;
+    return std::numeric_limits<double>::min();
+}
+
+double PropertyFloatConstraint::getMaximum() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->UpperBound;
+    return std::numeric_limits<double>::max();
+}
+
+double PropertyFloatConstraint::getStepSize() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->StepSize;
+    return 1.0;
 }
 
 void PropertyFloatConstraint::setPyObject(PyObject *value)
@@ -1921,6 +1965,7 @@ PyObject *PropertyMap::getPyObject(void)
             throw Base::UnicodeError("UTF8 conversion failure at PropertyMap::getPyObject()");
         }
         PyDict_SetItemString(dict,it->first.c_str(),item);
+        Py_DECREF(item);
     }
 
     return dict;

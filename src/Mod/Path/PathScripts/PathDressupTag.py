@@ -224,7 +224,7 @@ class ObjectDressup:
     def toolRadius(self):
         return float(PathDressup.toolController(self.obj.Base).Tool.Diameter) / 2.0
 
-    def addTagsToDocuemnt(self):
+    def addTagsToDocument(self):
         for i, solid in enumerate(self.solids):
             obj = FreeCAD.ActiveDocument.addObject('Part::Compound', "tag_%02d" % i)
             obj.Shape = solid
@@ -256,7 +256,7 @@ def Create(baseObject, name='DressupTag'):
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     dbo = ObjectDressup(obj, baseObject)
     job = PathUtils.findParentJob(baseObject)
-    job.adddOperation(obj)
+    job.addOperation(obj)
     dbo.assignDefaultValues()
     return obj
 

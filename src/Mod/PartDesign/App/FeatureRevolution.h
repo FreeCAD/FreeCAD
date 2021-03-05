@@ -68,6 +68,8 @@ public:
 protected:
     /// updates Axis from ReferenceAxis
     void updateAxis(void);
+
+    static const App::PropertyAngle::Constraints floatAngle;
 };
 
 } //namespace PartDesign

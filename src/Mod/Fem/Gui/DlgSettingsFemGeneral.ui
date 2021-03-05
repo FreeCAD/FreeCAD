@@ -195,7 +195,7 @@
              </widget>
             </item>
             <item>
-             <widget class="Gui::PrefFileChooser" name="le_wd_custom" native="true">
+             <widget class="Gui::PrefFileChooser" name="le_wd_custom">
               <property name="enabled">
                <bool>true</bool>
               </property>

@@ -71,6 +71,9 @@ TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) co
         try {
             Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
             TopoDS_Shape resShape = mkRefine.Shape();
+            if (!TopoShape(resShape).isClosed()) {
+                return oldShape;
+            }
             return resShape;
         }
         catch (Standard_Failure&) {

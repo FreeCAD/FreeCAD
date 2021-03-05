@@ -32,7 +32,7 @@ import draftmake.make_array as make_array
 import draftutils.utils as utils
 
 from draftutils.messages import _msg, _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 
 def make_circular_array(base_object,
@@ -119,7 +119,7 @@ def make_circular_array(base_object,
     make_ortho_array, make_polar_array, make_path_array, make_point_array
     """
     _name = "make_circular_array"
-    utils.print_header(_name, _tr("Circular array"))
+    utils.print_header(_name, translate("draft","Circular array"))
 
     if isinstance(base_object, str):
         base_object_str = base_object
@@ -128,7 +128,7 @@ def make_circular_array(base_object,
                                            doc=App.activeDocument())
     if not found:
         _msg("base_object: {}".format(base_object_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: object not in document."))
         return None
 
     _msg("base_object: {}".format(base_object.Label))
@@ -141,7 +141,7 @@ def make_circular_array(base_object,
                           (tan_distance, (int, float, App.Units.Quantity))],
                          name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a number or quantity."))
+        _err(translate("draft","Wrong input: must be a number or quantity."))
         return None
 
     _msg("number: {}".format(number))
@@ -151,7 +151,7 @@ def make_circular_array(base_object,
         utils.type_check([(number, int),
                           (symmetry, int)], name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be an integer number."))
+        _err(translate("draft","Wrong input: must be an integer number."))
         return None
 
     _msg("axis: {}".format(axis))
@@ -161,7 +161,7 @@ def make_circular_array(base_object,
         utils.type_check([(axis, App.Vector),
                           (center, App.Vector)], name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a vector."))
+        _err(translate("draft","Wrong input: must be a vector."))
         return None
 
     use_link = bool(use_link)

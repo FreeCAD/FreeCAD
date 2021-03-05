@@ -450,7 +450,6 @@ Application::Application(bool GUIenabled)
 
         // PySide additions
         PySideUicModule* pySide = new PySideUicModule();
-        Py_INCREF(pySide->module().ptr());
         PyModule_AddObject(module, "PySideUic", pySide->module().ptr());
 
         ExpressionBindingPy::init_type();
@@ -709,7 +708,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                         if (view) {
                             const char* ret = nullptr;
                             if (view->onMsg("ViewFit", &ret))
-                                getMainWindow()->updateActions(true);
+                                updateActions(true);
                         }
                     }
                 }
@@ -927,7 +926,7 @@ void Application::slotActiveDocument(const App::Document& Doc)
             }
         }
         signalActiveDocument(*doc->second);
-        getMainWindow()->updateActions();
+        updateActions();
     }
 }
 
@@ -944,7 +943,7 @@ void Application::slotDeletedObject(const ViewProvider& vp)
 void Application::slotChangedObject(const ViewProvider& vp, const App::Property& prop)
 {
     this->signalChangedObject(vp,prop);
-    getMainWindow()->updateActions(true);
+    updateActions(true);
 }
 
 void Application::slotRelabelObject(const ViewProvider& vp)
@@ -955,7 +954,7 @@ void Application::slotRelabelObject(const ViewProvider& vp)
 void Application::slotActivatedObject(const ViewProvider& vp)
 {
     this->signalActivatedObject(vp);
-    getMainWindow()->updateActions();
+    updateActions();
 }
 
 void Application::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
@@ -970,8 +969,8 @@ void Application::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
 
 void Application::onLastWindowClosed(Gui::Document* pcDoc)
 {
-    if (!d->isClosing && pcDoc) {
-        try {
+    try {
+        if (!d->isClosing && pcDoc) {
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last open document.
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
             if (!d->activeDocument && d->documents.size()) {
@@ -996,13 +995,20 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
                 }
             }
         }
-        catch (const Base::Exception& e) {
-            e.ReportException();
-        }
-        catch (const Py::Exception&) {
-            Base::PyException e;
-            e.ReportException();
-        }
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("Unhandled std::exception caught in Application::onLastWindowClosed.\n"
+                              "The error message is: %s\n", e.what());
+    }
+    catch (...) {
+        Base::Console().Error("Unhandled unknown exception caught in Application::onLastWindowClosed.\n");
     }
 }
 
@@ -1011,7 +1017,7 @@ bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     bool res = pView ? pView->onMsg(pMsg,ppReturn) : false;
-    getMainWindow()->updateActions(true);
+    updateActions(true);
     return res;
 }
 
@@ -1030,7 +1036,7 @@ bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
     for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
         if(focus == pView) {
             bool res = pView->onMsg(pMsg,ppReturn);
-            getMainWindow()->updateActions(true);
+            updateActions(true);
             return res;
         }
     }
@@ -1104,7 +1110,7 @@ void Application::setEditDocument(Gui::Document *doc) {
     for(auto &v : d->documents)
         v.second->_resetEdit();
     d->editDocument = doc;
-    getMainWindow()->updateActions();
+    updateActions();
 }
 
 void Application::setActiveDocument(Gui::Document* pcDocument)
@@ -1112,7 +1118,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     if (d->activeDocument == pcDocument)
         return; // nothing needs to be done
 
-    getMainWindow()->updateActions();
+    updateActions();
 
     if (pcDocument) {
         // This happens if a document with more than one view is about being
@@ -1262,6 +1268,11 @@ void Application::viewActivated(MDIView* pcView)
 void Application::updateActive(void)
 {
     activeDocument()->onUpdate();
+}
+
+void Application::updateActions(bool delay)
+{
+    getMainWindow()->updateActions(delay);
 }
 
 void Application::tryClose(QCloseEvent * e)

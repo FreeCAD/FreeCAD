@@ -142,7 +142,7 @@ class Edgestofaces:
         FreeCAD.ActiveDocument.recompute()
 
     def GetResources(self):
-        return {'Pixmap'  : 'Python',
+        return {'Pixmap'  : 'OpenSCAD_Edgestofaces',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Edgestofaces', 'Convert Edges To Faces'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD', 'Convert Edges to Faces')}
 
@@ -250,7 +250,7 @@ class ResizeMeshFeature:
                 selobj.Document.removeObject(newobj.Name)
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
-        return {#'Pixmap'  : 'OpenSCAD_ResizeMeshFeature',
+        return {'Pixmap'  : 'OpenSCAD_ResizeMeshFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Resize Mesh Feature...'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Create Resize Mesh Feature')}
 
@@ -287,7 +287,7 @@ class ExpandPlacements:
             expandplacements.expandplacements(selobj.Object,FreeCAD.Placement())
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
-        return {'Pixmap'  : 'Python',
+        return {'Pixmap'  : 'OpenSCAD_ExpandPlacements',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand Placements'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand all placements downwards the FeatureTree')}
 

@@ -1186,15 +1186,36 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
     }
 }
 
+void GeomBSplineCurve::workAroundOCCTBug(const std::vector<double>& weights)
+{
+    // If during assignment of weights (during the for loop below) all weights
+    // become (temporarily) equal even though weights does not have equal values
+    // OCCT will convert all the weights (the already assigned and those not yet assigned)
+    // to 1.0 (nonrational b-splines have 1.0 weights). This may lead to the assignment of wrong
+    // of weight values.
+    //
+    // Little hack is to set the last weight to a value different from last but one current and to-be-assigned
+
+    if (weights.size() < 2) // at least two poles/weights
+        return;
+
+    auto lastindex = myCurve->NbPoles(); // OCCT is base-1
+    auto lastbutonevalue = myCurve->Weight(lastindex-1);
+    double fakelastvalue = lastbutonevalue + weights[weights.size()-2];
+    myCurve->SetWeight(weights.size(),fakelastvalue);
+}
+
 void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights)
 {
     if (poles.size() != weights.size())
         throw Base::ValueError("poles and weights mismatch");
 
+    workAroundOCCTBug(weights);
+
     Standard_Integer index=1;
 
-    for (std::size_t it = 0; it < poles.size(); it++, index++) {
-        setPole(index, poles[it], weights[it]);
+    for (std::size_t i = 0; i < poles.size(); i++, index++) {
+        setPole(index, poles[i], weights[i]);
     }
 }
 
@@ -1237,6 +1258,8 @@ std::vector<double> GeomBSplineCurve::getWeights() const
 
 void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
 {
+    workAroundOCCTBug(weights);
+
     try {
         Standard_Integer index=1;
 

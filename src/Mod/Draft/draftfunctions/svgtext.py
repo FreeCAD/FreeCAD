@@ -183,7 +183,7 @@ def get_text(plane, techdraw,
             try:
                 _t = text[0].replace("&", "&amp;").replace("<", "&lt;")
                 svg += _t.replace(">", "&gt;")
-            except:
+            except Exception:
                 # TODO: trap only specific exception; what is the problem?
                 # Bad UTF8 string specification? This can be removed
                 # once the code is only used with Python 3.
@@ -200,7 +200,7 @@ def get_text(plane, techdraw,
                 try:
                     _t = text[i].replace("&", "&amp;").replace("<", "&lt;")
                     svg += _t.replace(">", "&gt;")
-                except:
+                except Exception:
                     # TODO: trap only specific exception; what is the problem?
                     # Bad UTF8 string specification? This can be removed
                     # once the code is only used with Python 3.

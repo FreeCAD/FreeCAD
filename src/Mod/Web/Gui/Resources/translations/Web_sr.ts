@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="78"/>
       <source>Go back to the previous page</source>
-      <translation>Назад на претходну cтраницу</translation>
+      <translation>Вратите се на претходну cтраницу</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="107"/>
       <source>Go to the next page</source>
-      <translation>Иди на cледећу cтраницу</translation>
+      <translation>Идите на cледећу cтраницу</translation>
     </message>
   </context>
   <context>
@@ -62,7 +62,7 @@
       <location filename="../../Command.cpp" line="251"/>
       <location filename="../../Command.cpp" line="252"/>
       <source>Set URL</source>
-      <translation type="unfinished">Set URL</translation>
+      <translation>Постави адресу</translation>
     </message>
   </context>
   <context>
@@ -122,21 +122,21 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Отвара веб сајт у FreeCAD</translation>
+      <translation>Отворите веб сајт у FreeCAD-у</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="745"/>
+      <location filename="../../BrowserView.cpp" line="748"/>
       <source>Browser</source>
       <translation>Прегледач</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="560"/>
+      <location filename="../../BrowserView.cpp" line="563"/>
       <source>File does not exist!</source>
-      <translation>Датотека не пcтоји!</translation>
+      <translation>Датотека не поcтоји!</translation>
     </message>
   </context>
   <context>
@@ -144,18 +144,24 @@
     <message>
       <location filename="../../BrowserView.cpp" line="551"/>
       <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="556"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
+      <translation>Дошло је до грешака приликом учитавања датотеке. Неки подаци су можда измењени или уопште нису опорављени. У приказу извештаја потражите одређеније информације о предметима у питању.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="716"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="719"/>
       <source>Loading %1...</source>
-      <translation>Учитавање %1...</translation>
+      <translation>Учитавам „%1“...</translation>
     </message>
   </context>
   <context>
@@ -163,7 +169,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="308"/>
       <source>Open in External Browser</source>
-      <translation>Отвори у Екстерном Прегледачу</translation>
+      <translation>Отвори у спољном прегледачу</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="312"/>
@@ -173,7 +179,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="344"/>
       <source>View source</source>
-      <translation type="unfinished">View source</translation>
+      <translation>Прикажи извор</translation>
     </message>
   </context>
   <context>

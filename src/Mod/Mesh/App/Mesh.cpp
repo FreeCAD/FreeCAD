@@ -1497,6 +1497,30 @@ void MeshObject::validateIndices()
         this->_segments.clear();
 }
 
+bool MeshObject::hasInvalidNeighbourhood() const
+{
+    MeshCore::MeshEvalNeighbourhood eval(_kernel);
+    return !eval.Evaluate();
+}
+
+bool MeshObject::hasPointsOutOfRange() const
+{
+    MeshCore::MeshEvalRangePoint eval(_kernel);
+    return !eval.Evaluate();
+}
+
+bool MeshObject::hasFacetsOutOfRange() const
+{
+    MeshCore::MeshEvalRangeFacet eval(_kernel);
+    return !eval.Evaluate();
+}
+
+bool MeshObject::hasCorruptedFacets() const
+{
+    MeshCore::MeshEvalCorruptedFacets eval(_kernel);
+    return !eval.Evaluate();
+}
+
 void MeshObject::validateDeformations(float fMaxAngle, float fEps)
 {
     unsigned long count = _kernel.CountFacets();

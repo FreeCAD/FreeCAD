@@ -343,6 +343,7 @@ std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edg
         WalkerEdge we;
         we.v1 = v1dx;
         we.v2 = v2dx;
+        we.idx = 0;
         walkerEdges.push_back(we);
     }
 

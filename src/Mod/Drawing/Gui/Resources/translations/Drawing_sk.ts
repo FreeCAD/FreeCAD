@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="481"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
@@ -25,7 +25,7 @@
     <message>
       <location filename="../../Command.cpp" line="529"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="530"/>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../Command.cpp" line="728"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="729"/>
@@ -68,7 +68,7 @@
     <message>
       <location filename="../../Command.cpp" line="636"/>
       <source>&amp;Export page...</source>
-      <translation>&amp;Export stránky...</translation>
+      <translation>&amp;Exportovať stránku...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="637"/>
@@ -82,7 +82,7 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -96,13 +96,13 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <location filename="../../Command.cpp" line="99"/>
       <source>Insert new drawing</source>
-      <translation>Vložiť nové Kreslenie</translation>
+      <translation>Vložiť nový výkres</translation>
     </message>
   </context>
   <context>
@@ -110,17 +110,17 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Insert view in drawing</source>
-      <translation>Vložiť zobrazenie v kresbe</translation>
+      <translation>Vložiť zobrazenie do výkresu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Insert a new View of a Part in the active drawing</source>
-      <translation>Vložiť nový pohľad na úlohu v aktívnom výkrese</translation>
+      <translation>Vloží nové zobrazenie časti do aktívneho výkresu</translation>
     </message>
   </context>
   <context>
@@ -128,7 +128,7 @@
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -138,7 +138,7 @@
     <message>
       <location filename="../../Command.cpp" line="62"/>
       <source>Open a scalable vector graphic</source>
-      <translation>Otvorte škálovateľnú vektorovú grafiku</translation>
+      <translation>Otvorí vektorovú grafiku s možnosťou zmeny mierky (SVG)</translation>
     </message>
   </context>
   <context>
@@ -146,18 +146,18 @@
     <message>
       <location filename="../../Command.cpp" line="443"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="444"/>
       <source>Open &amp;browser view</source>
-      <translation type="unfinished">Open &amp;browser view</translation>
+      <translation>Otvoriť zobrazenie &amp;prehliadača</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="445"/>
       <location filename="../../Command.cpp" line="447"/>
       <source>Opens the selected page in a browser view</source>
-      <translation type="unfinished">Opens the selected page in a browser view</translation>
+      <translation>Otvorí vybranú stránku v zobrazení prehliadača</translation>
     </message>
   </context>
   <context>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="394"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../Command.cpp" line="692"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="693"/>
@@ -194,7 +194,7 @@
       <location filename="../../Command.cpp" line="694"/>
       <location filename="../../Command.cpp" line="695"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Tvary projektu na užívateľom definovanú rovinu</translation>
+      <translation>Tvar projektu na používateľom určenej rovine</translation>
     </message>
   </context>
   <context>
@@ -202,12 +202,12 @@
     <message>
       <location filename="../../Command.cpp" line="759"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="760"/>
       <source>&amp;Spreadsheet View</source>
-      <translation>Tabuľkový pohľad</translation>
+      <translation>&amp;Tabuľkové zobrazenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="761"/>
@@ -221,12 +221,12 @@
     <message>
       <location filename="../../Command.cpp" line="574"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="575"/>
       <source>&amp;Symbol</source>
-      <translation type="unfinished">&amp;Symbol</translation>
+      <translation>&amp;Symbol</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="576"/>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../DrawingView.cpp" line="225"/>
       <source>&amp;Outline</source>
-      <translation>&amp;Náčrt</translation>
+      <translation>&amp;Obrys</translation>
     </message>
     <message>
       <location filename="../../DrawingView.cpp" line="231"/>
@@ -265,103 +265,109 @@
     <message>
       <location filename="../../DrawingView.cpp" line="242"/>
       <source>&amp;High Quality Antialiasing</source>
-      <translation>&amp;Vysoká kvalita vy&amp;hladzovania</translation>
+      <translation>Vyhladzovanie vo v&amp;ysokej kvalite</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="280"/>
+      <location filename="../../DrawingView.cpp" line="284"/>
       <source>Open SVG File</source>
       <translation>Otvoriť súbor SVG</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="281"/>
+      <location filename="../../DrawingView.cpp" line="285"/>
       <source>Could not open file '%1'.</source>
-      <translation>Nepodarilo sa otvoriť súbor '%1'.</translation>
+      <translation>Nepodarilo sa otvoriť súbor „%1“.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="368"/>
+      <location filename="../../DrawingView.cpp" line="408"/>
       <source>&amp;Renderer</source>
-      <translation>&amp;Renderer</translation>
+      <translation>V&amp;ykresľovač</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="473"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>Export PDF</source>
-      <translation>Export do PDF</translation>
+      <translation>Exportovať PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="474"/>
+      <location filename="../../DrawingView.cpp" line="514"/>
       <source>PDF file</source>
       <translation>Súbor PDF</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="490"/>
+      <location filename="../../DrawingView.cpp" line="530"/>
       <source>Page sizes</source>
       <translation>Veľkosti stránok</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="491"/>
+      <location filename="../../DrawingView.cpp" line="532"/>
+      <location filename="../../DrawingView.cpp" line="545"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="493"/>
+      <location filename="../../DrawingView.cpp" line="534"/>
+      <location filename="../../DrawingView.cpp" line="547"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="495"/>
+      <location filename="../../DrawingView.cpp" line="536"/>
+      <location filename="../../DrawingView.cpp" line="549"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="497"/>
+      <location filename="../../DrawingView.cpp" line="538"/>
+      <location filename="../../DrawingView.cpp" line="551"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="499"/>
+      <location filename="../../DrawingView.cpp" line="540"/>
+      <location filename="../../DrawingView.cpp" line="553"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="501"/>
+      <location filename="../../DrawingView.cpp" line="542"/>
+      <location filename="../../DrawingView.cpp" line="555"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="582"/>
+      <location filename="../../DrawingView.cpp" line="666"/>
       <source>Different orientation</source>
-      <translation>Orientácia obrazovky</translation>
+      <translation>Odlišná orientácia</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="583"/>
+      <location filename="../../DrawingView.cpp" line="667"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation than the drawing.
-Do you want to continue?</translation>
+      <translation>Tlačiareň používa odlišnú orientáciu ako nákres.
+Chcete pokračovať?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="590"/>
-      <location filename="../../DrawingView.cpp" line="598"/>
+      <location filename="../../DrawingView.cpp" line="674"/>
+      <location filename="../../DrawingView.cpp" line="682"/>
       <source>Different paper size</source>
-      <translation type="unfinished">Different paper size</translation>
+      <translation>Odlišná veľkosť papiera</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="591"/>
-      <location filename="../../DrawingView.cpp" line="599"/>
+      <location filename="../../DrawingView.cpp" line="675"/>
+      <location filename="../../DrawingView.cpp" line="683"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+      <translation>Tlačiareň používa odlišnú veľkosť papiera ako nákres.
+Chcete pokračovať?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="610"/>
+      <location filename="../../DrawingView.cpp" line="694"/>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Otvorenie zlyhalo</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="611"/>
+      <location filename="../../DrawingView.cpp" line="695"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>Nedá sa otvoriť súbor „%1“ na zápis.</translation>
     </message>
   </context>
   <context>
@@ -390,7 +396,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="324"/>
       <source>Primary view</source>
-      <translation type="unfinished">Primary view</translation>
+      <translation>Hlavné zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="340"/>
@@ -405,7 +411,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="421"/>
       <source>Auto scale / position</source>
-      <translation type="unfinished">Auto scale / position</translation>
+      <translation>Automatická mierka / pozícia</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="436"/>
@@ -531,17 +537,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="756"/>
       <source>Projection</source>
-      <translation type="unfinished">Projection</translation>
+      <translation>Projekcia</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="767"/>
       <source>Third Angle</source>
-      <translation type="unfinished">Third Angle</translation>
+      <translation>Tretí uhol</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="772"/>
       <source>First Angle</source>
-      <translation type="unfinished">First Angle</translation>
+      <translation>Prvý uhol</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="791"/>
@@ -564,7 +570,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="52"/>
       <source>Visible smooth edges</source>
-      <translation>Viditeľné vyhladzovanie hrán</translation>
+      <translation>Viditeľné vyhladené hrany</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="53"/>
@@ -589,7 +595,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="57"/>
       <source>Hidden smooth edges</source>
-      <translation>Skryté vyhladzovanie hrán</translation>
+      <translation>Skryté vyhladené hrany</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="58"/>
@@ -619,12 +625,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="92"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation type="unfinished">There is currently no active document to complete the operation</translation>
+      <translation>Momentálne nie je aktívny žiadny dokument na dokončenie operácie</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="97"/>
       <source>No active view</source>
-      <translation type="unfinished">No active view</translation>
+      <translation>Žiadne aktívne zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="98"/>
@@ -637,17 +643,17 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="223"/>
       <source>Landscape</source>
-      <translation type="unfinished">Landscape</translation>
+      <translation>Na šírku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="225"/>
       <source>Portrait</source>
-      <translation type="unfinished">Portrait</translation>
+      <translation>Na výšku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="229"/>
       <source>%1%2 %3</source>
-      <translation type="unfinished">%1%2 %3</translation>
+      <translation>%1%2 %3</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="234"/>
@@ -657,12 +663,12 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>%1%2 %3 (%4)</source>
-      <translation type="unfinished">%1%2 %3 (%4)</translation>
+      <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
-      <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
+      <translation>Vloží výkres vo formáte %1%2 %3 (%4)</translation>
     </message>
   </context>
   <context>
@@ -678,7 +684,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="596"/>
       <location filename="../../Command.cpp" line="654"/>
       <source>Scalable Vector Graphic</source>
-      <translation type="unfinished">Scalable Vector Graphic</translation>
+      <translation>SVG</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="327"/>
@@ -687,7 +693,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="648"/>
       <location filename="../../Command.cpp" line="772"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="328"/>
@@ -702,7 +708,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="589"/>
       <location filename="../../Command.cpp" line="778"/>
       <source>No page found</source>
-      <translation type="unfinished">No page found</translation>
+      <translation>Nenašla sa žiadna stránka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="337"/>
@@ -712,7 +718,7 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="590"/>
       <location filename="../../Command.cpp" line="779"/>
       <source>Create a page first.</source>
-      <translation type="unfinished">Create a page first.</translation>
+      <translation>Najskôr vytvorte stránku.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
@@ -723,12 +729,12 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="457"/>
       <location filename="../../Command.cpp" line="649"/>
       <source>Select one Page object.</source>
-      <translation>Vyberte jednostranný objekt.</translation>
+      <translation>Vyberte objekt na jednu stranu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="655"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Všetky súbory</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="657"/>
@@ -761,7 +767,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="152"/>
       <source>Show drawing</source>
-      <translation>Zobraziť nákres</translation>
+      <translation>Zobraziť výkres</translation>
     </message>
   </context>
   <context>
@@ -769,7 +775,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Drawing</source>
-      <translation>Kreslenie</translation>
+      <translation>Výkres</translation>
     </message>
   </context>
 </TS>

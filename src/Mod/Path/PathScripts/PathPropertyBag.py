@@ -22,6 +22,7 @@
 
 import FreeCAD
 import PySide
+import re
 
 __title__ = 'Generic property container to store some values.'
 __author__ = 'sliptonic (Brad Collette)'
@@ -67,6 +68,18 @@ class PropertyBag(object):
     def __setstate__(self, state):
         return None
 
+    def __sanitizePropertyName(self, name):
+        if(len(name) == 0):
+            return
+        clean = name[0]
+        for i in range(1, len(name)):
+            if (name[i] == ' '):
+                clean += name[i + 1].upper()
+                i += 1
+            elif(name[i - 1] != ' '):
+                clean += name[i]
+        return clean
+
     def onDocumentRestored(self, obj):
         self.obj = obj
         obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
@@ -82,10 +95,16 @@ class PropertyBag(object):
         if group is None:
             group = self.CustomPropertyGroupDefault
         groups = self.obj.CustomPropertyGroups
+
+        name = self.__sanitizePropertyName(name)
+        if not re.match("^[A-Za-z0-9_]*$", name):
+            raise ValueError('Property Name can only contain letters and numbers')
+
         if not group in groups:
             groups.append(group)
             self.obj.CustomPropertyGroups = groups
         self.obj.addProperty(propertyType, name, group, desc)
+        return name
 
     def refreshCustomPropertyGroups(self):
         '''refreshCustomPropertyGroups() ... removes empty property groups, should be called after deleting properties.'''

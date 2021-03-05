@@ -41,38 +41,32 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 
 class SubelementHighlight(gui_base_original.Modifier):
     """Gui Command for the SubelementHighlight tool."""
 
     def __init__(self):
+        super().__init__()
         self.is_running = False
         self.editable_objects = []
         self.original_view_settings = {}
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Subelement highlight"
-        _tip = ("Highlight the subelements "
-                "of the selected objects, "
-                "so that they can then be edited "
-                "with the move, rotate, and scale tools.")
 
         return {'Pixmap': 'Draft_SubelementHighlight',
                 'Accel': "H, S",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight",
-                                              _menu),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight",
-                                             _tip)}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Subelement highlight"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.")}
 
     def Activated(self):
         """Execute when the command is called."""
         if self.is_running:
             return self.finish()
         self.is_running = True
-        super(SubelementHighlight, self).Activated(name=_tr("Subelement highlight"))
+        super(SubelementHighlight, self).Activated(name=translate("draft","Subelement highlight"))
         self.get_selection()
 
     def proceed(self):

@@ -155,7 +155,7 @@ def cmdCreateImageScaling(name, trackers):
                         ok = True
                     elif q.Unit == FreeCAD.Units.Length:
                         ok = True
-                except:
+                except Exception:
                     ok = False
                 if not ok:
                     raise ValueError

@@ -65,7 +65,7 @@
          <string>Current constraint creation tool will remain active after creation</string>
         </property>
         <property name="text">
-         <string>Constraint creation &quot;Continue Mode&quot;</string>
+         <string>Constraint creation "Continue Mode"</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -296,7 +296,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
          <string>Current sketcher creation tool will remain active after creation</string>
         </property>
         <property name="text">
-         <string>Geometry creation &quot;Continue Mode&quot;</string>
+         <string>Geometry creation "Continue Mode"</string>
         </property>
         <property name="checked">
          <bool>true</bool>

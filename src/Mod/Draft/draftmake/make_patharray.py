@@ -41,7 +41,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
 from draftutils.messages import _msg, _err
-from draftutils.translate import _tr
+from draftutils.translate import translate
 from draftobjects.patharray import PathArray
 from draftobjects.pathtwistedarray import PathTwistedArray
 
@@ -158,7 +158,7 @@ def make_path_array(base_object, path_object, count=4,
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft","No active document. Aborting."))
         return None
 
     if isinstance(base_object, str):
@@ -167,7 +167,7 @@ def make_path_array(base_object, path_object, count=4,
     found, base_object = utils.find_object(base_object, doc)
     if not found:
         _msg("base_object: {}".format(base_object_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: object not in document."))
         return None
 
     _msg("base_object: {}".format(base_object.Label))
@@ -178,7 +178,7 @@ def make_path_array(base_object, path_object, count=4,
     found, path_object = utils.find_object(path_object, doc)
     if not found:
         _msg("path_object: {}".format(path_object_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: object not in document."))
         return None
 
     _msg("path_object: {}".format(path_object.Label))
@@ -188,7 +188,7 @@ def make_path_array(base_object, path_object, count=4,
         utils.type_check([(count, (int, float))],
                          name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a number."))
+        _err(translate("draft","Wrong input: must be a number."))
         return None
     count = int(count)
 
@@ -197,7 +197,7 @@ def make_path_array(base_object, path_object, count=4,
         utils.type_check([(extra, App.Vector)],
                          name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a vector."))
+        _err(translate("draft","Wrong input: must be a vector."))
         return None
 
     _msg("subelements: {}".format(subelements))
@@ -210,8 +210,7 @@ def make_path_array(base_object, path_object, count=4,
             utils.type_check([(subelements, (list, tuple, str))],
                              name=_name)
         except TypeError:
-            _err(_tr("Wrong input: must be a list or tuple of strings. "
-                     "Or a single string."))
+            _err(translate("draft","Wrong input: must be a list or tuple of strings, or a single string."))
             return None
 
         # The subelements list is used to build a special list
@@ -244,8 +243,7 @@ def make_path_array(base_object, path_object, count=4,
         if align_mode not in ("Original", "Frenet", "Tangent"):
             raise TypeError
     except TypeError:
-        _err(_tr("Wrong input: must be "
-                 "'Original', 'Frenet', or 'Tangent'."))
+        _err(translate("draft","Wrong input: must be 'Original', 'Frenet', or 'Tangent'."))
         return None
 
     _msg("tan_vector: {}".format(tan_vector))
@@ -253,7 +251,7 @@ def make_path_array(base_object, path_object, count=4,
         utils.type_check([(tan_vector, App.Vector)],
                          name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a vector."))
+        _err(translate("draft","Wrong input: must be a vector."))
         return None
 
     force_vertical = bool(force_vertical)
@@ -264,7 +262,7 @@ def make_path_array(base_object, path_object, count=4,
         utils.type_check([(vertical_vector, App.Vector)],
                          name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a vector."))
+        _err(translate("draft","Wrong input: must be a vector."))
         return None
 
     use_link = bool(use_link)
@@ -329,7 +327,7 @@ def make_path_twisted_array(base_object, path_object,
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft","No active document. Aborting."))
         return None
 
     if isinstance(base_object, str):
@@ -338,7 +336,7 @@ def make_path_twisted_array(base_object, path_object,
     found, base_object = utils.find_object(base_object, doc)
     if not found:
         _msg("base_object: {}".format(base_object_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: object not in document."))
         return None
 
     _msg("base_object: {}".format(base_object.Label))
@@ -349,7 +347,7 @@ def make_path_twisted_array(base_object, path_object,
     found, path_object = utils.find_object(path_object, doc)
     if not found:
         _msg("path_object: {}".format(path_object_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft","Wrong input: object not in document."))
         return None
 
     _msg("path_object: {}".format(path_object.Label))
@@ -359,7 +357,7 @@ def make_path_twisted_array(base_object, path_object,
         utils.type_check([(count, (int, float))],
                          name=_name)
     except TypeError:
-        _err(_tr("Wrong input: must be a number."))
+        _err(translate("draft","Wrong input: must be a number."))
         return None
     count = int(count)
 

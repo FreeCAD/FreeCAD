@@ -208,6 +208,11 @@
       <source>Notes</source>
       <translation>ノート</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Open start page preferences</source>
+      <translation type="unfinished">Open start page preferences</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -411,7 +416,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
       <source>Font family</source>
-      <translation>フォントファミリー</translation>
+      <translation>フォントの種類</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>

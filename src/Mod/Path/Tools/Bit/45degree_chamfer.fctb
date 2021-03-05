@@ -6,9 +6,9 @@
     "CuttingEdgeAngle": "45.0000 \u00b0",
     "CuttingEdgeHeight": "6.3500 mm",
     "Diameter": "12.3323 mm",
-    "FlatRadius": "5.0000 mm",
     "Length": "30.0000 mm",
     "ShankDiameter": "6.3500 mm"
+    "TipDiameter": "5.0000 mm",
   },
   "attribute": {}
 }

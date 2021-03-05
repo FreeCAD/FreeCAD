@@ -11,7 +11,6 @@ def main():
 
     input=""
     output="."
-    dir="."
     
     try:
         opts, args = getopt.getopt(sys.argv[1:], "dso:", ["dir=","src=","out="])
@@ -20,7 +19,7 @@ def main():
 
     for o, a in opts:
         if o in ("-d", "--dir"):
-            dir = a
+            print ("The %s option is deprecated. Ignoring." % (o))
         if o in ("-s", "--src"):
             input = a
         if o in ("-o", "--out"):

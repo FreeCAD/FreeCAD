@@ -50,6 +50,7 @@
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
 #include "TaskBalloon.h"
+#include "ui_TaskBalloon.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -88,15 +89,13 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
     ui->qsbFontSize->setUnit(Base::Unit::Length);
     ui->qsbFontSize->setMinimum(0);
-    connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
-    connect(ui->comboLineVisible, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineVisibleChanged()));
+
     ui->qsbLineWidth->setUnit(Base::Unit::Length);
     ui->qsbLineWidth->setSingleStep(0.100);
     ui->qsbLineWidth->setMinimum(0);
-    connect(ui->qsbLineWidth, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
-    ui->qsbKinkLength->setUnit(Base::Unit::Length);
+
     // negative kink length is allowed, thus no minimum
-    connect(ui->qsbKinkLength, SIGNAL(valueChanged(double)), this, SLOT(onKinkLengthChanged()));
+    ui->qsbKinkLength->setUnit(Base::Unit::Length);
 
     if (balloonVP != nullptr) {
         ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());
@@ -107,6 +106,11 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     }
     // new balloons have already the preferences BalloonKink length
     ui->qsbKinkLength->setValue(parent->dvBalloon->KinkLength.getValue());
+
+    connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
+    connect(ui->comboLineVisible, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineVisibleChanged()));
+    connect(ui->qsbLineWidth, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
+    connect(ui->qsbKinkLength, SIGNAL(valueChanged(double)), this, SLOT(onKinkLengthChanged()));
 }
 
 TaskBalloon::~TaskBalloon()
@@ -115,26 +119,24 @@ TaskBalloon::~TaskBalloon()
 
 bool TaskBalloon::accept()
 {
-    m_parent->dvBalloon->Text.setValue(ui->leText->text().toUtf8().constData());
-    App::Color ac;
-    ac.setValue<QColor>(ui->textColor->color());
-    m_balloonVP->Color.setValue(ac);
-    m_balloonVP->Fontsize.setValue(ui->qsbFontSize->value().getValue());
-    m_parent->dvBalloon->ShapeScale.setValue(ui->qsbShapeScale->value().getValue());
-    m_parent->dvBalloon->EndType.setValue(ui->comboEndSymbol->currentIndex());
-    m_parent->dvBalloon->EndTypeScale.setValue(ui->qsbSymbolScale->value().getValue());
-    m_parent->dvBalloon->BubbleShape.setValue(ui->comboBubbleShape->currentIndex());
-    m_balloonVP->LineVisible.setValue(ui->comboLineVisible->currentIndex());
-    m_balloonVP->LineWidth.setValue(ui->qsbLineWidth->value().getValue());
-    m_parent->dvBalloon->KinkLength.setValue(ui->qsbKinkLength->value().getValue());
-    m_parent->updateView(true);
+    Gui::Document* doc = m_balloonVP->getDocument();
+    m_balloonVP->getObject()->purgeTouched();
+    doc->commitCommand();
+    doc->resetEdit();
 
     return true;
 }
 
 bool TaskBalloon::reject()
 {
-    return false;
+    Gui::Document* doc = m_balloonVP->getDocument();
+    doc->abortCommand();
+    recomputeFeature();
+    m_parent->updateView(true);
+    m_balloonVP->getObject()->purgeTouched();
+    doc->resetEdit();
+
+    return true;
 }
 
 void TaskBalloon::recomputeFeature()
@@ -215,6 +217,7 @@ TaskDlgBalloon::TaskDlgBalloon(QGIViewBalloon *parent, ViewProviderBalloon *ball
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Balloon"), widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+    setAutoCloseOnTransactionChange(true);
 }
 
 TaskDlgBalloon::~TaskDlgBalloon()
