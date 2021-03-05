@@ -863,8 +863,12 @@ void Cell::restoreFormat(Base::XMLReader &reader, bool checkAlias)
     }
     if (displayUnit)
         setDisplayUnit(displayUnit);
-    if (alias && (!checkAlias || !owner->revAliasProp.count(alias)))
-        setAlias(alias);
+    if (alias) {
+        if (!checkAlias)
+            _setAlias(alias);
+        else if(!owner->revAliasProp.count(alias))
+            setAlias(alias, true);
+    }
 
     if (rowSpan || colSpan) {
         int rs = rowSpan ? atoi(rowSpan) : 1;
@@ -1794,11 +1798,11 @@ bool Cell::setEditMode(EditMode mode, bool silent) {
     if (mode == EditAutoAlias && editMode == EditAutoAliasV) {
         auto sibling = owner->getValue(CellAddress(address.row()+1, address.col()));
         if (sibling)
-            sibling->_setAlias("");
+            owner->setAlias(sibling->address, "", true);
     } else if (mode == EditAutoAliasV && editMode == EditAutoAlias) {
         auto sibling = owner->getValue(CellAddress(address.row(), address.col()+1));
         if (sibling)
-            sibling->_setAlias("");
+            owner->setAlias(sibling->address, "", true);
     }
     editMode = mode;
     applyAutoAlias();
@@ -1920,7 +1924,7 @@ void Cell::applyAutoAlias()
         return;
     if (existing == this) {
         signaller.aboutToChange();
-        setAlias("");
+        owner->setAlias(this->address, "");
     } else if (existing) {
         signaller.aboutToChange();
         setException("'Auto alias' conflict with alias in cell " + existing->address.toString());
@@ -1931,12 +1935,13 @@ void Cell::applyAutoAlias()
         signaller.aboutToChange();
         setException("Invalid string content for 'Auto alias' mode");
     } else {
-        Cell *sibling = owner->getValue(addr);
-        if (sibling) {
+        if (isUsed(EXCEPTION_SET)) {
             signaller.aboutToChange();
-            sibling->clearException();
-            sibling->_setAlias(alias);
+            clearException();
         }
+        Cell *sibling = owner->getValue(addr);
+        if (sibling)
+            owner->setAlias(addr, alias, true);
     }
     signaller.tryInvoke();
 }

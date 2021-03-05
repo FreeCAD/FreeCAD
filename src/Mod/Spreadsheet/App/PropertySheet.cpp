@@ -685,7 +685,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias, bool
         App::ObjectIdentifier key(owner, oldAlias);
         App::ObjectIdentifier value(owner, alias.empty()?address.toString():alias);
 
-        m[key] = value;
+        m[key.canonicalPath()] = value;
 
         for (auto doc : App::GetApplication().getDocuments()) {
             for (auto obj : doc->getObjects())
