@@ -380,7 +380,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         except Exception:
             FreeCAD.Console.PrintError(
                 "Unexpected error when writing CalculiX input file: {}\n"
-                .format(sys.exc_info()[0])
+                .format(sys.exc_info()[1])
             )
             raise
 
