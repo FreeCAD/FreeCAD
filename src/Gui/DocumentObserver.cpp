@@ -25,9 +25,9 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <boost_bind_bind.hpp>
 #endif
 
+#include <functional>
 #include "Application.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
@@ -35,7 +35,7 @@
 #include <App/Document.h>
 
 using namespace Gui;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 DocumentT::DocumentT()
@@ -238,8 +238,8 @@ class DocumentWeakPtrT::Private {
 public:
     Private(Gui::Document* doc) : _document(doc) {
         if (doc) {
-            connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
-                (&Private::deletedDocument, this, bp::_1));
+            connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(std::bind
+                (&Private::deletedDocument, this, sp::_1));
         }
     }
 
@@ -294,13 +294,13 @@ public:
             reset();
         }
     }
-    void createdObject(const Gui::ViewProvider& obj) {
+    void createdObject(const Gui::ViewProvider& obj) noexcept {
         // When undoing the removal
         if (object == &obj) {
             indocument = true;
         }
     }
-    void deletedObject(const Gui::ViewProvider& obj) {
+    void deletedObject(const Gui::ViewProvider& obj) noexcept {
         if (object == &obj) {
             indocument = false;
         }
@@ -318,12 +318,12 @@ public:
             if (obj) {
                 Gui::Document* doc = obj->getDocument();
                 indocument = true;
-                connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
-                    (&Private::deletedDocument, this, bp::_1));
-                connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
-                    (&Private::createdObject, this, bp::_1));
-                connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-                    (&Private::deletedObject, this, bp::_1));
+                connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(std::bind
+                    (&Private::deletedDocument, this, sp::_1));
+                connectDocumentCreatedObject = doc->signalNewObject.connect(std::bind
+                    (&Private::createdObject, this, sp::_1));
+                connectDocumentDeletedObject = doc->signalDeletedObject.connect(std::bind
+                    (&Private::deletedObject, this, sp::_1));
             }
         }
         catch (const Base::RuntimeError&) {
@@ -413,26 +413,26 @@ void DocumentObserver::attachDocument(Document* doc)
     if (doc == nullptr)
         return;
 
-    this->connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
-        (&DocumentObserver::slotCreatedObject, this, bp::_1));
-    this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-        (&DocumentObserver::slotDeletedObject, this, bp::_1));
-    this->connectDocumentChangedObject = doc->signalChangedObject.connect(boost::bind
-        (&DocumentObserver::slotChangedObject, this, bp::_1, bp::_2));
-    this->connectDocumentRelabelObject = doc->signalRelabelObject.connect(boost::bind
-        (&DocumentObserver::slotRelabelObject, this, bp::_1));
-    this->connectDocumentActivateObject = doc->signalActivatedObject.connect(boost::bind
-        (&DocumentObserver::slotActivatedObject, this, bp::_1));
-    this->connectDocumentEditObject = doc->signalInEdit.connect(boost::bind
-        (&DocumentObserver::slotEnterEditObject, this, bp::_1));
-    this->connectDocumentResetObject = doc->signalResetEdit.connect(boost::bind
-        (&DocumentObserver::slotResetEditObject, this, bp::_1));
-    this->connectDocumentUndo = doc->signalUndoDocument.connect(boost::bind
-        (&DocumentObserver::slotUndoDocument, this, bp::_1));
-    this->connectDocumentRedo = doc->signalRedoDocument.connect(boost::bind
-        (&DocumentObserver::slotRedoDocument, this, bp::_1));
-    this->connectDocumentDelete = doc->signalDeleteDocument.connect(boost::bind
-        (&DocumentObserver::slotDeleteDocument, this, bp::_1));
+    this->connectDocumentCreatedObject = doc->signalNewObject.connect(std::bind
+        (&DocumentObserver::slotCreatedObject, this, sp::_1));
+    this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(std::bind
+        (&DocumentObserver::slotDeletedObject, this, sp::_1));
+    this->connectDocumentChangedObject = doc->signalChangedObject.connect(std::bind
+        (&DocumentObserver::slotChangedObject, this, sp::_1, sp::_2));
+    this->connectDocumentRelabelObject = doc->signalRelabelObject.connect(std::bind
+        (&DocumentObserver::slotRelabelObject, this, sp::_1));
+    this->connectDocumentActivateObject = doc->signalActivatedObject.connect(std::bind
+        (&DocumentObserver::slotActivatedObject, this, sp::_1));
+    this->connectDocumentEditObject = doc->signalInEdit.connect(std::bind
+        (&DocumentObserver::slotEnterEditObject, this, sp::_1));
+    this->connectDocumentResetObject = doc->signalResetEdit.connect(std::bind
+        (&DocumentObserver::slotResetEditObject, this, sp::_1));
+    this->connectDocumentUndo = doc->signalUndoDocument.connect(std::bind
+        (&DocumentObserver::slotUndoDocument, this, sp::_1));
+    this->connectDocumentRedo = doc->signalRedoDocument.connect(std::bind
+        (&DocumentObserver::slotRedoDocument, this, sp::_1));
+    this->connectDocumentDelete = doc->signalDeleteDocument.connect(std::bind
+        (&DocumentObserver::slotDeleteDocument, this, sp::_1));
 }
 
 void DocumentObserver::detachDocument()
