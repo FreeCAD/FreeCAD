@@ -86,20 +86,26 @@ public:
     /*! Constructor */
     ViewProviderT();
     /*! Constructor */
-    ViewProviderT(ViewProviderDocumentObject*);
-    /*! Constructor */
     ViewProviderT(const ViewProviderT&);
+    /*! Constructor */
+    ViewProviderT(ViewProviderT &&);
+    /*! Constructor */
+    ViewProviderT(const ViewProviderDocumentObject*);
     /*! Destructor */
     ~ViewProviderT();
     /*! Assignment operator */
-    void operator=(const ViewProviderT&);
+    ViewProviderT &operator=(const ViewProviderT&);
+    /*! Assignment operator */
+    ViewProviderT &operator=(ViewProviderT &&);
     /*! Assignment operator */
     void operator=(const ViewProviderDocumentObject*);
+    /*! Equality operator */
+    bool operator==(const ViewProviderT&) const;
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
-    std::string getDocumentName() const;
+    const std::string &getDocumentName() const;
     /*! Get the Gui::Document as Python command. */
     std::string getGuiDocumentPython() const;
     /*! Get the App::Document as Python command. */
@@ -107,7 +113,7 @@ public:
     /*! Get a pointer to the document object or 0 if it doesn't exist any more. */
     ViewProviderDocumentObject* getViewProvider() const;
     /*! Get the name of the document object. */
-    std::string getObjectName() const;
+    const std::string &getObjectName() const;
     /*! Get the document object as Python command. */
     std::string getObjectPython() const;
     /*! Get a pointer to the document or 0 if it doesn't exist any more or the type doesn't match. */
@@ -162,24 +168,39 @@ private:
 class AppExport ViewProviderWeakPtrT
 {
 public:
-    ViewProviderWeakPtrT(ViewProviderDocumentObject*) noexcept;
+    ViewProviderWeakPtrT(ViewProviderDocumentObject*);
     ~ViewProviderWeakPtrT();
 
     /*!
      * \brief reset
      * Releases the reference to the managed object. After the call *this manages no object.
      */
-    void reset() noexcept;
+    void reset();
     /*!
      * \brief expired
      * \return true if the managed object has already been deleted, false otherwise.
      */
     bool expired() const noexcept;
     /*!
+     * \brief operator =
+     * Assignment operator
+     */
+    ViewProviderWeakPtrT& operator= (ViewProviderDocumentObject* p);
+    /*!
      * \brief operator ->
      * \return pointer to the document
      */
     ViewProviderDocumentObject* operator->() noexcept;
+    /*!
+     * \brief operator ==
+     * \return true if both objects are equal, false otherwise
+     */
+    bool operator== (const ViewProviderWeakPtrT& p) const noexcept;
+    /*!
+     * \brief operator !=
+     * \return true if both objects are inequal, false otherwise
+     */
+    bool operator!= (const ViewProviderWeakPtrT& p) const noexcept;
     /*! Get a pointer to the object or 0 if it doesn't exist any more or the type doesn't match. */
     template<typename T>
     inline T* get() const noexcept
@@ -199,6 +220,71 @@ private:
 };
 
 /**
+ * @brief The WeakPtrT class
+ */
+template <class T>
+class WeakPtrT
+{
+public:
+    WeakPtrT(T* t) : ptr(t) {
+    }
+    ~WeakPtrT() {
+    }
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset() {
+        ptr.reset();
+    }
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const {
+        return ptr.expired();
+    }
+    /*!
+     * \brief operator =
+     * Assignment operator
+     */
+    WeakPtrT<T>& operator= (T* p) {
+        ptr = p;
+        return *this;
+    }
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    T* operator->() {
+        return ptr.get<T>();
+    }
+    /*!
+     * \brief operator ==
+     * \return true if both objects are equal, false otherwise
+     */
+    bool operator== (const WeakPtrT<T>& p) const {
+        return ptr == p.ptr;
+    }
+    /*!
+     * \brief operator !=
+     * \return true if both objects are inequal, false otherwise
+     */
+    bool operator!= (const WeakPtrT<T>& p) const {
+        return ptr != p.ptr;
+    }
+
+private:
+    // disable
+    WeakPtrT(const WeakPtrT&);
+    WeakPtrT& operator=(const WeakPtrT&);
+
+private:
+    ViewProviderWeakPtrT ptr;
+};
+
+/**
  * The DocumentObserver class simplifies the step to write classes that listen
  * to what happens inside a document.
  * This is very useful for classes that needs to be notified when an observed
@@ -211,6 +297,7 @@ class GuiExport DocumentObserver
 public:
     /// Constructor
     DocumentObserver();
+    DocumentObserver(Document*);
     virtual ~DocumentObserver();
 
     /** Attaches to another document, the old document

@@ -124,34 +124,58 @@ ViewProviderT::ViewProviderT()
 {
 }
 
-ViewProviderT::ViewProviderT(ViewProviderDocumentObject* obj)
+ViewProviderT::ViewProviderT(const ViewProviderT& other)
 {
-    object = obj->getObject()->getNameInDocument();
-    document = obj->getObject()->getDocument()->getName();
+    *this = other;
 }
 
-ViewProviderT::ViewProviderT(const ViewProviderT& vp)
+ViewProviderT::ViewProviderT(ViewProviderT &&other)
 {
-    object = vp.object;
-    document = vp.document;
+    *this = std::move(other);
+}
+
+ViewProviderT::ViewProviderT(const ViewProviderDocumentObject* obj)
+{
+    *this = obj;
 }
 
 ViewProviderT::~ViewProviderT()
 {
 }
 
-void ViewProviderT::operator=(const ViewProviderT& obj)
+ViewProviderT & ViewProviderT::operator=(const ViewProviderT& obj)
 {
     if (this == &obj)
-        return;
+        return *this;
     object = obj.object;
     document = obj.document;
+    return *this;
+}
+
+ViewProviderT &ViewProviderT::operator=(ViewProviderT&& obj)
+{
+    if (this == &obj)
+        return *this;
+    object = std::move(obj.object);
+    document = std::move(obj.document);
+    return *this;
 }
 
 void ViewProviderT::operator=(const ViewProviderDocumentObject* obj)
 {
-    object = obj->getObject()->getNameInDocument();
-    document = obj->getObject()->getDocument()->getName();
+    if (!obj) {
+        object.clear();
+        document.clear();
+    }
+    else {
+        object = obj->getObject()->getNameInDocument();
+        document = obj->getObject()->getDocument()->getName();
+    }
+}
+
+bool ViewProviderT::operator==(const ViewProviderT &other) const {
+    return document == other.document
+        && object == other.object;
 }
 
 Document* ViewProviderT::getDocument() const
@@ -159,7 +183,7 @@ Document* ViewProviderT::getDocument() const
     return Application::Instance->getDocument(document.c_str());
 }
 
-std::string ViewProviderT::getDocumentName() const
+const std::string& ViewProviderT::getDocumentName() const
 {
     return document;
 }
@@ -186,7 +210,7 @@ ViewProviderDocumentObject* ViewProviderT::getViewProvider() const
     return obj;
 }
 
-std::string ViewProviderT::getObjectName() const
+const std::string& ViewProviderT::getObjectName() const
 {
     return object;
 }
@@ -262,21 +286,7 @@ Gui::Document* DocumentWeakPtrT::operator->() noexcept
 class ViewProviderWeakPtrT::Private {
 public:
     Private(ViewProviderDocumentObject* obj) : object(obj), indocument(false) {
-        try {
-            if (obj) {
-                Gui::Document* doc = obj->getDocument();
-                indocument = true;
-                connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
-                    (&Private::deletedDocument, this, bp::_1));
-                connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
-                    (&Private::createdObject, this, bp::_1));
-                connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-                    (&Private::deletedObject, this, bp::_1));
-            }
-        }
-        catch (const Base::RuntimeError&) {
-            // getDocument() may raise an exception
-        }
+        set(obj);
     }
     void deletedDocument(const Gui::Document& doc) {
         // When deleting document then there is no way to undo it
@@ -302,6 +312,26 @@ public:
         object = nullptr;
         indocument = false;
     }
+    void set(ViewProviderDocumentObject* obj) {
+        object = obj;
+        try {
+            if (obj) {
+                Gui::Document* doc = obj->getDocument();
+                indocument = true;
+                connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
+                    (&Private::deletedDocument, this, bp::_1));
+                connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
+                    (&Private::createdObject, this, bp::_1));
+                connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
+                    (&Private::deletedObject, this, bp::_1));
+            }
+        }
+        catch (const Base::RuntimeError&) {
+            // getDocument() may raise an exception
+            object = nullptr;
+            indocument = false;
+        }
+    }
     ViewProviderDocumentObject* get() const {
         return indocument ? object : nullptr;
     }
@@ -314,7 +344,7 @@ public:
     Connection connectDocumentDeletedObject;
 };
 
-ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderDocumentObject* obj) noexcept
+ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderDocumentObject* obj)
   : d(new Private(obj))
 {
 }
@@ -329,7 +359,7 @@ ViewProviderDocumentObject* ViewProviderWeakPtrT::_get() const noexcept
     return d->get();
 }
 
-void ViewProviderWeakPtrT::reset() noexcept
+void ViewProviderWeakPtrT::reset()
 {
     d->reset();
 }
@@ -339,15 +369,37 @@ bool ViewProviderWeakPtrT::expired() const noexcept
     return !d->indocument;
 }
 
+ViewProviderWeakPtrT& ViewProviderWeakPtrT::operator= (ViewProviderDocumentObject* p)
+{
+    d->reset();
+    d->set(p);
+    return *this;
+}
+
 ViewProviderDocumentObject* ViewProviderWeakPtrT::operator->() noexcept
 {
     return d->get();
+}
+
+bool ViewProviderWeakPtrT::operator== (const ViewProviderWeakPtrT& p) const noexcept
+{
+    return d->get() == p.d->get();
+}
+
+bool ViewProviderWeakPtrT::operator!= (const ViewProviderWeakPtrT& p) const noexcept
+{
+    return d->get() != p.d->get();
 }
 
 // -----------------------------------------------------------------------------
 
 DocumentObserver::DocumentObserver()
 {
+}
+
+DocumentObserver::DocumentObserver(Document* doc)
+{
+    attachDocument(doc);
 }
 
 DocumentObserver::~DocumentObserver()
