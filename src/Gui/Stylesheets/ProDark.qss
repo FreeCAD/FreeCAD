@@ -74,10 +74,23 @@ QToolBar * {
     padding: 0px;
 }
 
+/*==================================================================================================
+Style Links
+==================================================================================================*/
+QLabel[haslink="true"] {
+    color: #55aaff;
+}
+
+Gui--UrlLabel {
+    color: #55aaff;
+}
 
 /*==================================================================================================
 Main window
 ==================================================================================================*/
+QWidget {
+    background-color: #333333;
+}
 QMainWindow,
 QDialog,
 QDockWidget,
@@ -271,7 +284,7 @@ QToolBar::separator:vertical {
 Group box
 ==================================================================================================*/
 QGroupBox {
-    color: rgba(255,255,255,120);
+    color: #bcbcbc;
     border:1px solid rgba(255,255,255,20); /* lighter than its own border-color */;
     border-radius: 2px;
     margin-top: 10px;
@@ -300,7 +313,7 @@ Tooltip
 ==================================================================================================*/
 QToolTip {
     color: #ffffff;
-    background-color: #1e1e1e;
+    background-color: #2a2a2a;
     /*opacity: 90%; doesn't correctly work */
     padding: 4px;
     border-radius: 2px; /* has no effect */
@@ -319,10 +332,10 @@ QDockWidget {
 
 QDockWidget::title {
     text-align: center;
-    background-color: rgba(0,0,0,40);
-    border: 4px solid #333333; /* fix to simulate margin between this :title and tabs */ /* same as main background color */
-    border-radius: 6px; /* bigger than normal due to previous border fix */
-    padding: 4px 0px; /* also needed because of previous border fix */
+    background-color: #2a2a2a;
+    border-bottom: 4px solid #333333; /* fix to simulate margin between this :title and tabs */ /* same as main background color */
+    margin-left: 7px;
+    margin-right: 7px;
 }
 
 QDockWidget::close-button,
@@ -344,17 +357,18 @@ QDockWidget::float-button {
 
 QDockWidget::close-button:hover,
 QDockWidget::float-button:hover {
-    background-color: rgba(0,0,0,60);
+    background-color: #557bb6;
 }
 
 QDockWidget::close-button:pressed,
 QDockWidget::float-button:pressed {
-    background-color: rgba(0,0,0,120);
+    background-color: #42608d;
+    border: 2px solid #76acfd
 }
 
 /* fix for Python Console (probably there is a smarter way to arrive to it) */
 QDockWidget > QFrame {
-    background-color: #3C3C3C;
+    background-color: #3c3c3c;
 
     border: 6px solid #333333;
 }
@@ -366,6 +380,7 @@ Progress bar
 QProgressBar,
 QProgressBar:horizontal {
     color: white;
+    min-height: 24px;
     background-color: rgba(0,0,0,70);
     text-align: center;
     border: 1px solid rgba(0,0,0,140);
@@ -374,7 +389,7 @@ QProgressBar:horizontal {
 }
 QProgressBar::chunk,
 QProgressBar::chunk:horizontal {
-    background-color: qlineargradient(spread:pad, x1:1, y1:0.545, x2:1, y2:0, stop:0 #3874f2, stop:1 #557BB6);
+    background-color: #557BB6;
     border-radius: 2px;
 }
 
@@ -435,11 +450,13 @@ QScrollBar::add-line:horizontal {
 QScrollBar::sub-line:horizontal:hover,
 QScrollBar::sub-line:horizontal:on {
     border-image: url(qss:images_dark-light/left_arrow_lighter.svg);
+    background-color: #557BB6;
 }
 
 QScrollBar::add-line:horizontal:hover,
 QScrollBar::add-line:horizontal:on {
     border-image: url(qss:images_dark-light/right_arrow_lighter.svg);
+    background-color: #557BB6;
 }
 
 QScrollBar::up-arrow:horizontal,
@@ -485,11 +502,13 @@ QScrollBar::add-line:vertical {
 QScrollBar::sub-line:vertical:hover,
 QScrollBar::sub-line:vertical:on {
     border-image: url(qss:images_dark-light/up_arrow_lighter.svg);
+    background-color: #557BB6;
 }
 
 QScrollBar::add-line:vertical:hover,
 QScrollBar::add-line:vertical:on {
     border-image: url(qss:images_dark-light/down_arrow_lighter.svg);
+    background-color: #557BB6;
 }
 
 QScrollBar::up-arrow:vertical,
@@ -507,7 +526,7 @@ QScrollBar::sub-page:vertical {
 Tab bar
 ==================================================================================================*/
 QTabWidget::pane {
-    background-color: #333333; /* temporal (transparent background) */ /* tab content background color */ /* was transparent. fixes no color undocked Combo View */
+    background-color: transparent; /* temporal (transparent background) */ /* tab content background color */ /* was transparent. fixes no color undocked Combo View */
     position: absolute;
 }
 
@@ -543,7 +562,7 @@ QTabWidget::tab-bar:right {
 
 QTabBar {
     qproperty-drawBase: 0; /* important */
-    background-color: #333333; /* Hack for Undocked white background - was transparent*/ 
+    background-color: transparent; /* Hack for Undocked white background - was transparent*/ 
 }
 
 /* Workaround for QTabBars created from docked QDockWidgets which don't draw the border if not set and reset as follows: */
@@ -642,7 +661,8 @@ QDialog#Gui__Dialog__DlgPreferences QTabWidget::pane {
 
 /* hack to correctly align Preferences icon list on OSX */
 QDialog#Gui__Dialog__DlgPreferences > QListView {
-    min-width: 130px;
+    min-width: 108px; /* narrowed for new smaller icons - was 130px*/
+    max-width: 108px;
 }
 
 /* unique styles for sections inside Preferences */
@@ -820,8 +840,8 @@ Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	color: #557BB6;
-	background-color: #696969; /* same as focused background color */
+	color: #949494;
+	background-color: #2a2a2a; /* same as focused background color */
 }
 
 /* hack to disable margin inside Property values to following elements */
@@ -1057,7 +1077,7 @@ Text/Python editor (macros, etc...)
 ==================================================================================================*/
 QPlainTextEdit,
 QPlainTextEdit:focus {
-    background-color: #3C3C3C; /* Python Console */
+    background-color: #3c3c3c; /* Python Console */
     selection-color: #f5f5f5;
     selection-background-color: #557BB6;
     border: 6px solid #333333;
@@ -1181,12 +1201,12 @@ QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
     margin: 0px;
 }
 
-/* Fix for lists inside task panels */
+/* Fix for lists inside task panels */ /* sketcher constraints list */ 
 QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
 QSint--ActionGroup QFrame[class="content"] QTableView {
     color: #f5f5f5;
-    background-color: #3C3C3C;
+    background-color: #494949;
 }
 
 
@@ -1194,6 +1214,24 @@ QSint--ActionGroup QFrame[class="content"] QTableView {
 Buttons
 ==================================================================================================*/
 /* Common */
+QToolBar > Gui--WorkbenchComboBox  {
+    color: #f5f5f5;
+    background-color: #2a2a2a;  /* workbench picker and drop-down */
+    selection-color: #ffffff;
+    selection-background-color: #2a2a2a;
+    border: 1px solid #2a2a2a;
+    border-radius: 2px;
+    min-width: 50px; /* it ensures the default value is correctly displayed */
+    min-height: 16px; /* important to be a pair number in order to up/down buttons to be divisible by two (if not set could create a blank line in Ubuntu. Its downside is that it's needed to reset it (min-width: 0px) on following elements that can't have it such as fields inside QToolBar and inside QTreeView (Property editor) */
+    padding: 1px 2px; /* temporal: could don't be compatible with elements inside Tree/List view */
+}
+
+QToolBar > Gui--WorkbenchComboBox:!editable {
+    color: #f5f5f5;
+    font-weight: bold;
+    background-color: #557bb6;  /* workbench disabled color */
+}
+
 QComboBox,
 QAbstractSpinBox,
 QSpinBox,
@@ -1204,13 +1242,13 @@ QTimeEdit,
 QDateEdit,
 QDateTimeEdit {
     color: #f5f5f5;
-    background-color: #696969;
+    background-color: #494949;  /* lineedits and drop-downs */
     selection-color: #ffffff;
-    selection-background-color: #557BB6;
+    selection-background-color: #2a2a2a;
     border: 0px solid #2a2a2a;
     border-radius: 2px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
-    min-height: 20px; /* important to be a pair number in order to up/down buttons to be divisible by two (if not set could create a blank line in Ubuntu. Its downside is that it's needed to reset it (min-width: 0px) on following elements that can't have it such as fields inside QToolBar and inside QTreeView (Property editor) */
+    min-height: 16px; /* important to be a pair number in order to up/down buttons to be divisible by two (if not set could create a blank line in Ubuntu. Its downside is that it's needed to reset it (min-width: 0px) on following elements that can't have it such as fields inside QToolBar and inside QTreeView (Property editor) */
     padding: 1px 2px; /* temporal: could don't be compatible with elements inside Tree/List view */
 }
 
@@ -1234,7 +1272,7 @@ QDateTimeEdit {
 QTextEdit:!editable,
 QTextEdit:!editable:focus {
     color: #f5f5f5;
-    background-color: #3C3C3C;
+    background-color: #3c3c3c;
     border: 6px  solid #333333;
     border-radius: 0px;
     margin: 0px;
@@ -1252,10 +1290,10 @@ QDateEdit:focus,
 QDateTimeEdit:focus {
     font-weight: bold;
     color: #f5f5f5;
-    border-color: #3c3c3c;
+    border-color: #333333;
     border: 1px;
     border-right-color: #557BB6; /* same as up/down or drop-down button color */
-    background-color: #696969;
+    background-color: #557bb6;
 }
 
 QComboBox:disabled,
@@ -1267,8 +1305,8 @@ QTextEdit:disabled,
 QTimeEdit:disabled,
 QDateEdit:disabled,
 QDateTimeEdit:disabled {
-    color: #f5f5f5;
-    background-color: #696969; /* same as enabled color */
+    color: #696969;
+    background-color: #494949; /* same as enabled color */
     border-color: #2a2a2a; /* same as enabled color */
 }
 
@@ -1315,7 +1353,7 @@ QDoubleSpinBox:up-button:focus,
 QTimeEdit:up-button:focus,
 QDateEdit:up-button:focus,
 QDateTimeEdit:up-button:focus {
-    background-color: #557BB6;
+    background-color: #2a2a2a;
 }
 
 QAbstractSpinBox:down-button:focus,
@@ -1324,7 +1362,7 @@ QDoubleSpinBox:down-button:focus,
 QTimeEdit:down-button:focus,
 QDateEdit:down-button:focus,
 QDateTimeEdit:down-button:focus {
-    background-color: #557BB6;
+    background-color: #2a2a2a;
 }
 
 QAbstractSpinBox:up-button:disabled,
@@ -1429,7 +1467,7 @@ QComboBox::drop-down {
 
 QComboBox::drop-down:on,
 QComboBox::drop-down:focus {
-    background-color: #557BB6;
+    background-color: #2a2a2a;
 }
 
 QComboBox::down-arrow {
@@ -1454,7 +1492,7 @@ QComboBox {
 
 QComboBox QAbstractItemView {
     color: #bebebe; /* same as regular QComboBox color */
-    background-color: #2a2a2a; /* was transparent */
+    background-color: transparent; /* was transparent */
     selection-color: #f5f5f5;
     selection-background-color: #557BB6;
     border-width: 5px 0px 5px 0px;
@@ -1467,41 +1505,109 @@ QComboBox QAbstractItemView {
 /*==================================================================================================
 Push button
 ==================================================================================================*/
+QPushButton#inspectButton {
+    background-color: #2a2a2a;
+    border-bottom: 2px solid #1e1e1e;
+    min-height: 16px;
+}
+
+QPushButton:focus#inspectButton,
+QPushButton:hover#inspectButton {
+    background-color: #557bb6;
+    border: -2px solid #557bb6;
+}
+
+QPushButton:checked#inspectButton {
+    background-color: #557bb6;
+    border-bottom: solid #557bb6;
+}
+
+QPushButton:pressed#inspectButton {
+    background-color: #557bb6;
+    border-bottom: 1px solid #3c3c3c;
+}
+
+QPushButton#NavigationIndicator {
+    background-color: #557bb6;
+    min-height: 16px;
+    border: 2px solid #557bb6;
+}
+
+QPushButton:hover#NavigationIndicator {
+    border: -2px solid #557bb6;
+}
+
+QPushButton#buttonAddLevel {
+    margin-left:10px;
+}
+
+QPushButton#buttonRename {
+    margin-right:10px;
+}
+
+QPushButton#buttonAddLevel,
+QPushButton#buttonAddProxy,
+QPushButton#buttonDelete,
+QPushButton#buttonToggle,
+QPushButton#buttonIsolate,
+QPushButton#buttonSaveView,
+QPushButton#buttonRename {
+    color: #f5f5f5;
+    max-width: 100%;
+    min-width: 16px;
+    min-height: 24px;
+    padding: 4px;
+    background-color: #333333;
+    border: 1px #557bb6; 
+}
+
+QPushButton:hover#buttonAddLevel,
+QPushButton:hover#buttonAddProxy,
+QPushButton:hover#buttonDelete,
+QPushButton:hover#buttonToggle,
+QPushButton:hover#buttonIsolate,
+QPushButton:hover#buttonSaveView,
+QPushButton:hover#buttonRename {
+    color: #cbd8e6;
+    background-color: #557BB6;
+}  
+
 QPushButton {
     color: #e0e0e0;
     text-align: center;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #696969, stop:1 #696961); /* Middle Mouse Navigation Button and Ok Cancel Apply Help Preferences Buttons */
-    border: 2px;
-    border-color: #2a2a2a;
-    padding: 4px 20px;
+    min-width: 70px;
+    background-color: #2a2a2a; /* Middle Mouse Navigation Button and Ok Cancel Apply Help Preferences Buttons */
+    border: 2px solid #2a2a2a;
+    border-bottom-color: #1e1e1e; /* simulates shadow under the button */
+    padding: 2px 2px;
     margin: 2px 2px;
-    margin-right: 5px;
-    min-height: 20px; /* same as QTabBar QPushButton min-width */
-    border-radius: 2px;
+    min-height: 16px; /* same as QTabBar QPushButton min-width */
+    border-radius: 1px;
 
 }
 
 QPushButton:hover,
 QPushButton:focus {
     color: #cbd8e6;
-    border-color: #2a2a2a;
+    border: -2px solid #333333;
     background-color: #557BB6;
 }
 
 QPushButton:disabled,
 QPushButton:disabled:checked {
-    color: #2a2a2a;
-    background-color: #696969; /* same as enabled color */
+    color: #f5f5f5;
+    background-color: #2a2a2a; /* same as enabled color */
     border-color: #2a2a2a; /* same as enabled color */
 }
 
 QPushButton:pressed {
     background-color: #557BB6;
+    border: 1px solid #3c3c3c;
 }
 
 QPushButton:checked {
-    background-color: #696969;
-    border-color: #557BB6;
+    background-color: #557BB6;
+    border: solid #557BB6;
 }
 
 /* Color Buttons */
@@ -1552,8 +1658,8 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget > QWidget > QF
 }
 
 QPushButton:checked {
-    background-color: #696969;
-    border-color: #696969;
+    background-color: #3c3c3c;
+    border-color: #3c3c3c;
 }
 
 
@@ -1617,7 +1723,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled,
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
-    color: #333333;
+    color: #f5f5f5;
     border-color: #424242;
     background-color: #424242;
 }
@@ -1639,7 +1745,7 @@ QSint--ActionGroup QFrame[class="content"] QMenu::item {
 }
 
 QSint--ActionGroup QFrame[class="content"] QComboBox QAbstractItemView {
-    background-color: #696969;
+    background-color: #333333;
 }
 
 
@@ -1918,10 +2024,10 @@ QToolBar > QDateTimeEdit {
 }
 
 QToolBar > QPushButton {
-    padding: 4px;
+    padding: 2px;
     margin: 0px; /* doesn't work with :left, :right:, :top or :bottom sub-controls */
     min-width: 24px; /* could not be larger due to switchable Preferences "Size of toolbar icons" */
-    min-height: 20px; /* could not be larger due to switchable Preferences "Size of toolbar icons" */
+    min-height: 24px; /* could not be larger due to switchable Preferences "Size of toolbar icons" */
     border-radius: 2px; /* same as regular QPushButton */ 
 }
 
@@ -2058,14 +2164,14 @@ QToolBar QToolButton#qt_toolbar_ext_button:on {
 Tables (spreadsheets)
 ==================================================================================================*/
 QTableView {
-    gridline-color: #696969;
+    gridline-color: #a8a8a8;
     selection-color: #ffffff;
-    selection-background-color: #2D5C9A; /* Default Spreadsheet cell selection background color */
-    background-color: #a0a0a0; /* Default Spreadsheet cell background color */
+    selection-background-color: #557bb6; /* Default Spreadsheet cell selection background color */
+    background-color: #cecece; /* Default Spreadsheet cell background color */
 }
 
 QTableView::item:hover  {
-    background-color: rgba(0,0,0,10);  /* temporal: is it displayed in Linux or Windows? on OSX it isn't */
+    background-color: #557bb6;  /* temporal: is it displayed in Linux or Windows? on OSX it isn't */
 }
 
 QTableView::item:disabled  {
@@ -2074,7 +2180,7 @@ QTableView::item:disabled  {
 
 QTableView::item:selected  {
     color: #a0a0a0;
-    border-color: #cbd8e6; /* same as focused background color */
+    border-color: #cecece; /* same as focused background color */
     border-bottom-color: #557BB6; /* same as focused border color */
 }
 
@@ -2114,7 +2220,7 @@ QTableView > QWidget > QTextEdit,
 QTableView > QWidget > QTimeEdit,
 QTableView > QWidget > QDateEdit,
 QTableView > QWidget > QDateTimeEdit {
-    color: black;
+    color: #f5f5f5;
     background-color: transparent;
     border-color: transparent;
 }
@@ -2145,11 +2251,11 @@ QTableView > QWidget > QTextEdit:focus,
 QTableView > QWidget > QTimeEdit:focus,
 QTableView > QWidget > QDateEdit:focus,
 QTableView > QWidget > QDateTimeEdit:focus {
-    color: #2a2a2a;
-    selection-color: white;
+    color: #000000;
+    selection-color: #f5f5f5;
     selection-background-color: #557BB6;
-    border-color: #cbd8e6;
-    background-color: #cbd8e6;
+    border-color: #3c3c3c;
+    background-color: #cecece;
 }
 
 QTableView > QWidget > QComboBox:disabled,
@@ -2161,7 +2267,7 @@ QTableView > QWidget > QTextEdit:disabled,
 QTableView > QWidget > QTimeEdit:disabled,
 QTableView > QWidget > QDateEdit:disabled,
 QTableView > QWidget > QDateTimeEdit:disabled {
-    color: rgba(0,0,0,120);
+    color: #f5f5f5;
     background-color: transparent;
     border-color: transparent;
 }
@@ -2175,7 +2281,7 @@ QTableView > QWidget > QTextEdit:read-only,
 QTableView > QWidget > QTimeEdit:read-only,
 QTableView > QWidget > QDateEdit:read-only,
 QTableView > QWidget > QDateTimeEdit:read-only {
-    color: black;
+    color: #f5f5f5;
     background-color: transparent;
     border-color: transparent;
 }
