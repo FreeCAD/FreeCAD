@@ -54,6 +54,7 @@ SheetModel::SheetModel(Sheet *_sheet, QObject *parent)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
     aliasBgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e")));
+    lockedAliasColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("LockedAliasedCellColor", "#9effff")));
     textFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("TextColor", "#000000")));
     positiveFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
     negativeFgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
@@ -245,7 +246,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         else {
             std::string alias;
             if (cell->getAlias(alias)) {
-                return QVariant::fromValue(aliasBgColor);
+                return QVariant::fromValue(cell->isAliasLocked() ? lockedAliasColor : aliasBgColor);
             }
             else
                 return QVariant();

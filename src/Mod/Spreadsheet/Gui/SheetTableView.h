@@ -100,6 +100,7 @@ protected Q_SLOTS:
     void onBind();
     void onConfSetup();
     void onEditPersistent(bool);
+    void removeAlias();
 
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
@@ -127,7 +128,7 @@ protected:
     QMenu *contextMenu;
     QMenu *pasteMenu;
 
-#define SHEET_CELL_MODE(_name,_doc) QAction *actionEdit##_name;
+#define SHEET_CELL_MODE(_name,_label,_doc) QAction *actionEdit##_name;
     SHEET_CELL_MODES
 #undef SHEET_CELL_MODE
     QAction *actionEditPersistent;
@@ -147,6 +148,7 @@ protected:
     QAction *actionDel;
     QAction *actionBind;
     QAction *actionAlias;
+    QAction *actionRemoveAlias;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };

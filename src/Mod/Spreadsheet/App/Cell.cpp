@@ -30,6 +30,9 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/trim.hpp>
+#include <boost/regex.hpp>
+
 #include "Cell.h"
 #include "Utils.h"
 #include <boost/tokenizer.hpp>
@@ -132,7 +135,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , editPersistent(other.editPersistent)
 {
     setUsed(MARK_SET, false);
-    setAlias(other.alias);
+    _setAlias(other.alias);
     setDirty();
 }
 
@@ -149,7 +152,7 @@ Cell &Cell::operator =(const Cell &rhs)
     setForeground(rhs.foregroundColor);
     setDisplayUnit(rhs.displayUnit.stringRep);
     setComputedUnit(rhs.computedUnit);
-    setAlias(rhs.alias);
+    _setAlias(rhs.alias);
     setSpans(rhs.rowSpan, rhs.colSpan);
     editMode = rhs.editMode;
     editPersistent = rhs.editPersistent;
@@ -185,7 +188,7 @@ void Cell::setExpression(App::ExpressionPtr &&expr, int type)
 
     auto func = SimpleStatement::cast<FunctionStatement>(expr.get());
     if(func)
-        setAlias(func->getName());
+        setAlias(func->getName(), true);
 
     if((type & PasteFormat) && expr && expr->comment.size()) {
         if(!boost::starts_with(expr->comment,"<Cell "))
@@ -373,6 +376,7 @@ void Cell::setContent(const char * value, bool eval)
         if(eval && newExpr)
             newExpr = newExpr->eval();
         setExpression(std::move(newExpr));
+        applyAutoAlias();
         signaller.tryInvoke();
     }
     catch (Base::Exception &e) {
@@ -548,7 +552,73 @@ bool Cell::getDisplayUnit(DisplayUnit &unit) const
     return isUsed(DISPLAY_UNIT_SET);
 }
 
-void Cell::setAlias(const std::string &n)
+void Cell::checkAutoAlias()
+{
+    if (address.row() > 0) {
+        auto sibling = owner->getValue(CellAddress(address.row()-1, address.col()));
+        if (sibling) {
+            if (sibling->editMode == EditAutoAliasV) {
+                sibling->applyAutoAlias();
+                return;
+            } else if (sibling->editMode == EditAutoAlias) {
+                PropertySheet::AtomicPropertyChange signaller(*owner);
+                editMode = EditAutoAlias;
+                sibling->applyAutoAlias();
+                signaller.tryInvoke();
+                return;
+            }
+        }
+    }
+    if (address.col() > 0) {
+        auto sibling = owner->getValue(CellAddress(address.row(), address.col()-1));
+        if (sibling) {
+            if (sibling->editMode == EditAutoAlias) {
+                sibling->applyAutoAlias();
+                return;
+            } else if (sibling->editMode == EditAutoAliasV) {
+                PropertySheet::AtomicPropertyChange signaller(*owner);
+                editMode = EditAutoAlias;
+                sibling->applyAutoAlias();
+                signaller.tryInvoke();
+                return;
+            }
+        }
+    }
+}
+
+bool Cell::isAliasLocked(CellAddress *addr) const
+{
+    if (address.row() > 0) {
+        auto sibling = owner->getValue(CellAddress(address.row()-1, address.col()));
+        if (sibling && sibling->editMode == EditAutoAliasV) {
+            if (addr) *addr = sibling->address;
+            return true;
+        }
+    }
+    if (address.col() > 0) {
+        auto sibling = owner->getValue(CellAddress(address.row(), address.col()-1));
+        if (sibling && sibling->editMode == EditAutoAlias) {
+            if (addr) *addr = sibling->address;
+            return true;
+        }
+    }
+    return false;
+}
+
+void Cell::setAlias(const std::string &n, bool silent)
+{
+    CellAddress addr;
+    if (isAliasLocked(&addr)) {
+        if (!silent) {
+            std::string msg("Alias locked by 'Auto alias' cell ");
+            msg += addr.toString();
+            throw Base::RuntimeError(msg.c_str());
+        }
+    } else
+        _setAlias(n);
+}
+
+void Cell::_setAlias(const std::string &n)
 {
     if (alias != n) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
@@ -654,6 +724,7 @@ void Cell::setException(const std::string &e, bool silent)
     }
     exceptionStr = e;
     setUsed(EXCEPTION_SET);
+    setDirty();
 }
 
 void Cell::setParseException(const std::string &e)
@@ -1070,7 +1141,7 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
         return defaultColor;
 }
 
-#define SHEET_CELL_MODE(_name, _doc) #_name,
+#define SHEET_CELL_MODE(_name, _label, _doc) #_name,
 static const char *_EditModeNames[] = {
     SHEET_CELL_MODES
 };
@@ -1089,7 +1160,7 @@ Cell::EditMode Cell::getEditMode() const {
 }
 
 bool Cell::setEditMode(const char *name, bool silent) {
-#define SHEET_CELL_MODE(_name, _doc) {#_name, Edit##_name},
+#define SHEET_CELL_MODE(_name, _label, _doc) {#_name, Edit##_name},
     static std::unordered_map<const char *, EditMode, App::CStringHasher, App::CStringHasher> _Map = {
         SHEET_CELL_MODES
     };
@@ -1104,7 +1175,9 @@ bool Cell::setEditMode(const char *name, bool silent) {
 }
 
 bool Cell::setEditData(const QVariant &d) {
-    if(hasException() && editMode!=EditNormal)
+    if(hasException() && editMode != EditNormal
+                      && editMode != EditAutoAlias
+                      && editMode != EditAutoAliasV)
         FC_THROWM(Base::ExpressionError,exceptionStr);
 
     switch(editMode) {
@@ -1641,13 +1714,7 @@ bool Cell::setEditMode(EditMode mode, bool silent) {
                         || mode >= sizeof(_EditModeNames)/sizeof(_EditModeNames[0]))
         return false;
 
-    if(silent) {
-        PropertySheet::AtomicPropertyChange signaler(*owner);
-        editMode = mode;
-        return true;
-    }
-
-    if(mode!=Cell::EditNormal) {
+    if(!silent && mode!=EditNormal && mode!=EditAutoAlias && mode!=EditAutoAliasV) {
         if(!owner || !owner->getContainer()) 
             FC_THROWM(Base::RuntimeError,"Invalid cell '" << address.toString() << "'");
 
@@ -1724,7 +1791,17 @@ bool Cell::setEditMode(EditMode mode, bool silent) {
     }
 
     PropertySheet::AtomicPropertyChange signaler(*owner);
+    if (mode == EditAutoAlias && editMode == EditAutoAliasV) {
+        auto sibling = owner->getValue(CellAddress(address.row()+1, address.col()));
+        if (sibling)
+            sibling->_setAlias("");
+    } else if (mode == EditAutoAliasV && editMode == EditAutoAlias) {
+        auto sibling = owner->getValue(CellAddress(address.row(), address.col()+1));
+        if (sibling)
+            sibling->_setAlias("");
+    }
     editMode = mode;
+    applyAutoAlias();
     signaler.tryInvoke();
     return true;
 }
@@ -1804,4 +1881,62 @@ bool Cell::isPersistentEditMode() const
     return editPersistent
         || editMode == EditButton
         || editMode == EditCheckBox;
+}
+
+void Cell::applyAutoAlias()
+{
+    if (editMode != EditAutoAlias && editMode != EditAutoAliasV)
+        return;
+    auto sexpr = SimpleStatement::cast<App::StringExpression>(expression.get());
+    if (!sexpr)
+        return;
+
+    std::string alias = boost::trim_copy(sexpr->getText());
+    if (alias.empty())
+        return;
+
+    auto pos = alias.find('\n');
+    if (pos != std::string::npos)
+        alias.resize(pos);
+    if (alias.size() && alias[0] >= '0' && alias[0] <= '9')
+        alias.insert(alias.begin(), '_');
+
+    PropertySheet::AtomicPropertyChange signaller(*owner, false);
+
+    // Remove leading digits, spaces, and punctuations
+    static const boost::regex reLeading("^[[:digit:][:punct:][:space:]]*");
+    alias = boost::regex_replace(alias, reLeading, "");
+    // Remove ending spaces and punctuations
+    static const boost::regex reEnding("[[:space:][:punct:]]*$");
+    alias = boost::regex_replace(alias, reEnding, "");
+    // Replace all inbetween consecutive spaces and punctuations with a single '_'
+    static const boost::regex re("[[:space:][:punct:]]+");
+    alias = boost::regex_replace(alias, re, "_");
+
+    CellAddress addr(address.row() + (editMode==EditAutoAlias?0:1),
+                     address.col() + (editMode==EditAutoAlias?1:0));
+    Cell *existing = owner->getValueFromAlias(alias);
+    if (existing && existing->address == addr)
+        return;
+    if (existing == this) {
+        signaller.aboutToChange();
+        setAlias("");
+    } else if (existing) {
+        signaller.aboutToChange();
+        setException("'Auto alias' conflict with alias in cell " + existing->address.toString());
+        signaller.tryInvoke();
+        return;
+    }
+    if (alias.empty() || !owner->isValidAlias(alias)) {
+        signaller.aboutToChange();
+        setException("Invalid string content for 'Auto alias' mode");
+    } else {
+        Cell *sibling = owner->getValue(addr);
+        if (sibling) {
+            signaller.aboutToChange();
+            sibling->clearException();
+            sibling->_setAlias(alias);
+        }
+    }
+    signaller.tryInvoke();
 }

@@ -133,11 +133,15 @@ SheetTableView::SheetTableView(QWidget *parent)
     contextMenu->addAction(actionAlias);
     connect(actionAlias, SIGNAL(triggered()), this, SLOT(cellAlias()));
 
+    actionRemoveAlias = new QAction(tr("Remove alias(es)"), this);
+    contextMenu->addAction(actionRemoveAlias);
+    connect(actionRemoveAlias, SIGNAL(triggered()), this, SLOT(removeAlias()));
+
     QActionGroup *editGroup = new QActionGroup(this);
     editGroup->setExclusive(true);
 
-#define SHEET_CELL_MODE(_name, _doc) \
-    actionEdit##_name = new QAction(tr(#_name), this);\
+#define SHEET_CELL_MODE(_name, _label, _doc) \
+    actionEdit##_name = new QAction(_label, this);\
     actionEdit##_name->setCheckable(true);\
     actionEdit##_name->setData(QVariant((int)Cell::Edit##_name));\
     actionEdit##_name->setToolTip(tr(_doc));\
@@ -231,6 +235,24 @@ void SheetTableView::updateHiddenRows() {
     hiddenRows = sheet->hiddenRows.getValues();
 }
 
+void SheetTableView::removeAlias()
+{
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Remove cell alias"));
+    try {
+        for(auto &index : selectionModel()->selectedIndexes()) {
+            CellAddress addr(index.row(), index.column());
+            auto cell = sheet->getCell(addr);
+            if(cell)
+                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', None)", addr.toString());
+        }
+        Gui::Command::updateActive();
+    }catch(Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to remove alias"),
+                QString::fromLatin1(e.what()));
+    }
+}
+
 void SheetTableView::updateHiddenColumns() {
     bool showAll = actionShowColumns->isChecked();
     for(auto i : sheet->hiddenColumns.getValues()) {
@@ -248,7 +270,7 @@ void SheetTableView::updateHiddenColumns() {
 void SheetTableView::editMode(QAction *action) {
     int mode = action->data().toInt();
 
-    Gui::Command::openCommand("Cell edit mode");
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Cell edit mode"));
     try {
         for(auto &index : selectionModel()->selectedIndexes()) {
             CellAddress addr(index.row(), index.column());
@@ -259,16 +281,16 @@ void SheetTableView::editMode(QAction *action) {
                         << Cell::editModeName((Cell::EditMode)mode) << "')");
             }
         }
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::updateActive();
     }catch(Base::Exception &e) {
         e.ReportException();
-        Gui::Command::abortCommand();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to set edit mode"),
+                QString::fromLatin1(e.what()));
     }
-    Gui::Command::commitCommand();
 }
 
 void SheetTableView::onEditPersistent(bool checked) {
-    Gui::Command::openCommand("Cell persistent edit");
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Cell persistent edit"));
     try {
         for(auto &index : selectionModel()->selectedIndexes()) {
             CellAddress addr(index.row(), index.column());
@@ -278,31 +300,41 @@ void SheetTableView::onEditPersistent(bool checked) {
                         << addr.toString() << "', " << (checked?"True":"False") << ")");
             }
         }
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::updateActive();
     }catch(Base::Exception &e) {
         e.ReportException();
-        Gui::Command::abortCommand();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to set edit mode"),
+                QString::fromLatin1(e.what()));
     }
-    Gui::Command::commitCommand();
 }
 
 void SheetTableView::onRecompute() {
-    Gui::Command::openCommand("Recompute cells");
-    for(auto &range : selectedRanges()) {
-        Gui::cmdAppObjectArgs(sheet, "touchCells('%s', '%s')",
-                range.fromCellString(), range.toCellString());
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Recompute cells"));
+    try {
+        for(auto &range : selectedRanges()) {
+            Gui::cmdAppObjectArgs(sheet, "touchCells('%s', '%s')",
+                    range.fromCellString(), range.toCellString());
+        }
+        Gui::cmdAppObjectArgs(sheet, "recompute(True)");
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to recompute cells"),
+                QString::fromLatin1(e.what()));
     }
-    Gui::cmdAppObjectArgs(sheet, "recompute(True)");
-    Gui::Command::commitCommand();
 }
 
 void SheetTableView::onRecomputeNoTouch() {
-    Gui::Command::openCommand("Recompute cells only");
-    for(auto &range : selectedRanges()) {
-        Gui::cmdAppObjectArgs(sheet, "recomputeCells('%s', '%s')",
-                range.fromCellString(), range.toCellString());
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Recompute cells only"));
+    try {
+        for(auto &range : selectedRanges()) {
+            Gui::cmdAppObjectArgs(sheet, "recomputeCells('%s', '%s')",
+                    range.fromCellString(), range.toCellString());
+        }
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to recompute cells"),
+                QString::fromLatin1(e.what()));
     }
-    Gui::Command::commitCommand();
 }
 
 void SheetTableView::onBind() {
@@ -391,29 +423,34 @@ void SheetTableView::insertRows()
         sortedRows.push_back(it->row());
     std::sort(sortedRows.begin(), sortedRows.end());
 
-    /* Insert rows */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert rows"));
-    std::vector<int>::const_reverse_iterator it = sortedRows.rbegin();
-    while (it != sortedRows.rend()) {
-        int prev = *it;
-        int count = 1;
-
-        /* Collect neighbouring rows into one chunk */
-        ++it;
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Insert rows"));
+    try {
+        /* Insert rows */
+        std::vector<int>::const_reverse_iterator it = sortedRows.rbegin();
         while (it != sortedRows.rend()) {
-            if (*it == prev - 1) {
-                prev = *it;
-                ++count;
-                ++it;
-            }
-            else
-                break;
-        }
+            int prev = *it;
+            int count = 1;
 
-        Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(prev).c_str(), count);
+            /* Collect neighbouring rows into one chunk */
+            ++it;
+            while (it != sortedRows.rend()) {
+                if (*it == prev - 1) {
+                    prev = *it;
+                    ++count;
+                    ++it;
+                }
+                else
+                    break;
+            }
+
+            Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(prev).c_str(), count);
+        }
+        Gui::Command::updateActive();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to insert rows"),
+                QString::fromLatin1(e.what()));
     }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 
     if(updateHidden)
         actionShowRows->setChecked(false);
@@ -439,13 +476,18 @@ void SheetTableView::removeRows()
         sortedRows.push_back(it->row());
     std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
 
-    /* Remove rows */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
-    for (std::vector<int>::const_iterator it = sortedRows.begin(); it != sortedRows.end(); ++it) {
-        Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(*it).c_str(), 1);
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Remove rows"));
+    try {
+        /* Remove rows */
+        for (std::vector<int>::const_iterator it = sortedRows.begin(); it != sortedRows.end(); ++it) {
+            Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(*it).c_str(), 1);
+        }
+        Gui::Command::updateActive();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to remove rows"),
+                QString::fromLatin1(e.what()));
     }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 
     if(updateHidden)
         actionShowRows->setChecked(false);
@@ -470,30 +512,35 @@ void SheetTableView::insertColumns()
         sortedColumns.push_back(it->column());
     std::sort(sortedColumns.begin(), sortedColumns.end());
 
-    /* Insert columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert columns"));
-    std::vector<int>::const_reverse_iterator it = sortedColumns.rbegin();
-    while (it != sortedColumns.rend()) {
-        int prev = *it;
-        int count = 1;
-
-        /* Collect neighbouring columns into one chunk */
-        ++it;
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Insert columns"));
+    try {
+        /* Insert columns */
+        std::vector<int>::const_reverse_iterator it = sortedColumns.rbegin();
         while (it != sortedColumns.rend()) {
-            if (*it == prev - 1) {
-                prev = *it;
-                ++count;
-                ++it;
-            }
-            else
-                break;
-        }
+            int prev = *it;
+            int count = 1;
 
-        Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)",
-                                     columnName(prev).c_str(), count);
+            /* Collect neighbouring columns into one chunk */
+            ++it;
+            while (it != sortedColumns.rend()) {
+                if (*it == prev - 1) {
+                    prev = *it;
+                    ++count;
+                    ++it;
+                }
+                else
+                    break;
+            }
+
+            Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)",
+                                        columnName(prev).c_str(), count);
+        }
+        Gui::Command::updateActive();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to insert columns"),
+                QString::fromLatin1(e.what()));
     }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 
     if(updateHidden)
         actionShowColumns->setChecked(false);
@@ -518,13 +565,18 @@ void SheetTableView::removeColumns()
         sortedColumns.push_back(it->column());
     std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<int>());
 
-    /* Remove columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
-    for (std::vector<int>::const_iterator it = sortedColumns.begin(); it != sortedColumns.end(); ++it)
-        Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)",
-                                     columnName(*it).c_str(), 1);
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Remove columns"));
+    try {
+        /* Remove columns */
+        for (std::vector<int>::const_iterator it = sortedColumns.begin(); it != sortedColumns.end(); ++it)
+            Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)",
+                                        columnName(*it).c_str(), 1);
+        Gui::Command::updateActive();
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to remove columns"),
+                QString::fromLatin1(e.what()));
+    }
 
     if(updateHidden)
         actionShowColumns->setChecked(false);
@@ -726,16 +778,21 @@ void SheetTableView::deleteSelection()
     QModelIndexList selection = selectionModel()->selectedIndexes();
 
     if (selection.size() > 0) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
-        std::vector<Range> ranges = selectedRanges();
-        std::vector<Range>::const_iterator i = ranges.begin();
+        App::AutoTransaction committer(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
+        try {
+            std::vector<Range> ranges = selectedRanges();
+            std::vector<Range>::const_iterator i = ranges.begin();
 
-        for (; i != ranges.end(); ++i) {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
-                                    i->rangeString().c_str());
+            for (; i != ranges.end(); ++i) {
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
+                                        i->rangeString().c_str());
+            }
+            Gui::Command::updateActive();
+        } catch (Base::Exception &e) {
+            e.ReportException();
+            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Failed to clear cells"),
+                    QString::fromLatin1(e.what()));
         }
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
     }
 }
 
@@ -916,7 +973,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
             if(!cell) continue;
             persistent = persistent || cell->isPersistentEditMode();
             switch(cell->getEditMode()) {
-#define SHEET_CELL_MODE(_name, _doc) \
+#define SHEET_CELL_MODE(_name, _label, _doc) \
             case Cell::Edit##_name:\
                 action = actionEdit##_name;\
                 break;

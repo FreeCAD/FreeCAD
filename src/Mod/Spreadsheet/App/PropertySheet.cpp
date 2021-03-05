@@ -279,7 +279,10 @@ void PropertySheet::Paste(const Property &from)
             *(data[ifrom->first]) = *(ifrom->second); // Exists; assign cell directly
         }
         else {
-            data[ifrom->first] = new Cell(this, *(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
+            auto cell = new Cell(this, *(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
+            data[ifrom->first] = cell;
+            cell->checkAutoAlias();
+
         }
         recomputeDependencies(ifrom->first);
 
@@ -494,6 +497,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange, int type) {
                         }
                         cell->setExpression(ExpressionPtr(expr->copy()), type);
                     }
+                    cell->checkAutoAlias();
 
                     int rows, cols;
                     if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1)) 
@@ -575,17 +579,21 @@ Cell * PropertySheet::nonNullCellAt(CellAddress address)
     if (j != mergedCells.end()) {
         std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
 
-        if (i == data.end())
-            return createCell(address);
-        else
+        if (i == data.end()) {
+            auto cell = createCell(address);
+            cell->checkAutoAlias();
+            return cell;
+        } else
             return i->second;
     }
 
     std::map<CellAddress, Cell*>::const_iterator i = data.find(address);
 
-    if (i == data.end())
-        return createCell(address);
-    else
+    if (i == data.end()) {
+        auto cell = createCell(address);
+        cell->checkAutoAlias();
+        return cell;
+    } else
         return i->second;
 }
 
@@ -1674,8 +1682,10 @@ void PropertySheet::setExpressions(
         }
         if(!v.second)
             clear(addr);
-        else
+        else {
             cell->setExpression(std::move(v.second));
+            cell->checkAutoAlias();
+        }
     }
     signaller.tryInvoke();
 }
@@ -1859,10 +1869,11 @@ void PropertySheet::setPathValue(const ObjectIdentifier &path, const App::any &v
                 if(!src) {
                     signaller.aboutToChange();
                     src = createCell(source);
+                    src->checkAutoAlias();
                 }
 
                 std::string alias;
-                if(this!=other && dst->getAlias(alias)) {
+                if(this!=other && dst->getAlias(alias) && !src->isAliasLocked()) {
                     auto *oldCell = getValueFromAlias(alias);
                     if(oldCell && oldCell!=dst) {
                         signaller.aboutToChange();

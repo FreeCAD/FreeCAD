@@ -56,6 +56,7 @@ private:
     boost::signals2::scoped_connection rangeUpdatedConnection;
     Spreadsheet::Sheet * sheet;
     QColor aliasBgColor;
+    QColor lockedAliasColor;
     QColor textFgColor;
     QColor positiveFgColor;
     QColor negativeFgColor;
