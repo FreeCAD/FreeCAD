@@ -38,7 +38,6 @@
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
-#include <Base/StdStlTools.h>
 #include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
