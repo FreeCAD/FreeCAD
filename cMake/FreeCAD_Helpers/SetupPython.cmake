@@ -128,6 +128,7 @@ macro(SetupPython)
                                 "Python not found, install Python!\n"
                                 "=================================\n")
         endif()
+        set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
     else()
         find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 

@@ -45,6 +45,9 @@ constexpr char * FC_VTK_VERSION = "${VTK_VERSION}";
 // Xerces-C
 constexpr char * FC_XERCESC_VERSION = "${XercesC_VERSION}";
 
+// Pivy
+constexpr char * FC_PIVY_VERSION = "${PIVY_VERSION}";
+
 
 #endif // LIBRARY_VERSIONS_H
 
