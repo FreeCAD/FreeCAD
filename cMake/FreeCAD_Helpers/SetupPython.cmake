@@ -128,11 +128,20 @@ macro(SetupPython)
                                 "Python not found, install Python!\n"
                                 "=================================\n")
         endif()
+        
+        # For forward compatibility with new CMake scripts
         set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
+        set(Python3_LIBRARIES ${PYTHON_LIBRARIES})
+        set(Python3_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
+        set(Python3_LIBRARY_DIRS ${PYTHON_LIBRARY_DIRS})
+        set(Python3_VERSION ${PYTHON_VERSION_STRING})
+        set(Python3_VERSION_MAJOR ${PYTHON_VERSION_MAJOR})
+        set(Python3_VERSION_MINOR ${PYTHON_VERSION_MINOR})
+        set(Python3_VERSION_PATCH ${PYTHON_VERSION_PATCH})
     else()
         find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
-        # For compatibility with old CMake scripts
+        # For backwards compatibility with old CMake scripts
         set(PYTHON_LIBRARIES ${Python3_LIBRARIES})
         set(PYTHON_INCLUDE_DIRS ${Python3_INCLUDE_DIRS})
         set(PYTHON_LIBRARY_DIRS ${Python3_LIBRARY_DIRS})
