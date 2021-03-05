@@ -232,12 +232,13 @@ void AboutDialogFactory::setDefaultFactory(AboutDialogFactory *f)
  *  The dialog will be modal.
  */
 AboutDialog::AboutDialog(bool showLic, QWidget* parent)
-  : QDialog(parent, Qt::FramelessWindowHint), ui(new Ui_AboutApplication)
+  : QDialog(parent), ui(new Ui_AboutApplication)
 {
     Q_UNUSED(showLic);
 
     setModal(true);
     ui->setupUi(this);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QRect rect = QApplication::primaryScreen()->availableGeometry();
 #else
@@ -275,6 +276,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 //    }
     ui->tabWidget->setCurrentIndex(0); // always start on the About tab
     setupLabels();
+    showCredits();
     showLicenseInformation();
     showLibraryInformation();
     showCollectionInformation();
@@ -547,6 +549,54 @@ public:
     QString url;
 };
 
+void AboutDialog::showCredits()
+{
+    QString creditsFileURL = QString::fromLatin1("%1/CONTRIBUTORS")
+        .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+    QFile creditsFile(creditsFileURL);
+
+    if (!creditsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+
+    QWidget* tab_credits = new QWidget();
+    tab_credits->setObjectName(QString::fromLatin1("tab_credits"));
+    ui->tabWidget->addTab(tab_credits, tr("Credits"));
+    QVBoxLayout* hlayout = new QVBoxLayout(tab_credits);
+    QTextBrowser* textField = new QTextBrowser(tab_credits);
+    textField->setOpenExternalLinks(false);
+    textField->setOpenLinks(false);
+    hlayout->addWidget(textField);
+
+    QString creditsHTML = QString::fromLatin1("<html><body><h1>");
+    //: Header for the Credits tab of the About screen
+    creditsHTML += tr("Credits");
+    creditsHTML += QString::fromLatin1("</h1><p>");
+    creditsHTML += tr("FreeCAD would not be possible without the contributions of");
+    creditsHTML += QString::fromLatin1(":</p><h2>"); 
+    //: Header for the list of individual people in the Credits list.
+    creditsHTML += tr("Individuals");
+    creditsHTML += QString::fromLatin1("</h2><ul>");
+
+    QTextStream stream(&creditsFile);
+    QString line;
+    while (stream.readLineInto(&line)) {
+        if (!line.isEmpty()) {
+            if (line == QString::fromLatin1("Firms")) {
+                creditsHTML += QString::fromLatin1("</ul><h2>");
+                //: Header for the list of companies/organizations in the Credits list.
+                creditsHTML += tr("Organizations");
+                creditsHTML += QString::fromLatin1("</h2><ul>");
+            } 
+            else {
+                creditsHTML += QString::fromLatin1("<li>") + line + QString::fromLatin1("</li>");
+            }
+        }
+    }
+    creditsHTML += QString::fromLatin1("</ul></body></html>");
+    textField->setHtml(creditsHTML);
+}
+
 void AboutDialog::showLicenseInformation()
 {
     QString licenseFileURL = QString::fromLatin1("%1/LICENSE.html")
@@ -557,7 +607,7 @@ void AboutDialog::showLicenseInformation()
         return; // Leave the existing license placeholder there if we can't find our license html file
     }
 
-    ui->tabWidget->removeTab (2); // Hide the license placeholder widget
+    ui->tabWidget->removeTab (1); // Hide the license placeholder widget
 
     QWidget* tab_license = new QWidget();
     tab_license->setObjectName(QString::fromLatin1("tab_license"));

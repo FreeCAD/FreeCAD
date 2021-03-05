@@ -88,6 +88,7 @@ protected:
     App::PropertyLinkSub* propReferenceAxis;
 
 private:
+    void connectSignals();
     void updateUI();
 
 private:

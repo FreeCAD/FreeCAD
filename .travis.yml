@@ -89,19 +89,6 @@ jobs:
           - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - CACHE_NAME=JOB2
 
-      - os: linux
-        dist: bionic
-        language: cpp
-        compiler: gcc-7
-        cache: ccache
-        env:
-          - CC=gcc-7
-          - CXX=g++-7
-          - CC_FOR_BUILD=gcc-7
-          - CXX_FOR_BUILD=g++-7
-          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc"
-          - CACHE_NAME=JOB3
-
             #      - os: osx
             #        osx_image: xcode11.6
             #        language: cpp

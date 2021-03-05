@@ -3,13 +3,15 @@ configure_file(ThirdPartyLibraries.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html COPYONLY)
 configure_file(LICENSE.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/LICENSE.html COPYONLY)
+configure_file(CONTRIBUTORS
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/CONTRIBUTORS COPYONLY)
 
 
 
 if(BUILD_GUI)
     FILE(GLOB QCH_FILES freecad.qch.part*)
     list(SORT QCH_FILES)
-    set (DEST_FILE ${CMAKE_BINARY_DIR}/doc/freecad.qch)
+    set (DEST_FILE ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/freecad.qch)
     foreach(SRC_FILE ${QCH_FILES})
         if(${SRC_FILE} IS_NEWER_THAN ${DEST_FILE})
             EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/catfiles.py
@@ -20,9 +22,9 @@ if(BUILD_GUI)
         endif()
     endforeach()
 
-    configure_file(freecad.qhc ${CMAKE_BINARY_DIR}/doc/freecad.qhc COPYONLY)
+    configure_file(freecad.qhc ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/freecad.qhc COPYONLY)
     INSTALL(FILES
-        ${CMAKE_BINARY_DIR}/doc/freecad.qch
+        ${DEST_FILE}
         DESTINATION ${CMAKE_INSTALL_DOCDIR}
     )
 endif(BUILD_GUI)
@@ -31,6 +33,7 @@ INSTALL(FILES
     freecad.qhc
     ThirdPartyLibraries.html
     LICENSE.html
+    CONTRIBUTORS
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 

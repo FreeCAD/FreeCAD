@@ -82,6 +82,7 @@ protected:
     unsigned getOccurrences(void) const;
 
 private:
+    void connectSignals();
     void setupUI();
     void updateUI();
     void kickUpdateViewTimer() const;

@@ -181,6 +181,27 @@ const PropertyQuantityConstraint::Constraints*  PropertyQuantityConstraint::getC
     return _ConstStruct;
 }
 
+double PropertyQuantityConstraint::getMinimum() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->LowerBound;
+    return std::numeric_limits<double>::min();
+}
+
+double PropertyQuantityConstraint::getMaximum() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->UpperBound;
+    return std::numeric_limits<double>::max();
+}
+
+double PropertyQuantityConstraint::getStepSize() const
+{
+    if (_ConstStruct)
+        return _ConstStruct->StepSize;
+    return 1.0;
+}
+
 void PropertyQuantityConstraint::setPyObject(PyObject *value)
 {
     Base::Quantity quant= createQuantityFromPy(value);
