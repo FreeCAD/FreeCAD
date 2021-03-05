@@ -99,6 +99,7 @@ TextEdit::TextEdit(QWidget *parent)
     , deltaCol(0)
     , deltaRow(0)
 {
+    setLeadChar('=');
 }
 
 bool TextEdit::event(QEvent *event)

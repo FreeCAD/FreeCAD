@@ -72,6 +72,8 @@ public:
 
     bool isInsideString() const {return insideString;}
 
+    void setLeadChar(char lead) {leadChar = lead;}
+
 public Q_SLOTS:
     void slotUpdate(const QString &prefix, int pos);
 
@@ -131,7 +133,8 @@ private:
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {
     Q_OBJECT
 public:
-    ExpressionTextEdit(QWidget *parent = nullptr);
+    ExpressionTextEdit(QWidget *parent = nullptr, char leadChar=0);
+    void setLeadChar(char lead);
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();
@@ -148,6 +151,7 @@ private:
     ExpressionCompleter * completer;
     bool block;
     bool exactMatch;
+    char leadChar;
 };
 
 }

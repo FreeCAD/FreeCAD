@@ -2513,6 +2513,8 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char le
 
 void ExpressionLineEdit::setLeadChar(char lead) {
     leadChar = lead;
+    if (completer)
+        completer->setLeadChar(lead);
 }
 
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj, bool _checkInList)
@@ -2624,11 +2626,12 @@ void ExpressionLineEdit::resizeEvent(QResizeEvent *ev)
 
 ///////////////////////////////////////////////////////////////////////
 
-ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
+ExpressionTextEdit::ExpressionTextEdit(QWidget *parent, char lead)
     : QPlainTextEdit(parent)
     , completer(nullptr)
     , block(true)
     , exactMatch(false)
+    , leadChar(lead)
 {
     exactMatch = ExprParams::CompleterMatchExact();
     connect(this, SIGNAL(textChanged()), this, SLOT(slotTextChanged()));
@@ -2642,6 +2645,13 @@ void ExpressionTextEdit::setExactMatch(bool enabled) {
 #endif
 }
 
+void ExpressionTextEdit::setLeadChar(char lead)
+{
+    leadChar = lead;
+    if (completer)
+        completer->setLeadChar(lead);
+}
+
 void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
 {
     if (completer) {
@@ -2651,6 +2661,7 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
 
     if (currentDocObj != nullptr) {
         completer = new ExpressionCompleter(currentDocObj, this);
+        completer->setLeadChar(leadChar);
 #if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
@@ -2679,10 +2690,13 @@ void ExpressionTextEdit::slotTextChanged()
         return;
     QTextCursor c = textCursor();
     c.movePosition(QTextCursor::Start);
-    if(c.block().text().startsWith(QLatin1Char('\'')))
+    QString text = c.block().text();
+    if(!text.size() || (leadChar && text[0]!=QLatin1Char(leadChar)))
         return;
-    QTextCursor cursor = textCursor();
-    Q_EMIT textChanged2(cursor.block().text(),cursor.positionInBlock());
+    if (!text.startsWith(QLatin1Char('\''))) {
+        QTextCursor cursor = textCursor();
+        Q_EMIT textChanged2(cursor.block().text(),cursor.positionInBlock());
+    }
 }
 
 void ExpressionTextEdit::slotCompleteText(QString completionPrefix)
