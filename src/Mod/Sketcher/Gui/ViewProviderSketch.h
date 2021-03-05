@@ -166,9 +166,9 @@ public:
         STATUS_SKETCH_UseRubberBand /**< enum value when making a rubber band selection *//**< enum value a DrawSketchHandler is in control. */
     };
     /// is called by GuiCommands to set the drawing mode
-    void setSketchMode(SketchMode mode) {Mode = mode;}
+    void setSketchMode(SketchMode mode);
     /// get the sketch mode
-    SketchMode getSketchMode(void) const {return Mode;}
+    SketchMode getSketchMode(void) const {return _Mode;}
     //@}
 
     /** @name helper functions */
@@ -430,7 +430,7 @@ protected:
     void clearSelectPoints(void);
 
     // modes while sketching
-    SketchMode Mode;
+    SketchMode _Mode;
 
     // colors
     static SbColor VertexColor;
