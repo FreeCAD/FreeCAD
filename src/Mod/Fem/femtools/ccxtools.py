@@ -817,9 +817,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             obj.Text = file.read()
             file.close()
             obj.setPropertyStatus("Text", "ReadOnly")        # set property editor readonly
-            if hasattr(obj, "ViewObject"):
+            if FreeCAD.GuiUp:
                 obj.ViewObject.ReadOnly = True               # set editor view readonly
-            print(self.analysis)
         else:
             raise Exception("FEM: No .dat results found at {}!".format(dat_result_file))
 
