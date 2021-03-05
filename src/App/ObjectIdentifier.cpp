@@ -502,7 +502,11 @@ std::size_t ObjectIdentifier::hash() const
 {
     if(_hash && _cache.size())
         return _hash;
-    const_cast<ObjectIdentifier*>(this)->_hash = boost::hash_value(toString());
+    if (!owner || !owner->getNameInDocument())
+        return 0;
+    // To disambiguate local property reference syntax, include the owner's fullname
+    const_cast<ObjectIdentifier*>(this)->_hash = boost::hash_value(
+            owner->getFullName() + " " + toString());
     return _hash;
 }
 
@@ -1736,6 +1740,10 @@ ObjectIdentifier ObjectIdentifier::canonicalPath() const
         res.owner = result.resolvedDocumentObject;
         res._cache.clear();
     }
+    // If the property can be resolved, then resolveAmbiguity will auto set the
+    // localProperty below. However, the property may not exist (e.g. when
+    // renaming identifier, the old identifier no longer exist).
+    res.localProperty = true;
     res.resolveAmbiguity(result);
     if(!result.resolvedProperty || result.propertyType!=PseudoNone)
         return res;
