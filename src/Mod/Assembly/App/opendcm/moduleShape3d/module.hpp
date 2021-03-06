@@ -65,7 +65,7 @@
     typename Generator  \
     BOOST_PP_ENUM_TRAILING_PARAMS(n, typename Arg) \
     > \
-    boost::shared_ptr<Shape3D> createShape3D( \
+    std::shared_ptr<Shape3D> createShape3D( \
                      BOOST_PP_ENUM_BINARY_PARAMS(n, Arg, const& arg) \
                    );
 
@@ -76,16 +76,16 @@
     typename Generator \
     BOOST_PP_ENUM_TRAILING_PARAMS(n, typename Arg)\
     > \
-    boost::shared_ptr<typename ModuleShape3D<TypeList, ID>::template type<Sys>::Shape3D> \
+    std::shared_ptr<typename ModuleShape3D<TypeList, ID>::template type<Sys>::Shape3D> \
     ModuleShape3D<TypeList, ID>::type<Sys>::inheriter_base::createShape3D( \
             BOOST_PP_ENUM_BINARY_PARAMS(n, Arg, const& arg) \
                                               ) \
     { \
       typedef typename system_traits<Sys>::template getModule<details::m3d>::type module3d; \
       typedef typename module3d::Geometry3D Geometry3D; \
-      boost::shared_ptr<Geometry3D> g_ptr; \
-      boost::shared_ptr<Shape3D> hlg_ptr; \
-      boost::shared_ptr<Shape3D> ptr = boost::shared_ptr<Shape3D>(new Shape3D(*m_this)); \
+      std::shared_ptr<Geometry3D> g_ptr; \
+      std::shared_ptr<Shape3D> hlg_ptr; \
+      std::shared_ptr<Shape3D> ptr = std::shared_ptr<Shape3D>(new Shape3D(*m_this)); \
       BOOST_PP_REPEAT(n, APPEND_SINGLE, ptr) \
       ptr->template initShape<Generator>();\
       m_this->push_back(ptr);\
@@ -108,7 +108,7 @@ struct converter_g {
     mpl::and_<
     mpl::not_< boost::is_same<typename mpl::find<gtypes, T>::type,typename mpl::end<gtypes>::type> >,
         mpl::not_<boost::is_same<Identifier, T> >
-    >, boost::shared_ptr<R>  >::type  apply(T const& t, Sys* sys) {
+    >, std::shared_ptr<R>  >::type  apply(T const& t, Sys* sys) {
         return sys->createGeometry3D(t);
     };
 
@@ -118,22 +118,22 @@ struct converter_g {
     mpl::and_<
     boost::is_same<typename mpl::find<gtypes, T>::type, typename mpl::end<gtypes>::type>,
           mpl::not_<boost::is_same<Identifier, T> >
-    >, boost::shared_ptr<R>  >::type apply(T const& t, Sys* sys) {
-        return boost::shared_ptr<R>();
+    >, std::shared_ptr<R>  >::type apply(T const& t, Sys* sys) {
+        return std::shared_ptr<R>();
     };
 
     //seems to be an identifier type, lets check if we have such a geometry
     template<typename gtypes, typename Sys, typename Identifier>
     static typename boost::enable_if<
-    boost::is_same<Identifier, T>, boost::shared_ptr<R>  >::type  apply(T const& t, Sys* sys) {
+    boost::is_same<Identifier, T>, std::shared_ptr<R>  >::type  apply(T const& t, Sys* sys) {
         return sys->getGeometry3D(t);
     };
 };
 
 template<typename R>
-struct converter_g< boost::shared_ptr<R>, R> {
+struct converter_g< std::shared_ptr<R>, R> {
     template<typename gtypes, typename Sys, typename Identifier>
-    static boost::shared_ptr<R> apply(boost::shared_ptr<R> t, Sys* sys) {
+    static std::shared_ptr<R> apply(std::shared_ptr<R> t, Sys* sys) {
         return t;
     };
 };
@@ -146,14 +146,14 @@ struct converter_hlg  {
     boost::is_same<typename mpl::find<gtypes, T>::type, typename mpl::end<gtypes>::type>,
           mpl::not_<boost::is_same<Identifier, T> >
           >,
-    boost::shared_ptr<R>  >::type apply(T const& t, boost::shared_ptr<R> self, Sys* sys) {
-        return  boost::shared_ptr<R>();
+    std::shared_ptr<R>  >::type apply(T const& t, std::shared_ptr<R> self, Sys* sys) {
+        return  std::shared_ptr<R>();
     };
 
     template<typename gtypes, typename Sys, typename Identifier>
     static typename boost::enable_if<
     mpl::not_< boost::is_same<typename mpl::find<gtypes, T>::type, typename mpl::end<gtypes>::type> >,
-    boost::shared_ptr<R>  >::type apply(T const& t, boost::shared_ptr<R> self, Sys* sys) {
+    std::shared_ptr<R>  >::type apply(T const& t, std::shared_ptr<R> self, Sys* sys) {
 
         //shape can only be set one time, throw an error otherwise
         if(self->holdsType())
@@ -166,15 +166,15 @@ struct converter_hlg  {
     //seems to be an identifier type, lets check if we have such a geometry
     template<typename gtypes, typename Sys, typename Identifier>
     static typename boost::enable_if<
-    boost::is_same<Identifier, T>, boost::shared_ptr<R>  >::type  apply(T const& t, boost::shared_ptr<R> self, Sys* sys) {
+    boost::is_same<Identifier, T>, std::shared_ptr<R>  >::type  apply(T const& t, std::shared_ptr<R> self, Sys* sys) {
         return sys->getShape3D(t);
     };
 };
 
 template<typename R>
-struct converter_hlg<boost::shared_ptr<R>, R>  {
+struct converter_hlg<std::shared_ptr<R>, R>  {
     template<typename gtypes, typename Sys, typename Identifier>
-    static boost::shared_ptr<R> apply(boost::shared_ptr<R> t, boost::shared_ptr<R> self, Sys* sys) {
+    static std::shared_ptr<R> apply(std::shared_ptr<R> t, std::shared_ptr<R> self, Sys* sys) {
         return  t;
     };
 };
@@ -194,8 +194,8 @@ struct ModuleShape3D {
         struct Shape3D;
 
         typedef mpl::map2<
-        mpl::pair<remove, boost::function<void (boost::shared_ptr<Shape3D>) > >,
-            mpl::pair<remove, boost::function<void (boost::shared_ptr<Shape3D>) > > > ShapeSig;
+        mpl::pair<remove, boost::function<void (std::shared_ptr<Shape3D>) > >,
+            mpl::pair<remove, boost::function<void (std::shared_ptr<Shape3D>) > > > ShapeSig;
 
         template<typename Derived>
         struct Shape3D_base : public details::Geometry<typename Sys::Kernel, 3, typename Sys::geometries>, public Object<Sys, Derived, ShapeSig > {
@@ -237,29 +237,29 @@ struct ModuleShape3D {
                 return t;
             };
 
-            virtual boost::shared_ptr<Derived> clone(Sys& newSys);
+            virtual std::shared_ptr<Derived> clone(Sys& newSys);
 
             /*shape access functions and extractors to mimic vector<> iterators*/
-            typedef std::vector<fusion::vector<boost::shared_ptr<Geometry3D>, Connection> > GeometryVector;
-            typedef std::vector<fusion::vector<boost::shared_ptr<Derived>, Connection> > ShapeVector;
-            typedef std::vector<fusion::vector<boost::shared_ptr<Constraint3D>, Connection> > ConstraintVector;
+            typedef std::vector<fusion::vector<std::shared_ptr<Geometry3D>, Connection> > GeometryVector;
+            typedef std::vector<fusion::vector<std::shared_ptr<Derived>, Connection> > ShapeVector;
+            typedef std::vector<fusion::vector<std::shared_ptr<Constraint3D>, Connection> > ConstraintVector;
 
             struct geom_extractor  {
-                typedef boost::shared_ptr<Geometry3D> result_type;
+                typedef std::shared_ptr<Geometry3D> result_type;
                 template<typename T>
                 result_type operator()(T& pair) const {
                     return fusion::at_c<0>(pair);
                 };
             };
             struct shape_extractor  {
-                typedef boost::shared_ptr<Shape3D> result_type;
+                typedef std::shared_ptr<Shape3D> result_type;
                 template<typename T>
                 result_type operator()(T& pair) const {
                     return fusion::at_c<0>(pair);
                 };
             };
             struct cons_extractor  {
-                typedef boost::shared_ptr<Constraint3D> result_type;
+                typedef std::shared_ptr<Constraint3D> result_type;
                 template<typename T>
                 result_type operator()(T& pair) const {
                     return fusion::at_c<0>(pair);
@@ -288,15 +288,15 @@ struct ModuleShape3D {
                 return boost::make_transform_iterator(m_constraints.end(), cons_extractor());
             };
 
-            boost::shared_ptr<Geometry3D> geometry(purpose f);
+            std::shared_ptr<Geometry3D> geometry(purpose f);
             template<typename T>
-            boost::shared_ptr<Shape3D> subshape();
+            std::shared_ptr<Shape3D> subshape();
 
             //callbacks
-            void recalc(boost::shared_ptr<Geometry3D> g);
-            void remove(boost::shared_ptr<Geometry3D> g);
-            void remove(boost::shared_ptr<Derived> g);
-            void remove(boost::shared_ptr<Constraint3D> g);
+            void recalc(std::shared_ptr<Geometry3D> g);
+            void remove(std::shared_ptr<Geometry3D> g);
+            void remove(std::shared_ptr<Derived> g);
+            void remove(std::shared_ptr<Constraint3D> g);
 
         private:
 
@@ -342,13 +342,13 @@ struct ModuleShape3D {
             };
 
             Variant m_geometry; //Variant holding the real geometry type
-            boost::shared_ptr< details::ShapeGeneratorBase<Sys> > m_generator;
+            std::shared_ptr< details::ShapeGeneratorBase<Sys> > m_generator;
 
             using Object<Sys, Derived, ShapeSig>::m_system;
 
             template<typename generator>
             void initShape() {
-                m_generator = boost::shared_ptr<details::ShapeGeneratorBase<Sys> >(new typename generator::template type<Sys>(m_system));
+                m_generator = std::shared_ptr<details::ShapeGeneratorBase<Sys> >(new typename generator::template type<Sys>(m_system));
                 m_generator->set(ObjBase::shared_from_this(), &m_geometries, &m_shapes, &m_constraints);
 
                 if(!m_generator->check())
@@ -362,9 +362,9 @@ struct ModuleShape3D {
 
             //the storage is private, all things need to be added by this methods.
             //this is used to ensure the proper event connections
-            boost::shared_ptr<Derived> append(boost::shared_ptr<Geometry3D> g);
-            boost::shared_ptr<Derived> append(boost::shared_ptr<Derived> g);
-            boost::shared_ptr<Derived> append(boost::shared_ptr<Constraint3D> g);
+            std::shared_ptr<Derived> append(std::shared_ptr<Geometry3D> g);
+            std::shared_ptr<Derived> append(std::shared_ptr<Derived> g);
+            std::shared_ptr<Derived> append(std::shared_ptr<Constraint3D> g);
 
             //override protected event functions to emit signals
             void reset() {};
@@ -428,7 +428,7 @@ struct ModuleShape3D {
                 m_this = (Sys*)this;
             };
 
-            void system_sub(boost::shared_ptr<Sys> subsys) {};
+            void system_sub(std::shared_ptr<Sys> subsys) {};
 
         protected:
             Sys* m_this;
@@ -437,7 +437,7 @@ struct ModuleShape3D {
             //with no vararg templates before c++11 we need preprocessor to create the overloads of create we need
             BOOST_PP_REPEAT(5, CREATE_DEF, ~)
 
-            void removeShape3D(boost::shared_ptr<Shape3D> g);
+            void removeShape3D(std::shared_ptr<Shape3D> g);
         };
 
         struct inheriter_id : public inheriter_base {
@@ -446,7 +446,7 @@ struct ModuleShape3D {
 
             void removeShape3D(ID id);
             bool hasShape3D(ID id);
-            boost::shared_ptr<Shape3D> getShape3D(ID id);
+            std::shared_ptr<Shape3D> getShape3D(ID id);
 
             using inheriter_base::removeShape3D;
 
@@ -539,10 +539,10 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::set(const T&
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-boost::shared_ptr<Derived> ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::clone(Sys& newSys) {
+std::shared_ptr<Derived> ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::clone(Sys& newSys) {
 
     //copy the standard stuff
-    boost::shared_ptr<Derived> np = boost::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
+    std::shared_ptr<Derived> np = std::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
     np->m_system = &newSys;
     //it's possible that the variant contains pointers, so we need to clone them
     cloner clone_fnc(np->m_geometry);
@@ -553,7 +553,7 @@ boost::shared_ptr<Derived> ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-boost::shared_ptr<typename system_traits<Sys>::template getModule<details::m3d>::type::Geometry3D>
+std::shared_ptr<typename system_traits<Sys>::template getModule<details::m3d>::type::Geometry3D>
 ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::geometry(purpose f) {
 
     for(geometry3d_iterator it = beginGeometry3D(); it != endGeometry3D(); it++) {
@@ -562,17 +562,17 @@ ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::geometry(purpose 
             return *it;
     };
 
-    return boost::shared_ptr<Geometry3D>();
+    return std::shared_ptr<Geometry3D>();
 };
 
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-boost::shared_ptr<Derived>
-ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::append(boost::shared_ptr<Geometry3D> g) {
+std::shared_ptr<Derived>
+ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::append(std::shared_ptr<Geometry3D> g) {
 
     g->template setProperty<shape_geometry_prop>(true);
-    Connection c = g->template connectSignal<dcm::remove>(boost::bind(static_cast<void (Shape3D_base::*)(boost::shared_ptr<Geometry3D>)>(&Shape3D_base::remove) , this, _1));
+    Connection c = g->template connectSignal<dcm::remove>(boost::bind(static_cast<void (Shape3D_base::*)(std::shared_ptr<Geometry3D>)>(&Shape3D_base::remove) , this, _1));
     m_geometries.push_back(fusion::make_vector(g,c));
 
     return ObjBase::shared_from_this();
@@ -582,10 +582,10 @@ ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::append(boost::sha
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-boost::shared_ptr<Derived>
-ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::append(boost::shared_ptr<Derived> g) {
+std::shared_ptr<Derived>
+ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::append(std::shared_ptr<Derived> g) {
 
-    Connection c = g->template connectSignal<dcm::remove>(boost::bind(static_cast<void (Shape3D_base::*)(boost::shared_ptr<Derived>)>(&Shape3D_base::remove) , this, _1));
+    Connection c = g->template connectSignal<dcm::remove>(boost::bind(static_cast<void (Shape3D_base::*)(std::shared_ptr<Derived>)>(&Shape3D_base::remove) , this, _1));
     m_shapes.push_back(fusion::make_vector(g,c));
 
     return ObjBase::shared_from_this();
@@ -594,10 +594,10 @@ ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::append(boost::sha
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-boost::shared_ptr<Derived>
-ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::append(boost::shared_ptr<Constraint3D> g) {
+std::shared_ptr<Derived>
+ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::append(std::shared_ptr<Constraint3D> g) {
 
-    Connection c = g->template connectSignal<dcm::remove>(boost::bind(static_cast<void (Shape3D_base::*)(boost::shared_ptr<Constraint3D>)>(&Shape3D_base::remove) , this, _1));
+    Connection c = g->template connectSignal<dcm::remove>(boost::bind(static_cast<void (Shape3D_base::*)(std::shared_ptr<Constraint3D>)>(&Shape3D_base::remove) , this, _1));
     m_constraints.push_back(fusion::make_vector(g,c));
 
     return ObjBase::shared_from_this();
@@ -626,7 +626,7 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::disconnectAl
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::recalc(boost::shared_ptr<Geometry3D> g) {
+void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::recalc(std::shared_ptr<Geometry3D> g) {
 
     //we recalculated thebase line, that means we have our new value. use it.
     Base::finishCalculation();
@@ -635,7 +635,7 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::recalc(boost
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost::shared_ptr<Geometry3D> g) {
+void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(std::shared_ptr<Geometry3D> g) {
 
     //before we delete this shape by calling the system remove function, we need to remove
     //this geometry as this would be deleted again by the system call and we would go into infinite recursion
@@ -656,7 +656,7 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost::shared_ptr<Derived> g) {
+void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(std::shared_ptr<Derived> g) {
 
     //before we delete this shape by calling the system remove function, we need to remove
     //this geometry as this would be deleted again by the system call and we would go into infinite recursion
@@ -677,7 +677,7 @@ void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(boost::shared_ptr<Constraint3D> g) {
+void ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D_base<Derived>::remove(std::shared_ptr<Constraint3D> g) {
 
     //before we delete this shape by calling the system remove function, we need to remove
     //this geometry as this would be deleted again by the system call and we would go into infinite recursion
@@ -785,7 +785,7 @@ ModuleShape3D<Typelist, ID>::type<Sys>::Shape3D::Shape3D(const T& geometry, Sys&
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_base::removeShape3D(boost::shared_ptr<Shape3D> g) {
+void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_base::removeShape3D(std::shared_ptr<Shape3D> g) {
 
     //disconnect all shapes, geometries and constraints, as otherwise we would go into infinite
     //recursion
@@ -822,24 +822,24 @@ bool ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::hasShape3D(Identifier
 
 template<typename Typelist, typename ID>
 template<typename Sys>
-boost::shared_ptr<typename ModuleShape3D<Typelist, ID>::template type<Sys>::Shape3D>
+std::shared_ptr<typename ModuleShape3D<Typelist, ID>::template type<Sys>::Shape3D>
 ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::getShape3D(Identifier id) {
-    std::vector< boost::shared_ptr<Shape3D> >& vec = inheriter_base::m_this->template objectVector<Shape3D>();
-    typedef typename std::vector< boost::shared_ptr<Shape3D> >::iterator iter;
+    std::vector< std::shared_ptr<Shape3D> >& vec = inheriter_base::m_this->template objectVector<Shape3D>();
+    typedef typename std::vector< std::shared_ptr<Shape3D> >::iterator iter;
 
     for(iter it=vec.begin(); it!=vec.end(); it++) {
         if(compare_traits<Identifier>::compare((*it)->getIdentifier(), id))
             return *it;
     };
 
-    return  boost::shared_ptr<Shape3D>();
+    return  std::shared_ptr<Shape3D>();
 };
 
 template<typename Typelist, typename ID>
 template<typename Sys>
 void ModuleShape3D<Typelist, ID>::type<Sys>::inheriter_id::removeShape3D(Identifier id) {
 
-    boost::shared_ptr<Shape3D> s = getShape3D(id);
+    std::shared_ptr<Shape3D> s = getShape3D(id);
 
     if(s)
         removeShape3D(s);
