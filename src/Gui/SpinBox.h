@@ -84,7 +84,7 @@ public:
     uint maximum() const;
     void setMaximum( uint value );
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
     bool apply();
@@ -127,7 +127,7 @@ public:
     IntSpinBox ( QWidget* parent=0 );
     virtual ~IntSpinBox();
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 
@@ -154,7 +154,7 @@ public:
     DoubleSpinBox ( QWidget* parent=0 );
     virtual ~DoubleSpinBox();
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 
