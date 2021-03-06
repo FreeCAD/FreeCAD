@@ -33,13 +33,7 @@ __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
 printverbose = False
 
-import FreeCAD, io, os, sys
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    gui = True
-else:
-    if printverbose: print("FreeCAD Gui not present.")
-    gui = False
+import FreeCAD, io, os
 
 import ply.lex as lex
 import ply.yacc as yacc
@@ -50,9 +44,15 @@ from OpenSCADUtils import *
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
+
+if FreeCAD.GuiUp:
+    gui = True
+else:
+    if printverbose: print("FreeCAD Gui not present.")
+    gui = False
+
 hassetcolor=[]
 alreadyhidden=[]
-printverbose = True
 
 # Get the token map from the lexer.  This is required.
 import tokrules
@@ -130,7 +130,7 @@ def insert(filename,docname):
     "called when freecad imports a file"
     global doc
     global pathName
-    groupname = os.path.splitext(os.path.basename(filename))[0]
+    groupname_unused = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc=FreeCAD.getDocument(docname)
     except NameError:
@@ -596,7 +596,7 @@ def p_difference_action(p):
     if printverbose: print(len(p[5]))
     if printverbose: print(p[5])
     if (len(p[5]) == 0 ): #nochild
-        mycut = placeholder('group',[],'{}')
+        mycut_unused = placeholder('group',[],'{}')
     elif (len(p[5]) == 1 ): #single object
         p[0] = p[5]
     else:
@@ -806,7 +806,6 @@ def process_mesh_file(fname,ext):
 
 
 def processTextCmd(t):
-    import os
     from OpenSCADUtils import callopenscadstring
     tmpfilename = callopenscadstring(t,'dxf')
     from OpenSCAD2Dgeom import importDXFface 
