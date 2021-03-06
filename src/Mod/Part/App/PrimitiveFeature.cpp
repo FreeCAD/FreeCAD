@@ -853,14 +853,15 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
-        Standard_Real nbTurns = myHeight / myPitch;
         Standard_Real mySegLen = SegmentLength.getValue();
-        
-        Standard_Real myRadiusTop = myRadius + myHeight * tan(Base::toRadians(myAngle));
-        TopoShape spirhelix;
+        if (myPitch < Precision::Confusion())
+            Standard_Failure::Raise("Pitch too small");
+        Standard_Real nbTurns = myHeight / myPitch;
+        if (nbTurns > 1e4)
+            Standard_Failure::Raise("Number of turns too high (> 1e4)");
+        Standard_Real myRadiusTop = myRadius + myHeight * tan(myAngle/180.0f*M_PI);
 
-        TopoDS_Shape myHelix = spirhelix.makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, mySegLen, myLocalCS);
-        this->Shape.setValue(myHelix);
+        this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, mySegLen, myLocalCS));
     }
     catch (Standard_Failure& e) {
 
@@ -919,15 +920,11 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         Standard_Real myGrowth = Growth.getValue();
         Standard_Real myRadiusTop = myRadius + myGrowth * myNumRot;
         Standard_Real mySegLen = SegmentLength.getValue();
-        TopoShape spirhelix;
 
-        if (myGrowth < Precision::Confusion())
-            Standard_Failure::Raise("Growth too small");
         if (myNumRot < Precision::Confusion())
             Standard_Failure::Raise("Number of rotations too small");
-        
-        TopoDS_Shape mySpiral = spirhelix.makeSpiralHelix(myRadius, myRadiusTop, 0, myNumRot, mySegLen, Standard_False);
-        this->Shape.setValue(mySpiral);
+
+        this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, 0, myNumRot, mySegLen, Standard_False));
         return Primitive::execute();
     }
     catch (Standard_Failure& e) {

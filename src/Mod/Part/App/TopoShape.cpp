@@ -2508,7 +2508,7 @@ TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Rea
                                   Standard_Real breakperiod, Standard_Boolean leftHanded) const
 {
     // 1000 periods is an OCCT limit. The 3D curve gets truncated
-    // if he 2D curve spans beyond this limit.
+    // if the 2D curve spans beyond this limit.
     if ((breakperiod < 0) || (breakperiod > 1000))
         Standard_Failure::Raise("Break period must be in [0, 1000]");
     if (breakperiod == 0)
@@ -2522,14 +2522,12 @@ TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Rea
 
     // A Bezier curve is used below, to get a periodic surface also for spirals.
     TColgp_Array1OfPnt poles(1,2);
-    poles(1) = gp_Pnt(fabs(radiusbottom), 0, 0);
-    poles(2) = gp_Pnt(fabs(radiustop), 0, height);
-    Handle(Geom_BezierCurve) meridian;
-    meridian = new Geom_BezierCurve(poles);
+    poles(1) = gp_Pnt(radiusbottom, 0, 0);
+    poles(2) = gp_Pnt(radiustop, 0, height);
+    Handle(Geom_BezierCurve) meridian = new Geom_BezierCurve(poles);
 
     gp_Ax1 axis(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
-    Handle(Geom_Surface) surf;
-    surf = new Geom_SurfaceOfRevolution(meridian, axis);
+    Handle(Geom_Surface) surf = new Geom_SurfaceOfRevolution(meridian, axis);
 
     gp_Pnt2d beg(0, 0);
     gp_Pnt2d end(0, 0);
