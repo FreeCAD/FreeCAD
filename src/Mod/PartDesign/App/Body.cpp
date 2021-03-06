@@ -47,6 +47,7 @@
 #include "FeatureTransformed.h"
 #include "FeatureMultiTransform.h"
 #include "FeatureWrap.h"
+#include "FeatureDressUp.h"
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -338,7 +339,11 @@ Body::newObjectAt(const char *type,
     App::DocumentObject *obj = getDocument()->addObject(type, name, activate);
     if (!obj)
         FC_THROWM(Base::RuntimeError, "Failed to create object");
-    insertObject(obj, getInsertionPosition(deps));
+
+    if (deps.size() && obj->isDerivedFrom(DressUp::getClassTypeId()))
+        insertObject(obj, deps.back(), true);
+    else
+        insertObject(obj, getInsertionPosition(deps));
 
     auto tip = Tip.getValue();
     if (!tip || !isSibling(obj, tip))
@@ -366,6 +371,10 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     relinkToOrigin(feature);
 
     std::vector<App::DocumentObject*> model = Group.getValues();
+
+    // Just incase the feature is already inside the model
+    model.erase(std::remove(model.begin(), model.end(), feature), model.end());
+
     std::vector<App::DocumentObject*>::iterator insertInto;
 
     // Find out the position there to insert the feature
