@@ -108,9 +108,17 @@ void Feature::onChanged(const App::Property *prop)
         if (prop == &NewSolid) 
             onNewSolidChanged();
         else if (prop == &Visibility || prop == &BaseFeature) {
-            if (Visibility.getValue()) {
-                auto body = Body::findBodyOf(this);
-                if (body) {
+            auto body = Body::findBodyOf(this);
+            if (body) {
+                if (prop == &BaseFeature && BaseFeature.getValue()) {
+                    int idx = -1;
+                    body->Group.find(this->getNameInDocument(), &idx);
+                    int baseidx = -1;
+                    body->Group.find(BaseFeature.getValue()->getNameInDocument(), &idx);
+                    if (idx >= 0 && baseidx >= 0 && baseidx+1 != idx)
+                        body->insertObject(BaseFeature.getValue(), this);
+                }
+                if (Visibility.getValue()) {
                     auto siblings = body->getSiblings(this);
                     for (auto feat : siblings) {
                         if (feat != this && feat->Visibility.getValue())
