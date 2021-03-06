@@ -123,6 +123,10 @@ public:
     virtual bool useNewSelectionModel(void) const override {return true;}
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
     virtual SoDetail* getDetail(const char*) const override;
+    virtual bool getDetailPath(const char *subname,
+                               SoFullPath *pPath,
+                               bool append,
+                               SoDetail *&det) const override;
     virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const override;
     /// return the highlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;

@@ -741,6 +741,19 @@ bool ViewProviderPartExt::getElementPicked(const SoPickedPoint *pp, std::string 
     return true;
 }
 
+bool ViewProviderPartExt::getDetailPath(const char *subname,
+                                    SoFullPath *pPath,
+                                    bool append,
+                                    SoDetail *&det) const
+{
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    if (element && element == subname) {
+        if (Data::ComplexGeoData::hasMissingElement(subname))
+            return false;
+    }
+    return inherited::getDetailPath(subname, pPath, append, det);
+}
+
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
     const auto &shape = getShape();
