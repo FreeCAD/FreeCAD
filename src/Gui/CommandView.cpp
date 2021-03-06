@@ -1673,7 +1673,7 @@ void StdViewDock::activated(int iMsg)
 bool StdViewDock::isActive(void)
 {
     MDIView* view = getMainWindow()->activeWindow();
-    return (qobject_cast<View3DInventor*>(view) ? true : false);
+    return (qobject_cast<MDIView*>(view) ? true : false);
 }
 
 //===========================================================================
@@ -1702,7 +1702,7 @@ void StdViewUndock::activated(int iMsg)
 bool StdViewUndock::isActive(void)
 {
     MDIView* view = getMainWindow()->activeWindow();
-    return (qobject_cast<View3DInventor*>(view) ? true : false);
+    return (qobject_cast<MDIView*>(view) ? true : false);
 }
 
 //===========================================================================
@@ -1764,7 +1764,7 @@ void StdViewFullscreen::activated(int iMsg)
 bool StdViewFullscreen::isActive(void)
 {
     MDIView* view = getMainWindow()->activeWindow();
-    return (qobject_cast<View3DInventor*>(view) ? true : false);
+    return (qobject_cast<MDIView*>(view) ? true : false);
 }
 
 //===========================================================================
@@ -1825,17 +1825,20 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
     // the original view.
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
-        Gui::MDIView* clone = doc->cloneView(view);
-        if (!clone)
-            return;
+        Gui::MDIView* clone = view;
+        if (view->isDerivedFrom(View3DInventor::getClassTypeId())) {
+            clone = doc->cloneView(view);
+            if (!clone)
+                return;
 
-        const char* ppReturn = 0;
-        if (view->onMsg("GetCamera", &ppReturn)) {
-            std::string sMsg = "SetCamera ";
-            sMsg += ppReturn;
+            const char* ppReturn = 0;
+            if (view->onMsg("GetCamera", &ppReturn)) {
+                std::string sMsg = "SetCamera ";
+                sMsg += ppReturn;
 
-            const char** pReturnIgnore=0;
-            clone->onMsg(sMsg.c_str(), pReturnIgnore);
+                const char** pReturnIgnore=0;
+                clone->onMsg(sMsg.c_str(), pReturnIgnore);
+            }
         }
 
         if (iMsg==0) {
@@ -1855,7 +1858,8 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
         }
 
         // destroy the old view
-        view->deleteSelf();
+        if (clone != view)
+            view->deleteSelf();
     }
 #else
     if (iMsg==0) {
@@ -1879,7 +1883,7 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
 bool StdViewDockUndockFullscreen::isActive(void)
 {
     MDIView* view = getMainWindow()->activeWindow();
-    if (qobject_cast<View3DInventor*>(view)) {
+    if (qobject_cast<MDIView*>(view)) {
         // update the action group if needed
         ActionGroup* pActGrp = qobject_cast<ActionGroup*>(_pcAction);
         if (pActGrp) {
