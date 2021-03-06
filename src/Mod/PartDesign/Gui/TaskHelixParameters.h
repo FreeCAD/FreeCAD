@@ -71,6 +71,7 @@ private Q_SLOTS:
     void onHeightChanged(double);
     void onTurnsChanged(double);
     void onAngleChanged(double);
+    void onGrowthChanged(double);
     void onAxisChanged(int);
     void onLeftHandedChanged(bool);
     void onReversedChanged(bool);
@@ -94,6 +95,7 @@ protected:
     App::PropertyBool*        propReversed;
     App::PropertyLinkSub*     propReferenceAxis;
     App::PropertyAngle*       propAngle;
+    App::PropertyLength*      propGrowth;
     App::PropertyEnumeration* propMode;
     App::PropertyBool*        propOutside;
 

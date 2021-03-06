@@ -77,6 +77,8 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *Helix
             this, SLOT(onTurnsChanged(double)));
     connect(ui->coneAngle, SIGNAL(valueChanged(double)),
             this, SLOT(onAngleChanged(double)));
+    connect(ui->growth, SIGNAL(valueChanged(double)),
+            this, SLOT(onGrowthChanged(double)));
     connect(ui->axis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
     connect(ui->checkBoxLeftHanded, SIGNAL(toggled(bool)),
@@ -98,6 +100,7 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *Helix
     ui->height->blockSignals(true);
     ui->turns->blockSignals(true);
     ui->coneAngle->blockSignals(true);
+    ui->growth->blockSignals(true);
     ui->checkBoxLeftHanded->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
     ui->checkBoxOutside->blockSignals(true);
@@ -113,6 +116,7 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *Helix
     }
 
     this->propAngle = &(rev->Angle);
+    this->propGrowth = &(rev->Growth);
     this->propPitch = &(rev->Pitch);
     this->propHeight = &(rev->Height);
     this->propTurns = &(rev->Turns);
@@ -126,6 +130,7 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *Helix
     double height = propHeight->getValue();
     double turns = propTurns->getValue();
     double angle = propAngle->getValue();
+    double growth = propGrowth->getValue();
     bool leftHanded = propLeftHanded->getValue();
     bool reversed = propReversed->getValue();
     int index = propMode->getValue();
@@ -137,6 +142,7 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *Helix
     ui->coneAngle->setValue(angle);
     ui->coneAngle->setMinimum(propAngle->getMinimum());
     ui->coneAngle->setMaximum(propAngle->getMaximum());
+    ui->growth->setValue(growth);
     ui->checkBoxLeftHanded->setChecked(leftHanded);
     ui->checkBoxReversed->setChecked(reversed);
     ui->inputMode->setCurrentIndex(index);
@@ -150,12 +156,14 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix *Helix
     ui->height->bind(static_cast<PartDesign::Helix *>(pcFeat)->Height);
     ui->turns->bind(static_cast<PartDesign::Helix *>(pcFeat)->Turns);
     ui->coneAngle->bind(static_cast<PartDesign::Helix *>(pcFeat)->Angle);
+    ui->growth->bind(static_cast<PartDesign::Helix *>(pcFeat)->Growth);
 
     ui->axis->blockSignals(false);
     ui->pitch->blockSignals(false);
     ui->height->blockSignals(false);
     ui->turns->blockSignals(false);
     ui->coneAngle->blockSignals(false);
+    ui->growth->blockSignals(false);
     ui->checkBoxLeftHanded->blockSignals(false);
     ui->checkBoxReversed->blockSignals(false);
     ui->checkBoxOutside->blockSignals(false);
@@ -273,22 +281,32 @@ void TaskHelixParameters::updateUI()
     bool isHeightVisible = false;
     bool isTurnsVisible  = false;
     bool isOutsideVisible = false;
+    bool isAngleVisible = false;
+    bool isGrowthVisible = false;
 
     if(pcHelix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive)
         isOutsideVisible = true;
 
-    switch (propMode->getValue()) {
-        case 0:
-            isPitchVisible = true;
-            isHeightVisible = true;
-            break;
-        case 1:
-            isPitchVisible = true;
-            isTurnsVisible = true;
-            break;
-        default:
-            isHeightVisible = true;
-            isTurnsVisible = true;
+    std::string mode = propMode->getValueAsString();
+    if (mode == "pitch-height-angle") {
+        isPitchVisible = true;
+        isHeightVisible = true;
+        isAngleVisible = true;
+    } else if (mode == "pitch-turns-angle") {
+        isPitchVisible = true;
+        isTurnsVisible = true;
+        isAngleVisible = true;
+    } else if (mode == "height-turns-angle") {
+        isHeightVisible = true;
+        isTurnsVisible = true;
+        isAngleVisible = true;
+    } else if (mode == "height-turns-growth") {
+        isHeightVisible = true;
+        isTurnsVisible = true;
+        isGrowthVisible = true;
+    } else {
+        status = "Error: unsupported mode";
+        ui->labelMessage->setText(QString::fromUtf8(status.c_str()));
     }
 
     ui->pitch->setVisible(isPitchVisible);
@@ -299,6 +317,12 @@ void TaskHelixParameters::updateUI()
 
     ui->turns->setVisible(isTurnsVisible);
     ui->labelTurns->setVisible(isTurnsVisible);
+
+    ui->coneAngle->setVisible(isAngleVisible);
+    ui->labelConeAngle->setVisible(isAngleVisible);
+
+    ui->growth->setVisible(isGrowthVisible);
+    ui->labelGrowth->setVisible(isGrowthVisible);
 
     ui->checkBoxOutside->setVisible(isOutsideVisible);
 
@@ -343,6 +367,13 @@ void TaskHelixParameters::onTurnsChanged(double len)
 void TaskHelixParameters::onAngleChanged(double len)
 {
     propAngle->setValue(len);
+    recomputeFeature();
+    updateUI();
+}
+
+void TaskHelixParameters::onGrowthChanged(double len)
+{
+    propGrowth->setValue(len);
     recomputeFeature();
     updateUI();
 }
@@ -534,6 +565,7 @@ void TaskHelixParameters::apply()
     FCMD_OBJ_CMD(tobj,"Height = " << propHeight->getValue());
     FCMD_OBJ_CMD(tobj,"Turns = " << propTurns->getValue());
     FCMD_OBJ_CMD(tobj,"Angle = " << propAngle->getValue());
+    FCMD_OBJ_CMD(tobj,"Growth = " << propGrowth->getValue());
     FCMD_OBJ_CMD(tobj,"LeftHanded = " << (propLeftHanded->getValue() ? 1 : 0));
     FCMD_OBJ_CMD(tobj,"Reversed = " << (propReversed->getValue() ? 1 : 0));
 }
