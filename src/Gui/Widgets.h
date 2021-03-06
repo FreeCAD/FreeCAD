@@ -461,7 +461,7 @@ class GuiExport ExpLineEdit : public QLineEdit, public ExpressionBinding
 public:
     ExpLineEdit ( QWidget * parent=0, bool expressionOnly=false );
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 

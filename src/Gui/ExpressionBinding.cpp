@@ -66,7 +66,7 @@ void ExpressionBinding::unbind()
     path = App::ObjectIdentifier();
 }
 
-void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
+void Gui::ExpressionBinding::setExpression(std::shared_ptr<Expression> expr)
 {
     DocumentObject * docObj = path.getDocumentObject();
 
@@ -124,7 +124,7 @@ bool ExpressionBinding::hasExpression() const
     return isBound() && getExpression() != 0;
 }
 
-boost::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
+std::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
 {
     DocumentObject * docObj = path.getDocumentObject();
 
