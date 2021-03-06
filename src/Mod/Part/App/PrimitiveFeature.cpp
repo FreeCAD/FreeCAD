@@ -801,7 +801,7 @@ Helix::Helix(void)
     Height.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Helix",App::Prop_None,"The radius of the helix");
     Radius.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Helix",App::Prop_None,"The number of turns of an helix segment");
+    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Helix",App::Prop_None,"The number of turns per helix subdivision");
     SegmentLength.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is != 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
@@ -881,7 +881,7 @@ Spiral::Spiral(void)
     Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Rotations,(2.0),"Spiral",App::Prop_None,"The number of rotations");
     Rotations.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Spiral",App::Prop_None,"The number of turns of an spiral segment");
+    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Spiral",App::Prop_None,"The number of turns per spiral subdivision");
     SegmentLength.setConstraints(&quantityRange);
 }
 
