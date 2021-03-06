@@ -65,7 +65,7 @@ class Constraint {
     typedef typename Kernel::DynStride DS;
     typedef typename Kernel::MappedEquationSystem MES;
 
-    typedef boost::shared_ptr<details::Geometry<Kernel, Dim, typename Sys::geometries> > geom_ptr;
+    typedef std::shared_ptr<details::Geometry<Kernel, Dim, typename Sys::geometries> > geom_ptr;
     typedef std::vector<typename Kernel::Vector3, Eigen::aligned_allocator<typename Kernel::Vector3> > Vec;
 
     //metafunction to create equation from consraint and tags

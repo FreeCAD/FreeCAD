@@ -37,7 +37,7 @@ namespace details {
 
 
 template<typename Sys>
-MES<Sys>::MES(boost::shared_ptr<Cluster> cl, int par, int eqn) : Base(par, eqn), m_cluster(cl) {
+MES<Sys>::MES(std::shared_ptr<Cluster> cl, int par, int eqn) : Base(par, eqn), m_cluster(cl) {
 #ifdef USE_LOGGING
     log.add_attribute("Tag", attrs::constant< std::string >("MES3D"));
 #endif
@@ -101,7 +101,7 @@ void MES<Sys>::removeLocalGradientZeros() {
 
 
 template<typename Sys>
-SystemSolver<Sys>::Rescaler::Rescaler(boost::shared_ptr<Cluster> c, Mes& m) : cluster(c), mes(m), rescales(0) {
+SystemSolver<Sys>::Rescaler::Rescaler(std::shared_ptr<Cluster> c, Mes& m) : cluster(c), mes(m), rescales(0) {
 
 };
 
@@ -153,7 +153,7 @@ typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters(Sc
     for(; it.first != it.second; it.first++) {
 
         if(cluster->isCluster(*it.first)) {
-            boost::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
+            std::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
             c->template getProperty<math_prop>().applyClusterScale(sc,
                     c->template getProperty<fix_prop>());
         }
@@ -168,7 +168,7 @@ typename SystemSolver<Sys>::Scalar SystemSolver<Sys>::Rescaler::scaleClusters(Sc
 
 template<typename Sys>
 void SystemSolver<Sys>::Rescaler::collectPseudoPoints(
-    boost::shared_ptr<typename SystemSolver<Sys>::Cluster> parent,
+    std::shared_ptr<typename SystemSolver<Sys>::Cluster> parent,
     LocalVertex cluster,
     std::vector<typename SystemSolver<Sys>::Kernel::Vector3,
     Eigen::aligned_allocator<typename SystemSolver<Sys>::Kernel::Vector3> >& vec) {
@@ -217,7 +217,7 @@ void SystemSolver<Sys>::execute(Sys& sys) {
 };
 
 template<typename Sys>
-void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sys) {
+void SystemSolver<Sys>::solveCluster(std::shared_ptr<Cluster> cluster, Sys& sys) {
 
     //set out and solve all relevant subclusters
     typedef typename Cluster::cluster_iterator citer;
@@ -225,7 +225,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 
     for(; cit.first != cit.second; cit.first++) {
 
-        boost::shared_ptr<Cluster> c = (*cit.first).second;
+        std::shared_ptr<Cluster> c = (*cit.first).second;
 
         if(c->template getProperty<changed_prop>() &&
                 ((c->template getProperty<type_prop>() == details::cluster3D)
@@ -283,7 +283,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
     for(; it.first != it.second; it.first++) {
 
         if(cluster->isCluster(*it.first)) {
-            boost::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
+            std::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
             details::ClusterMath<Sys>& cm =  c->template getProperty<math_prop>();
 
             //only get maps and propagate downstream if not fixed
@@ -454,7 +454,7 @@ void SystemSolver<Sys>::solveCluster(boost::shared_ptr<Cluster> cluster, Sys& sy
 };
 
 template<typename Sys>
-void SystemSolver<Sys>::finish(boost::shared_ptr<Cluster> cluster, Sys& sys, Mes& mes) {
+void SystemSolver<Sys>::finish(std::shared_ptr<Cluster> cluster, Sys& sys, Mes& mes) {
 
     //solving is done, now go to all relevant geometries and clusters and write the values back
     //(no need to emit recalculated signal as this cluster is never recalculated in this run)
@@ -464,7 +464,7 @@ void SystemSolver<Sys>::finish(boost::shared_ptr<Cluster> cluster, Sys& sys, Mes
     for(; it.first != it.second; it.first++) {
 
         if(cluster->isCluster(*it.first)) {
-            boost::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
+            std::shared_ptr<Cluster> c = cluster->getVertexCluster(*it.first);
 
             if(!cluster->template getSubclusterProperty<fix_prop>(*it.first))
                 c->template getProperty<math_prop>().finishCalculation();
