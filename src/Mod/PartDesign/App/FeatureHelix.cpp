@@ -67,7 +67,7 @@ const double PI = 3.14159265359;
 
 using namespace PartDesign;
 
-const char* Helix::ModeEnums[] = {"pitch-height", "pitch-turns", "height-turns", NULL};
+const char* Helix::ModeEnums[] = {"pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", NULL};
 
 PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
@@ -88,6 +88,7 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(LeftHanded, (long(0)), "Helix", App::Prop_None, "LeftHanded");
     ADD_PROPERTY_TYPE(Reversed, (long(0)), "Helix", App::Prop_None, "Reversed");
     ADD_PROPERTY_TYPE(Angle, (0.0), "Helix", App::Prop_None, "Angle");
+    ADD_PROPERTY_TYPE(Growth, (0.0), "Helix", App::Prop_None, "Growth");
     Angle.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Helix", App::Prop_None, "Reference axis of revolution");
     ADD_PROPERTY_TYPE(Mode, (long(0)), "Helix", App::Prop_None, "Helix input mode");
@@ -110,30 +111,32 @@ short Helix::mustExecute() const
 App::DocumentObjectExecReturn *Helix::execute(void)
 {
      // Validate and normalize parameters
-    switch (Mode.getValue()) {
-        case 0:  // pitch - height
-            if (Pitch.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: Pitch too small");
-            if (Height.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: height too small!");
-            break;
-        case 1: // pitch - turns
-            if (Pitch.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: pitch too small!");
-            if (Turns.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: turns too small!");
-            Height.setValue(Turns.getValue()*Pitch.getValue());
-            break;
-        case 2: // height - turns
-            if (Height.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: height too small!");
-            if (Turns.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error turns too small!");
-            Pitch.setValue(Height.getValue()/Turns.getValue());
-            break;
-        default:
-            return new App::DocumentObjectExecReturn("Error: unsupported mode");
+    std::string mode = Mode.getValueAsString();
+    if (mode == "pitch-height-angle") {
+        if (Pitch.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: Pitch too small");
+        if (Height.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: height too small!");
+    } else if (mode == "pitch-turns-angle") {
+        if (Pitch.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: pitch too small!");
+        if (Turns.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: turns too small!");
+        Height.setValue(Turns.getValue()*Pitch.getValue());
+    } else if (mode == "height-turns-angle") {
+        if (Height.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: height too small!");
+        if (Turns.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error turns too small!");
+        Pitch.setValue(Height.getValue()/Turns.getValue());
+    } else if (mode == "height-turns-growth") {
+        if (Turns.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error turns too small!");
+        Pitch.setValue(Height.getValue()/Turns.getValue());
+    } else {
+        return new App::DocumentObjectExecReturn("Error: unsupported mode");
     }
+
 
     TopoDS_Shape sketchshape;
     try {
@@ -355,11 +358,13 @@ void Helix::updateAxis(void)
 
 TopoDS_Shape Helix::generateHelixPath(void)
 {
-    double pitch = Pitch.getValue();
+    double turns = Turns.getValue();
     double height = Height.getValue();
     bool leftHanded = LeftHanded.getValue();
     bool reversed = Reversed.getValue();
     double angle = Angle.getValue();
+    double growth = Growth.getValue();
+
     if (angle < Precision::Confusion() && angle > -Precision::Confusion())
         angle = 0.0;
 
@@ -387,9 +392,17 @@ TopoDS_Shape Helix::generateHelixPath(void)
         radius = 1.0; //fallback to radius 1
     }
 
+    bool growthMode = std::string(Mode.getValueAsString()).find("growth") != std::string::npos;
+    double radiusTop;
+    if (growthMode)
+        radiusTop = radius + turns*growth;
+    else
+        radiusTop = radius + height * tan(Base::toRadians(angle));
+
+
     //build the helix path
-    TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
-    TopoDS_Shape path = helix.getShape();
+    //TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
+    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 1, leftHanded);
 
 
     /*
