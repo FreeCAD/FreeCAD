@@ -68,6 +68,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <stdexcept>
+#include <tuple>
 
 #include <cmath>
 #include <ctime>
@@ -79,7 +80,6 @@
 #include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 
-#include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
 #include <boost_graph_adjacency_list.hpp>
 
