@@ -771,8 +771,18 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
     SoDetail *detail = nullptr;
     switch(res.first) {
     case TopAbs_FACE:
-        detail = new SoFaceDetail();
-        static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
+        if (!highlightFaceEdges) {
+            detail = new SoFaceDetail();
+            static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
+        } else {
+            detail = new Gui::SoFCDetail;
+            static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Face, index-1);
+            for(auto &s : subshape.getSubShapes(TopAbs_EDGE)) {
+                int idx = shape.findShape(s);
+                if(idx>0)
+                    static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Edge, idx-1);
+            }
+        }
         break;
     case TopAbs_EDGE:
         detail = new SoLineDetail();
@@ -802,6 +812,11 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
         break;
     }
     return detail;
+}
+
+void ViewProviderPartExt::setHighlightFaceEdges(bool enable)
+{
+    highlightFaceEdges = enable;
 }
 
 std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPoint* pp) const

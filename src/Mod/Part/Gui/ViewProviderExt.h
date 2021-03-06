@@ -177,6 +177,8 @@ public:
     virtual void setShapePropertyName(const char *propName);
     const char *getShapePropertyName() const;
 
+    void setHighlightFaceEdges(bool enable);
+
     Part::TopoShape getShape() const;
     virtual void updateVisual();
 
@@ -214,6 +216,7 @@ protected:
     bool VisualTouched;
     bool NormalsFromUV;
     bool UpdatingColor;
+    bool highlightFaceEdges = false;
 
     std::string shapePropName;
 
