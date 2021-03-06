@@ -235,7 +235,6 @@ class MatrixTransform:
             setattr(fp, prop, value)
 
     def execute(self, fp):
-        pass
         if fp.Matrix and fp.Base:
             sh=fp.Base.Shape#.copy()
             m=sh.Placement.toMatrix().multiply(fp.Matrix)

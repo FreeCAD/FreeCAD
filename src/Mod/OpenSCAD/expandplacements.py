@@ -31,7 +31,7 @@ feature tree to the most basic objects
 
 import FreeCAD
 from OpenSCADFeatures import *
-from OpenSCADUtils import isspecialorthogonalpython,isspecialorthogonal
+from OpenSCADUtils import isspecialorthogonal
 import replaceobj
 
 def likeprimitive(obj,extrusion=False):
