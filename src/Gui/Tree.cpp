@@ -2549,10 +2549,11 @@ void TreeWidget::Private::toggleItemVisibility(DocumentObjectItem *oitem)
                                              ss.str().c_str());
         }
 
+        int res = -1;
         if (sobjName)
-            obj->setElementVisible(sobjName, vis);
-        else
-            obj->Visibility.setValue(vis);
+            res = obj->setElementVisible(sobjName, vis);
+        if (res < 0)
+            oitem->object()->Visibility.setValue(vis);
 
         if(topParent && vis) {
             Gui::Selection().updateSelection(true,

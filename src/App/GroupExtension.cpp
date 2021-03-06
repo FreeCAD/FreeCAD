@@ -666,6 +666,8 @@ int GroupExtension::extensionIsElementVisibleEx(const char *subname, int reason)
 }
 
 int GroupExtension::extensionIsElementVisible(const char *element) const {
+    if (!getExtendedObject()->Visibility.getValue())
+        return -1;
     auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
             getExtendedObject()->getPropertyByName("HiddenChildren"));
     if(!hiddenChildren || hiddenChildren->getContainer()!=getExtendedObject())
