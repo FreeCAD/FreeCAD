@@ -803,9 +803,8 @@ void CmdTechDrawClipGroup::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Clip",page);
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Clip"));
-    Gui::cmdAppObject(page, std::ostringstream() << "addObject('TechDraw::DrawViewClip','" << FeatName << "')");
-    Gui::cmdAppObjectArgs(page, "addView(App.getDocument('%s').getObject('%s'))",
-            page->getDocument()->getName(),FeatName.c_str());
+    Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawViewClip','" << FeatName << "')");
+    Gui::cmdAppObjectArgs(page, "addView(%s))", getObjectCmd(page));
     updateActive();
     commitCommand();
 }
@@ -1012,7 +1011,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
         doCommand(Doc,"svg = f.read()");
         doCommand(Doc,"f.close()");
 
-        Gui::cmdAppObject(page, std::ostringstream() << "addObject('TechDraw::DrawViewSymbol','" << FeatName << "')");
+        Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawViewSymbol','" << FeatName << "')");
         auto feat = page->getDocument()->getObject(FeatName.c_str());
         Gui::cmdAppObject(feat,"Symbol = svg");
         Gui::cmdAppObject(page, std::ostringstream() << "addView(" << getObjectCmd(feat) << ")");
@@ -1069,7 +1068,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
         if (DrawGuiUtil::isDraftObject((*it)))  {
             draftItemsFound++;
             std::string FeatName = getUniqueObjectName("DraftView",page);
-            Gui::cmdAppObject(page, std::ostringstream() << "addObject('TechDraw::DrawViewDraft','" << FeatName << "')");
+            Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawViewDraft','" << FeatName << "')");
             auto feat = page->getDocument()->getObject(FeatName.c_str());
             Gui::cmdAppObject(feat, std::ostringstream() << "Source = " << getObjectCmd(*it));
             Gui::cmdAppObject(page, std::ostringstream() << "addView(" << getObjectCmd(feat) << ")");
