@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <Geom_TrimmedCurve.hxx>
-# include <boost/shared_ptr.hpp>
+# include <memory>
 #endif
 
 #include <Base/StdStlTools.h>
@@ -132,7 +132,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
              PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<Part::Geometry *> geoList;
-        std::vector<boost::shared_ptr <Part::Geometry> > tmpList;
+        std::vector<std::shared_ptr <Part::Geometry> > tmpList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryPy::Type))) {
@@ -145,14 +145,14 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
                     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
                     if (!circle.IsNull()) {
                         // create the definition struct for that geom
-                        boost::shared_ptr<Part::GeomArcOfCircle> aoc(new Part::GeomArcOfCircle());
+                        std::shared_ptr<Part::GeomArcOfCircle> aoc(new Part::GeomArcOfCircle());
                         aoc->setHandle(trim);
                         geoList.push_back(aoc.get());
                         tmpList.push_back(aoc);
                     }
                     else if (!ellipse.IsNull()) {
                         // create the definition struct for that geom
-                        boost::shared_ptr<Part::GeomArcOfEllipse> aoe(new Part::GeomArcOfEllipse());
+                        std::shared_ptr<Part::GeomArcOfEllipse> aoe(new Part::GeomArcOfEllipse());
                         aoe->setHandle(trim);
                         geoList.push_back(aoe.get());
                         tmpList.push_back(aoe);
