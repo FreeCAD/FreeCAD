@@ -1490,7 +1490,7 @@ bool SoBoxSelectionRenderAction::addLateDelayedPath(const SoPath *path, bool cop
     // arbitary order traversing with its head/tailChild field. Other node will
     // likely cause crash because of insufficient checking in
     // SoChildList::traverseInPath() and SoSeparator::GLRenderInPath().
-#if 1
+#if 0
     auto pathToSubname = [](const SoPath *path) {
         std::ostringstream ss;
         auto doc = Gui::Application::Instance->activeDocument();
