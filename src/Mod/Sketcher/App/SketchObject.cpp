@@ -901,6 +901,10 @@ int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
 
     this->Constraints.setValues(std::move(newVals));
 
+    // Solver didn't actually update, but we need this to inform view provider
+    // to redraw
+    signalSolverUpdate();
+
     return 0;
 }
 
@@ -933,6 +937,10 @@ int SketchObject::toggleVirtualSpace(int ConstrId)
     newVals[ConstrId] = constNew;
 
     this->Constraints.setValues(std::move(newVals));
+
+    // Solver didn't actually update, but we need this to inform view provider
+    // to redraw
+    signalSolverUpdate();
 
     return 0;
 }
