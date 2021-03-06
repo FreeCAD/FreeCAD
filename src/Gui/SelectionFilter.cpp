@@ -137,13 +137,13 @@ bool SelectionFilterGatePython::allow(App::Document*, App::DocumentObject* obj, 
 // ----------------------------------------------------------------------------
 
 SelectionFilter::SelectionFilter(const char* filter)
-  : Ast(0)
+  : Ast(nullptr)
 {
     setFilter(filter);
 }
 
 SelectionFilter::SelectionFilter(const std::string& filter)
-  : Ast(0)
+  : Ast(nullptr)
 {
     setFilter(filter.c_str());
 }
@@ -151,8 +151,7 @@ SelectionFilter::SelectionFilter(const std::string& filter)
 void SelectionFilter::setFilter(const char* filter)
 {
     if (!filter || filter[0] == 0) {
-        delete Ast;
-        Ast = 0;
+        Ast.reset();
         Filter.clear();
     }
     else {
@@ -172,43 +171,41 @@ bool SelectionFilter::match(void)
         return false;
     Result.clear();
 
-    for (std::vector< Node_Object *>::iterator it= Ast->Objects.begin();it!=Ast->Objects.end();++it) {
-        int min;
-        int max;
+    for (const auto& it : Ast->Objects) {
+        std::size_t min = 1;
+        std::size_t max = 1;
 
-        if ((*it)->Slice) {
-            min          = (*it)->Slice->Min;
-            max          = (*it)->Slice->Max;
-        }
-        else {
-            min          = 1;
-            max          = 1;
+        if (it->Slice) {
+            min = it->Slice->Min;
+            max = it->Slice->Max;
         }
 
-        std::vector<Gui::SelectionObject> temp = Gui::Selection().getSelectionEx(0,(*it)->ObjectType);
+        std::vector<Gui::SelectionObject> temp = Gui::Selection().getSelectionEx(nullptr, it->ObjectType);
 
         // test if subnames present
-        if ((*it)->SubName.empty()) {
+        if (it->SubName.empty()) {
             // if no subnames the count of the object get tested
-            if ((int)temp.size()<min || (int)temp.size()>max)
+            if (temp.size() < min || temp.size() > max)
                 return false;
         }
         else {
             // if subnames present count all subs over the selected object of type
-            int subCount=0;
+            std::size_t subCount = 0;
             for (std::vector<Gui::SelectionObject>::const_iterator it2=temp.begin();it2!=temp.end();++it2) {
                 const std::vector<std::string>& subNames = it2->getSubNames();
                 if (subNames.empty())
                     return false;
                 for (std::vector<std::string>::const_iterator it3=subNames.begin();it3!=subNames.end();++it3) {
-                    if (it3->find((*it)->SubName) != 0)
+                    if (it3->find(it->SubName) != 0)
                         return false;
                 }
                 subCount += subNames.size();
             }
-            if (subCount<min || subCount>max)
+
+            if (subCount < min || subCount > max)
                 return false;
         }
+
         Result.push_back(temp);
     }
     return true;
@@ -219,13 +216,13 @@ bool SelectionFilter::test(App::DocumentObject*pObj, const char*sSubName)
     if (!Ast)
         return false;
 
-    for (std::vector< Node_Object *>::iterator it= Ast->Objects.begin();it!=Ast->Objects.end();++it) {
-        if (pObj->getTypeId().isDerivedFrom((*it)->ObjectType)) {
+    for (const auto& it : Ast->Objects) {
+        if (pObj->getTypeId().isDerivedFrom(it->ObjectType)) {
             if (!sSubName)
                 return true;
-            if ((*it)->SubName.empty())
+            if (it->SubName.empty())
                 return true;
-            if (std::string(sSubName).find((*it)->SubName) == 0)
+            if (std::string(sSubName).find(it->SubName) == 0)
                 return true;
         }
     }
@@ -401,7 +398,7 @@ bool SelectionFilter::parse(void)
     ActFilter = this;
     /*int my_parse_result =*/ SelectionParser::yyparse();
     ActFilter = 0;
-    Ast = TopBlock;
+    Ast.reset(TopBlock);
     TopBlock = 0;
     SelectionParser::SelectionFilter_delete_buffer (my_string_buffer);
 

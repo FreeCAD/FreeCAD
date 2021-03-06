@@ -213,7 +213,7 @@ but slower response to any scene changes.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>What kind of multisample anti-aliasing is used </string>
+           <string>What kind of multisample anti-aliasing is used</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AntiAliasing</cstring>

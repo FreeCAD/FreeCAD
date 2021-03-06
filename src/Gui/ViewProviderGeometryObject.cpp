@@ -34,6 +34,7 @@
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
@@ -250,6 +251,14 @@ unsigned long ViewProviderGeometryObject::getBoundColor() const
     return bbcol;
 }
 
+namespace {
+float getBoundBoxFontSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    return hGrp->GetFloat("BoundingBoxFontSize", 10.0);
+}
+}
+
 void ViewProviderGeometryObject::showBoundingBox(bool show)
 {
     if (!pcBoundSwitch && show) {
@@ -265,6 +274,9 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
 
         pcBoundColor->rgb.setValue(r, g, b);
         pBoundingSep->addChild(pcBoundColor);
+        SoFont* font = new SoFont();
+        font->size.setValue(getBoundBoxFontSize());
+        pBoundingSep->addChild(font);
 
         pBoundingSep->addChild(new SoResetTransform());
         pBoundingSep->addChild(pcBoundingBox);

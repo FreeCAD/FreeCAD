@@ -92,7 +92,6 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     return refStr;
 }
 
-
 void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
 {
     Gui::Document* doc = vp->getDocument();
@@ -113,7 +112,7 @@ void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* pr
     }
 }
 
-void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
+void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar, const bool circle) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
 
     PartDesign::ProfileBased* pcSketchBased = dynamic_cast<PartDesign::ProfileBased*>(vp->getObject());
@@ -125,7 +124,7 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
             startReferenceSelection(pcSketchBased, prevSolid);
             Gui::Selection().clearSelection();
             Gui::Selection().addSelectionGate
-                (new ReferenceSelection(prevSolid, edge, face, planar));
+                (new ReferenceSelection(prevSolid, edge, face, planar, false, false, circle));
         } else {
             Gui::Selection().rmvSelectionGate();
             finishReferenceSelection(pcSketchBased, prevSolid);
@@ -264,6 +263,7 @@ bool TaskDlgSketchBasedParameters::accept() {
 bool TaskDlgSketchBasedParameters::reject()
 {
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    App::DocumentObjectWeakPtrT weakptr(pcSketchBased);
     // get the Sketch
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcSketchBased->Profile.getValue());
     bool rv;
@@ -273,7 +273,7 @@ bool TaskDlgSketchBasedParameters::reject()
 
     // if abort command deleted the object the sketch is visible again.
     // The previous one feature already should be made visible
-    if (!Gui::Application::Instance->getViewProvider(pcSketchBased)) {
+    if (weakptr.expired()) {
         // Make the sketch visible
         if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
             Gui::Application::Instance->getViewProvider(pcSketch)->show();

@@ -87,8 +87,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->cylinderHeight->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height);
             ui->cylinderRadius->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getValue());
             ui->cylinderRadius->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius);
-            ui->cylinderAngle->setMaximum(360.0);
-            ui->cylinderAngle->setMinimum(0.0);
+            ui->cylinderAngle->setMaximum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getMaximum());
+            ui->cylinderAngle->setMinimum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getMinimum());
             ui->cylinderHeight->setMaximum(INT_MAX);
             ui->cylinderHeight->setMinimum(0.0);
             ui->cylinderRadius->setMaximum(INT_MAX);
@@ -105,11 +105,11 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->sphereRadius->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius.getValue());
             ui->sphereRadius->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius);
             ui->sphereAngle1->setMaximum(ui->sphereAngle2->rawValue()); // must geometrically be <= than sphereAngle2
-            ui->sphereAngle1->setMinimum(-90.0);
-            ui->sphereAngle2->setMaximum(90);
+            ui->sphereAngle1->setMinimum(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle1.getMinimum());
+            ui->sphereAngle2->setMaximum(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle2.getMaximum());
             ui->sphereAngle2->setMinimum(ui->sphereAngle1->rawValue());
-            ui->sphereAngle3->setMaximum(360.0);
-            ui->sphereAngle3->setMinimum(0.0);
+            ui->sphereAngle3->setMaximum(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getMaximum());
+            ui->sphereAngle3->setMinimum(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getMinimum());
             ui->sphereRadius->setMaximum(INT_MAX);
             ui->sphereRadius->setMinimum(0.0);
             break;
@@ -123,8 +123,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->coneRadius1->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1);
             ui->coneRadius2->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2.getValue());
             ui->coneRadius2->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2);
-            ui->coneAngle->setMaximum(360.0);
-            ui->coneAngle->setMinimum(0.0);
+            ui->coneAngle->setMaximum(static_cast<PartDesign::Cone*>(vp->getObject())->Angle.getMaximum());
+            ui->coneAngle->setMinimum(static_cast<PartDesign::Cone*>(vp->getObject())->Angle.getMinimum());
             ui->coneHeight->setMaximum(INT_MAX);
             ui->coneHeight->setMinimum(0.0);
             ui->coneRadius1->setMaximum(INT_MAX);
@@ -147,11 +147,11 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->ellipsoidRadius3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3.getValue());
             ui->ellipsoidRadius3->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3);
             ui->ellipsoidAngle1->setMaximum(ui->ellipsoidAngle2->rawValue()); // must geometrically be <= than sphereAngle2
-            ui->ellipsoidAngle1->setMinimum(-90.0);
-            ui->ellipsoidAngle2->setMaximum(90);
+            ui->ellipsoidAngle1->setMinimum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle1.getMinimum());
+            ui->ellipsoidAngle2->setMaximum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle2.getMaximum());
             ui->ellipsoidAngle2->setMinimum(ui->ellipsoidAngle1->rawValue());
-            ui->ellipsoidAngle3->setMaximum(360.0);
-            ui->ellipsoidAngle3->setMinimum(0.0);
+            ui->ellipsoidAngle3->setMaximum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3.getMaximum());
+            ui->ellipsoidAngle3->setMinimum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3.getMinimum());
             ui->ellipsoidRadius1->setMinimum(0.0);
             ui->ellipsoidRadius1->setMaximum(INT_MAX);
             ui->ellipsoidRadius2->setMinimum(0.0);
@@ -172,11 +172,11 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->torusRadius2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2.getValue());
             ui->torusRadius2->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2);
             ui->torusAngle1->setMaximum(ui->torusAngle2->rawValue()); // must geometrically be <= than sphereAngle2
-            ui->torusAngle1->setMinimum(-180.0);
-            ui->torusAngle2->setMaximum(180);
+            ui->torusAngle1->setMinimum(static_cast<PartDesign::Torus*>(vp->getObject())->Angle1.getMinimum());
+            ui->torusAngle2->setMaximum(static_cast<PartDesign::Torus*>(vp->getObject())->Angle2.getMaximum());
             ui->torusAngle2->setMinimum(ui->torusAngle1->rawValue());
-            ui->torusAngle3->setMaximum(360.0);
-            ui->torusAngle3->setMinimum(0.0);
+            ui->torusAngle3->setMaximum(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3.getMaximum());
+            ui->torusAngle3->setMinimum(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3.getMinimum());
             // this is the outer radius that must not be smaller than the inner one
             // otherwise the geometry is impossible and we can even get a crash:
             // https://forum.freecadweb.org/viewtopic.php?f=3&t=44467

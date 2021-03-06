@@ -43,7 +43,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QWidget" name="widget" native="true">
+        <widget class="QWidget" name="widget">
          <property name="maximumSize">
           <size>
            <width>225</width>

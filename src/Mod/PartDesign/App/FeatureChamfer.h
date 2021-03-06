@@ -62,6 +62,8 @@ public:
 
 protected:
     void Restore(Base::XMLReader &reader) override;
+    static const App::PropertyQuantityConstraint::Constraints floatSize;
+    static const App::PropertyAngle::Constraints floatAngle;
 };
 
 } //namespace Part

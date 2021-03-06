@@ -13,7 +13,7 @@ macro(PrintFinalReport)
     message(STATUS "Standard:            Requires C++${CMAKE_CXX_STANDARD}")
 
     # Qt5 needs/sets PYTHON_CONFIG_SUFFIX regarding Shiboken
-    message(STATUS "Python:              [${PYTHON_EXECUTABLE}] [${PYTHON_CONFIG_SUFFIX}]")
+    message(STATUS "Python:              ${PYTHON_VERSION_STRING} [${PYTHON_EXECUTABLE}] [${PYTHON_CONFIG_SUFFIX}]")
 
     if(DEFINED PCL_FOUND)
         message(STATUS "PCL:                 ${PCL_VERSION}")
@@ -29,11 +29,11 @@ macro(PrintFinalReport)
 
     message(STATUS "Boost:               ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION} (${Boost_VERSION})")
 
-    message(STATUS "XercesC:             [${XercesC_LIBRARIES}] [${XercesC_INCLUDE_DIRS}]")
+    message(STATUS "XercesC:             ${XercesC_VERSION} [${XercesC_LIBRARIES}] [${XercesC_INCLUDE_DIRS}]")
 
     message(STATUS "ZLIB:                ${ZLIB_VERSION_STRING}")
 
-    message(STATUS "PyCXX:               [${PYCXX_INCLUDE_DIR}]")
+    message(STATUS "PyCXX:               ${PYCXX_VERSION} [${PYCXX_INCLUDE_DIR}]")
 
     message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}] [${OCC_LIBRARY_DIR}] [${OCC_INCLUDE_DIR}]")
 
@@ -42,7 +42,7 @@ macro(PrintFinalReport)
             message(STATUS "SMESH:               ${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK}")
         else(FREECAD_USE_EXTERNAL_SMESH)
             message(STATUS "SMESH:               build internal")
-            message(STATUS " MEDFile:            [${MEDFILE_LIBRARIES}] [${MEDFILE_INCLUDE_DIRS}]")
+            message(STATUS " MEDFile:            ${MEDFILE_VERSION} [${MEDFILE_LIBRARIES}] [${MEDFILE_INCLUDE_DIRS}]")
             message(STATUS " HDF5:               ${HDF5_VERSION}")
             message(STATUS " VTK:                ${VTK_VERSION}")
         endif(FREECAD_USE_EXTERNAL_SMESH)
@@ -164,9 +164,9 @@ macro(PrintFinalReport)
     endif(FREECAD_USE_FREETYPE)
 
     message(STATUS "OpenGL:              ${OPENGL_gl_LIBRARY}")
-    message(STATUS "OpenGLU:             ${OPENGL_glu_LIBRARY} [${OPENGL_glu_LIBRARY}][${OPENGL_INCLUDE_DIR}]")
+    message(STATUS "OpenGLU:             [${OPENGL_glu_LIBRARY}][${OPENGL_INCLUDE_DIR}]")
 
-    message(STATUS "Coin3D:              [${COIN3D_LIBRARIES}] [${COIN3D_INCLUDE_DIRS}]")
+    message(STATUS "Coin3D:              ${COIN3D_VERSION} [${COIN3D_LIBRARIES}] [${COIN3D_INCLUDE_DIRS}]")
 
 
     if (WIN32)

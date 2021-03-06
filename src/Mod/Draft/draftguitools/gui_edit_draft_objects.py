@@ -315,10 +315,10 @@ class DraftCircleGuiTools(GuiTools):
                 # edit by 3 points
                 if node_idx == 0:
                     # center point
-                    p1 = edit_command.localize_vectors(obj, obj.Shape.Vertexes[0].Point)
-                    p2 = edit_command.localize_vectors(obj, obj.Shape.Vertexes[1].Point)
-                    p0 = DraftVecUtils.project(edit_command.localize_vectors(obj, v),
-                                                edit_command.localize_vectors(obj, (self.getArcMid(obj, global_placement=True))))
+                    p1 = edit_command.localize_vector(obj, obj.Shape.Vertexes[0].Point)
+                    p2 = edit_command.localize_vector(obj, obj.Shape.Vertexes[1].Point)
+                    p0 = DraftVecUtils.project(edit_command.localize_vector(obj, v),
+                                                edit_command.localize_vector(obj, (self.getArcMid(obj, global_placement=True))))
                     edit_command.ghost.autoinvert=False
                     edit_command.ghost.setRadius(p1.sub(p0).Length)
                     edit_command.ghost.setStartPoint(obj.Shape.Vertexes[1].Point)
@@ -347,7 +347,7 @@ class DraftCircleGuiTools(GuiTools):
                 elif node_idx == 2:
                     edit_command.ghost.setEndPoint(v)
                 elif node_idx == 3:
-                    edit_command.ghost.setRadius(edit_command.localize_vectors(obj, v).Length)
+                    edit_command.ghost.setRadius(edit_command.localize_vector(obj, v).Length)
 
 
     def getArcStart(self, obj, global_placement=False):#Returns object midpoint
