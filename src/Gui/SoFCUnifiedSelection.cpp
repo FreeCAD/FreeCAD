@@ -2691,7 +2691,9 @@ void SoFCSelectionRoot::callback(SoCallbackAction *action) {
 }
 
 void SoFCSelectionRoot::doAction(SoAction *action) {
-    if(selectionStyle.getValue() == Unpickable) {
+    if(selectionStyle.getValue() == Unpickable
+            && action->getCurPathCode() != SoAction::IN_PATH)
+    {
         if(action->isOfType(SoSelectionElementAction::getClassTypeId())
                 && !static_cast<SoSelectionElementAction*>(action)->isSecondary())
             return;

@@ -160,7 +160,9 @@ void ViewProviderDressUp::updateAddSubShapeIndicator()
         shape.setPlacement(Base::Placement());
         for (int idx : faces)
             builder.Add(comp, shape.getSubShape(TopAbs_FACE, idx+1));
-        pcDressUp->DressUpShape.setValue(comp);
+        Part::TopoShape dressupShape(comp);
+        dressupShape.mapSubElement(shape);
+        pcDressUp->DressUpShape.setValue(dressupShape);
         getAddSubView()->updateVisual();
     }
 }

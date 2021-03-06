@@ -518,16 +518,16 @@ void TaskDressUpParameters::onItemSelectionChanged()
         return;
 
     std::vector<std::string> subs;
-    for(auto item : listWidget->selectedItems()) 
-        subs.push_back(subname + item->text().toStdString());
-
-    if(subs.size()) {
-        blockConnection(true);
-        Gui::Selection().clearSelection();
-        Gui::Selection().addSelections(obj->getDocument()->getName(),
-                obj->getNameInDocument(), subs);
-        blockConnection(false);
+    for(auto item : listWidget->selectedItems()) {
+        if (item->data(Qt::UserRole).toByteArray().isEmpty())
+            subs.push_back(subname + item->text().toStdString());
     }
+
+    blockConnection(true);
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelections(obj->getDocument()->getName(),
+            obj->getNameInDocument(), subs);
+    blockConnection(false);
 }
 
 App::SubObjectT TaskDressUpParameters::getInEdit(App::DocumentObject *base, const char *sub) {
@@ -593,6 +593,46 @@ void TaskDressUpParameters::onItemEntered(QListWidgetItem *)
     timer->start(100);
 }
 
+bool TaskDressUpParameters::getItemElement(QListWidgetItem *item, std::string &subname)
+{
+    QByteArray _ref = item->data(Qt::UserRole).toByteArray();
+    const char *ref = Data::ComplexGeoData::isMappedElement(_ref.constData());
+    if (!ref) {
+        subname += item->text().toStdString();
+        return true;
+    }
+    PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
+    auto shape = pcDressUp->DressUpShape.getShape();
+    std::string element("Face");
+    bool found = false;
+    for (int i=1, c=shape.countSubShapes(TopAbs_FACE); i<=c; ++i) {
+        element.resize(4);
+        element += std::to_string(i);
+        auto name = shape.getElementName(element.c_str(), Data::ComplexGeoData::MapToNamed);
+        shape.traceElement(name,
+            [&] (const std::string &n, size_t, long, long) {
+            if (n == ref) {
+                found = true;
+                return true;
+            }
+            return false;
+        });
+        if (found)
+            break;
+    }
+    if (!found)
+        return false;
+
+    subname.clear();
+    ViewProviderDocumentObject *editVp = nullptr;
+    auto editDoc = Gui::Application::Instance->editDocument();
+    if (!editDoc)
+        return false;
+    editDoc->getInEdit(&editVp,&subname);
+    subname += PartDesign::FeatureAddSub::addsubElementPrefix() + element;
+    return true;
+}
+
 void TaskDressUpParameters::onTimer() {
     if(enteredObject != listWidget || !listWidget)
         return;
@@ -604,11 +644,12 @@ void TaskDressUpParameters::onTimer() {
     }
     std::string subname;
     auto obj = getInEdit(subname);
-    if(obj) {
-        subname +=item->text().toStdString();
+    if(obj && getItemElement(item, subname))
         Gui::Selection().setPreselect(obj->getDocument()->getName(),
-                obj->getNameInDocument(), subname.c_str(),0,0,0,2);
-    }
+                                      obj->getNameInDocument(),
+                                      subname.c_str(),0,0,0,2,true);
+    else
+        Gui::Selection().rmvPreselect();
 }
 
 std::vector<std::string> TaskDressUpParameters::getReferences() const

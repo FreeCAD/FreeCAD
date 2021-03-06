@@ -56,6 +56,8 @@ public:
     Part::PropertyPartShape   AddSubShape;
     App::PropertyBool Refine;
 
+    static const std::string &addsubElementPrefix();
+
 protected:
     Type addSubType;
 };

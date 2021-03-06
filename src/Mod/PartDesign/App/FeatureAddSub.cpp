@@ -37,8 +37,6 @@
 
 using namespace PartDesign;
 
-namespace PartDesign {
-
 
 PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::Feature)
 
@@ -82,6 +80,12 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &s
         subShape = AddSubShape.getShape();
 }
 
+const std::string &FeatureAddSub::addsubElementPrefix()
+{
+    static std::string res(Data::ComplexGeoData::elementMapPrefix()
+                           + "AddSub"
+                           + Data::ComplexGeoData::elementMapPrefix());
+    return res;
 }
 
 namespace App {

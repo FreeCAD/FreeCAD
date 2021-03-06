@@ -41,6 +41,8 @@
 # include <Standard_Version.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include "ViewProviderAddSub.h"
 #include <Mod/Part/Gui/PartParams.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
@@ -94,6 +96,7 @@ PartGui::ViewProviderPart * ViewProviderAddSub::getAddSubView()
     pAddSubView->MapPointColor.setValue(false);    
     pAddSubView->MapTransparency.setValue(false);    
     pAddSubView->ForceMapColors.setValue(false);
+    pAddSubView->setHighlightFaceEdges(true);
     pAddSubView->Selectable.setValue(false);
     pAddSubView->Lighting.setValue(1);
     pAddSubView->enableFullSelectionHighlight(false, false, false);
@@ -227,13 +230,6 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
             // into the base feature view provider using SoFCSwitch::headChild
             // functionality, which will be shown as long as SoFCSwitch is
             // visible. See SoFCSwitch documentation for more details.
-            //
-            // Note that it would be better to use SoFCSwitch::tailChild
-            // instead of headChild, because it would then sure the preview on
-            // top regardless of whether the base object itself is on top or
-            // not. However, if using tailChild, the selection highlight will
-            // be obscured by preview. It would difficult to fix this problem
-            // now, but would be easy for the upcoming new renderer.
             auto baseVp = Gui::Application::Instance->getViewProvider(base);
             if (baseVp && baseVp->getModeSwitch()
                        && baseVp->getModeSwitch()->isOfType(Gui::SoFCSwitch::getClassTypeId()))
@@ -298,4 +294,25 @@ bool ViewProviderAddSub::setEdit(int ModNum)
 
 void ViewProviderAddSub::unsetEdit(int ModNum) {
     ViewProvider::unsetEdit(ModNum);
+}
+
+bool ViewProviderAddSub::getDetailPath(const char *subname,
+                                       SoFullPath *pPath,
+                                       bool append,
+                                       SoDetail *&det) const
+{
+    const std::string &prefix = PartDesign::FeatureAddSub::addsubElementPrefix();
+    if (boost::starts_with(subname, prefix)) {
+        auto view = const_cast<ViewProviderAddSub*>(this)->getAddSubView();
+        if (!view)
+            return false;
+        subname += prefix.size();
+        if(append) {
+            pPath->append(pcRoot);
+            pPath->append(pcModeSwitch);
+        }
+        pPath->append(previewGroup);
+        return view->getDetailPath(subname, pPath, true, det);
+    }
+    return ViewProvider::getDetailPath(subname, pPath, append, det);
 }

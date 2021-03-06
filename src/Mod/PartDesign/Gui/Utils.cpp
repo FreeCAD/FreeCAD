@@ -1150,7 +1150,7 @@ public:
                     objT.getDocumentName().c_str(),
                     objT.getObjectName().c_str(),
                     objT.getSubName().c_str(),
-                    0,0,0,2);
+                    0,0,0,2,true);
             return;
         default:
             break;
@@ -1352,8 +1352,6 @@ bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &p
     listWidget->clear();
     auto base = prop.getValue();
     const auto &baseShape = Part::Feature::getTopoShape(base);
-    if (baseShape.isNull())
-        return false;
     const auto &subs = prop.getShadowSubs();
     std::set<std::string> subSet;
     for(auto &sub : subs) 
@@ -1395,6 +1393,9 @@ bool populateGeometryReferences(QListWidget *listWidget, App::PropertyLinkSub &p
                 missingSub = Data::ComplexGeoData::missingPrefix()+missingSub;
             auto item = new QListWidgetItem(listWidget);
             item->setText(QString::fromStdString(missingSub));
+
+            item->setData(Qt::UserRole,
+                    QByteArray(Data::ComplexGeoData::newElementName(ref.c_str()).c_str()));
             item->setForeground(Qt::red);
             refs.back() = ref; // use new style name for future guessing
         }

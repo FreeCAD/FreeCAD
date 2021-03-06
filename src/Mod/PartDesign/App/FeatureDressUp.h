@@ -65,6 +65,8 @@ public:
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
 
+    static const std::string &addsubElementPrefix();
+
 protected:
     virtual void onChanged(const App::Property* prop);
 };

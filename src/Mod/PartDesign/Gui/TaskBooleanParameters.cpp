@@ -219,7 +219,7 @@ void TaskBooleanParameters::preselect(QListWidgetItem *item) {
     subname += ".";
 
     Gui::Selection().setPreselect(parent->getDocument()->getName(),
-            parent->getNameInDocument(),subname.c_str(),0,0,0,2);
+            parent->getNameInDocument(),subname.c_str(),0,0,0,2,true);
 }
 
 void TaskBooleanParameters::onItemSelection() {

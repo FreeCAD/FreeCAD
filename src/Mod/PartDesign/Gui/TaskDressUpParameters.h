@@ -66,6 +66,8 @@ public:
         return transactionID;
     }
 
+    bool getItemElement(QListWidgetItem *item, std::string &subname);
+
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
     void onItemEntered(QListWidgetItem* current);

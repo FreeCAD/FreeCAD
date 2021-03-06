@@ -347,7 +347,7 @@ void TaskDraftParameters::onTimer()
         if(obj) {
             subname += subs.front();
             Gui::Selection().setPreselect(obj->getDocument()->getName(),
-                    obj->getNameInDocument(), subname.c_str(),0,0,0,2);
+                    obj->getNameInDocument(), subname.c_str(),0,0,0,2,true);
         }
     }
 }

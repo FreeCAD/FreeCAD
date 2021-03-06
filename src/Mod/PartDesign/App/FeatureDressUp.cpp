@@ -185,13 +185,12 @@ void DressUp::onChanged(const App::Property* prop)
     // the BaseFeature property should track the Base and vice-versa as long as
     // the feature is inside a body (aka BaseFeature is nonzero)
     if (prop == &BaseFeature) {
-        if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
-            auto subs = Base.getSubValues();
+        if (BaseFeature.getValue()
+                && Base.getValue()
+                && Base.getValue() != BaseFeature.getValue()) {
+            
+            auto subs = Base.getSubValues(false);
             auto shadows = Base.getShadowSubs();
-            for(auto &sub : subs) {
-                if(sub.size() && sub[0]!='?')
-                    sub = std::string("?") + sub;
-            }
             Base.setValue (BaseFeature.getValue(),std::move(subs),std::move(shadows));
         }
     } else if (prop == &Base) {

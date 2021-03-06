@@ -49,6 +49,10 @@ public:
     bool isPreviewMode() const;
     virtual void finishRestoring();
     virtual void beforeDelete();
+    virtual bool getDetailPath(const char *subname,
+                               SoFullPath *pPath,
+                               bool append,
+                               SoDetail *&det) const;
     
     void setPreviewDisplayMode(bool);
 
