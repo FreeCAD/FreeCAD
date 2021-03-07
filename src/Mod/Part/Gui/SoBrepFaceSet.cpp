@@ -962,11 +962,12 @@ int SoBrepFaceSet::overrideMaterialBinding(
                 && !selected
                 && ctx
                 && ctx->isHighlighted()
-                && !ctx->isHighlightAll())
+                && !ctx->isHighlightAll()
+                && !Selection().needPickedList())
     {
-        // If show pre-selected face is enabled, the preselected face highlight
-        // will be shown on top with transparency, so no need for material
-        // override.
+        // If show pre-selected face on top is enabled, the preselected face
+        // highlight will be shown on top with transparency, so no need for
+        // material override.
         return 0;
     }
 
@@ -1008,10 +1009,6 @@ int SoBrepFaceSet::overrideMaterialBinding(
         trans0 = 0.01;
     }
 
-    float selectionTransparency = Gui::ViewParams::getSelectionTransparency();
-    if (selectionTransparency > trans0)
-        selectionTransparency = trans0;
-
     // Override material binding to PER_PART_INDEXED so that we can reuse coin
     // rendering for both selection, preselection and partial rendering. The
     // main purpose is such that selection and preselection can have correct
@@ -1027,10 +1024,12 @@ int SoBrepFaceSet::overrideMaterialBinding(
     //      b) has transparency
     //      c) has color override in secondary context
 
+    bool highlighted = ctx && ctx->isHighlighted() && !ctx->isHighlightAll();
+
     if((mb==SoMaterialBindingElement::OVERALL || 
         (mb==SoMaterialBindingElement::PER_PART && diffuse_size>=partIndex.getNum())) 
         &&
-       ((selected && Gui::Selection().needPickedList()) || 
+       (((selected || highlighted) && Gui::Selection().needPickedList()) || 
         (trans0!=0.0 && ctx && (ctx->isSelected() || ctx->isHighlighted())) ||
         (ctx2 && ctx2->colors.size())))
     {
@@ -1042,11 +1041,17 @@ int SoBrepFaceSet::overrideMaterialBinding(
             hasTransparency = true;
             if(trans0 < overrideTransparency) 
                 trans0 = overrideTransparency;
+            if(trans0 < Gui::ViewParams::getSelectionTransparency())
+                trans0 = Gui::ViewParams::getSelectionTransparency();
             trans_size = 1;
             if(ctx2)
                 ctx2->trans0 = trans0;
         }else if(ctx2)
             ctx2->trans0 = 0.0;
+
+        float selectionTransparency = Gui::ViewParams::getSelectionTransparency();
+        if (selectionTransparency > trans0)
+            selectionTransparency = trans0;
 
         uint32_t diffuseColor = diffuse[0].getPackedValue(trans0);
         uint32_t highlightColor=0;
