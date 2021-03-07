@@ -5980,18 +5980,23 @@ class DrawSketchHandlerExternal: public DrawSketchHandler
 public:
     std::vector<int> attaching;
     bool defining;
+    bool restorePickedList = false;
 
     DrawSketchHandlerExternal(bool defining=false)
         :attaching(0),defining(defining)
-    {}
+    {
+    }
 
     DrawSketchHandlerExternal(std::vector<int> &&geoIds)
         :attaching(std::move(geoIds)),defining(false)
-    {}
+    {
+    }
 
     virtual ~DrawSketchHandlerExternal()
     {
         Gui::Selection().rmvSelectionGate();
+        if (restorePickedList)
+            Gui::Selection().enablePickedList(false);
     }
 
     virtual bool allowExternalPick() const
@@ -6001,6 +6006,10 @@ public:
 
     virtual void activated(ViewProviderSketch *sketchgui)
     {
+        if (!Gui::Selection().needPickedList()) {
+            restorePickedList = true;
+            Gui::Selection().enablePickedList(true);
+        }
         if(attaching.size())
             sketchgui->showGeometry(false);
         sketchgui->setAxisPickStyle(false);
@@ -6026,6 +6035,10 @@ public:
 
     virtual void deactivated(ViewProviderSketch *sketchgui)
     {
+        if (restorePickedList) {
+            restorePickedList = false;
+            Gui::Selection().enablePickedList(false);
+        }
         sketchgui->showGeometry();
         sketchgui->setAxisPickStyle(true);
     }
