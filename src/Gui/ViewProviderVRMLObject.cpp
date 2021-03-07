@@ -60,10 +60,11 @@ PROPERTY_SOURCE(Gui::ViewProviderVRMLObject, Gui::ViewProviderDocumentObject)
 ViewProviderVRMLObject::ViewProviderVRMLObject()
 {
     pcVRML = new SoFCSelection();
-    pcVRML->highlightMode = Gui::SoFCSelection::OFF;
-    pcVRML->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    //pcVRML->style = Gui::SoFCSelection::BOX;
+    // pcVRML->highlightMode = Gui::SoFCSelection::OFF;
+    // pcVRML->selectionMode = Gui::SoFCSelection::SEL_OFF;
+    // pcVRML->style = Gui::SoFCSelection::BOX;
     pcVRML->ref();
+    SelectionStyle.setValue(1); // bounding box
 }
 
 ViewProviderVRMLObject::~ViewProviderVRMLObject()
@@ -207,6 +208,15 @@ void ViewProviderVRMLObject::getLocalResources(SoNode* node, std::list<std::stri
     getResourceFile<SoVRMLAnchor        >(node, resources);
 }
 
+void ViewProviderVRMLObject::onChanged(const App::Property* prop)
+{
+    if (prop == &Selectable) {
+        pcVRML->style = Selectable.getValue() == 1
+            ? Gui::SoFCSelection::BOX : Gui::SoFCSelection::EMISSIVE;
+    }
+    inherited::onChanged(prop);
+}
+
 void ViewProviderVRMLObject::updateData(const App::Property* prop)
 {
     App::VRMLObject* ivObj = static_cast<App::VRMLObject*>(pcObject);
@@ -236,6 +246,8 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
                     Base::Console().Error("The VRML file causes an infinite recursion!\n");
                     return;
                 }
+                node->renderCaching = SoSeparator::ON;
+                node->boundingBoxCaching = SoSeparator::ON;
                 pcVRML->addChild(node);
 
                 std::list<std::string> urls;
@@ -273,4 +285,5 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
         pcTransform->center.setValue(0.0f,0.0f,0.0f);
         pcTransform->scaleFactor.setValue(1.0f,1.0f,1.0f);
     }
+    inherited::updateData(prop);
 }
