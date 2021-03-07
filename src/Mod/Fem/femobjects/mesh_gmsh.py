@@ -212,6 +212,15 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             # https://forum.freecadweb.org/viewtopic.php?t=41738
             # https://forum.freecadweb.org/viewtopic.php?f=18&t=45260&start=20#p389494
 
+        if not hasattr(obj, "MeshSizeFromCurvature"):
+            obj.addProperty(
+                "App::PropertyIntegerConstraint",
+                "MeshSizeFromCurvature",
+                "FEM Gmsh Mesh Params",
+                "number of elements per 2*pi radians, 0 to deactivate"
+            )
+            obj.MeshSizeFromCurvature = (12, 0, 10000, 1)
+            
         if not hasattr(obj, "Algorithm2D"):
             obj.addProperty(
                 "App::PropertyEnumeration",
