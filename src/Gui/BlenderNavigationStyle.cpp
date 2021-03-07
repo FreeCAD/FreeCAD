@@ -51,7 +51,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE(Gui::BlenderNavigationStyle, Gui::UserNavigationStyle)
 
-BlenderNavigationStyle::BlenderNavigationStyle() : lockButton1(false)
+BlenderNavigationStyle::BlenderNavigationStyle() : lockButton1(false), lockButton2(false)
 {
 }
 
@@ -223,7 +223,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
             // If we are in edit mode then simply ignore the RMB events
             // to pass the event to the base class.
             this->lockrecenter = true;
-            if (!viewer->isEditing()) {
+            if (!viewer->isEditing() && !this->lockButton2) {
                 // If we are in zoom or pan mode ignore RMB events otherwise
                 // the canvas doesn't get any release events
                 if (this->currentmode != NavigationStyle::ZOOMING &&
@@ -318,16 +318,21 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         (this->ctrldown ? CTRLDOWN : 0) |
         (this->shiftdown ? SHIFTDOWN : 0);
 
+    // The left mouse button has been released right now but
+    // we want to avoid that the event is processed elsewhere
+    if (this->lockButton1 && !this->button1down) {
+        this->lockButton1 = false;
+        processed = true;
+    }
+    if (this->lockButton2 && !this->button2down) {
+        this->lockButton2 = false;
+        processed = true;
+    }
+
     switch (combo) {
     case 0:
         if (curmode == NavigationStyle::SPINNING) { break; }
         newmode = NavigationStyle::IDLE;
-        // The left mouse button has been released right now but
-        // we want to avoid that the event is processed elsewhere
-        if (this->lockButton1) {
-            this->lockButton1 = false;
-            processed = true;
-        }
 
         //if (curmode == NavigationStyle::DRAGGING) {
         //    if (doSpin())
@@ -344,6 +349,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     case BUTTON1DOWN|BUTTON2DOWN:
         newmode = NavigationStyle::PANNING;
+        this->lockButton1 = this->lockButton2 = true;
         break;
     case SHIFTDOWN|BUTTON3DOWN:
         newmode = NavigationStyle::PANNING;

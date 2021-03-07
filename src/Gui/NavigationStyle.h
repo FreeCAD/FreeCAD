@@ -335,6 +335,7 @@ protected:
 
 private:
     SbBool lockButton1;
+    SbBool lockButton2;
     SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
@@ -353,6 +354,7 @@ protected:
 
 private:
     SbBool lockButton1;
+    SbBool lockButton2;
     SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
