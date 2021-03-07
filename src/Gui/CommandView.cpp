@@ -3822,19 +3822,6 @@ VIEW_CMD_DEF(PartialHighlightOnFullSelect, PartialHighlightOnFullSelect)
 }
 
 //======================================================================
-// Std_EditingAutoTransparent
-//======================================================================
-VIEW_CMD_DEF(EditingAutoTransparent, EditingAutoTransparent)
-{
-  sGroup        = QT_TR_NOOP("View");
-  sMenuText     = QT_TR_NOOP("Auto transparent on edit");
-  sToolTipText  = ViewParams::docEditingAutoTransparent();
-  sWhatsThis    = "Std_EditingAutoTransparent";
-  sStatusTip    = sToolTipText;
-  eType         = NoDefaultAction;
-}
-
-//======================================================================
 // Std_PreselEdgeOnly
 //======================================================================
 VIEW_CMD_DEF(PreselEdgeOnly, ShowHighlightEdgeOnly)
@@ -3885,7 +3872,6 @@ public:
         addCommand(new StdCmdSelOnTop());
         addCommand(new StdCmdPreSelFaceOnTop());
         addCommand(new StdCmdPartialHighlightOnFullSelect());
-        addCommand(new StdCmdEditingAutoTransparent());
         addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());
         addCommand("Std_TreePreSelection");
