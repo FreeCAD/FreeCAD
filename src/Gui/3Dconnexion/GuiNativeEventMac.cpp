@@ -159,11 +159,17 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
         Base::Console().Log("Error installing 3Dconnexion handler\n");
         return;
     }
+#if 0
     /* register our app with the driver */
     // Pascal string Application name required to register driver for application
     UInt8  tdxAppName[] = {7,'F','r','e','e','C','A','D'};
     // 32bit appID to register driver for application
     UInt32 tdxAppID = 'FCAd';
+#else
+    // For some reason, the above name and ID don't work
+    UInt8  tdxAppName[] = {0};
+    UInt32 tdxAppID = kConnexionClientWildcard;
+#endif
     tdxClientID = RegisterConnexionClient( tdxAppID, tdxAppName,
                                            kConnexionClientModeTakeOver,
                                            kConnexionMaskAll );
