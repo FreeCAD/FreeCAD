@@ -160,6 +160,10 @@ int main( int argc, char ** argv )
         }
         argv_.push_back(0); // 0-terminated string
     }
+
+    // we need to force Coin not to use Freetype in order to find installed fonts on Windows
+    // see https://forum.freecadweb.org/viewtopic.php?p=485142#p485016
+    _putenv("COIN_FORCE_FREETYPE_OFF=1");
 #endif
 
 #if PY_MAJOR_VERSION >= 3
