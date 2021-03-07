@@ -142,6 +142,7 @@ macro(SetupPython)
         find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
         # For backwards compatibility with old CMake scripts
+        set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
         set(PYTHON_LIBRARIES ${Python3_LIBRARIES})
         set(PYTHON_INCLUDE_DIRS ${Python3_INCLUDE_DIRS})
         set(PYTHON_LIBRARY_DIRS ${Python3_LIBRARY_DIRS})
