@@ -255,6 +255,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 
         image = image.scaled(width, height);
     }
+    this->setMaximumHeight(0.9 * rect.height());
     ui->labelSplashPicture->setPixmap(image);
 //    if (showLic) { // currently disabled. Additional license blocks are always shown.
         QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
