@@ -24,89 +24,93 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QLabel" name="stepLabel">
-        <property name="text">
-         <string>Steps by turn</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefSpinBox" name="prefStepByTurn">
-        <property name="toolTip">
-         <string>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</string>
-        </property>
-        <property name="minimum">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <number>36</number>
-        </property>
-        <property name="value">
-         <number>8</number>
-        </property>
-        <property name="prefEntry">
-         <cstring>NaviStepByTurn</cstring>
-        </property>
-        <property name="prefPath">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::MinimumExpanding</enum>
-        </property>
-        <property name="sizeHint">
-         <size>
-          <width>91</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLabel" name="cornerLabel">
-        <property name="text">
-         <string>Corner</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QComboBox" name="naviCubeCorner">
-        <property name="toolTip">
-         <string>Corner where navigation cube is shown</string>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>Top left</string>
-         </property>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="1" column="4">
+         <widget class="QComboBox" name="naviCubeCorner">
+          <property name="toolTip">
+           <string>Corner where navigation cube is shown</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Top left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Top right</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bottom left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bottom right</string>
+           </property>
+          </item>
+         </widget>
         </item>
-        <item>
-         <property name="text">
-          <string>Top right</string>
-         </property>
+        <item row="1" column="3">
+         <widget class="QLabel" name="cornerLabel">
+          <property name="text">
+           <string>Corner</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
         </item>
-        <item>
-         <property name="text">
-          <string>Bottom left</string>
-         </property>
+        <item row="1" column="0">
+         <widget class="QLabel" name="stepLabel">
+          <property name="text">
+           <string>Steps by turn</string>
+          </property>
+         </widget>
         </item>
-        <item>
-         <property name="text">
-          <string>Bottom right</string>
-         </property>
+        <item row="1" column="1">
+         <widget class="Gui::PrefSpinBox" name="prefStepByTurn">
+          <property name="toolTip">
+           <string>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</string>
+          </property>
+          <property name="minimum">
+           <number>4</number>
+          </property>
+          <property name="maximum">
+           <number>36</number>
+          </property>
+          <property name="value">
+           <number>8</number>
+          </property>
+          <property name="prefEntry">
+           <cstring>NaviStepByTurn</cstring>
+          </property>
+          <property name="prefPath">
+           <cstring>View</cstring>
+          </property>
+         </widget>
         </item>
-       </widget>
+        <item row="1" column="2">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
+          <property name="sizeHint">
+           <size>
+            <width>91</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
