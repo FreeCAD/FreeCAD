@@ -175,12 +175,15 @@ public:
 	}
 };
 
-class NaviCubeImplementation {
+class NaviCubeImplementation : public ParameterGrp::ObserverType {
 public:
 	NaviCubeImplementation(Gui::View3DInventorViewer*);
 	virtual ~ NaviCubeImplementation();
 	void drawNaviCube();
 	void createContextMenu(const std::vector<std::string>& cmd);
+
+	/// Observer message from the ParameterGrp
+	virtual void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason);
 
 	bool processSoEvent(const SoEvent* ev);
 private:
@@ -311,40 +314,27 @@ void NaviCube::setCorner(Corner c) {
 
 NaviCubeImplementation::NaviCubeImplementation(
 	Gui::View3DInventorViewer* viewer) {
-	ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+
 	m_View3DInventorViewer = viewer;
 
-	m_TextColor = QColor(0,0,0,255);
-	if (hGrp->GetUnsigned("TextColor")) {
-		m_TextColor.setRgba(hGrp->GetUnsigned("TextColor"));
-	}
+	auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+	hGrp->Attach(this);
 
-	m_FrontFaceColor = QColor(255,255,255,128);
-	if (hGrp->GetUnsigned("FrontColor")) {
-		m_FrontFaceColor.setRgba(hGrp->GetUnsigned("FrontColor"));
-	}
-
-	m_BackFaceColor = QColor(226,233,239,128);
-	if (hGrp->GetUnsigned("BackColor")) {
-		m_BackFaceColor.setRgba(hGrp->GetUnsigned("BackColor"));
-	}
-
-	m_HiliteColor = QColor(170,226,255);
-	if (hGrp->GetUnsigned("HiliteColor")) {
-		m_HiliteColor.setRgba(hGrp->GetUnsigned("HiliteColor"));
-	}
-
-	m_ButtonColor = QColor(226,233,239,128);
-	if (hGrp->GetUnsigned("ButtonColor")) {
-		m_ButtonColor.setRgba(hGrp->GetUnsigned("ButtonColor"));
-	}
+	OnChange(*hGrp, "TextColor");
+	OnChange(*hGrp, "FrontColor");
+	OnChange(*hGrp, "BackColor");
+	OnChange(*hGrp, "HiliteColor");
+	OnChange(*hGrp, "ButtonColor");
+	OnChange(*hGrp, "CubeSize");
 
 	m_PickingFramebuffer = NULL;
-    m_CubeWidgetSize = ViewParams::getNaviWidgetSize();
 	m_Menu = createNaviCubeMenu();
 }
 
 NaviCubeImplementation::~NaviCubeImplementation() {
+	auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
+	hGrp->Detach(this);
+
 	delete m_Menu;
 	if (m_PickingFramebuffer)
 		delete m_PickingFramebuffer;
@@ -354,6 +344,25 @@ NaviCubeImplementation::~NaviCubeImplementation() {
 	for (vector<QOpenGLTexture *>::iterator t = m_glTextures.begin(); t != m_glTextures.end(); t++)
 		delete *t;
 #endif
+}
+
+void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType &rCaller, ParameterGrp::MessageType reason)
+{
+	const auto & rGrp = static_cast<ParameterGrp &>(rCaller);
+
+	if (strcmp(reason,"TextColor") == 0) {
+		m_TextColor.setRgba(rGrp.GetUnsigned(reason, QColor(0,0,0,255).rgba()));
+	} else if (strcmp(reason,"FrontColor") == 0) {
+		m_FrontFaceColor.setRgba(rGrp.GetUnsigned(reason, QColor(255,255,255,128).rgba()));
+	} else if (strcmp(reason,"BackColor") == 0) {
+		m_BackFaceColor.setRgba(rGrp.GetUnsigned(reason, QColor(226,233,239,128).rgba()));
+	} else if (strcmp(reason,"HiliteColor") == 0) {
+		m_HiliteColor.setRgba(rGrp.GetUnsigned(reason, QColor(170,226,255).rgba()));
+	} else if (strcmp(reason,"ButtonColor") == 0) {
+		m_ButtonColor.setRgba(rGrp.GetUnsigned(reason, QColor(226,233,239,128).rgba()));
+	} else if (strcmp(reason,"CubeSize") == 0) {
+		m_CubeWidgetSize = (rGrp.GetInt(reason, 132));
+	}
 }
 
 char* NaviCubeImplementation::enum2str(int e) {
