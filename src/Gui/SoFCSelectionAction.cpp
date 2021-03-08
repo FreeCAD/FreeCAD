@@ -1025,6 +1025,7 @@ public:
     SoColorPacker colorpacker;
     SoNode *root;
     std::map<int, SoPathList> latedelayedpaths;
+    SoPathList tmppathlist;
     unsigned delayedpathcount = 0;
     int currentdelayedpath = 0;
     SoPath *dummypath;
@@ -1323,21 +1324,32 @@ SoBoxSelectionRenderActionP::apply(SoBoxSelectionRenderAction *action,
     // any SoAnnoation inside the shadow group, the delayed path is some how
     // messed up. More sepecifically, the head of the path is the child node of
     // the shadow group, instead of the root scene node.
-    if(obeysrules && this->root && pathlist.getLength()) {
+    //
+    // In addition, the following code also filters out our dummypath which is
+    // added to trigger delayed path rendering so that our own prioritized late
+    // delayed rendering can work.
+    if(obeysrules && pathlist.getLength()) {
         int count = 0;
+        SoNode *head = this->root;
         for(int i=0, c=pathlist.getLength(); i<c ;++i) {
-            if(((SoFullPath*)pathlist[i])->getHead() == this->root)
+            if (pathlist[i] == dummypath)
+                continue;
+            if (!head)
+                head = ((SoFullPath*)pathlist[i])->getHead();
+            if(((SoFullPath*)pathlist[i])->getHead() == head)
                 ++count;
         }
         if(count != pathlist.getLength()) {
             if(!count)
                 return;
-            SoPathList plist(count);
+            tmppathlist.truncate(0);
             for(int i=0, c=pathlist.getLength(); i<c ;++i) {
-                if(((SoFullPath*)pathlist[i])->getHead() == this->root)
-                    plist.append(pathlist[i]);
+                if(pathlist[i] != dummypath 
+                        && ((SoFullPath*)pathlist[i])->getHead() == head)
+                    tmppathlist.append(pathlist[i]);
             }
-            action->SoGLRenderAction::apply(plist, TRUE);
+            action->SoGLRenderAction::apply(tmppathlist, TRUE);
+            tmppathlist.truncate(0);
             return;
         }
     }
