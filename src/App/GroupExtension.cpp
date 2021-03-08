@@ -666,13 +666,26 @@ int GroupExtension::extensionIsElementVisibleEx(const char *subname, int reason)
 }
 
 int GroupExtension::extensionIsElementVisible(const char *element) const {
-    if (!getExtendedObject()->Visibility.getValue())
-        return -1;
     auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
             getExtendedObject()->getPropertyByName("HiddenChildren"));
     if(!hiddenChildren || hiddenChildren->getContainer()!=getExtendedObject())
         return -1;
     return hiddenChildren->getValue(element)?0:1;
+}
+
+int GroupExtension::extensionSetElementVisible(const char *element, bool vis)
+{
+    auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+            getExtendedObject()->getPropertyByName("HiddenChildren"));
+    if(!hiddenChildren || hiddenChildren->getContainer()!=getExtendedObject())
+        return -1;
+    auto child = Group.find(element);
+    if (!child)
+        return -1;
+    Base::FlagToggler<> guard(_togglingVisibility);
+    hiddenChildren->setValue(element, (!vis) ? "" : nullptr);
+    child->Visibility.setValue(vis);
+    return 1;
 }
 
 void GroupExtension::onExtendedDocumentRestored() {

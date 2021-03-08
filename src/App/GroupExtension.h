@@ -130,6 +130,8 @@ public:
 
     virtual int extensionIsElementVisibleEx(const char *element, int reason) const override;
 
+    virtual int extensionSetElementVisible(const char *element, bool vis) override;
+
     virtual void onExtendedDocumentRestored() override;
 
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
