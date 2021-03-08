@@ -628,11 +628,6 @@ void View3DInventorViewer::init()
     pcViewProviderRoot->addChild(pEventCallback);
     pEventCallback->addEventCallback(SoEvent::getClassTypeId(), handleEventCB, this);
 
-    dimensionRoot = new SoSwitch(SO_SWITCH_NONE);
-    pcViewProviderRoot->addChild(dimensionRoot);
-    dimensionRoot->addChild(new SoSwitch()); //first one will be for the 3d dimensions.
-    dimensionRoot->addChild(new SoSwitch()); //second one for the delta dimensions.
-
     // This is a callback node that logs all action that traverse the Inventor tree.
 #if defined (FC_DEBUG) && defined(FC_LOGGING_CB)
     SoCallback* cb = new SoCallback;
@@ -710,6 +705,15 @@ void View3DInventorViewer::init()
     pcEditingTransform->setName("EditingTransform");
     restoreEditingRoot = false;
     pcEditingRoot->addChild(pcEditingTransform);
+
+    dimensionRoot = new SoSwitch(SO_SWITCH_NONE);
+    dimensionRoot->setName("DimensionRoot");
+    // To not get effect shadow drawing, add this in upper hierarchy.
+    //
+    // pcViewProviderRoot->addChild(dimensionRoot);
+    static_cast<SoGroup*>(sceneNode)->addChild(dimensionRoot);
+    dimensionRoot->addChild(new SoSwitch()); //first one will be for the 3d dimensions.
+    dimensionRoot->addChild(new SoSwitch()); //second one for the delta dimensions.
 
     static_cast<SoGroup*>(sceneNode)->addChild(pcGroupOnTop);
     static_cast<SoGroup*>(sceneNode)->addChild(pcEditingRoot);
