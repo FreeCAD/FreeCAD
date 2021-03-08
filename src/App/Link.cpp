@@ -1223,8 +1223,28 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     obj->getDocument()->removeObject(obj->getNameInDocument());
             }
         }
-    }else if(prop == _getElementCountProperty()) {
+    }else if(prop == getElementCountProperty()) {
         int elementCount = getElementCountValue()<0?0:getElementCountValue();
+
+        auto group = linkedPlainGroup();
+        if(group) {
+            if (elementCount && getLinkedObjectProperty()
+                             && !App::Document::isAnyRestoring()
+                             && !parent->getDocument()->isPerformingTransaction())
+            {
+                auto link = static_cast<App::Link*>(
+                        parent->getDocument()->addObject("App::Link", "Link"));
+                if (link) {
+                    auto grp = group->getExtendedObject();
+                    link->LinkedObject.setValue(grp);
+                    link->Label.setValue(grp->Label.getValue());
+                    getLinkedObjectProperty()->setValue(link);
+                    // Element count will be reset to zero when linked object property changed
+                    getElementCountProperty()->setValue(elementCount);
+                }
+            }
+            return;
+        }
 
         auto propVis = getVisibilityListProperty();
         if(propVis) {
@@ -1379,14 +1399,45 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             updateGroup();
     }else if(prop == getLinkedObjectProperty()) {
         auto group = linkedPlainGroup();
-        if(getShowElementProperty())
-            getShowElementProperty()->setStatus(Property::Hidden, !!group);
-        if(getElementCountProperty())
-            getElementCountProperty()->setStatus(Property::Hidden, !!group);
-        if(group)
+        if(group && getElementCountValue()
+                 && getLinkedObjectProperty()
+                 && !App::Document::isAnyRestoring()
+                 && !parent->getDocument()->isPerformingTransaction())
+        {
+            auto link = static_cast<App::Link*>(
+                    parent->getDocument()->addObject("App::Link", "Link"));
+            if (link) {
+                auto grp = group->getExtendedObject();
+                link->LinkedObject.setValue(grp);
+                link->Label.setValue(grp->Label.getValue());
+                getLinkedObjectProperty()->setValue(link);
+                return;
+            }
+        }
+
+        if(group) {
             updateGroup();
-        else if(_ChildCache.getSize())
+            if(!App::Document::isAnyRestoring()
+                    && !parent->getDocument()->isPerformingTransaction()
+                    && getVisibilityListProperty()
+                    && prevLinkedObjectID != group->getExtendedObject()->getID())
+            {
+                auto vis = getVisibilityListValue();
+                vis.clear();
+                for (auto child : group->Group.getValues()) {
+                    int v = group->extensionIsElementVisible(child->getNameInDocument());
+                    if (v < 0)
+                        v = child->Visibility.getValue() ? 1 : 0;
+                    vis.push_back(v ? true : false);
+                }
+                getVisibilityListProperty()->setValues(vis);
+            }
+        } else if(_ChildCache.getSize())
             _ChildCache.setValue();
+        if (auto linked = getLinkedObjectValue())
+            prevLinkedObjectID = linked->getID();
+        else
+            prevLinkedObjectID = 0;
         parseSubName();
         syncElementList();
 

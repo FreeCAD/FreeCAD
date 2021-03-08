@@ -358,6 +358,7 @@ protected:
     std::vector<boost::signals2::scoped_connection> plainGroupConns;
 
     long myOwner;
+    long prevLinkedObjectID = 0;
 
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
     mutable bool enableLabelCache;
