@@ -465,19 +465,42 @@ def p_resize_action(p):
     resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
     import Draft
     print(p[3])
-    newsize = p[3]['newsize']
+    new_size = p[3]['newsize']
     auto    = p[3]['auto'] 
-    print(newsize)
+    print(new_size)
     print(auto)
+    old_bbox = p[6][0].Shape.BoundBox
+    print ("Old bounding box: " + str(old_bbox))
+    old_size = [old_bbox.XLength, old_bbox.YLength, old_bbox.ZLength]
     for r in range(0,3) :
         if auto[r] == '1' :
-           newsize[r] = newsize[0]
-        if newsize[r] == '0' :
-           newsize[r] = '1'
-    print(newsize)
-    scale = FreeCAD.Vector(float(newsize[0]), float(newsize[1]), float(newsize[2]))
-    print(scale)       
-    p[0] = [Draft.scale(p[6],scale)]
+           new_size[r] = new_size[0]
+        if new_size[r] == '0' :
+           new_size[r] = str(old_size[r])
+    print(new_size)
+
+    # Calculate a transform matrix from the current bounding box to the new one:
+    transform_matrix = FreeCAD.Matrix()
+    #new_part.Shape = part.Shape.transformGeometry(transform_matrix) 
+
+    scale = FreeCAD.Vector(float(new_size[0])/old_size[0], 
+                           float(new_size[1])/old_size[1], 
+                           float(new_size[2])/old_size[2])
+
+    transform_matrix.scale(scale)
+
+    new_part=doc.addObject("Part::FeaturePython",'Matrix Deformation')
+    new_part.Shape = p[6][0].Shape.transformGeometry(transform_matrix)
+    if gui:
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('useViewProviderTree'):
+            from OpenSCADFeatures import ViewProviderTree
+            ViewProviderTree(new_part.ViewObject)
+        else:
+            new_part.ViewObject.Proxy = 0
+        p[6][0].ViewObject.hide()
+    p[0] = [new_part]
+     
 
 def p_not_supported(p):
     '''
@@ -724,6 +747,8 @@ def p_linear_extrude_with_twist(p):
     if printverbose: print("Linear Extrude With Twist")
     h = float(p[3]['height'])
     if printverbose: print("Twist : ",p[3])
+    if 'scale' in p[3]:
+        FreeCAD.Console.PrintWarning('WARNING: "scale" option to linear_extrude is not supported. Ignoring.\n')
     if 'twist' in p[3]:
         t = float(p[3]['twist'])
     else:
