@@ -44,10 +44,10 @@
         <property name="value">
          <number>8</number>
         </property>
-        <property name="prefEntry" stdset="0">
+        <property name="prefEntry">
          <cstring>NaviStepByTurn</cstring>
         </property>
-        <property name="prefPath" stdset="0">
+        <property name="prefPath">
          <cstring>View</cstring>
         </property>
        </widget>
@@ -60,7 +60,7 @@
         <property name="sizeType">
          <enum>QSizePolicy::MinimumExpanding</enum>
         </property>
-        <property name="sizeHint" stdset="0">
+        <property name="sizeHint">
          <size>
           <width>91</width>
           <height>20</height>
@@ -137,7 +137,7 @@
           <property name="sizeType">
            <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
-          <property name="sizeHint" stdset="0">
+          <property name="sizeHint">
            <size>
             <width>20</width>
             <height>20</height>
@@ -326,22 +326,22 @@ Turntable: the part will be rotated around the z-axis.</string>
            <string>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</string>
           </property>
-          <property name="unit" stdset="0">
+          <property name="unit">
            <string>mm</string>
           </property>
-          <property name="minimum" stdset="0">
+          <property name="minimum">
            <double>0.000010000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>10000000.000000000000000</double>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry">
            <cstring>NewDocumentCameraScale</cstring>
           </property>
-          <property name="prefPath" stdset="0">
+          <property name="prefPath">
            <cstring>View</cstring>
           </property>
-          <property name="rawValue" stdset="0">
+          <property name="rawValue">
            <double>100.000000000000000</double>
           </property>
          </widget>
@@ -360,10 +360,10 @@ The value is the diameter of the sphere to fit on the screen.</string>
           <property name="checked">
            <bool>false</bool>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry">
            <cstring>UseAutoRotation</cstring>
           </property>
-          <property name="prefPath" stdset="0">
+          <property name="prefPath">
            <cstring>View</cstring>
           </property>
          </widget>
@@ -379,10 +379,10 @@ The value is the diameter of the sphere to fit on the screen.</string>
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry">
            <cstring>ZoomAtCursor</cstring>
           </property>
-          <property name="prefPath" stdset="0">
+          <property name="prefPath">
            <cstring>View</cstring>
           </property>
          </widget>
@@ -429,10 +429,10 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
             <property name="value">
              <double>0.200000000000000</double>
             </property>
-            <property name="prefEntry" stdset="0">
+            <property name="prefEntry">
              <cstring>ZoomStep</cstring>
             </property>
-            <property name="prefPath" stdset="0">
+            <property name="prefPath">
              <cstring>View</cstring>
             </property>
            </widget>
@@ -445,7 +445,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
             <property name="sizeType">
              <enum>QSizePolicy::MinimumExpanding</enum>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="sizeHint">
              <size>
               <width>10</width>
               <height>20</height>
@@ -466,10 +466,10 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry">
            <cstring>InvertZoom</cstring>
           </property>
-          <property name="prefPath" stdset="0">
+          <property name="prefPath">
            <cstring>View</cstring>
           </property>
          </widget>
@@ -487,10 +487,10 @@ Mouse tilting is not disabled by this setting.</string>
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry">
            <cstring>DisableTouchTilt</cstring>
           </property>
-          <property name="prefPath" stdset="0">
+          <property name="prefPath">
            <cstring>View</cstring>
           </property>
          </widget>
@@ -505,7 +505,7 @@ Mouse tilting is not disabled by this setting.</string>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="sizeHint" stdset="0">
+     <property name="sizeHint">
       <size>
        <width>20</width>
        <height>96</height>
