@@ -781,6 +781,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemSelectionChanged(void)
 
         Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), constraint_name.c_str());
     }
+    sketchView->drawConstraintIcons(); // Draw whole set of constraint changes once
+    sketchView->updateColor();
     this->blockConnection(block);
 }
 

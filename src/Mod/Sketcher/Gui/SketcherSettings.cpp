@@ -72,6 +72,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxEnableEscape->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
+    ui->spinBoxFramesPerConstraintDraw->onSave();
     form->saveSettings();
 }
 
@@ -83,6 +84,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxEnableEscape->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
+    ui->spinBoxFramesPerConstraintDraw->onRestore();
     form->loadSettings();
 }
 
