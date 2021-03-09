@@ -1077,7 +1077,7 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
                 if (count == 3) {
                     ts << QObject::tr("\n\nPlease check report view for more...");
                 } else if (count < 3) {
-                    ts << QObject::tr("\n\nPyhsical path: ") << v.first
+                    ts << QObject::tr("\n\nPhysical path: ") << v.first
                     << QObject::tr("\nDocument: ") << docName(doc)
                     << QObject::tr("\n  Path: ") << QString::fromUtf8(doc->FileName.getValue());
                     for (auto d : v.second) {

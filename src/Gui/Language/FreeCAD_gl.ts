@@ -1368,35 +1368,35 @@ Se non marca esta opción, entón a propiedade debe nomearse de forma única, e 
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>Premendo &lt;Tab&gt; inserirá a cantidade do tamaño do sangrado definido</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation type="unfinished">Tabulator raster (how many spaces)</translation>
+      <translation>Tabulador raster (cantos espazos)</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>Cantos espazos se inserirán ó premer &lt;Tab&gt;</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</translation>
+      <translation>Premendo &lt;Tab&gt; inserirá un tabulador co tamaño de tab definido</translation>
     </message>
     <message>
       <source>Display items</source>
-      <translation type="unfinished">Display items</translation>
+      <translation>Amosar elementos</translation>
     </message>
     <message>
       <source>Font size to be used for selected code type</source>
-      <translation type="unfinished">Font size to be used for selected code type</translation>
+      <translation>Tamaño de letra a usar para o tipo de código seleccionado</translation>
     </message>
     <message>
       <source>Color and font settings will be applied to selected type</source>
-      <translation type="unfinished">Color and font settings will be applied to selected type</translation>
+      <translation>Os axustes de cor e tipo de letra aplicaranse ó tipo seleccionado</translation>
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation type="unfinished">Font family to be used for selected code type</translation>
+      <translation>Tipo de letra que se usará o tipo de código seleccionado</translation>
     </message>
     <message>
       <source>Color:</source>
@@ -1459,31 +1459,31 @@ Se non marca esta opción, entón a propiedade debe nomearse de forma única, e 
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation type="unfinished">Language of the application's user interface</translation>
+      <translation>Idioma da interface de usuario da aplicación</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Cantos ficheiros deben mostrarse na lista de ficheiros recentes</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>O fondo da xanela principal consistirá en mosaicos dunha imaxe especial.
+Consulte a Wiki de FreeCAD para máis detalles sobre a imaxe.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Folla de estilo de como se verá a interface de usuario</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
+      <translation>Escolla a súa preferencia para o tamaño da icona da barra de ferramentas. 
+Pode axustar isto de acordo ó tamaño da súa pantalla ou gusto persoal</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>Modo de vista de árbore:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -3022,14 +3022,14 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
-      <translation type="unfinished">URL describing more about the license</translation>
+      <translation>URL que describe máis sobre a licenza</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocumentImp</name>
     <message>
       <source>The format of the date to use.</source>
-      <translation type="unfinished">The format of the date to use.</translation>
+      <translation>O formato de data a empregar.</translation>
     </message>
     <message>
       <source>Default</source>
@@ -3037,7 +3037,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Formato</translation>
     </message>
   </context>
   <context>
@@ -3227,18 +3227,18 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creation method:</source>
-      <translation type="unfinished">Creation method:</translation>
+      <translation>Método de creación:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsImageImp</name>
     <message>
       <source>Offscreen (New)</source>
-      <translation type="unfinished">Offscreen (New)</translation>
+      <translation>Fóra de pantalla (Novo)</translation>
     </message>
     <message>
       <source>Offscreen (Old)</source>
-      <translation type="unfinished">Offscreen (Old)</translation>
+      <translation>Fóra de pantalla (Vello)</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
@@ -3848,7 +3848,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Resultado</translation>
     </message>
     <message>
       <source>List of last used calculations 
@@ -3858,7 +3858,7 @@ To add a calculation press Return in the value input field</translation>
     </message>
     <message>
       <source>Quantity</source>
-      <translation type="unfinished">Quantity</translation>
+      <translation>Cantidade</translation>
     </message>
     <message>
       <source>Unit system:</source>

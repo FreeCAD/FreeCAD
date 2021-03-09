@@ -121,11 +121,11 @@ void PropertyItem::onChange()
     if(hasExpression()) {
         for(auto child : childItems) {
             if(child && child->hasExpression())
-                child->setExpression(boost::shared_ptr<App::Expression>());
+                child->setExpression(std::shared_ptr<App::Expression>());
         }
         for(auto item=parentItem;item;item=item->parentItem) {
             if(item->hasExpression())
-                item->setExpression(boost::shared_ptr<App::Expression>());
+                item->setExpression(std::shared_ptr<App::Expression>());
         }
     }
 }

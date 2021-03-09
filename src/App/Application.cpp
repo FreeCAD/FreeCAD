@@ -30,6 +30,7 @@
 # include <sstream>
 # include <exception>
 # include <ios>
+# include <functional>
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <unistd.h>
 # include <pwd.h>
@@ -128,8 +129,6 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
-#include <boost_bind_bind.hpp>
-#include <boost/version.hpp>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
@@ -138,7 +137,7 @@ using namespace App;
 using namespace std;
 using namespace boost;
 using namespace boost::program_options;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 // scriptings (scripts are built-in but can be overridden by command line option)
@@ -199,7 +198,6 @@ PyDoc_STRVAR(Base_doc,
     "like vector, matrix, bounding box, placement, rotation, axis, ...\n"
     );
 
-#if PY_MAJOR_VERSION >= 3
 // This is called via the PyImport_AppendInittab mechanism called
 // during initialization, to make the built-in __FreeCADBase__
 // module known to Python.
@@ -228,7 +226,6 @@ init_freecad_module(void)
     };
     return PyModule_Create(&FreeCADModuleDef);
 }
-#endif
 
 Application::Application(std::map<std::string,std::string> &mConfig)
   : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false)
@@ -242,7 +239,6 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
     // setting up Python binding
     Base::PyGILStateLocker lock;
-#if PY_MAJOR_VERSION >= 3
     PyObject* modules = PyImport_GetModuleDict();
 
     __AppMethods = Application::Methods;
@@ -252,12 +248,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         pAppModule = init_freecad_module();
         PyDict_SetItemString(modules, "FreeCAD", pAppModule);
     }
-#else
-    PyObject* pAppModule = Py_InitModule3("FreeCAD", Application::Methods, FreeCAD_doc);
-#endif
     Py::Module(pAppModule).setAttr(std::string("ActiveDocument"),Py::None());
 
-#if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef ConsoleModuleDef = {
         PyModuleDef_HEAD_INIT,
         "__FreeCADConsole__", Console_doc, -1,
@@ -265,9 +257,6 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         NULL, NULL, NULL, NULL
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
-#else
-    PyObject* pConsoleModule = Py_InitModule3("__FreeCADConsole__", ConsoleSingleton::Methods, Console_doc);
-#endif
 
     // introducing additional classes
 
@@ -285,16 +274,13 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // binding classes from the base module. At a later stage we should
     // remove these types from the FreeCAD module.
 
-#if PY_MAJOR_VERSION >= 3
     PyObject* pBaseModule = PyImport_ImportModule ("__FreeCADBase__");
     if (!pBaseModule) {
         PyErr_Clear();
         pBaseModule = init_freecad_base_module();
         PyDict_SetItemString(modules, "__FreeCADBase__", pBaseModule);
     }
-#else
-    PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
-#endif
+
     Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, NULL);
     Py_INCREF(Base::BaseExceptionFreeCADError);
     PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
@@ -344,7 +330,6 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pAppModule, "Qt", pTranslateModule);
 
     //insert Units module
-#if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef UnitsModuleDef = {
         PyModuleDef_HEAD_INIT,
         "Units", "The Unit API", -1,
@@ -352,14 +337,8 @@ Application::Application(std::map<std::string,std::string> &mConfig)
         NULL, NULL, NULL, NULL
     };
     PyObject* pUnitsModule = PyModule_Create(&UnitsModuleDef);
-#else
-    PyObject* pUnitsModule = Py_InitModule3("Units", Base::UnitsApi::Methods,"The Unit API");
-#endif
     Base::Interpreter().addType(&Base::QuantityPy  ::Type,pUnitsModule,"Quantity");
     // make sure to set the 'nb_true_divide' slot
-#if PY_MAJOR_VERSION < 3
-    Base::QuantityPy::Type.tp_as_number->nb_true_divide = Base::QuantityPy::Type.tp_as_number->nb_divide;
-#endif
     Base::Interpreter().addType(&Base::UnitPy      ::Type,pUnitsModule,"Unit");
 
     Py_INCREF(pUnitsModule);
@@ -449,26 +428,26 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
     _pActiveDoc = DocMap[name];
 
     // connect the signals to the application for the new document
-    _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDocument, this, bp::_1, bp::_2));
-    _pActiveDoc->signalChanged.connect(boost::bind(&App::Application::slotChangedDocument, this, bp::_1, bp::_2));
-    _pActiveDoc->signalNewObject.connect(boost::bind(&App::Application::slotNewObject, this, bp::_1));
-    _pActiveDoc->signalDeletedObject.connect(boost::bind(&App::Application::slotDeletedObject, this, bp::_1));
-    _pActiveDoc->signalBeforeChangeObject.connect(boost::bind(&App::Application::slotBeforeChangeObject, this, bp::_1, bp::_2));
-    _pActiveDoc->signalChangedObject.connect(boost::bind(&App::Application::slotChangedObject, this, bp::_1, bp::_2));
-    _pActiveDoc->signalRelabelObject.connect(boost::bind(&App::Application::slotRelabelObject, this, bp::_1));
-    _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, bp::_1));
-    _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, bp::_1));
-    _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, bp::_1));
-    _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, bp::_1));
-    _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, bp::_1));
-    _pActiveDoc->signalBeforeRecompute.connect(boost::bind(&App::Application::slotBeforeRecompute, this, bp::_1));
-    _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, bp::_1, bp::_2));
-    _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, bp::_1));
-    _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, bp::_1));
-    _pActiveDoc->signalStartSave.connect(boost::bind(&App::Application::slotStartSaveDocument, this, bp::_1, bp::_2));
-    _pActiveDoc->signalFinishSave.connect(boost::bind(&App::Application::slotFinishSaveDocument, this, bp::_1, bp::_2));
+    _pActiveDoc->signalBeforeChange.connect(std::bind(&App::Application::slotBeforeChangeDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signalChanged.connect(std::bind(&App::Application::slotChangedDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signalNewObject.connect(std::bind(&App::Application::slotNewObject, this, sp::_1));
+    _pActiveDoc->signalDeletedObject.connect(std::bind(&App::Application::slotDeletedObject, this, sp::_1));
+    _pActiveDoc->signalBeforeChangeObject.connect(std::bind(&App::Application::slotBeforeChangeObject, this, sp::_1, sp::_2));
+    _pActiveDoc->signalChangedObject.connect(std::bind(&App::Application::slotChangedObject, this, sp::_1, sp::_2));
+    _pActiveDoc->signalRelabelObject.connect(std::bind(&App::Application::slotRelabelObject, this, sp::_1));
+    _pActiveDoc->signalActivatedObject.connect(std::bind(&App::Application::slotActivatedObject, this, sp::_1));
+    _pActiveDoc->signalUndo.connect(std::bind(&App::Application::slotUndoDocument, this, sp::_1));
+    _pActiveDoc->signalRedo.connect(std::bind(&App::Application::slotRedoDocument, this, sp::_1));
+    _pActiveDoc->signalRecomputedObject.connect(std::bind(&App::Application::slotRecomputedObject, this, sp::_1));
+    _pActiveDoc->signalRecomputed.connect(std::bind(&App::Application::slotRecomputed, this, sp::_1));
+    _pActiveDoc->signalBeforeRecompute.connect(std::bind(&App::Application::slotBeforeRecompute, this, sp::_1));
+    _pActiveDoc->signalOpenTransaction.connect(std::bind(&App::Application::slotOpenTransaction, this, sp::_1, sp::_2));
+    _pActiveDoc->signalCommitTransaction.connect(std::bind(&App::Application::slotCommitTransaction, this, sp::_1));
+    _pActiveDoc->signalAbortTransaction.connect(std::bind(&App::Application::slotAbortTransaction, this, sp::_1));
+    _pActiveDoc->signalStartSave.connect(std::bind(&App::Application::slotStartSaveDocument, this, sp::_1, sp::_2));
+    _pActiveDoc->signalFinishSave.connect(std::bind(&App::Application::slotFinishSaveDocument, this, sp::_1, sp::_2));
     _pActiveDoc->signalChangePropertyEditor.connect(
-            boost::bind(&App::Application::slotChangePropertyEditor, this, bp::_1, bp::_2));
+            std::bind(&App::Application::slotChangePropertyEditor, this, sp::_1, sp::_2));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -1499,6 +1478,23 @@ int Application::_argc;
 char ** Application::_argv;
 
 
+void Application::cleanupUnits()
+{
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Module mod (Py::Module("FreeCAD").getAttr("Units").ptr());
+
+        Py::List attr(mod.dir());
+        for (Py::List::iterator it = attr.begin(); it != attr.end(); ++it) {
+            mod.delAttr(Py::String(*it));
+        }
+    }
+    catch (Py::Exception& e) {
+        Base::PyGILStateLocker lock;
+        e.clear();
+    }
+}
+
 void Application::destruct(void)
 {
     // saving system parameter
@@ -1528,6 +1524,11 @@ void Application::destruct(void)
     paramMgr.clear();
     _pcSysParamMngr = 0;
     _pcUserParamMngr = 0;
+
+#ifdef FC_DEBUG
+    // Do this only in debug mode for memory leak checkers
+    cleanupUnits();
+#endif
 
     // not initialized or double destruct!
     assert(_pcSingleton);
@@ -1712,10 +1713,6 @@ void Application::init(int argc, char ** argv)
         _set_se_translator(my_se_translator_filter);
 #endif
         initTypes();
-
-#if (BOOST_FILESYSTEM_VERSION == 2)
-        boost::filesystem::path::default_name_check(boost::filesystem::no_check);
-#endif
 
         initConfig(argc,argv);
         initApplication();
@@ -1968,10 +1965,8 @@ void Application::initConfig(int argc, char ** argv)
 #   endif
 
     // init python
-#if PY_MAJOR_VERSION >= 3
     PyImport_AppendInittab ("FreeCAD", init_freecad_module);
     PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
-#endif
     const char* pythonpath = Interpreter().init(argc,argv);
     if (pythonpath)
         mConfig["PythonSearchPath"] = pythonpath;

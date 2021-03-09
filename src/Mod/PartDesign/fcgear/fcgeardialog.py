@@ -30,7 +30,7 @@ class GearCreationFrame(qt.QFrame):
         l = qt.QFormLayout(self)
         l.setFieldGrowthPolicy(l.ExpandingFieldsGrow)
         l.addRow('Number of teeth:', self.Z)
-        l.addRow('Modules (mm):', self.m)
+        l.addRow('Module (mm):', self.m)
         l.addRow('Pressure angle:', self.angle)
         l.addRow('Number of curves:', self.split)
 
@@ -46,7 +46,7 @@ class GearDialog(qt.QDialog):
         l = qt.QVBoxLayout(self)
         l.addWidget(self.gc)
         l.addWidget(buttonBox)
-        self.setWindowTitle('Gear cration dialog')
+        self.setWindowTitle('Gear creation dialog')
 
     def accept(self):
         if FreeCAD.ActiveDocument is None:
@@ -56,6 +56,10 @@ class GearDialog(qt.QDialog):
                                self.gc.Z.value(),
                                self.gc.angle.value(),
                                not self.gc.split.currentIndex())
+
+        # Use gear to silence static analyzer complaints about unused variables (TODO: Waiting on PEP640 or similar)
+        False if gear.__name__ else True
+
         FreeCADGui.SendMsgToActiveView("ViewFit")
         return super(GearDialog, self).accept()
 

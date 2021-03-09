@@ -6867,7 +6867,7 @@ Kies 'Afbreken' om af te breken</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Weet u zeker dat u wilt doorgaan?</translation>
     </message>
     <message>
       <source>

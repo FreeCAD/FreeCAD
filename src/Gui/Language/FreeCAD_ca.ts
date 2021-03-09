@@ -7285,7 +7285,7 @@ Camí: </translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Canviar estil de dibuix dels objectes</translation>
     </message>
   </context>
   <context>
@@ -7342,7 +7342,7 @@ Camí: </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Selecciona els objectes a exportar abans de triar Exportar.</translation>
     </message>
   </context>
   <context>
@@ -8832,7 +8832,7 @@ Camí: </translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Estableix com a pantalla d'inici per defecte</translation>
     </message>
   </context>
   <context>
@@ -8978,11 +8978,11 @@ Camí: </translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Restaurar càmera desada</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Restaurar ajustos de càmera desats</translation>
     </message>
   </context>
   <context>
@@ -9038,11 +9038,11 @@ Camí: </translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Desa càmera actual</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Desa ajustos de càmera actuals</translation>
     </message>
   </context>
   <context>

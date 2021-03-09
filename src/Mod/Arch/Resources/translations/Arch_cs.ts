@@ -686,17 +686,17 @@
     <message>
       <location filename="ArchSite.py" line="840"/>
       <source>The scale of the solar diagram</source>
-      <translation type="unfinished">The scale of the solar diagram</translation>
+      <translation>Rozsah solárního diagramu</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="843"/>
       <source>The position of the solar diagram</source>
-      <translation type="unfinished">The position of the solar diagram</translation>
+      <translation>Poloha solárního diagramu</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="845"/>
       <source>The color of the solar diagram</source>
-      <translation type="unfinished">The color of the solar diagram</translation>
+      <translation>Barva solárního diagramu</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="270"/>
@@ -986,7 +986,7 @@
     <message>
       <location filename="ArchWindow.py" line="560"/>
       <source>The area of this window</source>
-      <translation type="unfinished">The area of this window</translation>
+      <translation>Oblast tohoto okna</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="228"/>
@@ -1011,7 +1011,7 @@
     <message>
       <location filename="ArchMaterial.py" line="716"/>
       <source>A description for this material</source>
-      <translation type="unfinished">A description for this material</translation>
+      <translation>Popis tohoto materiálu</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="292"/>
@@ -1021,12 +1021,12 @@
     <message>
       <location filename="ArchMaterial.py" line="294"/>
       <source>The color of this material</source>
-      <translation type="unfinished">The color of this material</translation>
+      <translation>Barva tohoto materiálu</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="717"/>
       <source>The list of layer names</source>
-      <translation type="unfinished">The list of layer names</translation>
+      <translation>Seznam názvů vrstev</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="718"/>
@@ -3802,7 +3802,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.ui" line="125"/>
       <source>The color of this material</source>
-      <translation type="unfinished">The color of this material</translation>
+      <translation>Barva tohoto materiálu</translation>
     </message>
     <message>
       <location filename="ArchMaterial.ui" line="163"/>

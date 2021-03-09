@@ -1408,7 +1408,7 @@ yyreduce:
 
 /* Line 1464 of yacc.c  */
 #line 53 "SelectionFilter.y"
-    { (yyval.block) = (yyvsp[(1) - (2)].block) ; (yyval.block)->Objects.push_back((yyvsp[(2) - (2)].object)); ;}
+    { (yyval.block) = (yyvsp[(1) - (2)].block) ; (yyval.block)->Objects.emplace_back((yyvsp[(2) - (2)].object)); ;}
     break;
 
   case 13:

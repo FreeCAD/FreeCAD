@@ -4932,7 +4932,7 @@ Pozostaw puste pole, aby użyć wszystkich obiektów z dokumentu</translation>
     <message>
       <location filename="GitTaskPanel.ui" line="20"/>
       <source>Status</source>
-      <translation>Stan</translation>
+      <translation>Aktualny status</translation>
     </message>
     <message>
       <location filename="GitTaskPanel.ui" line="48"/>

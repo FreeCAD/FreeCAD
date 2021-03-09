@@ -155,12 +155,12 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>Rektangelns längd</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>Rektangelns höjd</translation>
     </message>
     <message>
       <location filename="wire.py" line="77"/>
@@ -361,7 +361,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="polygon.py" line="48"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Antalet ytor</translation>
     </message>
     <message>
       <location filename="polygon.py" line="52"/>

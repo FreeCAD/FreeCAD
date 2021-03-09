@@ -5179,7 +5179,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="preferences-archdefaults.ui" line="1044"/>
       <source>Color:</source>
-      <translation>Couleur:</translation>
+      <translation>Couleur :</translation>
     </message>
     <message>
       <location filename="preferences-archdefaults.ui" line="820"/>

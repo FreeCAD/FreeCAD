@@ -2419,7 +2419,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5992"/>
       <source>Add external geometry</source>
-      <translation type="unfinished">Add external geometry</translation>
+      <translation>Добавить внешнюю геометрию</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6173"/>

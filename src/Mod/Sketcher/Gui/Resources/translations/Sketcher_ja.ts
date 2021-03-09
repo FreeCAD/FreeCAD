@@ -11,7 +11,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="163"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>B-スプラインの曲率コームの表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="164"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="101"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>B-スプラインの次数の表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="102"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="194"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation type="unfinished">Show/hide B-spline knot multiplicity</translation>
+      <translation>B-スプラインのノット多重度を表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="195"/>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="225"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation type="unfinished">Show/hide B-spline control point weight</translation>
+      <translation>B-スプラインの制御点重みの表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="226"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
+      <translation>すべてのB-スプラインの制御点重みの非表示と表示を切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="132"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation type="unfinished">Show/hide B-spline control polygon</translation>
+      <translation>B-スプラインの制御ポリゴンの表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="133"/>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="102"/>
       <source>Produce a closed shape by tying the end point of one element with the next element's starting point</source>
-      <translation type="unfinished">Produce a closed shape by tying the end point of one element with the next element's starting point</translation>
+      <translation>要素の最終点と次の要素の開始点を結んで閉じたシェイプを作成</translation>
     </message>
   </context>
   <context>
@@ -160,27 +160,27 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="331"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>B-スプラインの次数の表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="338"/>
       <source>Show/hide B-spline control polygon</source>
-      <translation type="unfinished">Show/hide B-spline control polygon</translation>
+      <translation>B-スプラインの制御ポリゴンの表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="345"/>
       <source>Show/hide B-spline curvature comb</source>
-      <translation type="unfinished">Show/hide B-spline curvature comb</translation>
+      <translation>B-スプラインの曲率コームの表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="352"/>
       <source>Show/hide B-spline knot multiplicity</source>
-      <translation type="unfinished">Show/hide B-spline knot multiplicity</translation>
+      <translation>B-スプラインのノット多重度を表示/非表示</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="360"/>
       <source>Show/hide B-spline control point weight</source>
-      <translation type="unfinished">Show/hide B-spline control point weight</translation>
+      <translation>B-スプラインの制御点重みの表示/非表示</translation>
     </message>
   </context>
   <context>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3979"/>
       <source>Ellipse by periapsis, apoapsis, minor radius</source>
-      <translation type="unfinished">Ellipse by periapsis, apoapsis, minor radius</translation>
+      <translation>近点、遠点、短半径を指定して楕円を作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3983"/>
@@ -356,22 +356,22 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5341"/>
       <source>Fillets</source>
-      <translation type="unfinished">Fillets</translation>
+      <translation>フィレット</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5342"/>
       <source>Create a fillet between two lines</source>
-      <translation type="unfinished">Create a fillet between two lines</translation>
+      <translation>2 線の間にフィレットを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5417"/>
       <source>Sketch fillet</source>
-      <translation type="unfinished">Sketch fillet</translation>
+      <translation>スケッチフィレット</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5421"/>
       <source>Constraint-preserving sketch fillet</source>
-      <translation type="unfinished">Constraint-preserving sketch fillet</translation>
+      <translation>拘束を維持したスケッチフィレット</translation>
     </message>
   </context>
   <context>
@@ -465,12 +465,12 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="212"/>
       <source>Connect edges</source>
-      <translation type="unfinished">Connect edges</translation>
+      <translation>エッジを接続</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="213"/>
       <source>Tie the end point of the element with next element's starting point</source>
-      <translation type="unfinished">Tie the end point of the element with next element's starting point</translation>
+      <translation>要素の最終点と次の要素の開始点を結ぶ</translation>
     </message>
   </context>
   <context>
@@ -501,12 +501,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1754"/>
       <source>Constrain block</source>
-      <translation type="unfinished">Constrain block</translation>
+      <translation>ブロック拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1755"/>
       <source>Block constraint: block the selected edge from moving</source>
-      <translation type="unfinished">Block constraint: block the selected edge from moving</translation>
+      <translation>ブロック拘束: 選択したエッジが動かないようにブロック</translation>
     </message>
   </context>
   <context>
@@ -645,7 +645,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="7057"/>
       <source>Constrain internal alignment</source>
-      <translation type="unfinished">Constrain internal alignment</translation>
+      <translation>内部整列拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7058"/>
@@ -669,8 +669,7 @@
       <location filename="../../CommandConstraints.cpp" line="1530"/>
       <source>Lock constraint: create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation type="unfinished">Lock constraint: create both a horizontal and a vertical distance constraint
-on the selected vertex</translation>
+      <translation>ロック拘束: 選択した頂点に水平距離拘束と垂直距離拘束の両方を作成</translation>
     </message>
   </context>
   <context>
@@ -737,12 +736,12 @@ on the selected vertex</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4765"/>
       <source>Constrain radius or weight</source>
-      <translation type="unfinished">Constrain radius or weight</translation>
+      <translation>半径または重みを拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4766"/>
       <source>Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</source>
-      <translation type="unfinished">Fix the radius of a circle or an arc or fix the weight of a pole of a B-Spline</translation>
+      <translation>円・円弧の半径、またはB-スプラインの極の重みを固定</translation>
     </message>
   </context>
   <context>
@@ -761,8 +760,7 @@ on the selected vertex</translation>
       <location filename="../../CommandConstraints.cpp" line="6894"/>
       <source>Create a refraction law (Snell's law) constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law) constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>光線の2端点と境界のエッジの間に屈折の法則 (スネル則の法則) による拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -781,8 +779,7 @@ and an edge as an interface.</translation>
       <location filename="../../CommandConstraints.cpp" line="6594"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation type="unfinished">Create a symmetry constraint between two points
-with respect to a line or a third point</translation>
+      <translation>線または第3点に対して、2点間の対称拘束を作成</translation>
     </message>
   </context>
   <context>
@@ -831,12 +828,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>
-      <translation type="unfinished">Convert geometry to B-spline</translation>
+      <translation>ジオメトリーをB-スプラインに変換</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="386"/>
       <source>Converts the selected geometry to a B-spline</source>
-      <translation type="unfinished">Converts the selected geometry to a B-spline</translation>
+      <translation>選択されたジオメトリーをB-スプラインに変換</translation>
     </message>
   </context>
   <context>
@@ -1209,12 +1206,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5310"/>
       <source>Create corner-preserving fillet</source>
-      <translation type="unfinished">Create corner-preserving fillet</translation>
+      <translation>コーナーを維持したフィレットを作成</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5311"/>
       <source>Fillet that preserves intersection point and most constraints</source>
-      <translation type="unfinished">Fillet that preserves intersection point and most constraints</translation>
+      <translation>交差点とほとんどの拘束を維持したフィレット</translation>
     </message>
   </context>
   <context>
@@ -1353,12 +1350,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="526"/>
       <source>Decrease B-spline degree</source>
-      <translation type="unfinished">Decrease B-spline degree</translation>
+      <translation>B-スプラインの次数を減らす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="527"/>
       <source>Decreases the degree of the B-spline</source>
-      <translation type="unfinished">Decreases the degree of the B-spline</translation>
+      <translation>B-スプラインの次数を減らす</translation>
     </message>
   </context>
   <context>
@@ -1389,12 +1386,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2095"/>
       <source>Delete all constraints</source>
-      <translation type="unfinished">Delete all constraints</translation>
+      <translation>全ての拘束を削除</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2096"/>
       <source>Delete all constraints in the sketch</source>
-      <translation type="unfinished">Delete all constraints in the sketch</translation>
+      <translation>スケッチ内の全ての拘束を削除</translation>
     </message>
   </context>
   <context>
@@ -1412,7 +1409,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2035"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
-      <translation type="unfinished">Delete all geometry and constraints in the current sketch, with the exception of external geometry</translation>
+      <translation>外部ジオメトリーを除き、現在のスケッチ内の全てのジオメトリーと拘束を削除</translation>
     </message>
   </context>
   <context>
@@ -1430,7 +1427,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../Command.cpp" line="267"/>
       <source>Edit the selected sketch.</source>
-      <translation type="unfinished">Edit the selected sketch.</translation>
+      <translation>選択したスケッチを編集</translation>
     </message>
   </context>
   <context>
@@ -1479,7 +1476,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="453"/>
       <source>Increase B-spline degree</source>
-      <translation type="unfinished">Increase B-spline degree</translation>
+      <translation>B-スプラインの次数を増やす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="454"/>
@@ -1520,7 +1517,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>Finish editing the active sketch.</source>
-      <translation type="unfinished">Finish editing the active sketch.</translation>
+      <translation>アクティブなスケッチの編集を終了</translation>
     </message>
   </context>
   <context>
@@ -1547,7 +1544,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="561"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</translation>
+      <translation>選択したオブジェクトの一部がマッピング先のスケッチに依存しています。循環依存はできません。</translation>
     </message>
   </context>
   <context>
@@ -1565,7 +1562,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="865"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
-      <translation type="unfinished">Create a new sketch from merging two or more selected sketches.</translation>
+      <translation>2つ以上の選択したスケッチをマージすることで、新しいスケッチを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="878"/>
@@ -1575,7 +1572,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="879"/>
       <source>Select at least two sketches.</source>
-      <translation type="unfinished">Select at least two sketches.</translation>
+      <translation>少なくとも 2 つのスケッチを選択してください。</translation>
     </message>
   </context>
   <context>
@@ -1607,7 +1604,7 @@ as mirroring reference.</translation>
     <message>
       <location filename="../../Command.cpp" line="774"/>
       <source>Select one or more sketches.</source>
-      <translation type="unfinished">Select one or more sketches.</translation>
+      <translation>1 つ以上のスケッチを選択してください。</translation>
     </message>
   </context>
   <context>
@@ -1656,7 +1653,7 @@ as mirroring reference.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1896"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>格子状配列</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1897"/>
@@ -1713,7 +1710,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="653"/>
       <location filename="../../CommandSketcherTools.cpp" line="654"/>
       <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <translation>競合している拘束を選択</translation>
     </message>
   </context>
   <context>
@@ -1726,12 +1723,12 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="297"/>
       <source>Select associated constraints</source>
-      <translation type="unfinished">Select associated constraints</translation>
+      <translation>関連する拘束を選択</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="298"/>
       <source>Select the constraints associated with the selected geometrical elements</source>
-      <translation type="unfinished">Select the constraints associated with the selected geometrical elements</translation>
+      <translation>選択したジオメトリー要素に関連づけられた拘束を選択</translation>
     </message>
   </context>
   <context>
@@ -1744,12 +1741,12 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="704"/>
       <source>Select associated geometry</source>
-      <translation type="unfinished">Select associated geometry</translation>
+      <translation>関連するジオメトリーを選択</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="705"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
-      <translation type="unfinished">Select the geometrical elements associated with the selected constraints</translation>
+      <translation>選択した拘束に関連付けられたジオメトリー要素を選択</translation>
     </message>
   </context>
   <context>
@@ -1762,12 +1759,12 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="824"/>
       <source>Select unconstrained DoF</source>
-      <translation type="unfinished">Select unconstrained DoF</translation>
+      <translation>拘束されていない自由度を選択</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="825"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
-      <translation type="unfinished">Select geometrical elements where the solver still detects unconstrained degrees of freedom.</translation>
+      <translation>ソルバーが未拘束の自由度を検出している要素を選択</translation>
     </message>
   </context>
   <context>
@@ -1785,7 +1782,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="456"/>
       <source>Select the local horizontal axis of the sketch</source>
-      <translation type="unfinished">Select the local horizontal axis of the sketch</translation>
+      <translation>スケッチのローカル水平軸を選択</translation>
     </message>
   </context>
   <context>
@@ -1799,7 +1796,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="548"/>
       <location filename="../../CommandSketcherTools.cpp" line="549"/>
       <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <translation>不正な拘束を選択</translation>
     </message>
   </context>
   <context>
@@ -1817,7 +1814,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="370"/>
       <source>Select the local origin point of the sketch</source>
-      <translation type="unfinished">Select the local origin point of the sketch</translation>
+      <translation>スケッチのローカル原点を選択</translation>
     </message>
   </context>
   <context>
@@ -1831,7 +1828,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="600"/>
       <location filename="../../CommandSketcherTools.cpp" line="601"/>
       <source>Select partially redundant constraints</source>
-      <translation type="unfinished">Select partially redundant constraints</translation>
+      <translation>部分的に冗長な拘束を選択</translation>
     </message>
   </context>
   <context>
@@ -1863,7 +1860,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="414"/>
       <source>Select the local vertical axis of the sketch</source>
-      <translation type="unfinished">Select the local vertical axis of the sketch</translation>
+      <translation>スケッチのローカル垂直軸を選択</translation>
     </message>
   </context>
   <context>
@@ -1881,7 +1878,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
-      <translation type="unfinished">When in edit mode, stop the active operation (drawing, constraining, etc.).</translation>
+      <translation>編集モードの場合、アクティブな操作 (作図、拘束など) を停止</translation>
     </message>
   </context>
   <context>
@@ -1930,12 +1927,12 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7644"/>
       <source>Activate/deactivate constraint</source>
-      <translation type="unfinished">Activate/deactivate constraint</translation>
+      <translation>拘束をアクティブ化/非アクティブ化</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7645"/>
       <source>Activates or deactivates the selected constraints</source>
-      <translation type="unfinished">Activates or deactivates the selected constraints</translation>
+      <translation>選択した拘束をアクティブ化・非アクティブ化</translation>
     </message>
   </context>
   <context>
@@ -1966,7 +1963,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7518"/>
       <source>Toggle driving/reference constraint</source>
-      <translation type="unfinished">Toggle driving/reference constraint</translation>
+      <translation>駆動拘束/参照拘束の切り替え</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7519"/>
@@ -2016,7 +2013,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="735"/>
       <source>Select only one sketch.</source>
-      <translation type="unfinished">Select only one sketch.</translation>
+      <translation>スケッチを1つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="734"/>
@@ -2039,7 +2036,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="949"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation type="unfinished">When in edit mode, switch between section view and full view.</translation>
+      <translation>編集モードの場合、セクションビューとフルビューを切り替え</translation>
     </message>
   </context>
   <context>
@@ -2057,7 +2054,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation type="unfinished">When in edit mode, set the camera orientation perpendicular to the sketch plane.</translation>
+      <translation>編集モードの場合、スケッチ面に垂直にカメラの向きを設定</translation>
     </message>
   </context>
   <context>
@@ -2066,40 +2063,40 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1158"/>
       <location filename="../../CommandConstraints.cpp" line="1233"/>
       <source>Add horizontal constraint</source>
-      <translation type="unfinished">Add horizontal constraint</translation>
+      <translation>水平拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1167"/>
       <location filename="../../CommandConstraints.cpp" line="1259"/>
       <location filename="../../CommandConstraints.cpp" line="1494"/>
       <source>Add horizontal alignment</source>
-      <translation type="unfinished">Add horizontal alignment</translation>
+      <translation>水平配置を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1395"/>
       <location filename="../../CommandConstraints.cpp" line="1469"/>
       <source>Add vertical constraint</source>
-      <translation type="unfinished">Add vertical constraint</translation>
+      <translation>垂直拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1403"/>
       <source>Add vertical alignment</source>
-      <translation type="unfinished">Add vertical alignment</translation>
+      <translation>垂直配置を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1608"/>
       <source>Add 'Lock' constraint</source>
-      <translation type="unfinished">Add 'Lock' constraint</translation>
+      <translation>「ロック」拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1649"/>
       <source>Add relative 'Lock' constraint</source>
-      <translation type="unfinished">Add relative 'Lock' constraint</translation>
+      <translation>相対的な「ロック」拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1694"/>
       <source>Add fixed constraint</source>
-      <translation type="unfinished">Add fixed constraint</translation>
+      <translation>固定拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1836"/>
@@ -2129,65 +2126,65 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2321"/>
       <location filename="../../CommandConstraints.cpp" line="2453"/>
       <source>Add distance from horizontal axis constraint</source>
-      <translation type="unfinished">Add distance from horizontal axis constraint</translation>
+      <translation>水平軸からの距離拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2329"/>
       <location filename="../../CommandConstraints.cpp" line="2460"/>
       <source>Add distance from vertical axis constraint</source>
-      <translation type="unfinished">Add distance from vertical axis constraint</translation>
+      <translation>垂直軸からの距離拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2337"/>
       <location filename="../../CommandConstraints.cpp" line="2467"/>
       <source>Add point to point distance constraint</source>
-      <translation type="unfinished">Add point to point distance constraint</translation>
+      <translation>点間の距離拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2372"/>
       <location filename="../../CommandConstraints.cpp" line="2542"/>
       <source>Add point to line Distance constraint</source>
-      <translation type="unfinished">Add point to line Distance constraint</translation>
+      <translation>点と線の間の距離拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2406"/>
       <location filename="../../CommandConstraints.cpp" line="2499"/>
       <source>Add length constraint</source>
-      <translation type="unfinished">Add length constraint</translation>
+      <translation>寸法拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2657"/>
       <location filename="../../CommandConstraints.cpp" line="2740"/>
       <source>Add point on object constraint</source>
-      <translation type="unfinished">Add point on object constraint</translation>
+      <translation>オブジェクト上への点の拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2908"/>
       <location filename="../../CommandConstraints.cpp" line="3010"/>
       <source>Add point to point horizontal distance constraint</source>
-      <translation type="unfinished">Add point to point horizontal distance constraint</translation>
+      <translation>点間の水平距離拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2939"/>
       <source>Add fixed x-coordinate constraint</source>
-      <translation type="unfinished">Add fixed x-coordinate constraint</translation>
+      <translation>X座標固定拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3157"/>
       <location filename="../../CommandConstraints.cpp" line="3259"/>
       <source>Add point to point vertical distance constraint</source>
-      <translation type="unfinished">Add point to point vertical distance constraint</translation>
+      <translation>点間の垂直距離拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3187"/>
       <source>Add fixed y-coordinate constraint</source>
-      <translation type="unfinished">Add fixed y-coordinate constraint</translation>
+      <translation>Y座標固定拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3388"/>
       <location filename="../../CommandConstraints.cpp" line="3429"/>
       <source>Add parallel constraint</source>
-      <translation type="unfinished">Add parallel constraint</translation>
+      <translation>並行拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3553"/>
@@ -2198,12 +2195,12 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="3990"/>
       <location filename="../../CommandConstraints.cpp" line="4032"/>
       <source>Add perpendicular constraint</source>
-      <translation type="unfinished">Add perpendicular constraint</translation>
+      <translation>直角拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3658"/>
       <source>Add perpendicularity constraint</source>
-      <translation type="unfinished">Add perpendicularity constraint</translation>
+      <translation>垂直拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4187"/>
@@ -2214,12 +2211,12 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="4683"/>
       <location filename="../../CommandConstraints.cpp" line="4704"/>
       <source>Add tangent constraint</source>
-      <translation type="unfinished">Add tangent constraint</translation>
+      <translation>正接拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4317"/>
       <source>Swap coincident+tangency with ptp tangency</source>
-      <translation type="unfinished">Swap coincident+tangency with ptp tangency</translation>
+      <translation>点間正接によって一致と正接を入れ替え</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4354"/>
@@ -2237,7 +2234,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="4591"/>
       <location filename="../../CommandConstraints.cpp" line="4617"/>
       <source>Add tangent constraint point</source>
-      <translation type="unfinished">Add tangent constraint point</translation>
+      <translation>正接拘束点を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4881"/>
@@ -2245,7 +2242,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="4965"/>
       <location filename="../../CommandConstraints.cpp" line="5123"/>
       <source>Add radius constraint</source>
-      <translation type="unfinished">Add radius constraint</translation>
+      <translation>半径拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5382"/>
@@ -2253,7 +2250,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="5453"/>
       <location filename="../../CommandConstraints.cpp" line="5608"/>
       <source>Add diameter constraint</source>
-      <translation type="unfinished">Add diameter constraint</translation>
+      <translation>直径拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5940"/>
@@ -2263,13 +2260,13 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6240"/>
       <location filename="../../CommandConstraints.cpp" line="6294"/>
       <source>Add angle constraint</source>
-      <translation type="unfinished">Add angle constraint</translation>
+      <translation>角度拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6508"/>
       <location filename="../../CommandConstraints.cpp" line="6560"/>
       <source>Add equality constraint</source>
-      <translation type="unfinished">Add equality constraint</translation>
+      <translation>等値拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6681"/>
@@ -2278,28 +2275,28 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6835"/>
       <location filename="../../CommandConstraints.cpp" line="6870"/>
       <source>Add symmetric constraint</source>
-      <translation type="unfinished">Add symmetric constraint</translation>
+      <translation>対称拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7009"/>
       <source>Add Snell's law constraint</source>
-      <translation type="unfinished">Add Snell's law constraint</translation>
+      <translation>スネル則拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7218"/>
       <location filename="../../CommandConstraints.cpp" line="7396"/>
       <source>Add internal alignment constraint</source>
-      <translation type="unfinished">Add internal alignment constraint</translation>
+      <translation>内部配置拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7602"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation type="unfinished">Toggle constraint to driving/reference</translation>
+      <translation>拘束の駆動/参照を切り替え</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7686"/>
       <source>Activate/Deactivate constraint</source>
-      <translation type="unfinished">Activate/Deactivate constraint</translation>
+      <translation>拘束をアクティブ化/非アクティブ化</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
@@ -2314,7 +2311,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="489"/>
       <source>Reorient sketch</source>
-      <translation type="unfinished">Reorient sketch</translation>
+      <translation>スケッチの方向を変更</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="644"/>
@@ -2329,7 +2326,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="789"/>
       <source>Create a mirrored sketch for each selected sketch</source>
-      <translation type="unfinished">Create a mirrored sketch for each selected sketch</translation>
+      <translation>選択したスケッチごとに鏡像スケッチを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="888"/>
@@ -2344,64 +2341,64 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="319"/>
       <source>Add sketch line</source>
-      <translation type="unfinished">Add sketch line</translation>
+      <translation>スケッチ線を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="493"/>
       <source>Add sketch box</source>
-      <translation type="unfinished">Add sketch box</translation>
+      <translation>スケッチ長方形を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="981"/>
       <source>Add line to sketch wire</source>
-      <translation type="unfinished">Add line to sketch wire</translation>
+      <translation>スケッチワイヤーに線を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1001"/>
       <source>Add arc to sketch wire</source>
-      <translation type="unfinished">Add arc to sketch wire</translation>
+      <translation>スケッチワイヤーに円弧を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1444"/>
       <location filename="../../CommandCreateGeo.cpp" line="1713"/>
       <source>Add sketch arc</source>
-      <translation type="unfinished">Add sketch arc</translation>
+      <translation>スケッチ円弧を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1982"/>
       <location filename="../../CommandCreateGeo.cpp" line="4668"/>
       <source>Add sketch circle</source>
-      <translation type="unfinished">Add sketch circle</translation>
+      <translation>スケッチ円を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2741"/>
       <source>Add sketch ellipse</source>
-      <translation type="unfinished">Add sketch ellipse</translation>
+      <translation>スケッチ楕円を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3110"/>
       <source>Add sketch arc of ellipse</source>
-      <translation type="unfinished">Add sketch arc of ellipse</translation>
+      <translation>スケッチ楕円弧を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3448"/>
       <source>Add sketch arc of hyperbola</source>
-      <translation type="unfinished">Add sketch arc of hyperbola</translation>
+      <translation>スケッチ双曲線弧を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3750"/>
       <source>Add sketch arc of Parabola</source>
-      <translation type="unfinished">Add sketch arc of Parabola</translation>
+      <translation>スケッチ放物線弧を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4073"/>
       <source>Add Pole circle</source>
-      <translation type="unfinished">Add Pole circle</translation>
+      <translation>極の円を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4895"/>
       <source>Add sketch point</source>
-      <translation type="unfinished">Add sketch point</translation>
+      <translation>スケッチ点を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5144"/>
@@ -2422,37 +2419,37 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5992"/>
       <source>Add external geometry</source>
-      <translation type="unfinished">Add external geometry</translation>
+      <translation>外部ジオメトリーを追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6173"/>
       <source>Add carbon copy</source>
-      <translation type="unfinished">Add carbon copy</translation>
+      <translation>カーボンコピーを追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6354"/>
       <source>Add slot</source>
-      <translation type="unfinished">Add slot</translation>
+      <translation>長円を追加</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6567"/>
       <source>Add hexagon</source>
-      <translation type="unfinished">Add hexagon</translation>
+      <translation>六角形を追加</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
       <source>Convert to NURBS</source>
-      <translation type="unfinished">Convert to NURBS</translation>
+      <translation>NURBSに変換</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="479"/>
       <source>Increase spline degree</source>
-      <translation type="unfinished">Increase spline degree</translation>
+      <translation>スプラインの次数を増やす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="554"/>
       <source>Decrease spline degree</source>
-      <translation type="unfinished">Decrease spline degree</translation>
+      <translation>スプラインの次数を減らす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="647"/>
@@ -2508,7 +2505,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../DrawSketchHandler.cpp" line="601"/>
       <source>Add auto constraints</source>
-      <translation type="unfinished">Add auto constraints</translation>
+      <translation>自動拘束を追加</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="625"/>
@@ -2518,7 +2515,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="847"/>
       <source>Rename sketch constraint</source>
-      <translation type="unfinished">Rename sketch constraint</translation>
+      <translation>スケッチ拘束の名前を変更</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="840"/>
@@ -2990,7 +2987,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="134"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries. Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <translation>2つの固定ジオメトリーの間に拘束を追加することができません。固定ジオメトリーに外部ジオメトリー、ブロック拘束されたジオメトリー、またはB-スプラインの節点といった特殊な点が含まれています。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1795"/>
@@ -3108,7 +3105,7 @@ invalid constraints, degenerated geometry, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6288"/>
       <location filename="../../CommandConstraints.cpp" line="6978"/>
       <source>Select an edge that is not a B-spline weight</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight</translation>
+      <translation>B-スプラインの重みではないエッジを選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2696"/>
@@ -3271,7 +3268,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="4871"/>
       <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation type="unfinished">Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</translation>
+      <translation>1つ以上のB-スプラインの極、または1つ以上の円・円弧をスケッチから選択してください。ただし混在はできません。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4927"/>
@@ -3768,7 +3765,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="114"/>
       <source>Insert weight</source>
-      <translation type="unfinished">Insert weight</translation>
+      <translation>重みを挿入</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="119"/>
@@ -3796,14 +3793,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="5009"/>
       <location filename="../../CommandConstraints.cpp" line="5167"/>
       <source>Change weight</source>
-      <translation type="unfinished">Change weight</translation>
+      <translation>重みを変更</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5010"/>
       <location filename="../../CommandConstraints.cpp" line="5168"/>
       <location filename="../../EditDatumDialog.cpp" line="115"/>
       <source>Weight:</source>
-      <translation type="unfinished">Weight:</translation>
+      <translation>重み:</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5014"/>
@@ -4267,17 +4264,17 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="298"/>
       <source>Fully constrained edit edge color</source>
-      <translation type="unfinished">Fully constrained edit edge color</translation>
+      <translation>完全拘束された編集エッジの色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="305"/>
       <source>Color of fully constrained edge color in edit mode</source>
-      <translation type="unfinished">Color of fully constrained edge color in edit mode</translation>
+      <translation>編集モードでの完全拘束されたエッジの色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="325"/>
       <source>Fully constrained edit construction edge color</source>
-      <translation type="unfinished">Fully constrained edit construction edge color</translation>
+      <translation>完全拘束された構築エッジの色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="332"/>
@@ -5211,12 +5208,12 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6521"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom. %1</translation>
+      <translation>&lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;1&lt;/span&gt;&lt;/a&gt; 自由度の拘束下のスケッチ。%1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6524"/>
       <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</source>
-      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom. %2</translation>
+      <translation>&lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;"&gt;%1&lt;/span&gt;&lt;/a&gt; 自由度の拘束下のスケッチ。%2</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="6529"/>
@@ -5280,7 +5277,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandSketcherBSpline.cpp" line="362"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="364"/>
       <source>Switches between showing and hiding the control point weight for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the control point weight for all B-splines</translation>
+      <translation>すべてのB-スプラインの制御点重みの非表示と表示を切り替えます。</translation>
     </message>
   </context>
   <context>
@@ -5447,7 +5444,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="5418"/>
       <location filename="../../CommandCreateGeo.cpp" line="5419"/>
       <source>Creates a radius between two lines</source>
-      <translation type="unfinished">Creates a radius between two lines</translation>
+      <translation>2 線の間に半径を作成</translation>
     </message>
   </context>
   <context>
@@ -5498,7 +5495,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="5422"/>
       <location filename="../../CommandCreateGeo.cpp" line="5423"/>
       <source>Fillet that preserves constraints and intersection point</source>
-      <translation type="unfinished">Fillet that preserves constraints and intersection point</translation>
+      <translation>拘束と交差点を維持したフィレット</translation>
     </message>
   </context>
   <context>
@@ -6014,7 +6011,7 @@ to determine whether a solution converges or not</source>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher B-spline tools</source>
-      <translation type="unfinished">Sketcher B-spline tools</translation>
+      <translation>スケッチャーB-スプラインツール</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>

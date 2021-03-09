@@ -2332,7 +2332,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSlot.py" line="493"/>
       <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation type="unfinished">Current Extend Radius value produces negative arc radius.</translation>
+      <translation>Trenutna vrednost razširjenega polmera ustvarja negativni polmer loka.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="520"/>
@@ -2382,7 +2382,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSlot.py" line="1005"/>
       <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-      <translation type="unfinished">Failed, slot from edge only accepts lines, arcs and circles.</translation>
+      <translation>Spodletelo, reža z roba sprejema samo črte, loke in kroge.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="994"/>
@@ -2407,7 +2407,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="PathSlot.py" line="1688"/>
       <source>Current offset value produces negative radius.</source>
-      <translation type="unfinished">Current offset value produces negative radius.</translation>
+      <translation>Trenutna vrednost odmika ustvarja negativni polmer.</translation>
     </message>
   </context>
   <context>
@@ -3127,8 +3127,7 @@ privzeto=10,0.</translation>
       <location filename="PathVcarve.py" line="222"/>
       <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
-      <translation type="unfinished">Cutoff for removing colinear segments (degrees). 
-                        default=10.0.</translation>
+      <translation>Zgornja meja pri odstranjevanju sopremih odsekov (v stopinjah). Privzeto=10,0.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="322"/>

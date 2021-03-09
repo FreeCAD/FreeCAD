@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Poveži Preoblikovanje</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -5379,7 +5379,7 @@ Kako želite nadaljevati?</translation>
     </message>
     <message>
       <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <translation>Samodejno razširi</translation>
     </message>
   </context>
   <context>

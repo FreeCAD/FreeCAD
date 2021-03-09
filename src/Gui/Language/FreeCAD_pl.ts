@@ -379,7 +379,7 @@
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Przewiń środkowy przycisk myszy, albo trzymaj wciśnięty środkowy przycisk myszy podczas kliknięcia lewym lub prawym klawiszem myszy i porusz myszą w górę lub dół</translation>
+      <translation>Przewiń środkowym przyciskiem myszki, albo trzymaj wciśnięty środkowy przycisk podczas kliknięcia lewym lub prawym klawiszem myszki i porusz myszką w górę lub dół</translation>
     </message>
   </context>
   <context>
@@ -423,7 +423,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Zakończ modyfikację obiektu</translation>
+      <translation>Zakończ edycję obiektu</translation>
     </message>
   </context>
   <context>
@@ -462,15 +462,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Word size</source>
-      <translation>Wielkość słowa</translation>
+      <translation>Rozmiar słowa</translation>
     </message>
     <message>
       <source>Credits</source>
-      <translation>Twórcy</translation>
+      <translation>Zasłużeni</translation>
     </message>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD nigdzie by nie zaszedł bez ich wysiłków:</translation>
+      <translation>FreeCAD nie istniałby bez ich wysiłków:</translation>
     </message>
     <message>
       <source>License</source>
@@ -550,7 +550,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::Clipping</name>
     <message>
       <source>Clipping</source>
-      <translation>Utnij</translation>
+      <translation>Wycinek</translation>
     </message>
     <message>
       <source>Clipping X</source>
@@ -709,7 +709,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
 W tym przypadku przedrostek zostanie automatycznie obcięty podczas wyświetlania w edytorze właściwości.
 Jednak własność jest nadal używana w skrypcie z pełną nazwą, na przykład 'obj.Group_Name'.
 
-Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana i jest dostępna jak 'obj.Name'.</translation>
+Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana i jest dostępna jako 'obj.Name'.</translation>
     </message>
     <message>
       <source>Prefix group name</source>
@@ -1143,7 +1143,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     </message>
     <message>
       <source>Print Reference</source>
-      <translation>Wydrukuj Odnośniki</translation>
+      <translation>Wydrukuj odnośniki</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
@@ -1615,7 +1615,7 @@ rozmiar wiersza w konsoli Pythona</translation>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation>Lokalizacja makr użytkownika:</translation>
+      <translation>Lokalizacja makrodefinicji użytkownika:</translation>
     </message>
     <message>
       <source>Rename</source>
@@ -1683,7 +1683,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation>Podaj nową nazwę:</translation>
+      <translation>Wprowadź nową nazwę:</translation>
     </message>
     <message>
       <source>'%1'
@@ -1739,7 +1739,7 @@ Uwaga: Twoje zmiany zostaną zastosowane przy następnym przełączeniu środowi
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation>Instrukcje przewodnika: Wypełnij brakujące pola (opcjonalnie), a następnie kliknij Dodaj, a następnie zamknij</translation>
+      <translation>Instrukcje przewodnika: Wypełnij brakujące pola (opcjonalnie), a następnie kliknij dodaj, a następnie zamknij</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
@@ -2206,7 +2206,7 @@ Proszę podać inny katalog.</translation>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
       <source>Output window</source>
-      <translation>Okno wyjściowe</translation>
+      <translation>Okno raportów</translation>
     </message>
     <message>
       <source>Output</source>
@@ -2617,7 +2617,7 @@ opening or creation</source>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation>Obszar do wskazania/wyboru elementów w widoku 3D.
+      <translation>Obszar do wskazywania / wyboru elementów w oknie widoku 3D.
 Większa wartość ułatwia wybieranie, ale może uniemożliwić wybór małych obiektów.               </translation>
     </message>
     <message>
@@ -2641,7 +2641,7 @@ Zmiana tej opcji wymaga ponownego uruchomienia aplikacji.</translation>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation>Otwórz nową przeglądarkę lub uruchom ponownie %1 aby zastosować zmiany wygładzania krawędzi.</translation>
+      <translation>Otwórz nową przeglądarkę lub uruchom ponownie %1 aby zobaczyć naniesione zmiany wygładzania krawędzi.</translation>
     </message>
     <message>
       <source>5px</source>
@@ -2827,7 +2827,7 @@ Zmiana tej opcji wymaga ponownego uruchomienia aplikacji.</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation>Użyj Cofnij/Ponów w dokumentach</translation>
+      <translation>Użyj Cofnij / Ponów w dokumentach</translation>
     </message>
     <message>
       <source>Authoring and License</source>
@@ -2965,8 +2965,8 @@ icon in the tree view to fully reload it.</source>
       <translation>Włącz częściowe ładowanie zewnętrznych powiązanych dokumentów.
 Obiekty i ich zależności zostaną załadowane tylko wtedy,
 gdy dokument połączony zostanie otworzony automatycznie razem z dokumentem głównym.
-Częściowo załadowany dokument nie może być edytowany. Kliknij dwukrotnie ikonę dokumentu
-w widoku drzewa, aby go w pełni przeładować.</translation>
+Częściowo załadowany dokument nie może być edytowany. Kliknij dwukrotnie w ikonę dokumentu
+na widoku drzewa, aby go w pełni przeładować.</translation>
     </message>
     <message>
       <source>Disable partial loading of external linked objects</source>
@@ -3643,7 +3643,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Imperial decimal (in/lb)</source>
-      <translation>Jednostki imperialne (in/lb)</translation>
+      <translation>Jednostki brytyjskie (in/lb)</translation>
     </message>
     <message>
       <source>Building Euro (cm/m²/m³)</source>
@@ -3707,7 +3707,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>Imperialny dla cywili Eng (ft, ft/s)</translation>
+      <translation>Brytyjskie dla inżynierii lądowej (ft, ft/s)</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
@@ -3984,7 +3984,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
     </message>
     <message>
       <source>Status</source>
-      <translation>Stan</translation>
+      <translation>Aktualny status</translation>
     </message>
     <message>
       <source>Start Recovery</source>
@@ -6008,7 +6008,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Zakończ modyfikację obiektu</translation>
+      <translation>Zakończ edycję obiektu</translation>
     </message>
     <message>
       <source>Activate document</source>
@@ -7318,7 +7318,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Umieść kopie wybranych obiektów do aktywnego dokumentu</translation>
+      <translation>Umieść kopie wybranych obiektów w aktywnym dokumencie</translation>
     </message>
   </context>
   <context>
@@ -7488,7 +7488,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>The FreeCAD website</source>
-      <translation>Na stronie FreeCAD</translation>
+      <translation>Na witrynie FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -8696,7 +8696,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Dock views</source>
-      <translation>Widoki stacji dokującej</translation>
+      <translation>Widoki doku</translation>
     </message>
     <message>
       <source>Dock all top-level views</source>
@@ -8895,7 +8895,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Przełączyć wyświetlany widok z przeplotem kolumn</translation>
+      <translation>Przełącz widok trójwymiarowy na: z przeplotem kolumn</translation>
     </message>
   </context>
   <context>

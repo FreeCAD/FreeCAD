@@ -136,7 +136,7 @@
     </message>
     <message>
       <source>Paste expressions</source>
-      <translation type="unfinished">Paste expressions</translation>
+      <translation>Klistra in uttryck</translation>
     </message>
     <message>
       <source>Make link group</source>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Skapa underlänk</translation>
     </message>
     <message>
       <source>Import links</source>
@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Insert measurement</source>
-      <translation type="unfinished">Insert measurement</translation>
+      <translation>Infoga mått</translation>
     </message>
     <message>
       <source>Insert text document</source>
@@ -168,7 +168,7 @@
     </message>
     <message>
       <source>Add a part</source>
-      <translation type="unfinished">Add a part</translation>
+      <translation>Lägg till en del</translation>
     </message>
     <message>
       <source>Add a group</source>
@@ -188,7 +188,7 @@
     </message>
     <message>
       <source>Link Transform</source>
-      <translation type="unfinished">Link Transform</translation>
+      <translation>Länk omvandling</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -254,11 +254,11 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation type="unfinished">&amp;Clear</translation>
+      <translation>&amp;Rensa</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
-      <translation type="unfinished">Revert to last calculated value (as constant)</translation>
+      <translation>Återgå till senast beräknat värde (som konstant)</translation>
     </message>
   </context>
   <context>
@@ -693,7 +693,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Utförlig beskrivning av den nya egenskapen.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -705,15 +705,15 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>Addera gruppnamnet som prefix till egenskapsnamnet i formuläret 'Group_Name' för att undvika konflikter med en befintlig egenskap.
+I så fall kommer prefixet automatiskt att döljas när det visas i egenskapsredigeraren.
+Egenskapen används dock fortfarande i skript med det fullständiga namnet, som 'obj.Group_Name'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Om detta inte väljs måste egenskapen vara unikt namngiven och den nås som 'obj.Name'.</translation>
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Addera prefix till gruppnamn</translation>
     </message>
   </context>
   <context>
@@ -1102,7 +1102,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>%1 modulen ej inladdad</translation>
     </message>
   </context>
   <context>
@@ -1364,11 +1364,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Code lines will be numbered </source>
-      <translation type="unfinished">Code lines will be numbered </translation>
+      <translation>Kodrader kommer att numreras </translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert amount of defined indent size</translation>
+      <translation>Tryck på &lt;Tab&gt; för att infoga definierad indenteringsstorlek</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
@@ -1376,11 +1376,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
-      <translation type="unfinished">How many spaces will be inserted when pressing &lt;Tab&gt;</translation>
+      <translation>Hur många mellanslag som kommer att infogas med &lt;Tab&gt;</translation>
     </message>
     <message>
       <source>Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</source>
-      <translation type="unfinished">Pressing &lt;Tab&gt; will insert a tabulator with defined tab size</translation>
+      <translation>Tryck på &lt;Tab&gt; för att infoga definierad indenteringsstorlek</translation>
     </message>
     <message>
       <source>Display items</source>
@@ -1459,7 +1459,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation type="unfinished">Language of the application's user interface</translation>
+      <translation>Användargränssnittets språk</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
@@ -1468,22 +1468,22 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>Bakgrunden till huvudfönstret kommer att bestå av brickor av en speciell bild.
+Se FreeCAD Wiki för detaljer om bilden.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Stilmallen för användargränssnittets utseende</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
+      <translation>Välj din inställning för ikonstorlek i verktygsfältet. Du kan justera
+detta beroende på skärmstorlek eller personlig smak</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation type="unfinished">Tree view mode:</translation>
+      <translation>Trädvyläge:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1491,31 +1491,31 @@ this according to your screen size or personal taste</translation>
 'ComboView': combine tree view and property view into one panel.
 'TreeView and PropertyView': split tree view and property view into separate panel.
 'Both': keep all three panels, and you can have two sets of tree view and property view.</source>
-      <translation type="unfinished">Customize how tree view is shown in the panel (restart required).
+      <translation>Anpassa hur trädvyn visas i panelen (omstart krävs).
 
-'ComboView': combine tree view and property view into one panel.
-'TreeView and PropertyView': split tree view and property view into separate panel.
-'Both': keep all three panels, and you can have two sets of tree view and property view.</translation>
+'ComboView': kombinera trävyn och egenskapsvyn i en panel.
+'TreeView and PropertyView': delad trädvy och egenskapsvy i separat panel.
+'Båda': ha alla tre paneler, och du kan ha två uppsättningar av träd vy och egenskapsvy.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation type="unfinished">A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</translation>
+      <translation>En startskärm är ett litet laddningsfönster som visas
+när FreeCAD startar. Om detta alternativ är markerat kommer FreeCAD
+visa startskärm</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Choose which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>Välj vilken arbetsbänk som ska aktiveras och visas
+vid start av FreeCAD</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation type="unfinished">Words will be wrapped when they exceed available
-horizontal space in Python console</translation>
+      <translation>Radbrytning kommer att appliceras när det tillgängliga
+horisontellt utrymmet överskrids i Python-konsolen</translation>
     </message>
   </context>
   <context>
@@ -1550,7 +1550,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation type="unfinished">TreeView and PropertyView</translation>
+      <translation>TrädVy och EgenskapsVy</translation>
     </message>
     <message>
       <source>Both</source>
@@ -1722,7 +1722,7 @@ Kanske saknas fil-rättigheter?</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
-      <translation type="unfinished">Guided Walkthrough</translation>
+      <translation>Guidad genomgång</translation>
     </message>
     <message>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
@@ -7666,7 +7666,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>Skapa underlänk</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>

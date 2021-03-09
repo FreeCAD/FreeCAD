@@ -1841,7 +1841,7 @@ Die Eigenschaft 'Support' wird gelöscht.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="496"/>
       <location filename="../../CommandSketcherTools.cpp" line="497"/>
       <source>Select redundant constraints</source>
-      <translation>Redundante Einschränkungen auswählen</translation>
+      <translation>Überflüssige Einschränkungen auswählen</translation>
     </message>
   </context>
   <context>
@@ -2114,7 +2114,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandSketcherTools.cpp" line="144"/>
       <location filename="../../CommandSketcherTools.cpp" line="250"/>
       <source>Add coincident constraint</source>
-      <translation>Koinzidenz-Einschränkung hinzufügen</translation>
+      <translation>Übereinstimmungseinschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2150"/>
@@ -2259,7 +2259,7 @@ ungültigen Einschränkungen, degenerierten Geometrien, etc überprüfen.</trans
       <location filename="../../CommandConstraints.cpp" line="6240"/>
       <location filename="../../CommandConstraints.cpp" line="6294"/>
       <source>Add angle constraint</source>
-      <translation>Winkel-Einschränkung hinzufügen</translation>
+      <translation>Winkeleinschränkung hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6508"/>

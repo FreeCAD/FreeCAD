@@ -299,7 +299,7 @@ Quantity Quantity::Ounce            (0.0283495231  ,Unit(0,1));
 Quantity Quantity::Stone            (6.35029318    ,Unit(0,1));
 Quantity Quantity::Hundredweights   (50.80234544   ,Unit(0,1));
 
-Quantity Quantity::PoundForce       (224.81        ,Unit(1,1,-2)); // Newton  are ~= 0.22481 lbF
+Quantity Quantity::PoundForce       (4448.22       ,Unit(1,1,-2)); // lbf are ~= 4.44822 Newton
 
 Quantity Quantity::Newton           (1000.0        ,Unit(1,1,-2)); // Newton (kg*m/s^2)
 Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));

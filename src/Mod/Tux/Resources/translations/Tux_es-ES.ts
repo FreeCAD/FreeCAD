@@ -11,7 +11,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="64"/>
       <source>Zoom</source>
-      <translation>Aumentar</translation>
+      <translation>Aumentar/Disminuir</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="65"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="66"/>
       <source>Pan</source>
-      <translation>Desplazar</translation>
+      <translation>Panear</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="67"/>
@@ -66,12 +66,12 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation>Compactar</translation>
+      <translation>Compacto</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation>Descripción</translation>
+      <translation>Información sobre herramientas</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="295"/>

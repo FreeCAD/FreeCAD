@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation>Valitse näkymäpinnat/Reunat/kärkipisteet</translation>
+      <translation>Valitse Pinnat/Reunat/Kärkipisteet</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>

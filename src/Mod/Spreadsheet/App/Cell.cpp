@@ -38,7 +38,6 @@
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
-#include <Base/StdStlTools.h>
 #include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
@@ -503,7 +502,7 @@ void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
-        boost::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
+        std::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
         if (!e)
             throw Base::UnitsMismatchError("Invalid unit");

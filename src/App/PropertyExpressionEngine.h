@@ -77,16 +77,16 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
                         App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    typedef boost::function<std::string (const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr)> ValidatorFunc;
+    typedef boost::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)> ValidatorFunc;
 
     /**
      * @brief The ExpressionInfo struct encapsulates an expression and a comment.
      */
 
     struct ExpressionInfo {
-        boost::shared_ptr<App::Expression> expression; /**< The actual expression tree */
+        std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
 
-        ExpressionInfo(boost::shared_ptr<App::Expression> expression = boost::shared_ptr<App::Expression>()) {
+        ExpressionInfo(std::shared_ptr<App::Expression> expression = std::shared_ptr<App::Expression>()) {
             this->expression = expression;
         }
 
@@ -119,7 +119,7 @@ public:
 
     void Restore(Base::XMLReader &reader) override;
 
-    void setValue(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr);
+    void setValue(const App::ObjectIdentifier &path, std::shared_ptr<App::Expression> expr);
 
     const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
 
@@ -147,7 +147,7 @@ public:
     /* Expression validator */
     void setValidator(ValidatorFunc f) { validator = f; }
 
-    std::string validateExpression(const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr) const;
+    std::string validateExpression(const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr) const;
 
     void renameExpressions(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths);
 
@@ -179,7 +179,7 @@ private:
     std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
 
     void buildGraphStructures(const App::ObjectIdentifier &path,
-                              const boost::shared_ptr<Expression> expression, boost::unordered_map<App::ObjectIdentifier, int> &nodes,
+                              const std::shared_ptr<Expression> expression, boost::unordered_map<App::ObjectIdentifier, int> &nodes,
                               boost::unordered_map<int, App::ObjectIdentifier> &revNodes, std::vector<Edge> &edges) const;
 
     void buildGraph(const ExpressionMap &exprs,

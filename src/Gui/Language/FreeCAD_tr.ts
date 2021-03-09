@@ -3249,7 +3249,7 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <translation>Çalışma Tezgahları Yüklenmedi</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3257,7 +3257,7 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Seçileni Yükle</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -5372,7 +5372,7 @@ sağ görünümde %2 nokta seçili.</translation>
     </message>
     <message>
       <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <translation>Otomatik Genişlet</translation>
     </message>
   </context>
   <context>
@@ -7401,7 +7401,7 @@ Belge: </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>FreeCAD'i geliştirmek için bağış yapın</translation>
     </message>
   </context>
   <context>

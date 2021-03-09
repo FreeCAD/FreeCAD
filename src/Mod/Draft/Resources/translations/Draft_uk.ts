@@ -646,17 +646,17 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="ellipse.py" line="61"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>Площа цього об'єкту</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>Точки кривої Безьє</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>Ступінь функції Безьє</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -666,7 +666,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>Якщо крива Безьє має бути замкнута або ні</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
@@ -676,7 +676,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>Довжина цього об'єкта</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
@@ -1039,47 +1039,47 @@ beyond the dimension line</source>
     <message>
       <location filename="view_label.py" line="74"/>
       <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
+      <translation>Розмір тексту</translation>
     </message>
     <message>
       <location filename="view_label.py" line="83"/>
       <source>The font of the text</source>
-      <translation type="unfinished">The font of the text</translation>
+      <translation>Шрифт тексту</translation>
     </message>
     <message>
       <location filename="view_label.py" line="119"/>
       <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
+      <translation>Вертикальне вирівнювання тексту</translation>
     </message>
     <message>
       <location filename="view_label.py" line="102"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Колір тексту</translation>
     </message>
     <message>
       <location filename="view_label.py" line="128"/>
       <source>Line spacing (relative to font size)</source>
-      <translation type="unfinished">Line spacing (relative to font size)</translation>
+      <translation>Міжрядковий інтервал (по відношенню до розміру шрифту)</translation>
     </message>
     <message>
       <location filename="view_label.py" line="111"/>
       <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
+      <translation>Максимальна кількість символів в кожному рядку текстового поля</translation>
     </message>
     <message>
       <location filename="view_label.py" line="139"/>
       <source>The size of the arrow</source>
-      <translation type="unfinished">The size of the arrow</translation>
+      <translation>Розмір стрілки</translation>
     </message>
     <message>
       <location filename="view_label.py" line="148"/>
       <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
+      <translation>Тип стрілки цієї позначки</translation>
     </message>
     <message>
       <location filename="view_label.py" line="159"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>Тип рамки навколо тексту цього об'єкта</translation>
     </message>
     <message>
       <location filename="view_label.py" line="168"/>
@@ -1097,7 +1097,7 @@ beyond the dimension line</source>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style name</source>
-      <translation type="unfinished">Style name</translation>
+      <translation>Назва стилю</translation>
     </message>
     <message>
       <location filename="dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -3464,7 +3464,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="207"/>
       <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
+      <translation>Колір тексту</translation>
     </message>
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="132"/>
@@ -5967,7 +5967,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Відрізок</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="165"/>

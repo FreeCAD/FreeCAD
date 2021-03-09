@@ -6016,7 +6016,7 @@ za določitev, ali se rešitve prbližujejo ali ne</translation>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
       <source>Sketcher B-spline tools</source>
-      <translation type="unfinished">Sketcher B-spline tools</translation>
+      <translation>Sketcher B-spline orodja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>

@@ -6036,12 +6036,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="make_dimension.py" line="456"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation>Mauvaise entrée : l'objet n'a pas au moins un élément dans 'Arêtes' à utiliser pour mesurer.</translation>
+      <translation>Mauvaise entrée : l'objet n'a pas au moins un élément dans 'Arêtes', à utiliser pour mesurer.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="468"/>
       <source>index: values below 1 are not allowed; will be set to 1.</source>
-      <translation>i1 : les valeurs inférieures à 1 ne sont pas autorisées; sera défini à 1.</translation>
+      <translation>index : les valeurs inférieures à 1 ne sont pas autorisées ; sera défini à 1.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="472"/>
@@ -6056,7 +6056,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="make_dimension.py" line="487"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
-      <translation>Mauvaise entrée : doit être une chaîne, 'rayon' ou 'diamètre'.</translation>
+      <translation>Mauvaise entrée : doit être une chaîne de caractères, 'rayon' ou 'diamètre'.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="582"/>
@@ -6076,17 +6076,17 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="make_layer.py" line="157"/>
       <source>Wrong input: it must be a string.</source>
-      <translation>Mauvaise entrée : doit être une chaîne de caractères.</translation>
+      <translation>Mauvaise entrée : cela doit être une chaîne de caractères.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="188"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
-      <translation>Mauvaise entrée : doit être un tuple de trois nombres décimaux de 0.0 à 1.0.</translation>
+      <translation>Mauvaise entrée : doit être un n-uplet de trois nombres décimaux de 0.0 à 1.0.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="212"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation>Mauvaise entrée : doit être 'Continu', 'Interrompu', 'Pointillé', ou 'Mixte'.</translation>
+      <translation>Mauvaise entrée : doit être 'Continu', 'En tiret', 'En pointillé', ou 'Tiret point'.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="220"/>
@@ -6096,7 +6096,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="make_label.py" line="250"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation>Mauvaise entrée : doit être une liste ou un tuple de chaînes, ou une seule chaîne de caractère.</translation>
+      <translation>Mauvaise entrée : doit être une liste ou un n-uplet de chaînes de caractères, ou une seule chaîne de caractère.</translation>
     </message>
     <message>
       <location filename="make_patharray.py" line="246"/>
@@ -6677,7 +6677,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_togglemodes.py" line="73"/>
       <source>No active Draft Toolbar.</source>
-      <translation>Aucune barre d'outil Draft active.</translation>
+      <translation>Aucune Barre d'outil Draft active.</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="93"/>
@@ -6702,7 +6702,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_snaps.py" line="109"/>
       <source>Main toggle snap</source>
-      <translation>Activation/désactivation principale des accrochages</translation>
+      <translation>Basculer l'accrochage principal</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="140"/>
@@ -6787,7 +6787,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_array_simple.py" line="77"/>
       <source>Select an object to array</source>
-      <translation>Sélectionnez un objet à répéter</translation>
+      <translation>Sélectionnez un objet à mettre en réseau</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="124"/>
@@ -6857,12 +6857,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_scale.py" line="109"/>
       <source>Pick base point</source>
-      <translation>Sélectionner le point de base </translation>
+      <translation>Sélectionnez le point de base</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="131"/>
       <source>Pick reference distance from base point</source>
-      <translation>Sélectionner une distance de référence à partir du point de base</translation>
+      <translation>Sélectionner la distance de référence à partir du point de base</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="204"/>
@@ -6892,7 +6892,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_shape2dview.py" line="66"/>
       <source>Project 2D view</source>
-      <translation>Projection 2D</translation>
+      <translation>Vue 2D du projet</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="111"/>
@@ -6947,7 +6947,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_stretch.py" line="122"/>
       <source>Pick first point of selection rectangle</source>
-      <translation>Sélectionner le premier point du rectangle de sélection</translation>
+      <translation>Choisir le premier point du rectangle de sélection</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="159"/>
@@ -6967,7 +6967,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_stretch.py" line="443"/>
       <source>Turning one Rectangle into a Wire</source>
-      <translation>Transformer un Rectangle en Fil</translation>
+      <translation>Transforme un Rectangle en un Filaire</translation>
     </message>
     <message>
       <location filename="gui_grid.py" line="51"/>

@@ -1411,47 +1411,47 @@ iz menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Zapis stanja prikazanosti/skritosti stanja</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="402"/>
       <source>Merge layer duplicates</source>
-      <translation type="unfinished">Merge layer duplicates</translation>
+      <translation>Spoji podvojene sloje</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="407"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Dodaj nov sloj</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="244"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>Vklop / izklop mreže</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="262"/>
       <source>Object snapping</source>
-      <translation type="unfinished">Object snapping</translation>
+      <translation>Zaskočenje predmeta</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="294"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation type="unfinished">Toggles Visual Aid Dimensions On/Off</translation>
+      <translation>Vizualna pomoč Dimenzija Vklopi / Izklopi</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="314"/>
       <source>Toggles Ortho On/Off</source>
-      <translation type="unfinished">Toggles Ortho On/Off</translation>
+      <translation>Preklopi Orto Vklop/Izklop</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="332"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
-      <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
+      <translation>Preklopi omejitve na delovno ravnino Vklop / Izklop</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="144"/>
       <source>Unable to insert new object into a scaled part</source>
-      <translation type="unfinished">Unable to insert new object into a scaled part</translation>
+      <translation>Novega predmeta ni mogoče vstaviti v skaliran del</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="157"/>
@@ -1471,27 +1471,27 @@ iz menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="task_scale.py" line="131"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>Količnik X</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="132"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Količnik Y</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="133"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Kiličnik Z</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="134"/>
       <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <translation>Enakomerna sprememba velikosti</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="135"/>
       <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <translation>Usmerjenost delavne ravnine</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="136"/>
@@ -1506,7 +1506,7 @@ iz menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="task_scale.py" line="138"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>Izberi točke iz/v</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="139"/>
@@ -1521,7 +1521,7 @@ iz menija Orodja -&gt; Upravljalnik vstavkov</translation>
     <message>
       <location filename="gui_lineslope.py" line="91"/>
       <source>Slope</source>
-      <translation type="unfinished">Slope</translation>
+      <translation>Naklon</translation>
     </message>
     <message>
       <location filename="gui_circulararray.py" line="66"/>
@@ -1534,10 +1534,9 @@ iz menija Orodja -&gt; Upravljalnik vstavkov</translation>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>Ustvari kopije izbranega predmeta in jih postavite v radialno matriko različnih krožnih plasti.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+Matriko lahko spremenite v ortogonalno ali polarno tako, da spremenite njen tip.</translation>
     </message>
     <message>
       <location filename="gui_polararray.py" line="66"/>
@@ -1550,20 +1549,20 @@ The array can be turned into an orthogonal or a polar array by changing its type
 defined by a center of rotation and its angle.
 
 The array can be turned into an orthogonal or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a polar pattern
-defined by a center of rotation and its angle.
+      <translation>Ustvari kopije izbranega predmeta in kopije postavi v polarno matriko
+definirano s središčem vrtenja in njegovim kotom.
 
-The array can be turned into an orthogonal or a circular array by changing its type.</translation>
+Matriko lahko spremenite v pravokotno ali v krožno matriko s spreminjanjem njenega tipa.</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="65"/>
       <source>Array tools</source>
-      <translation type="unfinished">Array tools</translation>
+      <translation>Matrična orodja</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>Ustvarite različne vrste matrik, vključno s pravokotnimi, polarnimi, krožnimi, potmi in točkami</translation>
     </message>
     <message>
       <location filename="gui_orthoarray.py" line="66"/>
@@ -1576,10 +1575,10 @@ The array can be turned into an orthogonal or a circular array by changing its t
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Ustvari kopije izbranega predmeta in jih postavi v pravokotnem vzorcu,
+to pomeni da kopije sledijo določeni smeri v X, Y in Z oseh.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+Razpostavitev lahko spremenite v krožno ali v obročno razpostavitev s spremembo njene vrste.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="67"/>
@@ -1589,22 +1588,22 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_fillets.py" line="67"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation type="unfinished">Creates a fillet between two selected wires or edges.</translation>
+      <translation>Ustvari zaokrožitev med izbranima črtovjema ali robovoma.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="89"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>Brisanje originalnih predmetov</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="95"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Ustvari posnetje</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="326"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>Smer odmika ni določena. S premikom kazalke na eno stran predmeta najprej nakažite smer</translation>
     </message>
   </context>
   <context>
@@ -2019,16 +2018,16 @@ Morata biti najmanj dva.</translation>
     <message>
       <location filename="gui_groups.py" line="342"/>
       <source>Add to Construction group</source>
-      <translation type="unfinished">Add to Construction group</translation>
+      <translation>Dodaj v skupino pomagal</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="344"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
-      <translation type="unfinished">Adds the selected objects to the construction group,
-and changes their appearance to the construction style.
-It creates a construction group if it doesn't exist.</translation>
+      <translation>Doda izbrane predmete v skupino pomagal
+in spremeni njihov videz v slog pomožnih črt.
+Če skupine še ni, ustvari skupino pomagal.</translation>
     </message>
   </context>
   <context>
@@ -2036,12 +2035,12 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Dodaj točko</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="60"/>
       <source>Adds a point to an existing Wire or B-spline.</source>
-      <translation type="unfinished">Adds a point to an existing Wire or B-spline.</translation>
+      <translation>Doda točko obstoječemu črtovju ali B-koračni črti.</translation>
     </message>
   </context>
   <context>
@@ -2049,19 +2048,19 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_groups.py" line="67"/>
       <source>Ungroup</source>
-      <translation type="unfinished">Ungroup</translation>
+      <translation>Razdruži</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="72"/>
       <source>Move to group</source>
-      <translation type="unfinished">Move to group</translation>
+      <translation>Premakni v skupino</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="74"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>Prestavi izbrane predmete v obstoječo skupino ali jih odstrani iz katerekoli skupine.
+Če želite uporabiti to orodje, najprej ustvarite skupino.</translation>
     </message>
   </context>
   <context>
@@ -2077,12 +2076,12 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>Uporabi trenutni slog</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="50"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>Uporabi za izbrane predmete in skupine trenutni slog, določen v orodni vrstici (debelina črt in barve).</translation>
     </message>
   </context>
   <context>
@@ -2096,8 +2095,8 @@ Create a group first to use this tool.</translation>
       <location filename="gui_arcs.py" line="69"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Ustvari krožni lok z določitvijo središča in polmera.
+CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
     </message>
   </context>
   <context>
@@ -2105,12 +2104,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_arcs.py" line="598"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Ločna orodja</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="601"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>Ustvari različne vrte krožih lokov.</translation>
     </message>
   </context>
   <context>
@@ -2126,10 +2125,10 @@ CTRL to snap, SHIFT to constrain.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation type="unfinished">Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</translation>
+      <translation>Ustvari z izbranimi predmeti razpostavitev.
+Privzeta je je pravokotna razpostavitev 2 x 2.
+Razpostavitvi je mogoče po ustvaritvi spremeniti vrsto v krožno
+ali obročno, prav tako pa je mogoče spreminjati njene lastnosti.</translation>
     </message>
   </context>
   <context>
@@ -2142,7 +2141,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_groups.py" line="241"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and Arch objects to.</translation>
+      <translation>Izberite skupino, v kateroželite dodati vse predmete osnutka in arhitekture.</translation>
     </message>
   </context>
   <context>
@@ -2155,7 +2154,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Ustvari večtočkovni B-zlepek. CTRL za pripenjanje in PREMAKNI za omejitev.</translation>
     </message>
   </context>
   <context>
@@ -2163,14 +2162,14 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
-      <translation type="unfinished">Bezier curve</translation>
+      <translation>Bezierova krivulja</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Ustvari n-stopenjsko bezierjevo krivuljo. Več kot boste izbrali točk, višja bo stopnja.
+CTRL za pripenjanje, PREMAKNI za omejitev.</translation>
     </message>
   </context>
   <context>
@@ -2178,12 +2177,12 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
-      <translation type="unfinished">Bezier tools</translation>
+      <translation>Bezierjeva orodja</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of Bezier curves.</source>
-      <translation type="unfinished">Create various types of Bezier curves.</translation>
+      <translation>Ustvari različne vrte bezierjevih krivulj.</translation>
     </message>
   </context>
   <context>
@@ -2221,7 +2220,7 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="gui_lineops.py" line="124"/>
       <source>Close Line</source>
-      <translation type="unfinished">Close Line</translation>
+      <translation>Zapri črto</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="125"/>
@@ -2820,7 +2819,7 @@ These projections can be used to create technical drawings with the TechDraw Wor
     <message>
       <location filename="gui_shapestrings.py" line="70"/>
       <source>Shape from text</source>
-      <translation type="unfinished">Shape from text</translation>
+      <translation>Oblika iz besedila</translation>
     </message>
     <message>
       <location filename="gui_shapestrings.py" line="72"/>
@@ -2835,12 +2834,12 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
     <message>
       <location filename="gui_snaps.py" line="573"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>Prikaži orodno vrstico za pripenjanje</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="576"/>
       <source>Show the snap toolbar if it is hidden.</source>
-      <translation type="unfinished">Show the snap toolbar if it is hidden.</translation>
+      <translation>Prikaži orodno vrstico za pripenjanje, če je skrita.</translation>
     </message>
   </context>
   <context>
@@ -2848,7 +2847,7 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
     <message>
       <location filename="gui_lineslope.py" line="70"/>
       <source>Set slope</source>
-      <translation type="unfinished">Set slope</translation>
+      <translation>Nastavi naklon</translation>
     </message>
     <message>
       <location filename="gui_lineslope.py" line="73"/>
@@ -2869,7 +2868,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snapper.py" line="1527"/>
       <source>Toggles Grid On/Off</source>
-      <translation type="unfinished">Toggles Grid On/Off</translation>
+      <translation>Vklop / izklop mreže</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1528"/>
@@ -2908,7 +2907,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="509"/>
       <source>Show dimensions</source>
-      <translation type="unfinished">Show dimensions</translation>
+      <translation>Prikaži dimenzije</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="512"/>
@@ -3012,7 +3011,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="448"/>
       <source>Orthogonal</source>
-      <translation type="unfinished">Orthogonal</translation>
+      <translation>Pravokoten</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="451"/>
@@ -3051,7 +3050,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="478"/>
       <source>Special</source>
-      <translation type="unfinished">Special</translation>
+      <translation>Posebno</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="481"/>
@@ -3064,7 +3063,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="542"/>
       <source>Working plane</source>
-      <translation type="unfinished">Working plane</translation>
+      <translation>Delovna ravnina</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="545"/>
@@ -3098,7 +3097,7 @@ It works best when choosing a point on a straight segment and not a corner verte
     <message>
       <location filename="gui_stretch.py" line="64"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Raztegni</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="67"/>
@@ -3218,12 +3217,12 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_lineops.py" line="151"/>
       <source>Undo last segment</source>
-      <translation type="unfinished">Undo last segment</translation>
+      <translation>Razveljavi zadnji odsek</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="152"/>
       <source>Undoes the last drawn segment of the line being drawn.</source>
-      <translation type="unfinished">Undoes the last drawn segment of the line being drawn.</translation>
+      <translation>Razveljavi zadnji narisani odsek risane črte.</translation>
     </message>
   </context>
   <context>
@@ -3231,7 +3230,7 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</tran
     <message>
       <location filename="gui_upgrade.py" line="58"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Nadgradi</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="61"/>
@@ -5748,7 +5747,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="upgrade.py" line="469"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>Najdena 2 predmeta: zlivanje</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="480"/>
@@ -5808,7 +5807,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="mirror.py" line="90"/>
       <source>No object given</source>
-      <translation type="unfinished">No object given</translation>
+      <translation>Nobenega podanega predmeta</translation>
     </message>
     <message>
       <location filename="mirror.py" line="94"/>
@@ -5818,52 +5817,52 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="mirror.py" line="114"/>
       <source>mirrored)</source>
-      <translation type="unfinished">mirrored)</translation>
+      <translation>zrcaljeno)</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>Najden 1 blok: razbijanje</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="246"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>Najden 1 večtelesen sestav: razbijanje</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="253"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>Najden 1 parametričen objekt: odstranjevanje njegovih odvisnosti</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="261"/>
       <source>Found 2 objects: subtracting them</source>
-      <translation type="unfinished">Found 2 objects: subtracting them</translation>
+      <translation>Najdena 2 objekta: odštevanje</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="268"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>Najdenih več ploskev: razcepljanje</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="273"/>
       <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
+      <translation>Najdenih več objektov: odštevanje od prvega</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="278"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
+      <translation>Najdena 1 ploskev: izluščenje črtovij</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="284"/>
       <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
+      <translation>Najdena le črtovja: izvlečenje njihovih robov</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="288"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>Ni več možnih pretvorb v enostavnejše predmete</translation>
     </message>
     <message>
       <location filename="make_label.py" line="235"/>
@@ -5883,7 +5882,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_arc_3points.py" line="130"/>
       <source>Points: </source>
-      <translation type="unfinished">Points: </translation>
+      <translation>Točke: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="131"/>
@@ -5893,7 +5892,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_arc_3points.py" line="138"/>
       <source>Placement: </source>
-      <translation type="unfinished">Placement: </translation>
+      <translation>Postavitev: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="139"/>
@@ -5923,7 +5922,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_arc_3points.py" line="170"/>
       <source>Create primitive object</source>
-      <translation type="unfinished">Create primitive object</translation>
+      <translation>Ustvariti primitivno objekta</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="204"/>
@@ -5938,7 +5937,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_arc_3points.py" line="197"/>
       <source>Support:</source>
-      <translation type="unfinished">Support:</translation>
+      <translation>Podpora:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="198"/>
@@ -5948,7 +5947,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>length:</source>
-      <translation type="unfinished">length:</translation>
+      <translation>dolžina:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="132"/>
@@ -5958,7 +5957,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_fillet.py" line="139"/>
       <source>Radius is too large</source>
-      <translation type="unfinished">Radius is too large</translation>
+      <translation>Polmer je prevelik</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
@@ -5968,7 +5967,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_fillet.py" line="165"/>
       <source>Removed original objects.</source>
-      <translation type="unfinished">Removed original objects.</translation>
+      <translation>Brisanje originalnih predmetov.</translation>
     </message>
     <message>
       <location filename="make_text.py" line="101"/>
@@ -6108,12 +6107,12 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_layer.py" line="220"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
+      <translation>Napačen vnos: mora biti število med 0 in 100.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="250"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
+      <translation>Napačen vnos: mora biti seznam ali sklop nizov ali en niz.</translation>
     </message>
     <message>
       <location filename="make_patharray.py" line="246"/>
@@ -6124,7 +6123,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
       <location filename="make_sketch.py" line="103"/>
       <source>No shape found
 </source>
-      <translation type="unfinished">No shape found
+      <translation>Ni najdenih oblik
 </translation>
     </message>
     <message>
@@ -6169,7 +6168,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation type="unfinished">Orthogonal array 2D</translation>
+      <translation>Ortogonalna matrika 2D</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="424"/>
@@ -6179,7 +6178,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="make_orthoarray.py" line="501"/>
       <source>Rectangular array 2D</source>
-      <translation type="unfinished">Rectangular array 2D</translation>
+      <translation>Pravokotna matrika 2D</translation>
     </message>
     <message>
       <location filename="make_label.py" line="262"/>
@@ -6274,7 +6273,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="view_layer.py" line="358"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Aktiviraj to plast</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="364"/>
@@ -6299,7 +6298,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="task_orthoarray.py" line="83"/>
       <source>Task panel:</source>
-      <translation type="unfinished">Task panel:</translation>
+      <translation>Podokno nalog:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="205"/>
@@ -6309,12 +6308,12 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="task_orthoarray.py" line="216"/>
       <source>Selection is not suitable for array.</source>
-      <translation type="unfinished">Selection is not suitable for array.</translation>
+      <translation>Izbira ni primerna za matriko.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="379"/>
       <source>Object:</source>
-      <translation type="unfinished">Object:</translation>
+      <translation>Objekt:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="203"/>
@@ -6339,7 +6338,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="task_orthoarray.py" line="348"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>Združi:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="362"/>
@@ -6359,17 +6358,17 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="task_circulararray.py" line="388"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>Središče sukanja:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
       <source>Aborted:</source>
-      <translation type="unfinished">Aborted:</translation>
+      <translation>Prekinjeno:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="222"/>
       <source>Number of layers must be at least 2.</source>
-      <translation type="unfinished">Number of layers must be at least 2.</translation>
+      <translation>Število plasti mora biti najmanj 2.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="234"/>
@@ -6524,27 +6523,27 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_lines.py" line="169"/>
       <source>Create Line</source>
-      <translation type="unfinished">Create Line</translation>
+      <translation>Ustvari črto</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="191"/>
       <source>Create Wire</source>
-      <translation type="unfinished">Create Wire</translation>
+      <translation>Ustvarite črtovje</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="140"/>
       <source>Pick next point</source>
-      <translation type="unfinished">Pick next point</translation>
+      <translation>Izberite naslednjo točko</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="336"/>
       <source>Unable to create a Wire from selected objects</source>
-      <translation type="unfinished">Unable to create a Wire from selected objects</translation>
+      <translation>Črtovja iz izbranih predmetov ni bilo mogoče ustvariti</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="358"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>Pretvori v črtovje</translation>
     </message>
     <message>
       <location filename="gui_edit_draft_objects.py" line="507"/>
@@ -6614,7 +6613,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
       <source>Edges don't intersect!</source>
-      <translation type="unfinished">Edges don't intersect!</translation>
+      <translation>Robovi se ne sekajo!</translation>
     </message>
     <message>
       <location filename="gui_drawing.py" line="76"/>
@@ -6654,7 +6653,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_upgrade.py" line="85"/>
       <source>Upgrade</source>
-      <translation type="unfinished">Upgrade</translation>
+      <translation>Nadgradi</translation>
     </message>
     <message>
       <location filename="gui_move.py" line="205"/>
@@ -6794,7 +6793,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_snaps.py" line="566"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>Prikaži orodno vrstico za pripenjanje</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="101"/>
@@ -6859,7 +6858,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_points.py" line="146"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>Ustvari točko</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="352"/>
@@ -6869,17 +6868,17 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_scale.py" line="88"/>
       <source>Select an object to scale</source>
-      <translation type="unfinished">Select an object to scale</translation>
+      <translation>Izberite predmet za spreminjanje velikosti</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="109"/>
       <source>Pick base point</source>
-      <translation type="unfinished">Pick base point</translation>
+      <translation>Izberite izhodiščno točko</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="131"/>
       <source>Pick reference distance from base point</source>
-      <translation type="unfinished">Pick reference distance from base point</translation>
+      <translation>Izberite primerjalno dolžino od izhodišča</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="204"/>
@@ -6914,17 +6913,17 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_shape2dview.py" line="111"/>
       <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
+      <translation>Ustvari nov 2D pogled</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>Bezier curve has been closed</source>
-      <translation type="unfinished">Bezier curve has been closed</translation>
+      <translation>Bezierjeva krivulja je bila sklenjena</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>Zadnja točka je bila odstranjena</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="147"/>
@@ -6954,7 +6953,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_stretch.py" line="470"/>
       <source>Stretch</source>
-      <translation type="unfinished">Stretch</translation>
+      <translation>Raztegni</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="73"/>
@@ -7019,7 +7018,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_draft2sketch.py" line="99"/>
       <source>Convert to Sketch</source>
-      <translation type="unfinished">Convert to Sketch</translation>
+      <translation>Pretvori v skico</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="114"/>
@@ -7109,7 +7108,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_offset.py" line="140"/>
       <source>Pick distance</source>
-      <translation type="unfinished">Pick distance</translation>
+      <translation>Izberite razdaljo</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="320"/>
@@ -7134,7 +7133,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_trimex.py" line="496"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>Ti objekti se ne sekajo.</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="499"/>
@@ -7219,7 +7218,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>Kliknite kjer koli na črto, da jo razcepite.</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="106"/>
@@ -7239,22 +7238,22 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_fillets.py" line="112"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Vnesi polmer.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="131"/>
       <source>Delete original objects:</source>
-      <translation type="unfinished">Delete original objects:</translation>
+      <translation>Brisanje originalnih predmetov:</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="136"/>
       <source>Chamfer mode:</source>
-      <translation type="unfinished">Chamfer mode:</translation>
+      <translation>Način posnetja:</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="153"/>
       <source>Two elements needed.</source>
-      <translation type="unfinished">Two elements needed.</translation>
+      <translation>Potrebna sta dva elementa.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="160"/>
@@ -7284,17 +7283,17 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_styles.py" line="55"/>
       <source>Apply style</source>
-      <translation type="unfinished">Apply style</translation>
+      <translation>Uporabi slog</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="75"/>
       <source>Change Style</source>
-      <translation type="unfinished">Change Style</translation>
+      <translation>Spremeni slog</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="64"/>
       <source>Add to group</source>
-      <translation type="unfinished">Add to group</translation>
+      <translation>Dodaj v skupino</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="159"/>
@@ -7309,42 +7308,42 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_groups.py" line="282"/>
       <source>Add new Layer</source>
-      <translation type="unfinished">Add new Layer</translation>
+      <translation>Dodaj nov sloj</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="336"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>Dodaj v skupino konstrukcije</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>Izberite predmet za odmikanje</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>Zamik deluje samo ne enem objektu naenkrat.</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="92"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>Te vrste objekta ni mogoče odmakniti</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="120"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>Odmik Bezierjevih krivulj še vedno ni podprt</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="447"/>
       <source>Start angle</source>
-      <translation type="unfinished">Start angle</translation>
+      <translation>Začetni kot</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="452"/>
       <source>Pick start angle</source>
-      <translation type="unfinished">Pick start angle</translation>
+      <translation>Izberite začetni kot</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="455"/>
@@ -7364,27 +7363,27 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_arcs.py" line="335"/>
       <source>Create Circle</source>
-      <translation type="unfinished">Create Circle</translation>
+      <translation>Ustvari krog</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="369"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>Ustvari lok (Del)</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="389"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>Ustvari lok</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="466"/>
       <source>Pick aperture angle</source>
-      <translation type="unfinished">Pick aperture angle</translation>
+      <translation>Izberite kot odprtine</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="481"/>
       <source>Arc by 3 points</source>
-      <translation type="unfinished">Arc by 3 points</translation>
+      <translation>Lok iz 3 točk</translation>
     </message>
     <message>
       <location filename="gui_texts.py" line="66"/>
@@ -7399,7 +7398,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_texts.py" line="116"/>
       <source>Create Text</source>
-      <translation type="unfinished">Create Text</translation>
+      <translation>Ustvari besedilo</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="280"/>
@@ -7409,17 +7408,17 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Izberite objekt za vrtenje</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="101"/>
       <source>Pick rotation center</source>
-      <translation type="unfinished">Pick rotation center</translation>
+      <translation>Izberite središče vrtenja</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="390"/>
       <source>Base angle</source>
-      <translation type="unfinished">Base angle</translation>
+      <translation>Izhodiščni kot</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="391"/>
@@ -7429,7 +7428,7 @@ Da FreeCADu omogočite prenos teh knjižnic, odgovorite z Da.</translation>
     <message>
       <location filename="gui_rotate.py" line="394"/>
       <source>Pick base angle</source>
-      <translation type="unfinished">Pick base angle</translation>
+      <translation>Izberite izhodiščni kot</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="403"/>

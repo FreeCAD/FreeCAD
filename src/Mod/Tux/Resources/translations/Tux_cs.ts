@@ -16,7 +16,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="65"/>
       <source>Rotate</source>
-      <translation>Rotace</translation>
+      <translation>Otočit</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="66"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="67"/>
       <source>Tilt</source>
-      <translation>Naklonění</translation>
+      <translation>Naklonit</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="68"/>

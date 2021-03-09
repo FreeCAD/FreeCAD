@@ -94,16 +94,16 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="xPos"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="yPos"/>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::QuantitySpinBox" name="zPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="zPos"/>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::QuantitySpinBox" name="axialPos" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="axialPos"/>
       </item>
       <item row="5" column="1">
        <widget class="QPushButton" name="applyAxial">
@@ -179,13 +179,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="xCnt"/>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="yCnt"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="zCnt" native="true"/>
+       <widget class="Gui::QuantitySpinBox" name="zCnt"/>
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="centerOfMass">
@@ -298,7 +298,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="angle" native="true"/>
+             <widget class="Gui::QuantitySpinBox" name="angle"/>
             </item>
            </layout>
           </item>
@@ -378,21 +378,21 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="rollAngle" native="true">
+             <widget class="Gui::QuantitySpinBox" name="rollAngle">
               <property name="toolTip">
                <string>Rotation around the x-axis</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="pitchAngle" native="true">
+             <widget class="Gui::QuantitySpinBox" name="pitchAngle">
               <property name="toolTip">
                <string>Rotation around the y-axis</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="yawAngle" native="true">
+             <widget class="Gui::QuantitySpinBox" name="yawAngle">
               <property name="toolTip">
                <string>Rotation around the z-axis</string>
               </property>

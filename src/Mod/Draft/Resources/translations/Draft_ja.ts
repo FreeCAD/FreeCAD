@@ -6163,7 +6163,7 @@ FreeCADでこれらライブラリーのダウンロードを有効にするた�
     <message>
       <location filename="make_orthoarray.py" line="424"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>格子状配列</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="501"/>

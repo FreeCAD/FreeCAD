@@ -4133,7 +4133,7 @@ au format printf() , ou du texte arbitraire</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="210"/>
       <source>Color:</source>
-      <translation>Couleur:</translation>
+      <translation>Couleur :</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="217"/>

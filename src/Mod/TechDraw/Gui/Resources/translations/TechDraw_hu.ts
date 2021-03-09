@@ -3946,8 +3946,8 @@ Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
 Custom: custom scale factor is used</source>
       <translation>Oldal: az oldal léptékének a használata
-Automatikus: ha az részletnézet nagyobb, mint az oldal,
-                   akkor a részlet léptéke le lesz csökkentve, hogy elférjen az oldalon
+Automatikus: ha a részletnézet nagyobb, mint az oldal,
+                   akkor a részlet léptéke csökkentésre kerül, hogy elférjen az oldalon
 Egyedi: egyedi lépték használata</translation>
     </message>
     <message>

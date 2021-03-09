@@ -251,7 +251,7 @@
     <message>
       <location filename="ArchPanel.py" line="1224"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation>Die Position des Kennzeichnungstext. Für Zentrierung (0,0,0) belassen</translation>
+      <translation>Die Position des Kennzeichnungstextes. Für Zentrierung bei (0,0,0) belassen</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1226"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="ArchPanel.py" line="1219"/>
       <source>The tag text to display</source>
-      <translation>Der anzuzeigende Tag-Text</translation>
+      <translation>Der anzuzeigende Kennzeichnungstext</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1231"/>

@@ -3899,12 +3899,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftsnap.ui" line="219"/>
       <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation>Se selecionado, a barra de ferramentas do Snap será mostrada sempre que você usar o snap</translation>
+      <translation>Se selecionado, a barra de ferramentas de atração será mostrada sempre que você usar o recurso de atração</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="222"/>
       <source>Show Draft Snap toolbar</source>
-      <translation>Mostrar barra de ferramentas de snap</translation>
+      <translation>Mostrar barra de ferramentas de atração</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="242"/>
@@ -3919,7 +3919,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftsnap.ui" line="291"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>Se selecionado, a grade do projeto será sempre visível quando a bancada de trabalho estiver ativa. Caso contrário, somente usando um comando</translation>
+      <translation>Se selecionado, a rede de pontos do Projeto será sempre visível quando a bancada de trabalho estiver ativa. Caso contrário, somente a partir de um comando</translation>
     </message>
     <message>
       <location filename="preferences-dxf.ui" line="388"/>
@@ -3939,12 +3939,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-svg.ui" line="141"/>
       <source>Translated (for print &amp; display)</source>
-      <translation>Tradução (para impressão e visualização)</translation>
+      <translation>Traduzido (para impressão e visualização)</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="146"/>
       <source>Raw (for CAM)</source>
-      <translation>Raw (para CAM)</translation>
+      <translation>Estado bruto (para CAM)</translation>
     </message>
     <message>
       <location filename="preferences-svg.ui" line="161"/>
@@ -3964,12 +3964,12 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftsnap.ui" line="34"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation>Se essa opção estiver marcada, o snap será ativado sem a necessidade de pressionar a tecla de snap</translation>
+      <translation>Se essa opção estiver marcada, a atração (snap) será ativada sem a necessidade de pressionar qualquer tecla</translation>
     </message>
     <message>
       <location filename="preferences-draftsnap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
-      <translation>Snap sempre ativo (desativar tecla de snap)</translation>
+      <translation>Atração (snap) sempre ativa (desativar tecla)</translation>
     </message>
     <message>
       <location filename="preferences-draft.ui" line="407"/>
@@ -4019,7 +4019,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftvisual.ui" line="34"/>
       <source>Snap symbols style</source>
-      <translation>Estilo dos símbolos de snap</translation>
+      <translation>Estilo dos símbolos de atração</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="54"/>
@@ -4029,7 +4029,7 @@ such as "Arial:Bold"</source>
     <message>
       <location filename="preferences-draftvisual.ui" line="59"/>
       <source>Bitsnpieces style</source>
-      <translation>Estilo Bitsnpieces</translation>
+      <translation>Estilo desmontado</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="80"/>
@@ -7404,7 +7404,7 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
     <message>
       <location filename="gui_rotate.py" line="390"/>
       <source>Base angle</source>
-      <translation>Ângulo base</translation>
+      <translation>Ângulo de base</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="391"/>
@@ -7430,7 +7430,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="gui_rotate.py" line="412"/>
       <source>Pick rotation angle</source>
-      <translation>Indique o ângulo de rotação</translation>
+      <translation>Escolha o ângulo de rotação</translation>
     </message>
   </context>
   <context>

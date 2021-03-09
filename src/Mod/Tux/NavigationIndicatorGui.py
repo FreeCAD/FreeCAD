@@ -535,8 +535,11 @@ onCompact()
 onTooltip()
 onOrbitShow()
 
+label = statusBar.children()[2]
+statusBar.removeWidget(label)
 statusBar.addPermanentWidget(indicator)
-statusBar.addPermanentWidget(statusBar.children()[2])
+statusBar.addPermanentWidget(label)
+label.show()
 
 setCurrent()
 

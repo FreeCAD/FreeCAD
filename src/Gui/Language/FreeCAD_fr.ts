@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Test console output</source>
-      <translation>Teste une sortie sur console</translation>
+      <translation>Teste la sortie console</translation>
     </message>
   </context>
   <context>
@@ -1400,7 +1400,7 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
     </message>
     <message>
       <source>Color:</source>
-      <translation>Couleur:</translation>
+      <translation>Couleur :</translation>
     </message>
   </context>
   <context>

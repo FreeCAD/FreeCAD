@@ -2058,14 +2058,14 @@ Het creëert een constructiegroep als deze niet bestaat.</translation>
     <message>
       <location filename="gui_groups.py" line="72"/>
       <source>Move to group</source>
-      <translation type="unfinished">Move to group</translation>
+      <translation>Verplaats naar groep</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="74"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
-      <translation type="unfinished">Moves the selected objects to an existing group, or removes them from any group.
-Create a group first to use this tool.</translation>
+      <translation>Verplaatst de geselecteerde objecten naar een bestaande groep, of verwijdert ze van elke groep.
+Maak eerst een groep aan om dit gereedschap te gebruiken.</translation>
     </message>
   </context>
   <context>
@@ -2073,7 +2073,7 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="80"/>
       <source>Annotation styles...</source>
-      <translation type="unfinished">Annotation styles...</translation>
+      <translation>Annotatie stijlen...</translation>
     </message>
   </context>
   <context>
@@ -2081,12 +2081,12 @@ Create a group first to use this tool.</translation>
     <message>
       <location filename="gui_styles.py" line="47"/>
       <source>Apply current style</source>
-      <translation type="unfinished">Apply current style</translation>
+      <translation>Huidige stijl toepassen</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="50"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>Past de huidige stijl zoals gezet in de gereedschapsbalk (lijnbreedte en kleur) toe op de geselecteerde objecten en groepen.</translation>
     </message>
   </context>
   <context>
@@ -2100,8 +2100,8 @@ Create a group first to use this tool.</translation>
       <location filename="gui_arcs.py" line="69"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by a center point and a radius.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Maakt cirkelvormige boog doormiddel van een middelpunt en radius.
+CTRL voor vast leggen, SHIFT om te vast te leggen.</translation>
     </message>
   </context>
   <context>
@@ -2114,7 +2114,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_arcs.py" line="601"/>
       <source>Create various types of circular arcs.</source>
-      <translation type="unfinished">Create various types of circular arcs.</translation>
+      <translation>Creëer verschillende soorten cirkelvormige bogen.</translation>
     </message>
   </context>
   <context>
@@ -2130,10 +2130,10 @@ CTRL to snap, SHIFT to constrain.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation type="unfinished">Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</translation>
+      <translation>Maakt een reeks van een geselecteerd object.
+Standaard is het een 2x2 orthogonale reeks.
+Zodra de reeks is gemaakt kan het type worden gewijzigd
+naar polair of cirkel, en de eigenschappen ervan kunnen worden aangepast.</translation>
     </message>
   </context>
   <context>
@@ -2146,7 +2146,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_groups.py" line="241"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and Arch objects to.</translation>
+      <translation>Selecteer een groep om alle Draft en Arch objecten aan toe te voegen.</translation>
     </message>
   </context>
   <context>
@@ -2159,7 +2159,7 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Maakt een B-spline met meerdere punten. CTRL om uit te lijnen, SHIFT om te beperken.</translation>
     </message>
   </context>
   <context>
@@ -2167,14 +2167,14 @@ to polar or circular, and its properties can be modified.</translation>
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>Bezier curve</source>
-      <translation type="unfinished">Bezier curve</translation>
+      <translation>Béziercurve</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Maakt een N-graden Bezier-curve. Hoe meer punten je kiest, hoe hoger de graad.
+CTRL om vast te klikken, SHIFT om te beperken.</translation>
     </message>
   </context>
   <context>
@@ -2187,7 +2187,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of Bezier curves.</source>
-      <translation type="unfinished">Create various types of Bezier curves.</translation>
+      <translation>Maak verschillende soorten Bezier-curves.</translation>
     </message>
   </context>
   <context>
@@ -2201,8 +2201,8 @@ CTRL to snap, SHIFT to constrain.</translation>
       <location filename="gui_circles.py" line="83"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
-      <translation type="unfinished">Creates a circle (full circular arc).
-CTRL to snap, ALT to select tangent objects.</translation>
+      <translation>Maakt een cirkel.
+CTRL om vast te klikken, ALT om tangens objecten te selecteren.</translation>
     </message>
   </context>
   <context>
@@ -2216,8 +2216,8 @@ CTRL to snap, ALT to select tangent objects.</translation>
       <location filename="gui_clone.py" line="73"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation type="unfinished">Creates a clone of the selected objects.
-The resulting clone can be scaled in each of its three directions.</translation>
+      <translation>Maakt een kloon van de geselecteerde objecten.
+De resulterende kloon kan in elk van zijn drie richtingen worden geschaald.</translation>
     </message>
   </context>
   <context>
@@ -2230,7 +2230,7 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="gui_lineops.py" line="125"/>
       <source>Closes the line being drawn, and finishes the operation.</source>
-      <translation type="unfinished">Closes the line being drawn, and finishes the operation.</translation>
+      <translation>Sluit de lijn die getekend wordt, en beëindigt de bewerking.</translation>
     </message>
   </context>
   <context>
@@ -2238,16 +2238,16 @@ The resulting clone can be scaled in each of its three directions.</translation>
     <message>
       <location filename="gui_beziers.py" line="243"/>
       <source>Cubic bezier curve</source>
-      <translation type="unfinished">Cubic bezier curve</translation>
+      <translation>Cubic bezier curve</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="246"/>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Maakt een Bézier-curve van 2de graden (kwadratisch) en 3e graden (kubisch) segmenten. Klik en sleep om elk segment te definiëren.
+Nadat de curve is gemaakt kan je teruggaan naar het bewerken van elk controlepunt en de eigenschappen van elke knoop instellen.
+CTRL om vast te klikken, SHIFT om te beperken.</translation>
     </message>
   </context>
   <context>
@@ -2260,7 +2260,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="92"/>
       <source>Removes a point from an existing Wire or B-spline.</source>
-      <translation type="unfinished">Removes a point from an existing Wire or B-spline.</translation>
+      <translation>Verwijdert een punt van een bestaande draad of B-spline.</translation>
     </message>
   </context>
   <context>
@@ -2284,18 +2284,18 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>Maakt een dimensie.
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- Kies drie punten om een eenvoudige rechte maat te maken.
+- Selecteer een rechte lijn om een rechte maat gekoppeld aan die lijn te maken.
+- Selecteer een boog of cirkel om een straal of diameter maat gekoppeld aan die boog te maken.
+- Selecteer twee rechte lijnen om een hoeken tussen ze te maken.
+CTRL om te vangen, SHIFT om te beperken, ALT om een rand of boog te selecteren.
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+U kunt een enkele regel of een enkele cirkelboog selecteren voordat u deze opdracht start
+om de bijbehorende gelinkte dimensie te maken.
+U kunt ook een 'App::MeasureDistance' object selecteren voordat u deze opdracht start
+om het om te zetten in een 'Ontwerpdimensie' object.</translation>
     </message>
   </context>
   <context>
@@ -2310,9 +2310,9 @@ to turn it into a 'Draft Dimension' object.</translation>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation type="unfinished">Downgrades the selected objects into simpler shapes.
-The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
-For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</translation>
+      <translation>Verlaag de geselecteerde objecten in eenvoudigere vormen.
+Het resultaat van de bewerking is afhankelijk van het type objecten, dat meerdere keren achter elkaar kan worden gedowngraded.
+Bijvoorbeeld, het explodeert de geselecteerde polylijnen in eenvoudige vlakken, draden en vervolgens randen. Het kan ook vlakken aftrekken.</translation>
     </message>
   </context>
   <context>
@@ -2327,9 +2327,9 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation type="unfinished">Convert bidirectionally between Draft objects and Sketches.
-Many Draft objects will be converted into a single non-constrained Sketch.
-However, a single sketch with disconnected traces will be converted into several individual Draft objects.</translation>
+      <translation>Converteer bidirectioneel tussen Draft objecten en Sketches.
+Veel Draft objecten zullen worden omgezet in één niet-beperkt schets
+Een enkele schets met losgekoppelde sporen zal echter worden omgezet in verschillende schetsobjecten.</translation>
     </message>
   </context>
   <context>
@@ -2344,9 +2344,9 @@ However, a single sketch with disconnected traces will be converted into several
       <source>Creates a 2D projection on a Drawing Workbench page from the selected objects.
 This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
 Use TechDraw Workbench instead for generating technical drawings.</source>
-      <translation type="unfinished">Creates a 2D projection on a Drawing Workbench page from the selected objects.
-This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
-Use TechDraw Workbench instead for generating technical drawings.</translation>
+      <translation>Maakt een 2D projectie op een Tekenwerkbank pagina van de geselecteerde objecten.
+Dit commando is OBSOLETE sinds de Drawing Workbench verouderd is geworden in 0. 7.
+Gebruik TechDraw Workbench voor het genereren van technische tekeningen.</translation>
     </message>
   </context>
   <context>
@@ -2361,9 +2361,9 @@ Use TechDraw Workbench instead for generating technical drawings.</translation>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
-      <translation type="unfinished">Edits the active object.
-Press E or ALT+LeftClick to display context menu
-on supported nodes and on supported objects.</translation>
+      <translation>Verwerkt het actieve object.
+Druk op E of ALT+LeftClick om contextmenu weer te geven
+op ondersteunde nodes en op ondersteunde objecten.</translation>
     </message>
   </context>
   <context>
@@ -2376,7 +2376,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_ellipses.py" line="62"/>
       <source>Creates an ellipse. CTRL to snap.</source>
-      <translation type="unfinished">Creates an ellipse. CTRL to snap.</translation>
+      <translation>Maakt een ellips. CTRL om te klikken.</translation>
     </message>
   </context>
   <context>
@@ -2389,7 +2389,7 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
-      <translation type="unfinished">Creates a facebinder object from selected faces.</translation>
+      <translation>Maakt een vlakbinder object van geselecteerde vlakken.</translation>
     </message>
   </context>
   <context>
@@ -2397,12 +2397,12 @@ on supported nodes and on supported objects.</translation>
     <message>
       <location filename="gui_lineops.py" line="98"/>
       <source>Finish line</source>
-      <translation type="unfinished">Finish line</translation>
+      <translation>Eind regel</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="99"/>
       <source>Finishes a line without closing it.</source>
-      <translation type="unfinished">Finishes a line without closing it.</translation>
+      <translation>Beëindigt een lijn zonder deze te sluiten.</translation>
     </message>
   </context>
   <context>
@@ -2416,8 +2416,8 @@ on supported nodes and on supported objects.</translation>
       <location filename="gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flip the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Draai de normale richting van de geselecteerde afmetingen (lineair, radial, hoek).
+Als andere objecten zijn geselecteerd worden ze genegeerd.</translation>
     </message>
   </context>
   <context>
@@ -2432,9 +2432,9 @@ If other objects are selected they are ignored.</translation>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>Repareer foutieve schetsobjecten van een eerdere versie van het programma.
+Als een object is geselecteerd zal het met name proberen dat object te herstellen
+anders zal het proberen alle objecten in het actieve document te herstellen.</translation>
     </message>
   </context>
   <context>
@@ -2448,8 +2448,8 @@ otherwise it will try to heal all objects in the active document.</translation>
       <location filename="gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>Voegt de geselecteerde lijnen of polylijnen samen tot één object.
+De lijnen moeten een gemeenschappelijk punt delen aan het begin of het einde van de operatie.</translation>
     </message>
   </context>
   <context>
@@ -2470,15 +2470,14 @@ if any.
 
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement.
+      <translation>Maakt een label aan, eventueel gekoppeld aan een geselecteerd object of subelement.
 
-First select a vertex, an edge, or a face of an object, then call this command,
-and then set the position of the leader line and the textual label.
-The label will be able to display information about this object, and about the selected subelement,
-if any.
+Selecteer eerst een vertex, een rand of een vlak van een object, selecteer daarna dit commando,
+waarna de positie van de leiderslijn en het tekstlabel ingesteld kan worden.
+Het label kan informatie over dit object weergeven, en over de geselecteerde subelement,
+indien aanwezig.
 
-If many objects or many subelements are selected, only the first one in each case
-will be used to provide information to the label.</translation>
+Als veel objecten of veel subelementen zijn geselecteerd, zal de informatie van de eerst seleceteerde op het label worden weergegeven.</translation>
     </message>
   </context>
   <context>
@@ -2492,8 +2491,8 @@ will be used to provide information to the label.</translation>
       <location filename="gui_layers.py" line="55"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</translation>
+      <translation>Voegt een laag toe aan het document.
+Objecten die aan deze laag worden toegevoegd kunnen dezelfde visuele eigenschappen delen, zoals lijnkleur, lijnbreedte en vormkleur.</translation>
     </message>
   </context>
   <context>
@@ -2506,7 +2505,7 @@ Objects added to this layer can share the same visual properties such as line co
     <message>
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a 2-point line. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Maakt een 2-puntenlijn aan. CTRL om uit te lijnen, SHIFT om te beperken.</translation>
     </message>
   </context>
   <context>
@@ -2520,8 +2519,8 @@ Objects added to this layer can share the same visual properties such as line co
       <location filename="gui_array_simple.py" line="122"/>
       <source>Like the Array tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the Array tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Zoals het Reeks gereedschap, maakt u in plaats daarvan een 'Link reeks' aan.
+Een 'Link reeks' is efficiënter bij het verwerken van veel kopieën, maar de 'Fuse' optie kan niet worden gebruikt.</translation>
     </message>
   </context>
   <context>
@@ -2529,12 +2528,12 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_mirror.py" line="63"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Spiegelen</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="66"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points.</translation>
+      <translation>Spiegelt de geselecteerde objecten langs een lijn gedefinieerd door twee punten.</translation>
     </message>
   </context>
   <context>
@@ -2549,9 +2548,9 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Moves the selected objects from one base point to another point.
-If the "copy" option is active, it will create displaced copies.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Verplaatst de geselecteerde objecten van het ene basispunt naar het andere punt.
+Als de "kopiëren" optie actief is, zal het verplaatste object een kopie worden van het origineel.
+CTRL om uit te lijnen, SHIFT om te beperken.</translation>
     </message>
   </context>
   <context>
@@ -2566,9 +2565,9 @@ CTRL to snap, SHIFT to constrain.</translation>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Verschuiving van het geselecteerde object.
+Het kan ook een verschoven kopie van het oorspronkelijke object maken.
+CTRL om uit te lijnen, SHIFT om te beperken. Houd ALT ingedrukt en klik om een kopie te maken met elke klik.</translation>
     </message>
   </context>
   <context>
@@ -2576,16 +2575,16 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
     <message>
       <location filename="gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Pad reeks</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="76"/>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Maakt kopieën van het geselecteerde object langs een geselecteerd pad.
+Selecteer eerst het object en selecteer vervolgens het pad.
+Het pad kan een polyline zijn, B-spline, Bezier-curve of zelfs randen van andere objecten.</translation>
     </message>
   </context>
   <context>
@@ -2593,14 +2592,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_patharray.py" line="163"/>
       <source>Path Link array</source>
-      <translation type="unfinished">Path Link array</translation>
+      <translation>Pad Link reeks</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="166"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Zoals het PadReeks gereedschap, maakt u in plaats daarvan een 'Link reeks' aan.
+Een 'Link reeks' is efficiënter bij het verwerken van veel kopieën, maar de 'Fuse' optie kan niet worden gebruikt.</translation>
     </message>
   </context>
   <context>
@@ -2608,16 +2607,16 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pathtwistedarray.py" line="66"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Pad getoreerde reeks</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="69"/>
       <source>Creates copies of the selected object along a selected path, and twists the copies.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path, and twists the copies.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Maakt kopieën van het geselecteerde object langs een geselecteerd pad en verdraait de kopieën.
+Selecteer eerst het object en selecteer vervolgens het pad.
+Het pad kan een polyline zijn, B-spline, Bezier-curve of zelfs randen van andere objecten.</translation>
     </message>
   </context>
   <context>
@@ -2625,14 +2624,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_pathtwistedarray.py" line="121"/>
       <source>Path twisted Link array</source>
-      <translation type="unfinished">Path twisted Link array</translation>
+      <translation>Pad gedraaide link reeks</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathTwistedArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Zoals het PadDraaiReeks gereedschap, maakt u in plaats daarvan een 'Link reeks' aan.
+Een 'Link reeks' is efficiënter bij het verwerken van veel kopieën, maar de 'Fuse' optie kan niet worden gebruikt.</translation>
     </message>
   </context>
   <context>
@@ -2645,7 +2644,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
-      <translation type="unfinished">Creates a point object. Click anywhere on the 3D view.</translation>
+      <translation>Maakt een puntobject. Klik ergens op de 3D-weergave.</translation>
     </message>
   </context>
   <context>
@@ -2653,7 +2652,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_pointarray.py" line="76"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Punt reeks</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="79"/>
@@ -2664,13 +2663,13 @@ To create this compound, select various points and then use the Part Compound to
 or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
 
 Select the base object, and then select the compound or the sketch to create the point array.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies at the position of various points.
+      <translation>Maakt kopieën van het geselecteerde object aan en plaatst de kopieën op de positie van verschillende punten.
 
-The points need to be grouped under a compound of points before using this tool.
-To create this compound, select various points and then use the Part Compound tool,
-or use the Draft Upgrade tool to create a 'Block', or create a Sketch and add simple points to it.
+De punten moeten worden gegroepeerd onder een samenstelling van punten voordat deze tool kan worden gebruikt.
+Om deze samenstelling te maken, selecteer je verschillende punten en gebruik je de tool Onderdeel Samenvoeging,
+of gebruik het gereedschap voor Ontwerp Upgrade om een 'blok' te maken, of maak een schets en voeg eenvoudige punten toe.
 
-Select the base object, and then select the compound or the sketch to create the point array.</translation>
+Selecteer het basisobject en selecteer vervolgens de samenstelling of de schets om het punt reeks maken.</translation>
     </message>
   </context>
   <context>
@@ -2699,8 +2698,8 @@ Een 'Punt linkreeks' is efficiënter bij het verwerken van veel kopieën.</trans
       <location filename="gui_polygons.py" line="60"/>
       <source>Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
 CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
-CTRL to snap, SHIFT to constrain</translation>
+      <translation>Creëert een reguliere veelhoek (driehoek, vierkanten, pentagon, ...), door het selecteren van het aantal zijden en de omschreven straal.
+CTRL om uit te lijnen, SHIFT om te beperken</translation>
     </message>
   </context>
   <context>
@@ -2713,7 +2712,7 @@ CTRL to snap, SHIFT to constrain</translation>
     <message>
       <location filename="gui_rectangles.py" line="57"/>
       <source>Creates a 2-point rectangle. CTRL to snap.</source>
-      <translation type="unfinished">Creates a 2-point rectangle. CTRL to snap.</translation>
+      <translation>Maakt een 2-puntenrechthoek aan. CTRL om te klikken.</translation>
     </message>
   </context>
   <context>
@@ -2728,9 +2727,9 @@ CTRL to snap, SHIFT to constrain</translation>
       <source>Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
 If the "copy" option is active, it will create rotated copies.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
-If the "copy" option is active, it will create rotated copies.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Draait de geselecteerde objecten. Kies het midden van rotatie dan de start hoek, en dan de eind hoek.
+Als de "kopieer" optie actief is, zal deze rotatie maken.
+CTRL om uit te lijnen, SHIFT om te beperken. Houd ALT ingedrukt en klik om een kopie te maken met elke klik.</translation>
     </message>
   </context>
   <context>
@@ -2744,8 +2743,8 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
       <location filename="gui_scale.py" line="74"/>
       <source>Scales the selected objects from a base point.
 CTRL to snap, SHIFT to constrain, ALT to copy.</source>
-      <translation type="unfinished">Scales the selected objects from a base point.
-CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
+      <translation>Schaalt de geselecteerde objecten vanaf een basispunt.
+CTRL om uit te lijnen, SHIFT om te beperken, ALT om te kopiëren.</translation>
     </message>
   </context>
   <context>
@@ -2767,8 +2766,8 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
       <location filename="gui_selectplane.py" line="67"/>
       <source>Select the face of solid body to create a working plane on which to sketch Draft objects.
 You may also select a three vertices or a Working Plane Proxy.</source>
-      <translation type="unfinished">Select the face of solid body to create a working plane on which to sketch Draft objects.
-You may also select a three vertices or a Working Plane Proxy.</translation>
+      <translation>Selecteer het gezicht van een solide lichaam om een werkvlak te maken waarop je Draft objecten kunt schetsen.
+U kunt ook een drietal hoekpunten of een werkvlak proxy selecteren.</translation>
     </message>
   </context>
   <context>
@@ -2781,7 +2780,7 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="gui_setstyle.py" line="51"/>
       <source>Sets default styles</source>
-      <translation type="unfinished">Sets default styles</translation>
+      <translation>Zet standaard stijlen</translation>
     </message>
   </context>
   <context>
@@ -2789,16 +2788,16 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="gui_planeproxy.py" line="50"/>
       <source>Create working plane proxy</source>
-      <translation type="unfinished">Create working plane proxy</translation>
+      <translation>Proxy voor werkvlak aanmaken</translation>
     </message>
     <message>
       <location filename="gui_planeproxy.py" line="52"/>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane.
-Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
-Then you can use it to save a different camera position and objects' states any time you need.</translation>
+      <translation>Maakt een proxy-object aan van het huidige werk vlak.
+Zodra het object is gemaakt, dubbelklik dan op het structuur scherm om de camera positie en de zichtbaarheid van de objecten te herstellen.
+Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wanneer je nodig hebt.</translation>
     </message>
   </context>
   <context>
@@ -2806,7 +2805,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="gui_shape2dview.py" line="61"/>
       <source>Shape 2D view</source>
-      <translation type="unfinished">Shape 2D view</translation>
+      <translation>Vorm 2D weergave</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="64"/>
@@ -2814,10 +2813,10 @@ Then you can use it to save a different camera position and objects' states any 
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
 These projections can be used to create technical drawings with the TechDraw Workbench.</source>
-      <translation type="unfinished">Creates a 2D projection of the selected objects on the XY plane.
-The initial projection direction is the negative of the current active view direction.
-You can select individual faces to project, or the entire solid, and also include hidden lines.
-These projections can be used to create technical drawings with the TechDraw Workbench.</translation>
+      <translation>Maakt een 2D projectie van de geselecteerde objecten op het XY-vlak.
+De eerste projectie richting is de negatieve kant van de huidige actieve weergave.
+U kunt individuele vlakken, het gehele lichaam en. of selecteren om te projecteren, of het hele lichaam en ook verborgen lijnen toevoegen.
+Deze projecties kunnen technische tekeningen worden gebruikt in de TechDraw Werkbank.</translation>
     </message>
   </context>
   <context>
@@ -2825,14 +2824,14 @@ These projections can be used to create technical drawings with the TechDraw Wor
     <message>
       <location filename="gui_shapestrings.py" line="70"/>
       <source>Shape from text</source>
-      <translation type="unfinished">Shape from text</translation>
+      <translation>Vorm uit tekst</translation>
     </message>
     <message>
       <location filename="gui_shapestrings.py" line="72"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
-      <translation type="unfinished">Creates a shape from a text string by choosing a specific font and a placement.
-The closed shapes can be used for extrusions and boolean operations.</translation>
+      <translation>Maakt een vorm van een tekstreeks door een specifiek lettertype en een plaatsing te kiezen.
+De gesloten vormen kunnen worden gebruikt voor extrusies en booleaanse operaties.</translation>
     </message>
   </context>
   <context>
@@ -2840,12 +2839,12 @@ The closed shapes can be used for extrusions and boolean operations.</translatio
     <message>
       <location filename="gui_snaps.py" line="573"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>Toon uitlijn werkbalk</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="576"/>
       <source>Show the snap toolbar if it is hidden.</source>
-      <translation type="unfinished">Show the snap toolbar if it is hidden.</translation>
+      <translation>Laat de uitlijn werkbalk zien als deze verborgen is.</translation>
     </message>
   </context>
   <context>
@@ -2862,11 +2861,11 @@ If a polyline is selected, it will apply the slope transformation to each of its
 
 The slope will always change the Z value, therefore this command only works well for
 straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</source>
-      <translation type="unfinished">Sets the slope of the selected line by changing the value of the Z value of one of its points.
-If a polyline is selected, it will apply the slope transformation to each of its segments.
+      <translation>Stelt de richtingscoëfficiënt van de geselecteerde regel in door de waarde van de Z-waarde van een van zijn punten te veranderen.
+Als een veelhoek is geselecteerd, wordt de richtingstransformatie toegepast op elk van de segmenten.
 
-The slope will always change the Z value, therefore this command only works well for
-straight Draft lines that are drawn in the XY plane. Selected objects that aren't single lines will be ignored.</translation>
+De richtingscoëfficiënt zal altijd de Z waarde wijzigen Daarom werkt dit commando alleen goed voor
+rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten die niet uit losse lijnen bestaan, worden genegeerd.</translation>
     </message>
   </context>
   <context>
@@ -2879,7 +2878,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snapper.py" line="1528"/>
       <source>Toggle Draft Grid</source>
-      <translation type="unfinished">Toggle Draft Grid</translation>
+      <translation>Concept raster in-/uitschakelen</translation>
     </message>
   </context>
   <context>
@@ -2892,7 +2891,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="330"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
-      <translation type="unfinished">Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</translation>
+      <translation>Stel het uitlijnen in als punten in een circulaire boog gelegen met veelvoud van 30 en 45 graden.</translation>
     </message>
   </context>
   <context>
@@ -2905,7 +2904,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="360"/>
       <source>Set snapping to the center of a circular arc.</source>
-      <translation type="unfinished">Set snapping to the center of a circular arc.</translation>
+      <translation>Stel het uitlijnen in op het midden van een cirkelvorm.</translation>
     </message>
   </context>
   <context>
@@ -2918,7 +2917,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="512"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
-      <translation type="unfinished">Show temporary linear dimensions when editing an object and using other snapping methods.</translation>
+      <translation>Tijdelijke lineaire afmetingen weergeven bij het bewerken van een object en het gebruik van andere uitlijnings methoden.</translation>
     </message>
   </context>
   <context>
@@ -2931,7 +2930,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="299"/>
       <source>Set snapping to endpoints of an edge.</source>
-      <translation type="unfinished">Set snapping to endpoints of an edge.</translation>
+      <translation>Zet uitlijning naar eindpunten van een rand.</translation>
     </message>
   </context>
   <context>
@@ -2944,7 +2943,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="390"/>
       <source>Set snapping to the extension of an edge.</source>
-      <translation type="unfinished">Set snapping to the extension of an edge.</translation>
+      <translation>Stel de uitlijning in voor de verlenging van een rand.</translation>
     </message>
   </context>
   <context>
@@ -2957,7 +2956,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="209"/>
       <source>Set snapping to the intersection of grid lines.</source>
-      <translation type="unfinished">Set snapping to the intersection of grid lines.</translation>
+      <translation>Stel het uitlijnen in voor het kruispunt van rasterlijnen.</translation>
     </message>
   </context>
   <context>
@@ -2970,7 +2969,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="239"/>
       <source>Set snapping to the intersection of edges.</source>
-      <translation type="unfinished">Set snapping to the intersection of edges.</translation>
+      <translation>Stel het uitlijnen in voor het snijpunt van de randen.</translation>
     </message>
   </context>
   <context>
@@ -2978,12 +2977,12 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="116"/>
       <source>Main snapping toggle On/Off</source>
-      <translation type="unfinished">Main snapping toggle On/Off</translation>
+      <translation>Hoofd uitlijning schakelaar aan/uit</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="119"/>
       <source>Activates or deactivates all snap methods at once.</source>
-      <translation type="unfinished">Activates or deactivates all snap methods at once.</translation>
+      <translation>Activeert of deactiveert alle uitlijnmethoden tegelijk.</translation>
     </message>
   </context>
   <context>
@@ -2996,7 +2995,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="149"/>
       <source>Set snapping to the midpoint of an edge.</source>
-      <translation type="unfinished">Set snapping to the midpoint of an edge.</translation>
+      <translation>Stel het uitlijnen in tot het midpunt van een rand.</translation>
     </message>
   </context>
   <context>
@@ -3009,7 +3008,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="420"/>
       <source>Set snapping to the nearest point of an edge.</source>
-      <translation type="unfinished">Set snapping to the nearest point of an edge.</translation>
+      <translation>Stel het uitlijnen in op het dichtstbijzijnde punt van een rand.</translation>
     </message>
   </context>
   <context>
@@ -3022,7 +3021,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="451"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
-      <translation type="unfinished">Set snapping to a direction that is a multiple of 45 degrees from a point.</translation>
+      <translation>Stel het uitlijnen in op een richting die een veelvoud van 45 graden vanaf een punt.</translation>
     </message>
   </context>
   <context>
@@ -3035,7 +3034,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="269"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
-      <translation type="unfinished">Set snapping to a direction that is parallel to an edge.</translation>
+      <translation>Stel het uitlijnen in op een richting die parallel is aan een rand.</translation>
     </message>
   </context>
   <context>
@@ -3048,7 +3047,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="179"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
-      <translation type="unfinished">Set snapping to a direction that is perpendicular to an edge.</translation>
+      <translation>Stel het uitlijnen in op een richting die haaks staat op een rand.</translation>
     </message>
   </context>
   <context>
@@ -3061,7 +3060,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="481"/>
       <source>Set snapping to the special points defined inside an object.</source>
-      <translation type="unfinished">Set snapping to the special points defined inside an object.</translation>
+      <translation>Stel het uitlijnen in voor de speciale punten binnen een object.</translation>
     </message>
   </context>
   <context>
@@ -3076,9 +3075,9 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
-      <translation type="unfinished">Restricts snapping to a point in the current working plane.
-If you select a point outside the working plane, for example, by using other snapping methods,
-it will snap to that point's projection in the current working plane.</translation>
+      <translation>Beperkt uitlijing tot een punt in het huidige werkvlak.
+Als je een punt buiten het werkvlak selecteert, bijvoorbeeld door andere uitlijn-methodes te gebruiken,
+het zal uitgelijnd worden naar de projectie van dat punt op het huidige werkvlak.</translation>
     </message>
   </context>
   <context>
@@ -3093,9 +3092,9 @@ it will snap to that point's projection in the current working plane.</translati
       <source>Splits the selected line or polyline into two independent lines
 or polylines by clicking anywhere along the original object.
 It works best when choosing a point on a straight segment and not a corner vertex.</source>
-      <translation type="unfinished">Splits the selected line or polyline into two independent lines
-or polylines by clicking anywhere along the original object.
-It works best when choosing a point on a straight segment and not a corner vertex.</translation>
+      <translation>Splitst de geselecteerde lijn of polylijn in twee onafhankelijke lijnen
+of polylijnen door ergens langs het oorspronkelijke object te klikken.
+Het werkt het beste bij het kiezen van een punt op een recht segment en niet een hoek punt.</translation>
     </message>
   </context>
   <context>
@@ -3110,9 +3109,9 @@ It works best when choosing a point on a straight segment and not a corner verte
       <source>Stretches the selected objects.
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
-      <translation type="unfinished">Stretches the selected objects.
-Select an object, then draw a rectangle to pick the vertices that will be stretched,
-then draw a line to specify the distance and direction of stretching.</translation>
+      <translation>Rekt de geselecteerde objecten uit.
+Selecteer een object, en teken vervolgens een rechthoek om de hoekpunten te kiezen die zullen worden uitgeroepen,
+teken dan een lijn om de afstand en richting van stretching op te geven.</translation>
     </message>
   </context>
   <context>
@@ -3125,7 +3124,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_subelements.py" line="65"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
-      <translation type="unfinished">Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</translation>
+      <translation>Markeer de subelementen van de geselecteerde objecten, zodat ze vervolgens kunnen worden bewerkt met de verplaatsen, draaien en schaalgereedschappen.</translation>
     </message>
   </context>
   <context>
@@ -3138,7 +3137,7 @@ then draw a line to specify the distance and direction of stretching.</translati
     <message>
       <location filename="gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation type="unfinished">Creates a multi-line annotation. CTRL to snap.</translation>
+      <translation>Maakt een multi-lijn annotatie. CTRL om uit te lijnen.</translation>
     </message>
   </context>
   <context>
@@ -3152,8 +3151,8 @@ then draw a line to specify the distance and direction of stretching.</translati
       <location filename="gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
-      <translation type="unfinished">Toggles the Construction mode.
-When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</translation>
+      <translation>Schakelt de Bouw modus in of uit.
+Wanneer dit actief is, zullen de volgende aangemaakte objecten worden opgenomen in de bouwgroep. en zal getekend worden met de opgegeven kleur en eigenschappen.</translation>
     </message>
   </context>
   <context>
@@ -3161,16 +3160,16 @@ When this is active, the following objects created will be included in the const
     <message>
       <location filename="gui_togglemodes.py" line="131"/>
       <source>Toggle continue mode</source>
-      <translation type="unfinished">Toggle continue mode</translation>
+      <translation>Schakel 'continu' modus in of uit</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="133"/>
       <source>Toggles the Continue mode.
 When this is active, any drawing tool that is terminated will automatically start again.
 This can be used to draw several objects one after the other in succession.</source>
-      <translation type="unfinished">Toggles the Continue mode.
-When this is active, any drawing tool that is terminated will automatically start again.
-This can be used to draw several objects one after the other in succession.</translation>
+      <translation>Schakelt de vervolgmodus in op uit.
+Wanneer dit actief is, zal elke tekentool die wordt beëindigd automatisch opnieuw starten.
+Dit kan worden gebruikt om verschillende objecten achter elkaar te tekenen.</translation>
     </message>
   </context>
   <context>
@@ -3178,16 +3177,16 @@ This can be used to draw several objects one after the other in succession.</tra
     <message>
       <location filename="gui_togglemodes.py" line="166"/>
       <source>Toggle normal/wireframe display</source>
-      <translation type="unfinished">Toggle normal/wireframe display</translation>
+      <translation>Normaal/wireframe weergave in-/uitschakelen</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="168"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
-      <translation type="unfinished">Switches the display mode of selected objects from flatlines to wireframe and back.
-This is helpful to quickly visualize objects that are hidden by other objects.
-This is intended to be used with closed shapes and solids, and doesn't affect open wires.</translation>
+      <translation>Schakelt de weergavemodus van geselecteerde objecten van flatlines naar draad en terug.
+Dit is handig om objecten die verborgen zijn door andere objecten snel te weer te geven.
+Dit is bedoeld om te worden gebruikt met gesloten vormen en vast en heeft geen invloed op open draden.</translation>
     </message>
   </context>
   <context>
@@ -3200,7 +3199,7 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
     <message>
       <location filename="gui_grid.py" line="59"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation type="unfinished">Toggles the Draft grid on and off.</translation>
+      <translation>Zet het Draft raster aan en uit.</translation>
     </message>
   </context>
   <context>
@@ -3228,7 +3227,7 @@ CTRL snaps, SHIFT beperkt tot het huidige segment of tot normaal, ALT inverteerd
     <message>
       <location filename="gui_lineops.py" line="152"/>
       <source>Undoes the last drawn segment of the line being drawn.</source>
-      <translation type="unfinished">Undoes the last drawn segment of the line being drawn.</translation>
+      <translation>Maakt het laatst getekende segment van de getrokken lijn ongedaan.</translation>
     </message>
   </context>
   <context>
@@ -3244,10 +3243,10 @@ CTRL snaps, SHIFT beperkt tot het huidige segment of tot normaal, ALT inverteerd
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation type="unfinished">Upgrades the selected objects into more complex shapes.
-The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
-For example, it can join the selected objects into one, convert simple edges into parametric polylines,
-convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</translation>
+      <translation>Upgrade de geselecteerde objecten naar meer complexe vormen.
+Het resultaat van de bewerking is afhankelijk van het type voorwerpen, dat meerdere keren achter elkaar kan worden geupgraded.
+Bijvoorbeeld, het kan de geselecteerde objecten samenvoegen tot één, eenvoudige randen omzetten in parametrische polylijnen.
+Zet gesloten randen om in gevulde vlakken en parametrische veelhoeken en voeg vlakken samen in één vlak.</translation>
     </message>
   </context>
   <context>
@@ -3260,7 +3259,7 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="gui_lines.py" line="315"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Creëert een meerpuntslijn (polylijn). CTRL om uit te lijnen, SHIFT om te beperken.</translation>
     </message>
   </context>
   <context>
@@ -3273,7 +3272,7 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="gui_wire2spline.py" line="66"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
-      <translation type="unfinished">Converts a selected polyline to a B-spline, or a B-spline to a polyline.</translation>
+      <translation>Zet een geselecteerde polylijn om naar een B-spline, of een B-spline naar een polylijn.</translation>
     </message>
   </context>
   <context>
@@ -3674,7 +3673,7 @@ waarde ook wijzigen door de [ and ] sleutels te gebruiken tijdens het tekenen</t
     <message>
       <location filename="TaskPanel_SetStyle.ui" line="258"/>
       <source>If the unit suffix is shown on dimension texts or not</source>
-      <translation type="unfinished">If the unit suffix is shown on dimension texts or not</translation>
+      <translation>Als het achtervoegsel van de unit al dan niet op de maatteksten wordt weergegeven</translation>
     </message>
   </context>
   <context>
@@ -5032,12 +5031,12 @@ Deze waarde is de maximale segmentlengte. </translation>
     <message>
       <location filename="preferences-drafttexts.ui" line="495"/>
       <source>By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</source>
-      <translation type="unfinished">By leaving this field blank, the dimension measurements will be shown in the current unit defined in FreeCAD. By indicating a unit here such as m or cm, you can force new dimensions to be shown in that unit.</translation>
+      <translation>Door dit veld leeg te laten, worden de afmetingen weergegeven in de huidige eenheid die is gedefinieerd in FreeCAD. Door hier een eenheid zoals m of cm aan te geven, kun je de nieuwe afmetingen in die eenheid afdwingen.</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="257"/>
       <source>The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</source>
-      <translation type="unfinished">The resolution to draw the patterns in. Default value is 128. Higher values give better resolutions, lower values make drawing faster</translation>
+      <translation>De resolutie om patronen in te tekenen. Standaardwaarde is 128. Hogere waarden geven betere resoluties, lagere waarden maken sneller tekenen mogelijk</translation>
     </message>
     <message>
       <location filename="preferences-draftvisual.ui" line="280"/>
@@ -5098,7 +5097,7 @@ Deze waarde is de maximale segmentlengte. </translation>
     <message>
       <location filename="importSVG.py" line="1828"/>
       <source>The export list contains no object with a valid bounding box</source>
-      <translation type="unfinished">The export list contains no object with a valid bounding box</translation>
+      <translation>De exportlijst bevat geen object met een geldig omschrijvings-vak</translation>
     </message>
   </context>
   <context>
@@ -5106,7 +5105,7 @@ Deze waarde is de maximale segmentlengte. </translation>
     <message>
       <location filename="gui_snapper.py" line="1468"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Draft Uitlijning</translation>
     </message>
   </context>
   <context>
@@ -5708,102 +5707,102 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_label.py" line="194"/>
       <source>No active document. Aborting.</source>
-      <translation type="unfinished">No active document. Aborting.</translation>
+      <translation>Geen actief document. Breekt hier af.</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="151"/>
       <source>Object must be a closed shape</source>
-      <translation type="unfinished">Object must be a closed shape</translation>
+      <translation>Object moet een gesloten vorm zijn</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="153"/>
       <source>No solid object created</source>
-      <translation type="unfinished">No solid object created</translation>
+      <translation>Geen massief object aangemaakt</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="276"/>
       <source>Faces must be coplanar to be refined</source>
-      <translation type="unfinished">Faces must be coplanar to be refined</translation>
+      <translation>Vlakken moeten in het zelfde vlak liggen zijn om te worden verfijnd</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="230"/>
       <source>Upgrade: Unknown force method:</source>
-      <translation type="unfinished">Upgrade: Unknown force method:</translation>
+      <translation>Upgrade: Onbekende methode:</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="450"/>
       <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
+      <translation>Gevonden groepen: neemt elk open object op</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="456"/>
       <source>Found meshes: turning into Part shapes</source>
-      <translation type="unfinished">Found meshes: turning into Part shapes</translation>
+      <translation>Gevonden meshes: veranderen in Onderdeel vorm</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="464"/>
       <source>Found 1 solidifiable object: solidifying it</source>
-      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
+      <translation>1 object gevonden die massief kan worden gemaakt: Deze wordt nu massief gemaakt</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="469"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>2 objecten gevonden: ze samensmelten</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="480"/>
       <source>Found object with several coplanar faces: refine them</source>
-      <translation type="unfinished">Found object with several coplanar faces: refine them</translation>
+      <translation>Object met meerdere vlakken die in lijn met elkaar liggen gevonden: verfijn deze</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="486"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
+      <translation>1 niet-parametrische objecten gevonden: drafifying maken</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="497"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
+      <translation>1 gesloten schets object gevonden: er een vlak van maken</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="502"/>
       <source>Found closed wires: creating faces</source>
-      <translation type="unfinished">Found closed wires: creating faces</translation>
+      <translation>Gesloten draden gevonden: vlakken aanmaken</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="507"/>
       <source>Found several wires or edges: wiring them</source>
-      <translation type="unfinished">Found several wires or edges: wiring them</translation>
+      <translation>Verschillende draden of randen gevonden: bedraden</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
-      <translation type="unfinished">trying: closing it</translation>
+      <translation>proberen: sluit het</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="514"/>
       <source>Found 1 open wire: closing it</source>
-      <translation type="unfinished">Found 1 open wire: closing it</translation>
+      <translation>1 open draad gevonden: wordt gesloten</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="531"/>
       <source>Found 1 object: draftifying it</source>
-      <translation type="unfinished">Found 1 object: draftifying it</translation>
+      <translation>1 object gevonden: ontwerp maken</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
-      <translation type="unfinished">Found points: creating compound</translation>
+      <translation>Punten gevonden: samenvoeging maken</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="541"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+      <translation>Verschillende niet-behandelbare objecten gevonden: samenvoeging maken</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
       <source>Unable to upgrade these objects.</source>
-      <translation type="unfinished">Unable to upgrade these objects.</translation>
+      <translation>Kan deze objecten niet upgraden.</translation>
     </message>
     <message>
       <location filename="mirror.py" line="90"/>
@@ -5813,7 +5812,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="mirror.py" line="94"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
+      <translation>De twee punten vallen samen</translation>
     </message>
     <message>
       <location filename="mirror.py" line="114"/>
@@ -5823,62 +5822,62 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="downgrade.py" line="238"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>1 blok gevonden: pakt uit</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="246"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>1 samengestelde multi-massiefe objecten gevonden: het uitpakken</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="253"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>1 parametrisch object gevonden: de afhankelijkheden ervan verwijderen</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="261"/>
       <source>Found 2 objects: subtracting them</source>
-      <translation type="unfinished">Found 2 objects: subtracting them</translation>
+      <translation>2 objecten gevonden: ze van elkaar aftrekken</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="268"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>Verschillende vlakken gevonden: ze splitsen</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="273"/>
       <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
+      <translation>Verschillende objecten gevonden: ze aftrekken van het eerste geselecteerde object</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="278"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
+      <translation>1 vlak gevonden: de draden uitpakken</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="284"/>
       <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
+      <translation>Alleen draden gevonden: randen uitpakken</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="288"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>Geen downgrade meer mogelijk</translation>
     </message>
     <message>
       <location filename="make_label.py" line="235"/>
       <source>Wrong input: object not in document.</source>
-      <translation type="unfinished">Wrong input: object not in document.</translation>
+      <translation>Verkeerde invoer: object niet in document.</translation>
     </message>
     <message>
       <location filename="make_pointarray.py" line="135"/>
       <source>Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</source>
-      <translation type="unfinished">Wrong input: point object doesn't have 'Geometry', 'Links', or 'Components'.</translation>
+      <translation>Verkeerde invoer: punt object heeft geen 'Geometrie', 'Links' of 'Componenten'.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="214"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation type="unfinished">Wrong input: must be a placement, a vector, or a rotation.</translation>
+      <translation>Verkeerde invoer: moet een plaatsing, een vector, of een rotatie zijn.</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="130"/>
@@ -5888,7 +5887,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_arc_3points.py" line="131"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
-      <translation type="unfinished">Wrong input: must be list or tuple of three points exactly.</translation>
+      <translation>Verkeerde invoer: moet exact een lijst van drie punten zijn.</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="138"/>
@@ -5898,17 +5897,17 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_arc_3points.py" line="139"/>
       <source>Wrong input: incorrect type of placement.</source>
-      <translation type="unfinished">Wrong input: incorrect type of placement.</translation>
+      <translation>Verkeerde invoer: onjuist type plaatsing.</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="153"/>
       <source>Wrong input: incorrect type of points.</source>
-      <translation type="unfinished">Wrong input: incorrect type of points.</translation>
+      <translation>Verkeerde invoer: onjuist punt type.</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="159"/>
       <source>Cannot generate shape: </source>
-      <translation type="unfinished">Cannot generate shape: </translation>
+      <translation>Kan geen vorm genereren: </translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="166"/>
@@ -5923,7 +5922,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_arc_3points.py" line="170"/>
       <source>Create primitive object</source>
-      <translation type="unfinished">Create primitive object</translation>
+      <translation>Creëer een primitief object</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="204"/>
@@ -5958,7 +5957,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_fillet.py" line="139"/>
       <source>Radius is too large</source>
-      <translation type="unfinished">Radius is too large</translation>
+      <translation>Straal is te groot</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
@@ -5968,12 +5967,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_fillet.py" line="165"/>
       <source>Removed original objects.</source>
-      <translation type="unfinished">Removed original objects.</translation>
+      <translation>Originele objecten zijn verwijderd.</translation>
     </message>
     <message>
       <location filename="make_text.py" line="101"/>
       <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list of strings or a single string.</translation>
+      <translation>Verkeerde invoer: moet een lijst van tekenreeksen of een enkele tekenreeks zijn.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="491"/>
@@ -5983,17 +5982,17 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_circulararray.py" line="144"/>
       <source>Wrong input: must be a number or quantity.</source>
-      <translation type="unfinished">Wrong input: must be a number or quantity.</translation>
+      <translation>Verkeerde invoer: moet een getal of aantal zijn.</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="119"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation type="unfinished">Wrong input: must be an integer number.</translation>
+      <translation>Verkeerde invoer: moet een geheel getal zijn.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="203"/>
       <source>Wrong input: must be a vector.</source>
-      <translation type="unfinished">Wrong input: must be a vector.</translation>
+      <translation>Verkeerde invoer: moet een vector zijn.</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="438"/>
@@ -6003,82 +6002,82 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_label.py" line="307"/>
       <source>Wrong input: must be a number.</source>
-      <translation type="unfinished">Wrong input: must be a number.</translation>
+      <translation>Verkeerde invoer: moet een getal zijn.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="173"/>
       <source>This function is deprecated. Do not use this function directly.</source>
-      <translation type="unfinished">This function is deprecated. Do not use this function directly.</translation>
+      <translation>Deze functie wordt niet meer ondersteund. Gebruik deze functie niet.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="174"/>
       <source>Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</source>
-      <translation type="unfinished">Use one of 'make_linear_dimension', or 'make_linear_dimension_obj'.</translation>
+      <translation>Gebruik een van 'make_linear_dimension', of 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="229"/>
       <source>Wrong input: object must not be a list.</source>
-      <translation type="unfinished">Wrong input: object must not be a list.</translation>
+      <translation>Verkeerde invoer: object mag geen lijst zijn.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="452"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation type="unfinished">Wrong input: object doesn't have a 'Shape' to measure.</translation>
+      <translation>Verkeerde invoer: object heeft geen 'Vorm' om te meten.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="331"/>
       <source>Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Vertexes' to use for measuring.</translation>
+      <translation>Verkeerde invoer: object heeft geen ten minste één element in 'Hoekpunten' om te gebruiken voor het meten.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="463"/>
       <source>Wrong input: must be an integer.</source>
-      <translation type="unfinished">Wrong input: must be an integer.</translation>
+      <translation>Verkeerde invoer: moet een geheel getal zijn.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="343"/>
       <source>i1: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">i1: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>i1: waarden onder 1 zijn niet toegestaan; worden ingesteld op 1.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="363"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation type="unfinished">Wrong input: vertex not in object.</translation>
+      <translation>Verkeerde invoer: Hoekpunt niet in object.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="359"/>
       <source>i2: values below 1 are not allowed; will be set to the last vertex in the object.</source>
-      <translation type="unfinished">i2: values below 1 are not allowed; will be set to the last vertex in the object.</translation>
+      <translation>i2: waarden onder 1 zijn niet toegestaan; worden ingesteld op de laatste hoekpunt van het object.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="456"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation type="unfinished">Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</translation>
+      <translation>Verkeerde invoer: object heeft geen ten minste één element in 'Randen' om te gebruiken voor het meten.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="468"/>
       <source>index: values below 1 are not allowed; will be set to 1.</source>
-      <translation type="unfinished">index: values below 1 are not allowed; will be set to 1.</translation>
+      <translation>index: waarden onder 1 zijn niet toegestaan; worden ingesteld op 1.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="472"/>
       <source>Wrong input: index doesn't correspond to an edge in the object.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to an edge in the object.</translation>
+      <translation>Verkeerd invoerveld: de index komt niet overeen met een rand in het object.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="476"/>
       <source>Wrong input: index doesn't correspond to a circular edge.</source>
-      <translation type="unfinished">Wrong input: index doesn't correspond to a circular edge.</translation>
+      <translation>Verkeerde invoer: index komt niet overeen met een cirkelvormige rand.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="487"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'radius' or 'diameter'.</translation>
+      <translation>Verkeerde invoer: moet een tekenreeks, 'radius' of 'diameter' zijn.</translation>
     </message>
     <message>
       <location filename="make_dimension.py" line="582"/>
       <source>Wrong input: must be a list with two angles.</source>
-      <translation type="unfinished">Wrong input: must be a list with two angles.</translation>
+      <translation>Verkeerde invoer: moet een lijst met twee hoeken zijn.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="69"/>
@@ -6093,32 +6092,32 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_layer.py" line="157"/>
       <source>Wrong input: it must be a string.</source>
-      <translation type="unfinished">Wrong input: it must be a string.</translation>
+      <translation>Verkeerde invoer: het moet een tekenreeks zijn.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="188"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
-      <translation type="unfinished">Wrong input: must be a tuple of three floats 0.0 to 1.0.</translation>
+      <translation>Verkeerde invoer: moet een hoeveelheid van drie getallen tussen de 0,0 t/m 1,0.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="212"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
-      <translation type="unfinished">Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</translation>
+      <translation>Verkeerde invoer: moet 'Massief', 'Gestreept', 'Gestippeld' of 'StreekStippel' zijn.</translation>
     </message>
     <message>
       <location filename="make_layer.py" line="220"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation type="unfinished">Wrong input: must be a number between 0 and 100.</translation>
+      <translation>Verkeerde invoer: moet een getal tussen 0 en 100 zijn.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="250"/>
       <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation type="unfinished">Wrong input: must be a list or tuple of strings, or a single string.</translation>
+      <translation>Verkeerde invoer: moet een lijst of tuple van tekenreeksen of een enkele tekenreeks zijn.</translation>
     </message>
     <message>
       <location filename="make_patharray.py" line="246"/>
       <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation type="unfinished">Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</translation>
+      <translation>Verkeerde invoer: moet 'Origineel', 'Frenet' of 'Tangent' zijn.</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="103"/>
@@ -6131,35 +6130,35 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <location filename="make_sketch.py" line="109"/>
       <source>All Shapes must be planar
 </source>
-      <translation type="unfinished">All Shapes must be planar
+      <translation>Alle vormen moeten plat zijn
 </translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
       <source>All Shapes must be coplanar
 </source>
-      <translation type="unfinished">All Shapes must be coplanar
+      <translation>Alle vormen moeten in het zelfde vlak liggen
 </translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="60"/>
       <source>Internal orthogonal array</source>
-      <translation type="unfinished">Internal orthogonal array</translation>
+      <translation>Interne orthogonale reeks</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="87"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation type="unfinished">Wrong input: must be a number or vector.</translation>
+      <translation>Verkeerde invoer: moet een getal of vector zijn.</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="98"/>
       <source>Input: single value expanded to vector.</source>
-      <translation type="unfinished">Input: single value expanded to vector.</translation>
+      <translation>Invoer: enkele waarde uitgevouwen naar vector.</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="129"/>
       <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation type="unfinished">Input: number of elements must be at least 1. It is set to 1.</translation>
+      <translation>Invoer: aantal elementen moet minimaal 1 zijn. Het staat ingesteld op 1.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
@@ -6169,12 +6168,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_orthoarray.py" line="350"/>
       <source>Orthogonal array 2D</source>
-      <translation type="unfinished">Orthogonal array 2D</translation>
+      <translation>Orthogonale reeks 2D</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="424"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>Rechthoekige reeks</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="501"/>
@@ -6184,102 +6183,102 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="make_label.py" line="262"/>
       <source>Wrong input: subelement not in object.</source>
-      <translation type="unfinished">Wrong input: subelement not in object.</translation>
+      <translation>Verkeerde invoer: subelement niet in object.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="276"/>
       <source>Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Custom', 'Name', 'Label', 'Position', 'Length', 'Area', 'Volume', 'Tag', or 'Material'.</translation>
+      <translation>Verkeerde invoer: moet een string, 'aangepast', 'Naam', 'Label', 'Positie', 'Lengte', 'Gebied', 'Volume', 'Tag' of 'Materiaal' zijn.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="285"/>
       <source>Wrong input: must be a string.</source>
-      <translation type="unfinished">Wrong input: must be a string.</translation>
+      <translation>Verkeerde invoer: moet een tekenreeks zijn.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="298"/>
       <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation type="unfinished">Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</translation>
+      <translation>Verkeerde invoer: moet een tekenreeks, 'Horizontaal', 'Verticaal' of 'Aangepast' zijn.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="314"/>
       <source>Wrong input: must be a list of at least two vectors.</source>
-      <translation type="unfinished">Wrong input: must be a list of at least two vectors.</translation>
+      <translation>Verkeerde invoer: moet een lijst van ten minste twee vectoren zijn.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="347"/>
       <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation type="unfinished">Direction is not 'Custom'; points won't be used.</translation>
+      <translation>Richting is niet 'Aangepast'; punten worden niet gebruikt.</translation>
     </message>
     <message>
       <location filename="make_label.py" line="374"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation type="unfinished">Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</translation>
+      <translation>Verkeerde invoer: moet een lijst van twee elementen zijn. Bijvoorbeeld [object, 'Rand1'].</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="73"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>ShapeString: tekenreeks heeft geen draden</translation>
     </message>
     <message>
       <location filename="pointarray.py" line="160"/>
       <source>added property 'ExtraPlacement'</source>
-      <translation type="unfinished">added property 'ExtraPlacement'</translation>
+      <translation>toegevoegd eigenschap 'ExtraPlaatsing'</translation>
     </message>
     <message>
       <location filename="patharray.py" line="284"/>
       <source>, path object doesn't have 'Edges'.</source>
-      <translation type="unfinished">, path object doesn't have 'Edges'.</translation>
+      <translation>, pad-object heeft geen 'Randen'.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="407"/>
       <source>'PathObj' property will be migrated to 'PathObject'</source>
-      <translation type="unfinished">'PathObj' property will be migrated to 'PathObject'</translation>
+      <translation>'PadObj' eigendom zal worden gemigreerd naar 'PathObject'</translation>
     </message>
     <message>
       <location filename="patharray.py" line="525"/>
       <source>Cannot calculate path tangent. Copy not aligned.</source>
-      <translation type="unfinished">Cannot calculate path tangent. Copy not aligned.</translation>
+      <translation>Kan pad tangent niet berekenen. Kopiëren niet uitgelijnd.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="541"/>
       <source>Tangent and normal are parallel. Copy not aligned.</source>
-      <translation type="unfinished">Tangent and normal are parallel. Copy not aligned.</translation>
+      <translation>Tangens en normaal zijn parallelel. Kopieer niet uitgelijnd.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="558"/>
       <source>Cannot calculate path normal, using default.</source>
-      <translation type="unfinished">Cannot calculate path normal, using default.</translation>
+      <translation>Kan geen pad normaal berekenen, standaard wordt gebruikt.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="565"/>
       <source>Cannot calculate path binormal. Copy not aligned.</source>
-      <translation type="unfinished">Cannot calculate path binormal. Copy not aligned.</translation>
+      <translation>Kan pad niet binormaal berekenen. Kopieer niet uitgelijnd.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="571"/>
       <source>AlignMode {} is not implemented</source>
-      <translation type="unfinished">AlignMode {} is not implemented</translation>
+      <translation>Uitlijningsmodus {} is niet geïmplementeerd</translation>
     </message>
     <message>
       <location filename="draft_annotation.py" line="105"/>
       <source>added view property 'ScaleMultiplier'</source>
-      <translation type="unfinished">added view property 'ScaleMultiplier'</translation>
+      <translation>toegevoegde weergave eigenschap 'SchaalVermenigvuldiger'</translation>
     </message>
     <message>
       <location filename="draft_annotation.py" line="130"/>
       <source>migrated 'DraftText' type to 'Text'</source>
-      <translation type="unfinished">migrated 'DraftText' type to 'Text'</translation>
+      <translation>'DraftText' type gemigreerd naar 'Tekst'</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="358"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Activeer deze laag</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="364"/>
       <source>Select layer contents</source>
-      <translation type="unfinished">Select layer contents</translation>
+      <translation>Selecteer inhoud laag</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="147"/>
@@ -6289,12 +6288,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="init_draft_statusbar.py" line="133"/>
       <source>Unable to convert input into a scale factor</source>
-      <translation type="unfinished">Unable to convert input into a scale factor</translation>
+      <translation>Kan input niet omzetten naar een schaalfactor</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="151"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation type="unfinished">Set custom annotation scale in format x:x, x=x</translation>
+      <translation>Aangepaste aantekening schaal in formaat x:x, x=x instellen</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="83"/>
@@ -6304,12 +6303,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="task_orthoarray.py" line="205"/>
       <source>At least one element must be selected.</source>
-      <translation type="unfinished">At least one element must be selected.</translation>
+      <translation>Ten minste één element moet worden geselecteerd.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="216"/>
       <source>Selection is not suitable for array.</source>
-      <translation type="unfinished">Selection is not suitable for array.</translation>
+      <translation>Selectie is niet geschikt voor reeks.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="379"/>
@@ -6319,22 +6318,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="task_polararray.py" line="203"/>
       <source>Number of elements must be at least 2.</source>
-      <translation type="unfinished">Number of elements must be at least 2.</translation>
+      <translation>Aantal elementen moet ten minste 2 zijn.</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="207"/>
       <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is above 360 degrees. It is set to this value to proceed.</translation>
+      <translation>De hoek is hoger dan 360 graden. Het is ingesteld op deze waarde om door te gaan.</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="210"/>
       <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
-      <translation type="unfinished">The angle is below -360 degrees. It is set to this value to proceed.</translation>
+      <translation>De hoek is lager dan -360 graden. Het is ingesteld op deze waarde om door te gaan.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="341"/>
       <source>Center reset:</source>
-      <translation type="unfinished">Center reset:</translation>
+      <translation>Middelpunt reset:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="348"/>
@@ -6344,22 +6343,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="task_orthoarray.py" line="362"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Link reeks aanmaken:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="332"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>Aantal elementen:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="333"/>
       <source>Polar angle:</source>
-      <translation type="unfinished">Polar angle:</translation>
+      <translation>Polair-hoek:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="388"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>Midden van rotatie:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
@@ -6369,27 +6368,27 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="task_circulararray.py" line="222"/>
       <source>Number of layers must be at least 2.</source>
-      <translation type="unfinished">Number of layers must be at least 2.</translation>
+      <translation>Aantal lagen moet minimaal 2 zijn.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="234"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation type="unfinished">Radial distance is zero. Resulting array may not look correct.</translation>
+      <translation>Radiale afstand is nul. Resulterende reeks ziet er mogelijk niet correct uit.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="236"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Radial distance is negative. It is made positive to proceed.</translation>
+      <translation>Radiale afstand is negatief, het is positief gemaakt om verder te kunnen gaan.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="240"/>
       <source>Tangential distance cannot be zero.</source>
-      <translation type="unfinished">Tangential distance cannot be zero.</translation>
+      <translation>Tangentiële afstand kan niet nul zijn.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="243"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Tangential distance is negative. It is made positive to proceed.</translation>
+      <translation>Tangential distance is negatief, het is positief gemaakt om verder te gaan.</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="383"/>
@@ -6404,32 +6403,32 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="task_circulararray.py" line="385"/>
       <source>Number of circular layers:</source>
-      <translation type="unfinished">Number of circular layers:</translation>
+      <translation>Aantal circulaire lagen:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="386"/>
       <source>Symmetry parameter:</source>
-      <translation type="unfinished">Symmetry parameter:</translation>
+      <translation>Symmetrie parameter:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="209"/>
       <source>Number of elements must be at least 1.</source>
-      <translation type="unfinished">Number of elements must be at least 1.</translation>
+      <translation>Aantal elementen moet minimaal 1 zijn.</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="320"/>
       <source>Interval X reset:</source>
-      <translation type="unfinished">Interval X reset:</translation>
+      <translation>Interval X opnieuw instellen:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="329"/>
       <source>Interval Y reset:</source>
-      <translation type="unfinished">Interval Y reset:</translation>
+      <translation>Interval Y opnieuw instellen:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="338"/>
       <source>Interval Z reset:</source>
-      <translation type="unfinished">Interval Z reset:</translation>
+      <translation>Interval Z opnieuw instellen:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="380"/>
@@ -6474,7 +6473,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="task_shapestring.py" line="88"/>
       <source>Pick ShapeString location point:</source>
-      <translation type="unfinished">Pick ShapeString location point:</translation>
+      <translation>Kies VormReeks locatiepunt:</translation>
     </message>
     <message>
       <location filename="gui_shapestrings.py" line="143"/>
@@ -6489,7 +6488,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_upgrade.py" line="67"/>
       <source>Select an object to upgrade</source>
-      <translation type="unfinished">Select an object to upgrade</translation>
+      <translation>Selecteer een object om te upgraden</translation>
     </message>
     <message>
       <location filename="gui_clone.py" line="75"/>
@@ -6499,7 +6498,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_clone.py" line="79"/>
       <source>Select an object to clone</source>
-      <translation type="unfinished">Select an object to clone</translation>
+      <translation>Selecteer een object om te klonen</translation>
     </message>
     <message>
       <location filename="gui_ellipses.py" line="65"/>
@@ -6519,7 +6518,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_rectangles.py" line="203"/>
       <source>Pick opposite point</source>
-      <translation type="unfinished">Pick opposite point</translation>
+      <translation>Kies het tegenovergestelde punt</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="169"/>
@@ -6539,7 +6538,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_lines.py" line="336"/>
       <source>Unable to create a Wire from selected objects</source>
-      <translation type="unfinished">Unable to create a Wire from selected objects</translation>
+      <translation>Kan geen draad van de geselecteerde objecten maken</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="358"/>
@@ -6549,12 +6548,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_edit_draft_objects.py" line="507"/>
       <source>This object does not support possible coincident points, please try again.</source>
-      <translation type="unfinished">This object does not support possible coincident points, please try again.</translation>
+      <translation>Dit object ondersteunt geen mogelijke samenvallende punten, probeer het opnieuw.</translation>
     </message>
     <message>
       <location filename="gui_edit_draft_objects.py" line="557"/>
       <source>Active object must have more than two points/nodes</source>
-      <translation type="unfinished">Active object must have more than two points/nodes</translation>
+      <translation>Het actieve object moet meer dan twee punten/knooppunten bevatten</translation>
     </message>
     <message>
       <location filename="gui_edit_draft_objects.py" line="671"/>
@@ -6564,12 +6563,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_edit_draft_objects.py" line="698"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
+      <translation>Het eindpunt van de BezCurve kan niet geëffend worden</translation>
     </message>
     <message>
       <location filename="gui_edit_sketcher_objects.py" line="60"/>
       <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation type="unfinished">Sketch is too complex to edit: it is suggested to use sketcher default editor</translation>
+      <translation>Sketch is te ingewikkeld om te bewerken: het wordt aanbevolen om de standaard schets editor te gebruiken</translation>
     </message>
     <message>
       <location filename="gui_facebinders.py" line="66"/>
@@ -6579,12 +6578,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_facebinders.py" line="71"/>
       <source>Select faces from existing objects</source>
-      <translation type="unfinished">Select faces from existing objects</translation>
+      <translation>Selecteer vlakken van bestaande objecten</translation>
     </message>
     <message>
       <location filename="gui_lineslope.py" line="64"/>
       <source>Change slope</source>
-      <translation type="unfinished">Change slope</translation>
+      <translation>Helling wijzigen</translation>
     </message>
     <message>
       <location filename="gui_subelements.py" line="70"/>
@@ -6609,12 +6608,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_dimensions.py" line="309"/>
       <source>Create Dimension (radial)</source>
-      <translation type="unfinished">Create Dimension (radial)</translation>
+      <translation>Maak dimensie (radiaal)</translation>
     </message>
     <message>
       <location filename="gui_dimensions.py" line="511"/>
       <source>Edges don't intersect!</source>
-      <translation type="unfinished">Edges don't intersect!</translation>
+      <translation>Randen doorsnijden elkaar niet!</translation>
     </message>
     <message>
       <location filename="gui_drawing.py" line="76"/>
@@ -6624,22 +6623,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_drawing.py" line="77"/>
       <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
-      <translation type="unfinished">The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</translation>
+      <translation>De Drawing Workbench is verouderd sinds 0,17, overweeg in plaats daarvan de TechDraw Werkbank te gebruiken.</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="70"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>Selecteer een object om te projecteren</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="68"/>
       <source>Annotation style editor</source>
-      <translation type="unfinished">Annotation style editor</translation>
+      <translation>Stijleditor voor aantekeningen</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="292"/>
       <source>Open styles file</source>
-      <translation type="unfinished">Open styles file</translation>
+      <translation>Stijlbestand openen</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="316"/>
@@ -6649,7 +6648,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>Stijlbestand opslaan</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="85"/>
@@ -6679,17 +6678,17 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_rotate.py" line="283"/>
       <source>Some subelements could not be moved.</source>
-      <translation type="unfinished">Some subelements could not be moved.</translation>
+      <translation>Sommige subelementen konden niet verplaatst worden.</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="123"/>
       <source>Point array</source>
-      <translation type="unfinished">Point array</translation>
+      <translation>Punt reeks</translation>
     </message>
     <message>
       <location filename="gui_pointarray.py" line="105"/>
       <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the point object, before calling this command.</translation>
+      <translation>Selecteer precies twee objecten, het basisobject en het punt object, voordat u deze opdracht aanroept.</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="73"/>
@@ -6704,32 +6703,32 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_togglemodes.py" line="125"/>
       <source>Continue mode</source>
-      <translation type="unfinished">Continue mode</translation>
+      <translation>Continue modus</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="159"/>
       <source>Toggle display mode</source>
-      <translation type="unfinished">Toggle display mode</translation>
+      <translation>Toggle weergavemodus</translation>
     </message>
     <message>
       <location filename="gui_wire2spline.py" line="79"/>
       <source>Convert polyline/B-spline</source>
-      <translation type="unfinished">Convert polyline/B-spline</translation>
+      <translation>Converteer polylijn/B-spline</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="109"/>
       <source>Main toggle snap</source>
-      <translation type="unfinished">Main toggle snap</translation>
+      <translation>Hoofd toggle klik</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="140"/>
       <source>Midpoint snap</source>
-      <translation type="unfinished">Midpoint snap</translation>
+      <translation>Midpoint klik</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="170"/>
       <source>Perpendicular snap</source>
-      <translation type="unfinished">Perpendicular snap</translation>
+      <translation>Loodrechte uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="200"/>
@@ -6739,62 +6738,62 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_snaps.py" line="230"/>
       <source>Intersection snap</source>
-      <translation type="unfinished">Intersection snap</translation>
+      <translation>Intersectie uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="260"/>
       <source>Parallel snap</source>
-      <translation type="unfinished">Parallel snap</translation>
+      <translation>Parallelle uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="290"/>
       <source>Endpoint snap</source>
-      <translation type="unfinished">Endpoint snap</translation>
+      <translation>Eindpunt uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="321"/>
       <source>Angle snap (30 and 45 degrees)</source>
-      <translation type="unfinished">Angle snap (30 and 45 degrees)</translation>
+      <translation>Hoek uitlijning (30 en 45 graden)</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="351"/>
       <source>Arc center snap</source>
-      <translation type="unfinished">Arc center snap</translation>
+      <translation>Boog midden uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="381"/>
       <source>Edge extension snap</source>
-      <translation type="unfinished">Edge extension snap</translation>
+      <translation>Rand verlenging uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="411"/>
       <source>Near snap</source>
-      <translation type="unfinished">Near snap</translation>
+      <translation>Dichtbij uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="442"/>
       <source>Orthogonal snap</source>
-      <translation type="unfinished">Orthogonal snap</translation>
+      <translation>Orthogonale uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="472"/>
       <source>Special point snap</source>
-      <translation type="unfinished">Special point snap</translation>
+      <translation>Speciale punt uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="503"/>
       <source>Dimension display</source>
-      <translation type="unfinished">Dimension display</translation>
+      <translation>Maat weergeven</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="536"/>
       <source>Working plane snap</source>
-      <translation type="unfinished">Working plane snap</translation>
+      <translation>Werkvlak uitlijning</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="566"/>
       <source>Show snap toolbar</source>
-      <translation type="unfinished">Show snap toolbar</translation>
+      <translation>Toon uitlijn werkbalk</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="101"/>
@@ -6804,7 +6803,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_array_simple.py" line="77"/>
       <source>Select an object to array</source>
-      <translation type="unfinished">Select an object to array</translation>
+      <translation>Selecteer een object voor de reeks</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="124"/>
@@ -6824,12 +6823,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_arcs.py" line="410"/>
       <source>Pick radius</source>
-      <translation type="unfinished">Pick radius</translation>
+      <translation>Kies straal</translation>
     </message>
     <message>
       <location filename="gui_polygons.py" line="224"/>
       <source>Create Polygon (Part)</source>
-      <translation type="unfinished">Create Polygon (Part)</translation>
+      <translation>Maak Veelhoek (Onderdeel)</translation>
     </message>
     <message>
       <location filename="gui_polygons.py" line="243"/>
@@ -6839,22 +6838,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_mirror.py" line="124"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Spiegelen</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="74"/>
       <source>Select an object to mirror</source>
-      <translation type="unfinished">Select an object to mirror</translation>
+      <translation>Selecteer een object om te spiegelen</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="94"/>
       <source>Pick start point of mirror line</source>
-      <translation type="unfinished">Pick start point of mirror line</translation>
+      <translation>Kies het beginpunt van de spiegellijn</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="205"/>
       <source>Pick end point of mirror line</source>
-      <translation type="unfinished">Pick end point of mirror line</translation>
+      <translation>Kies het eindpunt van de spiegellijn</translation>
     </message>
     <message>
       <location filename="gui_points.py" line="146"/>
@@ -6869,7 +6868,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_scale.py" line="88"/>
       <source>Select an object to scale</source>
-      <translation type="unfinished">Select an object to scale</translation>
+      <translation>Selecteer een object om te schalen</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="109"/>
@@ -6879,12 +6878,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_scale.py" line="131"/>
       <source>Pick reference distance from base point</source>
-      <translation type="unfinished">Pick reference distance from base point</translation>
+      <translation>Kies een referentieafstand vanaf het basispunt</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="204"/>
       <source>Some subelements could not be scaled.</source>
-      <translation type="unfinished">Some subelements could not be scaled.</translation>
+      <translation>Sommige subelementen konden niet worden geschaald.</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="334"/>
@@ -6894,22 +6893,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_scale.py" line="337"/>
       <source>Unable to scale objects: </source>
-      <translation type="unfinished">Unable to scale objects: </translation>
+      <translation>Kan objecten niet schalen: </translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="339"/>
       <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation type="unfinished">This object type cannot be scaled directly. Please use the clone method.</translation>
+      <translation>Dit objecttype kan niet direct worden geschaald. Gebruik de kloon methode.</translation>
     </message>
     <message>
       <location filename="gui_scale.py" line="400"/>
       <source>Pick new distance from base point</source>
-      <translation type="unfinished">Pick new distance from base point</translation>
+      <translation>Kies een nieuwe afstand van het basispunt</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="66"/>
       <source>Project 2D view</source>
-      <translation type="unfinished">Project 2D view</translation>
+      <translation>Project 2D weergave</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="111"/>
@@ -6919,17 +6918,17 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>Bezier curve has been closed</source>
-      <translation type="unfinished">Bezier curve has been closed</translation>
+      <translation>De bezier-curve is gesloten</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>Laatste punt is verwijderd</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="147"/>
       <source>Pick next point, or finish (A) or close (O)</source>
-      <translation type="unfinished">Pick next point, or finish (A) or close (O)</translation>
+      <translation>Kies het volgende punt, of beëindig (A) of sluit (O)</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="451"/>
@@ -6939,12 +6938,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_beziers.py" line="376"/>
       <source>Click and drag to define next knot</source>
-      <translation type="unfinished">Click and drag to define next knot</translation>
+      <translation>Klik en sleep om de volgende knoop te definiëren</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="382"/>
       <source>Click and drag to define next knot, or finish (A) or close (O)</source>
-      <translation type="unfinished">Click and drag to define next knot, or finish (A) or close (O)</translation>
+      <translation>Klik en sleep om volgende knop, of eindig (A) of sluit (O)</translation>
     </message>
     <message>
       <location filename="gui_dimension_ops.py" line="55"/>
@@ -6959,32 +6958,32 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_stretch.py" line="73"/>
       <source>Select an object to stretch</source>
-      <translation type="unfinished">Select an object to stretch</translation>
+      <translation>Selecteer een object om uit te rekken</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="122"/>
       <source>Pick first point of selection rectangle</source>
-      <translation type="unfinished">Pick first point of selection rectangle</translation>
+      <translation>Kies het eerste punt van de selectierechthoek</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="159"/>
       <source>Pick opposite point of selection rectangle</source>
-      <translation type="unfinished">Pick opposite point of selection rectangle</translation>
+      <translation>Kies het tegenovergestelde punt van de selectierechthoek</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="168"/>
       <source>Pick start point of displacement</source>
-      <translation type="unfinished">Pick start point of displacement</translation>
+      <translation>Kies het startpunt van verplaatsing</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="231"/>
       <source>Pick end point of displacement</source>
-      <translation type="unfinished">Pick end point of displacement</translation>
+      <translation>Kies het eindpunt van verplaatsing</translation>
     </message>
     <message>
       <location filename="gui_stretch.py" line="443"/>
       <source>Turning one Rectangle into a Wire</source>
-      <translation type="unfinished">Turning one Rectangle into a Wire</translation>
+      <translation>Een rechthoek in een draad veranderen</translation>
     </message>
     <message>
       <location filename="gui_grid.py" line="51"/>
@@ -7009,12 +7008,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_draft2sketch.py" line="143"/>
       <source>Convert Draft/Sketch</source>
-      <translation type="unfinished">Convert Draft/Sketch</translation>
+      <translation>Converteer Draft/Schets</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="66"/>
       <source>Select an object to convert.</source>
-      <translation type="unfinished">Select an object to convert.</translation>
+      <translation>Selecteer een object om te converteren.</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="99"/>
@@ -7044,7 +7043,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_labels.py" line="219"/>
       <source>Pick endpoint of leader line</source>
-      <translation type="unfinished">Pick endpoint of leader line</translation>
+      <translation>Kies het eindpunt van de leiderslijn</translation>
     </message>
     <message>
       <location filename="gui_labels.py" line="229"/>
@@ -7054,47 +7053,47 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_edit.py" line="305"/>
       <source>Select a Draft object to edit</source>
-      <translation type="unfinished">Select a Draft object to edit</translation>
+      <translation>Selecteer een Draftt object om te bewerken</translation>
     </message>
     <message>
       <location filename="gui_edit.py" line="560"/>
       <source>No edit point found for selected object</source>
-      <translation type="unfinished">No edit point found for selected object</translation>
+      <translation>Geen bewerkingspunt gevonden voor het geselecteerde object</translation>
     </message>
     <message>
       <location filename="gui_edit.py" line="933"/>
       <source>Too many objects selected, max number set to: </source>
-      <translation type="unfinished">Too many objects selected, max number set to: </translation>
+      <translation>Te veel objecten geselecteerd, maximaal aantal ingesteld op: </translation>
     </message>
     <message>
       <location filename="gui_edit.py" line="941"/>
       <source>: this object is not editable</source>
-      <translation type="unfinished">: this object is not editable</translation>
+      <translation>: dit object is niet bewerkbaar</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="143"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Pad reeks</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="79"/>
       <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
-      <translation type="unfinished">Please select exactly two objects, the base object and the path object, before calling this command.</translation>
+      <translation>Selecteer precies twee objecten, het basis object en het pad object, voordat u deze opdracht aanroept.</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="168"/>
       <source>Path link array</source>
-      <translation type="unfinished">Path link array</translation>
+      <translation>Pad link reeks</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="101"/>
       <source>Path twisted array</source>
-      <translation type="unfinished">Path twisted array</translation>
+      <translation>Pad getoreerde reeks</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="127"/>
       <source>Path twisted link array</source>
-      <translation type="unfinished">Path twisted link array</translation>
+      <translation>Pad gedraaide link reeks</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="81"/>
@@ -7104,7 +7103,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_trimex.py" line="91"/>
       <source>Select objects to trim or extend</source>
-      <translation type="unfinished">Select objects to trim or extend</translation>
+      <translation>Selecteer objecten om te trimmen of uit te breiden</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="140"/>
@@ -7114,32 +7113,32 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_trimex.py" line="320"/>
       <source>The offset distance</source>
-      <translation type="unfinished">The offset distance</translation>
+      <translation>De verschuivings afstand</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="336"/>
       <source>The offset angle</source>
-      <translation type="unfinished">The offset angle</translation>
+      <translation>De verschuif hoek</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="474"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported.</translation>
+      <translation>Kan deze objecten niet trimmen, alleen Draft draden en bogen worden ondersteund.</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="479"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation type="unfinished">Unable to trim these objects, too many wires</translation>
+      <translation>Kan deze objecten niet trimmen, te veel draden</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="496"/>
       <source>These objects don't intersect.</source>
-      <translation type="unfinished">These objects don't intersect.</translation>
+      <translation>Deze objecten doorsnijden elkaar niet.</translation>
     </message>
     <message>
       <location filename="gui_trimex.py" line="499"/>
       <source>Too many intersection points.</source>
-      <translation type="unfinished">Too many intersection points.</translation>
+      <translation>Te veel snijpunten.</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="71"/>
@@ -7154,7 +7153,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_join.py" line="99"/>
       <source>Join lines</source>
-      <translation type="unfinished">Join lines</translation>
+      <translation>Lijnen Samenvoegen</translation>
     </message>
     <message>
       <location filename="gui_join.py" line="110"/>
@@ -7164,7 +7163,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_splines.py" line="120"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>Spline is gesloten</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="183"/>
@@ -7174,12 +7173,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_selectplane.py" line="89"/>
       <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
-      <translation type="unfinished">Pick a face, 3 vertices or a WP Proxy to define the drawing plane</translation>
+      <translation>Kies een vlak, 3 hoekpunten of een WP-Proxy om het tekenvlak te definiëren</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="263"/>
       <source>Working plane aligned to global placement of</source>
-      <translation type="unfinished">Working plane aligned to global placement of</translation>
+      <translation>Werkvlak is afgestemd op de globale plaatsing van</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="512"/>
@@ -7194,12 +7193,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_lineops.py" line="73"/>
       <source>No active command.</source>
-      <translation type="unfinished">No active command.</translation>
+      <translation>Geen actieve opdracht.</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="92"/>
       <source>Finish line</source>
-      <translation type="unfinished">Finish line</translation>
+      <translation>Eind regel</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="118"/>
@@ -7219,7 +7218,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_split.py" line="64"/>
       <source>Click anywhere on a line to split it.</source>
-      <translation type="unfinished">Click anywhere on a line to split it.</translation>
+      <translation>Klik ergens op een lijn om te splitsen.</translation>
     </message>
     <message>
       <location filename="gui_split.py" line="106"/>
@@ -7229,22 +7228,22 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_fillets.py" line="76"/>
       <source>Fillet radius</source>
-      <translation type="unfinished">Fillet radius</translation>
+      <translation>Afrondinds straal</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="79"/>
       <source>Radius of fillet</source>
-      <translation type="unfinished">Radius of fillet</translation>
+      <translation>Straal van de afronding</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="112"/>
       <source>Enter radius.</source>
-      <translation type="unfinished">Enter radius.</translation>
+      <translation>Voer straal in.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="131"/>
       <source>Delete original objects:</source>
-      <translation type="unfinished">Delete original objects:</translation>
+      <translation>Verwijder originele objecten:</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="136"/>
@@ -7264,12 +7263,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_fillets.py" line="161"/>
       <source>Test object removed</source>
-      <translation type="unfinished">Test object removed</translation>
+      <translation>Test object verwijderd</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="163"/>
       <source>Fillet cannot be created</source>
-      <translation type="unfinished">Fillet cannot be created</translation>
+      <translation>Afronding kan niet worden gemaakt</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="193"/>
@@ -7279,7 +7278,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_shapestrings.py" line="102"/>
       <source>Pick ShapeString location point</source>
-      <translation type="unfinished">Pick ShapeString location point</translation>
+      <translation>Kies ShapeString locatiepunt</translation>
     </message>
     <message>
       <location filename="gui_styles.py" line="55"/>
@@ -7314,27 +7313,27 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_groups.py" line="336"/>
       <source>Add to construction group</source>
-      <translation type="unfinished">Add to construction group</translation>
+      <translation>Voeg toe aan constructiegroep</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="76"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>Selecteer een object om te verschuiven</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="82"/>
       <source>Offset only works on one object at a time.</source>
-      <translation type="unfinished">Offset only works on one object at a time.</translation>
+      <translation>Verschuiving werkt slechts op één object tegelijk.</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="92"/>
       <source>Cannot offset this object type</source>
-      <translation type="unfinished">Cannot offset this object type</translation>
+      <translation>Kan dit objecttype niet verschuiven</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="120"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation type="unfinished">Offset of Bezier curves is currently not supported</translation>
+      <translation>Offset van Bezier-curves wordt momenteel niet ondersteund</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="447"/>
@@ -7359,7 +7358,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_arcs.py" line="316"/>
       <source>Create Circle (Part)</source>
-      <translation type="unfinished">Create Circle (Part)</translation>
+      <translation>Maak cirkel (Onderdeel)</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="335"/>
@@ -7369,12 +7368,12 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_arcs.py" line="369"/>
       <source>Create Arc (Part)</source>
-      <translation type="unfinished">Create Arc (Part)</translation>
+      <translation>Maak boog (Onderdeel)</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="389"/>
       <source>Create Arc</source>
-      <translation type="unfinished">Create Arc</translation>
+      <translation>Creëer boog</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="466"/>
@@ -7409,7 +7408,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_rotate.py" line="79"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Selecteer een object om te draaien</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="101"/>
@@ -7424,7 +7423,7 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
     <message>
       <location filename="gui_rotate.py" line="391"/>
       <source>The base angle you wish to start the rotation from</source>
-      <translation type="unfinished">The base angle you wish to start the rotation from</translation>
+      <translation>De basishoek waar u de rotatie van wilt starten</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="394"/>
@@ -7440,8 +7439,8 @@ Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.<
       <location filename="gui_rotate.py" line="404"/>
       <source>The amount of rotation you wish to perform.
 The final angle will be the base angle plus this amount.</source>
-      <translation type="unfinished">The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</translation>
+      <translation>De hoeveelheid rotatie die u wilt uitvoeren.
+De eindhoek zal de basishoek plus dit getal zijn.</translation>
     </message>
     <message>
       <location filename="gui_rotate.py" line="412"/>

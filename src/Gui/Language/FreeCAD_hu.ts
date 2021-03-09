@@ -4573,7 +4573,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     <name>Gui::DlgObjectSelection</name>
     <message>
       <source>Object selection</source>
-      <translation>Objektumok kijelölése</translation>
+      <translation>Tárgyak kijelölése</translation>
     </message>
     <message>
       <source>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</source>
@@ -7720,7 +7720,7 @@ Document: </translation>
     </message>
     <message>
       <source>Go to linked object</source>
-      <translation>Ugrás a hivatkozott objektumra</translation>
+      <translation>Ugrás a hivatkozott tárgyra</translation>
     </message>
     <message>
       <source>Select the linked object and switch to its owner document</source>
@@ -7735,7 +7735,7 @@ Document: </translation>
     </message>
     <message>
       <source>Go to the deepest linked object</source>
-      <translation>Ugrás a legmélyebben hivatkozott objektumra</translation>
+      <translation>Ugrás a legmélyebben hivatkozott tárgyra</translation>
     </message>
     <message>
       <source>Select the deepest linked object and switch to its owner document</source>
