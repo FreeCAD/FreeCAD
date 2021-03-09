@@ -576,8 +576,10 @@ void BrowserView::onLinkClicked (const QUrl & url)
             }
         }
         else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("File does not exist!"),
-            fi.absoluteFilePath ());
+            // QMessageBox::warning(Gui::getMainWindow(), QObject::tr("File does not exist!"),
+            // fi.absoluteFilePath ());
+            Base::Console().Warning("BrowserView: file does not exist: %s",
+                    fi.absoluteFilePath().toUtf8().constData());
         }
     }
 }
