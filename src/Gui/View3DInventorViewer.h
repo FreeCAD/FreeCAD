@@ -368,6 +368,8 @@ public:
     void addDimension3d(SoNode *node);
     void addDimensionDelta(SoNode *node);
     //@}
+    
+    SoGroup * getAuxSceneGraph() const;
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns

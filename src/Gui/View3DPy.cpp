@@ -169,6 +169,7 @@ void View3DInventorPy::init_type()
     add_varargs_method("setAnnotation",&View3DInventorPy::setAnnotation,"setAnnotation()");
     add_varargs_method("removeAnnotation",&View3DInventorPy::removeAnnotation,"removeAnnotation()");
     add_varargs_method("getSceneGraph",&View3DInventorPy::getSceneGraph,"getSceneGraph()");
+    add_varargs_method("getAuxSceneGraph",&View3DInventorPy::getAuxSceneGraph,"getAuxSceneGraph()");
     add_varargs_method("getViewer",&View3DInventorPy::getViewer,"getViewer()");
     add_varargs_method("addEventCallbackPivy",&View3DInventorPy::addEventCallbackPivy,"addEventCallbackPivy()");
     add_varargs_method("removeEventCallbackPivy",&View3DInventorPy::removeEventCallbackPivy,"removeEventCallbackPivy()");
@@ -2213,6 +2214,23 @@ Py::Object View3DInventorPy::getSceneGraph(const Py::Tuple& args)
         SoNode* scene = _view->getViewer()->getSceneGraph();
         PyObject* proxy = 0;
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", (void*)scene, 1);
+        scene->ref();
+        return Py::Object(proxy, true);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+Py::Object View3DInventorPy::getAuxSceneGraph(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        SoNode* scene = _view->getViewer()->getAuxSceneGraph();
+        PyObject* proxy = 0;
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoGroup *", (void*)scene, 1);
         scene->ref();
         return Py::Object(proxy, true);
     }

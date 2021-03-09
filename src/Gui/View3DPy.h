@@ -115,6 +115,7 @@ public:
     Py::Object setAnnotation(const Py::Tuple&);
     Py::Object removeAnnotation(const Py::Tuple&);
     Py::Object getSceneGraph(const Py::Tuple&);
+    Py::Object getAuxSceneGraph(const Py::Tuple&);
     Py::Object getViewer(const Py::Tuple&);
     Py::Object addEventCallbackPivy(const Py::Tuple&);
     Py::Object removeEventCallbackPivy(const Py::Tuple&);

@@ -70,18 +70,9 @@ class Tracker:
             drawstyle.lineWeight = 3
             drawstyle.linePattern = 0x0f0f  # 0xaa
         node = coin.SoSeparator()
-        # prevent the tracker to cast any shadow
-        try:
-            shadowstyle = coin.SoType.fromName('SoShadowStyle').createInstance()
-            shadowstyle.style = 'NO_SHADOWING'
-            node.addChild(shadowstyle)
-        except Exception:
-            pass
         lightmodel = coin.SoLightModel()
         lightmodel.model = 'BASE_COLOR'
-        resetbbox = coin.SoResetTransform()
-        resetbbox.whatToReset = 'BBOX'
-        for c in [lightmodel, drawstyle, self.color] + children + [resetbbox]:
+        for c in [lightmodel, drawstyle, self.color] + children:
             node.addChild(c)
         self.switch = coin.SoSwitch()  # this is the on/off switch
         if name:
@@ -96,13 +87,19 @@ class Tracker:
         ToDo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
+    def getSceneGraph(self):
+        try:
+            return Draft.get3DView().getAuxSceneGraph()
+        except Exception:
+            return Draft.get3DView().getSceneGraph()
+
     def _insertSwitch(self, switch):
         """Insert self.switch into the scene graph.
 
         Must not be called
         from an event handler (or other scene graph traversal).
         """
-        sg = Draft.get3DView().getSceneGraph()
+        sg = self.getSceneGraph()
         if self.ontop:
             sg.insertChild(switch, 0)
         else:
@@ -114,7 +111,7 @@ class Tracker:
         As with _insertSwitch,
         must not be called during scene graph traversal).
         """
-        sg = Draft.get3DView().getSceneGraph()
+        sg = self.getSceneGraph()
         if sg.findChild(switch) >= 0:
             sg.removeChild(switch)
 
@@ -134,7 +131,7 @@ class Tracker:
         So it doesn't obscure the other objects.
         """
         if self.switch:
-            sg = Draft.get3DView().getSceneGraph()
+            sg = self.getSceneGraph()
             sg.removeChild(self.switch)
             sg.addChild(self.switch)
 
@@ -144,7 +141,7 @@ class Tracker:
         So it obscures the other objects.
         """
         if self.switch:
-            sg = Draft.get3DView().getSceneGraph()
+            sg = self.getSceneGraph()
             sg.removeChild(self.switch)
             sg.insertChild(self.switch, 0)
 

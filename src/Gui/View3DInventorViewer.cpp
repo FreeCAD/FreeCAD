@@ -416,6 +416,8 @@ struct View3DInventorViewer::Private
 {
     View3DInventorViewer              *owner;
 
+    CoinPtr<SoGroup>                  pcAuxRoot;
+
     CoinPtr<SoShadowGroup>            pcShadowGroup;
     CoinPtr<SoFCDirectionalLight>     pcShadowDirectionalLight;
     CoinPtr<SoFCSpotLight>            pcShadowSpotLight;
@@ -693,6 +695,9 @@ void View3DInventorViewer::init()
     auto sceneNode = path->getNodeFromTail(1);
     assert(sceneNode->isOfType(SoGroup::getClassTypeId()));
 
+    _pimpl->pcAuxRoot = new SoGroup;
+    static_cast<SoGroup*>(sceneNode)->addChild(_pimpl->pcAuxRoot);
+
     pCurrentHighlightPath = nullptr;
 
     pcClipPlane = 0;
@@ -711,16 +716,17 @@ void View3DInventorViewer::init()
     // To not get effect shadow drawing, add this in upper hierarchy.
     //
     // pcViewProviderRoot->addChild(dimensionRoot);
-    static_cast<SoGroup*>(sceneNode)->addChild(dimensionRoot);
+    _pimpl->pcAuxRoot->addChild(dimensionRoot);
     dimensionRoot->addChild(new SoSwitch()); //first one will be for the 3d dimensions.
     dimensionRoot->addChild(new SoSwitch()); //second one for the delta dimensions.
 
-    static_cast<SoGroup*>(sceneNode)->addChild(pcGroupOnTop);
-    static_cast<SoGroup*>(sceneNode)->addChild(pcEditingRoot);
+    _pimpl->pcAuxRoot->addChild(pcGroupOnTop);
+    _pimpl->pcAuxRoot->addChild(pcEditingRoot);
 
     pcGroupOnTopPath = path->copy();
     pcGroupOnTopPath->ref();
     pcGroupOnTopPath->truncate(path->getLength()-1);
+    pcGroupOnTopPath->append(_pimpl->pcAuxRoot);
     pcGroupOnTopPath->append(pcGroupOnTop);
     pcGroupOnTopPath->append(pcGroupOnTopSwitch);
     pcGroupOnTopPath->append(pcGroupOnTopSel);
@@ -3921,6 +3927,11 @@ bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
         group->mode = SoSkipBoundingGroup::INCLUDE_BBOX;
     }
     return box.IsValid();
+}
+
+SoGroup *View3DInventorViewer::getAuxSceneGraph() const
+{
+    return _pimpl->pcAuxRoot;
 }
 
 bool View3DInventorViewer::getSceneBoundBox(SbBox3f &box) const {
