@@ -41,7 +41,6 @@ class TestImportCSG(unittest.TestCase):
 
     def setUp(self):
         self.test_dir = join(FreeCAD.getHomePath(), "Mod", "OpenSCAD", "OpenSCADTest", "data")
-        pass
 
     def test_open_scad(self):
         testfile = join(self.test_dir, "CSG.scad")
@@ -141,7 +140,7 @@ class TestImportCSG(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             filename = temp_dir + os.pathsep + "text.scad"
             f = open(filename,"w+")
-            f.write("text(\"FreeCAD\");")
+            f.write("text(\"X\");") # Keep it short to keep the test fast-ish
             f.close()
             try:
                 doc = importCSG.open(filename)
@@ -196,21 +195,127 @@ polyhedron(
             self.assertAlmostEqual (polyhedron.Shape.Volume, 1333.3333, 4)
             FreeCAD.closeDocument(doc.Name)
 
+    def utility_create_scad(self, scadCode, name):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            filename = temp_dir + os.pathsep + name + ".scad"
+            f = open(filename,"w+")
+            f.write(scadCode)
+            f.close()
+            return importCSG.open(filename)
 
-"""
-Actions to test:
------------------
-difference_action
-intersection_action
-union_action
-rotate_extrude_action
-linear_extrude_with_twist
-rotate_extrude_file
-import_file1
-resize_action
-surface_action
-projection_action
-hull_action
-minkowski_action
-offset_action
-"""
+    def test_import_difference(self):
+        doc = self.utility_create_scad("difference() { cube(15, center=true); sphere(10); }", "difference")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 266.1323, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+    def test_import_intersection(self):
+        doc = self.utility_create_scad("intersection() { cube(15, center=true); sphere(10); }", "intersection")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 3108.8677, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+    def test_import_union(self):
+        doc = self.utility_create_scad("union() { cube(15, center=true); sphere(10); }", "union")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 4454.9224, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+    def test_import_rotate_extrude(self):
+        doc = self.utility_create_scad("rotate_extrude() translate([10, 0]) square(5);", "rotate_extrude_simple")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 1963.4954, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("translate([0, 30, 0]) rotate_extrude($fn = 80) polygon( points=[[0,0],[8,4],[4,8],[4,12],[12,16],[0,20]] );", "rotate_extrude_no_hole")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 2412.7431, 3)
+        FreeCAD.closeDocument(doc.Name)
+       
+    def test_import_linear_extrude(self):
+        doc = self.utility_create_scad("linear_extrude(height = 20) square([20, 10], center = true);", "linear_extrude_simple")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 4000.000, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("linear_extrude(height = 20, scale = 0.2) square([20, 10], center = true);", "linear_extrude_scale")
+        object = doc.ActiveObject
+        # Not actually supported - this does not create a frustum, but a cube: scale does nothing
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("linear_extrude(height = 20, twist = 90) square([20, 10], center = true);", "linear_extrude_twist")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 3999.9961, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+    def test_import_rotate_extrude_file(self):
+        # OpenSCAD doesn't seem to have this feature at this time (March 2021)
+        pass
+
+# There is a problem with the DXF code right now, it doesn't like this square.
+#    def test_import_import_dxf(self):
+#        testfile = join(self.test_dir, "Square.dxf").replace('\\','/')
+#        doc = self.utility_create_scad("import(\"{}\");".format(testfile), "import_dxf");
+#        object = doc.ActiveObject
+#        self.assertTrue (object is not None)
+#        FreeCAD.closeDocument(doc.Name)
+
+    def test_import_import_stl(self):
+        testfile = join(self.test_dir, "Cube.stl").replace('\\','/')
+        doc = self.utility_create_scad("import(\"{}\");".format(testfile), "import_stl");
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        FreeCAD.closeDocument(doc.Name)
+
+    def test_import_resize(self):
+        doc = self.utility_create_scad("resize([2,2,2]) cube();", "resize_simple")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
+        FreeCAD.closeDocument(doc.Name)
+        
+        doc = self.utility_create_scad("resize([2,2,0]) cube();", "resize_with_zero")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 4.000000, 6)
+        FreeCAD.closeDocument(doc.Name)
+        
+        doc = self.utility_create_scad("resize([2,0,0], auto=true) cube();", "resize_with_auto")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("resize([2,2,2]) cube([2,2,2]);", "resize_no_change")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("resize([2,2,2]) cube([4,8,12]);", "resize_non_uniform")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
+        FreeCAD.closeDocument(doc.Name)
+
+    def test_import_surface(self):
+        pass
+
+    def test_import_projection(self):
+        pass
+
+    def test_import_hull(self):
+        pass
+
+    def test_import_minkowski(self):
+        pass
+
+    def test_import_offset(self):
+        pass
