@@ -336,21 +336,16 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
 #if QT_VERSION >= 0x050800 && defined(QTWEBENGINE)
     else { // for view source
         // QWebEngine caches standardContextMenu, guard so we only add signalmapper once
-        static bool firstRun = true;
-        if (firstRun) {
-            firstRun = false;
-            QMenu *menu = page()->createStandardContextMenu();
-            QList<QAction *> actions = menu->actions();
-            for(QAction *ac : actions) {
-                if (ac->data().toInt() == WebAction::ViewSource) {
-                    QSignalMapper* signalMapper = new QSignalMapper (this);
-                    signalMapper->setProperty("url", QVariant(r.linkUrl()));
-                    signalMapper->setMapping(ac, WebAction::ViewSource);
-                    connect(signalMapper, SIGNAL(mapped(int)),
-                            this, SLOT(triggerContextMenuAction(int)));
-                    connect (ac, SIGNAL(triggered()), signalMapper, SLOT(map()));
-                }
-            }
+        static QPointer<QAction> actionViewSource;
+        auto action = pageAction(QWEBPAGE::ViewSource);
+        if (action && action != actionViewSource) {
+            QSignalMapper* signalMapper = new QSignalMapper (this);
+            signalMapper->setProperty("url", QVariant(r.linkUrl()));
+            signalMapper->setMapping(action, WebAction::ViewSource);
+            connect(signalMapper, SIGNAL(mapped(int)),
+                    this, SLOT(triggerContextMenuAction(int)));
+            connect (action, SIGNAL(triggered()), signalMapper, SLOT(map()));
+            actionViewSource = action;
         }
     }
 #else
@@ -594,6 +589,7 @@ bool BrowserView::chckHostAllowed(const QString& host)
 void BrowserView::onDownloadRequested(QWebEngineDownloadItem *request)
 {
     QUrl url = request->url();
+    FC_LOG("download requested: " << url.toDisplayString().toUtf8().constData());
     if (!url.isLocalFile()) {
         request->accept();
         Gui::Dialog::DownloadManager::getInstance()->download(request->url());
