@@ -134,6 +134,8 @@ bool OverlayProxyWidget::hitTest(QPoint pt, bool delay)
     int hit = 0;
     QSize s = this->size();
     int hintSize = ViewParams::getDockOverlayHintTriggerSize();
+    if (owner->getState() == OverlayTabWidget::State_HintHidden)
+        hintSize *= 2;
     switch(dockArea) {
     case Qt::LeftDockWidgetArea:
         hit = (pt.y() >= 0 && pt.y() <= s.height() && pt.x() > 0 && pt.x() < hintSize);
@@ -155,6 +157,12 @@ bool OverlayProxyWidget::hitTest(QPoint pt, bool delay)
         if (hit && pt.y() >= 0)
             hit = 2;
         break;
+    }
+    if (owner->getState() == OverlayTabWidget::State_HintHidden) {
+        if (!hit)
+            owner->setState(OverlayTabWidget::State_Normal);
+        else
+            hit = false;
     }
     if (hit) {
         if (drawLine)
@@ -946,6 +954,7 @@ void OverlayTabWidget::setState(State state)
         break;
     case State_HintHidden:
         _state = state;
+        proxyWidget->hide();
         hide();
         _graphicsEffectTab->setEnabled(true);
         break;
