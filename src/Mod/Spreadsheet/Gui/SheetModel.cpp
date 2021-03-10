@@ -192,11 +192,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     if (cell->hasException()) {
         switch (role) {
         case Qt::ToolTipRole: {
-#if QT_VERSION >= 0x050000
             QString txt(Base::Tools::fromStdString(cell->getException()).toHtmlEscaped());
-#else
-            QString txt(Qt::escape(Base::Tools::fromStdString(cell->getException())));
-#endif
             return QVariant(QString::fromLatin1("<pre>%1</pre>").arg(txt));
         }
         case Qt::DisplayRole: {
