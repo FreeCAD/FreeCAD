@@ -138,6 +138,7 @@ macro(SetupPython)
         set(Python3_VERSION_MAJOR ${PYTHON_VERSION_MAJOR})
         set(Python3_VERSION_MINOR ${PYTHON_VERSION_MINOR})
         set(Python3_VERSION_PATCH ${PYTHON_VERSION_PATCH})
+        set(Python3_Interpreter_FOUND ${PYTHONINTERP_FOUND})
     else()
         find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
@@ -150,6 +151,7 @@ macro(SetupPython)
         set(PYTHON_VERSION_MAJOR ${Python3_VERSION_MAJOR})
         set(PYTHON_VERSION_MINOR ${Python3_VERSION_MINOR})
         set(PYTHON_VERSION_PATCH ${Python3_VERSION_PATCH})
+        set(PYTHONINTERP_FOUND ${Python3_Interpreter_FOUND})
     endif()
     
     # prevent python3 lower than 3.6
