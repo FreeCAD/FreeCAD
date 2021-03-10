@@ -1794,7 +1794,7 @@ void OverlayTabWidget::onSplitterResize(int index)
 void OverlayTabWidget::onCurrentChanged(int index)
 {
     setState(State_Showing);
-    startShow();
+    OverlayManager::instance()->refresh(this);
 
     auto sizes = splitter->sizes();
     int i=0;
