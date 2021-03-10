@@ -1247,34 +1247,37 @@ void FemMesh::readNastran(const std::string &Filename)
         // an consistent data structure is only possible
         // if the elements are added in the right order
         // thus the order is very important
-        //meshds->AddVolumeWithID
-        //(
-        //    meshds->FindNode(all_elements[i][0]),
-        //    meshds->FindNode(all_elements[i][2]),
-        //    meshds->FindNode(all_elements[i][1]),
-        //    meshds->FindNode(all_elements[i][3]),
-        //    meshds->FindNode(all_elements[i][6]),
-        //    meshds->FindNode(all_elements[i][5]),
-        //    meshds->FindNode(all_elements[i][4]),
-        //    meshds->FindNode(all_elements[i][9]),
-        //    meshds->FindNode(all_elements[i][7]),
-        //    meshds->FindNode(all_elements[i][8]),
-        //    element_id[i]
-        //);
-        meshds->AddVolumeWithID
-        (
-            meshds->FindNode(all_elements[i][1]),
-            meshds->FindNode(all_elements[i][0]),
-            meshds->FindNode(all_elements[i][2]),
-            meshds->FindNode(all_elements[i][3]),
-            meshds->FindNode(all_elements[i][4]),
-            meshds->FindNode(all_elements[i][6]),
-            meshds->FindNode(all_elements[i][5]),
-            meshds->FindNode(all_elements[i][8]),
-            meshds->FindNode(all_elements[i][7]),
-            meshds->FindNode(all_elements[i][9]),
-            element_id[i]
-        );
+        const SMDS_MeshNode* n0 = meshds->FindNode(all_elements[i][1]);
+        const SMDS_MeshNode* n1 = meshds->FindNode(all_elements[i][0]);
+        const SMDS_MeshNode* n2 = meshds->FindNode(all_elements[i][2]);
+        const SMDS_MeshNode* n3 = meshds->FindNode(all_elements[i][3]);
+        const SMDS_MeshNode* n4 = meshds->FindNode(all_elements[i][4]);
+        const SMDS_MeshNode* n5 = meshds->FindNode(all_elements[i][6]);
+        const SMDS_MeshNode* n6 = meshds->FindNode(all_elements[i][5]);
+        const SMDS_MeshNode* n7 = meshds->FindNode(all_elements[i][8]);
+        const SMDS_MeshNode* n8 = meshds->FindNode(all_elements[i][7]);
+        const SMDS_MeshNode* n9 = meshds->FindNode(all_elements[i][9]);
+        if (n0 && n1 && n2 && n3 && n4 && n5 && n6 && n7 && n8 && n9) {
+            meshds->AddVolumeWithID
+            (
+                n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
+                element_id[i]
+            );
+        }
+        else {
+            Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n",
+                                    element_id[i],
+                                    all_elements[i][1],
+                                    all_elements[i][0],
+                                    all_elements[i][2],
+                                    all_elements[i][3],
+                                    all_elements[i][4],
+                                    all_elements[i][6],
+                                    all_elements[i][5],
+                                    all_elements[i][8],
+                                    all_elements[i][7],
+                                    all_elements[i][9]);
+        }
     }
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
