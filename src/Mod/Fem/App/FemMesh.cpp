@@ -1115,19 +1115,15 @@ void FemMesh::readNastran(const std::string &Filename)
     std::ifstream inputfile;
     inputfile.open(Filename.c_str());
     inputfile.seekg(std::ifstream::beg);
-    std::string line1,line2,temp;
+    std::string line1,line2;
     std::vector<string> token_results;
-    token_results.clear();
     Base::Vector3d current_node;
     std::vector<Base::Vector3d> vertices;
-    vertices.clear();
     std::vector<unsigned int> nodal_id;
-    nodal_id.clear();
-    std::vector<unsigned int> tetra_element;
     std::vector<std::vector<unsigned int> > all_elements;
     std::vector<unsigned int> element_id;
-    element_id.clear();
     bool nastran_free_format = false;
+
     do
     {
         std::getline(inputfile,line1);
@@ -1153,7 +1149,6 @@ void FemMesh::readNastran(const std::string &Filename)
         }
         else if (!nastran_free_format && line1.find("CTETRA")!= std::string::npos)
         {
-            tetra_element.clear();
             //Lets extract the elements
             //As each Element Line consists of two subsequent lines as well
             //we have to take care of that
@@ -1171,6 +1166,7 @@ void FemMesh::readNastran(const std::string &Filename)
 
 
             element_id.push_back(id);
+            std::vector<unsigned int> tetra_element;
             tetra_element.push_back(atoi(line1.substr(24,32).c_str()));
             tetra_element.push_back(atoi(line1.substr(32,40).c_str()));
             tetra_element.push_back(atoi(line1.substr(40,48).c_str()));
@@ -1189,17 +1185,33 @@ void FemMesh::readNastran(const std::string &Filename)
             char_separator<char> sep(",");
             tokenizer<char_separator<char> > tokens(line1, sep);
             token_results.assign(tokens.begin(),tokens.end());
-            if (token_results.size() < 3)
+            if (token_results.size() < 6)
                 continue;//Line does not include Nodal coordinates
+
             nodal_id.push_back(atoi(token_results[1].c_str()));
             current_node.x = atof(token_results[3].c_str());
             current_node.y = atof(token_results[4].c_str());
             current_node.z = atof(token_results[5].c_str());
             vertices.push_back(current_node);
         }
+        else if (nastran_free_format && line1.find("CTRIA3")!= std::string::npos )
+        {
+            char_separator<char> sep(",");
+            tokenizer<char_separator<char> > tokens(line1, sep);
+            token_results.assign(tokens.begin(),tokens.end());
+            if (token_results.size() < 6)
+                continue;//Line does not include enough nodal IDs
+
+            element_id.push_back(atoi(token_results[1].c_str()));
+            std::vector<unsigned int> face_element;
+            face_element.push_back(atoi(token_results[3].c_str()));
+            face_element.push_back(atoi(token_results[4].c_str()));
+            face_element.push_back(atoi(token_results[5].c_str()));
+
+            all_elements.push_back(face_element);
+        }
         else if (nastran_free_format && line1.find("CTETRA")!= std::string::npos)
         {
-            tetra_element.clear();
             //Lets extract the elements
             //As each Element Line consists of two subsequent lines as well
             //we have to take care of that
@@ -1208,9 +1220,11 @@ void FemMesh::readNastran(const std::string &Filename)
             char_separator<char> sep(",");
             tokenizer<char_separator<char> > tokens(line1.append(line2), sep);
             token_results.assign(tokens.begin(),tokens.end());
-            if (token_results.size() < 11)
+            if (token_results.size() < 14)
                 continue;//Line does not include enough nodal IDs
+
             element_id.push_back(atoi(token_results[1].c_str()));
+            std::vector<unsigned int> tetra_element;
             tetra_element.push_back(atoi(token_results[3].c_str()));
             tetra_element.push_back(atoi(token_results[4].c_str()));
             tetra_element.push_back(atoi(token_results[5].c_str()));
@@ -1242,41 +1256,62 @@ void FemMesh::readNastran(const std::string &Filename)
         j++;
     }
 
-    for(unsigned int i=0;i<all_elements.size();i++)
+    for(size_t i=0;i<all_elements.size();i++)
     {
         // an consistent data structure is only possible
         // if the elements are added in the right order
         // thus the order is very important
-        const SMDS_MeshNode* n0 = meshds->FindNode(all_elements[i][1]);
-        const SMDS_MeshNode* n1 = meshds->FindNode(all_elements[i][0]);
-        const SMDS_MeshNode* n2 = meshds->FindNode(all_elements[i][2]);
-        const SMDS_MeshNode* n3 = meshds->FindNode(all_elements[i][3]);
-        const SMDS_MeshNode* n4 = meshds->FindNode(all_elements[i][4]);
-        const SMDS_MeshNode* n5 = meshds->FindNode(all_elements[i][6]);
-        const SMDS_MeshNode* n6 = meshds->FindNode(all_elements[i][5]);
-        const SMDS_MeshNode* n7 = meshds->FindNode(all_elements[i][8]);
-        const SMDS_MeshNode* n8 = meshds->FindNode(all_elements[i][7]);
-        const SMDS_MeshNode* n9 = meshds->FindNode(all_elements[i][9]);
-        if (n0 && n1 && n2 && n3 && n4 && n5 && n6 && n7 && n8 && n9) {
-            meshds->AddVolumeWithID
-            (
-                n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
-                element_id[i]
-            );
+        if (all_elements[i].size() == 3) {
+            const SMDS_MeshNode* n0 = meshds->FindNode(all_elements[i][0]);
+            const SMDS_MeshNode* n1 = meshds->FindNode(all_elements[i][1]);
+            const SMDS_MeshNode* n2 = meshds->FindNode(all_elements[i][2]);
+            if (n0 && n1 && n2) {
+                meshds->AddFaceWithID
+                (
+                    n0, n1, n2,
+                    element_id[i]
+                );
+            }
+            else {
+                Base::Console().Warning("NASTRAN: Failed to add face %d from nodes: (%d, %d, %d,)\n",
+                                        element_id[i],
+                                        all_elements[i][0],
+                                        all_elements[i][1],
+                                        all_elements[i][2]);
+            }
         }
-        else {
-            Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n",
-                                    element_id[i],
-                                    all_elements[i][1],
-                                    all_elements[i][0],
-                                    all_elements[i][2],
-                                    all_elements[i][3],
-                                    all_elements[i][4],
-                                    all_elements[i][6],
-                                    all_elements[i][5],
-                                    all_elements[i][8],
-                                    all_elements[i][7],
-                                    all_elements[i][9]);
+        else if (all_elements[i].size() == 10) {
+            const SMDS_MeshNode* n0 = meshds->FindNode(all_elements[i][1]);
+            const SMDS_MeshNode* n1 = meshds->FindNode(all_elements[i][0]);
+            const SMDS_MeshNode* n2 = meshds->FindNode(all_elements[i][2]);
+            const SMDS_MeshNode* n3 = meshds->FindNode(all_elements[i][3]);
+            const SMDS_MeshNode* n4 = meshds->FindNode(all_elements[i][4]);
+            const SMDS_MeshNode* n5 = meshds->FindNode(all_elements[i][6]);
+            const SMDS_MeshNode* n6 = meshds->FindNode(all_elements[i][5]);
+            const SMDS_MeshNode* n7 = meshds->FindNode(all_elements[i][8]);
+            const SMDS_MeshNode* n8 = meshds->FindNode(all_elements[i][7]);
+            const SMDS_MeshNode* n9 = meshds->FindNode(all_elements[i][9]);
+            if (n0 && n1 && n2 && n3 && n4 && n5 && n6 && n7 && n8 && n9) {
+                meshds->AddVolumeWithID
+                (
+                    n0, n1, n2, n3, n4, n5, n6, n7, n8, n9,
+                    element_id[i]
+                );
+            }
+            else {
+                Base::Console().Warning("NASTRAN: Failed to add volume %d from nodes: (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d)\n",
+                                        element_id[i],
+                                        all_elements[i][1],
+                                        all_elements[i][0],
+                                        all_elements[i][2],
+                                        all_elements[i][3],
+                                        all_elements[i][4],
+                                        all_elements[i][6],
+                                        all_elements[i][5],
+                                        all_elements[i][8],
+                                        all_elements[i][7],
+                                        all_elements[i][9]);
+            }
         }
     }
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
