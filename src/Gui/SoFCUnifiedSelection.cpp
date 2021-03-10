@@ -1554,15 +1554,13 @@ SoElement *SoFCDisplayModeElement::copyMatchInfo(void) const
 
     element->displayMode = this->displayMode;
     element->hiddenLines = this->hiddenLines;
-    if(this->hiddenLines) {
-        element->hasFaceColor = this->hasFaceColor;
-        element->hasLineColor = this->hasLineColor;
-        element->transp = this->transp;
-        if(this->hasFaceColor)
-            element->faceColor = this->faceColor;
-        if(this->hasLineColor)
-            element->lineColor = this->lineColor;
-    }
+    element->hasFaceColor = this->hasFaceColor;
+    element->hasLineColor = this->hasLineColor;
+    element->transp = this->transp;
+    if(this->hasFaceColor)
+        element->faceColor = this->faceColor;
+    if(this->hasLineColor)
+        element->lineColor = this->lineColor;
     element->nodeId = this->nodeId;
     return element;
 }
@@ -1572,6 +1570,9 @@ void SoFCDisplayModeElement::init(SoState * state)
     inherited::init(state);
     this->displayMode = SbName::empty();
     this->hiddenLines = FALSE;
+    this->hasFaceColor = FALSE;
+    this->hasLineColor = FALSE;
+    this->transp = 0.0f;
 }
 
 // ---------------------------------------------------------------------------------
