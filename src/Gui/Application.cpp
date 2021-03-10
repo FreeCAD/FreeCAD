@@ -1818,6 +1818,9 @@ void Application::runApplication(void)
     else {
         // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
+        QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#endif
     }
 
     //Enable support for highres images (added in Qt 5.1, but off by default)
