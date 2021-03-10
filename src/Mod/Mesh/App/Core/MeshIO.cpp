@@ -1646,7 +1646,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*");
     boost::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
-    boost::regex rx_q("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
+    boost::regex rx_q("\\s*CQUAD4\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
     boost::cmatch what;
 
@@ -1663,10 +1663,8 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
     while (std::getline(rstrIn, line)) {
         upper(ltrim(line));
         if (line.find("GRID*") == 0) {
-            assert(0);
         }
         else if (line.find('*') == 0) {
-            assert(0);
         }
         // insert the read-in vertex into a map to preserve the order
         else if (line.find("GRID") == 0) {
