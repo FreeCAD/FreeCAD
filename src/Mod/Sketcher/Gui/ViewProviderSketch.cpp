@@ -5914,6 +5914,10 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         }
     }
 
+    if (Mode == STATUS_NONE) {
+        updateColor();
+    }
+
     // delete the cloned objects
     if (temp) {
         for (std::vector<Part::Geometry *>::iterator it=tempGeo.begin(); it != tempGeo.end(); ++it) {
@@ -6192,11 +6196,8 @@ void ViewProviderSketch::updateData(const App::Property *prop)
         if(getSketchObject()->getExternalGeometryCount()+getSketchObject()->getHighestCurveIndex() + 1 ==
             getSolvedSketch().getGeometrySize()) {
             Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
-            if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
                 draw(false,true);
-                updateColor();
-                drawConstraintIcons();
-            }
 
             signalConstraintsChanged();
         }
