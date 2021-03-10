@@ -518,11 +518,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             boost::bind(&TreeWidget::slotChangedViewObject, this, bp::_1, bp::_2));
 
     // make sure to show a horizontal scrollbar if needed
-#if QT_VERSION >= 0x050000
     this->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    this->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
     this->header()->setStretchLastSection(false);
 
     // Add the first main label
@@ -530,10 +526,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->rootItem->setFlags(Qt::ItemIsEnabled);
     this->expandItem(this->rootItem);
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-#if QT_VERSION >= 0x040200
     // causes unexpected drop events (possibly only with Qt4.1.x)
     this->setMouseTracking(true); // needed for itemEntered() to work
-#endif
+
 
     this->preselectTimer = new QTimer(this);
     this->preselectTimer->setSingleShot(true);
@@ -1419,7 +1414,6 @@ void TreeWidget::dragLeaveEvent(QDragLeaveEvent * event)
 
 void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-#if QT_VERSION >= 0x050000
     // Qt5 does not change drag cursor in response to modifier key press,
     // because QDrag installs a event filter that eats up key event. We install
     // a filter after Qt and generate fake mouse move event in response to key
@@ -1428,7 +1422,6 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         _DragEventFilter = true;
         qApp->installEventFilter(this);
     }
-#endif
 
     QTreeWidget::dragMoveEvent(event);
     if (!event->isAccepted())
@@ -2899,9 +2892,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
     pLayout->addWidget(this->searchBox);
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
-#if QT_VERSION >= 0x040700
     this->searchBox->setPlaceholderText(tr("Search"));
-#endif
     connect(this->searchBox, SIGNAL(returnPressed()),
             this, SLOT(accept()));
     connect(this->searchBox, SIGNAL(textChanged(QString)),
@@ -4589,22 +4580,14 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         // to black which will lead to unreadable text if the system background
         // hss already a dark color.
         // However, it works if we set the appropriate role to an empty QVariant().
-#if QT_VERSION >= 0x040200
         this->setData(0, Qt::ForegroundRole,QVariant());
-#else
-        this->setData(0, Qt::ForegroundRole,QVariant());
-#endif
     }
     else { // invisible
         QStyleOptionViewItem opt;
         // it can happen that a tree item is not attached to the tree widget (#0003025)
         if (this->treeWidget())
             opt.initFrom(this->treeWidget());
-#if QT_VERSION >= 0x040200
         this->setForeground(0, opt.palette.color(QPalette::Disabled,QPalette::Text));
-#else
-        this->setTextColor(0, opt.palette.color(QPalette::Disabled,QPalette::Text);
-#endif
         mode = QIcon::Disabled;
     }
 
@@ -4735,11 +4718,7 @@ void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();
 
-#if (QT_VERSION >= 0x050000)
     QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
-#else
-    QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString(), 0, QApplication::UnicodeUTF8);
-#endif
 
     if (Obj->mustExecute() == 1 && !Obj->isError())
         info += TreeWidget::tr(" (but must be executed)");
