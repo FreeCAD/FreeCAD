@@ -530,7 +530,7 @@ void View3DInventor::printPreview()
 void View3DInventor::print(QPrinter* printer)
 {
     QPainter p(printer);
-    p.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
+    p.setRenderHints(QPainter::Antialiasing);
     if (!p.isActive() && !printer->outputFileName().isEmpty()) {
         qApp->setOverrideCursor(Qt::ArrowCursor);
         QMessageBox::critical(this, tr("Opening file failed"),

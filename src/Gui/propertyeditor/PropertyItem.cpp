@@ -537,7 +537,7 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
-        if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
+        if (role == Qt::BackgroundRole || role == Qt::ForegroundRole) {
             if(PropertyView::showAll()
                 && propertyItems.size() == 1
                 && propertyItems.front()->testStatus(App::Property::PropDynamic)
@@ -587,7 +587,7 @@ QVariant PropertyItem::data(int column, int role) const
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
             } 
-            else if (role == Qt::TextColorRole) {
+            else if (role == Qt::ForegroundRole) {
                 if (hasExpression())
                     return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
                 return QVariant();
@@ -607,7 +607,7 @@ QVariant PropertyItem::data(int column, int role) const
         else if (role == Qt::ToolTipRole) {
             return toolTip(propertyItems[0]);
         }
-        else if( role == Qt::TextColorRole) {
+        else if( role == Qt::ForegroundRole) {
             if (hasExpression())
                 return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
             return QVariant();
@@ -3908,11 +3908,11 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 
 QVariant PropertyLinkItem::data(int column, int role) const {
     if(propertyItems.size() && column == 1 
-            && (role == Qt::TextColorRole || role == Qt::ToolTipRole))
+            && (role == Qt::ForegroundRole || role == Qt::ToolTipRole))
     {
         auto propLink = Base::freecad_dynamic_cast<const App::PropertyLinkBase>(propertyItems[0]);
         if(propLink) {
-            if(role==Qt::TextColorRole && propLink->checkRestore()>1)
+            if(role==Qt::ForegroundRole && propLink->checkRestore()>1)
                 return QVariant::fromValue(QColor(0xff,0,0));
             else if(role == Qt::ToolTipRole) {
                 auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);

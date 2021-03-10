@@ -3133,11 +3133,11 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
     FOREACH_ITEM_ALL(item)
         if(tree->editingItem) {
             if(item == tree->editingItem) {
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
+                item->setData(0, Qt::BackgroundRole,QVariant());
                 break;
             }
         }else if(item->object() == &v)
-            item->setData(0, Qt::BackgroundColorRole,QVariant());
+            item->setData(0, Qt::BackgroundRole,QVariant());
     END_FOREACH_ITEM
     tree->editingItem = 0;
 }
@@ -4592,7 +4592,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
 #if QT_VERSION >= 0x040200
         this->setData(0, Qt::ForegroundRole,QVariant());
 #else
-        this->setData(0, Qt::TextColorRole,QVariant());
+        this->setData(0, Qt::ForegroundRole,QVariant());
 #endif
     }
     else { // invisible

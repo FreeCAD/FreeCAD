@@ -154,7 +154,7 @@ void SvgView::setRenderer(RendererType type)
 void SvgView::setHighQualityAntialiasing(bool highQualityAntialiasing)
 {
 #ifndef QT_NO_OPENGL
-    setRenderHint(QPainter::HighQualityAntialiasing, highQualityAntialiasing);
+    setRenderHint(QPainter::Antialiasing);
 #else
     Q_UNUSED(highQualityAntialiasing);
 #endif
