@@ -50,6 +50,7 @@
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
 #include <App/Origin.h>
+#include <App/DocumentParams.h>
 
 #include "Action.h"
 #include "Application.h"
@@ -1591,10 +1592,7 @@ StdCmdRefresh::StdCmdRefresh()
     // Make it optional to create a transaction for a recompute.
     // The new default behaviour is quite cumbersome in some cases because when
     // undoing the last transaction the manual recompute will clear the redo stack.
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Document");
-    bool create = hGrp->GetBool("TransactionOnRecompute", false);
-    if (!create)
+    if (!App::DocumentParams::TransactionOnRecompute())
         eType = eType | NoTransaction;
 }
 
@@ -1621,6 +1619,10 @@ void StdCmdRefresh::activated(int iMsg)
 
 bool StdCmdRefresh::isActive(void)
 {
+    if (App::DocumentParams::TransactionOnRecompute())
+        eType |= NoTransaction;
+    else
+        eType &= ~NoTransaction;
     return this->getDocument() && this->getDocument()->mustExecute();
 }
 

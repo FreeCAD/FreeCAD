@@ -26,30 +26,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="3" column="0">
-       <widget class="Line" name="line1_2">
-        <property name="frameShape">
-         <enum>QFrame::HLine</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QCheckBox" name="prefCanAbortRecompute">
-        <property name="toolTip">
-         <string>Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</string>
-        </property>
-        <property name="text">
-         <string>Allow aborting recomputation</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="0">
        <widget class="Gui::PrefCheckBox" name="prefUndoRedo">
         <property name="toolTip">
@@ -69,45 +45,36 @@ This feature may slightly increase recomputation time.</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="Line" name="line">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>6</number>
+      <item row="3" column="0">
+       <widget class="Line" name="line1_2">
+        <property name="frameShape">
+         <enum>QFrame::HLine</enum>
         </property>
-        <property name="margin">
-         <number>0</number>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
         </property>
-        <item>
-         <widget class="QLabel" name="textLabel1_2">
-          <property name="text">
-           <string>Maximum Undo/Redo steps</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="prefUndoRedoSize">
-          <property name="toolTip">
-           <string>How many Undo/Redo steps should be recorded</string>
-          </property>
-          <property name="value">
-           <number>20</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>MaxUndoSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Document</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QCheckBox" name="prefCanAbortRecompute">
+        <property name="toolTip">
+         <string>Allow user aborting document recomputation by pressing ESC.
+This feature may slightly increase recomputation time.</string>
+        </property>
+        <property name="text">
+         <string>Allow aborting recomputation</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <layout class="QHBoxLayout">
@@ -175,10 +142,50 @@ This feature may slightly increase recomputation time.</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
        <widget class="QCheckBox" name="prefRecomputeOnRestore">
         <property name="text">
          <string>Prompt recomputation after loading legacy document</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="textLabel1_2">
+          <property name="text">
+           <string>Maximum Undo/Redo steps</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="prefUndoRedoSize">
+          <property name="toolTip">
+           <string>How many Undo/Redo steps should be recorded</string>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MaxUndoSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="prefTransactionOnRecompute">
+        <property name="text">
+         <string>Enable Undo/Redo of recomputing documents</string>
         </property>
        </widget>
       </item>

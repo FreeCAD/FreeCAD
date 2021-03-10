@@ -83,6 +83,7 @@ public:
     FC_DOCUMENT_PARAM(ThumbnailSampleSize, int, Int, 0) \
     FC_DOCUMENT_PARAM(GeoGroupAllowCrossLink, bool, Bool, true) \
     FC_DOCUMENT_PARAM(DuplicateLabels, bool, Bool, false) \
+    FC_DOCUMENT_PARAM(TransactionOnRecompute, bool, Bool, false) \
 
 #undef FC_DOCUMENT_PARAM
 #define FC_DOCUMENT_PARAM(_name,_ctype,_type,_def) \
