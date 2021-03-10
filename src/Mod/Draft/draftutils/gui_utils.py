@@ -38,7 +38,6 @@ of the objects or the 3D view.
 # @{
 import math
 import os
-import six
 
 import FreeCAD as App
 import draftutils.utils as utils
@@ -599,63 +598,35 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             buffersize = p.byteCount()
             width = size[0]
             height = size[1]
-            numcomponents = int(float(buffersize) / (width * height))
+            numcomponents = int(buffersize / (width * height))
 
             img = coin.SoSFImage()
-            byteList = []
-            # isPy2 = sys.version_info.major < 3
-            isPy2 = six.PY2
+            byteList = bytearray()
 
             # The SoSFImage needs to be filled with bytes.
             # The pixel information is converted into a Qt color, gray,
             # red, green, blue, or transparency (alpha),
             # depending on the input image.
-            #
-            # If Python 2 is used, the color is turned into a character,
-            # which is of type 'byte', and added to the byte list.
-            # If Python 3 is used, characters are unicode strings,
-            # so they need to be encoded into 'latin-1'
-            # to produce the correct bytes for the list.
             for y in range(height):
                 # line = width*numcomponents*(height-(y));
                 for x in range(width):
-                    rgb = p.pixel(x, y)
-                    if numcomponents == 1 or numcomponents == 2:
-                        gray = chr(QtGui.qGray(rgb))
-                        if isPy2:
-                            byteList.append(gray)
-                        else:
-                            byteList.append(gray.encode('latin-1'))
+                    rgba = p.pixel(x, y)
+                    if numcomponents <= 2:
+                        byteList.append(QtGui.qGray(rgba))
 
                         if numcomponents == 2:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
-                    elif numcomponents == 3 or numcomponents == 4:
-                        red = chr(QtGui.qRed(rgb))
-                        green = chr(QtGui.qGreen(rgb))
-                        blue = chr(QtGui.qBlue(rgb))
+                            byteList.append(QtGui.qAlpha(rgba))
 
-                        if isPy2:
-                            byteList.append(red)
-                            byteList.append(green)
-                            byteList.append(blue)
-                        else:
-                            byteList.append(red.encode('latin-1'))
-                            byteList.append(green.encode('latin-1'))
-                            byteList.append(blue.encode('latin-1'))
+                    elif numcomponents <= 4:
+                        byteList.append(QtGui.qRed(rgba))
+                        byteList.append(QtGui.qGreen(rgba))
+                        byteList.append(QtGui.qBlue(rgba))
 
                         if numcomponents == 4:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
+                            byteList.append(QtGui.qAlpha(rgba))
                     # line += numcomponents
 
-            _bytes = b"".join(byteList)
+            _bytes = bytes(byteList)
             img.setValue(size, numcomponents, _bytes)
         except FileNotFoundError as exc:
             _wrn("load_texture: {0}, {1}".format(exc.strerror,
