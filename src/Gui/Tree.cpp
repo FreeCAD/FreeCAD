@@ -820,6 +820,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     initStyleOption(&opt, index);
 
     TreeWidget * tree = static_cast<TreeWidget*>(parent());
+    auto style = tree->style();
     if (index.column() == 0
             && tree->testAttribute(Qt::WA_NoSystemBackground)
             && opt.backgroundBrush.style() == Qt::NoBrush
@@ -828,11 +829,15 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
         QRect rect = opt.rect;
         int width = opt.fontMetrics.boundingRect(opt.text).width()
             + opt.decorationSize.width() + TreeParams::ItemBackgroundPadding();
+        if (TreeParams::CheckBoxesSelection()) {
+            width += style->pixelMetric(QStyle::PM_IndicatorWidth)
+                + style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
+        }
         if (width < rect.width())
             rect.setWidth(width);
         painter->fillRect(rect, _TreeItemBackground);
     }
-    tree->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
+    style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, tree);
 #endif
 }
 
