@@ -149,7 +149,7 @@ QString checkStatusToString(const int &index)
     }
     if (index > 33 || index < 0)
     {
-        QString message(QObject::tr("Out Of Enum Range:") + " ");
+        QString message(QObject::tr("Out Of Enum Range:") + QString::fromLatin1(" "));
         QString number;
         number.setNum(index);
         message += number;
