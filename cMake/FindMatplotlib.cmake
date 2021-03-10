@@ -9,7 +9,7 @@
 #  MATPLOTLIB_VERSION_PATCH    - the patch version number of matplotlib
 #  MATPLOTLIB_PATH_DIRS        - path to the matplotlib include files
 
-IF(PYTHONINTERP_FOUND)
+IF(Python3_Interpreter_FOUND)
     # Try to import matplotlib into Python interpreter. Python
     # interpreter was found previously as required package, so
     # don't take care about this.
