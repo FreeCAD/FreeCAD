@@ -298,7 +298,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
     // This is necessary to capture any focus lost from switching the tab,
     // otherwise the lost focus will leak to the parent, i.e. MdiArea, which may
     // cause unexpected Mdi sub window switching.
-    setFocusPolicy(Qt::StrongFocus);
+    // setFocusPolicy(Qt::StrongFocus);
 
     _imageScale = 0.0;
 
