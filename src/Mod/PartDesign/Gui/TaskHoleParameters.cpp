@@ -67,8 +67,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    addNewSolidCheckBox(proxy);
-    addUpdateViewCheckBox(proxy);
     refresh();
 
     ui->ThreadType->addItem(tr("None"), QByteArray("None"));
@@ -120,6 +118,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
             boost::bind(&TaskHoleParameters::changedObject, this, bp::_1, bp::_2));
 
+    this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
 }
 
@@ -261,11 +260,13 @@ void TaskHoleParameters::threadedChanged()
     ui->CustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked() && ui->UseCustomThreadClearance->isChecked());
 
 
-    // update view not active if modeling threads
-    // this will also ensure that the feature is recomputed.
-    checkBoxUpdateView->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
-    blockUpdate = ui->Threaded->isChecked() && ui->ModelThread->isChecked() && !(checkBoxUpdateView->isChecked());
+    if (checkBoxUpdateView) {
+        // update view not active if modeling threads
+        // this will also ensure that the feature is recomputed.
+        checkBoxUpdateView->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
+        blockUpdate = ui->Threaded->isChecked() && ui->ModelThread->isChecked() && !(checkBoxUpdateView->isChecked());
 
+    }
     pcHole->Threaded.setValue(ui->Threaded->isChecked());
     recomputeFeature();
 }
@@ -276,11 +277,13 @@ void TaskHoleParameters::modelThreadChanged()
 
     pcHole->ModelThread.setValue(ui->ModelThread->isChecked());
 
-    // update view not active if modeling threads
-    // this will also ensure that the feature is recomputed.
-    checkBoxUpdateView->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
-    blockUpdate = ui->Threaded->isChecked() && ui->ModelThread->isChecked() && !(checkBoxUpdateView->isChecked());
+    if (checkBoxUpdateView) {
+        // update view not active if modeling threads
+        // this will also ensure that the feature is recomputed.
+        checkBoxUpdateView->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
+        blockUpdate = ui->Threaded->isChecked() && ui->ModelThread->isChecked() && !(checkBoxUpdateView->isChecked());
 
+    }
     // conditional enabling of thread modeling options
     ui->UseCustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked());
     ui->CustomThreadClearance->setEnabled(ui->Threaded->isChecked() && ui->ModelThread->isChecked() && ui->UseCustomThreadClearance->isChecked());

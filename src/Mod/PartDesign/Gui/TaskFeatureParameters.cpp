@@ -150,7 +150,7 @@ void TaskFeatureParameters::addUpdateViewCheckBox(QWidget *widget)
     line->setFrameShadow(QFrame::Sunken);
     boxLayout->addWidget(line);
 
-    auto checkBoxUpdateView = new Gui::PrefCheckBox(this);
+    checkBoxUpdateView = new Gui::PrefCheckBox(this);
     checkBoxUpdateView->setText(tr("Update view"));
     checkBoxUpdateView->setChecked(true);
     connect(checkBoxUpdateView, SIGNAL(toggled(bool)), this, SLOT(onUpdateView(bool)));
