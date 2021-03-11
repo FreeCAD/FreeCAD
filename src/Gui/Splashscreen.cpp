@@ -253,7 +253,8 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
         height = std::min(height, static_cast<int>(width / scale));
         width = static_cast<int>(scale * height);
 
-        image = image.scaled(width, height);
+        image = image.scaled(width, height,
+                    Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     }
     ui->labelSplashPicture->setPixmap(image);
 //    if (showLic) { // currently disabled. Additional license blocks are always shown.
