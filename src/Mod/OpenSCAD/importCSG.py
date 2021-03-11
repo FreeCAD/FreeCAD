@@ -376,7 +376,7 @@ def p_operation(p):
               | intersection_action
               | union_action
               | rotate_extrude_action
-              | linear_extrude_with_twist
+              | linear_extrude_with_transform
               | rotate_extrude_file
               | import_file1
               | resize_action
@@ -728,9 +728,9 @@ def process_linear_extrude(obj,h) :
         newobj.ViewObject.hide()
     return(mylinear)
 
-def process_linear_extrude_with_twist(base,height,twist) :   
-    newobj=doc.addObject("Part::FeaturePython",'twist_extrude')
-    Twist(newobj,base,height,-twist) #base is an FreeCAD Object, height and twist are floats
+def process_linear_extrude_with_transform(base,height,twist,scale) :   
+    newobj=doc.addObject("Part::FeaturePython",'transform_extrude')
+    Twist(newobj,base,height,-twist,scale) #base is an FreeCAD Object, height and twist are floats, scale is a two-component vector of floats
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):
@@ -742,17 +742,18 @@ def process_linear_extrude_with_twist(base,height,twist) :
     #ViewProviderTree(obj.ViewObject)
     return(newobj)
 
-def p_linear_extrude_with_twist(p):
-    'linear_extrude_with_twist : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
-    if printverbose: print("Linear Extrude With Twist")
+def p_linear_extrude_with_transform(p):
+    'linear_extrude_with_transform : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    if printverbose: print("Linear Extrude With Transform")
     h = float(p[3]['height'])
+    s = 1.0
+    t = 0.0
     if printverbose: print("Twist : ",p[3])
     if 'scale' in p[3]:
-        FreeCAD.Console.PrintWarning('WARNING: "scale" option to linear_extrude is not supported. Ignoring.\n')
+        s = [float(p[3]['scale'][0]), float(p[3]['scale'][1])]
+        print ("Scale: " + str(s))
     if 'twist' in p[3]:
         t = float(p[3]['twist'])
-    else:
-        t = 0
     # Test if null object like from null text
     if (len(p[6]) == 0) :
         p[0] = []
@@ -761,14 +762,14 @@ def p_linear_extrude_with_twist(p):
         obj = fuse(p[6],"Linear Extrude Union")
     else :
         obj = p[6][0]
-    if t:
-        newobj = process_linear_extrude_with_twist(obj,h,t)
+    if t != 0.0 or s != 1.0:
+        newobj = process_linear_extrude_with_transform(obj,h,t,s)
     else:
         newobj = process_linear_extrude(obj,h)
     if p[3]['center']=='true' :
        center(newobj,0,0,h)
     p[0] = [newobj]
-    if printverbose: print("End Linear Extrude with twist")
+    if printverbose: print("End Linear Extrude with Transform")
 
 def p_import_file1(p):
     'import_file1 : import LPAREN keywordargument_list RPAREN SEMICOL'
