@@ -387,15 +387,17 @@ class Frustum:
             fp.Placement = plm
 
 class Twist:
-    def __init__(self, obj,child=None,h=1.0,angle=0.0):
+    def __init__(self, obj,child=None,h=1.0,angle=0.0,scale=[1.0,1.0]):
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that must be tranfsformed")
         obj.addProperty("App::PropertyAngle","Angle","Base","Twist Angle in degrees") #degree or rad
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the Extrusion")
+        obj.addProperty("App::PropertyFloatList","Scale","Base","Scale to apply during the Extrusion")
 
         obj.Base = child
         obj.Angle =  angle
         obj.Height = h
+        obj.Scale = scale
         obj.Proxy = self
 
     def execute(self, fp):
@@ -408,8 +410,7 @@ class Twist:
 
     def createGeometry(self,fp):
         import FreeCAD,Part,math,sys
-        #tangle = -twist #openscad uses degrees clockwise
-        if fp.Base and fp.Angle and fp.Height and \
+        if fp.Base and fp.Height and \
             fp.Base.Shape.isValid():
         #wire=fp.Base.Shape.Wires[0].transformGeometry(fp.Base.Placement.toMatrix()) 
             solids=[]
@@ -421,32 +422,26 @@ class Twist:
                 faceu=faceb.copy()
                 facetransform=FreeCAD.Matrix()
                 facetransform.rotateZ(math.radians(fp.Angle.Value))
+                facetransform.scale(fp.Scale[0],fp.Scale[1], 1.0)
                 facetransform.move(FreeCAD.Vector(0,0,fp.Height.Value))
                 faceu.transformShape(facetransform)
                 step = 2 + abs(int(fp.Angle.Value // 90)) #resolution in z direction
-                # print abs(int(fp.Angle.Value // 90)) #resolution in z direction
-                # print step
                 zinc = fp.Height.Value/(step-1.0)
                 angleinc = math.radians(fp.Angle.Value)/(step-1.0)
                 spine = Part.makePolygon([(0,0,i*zinc) \
                         for i in range(step)])
                 auxspine = Part.makePolygon([(math.cos(i*angleinc),\
-                        math.sin(i*angleinc),i*fp.Height.Value/(step-1)) \
+                        math.sin(i*angleinc),i*zinc) \
                         for i in range(step)])
                 faces=[faceb,faceu]
-                for wire in faceb.Wires:
+                for wire1,wire2 in zip(faceb.Wires,faceu.Wires):
                     pipeshell=Part.BRepOffsetAPI.MakePipeShell(spine)
                     pipeshell.setSpineSupport(spine)
-                    pipeshell.add(wire)
-                    # Was before function change
-                    # pipeshell.setAuxiliarySpine(auxspine,True,False)
-                    if sys.version_info.major < 3:
-                        pipeshell.setAuxiliarySpine(auxspine,True,long(0))
-                    else:
-                        pipeshell.setAuxiliarySpine(auxspine,True,0)
+                    pipeshell.add(wire1)
+                    pipeshell.add(wire2)
+                    pipeshell.setAuxiliarySpine(auxspine,True,0)
                     print(pipeshell.getStatus())
                     assert(pipeshell.isReady())
-                    #fp.Shape=pipeshell.makeSolid()
                     pipeshell.build()
                     faces.extend(pipeshell.shape().Faces)
                 try:

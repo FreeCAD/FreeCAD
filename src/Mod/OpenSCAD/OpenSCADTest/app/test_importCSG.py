@@ -246,13 +246,20 @@ polyhedron(
 
         doc = self.utility_create_scad("linear_extrude(height = 20, scale = 0.2) square([20, 10], center = true);", "linear_extrude_scale")
         object = doc.ActiveObject
-        # Not actually supported - this does not create a frustum, but a cube: scale does nothing
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 1945.2745, 3)
         FreeCAD.closeDocument(doc.Name)
 
         doc = self.utility_create_scad("linear_extrude(height = 20, twist = 90) square([20, 10], center = true);", "linear_extrude_twist")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 3999.9961, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("linear_extrude(height = 40, twist = 180, scale=0.25) square([20, 10], center = true);", "linear_extrude_twist")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 4144.9071, 3)
         FreeCAD.closeDocument(doc.Name)
 
     def test_import_rotate_extrude_file(self):
