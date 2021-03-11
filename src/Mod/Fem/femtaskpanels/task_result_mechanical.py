@@ -494,7 +494,8 @@ class _TaskPanel:
         plt.ylabel("Nodes")
         plt.grid(True)
         fig_manager = plt.get_current_fig_manager()
-        fig_manager.window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)    # stay ontop
+        if hasattr(fig_manager, 'window'):
+            fig_manager.window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)    # stay ontop
 
     def update_colors_stats(self, res_values, res_unit, minm, maxm):
         QApplication.setOverrideCursor(Qt.WaitCursor)
