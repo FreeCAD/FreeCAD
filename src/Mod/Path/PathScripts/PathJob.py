@@ -301,6 +301,18 @@ class ObjectJob:
             obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
             obj.setEditorMode('CycleTime', 1)  # read-only
 
+        if not hasattr(obj, "Fixtures"):
+            obj.addProperty("App::PropertyStringList", "Fixtures", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "The Work Coordinate Systems for the Job"))
+            obj.Fixtures = ['G54']
+
+        if not hasattr(obj, "OrderOutputBy"):
+            obj.addProperty("App::PropertyEnumeration", "OrderOutputBy", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "If multiple WCS, order the output this way"))
+            obj.OrderOutputBy = ['Fixture', 'Tool', 'Operation']
+
+        if not hasattr(obj, "SplitOutput"):
+            obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Split output into multiple gcode files"))
+            obj.SplitOutput = False
+
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)

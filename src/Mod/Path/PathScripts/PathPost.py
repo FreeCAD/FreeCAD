@@ -236,7 +236,7 @@ class CommandPathPost:
             elif hasattr(sel, "Path"):
                 try:
                     job = PathUtils.findParentJob(sel)
-                except Exception: # pylint: disable=broad-except
+                except Exception:
                     job = None
             else:
                 job = None
@@ -261,22 +261,9 @@ class CommandPathPost:
 
         PathLog.debug("about to postprocess job: {}".format(job.Name))
 
-        # Build up an ordered list of operations and tool changes.
-        # Then post-the ordered list
-        if hasattr(job, "Fixtures"):
-            wcslist = job.Fixtures
-        else:
-            wcslist = ['G54']
-
-        if hasattr(job, "OrderOutputBy"):
-            orderby = job.OrderOutputBy
-        else:
-            orderby = "Operation"
-
-        if hasattr(job, "SplitOutput"):
-            split = job.SplitOutput
-        else:
-            split = False
+        wcslist = job.Fixtures
+        orderby = job.OrderOutputBy
+        split = job.SplitOutput
 
         postlist = []
 
@@ -332,7 +319,7 @@ class CommandPathPost:
             for idx, obj in enumerate(job.Operations.Group):
 
                 # check if the operation is active
-                active =  PathUtil.opProperty(obj, 'Active')
+                active = PathUtil.opProperty(obj, 'Active')
 
                 tc = PathUtil.toolControllerForOp(obj)
                 if tc is None or tc.ToolNumber == currTool and active:
@@ -380,14 +367,14 @@ class CommandPathPost:
                         firstFixture = False
                         tc = PathUtil.toolControllerForOp(obj)
                         if tc is not None:
-                            if tc.ToolNumber != currTool:
+                            if job.SplitOutput or (tc.ToolNumber != currTool):
                                 sublist.append(tc)
                                 currTool = tc.ToolNumber
                         sublist.append(obj)
                     postlist.append(sublist)
 
         fail = True
-        rc = '' # pylint: disable=unused-variable
+        rc = ''
         if split:
             for slist in postlist:
                 (fail, rc, filename) = self.exportObjectsWith(slist, job)
