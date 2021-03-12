@@ -40,6 +40,7 @@
 # include <QSplitter>
 # include <QMenu>
 # include <QScrollBar>
+# include <QTimerEvent>
 #endif
 
 #if QT_VERSION >= 0x050000
@@ -1408,7 +1409,7 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     touched = false;
 
     if (_state <= State_Normal) {
-        titleBar->setVisible(!enable);
+        titleBar->setVisible(!enable || OverlayManager::instance()->isMouseTransparent());
         for (int i=0, c=splitter->count(); i<c; ++i) {
             auto handle = qobject_cast<OverlaySplitterHandle*>(splitter->handle(i));
             if (handle)
@@ -1940,10 +1941,30 @@ void OverlayTitleBar::paintEvent(QPaintEvent *)
         painter.rotate(-90);
         painter.translate(-r.left(), -r.top());
     }
-    QString text = painter.fontMetrics().elidedText(
-            dock->windowTitle(), Qt::ElideRight, r.width());
 
+    QString title;
+    if (OverlayManager::instance()->isMouseTransparent()) {
+        if (timerId == 0)
+            timerId = startTimer(500);
+        title = blink ? tr("Mouse pass through, ESC to stop") : dock->windowTitle();
+    } else {
+        if (timerId != 0) {
+            killTimer(timerId);
+            timerId = 0;
+        }
+        title = dock->windowTitle();
+    }
+    QString text = painter.fontMetrics().elidedText(
+            title, Qt::ElideRight, r.width());
     painter.drawText(r, flags, text);
+}
+
+void OverlayTitleBar::timerEvent(QTimerEvent *ev)
+{
+    if (timerId == ev->timerId()) {
+        update();
+        blink = !blink;
+    }
 }
 
 void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)

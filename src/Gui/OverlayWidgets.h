@@ -321,12 +321,15 @@ protected:
     void mouseReleaseEvent(QMouseEvent *);
     void paintEvent(QPaintEvent*);
     void keyPressEvent(QKeyEvent *ke);
+    void timerEvent(QTimerEvent *);
 
 private:
     QPoint dragOffset;
     QSize dragSize;
     QLayoutItem *titleItem = nullptr;
     QColor textcolor;
+    int timerId = 0;
+    bool blink = false;
 };
 
 class OverlaySizeGrip: public QWidget
