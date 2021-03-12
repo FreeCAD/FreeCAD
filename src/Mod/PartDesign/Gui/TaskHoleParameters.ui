@@ -539,7 +539,7 @@ Only available for holes without thread</string>
        </widget>
       </item>
       <item row="5" column="0">
-       <widget class="QLabel" name="label_10">
+       <widget class="QLabel" name="labelCountersinkAngle">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -547,7 +547,7 @@ Only available for holes without thread</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Countersink</string>
+         <string>Angle</string>
         </property>
        </widget>
       </item>

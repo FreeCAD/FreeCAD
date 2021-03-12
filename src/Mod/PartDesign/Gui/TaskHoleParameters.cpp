@@ -203,7 +203,8 @@ void TaskHoleParameters::refresh()
     ui->HoleCutDepth->setValue(pcHole->HoleCutDepth.getValue());
     ui->HoleCutDepth->setDisabled(pcHole->HoleCutDepth.isReadOnly());
     ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
-    ui->HoleCutCountersinkAngle->setDisabled(pcHole->HoleCutCountersinkAngle.isReadOnly());
+    ui->HoleCutCountersinkAngle->setVisible(pcHole->HoleCutCountersinkAngle.isReadOnly());
+    ui->labelCountersinkAngle->setVisible(pcHole->HoleCutCountersinkAngle.isReadOnly());
 
     ui->DepthType->setCurrentIndex(pcHole->DepthType.getValue());
     ui->Depth->setValue(pcHole->Depth.getValue());
@@ -370,9 +371,11 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
     // we must do this after recomputeFeature() because this gives us the info if
     // the type is a countersink and thus if HoleCutCountersinkAngle can be enabled
     std::string HoleCutTypeString = pcHole->HoleCutType.getValueAsString();
-    if (HoleCutTypeString == "None" || HoleCutTypeString == "Counterbore"
-        || HoleCutTypeString == "Countersink") {
+    bool countersink = HoleCutTypeString == "Countersink";
+    if (countersink || HoleCutTypeString == "None" || HoleCutTypeString == "Counterbore") {
         ui->HoleCutCustomValues->setEnabled(false);
+        ui->HoleCutCountersinkAngle->setVisible(countersink);
+        ui->labelCountersinkAngle->setVisible(countersink);
     }
     else { // screw definition
         // we can have the case that we have no normed values
@@ -380,13 +383,16 @@ void TaskHoleParameters::holeCutTypeChanged(int index)
         if (ui->HoleCutCustomValues->isChecked()) {
             ui->HoleCutDiameter->setEnabled(true);
             ui->HoleCutDepth->setEnabled(true);
-            if (!pcHole->HoleCutCountersinkAngle.isReadOnly())
-                ui->HoleCutCountersinkAngle->setEnabled(true);
+            if (!pcHole->HoleCutCountersinkAngle.isReadOnly()) {
+                ui->HoleCutCountersinkAngle->setVisible(true);
+                ui->labelCountersinkAngle->setVisible(true);
+            }
         }
         else {
             ui->HoleCutDiameter->setEnabled(false);
             ui->HoleCutDepth->setEnabled(false);
-            ui->HoleCutCountersinkAngle->setEnabled(false);
+            ui->HoleCutCountersinkAngle->setVisible(false);
+            ui->labelCountersinkAngle->setVisible(false);
         }
     }
 }
@@ -400,13 +406,16 @@ void TaskHoleParameters::holeCutCustomValuesChanged()
     if (ui->HoleCutCustomValues->isChecked()) {
         ui->HoleCutDiameter->setEnabled(true);
         ui->HoleCutDepth->setEnabled(true);
-        if (!pcHole->HoleCutCountersinkAngle.isReadOnly())
-            ui->HoleCutCountersinkAngle->setEnabled(true);
+        if (!pcHole->HoleCutCountersinkAngle.isReadOnly()) {
+            ui->HoleCutCountersinkAngle->setVisible(true);
+            ui->labelCountersinkAngle->setVisible(true);
+        }
     }
     else {
         ui->HoleCutDiameter->setEnabled(false);
         ui->HoleCutDepth->setEnabled(false);
-        ui->HoleCutCountersinkAngle->setEnabled(false);
+        ui->HoleCutCountersinkAngle->setVisible(false);
+        ui->labelCountersinkAngle->setVisible(false);
     }
 
     recomputeFeature();
@@ -424,7 +433,7 @@ void TaskHoleParameters::holeCutDepthChanged(double value)
 {
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
-    if (ui->HoleCutCountersinkAngle->isEnabled()){
+    if (ui->HoleCutCountersinkAngle->isVisible()){
         // we have a countersink and recalculate the HoleCutDiameter
 
         // store current depth
@@ -824,13 +833,13 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->HoleCutDepth->setDisabled(ro);
     }
     else if (&Prop == &pcHole->HoleCutCountersinkAngle) {
-        ui->HoleCutCountersinkAngle->setEnabled(true);
         if (ui->HoleCutCountersinkAngle->value().getValue() != pcHole->HoleCutCountersinkAngle.getValue()) {
             ui->HoleCutCountersinkAngle->blockSignals(true);
             ui->HoleCutCountersinkAngle->setValue(pcHole->HoleCutCountersinkAngle.getValue());
             ui->HoleCutCountersinkAngle->blockSignals(false);
         }
-        ui->HoleCutCountersinkAngle->setDisabled(ro);
+        ui->HoleCutCountersinkAngle->setVisible(!ro);
+        ui->labelCountersinkAngle->setVisible(!ro);
     }
     else if (&Prop == &pcHole->DepthType) {
         ui->DepthType->setEnabled(true);
