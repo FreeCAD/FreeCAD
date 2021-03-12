@@ -742,7 +742,9 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
 
 bool View3DInventor::onHasMsg(const char* pMsg) const
 {
-    if (strcmp("Print",pMsg) == 0)
+    if (strcmp("CanPan", pMsg) == 0)
+        return true;
+    else if (strcmp("Print",pMsg) == 0)
         return true;
     else if (strcmp("PrintPreview",pMsg) == 0)
         return true;

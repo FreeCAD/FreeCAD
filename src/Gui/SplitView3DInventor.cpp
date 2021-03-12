@@ -380,7 +380,10 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char**)
 
 bool AbstractSplitView::onHasMsg(const char* pMsg) const
 {
-    if (strcmp("ViewFit",pMsg) == 0) {
+    if (strcmp("CanPan",pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ViewFit",pMsg) == 0) {
         return true;
     }
     else if (strcmp("ViewBottom",pMsg) == 0) {

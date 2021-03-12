@@ -971,8 +971,7 @@ bool OverlayTabWidget::checkAutoHide() const
 
     if(ViewParams::getDockOverlayAutoView()) {
         auto view = getMainWindow()->activeWindow();
-        if(!view || (!view->isDerivedFrom(View3DInventor::getClassTypeId())
-                        && !view->isDerivedFrom(SplitView3DInventor::getClassTypeId())))
+        if(!view || !view->onHasMsg("CanPan"))
             return true;
     }
 
@@ -1334,10 +1333,11 @@ bool OverlayTabWidget::isTransparent() const
 {
     if (!actTransparent.isChecked())
         return false;
-    auto view = getMainWindow()->activeWindow();
-    if(!view || (!view->isDerivedFrom(View3DInventor::getClassTypeId())
-                && !view->isDerivedFrom(SplitView3DInventor::getClassTypeId())))
-        return false;
+    if(ViewParams::getDockOverlayAutoView()) {
+        auto view = getMainWindow()->activeWindow();
+        if(!view || !view->onHasMsg("CanPan"))
+            return false;
+    }
     return true;
 }
 
@@ -2767,9 +2767,11 @@ public:
                     Qt::WA_TransparentForMouseEvents, enabled);
             tabWidget->setAttribute(
                     Qt::WA_TransparentForMouseEvents, enabled);
+            tabWidget->touch();
         }
+        refresh();
         if(!enabled)
-            qApp->setOverrideCursor(QCursor());
+            qApp->restoreOverrideCursor();
         else
             qApp->setOverrideCursor(_cursor);
     }
