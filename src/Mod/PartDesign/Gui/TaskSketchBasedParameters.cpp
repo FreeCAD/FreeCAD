@@ -84,57 +84,58 @@ void TaskSketchBasedParameters::initUI(QWidget *widget) {
     PartDesignGui::addTaskCheckBox(widget);
 
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    if (!pcSketchBased->Fit.testStatus(App::Property::Hidden)) {
+        QHBoxLayout *layout = new QHBoxLayout();
+        layout->addWidget(new QLabel(tr("Fit tolerance"), this));
+        fitEdit = new Gui::PrefQuantitySpinBox(this);
+        fitEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/ProfileFit"));
+        fitEdit->bind(pcSketchBased->Fit);
+        fitEdit->setUnit(Base::Unit::Length);
+        fitEdit->setKeyboardTracking(false);
+        fitEdit->setToolTip(QApplication::translate("Property", pcSketchBased->Fit.getDocumentation()));
+        layout->addWidget(fitEdit);
+        connect(fitEdit, SIGNAL(valueChanged(double)), this, SLOT(onFitChanged(double)));
+        boxLayout->addLayout(layout);
 
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->addWidget(new QLabel(tr("Fit tolerance"), this));
-    fitEdit = new Gui::PrefQuantitySpinBox(this);
-    fitEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/ProfileFit"));
-    fitEdit->bind(pcSketchBased->Fit);
-    fitEdit->setUnit(Base::Unit::Length);
-    fitEdit->setKeyboardTracking(false);
-    fitEdit->setToolTip(QApplication::translate("Property", pcSketchBased->Fit.getDocumentation()));
-    layout->addWidget(fitEdit);
-    connect(fitEdit, SIGNAL(valueChanged(double)), this, SLOT(onFitChanged(double)));
-    boxLayout->addLayout(layout);
+        layout = new QHBoxLayout();
+        layout->addWidget(new QLabel(tr("Fit join type")));
+        fitJoinType = new QComboBox(this);
+        for (int i=0;;++i) {
+            const char * type = Part::Offset::JoinEnums[i];
+            if (!type)
+                break;
+            fitJoinType->addItem(tr(type));
+        }
+        connect(fitJoinType, SIGNAL(currentIndexChanged(int)), this, SLOT(onFitJoinChanged(int)));
+        layout->addWidget(fitJoinType);
+        boxLayout->addLayout(layout);
 
-    layout = new QHBoxLayout();
-    layout->addWidget(new QLabel(tr("Fit join type")));
-    fitJoinType = new QComboBox(this);
-    for (int i=0;;++i) {
-        const char * type = Part::Offset::JoinEnums[i];
-        if (!type)
-            break;
-        fitJoinType->addItem(tr(type));
+        layout = new QHBoxLayout();
+        layout->addWidget(new QLabel(tr("Inner fit"), this));
+        innerFitEdit = new Gui::PrefQuantitySpinBox(this);
+        innerFitEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/ProfileInnerFit"));
+        innerFitEdit->bind(pcSketchBased->InnerFit);
+        innerFitEdit->setUnit(Base::Unit::Length);
+        innerFitEdit->setKeyboardTracking(false);
+        innerFitEdit->setToolTip(QApplication::translate(
+                    "Property", pcSketchBased->InnerFit.getDocumentation()));
+        layout->addWidget(innerFitEdit);
+        connect(innerFitEdit, SIGNAL(valueChanged(double)), this, SLOT(onInnerFitChanged(double)));
+        boxLayout->addLayout(layout);
+
+        layout = new QHBoxLayout();
+        layout->addWidget(new QLabel(tr("Inner fit join type")));
+        innerFitJoinType = new QComboBox(this);
+        for (int i=0;;++i) {
+            const char * type = Part::Offset::JoinEnums[i];
+            if (!type)
+                break;
+            innerFitJoinType->addItem(tr(type));
+        }
+        connect(innerFitJoinType, SIGNAL(currentIndexChanged(int)), this, SLOT(onInnerFitJoinChanged(int)));
+        layout->addWidget(innerFitJoinType);
+        boxLayout->addLayout(layout);
     }
-    connect(fitJoinType, SIGNAL(currentIndexChanged(int)), this, SLOT(onFitJoinChanged(int)));
-    layout->addWidget(fitJoinType);
-    boxLayout->addLayout(layout);
-
-    layout = new QHBoxLayout();
-    layout->addWidget(new QLabel(tr("Inner fit"), this));
-    innerFitEdit = new Gui::PrefQuantitySpinBox(this);
-    innerFitEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/ProfileInnerFit"));
-    innerFitEdit->bind(pcSketchBased->InnerFit);
-    innerFitEdit->setUnit(Base::Unit::Length);
-    innerFitEdit->setKeyboardTracking(false);
-    innerFitEdit->setToolTip(QApplication::translate(
-                "Property", pcSketchBased->InnerFit.getDocumentation()));
-    layout->addWidget(innerFitEdit);
-    connect(innerFitEdit, SIGNAL(valueChanged(double)), this, SLOT(onInnerFitChanged(double)));
-    boxLayout->addLayout(layout);
-
-    layout = new QHBoxLayout();
-    layout->addWidget(new QLabel(tr("Inner fit join type")));
-    innerFitJoinType = new QComboBox(this);
-    for (int i=0;;++i) {
-        const char * type = Part::Offset::JoinEnums[i];
-        if (!type)
-            break;
-        innerFitJoinType->addItem(tr(type));
-    }
-    connect(innerFitJoinType, SIGNAL(currentIndexChanged(int)), this, SLOT(onInnerFitJoinChanged(int)));
-    layout->addWidget(innerFitJoinType);
-    boxLayout->addLayout(layout);
 
     addUpdateViewCheckBox(widget);
     _refresh();

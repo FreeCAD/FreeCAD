@@ -670,6 +670,12 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(ThreadFit, (0L), "Hole", App::Prop_None, "Clearance hole fit");
     ThreadFit.setEnums(ClearanceMetricEnums);
 
+    // Hide the default ProfileBased::Fit as the hole feature has its own processing
+    this->Fit.setStatus(App::Property::Hidden, true);
+    this->InnerFit.setStatus(App::Property::Hidden, true);
+    this->FitJoin.setStatus(App::Property::Hidden, true);
+    this->InnerFitJoin.setStatus(App::Property::Hidden, true);
+
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
