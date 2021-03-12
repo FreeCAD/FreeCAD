@@ -4124,7 +4124,8 @@ StdCmdDockOverlayMouseTransparent::StdCmdDockOverlayMouseTransparent()
 
 void StdCmdDockOverlayMouseTransparent::activated(int iMsg)
 {
-    auto checked = !!iMsg;
+    (void)iMsg;
+    bool checked = !OverlayManager::instance()->isMouseTransparent();
     OverlayManager::instance()->setMouseTransparent(checked);
     if(_pcAction)
         _pcAction->setChecked(checked,true);
