@@ -502,33 +502,139 @@ class CGALFeature:
             raise ValueError
 
 def makeSurfaceVolume(filename):
-    import FreeCAD,Part
-    f1=open(filename)
-    coords=[]
-    miny=1
-    for line in f1.readlines():
-        sline=line.strip()
-        if sline and not sline.startswith('#'):
-            ycoord=len(coords)
-            lcoords=[]
-            for xcoord, num in enumerate(sline.split()):
-                fnum=float(num)
-                lcoords.append(FreeCAD.Vector(float(xcoord),float(ycoord),fnum))
-                miny=min(fnum,miny)
-            coords.append(lcoords)
-    s=Part.BSplineSurface()
-    s.interpolate(coords)
-    plane=Part.makePlane(len(coords[0])-1,len(coords)-1,FreeCAD.Vector(0,0,miny-1))
-    l1=Part.makeLine(plane.Vertexes[0].Point,s.value(0,0))
-    l2=Part.makeLine(plane.Vertexes[1].Point,s.value(1,0))
-    l3=Part.makeLine(plane.Vertexes[2].Point,s.value(0,1))
-    l4=Part.makeLine(plane.Vertexes[3].Point,s.value(1,1))
-    f0=plane.Faces[0]
-    f0.reverse()
-    f1=Part.Face(Part.Wire([plane.Edges[0],l1.Edges[0],s.vIso(0).toShape(),l2.Edges[0]]))
-    f2=Part.Face(Part.Wire([plane.Edges[1],l3.Edges[0],s.uIso(0).toShape(),l1.Edges[0]]))
-    f3=Part.Face(Part.Wire([plane.Edges[2],l4.Edges[0],s.vIso(1).toShape(),l3.Edges[0]]))
-    f4=Part.Face(Part.Wire([plane.Edges[3],l2.Edges[0],s.uIso(1).toShape(),l4.Edges[0]]))
-    f5=s.toShape().Faces[0]
-    solid=Part.Solid(Part.Shell([f0,f1,f2,f3,f4,f5]))
-    return solid,(len(coords[0])-1)/2.0,(len(coords)-1)/2.0
+    import FreeCAD,Part,sys
+    with open(filename) as f1:
+        coords = []
+        min_z = sys.float_info.max
+        for line in f1.readlines():
+            sline=line.strip()
+            if sline and not sline.startswith('#'):
+                ycoord=len(coords)
+                lcoords=[]
+                for xcoord, num in enumerate(sline.split()):
+                    fnum=float(num)
+                    lcoords.append(FreeCAD.Vector(float(xcoord),float(ycoord),fnum))
+                    min_z = min(fnum,min_z)
+                coords.append(lcoords)
+                
+        num_rows = len(coords)
+        num_cols = len(coords[0])
+
+        # OpenSCAD does not spline this surface, so neither do we: just create a bunch of faces, 
+        # using four triangles per quadrilateral
+        faces = []
+        for row in range(num_rows-1):
+            for col in range(num_cols-1):
+                a = coords[row+0][col+0]
+                b = coords[row+0][col+1]
+                c = coords[row+1][col+1]
+                d = coords[row+1][col+0]
+                centroid = 0.25 * (a + b + c + d)
+                ab = Part.makeLine(a,b)
+                bc = Part.makeLine(b,c)
+                cd = Part.makeLine(c,d)
+                da = Part.makeLine(d,a)
+
+                diag_a = Part.makeLine(a, centroid)
+                diag_b = Part.makeLine(b, centroid)
+                diag_c = Part.makeLine(c, centroid)
+                diag_d = Part.makeLine(d, centroid)
+
+                wire1 = Part.Wire([ab,diag_a,diag_b])
+                wire2 = Part.Wire([bc,diag_b,diag_c])
+                wire3 = Part.Wire([cd,diag_c,diag_d])
+                wire4 = Part.Wire([da,diag_d,diag_a])
+
+                try:
+                    face = Part.Face(wire1)
+                    faces.append(face)
+                    face = Part.Face(wire2)
+                    faces.append(face)
+                    face = Part.Face(wire3)
+                    faces.append(face)
+                    face = Part.Face(wire4)
+                    faces.append(face)
+                except Exception:
+                    print ("Failed to create the face from {},{},{},{}".format(coords[row+0][col+0],\
+                        coords[row+0][col+1],coords[row+1][col+1],coords[row+1][col+0]))
+        
+        last_row = num_rows-1
+        last_col = num_cols-1
+
+        # Create the face to close off the y-min border: OpenSCAD places the lower surface of the shell
+        # at 1 unit below the lowest coordinate in the surface
+        lines = []
+        corner1 = FreeCAD.Vector(coords[0][0].x, coords[0][0].y, min_z-1)
+        lines.append (Part.makeLine(corner1,coords[0][0]))
+        for col in range(num_cols-1):
+            a = coords[0][col]
+            b = coords[0][col+1]
+            lines.append (Part.makeLine(a, b))
+        corner2 = FreeCAD.Vector(coords[0][last_col].x, coords[0][last_col].y, min_z-1)
+        lines.append (Part.makeLine(corner2,coords[0][last_col]))
+        lines.append (Part.makeLine(corner1,corner2))
+        wire = Part.Wire(lines)
+        face = Part.Face(wire)
+        faces.append(face)
+        
+        # Create the face to close off the y-max border
+        lines = []
+        corner1 = FreeCAD.Vector(coords[last_row][0].x, coords[last_row][0].y, min_z-1)
+        lines.append (Part.makeLine(corner1,coords[last_row][0]))
+        for col in range(num_cols-1):
+            a = coords[last_row][col]
+            b = coords[last_row][col+1]
+            lines.append (Part.makeLine(a, b))
+        corner2 = FreeCAD.Vector(coords[last_row][last_col].x, coords[last_row][last_col].y, min_z-1)
+        lines.append (Part.makeLine(corner2,coords[last_row][last_col]))
+        lines.append (Part.makeLine(corner1,corner2))
+        wire = Part.Wire(lines)
+        face = Part.Face(wire)
+        faces.append(face)
+
+         # Create the face to close off the x-min border
+        lines = []
+        corner1 = FreeCAD.Vector(coords[0][0].x, coords[0][0].y, min_z-1)
+        lines.append (Part.makeLine(corner1,coords[0][0]))
+        for row in range(num_rows-1):
+            a = coords[row][0]
+            b = coords[row+1][0]
+            lines.append (Part.makeLine(a, b))
+        corner2 = FreeCAD.Vector(coords[last_row][0].x, coords[last_row][0].y, min_z-1)
+        lines.append (Part.makeLine(corner2,coords[last_row][0]))
+        lines.append (Part.makeLine(corner1,corner2))
+        wire = Part.Wire(lines)
+        face = Part.Face(wire)
+        faces.append(face)
+
+         # Create the face to close off the x-max border
+        lines = []
+        corner1 = FreeCAD.Vector(coords[0][last_col].x, coords[0][last_col].y, min_z-1)
+        lines.append (Part.makeLine(corner1,coords[0][last_col]))
+        for row in range(num_rows-1):
+            a = coords[row][last_col]
+            b = coords[row+1][last_col]
+            lines.append (Part.makeLine(a, b))
+        corner2 = FreeCAD.Vector(coords[last_row][last_col].x, coords[last_row][last_col].y, min_z-1)
+        lines.append (Part.makeLine(corner2,coords[last_row][last_col]))
+        lines.append (Part.makeLine(corner1,corner2))
+        wire = Part.Wire(lines)
+        face = Part.Face(wire)
+        faces.append(face)
+
+        # Create a bottom surface to close off the shell
+        a = FreeCAD.Vector(coords[0][0].x, coords[0][0].y, min_z-1)
+        b = FreeCAD.Vector(coords[0][last_col].x, coords[0][last_col].y, min_z-1)
+        c = FreeCAD.Vector(coords[last_row][last_col].x, coords[last_row][last_col].y, min_z-1)
+        d = FreeCAD.Vector(coords[last_row][0].x, coords[last_row][0].y, min_z-1)
+        ab = Part.makeLine(a,b)
+        bc = Part.makeLine(b,c)
+        cd = Part.makeLine(c,d)
+        da = Part.makeLine(d,a)
+        wire = Part.Wire([ab,bc,cd,da])
+        face = Part.Face(wire)
+        faces.append(face)
+
+        s = Part.Shell(faces)
+        solid = Part.Solid(s)
+        return solid,last_col,last_row
