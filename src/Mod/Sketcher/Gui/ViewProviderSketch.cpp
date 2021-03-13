@@ -3692,7 +3692,14 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     // Constants to help create constraint icons
     QString joinStr = QString::fromLatin1(", ");
 
-    QImage icon = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(edit->constraintIconSize,edit->constraintIconSize)).toImage();
+    QPixmap pxMap;
+    std::stringstream constraintName;
+    constraintName << type.toLatin1().data() << edit->constraintIconSize; // allow resizing by embedding size
+    if (! Gui::BitmapFactory().findPixmapInCache(constraintName.str().c_str(), pxMap)) {
+        pxMap = Gui::BitmapFactory().pixmapFromSvg(type.toLatin1().data(),QSizeF(edit->constraintIconSize,edit->constraintIconSize));
+        Gui::BitmapFactory().addPixmapToCache(constraintName.str().c_str(), pxMap); // Cache for speed, avoiding pixmapFromSvg
+    }
+    QImage icon = pxMap.toImage();
 
     QFont font = QApplication::font();
     font.setPixelSize(static_cast<int>(1.0 * edit->constraintIconSize));
@@ -3812,14 +3819,14 @@ void ViewProviderSketch::OnChange(Base::Subject<const char*> &rCaller, const cha
 
 void ViewProviderSketch::subscribeToParameters()
 {
-     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-     hGrp->Attach(this);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    hGrp->Attach(this);
 }
 
 void ViewProviderSketch::unsubscribeToParameters()
 {
-     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-     hGrp->Detach(this);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    hGrp->Detach(this);
 }
 
 void ViewProviderSketch::updateInventorNodeSizes()
