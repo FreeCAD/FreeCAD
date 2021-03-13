@@ -391,6 +391,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         self.horiz.append(face)
                         self.exts.append(face)
 
+                # Place all self.horiz faces into same working plane
+                for h in self.horiz:
+                    h.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - h.BoundBox.ZMin))
+
                 # check all faces and see if they are touching/overlapping and combine those into a compound
                 self.horizontal = [] # pylint: disable=attribute-defined-outside-init
                 for shape in PathGeom.combineConnectedShapes(self.horiz):
