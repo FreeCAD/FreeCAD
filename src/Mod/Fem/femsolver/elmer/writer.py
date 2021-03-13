@@ -650,6 +650,8 @@ class Writer(object):
                 else self._getAllBodies()
             )
             for name in (n for n in refs if n in bodies):
+                # density has to be written even without self weight constraint
+                # https://forum.freecadweb.org/viewtopic.php?f=18&t=56590#p487117
                 self._material(
                     name, "Density",
                     self._getDensity(m)
