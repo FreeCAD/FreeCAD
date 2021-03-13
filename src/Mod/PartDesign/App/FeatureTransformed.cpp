@@ -350,15 +350,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             }
             current = mkBool->Shape();
         }
-        try {} catch (Standard_Failure& e) {
-            // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
-            // fuse operation of the transformation result will also fail
-
-            std::string msg("Transformation: Intersection check failed");
-            if (e.GetMessageString() != NULL)
-                msg += std::string(": '") + e.GetMessageString() + "'";
-            return new App::DocumentObjectExecReturn(msg.c_str());
-        }
 
         support = current; // Use result of this operation for fuse/cut of next original
     }
