@@ -379,8 +379,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         else:
                             face.translate(FreeCAD.Vector(0, 0, vFinDep - face.BoundBox.ZMin))
                             self.horiz.append(face)
-                            msg = translate('Path', 'Verify final depth of pocket shaped by vertical faces.')
-                            PathLog.warning(msg)
 
                 # add faces for extensions
                 self.exts = [] # pylint: disable=attribute-defined-outside-init
