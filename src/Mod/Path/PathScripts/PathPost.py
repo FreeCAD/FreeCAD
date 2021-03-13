@@ -113,7 +113,7 @@ def resolveFileName(job):
 
         if openDialog:
             foo = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), "Output File", filename)
-            if foo:
+            if foo[0]:
                 filename = foo[0]
             else:
                 filename = None
@@ -416,6 +416,8 @@ class CommandPathPost:
         if split:
             for slist in postlist:
                 (fail, rc, filename) = self.exportObjectsWith(slist, job)
+                if fail:
+                    break
         else:
             finalpostlist = [item for slist in postlist for item in slist]
             (fail, rc, filename) = self.exportObjectsWith(finalpostlist, job)
