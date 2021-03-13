@@ -112,7 +112,6 @@ def setup(doc=None, solvertype="elmer"):
     # setup box static, add a fixed, force and a pressure constraint
 
     doc = setup_base(doc, solvertype)
-    geom_obj = doc.Box
     analysis = doc.Analysis
 
     # solver
@@ -129,7 +128,7 @@ def setup(doc=None, solvertype="elmer"):
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         )[0]
-        eq_electrostatic = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        ObjectsFem.makeEquationElasticity(doc, solver_object)
     else:
         FreeCAD.Console.PrintWarning(
             "Not known or not supported solver type: {}. "

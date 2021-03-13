@@ -636,7 +636,6 @@ class Writer(object):
         return None
 
     def _handleElasticityMaterial(self, bodies):
-        gravObj = self._getSingleMember("Fem::ConstraintSelfWeight")
         tempObj = self._getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
             refTemp = self._getFromUi(tempObj.initialTemperature, "K", "O")

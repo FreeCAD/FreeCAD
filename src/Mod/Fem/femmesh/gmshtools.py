@@ -708,17 +708,18 @@ class GmshTools():
             geo.write("Mesh.CharacteristicLengthMin = " + str(0) + ";\n")
         else:
             geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
-        if hasattr(self.mesh_obj, "MeshSizeFromCurvature"):   
+        if hasattr(self.mesh_obj, "MeshSizeFromCurvature"):
             geo.write(
-                "Mesh.MeshSizeFromCurvature = " + str(self.mesh_obj.MeshSizeFromCurvature) +
+                "Mesh.MeshSizeFromCurvature = {}"
                 "; // number of elements per 2*pi radians, 0 to deactivate\n"
+                .format(self.mesh_obj.MeshSizeFromCurvature)
             )
         geo.write("\n")
         if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
             geo.write("// other mesh options\n")
             geo.write("Mesh.RecombineAll = 1;\n")
             geo.write("\n")
-            
+
         geo.write("// optimize the mesh\n")
         # Gmsh tetra optimizer
         if hasattr(self.mesh_obj, "OptimizeStd") and self.mesh_obj.OptimizeStd is True:
@@ -742,7 +743,7 @@ class GmshTools():
                 "parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
             )
         geo.write("\n")
-        
+
         geo.write("// mesh order\n")
         geo.write("Mesh.ElementOrder = " + self.order + ";\n")
         if self.order == "2":

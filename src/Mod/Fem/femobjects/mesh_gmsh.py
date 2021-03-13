@@ -220,7 +220,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "number of elements per 2*pi radians, 0 to deactivate"
             )
             obj.MeshSizeFromCurvature = (12, 0, 10000, 1)
-            
+
         if not hasattr(obj, "Algorithm2D"):
             obj.addProperty(
                 "App::PropertyEnumeration",

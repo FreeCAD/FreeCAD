@@ -274,24 +274,26 @@ def getBoundBoxOfAllDocumentShapes(doc):
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=52920
     for o in doc.Objects:
 
-        FreeCAD.Console.PrintMessage(":\n")                                     # debug only
+        FreeCAD.Console.PrintMessage(":\n")  # debug only
         bb = None
 
         try:
-            FreeCAD.Console.PrintMessage("trying: " + str(o.Label) + ": getPropertyOfGeometry()\n")   # debug only
+            FreeCAD.Console.PrintMessage(
+                "trying: {}: getPropertyOfGeometry()\n".format(o.Label)
+            )  # debug only
             bb = o.getPropertyOfGeometry().BoundBox
-            FreeCAD.Console.PrintMessage(str(bb) + "\n")                        # debug only
+            FreeCAD.Console.PrintMessage("{}\n".format(bb))  # debug only
         except Exception:
-            FreeCAD.Console.PrintMessage("exception \n")                        # debug only
+            FreeCAD.Console.PrintMessage("exception \n")  # debug only
             pass
 
-        if bb == None:
+        if bb is None:
             try:
-                FreeCAD.Console.PrintMessage("trying: " + str(o.Label) + ": FemMesh\n")   # debug only
+                FreeCAD.Console.PrintMessage("trying: {}: FemMesh\n".format(o.Label))  # debug only
                 bb = o.FemMesh.BoundBox
-                FreeCAD.Console.PrintMessage(str(bb) + "\n")                    # debug only
+                FreeCAD.Console.PrintMessage("{}\n".format(bb))  # debug only
             except Exception:
-                FreeCAD.Console.PrintMessage("exception \n")                    # debug only
+                FreeCAD.Console.PrintMessage("exception \n")  # debug only
                 pass
 
         if bb:
