@@ -650,11 +650,10 @@ class Writer(object):
                 else self._getAllBodies()
             )
             for name in (n for n in refs if n in bodies):
-                if gravObj:
-                    self._material(
-                        name, "Density",
-                        self._getDensity(m)
-                    )
+                self._material(
+                    name, "Density",
+                    self._getDensity(m)
+                )
                 self._material(
                     name, "Youngs Modulus",
                     self._getYoungsModulus(m)
