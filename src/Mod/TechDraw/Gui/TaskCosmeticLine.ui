@@ -89,6 +89,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbx1">
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -96,8 +103,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbx1">
+     <item row="1" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsby1">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>
@@ -107,13 +114,6 @@
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Z:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsby1">
-       <property name="unit" stdset="0">
-        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -155,17 +155,17 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,4">
-     <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbx2">
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>X:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbx2">
+       <property name="unit" stdset="0">
+        <string notr="true"/>
        </property>
       </widget>
      </item>

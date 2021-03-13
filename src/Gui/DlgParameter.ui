@@ -29,6 +29,16 @@
    <property name="spacing">
     <number>6</number>
    </property>
+   <item row="0" column="0">
+    <widget class="QComboBox" name="parameterSet"/>
+   </item>
+  <item row="1" column="0">
+    <widget class="QSplitter" name="splitter3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="0">
     <layout class="QHBoxLayout">
      <property name="margin">
@@ -127,17 +137,7 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QSplitter" name="splitter3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QComboBox" name="parameterSet"/>
-   </item>
-  </layout>
+   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

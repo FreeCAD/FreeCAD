@@ -39,6 +39,13 @@
         </property>
         <item>
          <layout class="QGridLayout" name="gl_01">
+          <item row="0" column="0">
+           <widget class="QLabel" name="l_gmsh_binary_std">
+            <property name="text">
+             <string>gmsh</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2">
            <widget class="Gui::PrefCheckBox" name="cb_gmsh_binary_std">
             <property name="text">
@@ -52,13 +59,6 @@
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Gmsh</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="l_gmsh_binary_std">
-            <property name="text">
-             <string>gmsh</string>
             </property>
            </widget>
           </item>

@@ -185,7 +185,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QWidget" name="paramImageParam" native="true">
+       <widget class="QWidget" name="paramImageParam">
         <layout class="QFormLayout" name="formLayout_3">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::ExpandingFieldsGrow</enum>

@@ -23,27 +23,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pb_Geometry">
-       <property name="text">
-        <string>Geometry</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="pb_Center">
-       <property name="text">
-        <string>CenterLine</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="pb_Cosmetic">
-       <property name="text">
-        <string>Cosmetic</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QLabel" name="l_All">
        <property name="text">
@@ -51,6 +30,13 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pb_Geometry">
+       <property name="text">
+        <string>Geometry</string>
        </property>
       </widget>
      </item>
@@ -64,6 +50,13 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pb_Cosmetic">
+       <property name="text">
+        <string>Cosmetic</string>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="1">
       <widget class="QLabel" name="l_Cosmetic">
        <property name="text">
@@ -71,6 +64,13 @@
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pb_Center">
+       <property name="text">
+        <string>CenterLine</string>
        </property>
       </widget>
      </item>

@@ -14,13 +14,6 @@
    <string>Transversal areas curve</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QTextEdit" name="OutputData">
-     <property name="textInteractionFlags">
-      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
@@ -77,7 +70,14 @@
      </item>
     </layout>
    </item>
-  </layout>
+  <item row="1" column="0">
+    <widget class="QTextEdit" name="OutputData">
+     <property name="textInteractionFlags">
+      <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+     </property>
+    </widget>
+   </item>
+   </layout>
  </widget>
  <customwidgets>
   <customwidget>

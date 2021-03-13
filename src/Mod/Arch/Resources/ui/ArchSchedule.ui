@@ -129,21 +129,6 @@ Leave blank to use all objects from the document</string>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QPushButton" name="buttonDel">
-       <property name="toolTip">
-        <string>Deletes the selected line</string>
-       </property>
-       <property name="text">
-        <string>Del row</string>
-       </property>
-       <property name="icon">
-        <iconset theme="remove">
-         <normaloff/>
-        </iconset>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="buttonAdd">
        <property name="toolTip">
@@ -154,6 +139,21 @@ Leave blank to use all objects from the document</string>
        </property>
        <property name="icon">
         <iconset theme="add">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="buttonDel">
+       <property name="toolTip">
+        <string>Deletes the selected line</string>
+       </property>
+       <property name="text">
+        <string>Del row</string>
+       </property>
+       <property name="icon">
+        <iconset theme="remove">
          <normaloff/>
         </iconset>
        </property>

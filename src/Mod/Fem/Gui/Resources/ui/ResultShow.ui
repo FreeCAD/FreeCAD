@@ -24,13 +24,6 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="1" column="0">
-           <widget class="QRadioButton" name="rb_abs_displacement">
-            <property name="text">
-             <string>Displacement Magnitude</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0">
            <widget class="QRadioButton" name="rb_none">
             <property name="text">
@@ -41,38 +34,10 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QRadioButton" name="rb_y_displacement">
+          <item row="1" column="0">
+           <widget class="QRadioButton" name="rb_abs_displacement">
             <property name="text">
-             <string>Displacement Y</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QRadioButton" name="rb_x_displacement">
-            <property name="text">
-             <string>Displacement X</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QRadioButton" name="rb_peeq">
-            <property name="text">
-             <string>Peeq</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QRadioButton" name="rb_z_displacement">
-            <property name="text">
-             <string>Displacement Z</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QRadioButton" name="rb_temperature">
-            <property name="text">
-             <string>Temperature</string>
+             <string>Displacement Magnitude</string>
             </property>
            </widget>
           </item>
@@ -83,10 +48,24 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="0">
+           <widget class="QRadioButton" name="rb_x_displacement">
+            <property name="text">
+             <string>Displacement X</string>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="1">
            <widget class="QRadioButton" name="rb_maxprin">
             <property name="text">
              <string>Max Principal Stress</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QRadioButton" name="rb_y_displacement">
+            <property name="text">
+             <string>Displacement Y</string>
             </property>
            </widget>
           </item>
@@ -97,6 +76,13 @@
             </property>
            </widget>
           </item>
+          <item row="5" column="0">
+           <widget class="QRadioButton" name="rb_z_displacement">
+            <property name="text">
+             <string>Displacement Z</string>
+            </property>
+           </widget>
+          </item>
           <item row="5" column="1">
            <widget class="QRadioButton" name="rb_max_shear_stress">
             <property name="text">
@@ -104,10 +90,24 @@
             </property>
            </widget>
           </item>
+          <item row="7" column="0">
+           <widget class="QRadioButton" name="rb_peeq">
+            <property name="text">
+             <string>Peeq</string>
+            </property>
+           </widget>
+          </item>
           <item row="7" column="1">
            <widget class="QRadioButton" name="rb_massflowrate">
             <property name="text">
              <string>Mass Flow Rate</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QRadioButton" name="rb_temperature">
+            <property name="text">
+             <string>Temperature</string>
             </property>
            </widget>
           </item>
