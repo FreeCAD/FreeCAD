@@ -5880,7 +5880,7 @@ Restart:
     }
 
     // Avoids unneeded calls to pixmapFromSvg
-    if(Mode==STATUS_NONE) {
+    if(Mode==STATUS_NONE || Mode==STATUS_SKETCH_UseHandler) {
        this->drawConstraintIcons();
        this->updateColor();
     }
