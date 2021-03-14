@@ -82,6 +82,11 @@ class _TaskPanel:
             QtCore.SIGNAL("timeout()"),
             self.update_timer_text
         )
+        QtCore.QObject.connect(
+            self.form.pb_get_gmsh_version,
+            QtCore.SIGNAL("clicked()"),
+            self.get_gmsh_version
+        )
 
         self.form.cb_dimension.addItems(
             mesh_gmsh.MeshGmsh.known_element_dimensions
@@ -109,6 +114,7 @@ class _TaskPanel:
     def reject(self):
         self.mesh_obj.ViewObject.Document.resetEdit()
         self.mesh_obj.Document.recompute()
+        self.Timer.stop()
         return True
 
     def clicked(self, button):
@@ -162,6 +168,15 @@ class _TaskPanel:
         self.form.cb_dimension.setCurrentIndex(index)
         self.dimension = str(self.form.cb_dimension.itemText(index))  # form returns unicode
 
+    def get_gmsh_version(self):
+        from femmesh import gmshtools
+        version, full_message = gmshtools.GmshTools(self.mesh_obj, self.analysis).get_gmsh_version()
+        QtGui.QMessageBox.information(
+            None,
+            "Gmsh - Information",
+            full_message
+        )
+
     def run_gmsh(self):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         part = self.mesh_obj.Part
@@ -202,7 +217,6 @@ class _TaskPanel:
         try:
             error = gmsh_mesh.create_mesh()
         except Exception:
-            import sys
             error = sys.exc_info()[1]
             FreeCAD.Console.PrintMessage(
                 "Unexpected error when creating mesh: {}\n"
