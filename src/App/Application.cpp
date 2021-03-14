@@ -2842,7 +2842,7 @@ void Application::ExtractUserPath()
     appData += PATHSEP;
     appData += "Library";
     appData += PATHSEP;
-    appData += "Preferences";
+    appData += "Application Support";
     Base::FileInfo fi(appData.c_str());
     if (!fi.exists()) {
         // This should never ever happen
