@@ -1209,10 +1209,10 @@ QTimeEdit,
 QDateEdit,
 QDateTimeEdit {
     color: #bebebe;
-    background-color: #232932;
+    background-color: #1E2226;
     selection-color: white;
     selection-background-color: #65A2E5;
-    border: 1px solid #232932;
+    border: 1px solid #1E2226;
     border-radius: 3px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
     min-height: 20px; /* important to be a pair number in order to up/down buttons to be divisible by two (if not set could create a blank line in Ubuntu. Its downside is that it's needed to reset it (min-width: 0px) on following elements that can't have it such as fields inside QToolBar and inside QTreeView (Property editor) */
