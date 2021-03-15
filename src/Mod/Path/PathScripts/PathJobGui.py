@@ -60,7 +60,7 @@ def translate(context, text, disambig=None):
 
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def _OpenCloseResourceEditor(obj, vobj, edit):
@@ -572,6 +572,7 @@ class TaskPanel:
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
         self.template = PathJobDlg.JobTemplateExport(self.obj, self.form.jobBox.widget(1))
+        self.name = self.obj.Name
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText('#')
@@ -623,12 +624,14 @@ class TaskPanel:
         self.setupGlobal.reject()
         self.setupOps.reject()
         FreeCAD.ActiveDocument.abortTransaction()
-        if self.deleteOnReject:
+        if self.deleteOnReject and FreeCAD.ActiveDocument.getObject(self.name):
             PathLog.info("Uncreate Job")
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
             if self.obj.ViewObject.Proxy.onDelete(self.obj.ViewObject, None):
                 FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            PathLog.track(self.name, FreeCAD.ActiveDocument.getObject(self.name))
         self.cleanup(resetEdit)
         return True
 
