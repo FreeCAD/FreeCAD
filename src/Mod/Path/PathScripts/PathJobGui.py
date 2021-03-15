@@ -400,7 +400,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         self.form.stockExtYpos.textChanged.connect(self.checkYpos)
         self.form.stockExtZpos.textChanged.connect(self.checkZpos)
         if hasattr(self.form, 'linkStockAndModel'):
-            self.form.linkStockAndModel.setChecked(True)
+            self.form.linkStockAndModel.setChecked(False)
 
     def checkXpos(self):
         self.trackXpos = self.form.stockExtXneg.text() == self.form.stockExtXpos.text()
@@ -631,7 +631,7 @@ class TaskPanel:
                 FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         else:
-            PathLog.track(self.name, FreeCAD.ActiveDocument.getObject(self.name))
+            PathLog.track(self.name, self.deleteOnReject, FreeCAD.ActiveDocument.getObject(self.name))
         self.cleanup(resetEdit)
         return True
 
