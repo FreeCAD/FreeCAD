@@ -232,10 +232,35 @@ polyhedron(
         self.assertAlmostEqual (object.Shape.Volume, 1963.4954, 3)
         FreeCAD.closeDocument(doc.Name)
 
-        doc = self.utility_create_scad("translate([0, 30, 0]) rotate_extrude($fn = 80) polygon( points=[[0,0],[8,4],[4,8],[4,12],[12,16],[0,20]] );", "rotate_extrude_no_hole")
+        doc = self.utility_create_scad("translate([0, 30, 0]) rotate_extrude() polygon( points=[[0,0],[8,4],[4,8],[4,12],[12,16],[0,20]] );", "rotate_extrude_no_hole")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 2412.7431, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+        # Bug #4353 - https://tracker.freecadweb.org/view.php?id=4353
+        doc = self.utility_create_scad("rotate_extrude($fn=4, angle=180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_low_fn")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 9.0, 5)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("rotate_extrude($fn=4, angle=-180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_low_fn_negative_angle")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 9.0, 5)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("rotate_extrude(angle=180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_angle")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 4.5*math.pi, 5)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("rotate_extrude(angle=-180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_negative_angle")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 4.5*math.pi, 5)
         FreeCAD.closeDocument(doc.Name)
        
     def test_import_linear_extrude(self):

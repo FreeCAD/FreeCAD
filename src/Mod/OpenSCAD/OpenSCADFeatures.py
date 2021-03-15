@@ -389,8 +389,8 @@ class Frustum:
 class Twist:
     def __init__(self, obj,child=None,h=1.0,angle=0.0,scale=[1.0,1.0]):
         obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object that must be tranfsformed")
-        obj.addProperty("App::PropertyAngle","Angle","Base","Twist angle") #degree or rad
+                        "The base object that must be transformed")
+        obj.addProperty("App::PropertyAngle","Angle","Base","Twist Angle in degrees") #degree or rad
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the Extrusion")
         obj.addProperty("App::PropertyFloatList","Scale","Base","Scale to apply during the Extrusion")
 
@@ -455,10 +455,93 @@ class Twist:
                     solids.append(Part.Compound(faces))
                 fp.Shape=Part.Compound(solids)
 
+
+
+class PrismaticToroid:
+    def __init__(self, obj,child=None,angle=360.0,n=3):
+        obj.addProperty("App::PropertyLink","Base","Base",
+                        "The 2D face that will be swept")
+        obj.addProperty("App::PropertyAngle","Angle","Base","Angle to sweep through")
+        obj.addProperty("App::PropertyInteger","Segments","Base","Number of segments per 360° (OpenSCAD's \"$fn\")")
+
+        obj.Base = child
+        obj.Angle =  angle
+        obj.Segments = n
+        obj.Proxy = self
+
+    def execute(self, fp):
+        self.createGeometry(fp)
+
+    def onChanged(self, fp, prop):
+        if prop in ["Angle","Segments"]:
+            self.createGeometry(fp)
+
+    def createGeometry(self,fp):
+        import FreeCAD,Part,math,sys
+        if fp.Base and fp.Angle and fp.Segments and fp.Base.Shape.isValid():
+            solids = []
+            min_sweep_angle_per_segment = 360.0 / fp.Segments # This is how OpenSCAD defines $fn
+            num_segments = math.floor(abs(fp.Angle) / min_sweep_angle_per_segment)
+            num_ribs = num_segments + 1
+            sweep_angle_per_segment = fp.Angle / num_segments # Always >= min_sweep_angle_per_segment
+
+            # From the OpenSCAD documentation:
+            # The 2D shape must lie completely on either the right (recommended) or the left side of the Y-axis. 
+            # More precisely speaking, every vertex of the shape must have either x >= 0 or x <= 0. If the shape 
+            # spans the X axis a warning appears in the console windows and the rotate_extrude() is ignored. If 
+            # the 2D shape touches the Y axis, i.e. at x=0, it must be a line that touches, not a point.
+
+            for start_face in fp.Base.Shape.Faces:
+                ribs = []
+                end_face = start_face
+                for rib in range(num_ribs):
+                    angle = rib * sweep_angle_per_segment
+                    intermediate_face = start_face.copy()
+                    face_transform = FreeCAD.Matrix()
+                    face_transform.rotateY (math.radians (angle))
+                    intermediate_face.transformShape (face_transform)
+                    if rib == num_ribs-1:
+                        end_face = intermediate_face
+
+                    edges = []
+                    for edge in intermediate_face.OuterWire.Edges:
+                        if edge.BoundBox.XMin != 0.0 or edge.BoundBox.XMax != 0.0:
+                            edges.append(edge)
+
+                    ribs.append(Part.Wire(edges))
+                    
+                faces = []
+                shell = Part.makeShellFromWires (ribs)
+                for face in shell.Faces:
+                    faces.append(face)
+
+                if abs(fp.Angle) < 360.0 and faces:
+                    if fp.Angle > 0:
+                        faces.append(start_face.reversed()) # Reversed so the normal faces out of the shell
+                        faces.append(end_face)
+                    else:
+                        faces.append(start_face) 
+                        faces.append(end_face.reversed()) # Reversed so the normal faces out of the shell
+
+                try:
+                    shell = Part.makeShell(faces)
+                    shell.sewShape()
+                    shell.fix(1e-7,1e-7,1e-7)
+                    clean_shell = shell.removeSplitter()
+                    solid = Part.makeSolid (clean_shell)
+                    if solid.Volume < 0:
+                        solid.reverse()
+                    print (f"Solid volume is {solid.Volume}")
+                    solids.append(solid)
+                except Part.OCCError:
+                    print ("Could not create solid: creating compound instead")
+                    solids.append(Part.Compound(faces))
+            fp.Shape = Part.Compound(solids)
+
 class OffsetShape:
     def __init__(self, obj,child=None,offset=1.0):
         obj.addProperty("App::PropertyLink","Base","Base",
-                        "The base object that must be tranfsformed")
+                        "The base object that must be transformed")
         obj.addProperty("App::PropertyDistance","Offset","Base","Offset outwards")
 
         obj.Base = child
@@ -469,7 +552,6 @@ class OffsetShape:
         self.createGeometry(fp)
 
     def onChanged(self, fp, prop):
-        pass
         if prop in ["Offset"]:
             self.createGeometry(fp)
 
