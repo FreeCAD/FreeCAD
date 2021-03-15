@@ -70,9 +70,9 @@ def sync_snap_toolbar_button(button, status):
             if action.objectName() == button:
                 action.setChecked(status)
                 if action.isChecked():
-                    action.setToolTip(a.toolTip().replace("OFF","ON"))
+                    action.setToolTip(action.toolTip().replace("OFF","ON"))
                 else:
-                    action.setToolTip(a.toolTip().replace("ON","OFF"))
+                    action.setToolTip(action.toolTip().replace("ON","OFF"))
                 return
 
 
