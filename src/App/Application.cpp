@@ -2875,64 +2875,43 @@ void Application::ExtractUserPath()
         // convert to UTF8
         WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
 
-        std::string appData = dest;
-        if (!userData.isEmpty()) {
+        boost::filesystem::path appData(dest);
+        if (!userData.isEmpty())
             appData = userData.toUtf8().data();
-        }
-        Base::FileInfo fi(appData.c_str());
-        if (!fi.exists()) {
+
+        if (!boost::filesystem::exists(appData)) {
             // This should never ever happen
-            std::stringstream str;
-            str << "Application data directory " << appData << " does not exist!";
-            throw Base::FileSystemError(str.str());
+            throw Base::FileSystemError("Application data directory " + appData.string() + " does not exist!");
         }
 
-        // In order to write to our data path we must create some directories first.
-        // If 'AppDataSkipVendor' is defined the value of 'ExeVendor' must not be part of
+        // If 'AppDataSkipVendor' is defined, the value of 'ExeVendor' must not be part of
         // the path.
         if (mConfig.find("AppDataSkipVendor") == mConfig.end()) {
-            appData += PATHSEP;
-            appData += mConfig["ExeVendor"];
-            fi.setFile(appData.c_str());
-            if (!fi.exists() && !Py_IsInitialized()) {
-                if (!fi.createDirectory()) {
-                    std::string error = "Cannot create directory ";
-                    error += appData;
-                    // Want more details on console
-                    std::cerr << error << std::endl;
-                    throw Base::FileSystemError(error);
-                }
-            }
+            appData /= mConfig["ExeVendor"];
         }
-
-        appData += PATHSEP;
-        appData += mConfig["ExeName"];
-        fi.setFile(appData.c_str());
-        if (!fi.exists() && !Py_IsInitialized()) {
-            if (!fi.createDirectory()) {
-                std::string error = "Cannot create directory ";
-                error += appData;
-                // Want more details on console
-                std::cerr << error << std::endl;
-                throw Base::FileSystemError(error);
-            }
-        }
+        appData /= mConfig["ExeName"];
 
         // Actually the name of the directory where the parameters are stored should be the name of
         // the application due to branding reasons.
-        appData += PATHSEP;
-        mConfig["UserAppData"] = appData;
+            
+        // In order to write to our data path, we must create some directories, first.
+        if (!boost::filesystem::exists(appData) && !Py_IsInitialized()) {
+            try {
+                boost::filesystem::create_directories(appData);
+            } catch (const boost::filesystem::filesystem_error& e) {
+                throw Base::FileSystemError("Could not create app data directories. Failed with: " + e.code().message());
+            }
+        }
+
+        mConfig["UserAppData"] = appData.string() + PATHSEP;
 
         // Create the default macro directory
-        fi.setFile(getUserMacroDir());
-        if (!fi.exists() && !Py_IsInitialized()) {
-            if (!fi.createDirectory()) {
-                // If the creation fails only write an error but do not raise an
-                // exception because it doesn't prevent FreeCAD from working
-                std::string error = "Cannot create directory ";
-                error += fi.fileName();
-                // Want more details on console
-                std::cerr << error << std::endl;
+        auto macroDir = getUserMacroDir();
+        if (!boost::filesystem::exists(macroDir) && !Py_IsInitialized()) {
+            try {
+                boost::filesystem::create_directories(macroDir);
+            } catch (const boost::filesystem::filesystem_error& e) {
+                throw Base::FileSystemError("Could not create macro directory. Failed with: " + e.code().message());
             }
         }
     }
