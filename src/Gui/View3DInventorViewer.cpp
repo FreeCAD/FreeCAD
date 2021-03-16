@@ -2017,6 +2017,21 @@ void View3DInventorViewer::Private::activate()
             pcShadowGroundGroup->addChild(pcShadowMaterial);
             pcShadowGroundGroup->addChild(pcShadowGroundCoords);
             pcShadowGroundGroup->addChild(pcShadowGroundStyle);
+
+            // We need to add an polygon offset for the group here because there
+            // is on in PartGui::ViewProviderPartExt, which means almost every
+            // shape in freecad is displayed an offset face rendering. If we
+            // don't add the same polygon offset here, the group may rendered on
+            // top of the shapes because of the depth offset.
+            //
+            // However, Coin3D bumpmap rendering
+            // (soshape_bumpmap::renderBumpMap()) in correctly uses a hard coded
+            // polygon offset as well, which will cause even more visual
+            // artifacts. The fix is simple in Coin3D is simple. Just get the
+            // current polygon offset and add some extra.
+            SoPolygonOffset* offset = new SoPolygonOffset();
+            pcShadowGroundGroup->addChild(offset);
+
             pcShadowGroundGroup->addChild(pcShadowGround);
 
             pcShadowGroundSwitch->addChild(pcShadowGroundGroup);
