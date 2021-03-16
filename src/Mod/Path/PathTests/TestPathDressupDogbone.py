@@ -143,3 +143,21 @@ class TestDressupDogbone(PathTestBase):
         self.assertEqual("(72.50, 72.50)", formatBoneLoc(locs[7]))
 
         FreeCAD.closeDocument("TestDressupDogbone")
+
+    def test03(self):
+        '''Verify no bone is inserted for straight move interrupted by plunge.'''
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 X0
+        G1 Y0
+        G1 X15
+        G1 Y10
+        G1 X10
+        G0 Z10
+        ''')
+        obj = TestFeature()
+        db = PathDressupDogbone.ObjectDressup(obj, base)
+        db.setup(obj, True)
+        db.execute(obj, False)
+        self.assertEqual(len(db.bones), 0)

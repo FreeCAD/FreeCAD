@@ -40,7 +40,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 LOG_MODULE = PathLog.thisModule()
 
 PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
-#PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+#PathLog.trackModule(LOG_MODULE)
 
 
 # Qt translation handling
@@ -227,6 +227,9 @@ class Chord (object):
     def asVector(self):
         return self.End - self.Start
 
+    def asDirection(self):
+        return self.asVector().normalize()
+
     def asLine(self):
         return Part.LineSegment(self.Start, self.End)
 
@@ -237,8 +240,9 @@ class Chord (object):
         return self.asVector().Length
 
     def getDirectionOfVector(self, B):
-        A = self.asVector()
+        A = self.asDirection()
         # if the 2 vectors are identical, they head in the same direction
+        PathLog.debug("   {}.getDirectionOfVector({})".format(A, B))
         if PathGeom.pointsCoincide(A, B):
             return 'Straight'
         d = -A.x*B.y + A.y*B.x
@@ -251,8 +255,8 @@ class Chord (object):
 
     def getDirectionOf(self, chordOrVector):
         if type(chordOrVector) is Chord:
-            return self.getDirectionOfVector(chordOrVector.asVector())
-        return self.getDirectionOfVector(chordOrVector)
+            return self.getDirectionOfVector(chordOrVector.asDirection())
+        return self.getDirectionOfVector(chordOrVector.normalize())
 
     def getAngleOfVector(self, ref):
         angle = self.asVector().getAngle(ref)
@@ -265,8 +269,8 @@ class Chord (object):
 
     def getAngle(self, refChordOrVector):
         if type(refChordOrVector) is Chord:
-            return self.getAngleOfVector(refChordOrVector.asVector())
-        return self.getAngleOfVector(refChordOrVector)
+            return self.getAngleOfVector(refChordOrVector.asDirection())
+        return self.getAngleOfVector(refChordOrVector.normalize())
 
     def getAngleXY(self):
         return self.getAngle(FreeCAD.Vector(1, 0, 0))
@@ -766,7 +770,7 @@ class ObjectDressup:
                 thisIsACandidate = self.canAttachDogbone(thisCommand, thisChord)
 
                 if thisIsACandidate and lastCommand and self.shouldInsertDogbone(obj, lastChord, thisChord):
-                    PathLog.info("  Found bone corner")
+                    PathLog.info("  Found bone corner: {}".format(lastChord.End))
                     bone = Bone(boneId, obj, lastCommand, lastChord, thisChord, Smooth.InAndOut, thisCommand.Parameters.get('F'))
                     bones = self.insertBone(bone)
                     boneId += 1
@@ -783,6 +787,7 @@ class ObjectDressup:
                     for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
                             PathLog.info("    and there is one")
+                            PathLog.debug("    odd/end={} last={}".format(chord, lastChord))
                             bone = Bone(boneId, obj, lastCommand, lastChord, chord, Smooth.In, lastCommand.Parameters.get('F'))
                             bones = self.insertBone(bone)
                             boneId += 1
@@ -947,10 +952,10 @@ class TaskPanel:
             for obj in FreeCAD.ActiveDocument.Objects:
                 if obj.Name.startswith('Shape'):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
-            print('object name %s' % self.obj.Name)
+            PathLog.info('object name %s' % self.obj.Name)
             if hasattr(self.obj.Proxy, "shapes"):
                 PathLog.info("showing shapes attribute")
-                for shapes in self.obj.Proxy.shapes.itervalues():
+                for shapes in self.obj.Proxy.shapes.values():
                     for shape in shapes:
                         Part.show(shape)
             else:
