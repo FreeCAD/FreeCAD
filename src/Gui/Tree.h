@@ -28,6 +28,7 @@
 #include <QTreeWidget>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
+#include <QDockWidget>
 
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
@@ -131,6 +132,11 @@ public:
 
     void synchronizeSelectionCheckBoxes();
 
+    DocumentObjectItem *getFirstSelectedObjectItem() const;
+    DocumentObjectItem *getObjectItemByPath(const std::vector<int> &path) const;
+
+    static bool swapSiblings(DocumentObjectItem *obj1, DocumentObjectItem *obj2);
+
 protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg) override;
@@ -155,6 +161,7 @@ protected:
 protected:
     void showEvent(QShowEvent *) override;
     void hideEvent(QHideEvent *) override;
+    void focusInEvent(QFocusEvent *event) override;
     void leaveEvent(QEvent *) override;
     void _updateStatus(bool delay=true);
 
@@ -182,6 +189,7 @@ private Q_SLOTS:
     void onItemEntered(QTreeWidgetItem * item);
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
+    void onTabifiedDockWidgetActivated(QDockWidget *dockWidget);
     void onUpdateStatus(void);
 
 Q_SIGNALS:
@@ -336,7 +344,7 @@ protected:
                     QTreeWidgetItem *parent=0, int index=-1,
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
-    int findRootIndex(App::DocumentObject *childObj);
+    int findRootIndex(const ViewProviderDocumentObject *childObj) const;
 
     DocumentObjectItem *findItemByObject(bool sync,
             App::DocumentObject *obj, const char *subname, bool select=false);
@@ -436,6 +444,10 @@ public:
     int isParentGroup() const;
 
     DocumentObjectItem *getParentItem() const;
+    DocumentObjectItem *getNextSibling() const;
+    DocumentObjectItem *getPreviousSibling() const;
+    std::vector<int> getFullPath() const;
+
     TreeWidget *getTree() const;
 
 private:

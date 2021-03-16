@@ -155,6 +155,9 @@ public:
     void setShowable(bool enable);
     bool isShowable() const;
 
+    int getTreeRank() const { return this->treeRank; }
+    int setTreeRank(int rank);
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
@@ -206,6 +209,9 @@ protected:
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
+
+    int treeRank;
+    static int lastTreeRank;
 
 private:
     bool _Showable = true;

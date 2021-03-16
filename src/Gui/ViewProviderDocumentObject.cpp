@@ -66,11 +66,13 @@ FC_LOG_LEVEL_INIT("Gui",true,true)
 using namespace Gui;
 
 
+int ViewProviderDocumentObject::lastTreeRank = 0;
+
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
   : pcObject(nullptr)
-  , pcDocument(nullptr)
+  , pcDocument(nullptr), treeRank(0)
 {
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
@@ -666,4 +668,18 @@ std::string ViewProviderDocumentObject::getFullName() const {
     if(pcObject)
         return pcObject->getFullName() + ".ViewObject";
     return std::string();
+}
+
+int ViewProviderDocumentObject::setTreeRank(int rank) {
+    int current = this->treeRank;
+    if (rank <= 0) {
+        this->treeRank = ++ViewProviderDocumentObject::lastTreeRank;
+    }
+    else {
+        this->treeRank = rank;
+        if (rank > ViewProviderDocumentObject::lastTreeRank) {
+            ViewProviderDocumentObject::lastTreeRank = rank;
+        }
+    }
+    return current;
 }
