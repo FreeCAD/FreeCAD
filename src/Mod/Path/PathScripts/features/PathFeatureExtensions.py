@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   Copyright (c) 2019 Markus Lampert (mlamptert)                         *
-# *   Copyright (c) 2020 Russell Johnson (russ4262) <russ4262@gmail.com>    *
+# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -33,7 +32,7 @@ Part = LazyLoader('Part', globals(), 'Part')
 from PySide import QtCore
 
 __title__ = "Path Features Extensions"
-__author__ = "Markus Lampert (mlampert)"
+__author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of face extensions features."
 
@@ -279,8 +278,8 @@ class Extension(object):
 # Eclass
 
 
-def initialize_properties(obj):
-    """initialize_properties(obj)... Adds feature propeties to object argument"""
+def initializeProperties(obj):
+    """initializeProperties(obj)... Adds feature propeties to object argument"""
     if not hasattr(obj, 'ExtensionLengthDefault'):
         obj.addProperty('App::PropertyDistance', 'ExtensionLengthDefault', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Default length of extensions.'))
     if not hasattr(obj, 'ExtensionFeature'):
@@ -292,8 +291,8 @@ def initialize_properties(obj):
     obj.setEditorMode('ExtensionFeature', 2)
 
 
-def set_default_property_values(obj, job):
-    """set_default_property_values(obj, job) ... set default values for feature properties"""
+def setDefaultPropertyValues(obj, job):
+    """setDefaultPropertyValues(obj, job) ... set default values for feature properties"""
     obj.ExtensionCorners = True
     obj.setExpression('ExtensionLengthDefault', 'OpToolDiameter / 2.0')
 

@@ -65,7 +65,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if not hasattr(obj, 'UseOutline'):
             obj.addProperty('App::PropertyBool', 'UseOutline', 'Pocket', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Uses the outline of the base geometry.'))
 
-        FeatureExtensions.initialize_properties(obj)
+        FeatureExtensions.initializeProperties(obj)
         self.initRotationOp(obj)
 
     def initRotationOp(self, obj):
@@ -284,7 +284,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.InverseAngle = False
         obj.AttemptInverseAngle = True
         obj.LimitDepthToFace = True
-        FeatureExtensions.set_default_property_values(obj, job)
+        FeatureExtensions.setDefaultPropertyValues(obj, job)
 
     # Support methods
     def checkForFacesLoop(self, base, subsList):
