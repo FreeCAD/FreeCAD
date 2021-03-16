@@ -1760,6 +1760,7 @@ void Document::Save (Base::Writer &writer) const
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"]
                     << "\" FileVersion=\"" << writer.getFileVersion() 
+                    << "\" Uid=\"" << Uid.getValueStr()
                     << "\" StringHasher=\"1\">\n";
     
     writer.incInd();
@@ -1802,6 +1803,9 @@ void Document::Restore(Base::XMLReader &reader)
     } else {
         reader.FileVersion = 0;
     }
+
+    if (reader.hasAttribute("Uid"))
+        Uid.setValue(reader.getAttribute("Uid"));
 
     if (reader.hasAttribute("StringHasher")) {
         Base::ReaderContext rctx("StringHasher");
