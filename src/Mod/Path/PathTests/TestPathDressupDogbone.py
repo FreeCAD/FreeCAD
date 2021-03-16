@@ -219,3 +219,45 @@ class TestDressupDogbone(PathTestBase):
         self.assertEqual("3: (10.00, 0.00)", self.formatBone(db.bones[2]))
         self.assertEqual("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
 
+
+    def test05(self):
+        '''Verify can handle noops between moves'''
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 X20
+        G1 Y0
+        G1 X10
+        G1 Y10
+        G1 Z10
+        ''')
+        obj = TestFeature()
+        db = PathDressupDogbone.ObjectDressup(obj, base)
+        db.setup(obj, True)
+        db.execute(obj, False)
+        self.assertEqual(len(db.bones), 4)
+        self.assertEqual("1: (20.00, 10.00)", self.formatBone(db.bones[0]))
+        self.assertEqual("2: (20.00, 0.00)", self.formatBone(db.bones[1]))
+        self.assertEqual("3: (10.00, 0.00)", self.formatBone(db.bones[2]))
+        self.assertEqual("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
+
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 X20
+        G1 Y0
+        G1 X10
+        G1 X10
+        G1 Y10
+        G1 Z10
+        ''')
+        obj = TestFeature()
+        db = PathDressupDogbone.ObjectDressup(obj, base)
+        db.setup(obj, True)
+        db.execute(obj, False)
+        self.assertEqual(len(db.bones), 4)
+        self.assertEqual("1: (20.00, 10.00)", self.formatBone(db.bones[0]))
+        self.assertEqual("2: (20.00, 0.00)", self.formatBone(db.bones[1]))
+        self.assertEqual("3: (10.00, 0.00)", self.formatBone(db.bones[2]))
+        self.assertEqual("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
+

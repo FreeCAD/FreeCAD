@@ -39,8 +39,8 @@ Part = LazyLoader('Part', globals(), 'Part')
 
 LOG_MODULE = PathLog.thisModule()
 
-PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule(LOG_MODULE)
+PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
+#PathLog.trackModule(LOG_MODULE)
 
 
 # Qt translation handling
@@ -302,6 +302,7 @@ class Chord (object):
         return not PathGeom.isRoughly(self.End.z, self.Start.z)
 
     def isANoopMove(self):
+        PathLog.debug("{}.isANoopMove(): {}".format(self, PathGeom.pointsCoincide(self.Start, self.End)))
         return PathGeom.pointsCoincide(self.Start, self.End)
 
     def foldsBackOrTurns(self, chord, side):
@@ -813,7 +814,8 @@ class ObjectDressup:
                     lastCommand = thisCommand
                     lastBone = None
                 elif thisChord.isANoopMove():
-                    PathLog.info("  dropping noop move")
+                    PathLog.info("  ignoring and dropping noop move")
+                    continue
                 else:
                     PathLog.info("  nope")
                     if lastCommand:
