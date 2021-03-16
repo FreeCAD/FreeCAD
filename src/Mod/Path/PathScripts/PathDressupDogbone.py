@@ -39,8 +39,8 @@ Part = LazyLoader('Part', globals(), 'Part')
 
 LOG_MODULE = PathLog.thisModule()
 
-PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
-#PathLog.trackModule(LOG_MODULE)
+PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+PathLog.trackModule(LOG_MODULE)
 
 
 # Qt translation handling
@@ -301,6 +301,9 @@ class Chord (object):
     def isAPlungeMove(self):
         return not PathGeom.isRoughly(self.End.z, self.Start.z)
 
+    def isANoopMove(self):
+        return PathGeom.pointsCoincide(self.Start, self.End)
+
     def foldsBackOrTurns(self, chord, side):
         direction = chord.getDirectionOf(self)
         PathLog.info("  - direction = %s/%s" % (direction, side))
@@ -439,7 +442,7 @@ class ObjectDressup:
 
     # Answer true if a dogbone could be on either end of the chord, given its command
     def canAttachDogbone(self, cmd, chord):
-        return cmd.Name in movestraight and not chord.isAPlungeMove()
+        return cmd.Name in movestraight and not chord.isAPlungeMove() and not chord.isANoopMove()
 
     def shouldInsertDogbone(self, obj, inChord, outChord):
         return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
@@ -809,6 +812,8 @@ class ObjectDressup:
                         commands.append(lastCommand)
                     lastCommand = thisCommand
                     lastBone = None
+                elif thisChord.isANoopMove():
+                    PathLog.info("  dropping noop move")
                 else:
                     PathLog.info("  nope")
                     if lastCommand:
@@ -823,12 +828,13 @@ class ObjectDressup:
 
                 lastChord = thisChord
             else:
-                PathLog.info("  Clean slate")
-                if lastCommand:
-                    commands.append(lastCommand)
-                    lastCommand = None
+                if thisCommand.Name[0] != '(':
+                    PathLog.info("  Clean slate")
+                    if lastCommand:
+                        commands.append(lastCommand)
+                        lastCommand = None
+                    lastBone = None
                 commands.append(thisCommand)
-                lastBone = None
         # for cmd in commands:
         #    PathLog.debug("cmd = '%s'" % cmd)
         path = Path.Path(commands)
