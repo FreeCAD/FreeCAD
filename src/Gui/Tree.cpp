@@ -173,6 +173,13 @@ protected:
 
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
 
+    DocumentObjectItem *findItemInList(const std::set<App::DocumentObject*> &inlist, 
+                                       DocumentObjectItem *item,
+                                       App::DocumentObject *subObj,
+                                       const char *subname,
+                                       bool sync,
+                                       bool select);
+
     App::DocumentObject *getTopParent(
             App::DocumentObject *obj, std::string &subname, DocumentObjectItem **item=0);
 
@@ -6138,6 +6145,38 @@ DocumentObjectItem *DocumentItem::findItemByObject(
     return item;
 }
 
+DocumentObjectItem *DocumentItem::findItemInList(const std::set<App::DocumentObject*> &inlist, 
+                                                 DocumentObjectItem *item,
+                                                 App::DocumentObject *subObj,
+                                                 const char *subname,
+                                                 bool sync,
+                                                 bool select)
+{
+    if(!item->populated) {
+        //force populate the item
+        item->populated = true;
+        populateItem(item,true);
+    }
+    DocumentObjectItem *res = nullptr;
+    for (int i=0, count=item->childCount(); i<count; ++i) {
+        auto child = item->child(i);
+        if (child->type() != TreeWidget::ObjectType)
+            continue;
+        auto objitem = static_cast<DocumentObjectItem*>(child);
+        DocumentObjectItem *tmp = nullptr;
+        if (objitem->object()->getObject() == subObj)
+            tmp = findItem(sync, objitem, subname, select);
+        else if (inlist.count(objitem->object()->getObject()))
+            tmp = findItemInList(inlist, objitem, subObj, subname, sync, select);
+        if (tmp && !res) {
+            res = tmp;
+            if (!select)
+                break;
+        }
+    }
+    return res;
+}
+
 DocumentObjectItem *DocumentItem::findItem(
         bool sync, DocumentObjectItem *item, const char *subname, bool select)
 {
@@ -6205,39 +6244,26 @@ DocumentObjectItem *DocumentItem::findItem(
 
     // The sub object is not found. This could happen for geo group, since its
     // children may be in more than one hierarchy down.
-    bool found = false;
-    DocumentObjectItem *res=0;
-    auto it = ObjectMap.find(subObj);
-    if(it != ObjectMap.end()) {
-        for(auto child : it->second->items) {
-            for(auto parent=child->parent();
-                    parent && parent->type()==TreeWidget::ObjectType;
-                    parent=parent->parent())
-            {
-                if(parent == item) {
-                    found = true;
-                    res = findItem(sync,child,nextsub,select);
-                    if(!select)
-                        return res;
-                }
-                auto obj = static_cast<DocumentObjectItem*>(parent)->object()->getObject();
-                if(!obj || !obj->getNameInDocument()
-                       ||  obj->getExtensionByType<App::LinkBaseExtension>(true)
-                       ||  obj->getExtensionByType<App::GeoFeatureGroupExtension>(true))
-                    break;
-            }
-        }
+    if (obj->getLinkedObject()->hasExtension(
+                App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+    {
+        auto inlist = subObj->getInListEx(true);
+        auto res = findItemInList(inlist, item, subObj, nextsub, sync, select);
+        if (res)
+            return res;
     }
 
-    if(select && !found) {
+    if(select) {
         // The sub object is still not found. Maybe it is a non-object sub-element.
         // Select the current object instead.
         TREE_TRACE("element " << subname << " not found");
         item->selected+=2;
-        if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
+        if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end()) {
             item->mySubs.push_back(subname);
+            return item;
+        }
     }
-    return res;
+    return nullptr;
 }
 
 void DocumentItem::selectItems(SelectionReason reason) {
