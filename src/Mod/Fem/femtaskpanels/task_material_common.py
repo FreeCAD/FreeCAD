@@ -273,7 +273,7 @@ class _TaskPanel:
             return
         self.card_path = self.parameterWidget.cb_materials.itemData(index)  # returns whole path
         FreeCAD.Console.PrintMessage(
-            "choose_material in FEM material task panel:\n"
+            "Material card choosen:\n"
             "    {}\n".format(self.card_path)
         )
         self.material = self.materials[self.card_path]
@@ -389,7 +389,7 @@ class _TaskPanel:
         # FreeCAD units definition is at file end of src/Base/Unit.cpp
         if not self.material:
             FreeCAD.Console.PrintMessage("For some reason all material data is empty!\n")
-            self.material["Name"] = "Empty"
+            self.material["Name"] = "NoName"
         if "Density" in self.material:
             if "Density" not in str(Units.Unit(self.material["Density"])):
                 FreeCAD.Console.PrintMessage(
@@ -400,7 +400,7 @@ class _TaskPanel:
                 self.material["Density"] = "0 kg/m^3"
         else:
             FreeCAD.Console.PrintMessage(
-                "Density not found in material data of: {}\n"
+                "Density not found in {}\n"
                 .format(self.material["Name"])
             )
             self.material["Density"] = "0 kg/m^3"
@@ -417,7 +417,7 @@ class _TaskPanel:
                     self.material["YoungsModulus"] = "0 MPa"
             else:
                 FreeCAD.Console.PrintMessage(
-                    "YoungsModulus not found in material data of: {}\n"
+                    "YoungsModulus not found in {}\n"
                     .format(self.material["Name"])
                 )
                 self.material["YoungsModulus"] = "0 MPa"
@@ -433,7 +433,7 @@ class _TaskPanel:
                     self.material["PoissonRatio"] = "0"
             else:
                 FreeCAD.Console.PrintMessage(
-                    "PoissonRatio not found in material data of: {}\n"
+                    "PoissonRatio not found in {}\n"
                     .format(self.material["Name"])
                 )
                 self.material["PoissonRatio"] = "0"
@@ -450,7 +450,7 @@ class _TaskPanel:
                     self.material["KinematicViscosity"] = "0 m^2/s"
             else:
                 FreeCAD.Console.PrintMessage(
-                    "KinematicViscosity not found in material data of: {}\n"
+                    "KinematicViscosity not found in {}\n"
                     .format(self.material["Name"])
                 )
                 self.material["KinematicViscosity"] = "0 m^2/s"
@@ -466,7 +466,7 @@ class _TaskPanel:
                     self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
             else:
                 FreeCAD.Console.PrintMessage(
-                    "VolumetricThermalExpansionCoefficient not found in material data of: {}\n"
+                    "VolumetricThermalExpansionCoefficient not found in {}\n"
                     .format(self.material["Name"])
                 )
                 self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
@@ -481,7 +481,7 @@ class _TaskPanel:
                 self.material["ThermalConductivity"] = "0 W/m/K"
         else:
             FreeCAD.Console.PrintMessage(
-                "ThermalConductivity not found in material data of: {}\n"
+                "ThermalConductivity not found in {}\n"
                 .format(self.material["Name"])
             )
             self.material["ThermalConductivity"] = "0 W/m/K"
@@ -496,7 +496,7 @@ class _TaskPanel:
                 self.material["ThermalExpansionCoefficient"] = "0 um/m/K"
         else:
             FreeCAD.Console.PrintMessage(
-                "ThermalExpansionCoefficient not found in material data of: {}\n"
+                "ThermalExpansionCoefficient not found in {}\n"
                 .format(self.material["Name"])
             )
             self.material["ThermalExpansionCoefficient"] = "0 um/m/K"
@@ -510,7 +510,7 @@ class _TaskPanel:
                 self.material["SpecificHeat"] = "0 J/kg/K"
         else:
             FreeCAD.Console.PrintMessage(
-                "SpecificHeat not found in material data of: {}\n"
+                "SpecificHeat not found in {}\n"
                 .format(self.material["Name"])
             )
             self.material["SpecificHeat"] = "0 J/kg/K"
