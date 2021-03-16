@@ -516,14 +516,15 @@ class _TaskPanel:
             self.material["SpecificHeat"] = "0 J/kg/K"
         FreeCAD.Console.PrintMessage("\n")
 
-    def update_material_property(self, input_field, matProperty, qUnit, variation=0.001):
+    def update_material_property(self, inputfield_text, matProperty, qUnit, variation=0.001):
+        # print(inputfield_text)
         # this update property works for all Gui::InputField widgets
         if qUnit != "":
-            value = Units.Quantity(input_field.text()).getValueAs(qUnit)
+            value = Units.Quantity(inputfield_text).getValueAs(qUnit)
             old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
         else:
             # for example PoissonRatio
-            value = float(input_field.text())
+            value = float(inputfield_text)
             old_value = float(self.material[matProperty])
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
@@ -540,40 +541,36 @@ class _TaskPanel:
                     self.set_transient_material()
         else:
             pass  # some check or default value set can be done here
+        # print(inputfield_text)
 
     # mechanical input fields
     def ym_changed(self):
         # FreeCADs standard unit for stress is kPa for UnitsSchemeInternal, but MPa can be used
-        input_field = self.parameterWidget.input_fd_young_modulus
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_young_modulus.text(),
             "YoungsModulus",
             "kPa",
-            variation
         )
 
     def density_changed(self):
+        print(
+            "String read from density input field: {}"
+            .format(self.parameterWidget.input_fd_density.text())
+        )
         # FreeCADs standard unit for density is kg/mm^3 for UnitsSchemeInternal
-        input_field = self.parameterWidget.input_fd_density
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_density.text(),
             "Density",
             "kg/m^3",
-            variation
         )
 
     def pr_changed(self):
         value = self.parameterWidget.spinBox_poisson_ratio.value()
-        input_field = self.parameterWidget.spinBox_poisson_ratio
         if value:
-            variation = 0.001
             self.update_material_property(
-                input_field,
+                self.parameterWidget.spinBox_poisson_ratio.text(),
                 "PoissonRatio",
                 "",
-                variation
             )
         elif value == 0:
             # PoissonRatio was set to 0.0 what is possible
@@ -587,50 +584,39 @@ class _TaskPanel:
 
     # thermal input fields
     def tc_changed(self):
-        input_field = self.parameterWidget.input_fd_thermal_conductivity
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_thermal_conductivity.text(),
             "ThermalConductivity",
             "W/m/K",
-            variation
         )
 
     def tec_changed(self):
-        input_field = self.parameterWidget.input_fd_expansion_coefficient
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_expansion_coefficient.text(),
             "ThermalExpansionCoefficient",
             "um/m/K",
-            variation
         )
 
     def sh_changed(self):
-        input_field = self.parameterWidget.input_fd_specific_heat
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_specific_heat.text(),
             "SpecificHeat",
             "J/kg/K",
-            variation
         )
 
     # fluidic input fields
     def vtec_changed(self):
-        input_field = self.parameterWidget.input_fd_vol_expansion_coefficient
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_vol_expansion_coefficient.text(),
             "VolumetricThermalExpansionCoefficient",
-            "m^3/m^3/K"
+            "m^3/m^3/K",
         )
 
     def kinematic_viscosity_changed(self):
-        input_field = self.parameterWidget.input_fd_kinematic_viscosity
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_kinematic_viscosity.text(),
             "KinematicViscosity",
-            "m^2/s"
+            "m^2/s",
         )
 
     def set_mat_params_in_input_fields(self, matmap):
