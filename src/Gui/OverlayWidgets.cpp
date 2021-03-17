@@ -171,6 +171,7 @@ bool OverlayProxyWidget::hitTest(QPoint pt, bool delay)
         else if (delay) {
             if (!timer.isActive())
                 timer.start(ViewParams::getDockOverlayHintDelay());
+            return true;
         } else {
             timer.stop();
             owner->setState(OverlayTabWidget::State_Hint);
@@ -500,6 +501,7 @@ void OverlayTabWidget::startShow()
     if (isVisible() || _state > State_Normal)
         return;
     int duration = ViewParams::getDockOverlayAnimationDuration();
+    bool setmode = _state != State_Showing;
     if (duration) {
         _animator->setStartValue(1.0);
         _animator->setEndValue(0.0);
@@ -511,6 +513,9 @@ void OverlayTabWidget::startShow()
         setState(State_Normal);
     proxyWidget->hide();
     show();
+    raise();
+    if (setmode)
+        setOverlayMode(overlayed);
 }
 
 void OverlayTabWidget::startHide()
@@ -1597,8 +1602,6 @@ void OverlayTabWidget::setRect(QRect rect)
         if(!isVisible() && count()) {
             proxyWidget->hide();
             startShow();
-            Base::StateLocker guard(busy);
-            setOverlayMode(overlayed);
         }
     }
 }
