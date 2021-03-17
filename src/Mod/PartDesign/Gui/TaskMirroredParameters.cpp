@@ -132,6 +132,8 @@ void TaskMirroredParameters::setupUI()
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
+
+    updateUI();
 }
 
 void TaskMirroredParameters::updateUI()
