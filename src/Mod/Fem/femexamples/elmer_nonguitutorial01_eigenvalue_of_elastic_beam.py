@@ -45,19 +45,20 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {"name": "Box Analysis Static",
-            "meshtype": "solid",
-            "meshelement": "Tet10",
-            "constraints": [],
-            "solvers": ["calculix", "elmer"],
-            "material": "solid",
-            "equation": "elasticity"
-            }
+    info = {
+        "name": "NonGui Tutorial 01 - Eigenvalue of elastic beam",
+        "meshtype": "solid",
+        "meshelement": "Tet10",
+        "constraints": [],
+        "solvers": ["elmer"],
+        "material": "solid",
+        "equation": "elasticity"
+    }
     return info
 
 
-def setup_base(doc=None, solvertype="ccxtools"):
-    # setup box base model
+def setup(doc=None, solvertype="elmer"):
+    # setup model
 
     if doc is None:
         doc = init_doc()
@@ -76,6 +77,23 @@ def setup_base(doc=None, solvertype="ccxtools"):
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
+     # solver
+    if solvertype == "elmer":
+        solver_object = analysis.addObject(
+            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        )[0]
+        eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_object)
+        eq_obj.LinearSolverType = "Direct"
+        # direct solver was used in the turorial, thus used here too
+        # the iterative is much faster and gives the same results
+        eq_obj.DoFrequencyAnalysis = True
+        eq_obj.CalculateStresses = True
+    else:
+        FreeCAD.Console.PrintWarning(
+            "Not known or not supported solver type: {}. "
+            "No solver object was created.\n".format(solvertype)
+        )
+
     # material
     material_object = analysis.addObject(
         ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
@@ -86,6 +104,15 @@ def setup_base(doc=None, solvertype="ccxtools"):
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "2330 kg/m^3"
     material_object.Material = mat
+
+    # fixed_constraint
+    fixed_constraint = analysis.addObject(
+        ObjectsFem.makeConstraintFixed(doc, name="FemConstraintFixed")
+    )[0]
+    fixed_constraint.References = [
+        (geom_obj, "Face1"),
+        (geom_obj, "Face2")
+    ]
 
     # mesh
     from .meshes.mesh_eigenvalue_of_elastic_beam_tetra10 import create_nodes
@@ -103,44 +130,6 @@ def setup_base(doc=None, solvertype="ccxtools"):
     femmesh_obj.Part = geom_obj
     femmesh_obj.SecondOrderLinear = False
     femmesh_obj.CharacteristicLengthMax = "40.80 mm"
-
-    doc.recompute()
-    return doc
-
-
-def setup(doc=None, solvertype="elmer"):
-    # setup box static, add a fixed, force and a pressure constraint
-
-    doc = setup_base(doc, solvertype)
-    analysis = doc.Analysis
-
-    # solver
-    if solvertype == "calculix":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
-        )[0]
-    elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
-        )[0]
-        solver_object.WorkingDir = u""
-    elif solvertype == "elmer":
-        solver_object = analysis.addObject(
-            ObjectsFem.makeSolverElmer(doc, "SolverElmer")
-        )[0]
-        ObjectsFem.makeEquationElasticity(doc, solver_object)
-    else:
-        FreeCAD.Console.PrintWarning(
-            "Not known or not supported solver type: {}. "
-            "No solver object was created.\n".format(solvertype)
-        )
-    if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.SplitInputWriter = False
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
 
     doc.recompute()
     return doc
