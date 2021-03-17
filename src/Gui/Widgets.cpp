@@ -1404,7 +1404,7 @@ void ExpLineEdit::bind(const ObjectIdentifier& _path) {
     iconLabel->show();
 }
 
-void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
+void ExpLineEdit::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -1512,7 +1512,7 @@ void ExpLineEdit::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 

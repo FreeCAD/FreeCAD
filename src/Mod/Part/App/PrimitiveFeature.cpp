@@ -801,6 +801,8 @@ Helix::Helix(void)
     Height.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Helix",App::Prop_None,"The radius of the helix");
     Radius.setConstraints(&quantityRange);
+    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Helix",App::Prop_None,"The number of turns per helix subdivision");
+    SegmentLength.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is != 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
     ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
@@ -813,7 +815,8 @@ void Helix::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if (prop == &Pitch || prop == &Height || prop == &Radius ||
-            prop == &Angle || prop == &LocalCoord || prop == &Style) {
+            prop == &Angle || prop == &LocalCoord || prop == &Style ||
+            prop == &SegmentLength) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -850,16 +853,15 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
-        //Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
-        TopoShape helix;
-        // work around for OCC bug #23314 (FC #0954)
-        // the exact conditions for failure are unknown.  building the helix 1 turn at a time
-        // seems to always work.
-        this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
-//        if (myHeight / myPitch > 50.0)
-//            this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
-//        else
-//            this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
+        Standard_Real mySegLen = SegmentLength.getValue();
+        if (myPitch < Precision::Confusion())
+            Standard_Failure::Raise("Pitch too small");
+        Standard_Real nbTurns = myHeight / myPitch;
+        if (nbTurns > 1e4)
+            Standard_Failure::Raise("Number of turns too high (> 1e4)");
+        Standard_Real myRadiusTop = myRadius + myHeight * tan(myAngle/180.0f*M_PI);
+
+        this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, mySegLen, myLocalCS));
     }
     catch (Standard_Failure& e) {
 
@@ -879,12 +881,15 @@ Spiral::Spiral(void)
     Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Rotations,(2.0),"Spiral",App::Prop_None,"The number of rotations");
     Rotations.setConstraints(&quantityRange);
+    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Spiral",App::Prop_None,"The number of turns per spiral subdivision");
+    SegmentLength.setConstraints(&quantityRange);
 }
 
 void Spiral::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &Growth || prop == &Rotations || prop == &Radius) {
+        if (prop == &Growth || prop == &Rotations || prop == &Radius ||
+            prop == &SegmentLength) {
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -913,30 +918,13 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         Standard_Real myNumRot = Rotations.getValue();
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myGrowth = Growth.getValue();
-        Standard_Real myAngle  = 45.0;
-        Standard_Real myPitch  = myGrowth / tan(Base::toRadians(myAngle));
-        Standard_Real myHeight = myPitch * myNumRot;
-        TopoShape helix;
-
-        if (myGrowth < Precision::Confusion())
-            Standard_Failure::Raise("Growth too small");
+        Standard_Real myRadiusTop = myRadius + myGrowth * myNumRot;
+        Standard_Real mySegLen = SegmentLength.getValue();
 
         if (myNumRot < Precision::Confusion())
             Standard_Failure::Raise("Number of rotations too small");
-        // spiral suffers from same bug as helix (FC bug #0954)
-        // So, we use same work around for OCC bug #23314
-        TopoDS_Shape myHelix = helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, Standard_False);
 
-        Handle(Geom_Plane) aPlane = new Geom_Plane(gp_Pnt(0.0,0.0,0.0), gp::DZ());
-        Standard_Real range = (myNumRot+1) * myGrowth + 1 + myRadius;
-        BRepBuilderAPI_MakeFace mkFace(aPlane, -range, range, -range, range
-#if OCC_VERSION_HEX >= 0x060502
-        , Precision::Confusion()
-#endif
-        );
-        BRepProj_Projection proj(myHelix, mkFace.Face(), gp::DZ());
-        this->Shape.setValue(proj.Shape());
-
+        this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, 0, myNumRot, mySegLen, Standard_False));
         return Primitive::execute();
     }
     catch (Standard_Failure& e) {

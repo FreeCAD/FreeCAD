@@ -272,7 +272,7 @@ public:
         return  m_parameterCount;
     };
     template<typename T>
-    void test_linkTo(boost::shared_ptr< Geometry< Kernel, Dim > > geom, int offset) {
+    void test_linkTo(std::shared_ptr< Geometry< Kernel, Dim > > geom, int offset) {
         linkTo<T>(geom, offset);
     };
     bool test_isLinked() {
@@ -316,10 +316,10 @@ public:
     };
 
     int m_link_offset;
-    boost::shared_ptr<Geometry<Kernel, Dim, TagList> > m_link;
+    std::shared_ptr<Geometry<Kernel, Dim, TagList> > m_link;
 
     template<typename T>
-    void linkTo(boost::shared_ptr< Geometry< Kernel, Dim, TagList > > geom, int offset);
+    void linkTo(std::shared_ptr< Geometry< Kernel, Dim, TagList > > geom, int offset);
     bool isLinked() {
         return m_link!=0;
     };

@@ -6,89 +6,41 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>375</width>
-    <height>627</height>
+    <width>689</width>
+    <height>863</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Colors</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBoxSketcherColor">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Sketcher colors</string>
+      <string>Working colors</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_17">
+     <layout class="QGridLayout" name="gridLayout_7">
+      <item row="0" column="1">
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Default edge color</string>
+           <string>Coordinate text</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefColorButton" name="SketchEdgeColor">
-          <property name="toolTip">
-           <string>Color of edges</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SketchEdgeColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_18">
-          <property name="text">
-           <string>Default vertex color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefColorButton" name="SketchVertexColor">
-          <property name="toolTip">
-           <string>Color of vertices</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SketchVertexColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Making line color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="Gui::PrefColorButton" name="CreateLineColor">
           <property name="toolTip">
            <string>Color used while new sketch elements are created</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>204</red>
             <green>204</green>
@@ -103,19 +55,131 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Edit edge color</string>
+        <item row="5" column="1">
+         <widget class="Gui::PrefColorButton" name="CursorCrosshairColor">
+          <property name="toolTip">
+           <string>Color of crosshair cursor.
+(The one you get when creating a new sketch element.)</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CursorCrosshairColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Creating line</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="Gui::PrefColorButton" name="CursorTextColor">
+          <property name="toolTip">
+           <string>Text color of the coordinates</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CursorTextColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_19">
+          <property name="text">
+           <string>Cursor crosshair</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Geometric element colors</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="1" column="0">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_ia">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Internal alignment edge</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QLabel" name="label_9">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Unconstrained</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="4">
          <widget class="Gui::PrefColorButton" name="EditedEdgeColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
            <string>Color of edges being edited</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>255</green>
@@ -130,19 +194,25 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_2">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Edit vertex color</string>
+           <string>Edge</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="4">
          <widget class="Gui::PrefColorButton" name="EditedVertexColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
            <string>Color of vertices being edited</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>38</green>
@@ -158,180 +228,24 @@
          </widget>
         </item>
         <item row="5" column="0">
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Construction geometry</string>
+           <string>Vertex</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefColorButton" name="ConstructionColor">
-          <property name="toolTip">
-           <string>Color of construction geometry in edit mode</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>220</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ConstructionColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_ia">
-          <property name="text">
-           <string>Internal alignment edge color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="Gui::PrefColorButton" name="InternalAlignedGeoColor">
-          <property name="toolTip">
-           <string>Color of edges of internal alignment geometry</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>178</red>
-            <green>178</green>
-            <blue>127</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>InternalAlignedGeoColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_20">
-          <property name="text">
-           <string>External geometry</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="Gui::PrefColorButton" name="ExternalColor">
-          <property name="toolTip">
-           <string>Color of external geometry in edit mode</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>204</red>
-            <green>51</green>
-            <blue>115</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ExternalColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Invalid Sketch</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
-         <widget class="Gui::PrefColorButton" name="InvalidSketchColor">
-          <property name="toolTip">
-           <string>Color of geometry indicating an invalid sketch</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>255</red>
-            <green>109</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>InvalidSketchColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="label_45">
-          <property name="text">
-           <string>Fully constrained geometry</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="1">
-         <widget class="Gui::PrefColorButton" name="FullyConstrainedColor">
-          <property name="toolTip">
-           <string>Color of fully constrained geometry in edit mode</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>255</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>FullyConstrainedColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
-         <widget class="QLabel" name="label_41">
-          <property name="text">
-           <string>Fully constrained edit edge color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="1">
-         <widget class="Gui::PrefColorButton" name="FullyConstraintElementColor">
-          <property name="toolTip">
-           <string>Color of fully constrained edge color in edit mode</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>128</red>
-            <green>208</green>
-            <blue>160</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>FullyConstraintElementColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="label_42">
-          <property name="text">
-           <string>Fully constrained edit construction edge color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
+        <item row="7" column="2">
          <widget class="Gui::PrefColorButton" name="FullyConstraintConstructionElementColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
            <string>Color of fully constrained construction edge color in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>143</red>
             <green>169</green>
@@ -346,19 +260,103 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0">
-         <widget class="QLabel" name="label_43">
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Fully constrained edit internal alignment edge color</string>
+           <string>Construction geometry</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="1">
+        <item row="8" column="4">
+         <widget class="Gui::PrefColorButton" name="InternalAlignedGeoColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Color of edges of internal alignment geometry</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>178</red>
+            <green>178</green>
+            <blue>127</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>InternalAlignedGeoColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="4">
+         <widget class="Gui::PrefColorButton" name="ConstructionColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Color of construction geometry in edit mode</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>220</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ConstructionColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefColorButton" name="FullyConstraintElementColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Color of fully constrained edge color in edit mode</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>128</red>
+            <green>208</green>
+            <blue>160</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FullyConstraintElementColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="2">
          <widget class="Gui::PrefColorButton" name="FullyConstraintInternalAlignmentColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
            <string>Color of fully constrained internal alignment edge color in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>222</red>
             <green>222</green>
@@ -373,19 +371,51 @@
           </property>
          </widget>
         </item>
-        <item row="13" column="0">
-         <widget class="QLabel" name="label_44">
-          <property name="text">
-           <string>Fully constrained edit vertex color</string>
+        <item row="9" column="2">
+         <widget class="Gui::PrefColorButton" name="ExternalColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Color of external geometry in edit mode</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>204</red>
+            <green>51</green>
+            <blue>115</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ExternalColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="13" column="1">
+        <item row="9" column="0">
+         <widget class="QLabel" name="label_20">
+          <property name="text">
+           <string>External geometry</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
          <widget class="Gui::PrefColorButton" name="FullyConstraintConstructionPointColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
            <string>Color of fully constrained vertex color in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>149</green>
@@ -400,19 +430,153 @@
           </property>
          </widget>
         </item>
-        <item row="14" column="0">
-         <widget class="QLabel" name="label_14">
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_7">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Constraint color</string>
+           <string>Constrained</string>
           </property>
          </widget>
         </item>
-        <item row="14" column="1">
+        <item row="1" column="5">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0">
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Invalid Sketch</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_45">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Fully constrained Sketch</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="FullyConstrainedColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Color of fully constrained geometry in edit mode</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>255</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FullyConstrainedColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefColorButton" name="InvalidSketchColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Color of geometry indicating an invalid sketch</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>109</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>InvalidSketchColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxSketcherColor">
+     <property name="title">
+      <string>Constraint colors</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="10" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Constraint symbols</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="1">
          <widget class="Gui::PrefColorButton" name="ConstrainedColor">
           <property name="toolTip">
            <string>Color of driving constraints in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>38</green>
@@ -427,100 +591,19 @@
           </property>
          </widget>
         </item>
-        <item row="15" column="0">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Reference constraint color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="15" column="1">
-         <widget class="Gui::PrefColorButton" name="NonDrivingConstraintColor">
-          <property name="toolTip">
-           <string>Color of reference constraints in edit mode</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>38</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>NonDrivingConstrDimColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="0">
-         <widget class="QLabel" name="labelexpr">
-          <property name="text">
-           <string>Expression dependent constraint color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="1">
-         <widget class="Gui::PrefColorButton" name="ExprBasedConstrDimColor">
-          <property name="toolTip">
-           <string>Color of expression dependent constraints in edit mode</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>255</red>
-            <green>127</green>
-            <blue>38</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ExprBasedConstrDimColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="0">
-         <widget class="QLabel" name="labeldeact">
-          <property name="text">
-           <string>Deactivated constraint color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="17" column="1">
-         <widget class="Gui::PrefColorButton" name="DeactivatedConstrDimColor">
-          <property name="toolTip">
-           <string>Color of deactivated constraints in edit mode</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>127</red>
-            <green>127</green>
-            <blue>127</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DeactivatedConstrDimColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="18" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Dimensional constraint color</string>
+           <string>Dimensional constraint</string>
           </property>
          </widget>
         </item>
-        <item row="18" column="1">
+        <item row="11" column="1">
          <widget class="Gui::PrefColorButton" name="DatumColor">
           <property name="toolTip">
            <string>Color of dimensional driving constraints</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>38</green>
@@ -535,55 +618,81 @@
           </property>
          </widget>
         </item>
-        <item row="19" column="0">
-         <widget class="QLabel" name="label_5">
+        <item row="12" column="0">
+         <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Coordinate text color</string>
+           <string>Reference constraint</string>
           </property>
          </widget>
         </item>
-        <item row="19" column="1">
-         <widget class="Gui::PrefColorButton" name="CursorTextColor">
+        <item row="12" column="1">
+         <widget class="Gui::PrefColorButton" name="NonDrivingConstraintColor">
           <property name="toolTip">
-           <string>Text color of the coordinates</string>
+           <string>Color of reference constraints in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
-            <green>0</green>
+            <green>38</green>
             <blue>255</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>CursorTextColor</cstring>
+           <cstring>NonDrivingConstrDimColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="20" column="0">
-         <widget class="QLabel" name="label_19">
+        <item row="13" column="0">
+         <widget class="QLabel" name="labelexpr">
           <property name="text">
-           <string>Cursor crosshair color</string>
+           <string>Expression dependent constraint</string>
           </property>
          </widget>
         </item>
-        <item row="20" column="1">
-         <widget class="Gui::PrefColorButton" name="CursorCrosshairColor">
+        <item row="13" column="1">
+         <widget class="Gui::PrefColorButton" name="ExprBasedConstrDimColor">
           <property name="toolTip">
-           <string>Color of crosshair cursor.
-(The one you get when creating a new sketch element.)</string>
+           <string>Color of expression dependent constraints in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
+            <green>127</green>
+            <blue>38</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>CursorCrosshairColor</cstring>
+           <cstring>ExprBasedConstrDimColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="0">
+         <widget class="QLabel" name="labeldeact">
+          <property name="text">
+           <string>Deactivated constraint</string>
+          </property>
+         </widget>
+        </item>
+        <item row="14" column="1">
+         <widget class="Gui::PrefColorButton" name="DeactivatedConstrDimColor">
+          <property name="toolTip">
+           <string>Color of deactivated constraints in edit mode</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>127</red>
+            <green>127</green>
+            <blue>127</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DeactivatedConstrDimColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
@@ -592,10 +701,109 @@
         </item>
        </layout>
       </item>
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Colors outside Sketcher</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_8">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="3" column="1">
+         <widget class="Gui::PrefColorButton" name="SketchVertexColor">
+          <property name="toolTip">
+           <string>Color of vertices</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SketchVertexColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefColorButton" name="SketchEdgeColor">
+          <property name="toolTip">
+           <string>Color of edges</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SketchEdgeColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Vertex</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Edge</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -615,11 +823,6 @@
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::PrefColorButton</class>

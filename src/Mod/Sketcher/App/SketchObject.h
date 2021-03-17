@@ -500,9 +500,9 @@ protected:
     virtual void onDocumentRestored() override;
     virtual void restoreFinished() override;
 
-    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr) override;
+    virtual void setExpression(const App::ObjectIdentifier &path, std::shared_ptr<App::Expression> expr) override;
 
-    std::string validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr);
+    std::string validateExpression(const App::ObjectIdentifier &path, std::shared_ptr<const App::Expression> expr);
 
     void constraintsRenamed(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renamed);
     void constraintsRemoved(const std::set<App::ObjectIdentifier> &removed);

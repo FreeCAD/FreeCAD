@@ -310,6 +310,7 @@ public:
     App::PropertyLength Height;
     App::PropertyLength Radius;
     App::PropertyAngle Angle;
+    App::PropertyQuantityConstraint SegmentLength;
     App::PropertyEnumeration     LocalCoord;
     App::PropertyEnumeration     Style;
 
@@ -342,6 +343,7 @@ public:
     App::PropertyLength Growth;
     App::PropertyQuantityConstraint Rotations;
     App::PropertyLength Radius;
+    App::PropertyQuantityConstraint SegmentLength;
 
     /** @name methods override feature */
     //@{

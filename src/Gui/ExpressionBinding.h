@@ -25,7 +25,7 @@
 
 #include <string>
 #include <App/ObjectIdentifier.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <QLabel>
 #include <boost_signals2.hpp>
 
@@ -58,17 +58,17 @@ public:
 
 protected:
     const App::ObjectIdentifier & getPath() const { return path; }
-    boost::shared_ptr<App::Expression> getExpression() const;
+    std::shared_ptr<App::Expression> getExpression() const;
     std::string getExpressionString(bool no_throw=true) const;
     std::string getEscapedExpressionString() const;
-    virtual void setExpression(boost::shared_ptr<App::Expression> expr);
+    virtual void setExpression(std::shared_ptr<App::Expression> expr);
 
     //gets called when the bound expression is changed, either by this binding or any external action
     virtual void onChange() {}
 
 private:
     App::ObjectIdentifier path;
-    boost::shared_ptr<App::Expression> lastExpression;
+    std::shared_ptr<App::Expression> lastExpression;
 
 protected:
     QLabel* iconLabel;

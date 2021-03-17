@@ -94,6 +94,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->CheckBox_UseAutoRotation->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
+    ui->prefCubeSize->onSave();
 
     bool showNaviCube = ui->groupBoxNaviCube->isChecked();
     hGrp->SetBool("ShowNaviCube", showNaviCube);
@@ -118,6 +119,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->CheckBox_UseAutoRotation->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
+    ui->prefCubeSize->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");

@@ -14,11 +14,12 @@ Physical Volume("Solid1") = {1};
 // min, max Characteristic Length
 Mesh.CharacteristicLengthMax = 1e+22;
 Mesh.CharacteristicLengthMin = 8.0;
+Mesh.MeshSizeFromCurvature = 12; // number of elements per 2*pi radians, 0 to deactivate
 
 // optimize the mesh
 Mesh.Optimize = 1;
 Mesh.OptimizeNetgen = 0;
-Mesh.HighOrderOptimize = 0;  // for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html
+Mesh.HighOrderOptimize = 0; // for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html
 
 // mesh order
 Mesh.ElementOrder = 2;

@@ -33,13 +33,7 @@ __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
 printverbose = False
 
-import FreeCAD, io, os, sys
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    gui = True
-else:
-    if printverbose: print("FreeCAD Gui not present.")
-    gui = False
+import FreeCAD, io, os
 
 import ply.lex as lex
 import ply.yacc as yacc
@@ -50,9 +44,15 @@ from OpenSCADUtils import *
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
+
+if FreeCAD.GuiUp:
+    gui = True
+else:
+    if printverbose: print("FreeCAD Gui not present.")
+    gui = False
+
 hassetcolor=[]
 alreadyhidden=[]
-printverbose = True
 
 # Get the token map from the lexer.  This is required.
 import tokrules
@@ -130,7 +130,7 @@ def insert(filename,docname):
     "called when freecad imports a file"
     global doc
     global pathName
-    groupname = os.path.splitext(os.path.basename(filename))[0]
+    groupname_unused = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc=FreeCAD.getDocument(docname)
     except NameError:
@@ -376,7 +376,7 @@ def p_operation(p):
               | intersection_action
               | union_action
               | rotate_extrude_action
-              | linear_extrude_with_twist
+              | linear_extrude_with_transform
               | rotate_extrude_file
               | import_file1
               | resize_action
@@ -465,19 +465,42 @@ def p_resize_action(p):
     resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
     import Draft
     print(p[3])
-    newsize = p[3]['newsize']
+    new_size = p[3]['newsize']
     auto    = p[3]['auto'] 
-    print(newsize)
+    print(new_size)
     print(auto)
+    old_bbox = p[6][0].Shape.BoundBox
+    print ("Old bounding box: " + str(old_bbox))
+    old_size = [old_bbox.XLength, old_bbox.YLength, old_bbox.ZLength]
     for r in range(0,3) :
         if auto[r] == '1' :
-           newsize[r] = newsize[0]
-        if newsize[r] == '0' :
-           newsize[r] = '1'
-    print(newsize)
-    scale = FreeCAD.Vector(float(newsize[0]), float(newsize[1]), float(newsize[2]))
-    print(scale)       
-    p[0] = [Draft.scale(p[6],scale)]
+           new_size[r] = new_size[0]
+        if new_size[r] == '0' :
+           new_size[r] = str(old_size[r])
+    print(new_size)
+
+    # Calculate a transform matrix from the current bounding box to the new one:
+    transform_matrix = FreeCAD.Matrix()
+    #new_part.Shape = part.Shape.transformGeometry(transform_matrix) 
+
+    scale = FreeCAD.Vector(float(new_size[0])/old_size[0], 
+                           float(new_size[1])/old_size[1], 
+                           float(new_size[2])/old_size[2])
+
+    transform_matrix.scale(scale)
+
+    new_part=doc.addObject("Part::FeaturePython",'Matrix Deformation')
+    new_part.Shape = p[6][0].Shape.transformGeometry(transform_matrix)
+    if gui:
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetBool('useViewProviderTree'):
+            from OpenSCADFeatures import ViewProviderTree
+            ViewProviderTree(new_part.ViewObject)
+        else:
+            new_part.ViewObject.Proxy = 0
+        p[6][0].ViewObject.hide()
+    p[0] = [new_part]
+     
 
 def p_not_supported(p):
     '''
@@ -596,7 +619,7 @@ def p_difference_action(p):
     if printverbose: print(len(p[5]))
     if printverbose: print(p[5])
     if (len(p[5]) == 0 ): #nochild
-        mycut = placeholder('group',[],'{}')
+        mycut_unused = placeholder('group',[],'{}')
     elif (len(p[5]) == 1 ): #single object
         p[0] = p[5]
     else:
@@ -705,9 +728,9 @@ def process_linear_extrude(obj,h) :
         newobj.ViewObject.hide()
     return(mylinear)
 
-def process_linear_extrude_with_twist(base,height,twist) :   
-    newobj=doc.addObject("Part::FeaturePython",'twist_extrude')
-    Twist(newobj,base,height,-twist) #base is an FreeCAD Object, height and twist are floats
+def process_linear_extrude_with_transform(base,height,twist,scale) :   
+    newobj=doc.addObject("Part::FeaturePython",'transform_extrude')
+    Twist(newobj,base,height,-twist,scale) #base is an FreeCAD Object, height and twist are floats, scale is a two-component vector of floats
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):
@@ -719,15 +742,18 @@ def process_linear_extrude_with_twist(base,height,twist) :
     #ViewProviderTree(obj.ViewObject)
     return(newobj)
 
-def p_linear_extrude_with_twist(p):
-    'linear_extrude_with_twist : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
-    if printverbose: print("Linear Extrude With Twist")
+def p_linear_extrude_with_transform(p):
+    'linear_extrude_with_transform : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
+    if printverbose: print("Linear Extrude With Transform")
     h = float(p[3]['height'])
+    s = 1.0
+    t = 0.0
     if printverbose: print("Twist : ",p[3])
+    if 'scale' in p[3]:
+        s = [float(p[3]['scale'][0]), float(p[3]['scale'][1])]
+        print ("Scale: " + str(s))
     if 'twist' in p[3]:
         t = float(p[3]['twist'])
-    else:
-        t = 0
     # Test if null object like from null text
     if (len(p[6]) == 0) :
         p[0] = []
@@ -736,14 +762,14 @@ def p_linear_extrude_with_twist(p):
         obj = fuse(p[6],"Linear Extrude Union")
     else :
         obj = p[6][0]
-    if t:
-        newobj = process_linear_extrude_with_twist(obj,h,t)
+    if t != 0.0 or s != 1.0:
+        newobj = process_linear_extrude_with_transform(obj,h,t,s)
     else:
         newobj = process_linear_extrude(obj,h)
     if p[3]['center']=='true' :
        center(newobj,0,0,h)
     p[0] = [newobj]
-    if printverbose: print("End Linear Extrude with twist")
+    if printverbose: print("End Linear Extrude with Transform")
 
 def p_import_file1(p):
     'import_file1 : import LPAREN keywordargument_list RPAREN SEMICOL'
@@ -806,7 +832,6 @@ def process_mesh_file(fname,ext):
 
 
 def processTextCmd(t):
-    import os
     from OpenSCADUtils import callopenscadstring
     tmpfilename = callopenscadstring(t,'dxf')
     from OpenSCAD2Dgeom import importDXFface 

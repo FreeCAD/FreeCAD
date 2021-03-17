@@ -393,7 +393,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     this->Constraints.setValues(std::move(newVals));
 
     if (!isdriving)
-        setExpression(Constraints.createPath(ConstrId), boost::shared_ptr<App::Expression>());
+        setExpression(Constraints.createPath(ConstrId), std::shared_ptr<App::Expression>());
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
@@ -451,7 +451,7 @@ int SketchObject::toggleDriving(int ConstrId)
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
     if (!constNew->isDriving)
-        setExpression(Constraints.createPath(ConstrId), boost::shared_ptr<App::Expression>());
+        setExpression(Constraints.createPath(ConstrId), std::shared_ptr<App::Expression>());
 
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
@@ -556,7 +556,7 @@ int SketchObject::setDatumsDriving(bool isdriving)
 
     for (size_t i = 0; i < uvals.size(); i++) {
         if (!isdriving && uvals[i]->isDimensional())
-            setExpression(Constraints.createPath(i), boost::shared_ptr<App::Expression>());
+            setExpression(Constraints.createPath(i), std::shared_ptr<App::Expression>());
     }
 
     if (noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
@@ -1265,7 +1265,7 @@ int SketchObject::addCopyOfConstraints(const SketchObject &orig)
 
             if (expr_info.expression) { // if there is an expression on the source dimensional
                 App::ObjectIdentifier dpath = this->Constraints.createPath(i);
-                setExpression(dpath, boost::shared_ptr<App::Expression>(expr_info.expression->copy()));
+                setExpression(dpath, std::shared_ptr<App::Expression>(expr_info.expression->copy()));
             }
         }
     }
@@ -5915,7 +5915,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
                  *           if (expr_info.expression)*/
                 //App::Expression * expr = parse(this, const std::string& buffer);
 
-                boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
+                std::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                 setExpression(Constraints.createPath(nextcid), expr);
             }
         }
@@ -7330,7 +7330,7 @@ void SketchObject::validateConstraints()
     }
 }
 
-std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr)
+std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, std::shared_ptr<const App::Expression> expr)
 {
     const App::Property * prop = path.getProperty();
 
@@ -7422,7 +7422,7 @@ void SketchObject::constraintsRemoved(const std::set<App::ObjectIdentifier> &rem
     std::set<App::ObjectIdentifier>::const_iterator i = removed.begin();
 
     while (i != removed.end()) {
-        ExpressionEngine.setValue(*i, boost::shared_ptr<App::Expression>());
+        ExpressionEngine.setValue(*i, std::shared_ptr<App::Expression>());
         ++i;
     }
 }
@@ -8010,7 +8010,7 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
     return true;
 }
 
-void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr)
+void SketchObject::setExpression(const App::ObjectIdentifier &path, std::shared_ptr<App::Expression> expr)
 {
     DocumentObject::setExpression(path, expr);
 
