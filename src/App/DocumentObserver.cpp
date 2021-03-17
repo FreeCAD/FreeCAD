@@ -521,6 +521,8 @@ SubObjectT SubObjectT::getParent() const {
 
 SubObjectT SubObjectT::getChild(const App::DocumentObject *child) const
 {
+    if (getObjectName().empty())
+        return SubObjectT(child);
     SubObjectT res = *this;
     res.setSubName(getSubNameNoElement() + child->getNameInDocument() + ".");
     return res;
