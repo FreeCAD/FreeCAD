@@ -227,7 +227,7 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
     if(!group)
         return;
 
-    if(obj->testStatus(App::PendingRecompute))
+    if(obj->testStatus(App::PendingRecompute) && !obj->isRecomputing())
         return;
 
     auto model = group->Group.getValues ();
