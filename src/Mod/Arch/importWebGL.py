@@ -326,8 +326,8 @@ def getHTMLTemplate():
                     clippingz: 100,
                     cameraType: cameraType,
                     navright: function() { navChange( [1,0,0] ); },
-                    navtop:   function() { navChange( [0,1,0] ); },
-                    navfront: function() { navChange( [0,0,1] ); }
+                    navtop:   function() { navChange( [0,0,1] ); },
+                    navfront: function() { navChange( [0,-1,0] ); }
                 };
                 
                 // ---- Wires ----
