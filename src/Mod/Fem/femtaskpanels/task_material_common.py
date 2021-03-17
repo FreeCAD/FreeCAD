@@ -273,7 +273,7 @@ class _TaskPanel:
             return
         self.card_path = self.parameterWidget.cb_materials.itemData(index)  # returns whole path
         FreeCAD.Console.PrintMessage(
-            "Material card choosen:\n"
+            "Material card chosen:\n"
             "    {}\n".format(self.card_path)
         )
         self.material = self.materials[self.card_path]
