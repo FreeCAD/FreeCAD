@@ -750,10 +750,14 @@ QTableView {
     border-radius: 3px;
 }
 
+/* fix to homogenize it on all OSs */
+
+/* Disabled because it removed custom tree item background (e.g. for active object)
 QListView::item:hover,
 QTreeView::item:hover  {
-    background-color: transparent; /* fix to homogenize it on all OSs */
+    background-color: transparent;
 }
+*/
 
 QListView::item:selected,
 QTreeView::item:selected  {
