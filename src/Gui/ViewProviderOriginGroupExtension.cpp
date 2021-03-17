@@ -151,6 +151,13 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
     vpOrigin->Size.setValue ( size );
 }
 
+bool ViewProviderOriginGroupExtension::extensionCanDragObject(App::DocumentObject *obj) const
+{
+    if(obj->isDerivedFrom(App::Origin::getClassTypeId()))
+        return false;
+    return ViewProviderGeoFeatureGroupExtension::extensionCanDragObject(obj);
+}
+
 namespace Gui {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderOriginGroupExtensionPython, Gui::ViewProviderOriginGroupExtension)
 

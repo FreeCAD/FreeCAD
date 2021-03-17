@@ -48,6 +48,8 @@ public:
 
     virtual void updateOriginSize();
 
+    virtual bool extensionCanDragObject(App::DocumentObject*) const override;
+
 protected:
     void slotChangedObjectApp ( const App::DocumentObject& obj );
     void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
