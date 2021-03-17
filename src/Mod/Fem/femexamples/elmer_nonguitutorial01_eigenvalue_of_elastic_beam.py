@@ -45,16 +45,15 @@ def init_doc(doc=None):
 
 
 def get_information():
-    info = {
+    return {
         "name": "NonGui Tutorial 01 - Eigenvalue of elastic beam",
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": [],
-        "solvers": ["elmer"],
+        "solvers": ["calculix", "ccxtools", "elmer"],
         "material": "solid",
-        "equation": "elasticity"
+        "equation": "elasticity"  # "frequency", but list not allowed here
     }
-    return info
 
 
 def setup(doc=None, solvertype="elmer"):
@@ -78,7 +77,16 @@ def setup(doc=None, solvertype="elmer"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
      # solver
-    if solvertype == "elmer":
+    if solvertype == "calculix":
+        solver_object = analysis.addObject(
+            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
+        )[0]
+    elif solvertype == "ccxtools":
+        solver_object = analysis.addObject(
+            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
+        )[0]
+        solver_object.WorkingDir = u""
+    elif solvertype == "elmer":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         )[0]
@@ -93,6 +101,15 @@ def setup(doc=None, solvertype="elmer"):
             "Not known or not supported solver type: {}. "
             "No solver object was created.\n".format(solvertype)
         )
+    if solvertype == "calculix" or solvertype == "ccxtools":
+        solver_object.AnalysisType = "frequency"
+        solver_object.GeometricalNonlinearity = "linear"
+        solver_object.ThermoMechSteadyState = False
+        solver_object.MatrixSolverType = "default"
+        solver_object.IterationsControlParameterTimeUse = False
+        solver_object.EigenmodesCount = 5
+        solver_object.EigenmodeHighLimit = 1000000.0
+        solver_object.EigenmodeLowLimit = 0.01
 
     # material
     material_object = analysis.addObject(
