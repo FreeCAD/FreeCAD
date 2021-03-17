@@ -27,14 +27,17 @@
 #include <QMessageBox>
 #endif
 
+#include <Base/Console.h>
 #include "App/Part.h"
 #include "App/Document.h"
-#include "Command.h"
+#include "CommandT.h"
 #include "Application.h"
 #include "Document.h"
 #include "MDIView.h"
+#include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
 
+FC_LOG_LEVEL_INIT("Gui", true, true);
 
 using namespace Gui;
 
@@ -56,24 +59,154 @@ StdCmdPart::StdCmdPart()
     sPixmap       = "Geofeaturegroup";
 }
 
+static App::SubObjectT addGroup(const char *type, const char *name, const QString &label)
+{
+    Gui::Document* gui = Application::Instance->activeDocument();
+    App::Document* app = gui->getDocument();
+
+    try {
+        App::Document *doc = nullptr;
+        auto sels = Gui::Selection().getSelectionT(nullptr, 0);
+        App::DocumentObject *group = nullptr;
+        App::DocumentObject *geogroup = nullptr;
+        std::vector<App::DocumentObject *> children;
+        App::SubObjectT ctx;
+        for (auto &sel : sels) {
+            auto obj = sel.getSubObject();
+            if (!obj || std::find(children.begin(), children.end(), obj) != children.end())
+                continue;
+            bool skip = false;
+            auto geogrp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+            if (geogrp) {
+                if (!geogroup) {
+                    if (children.empty()) {
+                        geogroup = geogrp;
+                        auto objs = sel.getSubObjectList();
+                        auto it = std::find(objs.begin(), objs.end(), geogroup);
+                        if (it != objs.end())
+                            ctx = App::SubObjectT(objs.begin(), it+1);
+                    } else
+                        skip = true;
+                } else if (geogrp != geogroup)
+                    skip = true;
+            }
+            App::DocumentObject *grp = !skip ? App::GroupExtension::getGroupOfObject(obj) : nullptr;
+            if (grp) {
+                if (!group) {
+                    if (children.empty()) {
+                        group = grp;
+                        auto objs = sel.getSubObjectList();
+                        auto it = std::find(objs.begin(), objs.end(), group);
+                        if (it != objs.end())
+                            ctx = App::SubObjectT(objs.begin(), it+1);
+                    } else
+                        skip = true;
+                } else if (grp != group)
+                    skip = true;
+            }
+            if (!skip && doc && doc != obj->getDocument()) {
+                FC_WARN("Ignore external object " << sel.getObjectFullName());
+                continue;
+            }
+            if (!skip) {
+                children.push_back(obj);
+                doc = obj->getDocument();
+            } else
+                FC_WARN("Ignore selected object " << sel.getObjectFullName()
+                        << " from group '" << (grp ? grp : geogrp)->Label.getValue() << "'");
+        }
+
+        if (!doc)
+            doc = app;
+        std::string GroupName = doc->getUniqueObjectName(name);
+        cmdAppDocument(app, std::ostringstream()
+                << "addObject('" << type << "','" << GroupName << "')");
+        auto newgrp = App::GetApplication().getActiveDocument()->getObject(GroupName.c_str());
+        if (!newgrp)
+            throw Base::RuntimeError("Failed to create object");
+        cmdAppDocument(app, std::ostringstream() << "Tip = " << newgrp->getFullName(true));
+        cmdAppObjectArgs(newgrp, "Label = u'%s'", label.toUtf8().constData());
+
+        for (int i=0; i<2; ++i) {
+            auto grp = i ? geogroup : group;
+            if (!grp)
+                continue;
+            auto ext = grp->getExtensionByType<App::GroupExtension>();
+            if (!ext->allowObject(newgrp)) {
+                geogroup = nullptr;
+                group = nullptr;
+                children.clear();
+                FC_WARN("Ignore selections because "
+                        << grp->getFullName() << " does not accept " << type);
+            }
+        }
+        bool remove = false;
+        if (geogroup && newgrp->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            remove = true;
+            auto vp = Application::Instance->getViewProvider(geogroup);
+            if (vp) {
+                if (!vp->canDragObjects()) {
+                    FC_WARN("Ignore selections because "
+                            << geogroup->getFullName() << " does not allow removing children");
+                    children.clear();
+                }
+                for (auto it=children.begin(); it!=children.end();) {
+                    if (!vp->canDragObject(*it)) {
+                        it = children.erase(it);
+                        FC_WARN("Ignore selected object " << (*it)->getFullName()
+                                << " cannot be removed from " << geogroup->getFullName());
+                    } else
+                        ++it;
+                }
+            }
+        }
+
+        if (children.size()) {
+            if (geogroup)
+                cmdAppObjectArgs(geogroup, "addObject(%s)", newgrp->getFullName(true));
+            if (group)
+                cmdAppObjectArgs(group, "addObject(%s)", newgrp->getFullName(true));
+            std::ostringstream ss;
+            for (auto child : children) {
+                if (remove)
+                    cmdAppObjectArgs(geogroup, "removeObject(%s)", child->getFullName(true));
+                ss << child->getFullName(true) << ", ";
+            }
+            cmdAppObjectArgs(newgrp, "Group = [%s]", ss.str());
+        } else
+            ctx = App::SubObjectT();
+        
+        Gui::Selection().clearSelection();
+        ctx = ctx.getChild(newgrp);
+        Gui::Selection().addSelection(ctx);
+        Application::Instance->commandManager().runCommandByName("Std_TreeSelection");
+        Gui::Selection().clearSelection();
+
+        Command::updateActive();
+
+        return ctx;
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(getMainWindow(),
+                              QObject::tr("Error"),
+                              QString::fromUtf8(e.what()));
+    }
+    return App::SubObjectT();
+}
+
 void StdCmdPart::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a part"));
-    std::string FeatName = getUniqueObjectName("Part");
+    auto res = addGroup("App::Part", "Part", QApplication::translate("Std_Part", "Part"));
+    if (res.getObjectName().empty())
+        return;
 
-    std::string PartName;
-    PartName = getUniqueObjectName("Part");
-    doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
-    // TODO We really must set label ourselves? (2015-08-17, Fat-Zer)
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'", PartName.c_str(),
-            QObject::tr(PartName.c_str()).toUtf8().data());
-    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
-                                 "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
-            PARTKEY, PartName.c_str());
-
-    updateActive();
+    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)");
+    cmdGuiDocument(App::GetApplication().getActiveDocument(), std::ostringstream()
+                << "ActiveView.setActiveObject('" << PARTKEY << "', "
+                << res.getObjectPython() << ", '" << res.getSubName() << "')");
 }
 
 bool StdCmdPart::isActive(void)
@@ -100,22 +233,8 @@ StdCmdGroup::StdCmdGroup()
 void StdCmdGroup::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a group"));
-
-    std::string GroupName;
-    GroupName = getUniqueObjectName("Group");
-    QString label = QApplication::translate("Std_Group", "Group");
-    doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'", GroupName.c_str(),
-              label.toUtf8().data());
-    commitCommand();
-
-    Gui::Document* gui = Application::Instance->activeDocument();
-    App::Document* app = gui->getDocument();
-    ViewProvider* vp = gui->getViewProvider(app->getActiveObject());
-    if (vp && vp->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
-        gui->signalScrollToObject(*static_cast<ViewProviderDocumentObject*>(vp));
+    addGroup("App::DocumentObjectGroup","Group", QApplication::translate("Std_Group", "Group"));
 }
 
 bool StdCmdGroup::isActive(void)
