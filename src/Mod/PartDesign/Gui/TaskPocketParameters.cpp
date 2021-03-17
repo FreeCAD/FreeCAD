@@ -40,6 +40,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePocket.h>
@@ -435,14 +436,16 @@ void TaskPocketParameters::onModeChanged(int index)
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFirst");
             break;
-        case 3:
+        case 3: {
             // Because of the code at the beginning of Pocket::execute() which is used to detect
             // broken legacy parts, we must set the length to zero here!
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFace");
+            QSignalBlocker blocker(ui->lengthEdit);
             pcPocket->Length.setValue(0.0);
             ui->lengthEdit->setValue(0.0);
             break;
+        }
         default: 
             oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("TwoLengths");
