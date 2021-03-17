@@ -201,6 +201,7 @@ polyhedron(
             f = open(filename,"w+")
             f.write(scadCode)
             f.close()
+            os.chdir(temp_dir)
             return importCSG.open(filename)
 
     def test_import_difference(self):
