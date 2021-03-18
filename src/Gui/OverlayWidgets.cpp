@@ -115,6 +115,7 @@ OverlayProxyWidget::OverlayProxyWidget(OverlayTabWidget *tabOverlay)
     dockArea = owner->getDockArea();
     timer.setSingleShot(true);
     connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    setToolTip(QObject::tr("Press ESC to hide hint"));
 }
 
 bool OverlayProxyWidget::isActivated() const
@@ -944,6 +945,7 @@ void OverlayTabWidget::setState(State state)
             break;
         _state = state;
         if (this->count() && ViewParams::getDockOverlayHintTabBar()) {
+            tabBar()->setToolTip(proxyWidget->toolTip());
             tabBar()->show();
             titleBar->hide();
             splitter->hide();
@@ -1450,11 +1452,14 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     _graphicsEffect->setEnabled(effectEnabled() && (enable || isTransparent()));
 
     if (_state == State_Hint && ViewParams::getDockOverlayHintTabBar()) {
+        tabBar()->setToolTip(proxyWidget->toolTip());
         tabBar()->show();
     } else if (ViewParams::getDockOverlayHideTabBar() || count()==1) {
         tabBar()->hide();
-    } else
+    } else {
+        tabBar()->setToolTip(QString());
         tabBar()->setVisible(!enable || !OverlayStyleSheet::instance()->hideTab);
+    }
 
     setRect(rectOverlay);
 }
