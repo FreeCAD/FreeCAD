@@ -648,11 +648,40 @@ PartDesign::Body *queryCommandOverride()
 
 class Monitor
 {
+    struct Connections {
+        App::SubObjectT activeBodyT;
+        PartDesign::Body *activeBody = nullptr;
+        boost::signals2::scoped_connection connChangedObject;
+        boost::signals2::scoped_connection connDeletedObject;
+
+        void disconnect(const App::DocumentObject &obj)
+        {
+            if (activeBody == &obj) {
+                activeBody = nullptr;
+                activeBodyT = App::SubObjectT();
+                connChangedObject.disconnect();
+                connDeletedObject.disconnect();
+            }
+        }
+    };
+
 public:
     Monitor()
     {
         editTimer.setSingleShot(true);
         proxy.connect(&editTimer, SIGNAL(timeout()), &proxy, SLOT(onEditTimer()));
+
+        connDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
+            [this](const App::Document &doc) {
+                conns.erase(&doc);
+                for (auto it=conns.begin(); it!=conns.end();) {
+                    if (it->first == &doc
+                            || (it->second.activeBody && it->second.activeBody->getDocument() == &doc))
+                        it = conns.erase(it);
+                    else
+                        ++it;
+                }
+            });
 
         Gui::Application::Instance->signalHighlightObject.connect(
             [this](const Gui::ViewProviderDocumentObject &vp,
@@ -661,28 +690,24 @@ public:
                    App::DocumentObject * parent,
                    const char *subname)
             {
-                if (!set) {
-                    if (activeBody == vp.getObject()) {
-                        activeBody = nullptr;
-                        connChangedObject.disconnect();
-                        connDeletedObject.disconnect();
-                        connDeleteDocument.disconnect();
-                    }
-                }
-                else if (vp.isDerivedFrom(ViewProviderBody::getClassTypeId())) {
-                    activeBody = Base::freecad_dynamic_cast<PartDesign::Body>(vp.getObject());
-                    if (activeBody) {
-                        connChangedObject = activeBody->getDocument()->signalChangedObject.connect(
-                                boost::bind(&Monitor::slotChangedObject, this, bp::_1, bp::_2));
-                        connDeletedObject = activeBody->getDocument()->signalDeletedObject.connect(
-                                boost::bind(&Monitor::slotDeletedObject, this, bp::_1));
-                        connDeleteDocument = App::GetApplication().signalDeleteDocument.connect(
-                                boost::bind(&Monitor::slotDeleteDocument, this, bp::_1));
-                        if (parent)
-                            activeBodyT = App::SubObjectT(parent, subname);
-                        else
-                            activeBodyT = App::SubObjectT(activeBody, "");
-                    }
+                auto activeBody = Base::freecad_dynamic_cast<PartDesign::Body>(vp.getObject());
+                if (!activeBody)
+                    return;
+                auto doc = parent ? parent->getDocument() : vp.getDocument()->getDocument();
+                if (!set)
+                    conns.erase(doc);
+                else { 
+                    auto &info = conns[doc];
+                    info.connChangedObject = activeBody->getDocument()->signalChangedObject.connect(
+                            boost::bind(&Monitor::slotChangedObject, this, activeBody, bp::_1, bp::_2));
+
+                    info.connDeletedObject = activeBody->getDocument()->signalDeletedObject.connect(
+                            boost::bind(&Connections::disconnect, &info, bp::_1));
+                    if (parent)
+                        info.activeBodyT = App::SubObjectT(parent, subname);
+                    else
+                        info.activeBodyT = App::SubObjectT(activeBody, "");
+                    info.activeBody = activeBody;
                 }
             });
 
@@ -750,9 +775,14 @@ public:
                     } else
                         parent = nullptr;
                 }
-                if (!parent && activeBody && activeBody == PartDesign::Body::findBodyOf(wrap)) {
-                    parent = activeBodyT.getObject();
-                    subname = activeBodyT.getSubName() + wrap->getNameInDocument() + ".";
+                if (!parent) {
+                    auto it = conns.find(doc->getDocument());
+                    if (it != conns.end()) {
+                        parent = it->second.activeBodyT.getObject();
+                        if (parent)
+                            subname = it->second.activeBodyT.getSubName()
+                                        + wrap->getNameInDocument() + ".";
+                    }
                 }
                 break;
             }
@@ -962,7 +992,9 @@ public:
         editPreview = false;
     }
 
-    void slotChangedObject(const App::DocumentObject &object, const App::Property &prop)
+    void slotChangedObject(PartDesign::Body *activeBody,
+                           const App::DocumentObject &object,
+                           const App::Property &prop)
     {
         if (Part::PartParams::EnableWrapFeature() == 0)
             return;
@@ -977,6 +1009,7 @@ public:
                 || type.isDerivedFrom(Part::SubShapeBinder::getClassTypeId())
                 || object.hasExtension(App::LinkBaseExtension::getExtensionClassTypeId()))
             return;
+
         if (App::GeoFeatureGroupExtension::getGroupOfObject(&object))
             return;
 
@@ -1042,26 +1075,6 @@ public:
         }
     }
 
-    void slotDeletedObject(const App::DocumentObject &obj)
-    {
-        if (activeBody == &obj)
-            disconnect();
-    }
-
-    void slotDeleteDocument(const App::Document &doc)
-    {
-        if (activeBody && activeBody->getDocument() == &doc)
-            disconnect();
-    }
-
-    void disconnect()
-    {
-        activeBody = nullptr;
-        connChangedObject.disconnect();
-        connDeletedObject.disconnect();
-        connDeleteDocument.disconnect();
-    }
-    
     void beforeEdit(App::DocumentObject *editingObj)
     {
         auto body = PartDesign::Body::findBodyOf(editingObj);
@@ -1177,8 +1190,11 @@ public:
             PartDesign::Body *body = Base::freecad_dynamic_cast<PartDesign::Body>(
                     editObjT.getSubObject());
             if (!body) {
-                body = Base::freecad_dynamic_cast<PartDesign::Body>(
-                        activeBodyT.getSubObject());
+                auto it = conns.find(App::GetApplication().getActiveDocument());
+                PartDesign::Body *body = nullptr;
+                if (it != conns.end())
+                    body = Base::freecad_dynamic_cast<PartDesign::Body>(
+                            it->second.activeBodyT.getSubObject());
                 if (!body) {
                     if (!report)
                         FC_THROWM(Base::RuntimeError, "No active body found");
@@ -1187,7 +1203,7 @@ public:
                             QObject::tr("No active body found"));
                     return App::SubObjectT();
                 }
-                editObjT = activeBodyT;
+                editObjT = it->second.activeBodyT;
             }
             return PartDesign::SubShapeBinder::import(feature, editObjT, true, false, true);
         } catch (Base::Exception & e) {
@@ -1201,13 +1217,10 @@ public:
     }
 
 public:
-    boost::signals2::scoped_connection connChangedObject;
-    boost::signals2::scoped_connection connDeletedObject;
+    std::map<const App::Document*, Connections> conns;
     boost::signals2::scoped_connection connDeleteDocument;
     boost::signals2::scoped_connection connVisibilityChanged;
     boost::signals2::scoped_connection connPrimitiveMoved;
-    PartDesign::Body *activeBody = nullptr;
-    App::SubObjectT activeBodyT;
     App::DocumentObjectT editObjT;
     App::SubObjectT editBodyT;
     App::DocumentT editDoc;
