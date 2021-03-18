@@ -63,6 +63,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->setupUi(proxy);
 #if QT_VERSION >= 0x040700
     ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+    addBlinkEditor(ui->lineFaceName);
 #endif
 
     this->groupLayout()->addWidget(proxy);
@@ -268,7 +269,6 @@ void TaskPocketParameters::updateUI(int index)
     else if (index == 3) {
         isOffsetEditVisable = true;
         isFaceEditEnabled    = true;
-        QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
@@ -559,6 +559,7 @@ void TaskPocketParameters::changeEvent(QEvent *e)
 
 #if QT_VERSION >= 0x040700
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
+        addBlinkEditor(ui->lineFaceName);
 #endif
         QVariant featureName = ui->lineFaceName->property("FeatureName");
         if (featureName.isValid()) {

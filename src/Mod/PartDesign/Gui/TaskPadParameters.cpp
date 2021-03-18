@@ -85,6 +85,7 @@ void TaskPadParameters::setupUI(bool newObj)
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
 #endif
     }
+    addBlinkEditor(ui->lineFaceName);
 
     this->initUI(proxy);
     this->groupLayout()->addWidget(proxy);
@@ -302,7 +303,6 @@ void TaskPadParameters::updateUI(int index)
     else if (index == 3) {
         isOffsetEditVisable  = true;
         isFaceEditEnabled    = true;
-        QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
             onButtonFace(true);
@@ -664,6 +664,7 @@ void TaskPadParameters::changeEvent(QEvent *e)
             ui->lineFaceName->setPlaceholderText(tr("No face selected"));
 #endif
         }
+        addBlinkEditor(ui->lineFaceName);
 
         ui->lengthEdit->blockSignals(false);
         ui->lengthEdit2->blockSignals(false);

@@ -103,6 +103,22 @@ void TaskFeatureParameters::onUpdateView(bool on)
     recomputeFeature();
 }
 
+void TaskFeatureParameters::addBlinkEditor(QLineEdit *edit)
+{
+    blinkEdits[edit] = edit->placeholderText();
+    if (blinkTimerId == 0)
+        blinkTimerId = startTimer(500);
+}
+
+void TaskFeatureParameters::timerEvent(QTimerEvent *ev)
+{
+    if (ev->timerId() == blinkTimerId) {
+        for (auto &v : blinkEdits)
+            v.first->setPlaceholderText(blink ? QString() : v.second);
+        blink = !blink;
+    }
+}
+
 void TaskFeatureParameters::recomputeFeature(bool delay)
 {
     if (blockUpdate || !vp || !vp->getObject())

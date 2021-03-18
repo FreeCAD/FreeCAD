@@ -74,6 +74,8 @@ protected Q_SLOTS:
 
 protected:
     virtual void _refresh();
+    void addBlinkEditor(QLineEdit *);
+    void timerEvent(QTimerEvent *);
 
 private:
     /** Notifies when the object is about to be removed. */
@@ -92,6 +94,9 @@ protected:
     Gui::PrefCheckBox * checkBoxUpdateView = nullptr;
     QTimer *updateViewTimer = nullptr;
     int transactionID = 0;
+    int blinkTimerId = 0;
+    bool blink = false;
+    std::map<QLineEdit*, QString> blinkEdits;
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs
