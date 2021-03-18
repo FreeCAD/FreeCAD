@@ -24,7 +24,9 @@ INSTALLATION
     WINDOWS = C:/[INSTALLATION_PATH]/FreeCAD/data/Gui/Stylesheets/
     LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
 
-============================================================================================================  
+============================================================================================================ 
+THESE COLOURS WERE USED AS TEMP SCRATCHPAD FOR DESIGNING. PLEASE DISREGARD!
+ 
     BACKGROUND (darker to lighter)
         black
         #1e1e1e
@@ -143,6 +145,10 @@ QToolBox::tab:hover
 /*==================================================================================================
 QStatusBar
 ==================================================================================================*/
+QStatusBar > QLabel {
+    margin-left: 4px;
+}
+
 
 QStatusBar::item {
     border: 1px solid #333333;
@@ -220,7 +226,7 @@ QMenu QToolButton:pressed,
 QMenu QPushButton:selected,
 QMenu QToolButton:selected {
     color: white;
-    background-color: #696969; /* same as QMenu::item:selected and QMenu::item:pressed */
+    background-color: #557bb6; /* same as QMenu::item:selected and QMenu::item:pressed */
 }
 
 QMenu QRadioButton:disabled,
@@ -286,7 +292,7 @@ Group box
 QGroupBox {
     color: #bcbcbc;
     border:1px solid rgba(255,255,255,20); /* lighter than its own border-color */;
-    border-radius: 2px;
+    border-radius: 1px;
     margin-top: 10px;
     padding: 6px;
     background-color: rgba(255,255,255,0);
@@ -316,7 +322,7 @@ QToolTip {
     background-color: #2a2a2a;
     /*opacity: 90%; doesn't correctly work */
     padding: 4px;
-    border-radius: 2px; /* has no effect */
+    border-radius: 1px; /* has no effect */
 }
 
 
@@ -334,15 +340,15 @@ QDockWidget::title {
     text-align: center;
     background-color: #2a2a2a;
     border-bottom: 4px solid #333333; /* fix to simulate margin between this :title and tabs */ /* same as main background color */
-    margin-left: 7px;
-    margin-right: 7px;
+    margin-left: 6px;
+    margin-right: 6px;
 }
 
 QDockWidget::close-button,
 QDockWidget::float-button {
     border: none;
     background: transparent;
-    border-radius: 2px;
+    border-radius: 1px;
     subcontrol-origin: padding;
     subcontrol-position: right center;
 }
@@ -369,7 +375,6 @@ QDockWidget::float-button:pressed {
 /* fix for Python Console (probably there is a smarter way to arrive to it) */
 QDockWidget > QFrame {
     background-color: #3c3c3c;
-
     border: 6px solid #333333;
 }
 
@@ -385,12 +390,12 @@ QProgressBar:horizontal {
     text-align: center;
     border: 1px solid rgba(0,0,0,140);
     padding: 1px;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 QProgressBar::chunk,
 QProgressBar::chunk:horizontal {
     background-color: #557BB6;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 
@@ -398,7 +403,7 @@ QProgressBar::chunk:horizontal {
 Scroll
 ==================================================================================================*/
 QAbstractScrollArea {
-    border-radius: 2px;
+    border-radius: 1px;
     background-color: transparent;
 }
 
@@ -425,7 +430,7 @@ QScrollBar::handle:horizontal:hover {
 
 QScrollBar::handle:horizontal {
     min-width: 5px;
-    border-radius: 2px;
+    border-radius: 1px;
     margin: 4px 15px;
 }
 
@@ -477,7 +482,7 @@ QScrollBar:vertical {
 
 QScrollBar::handle:vertical {
     min-height: 24px;
-    border-radius: 2px;
+    border-radius: 1px;
     margin: 15px 4px;
 }
 
@@ -667,7 +672,7 @@ QDialog#Gui__Dialog__DlgPreferences > QListView {
 
 /* unique styles for sections inside Preferences */
 QDialog#Gui__Dialog__DlgPreferences > QListView::item {
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 QDialog#Gui__Dialog__DlgPreferences > QListView::item:hover { /* Preference left icons*/
@@ -687,7 +692,7 @@ Tab bar buttons
 QTabBar::close-button {
     subcontrol-origin: margin;
     subcontrol-position: center right; /* only works for Qt 4.6 and newer */;
-    border-radius: 2px;
+    border-radius: 1px;
     background-image: url(qss:images_dark-light/close_light.svg);
     background-position: center center;
     background-repeat: none;
@@ -790,7 +795,7 @@ QTableView {
     selection-color: #ffffff;
     selection-background-color: #557BB6; /* should be similar to QListView::item selected background-color */
     show-decoration-selected: 1; /* make the selection span the entire width of the view */
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 QListView::item:hover,
@@ -821,7 +826,7 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel:disabled {
     color: transparent;
     background-color: transparent;
     border: none;
-    border-radius: 2px;
+    border-radius: 1px;
     margin: 0px;
     padding: 0px;
 }
@@ -894,7 +899,7 @@ QTreeView > QWidget > QTimeEdit:down-button,
 QTreeView > QWidget > QDateEdit:down-button,
 QTreeView > QWidget > QDateTimeEdit:down-button,
 QTreeView > QWidget > Gui--ColorButton {
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 /* set focus colors to best viewing the editable fields */
@@ -927,7 +932,7 @@ QTreeView > QWidget > QDateTimeEdit:read-only {
 /* Fix to correctly (not totally) draw QTextEdit on OSX at Page properties: "Page result", "Template" and "Editable Texts" */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget {
     min-height: 14px;
-    border-radius: 2px; /* reset */
+    border-radius: 1px; /* reset */
 }
 
 
@@ -937,8 +942,8 @@ Header of tree and list views
 QHeaderView {
     color: #d2d2d2;
     background-color: #2a2a2a;
-    border-top-left-radius: 2px; /* 1px less than its container */
-    border-top-right-radius: 2px; /* 1px less than its container */
+    border-top-left-radius: 1px; /* 1px less than its container */
+    border-top-right-radius: 1px; /* 1px less than its container */
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
@@ -1220,7 +1225,7 @@ QToolBar > Gui--WorkbenchComboBox  {
     selection-color: #ffffff;
     selection-background-color: #2a2a2a;
     border: 1px solid #2a2a2a;
-    border-radius: 2px;
+    border-radius: 1px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
     min-height: 16px; /* important to be a pair number in order to up/down buttons to be divisible by two (if not set could create a blank line in Ubuntu. Its downside is that it's needed to reset it (min-width: 0px) on following elements that can't have it such as fields inside QToolBar and inside QTreeView (Property editor) */
     padding: 1px 2px; /* temporal: could don't be compatible with elements inside Tree/List view */
@@ -1244,9 +1249,9 @@ QDateTimeEdit {
     color: #f5f5f5;
     background-color: #494949;  /* lineedits and drop-downs */
     selection-color: #ffffff;
-    selection-background-color: #2a2a2a;
+    selection-background-color: #557bb6;
     border: 0px solid #2a2a2a;
-    border-radius: 2px;
+    border-radius: 1px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
     min-height: 16px; /* important to be a pair number in order to up/down buttons to be divisible by two (if not set could create a blank line in Ubuntu. Its downside is that it's needed to reset it (min-width: 0px) on following elements that can't have it such as fields inside QToolBar and inside QTreeView (Property editor) */
     padding: 1px 2px; /* temporal: could don't be compatible with elements inside Tree/List view */
@@ -1293,7 +1298,7 @@ QDateTimeEdit:focus {
     border-color: #333333;
     border: 1px;
     border-right-color: #557BB6; /* same as up/down or drop-down button color */
-    background-color: #557bb6;
+    background-color: #494949;
 }
 
 QComboBox:disabled,
@@ -1461,8 +1466,8 @@ QComboBox::drop-down {
     subcontrol-origin: border; /* important */
     subcontrol-position: top right;
     width: 20px;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
 }
 
 QComboBox::drop-down:on,
@@ -1505,109 +1510,156 @@ QComboBox QAbstractItemView {
 /*==================================================================================================
 Push button
 ==================================================================================================*/
-QPushButton#inspectButton {
-    background-color: #2a2a2a;
-    border-bottom: 2px solid #1e1e1e;
-    min-height: 16px;
-}
-
-QPushButton:focus#inspectButton,
-QPushButton:hover#inspectButton {
-    background-color: #557bb6;
-    border: -2px solid #557bb6;
-}
-
-QPushButton:checked#inspectButton {
-    background-color: #557bb6;
-    border-bottom: solid #557bb6;
-}
-
-QPushButton:pressed#inspectButton {
-    background-color: #557bb6;
-    border-bottom: 1px solid #3c3c3c;
-}
-
-QPushButton#NavigationIndicator {
-    background-color: #557bb6;
-    min-height: 16px;
-    border: 2px solid #557bb6;
-}
-
-QPushButton:hover#NavigationIndicator {
-    border: -2px solid #557bb6;
-}
-
-QPushButton#buttonAddLevel {
-    margin-left:10px;
-}
-
-QPushButton#buttonRename {
-    margin-right:10px;
-}
-
-QPushButton#buttonAddLevel,
-QPushButton#buttonAddProxy,
-QPushButton#buttonDelete,
-QPushButton#buttonToggle,
-QPushButton#buttonIsolate,
-QPushButton#buttonSaveView,
-QPushButton#buttonRename {
-    color: #f5f5f5;
-    max-width: 100%;
-    min-width: 16px;
-    min-height: 24px;
-    padding: 4px;
-    background-color: #333333;
-    border: 1px #557bb6; 
-}
-
-QPushButton:hover#buttonAddLevel,
-QPushButton:hover#buttonAddProxy,
-QPushButton:hover#buttonDelete,
-QPushButton:hover#buttonToggle,
-QPushButton:hover#buttonIsolate,
-QPushButton:hover#buttonSaveView,
-QPushButton:hover#buttonRename {
-    color: #cbd8e6;
-    background-color: #557BB6;
-}  
-
 QPushButton {
     color: #e0e0e0;
     text-align: center;
-    min-width: 70px;
-    background-color: #2a2a2a; /* Middle Mouse Navigation Button and Ok Cancel Apply Help Preferences Buttons */
-    border: 2px solid #2a2a2a;
-    border-bottom-color: #1e1e1e; /* simulates shadow under the button */
-    padding: 2px 2px;
-    margin: 2px 2px;
-    min-height: 16px; /* same as QTabBar QPushButton min-width */
+    background-color: #2a2a2a;
+    padding: 4px 20px;
+    border: 1px solid #494949;
+    margin: 4px 4px;
     border-radius: 1px;
-
 }
 
 QPushButton:hover,
 QPushButton:focus {
-    color: #cbd8e6;
-    border: -2px solid #333333;
-    background-color: #557BB6;
+    color: #ffffff;
+    background-color: #557bb6;
+    border: 1px solid #f5f5f5;
 }
 
 QPushButton:disabled,
 QPushButton:disabled:checked {
     color: #f5f5f5;
     background-color: #2a2a2a; /* same as enabled color */
-    border-color: #2a2a2a; /* same as enabled color */
+    border: 1px solid #2a2a2a; /* same as enabled color */
 }
 
 QPushButton:pressed {
-    background-color: #557BB6;
+    color: #ffffff;
+    background-color: #48699a;
     border: 1px solid #3c3c3c;
 }
 
 QPushButton:checked {
     background-color: #557BB6;
-    border: solid #557BB6;
+    border: 1px solid #557BB6;
+}
+
+/* Inspect Widgets Addon */
+
+QDockWidget#InspectWidgets QPushButton {
+    background-color: #2a2a2a;
+    border: 1px solid #3c3c3c;
+    min-height: 16px;
+    margin: 0px;
+}
+
+QDockWidget#InspectWidgets QPushButton:hover {
+    color: #ffffff;
+    background-color: #557bb6;
+    border: 1px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+QDockWidget#InspectWidgets QPushButton:checked,
+QDockWidget#InspectWidgets QPushButton:pressed {
+    background-color: #557bb6;
+    border: 1px solid #557bb6;
+}
+
+/* CAD Navigation Style */
+
+QPushButton#NavigationIndicator {
+    background-color: #557bb6;
+    padding: 2px;
+    margin: 0px;
+    border: 1px solid #333333;
+    border-radius: 1px;
+    min-width: 90px;
+    min-height: 24px;
+}
+
+QPushButton:hover#NavigationIndicator {
+    color: #ffffff;
+    border: 1px solid #f5f5f5;
+}
+
+QPushButton:pressed#NavigationIndicator {
+    color: #ffffff;
+    background-color: #557bb6;
+    border: 1px solid #557bb6;
+}
+
+/* BIM Views Manager */
+
+QWidget#Form QPushButton {
+    background-color: #333333;
+    padding: 4px 2px;
+    border: 1px solid #3c3c3c;
+    border-radius: 1px;
+    margin: 2px;
+    margin-bottom: 8px;
+    max-width: 100%;
+    min-width: 16px;
+    min-height: 24px;
+}
+
+QWidget#Form QPushButton:hover {
+    border: 1px solid #f5f5f5;
+    background-color: #557BB6;
+}
+
+QWidget#Form QPushButton:pressed {
+    border: 1px solid #557bb6;
+    background-color: #557BB6;
+}
+
+/* Sketcher Manual Update Button */
+
+QPushButton#manualUpdate {
+    padding: 4px;
+    margin: 0px;
+    border: 1px solid #494949;
+}
+
+QPushButton:pressed#manualUpdate {
+    color: #ffffff;
+    border: 1px solid #3c3c3c;
+    background-color: #48699a;
+}
+
+/* Addon Manager */
+
+QDialog#Dialog QPushButton {
+    padding: 4px;
+    margin: 0px;
+    border: 1px solid #494949;
+}
+
+QDialog#Dialog QPushButton:hover {
+    color: #ffffff;
+    border: 1px solid #3c3c3c;
+    background-color: #48699a;
+}
+
+QPushButton#buttonUninstall {
+    margin-left: 16px;
+}
+
+QPushButton#buttonClose {
+    margin-right: 8px;
+}
+
+/* Ok Cancel Apply Help Preferences Buttons */ /* Hack to move Help button left */
+
+QDialogButtonBox > QPushButton {
+    color: #e0e0e0;
+    text-align: center;
+    background-color: #2a2a2a;
+    border: 1px solid #494949;
+    padding: 4px;
+    margin-right: 8px;
+    min-width: 60px;
 }
 
 /* Color Buttons */
@@ -1644,7 +1696,7 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton {
     background-color: #2a2a2a;
     border: 1px solid #1e1e1e;
     min-width: 16px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
-    border-radius: 2px;
+    border-radius: 1px;
     margin: 0px; /* reset */
     padding: 0px; /* reset */
 }
@@ -1653,48 +1705,44 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton {
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget > QWidget > QFrame {
     background-color: #333333; /* main background color */
     border: 1px solid #333333;
-    border-radius: 2px;
+    border-radius: 1px;
     padding: 2px 6px;
 }
-
-QPushButton:checked {
-    background-color: #3c3c3c;
-    border-color: #3c3c3c;
-}
-
 
 /*==================================================================================================
 Tool button inside QDialogs that works as QPushButtons
 ==================================================================================================*/
 /* found under Tools -> Customize -> Macros -> Pixmap "..." button */
+
 QDialog QToolButton {
     color: #e0e0e0;
     text-align: center;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #2a2a2a, stop:1 #1e1e1e);
-    border: 1px solid #1e1e1e;
-    border-bottom-color: black; /* simulates shadow under the button */
+    background-color: #2a2a2a;
+    border: 1px solid #494949;
     padding: 0px; /* different than regular QPushButton */
-    margin: 2px; /* different than regular QPushButton */
+    margin: 2px;
     min-height: 16px; /* same as QTabBar QPushButton min-width */
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 QDialog QToolButton:hover,
 QDialog QToolButton:focus {
-    color: #cbd8e6;
-    border-color: #557BB6;
-    background-color: #557BB6;
+    color: #ffffff;
+    background-color: #557bb6;
+    border: 1px solid #f5f5f5;
 }
 
 QDialog QToolButton:disabled,
 QDialog QToolButton:disabled:checked {
-    color: #333333;
-    border-color: #424242;
-    background-color: #424242;
+    color: #f5f5f5;
+    background-color: #2a2a2a; 
+    border: 1px solid #2a2a2a; 
 }
 
 QDialog QToolButton:pressed {
-    background-color: #557BB6;
+    color: #ffffff;
+    background-color: #48699a;
+    border: 1px solid #3c3c3c;
 }
 
 
@@ -1711,7 +1759,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
     padding: 2px 6px; /* different than regular QPushButton */
     margin: 2px; /* different than regular QPushButton */
     min-height: 16px; /* same as QTabBar QPushButton min-width */
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:hover,
@@ -1779,7 +1827,7 @@ QRadioButton:disabled {
 QRadioButton::indicator {
     width: 12px;
     height: 12px;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 QRadioButton::indicator:pressed {
@@ -1944,7 +1992,7 @@ QSlider:vertical {
 QSlider::groove {
     background-color: #2a2a2a;
     border: 2px solid #3c3c3c;
-    border-radius: 2px;
+    border-radius: 1px;
     margin: 4px 0px;
 }
 
@@ -1968,7 +2016,7 @@ QSlider::handle:vertical {
     border: 1px solid #2a2a2a;
     width: 16px;
     height: 16px;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 QSlider::handle:horizontal {
@@ -2028,35 +2076,44 @@ QToolBar > QPushButton {
     margin: 0px; /* doesn't work with :left, :right:, :top or :bottom sub-controls */
     min-width: 24px; /* could not be larger due to switchable Preferences "Size of toolbar icons" */
     min-height: 24px; /* could not be larger due to switchable Preferences "Size of toolbar icons" */
-    border-radius: 2px; /* same as regular QPushButton */ 
+    border-radius: 1px; /* same as regular QPushButton */
 }
 
 QToolBar > QPushButton:checked {
-    border: 1px solid #333333;
+    border: 1px solid #3c3c3c;
     background-color: #557BB6;
+}
+
+/* Hack to avoid QPushButton text partially hidden under menu-indicator */
+QToolBar > QPushButton::menu-indicator:!checked {
+    image: none;
+    width: 0px;
 }
 
 QToolBar > QPushButton:!checked {
     background-color: #333333; /* Current Working Plane and Nudge */
-    border: 1px solid #333333;
-    text-align: left;
+    padding: 2px 4px;
+    border: 1px solid #3c3c3c;
+    margin: 0px 2px;
 }
 
 QToolBar > QPushButton:checked:hover {
-    border-color: #557BB6;
+    border: 1px solid #f5f5f5;
 }
 
 QToolBar > QPushButton:!checked:hover {
     color: #ffffff;
     background-color: #557BB6;
-    border-color: #557BB6;
+    border: 1px solid #f5f5f5;
 }
 
 QToolBar > QPushButton:checked:pressed {
+    border: 1px solid #557bb6;
     background-color: solid #557BB6;
 }
 
 QToolBar > QPushButton:!checked:pressed {
+    border: 1px solid #557bb6;
     background-color: #557BB6;
 }
 
@@ -2069,43 +2126,60 @@ QToolBar > QPushButton:!checked:disabled {
 QToolBar > QToolButton {
     margin: 2px;
     padding: 2px;
-    border-radius: 2px;
+    border-radius: 1px;
+    border: 1px solid transparent;
 }
 
 QToolBar > QToolButton:hover {
     background-color: #557BB6;
+    border: 1px solid #f5f5f5;
 }
 
 QToolBar > QToolButton:pressed {
     background-color: #557BB6;
+    border: 1px solid #557bb6;
 }
 
 /* ToolBar menu buttons (buttons with drop-down menu) */
 QToolBar > QToolButton#qt_toolbutton_menubutton {
     padding-right: 20px; /* Hack to add more width to buttons with menu */
-    border: 1px solid transparent;
-    border-radius: 2px;
-}
-
-QToolBar > QToolButton#qt_toolbutton_menubutton:hover,
-QToolBar > QToolButton#qt_toolbutton_menubutton:pressed,
-QToolBar > QToolButton#qt_toolbutton_menubutton:open {
-    border: 1px solid #557BB6;
+    border: 1px solid #333333;
+    border-radius: 1px;
 }
 
 QToolBar QToolButton::menu-button,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button {
     border: none;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+    border-top-right-radius: 1px;
+    border-bottom-right-radius: 1px;
     width: 16px; /* 16px width + 4px for border = 20px allocated above */
     outline: none;
     background-color: transparent;
 }
 
-QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover,
+QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:hover {
+    border-top: 1px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
+    border-right: 1px solid #f5f5f5;
+    background-color: #557BB6;
+}
+
+QToolBar > QToolButton#qt_toolbutton_menubutton:pressed,
+QToolBar > QToolButton#qt_toolbutton_menubutton:open {
+    background-color: #557BB6;
+    border: 1px solid #557BB6;
+}
+
+QToolBar > QToolButton#qt_toolbutton_menubutton:hover {
+    background-color: #557BB6;
+    border: 1px solid #f5f5f5;
+}
+
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:pressed,
 QToolBar > QToolButton#qt_toolbutton_menubutton::menu-button:open {
+    border-top: 1px solid #557bb6;
+    border-bottom: 1px solid #557bb6;
+    border-right: 1px solid #557bb6;
     background-color: #557BB6;
 }
 
@@ -2208,7 +2282,7 @@ QTableView > QWidget > QTimeEdit:down-button,
 QTableView > QWidget > QDateEdit:down-button,
 QTableView > QWidget > QDateTimeEdit:down-button,
 QTableView > QWidget > Gui--ColorButton {
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 QTableView > QWidget > QComboBox,
@@ -2334,7 +2408,7 @@ QToolBar#Selector QToolButton {
     border: none;
     margin: 0px;
     padding: 2px 6px;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 /* Active tab */
