@@ -413,27 +413,30 @@ std::vector<TopoShape> ProfileBased::getProfileWires() const {
 }
 
 TopoShape ProfileBased::getSupportFace() const {
-    const Part::Part2DObject* sketch = getVerifiedSketch();
-    if (sketch->MapMode.getValue() == Attacher::mmFlatFace  &&  sketch->Support.getValue()) {
+    TopoShape shape;
+    const Part::Part2DObject* sketch = getVerifiedSketch(true);
+    if (!sketch)
+        shape = getVerifiedFace();
+    else if (sketch->MapMode.getValue() == Attacher::mmFlatFace  &&  sketch->Support.getValue()) {
         const auto &Support = sketch->Support;
         App::DocumentObject* ref = Support.getValue();
-        TopoShape shape;
         shape = Part::Feature::getTopoShape(
                 ref, Support.getSubValues().size() ? Support.getSubValues()[0].c_str() : "", true);
-
-        if (!shape.isNull()) {
-            if (shape.shapeType(true) != TopAbs_FACE) {
-                if (!shape.hasSubShape(TopAbs_FACE))
-                    throw Base::ValueError("Null face in SketchBased::getSupportFace()!");
-                shape = shape.getSubTopoShape(TopAbs_FACE, 1);
-            }
-            gp_Pln pln;
-            if (!shape.findPlane(pln))
-                throw Base::TypeError("No planar face in SketchBased::getSupportFace()!");
-
-            return shape;
-        }
     }
+    if (!shape.isNull()) {
+        if (shape.shapeType(true) != TopAbs_FACE) {
+            if (!shape.hasSubShape(TopAbs_FACE))
+                throw Base::ValueError("Null face in SketchBased::getSupportFace()!");
+            shape = shape.getSubTopoShape(TopAbs_FACE, 1);
+        }
+        gp_Pln pln;
+        if (!shape.findPlane(pln))
+            throw Base::TypeError("No planar face in SketchBased::getSupportFace()!");
+
+        return shape;
+    }
+    if (!sketch)
+        throw Base::RuntimeError("No planar support");
     return Feature::makeShapeFromPlane(sketch);
 }
 
