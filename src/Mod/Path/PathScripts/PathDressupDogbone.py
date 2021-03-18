@@ -964,6 +964,7 @@ class TaskPanel(object):
         self.viewProvider.showMarkers(False)
         for m in self.markers:
             self.viewProvider.switch.removeChild(m.sep)
+        self.markers = []
 
     def getFields(self):
         self.obj.Style = str(self.form.styleCombo.currentText())
