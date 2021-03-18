@@ -636,6 +636,12 @@ bool Transformed::isElementGenerated(const TopoShape &shape, const char *name) c
             }
             if(tag2 < 0) {
                 tag2 = -tag2;
+                if (this->OriginalSubs.getValues().empty()) {
+                    if(BaseFeature.getValue() && tag2 == BaseFeature.getValue()->getID()) {
+                        res = true;
+                        return true;
+                    }
+                }
                 for(auto obj : this->OriginalSubs.getValues()) {
                     if(tag2 == obj->getID()) {
                         res = true;
