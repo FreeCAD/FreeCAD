@@ -604,6 +604,7 @@ void DlgPropertyLink::onItemChanged(QTreeWidgetItem *item, int column)
         checkedItems.push_back(item);
         setItemLabel(item, (int)checkedItems.size());
     }
+    linkChanged();
 }
 
 void DlgPropertyLink::onClicked(QAbstractButton *button) {
@@ -859,7 +860,6 @@ QTreeWidgetItem *DlgPropertyLink::selectionChanged(const Gui::SelectionChanges& 
     if (!checked) {
         item->setCheckState(0, Qt::Checked);
         onItemChanged(item,0);
-        linkChanged();
     }
     if (setCurrent)
         ui->treeWidget->setCurrentItem(item);
