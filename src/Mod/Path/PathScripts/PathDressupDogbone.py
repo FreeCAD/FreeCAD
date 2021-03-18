@@ -31,7 +31,6 @@ import PathScripts.PathUtils as PathUtils
 import math
 
 from PySide import QtCore
-from pivy import coin
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -1196,6 +1195,7 @@ class CommandDressupDogbone(object):
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
+    from pivy import coin
     FreeCADGui.addCommand('Path_DressupDogbone', CommandDressupDogbone())
 
 FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")
