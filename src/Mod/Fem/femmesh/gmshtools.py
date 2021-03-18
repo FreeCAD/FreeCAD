@@ -370,32 +370,36 @@ class GmshTools():
     def get_gmsh_version(self):
         self.get_gmsh_command()
         if os.path.exists(self.gmsh_bin):
-            found_message = "executable found: " + self.gmsh_bin 
+            found_message = "file found: " + self.gmsh_bin
             Console.PrintMessage(found_message + "\n")
         else:
-            found_message = "executable not found: " + self.gmsh_bin
+            found_message = "file not found: " + self.gmsh_bin
             Console.PrintError(found_message + "\n")
             return (None, None, None), found_message
 
         command_list = [self.gmsh_bin, "--info"]
-        p = subprocess.Popen(
-            command_list,
-            shell=False,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        gmsh_stdout, gmsh_stderr = p.communicate()
+        try:
+            p = subprocess.Popen(
+                command_list,
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+        except Exception as e:
+            Console.PrintMessage(str(e) + "\n")
+            return (None, None, None), found_message + "\n\n" + "Error: " + str(e)
 
+        gmsh_stdout, gmsh_stderr = p.communicate()
         Console.PrintMessage("Gmsh: StdOut:\n" + gmsh_stdout + "\n")
         if gmsh_stderr:
             Console.PrintError("Gmsh: StdErr:\n" + gmsh_stderr + "\n")
 
         match = re.search("^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
         if match:
-            return match.group(1, 2, 3), found_message + "\n\n" + gmsh_stdout         # major, minor, patch, fullmessage
+            return match.group(1, 2, 3), found_message + "\n\n" + gmsh_stdout         # (major, minor, patch), fullmessage
         else:
-            return (None, None, None), found_message + "\n\n" + gmsh_stdout
+            return (None, None, None), found_message + "\n\n" + "Warning: Output not recognized\n\n" + gmsh_stdout
 
     def get_region_data(self):
         # mesh regions
