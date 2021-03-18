@@ -243,6 +243,7 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
 WebView::WebView(QWidget *parent)
     : QWEBVIEW(parent)
 {
+#ifdef QTWEBKIT
     // Increase html font size for high DPI displays
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QRect mainScreenSize = QApplication::primaryScreen()->geometry();
@@ -252,6 +253,7 @@ WebView::WebView(QWidget *parent)
     if (mainScreenSize.width() > 1920){
         setTextSizeMultiplier (mainScreenSize.width()/1920.0);
     }
+#endif
 }
 
 #ifdef QTWEBENGINE
