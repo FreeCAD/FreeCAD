@@ -36,7 +36,7 @@ iconprovider = QtGui.QFileIconProvider()
 iconbank = {} # to store already created icons so we don't overpollute the temp dir
 tempfolder = None # store icons inside a subfolder in temp dir
 defaulticon = None # store a default icon for problematic file types
-
+logger = FreeCAD.Logger('StartPage')
 
 def encode(text):
 
@@ -208,7 +208,7 @@ def getInfo(filename):
             if filename.lower().endswith(".fcstd"):
                 try:
                     zfile=zipfile.ZipFile(filename)
-                except:
+                except Exception:
                     print("Cannot read file: ",filename)
                     return None
                 files=zfile.namelist()
@@ -310,7 +310,6 @@ def getDefaultIcon():
     return defaulticon
 
 
-
 def buildCard(filename,method,arg=None):
 
     "builds a html <li> element representing a file. method is a script + a keyword, for ex. url.py?key="
@@ -341,7 +340,17 @@ def buildCard(filename,method,arg=None):
                     if isinstance(result, bytes):
                         result = result.decode("utf8")
                     if result.startswith(cacheheader):
-                        return result.replace('$METHOD$', method).replace('$ARG$', arg)
+                        keyword = '<img src="file:///'
+                        idx = result.find(keyword)
+                        if idx > 0:
+                            idx += len(keyword)
+                            eidx = result.find('" alt=',idx)
+                            if eidx > 0:
+                                logger.log('check thumbnail {}', result[idx:eidx])
+                                if os.path.exists(result[idx:eidx]):
+                                    logger.log('cache hit ', cachename)
+                                    return result.replace('$METHOD$', method).replace('$ARG$', arg)
+            logger.log('cache miss ', cachename)
 
         result = encode("")
         finfo = getInfo(filename)
