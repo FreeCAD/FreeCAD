@@ -68,7 +68,7 @@ DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
  */
 DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_DlgPreferences),
-      invalidParameter(false), canEmbedScrollArea(true)
+      invalidParameter(false)
 {
     ui->setupUi(this);
     ui->listBox->setFixedWidth(108);
@@ -160,13 +160,17 @@ void DlgPreferencesImp::createPageInGroup(QTabWidget *tabWidget, const std::stri
 {
     PreferencePage* page = WidgetFactory().createPreferencePage(pageName.c_str());
     if (page) {
-        tabWidget->addTab(page, page->windowTitle());
+        QScrollArea* scrollArea = new QScrollArea(this);
+        scrollArea->setFrameShape(QFrame::NoFrame);
+        scrollArea->setWidgetResizable(true);
+        scrollArea->setWidget(page);
+        tabWidget->addTab(scrollArea, page->windowTitle());
         page->loadSettings();
         page->setProperty("GroupName", tabWidget->property("GroupName"));
         page->setProperty("PageName", QVariant(QString::fromStdString(pageName)));
     }
     else {
-        Base::Console().Warning("%s is not a preference page\n", pageName.c_str());
+       Base::Console().Warning("%s is not a preference page\n", pageName.c_str());
     }
 }
 
@@ -358,7 +362,10 @@ void DlgPreferencesImp::reloadPages()
             QString pageName = QString::fromStdString(page);
             bool pageExists = false;
             for (int pageNumber = 0; pageNumber < tabWidget->count(); ++pageNumber) {
-                PreferencePage* prefPage = qobject_cast<PreferencePage*>(tabWidget->widget(pageNumber));
+                QWidget* widget = tabWidget->widget(pageNumber);
+                if (auto scrollarea = qobject_cast<QScrollArea*>(widget))
+                    widget = scrollarea->widget();
+                PreferencePage* prefPage = qobject_cast<PreferencePage*>(widget);
                 if (prefPage && prefPage->property("PageName").toString() == pageName) {
                     pageExists = true;
                     break;
@@ -385,6 +392,11 @@ void DlgPreferencesImp::applyChanges()
             QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
             for (int j=0; j<tabWidget->count(); j++) {
                 QWidget* page = tabWidget->widget(j);
+                if (auto scrollarea = qobject_cast<QScrollArea*>(page)) {
+                    page = scrollarea->widget();
+                    if (!page)
+                        continue;
+                }
                 int index = page->metaObject()->indexOfMethod("checkSettings()");
                 try {
                     if (index >= 0) {
@@ -409,7 +421,10 @@ void DlgPreferencesImp::applyChanges()
     for (int i=0; i<ui->tabWidgetStack->count(); i++) {
         QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
         for (int j=0; j<tabWidget->count(); j++) {
-            PreferencePage* page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
+            QWidget* widget = tabWidget->widget(j);
+            if (auto scrollarea = qobject_cast<QScrollArea*>(widget))
+                widget = scrollarea->widget();
+            PreferencePage* page = qobject_cast<PreferencePage*>(widget);
             if (page)
                 page->saveSettings();
         }
@@ -425,7 +440,6 @@ void DlgPreferencesImp::applyChanges()
 
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
-    //canEmbedScrollArea = false;
     this->adjustSize();
     QDialog::showEvent(ev);
 }
@@ -439,41 +453,6 @@ void DlgPreferencesImp::paintEvent(QPaintEvent *ev)
 void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
 {
     savedSize = ev->size();
-    if (canEmbedScrollArea) {
-        // embed the widget stack into a scroll area if the size is
-        // bigger than the available desktop
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-        QRect rect = QApplication::primaryScreen()->availableGeometry();
-#else
-        QRect rect = QApplication::desktop()->availableGeometry();
-#endif
-        canEmbedScrollArea = false;
-        int maxHeight = rect.height() - 60;
-        int maxWidth = rect.width();
-        int newHeight = height();
-        int newWidth = width();
-        if (newHeight > maxHeight || newWidth > maxWidth) {
-            ui->hboxLayout->removeWidget(ui->tabWidgetStack);
-            QScrollArea* scrollArea = new QScrollArea(this);
-            scrollArea->setFrameShape(QFrame::NoFrame);
-            scrollArea->setWidgetResizable(true);
-            scrollArea->setWidget(ui->tabWidgetStack);
-            ui->hboxLayout->addWidget(scrollArea);
-
-            // if possible the minimum width should so that it doesn't show
-            // a horizontal scroll bar.
-            QScrollBar* bar = scrollArea->verticalScrollBar();
-            if (bar) {
-                newWidth = std::min<int>(width() + bar->width(), maxWidth);
-                newHeight = std::min<int>(newHeight, maxHeight);
-            }
-        }
-        QMetaObject::invokeMethod(this, "resizeWindow",
-                Qt::QueuedConnection,
-                QGenericReturnArgument(),
-                Q_ARG(int, newWidth),
-                Q_ARG(int, newHeight));
-    }
     QDialog::resizeEvent(ev);
 }
 
