@@ -66,7 +66,7 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-    void showEvent(QShowEvent*);
+    void paintEvent(QPaintEvent*);
     void closeEvent(QCloseEvent*);
 
 protected:
@@ -80,6 +80,7 @@ private:
     QBrush defaultColor;
     QFont boldFont;
     QList<QTreeWidgetItem*> foundList;
+    bool geometryRestored = false;
 };
 
 // --------------------------------------------------------------------

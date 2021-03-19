@@ -2066,7 +2066,7 @@ void preAppSetup()
 #endif
         QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
     }
-    else {
+    else if (!getenv("QT_AUTO_SCREEN_SCALE_FACTOR")) {
         // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #if QT_VERSION >= QT_VERSION_CHECK(5,14,0)

@@ -41,6 +41,10 @@
 # include <qmessagebox.h>
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QWindow>
+#endif
+
 #include <QStack>
 
 #include <Base/Console.h>
@@ -349,10 +353,10 @@ public:
         iconSize2 *= 0.75;
 #endif
 
-#if QT_VERSION >= 0x050000
-        qreal dpr = qApp->devicePixelRatio();
-#else
         qreal dpr = 1.0;
+#if QT_VERSION >= 0x050000
+        auto window = master->window()->windowHandle();
+        dpr = window ? window->devicePixelRatio() : qApp->devicePixelRatio();
 #endif
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
 #else

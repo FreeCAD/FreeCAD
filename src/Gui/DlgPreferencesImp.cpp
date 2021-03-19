@@ -36,7 +36,6 @@
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QWindow>
 # include <QScreen>
 #endif
 
@@ -461,14 +460,7 @@ void DlgPreferencesImp::restoreGeometry()
     if (geometryRestored)
         return;
     geometryRestored = true;
-    QRect rect = getMainWindow()->geometry();
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    QWindow *window = getMainWindow()->window()->windowHandle();
-    if (window && window->screen())
-        rect = window->screen()->availableGeometry();
-#endif
-    int maxHeight = rect.height();
-    int maxWidth = rect.width();
+    QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
     std::string geometry = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/General")->GetASCII(
                 "PreferenceGeometry", "");
@@ -477,21 +469,10 @@ void DlgPreferencesImp::restoreGeometry()
     if (iss >> x >> y >> w >> h) {
         x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
         y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
-        int newWidth = std::min<int>(maxWidth-x, w);
-        int newHeight = std::min<int>(maxHeight-y, h);
-        this->move(x, y);
-        savedPos = QPoint(x, y);
-        QMetaObject::invokeMethod(this, "resizeWindow",
-                Qt::QueuedConnection,
-                QGenericReturnArgument(),
-                Q_ARG(int, newWidth),
-                Q_ARG(int, newHeight));
+        w = std::min<int>(rect.width(), w);
+        h = std::min<int>(rect.height(), h);
+        this->setGeometry(x,y,w,h);
     }
-}
-
-void DlgPreferencesImp::resizeWindow(int w, int h)
-{
-    resize(w, h);
 }
 
 void DlgPreferencesImp::changeEvent(QEvent *e)

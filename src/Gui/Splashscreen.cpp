@@ -238,11 +238,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
 
     setModal(true);
     ui->setupUi(this);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    QRect rect = QApplication::primaryScreen()->availableGeometry();
-#else
-    QRect rect = QApplication::desktop()->availableGeometry();
-#endif
+    QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
     QPixmap image = getMainWindow()->splashImage();
 
     // Make sure the image is not too big

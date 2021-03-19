@@ -131,11 +131,9 @@ protected:
     void paintEvent(QPaintEvent *ev);
     void restoreGeometry();
 
-
 protected Q_SLOTS:
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
     void on_buttonBox_clicked(QAbstractButton*);
-    void resizeWindow(int w, int h);
 
 private:
     /** @name for internal use only */

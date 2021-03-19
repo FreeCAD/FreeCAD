@@ -54,6 +54,7 @@
 # include <Inventor/events/SoEvent.h>
 # include <Inventor/fields/SoSFString.h>
 # include <Inventor/fields/SoSFColor.h>
+# include <QDesktopWidget>
 #endif
 # include <QStackedWidget>
 #include <QtOpenGL.h>

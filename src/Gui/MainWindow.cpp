@@ -195,6 +195,7 @@ struct MainWindowP
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler> > urlHandler;
     std::string hiddenDockWindows;
+    int screen = -1;
 };
 
 class MDITabbar : public QTabBar
@@ -1543,26 +1544,17 @@ void MainWindow::loadWindowSettings()
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    QRect rect = QApplication::primaryScreen()->availableGeometry();
-#else
-    QRect rect = QApplication::desktop()->availableGeometry();
-#endif
-    int maxHeight = rect.height();
-    int maxWidth = rect.width();
+    QRect rect = QApplication::desktop()->availableGeometry(d->screen);
 
     config.beginGroup(qtver);
     QPoint pos = config.value(QString::fromLatin1("Position"), this->pos()).toPoint();
-    maxWidth -= pos.x();
-    maxHeight -= pos.y();
-    this->resize(config.value(QString::fromLatin1("Size"), QSize(maxWidth, maxHeight)).toSize());
+    QSize size = config.value(QString::fromLatin1("Size"), rect.size()).toSize();
+    int x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, pos.x()));
+    int y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, pos.y()));
+    int w = std::min<int>(rect.width(), size.width());
+    int h = std::min<int>(rect.height(), size.height());
 
-    int x1,x2,y1,y2;
-    // make sure that the main window is not totally out of the visible rectangle
-    rect.getCoords(&x1, &y1, &x2, &y2);
-    pos.setX(qMin(qMax(pos.x(),x1-this->width()+30),x2-30));
-    pos.setY(qMin(qMax(pos.y(),y1-10),y2-10));
-    this->move(pos);
+    this->setGeometry(x,y,w,h);
 
     // tmp. disable the report window to suppress some bothering warnings
     Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
@@ -1599,6 +1591,13 @@ void MainWindow::saveWindowSettings()
     config.setValue(QString::fromLatin1("StatusBar"), this->statusBar()->isVisible());
     config.endGroup();
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/MainWindow");
+    std::ostringstream ss;
+    QRect rect(this->pos(), this->size());
+    ss << rect.left() << " " << rect.top() << " " << rect.width() << " " << rect.height();
+    hGrp->SetASCII("Geometry", ss.str().c_str());
+
     DockWindowManager::instance()->saveState();
     OverlayManager::instance()->save();
     ToolBarManager::getInstance()->saveState();
@@ -1616,6 +1615,7 @@ void MainWindow::startSplasher(void)
         if (hGrp->GetBool("ShowSplasher", true)) {
             d->splashscreen = new SplashScreen(this->splashImage());
             d->splashscreen->show();
+            d->screen = QApplication::desktop()->screenNumber(d->splashscreen);
         }
         else
             d->splashscreen = 0;

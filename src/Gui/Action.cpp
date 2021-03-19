@@ -42,6 +42,7 @@
 #include <QWidgetAction>
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QWindow>
 # include <QScreen>
 #endif
 
@@ -458,11 +459,7 @@ void WorkbenchComboBox::showPopup()
     int rows = count();
     if (rows > 0) {
         int height = view()->sizeHintForRow(0);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-        int maxHeight = QApplication::primaryScreen()->size().height();
-#else
-        int maxHeight = QApplication::desktop()->height();
-#endif
+        int maxHeight = QApplication::desktop()->availableGeometry(getMainWindow()).height();
         view()->setMinimumHeight(qMin(height * rows, maxHeight/2));
     }
 

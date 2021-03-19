@@ -31,11 +31,13 @@
 # include <QMessageBox>
 # include <QMenu>
 # include <QTreeWidget>
+# include <QDesktopWidget>
 #endif
 
 #include <boost/regex.hpp>
 
 #include "ui_DlgParameter.h"
+#include "MainWindow.h"
 #include "DlgParameterImp.h"
 #include "DlgParameterFind.h"
 #include "DlgInputDialogImp.h"
@@ -268,24 +270,35 @@ void DlgParameterImp::reject()
     close();
 }
 
-void DlgParameterImp::showEvent(QShowEvent* )
+void DlgParameterImp::paintEvent(QPaintEvent *ev)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences");
-    hGrp = hGrp->GetGroup("ParameterEditor");
-    std::string buf = hGrp->GetASCII("Geometry", "");
-    if (!buf.empty()) {
-        int x1, y1, x2, y2;
-        char sep;
-        std::stringstream str(buf);
-        str >> sep >> x1
-            >> sep >> y1
-            >> sep >> x2
-            >> sep >> y2;
-        QRect rect;
-        rect.setCoords(x1, y1, x2, y2);
-        this->setGeometry(rect);
+    if (!geometryRestored) {
+        geometryRestored = true;
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences");
+        hGrp = hGrp->GetGroup("ParameterEditor");
+        std::string buf = hGrp->GetASCII("Geometry", "");
+        if (!buf.empty()) {
+            int x, y, w, h;
+            char sep;
+            std::stringstream str(buf);
+            str >> sep >> x
+                >> sep >> y
+                >> sep >> w
+                >> sep >> h;
+            w -= x;
+            h -= y;
+
+            QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
+            x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
+            y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
+            w = std::min<int>(rect.height(), w);
+            h = std::min<int>(rect.width(), h);
+            this->setGeometry(x,y,w,h);
+        }
     }
+    QDialog::paintEvent(ev);
 }
 
 void DlgParameterImp::closeEvent(QCloseEvent* )
