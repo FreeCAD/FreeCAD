@@ -128,6 +128,8 @@ protected:
     void resizeEvent(QResizeEvent*);
     void saveGeometry();
     void moveEvent(QMoveEvent *);
+    void paintEvent(QPaintEvent *ev);
+    void restoreGeometry();
 
 
 protected Q_SLOTS:
@@ -151,7 +153,7 @@ private:
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
     std::unique_ptr<Ui_DlgPreferences> ui;
     bool invalidParameter;
-    bool canEmbedScrollArea;
+    bool geometryRestored = false;
     QSize savedSize;
     QPoint savedPos;
 

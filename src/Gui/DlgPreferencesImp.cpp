@@ -36,6 +36,7 @@
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+# include <QWindow>
 # include <QScreen>
 #endif
 
@@ -429,6 +430,12 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
     QDialog::showEvent(ev);
 }
 
+void DlgPreferencesImp::paintEvent(QPaintEvent *ev)
+{
+    restoreGeometry();
+    QDialog::paintEvent(ev);
+}
+
 void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
 {
     savedSize = ev->size();
@@ -461,28 +468,6 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
                 newHeight = std::min<int>(newHeight, maxHeight);
             }
         }
-
-        std::string geometry = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/General")->GetASCII(
-                    "PreferenceGeometry", "");
-        std::istringstream iss(geometry);
-        int x,y,w,h;
-        if (iss >> x >> y >> w >> h) {
-            x = std::max<int>(0, std::min<int>(maxWidth/2, x));
-#ifdef FC_OS_LINUX
-            // X11 has weird behavior on initial window placement.
-            // Just use the current y.
-            //
-            // https://doc.qt.io/qt-5/application-windows.html#x11-peculiarities
-            y = this->pos().y();
-#endif
-            y = std::max<int>(0, std::min<int>(maxHeight/2, y));
-            newWidth = std::min<int>(maxWidth-x, w);
-            newHeight = std::min<int>(maxHeight-y, h);
-            this->move(x, y);
-            savedPos = QPoint(x, y);
-        }
-
         QMetaObject::invokeMethod(this, "resizeWindow",
                 Qt::QueuedConnection,
                 QGenericReturnArgument(),
@@ -490,6 +475,39 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
                 Q_ARG(int, newHeight));
     }
     QDialog::resizeEvent(ev);
+}
+
+void DlgPreferencesImp::restoreGeometry()
+{
+    if (geometryRestored)
+        return;
+    geometryRestored = true;
+    QRect rect = getMainWindow()->geometry();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QWindow *window = getMainWindow()->window()->windowHandle();
+    if (window && window->screen())
+        rect = window->screen()->availableGeometry();
+#endif
+    int maxHeight = rect.height();
+    int maxWidth = rect.width();
+    std::string geometry = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/General")->GetASCII(
+                "PreferenceGeometry", "");
+    std::istringstream iss(geometry);
+    int x,y,w,h;
+    if (iss >> x >> y >> w >> h) {
+        x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
+        y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
+        int newWidth = std::min<int>(maxWidth-x, w);
+        int newHeight = std::min<int>(maxHeight-y, h);
+        this->move(x, y);
+        savedPos = QPoint(x, y);
+        QMetaObject::invokeMethod(this, "resizeWindow",
+                Qt::QueuedConnection,
+                QGenericReturnArgument(),
+                Q_ARG(int, newWidth),
+                Q_ARG(int, newHeight));
+    }
 }
 
 void DlgPreferencesImp::resizeWindow(int w, int h)
