@@ -339,3 +339,5 @@ fi
 %files data
 %{_datadir}/%{name}/
 %{_docdir}/%{name}/%{name}.q*
+%{_docdir}/%{name}/CONTRIBUTORS
+%{_docdir}/%{name}/LICENSE.html
