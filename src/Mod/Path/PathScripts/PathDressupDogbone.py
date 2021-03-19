@@ -887,7 +887,6 @@ class ObjectDressup(object):
         return state
 
 class Marker(object):
-    Color = [coin.SbColor(.9, .5, .9), coin.SbColor(.9, .9, .5)]
 
     def __init__(self, pt, r, h):
         if PathGeom.isRoughly(h, 0):
@@ -920,12 +919,17 @@ class Marker(object):
             self.lowlight()
 
     def highlight(self):
-        self.material.diffuseColor = self.Color[1]
+        self.material.diffuseColor = self.color(1)
         self.material.transparency = 0.45
 
     def lowlight(self):
-        self.material.diffuseColor = self.Color[0]
+        self.material.diffuseColor = self.color(0)
         self.material.transparency = 0.75
+
+    def color(self, id):
+        if id == 1:
+            return coin.SbColor(.9, .9, .5)
+        return coin.SbColor(.9, .5, .9)
 
 
 class TaskPanel(object):
