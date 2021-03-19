@@ -148,7 +148,7 @@ private:
     QByteArray str, flatStr;
 };
 
-// Simple wrapper around QGraphicsView to make dragging possible
+// Simple wrapper around QGraphicsView to make panning possible
 class GraphVizGraphicsView final : public QGraphicsView
 {
   public:
