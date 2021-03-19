@@ -467,6 +467,13 @@ void ViewProviderSketch::forceUpdateData()
 }
 
 // handler management ***************************************************************
+DrawSketchHandler* ViewProviderSketch::currentHandler() const
+{
+    if (edit)
+        return edit->sketchHandler;
+    return nullptr;
+}
+
 void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
 {
     assert(edit);

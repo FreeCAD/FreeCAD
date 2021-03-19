@@ -73,6 +73,9 @@ public:
     virtual bool allowExternalPick() const {return false;}
     virtual bool allowExternalDocument() const {return false;}
 
+    // Called when the corresponding tool button is pressed again while the handler is active
+    virtual void toggle() {}
+
     virtual void quit(void);
 
     friend class ViewProviderSketch;

@@ -131,6 +131,12 @@ void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler)
     if (doc) {
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+            if (auto cur = vp->currentHandler()) {
+                if (typeid(*cur) == typeid(*handler)) {
+                    cur->toggle();
+                    return;
+                }
+            }
             vp->purgeHandler();
             vp->activateHandler(ptr.release());
         }
@@ -665,12 +671,12 @@ public:
         SNAP_MODE_45Degree
     };
 
-    virtual void registerPressedKey(bool pressed, int key)
+    virtual void toggle()
     {
         if (Mode != STATUS_SEEK_Second)
             return; // SegmentMode can be changed only in STATUS_SEEK_Second mode
 
-        if (key == SoKeyboardEvent::M && pressed && previousCurve != -1) {
+        if (previousCurve != -1) {
             // loop through the following modes:
             // SEGMENT_MODE_Line, TRANSITION_MODE_Free / TRANSITION_MODE_Tangent
             // SEGMENT_MODE_Line, TRANSITION_MODE_Perpendicular_L
@@ -1269,10 +1275,12 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create polyline");
-    sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
+    sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch.\n"
+                                 "Pressed the button (or shortcut) to cycle behaviour");
     sWhatsThis      = "Sketcher_CreatePolyline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePolyline";
+    sAccel          = "M";
     eType           = ForEdit;
 }
 

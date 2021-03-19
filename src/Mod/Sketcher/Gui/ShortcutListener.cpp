@@ -44,15 +44,6 @@ ShortcutListener::~ShortcutListener()
 bool ShortcutListener::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::ShortcutOverride) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
-        if (kevent->modifiers() == Qt::NoModifier) {
-            switch (kevent->key()) { 
-                case Qt::Key_M: // For polyline 'M' cycle shortcut
-                    kevent->accept();
-                    return false;
-                default:
-                    break;
-            }
-        }
         if (kevent->modifiers() == Qt::NoModifier ||
             kevent->modifiers() == Qt::ShiftModifier ||
             kevent->modifiers() == Qt::KeypadModifier) {

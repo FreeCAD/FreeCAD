@@ -143,6 +143,8 @@ public:
     void activateHandler(DrawSketchHandler *newHandler);
     /// removes the active handler
     void purgeHandler(void);
+    /// obtain the current active handler
+    DrawSketchHandler *currentHandler() const;
     /// set the pick style of the sketch coordinate axes
     void setAxisPickStyle(bool on);
     /// show/hide editing geometry
