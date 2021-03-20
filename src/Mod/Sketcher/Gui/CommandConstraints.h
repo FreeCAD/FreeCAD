@@ -138,6 +138,9 @@ bool checkConstraint(const std::vector< Sketcher::Constraint * > &vals, Sketcher
 
 /// Does an endpoint-to-endpoint tangency
 void doEndpointTangency(Sketcher::SketchObject* Obj, Gui::SelectionObject &selection, int GeoId1, int GeoId2, Sketcher::PointPos PosId1, Sketcher::PointPos PosId2);
+
+/// shows constraint substitution information dialog box, enabling the user to forgo further notifications
+void notifyConstraintSubstitutions(const QString & message);
 }
 #endif // SKETCHERGUI_DrawSketchHandler_H
 

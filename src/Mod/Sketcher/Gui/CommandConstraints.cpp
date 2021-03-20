@@ -664,6 +664,17 @@ void SketcherGui::doEndpointTangency(Sketcher::SketchObject* Obj, Gui::Selection
                 GeoId1,PosId1,GeoId2,PosId2);
 }
 
+void SketcherGui::notifyConstraintSubstitutions(const QString & message)
+{
+    Gui::Dialog::DlgCheckableMessageBox::showMessage(   QObject::tr("Sketcher Constraint Substitution"),
+                                                        message,
+                                                        QLatin1String("User parameter:BaseApp/Preferences/Mod/Sketcher/General"),
+                                                        QLatin1String("NotifyConstraintSubstitutions"),
+                                                        true, // Default ParamEntry
+                                                        true, // checkbox state
+                                                        QObject::tr("Keep notifying me of constraint substitutions"));
+}
+
 
 namespace SketcherGui {
 
@@ -2163,19 +2174,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
                 Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
                 tryAutoRecomputeIfNotSolve(Obj);
 
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-
-                if(hGrp->GetBool("NotifyConstraintSubstitutions", true)) {
-                    auto hChecked = App::GetApplication().GetParameterGroupByPath( QByteArray("User parameter:BaseApp/CheckMessages"));
-                    hChecked->SetBool("Sketcher_Constraint_Substitution", false);
-                    Gui::Dialog::DlgCheckableMessageBox::showMessage(
-                        QObject::tr("Sketcher Constraint Substitution"),
-                        QObject::tr("Endpoint to endpoint tangency was applied instead."),
-                        false,
-                        QObject::tr("Don't tell me again")
-                    );
-                    hGrp->SetBool("NotifyConstraintSubstitutions", !hChecked->GetBool("Sketcher_Constraint_Substitution", true));
-                }
+                notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied instead."));
 
                 getSelection().clearSelection();
                 return;
@@ -4332,19 +4331,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     Obj->solve(); // The substitution requires a solve() so that the autoremove redundants works when Autorecompute not active.
                     tryAutoRecomputeIfNotSolve(Obj);
 
-                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+                    notifyConstraintSubstitutions(QObject::tr("Endpoint to endpoint tangency was applied instead."));
 
-                    if(hGrp->GetBool("NotifyConstraintSubstitutions", true)) {
-                        auto hChecked = App::GetApplication().GetParameterGroupByPath( QByteArray("User parameter:BaseApp/CheckMessages"));
-                        hChecked->SetBool("Sketcher_Constraint_Substitution", false);
-                        Gui::Dialog::DlgCheckableMessageBox::showMessage(
-                            QObject::tr("Sketcher Constraint Substitution"),
-                            QObject::tr("Endpoint to endpoint tangency was applied instead."),
-                            false,
-                            QObject::tr("Don't tell me again")
-                        );
-                        hGrp->SetBool("NotifyConstraintSubstitutions", !hChecked->GetBool("Sketcher_Constraint_Substitution", true));
-                    }
                     getSelection().clearSelection();
                     return;
                 }
