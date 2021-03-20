@@ -125,6 +125,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
             this, SLOT(onMidplaneChanged(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
             this, SLOT(onReversedChanged(bool)));
+    connect(ui->checkBoxUsePipe, SIGNAL(toggled(bool)),
+            this, SLOT(onUsePipeChanged(bool)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
     connect(ui->buttonFace, SIGNAL(clicked()),
@@ -192,6 +194,7 @@ void TaskPocketParameters::refresh()
     ui->offsetEdit->setValue(off);
     ui->checkBoxMidplane->setChecked(midplane);
     ui->checkBoxReversed->setChecked(reversed);
+    ui->checkBoxUsePipe->setChecked(pcPocket->UsePipeForDraft.getValue());
     ui->taperAngleEdit->setValue(angle);
     ui->taperAngleEdit2->setValue(angle2);
     ui->innerTaperAngleEdit->setValue(innerAngle);
@@ -404,6 +407,14 @@ void TaskPocketParameters::onMidplaneChanged(bool on)
 {
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
     pcPocket->Midplane.setValue(on);
+    ui->checkBoxReversed->setEnabled(!on);
+    recomputeFeature();
+}
+
+void TaskPocketParameters::onUsePipeChanged(bool on)
+{
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    pcPocket->UsePipeForDraft.setValue(on);
     ui->checkBoxReversed->setEnabled(!on);
     recomputeFeature();
 }

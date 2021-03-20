@@ -168,6 +168,8 @@ void TaskPadParameters::setupUI(bool newObj)
             this, SLOT(onMidplaneChanged(bool)));
     connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
             this, SLOT(onReversedChanged(bool)));
+    connect(ui->checkBoxUsePipe, SIGNAL(toggled(bool)),
+            this, SLOT(onUsePipeChanged(bool)));
     connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onModeChanged(int)));
     connect(ui->buttonFace, SIGNAL(clicked()),
@@ -240,6 +242,8 @@ void TaskPadParameters::refresh()
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
+
+    ui->checkBoxUsePipe->setChecked(pcPad->UsePipeForDraft.getValue());
 
     // Set object labels
     App::DocumentObject* obj = pcPad->UpToFace.getValue();
@@ -481,6 +485,14 @@ void TaskPadParameters::onMidplaneChanged(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Midplane.setValue(on);
+    ui->checkBoxReversed->setEnabled(!on);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onUsePipeChanged(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->UsePipeForDraft.setValue(on);
     ui->checkBoxReversed->setEnabled(!on);
     recomputeFeature();
 }

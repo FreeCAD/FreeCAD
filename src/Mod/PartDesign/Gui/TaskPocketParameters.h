@@ -69,6 +69,7 @@ private Q_SLOTS:
     void onAngle2Changed(double);
     void onInnerAngleChanged(double);
     void onInnerAngle2Changed(double);
+    void onUsePipeChanged(bool);
 
 protected:
     void changeEvent(QEvent *e) override;

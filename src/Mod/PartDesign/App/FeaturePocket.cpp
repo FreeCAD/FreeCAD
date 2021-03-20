@@ -83,7 +83,6 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(TaperAngleRev,(0.0), "Pocket", App::Prop_None, "Taper angle of reverse part of pocketing.");
     ADD_PROPERTY_TYPE(InnerTaperAngle,(0.0), "Pocket", App::Prop_None, "Taper angle of inner holes.");
     ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Pocket", App::Prop_None, "Taper angle of the reverse part for inner holes.");
-    ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Pocket", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
 }
 
 short Pocket::mustExecute() const
@@ -246,6 +245,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 if (Reversed.getValue())
                     params.dir.Reverse();
                 std::vector<TopoShape> drafts;
+                params.usepipe = this->UsePipeForDraft.getValue();
                 Part::Extrusion::makeDraft(params, profileshape, drafts, getDocument()->getStringHasher());
                 if (drafts.empty())
                     return new App::DocumentObjectExecReturn("Pocket with draft angle failed");
@@ -303,6 +303,5 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 void Pocket::setupObject()
 {
     ProfileBased::setupObject();
-    UsePipeForDraft.setValue(Part::PartParams::UsePipeForExtrusionDraft());
 }
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>312</width>
-    <height>474</height>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -211,6 +211,18 @@ the sketch plane's normal vector will be used</string>
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxUsePipe">
+     <property name="toolTip">
+      <string>Enable this option to use pipe (i.e. sweep) operation to create draft angles.
+If disabled, then use loft operation instead. Pipe operation can avoid some
+unnecessary use of BSplineSurface for planar faces in the resulting shape.</string>
+     </property>
+     <property name="text">
+      <string>Use pipe operation for draft</string>
+     </property>
     </widget>
    </item>
    <item>

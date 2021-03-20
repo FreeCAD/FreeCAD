@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>318</width>
-    <height>342</height>
+    <height>369</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -92,6 +92,18 @@
     <widget class="QCheckBox" name="checkBoxReversed">
      <property name="text">
       <string>Reversed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxUsePipe">
+     <property name="toolTip">
+      <string>Enable this option to use pipe (i.e. sweep) operation to create draft angles.
+If disabled, then use loft operation instead. Pipe operation can avoid some
+unnecessary use of BSplineSurface for planar faces in the resulting shape.</string>
+     </property>
+     <property name="text">
+      <string>Use pipe operation for draft</string>
      </property>
     </widget>
    </item>
