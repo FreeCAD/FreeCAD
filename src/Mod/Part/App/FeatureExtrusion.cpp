@@ -328,28 +328,42 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
     }
 }
 
-static TopoShape makeDraftUsingPipe(const std::vector<TopoShape> &wires,
+static TopoShape makeDraftUsingPipe(const std::vector<TopoShape> &_wires,
                                     App::StringHasherRef hasher)
 {
     std::vector<TopoShape> shells;
     std::vector<TopoShape> frontwires, backwires;
     
-    if (wires.size() < 2)
+    if (_wires.size() < 2)
         throw Base::CADKernelError("Not enough wire section");
 
+    std::vector<TopoShape> wires;
+    wires.reserve(_wires.size());
+    for (auto &wire : _wires) {
+        // Make a copy to work around OCCT bug on offset circular shapes
+        wires.push_back(wire.makECopy());
+    }
     GeomLineSegment line;
     Base::Vector3d pstart, pend;
     wires.front().getCenterOfGravity(pstart);
-    wires.back().getCenterOfGravity(pend);
+    gp_Pln pln;
+    if (wires.back().findPlane(pln)) {
+        auto dir = pln.Position().Direction();
+        auto base = pln.Location();
+        pend = pstart;
+        pend.ProjectToPlane(Base::Vector3d(base.X(), base.Y(), base.Z()),
+                            Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
+    } else
+        wires.back().getCenterOfGravity(pend);
     line.setPoints(pstart, pend);
 
     BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(line.toShape()));
     BRepOffsetAPI_MakePipeShell mkPS(mkWire.Wire());
     mkPS.SetTolerance(Precision::Confusion());
     mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-    mkPS.SetMode(true);
+    mkPS.SetMode(false);
 
-    for(auto &wire : wires)
+    for (auto &wire : wires)
         mkPS.Add(TopoDS::Wire(wire.getShape()));
 
     if (!mkPS.IsReady())
