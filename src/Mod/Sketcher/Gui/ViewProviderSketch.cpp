@@ -196,13 +196,16 @@ struct EditData {
     CurvesMaterials(0),
     RootCrossMaterials(0),
     EditCurvesMaterials(0),
+    EditMarkersMaterials(0),
     PointsCoordinate(0),
     CurvesCoordinate(0),
     RootCrossCoordinate(0),
     EditCurvesCoordinate(0),
+    EditMarkersCoordinate(0),
     CurveSet(0),
     RootCrossSet(0),
     EditCurveSet(0),
+    EditMarkerSet(0),
     PointSet(0),
     textX(0),
     textPos(0),
@@ -213,6 +216,7 @@ struct EditData {
     CurvesDrawStyle(0),
     RootCrossDrawStyle(0),
     EditCurvesDrawStyle(0),
+    EditMarkersDrawStyle(0),
     ConstraintDrawStyle(0),
     InformationDrawStyle(0)
     {}
@@ -267,13 +271,16 @@ struct EditData {
     SoMaterial    *CurvesMaterials;
     SoMaterial    *RootCrossMaterials;
     SoMaterial    *EditCurvesMaterials;
+    SoMaterial    *EditMarkersMaterials;
     SoCoordinate3 *PointsCoordinate;
     SoCoordinate3 *CurvesCoordinate;
     SoCoordinate3 *RootCrossCoordinate;
     SoCoordinate3 *EditCurvesCoordinate;
+    SoCoordinate3 *EditMarkersCoordinate;
     SoLineSet     *CurveSet;
     SoLineSet     *RootCrossSet;
     SoLineSet     *EditCurveSet;
+    SoMarkerSet   *EditMarkerSet;
     SoMarkerSet   *PointSet;
 
     SoText2       *textX;
@@ -287,6 +294,7 @@ struct EditData {
     SoDrawStyle * CurvesDrawStyle;
     SoDrawStyle * RootCrossDrawStyle;
     SoDrawStyle * EditCurvesDrawStyle;
+    SoDrawStyle * EditMarkersDrawStyle;
     SoDrawStyle * ConstraintDrawStyle;
     SoDrawStyle * InformationDrawStyle;
 };
@@ -3837,6 +3845,8 @@ void ViewProviderSketch::updateInventorNodeSizes()
     edit->CurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
     edit->RootCrossDrawStyle->lineWidth = 2 * edit->pixelScalingFactor;
     edit->EditCurvesDrawStyle->lineWidth = 3 * edit->pixelScalingFactor;
+    edit->EditMarkersDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
+    edit->EditMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", edit->MarkerSize);
     edit->ConstraintDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
     edit->InformationDrawStyle->lineWidth = 1 * edit->pixelScalingFactor;
 }
@@ -6144,6 +6154,47 @@ void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
     index[0] = EditCurve.size();
     edit->EditCurvesCoordinate->point.finishEditing();
     edit->EditCurveSet->numVertices.finishEditing();
+    edit->EditCurvesMaterials->diffuseColor.finishEditing();
+}
+
+void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
+{
+    assert(edit);
+
+    // determine marker size
+    int augmentedmarkersize = edit->MarkerSize;
+
+    auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
+
+    auto defaultmarker = std::find(supportedsizes.begin(), supportedsizes.end(), edit->MarkerSize);
+
+    if(defaultmarker != supportedsizes.end()) {
+        auto validAugmentationLevels = std::distance(defaultmarker,supportedsizes.end());
+
+        if(augmentationlevel >= validAugmentationLevels)
+            augmentationlevel = validAugmentationLevels - 1;
+
+        augmentedmarkersize = *std::next(defaultmarker, augmentationlevel);
+    }
+
+    edit->EditMarkerSet->markerIndex.startEditing();
+    edit->EditMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", augmentedmarkersize);
+
+    // add the points to set
+    edit->EditMarkersCoordinate->point.setNum(EditMarkers.size());
+    edit->EditMarkersMaterials->diffuseColor.setNum(EditMarkers.size());
+    SbVec3f *verts = edit->EditMarkersCoordinate->point.startEditing();
+    SbColor *color = edit->EditMarkersMaterials->diffuseColor.startEditing();
+
+    int i=0; // setting up the line set
+    for (std::vector<Base::Vector2d>::const_iterator it = EditMarkers.begin(); it != EditMarkers.end(); ++it,i++) {
+        verts[i].setValue(it->x,it->y,zEdit);
+        color[i] = InformationColor;
+    }
+
+    edit->EditMarkersCoordinate->point.finishEditing();
+    edit->EditMarkersMaterials->diffuseColor.finishEditing();
+    edit->EditMarkerSet->markerIndex.finishEditing();
 }
 
 void ViewProviderSketch::updateData(const App::Property *prop)
@@ -6685,6 +6736,27 @@ void ViewProviderSketch::createEditInventorNodes(void)
     float transparency;
     SbColor cursorTextColor(0,0,1);
     cursorTextColor.setPackedValue((uint32_t)hGrp->GetUnsigned("CursorTextColor", cursorTextColor.getPackedValue()), transparency);
+
+    // stuff for the EditMarkers +++++++++++++++++++++++++++++++++++++++
+    SoSeparator* editMarkersRoot = new SoSeparator;
+    edit->EditRoot->addChild(editMarkersRoot);
+    edit->EditMarkersMaterials = new SoMaterial;
+    edit->EditMarkersMaterials->setName("EditMarkersMaterials");
+    editCurvesRoot->addChild(edit->EditMarkersMaterials);
+
+    edit->EditMarkersCoordinate = new SoCoordinate3;
+    edit->EditMarkersCoordinate->setName("EditMarkersCoordinate");
+    editCurvesRoot->addChild(edit->EditMarkersCoordinate);
+
+    edit->EditMarkersDrawStyle = new SoDrawStyle;
+    edit->EditMarkersDrawStyle->setName("EditMarkersDrawStyle");
+    edit->EditMarkersDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
+    editCurvesRoot->addChild(edit->EditMarkersDrawStyle);
+
+    edit->EditMarkerSet = new SoMarkerSet;
+    edit->EditMarkerSet->setName("EditMarkerSet");
+    edit->EditMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", edit->MarkerSize);
+    editCurvesRoot->addChild(edit->EditMarkerSet);
 
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoSeparator *Coordsep = new SoSeparator();

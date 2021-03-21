@@ -307,6 +307,8 @@ public:
     void increaseMultiplicity(int index, int multiplicity);
     bool removeKnot(int index, int multiplicity, double tolerance = Precision::PConfusion());
 
+    void Trim(double u, double v);
+
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;

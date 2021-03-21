@@ -51,6 +51,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
+#include <Mod/Sketcher/App/Constraint.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
@@ -5450,13 +5451,15 @@ namespace SketcherGui {
                 int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 const Part::Geometry *geom = Sketch->getGeometry(GeoId);
-                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                    geom->getTypeId() == Part::GeomCircle::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomEllipse::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                )
-                    return true;
+                if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())   ||
+                    geom->getTypeId() == Part::GeomCircle::getClassTypeId()                     ||
+                    geom->getTypeId() == Part::GeomEllipse::getClassTypeId()                    ||
+                    geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
+                ) {
+                    // We do not trim internal geometry of complex geometries
+                    if( Sketcher::GeometryFacade::isInternalType(geom, Sketcher::InternalType::None))
+                        return true;
+                }
             }
             return  false;
         }
@@ -5483,6 +5486,40 @@ public:
     virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
+
+        int GeoId = sketchgui->getPreselectCurve();
+
+        if (GeoId > -1) {
+            auto sk = static_cast<Sketcher::SketchObject *>(sketchgui->getObject());
+            int GeoId1, GeoId2;
+            Base::Vector3d intersect1, intersect2;
+            if(sk->seekTrimPoints(GeoId, Base::Vector3d(onSketchPos.x,onSketchPos.y,0),
+                                  GeoId1, intersect1,
+                                  GeoId2, intersect2)) {
+
+                EditMarkers.resize(0);
+
+                if(GeoId1 != Sketcher::Constraint::GeoUndef)
+                    EditMarkers.emplace_back(intersect1.x, intersect1.y);
+                else {
+                    auto start = sk->getPoint(GeoId, Sketcher::start);
+                    EditMarkers.emplace_back(start.x, start.y);
+                }
+
+                if(GeoId2 != Sketcher::Constraint::GeoUndef)
+                    EditMarkers.emplace_back(intersect2.x, intersect2.y);
+                else {
+                    auto end = sk->getPoint(GeoId, Sketcher::end);
+                    EditMarkers.emplace_back( end.x, end.y);
+                }
+
+                sketchgui->drawEditMarkers(EditMarkers, 2); // maker augmented by two sizes (see supported marker sizes)
+            }
+        }
+        else {
+            EditMarkers.resize(0);
+            sketchgui->drawEditMarkers(EditMarkers, 2);
+        }
     }
 
     virtual bool pressButton(Base::Vector2d onSketchPos)
@@ -5496,11 +5533,10 @@ public:
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomCircle::getClassTypeId()      ||
-                geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+            if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())   ||
+                geom->getTypeId() == Part::GeomCircle::getClassTypeId()                     ||
+                geom->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+                geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "trim(%d,App.Vector(%f,%f,0))",
@@ -5513,12 +5549,17 @@ public:
                     Gui::Command::abortCommand();
                 }
             }
+
+            EditMarkers.resize(0);
+            sketchgui->drawEditMarkers(EditMarkers);
         }
         else // exit the trimming tool if the user clicked on empty space
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
 
         return true;
     }
+private:
+    std::vector<Base::Vector2d> EditMarkers;
 };
 
 DEF_STD_CMD_A(CmdSketcherTrimming)

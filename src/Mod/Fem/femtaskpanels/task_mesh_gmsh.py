@@ -171,7 +171,11 @@ class _TaskPanel:
     def get_gmsh_version(self):
         from femmesh import gmshtools
         version, full_message = gmshtools.GmshTools(self.mesh_obj, self.analysis).get_gmsh_version()
-        QtGui.QMessageBox.information(
+        if version[0] and version[1] and version[2]:
+            messagebox = QtGui.QMessageBox.information
+        else:
+            messagebox = QtGui.QMessageBox.warning
+        messagebox(
             None,
             "Gmsh - Information",
             full_message

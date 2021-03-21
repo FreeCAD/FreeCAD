@@ -74,7 +74,7 @@ class TestImportCSG(unittest.TestCase):
 
     def test_import_sphere(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "sphere.scad"
+            filename = temp_dir + os.path.sep + "sphere.scad"
             f = open(filename,"w+")
             f.write("sphere(10.0);")
             f.close()
@@ -86,7 +86,7 @@ class TestImportCSG(unittest.TestCase):
 
     def test_import_cylinder(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "cylinder.scad"
+            filename = temp_dir + os.path.sep + "cylinder.scad"
             f = open(filename,"w+")
             f.write("cylinder(50.0,d=10.0);")
             f.close()
@@ -99,7 +99,7 @@ class TestImportCSG(unittest.TestCase):
 
     def test_import_cube(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "cube.scad"
+            filename = temp_dir + os.path.sep + "cube.scad"
             f = open(filename,"w+")
             f.write("cube([1.0,2.0,3.0]);")
             f.close()
@@ -113,7 +113,7 @@ class TestImportCSG(unittest.TestCase):
 
     def test_import_circle(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "circle.scad"
+            filename = temp_dir + os.path.sep + "circle.scad"
             f = open(filename,"w+")
             f.write("circle(10.0);")
             f.close()
@@ -125,7 +125,7 @@ class TestImportCSG(unittest.TestCase):
 
     def test_import_square(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "square.scad"
+            filename = temp_dir + os.path.sep + "square.scad"
             f = open(filename,"w+")
             f.write("square([1.0,2.0]);")
             f.close()
@@ -138,7 +138,7 @@ class TestImportCSG(unittest.TestCase):
 
     def test_import_text(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "text.scad"
+            filename = temp_dir + os.path.sep + "text.scad"
             f = open(filename,"w+")
             f.write("text(\"X\");") # Keep it short to keep the test fast-ish
             f.close()
@@ -152,7 +152,7 @@ class TestImportCSG(unittest.TestCase):
 
     def test_import_polygon_nopath(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "polygon_nopath.scad"
+            filename = temp_dir + os.path.sep + "polygon_nopath.scad"
             f = open(filename,"w+")
             f.write("polygon(points=[[0,0],[100,0],[130,50],[30,50]]);")
             f.close()
@@ -164,7 +164,7 @@ class TestImportCSG(unittest.TestCase):
 
     def test_import_polygon_path(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "polygon_path.scad"
+            filename = temp_dir + os.path.sep + "polygon_path.scad"
             f = open(filename,"w+")
             f.write("polygon([[0,0],[100,0],[130,50],[30,50]], paths=[[0,1,2,3]]);")
             f.close()
@@ -176,7 +176,7 @@ class TestImportCSG(unittest.TestCase):
     
     def test_import_polyhedron(self):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + "polyhedron.scad"
+            filename = temp_dir + os.path.sep + "polyhedron.scad"
             f = open(filename,"w+")
             f.write(
 """
@@ -197,7 +197,7 @@ polyhedron(
 
     def utility_create_scad(self, scadCode, name):
         with tempfile.TemporaryDirectory() as temp_dir:
-            filename = temp_dir + os.pathsep + name + ".scad"
+            filename = temp_dir + os.path.sep + name + ".scad"
             f = open(filename,"w+")
             f.write(scadCode)
             f.close()
@@ -313,38 +313,48 @@ polyhedron(
         FreeCAD.closeDocument(doc.Name)
 
     def test_import_surface(self):
-        testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
-        doc = self.utility_create_scad(f"surface(file = \"{testfile}\", center = true, convexity = 5);", "surface_simple_dat")
-        object = doc.ActiveObject
-        self.assertTrue (object is not None)
-        self.assertAlmostEqual (object.Shape.Volume, 275.000000, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.XMin, -4.5, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.XMax, 4.5, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.YMin, -4.5, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.YMax, 4.5, 6)
-        FreeCAD.closeDocument(doc.Name)
-        
-        testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
-        doc = self.utility_create_scad(f"surface(file = \"{testfile}\", convexity = 5);", "surface_uncentered_dat")
-        object = doc.ActiveObject
-        self.assertTrue (object is not None)
-        self.assertAlmostEqual (object.Shape.Volume, 275.000000, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.XMin, 0, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.XMax, 9, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.YMin, 0, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.YMax, 9, 6)
-        FreeCAD.closeDocument(doc.Name)
+        # Workaround for absolute vs. relative path issue
+        # Inside the OpenSCAD file an absolute path name to Surface.dat is used
+        # but by using the OpenSCAD executable to create a CSG file it's converted
+        # into a path name relative to the output filename.
+        # In order to open the CAG file correctly the cwd must be temporarily changed
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cwd = os.getcwd()
+            os.chdir(temp_dir)
 
-        testfile = join(self.test_dir, "Surface2.dat").replace('\\','/')
-        doc = self.utility_create_scad(f"surface(file = \"{testfile}\", center = true, convexity = 5);", "surface_rectangular_dat")
-        object = doc.ActiveObject
-        self.assertTrue (object is not None)
-        self.assertAlmostEqual (object.Shape.Volume, 24.5500000, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.XMin, -2, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.XMax, 2, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.YMin, -1.5, 6)
-        self.assertAlmostEqual (object.Shape.BoundBox.YMax, 1.5, 6)
-        FreeCAD.closeDocument(doc.Name)
+            testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
+            doc = self.utility_create_scad(f"surface(file = \"{testfile}\", center = true, convexity = 5);", "surface_simple_dat")
+            object = doc.ActiveObject
+            self.assertTrue (object is not None)
+            self.assertAlmostEqual (object.Shape.Volume, 275.000000, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.XMin, -4.5, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.XMax, 4.5, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.YMin, -4.5, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.YMax, 4.5, 6)
+            FreeCAD.closeDocument(doc.Name)
+        
+            testfile = join(self.test_dir, "Surface.dat").replace('\\','/')
+            doc = self.utility_create_scad(f"surface(file = \"{testfile}\", convexity = 5);", "surface_uncentered_dat")
+            object = doc.ActiveObject
+            self.assertTrue (object is not None)
+            self.assertAlmostEqual (object.Shape.Volume, 275.000000, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.XMin, 0, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.XMax, 9, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.YMin, 0, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.YMax, 9, 6)
+            FreeCAD.closeDocument(doc.Name)
+
+            testfile = join(self.test_dir, "Surface2.dat").replace('\\','/')
+            doc = self.utility_create_scad(f"surface(file = \"{testfile}\", center = true, convexity = 5);", "surface_rectangular_dat")
+            object = doc.ActiveObject
+            self.assertTrue (object is not None)
+            self.assertAlmostEqual (object.Shape.Volume, 24.5500000, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.XMin, -2, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.XMax, 2, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.YMin, -1.5, 6)
+            self.assertAlmostEqual (object.Shape.BoundBox.YMax, 1.5, 6)
+            FreeCAD.closeDocument(doc.Name)
+            os.chdir(cwd)
 
     def test_import_projection(self):
         pass

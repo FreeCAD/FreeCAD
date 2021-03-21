@@ -138,6 +138,7 @@
 
 FC_LOG_LEVEL_INIT("Import", true, true)
 
+namespace ImportGui {
 class OCAFBrowser
 {
 public:
@@ -382,7 +383,6 @@ public:
     }
 };
 
-namespace ImportGui {
 class Module : public Py::ExtensionModule<Module>
 {
 public:
