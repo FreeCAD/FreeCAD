@@ -114,7 +114,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
                  << ",linestyle=\"" << LineStyle.getValue() << "\""
                  << ",color=\"" << col.asCSSString() << "\""
                  << ",linespacing=" << LineSpacing.getValue()
-                 // We must set techdraw to "true" becausea couple of things behave differently than in Drawing
+                 // We must set techdraw to "true" because a couple of things behave differently than in Drawing
                  << ",techdraw=True"
                  << ",override=" << (OverrideStyle.getValue() ? "True" : "False");
 
@@ -122,7 +122,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
 // (Arch section, etc)
 // like Draft.makeDrawingView, but we don't need to create the actual document objects in Draft, just the svg.
         Base::Interpreter().runString("import Draft");
-        Base::Interpreter().runStringArg("svgBody = Draft.getSVG(App.activeDocument().%s %s)",
+        Base::Interpreter().runStringArg("svgBody = Draft.get_svg(App.activeDocument().%s %s)",
                                          SourceName.c_str(),paramStr.str().c_str());
 //        Base::Interpreter().runString("print svgBody");
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
