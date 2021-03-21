@@ -249,6 +249,19 @@ SoFCVertexArrayIndexer::render(SoState * state,
     drawtarget = GL_LINE_STRIP;
     if (this->partialindices.empty()) {
       drawcount = static_cast<int>(this->linestripoffsets.size());
+      if (!renderasvbo) {
+        int typeshift = this->use_shorts ? 1 : 2;
+        for (int i=0; i<drawcount; ++i) {
+          // If not render as vbo, then glMultiDrawElements() expects the offsets
+          // to contain pointer instead of offsets to the bound buffer.
+          cc_glglue_glDrawElements(glue,
+                                   drawtarget,
+                                   this->linestripcounts[i],
+                                   GL_UNSIGNED_INT,
+                                   this->getIndices() + (this->linestripoffsets[i] >> typeshift));
+        }
+        return;
+      }
       offsets = &this->linestripoffsets[0];
       counts = &this->linestripcounts[0];
     }
@@ -258,13 +271,25 @@ SoFCVertexArrayIndexer::render(SoState * state,
     if (this->partialoffsets.empty()) {
       this->partialoffsets.reserve(this->partialindices.size());
       this->partialcounts.reserve(this->partialindices.size());
-      if (!this->linestripoffsets.empty()) {
-        for (int i : this->partialindices) {
-          this->partialoffsets.push_back(this->linestripoffsets[i]);
-          this->partialcounts.push_back(this->linestripcounts[i]);
+      if (!this->linestripoffsets.empty() && glIsEnabled(GL_LINE_STIPPLE)) {
+        drawtarget = GL_LINE_STRIP;
+        if (renderasvbo) {
+          for (int i : this->partialindices) {
+            this->partialoffsets.push_back(this->linestripoffsets[i]);
+            this->partialcounts.push_back(this->linestripcounts[i]);
+          }
+        }
+        else {
+          int typeshift = this->use_shorts ? 1 : 2;
+          for (int i : this->partialindices) {
+            this->partialcounts.push_back(this->linestripcounts[i]);
+            this->partialoffsets.push_back(
+                (intptr_t)(this->indexarray->getArrayPtr()
+                  + (this->linestripoffsets[i] >> typeshift)));
+          }
         }
       }
-      else {
+      else if (renderasvbo) {
         int typesize = this->use_shorts ? 2 : 4;
         for (int i : this->partialindices) {
           int prev = i ? this->partarray[i-1] : 0;
@@ -272,9 +297,14 @@ SoFCVertexArrayIndexer::render(SoState * state,
           this->partialcounts.push_back(this->partarray[i] - prev);
         }
       }
+      else {
+        for (int i : this->partialindices) {
+          int prev = i ? this->partarray[i-1] : 0;
+          this->partialoffsets.push_back((intptr_t)(this->indexarray->getArrayPtr() + prev));
+          this->partialcounts.push_back(this->partarray[i] - prev);
+        }
+      }
     }
-    if (!this->linestripoffsets.empty())
-      drawtarget = GL_LINE_STRIP;
 
     drawcount = static_cast<int>(this->partialindices.size());
     offsets = &this->partialoffsets[0];

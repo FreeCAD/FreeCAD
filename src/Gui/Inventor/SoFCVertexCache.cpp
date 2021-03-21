@@ -775,13 +775,12 @@ SoFCVertexCacheP::render(SoState * state,
     this->enableVBOs(state, glue, contextid, color, normal, texture, enabled, lastenabled);
     indexer->render(state, glue, TRUE, contextid, offsets, counts, drawcount);
     this->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
-  } else
-  if (SoFCVBO::shouldRenderAsVertexArrays(state, contextid, vnum)) {
+  } else if (SoFCVBO::shouldRenderAsVertexArrays(state, contextid, vnum)) {
     this->enableArrays(glue, color, normal, texture, enabled, lastenabled);
     if (!drawcount)
       indexer->render(state, glue, FALSE, contextid);
     else {
-      int typeshift = this->triangleindexer->useShorts() ? 1 : 2;
+      int typeshift = indexer->useShorts() ? 1 : 2;
       for (int i=0; i<drawcount; ++i) {
         int32_t count = counts[i];
         intptr_t offset = offsets[i] >> typeshift;
@@ -801,7 +800,7 @@ SoFCVertexCacheP::render(SoState * state,
                             color, normal, texture, enabled, lastenabled);
     }
     else {
-      int typeshift = this->triangleindexer->useShorts() ? 1 : 2;
+      int typeshift = indexer->useShorts() ? 1 : 2;
       for (int i=0; i<drawcount; ++i) {
         int count = counts[i];
         intptr_t offset = offsets[i] >> typeshift;
