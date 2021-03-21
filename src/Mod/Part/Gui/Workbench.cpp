@@ -127,17 +127,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << bop << join << split << compound
           << "Separator"
-          << "Part_Section"
-          << "Part_CrossSections"
-          << "Part_MakeFace"
           << "Part_Extrude"
           << "Part_Revolve"
           << "Part_Mirror"
           << "Part_Fillet"
           << "Part_Chamfer"
+          << "Part_MakeFace"
           << "Part_RuledSurface"
           << "Part_Loft"
           << "Part_Sweep"
+          << "Part_Section"
+          << "Part_CrossSections"
           << "Part_Offset"
           << "Part_Offset2D"
           << "Part_Thickness"
@@ -191,9 +191,12 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Part_Mirror"
           << "Part_Fillet"
           << "Part_Chamfer"
+          << "Part_MakeFace"
           << "Part_RuledSurface"
           << "Part_Loft"
           << "Part_Sweep"
+          << "Part_Section"
+          << "Part_CrossSections"
           << "Part_CompOffset"
           << "Part_Thickness"
           << "Part_ProjectionOnSurface"
@@ -209,9 +212,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Part_CompJoinFeatures"
             << "Part_CompSplitFeatures"
             << "Part_CheckGeometry"
-            << "Part_Defeaturing"
-            << "Part_Section"
-            << "Part_CrossSections";
+            << "Part_Defeaturing";
 
     Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
     measure->setCommand("Measure");
