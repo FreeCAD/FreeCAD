@@ -1159,7 +1159,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
     }
     if (draftItemsFound == 0) { 
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("There were no DraftWB objects in the selection."));
+            QObject::tr("There were no DraftWB objects in the selection.\n\nIf you wish to group Draft objects then use Layers in order for them to be collected."));
     }
 }
 
