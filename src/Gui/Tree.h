@@ -133,7 +133,9 @@ public:
     void synchronizeSelectionCheckBoxes();
 
     DocumentObjectItem *getFirstSelectedObjectItem() const;
-    DocumentObjectItem *getObjectItemByPath(const std::vector<int> &path) const;
+
+    bool allowMoveUpInGroup(DocumentObjectItem *obj, DocumentObjectItem **preceding = 0) const;
+    bool allowMoveDownInGroup(DocumentObjectItem *obj, DocumentObjectItem **succeeding = 0) const;
 
     static bool swapSiblings(DocumentObjectItem *obj1, DocumentObjectItem *obj2);
 
@@ -320,6 +322,8 @@ public:
     class ExpandInfo;
     typedef std::shared_ptr<ExpandInfo> ExpandInfoPtr;
 
+    QTreeWidgetItem *getTreeItemByPath(const std::string &path) const;
+
 protected:
     /** Adds a view provider to the document item.
      * If this view provider is already added nothing happens.
@@ -446,7 +450,9 @@ public:
     DocumentObjectItem *getParentItem() const;
     DocumentObjectItem *getNextSibling() const;
     DocumentObjectItem *getPreviousSibling() const;
-    std::vector<int> getFullPath() const;
+    DocumentObjectItem *getChildByName(const std::string &name) const;
+
+    std::string getFullPath() const;
 
     TreeWidget *getTree() const;
 

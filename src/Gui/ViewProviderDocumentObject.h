@@ -64,6 +64,9 @@ public:
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
 
+    // Hidden properties
+    App::PropertyInteger TreeRank;
+
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);
     virtual void update(const App::Property*) override;
@@ -155,8 +158,7 @@ public:
     void setShowable(bool enable);
     bool isShowable() const;
 
-    int getTreeRank() const { return this->treeRank; }
-    int setTreeRank(int rank);
+    virtual bool allowTreeOrderSwap(const App::DocumentObject *child1, const App::DocumentObject *child2) const;
 
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
@@ -210,7 +212,6 @@ protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
 
-    int treeRank;
     static int lastTreeRank;
 
 private:

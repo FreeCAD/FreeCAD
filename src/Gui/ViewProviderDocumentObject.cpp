@@ -72,7 +72,7 @@ PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
 ViewProviderDocumentObject::ViewProviderDocumentObject()
   : pcObject(nullptr)
-  , pcDocument(nullptr), treeRank(0)
+  , pcDocument(nullptr)
 {
     static const char *dogroup = "Display Options";
     static const char *sgroup = "Selection";
@@ -91,6 +91,8 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
             "Object: On top only if the whole object is selected\n"
             "Element: On top only if some sub-element of the object is selected");
     OnTopWhenSelected.setEnums(OnTopEnum);
+
+    ADD_PROPERTY_TYPE(TreeRank, (0), dogroup, App::PropertyType(App::Prop_Hidden|App::Prop_NoPersist), "Tree view item ordering key");
 
     sPixmap = "Feature";
 }
@@ -214,6 +216,14 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
         if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
             static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
                 ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
+        }
+    }
+    else if (prop == &TreeRank) {
+        if (this->TreeRank.getValue() <= 0) {
+            this->TreeRank.setValue(++ViewProviderDocumentObject::lastTreeRank);
+        }
+        else if (this->TreeRank.getValue() > ViewProviderDocumentObject::lastTreeRank) {
+            ViewProviderDocumentObject::lastTreeRank = this->TreeRank.getValue();
         }
     }
 
@@ -670,16 +680,14 @@ std::string ViewProviderDocumentObject::getFullName() const {
     return std::string();
 }
 
-int ViewProviderDocumentObject::setTreeRank(int rank) {
-    int current = this->treeRank;
-    if (rank <= 0) {
-        this->treeRank = ++ViewProviderDocumentObject::lastTreeRank;
-    }
-    else {
-        this->treeRank = rank;
-        if (rank > ViewProviderDocumentObject::lastTreeRank) {
-            ViewProviderDocumentObject::lastTreeRank = rank;
+bool ViewProviderDocumentObject::allowTreeOrderSwap(const App::DocumentObject *child1, const App::DocumentObject *child2) const
+{
+    std::vector<ViewProviderExtension *> extensions = getExtensionsDerivedFromType<ViewProviderExtension>();
+    for (ViewProviderExtension *ext : extensions) {
+        if (!ext->extensionAllowTreeOrderSwap(child1, child2)) {
+            return false;
         }
     }
-    return current;
+
+    return true;
 }

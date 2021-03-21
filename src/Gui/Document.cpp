@@ -725,7 +725,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
         }
 
         // If no tree rank was assigned, do it now, otherwise keep the current one
-        pcProvider->setTreeRank(pcProvider->getTreeRank());
+        pcProvider->TreeRank.setValue(pcProvider->TreeRank.getValue());
 
         // adding to the tree
         signalNewObject(*pcProvider);
@@ -1405,7 +1405,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
                     // For backward compatibility, use object ID as tree rank
                     rank = vpdo->getObject()->getID();
                 }
-                vpdo->setTreeRank(rank);
+                vpdo->TreeRank.setValue(rank);
 
                 if (expanded) {
                     this->signalExpandObject(*vpdo, TreeItemMode::ExpandItem, 0, 0);
@@ -1532,8 +1532,8 @@ void Document::SaveDocFile (Base::Writer &writer) const
             writer.Stream() << " Extensions=\"True\"";
 
         ViewProviderDocumentObject *vpdo = dynamic_cast<ViewProviderDocumentObject *>(obj);
-        if (vpdo && vpdo->getTreeRank()) {
-            writer.Stream() << " rank=\"" << vpdo->getTreeRank() << "\"";
+        if (vpdo && vpdo->TreeRank.getValue()) {
+            writer.Stream() << " rank=\"" << vpdo->TreeRank.getValue() << "\"";
         }
 
         writer.Stream() << ">" << std::endl;

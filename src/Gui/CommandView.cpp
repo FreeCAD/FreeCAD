@@ -3509,31 +3509,40 @@ void StdGroupMoveUp::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     TreeWidget *tree = TreeWidget::instance();
-    if (tree) {
-        DocumentObjectItem *selected = tree->getFirstSelectedObjectItem();
-        if (selected) {
-            DocumentObjectItem *previous = selected->getPreviousSibling();
-            if (previous) {
-                TreeWidget::swapSiblings(previous, selected);
-                tree->selectionModel()->clearSelection();
-                tree->setCurrentItem(selected);
-                selected->setSelected(true);
-            }
-        }
+    if (!tree) {
+        return;
+    }
+
+    DocumentObjectItem *selected = tree->getFirstSelectedObjectItem();
+    if (!selected) {
+        return;
+    }
+
+    DocumentObjectItem *previous;
+    if (!tree->allowMoveUpInGroup(selected, &previous)) {
+        return;
+    }
+
+    if (TreeWidget::swapSiblings(previous, selected)) {
+        tree->selectionModel()->clearSelection();
+        tree->setCurrentItem(selected);
+        selected->setSelected(true);
     }
 }
 
 bool StdGroupMoveUp::isActive(void)
 {
     TreeWidget *tree = TreeWidget::instance();
-    if (tree) {
-        DocumentObjectItem *selected = tree->getFirstSelectedObjectItem();
-        if (selected) {
-            return selected->getPreviousSibling();
-        }
+    if (!tree) {
+        return false;
     }
 
-    return false;
+    DocumentObjectItem *selected = tree->getFirstSelectedObjectItem();
+    if (!selected) {
+        return false;
+    }
+
+    return tree->allowMoveUpInGroup(selected);
 }
 
 //===========================================================================
@@ -3559,31 +3568,40 @@ void StdGroupMoveDown::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     TreeWidget *tree = TreeWidget::instance();
-    if (tree) {
-        DocumentObjectItem *selected = tree->getFirstSelectedObjectItem();
-        if (selected) {
-            DocumentObjectItem *next = selected->getNextSibling();
-            if (next) {
-                TreeWidget::swapSiblings(selected, next);
-                tree->selectionModel()->clearSelection();
-                tree->setCurrentItem(selected);
-                selected->setSelected(true);
-            }
-        }
+    if (!tree) {
+        return;
+    }
+
+    DocumentObjectItem *selected = tree->getFirstSelectedObjectItem();
+    if (!selected) {
+        return;
+    }
+
+    DocumentObjectItem *next ;
+    if (!tree->allowMoveDownInGroup(selected, &next)) {
+        return;
+    }
+
+    if (TreeWidget::swapSiblings(selected, next)) {
+        tree->selectionModel()->clearSelection();
+        tree->setCurrentItem(selected);
+        selected->setSelected(true);
     }
 }
 
 bool StdGroupMoveDown::isActive(void)
 {
     TreeWidget *tree = TreeWidget::instance();
-    if (tree) {
-        DocumentObjectItem *selected = tree->getFirstSelectedObjectItem();
-        if (selected) {
-            return selected->getNextSibling();
-        }
+    if (!tree) {
+        return false;
     }
 
-    return false;
+    DocumentObjectItem *selected = tree->getFirstSelectedObjectItem();
+    if (!selected) {
+        return false;
+    }
+
+    return tree->allowMoveDownInGroup(selected);
 }
 
 //======================================================================
