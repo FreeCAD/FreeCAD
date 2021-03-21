@@ -52,14 +52,16 @@
 # include <QApplication>
 #endif
 
+#include "../SoFCInteractiveElement.h"
 #include "SoFCVertexArrayIndexer.h"
+
+using namespace Gui;
 
 /**************************************************************************/
 
 static int vbo_vertex_count_min_limit = -1;
 static int vbo_vertex_count_max_limit = -1;
 static int vbo_render_as_vertex_arrays = -1;
-static int vbo_enabled = -1;
 static int vbo_debug = -1;
 static int vbo_context_shared = -1;
 
@@ -149,16 +151,6 @@ SoFCVBO::init(void)
     }
   }
 
-  // use COIN_VBO to globally disable VBOs when doing vertex array rendering
-  if (vbo_enabled < 0) {
-    const char * env = coin_getenv("COIN_VBO");
-    if (env) {
-      vbo_enabled = atoi(env);
-    }
-    else {
-      vbo_enabled = 1;
-    }
-  }
   if (vbo_debug < 0) {
     const char * env = coin_getenv("COIN_DEBUG_VBO");
     if (env) {
@@ -356,20 +348,24 @@ SoFCVBO::getVertexCountMaxLimit(void)
   return vbo_vertex_count_max_limit;
 }
 
+
+
 SbBool
 SoFCVBO::shouldCreateVBO(SoState * state, const uint32_t contextid, const int numdata)
 {
   (void)state;
-  static SbBool vbo_checked = FALSE;
-  if (vbo_enabled && !vbo_checked) {
-    vbo_checked = TRUE;
+  static int vbo_checked = 0;
+  if (!vbo_checked) {
+    vbo_checked = 1;
     const cc_glglue * glue = cc_glglue_instance(static_cast<int>(contextid));
     if (!cc_glglue_has_vertex_buffer_object(glue)
         || !SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT))
-      vbo_enabled = false;
+      vbo_checked = -1;
   }
-
-  if (!vbo_enabled || !vbo_render_as_vertex_arrays) return FALSE;
+  if (vbo_checked < 0)
+    return FALSE;
+  if (!vbo_render_as_vertex_arrays || !SoGLVBOActivatedElement::get(state))
+    return FALSE;
   int minv = SoFCVBO::getVertexCountMinLimit();
   int maxv = SoFCVBO::getVertexCountMaxLimit();
   return (numdata >= minv) && (numdata <= maxv);
