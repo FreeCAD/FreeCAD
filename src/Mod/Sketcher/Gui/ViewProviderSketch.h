@@ -128,6 +128,9 @@ public:
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
 
+    /// draw the edit markers
+    void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
+
     /// Is the view provider selectable
     bool isSelectable(void) const override;
     /// Observer message from the Selection
