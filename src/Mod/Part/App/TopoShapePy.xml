@@ -58,8 +58,10 @@ exportStep(filename)
     </Methode>
     <Methode Name="exportBrep" Const="true">
       <Documentation>
-        <UserDocu>Export the content of this shape to an BREP file. BREP is a CasCade native format.
+        <UserDocu>Export the content of this shape to an BREP file.
 exportBrep(filename)
+--
+BREP is an OpenCasCade native format.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -75,7 +77,7 @@ exportBinary(filename)
         <UserDocu>Export the content of this shape to a string in BREP format.
 exportBrepToString() -> string
 --
-BREP is a CasCade native format.</UserDocu>
+BREP is an OpenCasCade native format.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="dumpToString" Const="true">
@@ -268,7 +270,7 @@ OCC 6.9.0 or later is required.</UserDocu>
     <Methode Name="generalFuse" Const="true">
       <Documentation>
         <UserDocu>Run general fuse algorithm (GFA) between this and given shapes.
-generalFuse(list_of_other_shapes, fuzzy_value = 0.0)
+generalFuse(list_of_other_shapes, [fuzzy_value = 0.0]) -> (result, map)
 --
 list_of_other_shapes: shapes to run the algorithm against (the list is
 effectively prepended by 'self').
@@ -333,6 +335,7 @@ removeInternalWires(minimalArea) -> bool
       <Documentation>
         <UserDocu>Mirror this shape on a given plane.
 mirror(base, norm) -> Shape
+--
 The plane is given with its base point and its normal direction.</UserDocu>
       </Documentation>
     </Methode>
@@ -357,8 +360,6 @@ The transformation is applied to:
 
 Note: If you want to transform a shape without changing the
 underlying geometry then use the methods translate or rotate.
-
-transformGeometry(Matrix) -> Shape
 </UserDocu>
       </Documentation>
     </Methode>
@@ -380,7 +381,9 @@ transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
     </Methode>
     <Methode Name="translate">
       <Documentation>
-        <UserDocu>Apply the translation to the current location of this shape.</UserDocu>
+        <UserDocu>Apply the translation to the current location of this shape.
+translate(vector)
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="translated">
@@ -509,7 +512,7 @@ structure follows that of source shape.</UserDocu>
     <Methode Name="makeWires">
       <Documentation>
         <UserDocu>make wire(s) using the edges of this shape
-makeWires(op=None)
+makeWires([op=None])
 --
 The function will sort any edges inside the current shape, and connect them
 into wire. If more than one wire is found, then it will make a compound out of
@@ -671,8 +674,9 @@ makePerspectiveProjection(shape, pnt) -> Shape
     <Methode Name="reflectLines" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Build reflect lines on a shape according to the axes of view.
-Reflect lines are represented by edges in 3d.
 reflectLines(ViewDir, ViewPos, UpDir) -> Shape
+--
+Reflect lines are represented by edges in 3d.
         </UserDocu>
       </Documentation>
     </Methode>
