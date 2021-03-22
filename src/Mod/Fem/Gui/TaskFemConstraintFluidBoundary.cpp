@@ -211,7 +211,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
             App::PropertyLink* pcLink = static_cast<App::PropertyLink*>(prop);
             Part::Feature* pcPart = dynamic_cast<Part::Feature*>(pcLink->getValue());
             if (pcPart) {  // deduct dimension from part_obj.Shape.ShapeType
-                const TopoDS_Shape & pShape = pcPart->Shape.getShape().getShape();
+                TopoDS_Shape pShape = pcPart->Shape.getShape().getShape();
                 const TopAbs_ShapeEnum shapeType = pShape.IsNull() ? TopAbs_SHAPE : pShape.ShapeType();
                 if (shapeType == TopAbs_SOLID || shapeType ==TopAbs_COMPSOLID)  // COMPSOLID is solids connected by faces
                     dimension =3;

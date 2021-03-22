@@ -80,7 +80,7 @@ App::DocumentObjectExecReturn *FeatureShape::execute(void)
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
         if (!(*it && (*it)->isDerivedFrom(Part::Feature::getClassTypeId())))
             continue;
-        const TopoDS_Shape &shape = static_cast<Part::Feature*>(*it)->Shape.getShape().getShape();
+        TopoDS_Shape shape = static_cast<Part::Feature*>(*it)->Shape.getShape().getShape();
         if (shape.IsNull())
             continue;
         shapes.push_back(shape);
