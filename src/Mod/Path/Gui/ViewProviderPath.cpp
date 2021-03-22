@@ -41,6 +41,8 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <QFile>
+# include <QMenu>
+# include <QAction>
 #endif
 
 #include <Inventor/SbXfBox3d.h>
@@ -62,6 +64,7 @@
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoAxisCrossKit.h>
 #include <Gui/SoFCUnifiedSelection.h>
+#include <Gui/Command.h>
 
 using namespace Gui;
 using namespace PathGui;
@@ -724,6 +727,34 @@ Base::BoundBox3d ViewProviderPath::_getBoundingBox(
 QIcon ViewProviderPath::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Path_Toolpath");
+}
+
+void ViewProviderPath::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    QAction* act = menu->addAction(QObject::tr("Inspect G-Code"), receiver, member);
+    act->setData(QVariant((int)Gui::ViewProvider::Default));
+    ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderPath::doubleClicked(void)
+{
+    Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
+    return true;
+}
+
+bool ViewProviderPath::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        try {
+            Gui::Command::addModule(Gui::Command::Doc, "PathScripts.PathInspect");
+            Gui::Command::doCommand(Gui::Command::Doc, 
+                    "PathScripts.PathInspect.show(%s)", getObject()->getFullName(true).c_str()); 
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
+        return false;
+    }
+    return ViewProviderGeometryObject::setEdit(ModNum);
 }
 
 // Python object -----------------------------------------------------------------------

@@ -84,6 +84,9 @@ public:
 
     virtual void showBoundingBox(bool show);
 
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+    virtual bool doubleClicked(void);
+
     friend class PathSelectionObserver;
 
 protected:
@@ -93,6 +96,7 @@ protected:
 
     virtual void onChanged(const App::Property* prop);
     virtual unsigned long getBoundColor() const;
+    virtual bool setEdit(int ModNum);
 
     SoCoordinate3         * pcLineCoords;
     SoCoordinate3         * pcMarkerCoords;
