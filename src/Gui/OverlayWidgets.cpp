@@ -136,8 +136,8 @@ bool OverlayProxyWidget::hitTest(QPoint pt, bool delay)
     int hit = 0;
     QSize s = this->size();
     int hintSize = ViewParams::getDockOverlayHintTriggerSize();
-    if (owner->getState() == OverlayTabWidget::State_HintHidden)
-        hintSize *= 2;
+    // if (owner->getState() == OverlayTabWidget::State_HintHidden)
+    //     hintSize *= 2;
     switch(dockArea) {
     case Qt::LeftDockWidgetArea:
         hit = (pt.y() >= 0 && pt.y() <= s.height() && pt.x() > 0 && pt.x() < hintSize);
@@ -1491,8 +1491,10 @@ bool OverlayTabWidget::getAutoHideRect(QRect &rect) const
             rect.setBottom(rect.bottom() - std::max(rect.height()-hintWidth,0));
         else {
             rect.setTop(rect.top() + std::max(rect.height()-hintWidth,0));
-            if (_RightOverlay->isVisible() && _RightOverlay->_state <= State_Normal)
-                rect.setRight(std::min(rect.right(), _RightOverlay->x()));
+            if (_RightOverlay->isVisible() && _RightOverlay->_state <= State_Normal) {
+                QPoint offset = getMainWindow()->getMdiArea()->pos();
+                rect.setRight(std::min(rect.right(), _RightOverlay->x()-offset.x()));
+            }
         }
         break;
     default:
@@ -1570,22 +1572,20 @@ void OverlayTabWidget::setRect(QRect rect)
             switch(dockArea) {
             case Qt::LeftDockWidgetArea: 
             case Qt::RightDockWidgetArea: 
-                rectHint.setBottom(rect.bottom());
                 if (dockArea == Qt::LeftDockWidgetArea)
                     rect.setWidth(tabBar()->width());
                 else
                     rect.setLeft(rect.left() + rect.width() - tabBar()->width());
-                rect.setHeight(std::min(rect.height(), 
+                rect.setHeight(std::max(rect.height(), 
                             tabBar()->y() + tabBar()->sizeHint().height() + 5));
                 break;
             case Qt::BottomDockWidgetArea: 
             case Qt::TopDockWidgetArea: 
-                rectHint.setRight(rect.right());
                 if (dockArea == Qt::TopDockWidgetArea)
                     rect.setHeight(tabBar()->height());
                 else
                     rect.setTop(rect.top() + rect.height() - tabBar()->height());
-                rect.setWidth(std::min(rect.width(),
+                rect.setWidth(std::max(rect.width(),
                             tabBar()->x() + tabBar()->sizeHint().width() + 5));
                 break;
             default:
