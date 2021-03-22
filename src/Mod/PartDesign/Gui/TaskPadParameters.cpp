@@ -157,9 +157,9 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onLength2Changed(double)));
     connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
-        this, SLOT(onCBAlongDirectionChanged(bool)));
+        this, SLOT(onAlongDirectionChanged(bool)));
     connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
-        this, SLOT(onGBDirectionChanged(bool)));
+        this, SLOT(onDirectionToggled(bool)));
     connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
         this, SLOT(onXDirectionEditChanged(double)));
     connect(ui->YDirectionEdit, SIGNAL(valueChanged(double)),
@@ -204,8 +204,8 @@ void TaskPadParameters::updateUI(int index)
     bool isLengthEdit2Visible = false;
     bool isOffsetEditVisible  = false;
     bool isMidplateEnabled    = false;
-    bool isReversedEnabled    = true;
-    bool isReversedVisible    = true;
+    bool isReversedEnabled    = false;
+    bool isReversedVisible    = false;
     bool isFaceEditEnabled    = false;
 
     // dimension
@@ -216,22 +216,19 @@ void TaskPadParameters::updateUI(int index)
         // Calling setFocus() directly doesn't work because the spin box is not
         // yet visible.
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        isMidplateEnabled = true;
+        isMidplateEnabled = !ui->checkBoxReversed->isChecked();
         // Reverse only makes sense if Midplane is not true
         isReversedEnabled = !ui->checkBoxMidplane->isChecked();
+        isReversedVisible = true;
     }
     // up to first/last
     else if (index == 1 || index == 2) {
         isOffsetEditVisible = true;
-        isReversedEnabled   = false;
-        isReversedVisible   = false;
     }
     // up to face
     else if (index == 3) {
         isOffsetEditVisible = true;
         isFaceEditEnabled   = true;
-        isReversedEnabled   = false;
-        isReversedVisible   = false;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
         if (ui->lineFaceName->property("FeatureName").isNull())
@@ -241,6 +238,9 @@ void TaskPadParameters::updateUI(int index)
     else {
         isLengthEditVisible  = true;
         isLengthEdit2Visible = true;
+        isMidplateEnabled    = !ui->checkBoxReversed->isChecked();
+        isReversedEnabled    = !ui->checkBoxMidplane->isChecked();
+        isReversedVisible    = true;
     }
 
     ui->lengthEdit->setVisible( isLengthEditVisible );
@@ -310,14 +310,14 @@ void TaskPadParameters::onLength2Changed(double len)
     recomputeFeature();
 }
 
-void TaskPadParameters::onCBAlongDirectionChanged(bool on)
+void TaskPadParameters::onAlongDirectionChanged(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->AlongCustomVector.setValue(on);
     recomputeFeature();
 }
 
-void TaskPadParameters::onGBDirectionChanged(bool on)
+void TaskPadParameters::onDirectionToggled(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->UseCustomVector.setValue(on);

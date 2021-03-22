@@ -70,7 +70,7 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
     ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
-    ADD_PROPERTY_TYPE(AlongCustomVector, (1), "Pad", App::Prop_None, "Measure length along custom direction vector");
+    ADD_PROPERTY_TYPE(AlongCustomVector, (true), "Pad", App::Prop_None, "Measure length along custom direction vector");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};

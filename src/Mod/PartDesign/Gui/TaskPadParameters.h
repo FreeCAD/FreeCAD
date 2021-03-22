@@ -58,8 +58,8 @@ public:
 private Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
-    void onCBAlongDirectionChanged(bool);
-    void onGBDirectionChanged(bool);
+    void onAlongDirectionChanged(bool);
+    void onDirectionToggled(bool);
     void onXDirectionEditChanged(double);
     void onYDirectionEditChanged(double);
     void onZDirectionEditChanged(double);
