@@ -261,7 +261,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
             for(auto it=children.begin(),itNext=it;it!=children.end();it=itNext) {
                 ++itNext;
                 auto obj = *it;
-                if(!obj || !obj->getNameInDocument() || !allowObject(obj)) {
+                if(!obj || !obj->getNameInDocument()) {
                     error = true;
                     itNext = children.erase(it);
                     if(obj)
