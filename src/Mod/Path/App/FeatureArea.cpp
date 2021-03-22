@@ -77,10 +77,8 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
     if (links.empty())
         return new App::DocumentObjectExecReturn("No shapes linked");
 
-    for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        if (!(*it && (*it)->isDerivedFrom(Part::Feature::getClassTypeId())))
-            return new App::DocumentObjectExecReturn("Linked object is not a Part object (has no Shape).");
-        TopoDS_Shape shape = static_cast<Part::Feature*>(*it)->Shape.getShape().getShape();
+    for (auto obj : links) {
+        TopoDS_Shape shape = Part::Feature::getShape(obj);
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
     }
