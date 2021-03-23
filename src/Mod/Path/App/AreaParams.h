@@ -103,6 +103,7 @@
         (None)(ZigZag)(Offset)(Spiral)(ZigZagOffset)(Line)(Grid)(Triangle)))\
 	((double,tool_radius,ToolRadius,1.0,"Tool radius for pocketing",App::PropertyLength))\
 	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing",App::PropertyDistance))\
+	((double,max_offset,PocketMaxOffset,0.0,"Maximum offset for pocketing",App::PropertyDistance))\
 	((double,stepover,PocketStepover,0.0,\
         "Cutter diameter to step over on each pass. If =0, use ToolRadius.",App::PropertyLength))\
 	((double,last_stepover,PocketLastStepover,0.0,\

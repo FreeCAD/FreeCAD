@@ -1203,7 +1203,13 @@ struct FindPlane {
 
         if(x0 && y0) {
             TopExp_Explorer it(shape,TopAbs_VERTEX);
-            const auto &pt = BRep_Tool::Pnt(TopoDS::Vertex(it.Current()));
+            gp_Pnt pt;
+            if (it.More())
+                pt = BRep_Tool::Pnt(TopoDS::Vertex(it.Current()));
+            else {
+                // No vertex, infinite shape
+                pt = pos.Location();
+            }
             if(!myPlaneShape.IsNull() && myZ > pt.Z())
                 return;
             myZ = pt.Z();
@@ -2091,7 +2097,11 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         }else
             shift = 0.0; //Line pattern does not support shift
         Point center(box.Centre());
-        double r = box.Radius()+stepover;
+        double r;
+        if (max_offset > 0.0)
+            r = max_offset + stepover;
+        else
+            r = box.Radius()+stepover;
         if ( extra_offset > 0 )
             r += extra_offset;
         int steps = (int)ceil(r*2.0/stepover);
