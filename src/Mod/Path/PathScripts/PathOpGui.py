@@ -545,11 +545,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
                 if not ignoreErrors:
                     PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
-        else:
-            if not self.supportsPanels() or 'Panel' not in sel.Object.Name:
-                if not ignoreErrors:
-                    PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
-                return False
+        #  else:
+            #  if not self.supportsPanels() or 'Panel' not in sel.Object.Name:
+            #      if not ignoreErrors:
+            #          PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
+            #      return False
         return True
 
     def addBaseGeometry(self, selection):
