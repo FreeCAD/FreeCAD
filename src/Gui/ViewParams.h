@@ -279,6 +279,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Do not accept wheel focus on input fields in task panels."))\
     FC_VIEW_PARAM(GestureLongPressRotationCenter, bool, Bool, false, \
         QT_TRANSLATE_NOOP("ViewParams","Set rotation center on press in gesture navigation mode."))\
+    FC_VIEW_PARAM(CheckWidgetPlacementOnRestore, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Check widget position and size on restore to make sure it is within the current screen."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

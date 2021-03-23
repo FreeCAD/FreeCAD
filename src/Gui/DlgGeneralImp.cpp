@@ -89,6 +89,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     ui->treeFontSize->setValue(TreeParams::FontSize());
     ui->treeItemSpacing->setValue(TreeParams::ItemSpacing());
     ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
+    ui->checkPopUpWindow->setChecked(ViewParams::getCheckWidgetPlacementOnRestore());
 }
 
 /**
@@ -193,6 +194,7 @@ void DlgGeneralImp::saveSettings()
     TreeParams::setFontSize(ui->treeFontSize->value());
     TreeParams::setItemSpacing(ui->treeItemSpacing->value());
     ViewParams::setCommandHistorySize(ui->CmdHistorySize->value());
+    ViewParams::setCheckWidgetPlacementOnRestore(ui->checkPopUpWindow->isChecked());
 }
 
 void DlgGeneralImp::loadSettings()
@@ -328,6 +330,7 @@ void DlgGeneralImp::loadSettings()
     ui->treeFontSize->setValue(TreeParams::FontSize());
     ui->treeItemSpacing->setValue(TreeParams::ItemSpacing());
     ui->CmdHistorySize->setValue(ViewParams::getCommandHistorySize());
+    ui->checkPopUpWindow->setChecked(ViewParams::getCheckWidgetPlacementOnRestore());
 }
 
 void DlgGeneralImp::changeEvent(QEvent *e)

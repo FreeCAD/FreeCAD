@@ -44,6 +44,7 @@
 #include "BitmapFactory.h"
 #include "FileDialog.h"
 #include "SpinBox.h"
+#include "ViewParams.h"
 
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -270,7 +271,7 @@ void DlgParameterImp::reject()
     close();
 }
 
-void DlgParameterImp::paintEvent(QPaintEvent *ev)
+void DlgParameterImp::showEvent(QShowEvent *ev)
 {
     if (!geometryRestored) {
         geometryRestored = true;
@@ -290,15 +291,17 @@ void DlgParameterImp::paintEvent(QPaintEvent *ev)
             w -= x;
             h -= y;
 
-            QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
-            x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
-            y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
-            w = std::min<int>(rect.height(), w);
-            h = std::min<int>(rect.width(), h);
+            if (ViewParams::getCheckWidgetPlacementOnRestore()) {
+                QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
+                x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
+                y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
+                w = std::min<int>(rect.height(), w);
+                h = std::min<int>(rect.width(), h);
+            }
             this->setGeometry(x,y,w,h);
         }
     }
-    QDialog::paintEvent(ev);
+    QDialog::showEvent(ev);
 }
 
 void DlgParameterImp::closeEvent(QCloseEvent* )

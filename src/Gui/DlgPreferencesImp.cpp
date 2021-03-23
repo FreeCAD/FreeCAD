@@ -48,6 +48,7 @@
 #include "WidgetFactory.h"
 #include "BitmapFactory.h"
 #include "MainWindow.h"
+#include "ViewParams.h"
 
 using namespace Gui::Dialog;
 
@@ -440,12 +441,12 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
     this->adjustSize();
+    restoreGeometry();
     QDialog::showEvent(ev);
 }
 
 void DlgPreferencesImp::paintEvent(QPaintEvent *ev)
 {
-    restoreGeometry();
     QDialog::paintEvent(ev);
 }
 
@@ -460,17 +461,19 @@ void DlgPreferencesImp::restoreGeometry()
     if (geometryRestored)
         return;
     geometryRestored = true;
-    QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
     std::string geometry = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/General")->GetASCII(
                 "PreferenceGeometry", "");
     std::istringstream iss(geometry);
     int x,y,w,h;
     if (iss >> x >> y >> w >> h) {
-        x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
-        y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
-        w = std::min<int>(rect.width(), w);
-        h = std::min<int>(rect.height(), h);
+        if (ViewParams::getCheckWidgetPlacementOnRestore()) {
+            QRect rect = QApplication::desktop()->availableGeometry(getMainWindow());
+            x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, x));
+            y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, y));
+            w = std::min<int>(rect.width(), w);
+            h = std::min<int>(rect.height(), h);
+        }
         this->setGeometry(x,y,w,h);
     }
 }

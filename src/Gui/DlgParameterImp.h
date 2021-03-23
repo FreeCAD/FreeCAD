@@ -66,7 +66,7 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
-    void paintEvent(QPaintEvent*);
+    void showEvent(QShowEvent*);
     void closeEvent(QCloseEvent*);
 
 protected:
