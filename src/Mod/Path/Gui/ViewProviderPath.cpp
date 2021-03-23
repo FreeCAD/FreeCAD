@@ -211,20 +211,26 @@ ViewProviderPath::ViewProviderPath()
     pcArrowSwitch = new SoSwitch();
     pcArrowSwitch->ref();
 
-    auto pArrowGroup = new SoSeparator;
+    auto pArrowGroup = new SoFCPathAnnotation;
+    pArrowGroup->priority = 2;
     pcArrowTransform = new SoTransform();
     pArrowGroup->addChild(pcArrowTransform);
 
-    auto pArrowScale = new SoShapeScale();
-    auto pArrow = new SoAxisCrossKit();
-    pArrow->set("xAxis.appearance.drawStyle", "style INVISIBLE");
-    pArrow->set("xHead.appearance.drawStyle", "style INVISIBLE");
-    pArrow->set("yAxis.appearance.drawStyle", "style INVISIBLE");
-    pArrow->set("yHead.appearance.drawStyle", "style INVISIBLE");
-    pArrow->set("zAxis.appearance.drawStyle", "style INVISIBLE");
-    pArrow->set("zHead.transform", "translation 0 0 0");
-    pArrowScale->setPart("shape", pArrow);
-    pArrowScale->scaleFactor = 1.0f;
+    static Gui::CoinPtr<SoShapeScale> pArrowScale;
+    static Gui::CoinPtr<SoAxisCrossKit> pArrow;
+    if (!pArrow) {
+        pArrowScale = new SoShapeScale();
+        pArrowScale->scaleFactor = 1.0f;
+        pArrow = new SoAxisCrossKit();
+        pArrow->set("xAxis.appearance.drawStyle", "style INVISIBLE");
+        pArrow->set("xHead.appearance.drawStyle", "style INVISIBLE");
+        pArrow->set("yAxis.appearance.drawStyle", "style INVISIBLE");
+        pArrow->set("yHead.appearance.drawStyle", "style INVISIBLE");
+        pArrow->set("zAxis.appearance.drawStyle", "style INVISIBLE");
+        pArrow->set("zHead.transform", "translation 0 0 0");
+        pArrowScale->setPart("shape", pArrow);
+    }
+
     pArrowGroup->addChild(pArrowScale);
 
     pcArrowSwitch->addChild(pArrowGroup);
