@@ -3218,12 +3218,13 @@ public:
                                     sizes[i] = 0;
                                 else if (--expand) {
                                     expansion -= step;
-                                    sizes[i] = step;
+                                    sizes[i] += step;
                                 } else {
-                                    sizes[i] = expansion;
+                                    sizes[i] += expansion;
                                     break;
                                 }
                             }
+                            sizes[index] = 0;
                             tabWidget->splitter->setSizes(sizes);
                             tabWidget->saveTabs();
                         }
