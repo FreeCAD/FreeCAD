@@ -565,7 +565,7 @@ bool OverlayTabWidget::event(QEvent *ev)
     return QTabWidget::event(ev);
 }
 
-int OverlayTabWidget::testAlpha(const QPoint &_pos)
+int OverlayTabWidget::testAlpha(const QPoint &_pos, int radiusScale)
 {
     if (!count() || (!isOverlayed() && !isTransparent()) || !isVisible())
         return -1;
@@ -597,7 +597,7 @@ int OverlayTabWidget::testAlpha(const QPoint &_pos)
     }
 
     int res = qAlpha(_image.pixel(pos*_imageScale));
-    int radius = ViewParams::getDockOverlayAlphaRadius();
+    int radius = ViewParams::getDockOverlayAlphaRadius() * radiusScale;
     if (res || radius<=0 )
         return res;
 
@@ -3923,6 +3923,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
         if(isTreeViewDragging())
             return false;
 
+        OverlayTabWidget *activeTabWidget = nullptr;
         int hit = 0;
         QPoint pos = QCursor::pos();
         if (ViewParams::getDockOverlayAutoMouseThrough()
@@ -3930,7 +3931,8 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                     && pos == d->_lastPos)
         {
             hit = 1;
-        } else if (ev->type() != QEvent::Wheel) {
+        } else if (ViewParams::getDockOverlayWheelPassThrough()
+                    || ev->type() != QEvent::Wheel) {
             for(auto widget=qApp->widgetAt(pos); widget ; widget=widget->parentWidget()) {
                 int type = widget->windowType();
                 if (type != Qt::Widget && type != Qt::Window) {
@@ -3942,7 +3944,8 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                     break;
                 auto tabWidget = qobject_cast<OverlayTabWidget*>(widget);
                 if (tabWidget) {
-                    if (tabWidget->testAlpha(pos) == 0) {
+                    if (tabWidget->testAlpha(pos, ev->type() == QEvent::Wheel ? 5 : 1) == 0) {
+                        activeTabWidget = tabWidget;
                         hit = ViewParams::getDockOverlayAutoMouseThrough();
                         d->_lastPos = pos;
                     }
@@ -3980,22 +3983,10 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                 return false;
         }
 
-        auto widget = qobject_cast<QWidget*>(o);
-        if(!widget) {
-            QWindow* window = qobject_cast<QWindow*>(o);
-            if (window) {
-                widget = QWidget::find(window->winId());
-                if (!widget)
-                    return false;
-            }
-        }
-        auto tabWidget = findTabWidget(widget, true);
-        if(!tabWidget || tabWidget->isOverlayed() || !tabWidget->isTransparent())
+        if (!activeTabWidget)
+            activeTabWidget = findTabWidget(qApp->widgetAt(QCursor::pos()));
+        if(!activeTabWidget || activeTabWidget->isOverlayed() || !activeTabWidget->isTransparent())
             return false;
-        if(o != tabWidget) {
-            ev->ignore();
-            return true;
-        }
         ev->accept();
         int i = -1;
         for(auto &view : d->_3dviews) {
@@ -4015,10 +4006,10 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
 
             if (ev->type() == QEvent::MouseButtonPress) {
                 d->_trackingView = i;
-                d->_trackingOverlay = tabWidget;
+                d->_trackingOverlay = activeTabWidget;
                 d->_trackingOverlay->grabMouse();
             }
-            break;
+            return true;
         }
         break;
     }

@@ -136,6 +136,8 @@ public:
                                         "If disabled, then show on mouse click."))\
     FC_VIEW_PARAM(DockOverlayAutoMouseThrough,bool,Bool,true, \
         QT_TRANSLATE_NOOP("ViewParams", "Auto mouse click through transparent part of dock overlay."))\
+    FC_VIEW_PARAM(DockOverlayWheelPassThrough,bool,Bool,true, \
+        QT_TRANSLATE_NOOP("ViewParams", "Auto pass through mouse wheel event on transparent dock overlay."))\
     FC_VIEW_PARAM(DockOverlayAlphaRadius,int,Int,2, \
         QT_TRANSLATE_NOOP("ViewParams", "If auto mouse click through is enabled, then this radius\n" \
                                         "defines a region of alpha test under the mouse cursor.\n" \

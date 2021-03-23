@@ -214,7 +214,7 @@ public:
 
     void scheduleRepaint();
 
-    int testAlpha(const QPoint &);
+    int testAlpha(const QPoint &, int radiusScale);
 
     void startShow();
     void startHide();
