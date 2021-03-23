@@ -44,7 +44,7 @@
 
 using namespace Base;
 
-
+FC_LOG_LEVEL_INIT("Console");
 
 
 //=========================================================================
@@ -474,6 +474,78 @@ PyMethodDef ConsoleSingleton::Methods[] = {
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
+static const char *checkPyFrame(const char *msg, std::string &buf)
+{
+    if (!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_TRACE))
+        return msg;
+
+    PyGILStateLocker lock;
+
+    std::ostringstream ss;
+
+    if (FC_LOG_INSTANCE.level() > FC_LOGLEVEL_TRACE) {
+        static Py::Object pyFormatStack;
+        if (pyFormatStack.isNone()) {
+            PyObject *pymod = PyImport_ImportModule("traceback");
+            if (pymod != nullptr) {
+                PyObject* pyfunc = PyObject_GetAttrString(pymod, "format_stack");
+                if (pyfunc != nullptr) {
+                    if (PyCallable_Check(pyfunc))
+                        pyFormatStack = Py::asObject(pyfunc);
+                    else
+                        Py_DECREF(pyfunc);
+                }
+                Py_DECREF(pymod);
+            }
+            if (pyFormatStack.isNone())
+                PyErr_Clear();
+        }
+        if (!pyFormatStack.isNone()) {
+            PyObject* res = PyObject_CallFunctionObjArgs(pyFormatStack.ptr(), 0);
+            if (res == nullptr)
+                PyErr_Clear();
+            else {
+                if (PyList_Check(res)) {
+                    Py::List list(res);
+                    for (auto it = list.begin(); it!=list.end(); ++it)
+                        ss << Py::Object(*it).as_string() << "\n";
+                }
+                Py_DECREF(res);
+            }
+        }
+    }
+
+    if (ss.tellp()) {
+        ss << msg;
+        buf = ss.str();
+        return buf.c_str();
+    }
+
+    PyFrameObject* frame = PyEval_GetFrame();
+    if (frame) {
+        int line = PyFrame_GetLineNumber(frame);
+#if PY_MAJOR_VERSION >= 3
+        buf = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+        buf = PyString_AsString(frame->f_code->co_filename);
+#endif
+        if (buf != "<string>") {
+#ifdef FC_OS_WIN32
+            std::size_t pos = buf.rfind('\\');
+#else
+            std::size_t pos = buf.rfind('/');
+#endif
+            if (pos != std::string::npos)
+                buf.erase(buf.begin(), buf.begin() + pos + 1);
+            buf += "(";
+            buf += std::to_string(line);
+            buf += "): ";
+            buf += msg;
+            return buf.c_str();
+        }
+    }
+    return msg;
+}
 
 PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 {
@@ -511,8 +583,10 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 #endif
 
     PY_TRY {
-        if (string)
-            Instance().NotifyMessage(string);            // process message
+        if (string) {
+            std::string buf;
+            Instance().NotifyMessage(checkPyFrame(string, buf));            // process message
+        }
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -557,8 +631,10 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
 #endif
 
     PY_TRY {
-        if (string)
-            Instance().NotifyWarning(string);            // process message
+        if (string) {
+            std::string buf;
+            Instance().NotifyWarning(checkPyFrame(string, buf));            // process message
+        }
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -603,8 +679,10 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 #endif
 
     PY_TRY {
-        if (string)
-            Instance().NotifyError(string);            // process message
+        if (string) {
+            std::string buf;
+            Instance().NotifyError(checkPyFrame(string, buf));            // process message
+        }
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -649,8 +727,10 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 #endif
 
     PY_TRY {
-        if (string)
-            Instance().NotifyLog(string);            // process message
+        if (string) {
+            std::string buf;
+            Instance().NotifyLog(checkPyFrame(string,buf));            // process message
+        }
     } PY_CATCH;
 
     Py_XDECREF(unicode);
