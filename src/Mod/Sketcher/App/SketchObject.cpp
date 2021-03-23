@@ -6967,12 +6967,12 @@ void SketchObject::rebuildExternalGeometry(bool defining)
                         }
 
                     } else {
-                        FC_ERR("Selected external reference plane must be normal to sketch plane in "
+                        FC_WARN("Skip external reference plane that is not normal to sketch plane in "
                                 << getFullName() << ": " << key);
                         continue;
                     }
                 } else {
-                    FC_ERR("Non-planar faces are not yet supported in sketch "
+                    FC_WARN("Skip non-planar external reference face in sketch "
                                 << getFullName() << ": " << key);
                     continue;
                 }
@@ -8564,7 +8564,7 @@ void SketchObject::updateGeometryRefs() {
                     return;
                 }
                 auto it = legacyMap.find(egf->getRef());
-                if (it != legacyMap.end()) {
+                if (it != legacyMap.end() && egf->getRef() != externalGeoRef[it->second]) {
                     if(getDocument() && !getDocument()->isPerformingTransaction()) {
                         // FIXME: this is a bug. Find out when and why does this happen
                         //
