@@ -424,7 +424,7 @@ SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &
     // processed on the fly, and only the primitive with the closest picked
     // point and the highest priority will be returned.
     //
-    if(singlePick && pcRayPick->isPickAll())
+    if(pcRayPick->isPickAll())
         postProcessPickedList(ret, singlePick);
     return ret;
 }
@@ -456,17 +456,13 @@ void SoFCUnifiedSelection::postProcessPickedList(std::vector<PickedInfo> &ret, b
         }
     }
 
-    if(singlePick) {
-        std::vector<PickedInfo> sret(1);
-        sret[0] = std::move(*itPicked);
-        ret = std::move(sret);
-        return;
-    }
     if(itPicked != ret.begin()) {
         PickedInfo tmp(std::move(*itPicked));
         *itPicked = std::move(*ret.begin());
         *ret.begin() = std::move(tmp);
     }
+    if(singlePick)
+        ret.resize(1);
 }
 
 std::vector<App::SubObjectT>
