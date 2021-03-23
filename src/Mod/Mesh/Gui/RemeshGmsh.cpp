@@ -93,14 +93,14 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
     d->ui.outputWindow->setReadOnly(true);
 
     // Meshing algorithms
-    // 1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad
+    // 1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad,
     // 9=Packing of Parallelograms
     d->ui.method->addItem(tr("Automatic"), static_cast<int>(2));
     d->ui.method->addItem(tr("Adaptive"), static_cast<int>(1));
     d->ui.method->addItem(QString::fromLatin1("Delaunay"), static_cast<int>(5));
     d->ui.method->addItem(tr("Frontal"), static_cast<int>(6));
-    d->ui.method->addItem(QString::fromLatin1("BAMG"), static_cast<int>(5));
-    d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(6));
+    d->ui.method->addItem(QString::fromLatin1("BAMG"), static_cast<int>(7));
+    d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(8));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(9));
 }
 
@@ -316,9 +316,9 @@ bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
             << "   Exit;\n"
             << "EndIf\n"
             << "Merge \"" << stl.filePath() << "\";\n\n"
-            << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad)\n"
+            << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=Frontal Quad, 9=Packing of Parallelograms)\n"
             << "Mesh.Algorithm = " << algorithm << ";\n\n"
-            << "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)\n"
+            << "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, 9=R-tree, 10=HTX)\n"
             << "// Mesh.Algorithm3D = 1;\n\n"
             << "Mesh.CharacteristicLengthMax = " << maxSize << ";\n"
             << "Mesh.CharacteristicLengthMin = " << minSize << ";\n\n"
