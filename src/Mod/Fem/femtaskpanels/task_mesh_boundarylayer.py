@@ -72,7 +72,9 @@ class _TaskPanel:
         # start with Solid in list!
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
-            ["Solid", "Face", "Edge", "Vertex"]
+            ["Solid", "Face", "Edge", "Vertex"],
+            True,
+            False
         )
 
         # form made from param and selection widget

@@ -101,6 +101,8 @@ class GmshTools():
             self.algorithm2D = "7"
         elif algo2D == "DelQuad":
             self.algorithm2D = "8"
+        elif algo2D == "Packing Parallelograms":
+            self.algorithm2D = "9"
         else:
             self.algorithm2D = "2"
 
@@ -114,14 +116,12 @@ class GmshTools():
             self.algorithm3D = "2"
         elif algo3D == "Frontal":
             self.algorithm3D = "4"
-        elif algo3D == "Frontal Delaunay":
-            self.algorithm3D = "5"
-        elif algo3D == "Frontal Hex":
-            self.algorithm3D = "6"
         elif algo3D == "MMG3D":
             self.algorithm3D = "7"
         elif algo3D == "R-tree":
             self.algorithm3D = "9"
+        elif algo3D == "HXT":
+            self.algorithm3D = "10"
         else:
             self.algorithm3D = "1"
 
@@ -803,7 +803,7 @@ class GmshTools():
         )
         geo.write(
             "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, "
-            "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)\n"
+            "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms)\n"
         )
         if len(self.bl_setting_list) and self.dimension == 3:
             geo.write("Mesh.Algorithm = " + "DelQuad" + ";\n")  # Frontal/DelQuad are tested
@@ -811,7 +811,7 @@ class GmshTools():
             geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
         geo.write(
             "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, "
-            "5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)\n"
+            "7=MMG3D, 9=R-tree, 10=HTX)\n"
         )
         geo.write("Mesh.Algorithm3D = " + self.algorithm3D + ";\n")
         geo.write("\n")
