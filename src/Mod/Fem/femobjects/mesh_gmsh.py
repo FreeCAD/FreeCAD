@@ -144,7 +144,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "Order of mesh elements"
             )
             obj.ElementOrder = MeshGmsh.known_element_orders
-            obj.ElementOrder = "1st"
+            obj.ElementOrder = "2nd"
 
         if not hasattr(obj, "OptimizeStd"):
             obj.addProperty(
