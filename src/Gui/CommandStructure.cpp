@@ -215,6 +215,92 @@ bool StdCmdPart::isActive(void)
 }
 
 //===========================================================================
+// Std_PartActive
+//===========================================================================
+DEF_STD_CMD_A(StdCmdPartActive)
+
+StdCmdPartActive::StdCmdPartActive()
+  : Command("Std_PartActive")
+{
+    sGroup        = QT_TR_NOOP("Structure");
+    sMenuText     = QT_TR_NOOP("Create part in active container");
+    sToolTipText  = QT_TR_NOOP("Create a new part and add it to current active container");
+    sWhatsThis    = "Std_PartActive";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "GeofeaturegroupAddActive";
+}
+
+
+void StdCmdPartActive::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    App::SubObjectT activePart;
+    auto *activeView = Gui::Application::Instance->activeView();
+    if(activeView) {
+        App::DocumentObject *parent = nullptr;
+        std::string subname;
+        auto active = activeView->getActiveObject<App::DocumentObject*>(PARTKEY,&parent,&subname);
+        if (active) {
+            for(auto &sel : Gui::Selection().getSelection()) {
+                if (App::GeoFeatureGroupExtension::getGroupOfObject(sel.pObject)) {
+                    active = nullptr;
+                    break;
+                }
+            }
+        }
+        if (active) {
+            if (parent)
+                activePart = App::SubObjectT(parent, subname.c_str());
+            else
+                activePart = active;
+        }
+    }
+
+    auto res = addGroup("App::Part", "Part", QApplication::translate("Std_Part", "Part"));
+    auto newPart = res.getSubObject();
+    if (!newPart)
+        return;
+    auto active = activePart.getSubObject();
+    if (active) {
+        cmdAppObjectArgs(active, "addObject(%s)", newPart->getFullName(true));
+        res = activePart.getChild(newPart);
+    }
+
+    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)");
+    cmdGuiDocument(App::GetApplication().getActiveDocument(), std::ostringstream()
+                << "ActiveView.setActiveObject('" << PARTKEY << "', "
+                << res.getObjectPython() << ", '" << res.getSubName() << "')");
+}
+
+bool StdCmdPartActive::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+class StdCmdPartActions : public GroupCommand
+{
+public:
+    StdCmdPartActions()
+        : GroupCommand("Std_PartActions")
+    {
+        sGroup        = QT_TR_NOOP("Structure");
+        sMenuText     = QT_TR_NOOP("Part actions");
+        sToolTipText  = QT_TR_NOOP("Actions for making a part");
+        sWhatsThis    = "Std_PartActions";
+        sStatusTip    = sToolTipText;
+        eType         = AlterDoc;
+        bCanLog       = false;
+
+        addCommand(new StdCmdPart);
+        addCommand(new StdCmdPartActive);
+    }
+
+    virtual const char* className() const {return "StdCmdPartActions";}
+};
+
+
+//===========================================================================
 // Std_Group
 //===========================================================================
 DEF_STD_CMD_A(StdCmdGroup)
@@ -309,7 +395,7 @@ void CreateStructureCommands(void)
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new StdCmdPart());
+    rcCmdMgr.addCommand(new StdCmdPartActions());
     rcCmdMgr.addCommand(new StdCmdGroup());
     rcCmdMgr.addCommand(new StdCmdDatumActions());
 }
