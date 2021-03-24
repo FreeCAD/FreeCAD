@@ -179,7 +179,7 @@ App::Property* ViewProviderDocumentObject::addDynamicProperty(
 
 void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
 {
-    if (isAttachedToDocument()) {
+    if (isAttachedToDocument() && !testStatus(SecondaryView)) {
         App::DocumentObject* obj = getObject();
         App::Document* doc = obj ? obj->getDocument() : 0;
         if (doc) {
