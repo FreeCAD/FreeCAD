@@ -4263,6 +4263,9 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
         signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
 
+    // The new object may create object by itself, so set the active object
+    // again, before signaling.
+    d->activeObject = pcObject;
     signalActivatedObject(*pcObject);
 
     // return the Object
@@ -4415,6 +4418,8 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName, bool
         signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
 
+    if (activate)
+        d->activeObject = pcObject;
     signalActivatedObject(*pcObject);
 }
 

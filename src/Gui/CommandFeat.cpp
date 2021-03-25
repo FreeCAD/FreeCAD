@@ -168,6 +168,49 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
 
 }
 
+//===========================================================================
+// Std_RenameActiveObject
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdRenameActiveObject)
+
+StdCmdRenameActiveObject::StdCmdRenameActiveObject()
+  :Command("Std_RenameActiveObject")
+{
+    // setting the
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("Rename new object");
+    sToolTipText  = QT_TR_NOOP("Rename the newly created object");
+    sWhatsThis    = "Std_RenameActiveObject";
+    sStatusTip    = sToolTipText;
+    sAccel        = "Shift+F2";
+}
+
+bool StdCmdRenameActiveObject::isActive(void)
+{
+    auto doc = App::GetApplication().getActiveDocument();
+    return doc && doc->getActiveObject();
+}
+
+void StdCmdRenameActiveObject::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto doc = App::GetApplication().getActiveDocument();
+    auto tree = TreeWidget::instance();
+    if (!tree || !tree->isVisible() || !doc || !doc->getActiveObject())
+        return;
+
+    Gui::Selection().selStackPush();
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(doc->getActiveObject());
+    Gui::Selection().selStackPush();
+    TreeWidget::scrollItemToTop();
+    auto items = tree->selectedItems();
+    if (items.size() == 1)
+        tree->editItem(items[0]);
+}
+
 
 namespace Gui {
 
@@ -178,6 +221,7 @@ void CreateFeatCommands(void)
     rcCmdMgr.addCommand(new StdCmdFeatRecompute());
     rcCmdMgr.addCommand(new StdCmdRandomColor());
     rcCmdMgr.addCommand(new StdCmdSendToPythonConsole());
+    rcCmdMgr.addCommand(new StdCmdRenameActiveObject());
 }
 
 } // namespace Gui

@@ -601,7 +601,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" << "Std_LassoElementSelection"
           << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
           << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
-          << "Std_Edit" << "Separator" << "Std_DlgPreferences";
+          << "Std_Edit" << "Std_RenameActiveObject" << "Separator" << "Std_DlgPreferences";
 
     MenuItem* axoviews = new MenuItem;
     axoviews->setCommand("Axonometric");
