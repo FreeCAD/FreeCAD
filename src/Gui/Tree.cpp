@@ -2661,7 +2661,7 @@ void TreeWidget::mouseReleaseEvent(QMouseEvent *ev)
         if (oitem) {
             ViewProviderDocumentObject* vp = oitem->object();
             auto editDoc = Application::Instance->editDocument();
-            App::AutoTransaction committer("Item right clicked", true);
+            App::AutoTransaction committer("Item click released", true);
             bool handled = false;
             try {
                 SelectionContext sctx(oitem->getSubObjectT());
