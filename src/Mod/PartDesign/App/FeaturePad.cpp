@@ -68,9 +68,9 @@ Pad::Pad()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None,"Pad length");
     ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
-    ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
+    ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
-    ADD_PROPERTY_TYPE(AlongCustomVector, (true), "Pad", App::Prop_None, "Measure length along custom direction vector");
+    ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pad", App::Prop_None, "Measure pad length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
@@ -79,6 +79,10 @@ Pad::Pad()
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
+
+    // for new pads UseCustomVector is false, thus disable Direction and AlongSketchNormal
+    AlongSketchNormal.setReadOnly(true);
+    Direction.setReadOnly(true);
 }
 
 short Pad::mustExecute() const
@@ -89,7 +93,7 @@ short Pad::mustExecute() const
         Length2.isTouched() ||
         UseCustomVector.isTouched() ||
         Direction.isTouched() ||
-        AlongCustomVector.isTouched() ||
+        AlongSketchNormal.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
@@ -159,6 +163,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             paddingDirection = Direction.getValue();
         }
 
+        // disable options of UseCustomVector  
+        AlongSketchNormal.setReadOnly(!UseCustomVector.getValue());
+        Direction.setReadOnly(!UseCustomVector.getValue());
+
         // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
 
@@ -178,7 +186,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
 
         // perform the length correction if not along custom vector
-        if (AlongCustomVector.getValue()) {
+        if (AlongSketchNormal.getValue()) {
             L = L / factor;
             L2 = L2 / factor;
         }

@@ -75,7 +75,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     Base::Quantity l = pcPad->Length.getQuantityValue();
     Base::Quantity l2 = pcPad->Length2.getQuantityValue();
-    bool alongCustom = pcPad->AlongCustomVector.getValue();
+    bool alongCustom = pcPad->AlongSketchNormal.getValue();
     bool useCustom = pcPad->UseCustomVector.getValue();
     double xs = pcPad->Direction.getValue().x;
     double ys = pcPad->Direction.getValue().y;
@@ -157,7 +157,7 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, 
     connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
             this, SLOT(onLength2Changed(double)));
     connect(ui->checkBoxAlongDirection, SIGNAL(toggled(bool)),
-        this, SLOT(onAlongDirectionChanged(bool)));
+        this, SLOT(onAlongSketchNormalChanged(bool)));
     connect(ui->groupBoxDirection, SIGNAL(toggled(bool)),
         this, SLOT(onDirectionToggled(bool)));
     connect(ui->XDirectionEdit, SIGNAL(valueChanged(double)),
@@ -310,10 +310,10 @@ void TaskPadParameters::onLength2Changed(double len)
     recomputeFeature();
 }
 
-void TaskPadParameters::onAlongDirectionChanged(bool on)
+void TaskPadParameters::onAlongSketchNormalChanged(bool on)
 {
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
-    pcPad->AlongCustomVector.setValue(on);
+    pcPad->AlongSketchNormal.setValue(on);
     recomputeFeature();
 }
 
@@ -466,7 +466,7 @@ double TaskPadParameters::getLength2(void) const
     return ui->lengthEdit2->value().getValue();
 }
 
-bool   TaskPadParameters::getAlongCustom(void) const
+bool   TaskPadParameters::getAlongSketchNormal(void) const
 {
     return ui->checkBoxAlongDirection->isChecked();
 }
@@ -602,7 +602,7 @@ void TaskPadParameters::apply()
     FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "Direction = ("
         << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")");
-    FCMD_OBJ_CMD(obj, "AlongCustomVector = " << (getAlongCustom() ? 1 : 0));
+    FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
     FCMD_OBJ_CMD(obj,"Type = " << getMode());
     QString facename = getFaceName();
     FCMD_OBJ_CMD(obj,"UpToFace = " << facename.toLatin1().data());

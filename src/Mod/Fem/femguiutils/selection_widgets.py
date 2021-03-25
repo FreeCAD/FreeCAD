@@ -231,7 +231,7 @@ class SmallListView(QtGui.QListView):
 
 class GeometryElementsSelection(QtGui.QWidget):
 
-    def __init__(self, ref, eltypes=[], multigeom, showHintEmptyList):
+    def __init__(self, ref, eltypes, multigeom, showHintEmptyList):
         super(GeometryElementsSelection, self).__init__()
         # init ui stuff
         FreeCADGui.Selection.clearSelection()
