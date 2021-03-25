@@ -139,6 +139,9 @@ public:
 #define LINK_PARAM_SHOW_ELEMENT(...) \
     (ShowElement, bool, App::PropertyBool, true, "Enable link element list", ##__VA_ARGS__)
 
+#define LINK_PARAM_AUTO_LABEL(...) \
+    (AutoLinkLabel, bool, App::PropertyBool, false, "Enable link auto label according to linked object", ##__VA_ARGS__)
+
 #define LINK_PARAM_MODE(...) \
     (LinkMode, long, App::PropertyEnumeration, ((long)0), "Link group mode", ##__VA_ARGS__)
 
@@ -178,6 +181,7 @@ public:
     LINK_PARAM(COUNT)\
     LINK_PARAM(ELEMENTS)\
     LINK_PARAM(SHOW_ELEMENT)\
+    LINK_PARAM(AUTO_LABEL)\
     LINK_PARAM(MODE)\
     LINK_PARAM(COLORED_ELEMENTS)\
     LINK_PARAM(RETAG_ELEMENTS)\
@@ -348,6 +352,7 @@ protected:
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
     void updateGroup();
     void updateGroupVisibility();
+    void slotLabelChanged();
 
 protected:
     std::vector<Property *> props;
@@ -368,6 +373,8 @@ protected:
     bool hasCopyOnChange;
 
     mutable bool checkingProperty = false;
+
+    boost::signals2::scoped_connection connLabelChange;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -505,6 +512,7 @@ public:
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
     LINK_PARAM_EXT_ATYPE(RETAG_ELEMENTS,App::Prop_Hidden)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
+    LINK_PARAM_EXT_ATYPE(AUTO_LABEL,App::Prop_Hidden)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
 
@@ -526,6 +534,8 @@ public:
     }
 
     bool canLinkProperties() const override;
+
+    void setupObject() override;
 };
 
 typedef App::FeaturePythonT<Link> LinkPython;

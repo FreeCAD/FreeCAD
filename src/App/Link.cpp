@@ -461,7 +461,8 @@ bool LinkBaseExtension::setupCopyOnChange(DocumentObject *parent, DocumentObject
 void LinkBaseExtension::checkCopyOnChange(
         App::DocumentObject *parent, const App::Property &prop) 
 {
-    if(parent->getDocument()->isPerformingTransaction())
+    if(!parent || !parent->getDocument()
+               || parent->getDocument()->isPerformingTransaction())
         return;
 
     auto linked = getTrueLinkedObject(false);
@@ -1398,6 +1399,16 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         if(linkedPlainGroup())
             updateGroup();
     }else if(prop == getLinkedObjectProperty()) {
+        if (getAutoLinkLabelValue()) {
+            connLabelChange.disconnect();
+            auto linked = getTrueLinkedObject(false);
+            if (linked) {
+                connLabelChange = linked->Label.signalChanged.connect(
+                        boost::bind(&Link::slotLabelChanged, this));
+                slotLabelChanged();
+            }
+        }
+
         auto group = linkedPlainGroup();
         if(group && getElementCountValue()
                  && getLinkedObjectProperty()
@@ -1459,9 +1470,62 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         }
         syncElementList();
 
+    } else if(prop == getAutoLinkLabelProperty()) {
+        connLabelChange.disconnect();
+        if (getAutoLinkLabelValue()) {
+            auto linked = getTrueLinkedObject(false);
+            if (linked)
+                connLabelChange = linked->Label.signalChanged.connect(
+                        boost::bind(&Link::slotLabelChanged, this));
+        }
+        slotLabelChanged();
+    } else if (prop == &parent->Label) {
+        slotLabelChanged();
     } else {
         checkCopyOnChange(parent, *prop);
     }
+}
+
+void LinkBaseExtension::slotLabelChanged()
+{
+    if (!getAutoLinkLabelValue())
+        return;
+    auto parent = Base::freecad_dynamic_cast<DocumentObject>(getExtendedContainer());
+    if (!parent || !parent->getDocument()
+                || !parent->getNameInDocument()
+                || parent->isRestoring()
+                || parent->getDocument()->isPerformingTransaction())
+        return;
+
+    std::string prefix = parent->getNameInDocument();
+    prefix += "(";
+    if (parent->Label.getStrValue() != parent->getNameInDocument()
+            && !boost::starts_with(parent->Label.getStrValue(), prefix))
+        return;
+
+    auto linked = getTrueLinkedObject(false);
+    if (!linked) {
+        parent->Label.setValue(prefix + "?)");
+        return;
+    }
+
+    std::string label;
+    if (linked->isDerivedFrom(Link::getClassTypeId())) {
+        std::string p = linked->getNameInDocument();
+        p += "(";
+        if (boost::starts_with(linked->Label.getValue(), p)) {
+            const char *linkedLabel = linked->Label.getValue() + p.size();
+            while (*linkedLabel == '*')
+                ++linkedLabel;
+            label = prefix + "*" + linkedLabel;
+            if (boost::ends_with(label, ")"))
+                label.resize(label.size()-1);
+        }
+    }
+    if (label.empty())
+        label = prefix + linked->Label.getValue();
+    label += ")";
+    parent->Label.setValue(label);
 }
 
 void LinkBaseExtension::cacheChildLabel(int enable) const {
@@ -1935,6 +1999,12 @@ Link::Link() {
     LinkExtension::initExtension(this);
     static const PropertyIntegerConstraint::Constraints s_constraints = {0,INT_MAX,1};
     ElementCount.setConstraints(&s_constraints);
+}
+
+void Link::setupObject()
+{
+    inherited::setupObject();
+    AutoLinkLabel.setValue(true);
 }
 
 bool Link::canLinkProperties() const {

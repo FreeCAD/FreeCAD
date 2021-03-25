@@ -56,11 +56,6 @@ FC_LOG_LEVEL_INIT("CommandLink",true,true)
 
 using namespace Gui;
 
-static void setLinkLabel(App::DocumentObject *obj, const char *doc, const char *name) {
-    const char *label = obj->Label.getValue();
-    Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').Label='%s'",doc,name,label);
-}
-
 static void setLinkPlacement(std::ostringstream &ss,
                              App::DocumentObject *link,
                              const App::SubObjectT *sobj,
@@ -235,7 +230,6 @@ void StdCmdLinkMakeGroup::activated(int option) {
                     ss.str("");
                     cmdAppDocument(doc, ss << "addObject('App::Link','" << name
                             << "').setLink(" << obj->getFullName(true) << ")");
-                    setLinkLabel(obj,doc->getName(),name.c_str());
                     auto link = doc->getObject(name.c_str());
                     if(option==2)
                         cmdAppObject(link, "LinkTransform = True");
@@ -367,7 +361,6 @@ void StdCmdLinkMake::activated(int) {
             ss.str("");
             cmdAppDocument(doc, ss << "addObject('App::Link', '" << name << "').setLink("
                                    << sobj->getFullName(true) << ")");
-            setLinkLabel(sobj,doc->getName(),name.c_str());
             auto link = doc->getObject(name.c_str());
 
             if (link && addToContainer) {
@@ -530,7 +523,6 @@ void StdCmdLinkMakeRelative::activated(int) {
                     << PrintElements(elements) << ")");
             auto link = doc->getObject(name.c_str());
             cmdAppObject(link, "LinkTransform = True");
-            setLinkLabel(sobj,doc->getName(),name.c_str());
             if (addToContainer && link) {
                 cmdAppObjectArgs(container, "addObject(%s)", link->getFullName(true));
                 App::SubObjectT objT(topParent, parentSub.c_str());
