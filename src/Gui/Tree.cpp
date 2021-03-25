@@ -2847,7 +2847,7 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
         leaveEvent(0);
         if(modifier== Qt::ControlModifier)
             event->setDropAction(Qt::CopyAction);
-        else if(modifier== Qt::AltModifier) {
+        else if(modifier & Qt::AltModifier) {
             event->setDropAction(Qt::LinkAction);
             if (replace)
                 *replace = false;
@@ -2866,7 +2866,7 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
 
             if(modifier == Qt::ControlModifier)
                 event->setDropAction(Qt::CopyAction);
-            else if(modifier== Qt::AltModifier && items.size()==1)
+            else if((modifier & Qt::AltModifier) && items.size()==1)
                 event->setDropAction(Qt::LinkAction);
             else
                 event->setDropAction(Qt::MoveAction);
@@ -2924,18 +2924,28 @@ void TreeWidget::_dragMoveEvent(QDragMoveEvent *event, bool *replace)
                 }
 
                 if (da == Qt::LinkAction) {
-                    auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
-                    auto parentItem = targetItemObj->getParentItem();
-                    if((!ext || !ext->getLinkedObjectProperty()) && !parentItem) {
-                        TREE_TRACE("Cannot replace without parent");
-                        event->ignore();
-                        return;
-                    } else if (parentItem && !parentItem->object()->canReplaceObject(
-                                                targetItemObj->object()->getObject(), obj))
-                    {
-                        TREE_TRACE("Replace operation not supported");
-                        event->ignore();
-                        return;
+                    if (modifier & Qt::ControlModifier) {
+                        // CTRL + ALT to force link instead of replace operation
+                        if (replace)
+                            *replace = false;
+                        auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
+                        if (!ext || !ext->getLinkedObjectProperty()
+                                 || ext->getLinkedObjectProperty()->isReadOnly())
+                        {
+                            TREE_TRACE("Link operation not supported");
+                            event->ignore();
+                            return;
+                        }
+                    } else { 
+                        auto parentItem = targetItemObj->getParentItem();
+                        if (!parentItem 
+                                || !parentItem->object()->canReplaceObject(
+                                            targetItemObj->object()->getObject(), obj))
+                        {
+                            TREE_TRACE("Replace operation not supported");
+                            event->ignore();
+                            return;
+                        }
                     }
                 }
             }
@@ -3039,13 +3049,14 @@ void TreeWidget::dropEvent(QDropEvent *event)
         & (Qt::ControlModifier | Qt::AltModifier | Qt::ShiftModifier));
     if(modifier == Qt::ControlModifier)
         event->setDropAction(Qt::CopyAction);
-    else if(modifier == Qt::AltModifier
+    else if((modifier & Qt::AltModifier)
             && (itemInfo.size()==1||targetItem->type()==TreeWidget::DocumentType))
         event->setDropAction(Qt::LinkAction);
     else
         event->setDropAction(Qt::MoveAction);
     auto da = event->dropAction();
     bool dropOnly = da==Qt::CopyAction || da==Qt::LinkAction;
+    bool replace = true;
 
     if (targetItem->type() == TreeWidget::ObjectType) {
         // add object to group
@@ -3148,16 +3159,24 @@ void TreeWidget::dropEvent(QDropEvent *event)
             }
 
             if(da == Qt::LinkAction) {
-                auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
-                auto parentItem = targetItemObj->getParentItem();
-                if((!ext || !ext->getLinkedObjectProperty()) && !parentItem) {
-                    FC_WARN("Cannot replace without parent");
-                    return;
-                } else if (parentItem && !parentItem->object()->canReplaceObject(
-                            targetItemObj->object()->getObject(), obj))
-                {
-                    FC_WARN("Replace operation not supported");
-                    return;
+                // CTRL + ALT to force link instead of replace operation
+                replace = (modifier & Qt::ControlModifier) ? false : true;
+                if (replace) {
+                    auto parentItem = targetItemObj->getParentItem();
+                    if (!parentItem || !parentItem->object()->canReplaceObject(
+                                targetItemObj->object()->getObject(), obj))
+                    {
+                        FC_WARN("Replace operation not supported");
+                        return;
+                    }
+                } else {
+                    auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
+                    if (!ext || !ext->getLinkedObjectProperty()
+                             || ext->getLinkedObjectProperty()->isReadOnly())
+                    {
+                        FC_WARN("Link not support");
+                        return;
+                    }
                 }
             }
         }
@@ -3300,9 +3319,22 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 App::DocumentObjectT dropParentT(dropParent);
 
                 if(da == Qt::LinkAction) {
-                    auto parentItem = targetItemObj->getParentItem();
-                    if (parentItem) {
-                        App::DocumentObjectT targetObjT(targetObj);
+                    App::SubObjectT targetObjT(targetObj);
+                    if (!replace) {
+                        auto ext = targetObj->getExtensionByType<App::LinkBaseExtension>(true);
+                        if (ext && ext->getLinkedObjectProperty()
+                                && !ext->getLinkedObjectProperty()->isReadOnly())
+                        {
+                            ss << Command::getObjectCmd(targetObj) << '.'
+                               << ext->getLinkedObjectProperty()->getName()
+                               << " = "  << Command::getObjectCmd(obj);
+                            ext->getLinkedObjectProperty()->setValue(obj);
+                        } else {
+                            FC_WARN("Link action not supported for "
+                                    << targetObjT.getObjectFullName());
+                            continue;
+                        }
+                    } else if (auto parentItem = targetItemObj->getParentItem()) {
                         App::DocumentObjectT parentT(parentItem->object()->getObject());
 
                         ss << Command::getObjectCmd(
