@@ -3975,6 +3975,7 @@ PropertyXLink::getDocumentOutList(App::Document *doc) {
     for(auto &v : _DocInfoMap) {
         for(auto link : v.second->links) {
             if(!v.second->pcDoc
+                    || link->getScope() == LinkScope::Hidden
                     || link->testStatus(Property::PropTransient)
                     || link->testStatus(Property::Transient)
                     || link->testStatus(Property::PropNoPersist))
@@ -3998,6 +3999,11 @@ PropertyXLink::getDocumentInList(App::Document *doc) {
             continue;
         auto &docs = ret[v.second->pcDoc];
         for(auto link : v.second->links) {
+            if(link->getScope() == LinkScope::Hidden
+                    || link->testStatus(Property::PropTransient)
+                    || link->testStatus(Property::Transient)
+                    || link->testStatus(Property::PropNoPersist))
+                continue;
             auto obj = dynamic_cast<App::DocumentObject*>(link->getContainer());
             if(obj && obj->getNameInDocument() && obj->getDocument())
                 docs.insert(obj->getDocument());
