@@ -821,7 +821,11 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
         // After external links has been restored, we can now sort the document
         // according to their dependency order.
-        docs = Document::getDependentDocuments(docs, true);
+        try {
+            docs = Document::getDependentDocuments(docs, true);
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
         for(auto it=docs.begin(); it!=docs.end();) {
             auto doc = *it;
 

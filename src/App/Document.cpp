@@ -3524,17 +3524,46 @@ std::vector<App::Document*> Document::getDependentDocuments(
         return ret;
     }
 
+    for(auto &v : docMap)
+        vertexMap[v.second] = v.first;
+
     std::list<Vertex> make_order;
     try {
         boost::topological_sort(depList, std::front_inserter(make_order));
     } catch (const std::exception& e) {
-        std::string msg("Document::getDependentDocuments: ");
-        msg += e.what();
-        throw Base::RuntimeError(msg);
+        // Use boost::strong_components to find cycles. It groups strongly
+        // connected vertices as components, and therefore each component
+        // forms a cycle.
+        std::vector<int> c(vertexMap.size());
+        std::map<int,std::vector<Vertex> > components;
+        boost::strong_components(depList,boost::make_iterator_property_map(
+                    c.begin(),boost::get(boost::vertex_index,depList),c[0]));
+        for(size_t i=0;i<c.size();++i)
+            components[c[i]].push_back(i);
+
+        FC_ERR("Document dependency cycles: ");
+        std::ostringstream ss;
+        ss << '\n';
+        for(auto &v : components) {
+            if(v.second.size()<=1)
+                continue;
+            // For components with more than one member, they form a loop together
+            for(size_t i=0;i<v.second.size();++i) {
+                auto it = vertexMap.find(v.second[i]);
+                if(it==vertexMap.end())
+                    continue;
+                if(i%6==0)
+                    ss << '\n';
+                ss << it->second->getName() << ", ";
+            }
+            ss << '\n';
+        }
+        FC_ERR(ss.str());
+        FC_THROWM(Base::RuntimeError,
+                "Cyclice depending documents detected.\n"
+                "Please check Report View for more details.");
     }
 
-    for(auto &v : docMap)
-        vertexMap[v.second] = v.first;
     for (auto rIt=make_order.rbegin(); rIt!=make_order.rend(); ++rIt)
         ret.push_back(vertexMap[*rIt]);
     return ret;
