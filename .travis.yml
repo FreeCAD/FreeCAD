@@ -310,7 +310,12 @@ script:
         mkdir bin/
         mv ../FreeCADLibs/FreeCADLibs_12.5.3_x64_VC17/bin/* bin/
         du -hs bin/
+
+        # For debugging DLL load failure
         find 'C:\Users\travis\build\FreeCAD\FreeCAD' -name "*.dll"
+        /C/Users/travis/build/FreeCAD/FreeCAD/src/Tools/depends22_x64/depends.exe -c -ot dw.txt /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0
+        cat dw.txt
+        
         # show clcache hit stats
         cmd.exe //C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
         # run the tests
