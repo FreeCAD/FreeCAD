@@ -908,11 +908,15 @@ void SubShapeBinder::slotLabelChanged()
         auto linked = xlink.getValue()->getSubObject(subs.empty() ? "" : subs[0].c_str());
         if (linked) {
             std::string label;
-            if (linked->isDerivedFrom(SubShapeBinder::getClassTypeId())) {
+            if (linked->isDerivedFrom(SubShapeBinder::getClassTypeId())
+                    || linked->isDerivedFrom(App::Link::getClassTypeId())) {
                 std::string p = linked->getNameInDocument();
                 p += "(";
                 if (boost::starts_with(linked->Label.getValue(), p)) {
-                    label = prefix + "*" + (linked->Label.getValue() + p.size());
+                    const char *linkedLabel = linked->Label.getValue() + p.size();
+                    while (*linkedLabel == '*')
+                        ++linkedLabel;
+                    label = prefix + "*" + linkedLabel;
                     if (boost::ends_with(label, ")"))
                         label.resize(label.size()-1);
                     else if (boost::ends_with(label, ")...")) {
