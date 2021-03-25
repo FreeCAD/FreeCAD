@@ -469,6 +469,7 @@ def p_resize_action(p):
     auto    = p[3]['auto'] 
     print(new_size)
     print(auto)
+    p[6][0].recompute()
     old_bbox = p[6][0].Shape.BoundBox
     print ("Old bounding box: " + str(old_bbox))
     old_size = [old_bbox.XLength, old_bbox.YLength, old_bbox.ZLength]

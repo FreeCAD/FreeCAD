@@ -312,6 +312,18 @@ polyhedron(
         self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
         FreeCAD.closeDocument(doc.Name)
 
+        # Make sure to test something that isn't just a box (where the bounding box is trivial)
+        doc = self.utility_create_scad("""
+resize(newsize = [0,0,10], auto = [0,0,0]) {
+    sphere($fn = 96, $fa = 12, $fs = 2, r = 8.5);
+}""", "resize_non_uniform_sphere")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.BoundBox.XLength, 2*8.5, 1)
+        self.assertAlmostEqual (object.Shape.BoundBox.YLength, 2*8.5, 1)
+        self.assertAlmostEqual (object.Shape.BoundBox.ZLength, 10.0, 1)
+        FreeCAD.closeDocument(doc.Name)
+
     def test_import_surface(self):
         # Workaround for absolute vs. relative path issue
         # Inside the OpenSCAD file an absolute path name to Surface.dat is used
