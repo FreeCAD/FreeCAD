@@ -443,7 +443,7 @@ class Twist:
                     print(pipe_shell.getStatus())
                     assert(pipe_shell.isReady())
                     pipe_shell.build()
-                    faces.extend(pipeshell.shape().Faces)
+                    faces.extend(pipe_shell.shape().Faces)
                 try:
                     fullshell=Part.Shell(faces)
                     solid=Part.Solid(fullshell)
