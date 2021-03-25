@@ -1034,8 +1034,12 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
 void finishProfileBased(const Gui::Command* cmd, const Part::Feature* sketch, App::DocumentObject *Feat)
 {
-    if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
-        FCMD_OBJ_HIDE(sketch);
+    (void)sketch;
+    for (auto obj : Feat->getOutList()) {
+        if (obj->isDerivedFrom(Part::Part2DObject::getClassTypeId())
+                || obj->isDerivedFrom(Part::SubShapeBinder::getClassTypeId()))
+            Gui::cmdAppObjectHide(obj);
+    }
     finishFeature(cmd, Feat);
 }
 
