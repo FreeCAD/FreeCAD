@@ -710,7 +710,7 @@ private:
     bool raw;
 };
 
-struct MappedElement
+struct AppExport MappedElement
 {
 	IndexedName index;
 	MappedName name;
@@ -769,7 +769,7 @@ struct MappedElement
     }
 };
 
-struct HistoryItem {
+struct AppExport HistoryItem {
     App::DocumentObject *obj;
     long tag;
     Data::MappedName element;
@@ -795,7 +795,7 @@ struct AppExport ElementNameComp {
 
 typedef QVector<App::StringIDRef> ElementIDRefs;
 
-struct MappedChildElements
+struct AppExport MappedChildElements
 {
     IndexedName indexedName;
     int count;
