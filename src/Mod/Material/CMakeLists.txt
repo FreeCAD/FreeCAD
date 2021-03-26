@@ -34,6 +34,7 @@ SET (MaterialLib_Files
     StandardMaterial/Glass-E-GlassFibre.FCMat
     StandardMaterial/Glass-Generic.FCMat
     StandardMaterial/Glass-S2-GlassFibre.FCMat
+    StandardMaterial/Graphite.FCMat
     StandardMaterial/PA6-Generic.FCMat
     StandardMaterial/PET-Generic.FCMat
     StandardMaterial/PLA-Generic.FCMat
