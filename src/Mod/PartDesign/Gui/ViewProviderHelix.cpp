@@ -78,10 +78,9 @@ QIcon ViewProviderHelix::getIcon(void) const {
 
 bool ViewProviderHelix::setEdit(int ModNum)
 {
-
     if (ModNum == ViewProvider::Default ) {
         auto* prim = static_cast<PartDesign::Helix*>(getObject());
-        setPreviewDisplayMode(prim->getAddSubType() == PartDesign::FeatureAddSub::Subtractive);
+        setPreviewDisplayMode(TaskHelixParameters::showPreview(prim));
     }
     return ViewProviderAddSub::setEdit(ModNum);
 }

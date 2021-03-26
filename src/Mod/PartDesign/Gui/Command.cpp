@@ -616,7 +616,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             supportString = faceSelObject.getAsPropertyLinkSubString();
         }
         else {
-            obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+            obj = PlaneFilter.Result[0][0].getObject();
             supportString = getObjectCmd(obj,"(",",'')");
         }
 

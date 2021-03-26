@@ -268,30 +268,45 @@ def getBoundBoxOfAllDocumentShapes(doc):
      Part and PartDesign objects). If the document contains no such objects or
      no objects at all return ``None``.
     """
-    overalboundbox = None
+    overallboundbox = None
     # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
     # a FemMesh without a Shape could be clipped too
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=52920
     for o in doc.Objects:
 
+        FreeCAD.Console.PrintMessage(":\n")  # debug only
         bb = None
-        if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
+
+        try:
+            FreeCAD.Console.PrintMessage(
+                "trying: {}: getPropertyOfGeometry()\n".format(o.Label)
+            )  # debug only
+            bb = o.getPropertyOfGeometry().BoundBox
+            FreeCAD.Console.PrintMessage("{}\n".format(bb))  # debug only
+        except Exception:
+            FreeCAD.Console.PrintMessage("exception \n")  # debug only
+            pass
+
+        if bb is None:
             try:
-                bb = o.Shape.BoundBox
-            except Exception:
-                pass
-        elif hasattr(o, "FemMesh") and hasattr(o.FemMesh, "BoundBox"):
-            try:
+                FreeCAD.Console.PrintMessage("trying: {}: FemMesh\n".format(o.Label))  # debug only
                 bb = o.FemMesh.BoundBox
+                FreeCAD.Console.PrintMessage("{}\n".format(bb))  # debug only
             except Exception:
+                FreeCAD.Console.PrintMessage("exception \n")  # debug only
                 pass
+
         if bb:
             if bb.isValid():
-                if not overalboundbox:
-                    overalboundbox = bb
+                if not overallboundbox:
+                    overallboundbox = bb
                 else:
-                    overalboundbox.add(bb)
-    return overalboundbox
+                    overallboundbox.add(bb)
+        else:                                                                   # debug only
+            FreeCAD.Console.PrintMessage("no bb\n")                             # debug only
+
+    FreeCAD.Console.PrintMessage("overallBB:" + str(overallboundbox) + "\n")    # debug only
+    return overallboundbox
 
 
 def getSelectedFace(selectionex):

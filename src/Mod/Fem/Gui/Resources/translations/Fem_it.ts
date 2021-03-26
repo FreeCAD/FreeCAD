@@ -59,7 +59,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation>Riesegui</translation>
+      <translation>Esegui di nuovo</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
@@ -165,12 +165,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation>Vincolo fonte di calore</translation>
+      <translation>Vincolo sorgente di calore</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation>Crea un vincolo FEM fonte di calore del corpo</translation>
+      <translation>Crea un vincolo FEM sorgente di calore del corpo</translation>
     </message>
   </context>
   <context>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation>Vincolo velocità di flusso iniziale</translation>
+      <translation>Vincolo velocità iniziale di flusso</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>

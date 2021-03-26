@@ -4,6 +4,16 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
+      <source>Attachment...</source>
+      <translation>Eranskina...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Editatu hautatutako objektuaren eranskina.</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
       <translation>Ez dago {name} izena duen objekturik</translation>
@@ -24,14 +34,14 @@
       <translation>{obj} ezin da erantsi. Erabili dezakezu oraindik eranskinen edizio elkarrizketa objektua lerrokatzeko, baina eranskina ez da parametrikoa izango.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
-      <source>Attachment</source>
-      <translation>Eranskina</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
       <translation>Jarraitu</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <source>Attachment</source>
+      <translation>Eranskina</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -99,24 +109,14 @@
       <translation>Eranskinaren desplazamendua:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Eranskinaren desplazamendua (koordenatu lokaletan):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Eranskinaren desplazamendua (inaktiboa - erantsi gabea):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
-      <source>Attachment...</source>
-      <translation>Eranskina...</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
-      <source>Edit attachment of selected object.</source>
-      <translation>Editatu hautatutako objektuaren eranskina.</translation>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Eranskinaren desplazamendua (koordenatu lokaletan):</translation>
     </message>
   </context>
   <context>
@@ -259,99 +259,7 @@ It will create a 'Compound Filter' for each shape.</source>
     </message>
   </context>
   <context>
-    <name>Part_JoinFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Errorea gertatu da emaitza kalkulatzean:
-
-{err}
-
-Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela sakatu 'Abortatu' bertan behera uzteko.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Hautapen okerra</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Jarraitu</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Emaitza kalkulatzean errore bat gertatu da: 
-
-{err}
-
- Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
-      <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation>Lehenengo hautatu bi objektu gutxienez, edo konposatu bat edo gehiago!</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation>Hautatu bi objektu gutxienez, edo konposatu bat edo gehiago</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Hautatu oinarri-objektua, ondoren kapsulatuko den objektua, eta aplikatu tresna hau.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation>Hautatu oinarri-objektua, ondoren kapsulatuko den objektua, eta ondoren aplikatu tresna hau.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation>Hautatu inausiko den objektua, ondoren inausitakoan doituko den objektua, eta aplikatu tresna hau.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation>Hautatu inausiko den objektua, ondoren inausitakoan doituko den objektua, eta ondoren aplikatu tresna hau.</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Errorea gertatu da emaitza kalkulatzean:
-
-{err}
-
-Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela sakatu 'Abortatu' bertan behera uzteko.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Hautapen okerra</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Jarraitu</translation>
-    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
@@ -370,45 +278,6 @@ Batuketa boolearra da, jatorrizko formen ebakiduretan xerratzen dena.
 'Konposatu-iragazki' bat erabili daiteke banakako xerrak erauzteko.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Hautatu gutxienez bi objektu edo konposatu bat edo gehiago. Konposatu bakar bat hautatzen baduzu, konposatutako formak elkarrekin ebakiko dira (bestela, autoebakidurak dituzten konposatuak baliogabeak dira).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Xerratu konposatua</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Xerratu objektu hautatu bat beste objektu batzuk mozte-tresna gisa erabilita.
-Sortuko diren piezak konposatu batean biltegiratuko dira.
-'Konposatu-iragazki' bat erabili daiteke banakako xerrak erauzteko.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Lehenengo, hautatu bi objektu gutxienez. Lehena xerratuko den objektua da; gainerakoak xerratzeko erabiliko dira.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Xerratu eta banandu</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Zati boolearrak</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Zatitu objektuak haiek ebakitzen diren gunean</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
       <translation>Zatitu objektua beste objektu batzuekin dituen ebakiduren arabera, eta paketatu zatiak konposatu batean.</translation>
@@ -424,11 +293,9 @@ Sortuko diren piezak konposatu batean biltegiratuko dira.
       <translation>Lehenengo, hautatu bi objektu gutxienez! Lehena xerratuko den objektua da; gainerakoak xerratzeko erabiliko dira.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Xerratu objektu hautatu bat beste objektu batzuekin, eta banandu.
-'Konposatu-iragazki' bat sortuko da xerra bakoitzerako.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Lehenengo, hautatu bi objektu gutxienez. Lehena xerratuko den objektua da; gainerakoak xerratzeko erabiliko dira.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -454,6 +321,47 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
       <translation>Lehenengo, hautatu bi objektu edo konposatu bat edo gehiago! Konposatu bakar bat hautatzen baduzu, konposatutako formak elkarrekin ebakiko dira (bestela, autoebakidurak dituzten konposatuak baliogabeak dira).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Hautatu gutxienez bi objektu edo konposatu bat edo gehiago. Konposatu bakar bat hautatzen baduzu, konposatutako formak elkarrekin ebakiko dira (bestela, autoebakidurak dituzten konposatuak baliogabeak dira).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Xerratu konposatua</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Zati boolearrak</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Zatitu objektuak haiek ebakitzen diren gunean</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Xerratu objektu hautatu bat beste objektu batzuk mozte-tresna gisa erabilita.
+Sortuko diren piezak konposatu batean biltegiratuko dira.
+'Konposatu-iragazki' bat erabili daiteke banakako xerrak erauzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Xerratu eta banandu</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Xerratu objektu hautatu bat beste objektu batzuekin, eta banandu.
+'Konposatu-iragazki' bat sortuko da xerra bakoitzerako.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation>XOR boolearra</translation>
@@ -468,6 +376,29 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 edo konposatu baten barruko formekin.
 Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
 'Konposatu-iragazki' bat erabili daiteke gainerako piezak erauzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Errorea gertatu da emaitza kalkulatzean:
+
+{err}
+
+Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela sakatu 'Abortatu' bertan behera uzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Jarraitu</translation>
     </message>
   </context>
   <context>
@@ -949,6 +880,75 @@ Do you want to continue?</source>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
       <translation>Erakutsi kontrol-puntuak</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Emaitza kalkulatzean errore bat gertatu da: 
+
+{err}
+
+ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Errorea gertatu da emaitza kalkulatzean:
+
+{err}
+
+Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela sakatu 'Abortatu' bertan behera uzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation>Jarraitu</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Lehenengo hautatu bi objektu gutxienez, edo konposatu bat edo gehiago!</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Hautatu bi objektu gutxienez, edo konposatu bat edo gehiago</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Hautatu oinarri-objektua, ondoren kapsulatuko den objektua, eta aplikatu tresna hau.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Hautatu oinarri-objektua, ondoren kapsulatuko den objektua, eta ondoren aplikatu tresna hau.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Hautatu inausiko den objektua, ondoren inausitakoan doituko den objektua, eta aplikatu tresna hau.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Hautatu inausiko den objektua, ondoren inausitakoan doituko den objektua, eta ondoren aplikatu tresna hau.</translation>
     </message>
   </context>
   <context>

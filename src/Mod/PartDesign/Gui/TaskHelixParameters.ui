@@ -93,20 +93,25 @@
       <widget class="QComboBox" name="inputMode">
        <item>
         <property name="text">
-         <string>Pitch-Height</string>
+         <string>Pitch-Height-Angle</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Pitch-Turns</string>
+         <string>Pitch-Turns-Angle</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Height-Turns</string>
+         <string>Height-Turns-Angle</string>
         </property>
        </item>
-      </widget>
+       <item>
+        <property name="text">
+         <string>Height-Turns-Growth</string>
+        </property>
+       </item>
+       </widget>
      </item>
     </layout>
    </item>
@@ -204,7 +209,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayoutConeAngle">
      <item>
-      <widget class="QLabel" name="label5">
+      <widget class="QLabel" name="labelConeAngle">
        <property name="text">
         <string>Cone angle:</string>
        </property>
@@ -223,6 +228,34 @@
        </property>
        <property name="maximum">
         <double>89.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>5.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutGrowth">
+     <item>
+      <widget class="QLabel" name="labelGrowth">
+       <property name="text">
+        <string>Growth:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="growth">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
        </property>
        <property name="singleStep">
         <double>5.000000000000000</double>

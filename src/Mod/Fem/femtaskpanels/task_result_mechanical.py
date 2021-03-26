@@ -30,6 +30,12 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief task panel for mechanical ResultObjectPython
 
+try:
+    import matplotlib
+    matplotlib.use("Qt5Agg")
+except Exception:
+    print("Failed to set matplotlib backend to Qt5Agg")
+
 import matplotlib.pyplot as plt
 import numpy as np
 

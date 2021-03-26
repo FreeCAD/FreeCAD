@@ -30,7 +30,7 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Export points...</source>
-      <translation>Exportuj body ....</translation>
+      <translation>Exportovať body...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Import points...</source>
-      <translation>Import bodov ...</translation>
+      <translation>Importovať body...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <location filename="../../Command.cpp" line="71"/>
       <source>Imports a point cloud</source>
-      <translation>Importuj mračná bodov</translation>
+      <translation>Importuje mračná bodov</translation>
     </message>
   </context>
   <context>
@@ -93,7 +93,7 @@
       <location filename="../../Command.cpp" line="277"/>
       <location filename="../../Command.cpp" line="279"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>0rezať mračná bodov vybraným polygónom</translation>
+      <translation>Orezať mračná bodov vybraným polygónom</translation>
     </message>
   </context>
   <context>
@@ -125,7 +125,7 @@
     <message>
       <location filename="../../Command.cpp" line="153"/>
       <source>Transform Points</source>
-      <translation>Transformácia bodov</translation>
+      <translation>Transformovať body</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="154"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Importovať body</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>Transformovať body</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>
@@ -155,7 +155,7 @@
       <location filename="../../ViewProvider.cpp" line="468"/>
       <location filename="../../ViewProvider.cpp" line="627"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Orezať body</translation>
     </message>
   </context>
   <context>
@@ -163,7 +163,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII points import</source>
-      <translation>ASCII import bodov</translation>
+      <translation>Import bodov s kódovaním ASCII</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -178,12 +178,12 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="72"/>
       <source>Ignore lines starting with:</source>
-      <translation>Ignorovať riadky začínajúce:</translation>
+      <translation>Ignorovať riadky začínajúce s:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="79"/>
       <source>Cluster by lines starting with:</source>
-      <translation>Zoskup podľa riadkov začínajúcich s:</translation>
+      <translation>Zoskupiť riadky začínajúce s:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="88"/>
@@ -224,7 +224,7 @@
       <location filename="../../DlgPointsRead.ui" line="186"/>
       <location filename="../../DlgPointsRead.ui" line="243"/>
       <source>I,K (normal vector 2D)</source>
-      <translation>I, K (normálny vektor 2D)</translation>
+      <translation>I, K (normálny 2D vektor)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="162"/>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="302"/>
       <source>Points format:</source>
-      <translation>Formát bodou:</translation>
+      <translation>Formát bodov:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
@@ -295,7 +295,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines:</source>
-      <translation>Počet zobrazených riadkov:</translation>
+      <translation>Počet riadkov náhľadu:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="348"/>
@@ -315,7 +315,7 @@
       <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Všetky súbory</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="202"/>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Points tools</source>
-      <translation>Body nástrojov</translation>
+      <translation>Nástroje bodov</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>

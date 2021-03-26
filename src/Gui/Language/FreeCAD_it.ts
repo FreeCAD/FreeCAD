@@ -3255,23 +3255,23 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <translation>Ambienti di lavoro scaricati</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carica i workbenches selezionati, aggiungendo le loro finestre di preferenze alle impostazioni di preferenze.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Carica la selezione</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ambienti di lavoro disponibili non caricati&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Per preservare le risorse, FreeCAD non carica gli ambienti di lavoro finché non vengono utilizzati. Il loro caricamento può fornire l'accesso a preferenze aggiuntive relative alla loro funzionalità.&lt;/p&gt;&lt;p&gt;I seguenti ambienti di lavoro sono disponibili nella tua installazione, ma non sono ancora caricati:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3606,7 +3606,7 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
-      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
+      <translation>Aggiunge caselle di selezione nell'albero del modello</translation>
     </message>
   </context>
   <context>
@@ -5374,6 +5374,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Espressione...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Espansione automatica</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -6916,7 +6920,7 @@ Documento: </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Ci sono stati errori gravi durante il caricamento del file. Alcuni dati potrebbero essere stati modificati o non recuperati affatto. Il salvataggio del progetto molto probabilmente si tradurrà in perdita di dati.</translation>
     </message>
     <message>
       <source>Workbenches</source>
@@ -7366,7 +7370,7 @@ Documento: </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Selezionare gli oggetti da esportare prima di scegliere Esporta.</translation>
     </message>
   </context>
   <context>
@@ -7407,7 +7411,7 @@ Documento: </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Dona per contribuire allo sviluppo di FreeCAD</translation>
     </message>
   </context>
   <context>

@@ -42,9 +42,10 @@ public:
     App::PropertyVector      Axis;
     App::PropertyLength      Pitch;
     App::PropertyLength      Height;
-    App::PropertyFloat       Turns;
+    App::PropertyFloatConstraint   Turns;
     App::PropertyBool        LeftHanded;
     App::PropertyAngle       Angle;
+    App::PropertyLength      Growth;
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
@@ -79,6 +80,9 @@ protected:
 
     // center of profile bounding box
     Base::Vector3d getProfileCenterPoint();
+
+    // handle changed property
+    virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
 
 private:
     static const char* ModeEnums[];

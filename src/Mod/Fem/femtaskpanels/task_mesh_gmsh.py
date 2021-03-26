@@ -78,13 +78,27 @@ class _TaskPanel:
             self.choose_dimension
         )
         QtCore.QObject.connect(
+            self.form.cb_order,
+            QtCore.SIGNAL("activated(int)"),
+            self.choose_order
+        )
+        QtCore.QObject.connect(
             self.Timer,
             QtCore.SIGNAL("timeout()"),
             self.update_timer_text
         )
+        QtCore.QObject.connect(
+            self.form.pb_get_gmsh_version,
+            QtCore.SIGNAL("clicked()"),
+            self.get_gmsh_version
+        )
 
         self.form.cb_dimension.addItems(
             mesh_gmsh.MeshGmsh.known_element_dimensions
+        )
+
+        self.form.cb_order.addItems(
+            mesh_gmsh.MeshGmsh.known_element_orders
         )
 
         self.get_mesh_params()
@@ -109,6 +123,7 @@ class _TaskPanel:
     def reject(self):
         self.mesh_obj.ViewObject.Document.resetEdit()
         self.mesh_obj.Document.recompute()
+        self.Timer.stop()
         return True
 
     def clicked(self, button):
@@ -120,11 +135,13 @@ class _TaskPanel:
         self.clmax = self.mesh_obj.CharacteristicLengthMax
         self.clmin = self.mesh_obj.CharacteristicLengthMin
         self.dimension = self.mesh_obj.ElementDimension
+        self.order = self.mesh_obj.ElementOrder
 
     def set_mesh_params(self):
         self.mesh_obj.CharacteristicLengthMax = self.clmax
         self.mesh_obj.CharacteristicLengthMin = self.clmin
         self.mesh_obj.ElementDimension = self.dimension
+        self.mesh_obj.ElementOrder = self.order
 
     def update(self):
         "fills the widgets"
@@ -132,6 +149,8 @@ class _TaskPanel:
         self.form.if_min.setText(self.clmin.UserString)
         index_dimension = self.form.cb_dimension.findText(self.dimension)
         self.form.cb_dimension.setCurrentIndex(index_dimension)
+        index_order = self.form.cb_order.findText(self.order)
+        self.form.cb_order.setCurrentIndex(index_order)
 
     def console_log(self, message="", color="#000000"):
         if (not isinstance(message, bytes)) and (sys.version_info.major < 3):
@@ -161,6 +180,25 @@ class _TaskPanel:
             return
         self.form.cb_dimension.setCurrentIndex(index)
         self.dimension = str(self.form.cb_dimension.itemText(index))  # form returns unicode
+
+    def choose_order(self, index):
+        if index < 0:
+            return
+        self.form.cb_order.setCurrentIndex(index)
+        self.order = str(self.form.cb_order.itemText(index))  # form returns unicode
+
+    def get_gmsh_version(self):
+        from femmesh import gmshtools
+        version, full_message = gmshtools.GmshTools(self.mesh_obj, self.analysis).get_gmsh_version()
+        if version[0] and version[1] and version[2]:
+            messagebox = QtGui.QMessageBox.information
+        else:
+            messagebox = QtGui.QMessageBox.warning
+        messagebox(
+            None,
+            "Gmsh - Information",
+            full_message
+        )
 
     def run_gmsh(self):
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -202,12 +240,11 @@ class _TaskPanel:
         try:
             error = gmsh_mesh.create_mesh()
         except Exception:
-            import sys
+            error = sys.exc_info()[1]
             FreeCAD.Console.PrintMessage(
                 "Unexpected error when creating mesh: {}\n"
-                .format(sys.exc_info()[0])
+                .format(error)
             )
-            error = sys.exc_info()[0].strip()
         if error:
             FreeCAD.Console.PrintMessage("Gmsh had warnings ...\n")
             FreeCAD.Console.PrintMessage("{}\n".format(error))

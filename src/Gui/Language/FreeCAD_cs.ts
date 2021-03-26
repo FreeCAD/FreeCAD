@@ -164,7 +164,7 @@
     </message>
     <message>
       <source>Insert text document</source>
-      <translation type="unfinished">Insert text document</translation>
+      <translation>Vložit textový dokument</translation>
     </message>
     <message>
       <source>Add a part</source>
@@ -172,7 +172,7 @@
     </message>
     <message>
       <source>Add a group</source>
-      <translation type="unfinished">Add a group</translation>
+      <translation>Přidat skupinu</translation>
     </message>
     <message>
       <source>Align</source>
@@ -2628,7 +2628,7 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
+      <translation>Použít softwarové OpenGL</translation>
     </message>
   </context>
   <context>
@@ -2881,15 +2881,15 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>The application will create a new document when started</source>
-      <translation type="unfinished">The application will create a new document when started</translation>
+      <translation>Aplikace vytvoří nový dokument při spuštění</translation>
     </message>
     <message>
       <source>Compression level for FCStd files</source>
-      <translation type="unfinished">Compression level for FCStd files</translation>
+      <translation>Úroveň komprese pro soubory FCStd</translation>
     </message>
     <message>
       <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation type="unfinished">All changes in documents are stored so that they can be undone/redone</translation>
+      <translation>Všechny změny v dokumentech jsou uloženy tak, že mohou být vráceny/znovu provedeny</translation>
     </message>
     <message>
       <source>How many Undo/Redo steps should be recorded</source>
@@ -2898,12 +2898,12 @@ Changing this option requires a restart of the application.</translation>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Umožnit uživateli přerušit přepočítávání dokumentů stisknutím ESC.
+Tato funkce může mírně prodloužit dobu přepočítání.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
-      <translation type="unfinished">Allow aborting recomputation</translation>
+      <translation>Povolit přerušení přepočítávání</translation>
     </message>
     <message>
       <source>If there is a recovery file available the application will
@@ -2935,17 +2935,17 @@ Common sizes are 128, 256 and 512</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
-      <translation type="unfinished">How many backup files will be kept when saving document</translation>
+      <translation>Kolik záložních souborů bude ponecháno při ukládání dokumentu</translation>
     </message>
     <message>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
-      <translation type="unfinished">Backup files will get extension '.FCbak' and file names
-get date suffix according to the specified format</translation>
+      <translation>Záložní soubory získají příponu '.FCbak' a názvy souborů
+získají příponu data podle zadaného formátu</translation>
     </message>
     <message>
       <source>Use date and FCBak extension</source>
-      <translation type="unfinished">Use date and FCBak extension</translation>
+      <translation>Použít datum a příponu FCBak</translation>
     </message>
     <message>
       <source>Date format</source>
@@ -2993,27 +2993,27 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
-      <translation type="unfinished">Creative Commons Attribution</translation>
+      <translation>Creative Commons - Uveď autora</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-ShareAlike</translation>
+      <translation>Creative Commons Uveď autora-Zachovej licenci</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NoDerivatives</translation>
+      <translation>Creative Commons Uveď autora-Nezasahuj do díla</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial</translation>
+      <translation>Creative Commons Uveď autora-Neužívej dílo komerčně</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Creative Commons Uveď autora-Neužívej dílo komerčně-Nezasahuj do díla</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Creative Commons Uveď autora-Neužívej dílo komerčně-Nezasahuj do díla</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
@@ -3260,7 +3260,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Načíst Vybrané</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3343,15 +3343,15 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Menu nedávných maker</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Velikost seznamu nedávných maker</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>Kolik maker by mělo být uvedeno v seznamu nedávných maker</translation>
     </message>
     <message>
       <source>Shortcut count</source>
@@ -3378,7 +3378,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Navigation cube</source>
-      <translation type="unfinished">Navigation cube</translation>
+      <translation>Navigační kostka</translation>
     </message>
     <message>
       <source>Steps by turn</source>
@@ -3394,7 +3394,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Corner where navigation cube is shown</source>
-      <translation type="unfinished">Corner where navigation cube is shown</translation>
+      <translation>Roh, ve kterém je zobrazena navigační krychle</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -5373,6 +5373,10 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <source>Expression...</source>
       <translation type="unfinished">Expression...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
     </message>
   </context>
   <context>

@@ -128,7 +128,7 @@ typename Kernel::VectorMap& Geometry<Kernel, Dim, TagList>::getParameterMap() {
 
 template< typename Kernel, int Dim, typename TagList>
 template<typename T>
-void Geometry<Kernel, Dim, TagList>::linkTo(boost::shared_ptr<Geometry<Kernel, Dim, TagList> > geom, int offset) {
+void Geometry<Kernel, Dim, TagList>::linkTo(std::shared_ptr<Geometry<Kernel, Dim, TagList> > geom, int offset) {
 
     init<T>();
     m_link = geom;

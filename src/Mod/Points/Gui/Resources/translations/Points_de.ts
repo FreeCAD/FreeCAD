@@ -11,13 +11,13 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Convert to points...</source>
-      <translation>In Punkte konvertieren...</translation>
+      <translation>Zu Punkten konvertieren...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <location filename="../../Command.cpp" line="193"/>
       <source>Convert to points</source>
-      <translation>In Punkte konvertieren</translation>
+      <translation>Zu Punkten konvertieren</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
       <location filename="../../Command.cpp" line="322"/>
       <location filename="../../Command.cpp" line="324"/>
       <source>Merge several point clouds into one</source>
-      <translation>Mehrere Punktwolken in eine zusammenführen</translation>
+      <translation>Mehrere Punktwolken zu einer zusammenführen</translation>
     </message>
   </context>
   <context>
@@ -106,13 +106,13 @@
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Structured point cloud</source>
-      <translation>Strukturierte Punktwolke</translation>
+      <translation>Geordnete Punktwolke</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <location filename="../../Command.cpp" line="367"/>
       <source>Convert points to structured point cloud</source>
-      <translation>Punkte in strukturierte Punktwolke umwandeln</translation>
+      <translation>Punkte in geordnete Punktwolke umwandeln</translation>
     </message>
   </context>
   <context>
@@ -139,23 +139,23 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Punkte importieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>Transform points</source>
-      <translation type="unfinished">Transform points</translation>
+      <translation>Punkte transformieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="208"/>
       <source>Convert to points</source>
-      <translation>In Punkte konvertieren</translation>
+      <translation>Zu Punkten konvertieren</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="468"/>
       <location filename="../../ViewProvider.cpp" line="627"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Punkte ausschneiden</translation>
     </message>
   </context>
   <context>

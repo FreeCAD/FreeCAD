@@ -329,7 +329,7 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     App::ObjectIdentifier p(ObjectIdentifier::parse(getDocumentObjectPtr(), path));
 
     if (Py::Object(expr).isNone())
-        getDocumentObjectPtr()->setExpression(p, boost::shared_ptr<Expression>());
+        getDocumentObjectPtr()->setExpression(p, std::shared_ptr<Expression>());
 #if PY_MAJOR_VERSION >= 3
     else if (PyUnicode_Check(expr)) {
         const char * exprStr = PyUnicode_AsUTF8(expr);
@@ -337,7 +337,7 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     else if (PyString_Check(expr)) {
         const char * exprStr = PyString_AsString(expr);
 #endif
-        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
+        std::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
         if(shared_expr && comment)
             shared_expr->comment = comment;
 
@@ -351,7 +351,7 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
         if (unicode) {
             std::string exprStr = PyString_AsString(unicode);
             Py_DECREF(unicode);
-            boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
+            std::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
 
             if(shared_expr && comment)
                 shared_expr->comment = comment;
@@ -375,7 +375,7 @@ PyObject*  DocumentObjectPy::evalExpression(PyObject * args)
         return NULL;                    // NULL triggers exception
 
     PY_TRY {
-        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), expr));
+        std::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), expr));
         if(shared_expr)
             return Py::new_reference_to(shared_expr->getPyValue());
         Py_Return;

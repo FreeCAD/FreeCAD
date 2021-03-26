@@ -56,21 +56,24 @@ def sync_snap_toolbar_button(button, status):
     snap_toolbar = Gui.Snapper.get_snap_toolbar()
     if not snap_toolbar:
         return
-    for a in snap_toolbar.actions():
-        if a.objectName() == button:
-            if button == "Draft_Snap_Lock_Button":
-                # for lock button
-                snap_toolbar.actions()[0].setChecked(status)
-                for a in snap_toolbar.actions()[1:]:
-                    if a.objectName()[:10] == "Draft_Snap":
-                        a.setEnabled(status)
-            else:
-                # for every other button
-                a.setChecked(status)
-                if a.isChecked():
-                    a.setToolTip(a.toolTip().replace("OFF","ON"))
+
+    # Setting the snap lock button enables or disables all of the other snap actions:
+    if button == "Draft_Snap_Lock_Button":
+        snap_toolbar.actions()[0].setChecked(status) # Snap lock must be the first button
+        for action in snap_toolbar.actions()[1:]:
+            if action.objectName()[:10] == "Draft_Snap":
+                action.setEnabled(status)
+
+    # All other buttons only affect themselves
+    else:
+        for action in snap_toolbar.actions():
+            if action.objectName() == button:
+                action.setChecked(status)
+                if action.isChecked():
+                    action.setToolTip(action.toolTip().replace("OFF","ON"))
                 else:
-                    a.setToolTip(a.toolTip().replace("ON","OFF"))
+                    action.setToolTip(action.toolTip().replace("ON","OFF"))
+                return
 
 
 def sync_snap_statusbar_button(button, status):
@@ -94,6 +97,7 @@ def sync_snap_statusbar_button(button, status):
         for a in actions:
             if a.objectName() == button:
                 a.setChecked(status)
+                return
 
 
 # SNAP GUI TOOLS ------------------------------------------------------------

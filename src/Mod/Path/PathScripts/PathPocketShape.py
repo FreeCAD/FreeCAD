@@ -379,8 +379,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         else:
                             face.translate(FreeCAD.Vector(0, 0, vFinDep - face.BoundBox.ZMin))
                             self.horiz.append(face)
-                            msg = translate('Path', 'Verify final depth of pocket shaped by vertical faces.')
-                            PathLog.warning(msg)
 
                 # add faces for extensions
                 self.exts = [] # pylint: disable=attribute-defined-outside-init
@@ -390,6 +388,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         face = Part.Face(wire)
                         self.horiz.append(face)
                         self.exts.append(face)
+
+                # Place all self.horiz faces into same working plane
+                for h in self.horiz:
+                    h.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - h.BoundBox.ZMin))
 
                 # check all faces and see if they are touching/overlapping and combine those into a compound
                 self.horizontal = [] # pylint: disable=attribute-defined-outside-init
@@ -448,7 +450,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                 # Ensure StartDepth is above FinalDepth
                                 if start_dep <= adj_final_dep:
                                     start_dep = adj_final_dep + 1.0
-                                    msg = translate('PathPocketShape', 'Start Depth is lower than face depth. Setting to ')
+                                    msg = translate('PathPocketShape', 'Start Depth is lower than face depth. Setting to:')
                                     PathLog.warning(msg + ' {} mm.'.format(start_dep))
                                 PathLog.debug('LimitDepthToFace adj_final_dep: {}'.format(adj_final_dep))
                     # Eif

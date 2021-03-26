@@ -232,12 +232,13 @@ void AboutDialogFactory::setDefaultFactory(AboutDialogFactory *f)
  *  The dialog will be modal.
  */
 AboutDialog::AboutDialog(bool showLic, QWidget* parent)
-  : QDialog(parent, Qt::FramelessWindowHint), ui(new Ui_AboutApplication)
+  : QDialog(parent), ui(new Ui_AboutApplication)
 {
     Q_UNUSED(showLic);
 
     setModal(true);
     ui->setupUi(this);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QRect rect = QApplication::primaryScreen()->availableGeometry();
 #else
@@ -246,10 +247,11 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     QPixmap image = getMainWindow()->splashImage();
 
     // Make sure the image is not too big
-    if (image.height() > rect.height()/2 || image.width() > rect.width()/2) {
+    int denom = 2;
+    if (image.height() > rect.height()/denom || image.width() > rect.width()/denom) {
         float scale = static_cast<float>(image.width()) / static_cast<float>(image.height());
-        int width = std::min(image.width(), rect.width()/2);
-        int height = std::min(image.height(), rect.height()/2);
+        int width = std::min(image.width(), rect.width()/denom);
+        int height = std::min(image.height(), rect.height()/denom);
         height = std::min(height, static_cast<int>(width / scale));
         width = static_cast<int>(scale * height);
 
@@ -270,13 +272,17 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
             );
 #endif
         QString lictext = ui->textBrowserLicense->toHtml();
-        lictext.replace(QString::fromLatin1("SUCH DAMAGES."),info);
+        lictext.replace(QString::fromLatin1("SUCH DAMAGES.<hr/>"),info);
         ui->textBrowserLicense->setHtml(lictext);
 //    }
     ui->tabWidget->setCurrentIndex(0); // always start on the About tab
+
     setupLabels();
+    showCredits();
     showLicenseInformation();
+    showLibraryInformation();
     showCollectionInformation();
+    showOrHideImage(rect);
 }
 
 /**
@@ -456,6 +462,14 @@ static int getWordSizeOfOS()
 }
 };
 
+void AboutDialog::showOrHideImage(const QRect& rect)
+{
+    adjustSize();
+    if (height() > rect.height()) {
+        ui->labelSplashPicture->hide();
+    }
+}
+
 void AboutDialog::setupLabels()
 {
     //fonts are rendered smaller on Mac so point size can't be the same for all platforms
@@ -487,6 +501,10 @@ void AboutDialog::setupLabels()
     author.replace(QString::fromLatin1("(c) Unknown Author"), banner);
     ui->labelAuthor->setText(author);
     ui->labelAuthor->setUrl(mturl);
+
+    if (qApp->styleSheet().isEmpty()) {
+        ui->labelAuthor->setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;font-family: MS Shell Dlg 2;}"));
+    }
 
     QString version = ui->labelBuildVersion->text();
     version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2").arg(major, minor));
@@ -542,13 +560,87 @@ public:
     QString url;
 };
 
+void AboutDialog::showCredits()
+{
+    QString creditsFileURL = QString::fromLatin1("%1/CONTRIBUTORS")
+        .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+    QFile creditsFile(creditsFileURL);
+
+    if (!creditsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+
+    QWidget* tab_credits = new QWidget();
+    tab_credits->setObjectName(QString::fromLatin1("tab_credits"));
+    ui->tabWidget->addTab(tab_credits, tr("Credits"));
+    QVBoxLayout* hlayout = new QVBoxLayout(tab_credits);
+    QTextBrowser* textField = new QTextBrowser(tab_credits);
+    textField->setOpenExternalLinks(false);
+    textField->setOpenLinks(false);
+    hlayout->addWidget(textField);
+
+    QString creditsHTML = QString::fromLatin1("<html><body><h1>");
+    //: Header for the Credits tab of the About screen
+    creditsHTML += tr("Credits");
+    creditsHTML += QString::fromLatin1("</h1><p>");
+    creditsHTML += tr("FreeCAD would not be possible without the contributions of");
+    creditsHTML += QString::fromLatin1(":</p><h2>"); 
+    //: Header for the list of individual people in the Credits list.
+    creditsHTML += tr("Individuals");
+    creditsHTML += QString::fromLatin1("</h2><ul>");
+
+    QTextStream stream(&creditsFile);
+    QString line;
+    while (stream.readLineInto(&line)) {
+        if (!line.isEmpty()) {
+            if (line == QString::fromLatin1("Firms")) {
+                creditsHTML += QString::fromLatin1("</ul><h2>");
+                //: Header for the list of companies/organizations in the Credits list.
+                creditsHTML += tr("Organizations");
+                creditsHTML += QString::fromLatin1("</h2><ul>");
+            } 
+            else {
+                creditsHTML += QString::fromLatin1("<li>") + line + QString::fromLatin1("</li>");
+            }
+        }
+    }
+    creditsHTML += QString::fromLatin1("</ul></body></html>");
+    textField->setHtml(creditsHTML);
+}
+
 void AboutDialog::showLicenseInformation()
 {
-    QWidget *tab_license = new QWidget();
+    QString licenseFileURL = QString::fromLatin1("%1/LICENSE.html")
+        .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+    QFile licenseFile(licenseFileURL);
+
+    if (!licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return; // Leave the existing license placeholder there if we can't find our license html file
+    }
+
+    ui->tabWidget->removeTab (1); // Hide the license placeholder widget
+
+    QWidget* tab_license = new QWidget();
     tab_license->setObjectName(QString::fromLatin1("tab_license"));
-    ui->tabWidget->addTab(tab_license, tr("Libraries"));
+    ui->tabWidget->addTab(tab_license, tr("License"));
     QVBoxLayout* hlayout = new QVBoxLayout(tab_license);
     QTextBrowser* textField = new QTextBrowser(tab_license);
+    textField->setOpenExternalLinks(true);
+    textField->setOpenLinks(true);
+    hlayout->addWidget(textField);
+
+    QString licenseHTML = QString::fromUtf8(licenseFile.readAll());
+    textField->setHtml(licenseHTML);
+
+}
+
+void AboutDialog::showLibraryInformation()
+{
+    QWidget *tab_library = new QWidget();
+    tab_library->setObjectName(QString::fromLatin1("tab_library"));
+    ui->tabWidget->addTab(tab_library, tr("Libraries"));
+    QVBoxLayout* hlayout = new QVBoxLayout(tab_library);
+    QTextBrowser* textField = new QTextBrowser(tab_library);
     textField->setOpenExternalLinks(false);
     textField->setOpenLinks(false);
     hlayout->addWidget(textField);
@@ -557,9 +649,6 @@ void AboutDialog::showLicenseInformation()
     LibraryInfo li;
     QString baseurl = QString::fromLatin1("file:///%1/ThirdPartyLibraries.html")
             .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
-
-    //FIXME: Put all needed information into LibraryVersions.h
-    //
 
     // Boost
     li.name = QLatin1String("Boost");
@@ -579,14 +668,14 @@ void AboutDialog::showLicenseInformation()
     li.name = QLatin1String("Eigen3");
     li.href = baseurl + QLatin1String("#_TocEigen3");
     li.url = QLatin1String("http://eigen.tuxfamily.org/");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_EIGEN3_VERSION);
     libInfo << li;
 
     // FreeType
     li.name = QLatin1String("FreeType");
     li.href = baseurl + QLatin1String("#_TocFreeType");
     li.url = QLatin1String("http://freetype.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_FREETYPE_VERSION);
     libInfo << li;
 
     // KDL
@@ -616,14 +705,14 @@ void AboutDialog::showLicenseInformation()
     li.name = QLatin1String("Point Cloud Library");
     li.href = baseurl + QLatin1String("#_TocPcl");
     li.url = QLatin1String("http://www.pointclouds.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_PCL_VERSION);
     libInfo << li;
 
     // PyCXX
     li.name = QLatin1String("PyCXX");
     li.href = baseurl + QLatin1String("#_TocPyCXX");
     li.url = QLatin1String("http://cxx.sourceforge.net");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_PYCXX_VERSION);
     libInfo << li;
 
     // Python
@@ -637,7 +726,7 @@ void AboutDialog::showLicenseInformation()
     li.name = QLatin1String("PySide");
     li.href = baseurl + QLatin1String("#_TocPySide");
     li.url = QLatin1String("http://www.pyside.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_PYSIDE_VERSION);
     libInfo << li;
 
     // Qt
@@ -658,21 +747,21 @@ void AboutDialog::showLicenseInformation()
     li.name = QLatin1String("Shiboken");
     li.href = baseurl + QLatin1String("#_TocPySide");
     li.url = QLatin1String("http://www.pyside.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_SHIBOKEN_VERSION);
     libInfo << li;
 
     // vtk
     li.name = QLatin1String("vtk");
     li.href = baseurl + QLatin1String("#_TocVtk");
     li.url = QLatin1String("https://www.vtk.org");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_VTK_VERSION);
     libInfo << li;
 
     // Xerces-C
     li.name = QLatin1String("Xerces-C");
     li.href = baseurl + QLatin1String("#_TocXercesC");
     li.url = QLatin1String("https://xerces.apache.org/xerces-c");
-    li.version.clear();
+    li.version = QString::fromLatin1(FC_XERCESC_VERSION);
     libInfo << li;
 
     // Zipios++

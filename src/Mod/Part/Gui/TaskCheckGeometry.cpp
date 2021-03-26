@@ -829,9 +829,9 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
     std::vector<FunctionMapType>::iterator mapIt;
     for (mapIt = functionMap.begin(); mapIt != functionMap.end(); ++mapIt)
     {
-        if ((*mapIt).get<0>() == entry->shape.ShapeType() && (*mapIt).get<1>() == stat)
+        if (std::get<0>(*mapIt) == entry->shape.ShapeType() && std::get<1>(*mapIt) == stat)
         {
-            ((*mapIt).get<2>())(entry);
+            (std::get<2>(*mapIt))(entry);
             return;
         }
     }

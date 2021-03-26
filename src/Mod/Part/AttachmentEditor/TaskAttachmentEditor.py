@@ -33,7 +33,7 @@ try:
     from Show import TempoVis
     from Show.DepGraphTools import getAllDependent
 except ImportError as err:
-    def TempoVis(doc):
+    def TempoVis(doc,tag):
         return None
     def getAllDependent(feature):
         return []

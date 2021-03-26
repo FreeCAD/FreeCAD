@@ -423,7 +423,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Vordergrundfarbe der Tabellen Zelle(n) einstellen</translation>
+      <translation>Vordergrundfarbe der Tabellen-Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
@@ -431,7 +431,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Hintergrundfarbe der Tabellen Zelle(n) einstellen</translation>
+      <translation>Hintergrundfarbe der Tabellen-Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Spreadsheet</source>
@@ -440,7 +440,7 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation>Tabellenblatt unterstützt beim Einfügen keine Bereichsauswahl.
+      <translation>Kalkulationstabelle unterstützt beim Einfügen keine Bereichsauswahl.
 Bitte nur eine Zelle auswählen.</translation>
     </message>
     <message>

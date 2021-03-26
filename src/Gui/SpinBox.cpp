@@ -264,7 +264,7 @@ void UIntSpinBox::bind(const App::ObjectIdentifier &_path)
     iconLabel->show();
 }
 
-void UIntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void UIntSpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -399,7 +399,7 @@ void UIntSpinBox::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 }
@@ -473,7 +473,7 @@ void IntSpinBox::bind(const ObjectIdentifier& _path) {
     iconLabel->show();
 }
 
-void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void IntSpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -592,7 +592,7 @@ void IntSpinBox::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 }
@@ -666,7 +666,7 @@ void DoubleSpinBox::bind(const ObjectIdentifier& _path) {
     iconLabel->show();
 }
 
-void DoubleSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void DoubleSpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -784,7 +784,7 @@ void DoubleSpinBox::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 }

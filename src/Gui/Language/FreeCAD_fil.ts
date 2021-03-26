@@ -5379,6 +5379,10 @@ Paano mo gustong magpatuloy?</translation>
       <source>Expression...</source>
       <translation type="unfinished">Expression...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
