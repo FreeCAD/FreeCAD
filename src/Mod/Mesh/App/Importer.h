@@ -1,6 +1,5 @@
- /**************************************************************************
- *   Copyright (c) 2020 FreeCAD Developers                                 *
- *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
+/***************************************************************************
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,38 +20,44 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef MESH_IMPORTER_H
+#define MESH_IMPORTER_H
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+#include <string>
+#include <vector>
 
-#include <Gui/PropertyPage.h>
-#include <memory>
+namespace App {
+class Document;
+class Color;
+}
 
-namespace TechDrawGui {
-class Ui_DlgPrefsTechDrawAnnotationImp;
-
-class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage
+namespace MeshCore {
+struct Material;
+}
+namespace Mesh
 {
-    Q_OBJECT
+class MeshObject;
+class Feature;
 
+class Importer
+{
 public:
-    DlgPrefsTechDrawAnnotationImp( QWidget* parent = 0 );
-    ~DlgPrefsTechDrawAnnotationImp();
+    Importer(App::Document*);
+    ~Importer() = default;
 
-public Q_SLOTS:
-    void onLineGroupChanged(int);
-
-protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
-
-    int prefBalloonArrow(void) const;
+    void load(const std::string& fileName);
 
 private:
-    std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;
+    void addVertexColors(Feature*, const std::vector<App::Color>&);
+    void addFaceColors(Feature*, const std::vector<App::Color>&);
+    void addColors(Feature*, const std::string& property, const std::vector<App::Color>&);
+    Feature* createMesh(const std::string& name, MeshObject&);
+    void createMeshFromSegments(const std::string& name, MeshCore::Material& mat, MeshObject& mesh);
+
+private:
+    App::Document* document;
 };
 
-} // namespace TechDrawGui
+} // namespace Mesh
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+#endif // MESH_IMPORTER_H

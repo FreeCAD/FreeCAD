@@ -113,7 +113,7 @@ class Stretch(gui_base_original.Modifier):
         if self.ui and self.sel:
             self.step = 1
             self.refpoint = None
-            self.ui.pointUi("Stretch")
+            self.ui.pointUi(title="Stretch", icon="Draft_Stretch")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rectracker = trackers.rectangleTracker(dotted=True,

@@ -390,7 +390,7 @@ class Twist:
     def __init__(self, obj,child=None,h=1.0,angle=0.0,scale=[1.0,1.0]):
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that must be tranfsformed")
-        obj.addProperty("App::PropertyAngle","Angle","Base","Twist Angle in degrees") #degree or rad
+        obj.addProperty("App::PropertyAngle","Angle","Base","Twist angle") #degree or rad
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the Extrusion")
         obj.addProperty("App::PropertyFloatList","Scale","Base","Scale to apply during the Extrusion")
 
@@ -404,46 +404,46 @@ class Twist:
         self.createGeometry(fp)
 
     def onChanged(self, fp, prop):
-        pass
-        #if prop in ["Angle","Height"]:
-        #    self.createGeometry(fp)
+        if prop in ["Angle","Height"]:
+            self.createGeometry(fp)
 
     def createGeometry(self,fp):
         import FreeCAD,Part,math,sys
-        if fp.Base and fp.Height and \
-            fp.Base.Shape.isValid():
-        #wire=fp.Base.Shape.Wires[0].transformGeometry(fp.Base.Placement.toMatrix()) 
-            solids=[]
-            for faceb in fp.Base.Shape.Faces:
-            #fp.Base.Shape.Faces[0].check()
+        if fp.Base and fp.Height and fp.Base.Shape.isValid():
+            solids = []
+            for lower_face in fp.Base.Shape.Faces:
+                upper_face = lower_face.copy()
+                face_transform = FreeCAD.Matrix()
+                face_transform.rotateZ(math.radians(fp.Angle.Value))
+                face_transform.scale(fp.Scale[0], fp.Scale[1], 1.0)
+                face_transform.move(FreeCAD.Vector(0,0,fp.Height.Value))
+                upper_face.transformShape(face_transform, False, True) # True to check for non-uniform scaling
 
-            #faceb=fp.Base.Shape.Faces[0]
-            #faceb=fp.Base.Shape.removeSplitter().Faces[0]
-                faceu=faceb.copy()
-                facetransform=FreeCAD.Matrix()
-                facetransform.rotateZ(math.radians(fp.Angle.Value))
-                facetransform.scale(fp.Scale[0],fp.Scale[1], 1.0)
-                facetransform.move(FreeCAD.Vector(0,0,fp.Height.Value))
-                faceu.transformShape(facetransform)
-                step = 2 + abs(int(fp.Angle.Value // 90)) #resolution in z direction
-                zinc = fp.Height.Value/(step-1.0)
-                angleinc = math.radians(fp.Angle.Value)/(step-1.0)
-                spine = Part.makePolygon([(0,0,i*zinc) \
-                        for i in range(step)])
-                auxspine = Part.makePolygon([(math.cos(i*angleinc),\
-                        math.sin(i*angleinc),i*zinc) \
-                        for i in range(step)])
-                faces=[faceb,faceu]
-                for wire1,wire2 in zip(faceb.Wires,faceu.Wires):
-                    pipeshell=Part.BRepOffsetAPI.MakePipeShell(spine)
-                    pipeshell.setSpineSupport(spine)
-                    pipeshell.add(wire1)
-                    pipeshell.add(wire2)
-                    pipeshell.setAuxiliarySpine(auxspine,True,0)
-                    print(pipeshell.getStatus())
-                    assert(pipeshell.isReady())
-                    pipeshell.build()
-                    faces.extend(pipeshell.shape().Faces)
+                spine = Part.makePolygon([(0,0,0),(0,0,fp.Height.Value)])
+                if fp.Angle.Value == 0.0:
+                    auxiliary_spine = Part.makePolygon([(1,1,0),(fp.Scale[0],fp.Scale[1],fp.Height.Value)])
+                else:
+                    num_revolutions = abs(fp.Angle.Value)/360.0
+                    pitch = fp.Height.Value / num_revolutions
+                    height = fp.Height.Value
+                    radius = 1.0
+                    if fp.Angle.Value < 0.0:
+                        left_handed = True
+                    else:
+                        left_handed = False
+                    auxiliary_spine = Part.makeHelix(pitch, height, radius, 0.0, left_handed)
+                    
+                faces = [lower_face,upper_face]
+                for wire1,wire2 in zip(lower_face.Wires,upper_face.Wires):
+                    pipe_shell = Part.BRepOffsetAPI.MakePipeShell(spine)
+                    pipe_shell.setSpineSupport(spine)
+                    pipe_shell.add(wire1)
+                    pipe_shell.add(wire2)
+                    pipe_shell.setAuxiliarySpine(auxiliary_spine,True,0)
+                    print(pipe_shell.getStatus())
+                    assert(pipe_shell.isReady())
+                    pipe_shell.build()
+                    faces.extend(pipe_shell.shape().Faces)
                 try:
                     fullshell=Part.Shell(faces)
                     solid=Part.Solid(fullshell)

@@ -192,7 +192,8 @@ class _TaskPanel:
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
             ["Solid", "Face", "Edge"],
-            False
+            False,
+            True
         )  # start with Solid in list!
 
         # form made from param and selection widget
@@ -204,6 +205,10 @@ class _TaskPanel:
     # leave task panel ***************************************************************************
     def accept(self):
         # print(self.material)
+        if self.material == {}:  # happens if material editor was canceled
+                FreeCAD.Console.PrintError("Empty material dictionary, nothing was changed.\n")
+                self.recompute_and_set_back_all()
+                return True
         if self.selectionWidget.has_equal_references_shape_types():
             self.do_not_set_thermal_zeros()
             from materialtools.cardutils import check_mat_units as checkunits
