@@ -2065,7 +2065,10 @@ QTableView {
     gridline-color: #696969;
     selection-color: #ffffff;
     selection-background-color: #2D5C9A; /* Default Spreadsheet cell selection background color */
-    background-color: #a0a0a0; /* Default Spreadsheet cell background color */
+}
+
+QTableView:item {
+    color: #e0e0e0;
 }
 
 QTableView::item:hover  {
@@ -2077,9 +2080,10 @@ QTableView::item:disabled  {
 }
 
 QTableView::item:selected  {
-    color: #a0a0a0;
+    color: white;
     border-color: #cbd8e6; /* same as focused background color */
     border-bottom-color: #557BB6; /* same as focused border color */
+    background-color: #557BB6; /* should be similar to QListView::item selected background-color */
 }
 
 /* fix for elements inside the cells */

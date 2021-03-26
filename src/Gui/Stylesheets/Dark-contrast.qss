@@ -2040,9 +2040,14 @@ QToolBar QToolButton#qt_toolbar_ext_button:on {
 Tables (spreadsheets)
 ==================================================================================================*/
 QTableView {
+    color: #ffffff;
     gridline-color: #a0a0a0;
-    selection-color: #1b3774;
+    selection-color: #ffffff;
     selection-background-color: #adc5ed;
+}
+
+QTableView:item {
+    color: #ffffff;
 }
 
 QTableView::item:hover  {
@@ -2054,9 +2059,10 @@ QTableView::item:disabled  {
 }
 
 QTableView::item:selected  {
-    color: #1b3774;
+    color: white;
     border-color: #cbd8e6; /* same as focused background color */
     border-bottom-color: #7cabf9; /* same as focused border color */
+    background-color: #2053c0; /* should be similar to QListView::item selected background-color */
 }
 
 /* fix for elements inside the cells */

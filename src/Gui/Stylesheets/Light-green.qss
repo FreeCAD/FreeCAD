@@ -2033,9 +2033,10 @@ QTableView::item:disabled  {
 }
 
 QTableView::item:selected  {
-    color: #566214;
+    color: white;
     border-color: #dadfc5; /* same as focused background color */
     border-bottom-color: #a5c61a; /* same as focused border color */
+    background-color: #94b30f; /* should be similar to QListView::item selected background-color */
 }
 
 /* fix for elements inside the cells */
