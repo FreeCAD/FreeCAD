@@ -21,7 +21,7 @@
 
 import six
 
-import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,math,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui

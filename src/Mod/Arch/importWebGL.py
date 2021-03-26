@@ -37,7 +37,7 @@
 
 """FreeCAD WebGL Exporter"""
 
-import FreeCAD,Mesh,Draft,Part,DraftGeomUtils,Arch,OfflineRenderingUtils,json,six
+import FreeCAD,Mesh,Draft,Part,OfflineRenderingUtils,json,six
 
 if FreeCAD.GuiUp:
     import FreeCADGui

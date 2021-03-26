@@ -16,7 +16,7 @@ data of the second object like this:
 
 """
 
-import os, sys, struct
+import sys, struct
 
 import numpy
 
