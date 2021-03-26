@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2020 FreeCAD Developers                                 *
- *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
+ *   Author: Uwe StÃ¶hr <uwestoehr@lyx.org>                                 *
  *   Based on src/Mod/FEM/Gui/DlgSettingsFEMImp.cpp                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *

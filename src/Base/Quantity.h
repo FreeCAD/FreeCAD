@@ -268,6 +268,8 @@ public:
     static Quantity MilliVolt;
     static Quantity KiloVolt;
 
+    static Quantity MegaSiemens;
+    static Quantity KiloSiemens;
     static Quantity Siemens;
     static Quantity MilliSiemens;
     static Quantity MicroSiemens;

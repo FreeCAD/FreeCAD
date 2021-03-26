@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Uwe Stöhr <uwestoehr@lyx.org>                      *
+ *   Copyright (c) 2021 Uwe StÃ¶hr <uwestoehr@lyx.org>                      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

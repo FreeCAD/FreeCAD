@@ -34,7 +34,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_dimension">
           <property name="text">
-           <string>Mesh element dimension:</string>
+           <string>Element dimension:</string>
           </property>
          </widget>
         </item>
@@ -135,7 +135,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="I_order">
           <property name="text">
-           <string>Mesh order</string>
+           <string>Element order:</string>
           </property>
          </widget>
         </item>
@@ -195,7 +195,7 @@
             </property>
            </spacer>
           </item>
-         <item row="7" column="0">
+          <item row="7" column="0">
            <widget class="QPushButton" name="pb_get_gmsh_version">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -208,7 +208,7 @@
             </property>
            </widget>
           </item>
-          </layout>
+         </layout>
         </item>
        </layout>
       </item>
