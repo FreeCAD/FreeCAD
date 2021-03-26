@@ -37,10 +37,8 @@ import argparse
 import datetime
 #import shlex
 from PathScripts import PostUtils
-from PathScripts import PathUtils
 
-POST_PROCESSOR_NAME = 'UCCNC'
-VERSION="0.0.3"
+VERSION="0.0.4"
 
 TOOLTIP=''' Post processor for UC-CNC.
 
@@ -113,9 +111,9 @@ TOOL_CHANGE = ''''''
 ### Other configuration settings                   ###
 ######################################################
 
-# MACHINE_NAME possible options
-#    "<name>"    string with the target machine name.
-MACHINE_NAME = "Stepcraft-420"
+# GCODE_PROCESSOR possible options
+#    string     The target GCode processor name.
+GCODE_PROCESSOR = "UC-CNC"
 
 # SHOW_EDITOR possible values:
 #    bool       Show gcode before saving.
@@ -242,7 +240,7 @@ UNIT_SPEED_FORMAT = UNIT_SPEED_FORMAT_METRIC
 ######################################################
 
 # see: https://docs.python.org/3/library/argparse.html
-parser = argparse.ArgumentParser(prog=POST_PROCESSOR_NAME, add_help=False)
+parser = argparse.ArgumentParser(prog=__name__, add_help=False)
 parser.add_argument('--name',                                    help='GCode program name')
 parser.add_argument('--no-header',          action='store_true', help='suppress header output')
 parser.add_argument('--no-comments',        action='store_true', help='suppress comment output')
@@ -256,6 +254,7 @@ parser.add_argument('--metric',             action='store_true', help='lengths i
 parser.add_argument('--modal',              action='store_true', help='repeat/suppress repeated command arguments')
 parser.add_argument('--tool-length-offset', action='store_true', help='suppress tool length offset G43 following tool changes')
 parser.add_argument('--repeat',             action='store_true', help='repeat axis arguments')
+TOOLTIP_ARGS = parser.format_help()
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ['__builtin__', 'io']:
@@ -270,7 +269,6 @@ trace_gcode = False
 
 now = datetime.datetime.now()
 
-TOOLTIP_ARGS = parser.format_help()
 LINENR=0
 COMMAND_SPACE = " "
 UNIT_DEFAULT_CHANGED = False
@@ -282,7 +280,7 @@ problems_count = 0
 
 
 def processArguments(argstring):
-	global MACHINE_NAME             # The target machine name
+	global GCODE_PROCESSOR          # The target GCode processor name
 	global SHOW_EDITOR              # Show gcode before saving.
 	global PROG_NAME                # Name of the G-Code program
 	global OUTPUT_HEADER            # Use of a document header
@@ -390,7 +388,6 @@ def export(objectslist, filename, argstring):
 		print("export: process arguments failed, '{}'".format(argstring))
 		return None
 
-	global POST_PROCESSOR_NAME
 	global UNITS
 	global UNIT_FORMAT
 	global UNIT_SPEED_FORMAT
@@ -408,9 +405,9 @@ def export(objectslist, filename, argstring):
 	print("export: postprocessing...")
 	gcode = append0("%" + PROG_NAME + "\n")
 	if not argstring:
-		gcode += append("(" + POST_PROCESSOR_NAME + " with default settings)\n")
+		gcode += append("(" + __name__ + " with default settings)\n")
 	else:
-		gcode += append("({} {})\n".format(POST_PROCESSOR_NAME, argstring))
+		gcode += append("({} {})\n".format(__name__, argstring))
 
 	# write header
 	if OUTPUT_HEADER:
@@ -419,8 +416,10 @@ def export(objectslist, filename, argstring):
 		(CAM file: {})
 		(Output Time: {})
 		'''
-		for line in HEADER.format(MACHINE_NAME, __name__, VERSION, FreeCAD.ActiveDocument.FileName, str(now)).splitlines(True):
-			gcode += append(line)
+		for line in HEADER.format(GCODE_PROCESSOR, __name__, VERSION, FreeCAD.ActiveDocument.FileName, str(now)).splitlines():
+			l = line.strip()
+			if (l):
+				gcode += append(l + "\n")
 
 	# Write the preamble
 	# G20/G21 not supported by UC-CNC, *always* report the configured units and deviations from the default settings for safety.
@@ -437,40 +436,11 @@ def export(objectslist, filename, argstring):
 		# error: global name 'PathScripts' is not defined
 	for line in PREAMBLE.splitlines(False):
 		gcode += append(line + "\n")
-	#if OUTPUT_COMMENTS:
-	#	gcode += append(UNITS + " (units in '" + UNIT_FORMAT + "' and '" + UNIT_SPEED_FORMAT + "')\n")
-	#else:
-	#	gcode += append(UNITS + "\n")
 	if OUTPUT_COMMENTS:
 		gcode += append("(preamble: done)\n")
 
 	# write the code body
 	for obj in objectslist:
-
-		# fetch machine details
-		job = PathUtils.findParentJob(obj)
-
-		myMachine = MACHINE_NAME
-		if hasattr(job, "MachineName"):
-			myMachine = job.MachineName
-
-		if hasattr(job, "MachineUnits"):
-			#if job.MachineUnits == "Metric":
-			#	UNITS = UNITS_METRIC
-			#	UNIT_FORMAT = UNIT_FORMAT_METRIC
-			#	UNIT_SPEED_FORMAT = UNIT_SPEED_FORMAT_METRIC
-			#else:
-			#	UNITS = UNITS_US_IMP
-			#	UNIT_FORMAT = UNIT_FORMAT_US_IMP
-			#	UNIT_SPEED_FORMAT = UNIT_SPEED_FORMAT_US_IMP
-			if (job.MachineUnits == "Metric") and (UNITS != UNITS_METRIC):
-				print("export: MachineUnits: requested Metic [mm], using US Imperial [inch], G20/G21 not supported by UC-CNC, skipped.")
-				gcode += append("(" + UNITS_US_IMP + " PROBLEM: code not supported by UC-CNC, default: units in [" + UNIT_FORMAT + "])\n")
-				problems_count += 1
-			if (job.MachineUnits != "Metric") and (UNITS == UNITS_METRIC):
-				print("export: MachineUnits: requested US Imperial [inch], using Metic [mm], G20/G21 not supported by UC-CNC, skipped.")
-				gcode += append("(" + UNITS_METRIC + " PROBLEM: code not supported by UC-CNC, default: units in[" + UNIT_FORMAT + "])\n")
-				problems_count += 1
 
 		# pre_op
 		if OUTPUT_COMMENTS:
@@ -667,5 +637,5 @@ def parse(pathobj):
 
 		return out
 
-print(__name__ + " gcode postprocessor for UC-CNC loaded.")
+print(__name__ + " for " + GCODE_PROCESSOR + " loaded.")
 
