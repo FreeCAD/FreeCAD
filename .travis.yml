@@ -313,7 +313,7 @@ script:
 
         # For debugging DLL load failure
         find 'C:\Users\travis\build\FreeCAD\FreeCAD' -name "*.dll"
-        /C/Users/travis/build/FreeCAD/FreeCAD/src/Tools/depends22_x64/depends.exe -c -ph 1 -ot dw.txt /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0
+        /C/Users/travis/build/FreeCAD/FreeCAD/src/Tools/depends22_x64/depends.exe -c -pa 1 -pb -ot dw.txt /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0
         cat dw.txt
         
         # show clcache hit stats
