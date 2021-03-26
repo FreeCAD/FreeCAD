@@ -83,6 +83,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
             editor->setContextMenuPolicy(Qt::NoContextMenu);
             editor->setIndex(index);
             connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
+            lastEditor = editor;
             return editor;
         }
         case Cell::EditCombo: {
@@ -118,6 +119,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
     }
 
     SpreadsheetGui::TextEdit *editor = new SpreadsheetGui::TextEdit(parent);
+    lastEditor = editor;
     editor->setIndex(index);
 
     editor->setDocumentObject(sheet);
@@ -173,6 +175,11 @@ void SpreadsheetDelegate::setEditorData(QWidget *editor,
     TextEdit *edit = qobject_cast<TextEdit*>(editor);
     if (edit) {
         edit->setPlainText(data.toString());
+        if (lastEditor == edit) {
+            lastEditor = nullptr;
+            if (edit->blockCount() == 1)
+                edit->selectAll();
+        }
         return;
     }
     QPushButton *button = qobject_cast<QPushButton*>(editor);

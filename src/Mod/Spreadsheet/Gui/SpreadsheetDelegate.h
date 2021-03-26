@@ -57,6 +57,7 @@ private:
     bool committing = false;
     mutable bool updating = false;
     mutable bool syncCombo = false;
+    mutable QWidget *lastEditor = nullptr;
 
     friend class SheetTableView;
 };
