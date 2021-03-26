@@ -5891,9 +5891,18 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
     _pcAction = pcAction;
     languageChange();
 
-    pcAction->setIcon(arc1->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool defDiaConstrain = hGrp->GetBool("DefaultDiaConstraint", false);
+
+    if (defDiaConstrain) {
+        pcAction->setIcon(arc2->icon());
+        int defaultId = 1;
+        pcAction->setProperty("defaultAction", QVariant(defaultId));
+    } else {
+        pcAction->setIcon(arc1->icon());
+        int defaultId = 0;
+        pcAction->setProperty("defaultAction", QVariant(defaultId));
+    }
 
     pcAction->setShortcut(QString::fromLatin1(sAccel));
 
