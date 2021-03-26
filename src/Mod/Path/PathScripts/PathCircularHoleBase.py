@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -19,12 +17,6 @@
 # *   License along with this program; if not, write to the Free Software   *
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: 4th-axis integration                                           *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
 # *                                                                         *
 # ***************************************************************************
 
@@ -52,9 +44,6 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 __contributors__ = "russ4262 (Russell Johnson)"
-__created__ = "2017"
-__scriptVersion__ = "2b"
-__lastModified__ = "2020-02-13 17:11 CST"
 
 
 # Qt translation handling
@@ -255,98 +244,70 @@ class ObjectOp(PathOp.ObjectOp):
                 baseSubsTuples.append((base, subList, 0.0, 'A', stock))
         else:
             for p in range(0, len(obj.Base)):
-                (base, subsList) = obj.Base[p]
-                for sub in subsList:
-                    if self.isHoleEnabled(obj, base, sub):
-                        shape = getattr(base.Shape, sub)
-                        rtn = False
-                        (norm, surf) = self.getFaceNormAndSurf(shape)
-                        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
-                        if rtn is True:
-                            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
-                            # Verify faces are correctly oriented - InverseAngle might be necessary
-                            PathLog.debug("Verifying {} orientation: running faceRotationAnalysis() again.".format(sub))
-                            faceIA = getattr(clnBase.Shape, sub)
-                            (norm, surf) = self.getFaceNormAndSurf(faceIA)
-                            (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
-                            if rtn is True:
-                                msg = obj.Name + ":: "
-                                msg += translate("Path", "{} might be misaligned after initial rotation.".format(sub)) + "  "
-                                if obj.AttemptInverseAngle is True and obj.InverseAngle is False:
-                                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
-                                    msg += translate("Path", "Rotated to 'InverseAngle' to attempt access.")
-                                else:
-                                    if len(subsList) == 1:
-                                        msg += translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
-                                    else:
-                                        msg += translate("Path", "Consider transferring '{}' to independent operation.".format(sub))
-                                PathLog.warning(msg)
-                                # title = translate("Path", 'Rotation Warning')
-                                # self.guiMessage(title, msg, False)
-                            else:
-                                PathLog.debug("Face appears to be oriented correctly.")
-
-                            cmnt = "{}: {} @ {};  ".format(sub, axis, str(round(angle, 5)))
-                            if cmnt not in obj.Comment:
-                                obj.Comment += cmnt
-
-                            tup = clnBase, sub, tag, angle, axis, clnStock
-                            allTuples.append(tup)
-                        else:
-                            if self.warnDisabledAxis(obj, axis, sub) is True:
-                                pass  # Skip drill feature due to access issue
-                            else:
-                                PathLog.debug(str(sub) + ": No rotation used")
-                                axis = 'X'
-                                angle = 0.0
-                                tag = base.Name + '_' + axis + str(angle).replace('.', '_')
-                                stock = PathUtils.findParentJob(obj).Stock
-                                tup = base, sub, tag, angle, axis, stock
-                                allTuples.append(tup)
-                        # Eif
-                    # Eif
-                    subCount += 1
-                # Efor
-            # Efor
-            (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
-            subList = []
-            for o in range(0, len(Tags)):
-                PathLog.debug('hTag: {}'.format(Tags[o]))
-                subList = []
-                for (base, sub, tag, angle, axis, stock) in Grps[o]:
-                    subList.append(sub)
-                pair = base, subList, angle, axis, stock
-                baseSubsTuples.append(pair)
-            # Efor
+                (bst, at) = self.process_base_geometry_with_rotation(obj, p, subCount)
+                allTuples.extend(at)
+                baseSubsTuples.extend(bst)
 
         for base, subs, angle, axis, stock in baseSubsTuples:
+            # rotate shorter angle in opposite direction
+            if angle > 180:
+                angle -= 360
+            elif angle < -180:
+                angle += 360
+
+            # Re-analyze rotated model for drillable holes
+            if obj.EnableRotation != 'Off':
+                rotated_features = self.findHoles(obj, base)
+
             for sub in subs:
+                PathLog.debug('sub, angle, axis: {}, {}, {}'.format(sub, angle, axis))
                 if self.isHoleEnabled(obj, base, sub):
                     pos = self.holePosition(obj, base, sub)
                     if pos:
-                        # Default is treat selection as 'Face' shape
-                        holeBtm = base.Shape.getElement(sub).BoundBox.ZMin
+                        # Identify face to which edge belongs
+                        sub_shape = base.Shape.getElement(sub)
+
+                        # Default is to treat selection as 'Face' shape
+                        holeBtm = sub_shape.BoundBox.ZMin
+
+                        if obj.EnableRotation != 'Off':
+                            # Update Start and Final depths due to rotation, if auto defaults are active
+                            parent_face = self._find_parent_face_of_edge(rotated_features, sub_shape)
+                            if parent_face:
+                                PathLog.debug('parent_face found')
+                                holeBtm = parent_face.BoundBox.ZMin
+                                if obj.OpStartDepth == obj.StartDepth:
+                                    obj.StartDepth.Value = parent_face.BoundBox.ZMax
+                                    PathLog.debug('new StartDepth: {}'.format(obj.StartDepth.Value))
+                                if obj.OpFinalDepth == obj.FinalDepth:
+                                    obj.FinalDepth.Value = holeBtm
+                                    PathLog.debug('new FinalDepth: {}'.format(holeBtm))
+                            else:
+                                PathLog.debug('NO parent_face identified')
+
                         if base.Shape.getElement(sub).ShapeType == 'Edge':
                             msg = translate("Path", "Verify Final Depth of holes based on edges. {} depth is: {} mm".format(sub, round(holeBtm, 4))) + "  "
                             msg += translate("Path", "Always select the bottom edge of the hole when using an edge.")
                             PathLog.warning(msg)
 
                         # Warn user if Final Depth set lower than bottom of hole
-                        if finDep < holeBtm:
+                        if obj.FinalDepth.Value < holeBtm:
                             msg = translate("Path", "Final Depth setting is below the hole bottom for {}.".format(sub)) + '  '
                             msg += translate("Path", "{} depth is calculated at {} mm".format(sub, round(holeBtm, 4)))
                             PathLog.warning(msg)
 
                         holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub),
-                                     'angle': angle, 'axis': axis, 'trgtDep': finDep,
+                                     'angle': angle, 'axis': axis, 'trgtDep': obj.FinalDepth.Value,
                                       'stkTop': stock.Shape.BoundBox.ZMax})
 
+        # haveLocations are populated from user-provided (x, y) coordinates
+        # provided by the user in the Base Locations tab of the Task Editor window
         if haveLocations(self, obj):
             for location in obj.Locations:
                 # holes.append({'x': location.x, 'y': location.y, 'r': 0, 'angle': 0.0, 'axis': 'X', 'holeBtm': obj.FinalDepth.Value})
                 holes.append({'x': location.x, 'y': location.y, 'r': 0,
-                             'angle': 0.0, 'axis': 'X', 'trgtDep': finDep,
-                              'stkTop': PathUtils.findParentJob(obj).stock.Shape.BoundBox.ZMax})
+                             'angle': 0.0, 'axis': 'X', 'trgtDep': obj.FinalDepth.Value,
+                              'stkTop': PathUtils.findParentJob(obj).Stock.Shape.BoundBox.ZMax})
 
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)  # circularHoleExecute() located in PathDrilling.py
@@ -437,13 +398,8 @@ class ObjectOp(PathOp.ObjectOp):
             Determine rotational radii for 4th-axis rotations, for clearance/safe heights '''
 
         parentJob = PathUtils.findParentJob(obj)
-        # bb = parentJob.Stock.Shape.BoundBox
         xlim = 0.0
         ylim = 0.0
-        zlim = 0.0
-        xRotRad = 0.01
-        yRotRad = 0.01
-        zRotRad = 0.01
 
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(self.stockBB.ZMin) > math.fabs(self.stockBB.ZMax):
@@ -465,10 +421,8 @@ class ObjectOp(PathOp.ObjectOp):
             else:
                 xlim = self.stockBB.XMax
 
-        if ylim != 0.0:
-            xRotRad = math.sqrt(ylim**2 + zlim**2)
-        if xlim != 0.0:
-            yRotRad = math.sqrt(xlim**2 + zlim**2)
+        xRotRad = math.sqrt(ylim**2 + zlim**2)
+        yRotRad = math.sqrt(xlim**2 + zlim**2)
         zRotRad = math.sqrt(xlim**2 + ylim**2)
 
         clrOfst = parentJob.SetupSheet.ClearanceHeightOffset.Value
@@ -554,9 +508,9 @@ class ObjectOp(PathOp.ObjectOp):
                     if saX < 0.0:
                         angle = angle + 180.0
         elif saZ == 0.0:
-            if saY != 0.0:
-                angle = math.degrees(math.atan(saX / saY))
-                orientation = "Y"
+            # if saY != 0.0:
+            angle = math.degrees(math.atan(saX / saY))
+            orientation = "Y"
 
         if saX + nX == 0.0:
             angle = -1 * angle
@@ -602,9 +556,8 @@ class ObjectOp(PathOp.ObjectOp):
                     axis = 'Y'
                 rtn = True
 
-        if rtn is True:
+        if rtn:
             self.rotateFlag = True  # pylint: disable=attribute-defined-outside-init
-            # rtn = True
             if obj.ReverseDirection is True:
                 if angle < 180.0:
                     angle = angle + 180.0
@@ -617,8 +570,6 @@ class ObjectOp(PathOp.ObjectOp):
             praInfo += "\n - ... rotation triggered"
         else:
             praInfo += "\n - ... NO rotation triggered"
-
-        PathLog.debug("\n" + str(praInfo))
 
         return (rtn, angle, axis, praInfo)
 
@@ -648,17 +599,19 @@ class ObjectOp(PathOp.ObjectOp):
         '''visualAxis()
             Create visual X & Y axis for use in orientation of rotational operations
             Triggered only for PathLog.debug'''
+        fcad = FreeCAD.ActiveDocument
 
-        if not FreeCAD.ActiveDocument.getObject('xAxCyl'):
+        if not fcad.getObject('xAxCyl'):
             xAx = 'xAxCyl'
             yAx = 'yAxCyl'
-            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
+            # zAx = 'zAxCyl'
+            visual_axis_obj = fcad.addObject("App::DocumentObjectGroup", "visualAxis")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
-            vaGrp = FreeCAD.ActiveDocument.getObject("visualAxis")
+            vaGrp = fcad.getObject("visualAxis")
 
-            FreeCAD.ActiveDocument.addObject("Part::Cylinder", xAx)
-            cyl = FreeCAD.ActiveDocument.getObject(xAx)
+            fcad.addObject("Part::Cylinder", xAx)
+            cyl = fcad.getObject(xAx)
             cyl.Label = xAx
             cyl.Radius = self.xRotRad
             cyl.Height = 0.01
@@ -671,8 +624,8 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
 
-            FreeCAD.ActiveDocument.addObject("Part::Cylinder", yAx)
-            cyl = FreeCAD.ActiveDocument.getObject(yAx)
+            fcad.addObject("Part::Cylinder", yAx)
+            cyl = fcad.getObject(yAx)
             cyl.Label = yAx
             cyl.Radius = self.yRotRad
             cyl.Height = 0.01
@@ -684,28 +637,33 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Transparency = 85
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
+            visual_axis_obj.purgeTouched()
 
     def useTempJobClones(self, cloneName):
         '''useTempJobClones(cloneName)
             Manage use of temporary model clones for rotational operation calculations.
             Clones are stored in 'rotJobClones' group.'''
-        if FreeCAD.ActiveDocument.getObject('rotJobClones'):
+        fcad = FreeCAD.ActiveDocument
+
+        if fcad.getObject('rotJobClones'):
             if cloneName == 'Start':
                 if PathLog.getLevel(PathLog.thisModule()) < 4:
-                    for cln in FreeCAD.ActiveDocument.getObject('rotJobClones').Group:
-                        FreeCAD.ActiveDocument.removeObject(cln.Name)
+                    for cln in fcad.getObject('rotJobClones').Group:
+                        fcad.removeObject(cln.Name)
             elif cloneName == 'Delete':
                 if PathLog.getLevel(PathLog.thisModule()) < 4:
-                    for cln in FreeCAD.ActiveDocument.getObject('rotJobClones').Group:
-                        FreeCAD.ActiveDocument.removeObject(cln.Name)
-                    FreeCAD.ActiveDocument.removeObject('rotJobClones')
+                    for cln in fcad.getObject('rotJobClones').Group:
+                        fcad.removeObject(cln.Name)
+                    fcad.removeObject('rotJobClones')
+                else:
+                    fcad.getObject('rotJobClones').purgeTouched()
         else:
-            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "rotJobClones")
+            fcad.addObject("App::DocumentObjectGroup", "rotJobClones")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('rotJobClones').Visibility = False
 
         if cloneName != 'Start' and cloneName != 'Delete':
-            FreeCAD.ActiveDocument.getObject('rotJobClones').addObject(FreeCAD.ActiveDocument.getObject(cloneName))
+            fcad.getObject('rotJobClones').addObject(fcad.getObject(cloneName))
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject(cloneName).Visibility = False
 
@@ -714,6 +672,7 @@ class ObjectOp(PathOp.ObjectOp):
             Method called to create a temporary clone of the base and parent Job stock.
             Clones are destroyed after usage for calculations related to rotational operations.'''
         # Create a temporary clone and stock of model for rotational use.
+        fcad = FreeCAD.ActiveDocument
         rndAng = round(angle, 8)
         if rndAng < 0.0:  # neg sign is converted to underscore in clone name creation.
             tag = axis + '_' + axis + '_' + str(math.fabs(rndAng)).replace('.', '_')
@@ -724,21 +683,21 @@ class ObjectOp(PathOp.ObjectOp):
         if clnNm not in self.cloneNames:
             self.cloneNames.append(clnNm)
             self.cloneNames.append(stckClnNm)
-            if FreeCAD.ActiveDocument.getObject(clnNm):
-                FreeCAD.ActiveDocument.getObject(clnNm).Shape = base.Shape
+            if fcad.getObject(clnNm):
+                fcad.getObject(clnNm).Shape = base.Shape
             else:
-                FreeCAD.ActiveDocument.addObject('Part::Feature', clnNm).Shape = base.Shape
+                fcad.addObject('Part::Feature', clnNm).Shape = base.Shape
                 self.useTempJobClones(clnNm)
-            if FreeCAD.ActiveDocument.getObject(stckClnNm):
-                FreeCAD.ActiveDocument.getObject(stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
+            if fcad.getObject(stckClnNm):
+                fcad.getObject(stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
             else:
-                FreeCAD.ActiveDocument.addObject('Part::Feature', stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
+                fcad.addObject('Part::Feature', stckClnNm).Shape = PathUtils.findParentJob(obj).Stock.Shape
                 self.useTempJobClones(stckClnNm)
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject(stckClnNm).Transparency = 90
                 FreeCADGui.ActiveDocument.getObject(clnNm).ShapeColor = (1.000, 0.667, 0.000)
-        clnBase = FreeCAD.ActiveDocument.getObject(clnNm)
-        clnStock = FreeCAD.ActiveDocument.getObject(stckClnNm)
+        clnBase = fcad.getObject(clnNm)
+        clnStock = fcad.getObject(stckClnNm)
         tag = base.Name + '_' + tag
         return (clnBase, clnStock, tag)
 
@@ -749,10 +708,6 @@ class ObjectOp(PathOp.ObjectOp):
         norm = FreeCAD.Vector(0.0, 0.0, 0.0)
         surf = FreeCAD.Vector(0.0, 0.0, 0.0)
 
-        if face.ShapeType == 'Edge':
-            edgToFace = Part.Face(Part.Wire(Part.__sortEdges__([face])))
-            face = edgToFace
-
         if hasattr(face, 'normalAt'):
             n = face.normalAt(0, 0)
         elif hasattr(face, 'normal'):
@@ -761,7 +716,6 @@ class ObjectOp(PathOp.ObjectOp):
             s = face.Surface.Axis
         else:
             s = n
-
         norm.x = n.x
         norm.y = n.y
         norm.z = n.z
@@ -779,11 +733,6 @@ class ObjectOp(PathOp.ObjectOp):
             vect = FreeCAD.Vector(1, 0, 0)
         elif axis == 'Y':
             vect = FreeCAD.Vector(0, 1, 0)
-
-        if obj.InverseAngle is True:
-            angle = -1 * angle
-            if math.fabs(angle) == 0.0:
-                angle = 0.0
 
         # Create a temporary clone of model for rotational use.
         (clnBase, clnStock, tag) = self.cloneBaseAndStock(obj, base, angle, axis, subCount)
@@ -810,9 +759,28 @@ class ObjectOp(PathOp.ObjectOp):
         clnStock.purgeTouched()
         # Update property and angle values
         obj.InverseAngle = True
-        obj.AttemptInverseAngle = False
+        # obj.AttemptInverseAngle = False
         angle = -1 * angle
+
+        PathLog.debug(translate("Path", "Rotated to inverse angle."))
         return (clnBase, clnStock, angle)
+
+    def calculateStartFinalDepths(self, obj, shape, stock):
+        '''calculateStartFinalDepths(obj, shape, stock)
+            Calculate correct start and final depths for the shape(face) object provided.'''
+        finDep = max(obj.FinalDepth.Value, shape.BoundBox.ZMin)
+        stockTop = stock.Shape.BoundBox.ZMax
+        if obj.EnableRotation == 'Off':
+            strDep = obj.StartDepth.Value
+            if strDep <= finDep:
+                strDep = stockTop
+        else:
+            strDep = min(obj.StartDepth.Value, stockTop)
+            if strDep <= finDep:
+                strDep = stockTop
+                msg = translate('Path', "Start depth <= face depth.\nIncreased to stock top.")
+                PathLog.error(msg)
+        return (strDep, finDep)
 
     def sortTuplesByIndex(self, TupleList, tagIdx):
         '''sortTuplesByIndex(TupleList, tagIdx)
@@ -853,4 +821,184 @@ class ObjectOp(PathOp.ObjectOp):
             PathLog.warning(msg)
             return True
         else:
+            return False
+
+    def isFaceUp(self, base, face):
+        '''isFaceUp(base, face) ...
+        When passed a base object and face shape, returns True if face is up.
+        This method is used to identify correct rotation of a model.
+        '''
+        # verify face is normal to Z+-
+        (norm, surf) = self.getFaceNormAndSurf(face)
+        if round(abs(norm.z), 8) != 1.0 or round(abs(surf.z), 8) != 1.0:
+            PathLog.debug('isFaceUp - face not oriented normal to Z+-')
+            return False
+
+        curve = face.OuterWire.Edges[0].Curve
+        if curve.TypeId == "Part::GeomCircle":
+            center = curve.Center
+            radius = curve.Radius * 1.
+            face  = Part.Face(Part.Wire(Part.makeCircle(radius, center)))
+
+        up = face.extrude(FreeCAD.Vector(0.0, 0.0, 5.0))
+        dwn = face.extrude(FreeCAD.Vector(0.0, 0.0, -5.0))
+        upCmn = base.Shape.common(up)
+        dwnCmn = base.Shape.common(dwn)
+
+        # Identify orientation based on volumes of common() results
+        if len(upCmn.Edges) > 0:
+            PathLog.debug('isFaceUp - HAS up edges\n')
+            if len(dwnCmn.Edges) > 0:
+                PathLog.debug('isFaceUp - up and dwn edges\n')
+                dVol = round(dwnCmn.Volume, 6)
+                uVol = round(upCmn.Volume, 6)
+                if uVol > dVol:
+                    return False
+                return True
+            else:
+                if round(upCmn.Volume, 6) == 0.0:
+                    return True
+                return False
+        elif len(dwnCmn.Edges) > 0:
+            PathLog.debug('isFaceUp - HAS dwn edges only\n')
+            dVol = round(dwnCmn.Volume, 6)
+            if dVol == 0.0:
+                return False
+            return True
+
+        PathLog.debug('isFaceUp - exit True')
+        return True
+
+    def process_base_geometry_with_rotation(self, obj, p, subCount):
+        '''process_base_geometry_with_rotation(obj, p, subCount)...
+        This method is the control method for analyzing the selected features,
+        determining their rotational needs, and creating clones as needed
+        for rotational access for the pocketing operation.
+
+        Requires the object, obj.Base index (p), and subCount reference arguments.
+        Returns two lists of tuples for continued processing into paths.
+        '''
+        baseSubsTuples = []
+        allTuples = []
+
+        (base, subsList) = obj.Base[p]
+
+        PathLog.debug(translate('Path', "Processing subs individually ..."))
+        for sub in subsList:
+            subCount += 1
+            tup = self.process_nonloop_sublist(obj, base, sub)
+            if tup:
+                allTuples.append(tup)
+                baseSubsTuples.append(tup)
+
+        return (baseSubsTuples, allTuples)
+
+    def process_nonloop_sublist(self, obj, base, sub):
+        '''process_nonloop_sublist(obj, sub)...
+        Process sublist with non-looped set of features when rotation is enabled.
+        '''
+
+        rtn = False
+        face = base.Shape.getElement(sub)
+
+        if sub[:4] != 'Face':
+            if face.ShapeType == 'Edge':
+                edgToFace = Part.Face(Part.Wire(Part.__sortEdges__([face])))
+                face = edgToFace
+            else:
+                ignoreSub = base.Name + '.' + sub
+                PathLog.error(translate('Path', "Selected feature is not a Face. Ignoring: {}".format(ignoreSub)))
+                return False
+
+        (norm, surf) = self.getFaceNormAndSurf(face)
+        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
+        PathLog.debug("initial rotational analysis: {}".format(praInfo))
+
+        clnBase = base
+        faceIA = clnBase.Shape.getElement(sub)
+        if faceIA.ShapeType == 'Edge':
+            edgToFace = Part.Face(Part.Wire(Part.__sortEdges__([faceIA])))
+            faceIA = edgToFace
+
+        if rtn is True:
+            faceNum = sub.replace('Face', '')
+            PathLog.debug("initial applyRotationalAnalysis")
+            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNum)
+            # Verify faces are correctly oriented - InverseAngle might be necessary
+            faceIA = clnBase.Shape.getElement(sub)
+            if faceIA.ShapeType == 'Edge':
+                edgToFace = Part.Face(Part.Wire(Part.__sortEdges__([faceIA])))
+                faceIA = edgToFace
+
+            (norm, surf) = self.getFaceNormAndSurf(faceIA)
+            (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
+            PathLog.debug("follow-up rotational analysis: {}".format(praInfo2))
+
+            isFaceUp = self.isFaceUp(clnBase, faceIA)
+            PathLog.debug('... initial isFaceUp: {}'.format(isFaceUp))
+
+            if isFaceUp:
+                rtn = False
+                PathLog.debug('returning analysis: {}, {}'.format(praAngle, praAxis))
+                return (clnBase, [sub], angle, axis, clnStock)
+
+            if round(abs(praAngle), 8) == 180.0:
+                rtn = False
+                if not isFaceUp:
+                    PathLog.debug('initial isFaceUp is False')
+                    angle = 0.0
+        # Eif
+
+        if rtn:
+            # initial rotation failed, attempt inverse rotation if user requests it
+            PathLog.debug(translate("Path", "Face appears misaligned after initial rotation.") + ' 2')
+            if obj.AttemptInverseAngle:
+                PathLog.debug(translate("Path", "Applying inverse angle automatically."))
+                (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+            else:
+                if obj.InverseAngle:
+                    PathLog.debug(translate("Path", "Applying inverse angle manually."))
+                    (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
+                else:
+                    msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
+                    PathLog.warning(msg)
+
+            faceIA = clnBase.Shape.getElement(sub)
+            if faceIA.ShapeType == 'Edge':
+                edgToFace = Part.Face(Part.Wire(Part.__sortEdges__([faceIA])))
+                faceIA = edgToFace
+            if not self.isFaceUp(clnBase, faceIA):
+                angle += 180.0
+
+            # Normalize rotation angle
+            if angle < 0.0:
+                angle += 360.0
+            elif angle > 360.0:
+                angle -= 360.0
+
+            return (clnBase, [sub], angle, axis, clnStock)
+
+        if not self.warnDisabledAxis(obj, axis):
+            PathLog.debug(str(sub) + ": No rotation used")
+        axis = 'X'
+        angle = 0.0
+        stock = PathUtils.findParentJob(obj).Stock
+        return (base, [sub], angle, axis, stock)
+
+    def _find_parent_face_of_edge(self, rotated_features, test_shape):
+        '''_find_parent_face_of_edge(rotated_features, test_shape)...
+        Compare test_shape with each within rotated_features to identify
+        and return the parent face of the test_shape, if it exists.'''
+        for (base, sub) in rotated_features:
+            sub_shape = base.Shape.getElement(sub)
+            if test_shape.isSame(sub_shape):
+                return sub_shape
+            elif test_shape.isEqual(sub_shape):
+                return sub_shape
+            else:
+                for e in sub_shape.Edges:
+                    if test_shape.isSame(e):
+                        return sub_shape
+                    elif test_shape.isEqual(e):
+                        return sub_shape
             return False

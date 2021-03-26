@@ -126,6 +126,74 @@
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste expressions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make link group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make sub-link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import all links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert measurement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Insert text document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add a group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Placement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Link Transform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Measure distance</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -2503,6 +2571,16 @@ Larger value eases to pick things, but can make small features impossible to sel
                </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use software OpenGL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3112,6 +3190,29 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+        <source>Unloaded Workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load Selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
         <source>Macro</source>
@@ -3348,10 +3449,6 @@ Mouse tilting is not disabled by this setting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rotate at cursor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Isometric</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3397,6 +3494,49 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
         <source>Default camera orientation when creating a new document or selecting the home view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Window center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag at cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Object center</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+        <source>Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto switch to the 3D view containing the selected item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preselect the object in 3D view when mouse over the tree item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record selection in tree view in order to go back/forward using navigation button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add checkboxes for selection in document tree</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5157,6 +5297,10 @@ How do you want to proceed?</source>
         <source>Expression...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Auto expand</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -6666,6 +6810,22 @@ Document: </source>
         <source>Identical physical path</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectionFilter</name>
@@ -7109,7 +7269,7 @@ Document: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please select first the objects you want to export.</source>
+        <source>Select the objects to export before choosing Export.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7136,6 +7296,21 @@ Document: </source>
     </message>
     <message>
         <source>Recompute feature or document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Donate to FreeCAD development</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8724,6 +8899,21 @@ Document: </source>
     </message>
 </context>
 <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore saved camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore saved camera settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdViewRight</name>
     <message>
         <source>Standard-View</source>
@@ -8765,6 +8955,21 @@ Document: </source>
     </message>
     <message>
         <source>Rotate the view by 90° clockwise</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current camera</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save current camera settings</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

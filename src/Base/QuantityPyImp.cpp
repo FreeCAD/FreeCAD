@@ -39,7 +39,7 @@ std::string QuantityPy::representation(void) const
 #if 0
     //ret.precision(getQuantityPtr()->getFormat().precision);
     //ret.setf(std::ios::fixed, std::ios::floatfield);
-    ret << getQuantityPtr()->getValue() << " "; 
+    ret << getQuantityPtr()->getValue() << " ";
     ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
 #else
     double val= getQuantityPtr()->getValue();
@@ -76,7 +76,7 @@ PyObject* QuantityPy::toStr(PyObject* args)
 
 PyObject *QuantityPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of QuantityPy and the Twin object 
+    // create a new instance of QuantityPy and the Twin object
     return new QuantityPy(new Quantity);
 }
 
@@ -331,7 +331,7 @@ static Quantity &pyToQuantity(Quantity &q, PyObject *pyobj) {
     else if (PyLong_Check(pyobj))
         q = Quantity(PyLong_AsLong(pyobj));
     else {
-        PyErr_Format(PyExc_TypeError,"Cannot convert %s to Quantity",Py_TYPE(pyobj)->tp_name); 
+        PyErr_Format(PyExc_TypeError,"Cannot convert %s to Quantity",Py_TYPE(pyobj)->tp_name);
         throw Py::Exception();
     }
     return q;
@@ -471,7 +471,7 @@ PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, Py
             Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
             Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
             Base::Quantity q(a->pow(*b)); // to prevent memory leak in case of exception
-            
+
             return new QuantityPy(new Quantity(q));
         }
         else if (PyFloat_Check(other)) {
@@ -695,7 +695,7 @@ PyObject *QuantityPy::getCustomAttributes(const char* attr) const
 
 int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 PyObject * QuantityPy::number_invert_handler (PyObject* /*self*/)

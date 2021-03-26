@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2019 Russell Johnson (russ4262) <russ4262@gmail.com>    *
@@ -1442,11 +1441,14 @@ class ObjectWaterline(PathOp.ObjectOp):
             self.showDebugObject(pathGeom, 'PathGeom_{}'.format(round(csHght, 2)))
 
             if cutPattern == 'Line':
-                pntSet = PathSurfaceSupport.pathGeomToLinesPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
+                # pntSet = PathSurfaceSupport.pathGeomToLinesPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
+                pntSet = PathSurfaceSupport.pathGeomToLinesPointSet(self, obj, pathGeom)
             elif cutPattern == 'ZigZag':
-                pntSet = PathSurfaceSupport.pathGeomToZigzagPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
+                # pntSet = PathSurfaceSupport.pathGeomToZigzagPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
+                pntSet = PathSurfaceSupport.pathGeomToZigzagPointSet(self, obj, pathGeom)
             elif cutPattern in ['Circular', 'CircularZigZag']:
-                pntSet = PathSurfaceSupport.pathGeomToCircularPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps, self.tmpCOM)
+                # pntSet = PathSurfaceSupport.pathGeomToCircularPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps, self.tmpCOM)
+                pntSet = PathSurfaceSupport.pathGeomToCircularPointSet(self, obj, pathGeom)
             elif cutPattern == 'Spiral':
                 pntSet = PathSurfaceSupport.pathGeomToSpiralPointSet(obj, pathGeom)
 

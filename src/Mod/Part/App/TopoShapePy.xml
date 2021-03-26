@@ -552,6 +552,11 @@ If the shape is an edge it returns True if its vertices are the same.
         <UserDocu>isCoplanar(shape,tol=None) -- Checks if this shape is coplanar with the given shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="isInfinite" Const="true">
+      <Documentation>
+        <UserDocu>isInfinite() -- Checks if this shape has an infinite expansion.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="findPlane" Const="true">
       <Documentation>
           <UserDocu>findPlane(tol=None) -- return a plane if the shape is planar</UserDocu>

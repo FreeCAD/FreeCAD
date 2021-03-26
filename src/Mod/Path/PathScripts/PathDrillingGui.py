@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCircularHoleBaseGui as PathCircularHoleBaseGui
 import PathScripts.PathDrilling as PathDrilling
 import PathScripts.PathGui as PathGui
@@ -34,7 +33,7 @@ from PySide import QtCore
 
 __title__ = "Path Drilling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "UI and Command for Path Drilling Operation."
 __contributors__ = "IMBack!"
 
@@ -49,24 +48,24 @@ else:
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     '''Controller for the drilling operation's page'''
-    
+
     def initPage(self, obj):
         # pylint: disable=attribute-defined-outside-init
         self.peckDepthSpinBox = PathGui.QuantitySpinBox(self.form.peckDepth, obj, 'PeckDepth')
         self.peckRetractSpinBox = PathGui.QuantitySpinBox(self.form.peckRetractHeight, obj, 'RetractHeight')
         self.dwellTimeSpinBox = PathGui.QuantitySpinBox(self.form.dwellTime, obj, 'DwellTime')
-            
+
     def registerSignalHandlers(self, obj):
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
-        
+
         self.form.dwellEnabled.toggled.connect(self.form.dwellTime.setEnabled)
         self.form.dwellEnabled.toggled.connect(self.form.dwellTimelabel.setEnabled)
         self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
-        
+
         self.form.peckRetractHeight.setEnabled(True)
         self.form.retractLabel.setEnabled(True)
-        
+
         if self.form.peckEnabled.isChecked():
             self.form.dwellEnabled.setEnabled(False)
             self.form.peckDepth.setEnabled(True)
@@ -79,7 +78,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def getForm(self):
         '''getForm() ... return UI'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
-    
+
     def updateQuantitySpinBoxes(self, index = None):
         # pylint: disable=unused-argument
         self.peckDepthSpinBox.updateSpinBox()
@@ -142,7 +141,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.enableRotation.currentIndexChanged)
 
         return signals
-    
+
     def updateData(self, obj, prop):
         if prop in ['PeckDepth', 'RetractHeight'] and not prop in ['Base', 'Disabled']:
             self.updateQuantitySpinBoxes()
@@ -150,9 +149,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Drilling',
         PathDrilling.Create,
         TaskPanelOpPage,
-        'Path-Drilling',
-        QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Drilling"),
-        QtCore.QT_TRANSLATE_NOOP("PathDrilling", "Creates a Path Drilling object from a features of a base object"),
+        'Path_Drilling',
+        QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Drilling"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Creates a Path Drilling object from a features of a base object"),
         PathDrilling.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathDrillingGui... done\n")

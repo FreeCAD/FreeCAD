@@ -35,7 +35,7 @@ using namespace App;
 
 EXTENSION_PROPERTY_SOURCE(App::DocumentObjectExtension, App::Extension)
 
-DocumentObjectExtension::DocumentObjectExtension() 
+DocumentObjectExtension::DocumentObjectExtension()
 {
     initExtensionType(App::DocumentObjectExtension::getExtensionClassTypeId());
 }
@@ -46,7 +46,7 @@ DocumentObjectExtension::~DocumentObjectExtension()
 }
 
 short int DocumentObjectExtension::extensionMustExecute(void) {
-    
+
     return 0;
 }
 
@@ -64,15 +64,15 @@ void DocumentObjectExtension::onExtendedDocumentRestored() {
 }
 
 void DocumentObjectExtension::onExtendedSetupObject() {
-    
+
 }
 
 void DocumentObjectExtension::onExtendedUnsetupObject() {
-    
+
 }
 
 PyObject* DocumentObjectExtension::getExtensionPyObject(void) {
-    
+
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
         ExtensionPythonObject = Py::Object(new DocumentObjectExtensionPy(this),true);
@@ -82,17 +82,17 @@ PyObject* DocumentObjectExtension::getExtensionPyObject(void) {
 
 const DocumentObject* DocumentObjectExtension::getExtendedObject() const {
 
-    assert(getExtendedContainer()->isDerivedFrom(DocumentObject::getClassTypeId())); 
+    assert(getExtendedContainer()->isDerivedFrom(DocumentObject::getClassTypeId()));
     return static_cast<const DocumentObject*>(getExtendedContainer());
 }
 
 DocumentObject* DocumentObjectExtension::getExtendedObject() {
 
-    assert(getExtendedContainer()->isDerivedFrom(DocumentObject::getClassTypeId())); 
+    assert(getExtendedContainer()->isDerivedFrom(DocumentObject::getClassTypeId()));
     return static_cast<DocumentObject*>(getExtendedContainer());
 }
 
-bool DocumentObjectExtension::extensionGetSubObject(DocumentObject *&, 
+bool DocumentObjectExtension::extensionGetSubObject(DocumentObject *&,
         const char *, PyObject **, Base::Matrix4D *, bool, int) const
 {
     return false;

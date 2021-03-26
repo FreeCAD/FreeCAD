@@ -44,7 +44,7 @@ import FreeCAD as App
 import draftutils.utils as utils
 
 from draftutils.messages import _wrn, _err
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 from draftobjects.draftlink import DraftLink
 
 # Delay import of module until first use because it is heavy
@@ -75,8 +75,7 @@ class PointArray(DraftLink):
         properties = obj.PropertiesList
 
         if "Base" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", 
-                    "Base object that will be duplicated")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Base object that will be duplicated")
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
@@ -84,12 +83,7 @@ class PointArray(DraftLink):
             obj.Base = None
 
         if "PointObject" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", 
-                    ("Object containing points used to distribute "
-                    "the base object, for example, a sketch or "
-                    "a Part compound.\n"
-                    "The sketch or compound must contain at least "
-                    "one explicit point or vertex object."))
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Object containing points used to distribute the base object, for example, a sketch or a Part compound.\nThe sketch or compound must contain at least one explicit point or vertex object.")
             obj.addProperty("App::PropertyLink",
                             "PointObject",
                             "Objects",
@@ -97,10 +91,7 @@ class PointArray(DraftLink):
             obj.PointObject = None
 
         if "Count" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", 
-                    "Total number of elements in the array.\n"
-                    "This property is read-only, as the number depends "
-                    "on the points contained within 'Point Object'.")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Total number of elements in the array.\nThis property is read-only, as the number depends on the points contained within 'Point Object'.")
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
@@ -109,9 +100,7 @@ class PointArray(DraftLink):
             obj.setEditorMode("Count", 1)  # Read only
 
         if "ExtraPlacement" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", 
-                    "Additional placement, shift and rotation, "
-                    "that will be applied to each copy")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Additional placement, shift and rotation, that will be applied to each copy")
             obj.addProperty("App::PropertyPlacement",
                             "ExtraPlacement",
                             "Objects",
@@ -119,8 +108,7 @@ class PointArray(DraftLink):
             obj.ExtraPlacement = App.Placement()
 
         if self.use_link and "ExpandArray" not in properties:
-            _tip = _tr("Show the individual array elements "
-                       "(only for Link arrays)")
+            _tip = QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)")
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
@@ -147,15 +135,13 @@ class PointArray(DraftLink):
         properties = obj.PropertiesList
 
         if "ExtraPlacement" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Additional placement, shift and rotation, "
-                    "that will be applied to each copy")
+            _tip = QT_TRANSLATE_NOOP("App::Property", "Additional placement, shift and rotation, that will be applied to each copy")
             obj.addProperty("App::PropertyPlacement",
                             "ExtraPlacement",
                             "Objects",
                             _tip)
             obj.ExtraPlacement.Base = obj.Base.Placement.Base
-            _info = "added property 'ExtraPlacement'"
-            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft","added property 'ExtraPlacement'"))
 
         self.set_properties(obj)
         self.migrate_properties_0v19(obj)
@@ -171,7 +157,7 @@ class PointArray(DraftLink):
             obj.PointObject = obj.PointList
             obj.removeProperty("PointList")
             _info = "'PointList' property will be migrated to 'PointObject'"
-            _wrn("v0.19, " + obj.Label + ", " + _tr(_info))
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft","added property 'ExtraPlacement'"))
 
 
 def get_point_list(point_object):

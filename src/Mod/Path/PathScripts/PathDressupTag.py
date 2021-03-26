@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 import FreeCAD
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
@@ -225,7 +224,7 @@ class ObjectDressup:
     def toolRadius(self):
         return float(PathDressup.toolController(self.obj.Base).Tool.Diameter) / 2.0
 
-    def addTagsToDocuemnt(self):
+    def addTagsToDocument(self):
         for i, solid in enumerate(self.solids):
             obj = FreeCAD.ActiveDocument.addObject('Part::Compound', "tag_%02d" % i)
             obj.Shape = solid
@@ -257,7 +256,7 @@ def Create(baseObject, name='DressupTag'):
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     dbo = ObjectDressup(obj, baseObject)
     job = PathUtils.findParentJob(baseObject)
-    job.adddOperation(obj)
+    job.addOperation(obj)
     dbo.assignDefaultValues()
     return obj
 

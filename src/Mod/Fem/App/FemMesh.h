@@ -30,7 +30,7 @@
 
 #include <vector>
 #include <list>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <SMESH_Version.h>
 #include <SMDSAbs_ElementType.hxx>
 
@@ -46,7 +46,7 @@ class TopoDS_Solid;
 namespace Fem
 {
 
-typedef boost::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
+typedef std::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
 
 /** The representation of a FemMesh
  */
@@ -169,6 +169,7 @@ public:
 private:
     void copyMeshData(const FemMesh&);
     void readNastran(const std::string &Filename);
+    void readNastran95(const std::string &Filename);
     void readZ88(const std::string &Filename);
     void readAbaqus(const std::string &Filename);
 

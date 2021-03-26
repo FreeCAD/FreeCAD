@@ -1,0 +1,18 @@
+{
+    "name": "ISO 7046",
+    "cut_type": "countersink",
+    "thread_type": "metric",
+    "angle": 90,
+    "data": [
+    { "thread": "M1.6", "diameter":  3.6 },
+    { "thread": "M2",   "diameter":  4.4 },
+    { "thread": "M2.5", "diameter":  5.5 },
+	{ "thread": "M3",   "diameter":  6.3 },
+	{ "thread": "M3.5", "diameter":  8.2 },
+	{ "thread": "M4",   "diameter":  9.4 },
+	{ "thread": "M5",   "diameter": 10.4 },
+	{ "thread": "M6",   "diameter": 12.6 },
+	{ "thread": "M8",   "diameter": 17.3 },
+	{ "thread": "M10",  "diameter": 20.0 }
+    ]
+}

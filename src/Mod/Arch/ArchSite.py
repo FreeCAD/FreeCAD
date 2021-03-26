@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -47,9 +46,9 @@ else:
 #  Sites are containers for Arch objects, and also define a
 #  terrain surface
 
-__title__="FreeCAD Site"
+__title__= "FreeCAD Site"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 def makeSite(objectslist=None,baseobj=None,name="Site"):
@@ -117,16 +116,16 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
         import ladybug
         from ladybug import location
         from ladybug import sunpath
-    except:
+    except Exception:
         # TODO - remove pysolar dependency
         # FreeCAD.Console.PrintWarning("Ladybug module not found, using pysolar instead. Warning, this will be deprecated in the future\n")
         ladybug = False
         try:
             import pysolar
-        except:
+        except Exception:
             try:
                 import Pysolar as pysolar
-            except:
+            except Exception:
                 FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
                 return None
             else:
@@ -297,7 +296,7 @@ def makeWindRose(epwfile,scale=1,sectors=24):
     try:
         import ladybug
         from ladybug import epw
-    except:
+    except Exception:
         FreeCAD.Console.PrintError("The ladybug module was not found. Unable to generate solar diagrams\n")
         return None
     if not epwfile:
@@ -632,7 +631,7 @@ class _Site(ArchIFC.IfcProduct):
         if not "OriginOffset" in pl:
             obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
         if not hasattr(obj,"Group"):
-            obj.addExtension("App::GroupExtensionPython", self)
+            obj.addExtension("App::GroupExtensionPython")
         if not "IfcType" in pl:
             obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
             obj.IfcType = ArchIFC.IfcTypes
@@ -820,7 +819,7 @@ class _ViewProviderSite:
 
     def __init__(self,vobj):
         vobj.Proxy = self
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
         self.setProperties(vobj)
 
     def setProperties(self,vobj):
@@ -1047,7 +1046,7 @@ class _ViewProviderSite:
                     if hasattr(vobj.Object,"EPWFile") and vobj.Object.EPWFile:
                         try:
                             import ladybug
-                        except:
+                        except Exception:
                             pass
                         else:
                             self.windrosenode = makeWindRose(vobj.Object.EPWFile,vobj.SolarDiagramScale)

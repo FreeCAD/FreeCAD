@@ -71,7 +71,7 @@ public:
     void setup(DockWindowItems*);
 
     /// Adds a QDockWidget to the main window and sets \a widget as its widget
-    QDockWidget* addDockWindow(const char* name, QWidget* widget,  
+    QDockWidget* addDockWindow(const char* name, QWidget* widget,
                  Qt::DockWidgetArea pos = Qt::AllDockWidgetAreas);
     /// Removes and destroys the QDockWidget and returns the widget
     /// with name \a name added with @ref addDockWindow.
@@ -102,7 +102,7 @@ private Q_SLOTS:
 
 private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
-    
+
     DockWindowManager();
     ~DockWindowManager();
     static DockWindowManager* _instance;
@@ -111,4 +111,4 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_DOCKWINDOWMANAGER_H 
+#endif // GUI_DOCKWINDOWMANAGER_H

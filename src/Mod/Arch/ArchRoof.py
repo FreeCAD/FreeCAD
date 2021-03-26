@@ -54,7 +54,7 @@ else:
 
 __title__  = "FreeCAD Roof"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann"
-__url__    = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def adjust_list_len (lst, newLn, val):
@@ -439,7 +439,9 @@ class _Roof(ArchComponent.Component):
         if i != rel and 0 <= rel < numEdges:
             profilRel = self.profilsDico[rel]
             # do not use data from the relative profile if it in turn references a relative profile:
-            if 0 <= profilRel["idrel"] < numEdges:
+            if (0 <= profilRel["idrel"] < numEdges                           # idrel of profilRel points to a profile
+                and rel != profilRel["idrel"]                                # profilRel does not reference itself
+                and (profilRel["angle"] == 0.0 or profilRel["run"] == 0.0)): # run or angle of profilRel is zero
                 hgt = self.calcHeight(i)
                 profilCurr["height"] = hgt
             elif ang == 0.0 and run == 0.0:
@@ -806,7 +808,7 @@ class _Roof(ArchComponent.Component):
                 base = self.shps.pop()
                 for s in self.shps:
                     base = base.fuse(s)
-                base = self.processSubShapes(obj, base)
+                base = self.processSubShapes(obj, base, pl)
                 self.applyShape(obj, base, pl, allownosolid = True)
 
                 ## subVolume
@@ -819,7 +821,7 @@ class _Roof(ArchComponent.Component):
                         self.sub.Placement = pl
 
         elif base:
-            base = self.processSubShapes(obj, base)
+            base = self.processSubShapes(obj, base, pl)
             self.applyShape(obj, base, pl, allownosolid = True)
         else:
             FreeCAD.Console.PrintMessage(translate("Arch", "Unable to create a roof"))
@@ -858,7 +860,7 @@ class _Roof(ArchComponent.Component):
                     if faceLst:
                         try:
                             shell = Part.Shell(faceLst)
-                        except:
+                        except Exception:
                             pass
                         else:
                             lut={}

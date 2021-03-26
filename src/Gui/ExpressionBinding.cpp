@@ -59,7 +59,14 @@ bool ExpressionBinding::isBound() const
     return path.getDocumentObject() != 0;
 }
 
-void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
+void ExpressionBinding::unbind()
+{
+    expressionchanged.disconnect();
+    objectdeleted.disconnect();
+    path = App::ObjectIdentifier();
+}
+
+void Gui::ExpressionBinding::setExpression(std::shared_ptr<Expression> expr)
 {
     DocumentObject * docObj = path.getDocumentObject();
 
@@ -84,7 +91,7 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
 
     if(m_autoApply)
         apply();
-    
+
     if(transaction)
         App::GetApplication().closeActiveTransaction();
 
@@ -97,10 +104,14 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
     Q_ASSERT(prop != 0);
 
     path = prop->canonicalPath(_path);
-    
+
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
-    connection = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, bp::_1));
+    if (docObj) {
+        expressionchanged = docObj->ExpressionEngine.expressionChanged.connect(boost::bind(&ExpressionBinding::expressionChange, this, bp::_1));
+        App::Document* doc = docObj->getDocument();
+        objectdeleted = doc->signalDeletedObject.connect(boost::bind(&ExpressionBinding::objectDeleted, this, bp::_1));
+    }
 }
 
 void ExpressionBinding::bind(const Property &prop)
@@ -113,7 +124,7 @@ bool ExpressionBinding::hasExpression() const
     return isBound() && getExpression() != 0;
 }
 
-boost::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
+std::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
 {
     DocumentObject * docObj = path.getDocumentObject();
 
@@ -170,7 +181,7 @@ QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
 
 bool ExpressionBinding::apply(const std::string & propName)
 {
-    Q_UNUSED(propName); 
+    Q_UNUSED(propName);
     if (hasExpression()) {
         DocumentObject * docObj = path.getDocumentObject();
 
@@ -246,4 +257,12 @@ void ExpressionBinding::expressionChange(const ObjectIdentifier& id) {
 
     if(id==path)
         onChange();
+}
+
+void ExpressionBinding::objectDeleted(const App::DocumentObject& obj)
+{
+    DocumentObject * docObj = path.getDocumentObject();
+    if (docObj == &obj) {
+        unbind();
+    }
 }

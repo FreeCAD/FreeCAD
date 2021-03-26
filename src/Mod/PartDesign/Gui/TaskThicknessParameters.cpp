@@ -54,10 +54,10 @@ using namespace Gui;
 
 TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, false, true, parent)
+    , ui(new Ui_TaskThicknessParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskThicknessParameters();
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
@@ -118,6 +118,9 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
 
     int join = pcThickness->Join.getValue();
     ui->joinComboBox->setCurrentIndex(join);
+
+    // the dialog can be called on a broken thickness, then hide the thickness
+    hideOnError();
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -208,6 +211,8 @@ void TaskThicknessParameters::onRefDeleted(void)
     pcThickness->Base.setValue(base, refs);
     // recompute the feature
     pcThickness->recomputeFeature();
+    // hide the thickness if there was a computation error
+    hideOnError();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
@@ -225,6 +230,8 @@ void TaskThicknessParameters::onValueChanged(double angle)
     setupTransaction();
     pcThickness->Value.setValue(angle);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
+    // hide the thickness if there was a computation error
+    hideOnError();
 }
 
 void TaskThicknessParameters::onJoinTypeChanged(int join) {
@@ -234,6 +241,8 @@ void TaskThicknessParameters::onJoinTypeChanged(int join) {
     setupTransaction();
     pcThickness->Join.setValue(join);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
+    // hide the thickness if there was a computation error
+    hideOnError();
 }
 
 void TaskThicknessParameters::onModeChanged(int mode) {
@@ -243,6 +252,8 @@ void TaskThicknessParameters::onModeChanged(int mode) {
     setupTransaction();
     pcThickness->Mode.setValue(mode);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
+    // hide the thickness if there was a computation error
+    hideOnError();
 }
 
 double TaskThicknessParameters::getValue(void) const
@@ -256,6 +267,8 @@ void TaskThicknessParameters::onReversedChanged(const bool on) {
     setupTransaction();
     pcThickness->Reversed.setValue(on);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
+    // hide the thickness if there was a computation error
+    hideOnError();
 }
 
 bool TaskThicknessParameters::getReversed(void) const
@@ -268,6 +281,8 @@ void TaskThicknessParameters::onIntersectionChanged(const bool on) {
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
     pcThickness->Intersection.setValue(on);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
+    // hide the thickness if there was a computation error
+    hideOnError();
 }
 
 bool TaskThicknessParameters::getIntersection(void) const
@@ -285,13 +300,16 @@ int TaskThicknessParameters::getMode(void) const {
     return ui->modeComboBox->currentIndex();
 }
 
-
 TaskThicknessParameters::~TaskThicknessParameters()
 {
-    Gui::Selection().clearSelection();
-    Gui::Selection().rmvSelectionGate();
-
-    delete ui;
+    try {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 bool TaskThicknessParameters::event(QEvent *e)
@@ -345,11 +363,11 @@ TaskDlgThicknessParameters::~TaskDlgThicknessParameters()
 
 bool TaskDlgThicknessParameters::accept()
 {
-    parameter->showObject();
+    auto obj = vp->getObject();
+    if (!obj->isError())
+        parameter->showObject();
 
     TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
-
-    auto obj = vp->getObject();
 
     FCMD_OBJ_CMD(obj,"Value = " << draftparameter->getValue());
     FCMD_OBJ_CMD(obj,"Reversed = " << draftparameter->getReversed());

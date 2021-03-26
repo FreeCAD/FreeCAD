@@ -46,7 +46,7 @@ import draftutils.gui_utils as gui_utils
 import draftguitools.gui_base_original as gui_base_original
 import draftutils.todo as todo
 
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -57,15 +57,14 @@ class Point(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates a point object. Click anywhere on the 3D view."
 
         return {'Pixmap': 'Draft_Point',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Point", "Point"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", "Creates a point object. Click anywhere on the 3D view.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Point, self).Activated(name=_tr("Point"))
+        super(Point, self).Activated(name=translate("draft","Point"))
         self.view = gui_utils.get3DView()
         self.stack = []
         rot = self.view.getCameraNode().getField("orientation").getValue()

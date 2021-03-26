@@ -56,7 +56,7 @@
 # include <boost/thread/condition_variable.hpp>
 # include <boost/thread/future.hpp>
 # include <boost/bind/bind.hpp>
-# include <boost/shared_ptr.hpp>
+# include <memory>
 #endif
 
 #include <Base/Console.h>
@@ -885,12 +885,12 @@ CmdSandboxMeshTestRef::CmdSandboxMeshTestRef()
 void CmdSandboxMeshTestRef::activated(int)
 {
     Gui::WaitCursor wc;
-    std::vector< boost::shared_ptr<QThread> > threads;
+    std::vector< std::shared_ptr<QThread> > threads;
     Base::Reference<Mesh::MeshObject> mesh(new Mesh::MeshObject);
     int num = mesh.getRefCount();
 
     for (int i=0; i<10; i++) {
-        boost::shared_ptr<QThread> trd(new MeshThread(mesh));
+        std::shared_ptr<QThread> trd(new MeshThread(mesh));
         trd->start();
         threads.push_back(trd);
     }

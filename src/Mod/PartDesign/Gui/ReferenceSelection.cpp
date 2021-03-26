@@ -77,7 +77,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     } else { // fallback to active part
         originGroupObject = PartDesignGui::getActivePart ( );
     }
-    
+
     App::OriginGroupExtension* originGroup = nullptr;
     if(originGroupObject)
         originGroup = originGroupObject->getExtensionByType<App::OriginGroupExtension>();
@@ -172,6 +172,15 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     if (point && subName.size() > 6 && subName.substr(0,6) == "Vertex") {
         return true;
     }
+    if (circle && subName.size() > 4 && subName.substr(0,4) == "Edge") {
+        const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
+        TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+        const TopoDS_Edge& edgeShape = TopoDS::Edge(sh);
+        BRepAdaptor_Curve adapt(edgeShape);
+        if (adapt.GetType() == GeomAbs_Circle) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -212,7 +221,7 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     std::string subname = msg.pSubName;
 
     //check if the selection is an external reference and ask the user what to do
-    //of course only if thisObj is in a body, as otherwise the old workflow would not 
+    //of course only if thisObj is in a body, as otherwise the old workflow would not
     //be supported
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
     bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());

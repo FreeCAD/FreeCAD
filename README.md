@@ -25,31 +25,30 @@ Overview
 * **Freedom to build what you want**  FreeCAD is an open-source parametric 3D 
 modeler made primarily to design real-life objects of any size. 
 Parametric modeling allows you to easily modify your design by going back into 
-your model history and changing its parameters. 
+your model history to change its parameters. 
 
-* **Create 3D from 2D & back** FreeCAD allows you to sketch geometry constrained
+* **Create 3D from 2D and back** FreeCAD lets you to sketch geometry constrained
  2D shapes and use them as a base to build other objects. 
  It contains many components to adjust dimensions or extract design details from 
- 3D models to create high quality production ready drawings.
+ 3D models to create high quality production-ready drawings.
 
 * **Designed for your needs** FreeCAD is designed to fit a wide range of uses
- including product design, mechanical engineering and architecture. 
- Whether you are a hobbyist, a programmer, an experienced CAD user, 
- a student or a teacher, you will feel right at home with FreeCAD.
+including product design, mechanical engineering and architecture,
+whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
 
-* **Cross platform** FreeCAD runs on Windows, Mac and Linux
+* **Cross platform** FreeCAD runs on Windows, macOS and Linux operating systems.
 
 * **Underlying technology**
     * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
     * **Coin3D library** Open Inventor-compliant 3D scene representation model
     * **Python** FreeCAD offers a broad Python API
-    * **Qt** Graphical User Interface built with Qt
+    * **Qt** Graphical user interface built with Qt
 
 
 Installing
 ----------
 
-Precompiled (installable) packages are available for Windows and Mac on the
+Precompiled (installable) packages are available for Windows and macOS on the
 [Releases page](https://github.com/FreeCAD/FreeCAD/releases).
 
 On most Linux distributions, FreeCAD is directly installable from the 
@@ -73,20 +72,38 @@ Compiling
 ---------
 
 Compiling FreeCAD requires installation of several libraries and their 
-development files such as OpenCASCADe, Coin and Qt, listed in the 
-pages below. Once this is done, FreeCAD can be simply compiled with 
-cMake. On Windows, these libraries are bundled and offered by the 
+development files such as OCCT (Open Cascade), Coin and Qt, listed in the 
+pages below. Once this is done, FreeCAD can be compiled with 
+CMake. On Windows, these libraries are bundled and offered by the 
 FreeCAD team in a convenient package. On Linux, they are usually found 
-in your distribution's repositories, and on Mac OSX and other platforms 
-you will usually need to compile them yourself.
+in your distribution's repositories, and on macOS and other platforms, 
+you will usually have to compile them yourself.
 
 The pages below contain up-to-date build instructions:
 
 - [Linux](https://wiki.freecadweb.org/Compile_on_Linux)
 - [Windows](https://wiki.freecadweb.org/Compile_on_Windows)
-- [Mac OSX](https://wiki.freecadweb.org/Compile_on_MacOS)
+- [macOS](https://wiki.freecadweb.org/Compile_on_MacOS)
 - [Cygwin](https://wiki.freecadweb.org/Compile_on_Cygwin)
 - [MinGW](https://wiki.freecadweb.org/Compile_on_MinGW)
+
+
+Reporting Issues
+---------
+
+To report an issue please:
+- First post to forum to verify the issue; 
+- Link forum thread to bug tracker ticket and vice-a-versa; 
+- Use the most updated stable or development versions of FreeCAD; 
+- Post version info from eg. `Help > About FreeCAD > Copy to clipboard`; 
+- Post a Step-By-Step explanation on how to recreate the issue; 
+- Upload an example file to demonstrate problem. 
+
+For more detail see:
+- [Wiki Page about the Bug Tracker](https://wiki.freecadweb.org/Tracker)
+- [Bug Tracker](https://tracker.freecadweb.org)
+- [Help Forum](http://forum.freecadweb.org/viewforum.php?f=3)
+
 
 Usage & Getting help
 --------------------

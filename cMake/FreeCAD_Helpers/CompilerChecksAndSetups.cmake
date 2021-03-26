@@ -28,22 +28,18 @@ macro(CompilerChecksAndSetups)
                         OUTPUT_VARIABLE CMAKE_CXX_COMPILER_VERSION)
     endif(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
 
-    # Enabled C++11 for Freecad 0.17 and later
-    if (FREECAD_VERSION VERSION_GREATER 0.16)
-        set(BUILD_ENABLE_CXX_STD "C++11"  CACHE STRING  "Enable C++ standard")
+    # Enabled C++17 for Freecad 0.20 and later
+        set(BUILD_ENABLE_CXX_STD "C++17"  CACHE STRING  "Enable C++ standard")
         set_property(CACHE BUILD_ENABLE_CXX_STD PROPERTY STRINGS
-                     "C++11"
-                     "C++14"
                      "C++17"
                      "C++20"
         )
 
-        if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
-            message(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  G++ must be 4.7 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
-        elseif(CMAKE_COMPILER_IS_CLANGXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.3)
-            message(FATAL_ERROR "FreeCAD 0.17 and later requires C++11.  Clang must be 3.3 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
+        if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7.3)
+            message(FATAL_ERROR "FreeCAD 0.20 and later requires C++17.  G++ must be 7.3 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
+        elseif(CMAKE_COMPILER_IS_CLANGXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.0)
+            message(FATAL_ERROR "FreeCAD 0.20 and later requires C++17.  Clang must be 6.0 or later, the used version is ${CMAKE_CXX_COMPILER_VERSION}")
         endif()
-    endif(FREECAD_VERSION VERSION_GREATER 0.16)
 
     # Escape the two plus chars as otherwise cmake complains about invalid regex
     if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+20")

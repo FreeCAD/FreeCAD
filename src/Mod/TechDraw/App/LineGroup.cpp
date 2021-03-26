@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -125,62 +125,49 @@ std::vector<double> LineGroup::split(std::string line)
     return result;
 }
 
-//static support function: find group defn in file
-std::string LineGroup::getRecordFromFile(std::string parmFile, std::string groupName)
+//static support function: find group definition in file
+std::string LineGroup::getRecordFromFile(std::string parmFile, int groupNumber)
 {
     std::string record;
-    std::string lineSpec;
     std::ifstream inFile;
     inFile.open (parmFile, std::ifstream::in);
     if(!inFile.is_open()) {
         Base::Console().Message( "Cannot open LineGroup file: %s\n",parmFile.c_str());
         return record;
     }
-
-    bool groupFound = false;
+    // parse file to get the groupNumber'th line
+    int counter = 0; // the combobox enums begin with 0
     while ( inFile.good() ){
          std::string line;
-         std::getline(inFile,line);
-         std::string nameTag = line.substr(0,1);
-         std::string foundName;
-         unsigned long int commaPos;
-         if ((nameTag == ";")  ||
-             (nameTag == " ")  ||
-             (line.empty()) )  {           //is cr/lf empty?
-             continue;
-         } else if (nameTag == "*") {
-             commaPos = line.find(',',1);
-             if (commaPos != std::string::npos) {
-                  foundName = line.substr(1,commaPos-1);
-             } else {
-                  foundName = line.substr(1);
-             }
-             if (foundName == groupName) {
-                 //this is our group
+         std::getline(inFile, line);
+         std::string nameTag = line.substr(0, 1);
+         if (nameTag == "*") { // we found a definition line
+             if (counter == groupNumber) {
                  record = line;
-                 groupFound = true;
-                 break;
+                 return record;
              }
+             ++counter;
         }
     }  //endwhile
-    if (!groupFound) {
-        Base::Console().Message("LineGroup - group: %s is not found\n", groupName.c_str());
-    }
-    return record;
+    // nothing was found
+    Base::Console().Error("LineGroup: the LineGroup file has only %s entries but entry number %s is set\n"
+        , std::to_string(counter).c_str()
+        , std::to_string(groupNumber).c_str());
+    return std::string(); // return an empty string
 }
 
 //static LineGroup maker
-LineGroup* LineGroup::lineGroupFactory(std::string groupName)
+LineGroup* LineGroup::lineGroupFactory(int groupNumber)
 {
-    LineGroup* lg = new LineGroup(groupName);
+    LineGroup* lg = new LineGroup();
 
     std::string lgFileName = Preferences::lineGroupFile();
 
-    std::string lgRecord = LineGroup::getRecordFromFile(lgFileName, groupName);
+    std::string lgRecord = LineGroup::getRecordFromFile(lgFileName, groupNumber);
 
     std::vector<double> values = LineGroup::split(lgRecord);
     if (values.size() < 4) {
-        Base::Console().Message( "LineGroup::invalid entry in %s\n",groupName.c_str() );
+        Base::Console().Error( "LineGroup::invalid entry in %s\n", lgFileName.c_str() );
     } else {
         lg->setWeight("Thin",values[0]);
         lg->setWeight("Graphic",values[1]);
@@ -191,16 +178,47 @@ LineGroup* LineGroup::lineGroupFactory(std::string groupName)
 }
 
 //valid weight names: Thick, Thin, Graphic, Extra
-double LineGroup::getDefaultWidth(std::string weightName, std::string groupName)
+double LineGroup::getDefaultWidth(std::string weightName, int groupNumber)
 {
     //default line weights
-    std::string lgName = groupName;
-    if (groupName.empty()) {
-        lgName = Preferences::lineGroup();
+    int lgNumber = groupNumber;
+    if (lgNumber == -1) {
+        lgNumber = Preferences::lineGroup();
     }
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
     double weight = lg->getWeight(weightName);
     delete lg;
     return weight;
+}
+
+//static support function: find group definition in file
+std::string LineGroup::getGroupNamesFromFile(std::string FileName)
+{
+    std::string record;
+    std::ifstream inFile;
+    inFile.open(FileName, std::ifstream::in);
+    if (!inFile.is_open()) {
+        Base::Console().Message("Cannot open LineGroup file: %s\n", FileName.c_str());
+        return record;
+    }
+    // parse the file
+    while (inFile.good()) {
+        std::string line;
+        std::getline(inFile, line);
+        std::string nameTag = line.substr(0, 1);
+        std::string found;
+        unsigned long int commaPos;
+        if (nameTag == "*") {
+            commaPos = line.find(',', 1);
+            if (commaPos != std::string::npos) {
+                found = line.substr(1, commaPos - 1);
+                record = record + found + ',';
+            }
+        }
+    }  //endwhile
+    if (record.empty()) {
+        Base::Console().Message("LineGroup error: no group found in file %s\n", FileName.c_str());
+    }
+    return record;
 }

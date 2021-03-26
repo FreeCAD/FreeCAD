@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -391,8 +391,8 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
-    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) 
-                || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) 
+    else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())
+                || prop->isDerivedFrom(App::PropertyInteger::getClassTypeId()))
     {
         /* Number */
         double d;
@@ -454,7 +454,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
             if (cell->getForeground(color))
                 return QVariant::fromValue(QColor(255.0 * color.r, 255.0 * color.g, 255.0 * color.b, 255.0 * color.a));
-            else 
+            else
                 return QVariant(QColor(textFgColor));
         }
         case Qt::TextAlignmentRole: {
@@ -529,7 +529,7 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
 
         try {
             QString str = value.toString();
-            Gui::Command::openCommand("Edit cell");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit cell"));
             // Because of possible complication of recursively escaped
             // characters, let's take a shortcut and bypass the command
             // interface for now.
@@ -537,7 +537,7 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
             std::string strAddress = address.toString();
             str.replace(QString::fromUtf8("\\"), QString::fromUtf8("\\\\"));
             str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
-            FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" << 
+            FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" <<
                     str.toUtf8().constData() << "')");
 #else
             sheet->setContent(address, str.toUtf8().constData());

@@ -36,7 +36,7 @@ using namespace Gui;
 
 //**************************************************************************
 //**************************************************************************
-// TaskBoxPosition 
+// TaskBoxPosition
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 /* TRANSLATOR Gui::TaskBoxPosition */
@@ -100,11 +100,11 @@ TaskDlgRelocation::TaskDlgRelocation()
 {
  /*   rob  = new TaskRobot6Axis(pcRobotObject);
     ctr  = new TaskRobotControl(pcRobotObject);
-    
+
     trac = new TaskTrajectory(pcRobotObject,pcTrajectoryObject);
     msg  = new TaskRobotMessages(pcRobotObject);
-    
-    
+
+
     QObject::connect(trac ,SIGNAL(axisChanged(float,float,float,float,float,float,const Base::Placement &)),
                      rob  ,SLOT  (setAxis(float,float,float,float,float,float,const Base::Placement &)));
 
@@ -130,7 +130,7 @@ void TaskDlgRelocation::open()
 
 void TaskDlgRelocation::clicked(int)
 {
-    
+
 }
 
 bool TaskDlgRelocation::accept()

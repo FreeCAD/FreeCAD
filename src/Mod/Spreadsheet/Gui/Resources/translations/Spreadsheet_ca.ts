@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Fusiona les cel·les</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Divideix la cel·la</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Alineat a l’esquerra</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Alineat al centre</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Alineat a la dreta</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Alineat a dalt</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Alineat abaix</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Centrar verticalment</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Text en negreta</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Text en cursiva</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Text subratllat</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Crear full de càlcul</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Propietats de la cel·la</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Edita la cel·la</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Insereix files</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Suprimeix files</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Insereix columnes</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Neteja les cel·la(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Color de la clel·la</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Color de fons</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>

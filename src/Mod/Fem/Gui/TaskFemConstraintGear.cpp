@@ -284,7 +284,7 @@ bool TaskDlgFemConstraintGear::accept()
     const TaskFemConstraintGear* parameterGear = static_cast<const TaskFemConstraintGear*>(parameter);
 
     try {
-        //Gui::Command::openCommand("FEM force constraint changed");
+        //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
         std::string dirname = parameterGear->getDirectionName().data();
         std::string dirobj = parameterGear->getDirectionObject().data();
 

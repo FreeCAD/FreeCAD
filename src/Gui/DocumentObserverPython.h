@@ -26,7 +26,7 @@
 
 #include <CXX/Objects.hxx>
 
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 
 namespace Gui
@@ -35,7 +35,7 @@ namespace Gui
 /**
  * The DocumentObserverPython class is used to notify registered Python instances
  * whenever something happens to a document, like creation, destruction, adding or
- * removing viewproviders or when viewprovider property changes. This is the equivalent to the app 
+ * removing viewproviders or when viewprovider property changes. This is the equivalent to the app
  * python document observer
 */
 class GuiExport DocumentObserverPython
@@ -49,7 +49,7 @@ public:
     static void addObserver(const Py::Object& obj);
     static void removeObserver(const Py::Object& obj);
 
-private:   
+private:
     /** Checks if a new document was created */
     void slotCreatedDocument(const Gui::Document& Doc);
     /** Checks if the given document is about to be closed */
@@ -77,7 +77,7 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef struct {
+    typedef struct PythonObject {
        boost::signals2::scoped_connection slot;
        Py::Object py;
        PyObject* ptr() {

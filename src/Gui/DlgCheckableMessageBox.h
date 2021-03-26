@@ -73,6 +73,8 @@ public:
 
     void setPrefEntry(const QString& entry);
 
+    void setPrefPath(const QString& path);
+
     virtual void accept();
     virtual void reject();
 
@@ -99,8 +101,15 @@ public:
    // Conversion convenience
    static QMessageBox::StandardButton dialogButtonBoxToMessageBoxButton(QDialogButtonBox::StandardButton);
 
-   // convenient show method
-   static void showMessage(const QString& header, const QString& message, bool check=false, const QString& checkText = QString::fromLatin1("Don't show me again"));
+   /// convenient show method
+   /// It shows a dialog with header and message provided and a checkbox in check state with the message provided.
+   /// It uses a parameter in path "User parameter:BaseApp/CheckMessages" derived from the header test, defaulting to false,
+   /// to store the status of the checkbox, when the user exits the modal dialog.
+   static void showMessage(const QString& header, const QString& message, bool check = false, const QString& checkText = QString::fromLatin1("Don't show me again"));
+
+   /// Same as showMessage above, but it checks the specific preference path and parameter provided, defaulting to entryDefault value if the parameter is not present.
+   static void showMessage(const QString& header, const QString& message, const QString& prefPath, const QString& paramEntry, bool entryDefault = false,
+                           bool check = false, const QString& checkText = QString::fromLatin1("Don't show me again"));
 
 private Q_SLOTS:
    void slotClicked(QAbstractButton *b);
@@ -108,6 +117,7 @@ private Q_SLOTS:
 private:
    DlgCheckableMessageBoxPrivate *m_d;
    QByteArray paramEntry;
+   QString prefPath;
 };
 
 } // namespace Dialog

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry    <l.parry@warwick.ac.uk>              *
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -161,7 +161,7 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
 
     // get the items in the group
     auto objs = claimChildren();
-    
+
     // iterate over all item to check which ones have a section or detail view
     for (auto ObjectIterator : objs) {
         // get item

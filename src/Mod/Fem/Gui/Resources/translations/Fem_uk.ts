@@ -282,7 +282,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="314"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Рівняння пружності</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="315"/>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Матеріал армування (залізобетон)</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Відображати інформацію по сітці МСЕ</translation>
     </message>
   </context>
   <context>
@@ -620,7 +620,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Редактор матеріалів</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>

@@ -22,8 +22,6 @@
 
 /**
 
-
-
     \mainpage FreeCAD source documentation
 
     This is the source documentation of <a href=https://www.freecadweb.org>FreeCAD</a>. 
@@ -49,8 +47,6 @@
     as explained in <a href=https://freecadweb.org/wiki/Source_documentation>building
     the source code documentation</a>. You can also browse through the <a href=https://github.com/FreeCAD/FreeCAD>source
     code on github</a>.
-
-
 
   \if DEV_DOCUMENTATION
 
@@ -78,7 +74,9 @@
   
   \endif
 
+<small>
 @GIT_REVISION_INFO@
+</small>
  */
 
 /** \namespace std

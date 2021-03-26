@@ -170,7 +170,7 @@ class ArchSpaceGuiTools(GuiTools):
             editpoints = []
             editpoints.append(obj.ViewObject.Proxy.getTextPosition(obj.ViewObject))
             return editpoints
-        except:
+        except Exception:
             pass
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):

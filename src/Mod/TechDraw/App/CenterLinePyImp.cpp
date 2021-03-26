@@ -300,13 +300,13 @@ Py::Object CenterLinePy::getEdges(void) const
     std::vector<std::string> edges = cl->m_edges;
     int size = edges.size();
 
-    PyObject* result = PyList_New(size);
+    Py::List result(size);
 
     for (auto& e: edges) {
-        PyList_Append(result, PyUnicode_FromString(e.c_str()));
+        result.append(Py::asObject(PyUnicode_FromString(e.c_str())));
     }
 
-    return Py::asObject(result);
+    return result;
 }
 
 void CenterLinePy::setEdges(Py::Object arg)
@@ -346,13 +346,13 @@ Py::Object CenterLinePy::getFaces(void) const
     std::vector<std::string> faces = cl->m_faces;
     int size = faces.size();
 
-    PyObject* result = PyList_New(size);
+    Py::List result(size);
 
     for (auto& f: faces) {
-        PyList_Append(result, PyUnicode_FromString(f.c_str()));
+        result.append(Py::asObject(PyUnicode_FromString(f.c_str())));
     }
 
-    return Py::asObject(result);
+    return result;
 }
 
 void CenterLinePy::setFaces(Py::Object arg)
@@ -393,13 +393,13 @@ Py::Object CenterLinePy::getPoints(void) const
     std::vector<std::string> points = cl->m_verts;
     int size = points.size();
 
-    PyObject* result = PyList_New(size);
+    Py::List result(size);
 
     for (auto& p: points) {
-        PyList_Append(result, PyUnicode_FromString(p.c_str()));
+        result.append(Py::asObject(PyUnicode_FromString(p.c_str())));
     }
 
-    return Py::asObject(result);
+    return result;
 }
 
 void CenterLinePy::setPoints(Py::Object arg)

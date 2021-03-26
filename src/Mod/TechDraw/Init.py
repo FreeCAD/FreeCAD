@@ -1,8 +1,5 @@
-# FreeCAD init script of the TechDraw module
-# (c) 2001 Juergen Riegel
-
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                        *
+#*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -22,7 +19,8 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
+
+# FreeCAD init script of the TechDraw module
 
 FreeCAD.__unit_test__ += [ "TestTechDrawApp" ]

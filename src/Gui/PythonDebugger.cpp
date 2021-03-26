@@ -301,7 +301,7 @@ Py::Object PythonDebugExcept::excepthook(const Py::Tuple& args)
             //get the pointer to the frame held by the bottom traceback object - this
             //should be where the exception occurred.
             tracebackobject* pTb = (tracebackobject*)tb;
-            while (pTb->tb_next != NULL) 
+            while (pTb->tb_next != NULL)
             {
                 pTb = pTb->tb_next;
             }
@@ -316,7 +316,7 @@ Py::Object PythonDebugExcept::excepthook(const Py::Tuple& args)
 // -----------------------------------------------------
 
 namespace Gui {
-class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy> 
+class PythonDebuggerPy : public Py::PythonExtension<PythonDebuggerPy>
 {
 public:
     PythonDebuggerPy(PythonDebugger* d) : dbg(d), depth(0) { }

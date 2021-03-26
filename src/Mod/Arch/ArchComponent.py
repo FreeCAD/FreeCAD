@@ -27,9 +27,9 @@ Examples
 TODO put examples here.
 """
 
-__title__="FreeCAD Arch Component"
+__title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
 from FreeCAD import Vector
@@ -615,6 +615,8 @@ class Component(ArchIFC.IfcProduct):
 
         # Get the object's normal.
         n = DraftGeomUtils.getNormal(shape[0])
+        if (not n) or (not n.Length):
+            n = FreeCAD.Vector(0, 0, 1)
 
         # Reverse the normal if the hint vector and the normal vector have more
         # than a 90 degree angle between them.
@@ -755,8 +757,8 @@ class Component(ArchIFC.IfcProduct):
         subs = obj.Subtractions
         for link in obj.InListRecursive:
             if hasattr(link,"Hosts"):
-                for host in link.Hosts:
-                    if host == obj:
+                if link.Hosts:
+                    if obj in link.Hosts:
                         subs.append(link)
             elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
                 if link.Host == obj:
@@ -768,9 +770,10 @@ class Component(ArchIFC.IfcProduct):
 
             if base:
                 subvolume = None
-                if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window",True)):
-                        # windows can be additions or subtractions, treated the same way
-                        subvolume = o.Proxy.getSubVolume(o)
+
+                if (Draft.getType(o.getLinkedObject()) == "Window") or (Draft.isClone(o,"Window",True)):
+                    # windows can be additions or subtractions, treated the same way
+                    subvolume = o.getLinkedObject().Proxy.getSubVolume(o)
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
                     # roofs define their own special subtraction volume
                     subvolume = o.Proxy.getSubVolume(o)
@@ -779,7 +782,7 @@ class Component(ArchIFC.IfcProduct):
                     subvolume = o.Subvolume.Shape.copy()
                     if hasattr(o,"Placement"):
                         subvolume.Placement = subvolume.Placement.multiply(o.Placement)
-                    
+
                 if subvolume:
                     if base.Solids and subvolume.Solids:
                         if placement:
@@ -1117,14 +1120,15 @@ class Component(ArchIFC.IfcProduct):
         """
 
         hosts = []
+
         for link in obj.InListRecursive:
             if hasattr(link,"Host"):
                 if link.Host:
                     if link.Host == obj:
                         hosts.append(link)
             elif hasattr(link,"Hosts"):
-                for host in link.Hosts:
-                    if host == obj:
+                if link.Hosts:
+                    if obj in link.Hosts:
                         hosts.append(link)
         return hosts
 
@@ -1203,7 +1207,7 @@ class ViewProviderComponent:
                 if hasattr(obj,"Material"):
                     if obj.Material:
                         mat = obj.Material
-                if not mat:
+                if (not mat) and hasattr(obj.CloneOf.ViewObject,"DiffuseColor"):
                     if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
@@ -1257,7 +1261,7 @@ class ViewProviderComponent:
             # this would now hide all previous windows... Not the desired behaviour anymore.
         if prop == "DiffuseColor":
             if hasattr(vobj.Object,"CloneOf"):
-                if vobj.Object.CloneOf:
+                if vobj.Object.CloneOf and hasattr(vobj.Object.CloneOf,"DiffuseColor"):
                     if len(vobj.Object.CloneOf.ViewObject.DiffuseColor) > 1:
                         if vobj.DiffuseColor != vobj.Object.CloneOf.ViewObject.DiffuseColor:
                             vobj.DiffuseColor = vobj.Object.CloneOf.ViewObject.DiffuseColor
@@ -1718,10 +1722,12 @@ class ComponentTaskPanel:
         self.grid.addWidget(self.classButton, 5, 0, 1, 2)
         try:
             import BimClassification
-        except:
+        except Exception:
             self.classButton.hide()
         else:
             import os
+            # the BIM_Classification command needs to be added before it can be used
+            FreeCADGui.activateWorkbench("BIMWorkbench")
             self.classButton.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
@@ -2326,22 +2332,22 @@ if FreeCAD.GuiUp:
                 if "Integer" in editor.objectName():
                     try:
                         editor.setValue(int(index.data()))
-                    except:
+                    except Exception:
                         editor.setValue(0)
                 elif "Real" in editor.objectName():
                     try:
                         editor.setValue(float(index.data()))
-                    except:
+                    except Exception:
                         editor.setValue(0)
                 elif ("Boolean" in editor.objectName()) or ("Logical" in editor.objectName()):
                     try:
                         editor.setCurrentIndex(["true","false"].index(index.data().lower()))
-                    except:
+                    except Exception:
                         editor.setCurrentIndex(1)
                 elif "Measure" in editor.objectName():
                     try:
                         editor.setText(index.data())
-                    except:
+                    except Exception:
                         editor.setValue(0)
                 else:
                     editor.setText(index.data())

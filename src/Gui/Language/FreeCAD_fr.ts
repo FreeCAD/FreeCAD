@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Test console output</source>
-      <translation>Teste une sortie sur console</translation>
+      <translation>Teste la sortie console</translation>
     </message>
   </context>
   <context>
@@ -125,6 +125,74 @@
     <message>
       <source>Edit</source>
       <translation>Éditer</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Importation</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Supprimer</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Coller les expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Créer un groupe lien</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Créer un lien</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Créer un sous-lien</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importer des liens</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importer tous les liens</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Insérer une mesure</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Insérer un document texte</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Ajouter une pièce</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Ajouter un groupe</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Aligner</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Placement</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformer</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Transformer le lien</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Mesurer une distance</translation>
     </message>
   </context>
   <context>
@@ -178,7 +246,7 @@
     </message>
     <message>
       <source>Result:</source>
-      <translation>Résultat:</translation>
+      <translation>Résultat :</translation>
     </message>
     <message>
       <source>Ok</source>
@@ -1332,7 +1400,7 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
     </message>
     <message>
       <source>Color:</source>
-      <translation>Couleur:</translation>
+      <translation>Couleur :</translation>
     </message>
   </context>
   <context>
@@ -2545,9 +2613,21 @@ opening or creation</source>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Zone de sélection des éléments dans la vue 3D.
+Une valeur plus grande facilite la sélection, mais peut rendre les petites fonctions difficiles, voire impossible à sélectionner.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Cette option est utile pour le débogage des problèmes de carte graphique et de pilote.
+
+La modification de cette option nécessite un redémarrage de l'application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Utiliser OpenGL</translation>
     </message>
   </context>
   <context>
@@ -3169,6 +3249,29 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation>Ateliers non chargés</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Charger les ateliers sélectionnés, en ajoutant leurs fenêtres de préférences dans la boîte de dialogue des préférences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Charger la sélection</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ateliers non chargés disponibles&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pour préserver les ressources, FreeCAD ne charge pas les ateliers tant qu'ils ne sont pas utilisés. Le chargement de ceux-ci peut donner accès à des préférences supplémentaires liées à leurs fonctionnalités.&lt;/p&gt;&lt;p&gt;Les ateliers suivants sont disponibles dans votre installation, mais ne sont pas encore chargés :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
@@ -3410,10 +3513,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Les rotations en 3D utiliseront la position actuelle du curseur comme centre de rotation</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Rotation 3D centrée sur curseur</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Isométrique</translation>
     </message>
@@ -3460,6 +3559,49 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Orientation par défaut de la caméra lors de la création d'un nouveau document ou de la sélection de la vue initiale</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Mode rotation</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Centre de la fenêtre</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Positionner au curseur</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Centre de l'objet</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Sélection</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Basculer automatiquement vers la vue 3D contenant l'objet sélectionné</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Déplier automatiquement l'arborescence quand l'objet correspondant est sélectionné dans la vue 3D</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Préselectionné l'objet dans la vue 3D quand la souris est au-dessus d'un élément de l'arborescence</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Sauvegarder la sélection dans l'arborescence pour aller en avant/arrière avec les boutons de navigation</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Ajouter des cases à cocher pour la sélection dans l'arborescence des documents</translation>
     </message>
   </context>
   <context>
@@ -5227,6 +5369,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Expression...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Expansion automatique</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -6754,6 +6900,22 @@ Document : </translation>
       <source>Identical physical path</source>
       <translation>Chemin physique identique</translation>
     </message>
+    <message>
+      <source>Error</source>
+      <translation>Erreur</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Des erreurs sont survenues lors du chargement du fichier. Certaines données pourraient avoir été modifiées, ou pas récupérées du tout. Consultez la vue rapport pour plus d’informations sur les objets concernés.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Il y a eu de sérieuses erreurs lors du chargement du fichier. Certaines données ont peut-être été modifiées ou pas du tout récupérées. L'enregistrement du projet entraînera très probablement une perte de données.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Ateliers</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7197,8 +7359,8 @@ Document : </translation>
       <translation>Pas de sélection</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Veuillez d'abord sélectionner les objets que vous souhaitez exporter.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Sélectionnez les objets à exporter avant de choisir Exporter.</translation>
     </message>
   </context>
   <context>
@@ -7225,6 +7387,21 @@ Document : </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Recalculer la fonction ou le document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Aide</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Faire un don</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Faire un don pour soutenir le développement de FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -8812,6 +8989,21 @@ Document : </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vue standard</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Restaurer l'appareil photo enregistré</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Restaurer les paramètres de l'appareil photo enregistrés</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8854,6 +9046,21 @@ Document : </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Tourner la vue de 90° sens horaire</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vue standard</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Enregistrer l’appareil photo actuel</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Enregistrer les paramètres actuels de l'appareil photo</translation>
     </message>
   </context>
   <context>

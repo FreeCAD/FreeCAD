@@ -134,7 +134,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         }
 
         // undo command open
-        openCommand("Toggle draft from/to draft");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle draft from/to draft"));
 
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
@@ -144,6 +144,21 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
                 // issue the actual commands to toggle
                 Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", GeoId);
             }
+            if (it->size() > 6 && it->substr(0,6) == "Vertex") {
+                int vertexId = std::atoi(it->substr(6,4000).c_str()) - 1;
+
+                int geoId;
+                PointPos pos;
+                Obj->getGeoVertexIndex(vertexId,geoId, pos);
+
+                auto geo = Obj->getGeometry(geoId);
+
+                if(geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                    // issue the actual commands to toggle
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", geoId);
+                }
+            }
+
         }
         // finish the transaction and update
         commitCommand();

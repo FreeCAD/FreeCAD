@@ -208,6 +208,11 @@
       <source>Notes</source>
       <translation>Notities</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Open start page preferences</source>
+      <translation>Open start pagina voorkeuren</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>

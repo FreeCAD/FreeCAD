@@ -74,7 +74,7 @@ private:
     QByteArray text;
 };
 
-/** 
+/**
  * The Server class implements a simple TCP server.
  */
 class AppServer : public QTcpServer

@@ -597,7 +597,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         rott = rot1
         if hasattr(vobj, "FlipText") and vobj.FlipText:
             _rott = App.Rotation(rott[0], rott[1], rott[2], rott[3])
-            rott = _rott.multiply(App.Rotation(norm, 180)).Q
+            rott = _rott.multiply(App.Rotation(App.Vector(0, 0, 1), 180)).Q
             offset = offset.negative()
 
         # On first run the `DisplayMode` enumeration is not set, so we trap

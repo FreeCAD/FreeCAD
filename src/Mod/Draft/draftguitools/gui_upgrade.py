@@ -41,7 +41,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -52,38 +52,27 @@ class Upgrade(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Upgrades the selected objects into more complex shapes.\n"
-                "The result of the operation depends on the types of objects, "
-                "which may be able to be upgraded several times in a row.\n"
-                "For example, it can join the selected objects into one, "
-                "convert simple edges into parametric polylines,\n"
-                "convert closed edges into filled faces "
-                "and parametric polygons, and merge faces "
-                "into a single face.")
 
         return {'Pixmap': 'Draft_Upgrade',
                 'Accel': "U, P",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Upgrade", "Upgrade"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Upgrade", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Upgrade", "Upgrades the selected objects into more complex shapes.\nThe result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.\nFor example, it can join the selected objects into one, convert simple edges into parametric polylines,\nconvert closed edges into filled faces and parametric polygons, and merge faces into a single face.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Upgrade, self).Activated(name=_tr("Upgrade"))
+        super(Upgrade, self).Activated(name=translate("draft","Upgrade"))
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to upgrade"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
             else:
                 self.proceed()
 
     def proceed(self):
         """Proceed with execution of the command after selection."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-
         if Gui.Selection.getSelection():
             Gui.addModule("Draft")
             _cmd = 'Draft.upgrade'

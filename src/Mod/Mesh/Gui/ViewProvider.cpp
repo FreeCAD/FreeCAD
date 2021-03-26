@@ -503,7 +503,7 @@ void ViewProviderMesh::updateData(const App::Property* prop)
 QIcon ViewProviderMesh::getIcon() const
 {
 #if 1
-    static QIcon icon = Gui::BitmapFactory().pixmap("Tree_Mesh");
+    static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
     return icon;
 #else
     static const char * const Mesh_Feature_xpm[] = {
@@ -871,7 +871,7 @@ public:
     }
     void cutMesh() {
         Gui::Document* gui = mesh->getDocument();
-        gui->openCommand("Cut");
+        gui->openCommand(QT_TRANSLATE_NOOP("Command", "Cut"));
         ViewProviderMesh* copy = makeCopy();
         mesh->cutMesh(poly, proj, false);
         copy->cutMesh(poly, proj, true);
@@ -880,7 +880,7 @@ public:
     }
     void trimMesh() {
         Gui::Document* gui = mesh->getDocument();
-        gui->openCommand("Trim");
+        gui->openCommand(QT_TRANSLATE_NOOP("Command", "Trim"));
         ViewProviderMesh* copy = makeCopy();
         mesh->trimMesh(poly, proj, false);
         copy->trimMesh(poly, proj, true);
@@ -926,7 +926,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
 
     std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
-        Gui::Application::Instance->activeDocument()->openCommand("Cut");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Cut"));
         bool commitCommand = false;
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
@@ -987,7 +987,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
 
     std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
-        Gui::Application::Instance->activeDocument()->openCommand("Trim");
+        Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Trim"));
         bool commitCommand = false;
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
@@ -1064,7 +1064,7 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     Base::Sequencer().setLocked(locked);
 
     // Open a transaction object for the undo/redo stuff
-    Gui::Application::Instance->activeDocument()->openCommand("Split");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Split"));
 
     try {
         std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
@@ -1128,7 +1128,7 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     Base::Sequencer().setLocked(locked);
 
     // Open a transaction object for the undo/redo stuff
-    Gui::Application::Instance->activeDocument()->openCommand("Segment");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Segment"));
 
     try {
         std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
@@ -1723,7 +1723,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
                 }
             }
             else if (rm == id) {
-                Gui::Application::Instance->activeDocument()->openCommand("Delete");
+                Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
                 std::vector<ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
                 for (std::vector<ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
                     static_cast<ViewProviderMesh*>(*it)->deleteSelection();
@@ -1830,7 +1830,7 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
         return; // nothing to do
 
     //add the facets to the mesh and open a transaction object for the undo/redo stuff
-    Gui::Application::Instance->activeDocument()->openCommand("Fill hole");
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Fill hole"));
     Mesh::MeshObject* kernel = fea->Mesh.startEditing();
     kernel->addFacets(newFacets, newPoints, true);
     fea->Mesh.finishEditing();

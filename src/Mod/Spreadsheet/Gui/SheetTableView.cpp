@@ -158,7 +158,7 @@ void SheetTableView::insertRows()
     std::sort(sortedRows.begin(), sortedRows.end());
 
     /* Insert rows */
-    Gui::Command::openCommand("Insert rows");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert rows"));
     std::vector<int>::const_reverse_iterator it = sortedRows.rbegin();
     while (it != sortedRows.rend()) {
         int prev = *it;
@@ -195,7 +195,7 @@ void SheetTableView::removeRows()
     std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
 
     /* Remove rows */
-    Gui::Command::openCommand("Remove rows");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
     for (std::vector<int>::const_iterator it = sortedRows.begin(); it != sortedRows.end(); ++it) {
         Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(*it).c_str(), 1);
     }
@@ -216,7 +216,7 @@ void SheetTableView::insertColumns()
     std::sort(sortedColumns.begin(), sortedColumns.end());
 
     /* Insert columns */
-    Gui::Command::openCommand("Insert columns");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert columns"));
     std::vector<int>::const_reverse_iterator it = sortedColumns.rbegin();
     while (it != sortedColumns.rend()) {
         int prev = *it;
@@ -254,7 +254,7 @@ void SheetTableView::removeColumns()
     std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<int>());
 
     /* Remove columns */
-    Gui::Command::openCommand("Remove rows");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove rows"));
     for (std::vector<int>::const_iterator it = sortedColumns.begin(); it != sortedColumns.end(); ++it)
         Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)",
                                      columnName(*it).c_str(), 1);
@@ -419,7 +419,7 @@ void SheetTableView::deleteSelection()
     QModelIndexList selection = selectionModel()->selectedIndexes();
 
     if (selection.size() > 0) {
-        Gui::Command::openCommand("Clear cell(s)");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
         std::vector<Range> ranges = selectedRanges();
         std::vector<Range>::const_iterator i = ranges.begin();
 

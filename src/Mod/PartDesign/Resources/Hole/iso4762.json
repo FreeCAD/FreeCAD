@@ -4,9 +4,9 @@
     "thread_type": "metric",
     "data": [
 	{ "thread": "M1.6", "diameter":  3.5, "depth":  1.7 },
-	{ "thread": "M2",   "diameter":  4.4, "depth":  2.1 },
-	{ "thread": "M2.5", "diameter":  5.5, "depth":  3.0 },
-	{ "thread": "M3",   "diameter":  6.5, "depth":  3.4 },
+	{ "thread": "M2",   "diameter":  4.3, "depth":  2.1 },
+	{ "thread": "M2.5", "diameter":  5.0, "depth":  3.0 },
+	{ "thread": "M3",   "diameter":  6.0, "depth":  3.4 },
 	{ "thread": "M3.5", "diameter":  6.5, "depth":  3.9 },
 	{ "thread": "M4",   "diameter":  8.0, "depth":  4.4 },
 	{ "thread": "M5",   "diameter": 10.0, "depth":  5.4 },
@@ -20,11 +20,12 @@
 	{ "thread": "M20",  "diameter": 33.0, "depth": 20.6 },
 	{ "thread": "M22",  "diameter": 36.0, "depth": 22.8 },
 	{ "thread": "M24",  "diameter": 40.0, "depth": 24.8 },
-	{ "thread": "M27",  "diameter": 46.0, "depth": 31.0 },
-	{ "thread": "M30",  "diameter": 50.0, "depth": 34.0 },
-	{ "thread": "M33",  "diameter": 54.0, "depth": 36.0 },
+	{ "thread": "M30",  "diameter": 50.0, "depth": 31.0 },
+	{ "thread": "M33",  "diameter": 54.0, "depth": 34.0 },
 	{ "thread": "M36",  "diameter": 58.0, "depth": 37.0 },
 	{ "thread": "M42",  "diameter": 69.0, "depth": 43.0 },
-	{ "thread": "M48",  "diameter": 78.0, "depth": 49.0 }
+	{ "thread": "M48",  "diameter": 78.0, "depth": 49.0 },
+	{ "thread": "M54",  "diameter": 90.0, "depth": 55.0 },
+	{ "thread": "M64",  "diameter": 103.0, "depth": 65.0 }
     ]
 }

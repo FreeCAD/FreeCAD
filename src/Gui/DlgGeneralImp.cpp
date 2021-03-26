@@ -44,8 +44,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgGeneralImp */
 
 /**
- *  Constructs a DlgGeneralImp which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgGeneralImp which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
@@ -55,7 +55,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
   , ui(new Ui_DlgGeneral)
 {
     ui->setupUi(this);
-    
+
     // fills the combo box with all available workbenches
     // sorted by their menu text
     QStringList work = Application::Instance->workbenches();
@@ -84,7 +84,7 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
     }
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgGeneralImp::~DlgGeneralImp()
@@ -115,7 +115,7 @@ void DlgGeneralImp::saveSettings()
     ui->RecentFiles->onSave();
     ui->SplashScreen->onSave();
     ui->PythonWordWrap->onSave();
-  
+
     QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
     PythonConsole *pcPython = qobject_cast<PythonConsole*>(pc);
     if (pcPython) {
@@ -222,7 +222,7 @@ void DlgGeneralImp::loadSettings()
     if (index < 0) {
         ui->toolbarIconSize->addItem(tr("Custom (%1px)").arg(current), QVariant((int)current));
         index = ui->toolbarIconSize->findData(QVariant(current));
-    } 
+    }
     ui->toolbarIconSize->setCurrentIndex(index);
 
     ui->treeMode->addItem(tr("Combo View"));

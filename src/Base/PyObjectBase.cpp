@@ -53,7 +53,7 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
 }
 
 /// destructor
-PyObjectBase::~PyObjectBase() 
+PyObjectBase::~PyObjectBase()
 {
     PyGILStateLocker lock;
 #ifdef FC_LOGPYOBJECTS
@@ -66,8 +66,8 @@ PyObjectBase::~PyObjectBase()
  * PyObjectBase Type		-- Every class, even the abstract one should have a Type
 ------------------------------*/
 
-/** \brief 
- * To prevent subclasses of PyTypeObject to be subclassed in Python we should remove 
+/** \brief
+ * To prevent subclasses of PyTypeObject to be subclassed in Python we should remove
  * the Py_TPFLAGS_BASETYPE flag. For example, the classes App::VectorPy and App::MatrixPy
  * have removed this flag and its Python proxies App.Vector and App.Matrix cannot be subclassed.
  * In case we want to allow to derive from subclasses of PyTypeObject in Python
@@ -272,8 +272,8 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 PyObject *PyObjectBase::_getattr(const char *attr)
 {
     if (streq(attr, "__class__")) {
-        // Note: We must return the type object here, 
-        // so that our own types feel as really Python objects 
+        // Note: We must return the type object here,
+        // so that our own types feel as really Python objects
         Py_INCREF(Py_TYPE(this));
         return (PyObject *)(Py_TYPE(this));
     }

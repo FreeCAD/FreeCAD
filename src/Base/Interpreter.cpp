@@ -121,7 +121,7 @@ void PyException::raiseException() {
 
         std::string exceptionname;
         if (_exceptionType == Base::BaseExceptionFreeCADAbort)
-            edict.setItem("sclassname", 
+            edict.setItem("sclassname",
                     Py::String(typeid(Base::AbortException).name()));
         if (_isReported)
             edict.setItem("breported", Py::True());
@@ -159,7 +159,7 @@ void PyException::setPyException() const
 
 SystemExitException::SystemExitException()
 {
-    // Set exception message and code based upon the pthon sys.exit() code and/or message 
+    // Set exception message and code based upon the python sys.exit() code and/or message
     // based upon the following sys.exit() call semantics.
     //
     // Invocation       |  _exitCode  |  _sErrMsg
@@ -544,15 +544,8 @@ void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const ch
 void InterpreterSingleton::addPythonPath(const char* Path)
 {
     PyGILStateLocker locker;
-    PyObject *list = PySys_GetObject("path");
-#if PY_MAJOR_VERSION >= 3
-    PyObject *path = PyUnicode_FromString(Path);
-#else
-    PyObject *path = PyString_FromString(Path);
-#endif
-    PyList_Append(list, path);
-    Py_DECREF(path);
-    PySys_SetObject("path", list);
+    Py::List list(PySys_GetObject("path"));
+    list.append(Py::String(Path));
 }
 
 const char* InterpreterSingleton::init(int argc,char *argv[])
@@ -594,7 +587,7 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
 
 #if PY_MAJOR_VERSION >= 3
         size_t size = argc;
-        wchar_t **_argv = new wchar_t*[size];
+        static std::vector<wchar_t *> _argv(size);
         for (int i = 0; i < argc; i++) {
 #if PY_MINOR_VERSION >= 5
             _argv[i] = Py_DecodeLocale(argv[i],NULL);
@@ -602,7 +595,7 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
             _argv[i] = _Py_char2wchar(argv[i],NULL);
 #endif
         }
-        PySys_SetArgv(argc, _argv);
+        PySys_SetArgv(argc, _argv.data());
 #else
         PySys_SetArgv(argc, argv);
 #endif
@@ -919,6 +912,9 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
 #else
+    (void)TypeName;
+    (void)Pointer;
+    (void)own;
     result = -1; // indicates error
 #endif
 #if PY_MAJOR_VERSION < 3
@@ -971,9 +967,13 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     (void)Module;
 #endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
-        result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
+    result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
 #else
-        result = -1; // indicates error
+    (void)TypeName;
+    (void)obj;
+    (void)ptr;
+    (void)flags;
+    result = -1; // indicates error
 #endif
 #if PY_MAJOR_VERSION < 3
     }
@@ -1002,6 +1002,8 @@ void InterpreterSingleton::cleanupSWIG(const char* TypeName)
     PyGILStateLocker locker;
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     Swig_python::cleanupSWIG_T(TypeName);
+#else
+    (void)TypeName;
 #endif
 #if PY_MAJOR_VERSION < 3
     Swig_1_3_25::cleanupSWIG_T(TypeName);

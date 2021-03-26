@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
 # include <BRep_Tool.hxx>
 # include <BRepGProp.hxx>
@@ -429,7 +429,7 @@ void FaceColors::updatePanel()
 void FaceColors::open()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(d->vp->getObject()->getDocument());
-    doc->openCommand("Change face colors");
+    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Change face colors"));
 }
 
 bool FaceColors::accept()

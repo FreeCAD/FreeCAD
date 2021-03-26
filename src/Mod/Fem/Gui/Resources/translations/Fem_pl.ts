@@ -39,7 +39,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
       <source>Edit</source>
-      <translation>Edytuj</translation>
+      <translation>Edycja</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
@@ -59,12 +59,12 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation>Uruchom podobnie</translation>
+      <translation>Uruchom ponownie</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
       <source>Abort</source>
-      <translation>Anuluj</translation>
+      <translation>Przerwij</translation>
     </message>
   </context>
   <context>
@@ -170,7 +170,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation>Tworzy źródło ciepła ciała ograniczenia FEM</translation>
+      <translation>Tworzy źródło ciepła ciała wiązania MES</translation>
     </message>
   </context>
   <context>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation>Tworzy potencjał elektrostatyczny ograniczenia FEM</translation>
+      <translation>Tworzy potencjał elektrostatyczny wiązania MES</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation>Tworzy wiązanie FEM dla początkowej prędkości przepływu</translation>
+      <translation>Tworzy wiązanie MES dla początkowej prędkości przepływu</translation>
     </message>
   </context>
   <context>
@@ -399,7 +399,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
       <source>FEM material for solid</source>
-      <translation>Materiał MES dla ciała stałego</translation>
+      <translation>Materiał MES dla bryły</translation>
     </message>
   </context>
   <context>
@@ -814,7 +814,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates a mechanical material</source>
-      <translation>Tworzy nieliniowy materiał mechaniczny</translation>
+      <translation>Tworzy materiał mechaniczny</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
@@ -920,7 +920,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation>Tworzy grubość powłoki FEM</translation>
+      <translation>Tworzy grubość powłoki MES</translation>
     </message>
   </context>
   <context>
@@ -1097,7 +1097,7 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation>Stwórz wiązania MES dla łożyska</translation>
+      <translation>Utwórz wiązanie MES dla łożyska</translation>
     </message>
   </context>
   <context>
@@ -1110,7 +1110,7 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation>Stwórz stałą przemieszczenia FEM</translation>
+      <translation>Utwórz wiązanie przemieszczenia MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
@@ -1128,7 +1128,7 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation>Stwórz stałe wiązanie MES</translation>
+      <translation>Utwórz stałe wiązanie MES</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
@@ -1169,7 +1169,7 @@
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation>Utwórz obciążenie MES dla koła zębatego</translation>
+      <translation>Utwórz wiązanie MES dla koła zębatego</translation>
     </message>
   </context>
   <context>
@@ -1182,7 +1182,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation>Utwórz wiązanie MES nacisku</translation>
+      <translation>Utwórz wiązanie MES ciśnienia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -1243,7 +1243,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Wybierz pojedynczą siatkę FEM albo zestaw węzłów, proszę.</translation>
+      <translation>Wybierz pojedynczą siatkę MES albo zestaw węzłów.</translation>
     </message>
   </context>
   <context>
@@ -1290,7 +1290,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation>Wewnętrzny edytor dla plików .inp</translation>
+      <translation>Użyj wewnętrznego edytora dla plików .inp</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
@@ -1350,7 +1350,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation>Ograniczenia niskiej częstotliwości</translation>
+      <translation>Limit niskiej częstotliwości</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
@@ -1389,7 +1389,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="45"/>
       <source>Nodes set</source>
-      <translation>System węzłów</translation>
+      <translation>Zestaw węzłów</translation>
     </message>
   </context>
   <context>
@@ -1397,7 +1397,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.cpp" line="63"/>
       <source>Nodes set</source>
-      <translation>System węzłów</translation>
+      <translation>Zestaw węzłów</translation>
     </message>
   </context>
   <context>
@@ -1492,7 +1492,7 @@
     <message>
       <location filename="../../TaskDriver.cpp" line="51"/>
       <source>Nodes set</source>
-      <translation>System węzłów</translation>
+      <translation>Zestaw węzłów</translation>
     </message>
   </context>
   <context>
@@ -1500,7 +1500,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>Parametry obciążeń MES</translation>
+      <translation>Parametry wiązań MES</translation>
     </message>
   </context>
   <context>
@@ -1613,7 +1613,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
       <source>Point load</source>
-      <translation>Obciążenie węzłowe</translation>
+      <translation>Obciążenie punktowe</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
@@ -2243,7 +2243,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
       <source>Location</source>
-      <translation>Lokalizacja</translation>
+      <translation>Położenie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
@@ -2306,7 +2306,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="204"/>
       <source>Reversed direction</source>
-      <translation>Odwrócone kierunki</translation>
+      <translation>Odwróć kierunek</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
@@ -2316,7 +2316,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
       <source>Location</source>
-      <translation>Lokalizacja</translation>
+      <translation>Położenie</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="234"/>

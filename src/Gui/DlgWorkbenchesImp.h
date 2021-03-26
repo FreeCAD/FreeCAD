@@ -1,7 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: Przemo Firszt <przemo@firszt.eu>                              *
- *   Based on DlgToolbars.h file                                           *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU Library General Public           *
@@ -19,6 +18,8 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
+// Based on DlgToolbars.h file
 
 
 #ifndef GUI_DIALOG_DLGWORKBENCHES_IMP_H

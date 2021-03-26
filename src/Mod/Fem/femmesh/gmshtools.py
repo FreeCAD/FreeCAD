@@ -22,13 +22,15 @@
 
 __title__ = "Tools for the work with Gmsh mesher"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
 
 import subprocess
 import sys
+import os
+import re
 
 import FreeCAD
 from FreeCAD import Console
@@ -38,6 +40,10 @@ import Fem
 from . import meshtools
 from femtools import femutils
 from femtools import geomtools
+
+
+class GmshError(Exception):
+    pass
 
 
 class GmshTools():
@@ -95,6 +101,8 @@ class GmshTools():
             self.algorithm2D = "7"
         elif algo2D == "DelQuad":
             self.algorithm2D = "8"
+        elif algo2D == "Packing Parallelograms":
+            self.algorithm2D = "9"
         else:
             self.algorithm2D = "2"
 
@@ -108,14 +116,12 @@ class GmshTools():
             self.algorithm3D = "2"
         elif algo3D == "Frontal":
             self.algorithm3D = "4"
-        elif algo3D == "Frontal Delaunay":
-            self.algorithm3D = "5"
-        elif algo3D == "Frontal Hex":
-            self.algorithm3D = "6"
         elif algo3D == "MMG3D":
             self.algorithm3D = "7"
         elif algo3D == "R-tree":
             self.algorithm3D = "9"
+        elif algo3D == "HXT":
+            self.algorithm3D = "10"
         else:
             self.algorithm3D = "1"
 
@@ -154,12 +160,15 @@ class GmshTools():
         self.write_geo()
 
     def create_mesh(self):
-        self.update_mesh_data()
-        self.get_tmp_file_paths()
-        self.get_gmsh_command()
-        self.write_gmsh_input_files()
-        error = self.run_gmsh_with_geo()
-        self.read_and_set_new_mesh()
+        try:
+            self.update_mesh_data()
+            self.get_tmp_file_paths()
+            self.get_gmsh_command()
+            self.write_gmsh_input_files()
+            error = self.run_gmsh_with_geo()
+            self.read_and_set_new_mesh()
+        except GmshError as e:
+            error = str(e)
         return error
 
     def start_logs(self):
@@ -292,7 +301,7 @@ class GmshTools():
                         "in FEM preferences tab Gmsh.\n"
                     )
                     Console.PrintError(error_message)
-                    raise Exception(error_message)
+                    raise GmshError(error_message)
                 self.gmsh_bin = gmsh_path
             else:
                 error_message = (
@@ -300,7 +309,7 @@ class GmshTools():
                     "Set GMHS binary path in FEM preferences.\n"
                 )
                 Console.PrintError(error_message)
-                raise Exception(error_message)
+                raise GmshError(error_message)
         else:
             if not self.gmsh_bin:
                 self.gmsh_bin = FreeCAD.ParamGet(
@@ -357,6 +366,40 @@ class GmshTools():
 
         if self.group_elements:
             Console.PrintMessage("  {}\n".format(self.group_elements))
+
+    def get_gmsh_version(self):
+        self.get_gmsh_command()
+        if os.path.exists(self.gmsh_bin):
+            found_message = "file found: " + self.gmsh_bin
+            Console.PrintMessage(found_message + "\n")
+        else:
+            found_message = "file not found: " + self.gmsh_bin
+            Console.PrintError(found_message + "\n")
+            return (None, None, None), found_message
+
+        command_list = [self.gmsh_bin, "--info"]
+        try:
+            p = subprocess.Popen(
+                command_list,
+                shell=False,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+        except Exception as e:
+            Console.PrintMessage(str(e) + "\n")
+            return (None, None, None), found_message + "\n\n" + "Error: " + str(e)
+
+        gmsh_stdout, gmsh_stderr = p.communicate()
+        Console.PrintMessage("Gmsh: StdOut:\n" + gmsh_stdout + "\n")
+        if gmsh_stderr:
+            Console.PrintError("Gmsh: StdErr:\n" + gmsh_stderr + "\n")
+
+        match = re.search("^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
+        if match:
+            return match.group(1, 2, 3), found_message + "\n\n" + gmsh_stdout         # (major, minor, patch), fullmessage
+        else:
+            return (None, None, None), found_message + "\n\n" + "Warning: Output not recognized\n\n" + gmsh_stdout
 
     def get_region_data(self):
         # mesh regions
@@ -700,11 +743,18 @@ class GmshTools():
             geo.write("Mesh.CharacteristicLengthMin = " + str(0) + ";\n")
         else:
             geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
+        if hasattr(self.mesh_obj, "MeshSizeFromCurvature"):
+            geo.write(
+                "Mesh.MeshSizeFromCurvature = {}"
+                "; // number of elements per 2*pi radians, 0 to deactivate\n"
+                .format(self.mesh_obj.MeshSizeFromCurvature)
+            )
         geo.write("\n")
         if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
             geo.write("// other mesh options\n")
             geo.write("Mesh.RecombineAll = 1;\n")
             geo.write("\n")
+
         geo.write("// optimize the mesh\n")
         # Gmsh tetra optimizer
         if hasattr(self.mesh_obj, "OptimizeStd") and self.mesh_obj.OptimizeStd is True:
@@ -719,15 +769,16 @@ class GmshTools():
         # higher order mesh optimizing
         if hasattr(self.mesh_obj, "HighOrderOptimize") and self.mesh_obj.HighOrderOptimize is True:
             geo.write(
-                "Mesh.HighOrderOptimize = 1;  // for more HighOrderOptimize "
+                "Mesh.HighOrderOptimize = 1; // for more HighOrderOptimize "
                 "parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
             )
         else:
             geo.write(
-                "Mesh.HighOrderOptimize = 0;  // for more HighOrderOptimize "
+                "Mesh.HighOrderOptimize = 0; // for more HighOrderOptimize "
                 "parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
             )
         geo.write("\n")
+
         geo.write("// mesh order\n")
         geo.write("Mesh.ElementOrder = " + self.order + ";\n")
         if self.order == "2":
@@ -752,7 +803,7 @@ class GmshTools():
         )
         geo.write(
             "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, "
-            "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)\n"
+            "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms)\n"
         )
         if len(self.bl_setting_list) and self.dimension == 3:
             geo.write("Mesh.Algorithm = " + "DelQuad" + ";\n")  # Frontal/DelQuad are tested
@@ -760,7 +811,7 @@ class GmshTools():
             geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
         geo.write(
             "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, "
-            "5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)\n"
+            "7=MMG3D, 9=R-tree, 10=HTX)\n"
         )
         geo.write("Mesh.Algorithm3D = " + self.algorithm3D + ";\n")
         geo.write("\n")
@@ -814,11 +865,11 @@ class GmshTools():
         geo.close()
 
     def run_gmsh_with_geo(self):
-        comandlist = [self.gmsh_bin, "-", self.temp_file_geo]
-        # print(comandlist)
+        command_list = [self.gmsh_bin, "-", self.temp_file_geo]
+        # print(command_list)
         try:
             p = subprocess.Popen(
-                comandlist,
+                command_list,
                 shell=False,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
@@ -832,7 +883,10 @@ class GmshTools():
             # print(output)
             # print(error)
         except Exception:
-            error = "Error executing: {}\n".format(" ".join(comandlist))
+            if os.path.exists(self.gmsh_bin):
+                error = "Error executing: {}\n".format(" ".join(command_list))
+            else:
+                error = "Gmsh executable not found: {}\n".format(self.gmsh_bin)
             Console.PrintError(error)
             self.error = True
 

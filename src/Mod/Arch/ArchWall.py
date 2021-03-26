@@ -53,9 +53,9 @@ else:
 #  usually vertical, typically obtained by giving a thickness to a base line,
 #  then extruding it vertically.
 
-__title__="FreeCAD Wall"
+__title__  = "FreeCAD Wall"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 def makeWall(baseobj=None,height=None,length=None,width=None,align="Center",face=None,name=None):
     """Create a wall based on a given object, and returns the generated wall.
@@ -1023,7 +1023,7 @@ class _Wall(ArchComponent.Component):
                                 elif Draft.getType(obj.Base) == "Sketcher::SketchObject":
                                     try:
                                         obj.Base.movePoint(0,2,p2,0)
-                                    except:
+                                    except Exception:
                                         print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
@@ -1100,11 +1100,11 @@ class _Wall(ArchComponent.Component):
                     # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
-                    except:
+                    except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
                         widths = ArchSketchObject.sortSketchWidth(obj.Base, obj.OverrideWidth)
-                    except:
+                    except Exception:
                         widths = obj.OverrideWidth
                 else:
                     # If Base Object is not Sketch, but e.g. DWire, the width
@@ -1145,11 +1145,11 @@ class _Wall(ArchComponent.Component):
                     # sorted edges of Sketch
                     try:
                         import ArchSketchObject
-                    except:
+                    except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
                         aligns = ArchSketchObject.sortSketchAlign(obj.Base, obj.OverrideAlign)
-                    except:
+                    except Exception:
                         aligns = obj.OverrideAlign
                 else:
                     # If Base Object is not Sketch, but e.g. DWire, the align
@@ -1241,14 +1241,14 @@ class _Wall(ArchComponent.Component):
                     # in some corner case != getSortedClusters()
                     elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                         self.basewires = []
-                        skGeom = obj.Base.Geometry
+                        skGeom = obj.Base.GeometryFacadeList
                         skGeomEdges = []
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
                         for i in skGeom:
                             if not i.Construction:
                                 # support Line, Arc, Circle for Sketch as Base at the moment
-                                if isinstance(i, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
-                                    skGeomEdgesI = i.toShape()
+                                if isinstance(i.Geometry, (Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+                                    skGeomEdgesI = i.Geometry.toShape()
                                     skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
@@ -1269,15 +1269,15 @@ class _Wall(ArchComponent.Component):
                     else:
                         self.basewires = obj.Base.Shape.Wires
 
-                        # Found case that after sorting below, direction of 
+                        # Found case that after sorting below, direction of
                         # edges sorted are not as 'expected' thus resulted in
-                        # bug - e.g. a Dwire with edges/vertexes in clockwise 
-                        # order, 1st vertex is Forward as expected.  After 
-                        # sorting below, edges sorted still in clockwise order 
-                        # - no problem, but 1st vertex of each edge become 
+                        # bug - e.g. a Dwire with edges/vertexes in clockwise
+                        # order, 1st vertex is Forward as expected.  After
+                        # sorting below, edges sorted still in clockwise order
+                        # - no problem, but 1st vertex of each edge become
                         # Reverse rather than Forward.
 
-                        # See FC discussion - 
+                        # See FC discussion -
                         # https://forum.freecadweb.org/viewtopic.php?f=23&t=48275&p=413745#p413745
 
                         #self.basewires = []
@@ -1314,7 +1314,7 @@ class _Wall(ArchComponent.Component):
                                 try:
                                     if aligns[n] not in ['Left', 'Right', 'Center']:
                                         aligns[n] = align
-                                except:
+                                except Exception:
                                     aligns.append(align)
 
                                 # Fill the widths List with ArchWall's default
@@ -1323,7 +1323,7 @@ class _Wall(ArchComponent.Component):
                                 try:
                                     if not widths[n]:
                                         widths[n] = width
-                                except:
+                                except Exception:
                                     widths.append(width)
 
                             # Get a direction vector orthogonal to both the

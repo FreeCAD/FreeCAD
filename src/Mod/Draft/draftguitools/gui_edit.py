@@ -212,6 +212,7 @@ class Edit(gui_base_original.Modifier):
     """
 
     def __init__(self):
+        super().__init__()
         """Initialize Draft_Edit Command."""
         self.running = False
         self.trackers = {'object': []}
@@ -270,13 +271,10 @@ class Edit(gui_base_original.Modifier):
 
 
     def GetResources(self):
-        tooltip = ("Edits the active object.\n"
-                   "Press E or ALT+LeftClick to display context menu\n"
-                   "on supported nodes and on supported objects.")
         return {'Pixmap': 'Draft_Edit',
                 'Accel': "D, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", tooltip)
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object.\nPress E or ALT+LeftClick to display context menu\non supported nodes and on supported objects.")
                 }
 
 
@@ -669,7 +667,7 @@ class Edit(gui_base_original.Modifier):
             self.current_editing_object_gui_tools = None
             self.ghost.finalize()
             self.ghost = None
-        except:
+        except Exception:
             return
 
     # -------------------------------------------------------------------------
@@ -716,11 +714,11 @@ class Edit(gui_base_original.Modifier):
 
         for index, point in enumerate(obj.Points):
             if index == edgeIndex:
-                newPoints.append(self.localize_vectors(obj, newPoint))
+                newPoints.append(self.localize_vector(obj, newPoint))
             newPoints.append(point)
         if obj.Closed and edgeIndex == len(obj.Points):
             # last segment when object is closed
-            newPoints.append(self.localize_vectors(obj, newPoint))
+            newPoints.append(self.localize_vector(obj, newPoint))
         obj.Points = newPoints
 
     def addPointToCurve(self, point, obj, info=None):
@@ -768,11 +766,11 @@ class Edit(gui_base_original.Modifier):
                 uPoints.append(curve.parameter(p))
             for i in range(len(uPoints) - 1):
                 if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
-                    pts.insert(i + 1, self.localize_vectors(obj, point))
+                    pts.insert(i + 1, self.localize_vector(obj, point))
                     break
             # DNC: fix: add points to last segment if curve is closed
             if obj.Closed and (uNewPoint > uPoints[-1]):
-                pts.append(self.localize_vectors(obj, point))
+                pts.append(self.localize_vector(obj, point))
         obj.Points = pts
 
     # ------------------------------------------------------------------------
@@ -867,7 +865,7 @@ class Edit(gui_base_original.Modifier):
 
     def update(self, obj, nodeIndex, v):
         """Apply the App.Vector to the modified point and update obj."""
-        v = self.localize_vectors(obj, v)
+        v = self.localize_vector(obj, v)
         App.ActiveDocument.openTransaction("Edit")
         self.update_object(obj, nodeIndex, v)
         App.ActiveDocument.commitTransaction()
@@ -914,7 +912,7 @@ class Edit(gui_base_original.Modifier):
             except AttributeError:
                 try:
                     obj_gui_tools = self.gui_tools_repository.get(utils.get_type(obj))
-                except:
+                except Exception:
                     obj_gui_tools = None
         return obj_gui_tools
 
@@ -998,11 +996,11 @@ class Edit(gui_base_original.Modifier):
         """Return the given point list in the given object coordinate system."""
         plist = []
         for p in pointList:
-            point = self.localize_vectors(obj, p)
+            point = self.localize_vector(obj, p)
             plist.append(point)
         return plist
 
-    def localize_vectors(self, obj, point):
+    def localize_vector(self, obj, point):
         """Return the given point in the given object coordinate system."""
         if hasattr(obj, "getGlobalPlacement"):
             return obj.getGlobalPlacement().inverse().multVec(point)

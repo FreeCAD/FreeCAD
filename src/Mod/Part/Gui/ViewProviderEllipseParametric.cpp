@@ -36,7 +36,7 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderEllipseParametric, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderEllipseParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderEllipseParametric::ViewProviderEllipseParametric()

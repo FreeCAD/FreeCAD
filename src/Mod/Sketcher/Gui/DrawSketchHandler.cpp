@@ -29,6 +29,9 @@
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoFont.h>
 # include <QPainter>
+# if QT_VERSION >= 0x050000
+# include <QGuiApplication>
+# endif
 # include <cmath>
 #endif  // #ifndef _PreComp_
 
@@ -69,6 +72,7 @@ void DrawSketchHandler::quit(void)
 {
     assert(sketchgui);
     sketchgui->drawEdit(std::vector<Base::Vector2d>());
+    sketchgui->drawEditMarkers(std::vector<Base::Vector2d>());
     resetPositionText();
 
     Gui::Selection().rmvSelectionGate();
@@ -113,12 +117,15 @@ void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, c
     qreal pRatio = devicePixelRatio();
     bool isRatioOne = (pRatio == 1.0);
     qreal defaultCursorSize = isRatioOne ? 64 : 32;
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     qreal hotX = x;
     qreal hotY = y;
-#else
-    qreal hotX = x * pRatio;
-    qreal hotY = y * pRatio;
+#if QT_VERSION >= 0x050000
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+    if (qGuiApp->platformName() == QLatin1String("xcb")) {
+        hotX *= pRatio;
+        hotY *= pRatio;
+    }
+#endif
 #endif
     qreal cursorSize = defaultCursorSize * pRatio;
 
@@ -155,12 +162,15 @@ void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
             p1.setDevicePixelRatio(pRatio);
 #endif
-#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
             qreal hotX = x;
             qreal hotY = y;
-#else
-            qreal hotX = x * pRatio;
-            qreal hotY = y * pRatio;
+#if QT_VERSION >= 0x050000
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+            if (qGuiApp->platformName() == QLatin1String("xcb")) {
+                hotX *= pRatio;
+                hotY *= pRatio;
+            }
+#endif
 #endif
             cursor = QCursor(p1, hotX, hotY);
         } else {
@@ -589,7 +599,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
 
         if(createowncommand) {
             // Open the Command
-            Gui::Command::openCommand("Add auto constraints");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add auto constraints"));
         }
 
         // Iterate through constraints

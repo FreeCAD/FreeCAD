@@ -58,12 +58,11 @@ class Line(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates a 2-point line. CTRL to snap, SHIFT to constrain."
 
         return {'Pixmap': 'Draft_Line',
                 'Accel': "L,I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Line", "Line"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line. CTRL to snap, SHIFT to constrain.")}
 
     def Activated(self, name=translate("draft", "Line")):
         """Execute when the command is called."""
@@ -122,9 +121,13 @@ class Line(gui_base_original.Creator):
                 if not self.isWire and len(self.node) == 2:
                     self.finish(False, cont=True)
                 if len(self.node) > 2:
+                    # The wire is closed
                     if (self.point - self.node[0]).Length < utils.tolerance():
                         self.undolast()
-                        self.finish(True, cont=True)
+                        if len(self.node) > 2:
+                            self.finish(True, cont=True)
+                        else:
+                            self.finish(False, cont=True)
 
     def finish(self, closed=False, cont=False):
         """Terminate the operation and close the polyline if asked.
@@ -303,13 +306,11 @@ class Wire(Line):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates a multiple-points line (polyline). "
-                "CTRL to snap, SHIFT to constrain.")
 
         return {'Pixmap': 'Draft_Wire',
                 'Accel': "P, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Wire", "Polyline"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""

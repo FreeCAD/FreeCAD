@@ -33,6 +33,22 @@
 
 using namespace TechDrawGui;
 
+#if 0 // needed for Qt's lupdate utility
+    qApp->translate("Workbench", "Dimensions");
+    qApp->translate("Workbench", "Annotations");
+    qApp->translate("Workbench", "Add Lines");
+    qApp->translate("Workbench", "Add Vertices");    
+    qApp->translate("Workbench", "TechDraw");
+    qApp->translate("Workbench", "TechDraw Pages");
+    qApp->translate("Workbench", "TechDraw Views");
+    qApp->translate("Workbench", "TechDraw Clips");
+    qApp->translate("Workbench", "TechDraw Dimensions");
+    qApp->translate("Workbench", "TechDraw File Access");
+    qApp->translate("Workbench", "TechDraw Decoration");
+    qApp->translate("Workbench", "TechDraw Annotation");
+    qApp->translate("Workbench", "Views");
+#endif
+
 TYPESYSTEM_SOURCE(TechDrawGui::Workbench, Gui::StdWorkbench)
 
 Workbench::Workbench()
@@ -53,29 +69,39 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // dimensions
     Gui::MenuItem* dimensions = new Gui::MenuItem;
     dimensions->setCommand("Dimensions");
-    *dimensions << "TechDraw_LengthDimension" << "TechDraw_HorizontalDimension" << "TechDraw_VerticalDimension"
-        << "TechDraw_RadiusDimension" << "TechDraw_DiameterDimension" << "TechDraw_AngleDimension"
-        << "TechDraw_HorizontalExtentDimension" << "TechDraw_VerticalExtentDimension" << "TechDraw_LinkDimension"
-        << "TechDraw_LandmarkDimension"
-;
+    *dimensions << "TechDraw_LengthDimension";
+    *dimensions << "TechDraw_HorizontalDimension";
+    *dimensions << "TechDraw_VerticalDimension";
+    *dimensions << "TechDraw_RadiusDimension";
+    *dimensions << "TechDraw_DiameterDimension";
+    *dimensions << "TechDraw_AngleDimension";
+    *dimensions << "TechDraw_HorizontalExtentDimension";
+    *dimensions << "TechDraw_VerticalExtentDimension";
+    *dimensions << "TechDraw_LinkDimension";
+    *dimensions << "TechDraw_LandmarkDimension";
 
     // annotations
     Gui::MenuItem* annotations = new Gui::MenuItem;
     annotations->setCommand("Annotations");
-    *annotations << "TechDraw_Annotation" << "TechDraw_RichTextAnnotation" << "TechDraw_Balloon";
+    *annotations << "TechDraw_Annotation";
+    *annotations << "TechDraw_RichTextAnnotation";
+    *annotations << "TechDraw_Balloon";
 
     // lines
     Gui::MenuItem* lines = new Gui::MenuItem;
     lines->setCommand("Add Lines");
-    *lines << "TechDraw_LeaderLine" << "TechDraw_FaceCenterLine"
-        << "TechDraw_2LineCenterLine" << "TechDraw_2PointCenterLine";
+    *lines << "TechDraw_LeaderLine";
+    *lines << "TechDraw_FaceCenterLine";
+    *lines << "TechDraw_2LineCenterLine";
+    *lines << "TechDraw_2PointCenterLine";
     *lines << "TechDraw_2PointCosmeticLine";
 
     // vertices
     Gui::MenuItem* vertices = new Gui::MenuItem;
     vertices->setCommand("Add Vertices");
-    *vertices << "TechDraw_CosmeticVertex" << "TechDraw_Midpoints"
-        << "TechDraw_Quadrants";
+    *vertices << "TechDraw_CosmeticVertex";
+    *vertices << "TechDraw_Midpoints";
+    *vertices << "TechDraw_Quadrants";
 
     // main menu
     draw->setCommand("TechDraw");
@@ -239,7 +265,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPageSVG";
     *file << "TechDraw_ExportPageDXF";
- 
+
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";

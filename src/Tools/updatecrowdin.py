@@ -87,6 +87,7 @@ files = [ ["AddonManager.ts",      "/Mod/AddonManager/Resources/translations/Add
 class ResponseHandler( xml.sax.ContentHandler ):
 
     def __init__(self):
+        super().__init__()
         self.current = ""
         self.data = ""
         self.translated = 1

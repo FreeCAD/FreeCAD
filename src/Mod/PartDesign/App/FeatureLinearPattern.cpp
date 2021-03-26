@@ -49,12 +49,15 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::LinearPattern, PartDesign::Transformed)
 
+const App::PropertyIntegerConstraint::Constraints intOccurrences = { 1, INT_MAX, 1 };
+
 LinearPattern::LinearPattern()
 {
     ADD_PROPERTY_TYPE(Direction,(0),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Occurrences,(3));
+    Occurrences.setConstraints(&intOccurrences);
 }
 
 short LinearPattern::mustExecute() const
@@ -73,11 +76,9 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     if (distance < Precision::Confusion())
         throw Base::ValueError("Pattern length too small");
     int occurrences = Occurrences.getValue();
-    if (occurrences < 2)
-        throw Base::ValueError("At least two occurrences required");
+    if (occurrences < 1)
+        throw Base::ValueError("At least one occurrence required");
     bool reversed = Reversed.getValue();
-
-    double offset = distance / (occurrences - 1);
 
     App::DocumentObject* refObject = Direction.getValue();
     if (refObject == NULL)
@@ -178,12 +179,27 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     gp_Trsf trans;
     transformations.push_back(trans); // identity transformation
 
-    for (int i = 1; i < occurrences; i++) {
-        trans.SetTranslation(direction * i * offset);
-        transformations.push_back(trans);
+    if (occurrences > 1) {
+        double offset = distance / (occurrences - 1);
+        for (int i = 1; i < occurrences; i++) {
+            trans.SetTranslation(direction * i * offset);
+            transformations.push_back(trans);
+        }
     }
 
     return transformations;
+}
+
+void LinearPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+// transforms properties that had been changed
+{
+    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger OccurrencesProperty;
+        // restore the PropertyInteger to be able to set its value
+        OccurrencesProperty.Restore(reader);
+        Occurrences.setValue(OccurrencesProperty.getValue());
+    }
 }
 
 }

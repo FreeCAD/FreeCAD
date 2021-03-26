@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -19,6 +19,8 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
+
+
 #include "PreCompiled.h"
 
 // From Boost 1.75 on the geometry component requires C++14
@@ -33,7 +35,7 @@
 #   include "boost_fix/intrusive/detail/memory_util.hpp"
 #   include "boost_fix/container/detail/memory_util.hpp"
 # endif
-# include <boost/geometry.hpp>
+# include <boost_geometry.hpp>
 # include <boost/geometry/index/rtree.hpp>
 # include <boost/geometry/geometries/geometries.hpp>
 # include <boost/geometry/geometries/register/point.hpp>
@@ -2961,19 +2963,18 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         pstart = *_pstart;
     bool use_bound = !has_start || _pstart==NULL;
 
-    if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
-        //Second stage, group shape by its plane, and find overall boundary
+    //Second stage, group shape by its plane, and find overall boundary
 
-        if(arcPlaneFound || use_bound) {
-            for(auto &info : shape_list) {
-                if(arcPlaneFound) {
-                    info.myShape.Move(trsf);
-                    if(info.myPlanar) info.myPln.Transform(trsf);
-                }
-                if(use_bound)
-                    BRepBndLib::Add(info.myShape, bounds, Standard_False);
-            }
+    for(auto &info : shape_list) {
+        if(arcPlaneFound) {
+            info.myShape.Move(trsf);
+            if(info.myPlanar) info.myPln.Transform(trsf);
         }
+
+        BRepBndLib::Add(info.myShape, bounds, Standard_False);
+    }
+
+    if(use_bound || sort_mode == SortMode2D5 || sort_mode == SortModeGreedy) {
 
         for(auto itNext=shape_list.begin(),it=itNext;it!=shape_list.end();it=itNext) {
             ++itNext;
@@ -3003,15 +3004,35 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
 
     //FC_DURATION_DECL_INIT(td);
 
+    bounds.SetGap(0.0);
+    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+    bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+    AREA_TRACE("bound (" << xMin<<", "<<xMax<<"), ("<<
+            yMin<<", "<<yMax<<"), ("<<zMin<<", "<<zMax<<')');
+
     if(use_bound) {
-        bounds.SetGap(0.0);
-        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
-        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        AREA_TRACE("bound (" << xMin<<", "<<xMax<<"), ("<<
-                yMin<<", "<<yMax<<"), ("<<zMin<<", "<<zMax<<')');
         pstart.SetCoord(xMax,yMax,zMax);
         if(_pstart) *_pstart = pstart;
+    }else{
+        switch(retract_axis) {
+        case RetractAxisX:
+            if (pstart.X()<xMax){
+                pstart.SetX(xMax);
+            }
+            break;
+        case RetractAxisY:
+            if (pstart.Y()<yMax){
+                pstart.SetY(yMax);
+            }
+            break;
+        default:
+            if (pstart.Z()<zMax){
+                pstart.SetZ(zMax);
+            }
+        }
+        if(_pstart) *_pstart = pstart;
     }
+
 
     gp_Pln pln;
     double hint = 0.0;
@@ -3209,7 +3230,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     wires = sortWires(shapes,_pstart!=0,&pstart,pend,&stepdown_hint,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
-    
+
     if (wires.size() == 0)
         return;
 

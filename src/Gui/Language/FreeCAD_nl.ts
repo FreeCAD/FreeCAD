@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Bewerken</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Importeren</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Verwijderen</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Paste expressions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Maak linkgroep</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Maak link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Maak sublink</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importeer links</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importeer alle links</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Insert measurement</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Tekst document invoegen</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Voeg een onderdeel toe</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Een groep toevoegen</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Plaatsing</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformeren</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Koppeling transformeren</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Afstand meten</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -440,11 +508,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -2129,7 +2197,7 @@ Kies een andere map, alstublieft.</translation>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+      <translation>Indien ingeschakeld, dan zal de 3D-weergaveselectie gesynchroniseerd worden met de volledige objecthiërarchie.</translation>
     </message>
   </context>
   <context>
@@ -2280,11 +2348,11 @@ van de Python-console naar het rapportweergavepaneel</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Normale berichten worden opgenomen</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Neem normale berichten op</translation>
     </message>
   </context>
   <context>
@@ -2548,9 +2616,20 @@ het openen of aanmaken van bestand</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
-               </translation>
+      <translation>Ruimte voor het selecteren van elementen in 3D-weergave.
+Grotere waarde vergemakkelijkt de selectie van dingen, maar kan de selectie van kleine functies onmogelijk maken.               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Deze optie is handig voor het oplossen van problemen met grafische kaarten en stuurprogramma.
+
+Het wijzigen van deze optie vereist een herstart van de toepassing.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Gebruik software OpenGL</translation>
     </message>
   </context>
   <context>
@@ -3171,6 +3250,29 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation>Ongeladen werkbanken</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Laad de geselecteerde werkbanken, waarbij de voorkeur vensters wordt toegevoegd aan het voorkeuren dialoog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Laad geselecteerde</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Beschikbare niet-ingeladen werkbanken&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om werkgeheugen te sparen, laadt FreeCAD geen werkbanken totdat ze worden gebruikt. Het laden ervan kan toegang bieden tot extra voorkeuren met betrekking tot hun functionaliteit.&lt;/p&gt;&lt;p&gt;De volgende werkbanken zijn beschikbaar in uw installatie, maar zijn nog niet ingeladen:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
@@ -3242,31 +3344,31 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Recente macro's menu</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Grootte van recente macro lijst</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>Hoeveel macro's moeten worden weergegeven in recente macro's lijst</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Aantal snelkoppelingen</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>Hoeveel recente macro's hebben snelkoppelingen</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Toetsenbord aanpassers</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Toetsenbord aanpassingen, standaard = Ctrl+Shift+</translation>
     </message>
   </context>
   <context>
@@ -3414,10 +3516,6 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
       <translation>Rotaties in 3D zullen de huidige cursorpositie als middelpunt voor de rotatie gebruiken</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Draai bij cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Isometrisch</translation>
     </message>
@@ -3464,6 +3562,49 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Standaard cameraoriëntatie bij het aanmaken van een nieuw document of het selecteren van het startscherm</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Draai modus</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Venster midden</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Sleep bij cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Object midden</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Selectie</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Automatisch overschakelen naar de 3D-weergave met het geselecteerde item</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Automatisch boomstructuur item uitbreiden wanneer het bijbehorende object is geselecteerd in 3D-weergave</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Selecteer het object in de 3D-weergave als u met de muis over het item in de boomstructuur gaat</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Neem de selectie op in de boomstructuur om terug/vooruit te gaan met behulp van de navigatieknop</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Selectievakjes voor selectie in documentstructuur toevoegen</translation>
     </message>
   </context>
   <context>
@@ -3570,7 +3711,7 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <translation>FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -4541,27 +4682,27 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Display message types</source>
-      <translation type="unfinished">Display message types</translation>
+      <translation>Toon berichttypes</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Normale berichten</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Log berichten</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Waarschuwingen</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Foutmeldingen</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Rapportweergave weergeven</translation>
     </message>
   </context>
   <context>
@@ -4728,14 +4869,14 @@ Wilt u uw wijzigingen opslaan?</translation>
     <name>Gui::ExpressionLineEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Exacte overeenkomst</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Exacte overeenkomst</translation>
     </message>
   </context>
   <context>
@@ -5229,6 +5370,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Uitdrukking...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Automatisch uitbreiden</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5374,7 +5519,7 @@ Do you want to exit without saving your data?</source>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>Voer macro %1 uit (Shift+klik om te bewerken) snelkoppeling: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6716,45 +6861,61 @@ Kies 'Afbreken' om af te breken</translation>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+      <translation>Identiek fysiek pad gedetecteerd. Het kan ongewenste overschrijvingen van bestaand document veroorzaken!
 
 </translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Weet u zeker dat u wilt doorgaan?</translation>
     </message>
     <message>
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
+      <translation>
 
-Please check report view for more...</translation>
+Controleer de rapportweergave voor meer...</translation>
     </message>
     <message>
       <source>
 
 Pyhsical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Pyhsical path: </translation>
+Fysiek pad: </translation>
     </message>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
+      <translation>
 Document: </translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+  Traject: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Identische fysieke pad</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Fout</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Er zijn fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn misschien gewijzigd of helemaal hersteld. Kijk in de rapportweergave voor meer specifieke informatie over de objecten die hierbij zijn betrokken.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Er zijn ernstige fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn mogelijk gewijzigd of helemaal niet hersteld. Het opslaan van het project zal waarschijnlijk leiden tot data-verlies.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Werkbanken</translation>
     </message>
   </context>
   <context>
@@ -7199,8 +7360,8 @@ Document: </translation>
       <translation>Geen selectie</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Selecteer eerst de objecten die u wilt exporteren.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Selecteer de objecten om te exporteren voordat u voor export kiest.</translation>
     </message>
   </context>
   <context>
@@ -7227,6 +7388,21 @@ Document: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Stuk of document herberekenen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Help</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Doneer</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Doneer voor verdere ontwikkeling van FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -7970,11 +8146,11 @@ Document: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Recente macro's</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Recente macro lijst</translation>
     </message>
   </context>
   <context>
@@ -8814,6 +8990,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Opgeslagen camera herstellen</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Opgeslagen camera-instellingen herstellen</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8856,6 +9047,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Draai weergave 90° rechtsom</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Huidige camera opslaan</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Huidige camera-instellingen opslaan</translation>
     </message>
   </context>
   <context>
@@ -9280,7 +9486,7 @@ Weet u zeker dat u wilt doorgaan?
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Deze items worden geselecteerd voor verwijdering, maar staan niet in het actieve document.</translation>
     </message>
   </context>
   <context>

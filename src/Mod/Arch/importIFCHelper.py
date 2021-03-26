@@ -111,7 +111,7 @@ class ProjectImporter:
             # this method; otherwise a simple function (not tied to a class)
             # should be used.
             ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
-        except:
+        except Exception:
             # This scenario occurs validly in IFC2X3,
             # as the mapConversion does not exist
             return
@@ -453,7 +453,7 @@ def getColorFromStyledItem(styled_item):
         # this is an error in the IFC file in my opinion
     else:
         # never seen an ifc with more than one Styles in IfcStyledItem
-        # the above seams to only apply for IFC2x3, IFC4 can have them 
+        # the above seams to only apply for IFC2x3, IFC4 can have them
         # see https://forum.freecadweb.org/viewtopic.php?f=39&t=33560&p=437056#p437056
 
         # Get the `IfcPresentationStyleAssignment`, there should only be one,

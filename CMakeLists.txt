@@ -1,5 +1,5 @@
-# april 2020, the oldest we have to support : Ununtu 16.04 LTS (Xenial)
-cmake_minimum_required(VERSION 3.5.1 FATAL_ERROR)
+# March 2021, the oldest we have to support : Ununtu 18.04 LTS
+cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
 
 # policy CMP0072 was introduced with CMake 3.11
 # relates to FindOpenGL module
@@ -17,8 +17,8 @@ project(FreeCAD)
 
 set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
-set(PACKAGE_VERSION_MINOR "19")
-set(PACKAGE_VERSION_PATCH "16100")
+set(PACKAGE_VERSION_MINOR "20")
+set(PACKAGE_VERSION_PATCH "0")
 set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" (empty string)
 set(FREECAD_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
 
@@ -50,6 +50,12 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     find_package(ZLIB REQUIRED)
     find_package(PyCXX REQUIRED)
     SetupOpenCasCade()
+    if(BUILD_GUI)
+        # Do this before the check for SMESH because it depends on vtk
+        # that may have its own OpenGL check but possibly fails and leaves
+        # OPENGL_gl_LIBRARY empty that results into linker errors
+        SetupOpenGL()
+    endif(BUILD_GUI)
     SetupSalomeSMESH()
     if (BUILD_FEM_NETGEN)
         find_package(NETGEN)
@@ -64,7 +70,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     SetupFreetype()
 
     if(BUILD_GUI)
-        SetupOpenGL()
         SetupCoin3D()
         SetupSpaceball()
         SetupShibokenAndPyside()

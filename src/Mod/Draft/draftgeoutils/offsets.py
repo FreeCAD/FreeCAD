@@ -233,7 +233,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     else:
         norm = get_normal(wire)  # norm = Vector(0, 0, 1)
         # for backward compatibility with previous getNormal implementation
-        if norm == None:
+        if norm is None:
             norm = App.Vector(0, 0, 1)
 
     closed = isReallyClosed(wire)

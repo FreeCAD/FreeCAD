@@ -548,7 +548,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("Annotation");
-    openCommand("Create Annotation");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewAnnotation','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     updateActive();
@@ -1254,7 +1254,7 @@ CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Change Appearance of Lines");
-    sToolTipText    = "Change Appearance of selected Lines";
+    sToolTipText    = QT_TR_NOOP("Change Appearance of selected Lines");
     sWhatsThis      = "TechDraw_DecorateLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-DecorateLine";

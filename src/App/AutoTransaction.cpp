@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -50,7 +50,7 @@ AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
     // We use negative transaction guard to disable auto transaction from here
     // and any stack below. This is to support user setting active transaction
     // before having any existing AutoTransaction on stack, or 'persist'
-    // transaction that can out live AutoTransaction. 
+    // transaction that can out live AutoTransaction.
     if(app._activeTransactionGuard<0)
         --app._activeTransactionGuard;
     else if(tid || app._activeTransactionGuard>0)

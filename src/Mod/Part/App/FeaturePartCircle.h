@@ -29,7 +29,7 @@
 
 namespace Part
 {
-class Circle : public Part::Primitive
+class PartExport Circle : public Part::Primitive
 {
     PROPERTY_HEADER(Part::Circle);
 

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>Internet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>Internet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -42,13 +42,13 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>Internet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="136"/>
       <source>Refresh web page</source>
-      <translation>Osvježi web stranicu</translation>
+      <translation>Osvježi internet stranicu</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../Command.cpp" line="250"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>Internet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="251"/>
@@ -70,13 +70,13 @@
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>Internet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
       <location filename="../../Command.cpp" line="164"/>
       <source>Stop loading</source>
-      <translation>Prekini učitavanje</translation>
+      <translation>Zaustavi učitavanje</translation>
     </message>
   </context>
   <context>
@@ -84,13 +84,13 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>Internet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <location filename="../../Command.cpp" line="194"/>
       <source>Zoom in</source>
-      <translation>Zumiraj</translation>
+      <translation>Povećaj</translation>
     </message>
   </context>
   <context>
@@ -98,13 +98,13 @@
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>Internet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <location filename="../../Command.cpp" line="223"/>
       <source>Zoom out</source>
-      <translation>Odzumiraj</translation>
+      <translation>Umanji</translation>
     </message>
   </context>
   <context>
@@ -112,29 +112,29 @@
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Web</source>
-      <translation>Web</translation>
+      <translation>Internet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>Open website...</source>
-      <translation>Otvori web stranicu...</translation>
+      <translation>Otvori internet stranicu...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Otvori web stranicu u FreeCAD-u</translation>
+      <translation>Otvori internet stranicu u FreeCAD-u</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="745"/>
+      <location filename="../../BrowserView.cpp" line="748"/>
       <source>Browser</source>
       <translation>Preglednik</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="560"/>
+      <location filename="../../BrowserView.cpp" line="563"/>
       <source>File does not exist!</source>
       <translation>Datoteka ne postoji!</translation>
     </message>
@@ -144,6 +144,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="551"/>
       <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -153,7 +154,12 @@
       <translation>Pojavile su se pogreške tijekom učitavanja datoteke. Neki podaci su možda promijenjeni ili nisu oporavljeni potuno. Pogledajte prikaz izvješća za više podataka o objektima koji su uključeni.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="716"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="719"/>
       <source>Loading %1...</source>
       <translation>Učitavanje %1...</translation>
     </message>

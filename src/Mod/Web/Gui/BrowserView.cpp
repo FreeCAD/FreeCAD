@@ -544,7 +544,7 @@ void BrowserView::onLinkClicked (const QUrl & url)
 #if PY_MAJOR_VERSION < 3
                     Gui::Command::doCommand(Gui::Command::Gui,"exec(open(unicode('%s', 'utf-8')).read())",(const char*) filename.toUtf8());
 #else
-                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) filename.toUtf8());
+                    Gui::Command::doCommand(Gui::Command::Gui,"with open('%s') as file:\n\texec(file.read())",(const char*) filename.toUtf8());
 #endif
                 }
                 catch (const Base::Exception& e) {
@@ -554,6 +554,9 @@ void BrowserView::onLinkClicked (const QUrl & url)
                 App::Document *doc = BaseView::getAppDocument();
                 if(doc && doc->testStatus(App::Document::PartialRestore))
                     QMessageBox::critical(this, tr("Error"), tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+
+                if(doc && doc->testStatus(App::Document::RestoreError))
+                    QMessageBox::critical(this, tr("Error"), tr("There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data."));
             }
         }
         else {

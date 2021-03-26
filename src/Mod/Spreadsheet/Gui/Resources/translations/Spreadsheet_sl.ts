@@ -99,7 +99,7 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Poravnaj navpično sredinsko</translation>
+      <translation>Sredinso poravnaj po navpičnici</translation>
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
@@ -231,6 +231,89 @@
     <message>
       <source>Custom Color</source>
       <translation>Barva po meri</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Združi celice</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Razcepi celice</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Levo poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Sredinjenje polja</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Desno poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Gornje poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Spodnje poravnavanje polja</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Sredinjenje polj po navpičnici</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Nastavi na krepko besedilo</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Nastavi na ležeče besedilo</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Nastavi na podčrtano besedilo</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Ustvari preglednico</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Nastavi lastnosti polja</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Uredi polje</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Vstavi vrstice</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Odstrani vrstice</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Vstavi stolpce</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Počisti polje (i, a)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Nastavi barvo ospredja</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Nastavi barvo ozadja</translation>
     </message>
   </context>
   <context>

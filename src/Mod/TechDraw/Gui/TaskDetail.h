@@ -110,7 +110,7 @@ protected:
     TechDraw::DrawViewDetail* getDetailFeat();
 
 private:
-    Ui_TaskDetail * ui;
+    std::unique_ptr<Ui_TaskDetail> ui;
     bool blockUpdate;
 
     QGIGhostHighlight* m_ghost;

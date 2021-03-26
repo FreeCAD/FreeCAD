@@ -97,7 +97,8 @@ def get_draft_context_commands():
     return ["Draft_ApplyStyle", "Draft_ToggleDisplayMode",
             "Draft_AddToGroup", "Draft_SelectGroup",
             "Draft_SelectPlane", "Draft_ShowSnapBar",
-            "Draft_ToggleGrid", "Draft_AutoGroup"]
+            "Draft_ToggleGrid", "Draft_AutoGroup",
+            "Draft_SetStyle"]
 
 
 def get_draft_line_commands():

@@ -43,7 +43,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -54,32 +54,29 @@ class Facebinder(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Creates a facebinder object from selected faces."
 
         d = {'Pixmap': 'Draft_Facebinder',
              'Accel': "F,F",
              'MenuText': QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_Facebinder", _tip)}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder object from selected faces.")}
         return d
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Facebinder, self).Activated(name=_tr("Facebinder"))
+        super(Facebinder, self).Activated(name=translate("draft","Facebinder"))
 
         if not Gui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 _msg(translate("draft", "Select faces from existing objects"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                    gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed when a valid selection has been made."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
         if Gui.Selection.getSelection():
             App.ActiveDocument.openTransaction("Create Facebinder")
             Gui.addModule("Draft")

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -85,7 +85,7 @@ PyMOD_INIT_FUNC(PathGui)
 
      // add resources and reloads the translators
     loadPathResource();
-    
+
     // register preferences pages
     new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> ("Path");
 

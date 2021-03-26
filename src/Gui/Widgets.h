@@ -248,7 +248,7 @@ private:
 
 /**
  * A text label where a url can specified. When the user clicks on the text label the system browser
- * gets opened with the specified url. 
+ * gets opened with the specified url.
  *
  * This can be used for e.g. in the about dialog where the url of the maintainer of an application
  * can be specified.
@@ -414,7 +414,7 @@ public:
     LabelEditor (QWidget * parent = 0);
     virtual ~LabelEditor();
 
-    /** 
+    /**
     * Returns the text.
     */
     QString text() const;
@@ -461,7 +461,7 @@ class GuiExport ExpLineEdit : public QLineEdit, public ExpressionBinding
 public:
     ExpLineEdit ( QWidget * parent=0, bool expressionOnly=false );
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 

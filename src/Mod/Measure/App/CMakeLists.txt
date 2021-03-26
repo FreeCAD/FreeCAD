@@ -12,7 +12,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${Python3_INCLUDE_DIRS}
     ${XERCESC_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})

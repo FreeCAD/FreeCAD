@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -103,12 +103,12 @@ int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Dict TooltablePy::getTools(void) const
 {
-    PyObject *dict = PyDict_New();
+    Py::Dict dict;
     for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
-        PyObject *tool = new Path::ToolPy(i->second);
-        PyDict_SetItem(dict,PYINT_FROMLONG(i->first),tool);
+        PyObject *tool = new Path::ToolPy(new Tool(*i->second));
+        dict.setItem(Py::Long(i->first), Py::asObject(tool));
     }
-    return Py::Dict(dict);
+    return dict;
 }
 
 void TooltablePy::setTools(Py::Dict arg)
@@ -237,7 +237,7 @@ int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-Py::Int TooltablePy::getVersion(void) const 
+Py::Int TooltablePy::getVersion(void) const
 {
     return Py::Int(getTooltablePtr()->Version);
 }

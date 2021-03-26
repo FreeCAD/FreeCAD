@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Uvozi</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Izbriši</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Prilepi izraze</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Naredi skupino povezav</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Naredi povezavo</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Naredi podpovezavo</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Uvozi povezave</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Uvozi vse povezave</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Vstavi meritev</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Vstavi besedilni dokument</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Dodaj del</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Dodaj skupino</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Postavitev</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Preoblikuj</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Poveži Preoblikovanje</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Izmeri razdaljo</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -2550,9 +2618,21 @@ privzeto prikazan</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Površina pri izbiranju v trirazsežnem pogledu.
+Pri večjih vrednostih je izbiranje lažje, vendar pa je lahko zaradi tega izbiranje drobnih reči nemogoče.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Ta možnost je uporabna za iskanje napak grafične kartice in gonilnika.
+
+Za spremembo te možnosti je treba program ponovno zagnati.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Uporabi OpenGL programje</translation>
     </message>
   </context>
   <context>
@@ -3174,6 +3254,29 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation>Odložena delovna okolja</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Naloži izbrana delovna okolja in njihova prednastavitvena okna dodaj k pogovornemu oknu s prednastavitvami.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Naloži izbrano</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Odložena delovna okolja, ki so na voljo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zaradi varčevanja z viri FreeCAD ne naloži delovnih okolij, dokler se jih ne uporabi. Če jih naložite, vam bodo lahko na voljo dodatne prednastavitve, ki so povezane z njihovimi zmožnostmi.&lt;/p&gt;&lt;p&gt;V vaši namestitvi so na voljo naslednja delovna okolja, ki niso še naložena:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
@@ -3380,7 +3483,7 @@ Vrednost predstavlja premer krogle, včrtane v zaslon.</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
-      <translation>Preveličinjenje ob kazalki</translation>
+      <translation>Preodmičenje ob kazalki</translation>
     </message>
     <message>
       <source>Zoom step</source>
@@ -3415,10 +3518,6 @@ S to nastavitvijo nagibanje z miško ni onemogočeno.</translation>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>Pri prostorskem sukanju bo za vrtišče izbran trenutni položaj kazalke</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation>Sukaj okrog kazalke</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3467,6 +3566,49 @@ S to nastavitvijo nagibanje z miško ni onemogočeno.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Privzeta usmeritev kamere pri ustvarjanju novega dokumenta ali izbiri domačega pogleda</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Sukalni način</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Sredina okna</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Povleci h kazalki</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Središče predmeta</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Izbira</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Samodejno preklopi na prostorski pogled, ki vsebuje izbrani predmet</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Samodejno razširi predmet v drevesu, ki odgovarja izbranemu predmetu v prostorskem pogledu</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Predizberi predmete v prostorskem pogledu, preko katerih se z miško pomika v drevesu</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Posnemi izbor v drevesnem pogledu, da se lahko s krmilnim gumbom premika nazaj in naprej</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Za izbiranje po drevesu dokumenta dodaj označna polja</translation>
     </message>
   </context>
   <context>
@@ -5235,6 +5377,10 @@ Kako želite nadaljevati?</translation>
       <source>Expression...</source>
       <translation>Izraz ...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Samodejno razširi</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -6767,6 +6913,22 @@ Dokument: </translation>
       <source>Identical physical path</source>
       <translation>Enaka tvarna pot</translation>
     </message>
+    <message>
+      <source>Error</source>
+      <translation>Napaka</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Med nalaganjem datoteke je prišlo do napake. Nekateri podatki so se lahko spremenili ali pa se sploh niso obnovili. Poglej v okno poročil za podrobnejše informacije o vpletenih objektih.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Pri nalaganju datoteke je prišlo do resnih napak. Določeni podatki so bili lahko spremenjeni ali pa sploh niso bili obnovljeni. Če projekt shranite, bo najverjetneje prišlo do izgube podatkov.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Delovna okolja</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7210,8 +7372,8 @@ Dokument: </translation>
       <translation>Brez izbora</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Najprej izberite predmete, ki jih želite izvoziti.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Izberite predmete, ki jih želite izvoziti, preden izberete Izvoz.</translation>
     </message>
   </context>
   <context>
@@ -7238,6 +7400,21 @@ Dokument: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Preračunaj značilnost ali dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Pomoč</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Darujte</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Darujte FreeCADovemu razvoju</translation>
     </message>
   </context>
   <context>
@@ -7583,7 +7760,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation type="unfinished">Strip on level of link</translation>
+      <translation>Odreži na raven povezave</translation>
     </message>
   </context>
   <context>
@@ -8825,6 +9002,21 @@ Dokument: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Običajni pogled</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Povrni shranjeno kamero</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Povrni nastavitve shranjene kamere</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8867,6 +9059,21 @@ Dokument: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Zasukaj pogled za 90° v smeri ur. kazalca</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Običajni pogled</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Shrani trenutno kamero</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Shrani nastavitve trenutne kamere</translation>
     </message>
   </context>
   <context>

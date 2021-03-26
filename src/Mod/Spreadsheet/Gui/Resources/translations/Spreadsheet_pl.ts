@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Scal komórki</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Podziel komórkę</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Wyrównaj komórkę do lewej</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Wyśrodkuj komórkę</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Wyrównaj komórkę do prawej</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Wyrównaj komórkę do góry</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Wyrównaj komórkę do dołu</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Wyśrodkuj komórkę w pionie</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Ustaw pogrubiony tekst</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Ustaw pochylony tekst</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Ustaw tekst podkreślony</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Utwórz Arkusz kalkulacyjny</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Ustaw właściwości komórki</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Edytuj komórkę</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Wstaw wiersze</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Usuń wiersze</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Wstaw kolumny</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Wyczyść komórkę(i)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Ustawia kolor pierwszoplanowy</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Ustaw kolor tła</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -379,11 +462,11 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <name>QtColorPicker</name>
     <message>
       <source>Black</source>
-      <translation>Czarny</translation>
+      <translation>Czarne</translation>
     </message>
     <message>
       <source>White</source>
-      <translation>Biały</translation>
+      <translation>Białe</translation>
     </message>
     <message>
       <source>Red</source>

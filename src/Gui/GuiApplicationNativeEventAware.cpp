@@ -117,7 +117,7 @@ void Gui::GUIApplicationNativeEventAware::postMotionEvent(std::vector<int> motio
 
 	Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
     motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
-    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);  
+    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
     this->postEvent(currentWidget, motionEvent);
 }
 

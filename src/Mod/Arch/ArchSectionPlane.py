@@ -211,11 +211,11 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
 
     cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(cutplane,shapes,clip)
     shapes = []
-    if cutvolume:
-        for o, shapeList in objectShapes:
-            tmpSshapes = []
-            for sh in shapeList:
-                for sol in sh.Solids:
+    for o, shapeList in objectShapes:
+        tmpSshapes = []
+        for sh in shapeList:
+            for sol in sh.Solids:
+                if cutvolume:
                     if sol.Volume < 0:
                         sol.reverse()
                     c = sol.cut(cutvolume)
@@ -235,6 +235,8 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                     if showHidden:
                         c = sol.cut(invcutvolume)
                         hshapes.append(c)
+                else:
+                    shapes.extend(sol.Solids)
 
             if len(tmpSshapes) > 0:
                 sshapes.extend(tmpSshapes)
@@ -320,7 +322,7 @@ def getSVG(source,
            lineColor=(0.0, 0.0, 0.0),
            fontsize=1,
            showFill=False,
-           fillColor=(0.8, 0.8, 0.8),
+           fillColor=(1.0, 1.0, 1.0),
            techdraw=False,
            fillSpaces=False,
            cutlinewidth=0,
@@ -379,7 +381,7 @@ def getSVG(source,
             drafts.append(o)
         elif not o.isDerivedFrom("App::DocumentObjectGroup"):
             nonspaces.append(o)
-        if Draft.getType(o) == "Window":
+        if Draft.getType(o.getLinkedObject()) == "Window":  # To support Link of Windows(Doors)
             windows.append(o)
     objs = nonspaces
 
@@ -400,10 +402,10 @@ def getSVG(source,
     svgSymbolLineWidth = str(linewidth * yt)
     hiddenPattern = archUserParameters.GetString("archHiddenPattern","30,10")
     svgHiddenPattern = hiddenPattern.replace(" ","")
-    fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
-    fillpattern += ' x="0" y="0" width="10" height="10">'
-    fillpattern += '<g>'
-    fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    #fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
+    #fillpattern += ' x="0" y="0" width="10" height="10">'
+    #fillpattern += '<g>'
+    #fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
     svgLineColor = Draft.getrgb(lineColor)
     svg = ''
     # reading cached version
@@ -444,11 +446,16 @@ def getSVG(source,
                 render.cut(cutplane,showHidden)
             else:
                 render.cut(cutplane)
-            svgcache += '<g transform="scale(1,-1)">\n'
+            g = '<g transform="scale(1,-1)">\n'
+            if hasattr(source.ViewObject,"RotateSolidRender"):
+                if (source.ViewObject.RotateSolidRender.Value != 0):
+                    g = '<g transform="scale(1,-1) rotate('
+                    g += str(source.ViewObject.RotateSolidRender.Value)
+                    g += ')">\n'
+            svgcache += g
             svgcache += render.getViewSVG(linewidth="SVGLINEWIDTH")
-            svgcache += fillpattern
-            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",
-                                        fillpattern="sectionfill")
+            #svgcache += fillpattern
+            svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",fillpattern="#ffffff")
             if showHidden:
                 svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
             svgcache += '</g>\n'
@@ -575,11 +582,12 @@ def getSVG(source,
     if windows:
         sh = []
         for w in windows:
-            if not hasattr(w.Proxy,"sshapes"):
-                w.Proxy.execute(w)
-            if hasattr(w.Proxy,"sshapes"):
-                if w.Proxy.sshapes and (w.Name in cutwindows):
-                    c = Part.makeCompound(w.Proxy.sshapes)
+            wlo = w.getLinkedObject()  # To support Link of Windows(Doors)
+            if not hasattr(wlo.Proxy,"sshapes"):
+                wlo.Proxy.execute(wlo)
+            if hasattr(wlo.Proxy,"sshapes"):
+                if wlo.Proxy.sshapes and (w.Name in cutwindows):
+                    c = Part.makeCompound(wlo.Proxy.sshapes)
                     c.Placement = w.Placement
                     sh.append(c)
             # buggy for now...

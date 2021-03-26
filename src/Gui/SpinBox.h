@@ -84,7 +84,7 @@ public:
     uint maximum() const;
     void setMaximum( uint value );
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
     bool apply();
@@ -107,7 +107,7 @@ private Q_SLOTS:
 protected:
     virtual QString textFromValue ( int v ) const;
     virtual int valueFromText ( const QString & text ) const;
-    virtual void onChange();        
+    virtual void onChange();
 
 private:
     void updateValidator();
@@ -127,7 +127,7 @@ public:
     IntSpinBox ( QWidget* parent=0 );
     virtual ~IntSpinBox();
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 
@@ -142,7 +142,7 @@ private Q_SLOTS:
 };
 
 /**
- * The DoubleSpinBox class does exactly the same as Qt's QDoubleSpinBox but has expression 
+ * The DoubleSpinBox class does exactly the same as Qt's QDoubleSpinBox but has expression
  * support
  * @author Stefan Tröger
  */
@@ -154,7 +154,7 @@ public:
     DoubleSpinBox ( QWidget* parent=0 );
     virtual ~DoubleSpinBox();
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 

@@ -1238,7 +1238,7 @@
     <message>
       <location filename="../../Command.cpp" line="749"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="750"/>
@@ -1954,7 +1954,7 @@
       <location filename="../../Command.cpp" line="184"/>
       <location filename="../../Command.cpp" line="239"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="115"/>

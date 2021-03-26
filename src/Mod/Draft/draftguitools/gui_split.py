@@ -39,7 +39,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -50,21 +50,15 @@ class Split(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Splits the selected line or polyline "
-                "into two independent lines\n"
-                "or polylines by clicking anywhere "
-                "along the original object.\n"
-                "It works best when choosing a point on a straight segment "
-                "and not a corner vertex.")
 
         return {'Pixmap': 'Draft_Split',
                 'Accel': "S, P",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Split", "Split"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Split", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Split", "Splits the selected line or polyline into two independent lines\nor polylines by clicking anywhere along the original object.\nIt works best when choosing a point on a straight segment and not a corner vertex.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Split, self).Activated(name=_tr("Split"))
+        super(Split, self).Activated(name=translate("draft","Split"))
         if not self.ui:
             return
         _msg(translate("draft", "Click anywhere on a line to split it."))
@@ -112,8 +106,6 @@ class Split(gui_base_original.Modifier):
         self.commit(translate("draft", "Split line"),
                     _cmd_list)
 
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
         self.finish()
 
 

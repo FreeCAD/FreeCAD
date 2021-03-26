@@ -51,6 +51,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
+#include <Mod/Sketcher/App/Constraint.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
@@ -316,7 +317,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch line");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                           EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                           geometryCreationMode==Construction?"True":"False");
@@ -490,7 +491,7 @@ public:
             int firstCurve = getHighestCurveIndex() + 1;
 
             try {
-                Gui::Command::openCommand("Add sketch box");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
                     "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
@@ -978,7 +979,7 @@ public:
                 // issue the geometry
                 try {
                     // open the transaction
-                    Gui::Command::openCommand("Add line to sketch wire");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add line to sketch wire"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                         EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                         geometryCreationMode==Construction?"True":"False");
@@ -998,7 +999,7 @@ public:
                 }
 
                 try {
-                    Gui::Command::openCommand("Add arc to sketch wire");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add arc to sketch wire"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                         "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                         CenterPoint.x, CenterPoint.y, std::abs(arcRadius),
@@ -1441,7 +1442,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch arc");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, sqrt(rx*rx + ry*ry),
@@ -1710,7 +1711,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch arc");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, radius,
@@ -1979,7 +1980,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
                           EditCurve[0].x, EditCurve[0].y,
@@ -2738,7 +2739,7 @@ private:
         int currentgeoid = getHighestCurveIndex(); // index of the ellipse we just created
 
         try {
-            Gui::Command::openCommand("Add sketch ellipse");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch ellipse"));
             Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Ellipse"
                                     "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                                     periapsis.x, periapsis.y,
@@ -3107,7 +3108,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand("Add sketch arc of ellipse");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfEllipse"
                     "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%f,%f),%s)",
@@ -3445,7 +3446,7 @@ public:
 
             try {
 
-                Gui::Command::openCommand("Add sketch arc of hyperbola");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of hyperbola"));
 
                 //Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it to balance
                 //the intrinsic focus1, in order to balance out the intrinsic invisible focus1 when AOE is
@@ -3747,7 +3748,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand("Add sketch arc of Parabola");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of Parabola"));
 
                 //Add arc of parabola
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfParabola"
@@ -4070,7 +4071,7 @@ public:
             // insert circle point for pole, defer internal alignment constraining.
             try {
 
-                Gui::Command::openCommand("Add Pole circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
@@ -4131,36 +4132,15 @@ public:
             // insert circle point for pole, defer internal alignment constraining.
             try {
 
-                //Gui::Command::openCommand("Add Pole circle");
+                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
-                double guess = (EditCurve[1]-EditCurve[0]).Length()/6;
-
-                auto normalize = [](double guess) {
-                    double units=1.0;
-
-                    while (guess >= 10.0) {
-                        guess /= 10.0;
-                        units*=10.0;
-                    }
-
-                    while (guess < 1.0) {
-                        guess *= 10.0;
-                        units/=10.0;
-                    }
-
-                    return round(guess)*units;
-
-                };
-
-                guess = normalize(guess);
-
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
                                       EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
 
                 if(EditCurve.size() == 2) {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                          FirstPoleGeoId, guess );
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                                          FirstPoleGeoId, 1.0 ); // First pole defaults to 1.0 weight
                 }
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
@@ -4223,7 +4203,7 @@ public:
 
             try {
 
-                //Gui::Command::openCommand("Add B-spline curve");
+                //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
                 /*Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
                     "(%s,%s),"
@@ -4686,7 +4666,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch circle");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
                           CenterPoint.x, CenterPoint.y,
@@ -4913,7 +4893,7 @@ public:
             resetPositionText();
 
             try {
-                Gui::Command::openCommand("Add sketch point");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
                           EditPoint.x,EditPoint.y);
 
@@ -5037,7 +5017,6 @@ bool CmdSketcherCreateDraftLine::isActive(void)
     return false;
 }
 
-
 // ======================================================================================
 
 namespace SketcherGui {
@@ -5085,11 +5064,17 @@ namespace SketcherGui {
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerFillet() : Mode(STATUS_SEEK_First), firstCurve(0) {}
+    enum FilletType {
+        SimpleFillet,
+        ConstraintPreservingFillet
+    };
+
+    DrawSketchHandlerFillet(FilletType filletType) : filletType(filletType), Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
     }
+
     enum SelectMode{
         STATUS_SEEK_First,
         STATUS_SEEK_Second
@@ -5133,7 +5118,7 @@ public:
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
-                    construction=geom1->getConstruction() && geom2->getConstruction();
+                    construction=Sketcher::GeometryFacade::getConstruction(geom1) && Sketcher::GeometryFacade::getConstruction(geom2);
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
@@ -5156,8 +5141,10 @@ public:
                 int currentgeoid= getHighestCurveIndex();
                 // create fillet at point
                 try {
-                    Gui::Command::openCommand("Create fillet");
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f)", GeoId, PosId, radius);
+                    bool pointFillet = (filletType == 1);
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s)", GeoId, PosId, radius, "True",
+                        pointFillet ? "True":"False");
 
                     if (construction) {
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid+1);
@@ -5216,7 +5203,7 @@ public:
                         if (radius < 0)
                             return false;
 
-                        construction=lineSeg1->getConstruction() && lineSeg2->getConstruction();
+                        construction=Sketcher::GeometryFacade::getConstruction(lineSeg1) && Sketcher::GeometryFacade::getConstruction(lineSeg2);
                     }
                     else { // other supported curves
                         const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
@@ -5224,7 +5211,7 @@ public:
                         const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        construction=geo1->getConstruction() && geo2->getConstruction();
+                        construction=Sketcher::GeometryFacade::getConstruction(geo1) && Sketcher::GeometryFacade::getConstruction(geo2);
                     }
 
 
@@ -5232,11 +5219,13 @@ public:
 
                     // create fillet between lines
                     try {
-                        Gui::Command::openCommand("Create fillet");
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f)",
+                        bool pointFillet = (filletType == 1);
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s)",
                                   firstCurve, secondCurve,
                                   firstPos.x, firstPos.y,
-                                  secondPos.x, secondPos.y, radius);
+                                  secondPos.x, secondPos.y, radius,
+                                  "True", pointFillet ? "True":"False");
                         Gui::Command::commitCommand();
                     }
                     catch (const Base::CADKernelError& e) {
@@ -5277,6 +5266,7 @@ public:
     }
 
 protected:
+    int filletType;
     SelectMode Mode;
     int firstCurve;
     Base::Vector2d firstPos;
@@ -5301,7 +5291,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet());
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
 }
 
 bool CmdSketcherCreateFillet::isActive(void)
@@ -5309,6 +5299,135 @@ bool CmdSketcherCreateFillet::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+// ======================================================================================
+
+DEF_STD_CMD_A(CmdSketcherCreatePointFillet)
+
+CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
+  : Command("Sketcher_CreatePointFillet")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create corner-preserving fillet");
+    sToolTipText    = QT_TR_NOOP("Fillet that preserves intersection point and most constraints");
+    sWhatsThis      = "Sketcher_CreatePointFillet";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateFillet";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreatePointFillet::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
+}
+
+bool CmdSketcherCreatePointFillet::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateFillets'
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateFillets)
+
+/**
+ * @brief ctor
+ */
+CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
+  : Command("Sketcher_CompCreateFillets")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Fillets");
+    sToolTipText    = QT_TR_NOOP("Create a fillet between two lines");
+    sWhatsThis      = "Sketcher_CompCreateFillets";
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+/**
+ * @brief Instantiates the fillet handler when the fillet command activated
+ * @param int iMsg
+ */
+void CmdSketcherCompCreateFillets::activated(int iMsg)
+{
+    if (iMsg == 0) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::SimpleFillet));
+    } else if (iMsg == 1) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet(DrawSketchHandlerFillet::ConstraintPreservingFillet));
+    } else {
+        return;
+    }
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateFillets::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* oldFillet = pcAction->addAction(QString());
+    oldFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+
+    QAction* pointFillet = pcAction->addAction(QString());
+    pointFillet->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateFillets::updateAction(int mode)
+{
+    Q_UNUSED(mode);
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
+    a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+    getAction()->setIcon(a[index]->icon());
+}
+
+void CmdSketcherCompCreateFillets::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* oldFillet = a[0];
+    oldFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets","Sketch fillet"));
+    oldFillet->setToolTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
+    oldFillet->setStatusTip(QApplication::translate("Sketcher_CreateFillet","Creates a radius between two lines"));
+    QAction* pointFillet = a[1];
+    pointFillet->setText(QApplication::translate("CmdSketcherCompCreateFillets","Constraint-preserving sketch fillet"));
+    pointFillet->setToolTip(QApplication::translate("Sketcher_CreatePointFillet","Fillet that preserves constraints and intersection point"));
+    pointFillet->setStatusTip(QApplication::translate("Sketcher_CreatePointFillet","Fillet that preserves constraints and intersection point"));
+}
+
+bool CmdSketcherCompCreateFillets::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
 
 // ======================================================================================
 
@@ -5332,13 +5451,15 @@ namespace SketcherGui {
                 int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 const Part::Geometry *geom = Sketch->getGeometry(GeoId);
-                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                    geom->getTypeId() == Part::GeomCircle::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomEllipse::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                )
-                    return true;
+                if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())   ||
+                    geom->getTypeId() == Part::GeomCircle::getClassTypeId()                     ||
+                    geom->getTypeId() == Part::GeomEllipse::getClassTypeId()                    ||
+                    geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
+                ) {
+                    // We do not trim internal geometry of complex geometries
+                    if( Sketcher::GeometryFacade::isInternalType(geom, Sketcher::InternalType::None))
+                        return true;
+                }
             }
             return  false;
         }
@@ -5365,6 +5486,40 @@ public:
     virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
+
+        int GeoId = sketchgui->getPreselectCurve();
+
+        if (GeoId > -1) {
+            auto sk = static_cast<Sketcher::SketchObject *>(sketchgui->getObject());
+            int GeoId1, GeoId2;
+            Base::Vector3d intersect1, intersect2;
+            if(sk->seekTrimPoints(GeoId, Base::Vector3d(onSketchPos.x,onSketchPos.y,0),
+                                  GeoId1, intersect1,
+                                  GeoId2, intersect2)) {
+
+                EditMarkers.resize(0);
+
+                if(GeoId1 != Sketcher::Constraint::GeoUndef)
+                    EditMarkers.emplace_back(intersect1.x, intersect1.y);
+                else {
+                    auto start = sk->getPoint(GeoId, Sketcher::start);
+                    EditMarkers.emplace_back(start.x, start.y);
+                }
+
+                if(GeoId2 != Sketcher::Constraint::GeoUndef)
+                    EditMarkers.emplace_back(intersect2.x, intersect2.y);
+                else {
+                    auto end = sk->getPoint(GeoId, Sketcher::end);
+                    EditMarkers.emplace_back( end.x, end.y);
+                }
+
+                sketchgui->drawEditMarkers(EditMarkers, 2); // maker augmented by two sizes (see supported marker sizes)
+            }
+        }
+        else {
+            EditMarkers.resize(0);
+            sketchgui->drawEditMarkers(EditMarkers, 2);
+        }
     }
 
     virtual bool pressButton(Base::Vector2d onSketchPos)
@@ -5378,13 +5533,12 @@ public:
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomCircle::getClassTypeId()      ||
-                geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+            if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())   ||
+                geom->getTypeId() == Part::GeomCircle::getClassTypeId()                     ||
+                geom->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+                geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
                 try {
-                    Gui::Command::openCommand("Trim edge");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "trim(%d,App.Vector(%f,%f,0))",
                               GeoId, onSketchPos.x, onSketchPos.y);
                     Gui::Command::commitCommand();
@@ -5395,12 +5549,17 @@ public:
                     Gui::Command::abortCommand();
                 }
             }
+
+            EditMarkers.resize(0);
+            sketchgui->drawEditMarkers(EditMarkers);
         }
         else // exit the trimming tool if the user clicked on empty space
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
 
         return true;
     }
+private:
+    std::vector<Base::Vector2d> EditMarkers;
 };
 
 DEF_STD_CMD_A(CmdSketcherTrimming)
@@ -5655,7 +5814,7 @@ public:
             }
         } else if (Mode == STATUS_SEEK_Second) {
             try {
-                Gui::Command::openCommand("Extend edge");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend edge"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "extend(%d, %f, %d)\n", // GeoId, increment, PointPos
                     BaseGeoId, Increment, ExtendFromStart ? Sketcher::start : Sketcher::end);
                 Gui::Command::commitCommand();
@@ -5871,7 +6030,7 @@ public:
                 (subName.size() > 6 && subName.substr(0,6) == "Vertex") ||
                 (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
-                    Gui::Command::openCommand("Add external geometry");
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addExternal(\"%s\",\"%s\")",
                               msg.pObjectName, msg.pSubName);
                     Gui::Command::commitCommand();
@@ -6052,7 +6211,7 @@ namespace SketcherGui {
                 if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
 
                     try {
-                        Gui::Command::openCommand("Add carbon copy");
+                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
                         Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
                                               msg.pObjectName, geometryCreationMode==Construction?"True":"False");
 
@@ -6233,7 +6392,7 @@ public:
             }
 
             try {
-                Gui::Command::openCommand("Add slot");
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
                     "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))\n"
@@ -6446,7 +6605,7 @@ public:
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
-            Gui::Command::openCommand("Add hexagon");
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add hexagon"));
 
             try {
                 Gui::Command::doCommand(Gui::Command::Doc,
@@ -6895,7 +7054,9 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateOctagon());
     rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePointFillet());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());

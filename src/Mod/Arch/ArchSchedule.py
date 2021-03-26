@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -47,7 +46,7 @@ else:
 
 __title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 verbose = True # change this for silent recomputes
@@ -221,7 +220,7 @@ class _ArchSchedule:
                                 prop = args[0].upper()
                             fval = args[1].upper()
                             if prop == "TYPE":
-                                prop == "IFCTYPE"
+                                prop = "IFCTYPE"
                             if inv:
                                 if prop in props:
                                     csprop = o.PropertiesList[props.index(prop)]
@@ -290,7 +289,7 @@ class _ArchSchedule:
                                 d = getattr(d,v)
                             if hasattr(d,"Value"):
                                 d = d.Value
-                        except:
+                        except Exception:
                             FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
                         else:
                             if verbose:

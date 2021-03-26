@@ -129,28 +129,28 @@ PyObject*  ViewProviderPy::supportedProperties(PyObject *args)
 
 PyObject*  ViewProviderPy::show(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                       // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
     PY_TRY {
-        getViewProviderPtr()->show();  
+        getViewProviderPtr()->show();
         Py_Return;
     } PY_CATCH;
 }
 
 PyObject*  ViewProviderPy::hide(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                       // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
     PY_TRY {
-        getViewProviderPtr()->hide();  
+        getViewProviderPtr()->hide();
         Py_Return;
     } PY_CATCH;
 }
 
 PyObject*  ViewProviderPy::isVisible(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                       // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
     PY_TRY {
         return Py_BuildValue("O", (getViewProviderPtr()->isShow() ? Py_True : Py_False));
     } PY_CATCH;
@@ -275,7 +275,7 @@ PyObject* ViewProviderPy::replaceObject(PyObject *args)
 {
     PyObject *oldObj;
     PyObject *newObj;
-    if (!PyArg_ParseTuple(args, "O!O!", 
+    if (!PyArg_ParseTuple(args, "O!O!",
                 &App::DocumentObjectPy::Type,&oldObj,
                 &App::DocumentObjectPy::Type,&newObj))
         return NULL;
@@ -312,11 +312,11 @@ PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
 
 PyObject*  ViewProviderPy::listDisplayModes(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                       // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
     PY_TRY {
-        std::vector<std::string> modes = getViewProviderPtr()->getDisplayModes();  
-        PyObject* pyList = PyList_New(modes.size()); 
+        std::vector<std::string> modes = getViewProviderPtr()->getDisplayModes();
+        PyObject* pyList = PyList_New(modes.size());
         int i=0;
 
         for ( std::vector<std::string>::iterator it = modes.begin(); it != modes.end(); ++it ) {
@@ -334,8 +334,8 @@ PyObject*  ViewProviderPy::listDisplayModes(PyObject *args)
 
 PyObject*  ViewProviderPy::toString(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                     // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                     // NULL triggers exception
     PY_TRY {
         std::string buffer = getViewProviderPtr()->toString();
         return Py::new_reference_to(Py::String(buffer));
@@ -429,7 +429,7 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
 PyObject* ViewProviderPy::getElementColors(PyObject* args)
 {
     const char *element = 0;
-    if (!PyArg_ParseTuple(args, "|s", &element)) 
+    if (!PyArg_ParseTuple(args, "|s", &element))
         return 0;
 
     Py::Dict dict;
@@ -444,7 +444,7 @@ PyObject* ViewProviderPy::getElementColors(PyObject* args)
 PyObject* ViewProviderPy::setElementColors(PyObject* args)
 {
     PyObject *pyObj;
-    if (!PyArg_ParseTuple(args, "O", &pyObj)) 
+    if (!PyArg_ParseTuple(args, "O", &pyObj))
         return 0;
 
     if(!PyDict_Check(pyObj))
@@ -473,7 +473,7 @@ PyObject* ViewProviderPy::getElementPicked(PyObject* args)
     void *ptr = 0;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
     SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
-    if(!pp) 
+    if(!pp)
         throw Base::TypeError("type must be of coin.SoPickedPoint");
     std::string name;
     if(!getViewProviderPtr()->getElementPicked(pp,name))
@@ -491,7 +491,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args)
     void *ptr = 0;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
     SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
-    if(!pPath) 
+    if(!pPath)
         throw Base::TypeError("type must be of coin.SoPath");
     SoDetail *det = 0;
     if(!getViewProviderPtr()->getDetailPath(
@@ -655,7 +655,7 @@ void ViewProviderPy::setDefaultMode(Py::Int arg)
     return getViewProviderPtr()->setDefaultMode(arg);
 }
 
-Py::Boolean ViewProviderPy::getCanRemoveChildrenFromRoot() const 
+Py::Boolean ViewProviderPy::getCanRemoveChildrenFromRoot() const
 {
     return Py::Boolean(getViewProviderPtr()->canRemoveChildrenFromRoot());
 }

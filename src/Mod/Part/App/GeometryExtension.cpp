@@ -28,19 +28,56 @@
 #include <Base/Tools.h>
 
 #include "GeometryExtension.h"
+#include "GeometryExtensionPy.h"
 
 using namespace Part;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::Persistence)
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::BaseClass)
 
 GeometryExtension::GeometryExtension()
 {
 }
 
-void GeometryExtension::restoreNameAttribute(Base::XMLReader &reader)
+PyObject* GeometryExtension::copyPyObject() const
+{
+    Py::Tuple tuple;
+    Py::Object obj = Py::asObject(const_cast<GeometryExtension*>(this)->getPyObject());
+    return static_cast<GeometryExtensionPy *>(obj.ptr())->copy(tuple.ptr());
+}
+
+void GeometryExtension::copyAttributes(Part::GeometryExtension * cpy) const
+{
+    cpy->setName(this->getName()); // Base Class
+}
+
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryPersistenceExtension,Part::GeometryExtension)
+
+void GeometryPersistenceExtension::restoreAttributes(Base::XMLReader &reader)
 {
     if(reader.hasAttribute("name")) {
         std::string name = reader.getAttribute("name");
         setName(name);
     }
+}
+void GeometryPersistenceExtension::saveAttributes(Base::Writer &writer) const
+{
+    const std::string name = getName();
+
+    if(name.size() > 0)
+        writer.Stream() << "\" name=\"" << name;
+
+}
+
+void GeometryPersistenceExtension::Save(Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
+
+    saveAttributes(writer);
+
+    writer.Stream() << "\"/>" << std::endl;
+}
+
+void GeometryPersistenceExtension::Restore(Base::XMLReader &reader)
+{
+    restoreAttributes(reader);
 }

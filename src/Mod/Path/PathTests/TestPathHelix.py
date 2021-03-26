@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -64,7 +62,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
     def test02(self):
         '''Verify Helix generates proper holes for rotated model'''
 
-        self.job.ToolController[0].Tool.Diameter = 0.5
+        self.job.Tools.Group[0].Tool.Diameter = 0.5
 
         op = PathHelix.Create('Helix')
         proxy = op.Proxy
@@ -89,7 +87,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             self.doc.Body.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
 
             self.job = PathJob.Create('Job', [self.doc.Body])
-            self.job.ToolController[0].Tool.Diameter = 0.5
+            self.job.Tools.Group[0].Tool.Diameter = 0.5
 
             op = PathHelix.Create('Helix')
             proxy = op.Proxy
@@ -111,7 +109,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             self.clone.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
 
             self.job = PathJob.Create('Job', [self.clone])
-            self.job.ToolController[0].Tool.Diameter = 0.5
+            self.job.Tools.Group[0].Tool.Diameter = 0.5
 
             op = PathHelix.Create('Helix')
             proxy = op.Proxy

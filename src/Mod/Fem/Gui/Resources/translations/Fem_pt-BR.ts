@@ -110,7 +110,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
       <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+      <translation>Selecione os elementos que fazem parte do sólido a ser adicionado à lista. Em seguida, para adicionar o sólido, clique em "Adicionar".</translation>
     </message>
   </context>
   <context>

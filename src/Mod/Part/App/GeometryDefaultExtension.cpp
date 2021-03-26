@@ -44,33 +44,28 @@ GeometryDefaultExtension<T>::GeometryDefaultExtension(const T& val, std::string 
     setName(name);
 }
 
-// Persistence implementer
+
 template <typename T>
-unsigned int GeometryDefaultExtension<T>::getMemSize (void) const
+void GeometryDefaultExtension<T>::copyAttributes(Part::GeometryExtension * cpy) const
 {
-    return 1;
+    Part::GeometryPersistenceExtension::copyAttributes(cpy);
+    static_cast<GeometryDefaultExtension<T> *>(cpy)->value = this->value;
 }
 
 template <typename T>
-void GeometryDefaultExtension<T>::Save(Base::Writer &writer) const
+void GeometryDefaultExtension<T>::restoreAttributes(Base::XMLReader &reader)
 {
-
-    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
-
-    const std::string name = getName();
-
-    if(name.size() > 0)
-        writer.Stream() << "\" name=\"" << name;
-
-    writer.Stream() << "\" value=\"" << value << "\"/>" << std::endl;
-}
-
-template <typename T>
-void GeometryDefaultExtension<T>::Restore(Base::XMLReader &reader)
-{
-    restoreNameAttribute(reader);
+    Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     value = reader.getAttribute("value");
+}
+
+template <typename T>
+void GeometryDefaultExtension<T>::saveAttributes(Base::Writer &writer) const
+{
+    Part::GeometryPersistenceExtension::saveAttributes(writer);
+
+    writer.Stream() << "\" value=\"" << value;
 }
 
 template <typename T>
@@ -78,8 +73,7 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void)
 {
     std::unique_ptr<GeometryDefaultExtension<T>> cpy = std::make_unique<GeometryDefaultExtension<T>>();
 
-    cpy->value = this->value;
-    cpy->setName(this->getName());
+    copyAttributes(cpy.get());
 
     #if (defined(__GNUC__) && __GNUC__ < 7 ) || defined(_MSC_VER)
         return std::move(cpy); // GCC 4.8 and MSC do not support automatic move constructor call if the compiler fails to elide
@@ -114,7 +108,7 @@ namespace Part {
 //typedef Part::GeometryStringExtension<std::string> GeometryStringExtension;
 
 // ---------- GeometryIntExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryPersistenceExtension)
 
 template <>
 PyObject * GeometryDefaultExtension<long>::getPyObject(void)
@@ -123,15 +117,15 @@ PyObject * GeometryDefaultExtension<long>::getPyObject(void)
 }
 
 template <>
-void GeometryDefaultExtension<long>::Restore(Base::XMLReader &reader)
+void GeometryDefaultExtension<long>::restoreAttributes(Base::XMLReader &reader)
 {
-    restoreNameAttribute(reader);
+    Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     value = reader.getAttributeAsInteger("value");
 }
 
 // ---------- GeometryStringExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension,Part::GeometryPersistenceExtension)
 
 template <>
 PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
@@ -140,7 +134,7 @@ PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
 }
 
 // ---------- GeometryBoolExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension,Part::GeometryPersistenceExtension)
 
 template <>
 PyObject * GeometryDefaultExtension<bool>::getPyObject(void)
@@ -149,15 +143,15 @@ PyObject * GeometryDefaultExtension<bool>::getPyObject(void)
 }
 
 template <>
-void GeometryDefaultExtension<bool>::Restore(Base::XMLReader &reader)
+void GeometryDefaultExtension<bool>::restoreAttributes(Base::XMLReader &reader)
 {
-    restoreNameAttribute(reader);
+    Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     value = (bool)reader.getAttributeAsInteger("value");
 }
 
 // ---------- GeometryDoubleExtension ----------
-TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension,Part::GeometryExtension)
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension,Part::GeometryPersistenceExtension)
 
 template <>
 PyObject * GeometryDefaultExtension<double>::getPyObject(void)
@@ -166,9 +160,9 @@ PyObject * GeometryDefaultExtension<double>::getPyObject(void)
 }
 
 template <>
-void GeometryDefaultExtension<double>::Restore(Base::XMLReader &reader)
+void GeometryDefaultExtension<double>::restoreAttributes(Base::XMLReader &reader)
 {
-    restoreNameAttribute(reader);
+    Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     value = reader.getAttributeAsFloat("value");
 }

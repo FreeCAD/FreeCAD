@@ -61,7 +61,7 @@ void ButtonView::selectButton(int number)
 
 void ButtonView::goSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    Q_UNUSED(deselected); 
+    Q_UNUSED(deselected);
     if (selected.indexes().isEmpty())
         return;
     QModelIndex select(selected.indexes().at(0));
@@ -87,7 +87,7 @@ ButtonModel::ButtonModel(QObject *parent) : QAbstractListModel(parent)
 void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree ButtonMapTree)
 {
    spaceballButtonGroup()->Clear();
-   
+
    BOOST_FOREACH(const boost::property_tree::ptree::value_type &Map, ButtonMapTree.get_child("Mapping"))
    {
       if ("Map" == Map.first)
@@ -96,7 +96,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
          std::string ButtonCode;
          std::string ButtonCommand;
          std::string ButtonDownTime;
-         
+
          // Inspect Map attributes
          BOOST_FOREACH(const boost::property_tree::ptree::value_type &kv, Map.second.get_child("<xmlattr>"))
          {
@@ -105,7 +105,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
 
             Attribute = kv.first.data();
             Value = kv.second.data();
-     
+
             if (0 == Attribute.compare("Description"))
             {
                ButtonDescription = Value;
@@ -123,7 +123,7 @@ void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree Butto
                ButtonCommand = Value;
             }
          }
-         
+
          // ButtonCode is mandatory, the remaining attributes optional.
          if (!ButtonCode.empty())
          {
@@ -145,7 +145,7 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
    {
       boost::property_tree::ptree tree;
       boost::property_tree::ptree DeviceTree;
-    
+
       // exception thrown if no file found
       std::string path = App::Application::getResourceDir();
       path += "3Dconnexion/3DConnexion.xml";
@@ -170,7 +170,7 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
                   {
                      // We found the ButtonMap we want to load up
                      DeviceTree = ButtonMap.second;
-                  } 
+                  }
                }
             }
          }
@@ -187,10 +187,10 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
       Base::Console().Warning("%s\n", e.what());
    }
 }
-    
+
 int ButtonModel::rowCount (const QModelIndex &parent) const
 {
-    Q_UNUSED(parent); 
+    Q_UNUSED(parent);
     return spaceballButtonGroup()->GetGroups().size();
 }
 
@@ -404,7 +404,7 @@ int CommandModel::rowCount(const QModelIndex &parent) const
 
 int CommandModel::columnCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent); 
+    Q_UNUSED(parent);
     return 1;
 }
 
@@ -601,13 +601,13 @@ PrintModel::PrintModel(QObject *parent, ButtonModel *buttonModelIn, CommandModel
 
 int PrintModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent); 
+    Q_UNUSED(parent);
     return buttonModel->rowCount();
 }
 
 int PrintModel::columnCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent); 
+    Q_UNUSED(parent);
     return 2;
 }
 
@@ -871,7 +871,7 @@ void DlgCustomizeSpaceball::onRemoveMacroAction(const QByteArray &macroName)
 void DlgCustomizeSpaceball::onModifyMacroAction(const QByteArray &macroName)
 {
     //don't think I need to do anything here.
-    Q_UNUSED(macroName); 
+    Q_UNUSED(macroName);
 }
 
 QStringList DlgCustomizeSpaceball::getModels()

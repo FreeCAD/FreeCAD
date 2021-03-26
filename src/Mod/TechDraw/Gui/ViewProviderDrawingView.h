@@ -25,7 +25,7 @@
 #ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
 #define TECHDRAWGUI_VIEWPROVIDERVIEW_H
 
-#include <boost/signals2.hpp> 
+#include <boost_signals2.hpp> 
 
 #include <Gui/ViewProviderFeature.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>

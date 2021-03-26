@@ -27,6 +27,9 @@
 # include <gp_Pnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColgp_Array1OfPnt.hxx>
+# include <math_Matrix.hxx>
+# include <math_Gauss.hxx>
+# include <BSplCLib.hxx>
 #endif
 
 #include <Base/VectorPy.h>
@@ -378,6 +381,101 @@ Py::Object BezierCurvePy::getEndPoint(void) const
         (getGeometryPtr()->handle());
     gp_Pnt pnt = c->EndPoint();
     return Py::Vector(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+}
+
+PyObject* BezierCurvePy::interpolate(PyObject * args)
+{
+    PyObject* obj;
+    PyObject* par=0;
+    if (!PyArg_ParseTuple(args, "O|O", &obj, &par))
+        return 0;
+    try {
+        Handle(Geom_BezierCurve) curve = Handle(Geom_BezierCurve)::DownCast
+        (getGeometryPtr()->handle());
+        Py::Sequence constraints(obj);
+        int nb_pts = constraints.size();
+        if (nb_pts < 2)
+            Standard_Failure::Raise("not enough points given");
+        
+        TColStd_Array1OfReal params(1, nb_pts);
+        if (par) {
+            Py::Sequence plist(par);
+            int param_size = plist.size();
+            if (param_size != nb_pts)
+                Standard_Failure::Raise("number of points and parameters don't match");
+            int idx=1;
+            for (Py::Sequence::iterator pit = plist.begin(); pit != plist.end(); ++pit) {
+                Py::Float val(*pit);
+                params(idx++) = (double)val;
+            }
+        }
+        else {
+            for (int idx=0; idx<nb_pts; ++idx) {
+                params(idx+1) = (double)idx/((double)nb_pts-1);
+            }
+        }
+        
+        int num_poles = 0;
+        for (Py::Sequence::iterator it1 = constraints.begin(); it1 != constraints.end(); ++it1) {
+            Py::Sequence row(*it1);
+            num_poles += (int)row.size();
+        }
+        if (num_poles > curve->MaxDegree())
+            Standard_Failure::Raise("number of constraints exceeds bezier curve capacity");
+        // create a bezier-type knot sequence
+        TColStd_Array1OfReal knots(1, 2*num_poles);
+        for (int idx=1; idx<=num_poles; ++idx) {
+            knots(idx) = params(1);
+            knots(num_poles+idx) = params(nb_pts);
+        }
+        math_Matrix OCCmatrix(1, num_poles, 1, num_poles, 0.0);
+        math_Vector res_x(1, num_poles, 0.0);
+        math_Vector res_y(1, num_poles, 0.0);
+        math_Vector res_z(1, num_poles, 0.0);
+        int row_idx = 1;
+        int cons_idx = 1;
+        for (Py::Sequence::iterator it1 = constraints.begin(); it1 != constraints.end(); ++it1) {
+            Py::Sequence row(*it1);
+            math_Matrix bezier_eval(1, row.size(), 1, num_poles, 0.0);
+            Standard_Integer first_non_zero;
+            BSplCLib::EvalBsplineBasis(row.size()-1, num_poles, knots, params(cons_idx), first_non_zero, bezier_eval, Standard_False);
+            int idx2 = 1;
+            for (Py::Sequence::iterator it2 = row.begin(); it2 != row.end(); ++it2) {
+                OCCmatrix.SetRow(row_idx, bezier_eval.Row(idx2));
+                Py::Vector v(*it2);
+                Base::Vector3d pnt = v.toVector();
+                res_x(row_idx) = pnt.x;
+                res_y(row_idx) = pnt.y;
+                res_z(row_idx) = pnt.z;
+                idx2++;
+                row_idx++;
+            }
+            cons_idx++;
+        }
+        math_Gauss gauss(OCCmatrix);
+        gauss.Solve(res_x);
+        if (!gauss.IsDone())
+            Standard_Failure::Raise("Failed to solve equations");
+        gauss.Solve(res_y);
+        if (!gauss.IsDone())
+            Standard_Failure::Raise("Failed to solve equations");
+        gauss.Solve(res_z);
+        if (!gauss.IsDone())
+            Standard_Failure::Raise("Failed to solve equations");
+
+        TColgp_Array1OfPnt poles(1,num_poles);
+        for (int idx=1; idx<=num_poles; ++idx) {
+            poles.SetValue(idx, gp_Pnt(res_x(idx),res_y(idx),res_z(idx)));
+        }
+
+        Handle(Geom_BezierCurve) bezier = new Geom_BezierCurve(poles);
+        this->getGeomBezierCurvePtr()->setHandle(bezier);
+        Py_Return;
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
 }
 
 PyObject *BezierCurvePy::getCustomAttributes(const char* /*attr*/) const

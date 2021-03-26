@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -32,12 +30,12 @@ from PySide import QtCore
 
 __title__ = "Path Profile Faces Operation UI (depreciated)"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Profile Faces operation page controller and command implementation (depreciated)."
 
 
 class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    '''Psuedo page controller class for Profile operation, 
+    '''Psuedo page controller class for Profile operation,
     allowing for backward compatibility with pre-existing "Profile Faces" operations.'''
     pass
 # Eclass
@@ -46,9 +44,9 @@ class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('Profile',
         PathProfile.Create,
         TaskPanelOpPage,
-        'Path-Contour',
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile"),
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile entire model, selected face(s) or selected edge(s)"),
+        'Path_Contour',
+        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"),
         PathProfile.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")

@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Редактировать</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Импорт</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Удалить</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Вставить выражения</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Создать группу ссылок</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Создать ссылку</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Сделать доп. ссылку</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Импорт ссылок</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Импорт всех ссылок</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Вставить измерение</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Вставить текстовый документ</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Добавить деталь</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Добавить группу</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Выравнивание</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Расположение</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Преобразовать</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Преобразование ссылок</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Измерить расстояние</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -2544,9 +2612,21 @@ opening or creation</source>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Область выбора элементов в 3D виде.
+Большее значение облегчает выбор элемента, но может сделать невозможным выбор небольших элементов.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Эта опция полезна для диагностики графических карт и проблем с драйвером.
+
+Изменение этой опции требует перезапуска приложения.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Использовать программное обеспечение OpenGL</translation>
     </message>
   </context>
   <context>
@@ -3172,6 +3252,29 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation>Выгруженные верстаки</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Загрузить выбранные верстаки, добавляя их окна настроек в диалог настроек.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Загрузить выбранный</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Доступные выгруженные верстаки&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Чтобы сохранить ресурсы, FreeCAD не загружает верстаки до тех пор, пока они не будут использованы. Загрузка их может обеспечить доступ к дополнительным настройкам, связанным с их функциональностью.&lt;/p&gt;&lt;p&gt;В вашей установке доступны следующие верстаки, но еще не загружены:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
@@ -3415,10 +3518,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Вращение в 3D будет использовать текущую позицию курсора как центр вращения</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Повернуть под курсором</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Изометрическая</translation>
     </message>
@@ -3465,6 +3564,49 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Ориентация камеры по умолчанию при создании нового документа или выборе вида "Домой"</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Режим вращения</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Центр окна</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Перенести к курсору</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Центр объекта</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Выделение</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Автопереключение в 3D вид, содержащий выбранный элемент</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Автоматически разворачивать элемент дерева при выделении соответствующего объекта в 3D виде</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Выделить объект в режиме 3D при наведении курсора на элемент дерева</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Записывать выделение в дереве для перехода назад / вперед с помощью кнопки навигации</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Добавить флажки для выделения в дереве документов</translation>
     </message>
   </context>
   <context>
@@ -5234,6 +5376,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Выражение...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -6760,6 +6906,22 @@ Document: </source>
       <source>Identical physical path</source>
       <translation>Идентичная физическая траектория</translation>
     </message>
+    <message>
+      <source>Error</source>
+      <translation>Ошибки</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Произошли ошибки при загрузке файла. Возможно, некоторые данные были изменены или не восстановлены. Посмотрите в окно отчета для более конкретной информации о затронутых объектах.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>При загрузке файла возникли серьезные ошибки. Некоторые данные могли быть изменены или не восстановлены вообще. Сохранение проекта скорее всего приведет к потере данных.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Рабочие окружения</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7203,8 +7365,8 @@ Document: </source>
       <translation>Ничего не выбрано</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Пожалуйста, сначала выберите объекты, которые вы хотите экспортировать.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Выберите объекты для экспорта перед выбором Экспорта.</translation>
     </message>
   </context>
   <context>
@@ -7231,6 +7393,21 @@ Document: </source>
     <message>
       <source>Recompute feature or document</source>
       <translation>Пересчитать объект или документ</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Справка</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Поддержать</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Пожертвовать на разработку FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -8818,6 +8995,21 @@ Document: </source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Восстановить сохраненную камеру</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Восстановить сохранённые настройки камеры</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8860,6 +9052,21 @@ Document: </source>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Повернуть вид на 90° по часовой стрелке</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Сохранить текущую камеру</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Сохранить настройки текущей камеры</translation>
     </message>
   </context>
   <context>

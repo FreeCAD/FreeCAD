@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -51,9 +50,9 @@ else:
 #  Floors are used to group different Arch objects situated
 #  at a same level
 
-__title__="FreeCAD Arch Floor"
+__title__  = "FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
     """Obsolete, superseded by ArchBuildingPart.makeFloor.
@@ -93,7 +92,7 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
 
 class _CommandFloor:
-    """The command definition for the Arch workbench's gui tool, Arch Floor. 
+    """The command definition for the Arch workbench's gui tool, Arch Floor.
 
     A tool for creating Arch floors.
 
@@ -116,7 +115,7 @@ class _CommandFloor:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
 
     def IsActive(self):
-        """Determine whether or not the Arch Floor tool is active. 
+        """Determine whether or not the Arch Floor tool is active.
 
         Inactive commands are indicated by a greyed-out icon in the menus and toolbars.
         """
@@ -176,7 +175,7 @@ class _Floor(ArchIFC.IfcProduct):
 
     Turns a <App::DocumentObjectGroupPython> into a floor object, then
     takes a list of objects to own as its children.
-        
+
     The floor can be based off either a group, or a python feature. Learn more
     about groups here: https://wiki.freecadweb.org/Std_Group
 
@@ -254,7 +253,7 @@ class _Floor(ArchIFC.IfcProduct):
 
     def execute(self,obj):
         """Method run when the object is recomputed.
-        
+
         Move its children if its placement has changed since the previous
         recompute. Set any child Walls and Structures to have the height of
         the floor if they have not Height value set.
@@ -341,7 +340,7 @@ class _ViewProviderFloor:
         """Add display modes' data to the coin scenegraph.
 
         Add each display mode as a coin node, whose parent is this view
-        provider. 
+        provider.
 
         Each display mode's node includes the data needed to display the object
         in that mode. This might include colors of faces, or the draw style of

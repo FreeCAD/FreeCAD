@@ -228,7 +228,7 @@ void Property::verifyPath(const ObjectIdentifier &p) const
     p.verify(*this);
 }
 
-Property *Property::Copy(void) const 
+Property *Property::Copy(void) const
 {
     // have to be reimplemented by a subclass!
     assert(0);
@@ -242,7 +242,7 @@ void Property::Paste(const Property& /*from*/)
 }
 
 void Property::setStatusValue(unsigned long status) {
-    static const unsigned long mask = 
+    static const unsigned long mask =
         (1<<PropDynamic)
         |(1<<PropNoRecompute)
         |(1<<PropReadOnly)
@@ -287,13 +287,13 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
             const auto &item = *it;
             PyObject *key = item.first.ptr();
 #if PY_MAJOR_VERSION < 3
-            if(!PyInt_Check(key)) 
+            if(!PyInt_Check(key))
 #else
             if(!PyLong_Check(key))
 #endif
                 throw Base::TypeError("expect key type to be integer");
             long idx = PyLong_AsLong(key);
-            if(idx<-1 || idx>listSize) 
+            if(idx<-1 || idx>listSize)
                 throw Base::ValueError("index out of bound");
             if(idx==-1 || idx==listSize) {
                 idx = listSize;

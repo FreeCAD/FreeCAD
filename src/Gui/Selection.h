@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel <juergen.riegel@web.de>                   *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,7 +32,7 @@
 #include <list>
 #include <map>
 #include <deque>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <CXX/Objects.hxx>
 
 #include <Base/Observer.h>
@@ -79,7 +80,7 @@ public:
         MovePreselect, // to signal observer the mouse movement when preselect
     };
 
-    SelectionChanges(MsgType type = ClrSelection, 
+    SelectionChanges(MsgType type = ClrSelection,
             const char *docName=0, const char *objName=0,
             const char *subName=0, const char *typeName=0,
             float x=0, float y=0, float z=0, int subtype=0)
@@ -95,8 +96,8 @@ public:
     }
 
     SelectionChanges(MsgType type,
-                     const std::string &docName, 
-                     const std::string &objName, 
+                     const std::string &docName,
+                     const std::string &objName,
                      const std::string &subName,
                      const std::string &typeName = std::string(),
                      float x=0,float y=0,float z=0, int subtype=0)
@@ -208,7 +209,7 @@ class GuiExport SelectionObserver
 
 public:
     /** Constructor
-     * 
+     *
      * @param attach: whether to attach this observer on construction
      * @param resolve: sub-object resolving mode.
      *                 0 no resolve,
@@ -217,11 +218,11 @@ public:
      */
     SelectionObserver(bool attach = true, int resolve = 1);
     /** Constructor
-     * 
+     *
      * @param vp: filtering view object.
      * @param attach: whether to attach this observer on construction
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve, 
+     *                 0 no resolve,
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      *
@@ -363,10 +364,10 @@ public:
         float x,y,z;
     };
 
-    /// Add to selection 
-    bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
+    /// Add to selection
+    bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0,
             float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0, bool clearPreSelect=true);
-    bool addSelection2(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
+    bool addSelection2(const char* pDocName, const char* pObjectName=0, const char* pSubName=0,
             float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0)
     {
         return addSelection(pDocName,pObjectName,pSubName,x,y,z,pickedList,false);
@@ -376,10 +377,10 @@ public:
     bool addSelection(const SelectionObject&, bool clearPreSelect=true);
     /// Add to selection with several sub-elements
     bool addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
-    /// Update a selection 
+    /// Update a selection
     bool updateSelection(bool show, const char* pDocName, const char* pObjectName=0, const char* pSubName=0);
     /// Remove from selection (for internal use)
-    void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
+    void rmvSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0,
             const std::vector<SelObj> *pickedList = 0);
     /// Set the selection for a document
     void setSelection(const char* pDocName, const std::vector<App::DocumentObject*>&);
@@ -388,7 +389,7 @@ public:
     /// Clear the selection of all documents
     void clearCompleteSelection(bool clearPreSelect=true);
     /// Check if selected
-    bool isSelected(const char* pDocName, const char* pObjectName=0, 
+    bool isSelected(const char* pDocName, const char* pObjectName=0,
             const char* pSubName=0, int resolve=1) const;
     /// Check if selected
     bool isSelected(App::DocumentObject*, const char* pSubName=0, int resolve=1) const;
@@ -396,7 +397,7 @@ public:
     const char *getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
     /// set the preselected object (mostly by the 3D view)
-    int setPreselect(const char* pDocName, const char* pObjectName, 
+    int setPreselect(const char* pDocName, const char* pObjectName,
             const char* pSubName, float x=0, float y=0, float z=0, int signal=0);
     /// remove the present preselection
     void rmvPreselect(bool signal=false);
@@ -428,7 +429,7 @@ public:
      * Does basically the same as the method above unless that it accepts a string literal as first argument.
      * \a typeName must be a registered type, otherwise 0 is returned.
      */
-    unsigned int countObjectsOfType(const char* typeName, 
+    unsigned int countObjectsOfType(const char* typeName,
             const char* pDocName=0, int resolve=1) const;
 
     /** Returns a vector of objects of type \a TypeName selected for the given document name \a pDocName.
@@ -436,14 +437,14 @@ public:
      * If no objects of this document are selected an empty vector is returned.
      * @note The vector reflects the sequence of selection.
      */
-    std::vector<App::DocumentObject*> getObjectsOfType(const Base::Type& typeId, 
+    std::vector<App::DocumentObject*> getObjectsOfType(const Base::Type& typeId,
             const char* pDocName=0, int resolve=1) const;
 
     /**
      * Does basically the same as the method above unless that it accepts a string literal as first argument.
      * \a typeName must be a registered type otherwise an empty array is returned.
      */
-    std::vector<App::DocumentObject*> getObjectsOfType(const char* typeName, 
+    std::vector<App::DocumentObject*> getObjectsOfType(const char* typeName,
             const char* pDocName=0, int resolve=1) const;
     /**
      * A convenience template-based method that returns an array with the correct types already.
@@ -480,9 +481,9 @@ public:
      * @param pDocName: document name. If no document name is given the objects
      * of the active are returned. If nothing for this Document is selected an
      * empty vector is returned. If document name is "*", then all document is
-     * considered. 
+     * considered.
      * @param resolve: sub-object resolving mode
-     *                 0 no resolve, 
+     *                 0 no resolve,
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
@@ -496,10 +497,10 @@ public:
      * @param pDocName: document name. If no document name is given the objects
      * of the active are returned. If nothing for this Document is selected an
      * empty vector is returned. If document name is "*", then all document is
-     * considered. 
+     * considered.
      * @param typeId: specify the type of object to be returned.
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve, 
+     *                 0 no resolve,
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
@@ -569,11 +570,11 @@ public:
     int selStackForwardSize() const {return _SelStackForward.size();}
 
     /** Obtain selected objects from stack
-     * 
+     *
      * @param pDocName: optional filtering document, NULL for current active
      *                  document
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve, 
+     *                 0 no resolve,
      *                 1 resolve sub-object with old style element name
      *                 2 resolve sub-object with new style element name
      * @param index: optional position in the stack
@@ -589,7 +590,7 @@ public:
      */
     void selStackGoBack(int count=1);
 
-    /** Go forward selection history 
+    /** Go forward selection history
      *
      * @param count: optional number of steps to go back
      *
@@ -709,12 +710,12 @@ protected:
     std::deque<SelStackItem> _SelStackBack;
     std::deque<SelStackItem> _SelStackForward;
 
-    int checkSelection(const char *pDocName, const char *pObjectName, 
+    int checkSelection(const char *pDocName, const char *pObjectName,
             const char *pSubName,int resolve, _SelObj &sel, const std::list<_SelObj> *selList=0) const;
 
     std::vector<Gui::SelectionObject> getObjectList(const char* pDocName,Base::Type typeId, std::list<_SelObj> &objs, int resolve, bool single=false) const;
 
-    static App::DocumentObject *getObjectOfType(_SelObj &sel, Base::Type type, 
+    static App::DocumentObject *getObjectOfType(_SelObj &sel, Base::Type type,
             int resolve, const char **subelement=0);
 
     static SelectionSingleton* _pcSingleton;

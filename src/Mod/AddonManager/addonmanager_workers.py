@@ -24,9 +24,7 @@
 import os
 import re
 import shutil
-import stat
 import sys
-import tempfile
 
 from PySide import QtCore, QtGui
 
@@ -768,7 +766,7 @@ class InstallWorker(QtCore.QThread):
                                                      str(self.repos[idx][0]) + "\n")
                     if have_git:
                         self.info_label.emit("Cloning module...")
-                        repo = git.Repo.clone_from(self.repos[idx][1], clonedir, branch="master")
+                        repo = git.Repo.clone_from(self.repos[idx][1], clonedir)
 
                         # Make sure to clone all the submodules as well
                         if repo.submodules:

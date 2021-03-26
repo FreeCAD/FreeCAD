@@ -24,7 +24,7 @@
 
 __title__ = "Ccxtools FEM unit tests"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 import unittest
 from os.path import join

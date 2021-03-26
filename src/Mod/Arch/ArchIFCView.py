@@ -142,13 +142,13 @@ class IfcContextUI:
 
     def createLineEdit(self, name):
         """Creates a form with the name specified.
-        
+
         Parameters
         ----------
         name: str
             The name of the datapoint within the RepresentationContexts
             attribute being edited.
-        
+
         Returns
         -------
         <PySide2.QtWidgets.QWidget>

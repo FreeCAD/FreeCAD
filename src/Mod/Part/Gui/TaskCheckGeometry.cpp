@@ -393,7 +393,13 @@ TaskCheckGeometryResults::TaskCheckGeometryResults(QWidget *parent) : QWidget(pa
 
 TaskCheckGeometryResults::~TaskCheckGeometryResults()
 {
-    Gui::Selection().clearSelection();
+    try {
+        Gui::Selection().clearSelection();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 void TaskCheckGeometryResults::setupInterface()
@@ -634,10 +640,10 @@ void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const 
         cmdstream << "if hasattr(_shp,'normalAt'):" << std::endl;
         cmdstream << "    try:" << std::endl;
         cmdstream << "        _result += 'normalAt(0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0)]) +'\\n'" << std::endl;
-        cmdstream << "    except:" << std::endl;
+        cmdstream << "    except Exception:" << std::endl;
         cmdstream << "        try:" << std::endl;
         cmdstream << "            _result += 'normalAt(0,0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0,0)]) +'\\n'" << std::endl;
-        cmdstream << "        except:" << std::endl;
+        cmdstream << "        except Exception:" << std::endl;
         cmdstream << "            pass" << std::endl;
         cmdstream << "if hasattr(_shp, 'isClosed') and ('Wire' in _type or 'Edge' in _type):" << std::endl;
         cmdstream << "    _result += 'isClosed:  '+str(_shp.isClosed())+'\\n'" << std::endl;
@@ -823,9 +829,9 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
     std::vector<FunctionMapType>::iterator mapIt;
     for (mapIt = functionMap.begin(); mapIt != functionMap.end(); ++mapIt)
     {
-        if ((*mapIt).get<0>() == entry->shape.ShapeType() && (*mapIt).get<1>() == stat)
+        if (std::get<0>(*mapIt) == entry->shape.ShapeType() && std::get<1>(*mapIt) == stat)
         {
-            ((*mapIt).get<2>())(entry);
+            (std::get<2>(*mapIt))(entry);
             return;
         }
     }

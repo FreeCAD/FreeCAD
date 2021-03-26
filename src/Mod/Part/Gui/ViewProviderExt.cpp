@@ -1133,7 +1133,10 @@ void ViewProviderPartExt::updateVisual()
             const TopoDS_Face &actFace = TopoDS::Face(faceMap(i));
             // get the mesh of the shape
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace,aLoc);
-            if (mesh.IsNull()) continue;
+            if (mesh.IsNull()) {
+                parts[ii] = 0;
+                continue;
+            }
 
             // getting the transformation of the shape/face
             gp_Trsf myTransf;

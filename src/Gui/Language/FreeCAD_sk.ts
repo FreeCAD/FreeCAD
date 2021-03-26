@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Upraviť</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Importovať</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Odstrániť</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Vložiť výrazy</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation type="unfinished">Make link group</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation type="unfinished">Make link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation type="unfinished">Make sub-link</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation type="unfinished">Import links</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation type="unfinished">Import all links</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Vložiť meranie</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Vložiť textový dokument</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Pridať súčiastku (part)</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Pridať skupinu</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Zarovnať</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Umiestnenie</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformácia</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Preniesť spojenie</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Meranie vzdialenosti</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -143,7 +211,7 @@
     </message>
     <message>
       <source>Enable Translations</source>
-      <translation>Zapnúť preklady</translation>
+      <translation>Povoliť preklady</translation>
     </message>
     <message>
       <source>Enable Rotations</source>
@@ -186,7 +254,7 @@
     </message>
     <message>
       <source>&amp;Clear</source>
-      <translation>&amp;Vyčistiť</translation>
+      <translation>Vy&amp;mazať</translation>
     </message>
     <message>
       <source>Revert to last calculated value (as constant)</source>
@@ -201,7 +269,7 @@
     </message>
     <message>
       <source>Ico</source>
-      <translation type="unfinished">Ico</translation>
+      <translation>Ikona</translation>
     </message>
     <message>
       <source>Filename</source>
@@ -257,7 +325,7 @@
     <name>Gui::Assistant</name>
     <message>
       <source>%1 Help</source>
-      <translation>%1 Pomoc</translation>
+      <translation>%1 Pomocník</translation>
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
@@ -265,7 +333,7 @@
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
-      <translation>Nepodarilo sa spustiť asistenta Qt(%1)</translation>
+      <translation>Nepodarilo sa spustiť asistenta Qt (%1)</translation>
     </message>
   </context>
   <context>
@@ -329,7 +397,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>Zrušiť</translation>
+      <translation>&amp;Zrušiť</translation>
     </message>
   </context>
   <context>
@@ -351,11 +419,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Finish editing</source>
-      <translation>Koniec editácie</translation>
+      <translation>Dokončiť úpravu</translation>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Dokončiť editáciu objektu</translation>
+      <translation>Dokončí upravovanie objektu</translation>
     </message>
   </context>
   <context>
@@ -425,7 +493,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Collection</source>
-      <translation type="unfinished">Collection</translation>
+      <translation>Zbierka</translation>
     </message>
   </context>
   <context>
@@ -510,11 +578,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Adjust to view direction</source>
-      <translation>Prispôsobiť smeru pohľadu</translation>
+      <translation>Upraviť podľa smeru zobrazenia</translation>
     </message>
     <message>
       <source>Direction</source>
@@ -548,7 +616,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Fullscreen</source>
-      <translation>Celá obrazovka</translation>
+      <translation>Na celú obrazovka</translation>
     </message>
     <message>
       <source>Enable timer</source>
@@ -576,7 +644,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Stop</source>
-      <translation>Stop</translation>
+      <translation>Zastaviť</translation>
     </message>
     <message>
       <source>Close</source>
@@ -587,7 +655,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgActivateWindow</name>
     <message>
       <source>Choose Window</source>
-      <translation>Vyberte okno</translation>
+      <translation>Zvoľte okno</translation>
     </message>
     <message>
       <source>&amp;Activate</source>
@@ -652,7 +720,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <name>Gui::Dialog::DlgAuthorization</name>
     <message>
       <source>Authorization</source>
-      <translation>Autorizácia</translation>
+      <translation>Overenie totožnosti</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -694,7 +762,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <name>Gui::Dialog::DlgChooseIcon</name>
     <message>
       <source>Choose Icon</source>
-      <translation>Vyberte ikonu</translation>
+      <translation>Zvoľte ikonu</translation>
     </message>
     <message>
       <source>Icon folders...</source>
@@ -709,7 +777,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Setup Custom Macros</source>
-      <translation>Nastaviť vlastné Makrá</translation>
+      <translation>Nastavenie vlastných makier</translation>
     </message>
     <message>
       <source>Macro:</source>
@@ -725,7 +793,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Accelerator:</source>
-      <translation>Urýchľovač:</translation>
+      <translation>Akcelerátor:</translation>
     </message>
     <message>
       <source>What's this:</source>
@@ -796,7 +864,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Please specify the menu text first.</source>
-      <translation>Najskôr určite text menu.</translation>
+      <translation>Prosím, najskôr určte text ponuky.</translation>
     </message>
     <message>
       <source>No item selected</source>
@@ -869,11 +937,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Alt+A</source>
-      <translation>Alt + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <source>&amp;Reset</source>
-      <translation>Obnoviť</translation>
+      <translation>&amp;Obnoviť</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -881,7 +949,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Re&amp;set All</source>
-      <translation>Obnoviť všetko</translation>
+      <translation>O&amp;bnoviť všetko</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -893,7 +961,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
   </context>
   <context>
@@ -1034,7 +1102,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>Modul %1 nie je načítaný</translation>
     </message>
   </context>
   <context>
@@ -1045,7 +1113,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>Pomoc</translation>
+      <translation>&amp;Pomocník</translation>
     </message>
     <message>
       <source>&amp;Close</source>
@@ -1083,22 +1151,22 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Reset</source>
-      <translation>Reset</translation>
+      <translation>Obnoviť</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
       <source>Display properties</source>
-      <translation>Vlastnosti obrazovky</translation>
+      <translation>Vlastnosti zobrazenia</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Obrazovka</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Transparency:</source>
-      <translation>Priesvitnosť:</translation>
+      <translation>Priehľadnosť:</translation>
     </message>
     <message>
       <source>Line width:</source>
@@ -1118,11 +1186,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Viewing mode</source>
-      <translation>Prezerací mód</translation>
+      <translation>Režim zobrazenia</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Kresliaci mód:</translation>
+      <translation>Režim kreslenia:</translation>
     </message>
     <message>
       <source/>
@@ -1130,7 +1198,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Line transparency:</source>
-      <translation>Priesvitnosť čiary:</translation>
+      <translation>Priehľadnosť čiary:</translation>
     </message>
     <message>
       <source>Line color:</source>
@@ -1173,7 +1241,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Chrome</source>
-      <translation>Chrome</translation>
+      <translation>Chróm</translation>
     </message>
     <message>
       <source>Emerald</source>
@@ -1213,7 +1281,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Plastic</source>
-      <translation>Plastické</translation>
+      <translation>Plast</translation>
     </message>
     <message>
       <source>Ruby</source>
@@ -1248,7 +1316,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Options</source>
-      <translation>Možnosti</translation>
+      <translation>Voľby</translation>
     </message>
     <message>
       <source>Enable line numbers</source>
@@ -1272,11 +1340,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Indent size:</source>
-      <translation>Veľkosť zarážky:</translation>
+      <translation>Veľkosť odsadenia:</translation>
     </message>
     <message>
       <source>Keep tabs</source>
-      <translation>Pamätať si karty</translation>
+      <translation>Uchovať karty</translation>
     </message>
     <message>
       <source>Family:</source>
@@ -1347,11 +1415,11 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Enable splash screen at start up</source>
-      <translation>Pri štarte povoliť úvodnú obrazovku</translation>
+      <translation>Pri spúšťaní povoliť úvodnú obrazovku</translation>
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Po štarte automaticky nahrať modul:</translation>
+      <translation>Po štarte automaticky načítať modul:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1367,7 +1435,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Size of recent file list</source>
-      <translation>Veľkosť zoznamu obľúbených:</translation>
+      <translation>Veľkosť zoznamu nedávnych súborov</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1375,7 +1443,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Enable tiled background</source>
-      <translation>Zapnúť kachličkové pozadie</translation>
+      <translation>Povoliť dlaždicové pozadie</translation>
     </message>
     <message>
       <source>Style sheet:</source>
@@ -1383,15 +1451,15 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Python console</source>
-      <translation>Konzola Python</translation>
+      <translation>Konzola jazyka Python</translation>
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation>Zapnúť zalamovanie slov</translation>
+      <translation>Povoliť zalamovanie slov</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
-      <translation>Jazyk užívateľského rozhrania aplikácie</translation>
+      <translation>Jazyk používateľského rozhrania aplikácie</translation>
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
@@ -1400,12 +1468,12 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation>Pozadie hlavného okna bude tvorené kachličkami špeciálneho obrázku.
-Pozri FreeCAD Wiki pre detaily ohľadom obrázku.</translation>
+      <translation>Pozadie hlavného okna bude pozostávať z dlaždíc so špeciálnym obrázkom.
+Pre podrobnosti o obrázku si prezrite Wiki aplikácie FreeCAD.</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
-      <translation>Štýl ako bude vyzerať užívateľské rozhranie</translation>
+      <translation>Štýl ako bude vyzerať používateľské rozhranie</translation>
     </message>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
@@ -1414,7 +1482,7 @@ this according to your screen size or personal taste</source>
     </message>
     <message>
       <source>Tree view mode:</source>
-      <translation>Mód stromového zobrazenia:</translation>
+      <translation>Režim stromového zobrazenia:</translation>
     </message>
     <message>
       <source>Customize how tree view is shown in the panel (restart required).
@@ -1432,12 +1500,15 @@ this according to your screen size or personal taste</source>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation>Zobrazenie oznámenia (Splash screen) je malé okno zobrazované pri spúštaní aplikácie. Ak je táto možnosť zaškrtnutá, FreeCAD bude zobrazovať toto okno pri jeho spúšťaní.</translation>
+      <translation>Úvodná obrazovka je malé okno načítavania, ktoré je zorazené
+počas spúšťania aplikácie FreeCAD. Ak je táto voľba zaškrtnutá,
+aplikácia FreeCAD zobrazí úvodnú obrazovku</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation>Vyberte ktoré pracovné prostredie bude aktivované a zobrazené po spustení FreeCADu</translation>
+      <translation>Zvoľte, ktorý pracovný priestor bude aktivovaný a zobrazený
+po spustení aplikácie FreeCAD</translation>
     </message>
     <message>
       <source>Words will be wrapped when they exceed available
@@ -1473,7 +1544,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Zobraziť Pole so zoznamom</translation>
+      <translation>Kombinované zobrazenie</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
@@ -1514,7 +1585,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>Execute</source>
-      <translation>Vykonať</translation>
+      <translation>Spustiť</translation>
     </message>
     <message>
       <source>Close</source>
@@ -1558,7 +1629,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>Panel nástrojov</translation>
     </message>
   </context>
   <context>
@@ -1616,8 +1687,8 @@ Tento súbor už existuje.</translation>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>„%1“
+ už existuje.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
@@ -1645,7 +1716,7 @@ Perhaps a file permission error?</translation>
     </message>
     <message>
       <source>Do not show again</source>
-      <translation type="unfinished">Do not show again</translation>
+      <translation>Nezobrazovať znovu</translation>
     </message>
     <message>
       <source>Guided Walkthrough</source>
@@ -1698,7 +1769,7 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
       <source>Stop</source>
-      <translation>Stop</translation>
+      <translation>Zastaviť</translation>
     </message>
     <message>
       <source>Cancel</source>
@@ -1729,7 +1800,7 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
       <source>Existing macro</source>
-      <translation>Existujúce makrá</translation>
+      <translation>Existujúce makro</translation>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
@@ -1841,19 +1912,19 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Find...</source>
-      <translation type="unfinished">Find...</translation>
+      <translation>Nájsť...</translation>
     </message>
     <message>
       <source>Sorted</source>
-      <translation type="unfinished">Sorted</translation>
+      <translation>Usporiadané</translation>
     </message>
     <message>
       <source>Quick search</source>
-      <translation type="unfinished">Quick search</translation>
+      <translation>Rýchle hľadanie</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation type="unfinished">Type in a group name to find it</translation>
+      <translation>Zadajte názov skupiny pre jej nájdenie</translation>
     </message>
     <message>
       <source>Search Group</source>
@@ -1868,7 +1939,7 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Find what:</source>
-      <translation type="unfinished">Find what:</translation>
+      <translation>Čo nájsť:</translation>
     </message>
     <message>
       <source>Look at</source>
@@ -1961,11 +2032,11 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Clear user settings</source>
-      <translation type="unfinished">Clear user settings</translation>
+      <translation>Vymazať používateľské nastavenia</translation>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation type="unfinished">Do you want to clear all your user settings?</translation>
+      <translation>Chcete vymazať všetky vaše používateľské nastavenia?</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
@@ -2036,7 +2107,7 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Verzia programu:</translation>
     </message>
   </context>
   <context>
@@ -2091,7 +2162,7 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Project file</source>
-      <translation type="unfinished">Project file</translation>
+      <translation>Súbor projektu</translation>
     </message>
   </context>
   <context>
@@ -2110,7 +2181,7 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
+      <translation>Filtrovať podľa typu</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>
@@ -2118,11 +2189,11 @@ Určite iný adresár.</translation>
     </message>
     <message>
       <source>Reset</source>
-      <translation>Reset</translation>
+      <translation>Obnoviť</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
@@ -2304,7 +2375,7 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Accept changes</source>
-      <translation>Akceptovať zmeny</translation>
+      <translation>Prijať zmeny</translation>
     </message>
     <message>
       <source>Discard changes</source>
@@ -2316,7 +2387,7 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Select a file</source>
@@ -2347,7 +2418,7 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Anti-Aliasing</source>
-      <translation type="unfinished">Anti-Aliasing</translation>
+      <translation>Vyhladzovanie</translation>
     </message>
     <message>
       <source>None</source>
@@ -2359,7 +2430,7 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>MSAA 2x</source>
-      <translation type="unfinished">MSAA 2x</translation>
+      <translation>MSAA 2x</translation>
     </message>
     <message>
       <source>MSAA 4x</source>
@@ -2371,7 +2442,7 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation type="unfinished">Or&amp;thographic rendering</translation>
+      <translation>Or&amp;tografické vykresľovanie</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
@@ -2549,6 +2620,18 @@ Larger value eases to pick things, but can make small features impossible to sel
 Larger value eases to pick things, but can make small features impossible to select.
                </translation>
     </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Táto voľba je užitočná pri riešení problémov s grafickou kartou a jej ovládačom.
+
+Zmena tejto voľby vyžaduje reštart aplikácie.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Použiť softvérové OpenGL</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2665,7 +2748,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>&amp;Labels:</source>
-      <translation>Menovky:</translation>
+      <translation>&amp;Menovky:</translation>
     </message>
     <message>
       <source>&amp;Decimals:</source>
@@ -2725,7 +2808,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
-      <translation>Pri ukladaní projektu uložiť aj miniatúry</translation>
+      <translation>Pri ukladaní dokumentu uložiť miniatúru do súboru projektu</translation>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
@@ -2737,7 +2820,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>V dokumente povoliť duplikovať menovky objektu</translation>
+      <translation>Umožniť duplikovanie menoviek objektov v jednom dokumente</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
@@ -2797,7 +2880,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation type="unfinished">Add the program logo to the generated thumbnail</translation>
+      <translation>Pridať logo programu do vygenerovanej miniatúry</translation>
     </message>
     <message>
       <source>The application will create a new document when started</source>
@@ -2837,7 +2920,7 @@ automatically run a file recovery when it is started.</translation>
     </message>
     <message>
       <source>A thumbnail will be stored when document is saved</source>
-      <translation type="unfinished">A thumbnail will be stored when document is saved</translation>
+      <translation>Miniatúra bude uložená spolu s dokumentom</translation>
     </message>
     <message>
       <source>Size</source>
@@ -2846,12 +2929,12 @@ automatically run a file recovery when it is started.</translation>
     <message>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</source>
-      <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
-Common sizes are 128, 256 and 512</translation>
+      <translation>Nastaví veľkosť miniatúry, ktorá je uložená v dokumente.
+Zaužívané veľkosti sú 128, 256 a 512</translation>
     </message>
     <message>
       <source>The program logo will be added to the thumbnail</source>
-      <translation type="unfinished">The program logo will be added to the thumbnail</translation>
+      <translation>Logo programu bude pridané do miniatúry</translation>
     </message>
     <message>
       <source>How many backup files will be kept when saving document</source>
@@ -2869,7 +2952,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Formát dátumu</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -3058,7 +3141,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>&amp;Width:</source>
-      <translation>Šírka:</translation>
+      <translation>Šír&amp;ka:</translation>
     </message>
     <message>
       <source>Current screen</source>
@@ -3066,15 +3149,15 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Icon       32  x 32</source>
-      <translation>Ikona 32 x 32</translation>
+      <translation>Ikona       32  x 32</translation>
     </message>
     <message>
       <source>Icon       64 x 64</source>
-      <translation>Ikona 64 x 64</translation>
+      <translation>Ikon       64 x 64</translation>
     </message>
     <message>
       <source>Icon       128 x 128</source>
-      <translation>Ikona 128 x 128</translation>
+      <translation>Ikona       128 x 128</translation>
     </message>
     <message>
       <source>Standard sizes:</source>
@@ -3082,7 +3165,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
-      <translation>Výška:</translation>
+      <translation>&amp;Výška:</translation>
     </message>
     <message>
       <source>Aspect ratio:</source>
@@ -3090,7 +3173,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>&amp;Screen</source>
-      <translation>Obrazovka</translation>
+      <translation>O&amp;brazovka</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -3166,6 +3249,29 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <source>Pixel buffer</source>
       <translation type="unfinished">Pixel buffer</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation type="unfinished">Unloaded Workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation type="unfinished">Load Selected</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3412,10 +3518,6 @@ Mouse tilting is not disabled by this setting.</translation>
       <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation type="unfinished">Rotate at cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation type="unfinished">Isometric</translation>
     </message>
@@ -3462,6 +3564,49 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Mód rotácie</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Stred okna</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Ťahať pri kurzore</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Stred objektu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Výber</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Predčasne vybrať objekt v 3D zobrazení, keď je kurzor myši nad položku zo stromu</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
     </message>
   </context>
   <context>
@@ -3587,7 +3732,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
-      <translation>Povoliť zvýraznenie predvoľby</translation>
+      <translation>Povoliť zvýraznenie predčasného výberu</translation>
     </message>
     <message>
       <source>Background color</source>
@@ -3595,7 +3740,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Middle color</source>
-      <translation>Stredná farba</translation>
+      <translation>Prostredná farba</translation>
     </message>
     <message>
       <source>Color gradient</source>
@@ -3607,55 +3752,55 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation type="unfinished">Object being edited</translation>
+      <translation>Upravovaný objekt</translation>
     </message>
     <message>
       <source>Active container</source>
-      <translation type="unfinished">Active container</translation>
+      <translation>Aktívny kontajner</translation>
     </message>
     <message>
       <source>Enable preselection and highlight by specified color</source>
-      <translation type="unfinished">Enable preselection and highlight by specified color</translation>
+      <translation>Povoliť predčasný výber a zvýrazniť ho určenou farbou</translation>
     </message>
     <message>
       <source>Enable selection highlighting and use specified color</source>
-      <translation type="unfinished">Enable selection highlighting and use specified color</translation>
+      <translation>Povoliť zvýraznenie výberu a použiť určenú farbu</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
-      <translation type="unfinished">Background color for the model view</translation>
+      <translation>Farba pozadia pre zobrazenie modelu</translation>
     </message>
     <message>
       <source>Background will have selected color</source>
-      <translation type="unfinished">Background will have selected color</translation>
+      <translation>Pozadie bude vo vybranej farbe</translation>
     </message>
     <message>
       <source>Color gradient will get selected color as middle color</source>
-      <translation type="unfinished">Color gradient will get selected color as middle color</translation>
+      <translation>Farebný prechod získa vybranú farbu ako prostrednú farbu</translation>
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Spodná farba</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
-      <translation type="unfinished">Background will have selected color gradient</translation>
+      <translation>Pozadie bude vo farbe vybraného farebného prechodu</translation>
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Vrchná farba</translation>
     </message>
     <message>
       <source>Tree view</source>
-      <translation>Zobraziť Strom</translation>
+      <translation>Zobrazenie stromu</translation>
     </message>
     <message>
       <source>Background color for objects in tree view that are currently edited</source>
-      <translation type="unfinished">Background color for objects in tree view that are currently edited</translation>
+      <translation>Farba pozadia objektov v stromovom zobrazení, ktoré sú momentálne upravované</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
-      <translation type="unfinished">Background color for active containers in tree view</translation>
+      <translation>Farba pozadia aktívnych kontajnerov v stromovom zobrazení</translation>
     </message>
   </context>
   <context>
@@ -3669,7 +3814,7 @@ Mouse tilting is not disabled by this setting.</translation>
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <source>Units calculator</source>
-      <translation type="unfinished">Units calculator</translation>
+      <translation>Kalkulačka jednotiek</translation>
     </message>
     <message>
       <source>as:</source>
@@ -3685,7 +3830,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Copy</source>
-      <translation>Kópia</translation>
+      <translation>Kopírovať</translation>
     </message>
     <message>
       <source>Close</source>
@@ -3701,7 +3846,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Výsledok</translation>
     </message>
     <message>
       <source>List of last used calculations 
@@ -3711,7 +3856,7 @@ To add a calculation press Return in the value input field</translation>
     </message>
     <message>
       <source>Quantity</source>
-      <translation type="unfinished">Quantity</translation>
+      <translation>Množstvo</translation>
     </message>
     <message>
       <source>Unit system:</source>
@@ -4071,7 +4216,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Rotation:</source>
-      <translation>Rotácia:</translation>
+      <translation>Otočenie:</translation>
     </message>
     <message>
       <source>Zooming:</source>
@@ -4212,7 +4357,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Rotation:</source>
-      <translation>Rotácia:</translation>
+      <translation>Otočenie:</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -4236,7 +4381,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Reset</source>
-      <translation>Reset</translation>
+      <translation>Obnoviť</translation>
     </message>
     <message>
       <source>Close</source>
@@ -4272,7 +4417,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation type="unfinished">Apply incremental changes</translation>
+      <translation>Použiť prírastkové zmeny</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
@@ -4487,11 +4632,11 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <name>Gui::DockWnd::ComboView</name>
     <message>
       <source>Combo View</source>
-      <translation>Zobraziť Pole so zoznamom</translation>
+      <translation>Kombinované zobrazenie</translation>
     </message>
     <message>
       <source>Model</source>
-      <translation type="unfinished">Model</translation>
+      <translation>Model</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -4509,11 +4654,11 @@ The 'Status' column shows whether the document could be recovered.</translation>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
       <source>Options</source>
-      <translation>Možnosti</translation>
+      <translation>Voľby</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
     <message>
       <source>Save As...</source>
@@ -4572,7 +4717,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Konzola Python</translation>
+      <translation>Konzola jazyka Python</translation>
     </message>
   </context>
   <context>
@@ -4587,7 +4732,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Clears the search field</source>
-      <translation type="unfinished">Clears the search field</translation>
+      <translation>Vymaže pole vyhľadávania</translation>
     </message>
     <message>
       <source>Select only</source>
@@ -4631,11 +4776,11 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>Označiť na prepočítanie</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>Označí tento objekt na prepočítanie</translation>
     </message>
     <message>
       <source>Selection View</source>
@@ -4666,7 +4811,7 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Menovky &amp; Atribúty</translation>
+      <translation>Menovky a atribúty</translation>
     </message>
   </context>
   <context>
@@ -4690,12 +4835,12 @@ Toto bolo upravené mimo editora zdroja. Chcete to načítať?</translation>
     <message>
       <source>The document has been modified.
 Do you want to save your changes?</source>
-      <translation>Dokument bol upravovaný.
-Chcete uložiť zmeny?</translation>
+      <translation>Dokument bol zmenený.
+Chcete uložiť vaše zmeny?</translation>
     </message>
     <message>
       <source>Export PDF</source>
-      <translation>Export do PDF</translation>
+      <translation>Exportovať PDF</translation>
     </message>
     <message>
       <source>untitled[*]</source>
@@ -4703,15 +4848,15 @@ Chcete uložiť zmeny?</translation>
     </message>
     <message>
       <source> - Editor</source>
-      <translation> -Editor</translation>
+      <translation> - Editor</translation>
     </message>
     <message>
       <source>%1 chars removed</source>
-      <translation>%1 znakov odstránené</translation>
+      <translation>%1 znakov odstránených</translation>
     </message>
     <message>
       <source>%1 chars added</source>
-      <translation>%1 znakov pridané</translation>
+      <translation>%1 znakov pridaných</translation>
     </message>
     <message>
       <source>Formatted</source>
@@ -4915,7 +5060,7 @@ Chcete uložiť zmeny?</translation>
     <name>Gui::LocationDialog</name>
     <message>
       <source>Wrong direction</source>
-      <translation>Chybný smer</translation>
+      <translation>Nesprávny smer</translation>
     </message>
     <message>
       <source>Direction must not be the null vector</source>
@@ -5155,7 +5300,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
       <source>Clear list</source>
-      <translation type="unfinished">Clear list</translation>
+      <translation>Vymazať zoznam</translation>
     </message>
   </context>
   <context>
@@ -5232,12 +5377,16 @@ How do you want to proceed?</translation>
       <source>Expression...</source>
       <translation type="unfinished">Expression...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
-      <translation>Vlastnosti</translation>
+      <translation>Vlastnosť</translation>
     </message>
     <message>
       <source>Value</source>
@@ -5248,7 +5397,7 @@ How do you want to proceed?</translation>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Data</source>
@@ -5269,7 +5418,7 @@ Chcete skončiť bez uloženia vašich údajov?</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Konzola Python</translation>
+      <translation>Konzola jazyka Python</translation>
     </message>
     <message>
       <source>Unhandled PyCXX exception.</source>
@@ -5329,19 +5478,19 @@ Chcete skončiť bez uloženia vašich údajov?</translation>
     </message>
     <message>
       <source>Clear console</source>
-      <translation type="unfinished">Clear console</translation>
+      <translation>Vymazať konzolu</translation>
     </message>
     <message>
       <source>Macro Files</source>
-      <translation type="unfinished">Macro Files</translation>
+      <translation>Súbory makier</translation>
     </message>
     <message>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Všetky súbory</translation>
     </message>
     <message>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Uložiť históriu</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
@@ -5427,7 +5576,7 @@ Chcete skončiť bez uloženia vašich údajov?</translation>
     <name>Gui::StdCmdDescription</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Des&amp;cription</source>
@@ -5442,11 +5591,11 @@ Chcete skončiť bez uloženia vašich údajov?</translation>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Download online help</source>
-      <translation>Stiahnuť online Pomoc</translation>
+      <translation>Stiahnuť online pomocníka</translation>
     </message>
     <message>
       <source>Download %1's online help</source>
@@ -5472,13 +5621,13 @@ Prajete si zadať existujúci adresár?</translation>
       <source>You don't have write permission to '%1'
 
 Do you want to specify another directory?</source>
-      <translation>Nemáte povolenie pre zápis do '%1'
+      <translation>Nemáte oprávnenie pre zápis do adresára „%1“
 
-Prajete si zadať iný adresár?</translation>
+Chcete určiť iný adresár?</translation>
     </message>
     <message>
       <source>Stop downloading</source>
-      <translation>Zastaviť sťahovanie</translation>
+      <translation>Zastaviť preberanie</translation>
     </message>
   </context>
   <context>
@@ -5514,22 +5663,22 @@ Prajete si zadať iný adresár?</translation>
     <name>Gui::TaskCSysDragger</name>
     <message>
       <source>Increments</source>
-      <translation type="unfinished">Increments</translation>
+      <translation>Prírastky</translation>
     </message>
     <message>
       <source>Translation Increment:</source>
-      <translation type="unfinished">Translation Increment:</translation>
+      <translation>Prírastok prekladu:</translation>
     </message>
     <message>
       <source>Rotation Increment:</source>
-      <translation type="unfinished">Rotation Increment:</translation>
+      <translation>Prírastok otočenia:</translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskElementColors</name>
     <message>
       <source>Set element color</source>
-      <translation type="unfinished">Set element color</translation>
+      <translation>Nastaviť farbu prvku</translation>
     </message>
     <message>
       <source>TextLabel</source>
@@ -5537,7 +5686,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Recompute after commit</source>
-      <translation type="unfinished">Recompute after commit</translation>
+      <translation>Prepočítať po vykonaní</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -5549,7 +5698,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Remove all</source>
-      <translation type="unfinished">Remove all</translation>
+      <translation>Odstrániť všetko</translation>
     </message>
     <message>
       <source>Hide</source>
@@ -5568,7 +5717,7 @@ Prajete si zadať iný adresár?</translation>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
-      <translation>Kresliaci mód:</translation>
+      <translation>Režim kreslenia:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -5580,7 +5729,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Transparency:</source>
-      <translation>Priesvitnosť:</translation>
+      <translation>Priehľadnosť:</translation>
     </message>
     <message>
       <source>Appearance</source>
@@ -5640,11 +5789,11 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Chcete pred zavretím uložiť vaše zmeny?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
-      <translation type="unfinished">If you don't save, your changes will be lost.</translation>
+      <translation>Ak nevykonáte uloženie, vaše zmeny budú stratené.</translation>
     </message>
     <message>
       <source>Edit text</source>
@@ -5706,7 +5855,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Korean</source>
-      <translation type="unfinished">Korean</translation>
+      <translation>Kórejčina</translation>
     </message>
     <message>
       <source>Russian</source>
@@ -5726,7 +5875,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
-      <translation type="unfinished">Portuguese, Brazilian</translation>
+      <translation>Portugalčina (Brazília)</translation>
     </message>
     <message>
       <source>Portuguese</source>
@@ -5778,31 +5927,31 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Basque</source>
-      <translation type="unfinished">Basque</translation>
+      <translation>Baskičtina</translation>
     </message>
     <message>
       <source>Catalan</source>
-      <translation type="unfinished">Catalan</translation>
+      <translation>Katalánčina</translation>
     </message>
     <message>
       <source>Galician</source>
-      <translation type="unfinished">Galician</translation>
+      <translation>Galčina</translation>
     </message>
     <message>
       <source>Kabyle</source>
-      <translation type="unfinished">Kabyle</translation>
+      <translation>Kabylčina</translation>
     </message>
     <message>
       <source>Filipino</source>
-      <translation type="unfinished">Filipino</translation>
+      <translation>Filipínčina</translation>
     </message>
     <message>
       <source>Indonesian</source>
-      <translation type="unfinished">Indonesian</translation>
+      <translation>Indonézština</translation>
     </message>
     <message>
       <source>Lithuanian</source>
-      <translation type="unfinished">Lithuanian</translation>
+      <translation>Litovčina</translation>
     </message>
     <message>
       <source>Valencian</source>
@@ -5810,18 +5959,18 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Arabic</source>
-      <translation type="unfinished">Arabic</translation>
+      <translation>Arabčina</translation>
     </message>
     <message>
       <source>Vietnamese</source>
-      <translation type="unfinished">Vietnamese</translation>
+      <translation>Vietnamčina</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Zobraziť Strom</translation>
+      <translation>Zobrazenie stromu</translation>
     </message>
   </context>
   <context>
@@ -5855,7 +6004,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Menovky &amp; Atribúty</translation>
+      <translation>Menovky a atribúty</translation>
     </message>
     <message>
       <source>Application</source>
@@ -5863,11 +6012,11 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Finish editing</source>
-      <translation>Koniec editácie</translation>
+      <translation>Dokončiť úpravu</translation>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Dokončiť editáciu objektu</translation>
+      <translation>Dokončí upravovanie objektu</translation>
     </message>
     <message>
       <source>Activate document</source>
@@ -5879,23 +6028,23 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation type="unfinished">Skip recomputes</translation>
+      <translation>Vynechať prepočítavanie</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
-      <translation type="unfinished">Enable or disable recomputations of document</translation>
+      <translation>Povolí alebo zakáže prepočty dokumentu</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>Označiť na prepočítanie</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>Označí tento objekt na prepočítanie</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation type="unfinished">%1, Internal name: %2</translation>
+      <translation>%1, Interný názov: %2</translation>
     </message>
     <message>
       <source>Search...</source>
@@ -5903,7 +6052,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Search for objects</source>
-      <translation type="unfinished">Search for objects</translation>
+      <translation>Vyhľadá objekty</translation>
     </message>
     <message>
       <source>Description</source>
@@ -5911,55 +6060,55 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Show hidden items</source>
-      <translation type="unfinished">Show hidden items</translation>
+      <translation>Zobraziť skryté položky</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
-      <translation type="unfinished">Show hidden tree view items</translation>
+      <translation>Zobrazí skryté položky v stromovom zobrazení</translation>
     </message>
     <message>
       <source>Hide item</source>
-      <translation type="unfinished">Hide item</translation>
+      <translation>Skryť položku</translation>
     </message>
     <message>
       <source>Hide the item in tree</source>
-      <translation type="unfinished">Hide the item in tree</translation>
+      <translation>Skryť položku v strome</translation>
     </message>
     <message>
       <source>Close document</source>
-      <translation type="unfinished">Close document</translation>
+      <translation>Zavrieť dokument</translation>
     </message>
     <message>
       <source>Close the document</source>
-      <translation type="unfinished">Close the document</translation>
+      <translation>Zavrie dokument</translation>
     </message>
     <message>
       <source>Reload document</source>
-      <translation type="unfinished">Reload document</translation>
+      <translation>Znovu načítať dokument</translation>
     </message>
     <message>
       <source>Reload a partially loaded document</source>
-      <translation type="unfinished">Reload a partially loaded document</translation>
+      <translation>Znovu načíta čiastočne načítaný dokument</translation>
     </message>
     <message>
       <source>Allow partial recomputes</source>
-      <translation type="unfinished">Allow partial recomputes</translation>
+      <translation>Umožniť čiastočné prepočítanie</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation type="unfinished">Enable or disable recomputating editing object when 'skip recomputation' is enabled</translation>
+      <translation>Povolí alebo zakáže prepočet upravovaného objektu, keď je povolená voľba „vynechať prepočítanie“</translation>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>Prepočítať objekt</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>Prepočítať vybraný objekt</translation>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (ale musí byť spustený)</translation>
     </message>
   </context>
   <context>
@@ -5981,7 +6130,7 @@ Prajete si zadať iný adresár?</translation>
     <name>Gui::View3DInventor</name>
     <message>
       <source>Export PDF</source>
-      <translation>Export do PDF</translation>
+      <translation>Exportovať PDF</translation>
     </message>
     <message>
       <source>PDF file</source>
@@ -5989,18 +6138,18 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Otvorenie zlyhalo</translation>
     </message>
     <message>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>Nedá sa otvoriť súbor „%1“ na zápis.</translation>
     </message>
   </context>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>Vyberte pracovné prostredie '%1'</translation>
+      <translation>Vyberte pracovný priestor „%1“</translation>
     </message>
   </context>
   <context>
@@ -6031,7 +6180,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>About %1</source>
-      <translation>O aplikácií %1</translation>
+      <translation>O aplikácii %1</translation>
     </message>
   </context>
   <context>
@@ -6132,18 +6281,18 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Input in line %1 is not a number</source>
-      <translation type="unfinished">Input in line %1 is not a number</translation>
+      <translation>Vstup na riadku %1 nie je číslo</translation>
     </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Zobraziť Strom</translation>
+      <translation>Zobrazenie stromu</translation>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Zobrazenie vlastností</translation>
+      <translation>Zobrazenie vlastnosti</translation>
     </message>
     <message>
       <source>Selection view</source>
@@ -6151,11 +6300,11 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Zobrazenie zostavy</translation>
+      <translation>Zobrazenie hlásenia</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Zobraziť Pole so zoznamom</translation>
+      <translation>Kombinované zobrazenie</translation>
     </message>
     <message>
       <source>Toolbox</source>
@@ -6163,11 +6312,11 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Konzola Python</translation>
+      <translation>Konzola jazyka Python</translation>
     </message>
     <message>
       <source>Display properties</source>
-      <translation>Vlastnosti obrazovky</translation>
+      <translation>Vlastnosti zobrazenia</translation>
     </message>
     <message>
       <source>DAG View</source>
@@ -6182,7 +6331,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Obrazovka</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
@@ -6198,7 +6347,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Workbench failure</source>
-      <translation>Zlyhanie pracovného prostredia</translation>
+      <translation>Zlyhanie pracovného priestoru</translation>
     </message>
     <message>
       <source>%1</source>
@@ -6214,23 +6363,23 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Import file</source>
-      <translation>Import súboru</translation>
+      <translation>Importovať súbor</translation>
     </message>
     <message>
       <source>Export file</source>
-      <translation>Export súboru</translation>
+      <translation>Exportovať súbor</translation>
     </message>
     <message>
       <source>Printing...</source>
-      <translation>Tlač...</translation>
+      <translation>Tlačí sa...</translation>
     </message>
     <message>
       <source>Cannot load workbench</source>
-      <translation>Nedá sa načítať pracovné prostredie</translation>
+      <translation>Nedá sa načítať pracovný priestor</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
-      <translation>Počas načítania pracovného prostredia prišlo k zásadnej chybe</translation>
+      <translation>Počas načítania pracovného priestoru prišlo k zásadnej chybe</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -6246,7 +6395,7 @@ Prajete si zadať iný adresár?</translation>
     </message>
     <message>
       <source>Clear views</source>
-      <translation>Vyčistiť zobrazenia</translation>
+      <translation>Vymazať zobrazenia</translation>
     </message>
     <message>
       <source>Restore view &amp;%1</source>
@@ -6263,7 +6412,7 @@ Prajete si zadať iný adresár?</translation>
     <message>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-      <translation>Importovanie obnovených zobrazení môže zmazať predtým uložené zobrazenia.
+      <translation>Importovanie obnovených zobrazení môže vymazať predtým uložené zobrazenia.
 Chcete pokračovať?</translation>
     </message>
     <message>
@@ -6272,7 +6421,7 @@ Chcete pokračovať?</translation>
     </message>
     <message>
       <source>Cannot open file '%1'.</source>
-      <translation>Nedá sa otvoriť súbor '%1'.</translation>
+      <translation>Nedá sa otvoriť súbor „%1“.</translation>
     </message>
     <message>
       <source>files</source>
@@ -6296,7 +6445,7 @@ Chcete pokračovať?</translation>
     </message>
     <message>
       <source>Enter your text:</source>
-      <translation>Zadajte text:</translation>
+      <translation>Zadajte váš text:</translation>
     </message>
     <message>
       <source>New integer item</source>
@@ -6304,7 +6453,7 @@ Chcete pokračovať?</translation>
     </message>
     <message>
       <source>Enter your number:</source>
-      <translation>Zadajte číslo:</translation>
+      <translation>Zadajte vaše číslo:</translation>
     </message>
     <message>
       <source>New unsigned item</source>
@@ -6320,7 +6469,7 @@ Chcete pokračovať?</translation>
     </message>
     <message>
       <source>Choose an item:</source>
-      <translation>Vyberte položku:</translation>
+      <translation>Zvoľte položku:</translation>
     </message>
     <message>
       <source>Rename group</source>
@@ -6328,7 +6477,7 @@ Chcete pokračovať?</translation>
     </message>
     <message>
       <source>The group '%1' cannot be renamed.</source>
-      <translation>Nemožno premenovať skupinu '%1'.</translation>
+      <translation>Skupina „%1“ sa nedá premenovať.</translation>
     </message>
     <message>
       <source>Existing group</source>
@@ -6364,7 +6513,7 @@ Chcete pokračovať?</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
     <message>
       <source>Cancel</source>
@@ -6448,7 +6597,7 @@ Prosím otvorte okno prehliadača a zadajte tam: http://localhost:%1.</translati
     </message>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Unable to load documentation.
@@ -6458,7 +6607,7 @@ Pre jej načítanie je potrebné Qt 4.4 alebo vyššie.</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
-      <translation>Exportujem PDF...</translation>
+      <translation>Exportuje sa PDF...</translation>
     </message>
     <message>
       <source>Wrong selection</source>
@@ -6498,11 +6647,11 @@ Buďte opatrní pri klikaní na body.</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document '%1' before closing?</translation>
+      <translation>Chcete pred zavretím uložiť vaše zmeny v dokumente „%1“?</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
-      <translation type="unfinished">If you don't save, your changes will be lost.</translation>
+      <translation>Ak nevykonáte uloženie, vaše zmeny budú stratené.</translation>
     </message>
     <message>
       <source>Save a copy of the document under new filename...</source>
@@ -6530,7 +6679,7 @@ Buďte opatrní pri klikaní na body.</translation>
     </message>
     <message>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Pôvodné</translation>
     </message>
     <message>
       <source>Delete group content?</source>
@@ -6546,7 +6695,7 @@ Buďte opatrní pri klikaní na body.</translation>
     </message>
     <message>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Rozdeliť</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -6554,7 +6703,7 @@ Buďte opatrní pri klikaní na body.</translation>
     </message>
     <message>
       <source>Rotation:</source>
-      <translation>Rotácia:</translation>
+      <translation>Otočenie:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -6706,7 +6855,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document before closing?</source>
-      <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
+      <translation>Chcete pred zavretím uložiť vaše zmeny v dokumente?</translation>
     </message>
     <message>
       <source>Apply answer to all</source>
@@ -6764,6 +6913,22 @@ Dokument: </translation>
       <source>Identical physical path</source>
       <translation>Identická fyzická dráha</translation>
     </message>
+    <message>
+      <source>Error</source>
+      <translation>Chyba</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation type="unfinished">Workbenches</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -6802,22 +6967,22 @@ Dokument: </translation>
     <name>StdCmdAbout</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>&amp;About %1</source>
-      <translation>O &amp;aplikácií %1</translation>
+      <translation>O &amp;aplikácii %1</translation>
     </message>
     <message>
       <source>About %1</source>
-      <translation>O aplikácií %1</translation>
+      <translation>O aplikácii %1</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>About &amp;Qt</source>
@@ -6836,11 +7001,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>Ďalej</translation>
+      <translation>&amp;Nasledujúce</translation>
     </message>
     <message>
       <source>Activate next window</source>
-      <translation>Aktivuje ďalšie okno</translation>
+      <translation>Aktivuje nasledujúce okno</translation>
     </message>
   </context>
   <context>
@@ -6851,11 +7016,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>Predchádzajúce</translation>
+      <translation>&amp;Predchádzajúce</translation>
     </message>
     <message>
       <source>Activate previous window</source>
-      <translation>Zobrazí predchádzajúce okno</translation>
+      <translation>Aktivuje predchádzajúce okno</translation>
     </message>
   </context>
   <context>
@@ -6937,7 +7102,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Close Al&amp;l</source>
-      <translation>Zavrieť všetko</translation>
+      <translation>Zavri&amp;eť všetko</translation>
     </message>
     <message>
       <source>Close all windows</source>
@@ -7042,7 +7207,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Cu&amp;stomize...</source>
-      <translation>Prispôs&amp;obenie...</translation>
+      <translation>Prispôs&amp;obiť...</translation>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
@@ -7057,7 +7222,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Otvorí dialógové okno a umožní spustiť nahrané makro</translation>
+      <translation>Otvorí dialógové okno a umožní spustiť zaznamenané makro</translation>
     </message>
     <message>
       <source>Macro</source>
@@ -7102,7 +7267,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>E&amp;ditovať parametre...</translation>
+      <translation>&amp;Upraviť parametre...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
@@ -7128,7 +7293,7 @@ Dokument: </translation>
     <name>StdCmdDockViewMenu</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Panels</source>
@@ -7177,11 +7342,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
-      <translation type="unfinished">Toggle &amp;Edit mode</translation>
+      <translation>Prepnúť &amp;režim úprav</translation>
     </message>
     <message>
       <source>Toggles the selected object's edit mode</source>
-      <translation type="unfinished">Toggles the selected object's edit mode</translation>
+      <translation>Prepne režim úprav pre vybraný objekt</translation>
     </message>
     <message>
       <source>Activates or Deactivates the selected object's edit mode</source>
@@ -7196,19 +7361,19 @@ Dokument: </translation>
     </message>
     <message>
       <source>&amp;Export...</source>
-      <translation>&amp;Export...</translation>
+      <translation>&amp;Exportovať...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Export objektu v aktívnom dokumente</translation>
+      <translation>Exportuje objektu v aktívnom dokumente</translation>
     </message>
     <message>
       <source>No selection</source>
-      <translation>bez výberu</translation>
+      <translation>Žiadny výber</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation type="unfinished">Please select first the objects you want to export.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Pred spustením exportu zvoľte objekty na exportovanie.</translation>
     </message>
   </context>
   <context>
@@ -7234,14 +7399,29 @@ Dokument: </translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Prepočítať funkciu alebo dokument</translation>
+      <translation>Prepočíta funkciu alebo dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Pomocník</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Podporiť</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation type="unfinished">Donate to FreeCAD development</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreeCADFAQ</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>FreeCAD FAQ</source>
@@ -7260,7 +7440,7 @@ Dokument: </translation>
     <name>StdCmdFreeCADForum</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>FreeCAD Forum</source>
@@ -7279,7 +7459,7 @@ Dokument: </translation>
     <name>StdCmdFreeCADPowerUserHub</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Python scripting documentation</source>
@@ -7298,7 +7478,7 @@ Dokument: </translation>
     <name>StdCmdFreeCADUserHub</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Users documentation</source>
@@ -7313,7 +7493,7 @@ Dokument: </translation>
     <name>StdCmdFreeCADWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>FreeCAD Website</source>
@@ -7321,7 +7501,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>The FreeCAD website</source>
-      <translation>Internetová stránka programu FreeCAD</translation>
+      <translation>Webová stránka aplikácie FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -7411,7 +7591,7 @@ Dokument: </translation>
     <name>StdCmdLinkActions</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Link actions</source>
@@ -7512,7 +7692,7 @@ Dokument: </translation>
     <name>StdCmdLinkSelectActions</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Link navigation</source>
@@ -7669,7 +7849,7 @@ Dokument: </translation>
     <name>StdCmdMeasureDistance</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -7737,7 +7917,7 @@ Dokument: </translation>
     <name>StdCmdOnlineHelp</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Show help to the application</source>
@@ -7748,7 +7928,7 @@ Dokument: </translation>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Help Website</source>
@@ -7783,11 +7963,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Cannot open file</source>
-      <translation type="unfinished">Cannot open file</translation>
+      <translation>Nedá sa otvoriť súbor</translation>
     </message>
     <message>
       <source>Loading the file %1 is not supported</source>
-      <translation type="unfinished">Loading the file %1 is not supported</translation>
+      <translation>Načítanie súboru %1 nie je podporované</translation>
     </message>
   </context>
   <context>
@@ -7802,7 +7982,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>Vytvoriť novú časť a aktivovať ju</translation>
+      <translation>Vytvorí novú časť a aktivuje ju</translation>
     </message>
   </context>
   <context>
@@ -7858,7 +8038,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
-      <translation>&amp;Export do PDF...</translation>
+      <translation>&amp;Exportovať PDF...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
@@ -7896,7 +8076,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Zobraziť podrobnosti o práve aktívnom projekte</translation>
+      <translation>Zobrazí podrobnosti o práve aktívnom projekte</translation>
     </message>
   </context>
   <context>
@@ -7918,7 +8098,7 @@ Dokument: </translation>
     <name>StdCmdPythonWebsite</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>Python Website</source>
@@ -7937,11 +8117,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation>Koniec</translation>
+      <translation>S&amp;končiť</translation>
     </message>
     <message>
       <source>Quits the application</source>
-      <translation>Ukončí program</translation>
+      <translation>Ukončí aplikáciu</translation>
     </message>
   </context>
   <context>
@@ -7963,11 +8143,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Recent files</source>
-      <translation>Obľúbené súbory</translation>
+      <translation>Nedávne súbory</translation>
     </message>
     <message>
       <source>Recent file list</source>
-      <translation>Zoznam obľúbených súborov</translation>
+      <translation>Zoznam nedávnych súborov</translation>
     </message>
   </context>
   <context>
@@ -8012,7 +8192,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation>Prepočíta aktuálny a aktívny dokument</translation>
+      <translation>Prepočíta momentálne aktívny dokument</translation>
     </message>
   </context>
   <context>
@@ -8109,7 +8289,7 @@ Dokument: </translation>
     <name>StdCmdSelBack</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>&amp;Back</source>
@@ -8124,7 +8304,7 @@ Dokument: </translation>
     <name>StdCmdSelBoundingBox</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
@@ -8139,7 +8319,7 @@ Dokument: </translation>
     <name>StdCmdSelForward</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>&amp;Forward</source>
@@ -8244,7 +8424,7 @@ Dokument: </translation>
     <name>StdCmdStatusBar</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Status bar</source>
@@ -8364,7 +8544,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Toggle selectability</source>
-      <translation>Prepínač výberu</translation>
+      <translation>Prepnúť výber</translation>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
@@ -8379,7 +8559,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Prepínač viditeľnosti</translation>
+      <translation>Prepnúť viditeľnosť</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
@@ -8390,7 +8570,7 @@ Dokument: </translation>
     <name>StdCmdToolBarMenu</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Tool&amp;bars</source>
@@ -8435,7 +8615,7 @@ Dokument: </translation>
     <name>StdCmdTreeCollapse</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Collapse selected item</source>
@@ -8450,7 +8630,7 @@ Dokument: </translation>
     <name>StdCmdTreeExpand</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Expand selected item</source>
@@ -8465,7 +8645,7 @@ Dokument: </translation>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Select all instances</source>
@@ -8480,7 +8660,7 @@ Dokument: </translation>
     <name>StdCmdTreeViewActions</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>TreeView actions</source>
@@ -8514,18 +8694,18 @@ Dokument: </translation>
     </message>
     <message>
       <source>&amp;Units calculator...</source>
-      <translation type="unfinished">&amp;Units calculator...</translation>
+      <translation>Kalkulačka &amp;jednotiek...</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
-      <translation type="unfinished">Start the units calculator</translation>
+      <translation>Spustí kalkulačku jednotiek</translation>
     </message>
   </context>
   <context>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Dock views</source>
@@ -8548,7 +8728,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Set to bottom view</source>
-      <translation>Nastaví na pohľad z dola</translation>
+      <translation>Nastaví na pohľad zospodu</translation>
     </message>
   </context>
   <context>
@@ -8634,11 +8814,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Fit all</source>
-      <translation>Ukáž všetko</translation>
+      <translation>Prispôsobiť všetko</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Prispôsobí zobrazenie celého obsahu a ukáže na obrazovke</translation>
+      <translation>Prispôsobí celý obsah obrazovke</translation>
     </message>
   </context>
   <context>
@@ -8668,7 +8848,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Nastaví na pohľad z predu</translation>
+      <translation>Nastaví na pohľad spredu</translation>
     </message>
   </context>
   <context>
@@ -8803,7 +8983,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Nastaviť pohľad z ľava</translation>
+      <translation>Nastaví na pohľad zľava</translation>
     </message>
   </context>
   <context>
@@ -8818,7 +8998,22 @@ Dokument: </translation>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>Nastaví pohľad zo zadu</translation>
+      <translation>Nastaví na pohľad zozadu</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Štandardné zobrazenie</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Obnoviť uloženú kameru</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Obnoviť nastavenia uloženej kamery</translation>
     </message>
   </context>
   <context>
@@ -8833,7 +9028,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>Nastaví pohľad z prava</translation>
+      <translation>Nastaví na pohľad sprava</translation>
     </message>
   </context>
   <context>
@@ -8867,6 +9062,21 @@ Dokument: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Štandardné zobrazenie</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Uložiť aktuálnu kameru</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Uložiť nastavenia aktuálnej kamery</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
@@ -8878,7 +9088,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>Nastaví pohľad z hora</translation>
+      <translation>Nastaví na pohľad zhora</translation>
     </message>
   </context>
   <context>
@@ -8915,7 +9125,7 @@ Dokument: </translation>
     <name>StdCmdWhatsThis</name>
     <message>
       <source>Help</source>
-      <translation>Pomoc</translation>
+      <translation>Pomocník</translation>
     </message>
     <message>
       <source>&amp;What's This?</source>
@@ -8956,15 +9166,15 @@ Dokument: </translation>
     <name>StdCmdWorkbench</name>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Workbench</source>
-      <translation>Pracovné prostredie</translation>
+      <translation>Pracovný priestor</translation>
     </message>
     <message>
       <source>Switch between workbenches</source>
-      <translation>Prepne medzi pracovnými prostrediami</translation>
+      <translation>Prepne medzi pracovnými priestormi</translation>
     </message>
   </context>
   <context>
@@ -8975,11 +9185,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Fullscreen</source>
-      <translation>Celá obrazovka</translation>
+      <translation>Na celú obrazovka</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Zobrazí hlavné okno v režime na celú obrazovku</translation>
     </message>
   </context>
   <context>
@@ -9005,7 +9215,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Perspective view</source>
-      <translation>Perspektívne zobrazenie</translation>
+      <translation>Perspektívny pohľad</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
@@ -9065,11 +9275,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Pre-selection</source>
-      <translation type="unfinished">Pre-selection</translation>
+      <translation>Predčasný výber</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
-      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+      <translation>Predčasne vybrať objekt v 3D zobrazení, keď je kurzor myši nad položku zo stromu</translation>
     </message>
   </context>
   <context>
@@ -9181,11 +9391,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Docked</source>
-      <translation>Prichytené</translation>
+      <translation>Ukotvené</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Zobrazuje aktívny pohľad v celo-obrazovom režime buď neukotvené, alebo ukotvené</translation>
+      <translation>Zobrazí aktívne okno buď v režime na celú obrazovku, v ukotvenom alebo neukotvenom režime</translation>
     </message>
   </context>
   <context>
@@ -9200,7 +9410,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Zobrazuje aktívny pohľad v celo-obrazovom režime buď neukotvené, alebo ukotvené</translation>
+      <translation>Zobrazí aktívne okno buď v režime na celú obrazovku, v ukotvenom alebo neukotvenom režime</translation>
     </message>
   </context>
   <context>
@@ -9211,11 +9421,11 @@ Dokument: </translation>
     </message>
     <message>
       <source>Fullscreen</source>
-      <translation>Celá obrazovka</translation>
+      <translation>Na celú obrazovka</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Zobrazuje aktívny pohľad v celo-obrazovom režime buď neukotvené, alebo ukotvené</translation>
+      <translation>Zobrazí aktívne okno buď v režime na celú obrazovku, v ukotvenom alebo neukotvenom režime</translation>
     </message>
   </context>
   <context>
@@ -9245,7 +9455,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Zobrazuje aktívny pohľad v celo-obrazovom režime buď neukotvené, alebo ukotvené</translation>
+      <translation>Zobrazí aktívne okno buď v režime na celú obrazovku, v ukotvenom alebo neukotvenom režime</translation>
     </message>
   </context>
   <context>
@@ -9394,7 +9604,7 @@ Do you still want to proceed?</translation>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
-      <translation type="unfinished">This will discard all the changes since last file save.</translation>
+      <translation>Týmto sa zahodia všetky zmeny od posledného uloženia súboru.</translation>
     </message>
     <message>
       <source>Revert document</source>
@@ -9457,7 +9667,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>&amp;Editovať</translation>
+      <translation>&amp;Upraviť</translation>
     </message>
     <message>
       <source>Standard views</source>
@@ -9477,7 +9687,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;View</source>
-      <translation>Zobrazenie</translation>
+      <translation>Zo&amp;brazenie</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
@@ -9489,7 +9699,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;Windows</source>
-      <translation>Okná</translation>
+      <translation>O&amp;kná</translation>
     </message>
     <message>
       <source>&amp;On-line help</source>
@@ -9497,7 +9707,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>Pomoc</translation>
+      <translation>&amp;Pomocník</translation>
     </message>
     <message>
       <source>File</source>
@@ -9509,7 +9719,7 @@ Do you still want to proceed?</translation>
     </message>
     <message>
       <source>View</source>
-      <translation>Pohľad</translation>
+      <translation>Zobrazenie</translation>
     </message>
     <message>
       <source>Special Ops</source>

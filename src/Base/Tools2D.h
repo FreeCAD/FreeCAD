@@ -100,7 +100,7 @@ class BaseExport BoundBox2d
 {
 public:
   double MinX, MinY, MaxX, MaxY;
-  
+
   inline BoundBox2d (void);
   inline BoundBox2d (const BoundBox2d &rclBB);
   inline BoundBox2d (double fX1, double fY1, double fX2, double fY2);
@@ -110,7 +110,7 @@ public:
   // operators
   inline BoundBox2d& operator= (const BoundBox2d& rclBB);
   inline bool operator== (const BoundBox2d& rclBB) const;
-  
+
   // methods
   inline double Width(void) const;
   inline double Height(void) const;
@@ -176,7 +176,7 @@ public:
   inline Vector2d& operator[] (size_t ulNdx) const;
   inline Vector2d& At (size_t ulNdx) const;
   inline bool Delete (size_t ulNdx);
-  inline void  DeleteAll (void);    
+  inline void  DeleteAll (void);
 
   // misc
   BoundBox2d CalcBoundBox (void) const;

@@ -1460,7 +1460,7 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="70"/>
       <source>Length</source>
-      <translation>돌출 컷(Pocket) 길이</translation>
+      <translation>거리</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="91"/>
@@ -1684,7 +1684,7 @@
     <message>
       <location filename="../../TaskPadParameters.ui" line="42"/>
       <source>Length</source>
-      <translation>돌출 컷(Pocket) 길이</translation>
+      <translation>거리</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="60"/>
@@ -1824,17 +1824,17 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="182"/>
       <source>X</source>
-      <translation type="unfinished">X</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="189"/>
       <source>Y</source>
-      <translation type="unfinished">Y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="196"/>
       <source>Z</source>
-      <translation type="unfinished">Z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="365"/>
@@ -1961,7 +1961,7 @@
     <message>
       <location filename="../../TaskPocketParameters.ui" line="42"/>
       <source>Length</source>
-      <translation>돌출 컷(Pocket) 길이</translation>
+      <translation>거리</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="60"/>

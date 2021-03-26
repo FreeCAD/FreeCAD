@@ -53,9 +53,9 @@ from draftutils.messages import _msg, _err
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-__title__ = "FreeCAD IFC export"
+__title__  = "FreeCAD IFC export"
 __author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__ = "https://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 # Save the Python open function because it will be redefined
 if open.__module__ in ['__builtin__', 'io']:
@@ -195,6 +195,16 @@ def export(exportList, filename, colors=None, preferences=None):
              "Visit https://wiki.freecadweb.org/IfcOpenShell "
              "to learn about installing it.")
         return
+    if filename.lower().endswith("json"):
+        import json
+        try:
+            from ifcjson import ifc2json5a
+        except Exception:
+            try:
+                import ifc2json5a
+            except Exception:
+                _err("Error: Unable to locate ifc2json5a module. Aborting.")
+                return
 
     starttime = time.time()
 
@@ -479,7 +489,7 @@ def export(exportList, filename, colors=None, preferences=None):
             ifctype = "IfcBuildingElementProxy"
 
         # getting the representation
- 
+
         # ignore the own shape for assembly objects
         skipshape = False
         if assemblyElements:
@@ -1534,7 +1544,10 @@ def export(exportList, filename, colors=None, preferences=None):
 
     filename = decode(filename)
 
-    ifcfile.write(filename)
+    if filename.lower().endswith("json"):
+        writeJson(filename,ifcfile)
+    else:
+        ifcfile.write(filename)
 
     if preferences['STORE_UID']:
         # some properties might have been changed
@@ -1542,7 +1555,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
     os.remove(templatefile)
 
-    if preferences['DEBUG'] and ifcbin.compress:
+    if preferences['DEBUG'] and ifcbin.compress and (not filename.lower().endswith("json")):
         f = pyopen(filename,"r")
         s = len(f.read().split("\n"))
         f.close()
@@ -1602,10 +1615,10 @@ def getPropertyData(key,value,preferences):
     else:
         try:
             pvalue = float(pvalue)
-        except:
+        except Exception:
             try:
                 pvalue = FreeCAD.Units.Quantity(pvalue).Value
-            except:
+            except Exception:
                 if six.PY2:
                     pvalue = pvalue.encode("utf8")
                 if preferences['DEBUG']:print("      warning: unable to export property as numeric value:",pname,pvalue)
@@ -1637,12 +1650,12 @@ def getIfcTypeFromObj(obj):
 
     if not "::" in ifctype:
         ifctype = "Ifc" + ifctype
-    elif ifctype == "App::DocumentObjctGroup":
+    elif ifctype == "IfcApp::DocumentObjctGroup":
         ifctype = "IfcGroup"
     else:
         # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
         # this is not a ifctype at all
-        ifctype = None  
+        ifctype = None
 
     # print("Return value of getIfcTypeFromObj: {}".format(ifctype))
     return ifctype
@@ -2345,10 +2358,13 @@ def getUID(obj,preferences):
     if not uid:
         uid = ifcopenshell.guid.new()
         # storing the uid for further use
-        if preferences['STORE_UID'] and hasattr(obj,"IfcData"):
-            d = obj.IfcData
-            d["IfcUID"] = uid
-            obj.IfcData = d
+        if preferences["STORE_UID"]:
+            if hasattr(obj, "IfcData"):
+                d = obj.IfcData
+                d["IfcUID"] = uid
+                obj.IfcData = d
+            if hasattr(obj, "GlobalId"):
+                obj.GlobalId = uid
     return uid
 
 
@@ -2363,6 +2379,7 @@ def getText(field,obj):
     if six.PY2:
         result = result.encode("utf8")
     return result
+
 
 def getAxisContext(ifcfile):
 
@@ -2379,6 +2396,7 @@ def getAxisContext(ifcfile):
     nctx = ifcfile.createIfcGeometricRepresentationSubContext('Axis','Model',None,None,None,None,ctx,None,"MODEL_VIEW",None);
     return nctx
 
+
 def createAxis(ifcfile,obj,preferences):
 
     """Creates an axis for a given wall, if applicable"""
@@ -2391,3 +2409,25 @@ def createAxis(ifcfile,obj,preferences):
                 axis = ifcfile.createIfcShapeRepresentation(ctx,'Axis','Curve2D',[curve])
                 return axis
     return None
+
+
+def writeJson(filename,ifcfile):
+
+    """writes an .ifcjson file"""
+
+    import json
+    try:
+        from ifcjson import ifc2json5a
+    except Exception:
+        try:
+            import ifc2json5a
+        except Exception:
+            print("Error: Unable to locate ifc2json5a module. Aborting.")
+            return
+    print("Converting IFC to JSON...")
+    jsonfile = ifc2json5a.IFC2JSON5a(ifcfile).spf2Json()
+    f = pyopen(filename,'w')
+    s = json.dumps(jsonfile,indent=4)
+    #print("json:",s)
+    f.write(s)
+    f.close()

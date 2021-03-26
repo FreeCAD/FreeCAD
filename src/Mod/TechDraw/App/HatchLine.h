@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
- 
+
 //! HatchLine - Classes related to processing PAT files
 
 #ifndef _TechDraw_HATCHLINE_H_
@@ -48,11 +48,11 @@ class DrawUtil;
 //DashSpec is the parsed portion of a PATLineSpec related to mark/space/dot
 class TechDrawExport DashSpec
 {
-public: 
+public:
       DashSpec() {}
       DashSpec(std::vector<double> p) { m_parms = p; }
       ~DashSpec() {}
-      
+
       double              get(int i)  {return m_parms.at(i); }
       std::vector<double> get(void)   {return m_parms;}
       bool                empty(void) {return m_parms.empty();}
@@ -60,7 +60,7 @@ public:
       double              length(void);
       void                dump(const char* title);
       DashSpec            reversed(void);
-      
+
 private:
     std::vector<double> m_parms;
 };
@@ -72,7 +72,7 @@ public:
     PATLineSpec();
     PATLineSpec(std::string& lineSpec);
     ~PATLineSpec();
-    
+
     void load(std::string& lineSpec);
 
     double getAngle(void)  {return m_angle;}
@@ -89,12 +89,12 @@ public:
     static bool  findPatternStart(std::ifstream& inFile, std::string& parmName);
     static std::vector<std::string> loadPatternDef(std::ifstream& inFile);
     static std::vector<std::string> getPatternList(std::string& parmFile);
-    
+
     bool isDashed(void);
 
     void dump(const char* title);
 
-private: 
+private:
     void init(void);
     std::vector<double> split(std::string line);
     //PAT line extracted tokens
@@ -111,7 +111,7 @@ class TechDrawExport LineSet
 public:
     LineSet() {}
     ~LineSet() {}
-    
+
     void setPATLineSpec(const PATLineSpec& s) { m_hatchLine = s; }
     void setEdges(std::vector<TopoDS_Edge> e) {m_edges = e;}
     void setGeoms(std::vector<TechDraw::BaseGeom*>  g) {m_geoms = g;}
@@ -124,7 +124,7 @@ public:
     PATLineSpec       getPATLineSpec(void) { return m_hatchLine; }
     double            getOffset(void) { return m_hatchLine.getOffset(); }      //delta X offset
     double            getAngle(void)  { return m_hatchLine.getAngle(); }
-    Base::Vector3d    getOrigin(void) { return m_hatchLine.getOrigin(); }      
+    Base::Vector3d    getOrigin(void) { return m_hatchLine.getOrigin(); }
     double            getInterval(void) {return m_hatchLine.getInterval(); }   //space between lines
     double            getIntervalX(void) { return m_hatchLine.getIntervalX(); }      //interval X-component
     double            getIntervalY(void) { return m_hatchLine.getIntervalY(); }      //interval Y-component
@@ -132,7 +132,7 @@ public:
     double            getPatternLength(void) { return m_hatchLine.getLength(); }
     Base::Vector3d    getUnitDir(void);
     Base::Vector3d    getUnitOrtho(void);
-    DashSpec          getDashSpec(void) { return m_hatchLine.getDashParms();} 
+    DashSpec          getDashSpec(void) { return m_hatchLine.getDashParms();}
     Base::Vector3d    calcApparentStart(TechDraw::BaseGeom* g);
     Base::Vector3d    findAtomStart(void);
     Base::Vector3d    getLineOrigin(void);                              //point corresponding to pattern origin for this line (O + n*intervalX)
@@ -145,7 +145,7 @@ public:
     double getMaxY(void);
 
     bool isDashed(void);
-    
+
 private:
     std::vector<TopoDS_Edge> m_edges;
     std::vector<TechDraw::BaseGeom*> m_geoms;

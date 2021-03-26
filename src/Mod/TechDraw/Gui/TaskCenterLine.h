@@ -130,7 +130,7 @@ private Q_SLOTS:
     void onFlipChanged();
 
 private:
-    Ui_TaskCenterLine * ui;
+    std::unique_ptr<Ui_TaskCenterLine> ui;
 
     TechDraw::DrawViewPart* m_partFeat;
     TechDraw::DrawPage* m_basePage;

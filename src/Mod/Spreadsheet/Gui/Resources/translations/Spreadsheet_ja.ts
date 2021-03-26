@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation>別名設定</translation>
+      <translation>エイリアスを設定</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>選択したセルに別名を設定</translation>
+      <translation>選択したセルのエイリアスを設定</translation>
     </message>
   </context>
   <context>
@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>セルの結合</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>セルの分割</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>セルを左揃え</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>セルを中央揃え</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>セルを右揃え</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>セルを上揃え</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>セルを下揃え</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>セルを上下中央揃え</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>太字にする</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>斜体にする</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>下線</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>スプレッドシートを作成</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>セルのプロパティ</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>セルを編集</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>行を挿入</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>行を削除</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>列を挿入</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>セルをクリア</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>文字色を設定</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>背景色を設定</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -293,7 +376,7 @@
     </message>
     <message>
       <source>Italic</source>
-      <translation>斜体字</translation>
+      <translation>斜体</translation>
     </message>
     <message>
       <source>Underline</source>
@@ -313,14 +396,14 @@
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>このセルのエイリアス</translation>
+      <translation>エイリアス名</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>All (*)</source>
-      <translation>全て (*)</translation>
+      <translation>すべてのファイル (*.*)</translation>
     </message>
     <message>
       <source>Import file</source>

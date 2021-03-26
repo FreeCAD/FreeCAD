@@ -234,6 +234,7 @@ void QGIPrimPath::setNormalColor(QColor c)
 {
     m_colNormal = c;
     m_colOverride = true;
+    m_colCurrent = m_colNormal;
 }
 
 void QGIPrimPath::setCapStyle(Qt::PenCapStyle c)
@@ -316,6 +317,7 @@ void QGIPrimPath::resetFill() {
 void QGIPrimPath::setFillColor(QColor c)
 { 
     m_colNormalFill = c;
+    m_fillColorCurrent = m_colNormalFill;
 //    m_colDefFill = c;
 }
 

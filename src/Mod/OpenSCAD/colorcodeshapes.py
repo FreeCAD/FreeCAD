@@ -29,7 +29,6 @@ This Script includes python functions to find out the most basic shape type
 in a compound and to change the color of shapes according to their shape type
 '''
 
-import FreeCAD
 def shapedict(shapelst):
     return dict([(shape.hashCode(),shape) for shape in shapelst])
 
@@ -106,7 +105,7 @@ def colorcodeshapes(objs):
                         st = mostbasiccompound(obj.Shape)
                     color=shapecolors[st]
                 obj.ViewObject.ShapeColor = color
-            except:
+            except Exception:
                 raise
 
 #colorcodeshapes(App.ActiveDocument.Objects)

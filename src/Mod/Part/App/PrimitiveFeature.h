@@ -310,6 +310,7 @@ public:
     App::PropertyLength Height;
     App::PropertyLength Radius;
     App::PropertyAngle Angle;
+    App::PropertyQuantityConstraint SegmentLength;
     App::PropertyEnumeration     LocalCoord;
     App::PropertyEnumeration     Style;
 
@@ -340,8 +341,9 @@ public:
     Spiral();
 
     App::PropertyLength Growth;
-    App::PropertyLength Rotations;
+    App::PropertyQuantityConstraint Rotations;
     App::PropertyLength Radius;
+    App::PropertyQuantityConstraint SegmentLength;
 
     /** @name methods override feature */
     //@{
@@ -391,7 +393,7 @@ protected:
     void onChanged(const App::Property* prop);
 };
 
-class Ellipse : public Part::Primitive
+class PartExport Ellipse : public Part::Primitive
 {
     PROPERTY_HEADER(Part::Ellipse);
 

@@ -76,6 +76,7 @@ if not hasattr(FreeCAD, "DraftWorkingPlane"):
 # ---------------------------------------------------------------------------
 import draftguitools.gui_edit
 import draftguitools.gui_selectplane
+import draftguitools.gui_setstyle
 import draftguitools.gui_planeproxy
 from draftguitools.gui_lineops import FinishLine
 from draftguitools.gui_lineops import CloseLine

@@ -198,7 +198,7 @@ PyMethodDef Application::Methods[] = {
 
   {"getMarkerIndex", (PyCFunction) Application::sGetMarkerIndex, METH_VARARGS,
    "Get marker index according to marker size setting"},
-   
+
     {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver, METH_VARARGS,
      "addDocumentObserver() -> None\n\n"
      "Add an observer to get notified about changes on documents."},
@@ -214,7 +214,7 @@ PyMethodDef Application::Methods[] = {
    "loadFile(string=filename,[string=module]) -> None\n\n"
    "Loads an arbitrary file by delegating to the given Python module:\n"
    "* If no module is given it will be determined by the file extension.\n"
-   "* If more than one module can load a file the first one one will be taken.\n"
+   "* If more than one module can load a file the first one will be taken.\n"
    "* If no module exists to load the file an exception will be raised."},
 
   {"coinRemoveAllChildren",     (PyCFunction) Application::sCoinRemoveAllChildren, METH_VARARGS,
@@ -225,8 +225,8 @@ PyMethodDef Application::Methods[] = {
 
 PyObject* Gui::Application::sEditDocument(PyObject * /*self*/, PyObject *args)
 {
-	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-		return NULL;                       // NULL triggers exception 
+	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+		return NULL;                       // NULL triggers exception
 
 	Document *pcDoc = Instance->editDocument();
 	if (pcDoc) {
@@ -270,7 +270,7 @@ PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
         Gui::MDIView* mdiView = Instance->activeView();
         if (mdiView && (type.isBad() || mdiView->isDerivedFrom(type))) {
             auto res = Py::asObject(mdiView->getPyObject());
-            if(!res.isNone() || !type.isBad()) 
+            if(!res.isNone() || !type.isBad())
                 return Py::new_reference_to(res);
         }
 
@@ -899,11 +899,11 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         // to be base class for all workbench classes
         Py::Module module("__main__");
         Py::Object baseclass(module.getAttr(std::string("Workbench")));
-        
+
         // check whether it is an instance or class object
         Py::Object object(pcObject);
         Py::String name;
-        
+
         if (PyObject_IsSubclass(object.ptr(), baseclass.ptr()) == 1) {
             // create an instance of this class
             name = object.getAttr(std::string("__name__"));
@@ -928,7 +928,7 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
         Py::Callable(object.getAttr(std::string("GetClassName")));
         item = name.as_std_string("ascii");
 
-        PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,item.c_str()); 
+        PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,item.c_str());
         if (wb) {
             PyErr_Format(PyExc_KeyError, "'%s' already exists.", item.c_str());
             return NULL;
@@ -951,7 +951,7 @@ PyObject* Application::sRemoveWorkbenchHandler(PyObject * /*self*/, PyObject *ar
     if (!PyArg_ParseTuple(args, "s", &psKey))
         return NULL;
 
-    PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,psKey); 
+    PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,psKey);
     if (!wb) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
         return NULL;
@@ -970,7 +970,7 @@ PyObject* Application::sGetWorkbenchHandler(PyObject * /*self*/, PyObject *args)
     char* psKey;
     if (!PyArg_ParseTuple(args, "s", &psKey))
         return NULL;
-   
+
     // get the python workbench object from the dictionary
     PyObject* pcWorkbench = PyDict_GetItemString(Instance->_pcWorkbenchDictionary, psKey);
     if (!pcWorkbench) {
@@ -1078,7 +1078,7 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
     const char *format = "XPM";
     if (!PyArg_ParseTuple(args, "ss#|s", &iconName,&content,&size,&format))
         return NULL;
-    
+
     QPixmap icon;
     if (BitmapFactory().findPixmapInCache(iconName, icon)) {
         PyErr_SetString(PyExc_AssertionError, "Icon with this name already registered");
@@ -1109,7 +1109,7 @@ PyObject* Application::sGetIcon(PyObject * /*self*/, PyObject *args)
     char *iconName;
     if (!PyArg_ParseTuple(args, "s", &iconName))
         return NULL;
-    
+
     PythonWrapper wrap;
     wrap.loadGuiModule();
     wrap.loadWidgetsModule();
@@ -1124,7 +1124,7 @@ PyObject* Application::sIsIconCached(PyObject * /*self*/, PyObject *args)
     char *iconName;
     if (!PyArg_ParseTuple(args, "s", &iconName))
         return NULL;
-    
+
     QPixmap icon;
     return Py::new_reference_to(Py::Boolean(BitmapFactory().findPixmapInCache(iconName, icon)));
 }
@@ -1330,7 +1330,7 @@ PyObject* Application::sShowPreferences(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "|si", &pstr, &idx))
         return NULL;
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
-    if (pstr) 
+    if (pstr)
         cDlg.activateGroupPage(QString::fromUtf8(pstr),idx);
     WaitCursor wc;
     wc.restoreCursor();

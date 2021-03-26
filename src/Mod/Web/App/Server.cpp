@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h" 
+#include "PreCompiled.h"
 
 #include <QCoreApplication>
 #include <QTcpSocket>

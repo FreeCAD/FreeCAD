@@ -125,10 +125,10 @@ typename Visitor::result_type Module3D<Typelist, ID>::type<Sys>::Geometry3D_base
 template<typename Typelist, typename ID>
 template<typename Sys>
 template<typename Derived>
-boost::shared_ptr<Derived> Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::clone(Sys& newSys) {
+std::shared_ptr<Derived> Module3D<Typelist, ID>::type<Sys>::Geometry3D_base<Derived>::clone(Sys& newSys) {
 
     //copy the standart stuff
-    boost::shared_ptr<Derived> np = boost::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
+    std::shared_ptr<Derived> np = std::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
     np->m_system = &newSys;
     //it's possible that the variant contains pointers, so we need to clone them
     details::cloner<Variant> clone_fnc(np->m_geometry);

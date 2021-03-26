@@ -1,0 +1,23 @@
+{
+    "name": "ISO 12474",
+    "cut_type": "counterbore",
+    "thread_type": "metricfine",
+    "data": [
+	{ "thread": "M8x1.0",	"diameter": 15.0,	"depth": 8.6 },
+	{ "thread": "M10x1.0",	"diameter": 18.0,	"depth": 10.6 },
+	{ "thread": "M10x1.25",	"diameter": 18.0,	"depth": 10.6 },
+	{ "thread": "M12x1.25",	"diameter": 20.0,	"depth": 12.6 },
+	{ "thread": "M12x1.5",	"diameter": 20.0,	"depth": 12.6 },
+	{ "thread": "M14x1.5",	"diameter": 24.0,	"depth": 14.6 },
+	{ "thread": "M16x1.5",	"diameter": 26.0,	"depth": 16.6 },
+	{ "thread": "M18x1.5",	"diameter": 30.0,	"depth": 18.6 },
+	{ "thread": "M20x1.5",	"diameter": 33.0,	"depth": 20.6 },
+	{ "thread": "M20x2.0",	"diameter": 33.0,	"depth": 20.6 },
+	{ "thread": "M22x1.5",	"diameter": 36.0,	"depth": 22.8 },
+	{ "thread": "M24x2.0",	"diameter": 40.0,	"depth": 24.8 },
+	{ "thread": "M30x2.0",	"diameter": 50.0,	"depth": 31.0 },
+	{ "thread": "M33x1.5",	"diameter": 54.0,	"depth": 34.0 },
+	{ "thread": "M36x3.0",	"diameter": 58.0,	"depth": 37.0 },
+	{ "thread": "M42x3.0",	"diameter": 69.0,	"depth": 41.0 }
+    ]
+}

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -69,7 +69,7 @@ DrawWeldSymbol::~DrawWeldSymbol()
 {
 }
 
-//DWS always has exactly 2 child tiles - ArrowSide and OtherSide. 
+//DWS always has exactly 2 child tiles - ArrowSide and OtherSide.
 //OtherSide tile may be hidden;
 //once DWS has been added to the document, add 2x DrawTileWeld
 //but if this is a restore of an existing DWS, the tiles will loaded elsewhere
@@ -120,7 +120,7 @@ short DrawWeldSymbol::mustExecute() const
 }
 
 App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
-{ 
+{
 //    Base::Console().Message("DWS::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;

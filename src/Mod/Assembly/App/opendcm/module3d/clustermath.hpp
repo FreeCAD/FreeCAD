@@ -52,7 +52,7 @@ public:
     typedef typename Sys::Cluster Cluster;
     typedef typename system_traits<Sys>::template getModule<m3d>::type module3d;
     typedef typename module3d::Geometry3D Geometry3D;
-    typedef boost::shared_ptr<Geometry3D> Geom;
+    typedef std::shared_ptr<Geometry3D> Geom;
     typedef typename module3d::math_prop math_prop;
     typedef typename module3d::fix_prop fix_prop;
 
@@ -122,10 +122,10 @@ public:
         map_downstream(details::ClusterMath<Sys>& cm, bool fix);
 
         void operator()(Geom g);
-        void operator()(boost::shared_ptr<Cluster> c);
+        void operator()(std::shared_ptr<Cluster> c);
     };
 
-    void mapClusterDownstreamGeometry(boost::shared_ptr<Cluster> cluster);
+    void mapClusterDownstreamGeometry(std::shared_ptr<Cluster> cluster);
 
     //Calculate the scale of the cluster. Therefore the midpoint is calculated and the scale is
     // defined as the max distance between the midpoint and the points.

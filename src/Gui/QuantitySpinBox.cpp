@@ -89,6 +89,11 @@ public:
 
     bool validate(QString& input, Base::Quantity& result) const
     {
+        // Do not accept empty strings because the parser will consider
+        // " unit" as "1 unit" which is not the desired behaviour (see #0004104)
+        if (input.isEmpty())
+            return false;
+
         bool success = false;
         QString tmp = input;
         int pos = 0;
@@ -309,7 +314,12 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     iconLabel->hide();
     lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
     // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
+#ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
+#else
+    // https://forum.freecadweb.org/viewtopic.php?f=8&t=50615
+    lineEdit()->setTextMargins(0, 2, 0, 0);
+#endif
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -325,7 +335,7 @@ void QuantitySpinBox::bind(const App::ObjectIdentifier &_path)
     iconLabel->show();
 }
 
-void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void Gui::QuantitySpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -417,7 +427,7 @@ QString Gui::QuantitySpinBox::expressionText() const
 void Gui::QuantitySpinBox::onChange()
 {
     Q_ASSERT(isBound());
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -458,7 +468,7 @@ bool QuantitySpinBox::apply(const std::string & propName)
         if (isBound()) {
             const App::ObjectIdentifier & path = getPath();
             const Property * prop = path.getProperty();
-            
+
             /* Skip update if property is bound and we know it is read-only */
             if (prop && prop->isReadOnly())
                 return true;
@@ -651,7 +661,7 @@ void QuantitySpinBox::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 

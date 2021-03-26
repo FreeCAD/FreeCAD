@@ -249,7 +249,7 @@ int UIntSpinBox::valueFromText (const QString & text) const
     return d->mapToInt(newVal);
 }
 
-void UIntSpinBox::updateValidator() 
+void UIntSpinBox::updateValidator()
 {
     d->mValidator->setRange(this->minimum(), this->maximum());
 }
@@ -264,7 +264,7 @@ void UIntSpinBox::bind(const App::ObjectIdentifier &_path)
     iconLabel->show();
 }
 
-void UIntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void UIntSpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -281,7 +281,7 @@ void UIntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void UIntSpinBox::onChange() {
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -399,7 +399,7 @@ void UIntSpinBox::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 }
@@ -454,7 +454,7 @@ IntSpinBox::~IntSpinBox() {
 
 
 bool IntSpinBox::apply(const std::string& propName) {
-    
+
     if (!ExpressionBinding::apply(propName)) {
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %d", propName.c_str(), value());
         return true;
@@ -464,7 +464,7 @@ bool IntSpinBox::apply(const std::string& propName) {
 }
 
 void IntSpinBox::bind(const ObjectIdentifier& _path) {
-    
+
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
@@ -473,7 +473,7 @@ void IntSpinBox::bind(const ObjectIdentifier& _path) {
     iconLabel->show();
 }
 
-void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void IntSpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -490,7 +490,7 @@ void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void IntSpinBox::onChange() {
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -592,7 +592,7 @@ void IntSpinBox::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 }
@@ -647,7 +647,7 @@ DoubleSpinBox::~DoubleSpinBox() {
 
 
 bool DoubleSpinBox::apply(const std::string& propName) {
-    
+
     if (!ExpressionBinding::apply(propName)) {
         Gui::Command::doCommand(Gui::Command::Doc, "%s = %f", propName.c_str(), value());
         return true;
@@ -657,7 +657,7 @@ bool DoubleSpinBox::apply(const std::string& propName) {
 }
 
 void DoubleSpinBox::bind(const ObjectIdentifier& _path) {
-    
+
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
@@ -666,7 +666,7 @@ void DoubleSpinBox::bind(const ObjectIdentifier& _path) {
     iconLabel->show();
 }
 
-void DoubleSpinBox::setExpression(boost::shared_ptr<Expression> expr)
+void DoubleSpinBox::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -683,7 +683,7 @@ void DoubleSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void DoubleSpinBox::onChange() {
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
@@ -784,7 +784,7 @@ void DoubleSpinBox::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 }

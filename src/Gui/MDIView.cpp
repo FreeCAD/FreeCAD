@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals2.hpp>
+# include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
 # include <qapplication.h>
 # include <qregexp.h>
@@ -58,7 +58,7 @@ MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wfla
   , ActiveObjects(pcDocument)
 {
     setAttribute(Qt::WA_DeleteOnClose);
-    
+
     if (pcDocument)
     {
       connectDelObject = pcDocument->signalDeletedObject.connect
@@ -211,7 +211,7 @@ void MDIView::closeEvent(QCloseEvent *e)
         // and thus the notification in QMdiSubWindow::closeEvent of
         // other mdi windows to get maximized if this window
         // is maximized will fail.
-        // This odd behaviour is caused by the invocation of 
+        // This odd behaviour is caused by the invocation of
         // d->mdiArea->removeSubWindow(parent) which we must let there
         // because otherwise other parts don't work as they should.
         QMainWindow::closeEvent(e);
@@ -308,7 +308,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | 
+                    setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
                                  Qt::WindowMinMaxButtonsHint);
                     if (this->wstate & Qt::WindowMaximized)
                         showMaximized();
@@ -327,7 +327,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     else
                         showNormal();
                 }
-            
+
                 this->currentMode = TopLevel;
                 update();
             }   break;
@@ -345,7 +345,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     this->wstate = windowState();
                     showFullScreen();
                 }
-                
+
                 this->currentMode = FullScreen;
                 update();
             }   break;

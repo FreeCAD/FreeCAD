@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Importa</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Elimina</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Enganxar expresions</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Crea un grup d'enllaç</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Crea un enllaç</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Crea un subenllaç</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importa enllaços</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importa tots els enllaços</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Inserir dimensió</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Afegeix document de text</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Afegeix una part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Afegir un grup</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation type="unfinished">Align</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Posició</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Mesura la distància</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -440,11 +508,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source> "</source>
-      <translation type="unfinished"> "</translation>
+      <translation> "</translation>
     </message>
     <message>
       <source>"</source>
-      <translation type="unfinished">"</translation>
+      <translation>"</translation>
     </message>
   </context>
   <context>
@@ -625,7 +693,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Verbose description of the new property.</source>
-      <translation type="unfinished">Verbose description of the new property.</translation>
+      <translation>Descripció detallada de la nova propietat.</translation>
     </message>
     <message>
       <source>Documentation</source>
@@ -637,15 +705,15 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>Prefixa el nom de la propietat amb el nom del group de la manera 'Grup_Nom' per evitar conflictes amb propietats ja existents.
+En aquest cas el prefix s'escapçarà automàticament quan es mostri en l'editor de propietats.
+Tanmateix, la propietat se segueix utilitzant en els scripts amb el nom sencer 'obj.Grup_Nom'.
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+Si no està activat, la propietat ha de tenir un nom únic, i s'accedeix a ella mitjançant 'obj.Nom'.</translation>
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Prefixa el nom del grup</translation>
     </message>
   </context>
   <context>
@@ -1034,7 +1102,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>%1 module not loaded</source>
-      <translation type="unfinished">%1 module not loaded</translation>
+      <translation>El mòdul %1 no s'ha carregat</translation>
     </message>
   </context>
   <context>
@@ -2036,7 +2104,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>Versió del programa:</translation>
     </message>
   </context>
   <context>
@@ -2126,7 +2194,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+      <translation>Si està activada, la selecció de la vista 3D es sincronitzarà amb la jerarquia completa de l'objecte.</translation>
     </message>
   </context>
   <context>
@@ -2268,19 +2336,19 @@ de la consola Python al tauler de Vista d'informes</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>Inclou el temps per cada informe</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Inclou el temps per a cada entrada</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>Es gravarà el registre de missatges</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>Grava els missatges</translation>
     </message>
   </context>
   <context>
@@ -2525,12 +2593,12 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment. </transla
     <message>
       <source>Axis cross will be shown by default at file
 opening or creation</source>
-      <translation type="unfinished">Axis cross will be shown by default at file
-opening or creation</translation>
+      <translation>Els eixos de coordenades es mostraran per defecte
+en obrir o crear un arxiu</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Mostra els eixos de coordenades per defecte</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -2540,9 +2608,21 @@ opening or creation</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Àrea per a seleccionar elements en vista 3D.
+Un valor més gran en facilita la selecció, però pot fer que les propietats xicotetes no es puguin seleccionar.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Aquesta opció és útil per investigar problemes amb la targeta gràfica i el controlador.
+
+Modificar aquesta opció requereix reiniciar l'aplicació.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
     </message>
   </context>
   <context>
@@ -3161,6 +3241,29 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation>Bancs de treball descarregats</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Carregar Selecció</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
@@ -3232,31 +3335,31 @@ També podeu utilitzar la forma: Joan Peris &lt;joan@peris.com&gt;</translation>
     </message>
     <message>
       <source>Recent macros menu</source>
-      <translation type="unfinished">Recent macros menu</translation>
+      <translation>Menú de macros recents</translation>
     </message>
     <message>
       <source>Size of recent macro list</source>
-      <translation type="unfinished">Size of recent macro list</translation>
+      <translation>Mida de la llista de macros recents</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation type="unfinished">How many macros should be listed in recent macros list</translation>
+      <translation>Indica la quantitat de macros s’han d’enumerar en la llista de macros recents</translation>
     </message>
     <message>
       <source>Shortcut count</source>
-      <translation type="unfinished">Shortcut count</translation>
+      <translation>Comptador d'accessos directes</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation type="unfinished">How many recent macros should have shortcuts</translation>
+      <translation>Quants macros recents han de tenir deceres</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation type="unfinished">Keyboard Modifiers</translation>
+      <translation>Modificadors de teclat</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
-      <translation type="unfinished">Keyboard modifiers, default = Ctrl+Shift+</translation>
+      <translation>Tecles modificadores, per defecte = Ctrl+Maj+</translation>
     </message>
   </context>
   <context>
@@ -3402,10 +3505,6 @@ Mouse tilting is not disabled by this setting.</source>
       <translation>Les rotacions en 3D utilitzaran la posició actual del cursor com a centre de rotació</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Rotació centrada en el cursor</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Isomètrica</translation>
     </message>
@@ -3447,11 +3546,54 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Default camera orientation</source>
-      <translation type="unfinished">Default camera orientation</translation>
+      <translation>Orientació de la càmera per defecte</translation>
     </message>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+      <translation>Orientació de la càmera per defecte en crear un nou document o en seleccionar la vista inicial</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Mode de rotació</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Centre de la finestra</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Zoom en el cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Centre de l'objecte</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Selecció</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Canvia automàticament a la vista 3D que conté l’element seleccionat</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Expandeix automàticament l’element de l'arbre quan l’objecte corresponent està seleccionat en la vista 3D</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Selecciona l'objecte en vista 3D en fer clic amb el ratolí sobre l'element de l'arbre</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Grava la selecció en la vista de l'arbre per a anar arrere/avant mitjançant el botó de navegació</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Afegir caselles de selecció a l'arbre del document</translation>
     </message>
   </context>
   <context>
@@ -4534,23 +4676,23 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
     </message>
     <message>
       <source>Normal messages</source>
-      <translation type="unfinished">Normal messages</translation>
+      <translation>Missatges normals</translation>
     </message>
     <message>
       <source>Log messages</source>
-      <translation type="unfinished">Log messages</translation>
+      <translation>Resgistre de missatges</translation>
     </message>
     <message>
       <source>Warnings</source>
-      <translation type="unfinished">Warnings</translation>
+      <translation>Avisos</translation>
     </message>
     <message>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Errors</translation>
     </message>
     <message>
       <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <translation>Mostra la vista de l'informe si</translation>
     </message>
   </context>
   <context>
@@ -4716,14 +4858,14 @@ Do you want to save your changes?</source>
     <name>Gui::ExpressionLineEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Coincidència exacta</translation>
     </message>
   </context>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
       <source>Exact match</source>
-      <translation type="unfinished">Exact match</translation>
+      <translation>Coincidència exacta</translation>
     </message>
   </context>
   <context>
@@ -5215,6 +5357,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Expressió...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Auto expandir</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5360,7 +5506,7 @@ Do you want to exit without saving your data?</source>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>Corre la macro %1 (Maj+clic per editar) drecera: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -5937,18 +6083,18 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (però s'ha d'executar)</translation>
     </message>
   </context>
   <context>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>Vectors</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>Taula</translation>
     </message>
     <message>
       <source>...</source>
@@ -6723,18 +6869,34 @@ Pyhsical path: </translation>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
+      <translation>
 Document: </translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+Camí: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
       <translation type="unfinished">Identical physical path</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Error</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Hi hagué errors quan es carregava el fitxer. Algunes dades s'han pogut modificar o no s'han recuperat. Cerqueu a la vista d'informes per a obtindre informació més específica sobre els objectes implicats.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Hi ha hagut greus errors en carregar l'arxiu. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Guardar el projecte molt probablement resulti en pèrdua de dades.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Bancs de treball</translation>
     </message>
   </context>
   <context>
@@ -7123,7 +7285,7 @@ Document: </translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
-      <translation type="unfinished">Change the draw style of the objects</translation>
+      <translation>Canviar estil de dibuix dels objectes</translation>
     </message>
   </context>
   <context>
@@ -7179,8 +7341,8 @@ Document: </translation>
       <translation>No s'ha seleccionat</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Seleccioneu primer els objectes que voleu exportar</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Selecciona els objectes a exportar abans de triar Exportar.</translation>
     </message>
   </context>
   <context>
@@ -7207,6 +7369,21 @@ Document: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Recalcula la funcionalitat o el document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Ajuda</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Donar</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Contribueix al desenvolupament</translation>
     </message>
   </context>
   <context>
@@ -7950,11 +8127,11 @@ Document: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Macros recents</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Llista de macros recents</translation>
     </message>
   </context>
   <context>
@@ -8651,11 +8828,11 @@ Document: </translation>
     </message>
     <message>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>Inici</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Estableix com a pantalla d'inici per defecte</translation>
     </message>
   </context>
   <context>
@@ -8794,6 +8971,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estàndard</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Restaurar càmera desada</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Restaurar ajustos de càmera desats</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8836,6 +9028,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Gireu la vista 90° en sentit horari</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estàndard</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Desa càmera actual</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Desa ajustos de càmera actuals</translation>
     </message>
   </context>
   <context>

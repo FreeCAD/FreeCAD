@@ -133,7 +133,7 @@ void DlgMacroExecuteImp::fillUpList(void)
     }
 }
 
-/** 
+/**
  * Selects a macro file in the list view.
  */
 void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem* item)
@@ -351,7 +351,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
 {
     // query file name
     QString fn = QInputDialog::getText(this, tr("Macro file"), tr("Enter a file name, please:"),
-        QLineEdit::Normal, QString(), 0);
+        QLineEdit::Normal, QString(), nullptr, Qt::MSWindowsFixedSizeDialogHint);
     if (!fn.isEmpty())
     {
         QString suffix = QFileInfo(fn).suffix().toLower();
@@ -680,7 +680,7 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
 
     // query new name
     QString fn = QInputDialog::getText(this, tr("Renaming Macro File"),
-        tr("Enter new name:"), QLineEdit::Normal, oldName, 0);
+        tr("Enter new name:"), QLineEdit::Normal, oldName, nullptr, Qt::MSWindowsFixedSizeDialogHint);
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
@@ -767,7 +767,8 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
 
     // give user a chance to pick a different name from digitized name suggested
     QString fn = QInputDialog::getText(this, tr("Duplicate Macro"),
-        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 0);
+        tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 
+        nullptr, Qt::MSWindowsFixedSizeDialogHint);
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py")){

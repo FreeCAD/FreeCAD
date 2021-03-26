@@ -261,10 +261,10 @@ void DockWindowManager::retranslate()
  * \li Std_SelectionView
  *
  * To avoid name clashes the caller should use names of the form \a module_widgettype, i. e. if a analyse dialog for
- * the mesh module is added the name must then be Mesh_AnalyzeDialog. 
+ * the mesh module is added the name must then be Mesh_AnalyzeDialog.
  *
- * To make use of dock windows when a workbench gets loaded the method setupDockWindows() must reimplemented in a 
- * subclass of Gui::Workbench. 
+ * To make use of dock windows when a workbench gets loaded the method setupDockWindows() must reimplemented in a
+ * subclass of Gui::Workbench.
  */
 bool DockWindowManager::registerDockWindow(const char* name, QWidget* widget)
 {

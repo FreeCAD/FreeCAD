@@ -36,9 +36,9 @@ namespace Dialog {
 /**
  * Dialog which contains several tab pages to customize
  * the changeable toolbars and commandbars or to define
- * own macro actions. 
+ * own macro actions.
  *
- * You can extend the existing toolbars or commandbars with 
+ * You can extend the existing toolbars or commandbars with
  * several commands just by drag and drop.
  * @see DlgCustomCommandsImp
  * @see DlgCustomToolbarsImp
@@ -47,7 +47,7 @@ namespace Dialog {
  * \author Werner Mayer
  */
 class DlgCustomizeImp : public QDialog
-{ 
+{
     Q_OBJECT
 
 public:
@@ -70,7 +70,7 @@ private:
     //@{
     QPushButton* buttonHelp; /**< the help button */
     QPushButton* buttonClose; /**< the cancel button */
-    QTabWidget* tabWidget; /**< tab widgets containing all pages */ 
+    QTabWidget* tabWidget; /**< tab widgets containing all pages */
     QGridLayout* customLayout; /**< layout */
     QHBoxLayout* layout; /** horizontal layout */
     static QList<QByteArray> _pages; /**< Name of all registered preference pages */

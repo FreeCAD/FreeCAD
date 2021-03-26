@@ -120,7 +120,7 @@ using namespace Gui;
  *     return root;
  *   }
  * };
- * 
+ *
  * \endcode
  *
  * \subsection customizeWorkbench Customizing the workbench
@@ -542,7 +542,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
-                  << "Std_ToggleSelectability" << "Std_TreeSelection" 
+                  << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Separator" << "Std_Delete"
                   << "Std_SendToPythonConsole";
         }
@@ -551,9 +551,9 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
     {
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
-                  << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
-                  << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
-                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" 
+                  << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
+                  << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
+                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete"
                   << "Std_SendToPythonConsole" << "Separator";
         }
     }
@@ -574,8 +574,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     file->setCommand("&File");
     *file << "Std_New" << "Std_Open" << "Separator" << "Std_CloseActiveWindow"
           << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs"
-          << "Std_SaveCopy" << "Std_SaveAll" << "Std_Revert" << "Separator" << "Std_Import" 
-          << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo" 
+          << "Std_SaveCopy" << "Std_SaveAll" << "Std_Revert" << "Separator" << "Std_Import"
+          << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo"
           << "Separator" << "Std_Print" << "Std_PrintPreview" << "Std_PrintPdf"
           << "Separator" << "Std_RecentFiles" << "Separator" << "Std_Quit";
 
@@ -584,7 +584,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" 
+          << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection"
           << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
           << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
           << "Std_Edit" << "Separator" << "Std_DlgPreferences";
@@ -607,7 +607,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // stereo
     MenuItem* view3d = new MenuItem;
     view3d->setCommand("&Stereo");
-    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff" 
+    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff"
             << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns"
             << "Std_ViewIvStereoOff" << "Separator" << "Std_ViewIvIssueCamPos";
 
@@ -621,7 +621,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     visu->setCommand("Visibility");
     *visu << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
           << "Std_SelectVisibleObjects"
-          << "Separator" << "Std_ToggleObjects" << "Std_ShowObjects" << "Std_HideObjects" 
+          << "Separator" << "Std_ToggleObjects" << "Std_ShowObjects" << "Std_HideObjects"
           << "Separator" << "Std_ToggleSelectability"
           << "Separator" << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
 
@@ -632,14 +632,14 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Std_SelBoundingBox"
           << "Separator" << view3d << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
-          << "Std_TextureMapping" 
+          << "Std_TextureMapping"
 #ifdef BUILD_VR
           << "Std_ViewVR"
-#endif 
+#endif
           << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
-          << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
-          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
+          << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
+          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
 
@@ -695,7 +695,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Help
     MenuItem* help = new MenuItem( menuBar );
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_FreeCADWebsite"
+    *help << "Std_OnlineHelp" << "Std_FreeCADWebsite" << "Std_FreeCADDonation"
           << "Std_FreeCADUserHub" << "Std_FreeCADPowerUserHub"
           << "Std_PythonHelp" << "Std_FreeCADForum"
           << "Std_FreeCADFAQ" << "Std_About" << "Std_WhatsThis";
@@ -772,7 +772,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, true);
     root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, true, true);
-    
+
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
@@ -780,7 +780,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     bool enabled = group->GetBool("Enabled", false);
     if (enabled)
       root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);
-    
+
     return root;
 }
 

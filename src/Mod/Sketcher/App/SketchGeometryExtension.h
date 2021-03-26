@@ -25,35 +25,97 @@
 
 #include <Mod/Part/App/Geometry.h>
 #include <atomic>
+#include <bitset>
+#include <array>
 
 namespace Sketcher
 {
 
-class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
+    namespace InternalType {
+        enum InternalType {
+            None                    = 0,
+            EllipseMajorDiameter    = 1,
+            EllipseMinorDiameter    = 2,
+            EllipseFocus1           = 3,
+            EllipseFocus2           = 4,
+            HyperbolaMajor          = 5,
+            HyperbolaMinor          = 6,
+            HyperbolaFocus          = 7,
+            ParabolaFocus           = 8,
+            BSplineControlPoint     = 9,
+            BSplineKnotPoint        = 10,
+            NumInternalGeometryType        // Must be the last
+        };
+    }
+
+    namespace GeometryMode {
+        enum GeometryMode {
+            Blocked                 = 0,
+            Construction            = 1,
+            NumGeometryMode        // Must be the last
+        };
+    }
+
+class ISketchGeometryExtension
+{
+
+public:
+    // Identification information
+    virtual long getId() const = 0;
+    virtual void setId(long id) = 0;
+
+    // Internal Alignment Geometry Type
+    virtual InternalType::InternalType getInternalType() const = 0;
+    virtual void setInternalType(InternalType::InternalType type) = 0;
+
+    // Geometry functional mode
+    virtual bool testGeometryMode(int flag) const = 0;
+    virtual void setGeometryMode(int flag, bool v=true) = 0;
+};
+
+class SketcherExport SketchGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
+
     SketchGeometryExtension();
     SketchGeometryExtension(long cid);
     virtual ~SketchGeometryExtension() override = default;
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
 
     virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
     virtual PyObject *getPyObject(void) override;
 
-    long getId() const {return Id;}
-    void setId(long id) {Id = id;}
+    virtual long getId() const override {return Id;}
+    virtual void setId(long id) override {Id = id;}
+
+    virtual InternalType::InternalType getInternalType() const override {return InternalGeometryType;}
+    virtual void setInternalType(InternalType::InternalType type) override {InternalGeometryType = type;}
+
+    virtual bool testGeometryMode(int flag) const override { return GeometryModeFlags.test((size_t)(flag)); };
+    virtual void setGeometryMode(int flag, bool v=true) override { GeometryModeFlags.set((size_t)(flag), v); };
+
+    constexpr static std::array<const char *,InternalType::NumInternalGeometryType> internaltype2str {{ "None", "EllipseMajorDiameter", "EllipseMinorDiameter","EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor", "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint" }};
+
+    constexpr static std::array<const char *,GeometryMode::NumGeometryMode> geometrymode2str {{ "Blocked", "Construction" }};
+
+    static bool getInternalTypeFromName(std::string str, InternalType::InternalType &type);
+
+    static bool getGeometryModeFromName(std::string str, GeometryMode::GeometryMode &type);
+
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+    virtual void restoreAttributes(Base::XMLReader &reader) override;
+    virtual void saveAttributes(Base::Writer &writer) const override;
 
 private:
     SketchGeometryExtension(const SketchGeometryExtension&) = default;
 
 private:
-    long Id;
+    using GeometryModeFlagType = std::bitset<32>;
+    long                          Id;
+    InternalType::InternalType    InternalGeometryType;
+    GeometryModeFlagType          GeometryModeFlags;
 
 private:
     static std::atomic<long> _GeometryID;

@@ -421,7 +421,7 @@ private:
         Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
         std::vector<unsigned long> segm;
         segm.reserve(list.size());
-        for (unsigned int i=0; i<list.size(); i++) {
+        for (Py_ssize_t i=0; i<list.size(); i++) {
             segm.push_back((long)Py::Long(list[i]));
         }
 

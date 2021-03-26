@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre (yorik@uncreated.net) 2014              *
+ *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,7 +53,7 @@ using namespace Gui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskWidgetPathCompound::TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Path-Compound"),tr("Compound paths"),true, parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("Path_Compound"),tr("Compound paths"),true, parent)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);

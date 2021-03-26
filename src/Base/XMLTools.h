@@ -80,7 +80,7 @@ inline StrX::StrX(const XMLCh* const toTranscode)
 //    WideCharToMultiByte(CP_UTF8,0,toTranscode,-1,fLocaleForm)
 //#else
 //    fUnicodeForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-//#endif 
+//#endif
 }
 
 inline StrX::~StrX()
@@ -183,7 +183,7 @@ class XStr
 public :
     ///  Constructors and Destructor
     XStr(const char* const toTranscode);
-    /// 
+    ///
     ~XStr();
 
 
@@ -204,7 +204,7 @@ inline XStr::XStr(const char* const toTranscode)
 //    WideCharToMultiByte()
 //#else
     fUnicodeForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-//#endif 
+//#endif
 }
 
 inline XStr::~XStr()

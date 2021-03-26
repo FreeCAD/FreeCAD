@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2020 FreeCAD Developers                                 *
- *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
+ *   Author: Uwe StÃ¶hr <uwestoehr@lyx.org>                                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -68,7 +68,6 @@ TaskHatch::TaskHatch(TechDraw::DrawHatch* inHatch, TechDrawGui::ViewProviderHatc
 
 TaskHatch::~TaskHatch()
 {
-    delete ui;
 }
 
 void TaskHatch::initUi()

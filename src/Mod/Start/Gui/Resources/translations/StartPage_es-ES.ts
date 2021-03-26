@@ -46,7 +46,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>General documentation</source>
-      <translation>Generar Documentación</translation>
+      <translation>Documentación General</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation>Centro de actividad de usuarios empoderados</translation>
+      <translation>Centro de actividad de usuarios avanzados</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation>Ayuda de la comunidad</translation>
+      <translation>Obteniendo ayuda de la comunidad</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation>FreeCAD también mantiene un &lt;a href="https://www.freecadweb.org/tracker"&gt; rastreador de errores &lt;/a&gt; público donde cualquier persona puede enviar errores y proponer nuevas funciones. Para evitar causar trabajo extra y tener la mejor oportunidad para resolver su error, asegúrese de leer la &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt; guía de envío de errores &lt;/a&gt; antes de publicar.</translation>
+      <translation>FreeCAD también mantiene un &lt;a href="https://www.freecadweb.org/tracker"&gt; rastreador de errores &lt;/a&gt; público donde cualquier persona puede reportar errores y proponer nuevas funcionalidades. Para evitar causar trabajo extra y tener la mejor oportunidad para resolver su error, asegúrese de leer la &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt; guía de envío de errores &lt;/a&gt; antes de publicar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>A continuación se muestra una lista de los entornos de trabajo adicionales disponibles que se pueden agregar a su instalación de FreeCAD. Examinelos e instalelos desde el menú Herramientas -&gt; Administrador de complementos. Puede obtener más información sobre cualquiera de ellos haciendo clic en los enlaces a continuación.</translation>
+      <translation>A continuación se muestra una lista de los entornos de trabajo adicionales disponibles que se pueden agregar a su instalación de FreeCAD. Examínelos e instálelos desde el menú Herramientas -&gt; Administrador de complementos. Puede obtener más información sobre cualquiera de ellos haciendo clic en los enlaces a continuación.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation>Ver todos cambios acometidos en github</translation>
+      <translation>Ver todos los cambios confirmados en GitHub</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -166,12 +166,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>build</source>
-      <translation>construir</translation>
+      <translation>compilación</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation>Crear nuevo ...</translation>
+      <translation>Crear nuevo...</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
@@ -208,6 +208,11 @@
       <source>Notes</source>
       <translation>Notas</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Open start page preferences</source>
+      <translation>Abrir preferencias de página de inicio</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -228,7 +233,7 @@
     <message>
       <location filename="../../Command.cpp" line="45"/>
       <source>Start Page</source>
-      <translation>Página de inicio</translation>
+      <translation>Página de Inicio</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="46"/>
@@ -251,7 +256,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation>Una plantilla HTML opcional que se utilizará en lugar de la página de inicio predeterminada.</translation>
+      <translation>Una plantilla HTML opcional que será utilizada en lugar de la página de inicio predeterminada.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -266,12 +271,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation>Mostrar ejemplos de contenido de la carpeta</translation>
+      <translation>Mostrar el contenido de la carpeta de ejemplos</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation>Mostrar carpeta adicional</translation>
+      <translation>Mostrar carpeta de usuario</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
@@ -281,7 +286,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Si esta casilla está seleccionada, los últimos posts del Foro FreeCAD se mostrará en la pestaña de Actividad</translation>
+      <translation>Si esta opción esta seleccionada, las últimas publicaciones del foro de FreeCAD se mostrarán en la pestaña de Actividad</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
@@ -326,7 +331,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
       <source>Background color gradient down</source>
-      <translation>Deegradado del color de fondo</translation>
+      <translation>Degradado del color de fondo</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
@@ -336,17 +341,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
       <source>Link color</source>
-      <translation>Color de enlace</translation>
+      <translation>Color del enlace</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation>Una imagen opcional a mostrar como fondo</translation>
+      <translation>Una imagen opcional para que aparezca como fondo</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Si esto se marca, y esta especificada una hoja de estilo en las preferencias generales, se utilizará y anulará los colores siguientes</translation>
+      <translation>Si se selecciona, y se especifica una hoja de estilo en las preferencias generales, se utilizará y anulará los colores a continuación</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
@@ -366,7 +371,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
       <source>Page text color</source>
-      <translation>Color de texto de la página</translation>
+      <translation>Color del texto de la página</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
@@ -401,7 +406,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation>Color de fondo de texto</translation>
+      <translation>Color de fondo del texto</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
@@ -416,7 +421,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation>La familia de fuentes para usar en la página de inicio. Puede ser un nombre de fuente o una serie de fuentes de reserva separadas por comas</translation>
+      <translation>La familia de fuentes para usar en la página de inicio. Puede ser un nombre de fuente o una serie de fuentes alternativas separadas por comas</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
@@ -426,7 +431,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation>El tamaño de fuente base para todos los textos de la página de inicio</translation>
+      <translation>El tamaño de fuente base para ser utilizado en todos los textos de la Página de inicio</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="524"/>
@@ -436,7 +441,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="542"/>
       <source>Use gradient for New File icon</source>
-      <translation>Use gradiente para el nuevo icono de archivo</translation>
+      <translation>Usar degradado para el icono de Archivo Nuevo</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="568"/>
@@ -446,7 +451,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="577"/>
       <source>Should the start page be closed after loading?</source>
-      <translation>¿Debe cerrar la página de inicio después de cargar?</translation>
+      <translation>¿Se debe cerrar la página de inicio después de la carga?</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>

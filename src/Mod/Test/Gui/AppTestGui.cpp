@@ -45,7 +45,7 @@ public:
         add_varargs_method("addTest",&Module::addTest,"addTest");
         initialize("This module is the QtUnitGui module"); // register with Python
     }
-    
+
     virtual ~Module() {}
 
 private:

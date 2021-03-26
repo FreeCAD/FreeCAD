@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Dieser Abschnitt enthält die Dokumentation, die für Benutzer von FreeCAD im Allgemeinen nützlich sind. Eine Liste aller Workbenches, detaillierte Anweisungen zur Installation und Verwendung der FreeCAD-Anwendung, Lernprogramme und alles, was Sie zum Einstieg benötigen.</translation>
+      <translation>Dieser Abschnitt enthält die Dokumentation, die für Benutzer von FreeCAD im Allgemeinen nützlich sind. Eine Liste aller Arbeitsbereiche, detaillierte Anweisungen zur Installation und Verwendung der FreeCAD-Anwendung, Tutorials und alles, was Sie zum Einstieg benötigen.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation>Dieser Abschnitt enthält die Dokumentation für fortgeschrittene Benutzer und Personen, die sich für das Schreiben von Python-Skripts interessieren. Dort finden Sie auch ein Repository mit Makros, Anweisungen zur Installation und deren Verwendung. Sowie weitere Informationen zum Anpassen von FreeCAD an Ihre speziellen Anforderungen.</translation>
+      <translation>Dieser Abschnitt enthält die Dokumentation für fortgeschrittene Anwender und Personen, die sich für das Schreiben von Python-Skripts interessieren. Dort findet sich auch ein Ablageordner mit Makros, Anweisungen zu deren Installation und deren Verwendung sowie weitere Informationen zum Anpassen von FreeCAD an Ihre speziellen Anforderungen.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
@@ -208,6 +208,11 @@ Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Notes</source>
       <translation>Notizen</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Open start page preferences</source>
+      <translation>Einstellungen der Startseite öffnen</translation>
     </message>
   </context>
   <context>
@@ -452,7 +457,7 @@ Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
       <source>Switch workbench after loading</source>
-      <translation>Nach dem Laden Werkbank wechseln</translation>
+      <translation>Nach dem Laden Arbeitsbereich wechseln</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>

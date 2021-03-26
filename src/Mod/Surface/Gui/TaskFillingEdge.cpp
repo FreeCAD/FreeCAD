@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2017 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                      Christophe Grellier <cg[at]grellier.fr>            *
+ *   Copyright (c) 2017 Christophe Grellier <cg[at]grellier.fr>            *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -128,6 +128,7 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcutContext(Qt::WidgetShortcut);
     ui->listUnbound->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onDeleteUnboundEdge()));
     ui->listUnbound->setContextMenuPolicy(Qt::ActionsContextMenu);

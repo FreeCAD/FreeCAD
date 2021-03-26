@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -32,6 +30,7 @@ import copy
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
+Part = LazyLoader('Part', globals(), 'Part')
 
 from PySide import QtCore
 
@@ -71,9 +70,11 @@ class ObjectOp(PathOp.ObjectOp):
 
             # reorder the wire
             if hasattr(obj, 'StartVertex'):
-                offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
+                start_idx = obj.StartVertex
 
             edges = copy.copy(PathOpTools.orientWire(offset, forward).Edges)
+            edges = Part.sortEdges(edges)[0];
+
             last = None
 
             for z in zValues:
