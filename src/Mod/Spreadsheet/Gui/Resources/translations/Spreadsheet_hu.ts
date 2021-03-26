@@ -245,51 +245,51 @@
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Balra igazított cella</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Központi cella</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Jobbra igazított cella</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Felülre igazított cella</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Alulra igazított cella</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Függőlegesen középre igazított cellák</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Félkövér szöveg beállítása</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Dőlt szöveg beállítása</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Aláhúzott szöveg beállítása</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Táblázat létrehozása</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Cellatulajdonságok beállítása</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Cella szerkesztése</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -305,15 +305,15 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Cella(k) törlése</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Előtér színének beállítása</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Háttér színének beállítása</translation>
     </message>
   </context>
   <context>

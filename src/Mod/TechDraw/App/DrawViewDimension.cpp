@@ -792,7 +792,7 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         }
 
         // qUserString is the value + unit with default decimals, so extract the unit
-        // we cannot just use unit.getString() because this would convert '°' to 'deg'
+        // we cannot just use unit.getString() because this would convert 'Â°' to 'deg'
         QRegExp rxUnits(QString::fromUtf8(" \\D*$")); // space + any non digits at end of string
         int pos = 0;
         if ((pos = rxUnits.indexIn(qUserString, 0)) != -1) {
@@ -948,7 +948,7 @@ std::string DrawViewDimension::getFormattedDimensionValue(int partial)
         if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
             result = labelText + unitText + QString::fromUtf8(" \xC2\xB1 ") + tolerance;
         } else {
-            // add the tolerance to the dimension using the ± sign
+            // add the tolerance to the dimension using the Â± sign
             result = labelText + QString::fromUtf8(" \xC2\xB1 ") + tolerance;
         }
         if (partial == 2) {
@@ -956,6 +956,9 @@ std::string DrawViewDimension::getFormattedDimensionValue(int partial)
         }
 
         return result.toStdString();
+    }
+    if (Arbitrary.getValue()) {
+        return FormatSpec.getStrValue();
     }
 
     return formatValue(getDimValue(), qFormatSpec, partial);

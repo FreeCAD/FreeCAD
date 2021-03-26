@@ -145,7 +145,7 @@ ConditioningTypes = [
 "NaturallyVentedOnly"
 ]
 
-import FreeCAD,ArchComponent,ArchCommands,math,Draft,sys
+import FreeCAD,ArchComponent,ArchCommands,Draft,sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui

@@ -48,17 +48,17 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         "Delaunay",
         "Frontal",
         "BAMG",
-        "DelQuad"
+        "DelQuad",
+        "Packing Parallelograms"
     ]
     known_mesh_algorithm_3D = [
         "Automatic",
         "Delaunay",
         "New Delaunay",
         "Frontal",
-        "Frontal Delaunay",
-        "Frontal Hex",
         "MMG3D",
-        "R-tree"
+        "R-tree",
+        "HXT"
     ]
 
     def __init__(self, obj):
@@ -67,6 +67,9 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
 
     def onDocumentRestored(self, obj):
         self.add_properties(obj)
+        # refresh the list of known 3D algorithms for existing meshes
+        # since some algos are meanwhile deprecated and new algos are available
+        obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
 
     def add_properties(self, obj):
         if not hasattr(obj, "MeshBoundaryLayerList"):
@@ -211,6 +214,15 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             # thus standard will be False
             # https://forum.freecadweb.org/viewtopic.php?t=41738
             # https://forum.freecadweb.org/viewtopic.php?f=18&t=45260&start=20#p389494
+
+        if not hasattr(obj, "MeshSizeFromCurvature"):
+            obj.addProperty(
+                "App::PropertyIntegerConstraint",
+                "MeshSizeFromCurvature",
+                "FEM Gmsh Mesh Params",
+                "number of elements per 2*pi radians, 0 to deactivate"
+            )
+            obj.MeshSizeFromCurvature = (12, 0, 10000, 1)
 
         if not hasattr(obj, "Algorithm2D"):
             obj.addProperty(

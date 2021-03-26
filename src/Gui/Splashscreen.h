@@ -101,8 +101,11 @@ public:
 
 protected:
     void setupLabels();
+    void showCredits();
     void showLicenseInformation();
+    void showLibraryInformation();
     void showCollectionInformation();
+    void showOrHideImage(const QRect& rect);
 
 protected Q_SLOTS:
     virtual void on_copyButton_clicked();

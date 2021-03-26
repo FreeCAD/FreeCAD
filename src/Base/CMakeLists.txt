@@ -338,7 +338,6 @@ SET(FreeCADBase_HPP_SRCS
     Reader.h
     Rotation.h
     Sequencer.h
-    StdStlTools.h
     Stream.h
     Swap.h
     ${SWIG_HEADERS}

@@ -24,7 +24,7 @@
 #include <boost/mpl/map.hpp>
 #include <boost/mpl/if.hpp>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/variant.hpp>
 #include <boost/function.hpp>
 
@@ -60,8 +60,8 @@ struct Module3D {
         struct vertex_prop;
         struct inheriter_base;
 
-        typedef boost::shared_ptr<Geometry3D> Geom;
-        typedef boost::shared_ptr<Constraint3D> Cons;
+        typedef std::shared_ptr<Geometry3D> Geom;
+        typedef std::shared_ptr<Constraint3D> Cons;
 
         typedef mpl::map3<  mpl::pair<reset, boost::function<void (Geom) > >,
                 mpl::pair<remove, boost::function<void (Geom) > > ,
@@ -105,7 +105,7 @@ struct Module3D {
             template<typename T>
             T convertTo();
 
-            virtual boost::shared_ptr<Derived> clone(Sys& newSys);
+            virtual std::shared_ptr<Derived> clone(Sys& newSys);
 
         protected:
             typedef typename mpl::push_front<Typelist, boost::blank>::type ExtTypeList;
@@ -178,7 +178,7 @@ struct Module3D {
             Constraint3D_base(Sys& system, Geom f, Geom s) : detail::Constraint<Sys, 3>(f,s),
                 Object<Sys, Derived, ConsSignal>(system) {};
 
-            virtual boost::shared_ptr<Derived> clone(Sys& newSys);
+            virtual std::shared_ptr<Derived> clone(Sys& newSys);
         };
 
         template<typename Derived>
@@ -217,7 +217,7 @@ struct Module3D {
             Cons createConstraint3D(Geom first, Geom second, T1 constraint1);
             void removeConstraint3D(Cons c);
 
-            void system_sub(boost::shared_ptr<Sys> subsys) {};
+            void system_sub(std::shared_ptr<Sys> subsys) {};
 
         protected:
             Sys* m_this;

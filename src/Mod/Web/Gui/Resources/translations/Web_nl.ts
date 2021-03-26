@@ -156,7 +156,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="559"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Er zijn ernstige fouten opgetreden tijdens het laden van het bestand. Sommige gegevens zijn mogelijk gewijzigd of helemaal niet hersteld. Het opslaan van het project zal waarschijnlijk leiden tot data-verlies.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="719"/>

@@ -203,7 +203,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="exportButtonBox" native="true">
+    <widget class="QWidget" name="exportButtonBox">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="leftMargin">
        <number>0</number>

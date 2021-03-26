@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Poisson.cpp" line="101"/>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>Reconstrucció amb Poisson</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.cpp" line="234"/>

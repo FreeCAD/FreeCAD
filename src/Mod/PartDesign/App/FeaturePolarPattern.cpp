@@ -26,6 +26,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <gp_Lin.hxx>
+# include <gp_Circ.hxx>
 # include <gp_Ax2.hxx>
 # include <BRepAdaptor_Curve.hxx>
 #endif
@@ -47,12 +48,17 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 
+const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyAngle::Constraints PolarPattern::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
+
 PolarPattern::PolarPattern()
 {
-    ADD_PROPERTY_TYPE(Axis,(0),"PolarPattern",(App::PropertyType)(App::Prop_None),"Direction");
-    ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY(Angle,(360.0));
-    ADD_PROPERTY(Occurrences,(3));
+    ADD_PROPERTY_TYPE(Axis, (0), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
+    ADD_PROPERTY(Reversed, (0));
+    ADD_PROPERTY(Angle, (360.0));
+    Angle.setConstraints(&floatAngle);
+    ADD_PROPERTY(Occurrences, (3));
+    Occurrences.setConstraints(&intOccurrences);
 }
 
 short PolarPattern::mustExecute() const
@@ -68,18 +74,28 @@ short PolarPattern::mustExecute() const
 const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     double angle = Angle.getValue();
-    if (angle < Precision::Confusion())
+    double radians = Base::toRadians<double>(angle);
+    if (radians < Precision::Angular())
         throw Base::ValueError("Pattern angle too small");
     int occurrences = Occurrences.getValue();
-    if (occurrences < 2)
-        throw Base::ValueError("At least two occurrences required");
-    bool reversed = Reversed.getValue();
+    if (occurrences < 1)
+        throw Base::ValueError("At least one occurrence required");
 
+    // Note: The original feature is NOT included in the list of transformations! Therefore
+    // we start with occurrence number 1, not number 0
+    std::list<gp_Trsf> transformations;
+    gp_Trsf trans;
+    transformations.push_back(trans); // identity transformation
+
+    if (occurrences < 2)
+        return transformations;
+
+    bool reversed = Reversed.getValue();
     double offset;
     if (std::fabs(angle - 360.0) < Precision::Confusion())
-        offset = Base::toRadians<double>(angle) / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
+        offset = radians / occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
     else
-        offset = Base::toRadians<double>(angle) / (occurrences - 1);
+        offset = radians / (occurrences - 1);
 
     App::DocumentObject* refObject = Axis.getValue();
     if (refObject == NULL)
@@ -131,12 +147,16 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
             if (refEdge.IsNull())
                 throw Base::ValueError("Failed to extract axis edge");
             BRepAdaptor_Curve adapt(refEdge);
-            if (adapt.GetType() != GeomAbs_Line)
-                throw Base::TypeError("Axis edge must be a straight line");
-
-            axbase = adapt.Value(adapt.FirstParameter());
-            axdir = adapt.Line().Direction();
-        } else {
+            if (adapt.GetType() == GeomAbs_Line) {
+                axbase = adapt.Line().Location();
+                axdir = adapt.Line().Direction();
+            } else if (adapt.GetType() == GeomAbs_Circle) {
+                axbase = adapt.Circle().Location();
+                axdir = adapt.Circle().Axis().Direction();
+            } else {
+                throw Base::TypeError("Rotation edge must be a straight line, circle or arc of circle");
+            }
+         } else {
             throw Base::TypeError("Axis reference must be an edge");
         }
     } else {
@@ -151,18 +171,24 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     if (reversed)
         axis.SetDirection(axis.Direction().Reversed());
 
-    // Note: The original feature is NOT included in the list of transformations! Therefore
-    // we start with occurrence number 1, not number 0
-    std::list<gp_Trsf> transformations;
-    gp_Trsf trans;
-    transformations.push_back(trans); // identity transformation
-
     for (int i = 1; i < occurrences; i++) {
         trans.SetRotation(axis.Axis(), i * offset);
         transformations.push_back(trans);
     }
 
     return transformations;
+}
+
+void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+// transforms properties that had been changed
+{
+    // property Occurrences had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &Occurrences && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger OccurrencesProperty;
+        // restore the PropertyInteger to be able to set its value
+        OccurrencesProperty.Restore(reader);
+        Occurrences.setValue(OccurrencesProperty.getValue());
+    }
 }
 
 }

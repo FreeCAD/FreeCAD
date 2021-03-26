@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Approximate a plane</source>
-      <translation>Odhadnuť rovinu</translation>
+      <translation>Odhadnúť rovinu</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>Segmentácia siete...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="381"/>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Z komponentov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Vytvorí segmenty siete z komponentov</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Ručná segmentácia...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="413"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>Vytvorí segmenty siete ručne</translation>
     </message>
   </context>
   <context>
@@ -264,13 +264,13 @@
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>Stupeň</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="55"/>
       <location filename="../../FitBSplineSurface.ui" line="122"/>
       <source>Control points</source>
-      <translation type="unfinished">Control points</translation>
+      <translation>Kontrolné body</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation type="unfinished">Size factor</translation>
+      <translation>Faktor veľkosti</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
@@ -300,7 +300,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="227"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>Celková váha</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="256"/>
@@ -325,7 +325,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
+      <translation>Vytvoriť umiestnenie</translation>
     </message>
   </context>
   <context>
@@ -333,12 +333,12 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="208"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>Prosím, vyberte jeden objekt umiestnenia na získanie miestnej orientácie.</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="167"/>
@@ -357,7 +357,7 @@
     <message>
       <location filename="../../Poisson.ui" line="20"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Parametre</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="26"/>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Snímkov na uzol</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="108"/>
@@ -386,7 +386,7 @@
       <location filename="../../Command.cpp" line="89"/>
       <location filename="../../Command.cpp" line="569"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -417,7 +417,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="27"/>
       <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
+      <translation>Vytvoriť celok</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="34"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="70"/>
       <source>Distance to plane</source>
-      <translation type="unfinished">Distance to plane</translation>
+      <translation>Vzdialenosť k rovine</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="87"/>
@@ -447,7 +447,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create mesh from unused triangles</source>
-      <translation type="unfinished">Create mesh from unused triangles</translation>
+      <translation>Vytvoriť sieť z nevyužitých trojuholníkov</translation>
     </message>
   </context>
   <context>
@@ -455,7 +455,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual segmentation</source>
-      <translation type="unfinished">Manual segmentation</translation>
+      <translation>Ručná segmentácia</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
@@ -495,7 +495,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="112"/>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="122"/>
@@ -521,7 +521,7 @@
       <location filename="../../SegmentationManual.ui" line="218"/>
       <location filename="../../SegmentationManual.ui" line="271"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>Zistiť</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -556,12 +556,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>Odrezať segment zo siete</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Skryť segment</translation>
     </message>
   </context>
   <context>

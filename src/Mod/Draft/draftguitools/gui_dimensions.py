@@ -71,6 +71,7 @@ class Dimension(gui_base_original.Creator):
     """
 
     def __init__(self):
+        super().__init__()
         self.max = 2
         self.cont = None
         self.dir = None
@@ -97,7 +98,7 @@ class Dimension(gui_base_original.Creator):
         else:
             super(Dimension, self).Activated(name)
             if self.ui:
-                self.ui.pointUi(name)
+                self.ui.pointUi(title=name, icon="Draft_Dimension")
                 self.ui.continueCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False

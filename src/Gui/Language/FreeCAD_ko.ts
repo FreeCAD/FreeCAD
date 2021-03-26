@@ -1625,15 +1625,15 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Duplicate</source>
-      <translation type="unfinished">Duplicate</translation>
+      <translation>복제</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation type="unfinished">Addons...</translation>
+      <translation>애드온...</translation>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation type="unfinished">Toolbar</translation>
+      <translation>도구 모음</translation>
     </message>
   </context>
   <context>
@@ -1681,7 +1681,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>매크로 파일 이름 바꾸기</translation>
     </message>
     <message>
       <source>Enter new name:</source>
@@ -1695,7 +1695,7 @@ This file already exists.</source>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>이름 변경 실패</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
@@ -5377,6 +5377,10 @@ How do you want to proceed?</translation>
     <message>
       <source>Expression...</source>
       <translation type="unfinished">Expression...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
     </message>
   </context>
   <context>

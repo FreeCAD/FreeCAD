@@ -108,11 +108,11 @@ Base::Axis Part2DObject::getAxis(int axId) const
 }
 
 bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
-                                  int GeoId, const Base::Vector3d &point,
-                                  int &GeoId1, Base::Vector3d &intersect1,
-                                  int &GeoId2, Base::Vector3d &intersect2)
+                                  int geometryIndex, const Base::Vector3d &point,
+                                  int &geometryIndex1, Base::Vector3d &intersect1,
+                                  int &geometryIndex2, Base::Vector3d &intersect2)
 {
-    if (GeoId >= int(geomlist.size()))
+    if ( geometryIndex >= int(geomlist.size()))
         return false;
 
     gp_Pln plane(gp_Pnt(0,0,0),gp_Dir(0,0,1));
@@ -120,7 +120,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     Standard_Boolean periodic=Standard_False;
     double period = 0;
     Handle(Geom2d_Curve) primaryCurve;
-    Handle(Geom_Geometry) geom = (geomlist[GeoId])->handle();
+    Handle(Geom_Geometry) geom = (geomlist[geometryIndex])->handle();
     Handle(Geom_Curve) curve3d = Handle(Geom_Curve)::DownCast(geom);
 
     if (curve3d.IsNull())
@@ -141,14 +141,14 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     double pickedParam = Projector.LowerDistanceParameter();
 
     // find intersection points
-    GeoId1 = -1;
-    GeoId2 = -1;
+    geometryIndex1 = -1;
+    geometryIndex2 = -1;
     double param1=-1e10,param2=1e10;
     gp_Pnt2d p1,p2;
     Handle(Geom2d_Curve) secondaryCurve;
     for (int id=0; id < int(geomlist.size()); id++) {
         // #0000624: Trim tool doesn't work with construction lines
-        if (id != GeoId/* && !geomlist[id]->Construction*/) {
+        if (id != geometryIndex/* && !geomlist[id]->Construction*/) {
             geom = (geomlist[id])->handle();
             curve3d = Handle(Geom_Curve)::DownCast(geom);
             if (!curve3d.IsNull()) {
@@ -205,24 +205,24 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
                         if (param > param1) {
                             param1 = param;
                             p1 = p;
-                            GeoId1 = id;
+                            geometryIndex1 = id;
                         }
                         param -= period; // transfer param into the interval (pickedParam pickedParam+period]
                         if (param < param2) {
                             param2 = param;
                             p2 = p;
-                            GeoId2 = id;
+                            geometryIndex2 = id;
                         }
                     }
                     else if (param < pickedParam && param > param1) {
                         param1 = param;
                         p1 = p;
-                        GeoId1 = id;
+                        geometryIndex1 = id;
                     }
                     else if (param > pickedParam && param < param2) {
                         param2 = param;
                         p2 = p;
-                        GeoId2 = id;
+                        geometryIndex2 = id;
                     }
                 }
             }
@@ -233,18 +233,18 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
         // in case both points coincide, cancel the selection of one of both
         if (fabs(param2-param1-period) < 1e-10) {
             if (param2 - pickedParam >= pickedParam - param1)
-                GeoId2 = -1;
+                geometryIndex2 = -1;
             else
-                GeoId1 = -1;
+                geometryIndex1 = -1;
         }
     }
 
-    if (GeoId1 < 0 && GeoId2 < 0)
+    if ( geometryIndex1 < 0 && geometryIndex2 < 0)
         return false;
 
-    if (GeoId1 >= 0)
+    if ( geometryIndex1 >= 0)
         intersect1 = Base::Vector3d(p1.X(),p1.Y(),0.f);
-    if (GeoId2 >= 0)
+    if ( geometryIndex2 >= 0)
         intersect2 = Base::Vector3d(p2.X(),p2.Y(),0.f);
     return true;
 }

@@ -234,7 +234,7 @@
       <location filename="../../Command.cpp" line="1637"/>
       <location filename="../../Command.cpp" line="1639"/>
       <source>Fill holes of the mesh</source>
-      <translation>Riempie i fbuchi della mesh</translation>
+      <translation>Riempie i buchi della mesh</translation>
     </message>
   </context>
   <context>
@@ -755,12 +755,12 @@
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh difference</source>
-      <translation type="unfinished">Mesh difference</translation>
+      <translation>Differenza di mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="383"/>
       <source>Mesh intersection</source>
-      <translation type="unfinished">Mesh intersection</translation>
+      <translation>Intersezione di mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="469"/>
@@ -770,7 +770,7 @@
     <message>
       <location filename="../../Command.cpp" line="665"/>
       <source>Mesh VertexCurvature</source>
-      <translation type="unfinished">Mesh VertexCurvature</translation>
+      <translation>Mesh VerticiCurvatura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1414"/>
@@ -846,7 +846,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
       <source>Fix self-intersections</source>
-      <translation type="unfinished">Fix self-intersections</translation>
+      <translation>Correggi le auto-intersezioni</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>

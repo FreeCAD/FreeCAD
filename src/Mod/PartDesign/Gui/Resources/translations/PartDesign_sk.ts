@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation>Urob pevnú hrubú</translation>
+      <translation>Vytvoriť hrubé teleso</translation>
     </message>
   </context>
   <context>
@@ -839,7 +839,7 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="54"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="161"/>
       <source>Width:</source>
-      <translation>šírka:</translation>
+      <translation>Šírka:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="61"/>
@@ -877,14 +877,14 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="585"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="839"/>
       <source>Radius 1:</source>
-      <translation>Polomer 1:</translation>
+      <translation>Polomer č. 1:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="392"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="592"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="832"/>
       <source>Radius 2:</source>
-      <translation>Polomer 2:</translation>
+      <translation>Polomer č. 2:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="455"/>
@@ -1044,7 +1044,7 @@
     <message>
       <location filename="../../DlgReference.ui" line="14"/>
       <source>Reference</source>
-      <translation>Odkaz</translation>
+      <translation>Referencia</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
@@ -1469,7 +1469,7 @@
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="114"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="114"/>
@@ -1522,7 +1522,7 @@
     <message>
       <location filename="../../TaskLoftParameters.ui" line="113"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="59"/>
@@ -1565,7 +1565,7 @@
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="72"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="111"/>
@@ -1603,7 +1603,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="64"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="76"/>
@@ -1653,7 +1653,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="137"/>
       <source>Right-click to add</source>
-      <translation>Pridajte pravým tlačidlom myši</translation>
+      <translation>Pridáte kliknutím pravým tlačidlom myši</translation>
     </message>
   </context>
   <context>
@@ -1710,7 +1710,7 @@
     <message>
       <location filename="../../TaskPadParameters.ui" line="128"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
@@ -1987,7 +1987,7 @@
     <message>
       <location filename="../../TaskPocketParameters.ui" line="128"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="56"/>
@@ -2070,7 +2070,7 @@
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="112"/>
@@ -2147,7 +2147,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="119"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="61"/>
@@ -2190,7 +2190,7 @@
     <message>
       <location filename="../../TaskScaledParameters.ui" line="86"/>
       <source>Update view</source>
-      <translation>Aktualizovať pohľad</translation>
+      <translation>Aktualizovať zobrazenie</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="98"/>
@@ -2274,7 +2274,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="95"/>
       <source>Pipe</source>
-      <translation>Trubka</translation>
+      <translation>Potrubie</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="100"/>
@@ -2517,7 +2517,7 @@
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Several sub-elements selected</source>
-      <translation>Je vybraných niekoľko sub-prvkov</translation>
+      <translation>Je vybraných niekoľko pod-prvkov</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="476"/>
@@ -2596,7 +2596,7 @@
       <location filename="../../Command.cpp" line="1543"/>
       <location filename="../../Command.cpp" line="1555"/>
       <source>Wrong selection</source>
-      <translation>Chybný výber</translation>
+      <translation>Nesprávny výber</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1514"/>
@@ -3002,7 +3002,7 @@ Tento prvok je nefunkčný a nedá sa upraviť.</translation>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="51"/>
       <source>Edit revolution</source>
-      <translation>Uprav orotovanie</translation>
+      <translation>Upraviť orotovanie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="184"/>

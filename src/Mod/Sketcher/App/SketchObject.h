@@ -140,8 +140,17 @@ public:
     int addCopyOfConstraints(const SketchObject &orig);
     /// add constraint
     int addConstraint(const Constraint *constraint);
+    /// add constraint
+    int addConstraint(std::unique_ptr<Constraint> constraint);
     /// delete constraint
     int delConstraint(int ConstrId);
+    /** deletes a group of constraints at once, if norecomputes is active, the default behaviour is that
+     * it will solve the sketch.
+     *
+     * If updating the Geometry property as a consequence of a (sucessful) solve() is not wanted, updategeometry=false,
+     * prevents the update. This allows to update the solve status (e.g. dof), without updating the geometry (i.e. make it
+     * move to fulfil the constraints).
+     */
     int delConstraints(std::vector<int> ConstrIds, bool updategeometry=true);
     int delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoincident=true);
     int delConstraintOnPoint(int VertexId, bool onlyCoincident=true);
@@ -168,7 +177,12 @@ public:
      *  id==-2 for the vertical sketch axis
      *  id<=-3 for user defined projected external geometries,
      */
-    const Part::Geometry* getGeometry(int GeoId) const;
+    template <  typename GeometryT = Part::Geometry,
+                typename = typename std::enable_if<
+                    std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value
+             >::type
+    >
+    const GeometryT * getGeometry(int GeoId) const;
 
     std::unique_ptr<const GeometryFacade> getGeometryFacade(int GeoId) const;
 
@@ -183,6 +197,11 @@ public:
 
     /// retrieves a vector containing both normal and external Geometry (including the sketch axes)
     std::vector<Part::Geometry*> getCompleteGeometry(void) const;
+
+    /// converts a GeoId index into an index of the CompleteGeometry vector
+    int getCompleteGeometryIndex(int GeoId) const;
+
+    int getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) const;
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
@@ -458,6 +477,14 @@ public:
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
 
     bool isPerformingInternalTransaction() const {return internaltransaction;};
+
+    /** retrieves intersection points of this curve with the closest two curves around a point of this curve.
+     * - it includes internal and external intersecting geometry.
+     * - it returns Constraint::GeoUndef if no intersection is found.
+     */
+    bool seekTrimPoints(int GeoId, const Base::Vector3d &point,
+                                  int &GeoId1, Base::Vector3d &intersect1,
+                                  int &GeoId2, Base::Vector3d &intersect2);
 public:
     // Analyser functions
     int autoConstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/20, bool includeconstruction = true);
@@ -500,9 +527,9 @@ protected:
     virtual void onDocumentRestored() override;
     virtual void restoreFinished() override;
 
-    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr) override;
+    virtual void setExpression(const App::ObjectIdentifier &path, std::shared_ptr<App::Expression> expr) override;
 
-    std::string validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr);
+    std::string validateExpression(const App::ObjectIdentifier &path, std::shared_ptr<const App::Expression> expr);
 
     void constraintsRenamed(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renamed);
     void constraintsRemoved(const std::set<App::ObjectIdentifier> &removed);
@@ -555,6 +582,24 @@ protected:
     // Checks whether the geometry state stored in the geometry extension matches the current sketcher situation (e.g. constraints)
     // and corrects the state if not matching.
     void synchroniseGeometryState();
+
+    // helper function to create a new constraint and move it to the Constraint Property
+    void addConstraint( Sketcher::ConstraintType constrType,
+                        int firstGeoId,
+                        Sketcher::PointPos firstPos,
+                        int secondGeoId = Constraint::GeoUndef,
+                        Sketcher::PointPos secondPos = Sketcher::none,
+                        int thirdGeoId = Constraint::GeoUndef,
+                        Sketcher::PointPos thirdPos = Sketcher::none);
+
+    // creates a new constraint
+    std::unique_ptr<Constraint> createConstraint(   Sketcher::ConstraintType constrType,
+                                                    int firstGeoId,
+                                                    Sketcher::PointPos firstPos,
+                                                    int secondGeoId = Constraint::GeoUndef,
+                                                    Sketcher::PointPos secondPos = Sketcher::none,
+                                                    int thirdGeoId = Constraint::GeoUndef,
+                                                    Sketcher::PointPos thirdPos = Sketcher::none);
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
@@ -629,6 +674,21 @@ inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine/*=
 inline int SketchObject::moveTemporaryPoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative/*=false*/)
 {
     return solvedSketch.movePoint(geoId, pos, toPoint, relative);
+}
+
+template <  typename GeometryT,
+            typename >
+const GeometryT * SketchObject::getGeometry(int GeoId) const
+{
+    if (GeoId >= 0) {
+        const std::vector<Part::Geometry *> &geomlist = getInternalGeometry();
+        if (GeoId < int(geomlist.size()))
+            return static_cast<GeometryT *>(geomlist[GeoId]);
+    }
+    else if (-GeoId <= int(ExternalGeo.size()))
+        return static_cast<GeometryT *>(ExternalGeo[-GeoId-1]);
+
+    return nullptr;
 }
 
 typedef App::FeaturePythonT<SketchObject> SketchObjectPython;

@@ -89,6 +89,7 @@
 # include <NCollection_List.hxx>
 # include <BRepFill_Filling.hxx>
 #endif
+# include <BRepFill_Generator.hxx>
 
 #include <cstdio>
 #include <fstream>
@@ -454,6 +455,10 @@ public:
             "makeRuledSurface(Edge|Wire,Edge|Wire) -- Make a ruled surface\n"
             "Create a ruled surface out of two edges or wires. If wires are used then"
             "these must have the same number of edges."
+        );
+        add_varargs_method("makeShellFromWires",&Module::makeShellFromWires,
+            "makeShellFromWires(Wires) -- Make a shell from wires.\n"
+            "The wires must have the same number of edges."
         );
         add_varargs_method("makeTube",&Module::makeTube,
             "makeTube(edge,radius,[continuity,max degree,max segments]) -- Create a tube.\n"
@@ -1628,6 +1633,30 @@ private:
         }
         catch (Standard_Failure&) {
             throw Py::Exception(PartExceptionOCCError, "creation of ruled surface failed");
+        }
+    }
+    Py::Object makeShellFromWires(const Py::Tuple& args)
+    {
+        PyObject *pylist;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &pylist))
+            throw Py::Exception();
+
+        try {
+            BRepFill_Generator fill;
+            Py::Sequence list(pylist);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Py::TopoShape shape(*it);
+                const TopoDS_Shape& s = shape.extensionObject()->getTopoShapePtr()->getShape();
+                if (!s.IsNull() && s.ShapeType() == TopAbs_WIRE) {
+                    fill.AddWire(TopoDS::Wire(s));
+                }
+            }
+
+            fill.Perform();
+            return Py::asObject(new TopoShapeShellPy(new TopoShape(fill.Shell())));
+        }
+        catch (Standard_Failure&) {
+            throw Py::Exception(PartExceptionOCCError, "creation of shell failed");
         }
     }
     Py::Object makeTube(const Py::Tuple& args)

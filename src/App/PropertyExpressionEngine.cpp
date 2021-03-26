@@ -110,7 +110,7 @@ Property *PropertyExpressionEngine::Copy() const
     PropertyExpressionEngine * engine = new PropertyExpressionEngine();
 
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it)
-        engine->expressions[it->first] = ExpressionInfo(boost::shared_ptr<Expression>(it->second.expression->copy()));
+        engine->expressions[it->first] = ExpressionInfo(std::shared_ptr<Expression>(it->second.expression->copy()));
 
     engine->validator = validator;
 
@@ -153,7 +153,7 @@ void PropertyExpressionEngine::Paste(const Property &from)
     expressions.clear();
     for(auto &e : fromee.expressions) {
         expressions[e.first] = ExpressionInfo(
-                boost::shared_ptr<Expression>(e.second.expression->copy()));
+                std::shared_ptr<Expression>(e.second.expression->copy()));
         expressionChanged(e.first);
     }
     validator = fromee.validator;
@@ -218,7 +218,7 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
  */
 
 void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & path,
-                                                    const boost::shared_ptr<Expression> expression,
+                                                    const std::shared_ptr<Expression> expression,
                                                     boost::unordered_map<ObjectIdentifier, int> & nodes,
                                                     boost::unordered_map<int, ObjectIdentifier> & revNodes,
                                                     std::vector<Edge> & edges) const
@@ -304,7 +304,7 @@ void PropertyExpressionEngine::afterRestore()
 
         for(auto &info : *restoredExpressions) {
             ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
-            boost::shared_ptr<Expression> expression(Expression::parse(docObj, info.expr.c_str()));
+            std::shared_ptr<Expression> expression(Expression::parse(docObj, info.expr.c_str()));
             if(expression)
                 expression->comment = std::move(info.comment);
             setValue(path, expression);
@@ -351,7 +351,7 @@ const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentif
  * @param comment Optional comment.
  */
 
-void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::shared_ptr<Expression> expr)
+void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, std::shared_ptr<Expression> expr)
 {
     ObjectIdentifier usePath(canonicalPath(path));
     const Property * prop = usePath.getProperty();
@@ -623,7 +623,7 @@ bool PropertyExpressionEngine::depsAreTouched() const
  * @return Empty string on success, error message on failure.
  */
 
-std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier &path, boost::shared_ptr<const Expression> expr) const
+std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier &path, std::shared_ptr<const Expression> expr) const
 {
     std::string error;
     ObjectIdentifier usePath(canonicalPath(path));
@@ -653,7 +653,7 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
     ExpressionMap newExpressions = expressions;
 
     // Add expression in question
-    boost::shared_ptr<Expression> exprClone(expr->copy());
+    std::shared_ptr<Expression> exprClone(expr->copy());
     newExpressions[usePath].expression = exprClone;
 
     // Build graph; an exception will be thrown if it is not a DAG
@@ -819,9 +819,9 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
 #ifdef BOOST_NO_CXX11_SMART_PTR
-        boost::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap).release());
+        std::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap).release());
 #else
-        boost::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap));
+        std::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap));
 #endif
         if(!expr && !engine) 
             continue;
@@ -829,7 +829,7 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
             engine.reset(new PropertyExpressionEngine);
             for(auto it2=expressions.begin();it2!=it;++it2) {
                 engine->expressions[it2->first] = ExpressionInfo(
-                        boost::shared_ptr<Expression>(it2->second.expression->copy()));
+                        std::shared_ptr<Expression>(it2->second.expression->copy()));
             }
         }else if(!expr)
             expr = it->second.expression;
@@ -847,9 +847,9 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
 #ifdef BOOST_NO_CXX11_SMART_PTR
-        boost::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel).release());
+        std::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel).release());
 #else
-        boost::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel));
+        std::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel));
 #endif
         if(!expr && !engine) 
             continue;
@@ -857,7 +857,7 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
             engine.reset(new PropertyExpressionEngine);
             for(auto it2=expressions.begin();it2!=it;++it2) {
                 engine->expressions[it2->first] = ExpressionInfo(
-                        boost::shared_ptr<Expression>(it2->second.expression->copy()));
+                        std::shared_ptr<Expression>(it2->second.expression->copy()));
             }
         }else if(!expr)
             expr = it->second.expression;
@@ -875,10 +875,10 @@ Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject 
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
 #ifdef BOOST_NO_CXX11_SMART_PTR
-        boost::shared_ptr<Expression> expr(
+        std::shared_ptr<Expression> expr(
                 it->second.expression->replaceObject(parent,oldObj,newObj).release());
 #else
-        boost::shared_ptr<Expression> expr(
+        std::shared_ptr<Expression> expr(
                 it->second.expression->replaceObject(parent,oldObj,newObj));
 #endif
         if(!expr && !engine) 
@@ -887,7 +887,7 @@ Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject 
             engine.reset(new PropertyExpressionEngine);
             for(auto it2=expressions.begin();it2!=it;++it2) {
                 engine->expressions[it2->first] = ExpressionInfo(
-                        boost::shared_ptr<Expression>(it2->second.expression->copy()));
+                        std::shared_ptr<Expression>(it2->second.expression->copy()));
             }
         }else if(!expr)
             expr = it->second.expression;
@@ -914,7 +914,7 @@ void PropertyExpressionEngine::setExpressions(
     AtomicPropertyChange signaller(*this);
 #ifdef BOOST_NO_CXX11_SMART_PTR
     for(auto &v : exprs)
-        setValue(v.first,boost::shared_ptr<Expression>(v.second.release()));
+        setValue(v.first,std::shared_ptr<Expression>(v.second.release()));
 #else
     for(auto &v : exprs)
         setValue(v.first,std::move(v.second));

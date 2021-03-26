@@ -65,10 +65,10 @@ template<typename Sys, typename Derived, typename Sig>
 Object<Sys, Derived, Sig>::Object(Sys& system) : m_system(&system) {};
 
 template<typename Sys, typename Derived, typename Sig>
-boost::shared_ptr<Derived> Object<Sys, Derived, Sig>::clone(Sys& newSys)
+std::shared_ptr<Derived> Object<Sys, Derived, Sig>::clone(Sys& newSys)
 {
 
-    boost::shared_ptr<Derived> np = boost::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
+    std::shared_ptr<Derived> np = std::shared_ptr<Derived>(new Derived(*static_cast<Derived*>(this)));
     np->m_system = &newSys;
     return np;
 };

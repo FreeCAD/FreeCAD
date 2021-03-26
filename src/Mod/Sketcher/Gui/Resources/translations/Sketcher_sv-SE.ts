@@ -29,7 +29,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="101"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>Visa/dölj gradtal för B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="102"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="331"/>
       <source>Show/hide B-spline degree</source>
-      <translation type="unfinished">Show/hide B-spline degree</translation>
+      <translation>Visa/dölj gradtal för B-splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="338"/>
@@ -300,7 +300,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4846"/>
       <source>3 rim points</source>
-      <translation>tre kantpunkter</translation>
+      <translation>Tre randpunkter</translation>
     </message>
   </context>
   <context>
@@ -356,12 +356,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5341"/>
       <source>Fillets</source>
-      <translation type="unfinished">Fillets</translation>
+      <translation>Avrundningar</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5342"/>
       <source>Create a fillet between two lines</source>
-      <translation type="unfinished">Create a fillet between two lines</translation>
+      <translation>Skapa avrundning mellan två linjer</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5417"/>
@@ -781,8 +781,8 @@ and an edge as an interface.</translation>
       <location filename="../../CommandConstraints.cpp" line="6594"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation type="unfinished">Create a symmetry constraint between two points
-with respect to a line or a third point</translation>
+      <translation>Skapa en symmetribegränsning mellan två punkter
+med avseende på en linje eller tredje punkt</translation>
     </message>
   </context>
   <context>
@@ -1448,7 +1448,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5846"/>
       <source>Extend an edge with respect to the picked position</source>
-      <translation>Förlänger en kant med avseende till den valda positionen</translation>
+      <translation>Förläng en kant med avseende på den valda positionen</translation>
     </message>
   </context>
   <context>
@@ -1520,7 +1520,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>Finish editing the active sketch.</source>
-      <translation type="unfinished">Finish editing the active sketch.</translation>
+      <translation>Sluta redigera den aktiva skissen.</translation>
     </message>
   </context>
   <context>
@@ -1540,9 +1540,9 @@ with respect to a line or a third point</translation>
       <source>Set the 'Support' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation type="unfinished">Set the 'Support' of a sketch.
-First select the supporting geometry, for example, a face or an edge of a solid object,
-then call this command, then choose the desired sketch.</translation>
+      <translation>Sätt en skiss "stöd".
+Markera först den stödjande geometrin, till exempel en yta eller kant på ett solitt objekt,
+anropa sedan det här kommandot och välj sedan önskad skiss.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="561"/>
@@ -1565,7 +1565,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="865"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
-      <translation type="unfinished">Create a new sketch from merging two or more selected sketches.</translation>
+      <translation>Skapa ny skiss genom att sammanfoga två eller fler markerade skisser.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="878"/>
@@ -1595,9 +1595,9 @@ then call this command, then choose the desired sketch.</translation>
       <source>Create a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference.</source>
-      <translation type="unfinished">Create a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference.</translation>
+      <translation>Skapa en ny speglad skiss för varje markerad skiss
+genom att använda X- axeln, Y-axeln eller origo
+som speglingsreferens.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
@@ -1680,8 +1680,8 @@ as mirroring reference.</translation>
       <location filename="../../Command.cpp" line="382"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'Support' property, if any.</source>
-      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
-This will clear the 'Support' property, if any.</translation>
+      <translation>Placera markerad skiss på ett globalt koordinatplan.
+Detta kommer att rensa "stöd"-egenskapen, om den finns.</translation>
     </message>
   </context>
   <context>
@@ -1713,7 +1713,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="653"/>
       <location filename="../../CommandSketcherTools.cpp" line="654"/>
       <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <translation>Markera motstridiga begränsningar</translation>
     </message>
   </context>
   <context>
@@ -1767,7 +1767,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="825"/>
       <source>Select geometrical elements where the solver still detects unconstrained degrees of freedom.</source>
-      <translation type="unfinished">Select geometrical elements where the solver still detects unconstrained degrees of freedom.</translation>
+      <translation>Markera geometriska element där lösaren fortfarande hittar obegränsade frihetsgrader.</translation>
     </message>
   </context>
   <context>
@@ -1845,7 +1845,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="496"/>
       <location filename="../../CommandSketcherTools.cpp" line="497"/>
       <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <translation>Markera överflödiga begränsningar</translation>
     </message>
   </context>
   <context>
@@ -1881,7 +1881,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>When in edit mode, stop the active operation (drawing, constraining, etc.).</source>
-      <translation type="unfinished">When in edit mode, stop the active operation (drawing, constraining, etc.).</translation>
+      <translation>I redigeringsläge, stoppa den aktiva operationen (ritning, begränsning, etc.).</translation>
     </message>
   </context>
   <context>
@@ -1935,7 +1935,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7645"/>
       <source>Activates or deactivates the selected constraints</source>
-      <translation type="unfinished">Activates or deactivates the selected constraints</translation>
+      <translation>Aktiverar eller deaktiverar markerade begränsningar</translation>
     </message>
   </context>
   <context>
@@ -2039,7 +2039,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="949"/>
       <source>When in edit mode, switch between section view and full view.</source>
-      <translation type="unfinished">When in edit mode, switch between section view and full view.</translation>
+      <translation>I redigeringsläge, växla mellan snittvy och fullständig vy.</translation>
     </message>
   </context>
   <context>
@@ -2057,7 +2057,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../Command.cpp" line="681"/>
       <source>When in edit mode, set the camera orientation perpendicular to the sketch plane.</source>
-      <translation type="unfinished">When in edit mode, set the camera orientation perpendicular to the sketch plane.</translation>
+      <translation>I redigeringsläge, rikta kameran vinkelrätt mot skissplanet.</translation>
     </message>
   </context>
   <context>
@@ -2442,7 +2442,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="413"/>
       <source>Convert to NURBS</source>
-      <translation type="unfinished">Convert to NURBS</translation>
+      <translation>Konvertera till NURBS</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="479"/>
@@ -2579,47 +2579,47 @@ invalid constraints, degenerated geometry, etc.</translation>
       <translation>Auto-begränsningsfel: Olösbar skiss efter tillämpning av likhetsbegränsningar.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="2034"/>
+      <location filename="../../../App/SketchObject.cpp" line="1966"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation>Kan inte finna mötespunkter för kurvorna. Försök att lägga till sammanfallaningsbegränsningar mellan kurvorna du vill använda.</translation>
+      <translation>Kan inte finna skärning mellan kurvorna. Försök att lägga till en sammanfallande-begränsning mellan ändpunkterna på kurvorna du vill avrunda.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5667"/>
+      <location filename="../../../App/SketchObject.cpp" line="5606"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
       <translation>Denna version av OCE/OCC stöder inte knutfunktioner. Version 6.9.0 eller högre krävs.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5671"/>
+      <location filename="../../../App/SketchObject.cpp" line="5610"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline-geometriindex (GeoID) är inte giltigt.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5674"/>
+      <location filename="../../../App/SketchObject.cpp" line="5613"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Du efterfrågar ingen ändring i knutmultipliciteten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5679"/>
+      <location filename="../../../App/SketchObject.cpp" line="5618"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
       <translation>Geometriindex (GeoId) som är angivet är inte en B-spline-kurva.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5686"/>
+      <location filename="../../../App/SketchObject.cpp" line="5625"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Knutindex är inte giltigt. Notera att i enlighet med OCC-notation så har första knuten index 1 och inte index 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5693"/>
+      <location filename="../../../App/SketchObject.cpp" line="5632"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Multipliciteten kan inte ökas mer än graden av B-spline:n.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5696"/>
+      <location filename="../../../App/SketchObject.cpp" line="5635"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Multipliciteten kan inte minskas under 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="5708"/>
+      <location filename="../../../App/SketchObject.cpp" line="5647"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kan inte minsta multipliciteten inom den maximala toleransen.</translation>
     </message>
@@ -3768,7 +3768,7 @@ Accepterade kombinationer: två kurvor; en slutpunkt och en kurva; två slutpunk
     <message>
       <location filename="../../EditDatumDialog.cpp" line="114"/>
       <source>Insert weight</source>
-      <translation type="unfinished">Insert weight</translation>
+      <translation>Infoga vikt</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="119"/>
@@ -3796,7 +3796,7 @@ Accepterade kombinationer: två kurvor; en slutpunkt och en kurva; två slutpunk
       <location filename="../../CommandConstraints.cpp" line="5009"/>
       <location filename="../../CommandConstraints.cpp" line="5167"/>
       <source>Change weight</source>
-      <translation type="unfinished">Change weight</translation>
+      <translation>Ändra vikt</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5010"/>
@@ -4114,22 +4114,22 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="115"/>
       <source>New constraints that would be redundant will automatically be removed</source>
-      <translation type="unfinished">New constraints that would be redundant will automatically be removed</translation>
+      <translation>Nya begränsningar som vore överflödiga kommer automatiskt att tas bort</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="118"/>
       <source>Auto remove redundants</source>
-      <translation type="unfinished">Auto remove redundants</translation>
+      <translation>Ta bort överflödiga automatiskt</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="134"/>
       <source>Allow to leave sketch edit mode when pressing Esc button</source>
-      <translation type="unfinished">Allow to leave sketch edit mode when pressing Esc button</translation>
+      <translation>Tillåt att lämna skissredigerings-läge när Esc-tangenten trycks ner</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="137"/>
       <source>Esc can leave sketch edit mode</source>
-      <translation type="unfinished">Esc can leave sketch edit mode</translation>
+      <translation>Esc-tangenten kan lämna skissredigerings-läge</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="153"/>
@@ -4182,7 +4182,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="136"/>
       <source>Edit vertex color</source>
-      <translation>Redigera färg på hörnpunkts</translation>
+      <translation>Färg på hörnpunkter som redigeras</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="163"/>
@@ -4222,22 +4222,22 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="89"/>
       <source>Color used while new sketch elements are created</source>
-      <translation type="unfinished">Color used while new sketch elements are created</translation>
+      <translation>Färg som används medan nya skisselement skapas</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="116"/>
       <source>Color of edges being edited</source>
-      <translation type="unfinished">Color of edges being edited</translation>
+      <translation>Färg på kanter som redigeras</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="143"/>
       <source>Color of vertices being edited</source>
-      <translation type="unfinished">Color of vertices being edited</translation>
+      <translation>Färg på hörnpunkter som redigeras</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="170"/>
       <source>Color of construction geometry in edit mode</source>
-      <translation type="unfinished">Color of construction geometry in edit mode</translation>
+      <translation>Färg på konstruktionsgeometri i redigeringsläge</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="190"/>
@@ -4252,22 +4252,22 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="224"/>
       <source>Color of external geometry in edit mode</source>
-      <translation type="unfinished">Color of external geometry in edit mode</translation>
+      <translation>Färg på extern geometri i redigeringsläge</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="244"/>
       <source>Invalid Sketch</source>
-      <translation type="unfinished">Invalid Sketch</translation>
+      <translation>Ogiltig skiss</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="251"/>
       <source>Color of geometry indicating an invalid sketch</source>
-      <translation type="unfinished">Color of geometry indicating an invalid sketch</translation>
+      <translation>Färg på geometri för att ange en ogiltig skiss</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="278"/>
       <source>Color of fully constrained geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained geometry in edit mode</translation>
+      <translation>Färg på fullständigt begränsad geometri i redigeringsläge</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="298"/>
@@ -4727,12 +4727,12 @@ Inga begränsningar länkade till slutpunkterna hittades däremot.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="94"/>
       <source>Extended information will be added to the list</source>
-      <translation type="unfinished">Extended information will be added to the list</translation>
+      <translation>Utökad information läggs till i listan</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="97"/>
       <source>Extended information</source>
-      <translation type="unfinished">Extended information</translation>
+      <translation>Utökad information</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="638"/>
@@ -4781,7 +4781,7 @@ Inga begränsningar länkade till slutpunkterna hittades däremot.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="69"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>Läge:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="89"/>
@@ -4948,14 +4948,14 @@ Inga begränsningar länkade till slutpunkterna hittades däremot.</translation>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="51"/>
       <source>Distance between two subsequent grid lines</source>
-      <translation type="unfinished">Distance between two subsequent grid lines</translation>
+      <translation>Avstånd mellan på varandra följande rutnätslinjer</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="87"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid size to a grid line to snap.</source>
-      <translation type="unfinished">New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid size to a grid line to snap.</translation>
+      <translation>Nya punkter fäster vid närmsta rutnätslinje.
+Punkter måste placeras mindre än en femtedels ruta från en linje för att fästa.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="91"/>
@@ -4965,7 +4965,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="107"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
-      <translation type="unfinished">Sketcher proposes automatically sensible constraints.</translation>
+      <translation>Skissaren föreslår automatiskt förnuftiga begränsningar.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="110"/>
@@ -4975,7 +4975,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="126"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
-      <translation type="unfinished">Sketcher tries not to propose redundant auto constraints</translation>
+      <translation>Skissaren försöker att inte föreslå överflödiga automatiska begränsningar</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="129"/>
@@ -4985,7 +4985,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="145"/>
       <source>Rendering order (global):</source>
-      <translation type="unfinished">Rendering order (global):</translation>
+      <translation>Renderings-ordning (global):</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="164"/>
@@ -5638,7 +5638,7 @@ Select the method to attach this sketch to selected objects.</translation>
       <location filename="../../Command.cpp" line="396"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation>En skiss med en stödyta kan inte omriktas.
+      <translation>En skiss med en stödyta kan inte riktas om.
 Vill du ta bort den från stödytan?</translation>
     </message>
   </context>
@@ -5662,27 +5662,27 @@ Vill du ta bort den från stödytan?</translation>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="40"/>
       <source>New constraints that would be redundant will automatically be removed</source>
-      <translation type="unfinished">New constraints that would be redundant will automatically be removed</translation>
+      <translation>Nya begränsningar som vore överflödiga kommer automatiskt att tas bort</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="43"/>
       <source>Auto remove redundants</source>
-      <translation type="unfinished">Auto remove redundants</translation>
+      <translation>Ta bort överflödiga automatiskt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="61"/>
       <source>Executes a recomputation of active document after every sketch action</source>
-      <translation type="unfinished">Executes a recomputation of active document after every sketch action</translation>
+      <translation>Genomför en omberäkning av det aktiva dokumentet efter varje skisshandling</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="64"/>
       <source>Auto update</source>
-      <translation type="unfinished">Auto update</translation>
+      <translation>Uppdatera automatiskt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="80"/>
       <source>Forces recomputation of active document</source>
-      <translation type="unfinished">Forces recomputation of active document</translation>
+      <translation>Framtvingar omberäkning av det aktiva dokumentet</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="83"/>
@@ -5782,7 +5782,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>QR algorithm:</source>
-      <translation type="unfinished">QR algorithm:</translation>
+      <translation>QR-algoritm:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>
@@ -6020,6 +6020,11 @@ to determine whether a solution converges or not</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
+      <source>Sketcher B-spline tools</source>
+      <translation type="unfinished">Sketcher B-spline tools</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
       <source>Sketcher virtual space</source>
       <translation>Virtuellt utrymme för skissaren</translation>
     </message>

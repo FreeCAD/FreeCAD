@@ -4,6 +4,16 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
+      <source>Attachment...</source>
+      <translation>Připojení...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Upravit připojení vybraného objektu.</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
       <translation>Žádný objekt s názvem {name}</translation>
@@ -24,14 +34,14 @@
       <translation>{obj} není připojitelný. Můžete stále použít editační dialog pro zarovnání objektu, ale připojení nebude parametrické.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
-      <source>Attachment</source>
-      <translation>Připojení</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
       <translation>Pokračovat</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <source>Attachment</source>
+      <translation>Připojení</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -99,24 +109,14 @@
       <translation>Odsazení připojení:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odsazení připojení (v lokálních souřadnicích):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Odsazení připojení (neaktivní - nepřipojeno):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
-      <source>Attachment...</source>
-      <translation>Připojení...</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
-      <source>Edit attachment of selected object.</source>
-      <translation>Upravit připojení vybraného objektu.</translation>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Odsazení připojení (v lokálních souřadnicích):</translation>
     </message>
   </context>
   <context>
@@ -259,99 +259,7 @@ Vytvoří "Filtr složenin" pro každý tvar.</translation>
     </message>
   </context>
   <context>
-    <name>Part_JoinFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Výpočet výsledku selhal s chybou: 
-
-{err}
-
-Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro ukončení.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Špatný výběr</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Pokračovat</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Výpočet výsledku selhal s chybou: 
-
-{err}
-
- Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro ukončení.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
-      <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation>Vyberte nejprve dva objekty nebo jednu či více složenin!</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation>Vyberte nejméně dva objekty nebo jednu či více složenin</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Vyberte základní objekt, potom objekt k připojení a nakonec použijte tento nástroj.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation>Vyberte základní objekt, potom objekt k připojení a nakonec použijte tento nástroj.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation>Vyberte objekt, ve kterém má být výřez, pak objekt, který má odpovídat výřezu, a nakonec použijte tento nástroj.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation>Vyberte objekt, ve kterém má být výřez, pak objekt, který má odpovídat výřezu, a nakonec použijte tento nástroj.</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Výpočet výsledku selhal s chybou: 
-
-{err}
-
-Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro ukončení.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Špatný výběr</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Pokračovat</translation>
-    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
@@ -371,45 +279,6 @@ původních tvarů.
 "Filtr složeniny" lze použít k extrakci jednotlivých částí.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Vyberte alespoň dva objekty nebo jednu či více složenin. Je-li vybrána jen jedna složenina, pak bude vytvořen průnik tvarů složeniny (jinak jsou sebe-protínající se složeniny neplatné).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Plátkovat na složeninu</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Rozdělit vybraný objekt použitím jiných objektů jako řezných nástrojů.
-Výsledné části budou definovány jako složenina.
-'Filtr složeniny' lze použít k extrakci jednotlivých částí.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Vyberte aspoň dva objekty. První je objekt k vytvoření části; ostatní jsou řezné objekty.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Rozdělit plátkováním</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleovské fragmenty</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Rozdělit objekty, kde se protínají</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
       <translation>Rozdělit objekt pomocí průniků s dalšími objekty a zabalit části do složeniny.</translation>
@@ -425,11 +294,9 @@ Výsledné části budou definovány jako složenina.
       <translation>Vyberte nejprve aspoň dva objekty! První je objekt k vytvoření plátku; ostatní jsou řezné objekty.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Rozdělit vybraný objekt jinými objekty a rozdělit je od sebe.
-Vytvoří 'Filtr složeniny' pro každý řez.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Vyberte aspoň dva objekty. První je objekt k vytvoření části; ostatní jsou řezné objekty.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -455,6 +322,47 @@ Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro
       <translation>Vyberte nejprve alespoň dva objekty nebo jednu či více složenin! Je-li vybrána jen jedna složenina, pak bude vytvořen průnik tvarů složeniny (jinak jsou sebe-protínající se složeniny neplatné).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Vyberte alespoň dva objekty nebo jednu či více složenin. Je-li vybrána jen jedna složenina, pak bude vytvořen průnik tvarů složeniny (jinak jsou sebe-protínající se složeniny neplatné).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Plátkovat na složeninu</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleovské fragmenty</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Rozdělit objekty, kde se protínají</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Rozdělit vybraný objekt použitím jiných objektů jako řezných nástrojů.
+Výsledné části budou definovány jako složenina.
+'Filtr složeniny' lze použít k extrakci jednotlivých částí.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Rozdělit plátkováním</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Rozdělit vybraný objekt jinými objekty a rozdělit je od sebe.
+Vytvoří 'Filtr složeniny' pro každý řez.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation>Booleovské XOR</translation>
@@ -469,6 +377,29 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 nebo s tvary uvnitř složeniny.
 To znamená, že budou odstraněny překrývající se objemy tvarů.
 K extrakci zbývajících částí může být použitý 'Filtr složenin'.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Špatný výběr</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Výpočet výsledku selhal s chybou: 
+
+{err}
+
+Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro ukončení.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Pokračovat</translation>
     </message>
   </context>
   <context>
@@ -951,6 +882,75 @@ Chcete pokračovat?</translation>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
       <translation>Zobrazit řídící body</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Výpočet výsledku selhal s chybou: 
+
+{err}
+
+ Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro ukončení.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Výpočet výsledku selhal s chybou: 
+
+{err}
+
+Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro ukončení.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation>Pokračovat</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Vyberte nejprve dva objekty nebo jednu či více složenin!</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Vyberte nejméně dva objekty nebo jednu či více složenin</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Vyberte základní objekt, potom objekt k připojení a nakonec použijte tento nástroj.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Vyberte základní objekt, potom objekt k připojení a nakonec použijte tento nástroj.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Vyberte objekt, ve kterém má být výřez, pak objekt, který má odpovídat výřezu, a nakonec použijte tento nástroj.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation>Špatný výběr</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Vyberte objekt, ve kterém má být výřez, pak objekt, který má odpovídat výřezu, a nakonec použijte tento nástroj.</translation>
     </message>
   </context>
   <context>

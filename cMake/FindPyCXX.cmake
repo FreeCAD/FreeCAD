@@ -5,6 +5,7 @@
 # PYCXX_SOURCE_DIR
 # PYCXX_FOUND
 # PYCXX_SOURCES
+# PYCXX_VERSION
 #
 # The PYCXX_*_DIR variables can be set to tell this module where
 # the files are.

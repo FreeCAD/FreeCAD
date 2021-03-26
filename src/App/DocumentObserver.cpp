@@ -24,10 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <functional>
 # include <sstream>
 #endif
-
-#include <boost_bind_bind.hpp>
 
 #include <Base/Tools.h>
 #include "Application.h"
@@ -38,7 +37,7 @@
 #include "GeoFeature.h"
 
 using namespace App;
-namespace bp = boost::placeholders;
+namespace sp = std::placeholders;
 
 
 DocumentT::DocumentT()
@@ -405,8 +404,8 @@ class DocumentWeakPtrT::Private {
 public:
     Private(App::Document* doc) : _document(doc) {
         if (doc) {
-            connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
-                (&Private::deletedDocument, this, bp::_1));
+            connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
+                (&Private::deletedDocument, this, sp::_1));
         }
     }
 
@@ -483,13 +482,13 @@ public:
         object = obj;
         if (obj) {
             indocument = true;
-            connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
-            (&Private::deletedDocument, this, bp::_1));
+            connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
+            (&Private::deletedDocument, this, sp::_1));
             App::Document* doc = obj->getDocument();
-            connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
-            (&Private::createdObject, this, bp::_1));
-            connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
-            (&Private::deletedObject, this, bp::_1));
+            connectDocumentCreatedObject = doc->signalNewObject.connect(std::bind
+            (&Private::createdObject, this, sp::_1));
+            connectDocumentDeletedObject = doc->signalDeletedObject.connect(std::bind
+            (&Private::deletedObject, this, sp::_1));
         }
     }
     App::DocumentObject* get() const noexcept {
@@ -555,19 +554,19 @@ bool DocumentObjectWeakPtrT::operator!= (const DocumentObjectWeakPtrT& p) const 
 
 DocumentObserver::DocumentObserver() : _document(nullptr)
 {
-    this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(boost::bind
-        (&DocumentObserver::slotCreatedDocument, this, bp::_1));
-    this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
-        (&DocumentObserver::slotDeletedDocument, this, bp::_1));
+    this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(std::bind
+        (&DocumentObserver::slotCreatedDocument, this, sp::_1));
+    this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
+        (&DocumentObserver::slotDeletedDocument, this, sp::_1));
 }
 
 DocumentObserver::DocumentObserver(Document* doc) : _document(nullptr)
 {
     // Connect to application and given document
-    this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(boost::bind
-        (&DocumentObserver::slotCreatedDocument, this, bp::_1));
-    this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
-        (&DocumentObserver::slotDeletedDocument, this, bp::_1));
+    this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(std::bind
+        (&DocumentObserver::slotCreatedDocument, this, sp::_1));
+    this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
+        (&DocumentObserver::slotDeletedDocument, this, sp::_1));
     attachDocument(doc);
 }
 
@@ -590,16 +589,16 @@ void DocumentObserver::attachDocument(Document* doc)
         detachDocument();
         _document = doc;
 
-        this->connectDocumentCreatedObject = _document->signalNewObject.connect(boost::bind
-            (&DocumentObserver::slotCreatedObject, this, bp::_1));
-        this->connectDocumentDeletedObject = _document->signalDeletedObject.connect(boost::bind
-            (&DocumentObserver::slotDeletedObject, this, bp::_1));
-        this->connectDocumentChangedObject = _document->signalChangedObject.connect(boost::bind
-            (&DocumentObserver::slotChangedObject, this, bp::_1, bp::_2));
-        this->connectDocumentRecomputedObject = _document->signalRecomputedObject.connect(boost::bind
-            (&DocumentObserver::slotRecomputedObject, this, bp::_1));
-        this->connectDocumentRecomputed = _document->signalRecomputed.connect(boost::bind
-            (&DocumentObserver::slotRecomputedDocument, this, bp::_1));
+        this->connectDocumentCreatedObject = _document->signalNewObject.connect(std::bind
+            (&DocumentObserver::slotCreatedObject, this, sp::_1));
+        this->connectDocumentDeletedObject = _document->signalDeletedObject.connect(std::bind
+            (&DocumentObserver::slotDeletedObject, this, sp::_1));
+        this->connectDocumentChangedObject = _document->signalChangedObject.connect(std::bind
+            (&DocumentObserver::slotChangedObject, this, sp::_1, sp::_2));
+        this->connectDocumentRecomputedObject = _document->signalRecomputedObject.connect(std::bind
+            (&DocumentObserver::slotRecomputedObject, this, sp::_1));
+        this->connectDocumentRecomputed = _document->signalRecomputed.connect(std::bind
+            (&DocumentObserver::slotRecomputedDocument, this, sp::_1));
     }
 }
 

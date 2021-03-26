@@ -211,7 +211,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Open start page preferences</source>
-      <translation type="unfinished">Open start page preferences</translation>
+      <translation>Open start pagina voorkeuren</translation>
     </message>
   </context>
   <context>

@@ -458,6 +458,8 @@ private:
     /// Destructor
     virtual ~Application();
 
+    static void cleanupUnits();
+
     /** @name member for parameter */
     //@{
     static ParameterManager *_pcSysParamMngr;

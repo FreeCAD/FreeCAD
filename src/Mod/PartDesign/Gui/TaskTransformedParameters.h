@@ -136,7 +136,7 @@ public:
     App::DocumentObject *getBaseObject() const;
 
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
-    App::DocumentObject* getSketchObject() const;   
+    App::DocumentObject* getSketchObject() const;
 
     void exitSelectionMode();
 
@@ -188,7 +188,7 @@ protected:
     void hideBase();
     void showBase();
 
-    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false);    
+    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false, bool circle=false);
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
@@ -221,7 +221,7 @@ protected:
     /// Flag indicating whether this object is a container for MultiTransform
     bool insideMultiTransform;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
-    bool blockUpdate;    
+    bool blockUpdate;
 };
 
 /// simulation dialog for the TaskView

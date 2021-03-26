@@ -289,7 +289,7 @@
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Redigera cell</translation>
     </message>
     <message>
       <source>Insert rows</source>

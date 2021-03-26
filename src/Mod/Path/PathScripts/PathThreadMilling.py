@@ -183,11 +183,11 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.ThreadOrientation = self.ThreadOrientations
         obj.addProperty("App::PropertyEnumeration", "ThreadType", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Currently only internal"))
         obj.ThreadType = self.ThreadTypes
-        obj.addProperty("App::PropertyString", "ThreadName", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Devfines which standard thread was chosen"))
+        obj.addProperty("App::PropertyString", "ThreadName", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Defines which standard thread was chosen"))
         obj.addProperty("App::PropertyLength", "MajorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's major diameter"))
         obj.addProperty("App::PropertyLength", "MinorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's minor diameter"))
         obj.addProperty("App::PropertyLength", "Pitch", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's pitch - used for metric threads"))
-        obj.addProperty("App::PropertyInteger", "TPI", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's tpi - used for imperial threads"))
+        obj.addProperty("App::PropertyInteger", "TPI", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's TPI (turns per inch) - used for imperial threads"))
         obj.addProperty("App::PropertyInteger", "ThreadFit", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set how many passes are used to cut the thread"))
         obj.addProperty("App::PropertyInteger", "Passes", "Operation", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set how many passes are used to cut the thread"))
         obj.addProperty("App::PropertyEnumeration", "Direction", "Operation", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Direction of thread cutting operation"))
