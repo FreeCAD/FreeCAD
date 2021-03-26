@@ -45,6 +45,7 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/misc/SoTempPath.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <unordered_map>
 #include <map>

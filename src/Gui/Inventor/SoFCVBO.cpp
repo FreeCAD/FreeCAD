@@ -33,7 +33,10 @@
 
 #include "PreCompiled.h"
 
-#include "SoFCVBO.h"
+#include <QtOpenGL.h>
+#if defined(HAVE_QT5_OPENGL)
+# include <QApplication>
+#endif
 
 #include <cstdio>
 #include <cstdlib>
@@ -48,10 +51,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#if defined(HAVE_QT5_OPENGL)
-# include <QApplication>
-#endif
-
+#include "SoFCVBO.h"
 #include "../SoFCInteractiveElement.h"
 #include "SoFCVertexArrayIndexer.h"
 
