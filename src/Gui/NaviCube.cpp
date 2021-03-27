@@ -945,9 +945,7 @@ void NaviCubeImplementation::handleResize() {
 		m_PrevWidth = view[0];
 		m_PrevHeight = view[1];
 		m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
-
 	}
-
 }
 
 void NaviCubeImplementation::drawNaviCube(bool pickMode) {
@@ -1294,6 +1292,12 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
 		bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
 
+		// 3D animation (UseAutoRotatio) collides with the rotation to the nearest state
+		// thus when enabled, disable them temprarily for the cube rotation
+		bool UseAutoRotation = hGrp->GetBool("UseAutoRotation", false);
+		if (UseAutoRotation && toNearest)
+			m_View3DInventorViewer->setAnimationEnabled(false);
+
 		switch (pick) {
 		default:
 			return false;
@@ -1624,6 +1628,10 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			handleMenu();
 			break;
 		}
+
+		// re-anable UseAutoRotation after the cube rotation was done
+		if (UseAutoRotation && toNearest)
+			m_View3DInventorViewer->setAnimationEnabled(true);
 	}
 	return true;
 }
