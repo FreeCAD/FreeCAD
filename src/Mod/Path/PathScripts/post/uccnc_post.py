@@ -54,7 +54,7 @@ UCCNC_post.export(object,"/path/to/file.ncc","")
 This postprocessor was tested on UC-CNC v1.2111, an UC100 and a Stepcraft 420.
 It was tested on FreeCAD v0.17, v0.18 and v0.19
 
-Other (Stepcraft) machines using UC-CNC and UC* controlers should be easy to adapt.
+Other (Stepcraft) machines using UC-CNC and UC* controllers should be easy to adapt.
 '''
 
 # PREAMBLE_ possible values:
@@ -144,7 +144,7 @@ OUTPUT_HEADER = True
 #                set with --no-comment
 OUTPUT_COMMENTS = True
 
-# OUTPUT_LINE_NUMBERS posible values:
+# OUTPUT_LINE_NUMBERS possible values:
 #    bool      (Dont) use line numbers in output
 #    True        Add a line number to each output line.
 #    False       Do not add a line number.
@@ -188,7 +188,7 @@ MODAL = False
 #                set with --repeat
 REPEAT_ARGUMENTS = False
 
-# USE_TLO posible values:
+# USE_TLO possible values:
 #   bool        Set tool length offset.
 #    True        G43 will be output following tool changes
 #    False       No G43 used.
@@ -287,7 +287,7 @@ COMMAND_SPACE = " "
 UNIT_DEFAULT_CHANGED = False
 
 # counting warnings and problems.
-# Each warning/problem will apear as a WARNING:/PROBLEM: comment in the GCode output.
+# Each warning/problem will appear as a WARNING:/PROBLEM: comment in the GCode output.
 warnings_count = 0
 problems_count = 0
 
@@ -313,7 +313,7 @@ def processArguments(argstring):
     global UNIT_FORMAT              # Text with specific units
     global UNIT_SPEED_FORMAT        # Text with specific units over time units
     global UNIT_DEFAULT_CHANGED     # tracing changes in UNIT settings.
-    global REPEAT_ARGUMENTS         # Repeat or surpress axis values if the same as previous line.
+    global REPEAT_ARGUMENTS         # Repeat or suppress axis values if the same as previous line.
 
     try:
         UNIT_DEFAULT_CHANGED = False

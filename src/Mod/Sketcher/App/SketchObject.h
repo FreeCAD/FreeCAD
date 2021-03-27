@@ -147,7 +147,7 @@ public:
     /** deletes a group of constraints at once, if norecomputes is active, the default behaviour is that
      * it will solve the sketch.
      *
-     * If updating the Geometry property as a consequence of a (sucessful) solve() is not wanted, updategeometry=false,
+     * If updating the Geometry property as a consequence of a (successful) solve() is not wanted, updategeometry=false,
      * prevents the update. This allows to update the solve status (e.g. dof), without updating the geometry (i.e. make it
      * move to fulfil the constraints).
      */
