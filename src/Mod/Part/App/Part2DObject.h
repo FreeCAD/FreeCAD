@@ -73,7 +73,7 @@ public:
       * indexes geometryIndex1 and geometryIndex2 specify the corresponding curves that intersect
       * the curve geometryIndex.
       *
-      * If intersection is found, the associated geometryIndex1 or geometryIndex2 retuns -1.
+      * If intersection is found, the associated geometryIndex1 or geometryIndex2 returns -1.
       */
     static bool seekTrimPoints(const std::vector<Geometry *> &geomlist,
                                int geometryIndex, const Base::Vector3d &point,
