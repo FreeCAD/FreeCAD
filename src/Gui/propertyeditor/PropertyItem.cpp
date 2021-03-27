@@ -1051,7 +1051,8 @@ void PropertyUnitItem::setValue(const QVariant& value)
             return;
         const Base::Quantity& val = value.value<Base::Quantity>();
 
-        QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue()).arg(val.getUnit().getString()); 
+        QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue(),0,'f',decimals())
+                                                     .arg(val.getUnit().getString());
         setPropertyValue(unit);
     }
 }
@@ -1643,9 +1644,9 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
     QString data = QString::fromLatin1("(%1, %2, %3)")
-                    .arg(x.getValue())
-                    .arg(y.getValue())
-                    .arg(z.getValue());
+                    .arg(x.getValue(),0,'f',decimals())
+                    .arg(y.getValue(),0,'f',decimals())
+                    .arg(z.getValue(),0,'f',decimals());
     setPropertyValue(data);
 }
 
@@ -2370,13 +2371,13 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     QString data = QString::fromLatin1("App.Placement("
                                       "App.Vector(%1,%2,%3),"
                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")
-                    .arg(pos.x)
-                    .arg(pos.y)
-                    .arg(pos.z)
-                    .arg(rot_axis.x)
-                    .arg(rot_axis.y)
-                    .arg(rot_axis.z)
-                    .arg(rot_angle,0);
+                    .arg(pos.x, 0, 'f', decimals())
+                    .arg(pos.y, 0, 'f', decimals())
+                    .arg(pos.z, 0, 'f', decimals())
+                    .arg(rot_axis.x, 0, 'f', decimals())
+                    .arg(rot_axis.y, 0, 'f', decimals())
+                    .arg(rot_axis.z, 0, 'f', decimals())
+                    .arg(rot_angle, 0, 'f', decimals());
     setPropertyValue(data);
 }
 
