@@ -1292,7 +1292,7 @@ static App::Color getElementColor(App::Color color,
     bool colorFound = false;
     std::vector<Data::MappedName> history;
     Data::MappedName original;
-    long tag = shape.getElementHistory(mapped,&original);
+    long tag = shape.getElementHistory(mapped,&original,&history);
     while(1) {
         if(!tag)
             return color;
