@@ -375,65 +375,78 @@ void Command::setupCheckable(int iMsg) {
 void Command::invoke(int i, TriggerSource trigger)
 {
     CommandTrigger cmdTrigger(_trigger,trigger);
-    if(displayText.empty()) {
+    if (displayText.empty()) {
         displayText = getMenuText();
         boost::replace_all(displayText,"&","");
-        if(displayText.empty())
+        if (displayText.empty())
             displayText = getName();
     }
-
-    // Because Transaction now captures ViewObject changes, auto named
-    // transaction is disabled here to avoid too many unnecessary transactions.
-    //
-    // App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
-    App::AutoTransaction committer(0,true);
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
 #endif
-    // set the application module type for the macro
-    getGuiApplication()->macroManager()->setModule(sAppModule);
+
+    _invoke(i, bCanLog && !_busy);
+}
+
+void Command::_invoke(int id, bool disablelog)
+{
     try {
-        std::unique_ptr<LogDisabler> disabler;
-        if(bCanLog && !_busy)
-            disabler.reset(new LogDisabler);
+        // Because Transaction now captures ViewObject changes, auto named
+        // transaction is disabled here to avoid too many unnecessary transactions.
+        //
+        App::AutoTransaction committer(nullptr, true);
+
+        // set the application module type for the macro
+        getGuiApplication()->macroManager()->setModule(sAppModule);
+
+        std::unique_ptr<LogDisabler> logdisabler;
+        if (disablelog)
+            logdisabler.reset(new LogDisabler);
+
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
             auto editDoc = getGuiApplication()->editDocument();
-            if(!disabler)
-                activated( i );
+
+            if (!logdisabler) {
+                activated(id);
+            }
             else {
-                Gui::SelectionLogDisabler disabler;
+                Gui::SelectionLogDisabler seldisabler;
                 auto lines = manager->getLines();
                 std::ostringstream ss;
                 ss << "### Begin command " << sName;
                 // Add a pending line to mark the start of a command
                 PendingLine pending(MacroManager::Cmt, ss.str().c_str());
-                activated( i );
                 ss.str("");
-                if(manager->getLines() == lines) {
+
+                activated(id);
+
+                if (manager->getLines() == lines) {
                     // This command does not record any lines, lets do it for
-                    // him. The above LogDisabler is to prevent nested command
+                    // it. The above LogDisabler is to prevent nested command
                     // logging, i.e. we only auto log the first invoking
                     // command.
 
                     // Cancel the above pending line first
                     pending.cancel();
-                    ss << "Gui.runCommand('" << sName << "'," << i << ')';
+                    ss << "Gui.runCommand('" << sName << "'," << id << ')';
                     manager->addLine(MacroManager::Gui, ss.str().c_str());
-                }else{
+                }
+                else {
                     // In case the command has any output to the console, lets
                     // mark the end of the command here
                     ss << "### End command " << sName;
                     manager->addLine(MacroManager::Cmt, ss.str().c_str());
                 }
             }
+
             getMainWindow()->updateActions();
 
             // If this command starts an editing, let the transaction persist
-            if(!editDoc && getGuiApplication()->editDocument())
+            if (!editDoc && getGuiApplication()->editDocument())
                 committer.setEnable(false);
         }
     }
