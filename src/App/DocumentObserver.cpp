@@ -398,13 +398,13 @@ std::vector<App::DocumentObject*> SubObjectT::getSubObjectList() const {
 
 // -----------------------------------------------------------------------------
 
-PropertyListT::PropertyListT()
+PropertyLinkT::PropertyLinkT()
     : toPython("None")
 {
 }
 
-PropertyListT::PropertyListT(DocumentObject *obj)
-    : PropertyListT()
+PropertyLinkT::PropertyLinkT(DocumentObject *obj)
+    : PropertyLinkT()
 {
     if (obj) {
         std::ostringstream str;
@@ -415,8 +415,8 @@ PropertyListT::PropertyListT(DocumentObject *obj)
     }
 }
 
-PropertyListT::PropertyListT(DocumentObject *obj, const std::vector<std::string>& subNames)
-    : PropertyListT()
+PropertyLinkT::PropertyLinkT(DocumentObject *obj, const std::vector<std::string>& subNames)
+    : PropertyLinkT()
 {
     if (obj) {
         std::ostringstream str;
@@ -430,8 +430,8 @@ PropertyListT::PropertyListT(DocumentObject *obj, const std::vector<std::string>
     }
 }
 
-PropertyListT::PropertyListT(const std::vector<DocumentObject*>& objs)
-    : PropertyListT()
+PropertyLinkT::PropertyLinkT(const std::vector<DocumentObject*>& objs)
+    : PropertyLinkT()
 {
     if (!objs.empty()) {
         std::stringstream str;
@@ -454,8 +454,8 @@ PropertyListT::PropertyListT(const std::vector<DocumentObject*>& objs)
     }
 }
 
-PropertyListT::PropertyListT(const std::vector<DocumentObject*>& objs, const std::vector<std::string>& subNames)
-    : PropertyListT()
+PropertyLinkT::PropertyLinkT(const std::vector<DocumentObject*>& objs, const std::vector<std::string>& subNames)
+    : PropertyLinkT()
 {
     if (!objs.empty() && objs.size() == subNames.size()) {
         std::stringstream str;
@@ -484,7 +484,7 @@ PropertyListT::PropertyListT(const std::vector<DocumentObject*>& objs, const std
     }
 }
 
-std::string PropertyListT::getPropertyPython() const
+std::string PropertyLinkT::getPropertyPython() const
 {
     return toPython;
 }

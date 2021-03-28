@@ -212,25 +212,25 @@ private:
 };
 
 /**
- * The PropertyListT class is a helper class to create Python statements for proprty links.
+ * The PropertyLinkT class is a helper class to create Python statements for proprty links.
  */
-class AppExport PropertyListT
+class AppExport PropertyLinkT
 {
 public:
     /*! Constructor */
-    PropertyListT();
+    PropertyLinkT();
 
     /*! Constructor */
-    PropertyListT(DocumentObject *obj);
+    PropertyLinkT(DocumentObject *obj);
 
     /*! Constructor */
-    PropertyListT(DocumentObject *obj, const std::vector<std::string>& subNames);
+    PropertyLinkT(DocumentObject *obj, const std::vector<std::string>& subNames);
 
     /*! Constructor */
-    PropertyListT(const std::vector<DocumentObject*>& objs);
+    PropertyLinkT(const std::vector<DocumentObject*>& objs);
 
     /*! Constructor */
-    PropertyListT(const std::vector<DocumentObject*>& objs, const std::vector<std::string>& subNames);
+    PropertyLinkT(const std::vector<DocumentObject*>& objs, const std::vector<std::string>& subNames);
 
     /*! Get the property as Python command. */
     std::string getPropertyPython() const;
