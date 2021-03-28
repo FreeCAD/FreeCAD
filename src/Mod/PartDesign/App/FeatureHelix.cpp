@@ -111,26 +111,26 @@ short Helix::mustExecute() const
 App::DocumentObjectExecReturn *Helix::execute(void)
 {
      // Validate and normalize parameters
-    std::string mode = Mode.getValueAsString();
-    if (mode == "pitch-height-angle") {
+    HelixMode mode = static_cast<HelixMode>(Mode.getValue());
+    if (mode == HelixMode::pitch_height_angle) {
         if (Pitch.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: Pitch too small");
         if (Height.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: height too small!");
         Turns.setValue(Height.getValue()/Pitch.getValue());
-    } else if (mode == "pitch-turns-angle") {
+    } else if (mode == HelixMode::pitch_turns_angle) {
         if (Pitch.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: pitch too small!");
         if (Turns.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: turns too small!");
         Height.setValue(Turns.getValue()*Pitch.getValue());
-    } else if (mode == "height-turns-angle") {
+    } else if (mode == HelixMode::height_turns_angle) {
         if (Height.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: height too small!");
         if (Turns.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error turns too small!");
         Pitch.setValue(Height.getValue()/Turns.getValue());
-    } else if (mode == "height-turns-growth") {
+    } else if (mode == HelixMode::height_turns_growth) {
         if (Turns.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error turns too small!");
         Pitch.setValue(Height.getValue()/Turns.getValue());
