@@ -101,9 +101,7 @@ public:
     TopoShape(const TopoShape&);
     ~TopoShape();
 
-    inline void setShape(const TopoDS_Shape& shape, bool resetElementMap=true) {
-        _Shape.setShape(shape, resetElementMap);
-    }
+    void setShape(const TopoDS_Shape& shape, bool resetElementMap=true);
 
     inline void setShape(const TopoShape& shape) {
         *this = shape;
@@ -767,8 +765,6 @@ private:
             : master(master), _Shape(shape)
         {}
 
-        void setShape(const TopoDS_Shape & shape, bool resetElementMap);
-
         const TopoDS_Shape & getShape() const {
             return _Shape;
         }
@@ -874,6 +870,7 @@ private:
     private:
         TopoShape & master;
         TopoDS_Shape _Shape;
+        friend class TopoShape;
     };
     friend class ShapeProtector;
 

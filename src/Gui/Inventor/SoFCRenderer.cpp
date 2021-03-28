@@ -22,6 +22,28 @@
 
 #include "PreCompiled.h"
 
+#ifndef FC_OS_WIN32
+# ifndef GL_GLEXT_PROTOTYPES
+# define GL_GLEXT_PROTOTYPES 1
+# endif
+#endif
+
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+#  include <GL/gl.h>
+#  include <GL/glext.h>
+# else
+#  ifdef FC_OS_MACOSX
+#   include <OpenGL/gl.h>
+#   include <OpenGL/glext.h>
+#  else
+#   include <GL/gl.h>
+#   include <GL/glext.h>
+#  endif //FC_OS_MACOSX
+# endif //FC_OS_WIN32
+// Should come after glext.h to avoid warnings
+# include <Inventor/C/glue/gl.h>
+
 #include <algorithm>
 #include <unordered_map>
 
@@ -404,12 +426,24 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
       || (overrideflags.test(Material::FLAG_TRANSPARENCY)
           && (col&0xff) != (this->material.diffuse&0xff)))
   {
-    if (overrideflags.test(Material::FLAG_TRANSPARENCY)) {
-      glBlendFunc(GL_CONSTANT_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA);
-      glBlendColor(0.f, 0.f, 0.f,  (col & 0xff)/255.f);
+    static bool hasBlendColor = true;
+	  GLenum sfactor = GL_SRC_ALPHA, dfactor = GL_ONE_MINUS_SRC_ALPHA;
+    if (hasBlendColor && overrideflags.test(Material::FLAG_TRANSPARENCY)) {
+#ifdef FC_OS_WIN32
+      static PFNGLBLENDCOLORPROC glBlendColor;
+      if (hasBlendColor && !glBlendColor) {
+        const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+        glBlendColor = (PFNGLBLENDCOLORPROC)cc_glglue_getprocaddress(glue, "glBlendColor");
+        hasBlendColor = (glBlendColor != nullptr);
+      }
+#endif
+      if (hasBlendColor) {
+        glBlendColor(0.f, 0.f, 0.f,  (col & 0xff)/255.f);
+        sfactor = GL_CONSTANT_ALPHA_EXT;
+        dfactor = GL_ONE_MINUS_CONSTANT_ALPHA_EXT;
+      }
     }
-    else 
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(sfactor, dfactor);
   }
 
   this->material.overrideflags = overrideflags;

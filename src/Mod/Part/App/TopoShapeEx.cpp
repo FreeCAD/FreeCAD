@@ -349,7 +349,7 @@ public:
         TopoShape _getTopoShape(const TopoShape &parent, int index) {
             auto &s = topoShapes[index-1];
             if(s.isNull()) {
-                s._Shape.setShape(shapes.FindKey(index), true);
+                s.setShape(shapes.FindKey(index), true);
                 s.INIT_SHAPE_CACHE();
                 s._Cache->subLocation = s._Shape.Location();
             }
@@ -571,16 +571,15 @@ TopoShape::TopoShape(const TopoShape& shape)
     *this = shape;
 }
 
-void TopoShape::ShapeProtector::setShape(const TopoDS_Shape & shape,
-                                         bool resetElementMap)
+void TopoShape::setShape(const TopoDS_Shape & shape, bool resetElementMap)
 {
     if(resetElementMap)
-        master.resetElementMap();
-    else if (master._Cache && master._Cache->isTouched(shape))
-        master.flushElementMap();
-    _Shape = shape;
-    if (master._Cache)
-        master.INIT_SHAPE_CACHE();
+        this->resetElementMap();
+    else if (_Cache && _Cache->isTouched(shape))
+        this->flushElementMap();
+    _Shape._Shape = shape;
+    if (_Cache)
+        INIT_SHAPE_CACHE();
 }
 
 bool TopoShape::hasPendingElementMap() const
@@ -593,7 +592,7 @@ bool TopoShape::hasPendingElementMap() const
 void TopoShape::operator = (const TopoShape& sh)
 {
     if (this != &sh) {
-        this->_Shape.setShape(sh._Shape, true);
+        this->setShape(sh._Shape, true);
         this->Tag = sh.Tag;
         this->Hasher = sh.Hasher;
         this->_Cache = sh._Cache;

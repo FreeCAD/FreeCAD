@@ -132,8 +132,7 @@ private:
   friend class SoFCVertexCacheP;
   SoFCVertexCacheP * pimpl;
 
-  SoFCVertexCache(const SoFCVertexCache & rhs); // N/A
-  SoFCVertexCache & operator = (const SoFCVertexCache & rhs); // N/A
+  SoFCVertexCache & operator = (const SoFCVertexCache & rhs) = delete; // N/A
 
 };
 

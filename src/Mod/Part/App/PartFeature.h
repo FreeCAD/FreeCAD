@@ -42,7 +42,7 @@ class BRepBuilderAPI_MakeShape;
 
 namespace Data
 {
-class HistoryItem;
+struct HistoryItem;
 }
 
 namespace Part
