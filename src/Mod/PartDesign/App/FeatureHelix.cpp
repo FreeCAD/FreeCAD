@@ -175,12 +175,6 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    // get revolve axis
-    Base::Vector3d b = Base.getValue();
-    gp_Pnt pnt(b.x,b.y,b.z);
-    Base::Vector3d v = Axis.getValue();
-    gp_Dir dir(v.x,v.y,v.z);
-
     try {
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
