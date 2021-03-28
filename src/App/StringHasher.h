@@ -128,9 +128,14 @@ public:
 
     std::string dataToText(int index) const;
 
-    void toBytes(QByteArray &bytes) const {
-        if (_postfix.size())
-            bytes = _data + _postfix;
+    void toBytes(QByteArray &bytes, int index) const {
+        if (_postfix.size()) {
+            if (index)
+                bytes = _data + QByteArray::number(index) + _postfix;
+            else
+                bytes = _data + _postfix;
+        } if (index)
+            bytes = _data + QByteArray::number(index);
         else
             bytes = _data;
     }
@@ -290,6 +295,7 @@ public:
 
     const char * constData() const {
         if (_sid) {
+            assert(_index == 0);
             assert(_sid->postfix().isEmpty());
             return _sid->data().constData();
         }
@@ -320,7 +326,7 @@ public:
 
     void toBytes(QByteArray &bytes) const {
         if (_sid)
-            _sid->toBytes(bytes);
+            _sid->toBytes(bytes, _index);
     }
 
     PyObject *getPyObject(void) {

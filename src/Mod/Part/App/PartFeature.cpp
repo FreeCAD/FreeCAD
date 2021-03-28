@@ -232,7 +232,7 @@ getElementSource(App::DocumentObject *owner,
                 if (o)
                     doc = o->getDocument();
             }
-            obj = doc->getObjectByID(tag);
+            obj = doc->getObjectByID(tag < 0 ? -tag : tag);
             if(type) {
                 for(auto &hist : history) {
                     if(shape.elementType(hist)!=type)

@@ -223,10 +223,7 @@ public:
     explicit MappedName(const App::StringIDRef & sid)
         :raw(false)
     {
-        if (sid) {
-            this->data = sid.deref().data();
-            this->postfix = sid.deref().postfix();
-        }
+        sid.toBytes(this->data);
     }
 
 	MappedName(const MappedName & other)

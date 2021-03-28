@@ -1599,7 +1599,8 @@ char ComplexGeoData::elementType(const Data::MappedName &name) const
     if(!name)
         return 0;
     char element_type=0;
-    findTagInElementName(name,0,0,0,&element_type);
+    if (findTagInElementName(name,0,0,0,&element_type) < 0)
+        return elementType(name.toIndexedName());
     return element_type;
 }
 
@@ -2115,7 +2116,7 @@ void ComplexGeoData::traceElement(const MappedName &name, TraceCallback cb) cons
 {
     long tag = this->Tag, encodedTag = 0;
     int len = 0;
-    auto pos = findTagInElementName(name,&tag,&len,nullptr,nullptr,true);
+    auto pos = findTagInElementName(name,&encodedTag,&len,nullptr,nullptr,true);
     if(cb(name, len, encodedTag, tag) || pos < 0)
         return;
 
