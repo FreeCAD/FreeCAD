@@ -47,6 +47,7 @@ public:
     App::PropertyVector      Direction;
     App::PropertyBool        AlongSketchNormal;
     App::PropertyLength      Offset;
+    App::PropertyLinkSub     ReferenceAxis;
 
     /** @name methods override feature */
     //@{
