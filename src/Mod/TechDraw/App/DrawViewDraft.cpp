@@ -102,9 +102,9 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
         cmd << "import Draft\n"
             << "App.getDocument('" << getDocument()->getName() << "').getObject('"
             << getNameInDocument() << "').Symbol = '" << getSVGHead() << "' + "
-                << "Draft.getSVG(App.getDocument('"
+                << "Draft.get_svg(App.getDocument('"
                     << sourceObj->getDocument()->getName() << "').getObject('" 
-                    << sourceObj->getNameInDocument() << "'),"
+                    << sourceObj->getNameInDocument() << "')"
                  << ",scale=" << getScale() 
                  << ",linewidth=" << LineWidth.getValue() 
                  << ",fontsize=" << FontSize.getValue()
