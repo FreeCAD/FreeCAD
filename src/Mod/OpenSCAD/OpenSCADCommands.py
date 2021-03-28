@@ -328,6 +328,7 @@ class AddSCADWidget(QtGui.QWidget):
     def __init__(self,*args):
         QtGui.QWidget.__init__(self,*args)
         self.textEdit=QtGui.QTextEdit()
+        self.textEdit.setAcceptRichText(False)
         self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Add'))
         self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear'))
         self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD','as Mesh'))
