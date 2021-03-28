@@ -164,6 +164,7 @@ protected Q_SLOTS:
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
+    void onSelectDependents();
     void onSkipRecompute(bool on);
     void onAllowPartialRecompute(bool on);
     void onReloadDoc();
@@ -208,10 +209,14 @@ private:
     void updateChildren(App::DocumentObject *obj,
             const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
 
+    bool CheckForDependents();
+    void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
+
 private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
+    QAction* selectDependentsAction;
     QAction* skipRecomputeAction;
     QAction* allowPartialRecomputeAction;
     QAction* markRecomputeAction;
