@@ -379,8 +379,8 @@ public:
   void addChildCache(SoState * state, SoFCRenderCache * cache);
   void addChildCache(SoState * state, SoFCVertexCache * cache);
 
-  void increaseRenderingOrder();
-  void decreaseRenderingOrder();
+  void increaseRenderingOrder(int priority=0);
+  void decreaseRenderingOrder(int priority=0);
 
   void resetMatrix();
 

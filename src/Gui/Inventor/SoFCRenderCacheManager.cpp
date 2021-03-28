@@ -137,6 +137,8 @@ public:
   static SoCallbackAction::Response postSeparator(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response preAnnotation(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postAnnotation(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response prePathAnnotation(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postPathAnnotation(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response preShape(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postShape(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postLightModel(void *, SoCallbackAction *action, const SoNode * node);
@@ -245,6 +247,8 @@ SoFCRenderCacheManagerP::SoFCRenderCacheManagerP()
   this->action.addPostCallback(SoFCSelectionRoot::getClassTypeId(), &postSeparator, this);
   this->action.addPreCallback(SoAnnotation::getClassTypeId(), &preAnnotation, this);
   this->action.addPostCallback(SoAnnotation::getClassTypeId(), &postAnnotation, this);
+  this->action.addPreCallback(SoFCPathAnnotation::getClassTypeId(), &prePathAnnotation, this);
+  this->action.addPostCallback(SoFCPathAnnotation::getClassTypeId(), &postPathAnnotation, this);
   this->action.addPreCallback(SoShape::getClassTypeId(), &preShape, this);
   this->action.addPostCallback(SoShape::getClassTypeId(), &postShape, this);
   this->action.addPostCallback(SoTexture::getClassTypeId(), &postTexture, this);
@@ -751,6 +755,42 @@ SoFCRenderCacheManagerP::postSeparator(void *userdata,
     if (self->stack.size())
       self->stack.back()->endChildCaching(state, cache);
   }
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::postPathAnnotation(void *userdata,
+                                            SoCallbackAction *action,
+                                            const SoNode * node)
+{
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  (void)action;
+  auto annotation = static_cast<const SoFCPathAnnotation*>(node);
+  if (annotation->priority.getValue())
+    self->stack.back()->increaseRenderingOrder(annotation->priority.getValue());
+  else if (++self->annotation == 1)
+    self->stack.back()->increaseRenderingOrder();
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::prePathAnnotation(void *userdata,
+                                           SoCallbackAction *action,
+                                           const SoNode * node)
+{
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  (void)action;
+  auto annotation = static_cast<const SoFCPathAnnotation*>(node);
+  if (annotation->priority.getValue())
+    self->stack.back()->increaseRenderingOrder(annotation->priority.getValue());
+  else if (++self->annotation == 1)
+    self->stack.back()->increaseRenderingOrder();
   return SoCallbackAction::CONTINUE;
 }
 

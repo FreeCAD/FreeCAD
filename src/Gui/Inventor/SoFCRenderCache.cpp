@@ -435,15 +435,21 @@ copyMaterial(SoFCRenderCache::Material &res,
 }
 
 void
-SoFCRenderCache::increaseRenderingOrder()
+SoFCRenderCache::increaseRenderingOrder(int priority)
 {
-  ++PRIVATE(this)->material.annotation;
+  if (priority)
+    PRIVATE(this)->material.order += 1000 + priority;
+  else
+    ++PRIVATE(this)->material.annotation;
 }
 
 void
-SoFCRenderCache::decreaseRenderingOrder()
+SoFCRenderCache::decreaseRenderingOrder(int priority)
 {
-  --PRIVATE(this)->material.annotation;
+  if (priority)
+    PRIVATE(this)->material.order -= 1000 + priority;
+  else
+    --PRIVATE(this)->material.annotation;
 }
 
 SoFCRenderCache::Material
