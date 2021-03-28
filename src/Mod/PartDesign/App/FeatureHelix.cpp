@@ -117,6 +117,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
             return new App::DocumentObjectExecReturn("Error: Pitch too small");
         if (Height.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: height too small!");
+        Turns.setValue(Height.getValue()/Pitch.getValue());
     } else if (mode == "pitch-turns-angle") {
         if (Pitch.getValue() < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Error: pitch too small!");
