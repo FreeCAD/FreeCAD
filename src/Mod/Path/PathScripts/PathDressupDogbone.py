@@ -22,13 +22,13 @@
 
 from __future__ import print_function
 import FreeCAD
-import math
 import Path
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
+import math
 
 from PySide import QtCore
 
@@ -140,7 +140,7 @@ def edgesForCommands(cmds, startPt):
     return edges
 
 
-class Style:
+class Style(object):
     # pylint: disable=no-init
 
     Dogbone = 'Dogbone'
@@ -151,7 +151,7 @@ class Style:
     All = [Dogbone, Tbone_H, Tbone_V, Tbone_L, Tbone_S]
 
 
-class Side:
+class Side(object):
     # pylint: disable=no-init
 
     Left = 'Left'
@@ -167,7 +167,7 @@ class Side:
         return None
 
 
-class Incision:
+class Incision(object):
     # pylint: disable=no-init
 
     Fixed = 'fixed'
@@ -176,7 +176,7 @@ class Incision:
     All = [Adaptive, Fixed, Custom]
 
 
-class Smooth:
+class Smooth(object):
     # pylint: disable=no-init
 
     Neither = 0
@@ -314,7 +314,7 @@ class Chord (object):
         return PathGeom.pointsCoincide(self.End, chord.Start)
 
 
-class Bone:
+class Bone(object):
     def __init__(self, boneId, obj, lastCommand, inChord, outChord, smooth, F):
         self.obj = obj
         self.boneId = boneId
@@ -356,6 +356,9 @@ class Bone:
     def location(self):
         return (self.inChord.End.x, self.inChord.End.y)
 
+    def locationZ(self):
+        return (self.inChord.End.x, self.inChord.End.y, self.inChord.End.z)
+
     def adaptiveLength(self, boneAngle, toolRadius):
         theta = self.angle()
         distance = self.distance(toolRadius)
@@ -396,7 +399,7 @@ class Bone:
         return length
 
 
-class ObjectDressup:
+class ObjectDressup(object):
 
     def __init__(self, obj, base):
         # Tool Properties
@@ -560,6 +563,9 @@ class ObjectDressup:
             PathLog.info("no bone after all ..")
             return [bone.lastCommand, bone.outChord.g1Command(bone.F)]
 
+        # track length for marker visuals
+        self.length = max(self.length, length)
+
         boneInChord = bone.inChord.move(length, boneAngle)
         boneOutChord = boneInChord.moveTo(bone.outChord.Start)
 
@@ -683,7 +689,7 @@ class ObjectDressup:
         self.boneShapes = []
         blacklisted, inaccessible = self.boneIsBlacklisted(bone)
         enabled = not blacklisted
-        self.bones.append((bone.boneId, bone.location(), enabled, inaccessible))
+        self.bones.append((bone.boneId, bone.locationZ(), enabled, inaccessible))
 
         self.boneId = bone.boneId
         if False and PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG and bone.boneId > 2:
@@ -759,6 +765,7 @@ class ObjectDressup:
         boneId = 1
         self.bones = []
         self.locationBlacklist = set()
+        self.length = 0
         # boneIserted = False
 
         for (i, thisCommand) in enumerate(obj.Base.Path.Commands):
@@ -884,29 +891,80 @@ class ObjectDressup:
         if not hasattr(self, 'bones'):
             self.execute(obj)
         for (nr, loc, enabled, inaccessible) in self.bones:
-            item = state.get(loc)
+            item = state.get((loc[0], loc[1]))
             if item:
                 item[2].append(nr)
+                item[3].append(loc[2])
             else:
-                state[loc] = (enabled, inaccessible, [nr])
+                state[(loc[0], loc[1])] = (enabled, inaccessible, [nr], [loc[2]])
         return state
 
+class Marker(object):
 
-class TaskPanel:
+    def __init__(self, pt, r, h):
+        if PathGeom.isRoughly(h, 0):
+            h = 0.1
+        self.pt = pt
+        self.r  = r
+        self.h  = h
+        self.sep = coin.SoSeparator()
+        self.pos = coin.SoTranslation()
+        self.pos.translation = (pt.x, pt.y, pt.z + h / 2)
+        self.rot = coin.SoRotationXYZ()
+        self.rot.axis = self.rot.X
+        self.rot.angle = math.pi / 2
+        self.cyl = coin.SoCylinder()
+        self.cyl.radius = r
+        self.cyl.height = h
+        # self.cyl.removePart(self.cyl.TOP)
+        # self.cyl.removePart(self.cyl.BOTTOM)
+        self.material = coin.SoMaterial()
+        self.sep.addChild(self.pos)
+        self.sep.addChild(self.rot)
+        self.sep.addChild(self.material)
+        self.sep.addChild(self.cyl)
+        self.lowlight()
+
+    def setSelected(self, selected):
+        if selected:
+            self.highlight()
+        else:
+            self.lowlight()
+
+    def highlight(self):
+        self.material.diffuseColor = self.color(1)
+        self.material.transparency = 0.45
+
+    def lowlight(self):
+        self.material.diffuseColor = self.color(0)
+        self.material.transparency = 0.75
+
+    def color(self, id):
+        if id == 1:
+            return coin.SbColor(.9, .9, .5)
+        return coin.SbColor(.9, .5, .9)
+
+
+class TaskPanel(object):
     DataIds = QtCore.Qt.ItemDataRole.UserRole
     DataKey = QtCore.Qt.ItemDataRole.UserRole + 1
+    DataLoc = QtCore.Qt.ItemDataRole.UserRole + 2
 
-    def __init__(self, obj):
+    def __init__(self, viewProvider, obj):
+        self.viewProvider = viewProvider
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
         self.s = None
         FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupDogbone", "Edit Dogbone Dress-up"))
+        self.height = 10
+        self.markers = []
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
+        self.cleanup()
 
     def accept(self):
         self.getFields()
@@ -916,6 +974,13 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
         FreeCAD.ActiveDocument.recompute()
+        self.cleanup()
+
+    def cleanup(self):
+        self.viewProvider.showMarkers(False)
+        for m in self.markers:
+            self.viewProvider.switch.removeChild(m.sep)
+        self.markers = []
 
     def getFields(self):
         self.obj.Style = str(self.form.styleCombo.currentText())
@@ -932,7 +997,7 @@ class TaskPanel:
 
     def updateBoneList(self):
         itemList = []
-        for loc, (enabled, inaccessible, ids) in PathUtil.keyValueIter(self.obj.Proxy.boneStateList(self.obj)):
+        for loc, (enabled, inaccessible, ids, zs) in PathUtil.keyValueIter(self.obj.Proxy.boneStateList(self.obj)):
             lbl = '(%.2f, %.2f): %s' % (loc[0], loc[1], ','.join(str(id) for id in ids))
             item = QtGui.QListWidgetItem(lbl)
             if enabled:
@@ -945,10 +1010,20 @@ class TaskPanel:
             item.setFlags(flags)
             item.setData(self.DataIds, ids)
             item.setData(self.DataKey, ids[0])
+            item.setData(self.DataLoc, loc)
             itemList.append(item)
         self.form.bones.clear()
+        markers = []
         for item in sorted(itemList, key=lambda item: item.data(self.DataKey)):
             self.form.bones.addItem(item)
+            loc = item.data(self.DataLoc)
+            r = max(self.obj.Proxy.length, 1)
+            markers.append(Marker(FreeCAD.Vector(loc[0], loc[1], min(zs)), r, max(1, max(zs) - min(zs))))
+        for m in self.markers:
+            self.viewProvider.switch.removeChild(m.sep)
+        for m in markers:
+            self.viewProvider.switch.addChild(m.sep)
+        self.markers = markers
 
     def updateUI(self):
         customSelected = self.obj.Incision == Incision.Custom
@@ -1005,9 +1080,16 @@ class TaskPanel:
         self.form.incisionCombo.currentIndexChanged.connect(self.updateModel)
         self.form.custom.valueChanged.connect(self.updateModel)
         self.form.bones.itemChanged.connect(self.updateModel)
+        self.form.bones.itemSelectionChanged.connect(self.updateMarkers)
 
+        self.viewProvider.showMarkers(True)
 
-class SelObserver:
+    def updateMarkers(self):
+        index = self.form.bones.currentRow()
+        for i, m in enumerate(self.markers):
+            m.setSelected(i == index)
+
+class SelObserver(object):
     def __init__(self):
         import PathScripts.PathSelection as PST
         PST.eselect()
@@ -1022,7 +1104,7 @@ class SelObserver:
         FreeCADGui.updateGui()
 
 
-class ViewProviderDressup:
+class ViewProviderDressup(object):
 
     def __init__(self, vobj):
         self.vobj = vobj
@@ -1039,7 +1121,12 @@ class ViewProviderDressup:
                             group.remove(g)
                     i.Group = group
             # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
-        return
+        self.switch = coin.SoSwitch()
+        vobj.RootNode.addChild(self.switch)
+
+    def showMarkers(self, on):
+        sw = coin.SO_SWITCH_ALL if on else coin.SO_SWITCH_NONE
+        self.switch.whichChild = sw
 
     def claimChildren(self):
         return [self.obj.Base]
@@ -1047,7 +1134,7 @@ class ViewProviderDressup:
     def setEdit(self, vobj, mode=0):
         # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
-        panel = TaskPanel(vobj.Object)
+        panel = TaskPanel(self, vobj.Object)
         FreeCADGui.Control.showDialog(panel)
         panel.setupUi()
         return True
@@ -1087,7 +1174,7 @@ def Create(base, name='DogboneDressup'):
     return obj
 
 
-class CommandDressupDogbone:
+class CommandDressupDogbone(object):
     # pylint: disable=no-init
 
     def GetResources(self):
@@ -1125,6 +1212,7 @@ class CommandDressupDogbone:
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
+    from pivy import coin
     FreeCADGui.addCommand('Path_DressupDogbone', CommandDressupDogbone())
 
 FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")

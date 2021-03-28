@@ -551,7 +551,7 @@ const char* Hole::ThreadClass_ISOmetricfine_Enums[]  = { "4G", "4H", "5G", "5H",
 
 // ISO 965-1:2013 ISO general purpose metric screw threads - Tolerances - Part 1
 // Table 1 - Fundamentral deviations for internal threads ...
-// reproduced in: https://www.accu.co.uk/en/p/134-iso-metric-thread-tolerances [retrived: 2021-01-11]
+// reproduced in: https://www.accu.co.uk/en/p/134-iso-metric-thread-tolerances [retrieved: 2021-01-11]
 const double Hole::ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size][2] = {
 //  Pitch    G
     {0.2,   0.017},
@@ -939,7 +939,7 @@ double Hole::getThreadClassClearance()
 {
     double pitch = getThreadPitch();
 
-    // Calulate how much clearance to add based on Thread tolerance class and pitch
+    // Calculate how much clearance to add based on Thread tolerance class and pitch
     if (ThreadClass.getValueAsString()[1] == 'G') {
         for(unsigned int i=0; i<ThreadClass_ISOmetric_data_size; i++) {
             double p = ThreadClass_ISOmetric_data[i][0];
