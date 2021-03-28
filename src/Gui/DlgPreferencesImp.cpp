@@ -474,7 +474,8 @@ void DlgPreferencesImp::restoreGeometry()
             w = std::min<int>(rect.width(), w);
             h = std::min<int>(rect.height(), h);
         }
-        this->setGeometry(x,y,w,h);
+        this->move(x, y);
+        this->resize(w, h);
     }
 }
 
