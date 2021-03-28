@@ -1554,7 +1554,8 @@ void MainWindow::loadWindowSettings()
     int w = std::min<int>(rect.width(), size.width());
     int h = std::min<int>(rect.height(), size.height());
 
-    this->setGeometry(x,y,w,h);
+    this->move(x, y);
+    this->resize(w, h);
 
     // tmp. disable the report window to suppress some bothering warnings
     Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);

@@ -298,7 +298,8 @@ void DlgParameterImp::showEvent(QShowEvent *ev)
                 w = std::min<int>(rect.height(), w);
                 h = std::min<int>(rect.width(), h);
             }
-            this->setGeometry(x,y,w,h);
+            this->move(x, y);
+            this->resize(w, h);
         }
     }
     QDialog::showEvent(ev);
