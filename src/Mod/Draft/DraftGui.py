@@ -751,7 +751,7 @@ class DraftToolBar:
         self.finishButton.setToolTip(translate(
             "draft", "Finishes the current drawing or editing operation"))
         self.continueCmd.setToolTip(translate(
-            "draft", "If checked, command will not finish until you press"
+            "draft", "If checked, command will not finish until you press "
                      + "the command button again"))
         self.continueCmd.setText(translate(
             "draft", "Continue") + " (" + inCommandShortcuts["Continue"][0] + ")")
@@ -1084,7 +1084,7 @@ class DraftToolBar:
             self.chooserButton.hide()
 
 
-    def trimUi(self,title=translate("draft","Trim")):
+    def trimUi(self,title=translate("draft","Trimex")):
         self.taskUi(title, icon="Draft_Trimex")
         self.radiusUi()
         self.labelRadius.setText(translate("draft","Distance"))
