@@ -1442,6 +1442,8 @@ class _ArchWindowTaskPanel:
         self.field3.setText('')
         self.field4.setText('')
         self.field5.setText('')
+        self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
+        self.field7.setCurrentIndex(0)
         self.addp4.setChecked(False)
         self.addp5.setChecked(False)
         self.newtitle.setVisible(True)
@@ -1489,6 +1491,8 @@ class _ArchWindowTaskPanel:
             if self.obj:
                 if comp in self.obj.WindowParts:
                     ind = self.obj.WindowParts.index(comp)
+                    self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
+                    self.field7.setCurrentIndex(0)
                     for i in range(5):
                         f = getattr(self,"field"+str(i+1))
                         t = self.obj.WindowParts[ind+i]
