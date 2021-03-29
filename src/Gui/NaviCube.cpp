@@ -205,8 +205,9 @@ private:
 	GLuint createButtonTex(QtGLWidget*, int);
 	GLuint createMenuTex(QtGLWidget*, bool);
 
-	void setView(float ,float );
-	void rotateView(int axis, float rotAngle, SbVec3f customAxis = SbVec3f(0, 0, 0));
+	SbRotation setView(float ,float) const;
+	SbRotation rotateView(SbRotation, int axis, float rotAngle, SbVec3f customAxis = SbVec3f(0, 0, 0)) const;
+	void rotateView(const SbRotation&);
 
 	QString str(char* str);
 	char* enum2str(int);
@@ -1234,16 +1235,14 @@ bool NaviCubeImplementation::mousePressed(short x, short y) {
 	return pick != 0;
 }
 
-void NaviCubeImplementation::setView(float rotZ, float rotX) {
+SbRotation NaviCubeImplementation::setView(float rotZ, float rotX) const {
 	SbRotation rz, rx, t;
 	rz.setValue(SbVec3f(0, 0, 1), rotZ * M_PI / 180);
 	rx.setValue(SbVec3f(1, 0, 0), rotX * M_PI / 180);
-	m_View3DInventorViewer->setCameraOrientation(rx * rz);
+	return rx * rz;
 }
 
-void NaviCubeImplementation::rotateView(int axis, float rotAngle, SbVec3f customAxis) {
-	SbRotation viewRot = m_View3DInventorViewer->getCameraOrientation();
-
+SbRotation NaviCubeImplementation::rotateView(SbRotation viewRot, int axis, float rotAngle, SbVec3f customAxis) const {
 	SbVec3f up;
 	viewRot.multVec(SbVec3f(0, 1, 0), up);
 
@@ -1256,7 +1255,7 @@ void NaviCubeImplementation::rotateView(int axis, float rotAngle, SbVec3f custom
 	SbVec3f direction;
 	switch (axis) {
 	default :
-		return;
+		return viewRot;
 	case DIR_UP :
 		direction = up;
 		break;
@@ -1273,8 +1272,11 @@ void NaviCubeImplementation::rotateView(int axis, float rotAngle, SbVec3f custom
 
 	SbRotation rot(direction, -rotAngle * M_PI / 180.0);
 	SbRotation newViewRot = viewRot * rot;
-	m_View3DInventorViewer->setCameraOrientation(newViewRot);
+	return newViewRot;
+}
 
+void NaviCubeImplementation::rotateView(const SbRotation& rot) {
+	m_View3DInventorViewer->setCameraOrientation(rot);
 }
 
 void NaviCubeImplementation::handleMenu() {
@@ -1329,18 +1331,14 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
 		bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
 
-		// 3D animation (UseAutoRotatio) collides with the rotation to the nearest state
-		// thus when enabled, disable them temprarily for the cube rotation
-		bool UseAutoRotation = hGrp->GetBool("UseAutoRotation", false);
-		if (UseAutoRotation && toNearest)
-			m_View3DInventorViewer->setAnimationEnabled(false);
+		SbRotation viewRot = CurrentViewRot;
 
 		switch (pick) {
 		default:
 			return false;
 			break;
 		case TEX_FRONT:
-			setView(0, 90);
+			viewRot = setView(0, 90);
 			// we don't want to dumb rotate to the same view since depending on from where the user clicked on FRONT
 			// we have one of four suitable end positions.
 			// we use here the same rotation logic used by other programs using OCC like "CAD Assistant"
@@ -1348,327 +1346,325 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			// otherwise rotate around y
 			if (toNearest) {
 				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 			}
 			break;
 		case TEX_REAR:
-			setView(180, 90);
+			viewRot = setView(180, 90);
 			if (toNearest) {
 				if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_LEFT:
-			setView(270, 90);
+			viewRot = setView(270, 90);
 			if (toNearest) {
 				if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_RIGHT:
-			setView(90, 90);
+			viewRot = setView(90, 90);
 			if (toNearest) {
 				if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 			}
 			break;
 		case TEX_TOP:
-			setView(0, 0);
+			viewRot = setView(0, 0);
 			if (toNearest) {
 				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 			}
 			break;
 		case TEX_BOTTOM:
-			setView(0, 180);
+			viewRot = setView(0, 180);
 			if (toNearest) {
 				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 			}
 			break;
 		case TEX_FRONT_TOP:
 			// set to FRONT then rotate
-			setView(0, 90);
-			rotateView(1, 45);
+			viewRot = setView(0, 90);
+			viewRot = rotateView(viewRot, 1, 45);
 			if (toNearest) {
 				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 			}
 			break;
 		case TEX_FRONT_BOTTOM:
 			// set to FRONT then rotate
-			setView(0, 90);
-			rotateView(1, -45);
+			viewRot = setView(0, 90);
+			viewRot = rotateView(viewRot, 1, -45);
 			if (toNearest) {
 				if (ViewRotMatrix[0][0] < 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 			}
 			break;
 		case TEX_REAR_BOTTOM:
 			// set to REAR then rotate
-			setView(180, 90);
-			rotateView(1, -45);
+			viewRot = setView(180, 90);
+			viewRot = rotateView(viewRot, 1, -45);
 			if (toNearest) {
 				if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_REAR_TOP:
 			// set to REAR then rotate
-			setView(180, 90);
-			rotateView(1, 45);
+			viewRot = setView(180, 90);
+			viewRot = rotateView(viewRot, 1, 45);
 			if (toNearest) {
 				if (ViewRotMatrix[0][0] > 0 && abs(ViewRotMatrix[0][0]) >= abs(ViewRotMatrix[1][0]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][0] > 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[1][0] < 0 && abs(ViewRotMatrix[1][0]) > abs(ViewRotMatrix[0][0]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_FRONT_LEFT:
 			// set to FRONT then rotate
-			setView(0, 90);
-			rotateView(0, 45);
+			viewRot = setView(0, 90);
+			viewRot = rotateView(viewRot, 0, 45);
 			if (toNearest) {
 				if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_FRONT_RIGHT:
 			// set to FRONT then rotate
-			setView(0, 90);
-			rotateView(0, -45);
+			viewRot = setView(0, 90);
+			viewRot = rotateView(viewRot, 0, -45);
 			if (toNearest) {
 				if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_REAR_RIGHT:
 			// set to REAR then rotate
-			setView(180, 90);
-			rotateView(0, 45);
+			viewRot = setView(180, 90);
+			viewRot = rotateView(viewRot, 0, 45);
 			if (toNearest) {
 				if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_REAR_LEFT:
 			// set to REAR then rotate
-			setView(180, 90);
-			rotateView(0, -45);
+			viewRot = setView(180, 90);
+			viewRot = rotateView(viewRot, 0, -45);
 			if (ViewRotMatrix[1][2] < 0 && abs(ViewRotMatrix[1][2]) >= abs(ViewRotMatrix[0][2]))
-				rotateView(2, 180);
+				viewRot = rotateView(viewRot, 2, 180);
 			else if (ViewRotMatrix[0][2] > 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-				rotateView(2, -90);
+				viewRot = rotateView(viewRot, 2, -90);
 			else if (ViewRotMatrix[0][2] < 0 && abs(ViewRotMatrix[0][2]) > abs(ViewRotMatrix[1][2]))
-				rotateView(2, 90);
+				viewRot = rotateView(viewRot, 2, 90);
 			break;
 		case TEX_TOP_LEFT:
 			// set to LEFT then rotate
-			setView(270, 90);
-			rotateView(1, 45);
+			viewRot = setView(270, 90);
+			viewRot = rotateView(viewRot, 1, 45);
 			if (toNearest) {
 				if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_TOP_RIGHT:
 			// set to RIGHT then rotate
-			setView(90, 90);
-			rotateView(1, 45);
+			viewRot = setView(90, 90);
+			viewRot = rotateView(viewRot, 1, 45);
 			if (toNearest) {
 				if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 			}
 			break;
 		case TEX_BOTTOM_RIGHT:
 			// set to RIGHT then rotate
-			setView(90, 90);
-			rotateView(1, -45);
+			viewRot = setView(90, 90);
+			viewRot = rotateView(viewRot, 1, -45);
 			if (toNearest) {
 				if (ViewRotMatrix[0][1] < 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 			}
 			break;
 		case TEX_BOTTOM_LEFT:
 			// set to LEFT then rotate
-			setView(270, 90);
-			rotateView(1, -45);
+			viewRot = setView(270, 90);
+			viewRot = rotateView(viewRot, 1, -45);
 			if (toNearest) {
 				if (ViewRotMatrix[0][1] > 0 && abs(ViewRotMatrix[0][1]) >= abs(ViewRotMatrix[1][1]))
-					rotateView(2, 180);
+					viewRot = rotateView(viewRot, 2, 180);
 				else if (ViewRotMatrix[1][1] > 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, -90);
+					viewRot = rotateView(viewRot, 2, -90);
 				else if (ViewRotMatrix[1][1] < 0 && abs(ViewRotMatrix[1][1]) > abs(ViewRotMatrix[0][1]))
-					rotateView(2, 90);
+					viewRot = rotateView(viewRot, 2, 90);
 			}
 			break;
 		case TEX_BOTTOM_LEFT_FRONT:
-			setView(rot - 90, 90 + tilt);
+			viewRot = setView(rot - 90, 90 + tilt);
 			// we have 3 possible end states:
 			// - z-axis is not rotated larger than 120 ° from (0, 1, 0) -> we are already there
 			// - y-axis is not rotated larger than 120 ° from (0, 1, 0)
 			// - x-axis is not rotated larger than 120 ° from (0, 1, 0)
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] > 0.4823)
-					rotateView(0, -120, SbVec3f(1, 1, 1));
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, 1));
 				else if (ViewRotMatrix[1][1] > 0.4823)
-					rotateView(0, 120, SbVec3f(1, 1, 1));
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, 1, 1));
 			}
 			break;
 		case TEX_BOTTOM_FRONT_RIGHT:
-			setView(90 + rot - 90, 90 + tilt);
+			viewRot = setView(90 + rot - 90, 90 + tilt);
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] < -0.4823)
-					rotateView(0, 120, SbVec3f(-1, 1, 1));
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, 1, 1));
 				else if (ViewRotMatrix[1][1] > 0.4823)
-					rotateView(0, -120, SbVec3f(-1, 1, 1));
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, 1, 1));
 			}
 			break;
 		case TEX_BOTTOM_RIGHT_REAR:
-			setView(180 + rot - 90, 90 + tilt);
+			viewRot = setView(180 + rot - 90, 90 + tilt);
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] < -0.4823)
-					rotateView(0, -120, SbVec3f(-1, -1, 1));
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, -1, 1));
 				else if (ViewRotMatrix[1][1] < -0.4823)
-					rotateView(0, 120, SbVec3f(-1, -1, 1));
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, -1, 1));
 			}
 			break;
 		case TEX_BOTTOM_REAR_LEFT:
 			setView(270 + rot - 90, 90 + tilt);
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] > 0.4823)
-					rotateView(0, 120, SbVec3f(1, -1, 1));
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, -1, 1));
 				else if (ViewRotMatrix[1][1] < -0.4823)
-					rotateView(0, -120, SbVec3f(1, -1, 1));
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, -1, 1));
 			}
 			break;
 		case TEX_TOP_RIGHT_FRONT:
-			setView(rot, 90 - tilt);
+			viewRot = setView(rot, 90 - tilt);
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] > 0.4823)
-					rotateView(0, -120, SbVec3f(-1, 1, -1));
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, 1, -1));
 				else if (ViewRotMatrix[1][1] < -0.4823)
-					rotateView(0, 120, SbVec3f(-1, 1, -1));
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, 1, -1));
 			}
 			break;
 		case TEX_TOP_FRONT_LEFT:
-			setView(rot - 90, 90 - tilt);
+			viewRot = setView(rot - 90, 90 - tilt);
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] < -0.4823)
-					rotateView(0, 120, SbVec3f(1, 1, -1));
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, 1, -1));
 				else if (ViewRotMatrix[1][1] < -0.4823)
-					rotateView(0, -120, SbVec3f(1, 1, -1));
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, -1));
 			}
 			break;
 		case TEX_TOP_LEFT_REAR:
-			setView(rot - 180, 90 - tilt);
+			viewRot = setView(rot - 180, 90 - tilt);
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] < -0.4823)
-					rotateView(0, -120, SbVec3f(1, -1, -1));
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, -1, -1));
 				else if (ViewRotMatrix[1][1] > 0.4823)
-					rotateView(0, 120, SbVec3f(1, -1, -1));
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, -1, -1));
 			}
 			break;
 		case TEX_TOP_REAR_RIGHT:
-			setView(rot - 270, 90 - tilt);
+			viewRot = setView(rot - 270, 90 - tilt);
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] > 0.4823)
-					rotateView(0, 120, SbVec3f(-1, -1, -1));
+					viewRot = rotateView(viewRot, 0, 120, SbVec3f(-1, -1, -1));
 				else if (ViewRotMatrix[1][1] > 0.4823)
-					rotateView(0, -120, SbVec3f(-1, -1, -1));
+					viewRot = rotateView(viewRot, 0, -120, SbVec3f(-1, -1, -1));
 			}
 			break;
 		case TEX_ARROW_LEFT :
-			rotateView(DIR_OUT,rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_OUT,rotStepAngle);
 			break;
 		case TEX_ARROW_RIGHT :
-			rotateView(DIR_OUT,-rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_OUT,-rotStepAngle);
 			break;
 		case TEX_ARROW_WEST :
-			rotateView(DIR_UP,-rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_UP,-rotStepAngle);
 			break;
 		case TEX_ARROW_EAST :
-			rotateView(DIR_UP,rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_UP,rotStepAngle);
 			break;
 		case TEX_ARROW_NORTH :
-			rotateView(DIR_RIGHT,-rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_RIGHT,-rotStepAngle);
 			break;
 		case TEX_ARROW_SOUTH :
-			rotateView(DIR_RIGHT,rotStepAngle);
+			viewRot = rotateView(viewRot, DIR_RIGHT,rotStepAngle);
 			break;
 		case TEX_DOT_BACKSIDE:
-			rotateView(0, 180);
+			viewRot = rotateView(viewRot, 0, 180);
 			break;
 		case TEX_VIEW_MENU_FACE :
 			handleMenu();
 			break;
 		}
 
-		// re-anable UseAutoRotation after the cube rotation was done
-		if (UseAutoRotation && toNearest)
-			m_View3DInventorViewer->setAnimationEnabled(true);
+		rotateView(viewRot);
 	}
 	return true;
 }
