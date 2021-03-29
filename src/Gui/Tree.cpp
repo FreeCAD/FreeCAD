@@ -867,8 +867,10 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
             contextMenu.addAction(this->createGroupAction);
 
+        contextMenu.addSeparator();
         contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->recomputeObjectAction);
+        contextMenu.addSeparator();
         contextMenu.addAction(this->relabelObjectAction);
 
         auto selItems = this->selectedItems();
