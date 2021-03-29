@@ -56,11 +56,10 @@ class Rectangle(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Rectangle")
-        super(Rectangle, self).Activated(name)
+        super(Rectangle, self).Activated(name="Rectangle")
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(title=name, icon="Draft_Rectangle")
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Rectangle")
             self.ui.extUi()
             if utils.getParam("UsePartPrimitives", False):
                 self.fillstate = self.ui.hasFill.isChecked()

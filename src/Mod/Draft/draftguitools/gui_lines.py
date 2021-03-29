@@ -64,7 +64,7 @@ class Line(gui_base_original.Creator):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Line", "Line"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line. CTRL to snap, SHIFT to constrain.")}
 
-    def Activated(self, name=translate("draft", "Line"), icon="Draft_Line"):
+    def Activated(self, name="Line", icon="Draft_Line"):
         """Execute when the command is called."""
         super(Line, self).Activated(name)
 
@@ -73,9 +73,9 @@ class Line(gui_base_original.Creator):
         self.obj = None  # stores the temp shape
         self.oldWP = None  # stores the WP if we modify it
         if self.isWire:
-            self.ui.wireUi(title=name, icon=icon)
+            self.ui.wireUi(title=translate("draft", self.featureName), icon=icon)
         else:
-            self.ui.lineUi(title=name, icon=icon)
+            self.ui.lineUi(title=translate("draft", self.featureName), icon=icon)
         if sys.version_info.major < 3:
             if isinstance(self.featureName, unicode):
                 self.featureName = self.featureName.encode("utf8")
@@ -359,7 +359,7 @@ class Wire(Line):
         # If there was no selection or the selection was just one object
         # then we proceed with the normal line creation functions,
         # only this time we will be able to input more than two points
-        super(Wire, self).Activated(name=translate("draft", "Polyline"),
+        super(Wire, self).Activated(name="Polyline",
                                     icon="Draft_Wire")
 
 

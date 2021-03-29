@@ -64,7 +64,7 @@ class Point(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Point, self).Activated(name=translate("draft","Point"))
+        super(Point, self).Activated(name="Point")
         self.view = gui_utils.get3DView()
         self.stack = []
         rot = self.view.getCameraNode().getField("orientation").getValue()
@@ -74,7 +74,7 @@ class Point(gui_base_original.Creator):
                                     upv)
         self.point = None
         if self.ui:
-            self.ui.pointUi(icon="Draft_Point")
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Point")
             self.ui.continueCmd.show()
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)

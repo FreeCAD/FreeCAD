@@ -66,7 +66,7 @@ class Stretch(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Stretch, self).Activated(name=translate("draft","Stretch"))
+        super(Stretch, self).Activated(name="Stretch")
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi()
@@ -111,7 +111,7 @@ class Stretch(gui_base_original.Modifier):
         if self.ui and self.sel:
             self.step = 1
             self.refpoint = None
-            self.ui.pointUi(title="Stretch", icon="Draft_Stretch")
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Stretch")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rectracker = trackers.rectangleTracker(dotted=True,

@@ -73,8 +73,7 @@ class Scale(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        self.name = translate("draft", "Scale")
-        super(Scale, self).Activated(name=self.name)
+        super(Scale, self).Activated(name="Scale")
         if not self.ui:
             return
         self.ghosts = []
@@ -99,7 +98,7 @@ class Scale(gui_base_original.Modifier):
             groups.get_group_contents(self.selected_objects)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.refs = []
-        self.ui.pointUi(title=self.name, icon="Draft_Scale")
+        self.ui.pointUi(title=translate("draft",self.featureName), icon="Draft_Scale")
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()

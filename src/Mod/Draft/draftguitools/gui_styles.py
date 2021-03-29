@@ -52,7 +52,7 @@ class ApplyStyle(gui_base_original.Modifier):
 
         Activate the specific BSpline tracker.
         """
-        super(ApplyStyle, self).Activated(name=translate("draft","Apply style"))
+        super(ApplyStyle, self).Activated(name="Apply style")
         if self.ui:
             self.sel = Gui.Selection.getSelection()
             if len(self.sel) > 0:
