@@ -47,6 +47,7 @@
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
+# include <codecvt>
 #endif
 
 #if defined(FC_OS_BSD)
@@ -2852,13 +2853,12 @@ void Application::ExtractUserPath()
 
 #elif defined(FC_OS_WIN32)
     WCHAR szPath[MAX_PATH];
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     // Get the default path where we can save our documents. It seems that
     // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
     // which does the same.
     if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, szPath))) {
-        char dest[MAX_PATH * 3];
-        WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
-        mConfig["UserHomePath"] = dest;
+        mConfig["UserHomePath"] = converter.to_bytes(szPath);
     }
     else {
         mConfig["UserHomePath"] = mConfig["AppHomePath"];
@@ -2900,12 +2900,10 @@ void Application::ExtractUserPath()
             }
         }
 
-        QString dataPath = QString::fromStdWString(appData.wstring());
-        mConfig["UserAppData"] = dataPath.toStdString() + PATHSEP;
+        mConfig["UserAppData"] = converter.to_bytes(appData.wstring()) + PATHSEP;
 
         // Create the default macro directory
-        QString macroPath = QString::fromStdString(getUserMacroDir());
-        boost::filesystem::path macroDir = macroPath.toStdWString();
+        boost::filesystem::path macroDir = converter.from_bytes(getUserMacroDir());
         if (!boost::filesystem::exists(macroDir) && !Py_IsInitialized()) {
             try {
                 boost::filesystem::create_directories(macroDir);
