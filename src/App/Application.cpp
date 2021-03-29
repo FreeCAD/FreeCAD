@@ -2852,11 +2852,11 @@ void Application::ExtractUserPath()
 
 #elif defined(FC_OS_WIN32)
     WCHAR szPath[MAX_PATH];
-    char dest[MAX_PATH*3];
     // Get the default path where we can save our documents. It seems that
     // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
     // which does the same.
     if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, szPath))) {
+        char dest[MAX_PATH * 3];
         WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
         mConfig["UserHomePath"] = dest;
     }
@@ -2872,12 +2872,9 @@ void Application::ExtractUserPath()
     // kept. There we create a directory with name of the vendor and a sub-directory with name
     // of the application.
     if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, szPath))) {
-        // convert to UTF8
-        WideCharToMultiByte(CP_UTF8, 0, szPath, -1,dest, 256, NULL, NULL);
-
-        boost::filesystem::path appData(dest);
+        boost::filesystem::path appData(szPath);
         if (!userData.isEmpty())
-            appData = userData.toUtf8().data();
+            appData = userData.toStdWString();
 
         if (!boost::filesystem::exists(appData)) {
             // This should never ever happen
@@ -2903,10 +2900,12 @@ void Application::ExtractUserPath()
             }
         }
 
-        mConfig["UserAppData"] = appData.string() + PATHSEP;
+        QString dataPath = QString::fromStdWString(appData.wstring());
+        mConfig["UserAppData"] = dataPath.toStdString() + PATHSEP;
 
         // Create the default macro directory
-        auto macroDir = getUserMacroDir();
+        QString macroPath = QString::fromStdString(getUserMacroDir());
+        boost::filesystem::path macroDir = macroPath.toStdWString();
         if (!boost::filesystem::exists(macroDir) && !Py_IsInitialized()) {
             try {
                 boost::filesystem::create_directories(macroDir);
