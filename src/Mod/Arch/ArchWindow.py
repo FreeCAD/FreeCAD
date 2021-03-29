@@ -615,11 +615,11 @@ class _Window(ArchComponent.Component):
         self.sshapes = []
         self.vshapes = []
         shapes = []
-        rotdata = None
         for i in range(int(len(obj.WindowParts)/5)):
             wires = []
             hinge = None
             omode = None
+            rotdata = None
             ssymbols = []
             vsymbols = []
             wstr = obj.WindowParts[(i*5)+2].split(',')
