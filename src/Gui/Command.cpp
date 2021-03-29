@@ -476,7 +476,7 @@ void Command::_invoke(int id, bool disablelog)
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", i);
+        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
