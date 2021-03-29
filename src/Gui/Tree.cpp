@@ -2684,6 +2684,7 @@ void TreeWidget::setupText()
 
     this->recomputeObjectAction->setText(tr("Recompute object"));
     this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
+    this->recomputeObjectAction->setIcon(BitmapFactory().iconFromTheme("view-refresh"));
 }
 
 void TreeWidget::syncView(ViewProviderDocumentObject *vp)
