@@ -35,6 +35,7 @@
 class SoBase;
 class SoDragger;
 class SoMaterialBinding;
+class SoMatrixTransform;
 
 namespace Gui {
 
@@ -112,7 +113,7 @@ public:
 
     int getSize() const { return nodeArray.size(); }
 
-    static void setTransform(SoTransform *pcTransform, const Base::Matrix4D &mat);
+    static void setTransform(SoMatrixTransform *pcTransform, const Base::Matrix4D &mat);
 
     /// Types of snapshot to override linked root node:
     enum SnapshotType {
@@ -175,7 +176,7 @@ protected:
     LinkInfoPtr linkOwner;
     LinkInfoPtr linkInfo;
     CoinPtr<SoFCSelectionRoot> pcLinkRoot;
-    CoinPtr<SoTransform> pcTransform;
+    CoinPtr<SoMatrixTransform> pcTransform;
     CoinPtr<SoSeparator> pcLinkedRoot;
     CoinPtr<SoDrawStyle> pcDrawStyle; // for override line width and point size
     CoinPtr<SoShapeHints> pcShapeHints; // for override double side rendering for mirror
@@ -373,6 +374,7 @@ protected:
     };
     std::unique_ptr<DraggerContext> dragCtx;
     CoinPtr<SoDragger> pcDragger;
+    CoinPtr<SoMatrixTransform> pcMatrixTransform;
     ViewProviderDocumentObject *childVp;
     LinkInfoPtr childVpLink;
     boost::signals2::scoped_connection connNewElement;

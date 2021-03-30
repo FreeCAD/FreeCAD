@@ -117,6 +117,11 @@ public:
      "Scale vector for non-uniform scaling. Please be aware that the underlying\n" \
      "geometry may be transformed into BSpline surface due to non-uniform scale.", ##__VA_ARGS__)
 
+#define LINK_PARAM_MATRIX(...) \
+    (Matrix, Base::Matrix4D, App::PropertyMatrix, Base::Matrix4D(), \
+     "Matrix transformation for the linked object. The transformation is applied\n" \
+     "before scale and placement.", ##__VA_ARGS__)
+
 #define LINK_PARAM_PLACEMENTS(...) \
     (PlacementList, std::vector<Base::Placement>, App::PropertyPlacementList, std::vector<Base::Placement>(),\
       "The placement for each element in a link array", ##__VA_ARGS__)
@@ -124,6 +129,11 @@ public:
 #define LINK_PARAM_SCALES(...) \
     (ScaleList, std::vector<Base::Vector3d>, App::PropertyVectorList, std::vector<Base::Vector3d>(),\
       "The scale factors for each element in a link array", ##__VA_ARGS__)
+
+#define LINK_PARAM_MATRICES(...) \
+    (MatrixList, std::vector<Base::Matrix4D>, App::PropertyMatrixList, std::vector<Base::Matrix4D>(),\
+      "Matrix transofmration of each element in a link array.\n" \
+      "The transformation is applied before scale and placement.", ##__VA_ARGS__)
 
 #define LINK_PARAM_VISIBILITIES(...) \
     (VisibilityList, boost::dynamic_bitset<>, App::PropertyBoolList, boost::dynamic_bitset<>(),\
@@ -175,8 +185,10 @@ public:
     LINK_PARAM(TRANSFORM)\
     LINK_PARAM(SCALE)\
     LINK_PARAM(SCALE_VECTOR)\
+    LINK_PARAM(MATRIX)\
     LINK_PARAM(PLACEMENTS)\
     LINK_PARAM(SCALES)\
+    LINK_PARAM(MATRICES)\
     LINK_PARAM(VISIBILITIES)\
     LINK_PARAM(COUNT)\
     LINK_PARAM(ELEMENTS)\
@@ -471,7 +483,9 @@ public:
 #define LINK_PARAMS_EXT \
     LINK_PARAM_EXT(SCALE)\
     LINK_PARAM_EXT(SCALE_VECTOR)\
+    LINK_PARAM_EXT_ATYPE(MATRIX, App::Prop_Hidden)\
     LINK_PARAM_EXT_ATYPE(SCALES, App::Prop_Hidden)\
+    LINK_PARAM_EXT_ATYPE(MATRICES, App::Prop_Hidden)\
     LINK_PARAM_EXT(VISIBILITIES)\
     LINK_PARAM_EXT(PLACEMENTS)\
     LINK_PARAM_EXT(ELEMENTS)
@@ -550,6 +564,7 @@ public:
 #define LINK_PARAMS_ELEMENT \
     LINK_PARAM_EXT(SCALE)\
     LINK_PARAM_EXT(SCALE_VECTOR)\
+    LINK_PARAM_EXT_ATYPE(MATRIX, App::Prop_Hidden)\
     LINK_PARAM_EXT_TYPE(OBJECT, App::PropertyXLink)\
     LINK_PARAM_EXT(TRANSFORM) \
     LINK_PARAM_EXT(LINK_PLACEMENT)\
