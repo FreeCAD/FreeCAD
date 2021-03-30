@@ -1594,7 +1594,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			}
 			break;
 		case TEX_BOTTOM_REAR_LEFT:
-			setView(270 + rot - 90, 90 + tilt);
+			viewRot = setView(270 + rot - 90, 90 + tilt);
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] > 0.4823)
 					viewRot = rotateView(viewRot, 0, 120, SbVec3f(1, -1, 1));
