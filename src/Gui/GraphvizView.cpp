@@ -33,8 +33,10 @@
 # include <QSvgRenderer>
 # include <QGraphicsSvgItem>
 # include <QMessageBox>
+# include <QMouseEvent>
 # include <QGraphicsScene>
 # include <QGraphicsView>
+# include <QScrollBar>
 # include <QThread>
 # include <QProcess>
 # include <boost_bind_bind.hpp>
@@ -146,6 +148,92 @@ private:
     QByteArray str, flatStr;
 };
 
+// Simple wrapper around QGraphicsView to make panning possible
+class GraphvizGraphicsView final : public QGraphicsView
+{
+  public:
+    GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent);
+    ~GraphvizGraphicsView() = default;
+
+    GraphvizGraphicsView(const GraphvizGraphicsView&) = delete;
+    GraphvizGraphicsView(GraphvizGraphicsView&&) = delete;
+    GraphvizGraphicsView& operator=(const GraphvizGraphicsView&) = delete;
+    GraphvizGraphicsView& operator=(GraphvizGraphicsView&&) = delete;
+
+  protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
+  private:
+    bool   isPanning;
+    QPoint panStart;
+};
+
+GraphvizGraphicsView::GraphvizGraphicsView(QGraphicsScene* scene, QWidget* parent) : QGraphicsView(scene, parent),
+                                                                     isPanning(false)
+{
+}
+
+void GraphvizGraphicsView::mousePressEvent(QMouseEvent* e)
+{
+  if(e && e->button() == Qt::LeftButton)
+  {
+    isPanning = true;
+    panStart = e->pos();
+    e->accept();
+    QApplication::setOverrideCursor(Qt::ClosedHandCursor);
+  }
+
+  QGraphicsView::mousePressEvent(e);
+
+  return;
+}
+
+void GraphvizGraphicsView::mouseMoveEvent(QMouseEvent *e)
+{
+  if(e == nullptr)
+  {
+    return;
+  }
+
+  if(isPanning)
+  {
+    auto* horizontalScrollbar = horizontalScrollBar();
+    auto* verticalScrollbar = verticalScrollBar();
+    if(horizontalScrollbar == nullptr ||
+       verticalScrollbar   == nullptr)
+    {
+      return;
+    }
+
+    auto direction = e->pos() - panStart;
+    horizontalScrollbar->setValue(horizontalScrollbar->value() - direction.x());
+    verticalScrollbar->setValue(verticalScrollbar->value() - direction.y());
+
+    panStart = e->pos();
+    e->accept();
+  }
+
+  QGraphicsView::mouseMoveEvent(e);
+
+  return;
+}
+
+void GraphvizGraphicsView::mouseReleaseEvent(QMouseEvent* e)
+{
+  if(e && e->button() & Qt::LeftButton)
+  {
+    isPanning = false;
+    QApplication::restoreOverrideCursor();
+    e->accept();
+  }
+
+  QGraphicsView::mouseReleaseEvent(e);
+
+  return;
+}
+
 }
 
 /* TRANSLATOR Gui::GraphvizView */
@@ -165,7 +253,7 @@ GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
     scene->addItem(svgItem);
 
     // Create view and zoomer object
-    view = new QGraphicsView(scene, this);
+    view = new GraphvizGraphicsView(scene, this);
     zoomer = new GraphicsViewZoom(view);
     zoomer->set_modifiers(Qt::NoModifier);
     view->show();

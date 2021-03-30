@@ -31,8 +31,7 @@ __title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
-from FreeCAD import Vector
+import FreeCAD,Draft,ArchCommands,sys,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore

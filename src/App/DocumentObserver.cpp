@@ -248,10 +248,8 @@ const std::string &DocumentObjectT::getPropertyName() const {
 std::string DocumentObjectT::getPropertyPython() const
 {
     std::stringstream str;
-    str << "FreeCAD.getDocument('" << document
-        << "').getObject('" << object
-        << "')";
-    if(property.size())
+    str << getObjectPython();
+    if (property.size())
         str << '.' << property;
     return str.str();
 }
@@ -396,6 +394,99 @@ std::vector<App::DocumentObject*> SubObjectT::getSubObjectList() const {
     if(obj)
         return obj->getSubObjectList(subname.c_str());
     return {};
+}
+
+// -----------------------------------------------------------------------------
+
+PropertyLinkT::PropertyLinkT()
+    : toPython("None")
+{
+}
+
+PropertyLinkT::PropertyLinkT(DocumentObject *obj)
+    : PropertyLinkT()
+{
+    if (obj) {
+        std::ostringstream str;
+        DocumentObjectT objT(obj);
+        str << objT.getObjectPython();
+
+        toPython = str.str();
+    }
+}
+
+PropertyLinkT::PropertyLinkT(DocumentObject *obj, const std::vector<std::string>& subNames)
+    : PropertyLinkT()
+{
+    if (obj) {
+        std::ostringstream str;
+        DocumentObjectT objT(obj);
+        str << "(" << objT.getObjectPython() << ",[";
+        for(const auto& it : subNames)
+            str << "'" << it << "',";
+        str << "])";
+
+        toPython = str.str();
+    }
+}
+
+PropertyLinkT::PropertyLinkT(const std::vector<DocumentObject*>& objs)
+    : PropertyLinkT()
+{
+    if (!objs.empty()) {
+        std::stringstream str;
+        str << "[";
+        for (std::size_t i = 0; i < objs.size(); i++) {
+            if (i > 0)
+                str << ", ";
+
+            App::DocumentObject* obj = objs[i];
+            if (obj) {
+                DocumentObjectT objT(obj);
+                str << objT.getObjectPython();
+            }
+            else {
+                str << "None";
+            }
+        }
+
+        str << "]";
+    }
+}
+
+PropertyLinkT::PropertyLinkT(const std::vector<DocumentObject*>& objs, const std::vector<std::string>& subNames)
+    : PropertyLinkT()
+{
+    if (!objs.empty() && objs.size() == subNames.size()) {
+        std::stringstream str;
+        str << "[";
+        for (std::size_t i = 0; i < subNames.size(); i++) {
+            if (i>0)
+                str << ",(";
+            else
+                str << "(";
+
+            App::DocumentObject* obj = objs[i];
+            if (obj) {
+                DocumentObjectT objT(obj);
+                str << objT.getObjectPython();
+            }
+            else {
+                str << "None";
+            }
+
+            str << ",";
+            str << "'" << subNames[i] << "'";
+            str << ")";
+        }
+
+        str << "]";
+    }
+}
+
+std::string PropertyLinkT::getPropertyPython() const
+{
+    return toPython;
 }
 
 // -----------------------------------------------------------------------------

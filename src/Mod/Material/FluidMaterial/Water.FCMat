@@ -22,3 +22,4 @@ VolumetricThermalExpansionCoefficient = 2.07e-4 m/m/K
 [Electrical]
 RelativePermittivity = 80.0
 ; at 20°C and 50Hz
+ElectricalConductivity = 5.5e-6 S/m

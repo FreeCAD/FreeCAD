@@ -16,7 +16,6 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
 from PySide import QtGui as qt
-import fcsprocket
 import FreeCAD, FreeCADGui
 
 class SprocketCreationFrame(qt.QFrame):
@@ -51,10 +50,10 @@ class SprocketDialog(qt.QDialog):
         if FreeCAD.ActiveDocument is None:
             FreeCAD.newDocument("Sprocket")
 
-        gear = fcgear.makeSprocket(self.gc.m.value(),
-                               self.gc.Z.value(),
-                               self.gc.angle.value(),
-                               not self.gc.split.currentIndex())
+        gear_unused = fcgear.makeSprocket(self.gc.m.value(),
+                                          self.gc.Z.value(),
+                                          self.gc.angle.value(),
+                                          not self.gc.split.currentIndex())
         FreeCADGui.SendMsgToActiveView("ViewFit")
         return super(SprocketDialog, self).accept()
 

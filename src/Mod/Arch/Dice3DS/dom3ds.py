@@ -16,7 +16,7 @@ data of the second object like this:
 
 """
 
-import os, sys, struct
+import sys, struct
 
 import numpy
 
@@ -550,7 +550,7 @@ class UnknownChunk(UndefinedChunk):
     __slots__ = ['tag']
     label = "UNKNOWN"
     def __init__(self,tag):
-        self.tag = tag
+        super().__init__(tag=tag)
 
 
 class ErrorChunk(UndefinedChunk):
@@ -558,9 +558,7 @@ class ErrorChunk(UndefinedChunk):
     label = "ERROR"
     tag = 0xEEEE
     def __init__(self,intended_tag=None,intended_label=None,error_msg=None):
-        self.intended_tag = intended_tag
-        self.intended_label = intended_label
-        self.error_msg = error_msg
+        super().__init__(intended_tag=intended_tag,intended_label=intended_label,error_msg=error_msg)
     def dump(self,flo,indent,flags):
         super(ErrorChunk,self).dump(flo,indent,flags)
         if self.intended_tag is not None:
@@ -695,7 +693,6 @@ class TrackChunk(ChunkBase):
             n = self.nkeys
         else:
             n = min(flags['arraylines'],self.nkeys)
-        indent2 = indent+"    "
         for i in xrange(n):
             kf = self.keys[i]
             flo.write("%skeys[0] = %s.Key\n" % (indent,self.label))

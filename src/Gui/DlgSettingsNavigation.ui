@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>363</height>
+    <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Navigation</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
     <widget class="QGroupBox" name="groupBoxNaviCube">
      <property name="title">
       <string>Navigation cube</string>
@@ -34,6 +34,9 @@
        <widget class="Gui::PrefSpinBox" name="prefStepByTurn">
         <property name="toolTip">
          <string>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
          <number>4</number>
@@ -108,6 +111,25 @@
         </item>
        </widget>
       </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="naviCubeToNearest">
+        <property name="toolTip">
+         <string>Rotates to nearest possible state when clicking a cube face</string>
+        </property>
+        <property name="text">
+         <string>Rotate to nearest</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NaviRotateToNearest</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>NaviCube</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
@@ -119,6 +141,9 @@
        <widget class="Gui::PrefSpinBox" name="prefCubeSize">
         <property name="toolTip">
          <string>Size of the navigation cube</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
          <number>10</number>
@@ -143,7 +168,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="GroupBox12">
      <property name="enabled">
       <bool>true</bool>
@@ -333,7 +358,7 @@ Turntable: the part will be rotated around the z-axis.</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+       <item row="4" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>New document scale</string>
@@ -341,7 +366,7 @@ Turntable: the part will be rotated around the z-axis.</string>
          </widget>
         </item>
         <item row="4" column="3">
-         <widget class="PrefUnitSpinBox" name="qspinNewDocScale">
+         <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
           <property name="minimumSize">
            <size>
             <width>120</width>
@@ -527,12 +552,12 @@ Mouse tilting is not disabled by this setting.</string>
           </property>
          </widget>
         </item>
-       </layout>
+        </layout>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -549,6 +574,11 @@ Mouse tilting is not disabled by this setting.</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -563,11 +593,6 @@ Mouse tilting is not disabled by this setting.</string>
    <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

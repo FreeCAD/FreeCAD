@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="TopoShapePy" 
-      Name="TopoShapeCompSolidPy" 
-      Twin="TopoShape" 
-      TwinPointer="TopoShape" 
-      Include="Mod/Part/App/TopoShape.h" 
-      Namespace="Part" 
-      FatherInclude="Mod/Part/App/TopoShapePy.h" 
+  <PythonExport
+      Father="TopoShapePy"
+      Name="TopoShapeCompSolidPy"
+      Twin="TopoShape"
+      TwinPointer="TopoShape"
+      Include="Mod/Part/App/TopoShape.h"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/TopoShapePy.h"
       FatherNamespace="Part"
       Constructor="true">
     <Documentation>
@@ -16,7 +16,9 @@
     </Documentation>
     <Methode Name="add">
       <Documentation>
-        <UserDocu>Add a solid to the compound.</UserDocu>
+        <UserDocu>Add a solid to the compound.
+add(solid)
+        </UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

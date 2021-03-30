@@ -26,9 +26,9 @@ Mesh.ElementOrder = 2;
 Mesh.SecondOrderLinear = 0; // Second order nodes are created by linear interpolation instead by curvilinear
 
 // mesh algorithm, only a few algorithms are usable with 3D boundary layer generation
-// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)
+// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad, 9=Packing Parallelograms)
 Mesh.Algorithm = 2;
-// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)
+// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 7=MMG3D, 9=R-tree, 10=HTX)
 Mesh.Algorithm3D = 1;
 
 // meshing

@@ -20,13 +20,11 @@
 #***************************************************************************
 
 import FreeCAD
-import WorkingPlane
 import math
 import Draft
 import ArchCommands
 import DraftVecUtils
 import ArchComponent
-import os
 import re
 import tempfile
 import uuid

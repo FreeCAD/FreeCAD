@@ -23,7 +23,7 @@
 
 from __future__ import print_function
 
-import FreeCAD, Part, DraftGeomUtils, WorkingPlane, DraftVecUtils, math, Draft
+import FreeCAD, Part, DraftGeomUtils, WorkingPlane, DraftVecUtils, math
 from datetime import datetime
 
 # This is roughly based on the no-fit polygon algorithm, used in

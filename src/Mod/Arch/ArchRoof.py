@@ -22,8 +22,6 @@
 import math
 
 import ArchComponent
-import Arch_rc
-import Draft
 import DraftGeomUtils
 import DraftVecUtils
 import FreeCAD

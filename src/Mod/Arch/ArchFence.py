@@ -25,7 +25,6 @@ import math
 
 import FreeCAD
 import ArchComponent
-import Draft
 import draftobjects.patharray as patharray
 
 if FreeCAD.GuiUp:

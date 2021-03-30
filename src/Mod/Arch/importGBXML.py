@@ -23,7 +23,7 @@ __title__  = "FreeCAD GbXml exporter"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import os,FreeCAD,Draft
+import FreeCAD,Draft
 
 if FreeCAD.GuiUp:
     from DraftTools import translate

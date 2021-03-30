@@ -56,7 +56,15 @@ class TestDressupDogbone(PathTestBase):
 
     def test00(self):
         '''Verify bones are inserted for simple moves.'''
-        base = TestProfile('Inside', 'CW', 'G0 X10 Y10 Z10\nG1 Z0\nG1 Y100\nG1 X12\nG1 Y10\nG1 X10\nG1 Z10')
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 Y100
+        G1 X12
+        G1 Y10
+        G1 X10
+        G1 Z10
+        ''')
         obj = TestFeature()
         db = PathDressupDogbone.ObjectDressup(obj, base)
         db.setup(obj, True)
@@ -69,7 +77,15 @@ class TestDressupDogbone(PathTestBase):
 
     def test01(self):
         '''Verify bones are inserted if hole ends with rapid move out.'''
-        base = TestProfile('Inside', 'CW', 'G0 X10 Y10 Z10\nG1 Z0\nG1 Y100\nG1 X12\nG1 Y10\nG1 X10\nG0 Z10')
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 Y100
+        G1 X12
+        G1 Y10
+        G1 X10
+        G0 Z10
+        ''')
         obj = TestFeature()
         db = PathDressupDogbone.ObjectDressup(obj, base)
         db.setup(obj, True)
@@ -143,3 +159,105 @@ class TestDressupDogbone(PathTestBase):
         self.assertEqual("(72.50, 72.50)", formatBoneLoc(locs[7]))
 
         FreeCAD.closeDocument("TestDressupDogbone")
+
+    def test03(self):
+        '''Verify no bone is inserted for straight move interrupted by plunge.'''
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 X0   ( start)
+        G1 Y0
+        G1 X15
+        G1 Y10
+        G1 X10  ( straight line move to start)
+        G0 Z10
+        ''')
+        obj = TestFeature()
+        db = PathDressupDogbone.ObjectDressup(obj, base)
+        db.setup(obj, True)
+        db.execute(obj, False)
+        self.assertEqual(len(db.bones), 0)
+
+    def test04(self):
+        '''Verify can handle comments between moves'''
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 X20
+        G1 Y0
+        G1 X10
+        G1 Y10
+        G1 Z10
+        ''')
+        obj = TestFeature()
+        db = PathDressupDogbone.ObjectDressup(obj, base)
+        db.setup(obj, True)
+        db.execute(obj, False)
+        self.assertEqual(len(db.bones), 4)
+        self.assertEqual("1: (20.00, 10.00)", self.formatBone(db.bones[0]))
+        self.assertEqual("2: (20.00, 0.00)", self.formatBone(db.bones[1]))
+        self.assertEqual("3: (10.00, 0.00)", self.formatBone(db.bones[2]))
+        self.assertEqual("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
+
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 X20
+        G1 Y0
+        G1 X10
+        (some comment or other should not change the output)
+        G1 Y10
+        G1 Z10
+        ''')
+        obj = TestFeature()
+        db = PathDressupDogbone.ObjectDressup(obj, base)
+        db.setup(obj, True)
+        db.execute(obj, False)
+        self.assertEqual(len(db.bones), 4)
+        self.assertEqual("1: (20.00, 10.00)", self.formatBone(db.bones[0]))
+        self.assertEqual("2: (20.00, 0.00)", self.formatBone(db.bones[1]))
+        self.assertEqual("3: (10.00, 0.00)", self.formatBone(db.bones[2]))
+        self.assertEqual("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
+
+
+    def test05(self):
+        '''Verify can handle noops between moves'''
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 X20
+        G1 Y0
+        G1 X10
+        G1 Y10
+        G1 Z10
+        ''')
+        obj = TestFeature()
+        db = PathDressupDogbone.ObjectDressup(obj, base)
+        db.setup(obj, True)
+        db.execute(obj, False)
+        self.assertEqual(len(db.bones), 4)
+        self.assertEqual("1: (20.00, 10.00)", self.formatBone(db.bones[0]))
+        self.assertEqual("2: (20.00, 0.00)", self.formatBone(db.bones[1]))
+        self.assertEqual("3: (10.00, 0.00)", self.formatBone(db.bones[2]))
+        self.assertEqual("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
+
+        base = TestProfile('Inside', 'CW', '''
+        G0 X10 Y10 Z10
+        G1 Z0
+        G1 X20
+        G1 Y0
+        G1 X10
+        G1 X10
+        G1 Y10
+        G1 Z10
+        ''')
+        obj = TestFeature()
+        db = PathDressupDogbone.ObjectDressup(obj, base)
+        db.setup(obj, True)
+        db.execute(obj, False)
+        self.assertEqual(len(db.bones), 4)
+        self.assertEqual("1: (20.00, 10.00)", self.formatBone(db.bones[0]))
+        self.assertEqual("2: (20.00, 0.00)", self.formatBone(db.bones[1]))
+        self.assertEqual("3: (10.00, 0.00)", self.formatBone(db.bones[2]))
+        self.assertEqual("4: (10.00, 10.00)", self.formatBone(db.bones[3]))
+

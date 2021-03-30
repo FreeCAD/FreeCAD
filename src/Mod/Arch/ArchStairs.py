@@ -24,14 +24,13 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecadweb.org"
 
 
-import FreeCAD,ArchComponent,ArchCommands,Draft,DraftVecUtils,math,ArchPipe
+import FreeCAD,ArchComponent,Draft,DraftVecUtils,math,ArchPipe
 import Part, DraftGeomUtils
 
 
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:

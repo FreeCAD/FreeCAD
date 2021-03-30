@@ -22,9 +22,9 @@
 
 from __future__ import print_function
 import sys
-import FreeCAD, time
+import FreeCAD
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc, os
+    import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP

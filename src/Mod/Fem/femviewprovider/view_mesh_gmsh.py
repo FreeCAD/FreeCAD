@@ -96,10 +96,9 @@ class VPMeshGmsh:
         )
     """
 
-    # overwrite unsetEdit, hide mesh object on task panel exit
+    # overwrite unsetEdit
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
-        self.ViewObject.hide()
         return True
 
     def doubleClicked(self, vobj):

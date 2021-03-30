@@ -55,6 +55,7 @@
 #include "TaskHelixParameters.h"
 
 using namespace PartDesignGui;
+using PartDesign::HelixMode;
 using namespace Gui;
 
 
@@ -287,20 +288,20 @@ void TaskHelixParameters::updateUI()
     if(pcHelix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive)
         isOutsideVisible = true;
 
-    std::string mode = propMode->getValueAsString();
-    if (mode == "pitch-height-angle") {
+    HelixMode mode = static_cast<HelixMode>(propMode->getValue());
+    if (mode == HelixMode::pitch_height_angle) {
         isPitchVisible = true;
         isHeightVisible = true;
         isAngleVisible = true;
-    } else if (mode == "pitch-turns-angle") {
+    } else if (mode == HelixMode::pitch_turns_angle) {
         isPitchVisible = true;
         isTurnsVisible = true;
         isAngleVisible = true;
-    } else if (mode == "height-turns-angle") {
+    } else if (mode == HelixMode::height_turns_angle) {
         isHeightVisible = true;
         isTurnsVisible = true;
         isAngleVisible = true;
-    } else if (mode == "height-turns-growth") {
+    } else if (mode == HelixMode::height_turns_growth) {
         isHeightVisible = true;
         isTurnsVisible = true;
         isGrowthVisible = true;

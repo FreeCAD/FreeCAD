@@ -331,6 +331,8 @@ Quantity Quantity::Volt             (1e+6          ,Unit(2,1,-3,-1)); // Volt (k
 Quantity Quantity::MilliVolt        (1e+3          ,Unit(2,1,-3,-1));
 Quantity Quantity::KiloVolt         (1e+9          ,Unit(2,1,-3,-1));
 
+Quantity Quantity::MegaSiemens      (1.0           ,Unit(-2,-1,3,2));
+Quantity Quantity::KiloSiemens      (1e-3          ,Unit(-2,-1,3,2));
 Quantity Quantity::Siemens          (1e-6          ,Unit(-2,-1,3,2)); // Siemens (A^2*s^3/kg/m^2)
 Quantity Quantity::MilliSiemens     (1e-9          ,Unit(-2,-1,3,2));
 Quantity Quantity::MicroSiemens     (1e-12         ,Unit(-2,-1,3,2));

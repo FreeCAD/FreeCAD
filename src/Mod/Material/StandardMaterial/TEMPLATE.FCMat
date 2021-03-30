@@ -94,7 +94,7 @@ YoungsModulus =
 
 
 [Thermal]
-; Description to be updated
+; Specific capacity in [FreeCAD SpecificHeat unit]
 ; https://en.wikipedia.org/wiki/Heat_capacity
 SpecificHeat =
 
@@ -105,6 +105,15 @@ ThermalConductivity =
 ; Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]
 ; https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient
 ThermalExpansionCoefficient =
+
+[Electrical]
+; The ratio to the permittivity of the vacuum
+; https://en.wikipedia.org/wiki/Relative_permittivity
+RelativePermittivity =
+
+; The electrical conductivity in [FreeCAD ElectricalConductivity unit]
+; https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity
+ElectricalConductivity =
 
 
 [Architectural]

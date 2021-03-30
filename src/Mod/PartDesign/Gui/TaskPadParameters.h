@@ -58,7 +58,8 @@ public:
 private Q_SLOTS:
     void onLengthChanged(double);
     void onLength2Changed(double);
-    void onGBDirectionChanged(bool);
+    void onAlongSketchNormalChanged(bool);
+    void onDirectionToggled(bool);
     void onXDirectionEditChanged(double);
     void onYDirectionEditChanged(double);
     void onZDirectionEditChanged(double);
@@ -75,6 +76,7 @@ protected:
 private:
     double getLength(void) const;
     double getLength2(void) const;
+    bool   getAlongSketchNormal(void) const;
     bool   getCustom(void) const;
     double getXDirection(void) const;
     double getYDirection(void) const;

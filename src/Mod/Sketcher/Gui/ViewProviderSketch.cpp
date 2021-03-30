@@ -948,9 +948,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     doBoxSelection(prvCursorPos, cursorPos, viewer);
                     rubberband->setWorking(false);
 
-                    //disable framebuffer drawing in viewer
-                    const_cast<Gui::View3DInventorViewer *>(viewer)->setRenderType(Gui::View3DInventorViewer::Native);
-
                     // a redraw is required in order to clear the rubberband
                     draw(true,false);
                     const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
@@ -1372,7 +1369,6 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_StartRubberBand: {
             Mode = STATUS_SKETCH_UseRubberBand;
             rubberband->setWorking(true);
-            viewer->setRenderType(Gui::View3DInventorViewer::Image);
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
@@ -6742,21 +6738,21 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(editMarkersRoot);
     edit->EditMarkersMaterials = new SoMaterial;
     edit->EditMarkersMaterials->setName("EditMarkersMaterials");
-    editCurvesRoot->addChild(edit->EditMarkersMaterials);
+    editMarkersRoot->addChild(edit->EditMarkersMaterials);
 
     edit->EditMarkersCoordinate = new SoCoordinate3;
     edit->EditMarkersCoordinate->setName("EditMarkersCoordinate");
-    editCurvesRoot->addChild(edit->EditMarkersCoordinate);
+    editMarkersRoot->addChild(edit->EditMarkersCoordinate);
 
     edit->EditMarkersDrawStyle = new SoDrawStyle;
     edit->EditMarkersDrawStyle->setName("EditMarkersDrawStyle");
     edit->EditMarkersDrawStyle->pointSize = 8 * edit->pixelScalingFactor;
-    editCurvesRoot->addChild(edit->EditMarkersDrawStyle);
+    editMarkersRoot->addChild(edit->EditMarkersDrawStyle);
 
     edit->EditMarkerSet = new SoMarkerSet;
     edit->EditMarkerSet->setName("EditMarkerSet");
     edit->EditMarkerSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", edit->MarkerSize);
-    editCurvesRoot->addChild(edit->EditMarkerSet);
+    editMarkersRoot->addChild(edit->EditMarkerSet);
 
     // stuff for the edit coordinates ++++++++++++++++++++++++++++++++++++++
     SoSeparator *Coordsep = new SoSeparator();

@@ -78,6 +78,11 @@ class _TaskPanel:
             self.choose_dimension
         )
         QtCore.QObject.connect(
+            self.form.cb_order,
+            QtCore.SIGNAL("activated(int)"),
+            self.choose_order
+        )
+        QtCore.QObject.connect(
             self.Timer,
             QtCore.SIGNAL("timeout()"),
             self.update_timer_text
@@ -90,6 +95,10 @@ class _TaskPanel:
 
         self.form.cb_dimension.addItems(
             mesh_gmsh.MeshGmsh.known_element_dimensions
+        )
+
+        self.form.cb_order.addItems(
+            mesh_gmsh.MeshGmsh.known_element_orders
         )
 
         self.get_mesh_params()
@@ -126,11 +135,13 @@ class _TaskPanel:
         self.clmax = self.mesh_obj.CharacteristicLengthMax
         self.clmin = self.mesh_obj.CharacteristicLengthMin
         self.dimension = self.mesh_obj.ElementDimension
+        self.order = self.mesh_obj.ElementOrder
 
     def set_mesh_params(self):
         self.mesh_obj.CharacteristicLengthMax = self.clmax
         self.mesh_obj.CharacteristicLengthMin = self.clmin
         self.mesh_obj.ElementDimension = self.dimension
+        self.mesh_obj.ElementOrder = self.order
 
     def update(self):
         "fills the widgets"
@@ -138,6 +149,8 @@ class _TaskPanel:
         self.form.if_min.setText(self.clmin.UserString)
         index_dimension = self.form.cb_dimension.findText(self.dimension)
         self.form.cb_dimension.setCurrentIndex(index_dimension)
+        index_order = self.form.cb_order.findText(self.order)
+        self.form.cb_order.setCurrentIndex(index_order)
 
     def console_log(self, message="", color="#000000"):
         if (not isinstance(message, bytes)) and (sys.version_info.major < 3):
@@ -167,6 +180,12 @@ class _TaskPanel:
             return
         self.form.cb_dimension.setCurrentIndex(index)
         self.dimension = str(self.form.cb_dimension.itemText(index))  # form returns unicode
+
+    def choose_order(self, index):
+        if index < 0:
+            return
+        self.form.cb_order.setCurrentIndex(index)
+        self.order = str(self.form.cb_order.itemText(index))  # form returns unicode
 
     def get_gmsh_version(self):
         from femmesh import gmshtools

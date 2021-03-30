@@ -65,7 +65,7 @@ class Ellipse(gui_base_original.Creator):
         super(Ellipse, self).Activated(name)
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(name)
+            self.ui.pointUi(title=name, icon="Draft_Ellipse")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rect = trackers.rectangleTracker()

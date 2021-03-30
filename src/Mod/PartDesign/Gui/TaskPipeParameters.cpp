@@ -524,6 +524,11 @@ bool TaskPipeParameters::accept()
     }
 
     try {
+        App::DocumentObject* spine = pcPipe->Spine.getValue();
+        std::vector<std::string> subNames = pcPipe->Spine.getSubValues();
+        App::PropertyLinkT propT(spine, subNames);
+        Gui::cmdAppObjectArgs(pcPipe, "Spine = %s", propT.getPropertyPython());
+
         Gui::cmdAppDocument(pcPipe, "recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());

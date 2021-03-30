@@ -274,6 +274,8 @@ EXPO     [eE][-+]?[0-9]+
 "kV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloVolt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Volt
 "mV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliVolt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Volt
 
+"MS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaSiemens;         yylval.quantity.unitStr = yytext; return UNIT; // mega Siemens
+"kS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloSiemens;         yylval.quantity.unitStr = yytext; return UNIT; // kilo Siemens
 "S"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Siemens;             yylval.quantity.unitStr = yytext; return UNIT; // Siemens (A^2*s^3/kg/m^2)
 "mS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // milli Siemens
 "uS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // micro Siemens

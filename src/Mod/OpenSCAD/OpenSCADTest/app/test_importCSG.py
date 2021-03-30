@@ -26,6 +26,7 @@ import OpenSCAD
 import importCSG
 import tempfile
 import os
+import math
 
 from os.path import join
 
@@ -231,10 +232,35 @@ polyhedron(
         self.assertAlmostEqual (object.Shape.Volume, 1963.4954, 3)
         FreeCAD.closeDocument(doc.Name)
 
-        doc = self.utility_create_scad("translate([0, 30, 0]) rotate_extrude($fn = 80) polygon( points=[[0,0],[8,4],[4,8],[4,12],[12,16],[0,20]] );", "rotate_extrude_no_hole")
+        doc = self.utility_create_scad("translate([0, 30, 0]) rotate_extrude() polygon( points=[[0,0],[8,4],[4,8],[4,12],[12,16],[0,20]] );", "rotate_extrude_no_hole")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
         self.assertAlmostEqual (object.Shape.Volume, 2412.7431, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+        # Bug #4353 - https://tracker.freecadweb.org/view.php?id=4353
+        doc = self.utility_create_scad("rotate_extrude($fn=4, angle=180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_low_fn")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 9.0, 5)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("rotate_extrude($fn=4, angle=-180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_low_fn_negative_angle")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 9.0, 5)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("rotate_extrude(angle=180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_angle")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 4.5*math.pi, 5)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("rotate_extrude(angle=-180) polygon([[0,0],[3,3],[0,3]]);", "rotate_extrude_negative_angle")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, 4.5*math.pi, 5)
         FreeCAD.closeDocument(doc.Name)
        
     def test_import_linear_extrude(self):
@@ -244,22 +270,26 @@ polyhedron(
         self.assertAlmostEqual (object.Shape.Volume, 4000.000, 3)
         FreeCAD.closeDocument(doc.Name)
 
-        doc = self.utility_create_scad("linear_extrude(height = 20, scale = 0.2) square([20, 10], center = true);", "linear_extrude_scale")
-        object = doc.ActiveObject
-        self.assertTrue (object is not None)
-        self.assertAlmostEqual (object.Shape.Volume, 1945.2745, 3)
-        FreeCAD.closeDocument(doc.Name)
-
         doc = self.utility_create_scad("linear_extrude(height = 20, twist = 90) square([20, 10], center = true);", "linear_extrude_twist")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
-        self.assertAlmostEqual (object.Shape.Volume, 3999.9961, 3)
+        self.assertAlmostEqual (object.Shape.Volume, 4000.000, 2)
         FreeCAD.closeDocument(doc.Name)
 
-        doc = self.utility_create_scad("linear_extrude(height = 40, twist = 180, scale=0.25) square([20, 10], center = true);", "linear_extrude_twist")
+        doc = self.utility_create_scad("linear_extrude(height = 20, scale = 0.2) square([20, 10], center = true);", "linear_extrude_scale")
         object = doc.ActiveObject
         self.assertTrue (object is not None)
-        self.assertAlmostEqual (object.Shape.Volume, 4144.9071, 3)
+        h = 20
+        a1 = 20*10
+        a2 = 20*0.2 * 10*0.2
+        expected_volume = (h/3) * (a1+a2+math.sqrt(a1*a2))
+        self.assertAlmostEqual (object.Shape.Volume, expected_volume, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad("linear_extrude(height = 20, twist = 180, scale=0.2) square([20, 10], center = true);", "linear_extrude_twist_scale")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Volume, expected_volume, 2)
         FreeCAD.closeDocument(doc.Name)
 
     def test_import_rotate_extrude_file(self):
@@ -312,6 +342,18 @@ polyhedron(
         self.assertAlmostEqual (object.Shape.Volume, 8.000000, 6)
         FreeCAD.closeDocument(doc.Name)
 
+        # Make sure to test something that isn't just a box (where the bounding box is trivial)
+        doc = self.utility_create_scad("""
+resize(newsize = [0,0,10], auto = [0,0,0]) {
+    sphere($fn = 96, $fa = 12, $fs = 2, r = 8.5);
+}""", "resize_non_uniform_sphere")
+        object = doc.ActiveObject
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.BoundBox.XLength, 2*8.5, 1)
+        self.assertAlmostEqual (object.Shape.BoundBox.YLength, 2*8.5, 1)
+        self.assertAlmostEqual (object.Shape.BoundBox.ZLength, 10.0, 1)
+        FreeCAD.closeDocument(doc.Name)
+
     def test_import_surface(self):
         # Workaround for absolute vs. relative path issue
         # Inside the OpenSCAD file an absolute path name to Surface.dat is used
@@ -357,7 +399,36 @@ polyhedron(
             os.chdir(cwd)
 
     def test_import_projection(self):
-        pass
+        base_shape = "linear_extrude(height=5,center=true,twist=90,scale=0.5){square([1,1],center=true);}"
+        hole = "cube([0.25,0.25,6],center=true);"
+        cut_shape = f"difference() {{ {base_shape} {hole} }}"
+
+        doc = self.utility_create_scad(f"projection(cut=true) {base_shape}", "projection_slice_square")
+        object = doc.getObject("projection_cut")
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Area, 0.75*0.75, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+        doc = self.utility_create_scad(f"projection(cut=true) {cut_shape}", "projection_slice_square_with_hole")
+        object = doc.getObject("projection_cut")
+        self.assertTrue (object is not None)
+        self.assertAlmostEqual (object.Shape.Area, 0.75*0.75 - 0.25*0.25, 3)
+        FreeCAD.closeDocument(doc.Name)
+
+        # Unimplemented functionality: 
+
+        # With cut=false, the twisted unit square projects to a circle of radius sqrt(0.5)
+        #doc = self.utility_create_scad(f"projection(cut=false) {base_shape}", "projection_circle")
+        #object = doc.getObject("projection")
+        #self.assertTrue (object is not None)
+        #self.assertAlmostEqual (object.Shape.Area, 2*math.pi*math.sqrt(2), 3)
+        #FreeCAD.closeDocument(doc.Name)
+
+        #doc = self.utility_create_scad(f"projection(cut=false) {cut_shape}", "projection_circle_with_hole")
+        #object = doc.getObject("projection")
+        #self.assertTrue (object is not None)
+        #self.assertAlmostEqual (object.Shape.Area, 2*math.pi*math.sqrt(0.5) - 0.125, 3)
+        #FreeCAD.closeDocument(doc.Name)
 
     def test_import_hull(self):
         pass

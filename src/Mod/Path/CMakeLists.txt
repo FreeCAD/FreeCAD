@@ -159,6 +159,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/rml_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
+    PathScripts/post/uccnc_post.py
 )
 
 SET(Tools_Bit_SRCS

@@ -15,7 +15,7 @@
 #   License along with FCGear; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 
-from math import cos, sin, tan, sqrt, radians, acos, atan, asin, degrees
+from math import cos, sin, tan, sqrt, radians, atan, asin, degrees
 
 
 def CreateSprocket(w, P, N, Dr):
@@ -31,8 +31,6 @@ def CreateSprocket(w, P, N, Dr):
     """
     Ds = 1.005 * Dr + (0.003 * 25.4)
     R = Ds / 2
-    alpha = 35 + 60/N
-    beta = 18 - 56 / N
     M = 0.8 * Dr * cos(radians(35) + radians(60/N))
     T = 0.8 * Dr * sin(radians(35) + radians(60/N))
     E = 1.3025 * Dr + (0.0015 * 25.4)
@@ -41,8 +39,8 @@ def CreateSprocket(w, P, N, Dr):
     F = Dr * (0.8 * cos(radians(18) - radians(56)/N) + 1.4 *
               cos(radians(17) - radians(64) / N) - 1.3025) - (0.0015 * 25.4)
     PD = P / (sin(radians(180)/N))
-    H = sqrt(F**2 - (1.4 * Dr - P/2)**2)
-    OD = P * (0.6 + 1/tan(radians(180/N)))
+    # H = sqrt(F**2 - (1.4 * Dr - P/2)**2)
+    # OD = P * (0.6 + 1/tan(radians(180/N)))
 
     # The sprocket tooth gullet consists of four segments
     x0 = 0
@@ -52,7 +50,6 @@ def CreateSprocket(w, P, N, Dr):
     alpha = 35 + 60/N
     x1 = -R * cos(radians(alpha))
     y1 = PD/2 - R * sin(radians(alpha))
-    arc_end = [x1, y1]
 
     # ---- Segment 2 -----
     alpha = 35 + 60/N

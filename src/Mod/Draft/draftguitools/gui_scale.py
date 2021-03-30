@@ -99,7 +99,7 @@ class Scale(gui_base_original.Modifier):
             groups.get_group_contents(self.selected_objects)
         self.selected_subelements = Gui.Selection.getSelectionEx()
         self.refs = []
-        self.ui.pointUi(self.name)
+        self.ui.pointUi(title=self.name, icon="Draft_Scale")
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()

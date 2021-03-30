@@ -121,6 +121,7 @@ public:
     static Unit ElectricalInductance;
     static Unit ElectricalConductance;
     static Unit ElectricalResistance;
+    static Unit ElectricalConductivity;
     static Unit AmountOfSubstance;
     static Unit LuminousIntensity;
 

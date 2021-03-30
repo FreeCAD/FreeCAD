@@ -83,6 +83,14 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
+    void process(int method, App::Document* doc, const std::list<App::SubObjectT>&);
+    void saveParameters(int method);
+    void setFaceColors(int method, App::Document* doc, App::DocumentObject* obj);
+    QString getMeshingParameters(int method, App::DocumentObject* obj) const;
+    QString getStandardParameters(App::DocumentObject* obj) const;
+    QString getMefistoParameters() const;
+    QString getNetgenParameters() const;
+    std::vector<App::Color> getUniqueColors(const std::vector<App::Color>& colors) const;
 
 private Q_SLOTS:
     void meshingMethod(int id);

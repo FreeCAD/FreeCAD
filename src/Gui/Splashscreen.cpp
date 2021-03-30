@@ -40,13 +40,7 @@
 # include <Inventor/C/basic.h>
 #endif
 
-#if QT_VERSION < 0x050000
-# include <QGLContext>
-#endif
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QScreen>
-#endif
+#include <QScreen>
 
 #include <LibraryVersions.h>
 #include <zlib.h>
@@ -143,16 +137,10 @@ public:
                 return;
         }
 
-#if QT_VERSION < 0x050000
-        const QGLContext* ctx = QGLContext::currentContext();
-        if (!ctx)
-#endif
-        {
-            splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
-            QMutex mutex;
-            QMutexLocker ml(&mutex);
-            QWaitCondition().wait(&mutex, 50);
-        }
+        splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
+        QMutex mutex;
+        QMutexLocker ml(&mutex);
+        QWaitCondition().wait(&mutex, 50);
     }
 
 private:
@@ -239,11 +227,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     setModal(true);
     ui->setupUi(this);
     layout()->setSizeConstraint(QLayout::SetFixedSize);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QRect rect = QApplication::primaryScreen()->availableGeometry();
-#else
-    QRect rect = QApplication::desktop()->availableGeometry();
-#endif
     QPixmap image = getMainWindow()->splashImage();
 
     // Make sure the image is not too big
@@ -258,23 +242,6 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
         image = image.scaled(width, height);
     }
     ui->labelSplashPicture->setPixmap(image);
-//    if (showLic) { // currently disabled. Additional license blocks are always shown.
-        QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
-        // any additional piece of text to be added after the main license text goes below.
-        // Please set title in <h2> tags, license text in <p> tags
-        // and add an <hr/> tag at the end to nicely separate license blocks
-#ifdef _USE_3DCONNEXION_SDK
-        info += QString::fromLatin1(
-            "<h2>3D Mouse Support</h2>"
-            "<p>Development tools and related technology provided under license from 3Dconnexion."
-            "(c) 1992 - 2012 3Dconnexion. All rights reserved</p>"
-            "<hr/>"
-            );
-#endif
-        QString lictext = ui->textBrowserLicense->toHtml();
-        lictext.replace(QString::fromLatin1("SUCH DAMAGES.<hr/>"),info);
-        ui->textBrowserLicense->setHtml(lictext);
-//    }
     ui->tabWidget->setCurrentIndex(0); // always start on the About tab
 
     setupLabels();
@@ -293,174 +260,6 @@ AboutDialog::~AboutDialog()
     // no need to delete child widgets, Qt does it all for us
     delete ui;
 }
-
-class SystemInfo {
-public:
-static QString getOperatingSystem()
-{
-#if QT_VERSION >= 0x050400
-    return QSysInfo::prettyProductName();
-
-#else // < 0x050400
-
-#if defined (Q_OS_WIN32)
-    switch(QSysInfo::windowsVersion())
-    {
-        case QSysInfo::WV_NT:
-            return QString::fromLatin1("Windows NT");
-        case QSysInfo::WV_2000:
-            return QString::fromLatin1("Windows 2000");
-        case QSysInfo::WV_XP:
-            return QString::fromLatin1("Windows XP");
-        case QSysInfo::WV_2003:
-            return QString::fromLatin1("Windows Server 2003");
-        case QSysInfo::WV_VISTA:
-            return QString::fromLatin1("Windows Vista");
-        case QSysInfo::WV_WINDOWS7:
-            return QString::fromLatin1("Windows 7");
-#if QT_VERSION >= 0x040800
-        case QSysInfo::WV_WINDOWS8:
-            return QString::fromLatin1("Windows 8");
-#endif
-#if ((QT_VERSION >= 0x050200) || (QT_VERSION >= 0x040806 && QT_VERSION < 0x050000))
-        case QSysInfo::WV_WINDOWS8_1:
-            return QString::fromLatin1("Windows 8.1");
-#endif
-#if QT_VERSION >= 0x040807
-        case QSysInfo::WV_WINDOWS10:
-            return QString::fromLatin1("Windows 10");
-#endif
-        default:
-            return QString::fromLatin1("Windows");
-    }
-#elif defined (Q_OS_MAC)
-    switch(QSysInfo::MacVersion())
-    {
-        case QSysInfo::MV_10_3:
-            return QString::fromLatin1("Mac OS X 10.3");
-        case QSysInfo::MV_10_4:
-            return QString::fromLatin1("Mac OS X 10.4");
-        case QSysInfo::MV_10_5:
-            return QString::fromLatin1("Mac OS X 10.5");
-#if QT_VERSION >= 0x040700
-        case QSysInfo::MV_10_6:
-            return QString::fromLatin1("Mac OS X 10.6");
-#endif
-#if QT_VERSION >= 0x040800
-        case QSysInfo::MV_10_7:
-            return QString::fromLatin1("Mac OS X 10.7");
-        case QSysInfo::MV_10_8:
-            return QString::fromLatin1("Mac OS X 10.8");
-        case QSysInfo::MV_10_9:
-            return QString::fromLatin1("Mac OS X 10.9");
-        case QSysInfo::MV_10_10:
-            return QString::fromLatin1("Mac OS X 10.10");
-#endif
-#if QT_VERSION >= 0x050500
-        case QSysInfo::MV_10_11:
-            return QString::fromLatin1("Mac OS X 10.11");
-#endif
-#if QT_VERSION >= 0x050600
-        case QSysInfo::MV_10_12:
-            return QString::fromLatin1("Mac OS X 10.12");
-#endif
-        default:
-            return QString::fromLatin1("Mac OS X");
-    }
-#elif defined (Q_OS_LINUX)
-    QString exe(QLatin1String("lsb_release"));
-    QStringList args;
-    args << QLatin1String("-ds");
-    QProcess proc;
-    proc.setEnvironment(QProcess::systemEnvironment());
-    proc.start(exe, args);
-    if (proc.waitForStarted() && proc.waitForFinished()) {
-        QByteArray info = proc.readAll();
-        info.replace('\n',"");
-        return QString::fromLatin1((const char*)info);
-    }
-
-    return QString::fromLatin1("Linux");
-#elif defined (Q_OS_UNIX)
-    return QString::fromLatin1("UNIX");
-#else
-    return QString();
-#endif
-
-#endif // >= 0x050400
-}
-
-static int getWordSizeOfOS()
-{
-#if defined(Q_OS_WIN64)
-    return 64; // 64-bit process running on 64-bit windows
-#elif defined(Q_OS_WIN32)
-
-    // determine if 32-bit process running on 64-bit windows in WOW64 emulation
-    // or 32-bit process running on 32-bit windows
-    // default bIsWow64 to false for 32-bit process on 32-bit windows
-
-    BOOL bIsWow64 = false; // must default to false
-    typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
-
-    LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
-        GetModuleHandle("kernel32"), "IsWow64Process");
-
-    if (NULL != fnIsWow64Process) {
-        if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
-            assert(false); // something went majorly wrong
-        }
-    }
-    return bIsWow64 ? 64 : 32;
-
-#elif defined (Q_OS_LINUX)
-    // http://stackoverflow.com/questions/246007/how-to-determine-whether-a-given-linux-is-32-bit-or-64-bit
-    QString exe(QLatin1String("getconf"));
-    QStringList args;
-    args << QLatin1String("LONG_BIT");
-    QProcess proc;
-    proc.setEnvironment(QProcess::systemEnvironment());
-    proc.start(exe, args);
-    if (proc.waitForStarted() && proc.waitForFinished()) {
-        QByteArray info = proc.readAll();
-        info.replace('\n',"");
-        return info.toInt();
-    }
-
-    return 0; // failed
-
-#elif defined (Q_OS_UNIX) || defined (Q_OS_MAC)
-    QString exe(QLatin1String("uname"));
-    QStringList args;
-    args << QLatin1String("-m");
-    QProcess proc;
-    proc.setEnvironment(QProcess::systemEnvironment());
-    proc.start(exe, args);
-    if (proc.waitForStarted() && proc.waitForFinished()) {
-        QByteArray info = proc.readAll();
-        info.replace('\n',"");
-        if (info.indexOf("x86_64") >= 0)
-            return 64;
-        else if (info.indexOf("amd64") >= 0)
-            return 64;
-        else if (info.indexOf("ia64") >= 0)
-            return 64;
-        else if (info.indexOf("ppc64") >= 0)
-            return 64;
-        else if (info.indexOf("i386") >= 0)
-            return 32;
-        else if (info.indexOf("i686") >= 0)
-            return 32;
-        else if (info.indexOf("x86") >= 0)
-            return 32;
-    }
-
-    return 0; // failed
-#else
-    return 0; // unknown
-#endif
-}
-};
 
 void AboutDialog::showOrHideImage(const QRect& rect)
 {
@@ -519,7 +318,7 @@ void AboutDialog::setupLabels()
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QString::fromLatin1("Unknown"), SystemInfo::getOperatingSystem());
+    os.replace(QString::fromLatin1("Unknown"), QSysInfo::prettyProductName());
     ui->labelBuildOS->setText(os);
 
     QString platform = ui->labelBuildPlatform->text();
@@ -543,8 +342,22 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionHash");
     if (it != config.end()) {
         QString hash = ui->labelBuildHash->text();
-        hash.replace(QString::fromLatin1("Unknown"), QString::fromLatin1(it->second.c_str()));
+        hash.replace(QString::fromLatin1("Unknown"), QString::fromLatin1(it->second.c_str()).left(7)); // Use the 7-char abbreviated hash
         ui->labelBuildHash->setText(hash);
+        if (auto url_itr = config.find("BuildRepositoryURL"); url_itr != config.end()) {
+            auto url = QString::fromStdString(url_itr->second);
+
+            if (int space = url.indexOf(QChar::fromLatin1(' ')); space != -1)
+                url = url.left(space); // Strip off the branch information to get just the repo
+
+            if (url == QString::fromUtf8("Unknown"))
+                url = QString::fromUtf8("https://github.com/FreeCAD/FreeCAD"); // Just take a guess
+
+            // This may only create valid URLs for Github, but some other hosts use the same format so give it a shot...
+            auto https = url.replace(QString::fromUtf8("git://"), QString::fromUtf8("https://"));
+            https.replace(QString::fromUtf8(".git"), QString::fromUtf8(""));
+            ui->labelBuildHash->setUrl(https + QString::fromUtf8("/commit/") + QString::fromStdString(it->second));
+        }
     }
     else {
         ui->labelHash->hide();
@@ -598,7 +411,7 @@ void AboutDialog::showCredits()
                 //: Header for the list of companies/organizations in the Credits list.
                 creditsHTML += tr("Organizations");
                 creditsHTML += QString::fromLatin1("</h2><ul>");
-            } 
+            }
             else {
                 creditsHTML += QString::fromLatin1("<li>") + line + QString::fromLatin1("</li>");
             }
@@ -614,24 +427,48 @@ void AboutDialog::showLicenseInformation()
         .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
     QFile licenseFile(licenseFileURL);
 
-    if (!licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return; // Leave the existing license placeholder there if we can't find our license html file
+    if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QString licenseHTML = QString::fromUtf8(licenseFile.readAll());
+        const auto placeholder = QString::fromUtf8("<!--PLACEHOLDER_FOR_ADDITIONAL_LICENSE_INFORMATION-->");
+        licenseHTML.replace(placeholder, getAdditionalLicenseInformation());
+
+        ui->tabWidget->removeTab(1); // Hide the license placeholder widget
+
+        QWidget* tab_license = new QWidget();
+        tab_license->setObjectName(QString::fromLatin1("tab_license"));
+        ui->tabWidget->addTab(tab_license, tr("License"));
+        QVBoxLayout* hlayout = new QVBoxLayout(tab_license);
+        QTextBrowser* textField = new QTextBrowser(tab_license);
+        textField->setOpenExternalLinks(true);
+        textField->setOpenLinks(true);
+        hlayout->addWidget(textField);
+
+        textField->setHtml(licenseHTML);
     }
+    else {
+        QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
+        info += getAdditionalLicenseInformation();
+        QString lictext = ui->textBrowserLicense->toHtml();
+        lictext.replace(QString::fromLatin1("SUCH DAMAGES.<hr/>"), info);
+        ui->textBrowserLicense->setHtml(lictext);
+    }
+}
 
-    ui->tabWidget->removeTab (1); // Hide the license placeholder widget
-
-    QWidget* tab_license = new QWidget();
-    tab_license->setObjectName(QString::fromLatin1("tab_license"));
-    ui->tabWidget->addTab(tab_license, tr("License"));
-    QVBoxLayout* hlayout = new QVBoxLayout(tab_license);
-    QTextBrowser* textField = new QTextBrowser(tab_license);
-    textField->setOpenExternalLinks(true);
-    textField->setOpenLinks(true);
-    hlayout->addWidget(textField);
-
-    QString licenseHTML = QString::fromUtf8(licenseFile.readAll());
-    textField->setHtml(licenseHTML);
-
+QString AboutDialog::getAdditionalLicenseInformation() const
+{
+    // Any additional piece of text to be added after the main license text goes below.
+    // Please set title in <h2> tags, license text in <p> tags
+    // and add an <hr/> tag at the end to nicely separate license blocks
+    QString info;
+#ifdef _USE_3DCONNEXION_SDK
+    info += QString::fromUtf8(
+        "<h2>3D Mouse Support</h2>"
+        "<p>Development tools and related technology provided under license from 3Dconnexion.<br/>"
+        "Copyright &#169; 1992&ndash;2012 3Dconnexion. All rights reserved.</p>"
+        "<hr/>"
+    );
+#endif
+    return info;
 }
 
 void AboutDialog::showLibraryInformation()
@@ -862,12 +699,7 @@ void AboutDialog::on_copyButton_clicked()
         }
     }
 
-    str << "OS: " << SystemInfo::getOperatingSystem() << deskInfo << '\n';
-
-    int wordSize = SystemInfo::getWordSizeOfOS();
-    if (wordSize > 0) {
-        str << "Word size of OS: " << wordSize << "-bit\n";
-    }
+    str << "OS: " << QSysInfo::prettyProductName() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
     str << "Version: " << major << "." << minor << "." << build;
     char *appimage = getenv("APPIMAGE");

@@ -867,6 +867,50 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="2">
+         <widget class="QLabel" name="label_27">
+          <property name="text">
+           <string>Global</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="3">
+         <widget class="Gui::PrefLineEdit" name="lineEdit_21">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>G</string>
+          </property>
+          <property name="maxLength">
+           <number>1</number>
+          </property>
+          <property name="placeholderText">
+           <string/>
+          </property>
+          <property name="clearButtonEnabled" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>inCommandShortcutGlobal</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

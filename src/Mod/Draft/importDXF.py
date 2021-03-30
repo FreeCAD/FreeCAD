@@ -55,7 +55,7 @@ import six
 import FreeCAD
 import Part, Draft, Mesh
 import DraftVecUtils, DraftGeomUtils, WorkingPlane
-from Draft import _Dimension, _ViewProviderDimension
+from Draft import _Dimension
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
@@ -2573,7 +2573,9 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     newob = doc.addObject("App::FeaturePython", "Dimension")
                     lay.addObject(newob)
                     _Dimension(newob)
-                    _ViewProviderDimension(newob.ViewObject)
+                    if FreeCAD.GuiUp:
+                        from Draft import _ViewProviderDimension
+                        _ViewProviderDimension(newob.ViewObject)
                     newob.Start = p1
                     newob.End = p2
                     newob.Dimline = pt

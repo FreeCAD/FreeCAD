@@ -92,7 +92,7 @@ def setup(doc=None, solvertype="elmer"):
         )[0]
         eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_object)
         eq_obj.LinearSolverType = "Direct"
-        # direct solver was used in the turorial, thus used here too
+        # direct solver was used in the tutorial, thus used here too
         # the iterative is much faster and gives the same results
         eq_obj.DoFrequencyAnalysis = True
         eq_obj.CalculateStresses = True

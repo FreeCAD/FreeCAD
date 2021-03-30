@@ -15,6 +15,7 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Stream.h>
 #include <Base/Vector3D.h>
 #include "dxf.h"
 
@@ -47,7 +48,8 @@ m_layerName("none")
     // start the file
     m_fail = false;
     m_version = 12;
-    m_ofs = new ofstream(filepath, ios::out);
+    Base::FileInfo fi(filepath);
+    m_ofs = new Base::ofstream(fi, ios::out);
     m_ssBlock     = new std::ostringstream();
     m_ssBlkRecord = new std::ostringstream();
     m_ssEntity    = new std::ostringstream();

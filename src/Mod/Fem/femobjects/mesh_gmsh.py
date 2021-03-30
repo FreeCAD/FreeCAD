@@ -48,17 +48,17 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         "Delaunay",
         "Frontal",
         "BAMG",
-        "DelQuad"
+        "DelQuad",
+        "Packing Parallelograms"
     ]
     known_mesh_algorithm_3D = [
         "Automatic",
         "Delaunay",
         "New Delaunay",
         "Frontal",
-        "Frontal Delaunay",
-        "Frontal Hex",
         "MMG3D",
-        "R-tree"
+        "R-tree",
+        "HXT"
     ]
 
     def __init__(self, obj):
@@ -67,6 +67,9 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
 
     def onDocumentRestored(self, obj):
         self.add_properties(obj)
+        # refresh the list of known 3D algorithms for existing meshes
+        # since some algos are meanwhile deprecated and new algos are available
+        obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
 
     def add_properties(self, obj):
         if not hasattr(obj, "MeshBoundaryLayerList"):

@@ -31,6 +31,7 @@
 
 class TopoDS_Shape;
 class SMESH_Gen;
+class SMESH_Mesh;
 
 namespace Mesh { class MeshObject; }
 namespace MeshPart {
@@ -134,6 +135,10 @@ public:
     Mesh::MeshObject* createMesh() const;
 
 private:
+    Mesh::MeshObject* createStandard() const;
+    Mesh::MeshObject* createFrom(SMESH_Mesh*) const;
+
+private:
     const TopoDS_Shape& shape;
     Method method;
     double maxLength;
@@ -155,7 +160,6 @@ private:
     bool allowquad;
 #endif
     std::vector<uint32_t> colors;
-    struct Vertex;
 
     static SMESH_Gen *_mesh_gen;
 };

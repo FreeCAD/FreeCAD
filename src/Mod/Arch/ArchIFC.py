@@ -25,7 +25,7 @@
 and attributes of Arch/BIM objects.
 """
 
-import FreeCAD, os, json
+import FreeCAD,json
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
