@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <Inventor/lists/SoTypeList.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
@@ -133,6 +134,8 @@ public:
                     bool ontop,
                     bool alt);
 
+  void initAction();
+
   static SoCallbackAction::Response preSeparator(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postSeparator(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response preAnnotation(void *, SoCallbackAction *action, const SoNode * node);
@@ -215,7 +218,8 @@ public:
   FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, CacheSensor> cachetable;
   FC_COIN_THREAD_LOCAL std::unordered_map<const SoNode *, VCacheSensor> vcachetable;
 
-  SoCallbackAction action;
+  SoCallbackAction *action;
+  int shapetypeid;
   VertexCachePtr vcache;
 
   std::unordered_map<std::string, SelectionPathMap> selcaches;
@@ -236,6 +240,22 @@ public:
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
+static FC_COIN_THREAD_LOCAL int _shapetypeid = -1;
+
+static int
+getMaxShapeTypeId()
+{
+  SoTypeList derivedtypes;
+  int n = SoType::getAllDerivedFrom(SoShape::getClassTypeId(), derivedtypes);
+  int res = 0;
+  for (int i=0; i<n; ++i) {
+    int idx = static_cast<int>(derivedtypes[i].getData());
+    if (res < idx)
+      res = idx;
+  }
+  return res;
+}
+
 SoFCRenderCacheManagerP::SoFCRenderCacheManagerP()
 {
   this->initmaterial = false;
@@ -243,33 +263,57 @@ SoFCRenderCacheManagerP::SoFCRenderCacheManagerP()
   this->selid = 0;
   this->sceneid = 0;
   this->annotation = 0;
-  this->action.addPreCallback(SoFCSelectionRoot::getClassTypeId(), &preSeparator, this);
-  this->action.addPostCallback(SoFCSelectionRoot::getClassTypeId(), &postSeparator, this);
-  this->action.addPreCallback(SoAnnotation::getClassTypeId(), &preAnnotation, this);
-  this->action.addPostCallback(SoAnnotation::getClassTypeId(), &postAnnotation, this);
-  this->action.addPreCallback(SoFCPathAnnotation::getClassTypeId(), &prePathAnnotation, this);
-  this->action.addPostCallback(SoFCPathAnnotation::getClassTypeId(), &postPathAnnotation, this);
-  this->action.addPreCallback(SoShape::getClassTypeId(), &preShape, this);
-  this->action.addPostCallback(SoShape::getClassTypeId(), &postShape, this);
-  this->action.addPostCallback(SoTexture::getClassTypeId(), &postTexture, this);
-  this->action.addPostCallback(SoResetTransform::getClassTypeId(), &postResetTransform, this);
-  this->action.addPostCallback(SoTextureMatrixTransform::getClassTypeId(), &postTextureTransform, this);
-  this->action.addPostCallback(SoTexture2Transform::getClassTypeId(), &postTextureTransform, this);
-  this->action.addPostCallback(SoTexture3Transform::getClassTypeId(), &postTextureTransform, this);
-  this->action.addPostCallback(SoLightModel::getClassTypeId(), &postLightModel, this);
-  this->action.addPostCallback(SoMaterial::getClassTypeId(), &postMaterial, this);
-  this->action.addPostCallback(SoDepthBuffer::getClassTypeId(), &postDepthBuffer, this);
-  this->action.addPostCallback(SoLight::getClassTypeId(), &postLight, this);
+  this->action = nullptr;
+  this->shapetypeid = 0;
 
-  this->action.addTriangleCallback(SoShape::getClassTypeId(), &addTriangle, this);
-  this->action.addLineSegmentCallback(SoShape::getClassTypeId(), &addLine, this);
-  this->action.addPointCallback(SoShape::getClassTypeId(), &addPoint, this);
-
+  if (_shapetypeid < 0) {
+    SoCallbackAction::addMethod(SoShape::getClassTypeId(),
+        [](SoAction *action, SoNode *node) {
+            if (_shapetypeid < static_cast<int>(node->getTypeId().getData())) {
+                node->touch(); // make sure to revisit
+                _shapetypeid = 0;
+            }
+            SoNode::callbackS(action, node);
+        }
+    );
+  }
+  initAction();
   this->renderer = new SoFCRenderer;
+}
+
+void SoFCRenderCacheManagerP::initAction()
+{
+  if (this->action && this->shapetypeid && _shapetypeid == this->shapetypeid)
+    return;
+  delete this->action;
+  _shapetypeid = this->shapetypeid = getMaxShapeTypeId();
+  this->action = new SoCallbackAction;
+  this->action->addPreCallback(SoFCSelectionRoot::getClassTypeId(), &preSeparator, this);
+  this->action->addPostCallback(SoFCSelectionRoot::getClassTypeId(), &postSeparator, this);
+  this->action->addPreCallback(SoAnnotation::getClassTypeId(), &preAnnotation, this);
+  this->action->addPostCallback(SoAnnotation::getClassTypeId(), &postAnnotation, this);
+  this->action->addPreCallback(SoFCPathAnnotation::getClassTypeId(), &prePathAnnotation, this);
+  this->action->addPostCallback(SoFCPathAnnotation::getClassTypeId(), &postPathAnnotation, this);
+  this->action->addPreCallback(SoShape::getClassTypeId(), &preShape, this);
+  this->action->addPostCallback(SoShape::getClassTypeId(), &postShape, this);
+  this->action->addPostCallback(SoTexture::getClassTypeId(), &postTexture, this);
+  this->action->addPostCallback(SoResetTransform::getClassTypeId(), &postResetTransform, this);
+  this->action->addPostCallback(SoTextureMatrixTransform::getClassTypeId(), &postTextureTransform, this);
+  this->action->addPostCallback(SoTexture2Transform::getClassTypeId(), &postTextureTransform, this);
+  this->action->addPostCallback(SoTexture3Transform::getClassTypeId(), &postTextureTransform, this);
+  this->action->addPostCallback(SoLightModel::getClassTypeId(), &postLightModel, this);
+  this->action->addPostCallback(SoMaterial::getClassTypeId(), &postMaterial, this);
+  this->action->addPostCallback(SoDepthBuffer::getClassTypeId(), &postDepthBuffer, this);
+  this->action->addPostCallback(SoLight::getClassTypeId(), &postLight, this);
+
+  this->action->addTriangleCallback(SoShape::getClassTypeId(), &addTriangle, this);
+  this->action->addLineSegmentCallback(SoShape::getClassTypeId(), &addLine, this);
+  this->action->addPointCallback(SoShape::getClassTypeId(), &addPoint, this);
 }
 
 SoFCRenderCacheManagerP::~SoFCRenderCacheManagerP()
 {
+  delete this->action;
   delete this->renderer;
 }
 
@@ -322,10 +366,10 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
                                      bool ontop)
 {
   PRIVATE(this)->caches.clear();
-  SoState * state = PRIVATE(this)->action.getState();
+  SoState * state = PRIVATE(this)->action->getState();
   if (ontop)
     SoFCSwitch::setOverrideSwitch(state, true);
-  PRIVATE(this)->action.apply(path);
+  PRIVATE(this)->action->apply(path);
   if (ontop)
     SoFCSwitch::setOverrideSwitch(state, false);
   if (PRIVATE(this)->caches.size()) {
@@ -355,10 +399,10 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
     return;
 
   self->caches.clear();
-  SoState * state = self->action.getState();
+  SoState * state = self->action->getState();
   if (sensor->ontop)
     SoFCSwitch::setOverrideSwitch(state, true);
-  self->action.apply(path);
+  self->action->apply(path);
   if (sensor->ontop)
     SoFCSwitch::setOverrideSwitch(state, false);
 
@@ -659,7 +703,8 @@ SoFCRenderCacheManager::render(SoGLRenderAction * action)
     PRIVATE(this)->sceneid = path->getTail()->getNodeId();
     PRIVATE(this)->caches.clear();
     CoinPtr<SoPath> pathCopy(path->copy());
-    PRIVATE(this)->action.apply(pathCopy);
+    PRIVATE(this)->initAction();
+    PRIVATE(this)->action->apply(pathCopy);
     PRIVATE(this)->renderer->setScene(PRIVATE(this)->caches);
     PRIVATE(this)->caches.clear();
     PRIVATE(this)->initmaterial = false;
