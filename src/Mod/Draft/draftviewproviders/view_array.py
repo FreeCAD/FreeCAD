@@ -60,8 +60,7 @@ class ViewProviderDraftArray(ViewProviderDraft):
                 else:
                     c = vobj.Object.Base.ViewObject.ShapeColor
                     c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
-                    for f in vobj.Object.Base.Shape.Faces:
-                        colors.append(c)
+                    colors += [c] * len(vobj.Object.Base.Shape.Faces)
         if colors:
             n = 1
             if hasattr(vobj.Object,"ArrayType"):
