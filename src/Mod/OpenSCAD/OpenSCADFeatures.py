@@ -434,15 +434,6 @@ class Twist:
 
                     auxiliary_spine = Part.makeHelix(pitch, height, radius, 0.0, left_handed)
 
-                    # OCC versions before 7.5 had a problem with using a helix as the auxilliary spine, so approximate
-                    # it piecewise
-                    occ_version = Part.OCC_VERSION.split(".")
-                    if int(occ_version[0]) <= 7 and int(occ_version[1]) < 5:
-                        num_points = int(max(3,num_revolutions * 36)) # Every ten degrees is adequate
-                        wire = auxiliary_spine.Wires[0]
-                        points = wire.discretize(Number=num_points)
-                        auxiliary_spine = Part.makePolygon(points)
-                    
                 faces = [lower_face,upper_face]
                 for wire1,wire2 in zip(lower_face.Wires,upper_face.Wires):
                     pipe_shell = Part.BRepOffsetAPI.MakePipeShell(spine)
