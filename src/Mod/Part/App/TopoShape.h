@@ -258,6 +258,9 @@ public:
     TopoDS_Shape makeLongHelix(Standard_Real pitch, Standard_Real height,
         Standard_Real radius, Standard_Real angle=0,
         Standard_Boolean left=Standard_False) const;
+    TopoDS_Shape makeSpiralHelix(Standard_Real radiusbottom, Standard_Real radiustop,
+        Standard_Real height, Standard_Real nbturns=1, Standard_Real breakperiod=1,
+        Standard_Boolean left=Standard_False) const;
     TopoDS_Shape makeThread(Standard_Real pitch, Standard_Real depth,
         Standard_Real height, Standard_Real radius) const;
     TopoDS_Shape makeLoft(const TopTools_ListOfShape& profiles, Standard_Boolean isSolid,

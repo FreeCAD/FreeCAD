@@ -181,7 +181,7 @@ CmdPartPointsFromMesh::CmdPartPointsFromMesh()
     sToolTipText  = QT_TR_NOOP("Create selectable points object from selected mesh object");
     sWhatsThis    = "Part_PointsFromMesh";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Points_from_Mesh";
+    sPixmap       = "Part_PointsFromMesh";
 }
 
 void CmdPartPointsFromMesh::activated(int iMsg)

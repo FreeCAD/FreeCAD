@@ -121,11 +121,11 @@ void PropertyItem::onChange()
     if(hasExpression()) {
         for(auto child : childItems) {
             if(child && child->hasExpression())
-                child->setExpression(boost::shared_ptr<App::Expression>());
+                child->setExpression(std::shared_ptr<App::Expression>());
         }
         for(auto item=parentItem;item;item=item->parentItem) {
             if(item->hasExpression())
-                item->setExpression(boost::shared_ptr<App::Expression>());
+                item->setExpression(std::shared_ptr<App::Expression>());
         }
     }
 }
@@ -537,7 +537,7 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
-        if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
+        if (role == Qt::BackgroundRole || role == Qt::ForegroundRole) {
             if(PropertyView::showAll()
                 && propertyItems.size() == 1
                 && propertyItems.front()->testStatus(App::Property::PropDynamic)
@@ -549,11 +549,13 @@ QVariant PropertyItem::data(int column, int role) const
             }
             return QVariant();
         }
-        if (role == Qt::DisplayRole)
+        if (role == Qt::DisplayRole) {
             return displayName();
+        }
         // no properties set
-        if (propertyItems.empty())
+        if (propertyItems.empty()) {
             return QVariant();
+        }
         else if (role == Qt::ToolTipRole) {
             if(!PropertyView::showAll())
                 return toolTip(propertyItems[0]);
@@ -563,17 +565,17 @@ QVariant PropertyItem::data(int column, int role) const
             if(doc.size())
                 return type + QLatin1String("\n\n") + doc;
             return type;
-        } else if (role == Qt::TextColorRole && linked)
-            return QVariant::fromValue(QColor(0,0x80,0));
-        else
-            return QVariant();
+        }
+
+        return QVariant();
     }
     else {
         // no properties set
         if (propertyItems.empty()) {
             PropertyItem* parent = this->parent();
-            if (!parent || !parent->parent())
+            if (!parent || !parent->parent()) {
                 return QVariant();
+            }
             if (role == Qt::EditRole) {
                 return parent->property(qPrintable(objectName()));
             }
@@ -585,27 +587,33 @@ QVariant PropertyItem::data(int column, int role) const
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
             } 
-            else if( role == Qt::TextColorRole) {
-                if(hasExpression())
+            else if (role == Qt::ForegroundRole) {
+                if (hasExpression())
                     return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
                 return QVariant();
-            } else
-                return QVariant();
+            }
+
+            return QVariant();
         }
-        if (role == Qt::EditRole)
+        if (role == Qt::EditRole) {
             return value(propertyItems[0]);
-        else if (role == Qt::DecorationRole)
+        }
+        else if (role == Qt::DecorationRole) {
             return decoration(value(propertyItems[0]));
-        else if (role == Qt::DisplayRole)
+        }
+        else if (role == Qt::DisplayRole) {
             return toString(value(propertyItems[0]));
-        else if (role == Qt::ToolTipRole)
+        }
+        else if (role == Qt::ToolTipRole) {
             return toolTip(propertyItems[0]);
-        else if( role == Qt::TextColorRole) {
-            if(hasExpression())
+        }
+        else if( role == Qt::ForegroundRole) {
+            if (hasExpression())
                 return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
             return QVariant();
-        } else
-            return QVariant();
+        }
+
+        return QVariant();
     }
 }
 
@@ -1043,7 +1051,8 @@ void PropertyUnitItem::setValue(const QVariant& value)
             return;
         const Base::Quantity& val = value.value<Base::Quantity>();
 
-        QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue()).arg(val.getUnit().getString()); 
+        QString unit = QString::fromLatin1("'%1 %2'").arg(val.getValue(),0,'f',decimals())
+                                                     .arg(val.getUnit().getString());
         setPropertyValue(unit);
     }
 }
@@ -1635,9 +1644,9 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
     Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
     QString data = QString::fromLatin1("(%1, %2, %3)")
-                    .arg(x.getValue())
-                    .arg(y.getValue())
-                    .arg(z.getValue());
+                    .arg(x.getValue(),0,'f',decimals())
+                    .arg(y.getValue(),0,'f',decimals())
+                    .arg(z.getValue(),0,'f',decimals());
     setPropertyValue(data);
 }
 
@@ -2362,13 +2371,13 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     QString data = QString::fromLatin1("App.Placement("
                                       "App.Vector(%1,%2,%3),"
                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")
-                    .arg(pos.x)
-                    .arg(pos.y)
-                    .arg(pos.z)
-                    .arg(rot_axis.x)
-                    .arg(rot_axis.y)
-                    .arg(rot_axis.z)
-                    .arg(rot_angle,0);
+                    .arg(pos.x, 0, 'f', decimals())
+                    .arg(pos.y, 0, 'f', decimals())
+                    .arg(pos.z, 0, 'f', decimals())
+                    .arg(rot_axis.x, 0, 'f', decimals())
+                    .arg(rot_axis.y, 0, 'f', decimals())
+                    .arg(rot_axis.z, 0, 'f', decimals())
+                    .arg(rot_angle, 0, 'f', decimals());
     setPropertyValue(data);
 }
 
@@ -3899,11 +3908,11 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 
 QVariant PropertyLinkItem::data(int column, int role) const {
     if(propertyItems.size() && column == 1 
-            && (role == Qt::TextColorRole || role == Qt::ToolTipRole))
+            && (role == Qt::ForegroundRole || role == Qt::ToolTipRole))
     {
         auto propLink = Base::freecad_dynamic_cast<const App::PropertyLinkBase>(propertyItems[0]);
         if(propLink) {
-            if(role==Qt::TextColorRole && propLink->checkRestore()>1)
+            if(role==Qt::ForegroundRole && propLink->checkRestore()>1)
                 return QVariant::fromValue(QColor(0xff,0,0));
             else if(role == Qt::ToolTipRole) {
                 auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
@@ -3979,7 +3988,6 @@ PropertyItemEditorFactory::~PropertyItemEditorFactory()
 {
 }
 
-#if (QT_VERSION >= 0x050300)
 QWidget * PropertyItemEditorFactory::createEditor (int /*type*/, QWidget * /*parent*/) const
 {
     // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
@@ -3991,19 +3999,6 @@ QByteArray PropertyItemEditorFactory::valuePropertyName (int /*type*/) const
     // do not allow to set properties because we do that in subclasses of PropertyItem
     return "";
 }
-#else
-QWidget * PropertyItemEditorFactory::createEditor (QVariant::Type /*type*/, QWidget * /*parent*/) const
-{
-    // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
-    return 0;
-}
-
-QByteArray PropertyItemEditorFactory::valuePropertyName (QVariant::Type /*type*/) const
-{
-    // do not allow to set properties because we do that in subclasses of PropertyItem
-    return "";
-}
-#endif
 
 #include "moc_PropertyItem.cpp"
 

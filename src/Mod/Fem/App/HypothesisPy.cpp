@@ -71,7 +71,7 @@
 using namespace Fem;
 
 
-HypothesisPy::HypothesisPy(boost::shared_ptr<SMESH_Hypothesis> h)
+HypothesisPy::HypothesisPy(std::shared_ptr<SMESH_Hypothesis> h)
   : hyp(h)
 {
 }

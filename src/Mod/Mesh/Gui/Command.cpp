@@ -107,7 +107,7 @@ void CmdMeshTransform::activated(int)
   std::string fName = getUniqueObjectName("Move");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
 
-  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Mesh Create"));
+  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Create"));
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::Transform\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);
@@ -146,7 +146,7 @@ void CmdMeshDemolding::activated(int)
   std::string fName = getUniqueObjectName("Demolding");
   std::vector<Gui::SelectionSingleton::SelObj> cSel = getSelection().getSelection();
 
-  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Mesh Create"));
+  openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Create"));
   doCommand(Doc,"App.activeDocument().addObject(\"Mesh::TransformDemolding\",\"%s\")",fName.c_str());
   doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",fName.c_str(),cSel[0].FeatName);
   doCommand(Gui,"Gui.hide(\"%s\")",cSel[0].FeatName);

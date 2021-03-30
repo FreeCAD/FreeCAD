@@ -69,7 +69,7 @@ count :									 { $$ = 0                     }
 matchline  : type subname count                { $$ = new Node_Object($1,$2,$3) }
 
 matchlines : matchline            { $$ = new Node_Block($1);  }
-           | matchlines matchline { $$ = $1 ; $$->Objects.push_back($2); }
+           | matchlines matchline { $$ = $1 ; $$->Objects.emplace_back($2); }
 
 block : matchlines                { $$ = $1 }
 

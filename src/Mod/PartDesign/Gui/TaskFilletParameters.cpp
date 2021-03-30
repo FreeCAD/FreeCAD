@@ -281,6 +281,10 @@ TaskDlgFilletParameters::~TaskDlgFilletParameters()
 //}
 bool TaskDlgFilletParameters::accept()
 {
+    auto obj = vp->getObject();
+    if (!obj->isError())
+        parameter->showObject();
+
     parameter->apply();
 
     return TaskDlgDressUpParameters::accept();

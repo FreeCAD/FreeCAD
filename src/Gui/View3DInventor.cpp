@@ -513,13 +513,8 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-#if QT_VERSION >= 0x050300
     printer.setPageSize(QPageSize(QPageSize::A4));
     printer.setPageOrientation(QPageLayout::Landscape);
-#else
-    printer.setPageSize(QPrinter::A4);
-    printer.setOrientation(QPrinter::Landscape);
-#endif
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -530,7 +525,7 @@ void View3DInventor::printPreview()
 void View3DInventor::print(QPrinter* printer)
 {
     QPainter p(printer);
-    p.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
+    p.setRenderHints(QPainter::Antialiasing);
     if (!p.isActive() && !printer->outputFileName().isEmpty()) {
         qApp->setOverrideCursor(Qt::ArrowCursor);
         QMessageBox::critical(this, tr("Opening file failed"),
@@ -539,11 +534,7 @@ void View3DInventor::print(QPrinter* printer)
         return;
     }
 
-#if QT_VERSION >= 0x050300
     QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
-#else
-    QRect rect = printer->pageRect();
-#endif
     QImage img;
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);
@@ -1038,16 +1029,6 @@ void View3DInventor::keyPressEvent (QKeyEvent* e)
     // of an MDI view because it causes rendering problems.
     // The only reliable solution is to clone the MDI view,
     // set its view mode and close the original MDI view.
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-    ViewMode mode = MDIView::currentViewMode();
-    if (mode != Child) {
-        // If the widget is in fullscreen mode then we can return to normal mode either
-        // by pressing the matching accelerator or ESC.
-        if (e->key() == Qt::Key_Escape) {
-            setCurrentViewMode(Child);
-        }
-    }
-#endif
 
     QMainWindow::keyPressEvent(e);
 }

@@ -403,7 +403,7 @@ class PropertyBagCreateCommand(object):
         pass
 
     def GetResources(self):
-        return {'MenuText': translate('PathPropertyBag', 'Property Bag'),
+        return {'MenuText': translate('PathPropertyBag', 'PropertyBag'),
                 'ToolTip': translate('PathPropertyBag', 'Creates an object which can be used to store reference properties.')}
 
     def IsActive(self):

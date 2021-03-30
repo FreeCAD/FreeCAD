@@ -538,6 +538,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
     if (msg.Type == Gui::SelectionChanges::AddSelection)
     {
       DimSelections::DimSelection newSelection;
+      newSelection.shapeType = DimSelections::None;
       newSelection.documentName = msg.pDocName;
       newSelection.objectName = msg.pObjectName;
       newSelection.subObjectName = msg.pSubName;
@@ -557,6 +558,7 @@ void PartGui::TaskMeasureLinear::onSelectionChanged(const Gui::SelectionChanges&
     if (msg.Type == Gui::SelectionChanges::AddSelection)
     {
       DimSelections::DimSelection newSelection;
+      newSelection.shapeType = DimSelections::None;
       newSelection.documentName = msg.pDocName;
       newSelection.objectName = msg.pObjectName;
       newSelection.subObjectName = msg.pSubName;
@@ -1537,6 +1539,7 @@ void PartGui::TaskMeasureAngular::onSelectionChanged(const Gui::SelectionChanges
     return;
   mat.inverse();
   DimSelections::DimSelection newSelection;
+  newSelection.shapeType = DimSelections::None;
   newSelection.documentName = msg.pDocName;
   newSelection.objectName = msg.pObjectName;
   newSelection.subObjectName = msg.pSubName;

@@ -100,6 +100,8 @@ QGIDatumLabel::QGIDatumLabel()
     posX = 0;
     posY = 0;
 
+    parent = nullptr;
+
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(ItemSendsGeometryChanges, true);
     setFlag(ItemIsMovable, true);

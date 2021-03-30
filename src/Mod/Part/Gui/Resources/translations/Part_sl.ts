@@ -4,6 +4,16 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
+      <source>Attachment...</source>
+      <translation>Pripetek ...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Uredi pripetek izbranega predmeta.</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
       <translation>Ni predmeta z imenom {name}</translation>
@@ -24,14 +34,14 @@
       <translation>Predmeta {obj} ni mogoče pripeti. Še vedno lahko uporabite pogovorno okno pripetka za poravnavo predmeta, vendar pripetek ne bo parametričen.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
-      <source>Attachment</source>
-      <translation>Pripetek</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
       <translation>Nadaljuj</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <source>Attachment</source>
+      <translation>Pripetek</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -99,24 +109,14 @@
       <translation>Odmik pripetka:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odmik pripetka (v lokalnih koordinatah):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Odmik pripetka (nedejvno - ni pripeto):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
-      <source>Attachment...</source>
-      <translation>Pripetek ...</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
-      <source>Edit attachment of selected object.</source>
-      <translation>Uredi pripetek izbranega predmeta.</translation>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Odmik pripetka (v lokalnih koordinatah):</translation>
     </message>
   </context>
   <context>
@@ -259,99 +259,7 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     </message>
   </context>
   <context>
-    <name>Part_JoinFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Pri izračunavanju razultata je prišlo do napake: 
-
-{err}
-
-Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Neveljaven izbor</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
-      <source>Continue</source>
-      <translation>Nadaljuj</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Pri izračunavanju razultata je prišlo do napake: 
-
-{err}
-
- Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
-      <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation>Najprej izberite vsaj dva predmeta ali enega oz. več sestavov!</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
-      <source>Select at least two objects, or one or more compounds</source>
-      <translation>Izberite vsaj dva predmeta ali enega oz. več sestavov</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Izberite osnovni predmet, nato predmet za vgradnjo in prikličite to orodje.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
-      <source>Select base object, then the object to embed, and then invoke this tool.</source>
-      <translation>Izberite osnovni predmet, nato predmet za vgradnjo in za tem prikličite to orodje.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation>Izberite predmet, v katerem želite narediti izrez, nato izberite predmet, kateremu se naj izrez prilega, in prikličite to orodje.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation>Izberite predmet, v katerem želite narediti izrez, nato izberite predmet, kateremu se naj izrez prilega, in za tem prikličite to orodje.</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Pri izračunavanju razultata je prišlo do napake: 
-
-{err}
-
-Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Neveljaven izbor</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Nadaljuj</translation>
-    </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
@@ -370,45 +278,6 @@ To je seštevek logičnih vrednosti, ki je nato zarezan na presekih izvirnih obl
 S "Sitom sestava" lahko izvlečete posamezne rezine.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Izberitev vsaj dva predmeta ali enega oz. več sestavov! Če je izbran le en sestav, bo med sestavljenimi oblikami izveden presek (sicer so sestavi, ki sekajo sami sebe, neveljavni).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Razcepki v sestav</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Razreži izbrani predmet z drugimi predmeti, ki služijo kot rezilo.
-Dobljeni kosi bodo shranjeni v sestav.
-Posamezne rezine lahko izločite s pomočje "Sita sestavov".</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Razcepi</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Drobci logične operacije</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Razcepi predmete, kjer se sekajo</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
       <translation>Razcepi predmet na presečišču z drugimi predmeti in združi koščke v sestav.</translation>
@@ -424,11 +293,9 @@ Posamezne rezine lahko izločite s pomočje "Sita sestavov".</translation>
       <translation>Najprej izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Razreži izbrani predmet z drugimi predmeti in ga razcepi.
-Za vsako rezino bo ustvarjeno "sito sestava".</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
@@ -454,6 +321,47 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
       <translation>Najprej izberitev vsaj dva predmeta ali enega oz. več sestavov! Če je izbran le en sestav, bo med sestavljenimi oblikami izveden presek (sicer so sestavi, ki sekajo sami sebe, neveljavni).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Izberitev vsaj dva predmeta ali enega oz. več sestavov! Če je izbran le en sestav, bo med sestavljenimi oblikami izveden presek (sicer so sestavi, ki sekajo sami sebe, neveljavni).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Razcepki v sestav</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Drobci logične operacije</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Razcepi predmete, kjer se sekajo</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Razreži izbrani predmet z drugimi predmeti, ki služijo kot rezilo.
+Dobljeni kosi bodo shranjeni v sestav.
+Posamezne rezine lahko izločite s pomočje "Sita sestavov".</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Razcepi</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Razreži izbrani predmet z drugimi predmeti in ga razcepi.
+Za vsako rezino bo ustvarjeno "sito sestava".</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
       <translation>Logična vrednost XOR</translation>
@@ -468,6 +376,29 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 oz. z oblikami znotraj sestava.
 To pomeni, da bodo prekrivajoči deli oblik odstranjeni.
 Ostale dele lahko izvelečet s "sitom sestava".</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Neveljaven izbor</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Pri izračunavanju razultata je prišlo do napake: 
+
+{err}
+
+Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Nadaljuj</translation>
     </message>
   </context>
   <context>
@@ -950,6 +881,75 @@ Ali želite nadaljevati?</translation>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
       <translation>Prikaži krmilne točke</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Pri izračunavanju razultata je prišlo do napake: 
+
+{err}
+
+ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Pri izračunavanju razultata je prišlo do napake: 
+
+{err}
+
+Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
+      <source>Continue</source>
+      <translation>Nadaljuj</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Najprej izberite vsaj dva predmeta ali enega oz. več sestavov!</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="208"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Izberite vsaj dva predmeta ali enega oz. več sestavov</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Izberite osnovni predmet, nato predmet za vgradnjo in prikličite to orodje.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="304"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Izberite osnovni predmet, nato predmet za vgradnjo in za tem prikličite to orodje.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Izberite predmet, v katerem želite narediti izrez, nato izberite predmet, kateremu se naj izrez prilega, in prikličite to orodje.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
+      <source>Bad selection</source>
+      <translation>Neveljaven izbor</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Izberite predmet, v katerem želite narediti izrez, nato izberite predmet, kateremu se naj izrez prilega, in za tem prikličite to orodje.</translation>
     </message>
   </context>
   <context>

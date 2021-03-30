@@ -618,12 +618,12 @@
     <message>
       <location filename="../../Command.cpp" line="1831"/>
       <source>Split by components</source>
-      <translation type="unfinished">Split by components</translation>
+      <translation>Bileşenlere göre ayır</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1832"/>
       <source>Split selected mesh into its components</source>
-      <translation type="unfinished">Split selected mesh into its components</translation>
+      <translation>Seçilen mesh'i bileşenlerine ayır</translation>
     </message>
   </context>
   <context>

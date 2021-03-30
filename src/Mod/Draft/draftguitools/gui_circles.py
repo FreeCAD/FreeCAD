@@ -68,6 +68,7 @@ class Circle(gui_arcs.Arc):
     """
 
     def __init__(self):
+        super().__init__()
         self.closedCircle = True
         self.featureName = "Circle"
 

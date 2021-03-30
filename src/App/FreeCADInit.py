@@ -48,6 +48,8 @@ def setupSearchPaths(PathExtension):
 	if sys.platform == 'win32' and hasattr(os, "add_dll_directory"):
 		if "FREECAD_LIBPACK_BIN" in os.environ:
 			os.add_dll_directory(os.environ["FREECAD_LIBPACK_BIN"])
+		if "WINDIR" in os.environ:
+			os.add_dll_directory(os.environ["WINDIR"] + os.sep + "system32")
 		for path in PathExtension:
 			os.add_dll_directory(path)
 
@@ -731,6 +733,8 @@ App.Units.Volt          = App.Units.Quantity('V')
 App.Units.MilliVolt     = App.Units.Quantity('mV')
 App.Units.KiloVolt      = App.Units.Quantity('kV')
 
+App.Units.MegaSiemens   = App.Units.Quantity('MS')
+App.Units.KiloSiemens   = App.Units.Quantity('kS')
 App.Units.Siemens       = App.Units.Quantity('S')
 App.Units.MilliSiemens  = App.Units.Quantity('mS')
 App.Units.MicroSiemens  = App.Units.Quantity('uS')
@@ -807,6 +811,7 @@ App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
 App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
 App.Units.ElectricalConductance = App.Units.Unit(-2,-1,3,2)
 App.Units.ElectricalResistance  = App.Units.Unit(2,1,-3,-2)
+App.Units.ElectricalConductivity = App.Units.Unit(-3,-1,3,2)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 

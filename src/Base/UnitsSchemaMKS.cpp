@@ -307,6 +307,24 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1e12;
         }
     }
+    else if (unit == Unit::ElectricalConductivity) {
+        if (UnitValue < 1e-3) {
+            unitString = QString::fromLatin1("mS/m");
+            factor = 1e-12;
+        }
+        else if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("S/m");
+            factor = 1e-9;
+        }
+        else if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("kS/m");
+            factor = 1e-6;
+        }
+        else {
+            unitString = QString::fromLatin1("MS/m");
+            factor = 1e-3;
+        }
+    }
     else if (unit == Unit::ElectricalCapacitance) {
         if (UnitValue < 1e-15) {
             unitString = QString::fromLatin1("pF");

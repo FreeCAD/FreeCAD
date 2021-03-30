@@ -169,7 +169,6 @@ class CrowdinUpdater:
         for future in futures:
             future.result()
 
-
 def load_token():
     # load API token stored in ~/.crowdin-freecad-token
     config_file = os.path.expanduser('~')+os.sep+".crowdin-freecad-token"

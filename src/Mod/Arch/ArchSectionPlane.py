@@ -20,13 +20,11 @@
 #***************************************************************************
 
 import FreeCAD
-import WorkingPlane
 import math
 import Draft
 import ArchCommands
 import DraftVecUtils
 import ArchComponent
-import os
 import re
 import tempfile
 import uuid
@@ -211,11 +209,11 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
 
     cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(cutplane,shapes,clip)
     shapes = []
-    if cutvolume:
-        for o, shapeList in objectShapes:
-            tmpSshapes = []
-            for sh in shapeList:
-                for sol in sh.Solids:
+    for o, shapeList in objectShapes:
+        tmpSshapes = []
+        for sh in shapeList:
+            for sol in sh.Solids:
+                if cutvolume:
                     if sol.Volume < 0:
                         sol.reverse()
                     c = sol.cut(cutvolume)
@@ -235,6 +233,8 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                     if showHidden:
                         c = sol.cut(invcutvolume)
                         hshapes.append(c)
+                else:
+                    shapes.extend(sol.Solids)
 
             if len(tmpSshapes) > 0:
                 sshapes.extend(tmpSshapes)

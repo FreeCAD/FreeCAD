@@ -47,5 +47,5 @@ INSTALL(
     FILES
         ${Start_Tests}
     DESTINATION
-        Mod/Start/testStart
+        Mod/Start/TestStart
 )

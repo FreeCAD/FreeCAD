@@ -29,7 +29,6 @@ This Script includes python functions to find out the most basic shape type
 in a compound and to change the color of shapes according to their shape type
 '''
 
-import FreeCAD
 def shapedict(shapelst):
     return dict([(shape.hashCode(),shape) for shape in shapelst])
 

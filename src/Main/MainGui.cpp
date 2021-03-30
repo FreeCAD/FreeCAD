@@ -146,6 +146,10 @@ int main( int argc, char ** argv )
 #endif
 
 #if defined (FC_OS_WIN32)
+    // we need to force Coin not to use Freetype in order to find installed fonts on Windows
+    // see https://forum.freecadweb.org/viewtopic.php?p=485142#p485016
+    _putenv("COIN_FORCE_FREETYPE_OFF=1");
+
     int argc_ = argc;
     QVector<QByteArray> data;
     QVector<char *> argv_;

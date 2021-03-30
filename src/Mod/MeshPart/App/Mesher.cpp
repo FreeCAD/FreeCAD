@@ -119,7 +119,9 @@ int MeshingOutput::sync()
 
 // ----------------------------------------------------------------------------
 
-struct Mesher::Vertex {
+namespace MeshPart {
+
+struct Vertex {
     static const double deflection;
     Standard_Real x,y,z;
     Standard_Integer i;
@@ -150,51 +152,22 @@ struct Mesher::Vertex {
     }
 };
 
-const double Mesher::Vertex::deflection = gp::Resolution();
+const double Vertex::deflection = gp::Resolution();
 
 // ----------------------------------------------------------------------------
 
-Mesher::Mesher(const TopoDS_Shape& s)
-  : shape(s)
-  , method(None)
-  , maxLength(0)
-  , maxArea(0)
-  , localLength(0)
-  , deflection(0)
-  , angularDeflection(0.5)
-  , minLen(0)
-  , maxLen(0)
-  , relative(false)
-  , regular(false)
-  , segments(false)
-#if defined (HAVE_NETGEN)
-  , fineness(5)
-  , growthRate(0)
-  , nbSegPerEdge(0)
-  , nbSegPerRadius(0)
-  , secondOrder(false)
-  , optimize(true)
-  , allowquad(false)
-#endif
-{
-}
+class BrepMesh {
+    bool segments;
+    std::vector<uint32_t> colors;
+public:
+    BrepMesh(bool s, const std::vector<uint32_t>& c)
+        : segments(s)
+        , colors(c)
+    {
+    }
 
-Mesher::~Mesher()
-{
-}
-
-Mesh::MeshObject* Mesher::createMesh() const
-{
-    // OCC standard mesher
-    if (method == Standard) {
-        if (!shape.IsNull()) {
-            BRepTools::Clean(shape);
-            BRepMesh_IncrementalMesh aMesh(shape, deflection, relative, angularDeflection);
-        }
-
-        std::vector<Part::TopoShape::Domain> domains;
-        Part::TopoShape(shape).getDomains(domains);
-
+    Mesh::MeshObject* create(const std::vector<Part::TopoShape::Domain>& domains) const
+    {
         std::map<uint32_t, std::vector<std::size_t> > colorMap;
         for (std::size_t i=0; i<colors.size(); i++) {
             colorMap[colors[i]].push_back(i);
@@ -323,6 +296,60 @@ Mesh::MeshObject* Mesher::createMesh() const
             }
         }
         return meshdata;
+    }
+};
+}
+
+// ----------------------------------------------------------------------------
+
+Mesher::Mesher(const TopoDS_Shape& s)
+  : shape(s)
+  , method(None)
+  , maxLength(0)
+  , maxArea(0)
+  , localLength(0)
+  , deflection(0)
+  , angularDeflection(0.5)
+  , minLen(0)
+  , maxLen(0)
+  , relative(false)
+  , regular(false)
+  , segments(false)
+#if defined (HAVE_NETGEN)
+  , fineness(5)
+  , growthRate(0)
+  , nbSegPerEdge(0)
+  , nbSegPerRadius(0)
+  , secondOrder(false)
+  , optimize(true)
+  , allowquad(false)
+#endif
+{
+}
+
+Mesher::~Mesher()
+{
+}
+
+Mesh::MeshObject* Mesher::createStandard() const
+{
+    if (!shape.IsNull()) {
+        BRepTools::Clean(shape);
+        BRepMesh_IncrementalMesh aMesh(shape, deflection, relative, angularDeflection);
+    }
+
+    std::vector<Part::TopoShape::Domain> domains;
+    Part::TopoShape(shape).getDomains(domains);
+
+    BrepMesh brepmesh(this->segments, this->colors);
+    return brepmesh.create(domains);
+}
+
+Mesh::MeshObject* Mesher::createMesh() const
+{
+    // OCC standard mesher
+    if (method == Standard) {
+        return createStandard();
     }
 
 #ifndef HAVE_SMESH
@@ -488,6 +515,23 @@ Mesh::MeshObject* Mesher::createMesh() const
     std::cout.rdbuf(oldcout);
 
     // build up the mesh structure
+    Mesh::MeshObject* meshdata = createFrom(mesh);
+
+    // clean up
+    TopoDS_Shape aNull;
+    mesh->ShapeToMesh(aNull);
+    mesh->Clear();
+    delete mesh;
+    for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
+        delete *it;
+
+    return meshdata;
+#endif // HAVE_SMESH
+}
+
+Mesh::MeshObject* Mesher::createFrom(SMESH_Mesh* mesh) const
+{
+    // build up the mesh structure
     SMDS_FaceIteratorPtr aFaceIter = mesh->GetMeshDS()->facesIterator();
     SMDS_NodeIteratorPtr aNodeIter = mesh->GetMeshDS()->nodesIterator();
 
@@ -505,6 +549,7 @@ Mesh::MeshObject* Mesher::createMesh() const
         verts.push_back(p);
         mapNodeIndex[aNode] = index++;
     }
+
     for (;aFaceIter->more();) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
         if (aFace->NbNodes() == 3) {
@@ -629,20 +674,10 @@ Mesh::MeshObject* Mesher::createMesh() const
         }
     }
 
-    // clean up
-    TopoDS_Shape aNull;
-    mesh->ShapeToMesh(aNull);
-    mesh->Clear();
-    delete mesh;
-    for (std::list<SMESH_Hypothesis*>::iterator it = hypoth.begin(); it != hypoth.end(); ++it)
-        delete *it;
-    
     MeshCore::MeshKernel kernel;
     kernel.Adopt(verts, faces, true);
 
     Mesh::MeshObject* meshdata = new Mesh::MeshObject();
     meshdata->swap(kernel);
     return meshdata;
-#endif // HAVE_SMESH
 }
-

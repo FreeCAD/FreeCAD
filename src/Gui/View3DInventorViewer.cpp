@@ -976,7 +976,9 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
     if(Reason.Type == SelectionChanges::RmvPreselect ||
        Reason.Type == SelectionChanges::RmvPreselectSignal)
     {
-        SoFCHighlightAction cAct(SelectionChanges::RmvPreselect);
+        //Hint: do not create a tmp. instance of SelectionChanges
+        SelectionChanges selChanges(SelectionChanges::RmvPreselect);
+        SoFCHighlightAction cAct(selChanges);
         cAct.apply(pcViewProviderRoot);
     } else {
         SoFCSelectionAction cAct(Reason);

@@ -10,6 +10,9 @@ download and another to actually download the files.
 
 2) run "downloadwiki.py". If connection drops, run it again, 
    the already downloaded files will be skipped.
+   
+2b) Dirty hack: run "fixlinks.py" to fix wrong html links
+    (downloadwiki.py should be fixed in the future)
 
 3) run "buildqhelp.py" to generate freecad.qhc and freecad.qch
    files

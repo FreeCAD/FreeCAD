@@ -67,8 +67,8 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
     PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     double a = pcDraft->Angle.getValue();
 
-    ui->draftAngle->setMinimum(0.0);
-    ui->draftAngle->setMaximum(89.99);
+    ui->draftAngle->setMinimum(pcDraft->Angle.getMinimum());
+    ui->draftAngle->setMaximum(pcDraft->Angle.getMaximum());
     ui->draftAngle->setValue(a);
     ui->draftAngle->selectAll();
     QMetaObject::invokeMethod(ui->draftAngle, "setFocus", Qt::QueuedConnection);
@@ -386,6 +386,10 @@ TaskDlgDraftParameters::~TaskDlgDraftParameters()
 
 bool TaskDlgDraftParameters::accept()
 {
+    auto tobj = vp->getObject();
+    if (!tobj->isError())
+        parameter->showObject();
+
     std::vector<std::string> strings;
     App::DocumentObject* obj;
     TaskDraftParameters* draftparameter = static_cast<TaskDraftParameters*>(parameter);
@@ -403,7 +407,6 @@ bool TaskDlgDraftParameters::accept()
     //     return false;
     // }
 
-    auto tobj = vp->getObject();
     FCMD_OBJ_CMD(tobj,"Angle = " << draftparameter->getAngle());
     FCMD_OBJ_CMD(tobj,"Reversed = " << draftparameter->getReversed());
     if(neutralPlane.empty())

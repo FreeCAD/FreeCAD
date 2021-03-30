@@ -67,7 +67,7 @@ class Polygon(gui_base_original.Creator):
             self.rad = None
             self.tangents = []
             self.tanpoints = []
-            self.ui.pointUi(name)
+            self.ui.pointUi(title=name, icon="Draft_Polygon")
             self.ui.extUi()
             self.ui.numFaces.show()
             self.ui.numFacesLabel.show()

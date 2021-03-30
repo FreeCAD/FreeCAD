@@ -83,35 +83,35 @@ class PathTwistedArray(DraftLink):
             obj.addProperty("App::PropertyLink",
                             "Base",
                             "Objects",
-                            Qt_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."))
+                            QT_TRANSLATE_NOOP("App::Property","The base object that will be duplicated."))
             obj.Base = None
 
         if "PathObject" not in properties:
             obj.addProperty("App::PropertyLink",
                             "PathObject",
                             "Objects",
-                            Qt_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."))
+                            QT_TRANSLATE_NOOP("App::Property","The object along which the copies will be distributed. It must contain 'Edges'."))
             obj.PathObject = None
 
         if "Count" not in properties:
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
-                            Qt_TRANSLATE_NOOP("App::Property","Number of copies to create."))
+                            QT_TRANSLATE_NOOP("App::Property","Number of copies to create."))
             obj.Count = 15
 
         if "RotationFactor" not in properties:
             obj.addProperty("App::PropertyFloat",
                             "RotationFactor",
                             "Objects",
-                            Qt_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."))
+                            QT_TRANSLATE_NOOP("App::Property","Rotation factor of the twisted array."))
             obj.RotationFactor = 0.25
 
         if self.use_link and "ExpandArray" not in properties:
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
-                            Qt_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"))
+                            QT_TRANSLATE_NOOP("App::Property","Show the individual array elements (only for Link arrays)"))
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape', 'Transient')
 

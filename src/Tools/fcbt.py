@@ -3,7 +3,7 @@
 # (c) 2004 Juergen Riegel
 
 
-import os,sys
+import sys
 
 help1 = """
 FreeCAD Build Tool

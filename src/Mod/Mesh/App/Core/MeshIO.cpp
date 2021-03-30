@@ -341,11 +341,6 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     unsigned long countMaterialFacets = 0;
 
     while (std::getline(rstrIn, line)) {
-        // when a group name comes don't make it lower case
-        if (!line.empty() && line[0] != 'g') {
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-                *it = tolower(*it);
-        }
         if (boost::regex_match(line.c_str(), what, rx_p)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
@@ -1285,8 +1280,7 @@ bool MeshInput::LoadMeshNode (std::istream &rstrIn)
         return false;
 
     while (std::getline(rstrIn, line)) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = tolower(*it);
+        boost::algorithm::to_lower(line);
         if (boost::regex_match(line.c_str(), what, rx_p)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
@@ -1646,7 +1640,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*");
     boost::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
-    boost::regex rx_q("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
+    boost::regex rx_q("\\s*CQUAD4\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
     boost::cmatch what;
 
@@ -1663,10 +1657,8 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
     while (std::getline(rstrIn, line)) {
         upper(ltrim(line));
         if (line.find("GRID*") == 0) {
-            assert(0);
         }
         else if (line.find('*') == 0) {
-            assert(0);
         }
         // insert the read-in vertex into a map to preserve the order
         else if (line.find("GRID") == 0) {

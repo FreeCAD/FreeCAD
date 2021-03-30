@@ -856,7 +856,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
       <source>Repair mesh</source>
-      <translation type="unfinished">Repair mesh</translation>
+      <translation>Ремонт сетки</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="130"/>
