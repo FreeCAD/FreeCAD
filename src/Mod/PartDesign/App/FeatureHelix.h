@@ -31,6 +31,13 @@
 namespace PartDesign
 {
 
+enum class HelixMode {
+    pitch_height_angle,
+    pitch_turns_angle,
+    height_turns_angle,
+    height_turns_growth
+};
+
 class PartDesignExport Helix : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Helix);

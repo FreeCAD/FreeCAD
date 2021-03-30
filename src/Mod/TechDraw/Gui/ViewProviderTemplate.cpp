@@ -191,6 +191,10 @@ bool ViewProviderTemplate::onDelete(const std::vector<std::string> &)
     // get the page
     auto page = getTemplate()->getParentPage();
 
+    // If no parent page is given then just go ahead
+    if (!page)
+        return true;
+
     // generate dialog
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);

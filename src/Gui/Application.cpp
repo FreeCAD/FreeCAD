@@ -1833,6 +1833,20 @@ void Application::runApplication(void)
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     }
 
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+        // By default (on platforms that support it, see docs for
+        // Qt::AA_CompressHighFrequencyEvents) QT applies compression
+        // for high frequency events (mouse move, touch, window resizes)
+        // to keep things smooth even when handling the event takes a
+        // while (e.g. to calculate snapping).
+        // However, tablet pen move events (and mouse move events
+        // synthesised from those) are not compressed by default (to
+        // allow maximum precision when e.g. hand-drawing curves),
+        // leading to unacceptable slowdowns using a tablet pen. Enable
+        // compression for tablet events here to solve that.
+        QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
+    #endif
+
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
 

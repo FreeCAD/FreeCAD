@@ -37,7 +37,7 @@
 
 """FreeCAD WebGL Exporter"""
 
-import FreeCAD,Mesh,Draft,Part,DraftGeomUtils,Arch,OfflineRenderingUtils,json,six
+import FreeCAD,Mesh,Draft,Part,OfflineRenderingUtils,json,six
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -326,8 +326,8 @@ def getHTMLTemplate():
                     clippingz: 100,
                     cameraType: cameraType,
                     navright: function() { navChange( [1,0,0] ); },
-                    navtop:   function() { navChange( [0,1,0] ); },
-                    navfront: function() { navChange( [0,0,1] ); }
+                    navtop:   function() { navChange( [0,0,1] ); },
+                    navfront: function() { navChange( [0,-1,0] ); }
                 };
                 
                 // ---- Wires ----

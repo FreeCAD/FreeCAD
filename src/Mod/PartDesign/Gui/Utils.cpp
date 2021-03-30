@@ -35,6 +35,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/ViewProviderPart.h>
@@ -85,8 +86,10 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         subname += obj->getNameInDocument();
         subname += '.';
     }
-    _FCMD_OBJ_DOC_CMD(Gui,parent,"setEdit(" << Gui::Command::getObjectCmd(parent) 
-            << ",0,'" << subname << "')");
+
+    Gui::cmdGuiDocument(parent, std::ostringstream() << "setEdit("
+                                                     << Gui::Command::getObjectCmd(parent)
+                                                     << ", 0, '" << subname << "')");
     return true;
 }
 

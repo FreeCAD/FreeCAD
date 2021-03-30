@@ -2261,7 +2261,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 diffusecolor = obj.ViewObject.DiffuseColor
         if shapecolor and (shapetype != "clone"): # cloned objects are already colored
             key = None
-            rgbt = [shapecolor+(transparency,) for shape in shapes]
+            rgbt = [shapecolor+(transparency,)] * len(shapes)
             if diffusecolor \
                     and (len(diffusecolor) == len(obj.Shape.Faces)) \
                     and (len(obj.Shape.Solids) == len(colorshapes)):

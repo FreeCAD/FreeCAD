@@ -56,7 +56,7 @@
 
 using namespace PartDesign;
 
-const char* Pad::TypeEnums[]= {"Length","UpToLast","UpToFirst","UpToFace","TwoLengths",NULL};
+const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "TwoLengths", NULL};
 
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::ProfileBased)
 
@@ -68,8 +68,9 @@ Pad::Pad()
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length, (100.0), "Pad", App::Prop_None,"Pad length");
     ADD_PROPERTY_TYPE(Length2, (100.0), "Pad", App::Prop_None,"Second Pad length");
-    ADD_PROPERTY_TYPE(UseCustomVector, (0), "Pad", App::Prop_None, "Use custom vector for pad direction");
+    ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pad", App::Prop_None, "Use custom vector for pad direction");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pad", App::Prop_None, "Pad direction vector");
+    ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pad", App::Prop_None, "Measure pad length along the sketch normal direction");
     ADD_PROPERTY_TYPE(UpToFace, (0), "Pad", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pad", App::Prop_None, "Offset from face in which pad will end");
     static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
@@ -78,6 +79,10 @@ Pad::Pad()
     // Remove the constraints and keep the type to allow to accept negative values
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=52075&p=448410#p447636
     Length2.setConstraints(nullptr);
+
+    // for new pads UseCustomVector is false, thus disable Direction and AlongSketchNormal
+    AlongSketchNormal.setReadOnly(true);
+    Direction.setReadOnly(true);
 }
 
 short Pad::mustExecute() const
@@ -88,6 +93,7 @@ short Pad::mustExecute() const
         Length2.isTouched() ||
         UseCustomVector.isTouched() ||
         Direction.isTouched() ||
+        AlongSketchNormal.isTouched() ||
         Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
@@ -103,6 +109,12 @@ App::DocumentObjectExecReturn *Pad::execute(void)
     double L2 = Length2.getValue();
     if ((std::string(Type.getValueAsString()) == "TwoLengths") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Second length of pad too small");
+
+    // if midplane is true, disable reversed and vice versa
+    bool hasMidplane = Midplane.getValue();
+    bool hasReversed = Reversed.getValue();
+    Midplane.setReadOnly(hasReversed);
+    Reversed.setReadOnly(hasMidplane);
 
     Part::Feature* obj = 0;
     TopoDS_Shape sketchshape;
@@ -133,12 +145,13 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         base.Move(invObjLoc);
 
         Base::Vector3d paddingDirection;
-
-        // use the given vector if necessary
+        
         if (!UseCustomVector.getValue()) {
+            // use sketch's normal vector for direction
             paddingDirection = SketchVector;
         }
         else {
+            // use the given vector
             // if null vector, use SketchVector
             if ( (fabs(Direction.getValue().x) < Precision::Confusion())
                 && (fabs(Direction.getValue().y) < Precision::Confusion())
@@ -149,6 +162,10 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
             paddingDirection = Direction.getValue();
         }
+
+        // disable options of UseCustomVector  
+        AlongSketchNormal.setReadOnly(!UseCustomVector.getValue());
+        Direction.setReadOnly(!UseCustomVector.getValue());
 
         // create vector in padding direction with length 1
         gp_Dir dir(paddingDirection.x, paddingDirection.y, paddingDirection.z);
@@ -168,9 +185,15 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         if (factor < Precision::Confusion())
             return new App::DocumentObjectExecReturn("Pad: Creation failed because direction is orthogonal to sketch's normal vector");
 
-        // perform the length correction
-        L = L / factor;
-        L2 = L2 / factor;
+        // perform the length correction if not along custom vector
+        if (AlongSketchNormal.getValue()) {
+            L = L / factor;
+            L2 = L2 / factor;
+        }
+
+        // explicitly set the Direction so that the dialog shows also the used direction
+        // if the sketch's normal vector was used
+        Direction.setValue(paddingDirection);
 
         dir.Transform(invObjLoc.Transformation());
 
@@ -306,7 +329,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             }
         } else {
             generatePrism(prism, sketchshape, method, dir, L, L2,
-                          Midplane.getValue(), Reversed.getValue());
+                hasMidplane, hasReversed);
         }
 
         if (prism.IsNull())
