@@ -586,10 +586,8 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         completer->setRequireLeadingEqualSign(requireLeadingEqualSign);
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-#endif
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
         connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
@@ -604,10 +602,9 @@ void ExpressionLineEdit::setNoProperty(bool enabled) {
 
 void ExpressionLineEdit::setExactMatch(bool enabled) {
     exactMatch = enabled;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
     if (completer)
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
-#endif
+
 }
 
 bool ExpressionLineEdit::completerActive() const
@@ -649,7 +646,6 @@ void ExpressionLineEdit::keyPressEvent(QKeyEvent *e) {
 
 void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
     QMenu *menu = createStandardContextMenu();
     menu->addSeparator();
     QAction* match = menu->addAction(tr("Exact match"));
@@ -670,9 +666,6 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
     }
 
     delete menu;
-#else
-    QLineEdit::contextMenuEvent(event);
-#endif
 }
 
 
@@ -689,10 +682,8 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
 
 void ExpressionTextEdit::setExactMatch(bool enabled) {
     exactMatch = enabled;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
     if (completer)
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
-#endif
 }
 
 void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
@@ -704,10 +695,8 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
 
     if (currentDocObj != nullptr) {
         completer = new ExpressionCompleter(currentDocObj, this);
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-#endif
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
@@ -756,7 +745,6 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent *e) {
 
 void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
     QMenu *menu = createStandardContextMenu();
     menu->addSeparator();
     QAction* match = menu->addAction(tr("Exact match"));
@@ -777,9 +765,6 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
     }
 
     delete menu;
-#else
-    QPlainTextEdit::contextMenuEvent(event);
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////

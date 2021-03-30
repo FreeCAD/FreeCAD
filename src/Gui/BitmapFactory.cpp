@@ -37,9 +37,6 @@
 # include <QStyleOption>
 # include <sstream>
 #endif
-#if defined (FC_OS_WIN32) && QT_VERSION < 0x050000
-#define QTWEBKIT
-#endif
 
 #ifdef QTWEBKIT
 #include <QWebView>
@@ -177,9 +174,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
         filters << QString::fromLatin1("*.%1").arg(QString::fromLatin1(*it).toLower());
 
     QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
-#if QT_VERSION >= 0x040500
     paths.removeDuplicates();
-#endif
     for (QStringList::ConstIterator pt = paths.begin(); pt != paths.end(); ++pt) {
         QDir d(*pt);
         d.setNameFilters(filters);
@@ -188,9 +183,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
             files << it->absoluteFilePath();
     }
 
-#if QT_VERSION >= 0x040500
     files.removeDuplicates();
-#endif
     return files;
 }
 
@@ -583,13 +576,8 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, Position 
 {
     // does the similar as the method above except that this method does not resize the resulting pixmap
     int x = 0, y = 0;
-#if QT_VERSION >= 0x050000
     qreal dpr1 = p1.devicePixelRatio();
     qreal dpr2 = p2.devicePixelRatio();
-#else
-    qreal dpr1 = 1;
-    qreal dpr2 = 1;
-#endif
 
     switch (pos)
     {

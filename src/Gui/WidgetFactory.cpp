@@ -27,9 +27,7 @@
 # include <limits>
 # include <QTextStream>
 #endif
-#if QT_VERSION >= 0x050200
-# include <QMetaType>
-#endif
+#include <QMetaType>
 
 // Uncomment this block to remove PySide C++ support and switch to its Python interface
 //#undef HAVE_SHIBOKEN
@@ -178,7 +176,7 @@ PythonToCppFunc isBaseQuantity_PythonToCpp_QVariantConvertible(PyObject* obj)
     return 0;
 }
 
-#if defined (HAVE_PYSIDE) && QT_VERSION >= 0x050200
+#if defined (HAVE_PYSIDE)
 Base::Quantity convertWrapperToQuantity(const PySide::PyObjectWrapper &w)
 {
     PyObject* pyIn = static_cast<PyObject*>(w);
@@ -208,7 +206,7 @@ void registerTypes()
                                                              isBaseQuantity_PythonToCpp_QVariantConvertible);
     }
 
-#if defined (HAVE_PYSIDE) && QT_VERSION >= 0x050200
+#if defined (HAVE_PYSIDE)
     QMetaType::registerConverter<PySide::PyObjectWrapper, Base::Quantity>(&convertWrapperToQuantity);
 #endif
 }
@@ -367,15 +365,10 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
             return reinterpret_cast<QObject*>(cppobject);
         }
     }
-#elif QT_VERSION >= 0x050000
+#else
     // Access shiboken2/PySide2 via Python
     //
     void* ptr = qt_getCppPointer(pyobject, "shiboken2", "getCppPointer");
-    return reinterpret_cast<QObject*>(ptr);
-#else
-    // Access shiboken/PySide via Python
-    //
-    void* ptr = qt_getCppPointer(pyobject, "shiboken", "getCppPointer");
     return reinterpret_cast<QObject*>(ptr);
 #endif
 
@@ -398,15 +391,10 @@ QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
             return reinterpret_cast<QGraphicsItem*>(cppobject);
         }
     }
-#elif QT_VERSION >= 0x050000
+#else
     // Access shiboken2/PySide2 via Python
     //
     void* ptr = qt_getCppPointer(Py::asObject(pyPtr), "shiboken2", "getCppPointer");
-    return reinterpret_cast<QGraphicsItem*>(ptr);
-#else
-    // Access shiboken/PySide via Python
-    //
-    void* ptr = qt_getCppPointer(Py::asObject(pyPtr), "shiboken", "getCppPointer");
     return reinterpret_cast<QGraphicsItem*>(ptr);
 #endif
     return nullptr;
@@ -420,14 +408,10 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
                               const_cast<QIcon*>(icon), true, false, typeName);
     if (pyobj)
         return Py::asObject(pyobj);
-#elif QT_VERSION >= 0x050000
+#else
     // Access shiboken2/PySide2 via Python
     //
     return qt_wrapInstance<const QIcon*>(icon, "QIcon", "shiboken2", "PySide2.QtGui", "wrapInstance");
-#else
-    // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<const QIcon*>(icon, "QIcon", "shiboken", "PySide.QtGui", "wrapInstance");
 #endif
     throw Py::RuntimeError("Failed to wrap icon");
 }
@@ -466,24 +450,14 @@ Py::Object PythonWrapper::fromQObject(QObject* object, const char* className)
         return Py::asObject(pyobj);
     }
     throw Py::RuntimeError("Failed to wrap object");
-
-#elif QT_VERSION >= 0x050000
+#else
     // Access shiboken2/PySide2 via Python
     //
     return qt_wrapInstance<QObject*>(object, className, "shiboken2", "PySide2.QtCore", "wrapInstance");
-#else
-    // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<QObject*>(object, className, "shiboken", "PySide.QtCore", "wrapInstance");
 #endif
-
 #if 0 // Unwrapping using sip/PyQt
     Q_UNUSED(className);
-#if QT_VERSION >= 0x050000
     return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt5.QtCore", "wrapinstance");
-#else
-    return qt_wrapInstance<QObject*>(object, "QObject", "sip", "PyQt4.Qt", "wrapinstance");
-#endif
 #endif
 }
 
@@ -505,23 +479,15 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     }
     throw Py::RuntimeError("Failed to wrap widget");
 
-#elif QT_VERSION >= 0x050000
+#else
     // Access shiboken2/PySide2 via Python
     //
     return qt_wrapInstance<QWidget*>(widget, className, "shiboken2", "PySide2.QtWidgets", "wrapInstance");
-#else
-    // Access shiboken/PySide via Python
-    //
-    return qt_wrapInstance<QWidget*>(widget, className, "shiboken", "PySide.QtGui", "wrapInstance");
 #endif
 
 #if 0 // Unwrapping using sip/PyQt
     Q_UNUSED(className);
-#if QT_VERSION >= 0x050000
     return qt_wrapInstance<QWidget*>(widget, "QWidget", "sip", "PyQt5.QtWidgets", "wrapinstance");
-#else
-    return qt_wrapInstance<QWidget*>(widget, "QWidget", "sip", "PyQt4.Qt", "wrapinstance");
-#endif
 #endif
 }
 
@@ -619,7 +585,7 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
                 Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QObject>()), child));
                 PyObject_SetAttrString(root, name.constData(), pyChild);
-#elif QT_VERSION >= 0x050000
+#else
                 const char* className = qt_identifyType(child, "PySide2.QtWidgets");
                 if (!className) {
                     if (qobject_cast<QWidget*>(child))
@@ -629,17 +595,6 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
                 }
 
                 Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, "shiboken2", "PySide2.QtWidgets", "wrapInstance"));
-                PyObject_SetAttrString(root, name.constData(), pyChild.ptr());
-#else
-                const char* className = qt_identifyType(child, "PySide.QtGui");
-                if (!className) {
-                    if (qobject_cast<QWidget*>(child))
-                        className = "QWidget";
-                    else
-                        className = "QObject";
-                }
-
-                Py::Object pyChild(qt_wrapInstance<QObject*>(child, className, "shiboken", "PySide.QtGui", "wrapInstance"));
                 PyObject_SetAttrString(root, name.constData(), pyChild.ptr());
 #endif
             }
@@ -822,7 +777,6 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     QString cmd;
     QTextStream str(&cmd);
     // https://github.com/albop/dolo/blob/master/bin/load_ui.py
-#if QT_VERSION >= 0x050000
     str << "import pyside2uic\n"
         << "from PySide2 import QtCore, QtGui, QtWidgets\n"
         << "import xml.etree.ElementTree as xml\n"
@@ -844,29 +798,6 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
         << "    form_class = frame['Ui_%s'%form_class]\n"
         << "    base_class = eval('QtWidgets.%s'%widget_class)\n";
-#else
-    str << "import pysideuic\n"
-        << "from PySide import QtCore, QtGui\n"
-        << "import xml.etree.ElementTree as xml\n"
-        << "try:\n"
-        << "    from cStringIO import StringIO\n"
-        << "except Exception:\n"
-        << "    from io import StringIO\n"
-        << "\n"
-        << "uiFile = \"" << file.c_str() << "\"\n"
-        << "parsed = xml.parse(uiFile)\n"
-        << "widget_class = parsed.find('widget').get('class')\n"
-        << "form_class = parsed.find('class').text\n"
-        << "with open(uiFile, 'r') as f:\n"
-        << "    o = StringIO()\n"
-        << "    frame = {}\n"
-        << "    pysideuic.compileUi(f, o, indent=0)\n"
-        << "    pyc = compile(o.getvalue(), '<string>', 'exec')\n"
-        << "    exec(pyc, frame)\n"
-        << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
-        << "    form_class = frame['Ui_%s'%form_class]\n"
-        << "    base_class = eval('QtGui.%s'%widget_class)\n";
-#endif
 
     PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
     if (result) {
@@ -924,15 +855,8 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
         << "loader = UiLoader(globals()[\"base_\"])\n"
         << "widget = loader.load(globals()[\"uiFile_\"])\n"
         << "\n";
-#elif QT_VERSION >= 0x050000
-    str << "from PySide2 import QtCore, QtGui, QtWidgets\n"
-        << "import FreeCADGui"
-        << "\n"
-        << "loader = FreeCADGui.UiLoader()\n"
-        << "widget = loader.load(globals()[\"uiFile_\"])\n"
-        << "\n";
 #else
-    str << "from PySide import QtCore, QtGui\n"
+    str << "from PySide2 import QtCore, QtGui, QtWidgets\n"
         << "import FreeCADGui"
         << "\n"
         << "loader = FreeCADGui.UiLoader()\n"
@@ -1408,9 +1332,7 @@ void PyResource::load(const char* name)
     QWidget* w=0;
     try {
         UiLoader loader;
-#if QT_VERSION >= 0x040500
         loader.setLanguageChangeEnabled(true);
-#endif
         QFile file(fn);
         if (file.open(QFile::ReadOnly))
             w = loader.load(&file, QApplication::activeWindow());

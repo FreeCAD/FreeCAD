@@ -652,7 +652,6 @@ void AboutDialog::showCollectionInformation()
 
 void AboutDialog::linkActivated(const QUrl& link)
 {
-//#if defined(Q_OS_WIN) && QT_VERSION < 0x050602
     LicenseView* licenseView = new LicenseView();
     licenseView->setAttribute(Qt::WA_DeleteOnClose);
     licenseView->show();
@@ -665,9 +664,6 @@ void AboutDialog::linkActivated(const QUrl& link)
     licenseView->setWindowTitle(title);
     getMainWindow()->addWindow(licenseView);
     licenseView->setSource(link);
-//#else
-//    QDesktopServices::openUrl(link);
-//#endif
 }
 
 void AboutDialog::on_copyButton_clicked()

@@ -271,13 +271,8 @@ public:
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
             QWheelEvent* we = static_cast<QWheelEvent*>(event);
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
             if (qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y()))
                 return true;
-#else
-            if (we->orientation() == Qt::Horizontal)
-                return true;
-#endif
         }
         else if (event->type() == QEvent::KeyPress) {
             QKeyEvent* ke = static_cast<QKeyEvent*>(event);
@@ -601,10 +596,8 @@ void View3DInventorViewer::init()
 
     //create the cursors
     createStandardCursors(devicePixelRatio());
-#if (QT_VERSION >= 0x050000)
     connect(this, &View3DInventorViewer::devicePixelRatioChanged,
             this, &View3DInventorViewer::createStandardCursors);
-#endif
 
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
