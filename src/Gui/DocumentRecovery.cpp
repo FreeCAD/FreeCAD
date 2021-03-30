@@ -178,11 +178,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
 {
     d_ptr->ui.setupUi(this);
     d_ptr->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start Recovery"));
-#if QT_VERSION >= 0x050000
     d_ptr->ui.treeWidget->header()->setSectionResizeMode(QHeaderView::Stretch);
-#else
-    d_ptr->ui.treeWidget->header()->setResizeMode(QHeaderView::Stretch);
-#endif
 
     d_ptr->recovered = false;
 

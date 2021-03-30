@@ -83,11 +83,7 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
     ui->actionListWidget->setHeaderLabels(labels);
     ui->actionListWidget->header()->hide();
     ui->actionListWidget->setIconSize(QSize(32, 32));
-#if QT_VERSION >= 0x050000
     ui->actionListWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    ui->actionListWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
 
     showActions();
 }

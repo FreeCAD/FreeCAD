@@ -289,9 +289,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
 {
     if (dlg.hasAttr(std::string("ui"))) {
         UiLoader loader;
-#if QT_VERSION >= 0x040500
         loader.setLanguageChangeEnabled(true);
-#endif
         QString fn, icon;
         Py::String ui(dlg.getAttr(std::string("ui")));
         std::string path = (std::string)ui;

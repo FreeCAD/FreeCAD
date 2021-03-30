@@ -1520,9 +1520,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
     sWhatsThis    = "Std_ViewFitSelection";
     sStatusTip    = QT_TR_NOOP("Fits the selected content on the screen");
     sAccel        = "V, S";
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-selection";
-#endif
     eType         = Alter3DView;
 }
 
@@ -2494,9 +2492,7 @@ StdViewZoomIn::StdViewZoomIn()
     sToolTipText  = QT_TR_NOOP("Zoom In");
     sWhatsThis    = "Std_ViewZoomIn";
     sStatusTip    = QT_TR_NOOP("Zoom In");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-in";
-#endif
     sAccel        = keySequenceToAccel(QKeySequence::ZoomIn);
     eType         = Alter3DView;
 }
@@ -2529,9 +2525,7 @@ StdViewZoomOut::StdViewZoomOut()
     sToolTipText  = QT_TR_NOOP("Zoom Out");
     sWhatsThis    = "Std_ViewZoomOut";
     sStatusTip    = QT_TR_NOOP("Zoom Out");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-out";
-#endif
     sAccel        = keySequenceToAccel(QKeySequence::ZoomOut);
     eType         = Alter3DView;
 }
@@ -2564,9 +2558,7 @@ StdViewBoxZoom::StdViewBoxZoom()
     sToolTipText  = QT_TR_NOOP("Box zoom");
     sWhatsThis    = "Std_ViewBoxZoom";
     sStatusTip    = QT_TR_NOOP("Box zoom");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-border";
-#endif
     sAccel        = "Ctrl+B";
     eType         = Alter3DView;
 }
@@ -2595,9 +2587,7 @@ StdBoxSelection::StdBoxSelection()
     sToolTipText  = QT_TR_NOOP("Box selection");
     sWhatsThis    = "Std_BoxSelection";
     sStatusTip    = QT_TR_NOOP("Box selection");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-select-box";
-#endif
     sAccel        = "Shift+B";
     eType         = AlterSelection;
 }
@@ -2819,9 +2809,7 @@ StdBoxElementSelection::StdBoxElementSelection()
     sToolTipText  = QT_TR_NOOP("Box element selection");
     sWhatsThis    = "Std_BoxElementSelection";
     sStatusTip    = QT_TR_NOOP("Box element selection");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-element-select-box";
-#endif
     sAccel        = "Shift+E";
     eType         = AlterSelection;
 }

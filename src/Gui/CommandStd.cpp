@@ -27,10 +27,8 @@
 # include <QMessageBox>
 # include <QSharedPointer>
 # include <QWhatsThis>
-#if QT_VERSION >= 0x040200
 # include <QDesktopServices>
 # include <QUrl>
-#endif
 #endif
 
 #include <boost/scoped_ptr.hpp>
@@ -245,13 +243,8 @@ Action * StdCmdAbout::createAction(void)
     pcAction->setWhatsThis(QLatin1String(sWhatsThis));
     pcAction->setIcon(QApplication::windowIcon());
     pcAction->setShortcut(QString::fromLatin1(sAccel));
-#if QT_VERSION > 0x050000
     // Needs to have AboutRole set to avoid duplicates if adding the about action more than once on macOS
     pcAction->setMenuRole(QAction::AboutRole);
-#else
-    // With Qt 4.8, having AboutRole set causes it to disappear when readding it: issue #0001485
-    pcAction->setMenuRole(QAction::ApplicationSpecificRole);
-#endif
     return pcAction;
 }
 
