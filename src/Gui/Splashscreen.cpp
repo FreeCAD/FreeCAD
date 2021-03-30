@@ -37,6 +37,8 @@
 # include <QSysInfo>
 # include <QTextStream>
 # include <QWaitCondition>
+# include <QDir>
+# include <QFileInfo>
 # include <Inventor/C/basic.h>
 #endif
 
