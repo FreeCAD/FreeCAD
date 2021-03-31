@@ -293,8 +293,11 @@ SoFCSwitch::notify(SoNotList * nl)
     if(which!=SO_SWITCH_ALL) {
       int fromchild = this->findChild((SoNode*) rec->getBase());
       if (fromchild >= 0
-          && fromchild!=which 
-          && childNotify.getValue()<=0)
+          && fromchild != which 
+          && (fromchild != this->tailChild.getValue() || which < 0)
+          && (fromchild != this->headChild.getValue() || which < 0)
+          && (fromchild != this->defaultChild.getValue() || which >= 0)
+          && childNotify.getValue() <= 0)
       {
         ignoreit = TRUE;
       }
