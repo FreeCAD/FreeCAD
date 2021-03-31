@@ -106,9 +106,7 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
             std::thread t([]() {
                 static int argc = 0;
                 static char **argv = {0};
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
                 QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-#endif
                 // This only works well if the QApplication is the very first created instance
                 // of a QObject. Otherwise the application lives in a different thread than the
                 // main thread which will cause hazardous behaviour.
