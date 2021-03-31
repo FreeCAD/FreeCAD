@@ -120,13 +120,6 @@ int main( int argc, char ** argv )
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.
     (void)QLocale::system();
-#if QT_VERSION < 0x050000
-    // http://www.freecadweb.org/tracker/view.php?id=399
-    // Because of setting LANG=C the Qt automagic to use the correct encoding
-    // for file names is broken. This is a workaround to force the use of UTF-8 encoding
-    QFile::setEncodingFunction(myEncoderFunc);
-    QFile::setDecodingFunction(myDecoderFunc);
-#endif
     // See https://forum.freecadweb.org/viewtopic.php?f=18&t=20600
     // See Gui::Application::runApplication()
     putenv("LC_NUMERIC=C");
@@ -189,9 +182,7 @@ int main( int argc, char ** argv )
     App::Application::Config()["SplashTextColor" ] = "#ffffff"; // white
     App::Application::Config()["SplashInfoColor" ] = "#c8c8c8"; // light grey
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 7, 0))
     QGuiApplication::setDesktopFileName(QStringLiteral("org.freecadweb.FreeCAD.desktop"));
-#endif
 
     try {
         // Init phase ===========================================================
