@@ -81,7 +81,7 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
         this->partialindices.push_back(i);
     }
   } else {
-    this->use_shorts = FALSE;
+    this->use_shorts = TRUE;
     this->indexarraylength = 0;
     for (int i : partindices)
       addIndex(i);
@@ -204,8 +204,8 @@ SoFCVertexArrayIndexer::close(const int *parts, int count)
     }
   }
   else if (this->target == GL_LINES
-          && this->partarray.size()
-          && this->partarray.back() < this->indexarraylength)
+          && (this->partarray.empty()
+              || this->partarray.back() < this->indexarraylength))
   {
     this->partarray.push_back(this->indexarraylength);
   }
