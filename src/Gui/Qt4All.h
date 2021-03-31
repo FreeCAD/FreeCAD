@@ -161,12 +161,6 @@
 #include <QUiLoader>
 #include <QtDesigner/QFormBuilder>
 
-// QtWebKit
-// Only needed in Web module
-//#include <QWebFrame>
-//#include <QWebView>
-//#include <QWebSettings>
-
 #include "qmath.h"
 #include <QGraphicsView>
 #include <QGraphicsScene>

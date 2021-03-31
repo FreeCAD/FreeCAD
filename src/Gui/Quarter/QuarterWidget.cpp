@@ -1043,11 +1043,7 @@ QuarterWidget::redraw(void)
   // Note that, the recursive repaint is not infinite due to setting
   // 'processdelayqueue = false' above. However, it does cause annoying
   // flickering, and actually crash on Windows.
-#if 1
   this->viewport()->update();
-#else
-
-#endif
 }
 
 /*!
