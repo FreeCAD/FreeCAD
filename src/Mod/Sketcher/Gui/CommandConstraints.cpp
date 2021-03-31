@@ -905,14 +905,12 @@ public:
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
-#if QT_VERSION >= 0x050000
         cursorPixmap.setDevicePixelRatio(pixelRatio);
         // only X11 needs hot point coordinates to be scaled
         if (qGuiApp->platformName() == QLatin1String("xcb")) {
             hotX *= pixelRatio;
             hotY *= pixelRatio;
         }
-#endif
         setCursor(cursorPixmap, hotX, hotY, false);
     }
 
