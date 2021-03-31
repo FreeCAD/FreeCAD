@@ -112,7 +112,9 @@ QVariant SceneModel::data(const QModelIndex & index, int role) const
         if(node->isOfType(SoFCSwitch::getClassTypeId())) {
             auto pathNode = static_cast<SoFCSwitch*>(node);
             stream << pathNode->defaultChild.getValue() << ", "
-                << pathNode->overrideSwitch.getValue() << ", ";
+                   << pathNode->overrideSwitch.getValue() << ", "
+                   << pathNode->headChild.getValue() << ", "
+                   << pathNode->tailChild.getValue() << ", ";
         }
     } else if (node->isOfType(SoSeparator::getClassTypeId())) {
         auto pcSeparator = static_cast<SoSeparator*>(node);
@@ -169,17 +171,18 @@ QModelIndex SceneModel::index(int row, int column, const QModelIndex &parent) co
 
     if (node->isOfType(SoFCPathAnnotation::getClassTypeId())) {
         auto path = static_cast<SoFCPathAnnotation*>(node)->getPath();
-        if (!path || row < 0 || row >= path->getLength())
-            return QModelIndex();
-
-        auto &child = items[index];
-        if (!child.node) {
-            child.node = path->getNode(row);
-            child.expand = false;
-            child.parent = parent;
+        if (path && row >= 0 && row < path->getLength()) {
+            auto &child = items[index];
+            if (!child.node) {
+                child.node = path->getNode(row);
+                child.expand = false;
+                child.parent = parent;
+            }
+            return index;
         }
-        return index;
-    } else if (auto children = node->getChildren()) {
+    }
+
+    if (auto children = node->getChildren()) {
         if (row < 0 || row >= children->getLength())
             return QModelIndex();
 
@@ -206,8 +209,10 @@ int SceneModel::rowCount(const QModelIndex & parent) const
     SoNode *node = item->node;
     if (node->isOfType(SoFCPathAnnotation::getClassTypeId())) {
         auto path = static_cast<SoFCPathAnnotation*>(node)->getPath();
-        return path ? path->getLength() : 0;
-    } else if (auto children = node->getChildren()) {
+        if (path && path->getLength())
+            return path->getLength();
+    }
+    if (auto children = node->getChildren()) {
         int count = children->getLength();
         if (count==1 && !item->expand)
             return 0;
