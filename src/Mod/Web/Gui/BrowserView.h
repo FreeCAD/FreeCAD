@@ -29,12 +29,12 @@
 #include <Gui/Window.h>
 #include <QLineEdit>
 
-#if QT_VERSION >= 0x050700 && defined(QTWEBENGINE)
+#if defined(QTWEBENGINE)
 #include <QWebEngineView>
 namespace WebGui {
 class WebEngineUrlRequestInterceptor;
 };
-#elif QT_VERSION >= 0x040400 && defined(QTWEBKIT)
+#elif defined(QTWEBKIT)
 #include <QWebView>
 #endif
 

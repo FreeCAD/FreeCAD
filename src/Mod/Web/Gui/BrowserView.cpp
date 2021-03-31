@@ -52,7 +52,7 @@
 #endif
 
 
-#if QT_VERSION >= 0x050700 && defined(QTWEBENGINE)
+#if defined(QTWEBENGINE)
 # include <QWebEnginePage>
 # include <QWebEngineView>
 # include <QWebEngineSettings>
@@ -60,20 +60,16 @@
 # include <QWebEngineContextMenuData>
 # include <QWebEngineUrlRequestInterceptor>
 # include <QWebEngineUrlRequestInfo>
-# define QWEBVIEW QWebEngineView
-# define QWEBPAGE QWebEnginePage
-#elif QT_VERSION >= 0x040400 && defined(QTWEBKIT)
+#elif defined(QTWEBKIT)
 # include <QWebFrame>
 # include <QWebView>
 # include <QWebSettings>
 # include <QNetworkAccessManager>
-# define QWEBVIEW QWebView
-# define QWEBPAGE QWebPage
+using QWebEngineView = QWebView;
+using QWebEnginePage = QWebPage;
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QScreen>
-#endif
+#include <QScreen>
 
 #include <QLatin1String>
 #include <QRegExp>
@@ -237,14 +233,10 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
  */
 
 WebView::WebView(QWidget *parent)
-    : QWEBVIEW(parent)
+    : QWebEngineView(parent)
 {
     // Increase html font size for high DPI displays
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QRect mainScreenSize = QApplication::primaryScreen()->geometry();
-#else
-    QRect mainScreenSize = QApplication::desktop()->screenGeometry();
-#endif
     if (mainScreenSize.width() > 1920){
         setTextSizeMultiplier (mainScreenSize.width()/1920.0);
     }
@@ -270,23 +262,19 @@ void WebView::mousePressEvent(QMouseEvent *event)
             return;
         }
     }
-    QWEBVIEW::mousePressEvent(event);
+    QWebEngineView::mousePressEvent(event);
 }
 #endif
 
 void WebView::wheelEvent(QWheelEvent *event)
 {
     if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         qreal factor = zoomFactor() + (-event->angleDelta().y() / 800.0);
-#else
-        qreal factor = zoomFactor() + (-event->delta() / 800.0);
-#endif
         setZoomFactor(factor);
         event->accept();
         return;
     }
-    QWEBVIEW::wheelEvent(event);
+    QWebEngineView::wheelEvent(event);
 }
 
 void WebView::contextMenuEvent(QContextMenuEvent *event)
@@ -313,12 +301,12 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         connect (newAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
         signalMapper->setMapping(newAction, WebAction::OpenLinkInNewWindow);
 
-        menu.addAction(pageAction(QWEBPAGE::DownloadLinkToDisk));
-        menu.addAction(pageAction(QWEBPAGE::CopyLinkToClipboard));
+        menu.addAction(pageAction(QWebEnginePage::DownloadLinkToDisk));
+        menu.addAction(pageAction(QWebEnginePage::CopyLinkToClipboard));
         menu.exec(mapToGlobal(event->pos()));
         return;
     }
-#if QT_VERSION >= 0x050800 && defined(QTWEBENGINE)
+#if defined(QTWEBENGINE)
     else { // for view source
         // QWebEngine caches standardContextMenu, guard so we only add signalmapper once
         static bool firstRun = true;
@@ -352,7 +340,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         menu->exec(event->globalPos());
     }
 #endif
-    QWEBVIEW::contextMenuEvent(event);
+    QWebEngineView::contextMenuEvent(event);
 }
 
 void WebView::triggerContextMenuAction(int id)
@@ -445,10 +433,7 @@ BrowserView::BrowserView(QWidget* parent)
 #endif
 
     view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
-
-#if QT_VERSION >= 0x050800
     view->settings()->setAttribute(QWebEngineSettings::FocusOnNavigationEnabled,false);
-#endif
 
     connect(view->page()->profile(), SIGNAL(downloadRequested(QWebEngineDownloadItem*)),
             this, SLOT(onDownloadRequested(QWebEngineDownloadItem*)));
@@ -498,11 +483,7 @@ void BrowserView::onLinkClicked (const QUrl & url)
     // query
     QString q;
     if (url.hasQuery())
-#if QT_VERSION >= 0x050000
         q = url.query();
-#else
-        q = QString::fromAscii(url.encodedQuery().data());
-#endif
 
     //QString fragment = url.	fragment();
 
@@ -541,11 +522,7 @@ void BrowserView::onLinkClicked (const QUrl & url)
                     }
                     // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
                     QString filename = Base::Tools::escapeEncodeFilename(fi.absoluteFilePath());
-#if PY_MAJOR_VERSION < 3
-                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open(unicode('%s', 'utf-8')).read())",(const char*) filename.toUtf8());
-#else
                     Gui::Command::doCommand(Gui::Command::Gui,"with open('%s') as file:\n\texec(file.read())",(const char*) filename.toUtf8());
-#endif
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));
@@ -801,9 +778,9 @@ bool BrowserView::onMsg(const char* pMsg,const char** )
 bool BrowserView::onHasMsg(const char* pMsg) const
 {
     if (strcmp(pMsg,"Back")==0)
-        return view->page()->action(QWEBPAGE::Back)->isEnabled();
+        return view->page()->action(QWebEnginePage::Back)->isEnabled();
     if (strcmp(pMsg,"Next")==0)
-        return view->page()->action(QWEBPAGE::Forward)->isEnabled();
+        return view->page()->action(QWebEnginePage::Forward)->isEnabled();
     if (strcmp(pMsg,"Refresh")==0) return !isLoading;
     if (strcmp(pMsg,"Stop")==0) return isLoading;
     if (strcmp(pMsg,"ZoomIn")==0) return true;
