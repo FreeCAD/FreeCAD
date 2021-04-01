@@ -238,6 +238,7 @@ def get_group_contents(objectslist,
         if isinstance(item, tuple):
             obj = item[0].getSubObject(item[1], retType=1)
         if obj:
+            children = []
             if (obj.isDerivedFrom("App::DocumentObjectGroup")
                     or (utils.get_type(obj) in ("Building", "BuildingPart",
                                                 "Space", "Site")
@@ -254,15 +255,15 @@ def get_group_contents(objectslist,
                     if addgroups or (spaces
                                      and utils.get_type(obj) == "Space"):
                         newlist.append(item)
-                        continue
                     if (noarchchild
                             and utils.get_type(obj) in ("Building",
                                                         "BuildingPart")):
                         continue
+                    else:
+                        children = obj.Group
 
-            subs = obj.getSubObjects()
-            if subs:
-                children = []
+            if not children:
+                subs = obj.getSubObjects()
                 for sub in subs:
                     if obj is not item:
                         children.append((item[0], item[1]+sub))
@@ -270,8 +271,8 @@ def get_group_contents(objectslist,
                         sobj = obj.getSubObject(sub, retType=1)
                         if sobj:
                             children.append(sobj)
-                newlist += get_group_contents(children, walls, False)
-
+            if children:
+                newlist += get_group_contents(children, walls, addgroups)
             elif not newlist or newlist[-1] is not item:
                 # print("adding ", obj.Name)
                 newlist.append(item)
