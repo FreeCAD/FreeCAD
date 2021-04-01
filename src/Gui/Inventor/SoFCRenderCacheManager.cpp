@@ -815,9 +815,9 @@ SoFCRenderCacheManagerP::postPathAnnotation(void *userdata,
   (void)action;
   auto annotation = static_cast<const SoFCPathAnnotation*>(node);
   if (annotation->priority.getValue())
-    self->stack.back()->increaseRenderingOrder(annotation->priority.getValue());
+    self->stack.back()->decreaseRenderingOrder(annotation->priority.getValue());
   else if (++self->annotation == 1)
-    self->stack.back()->increaseRenderingOrder();
+    self->stack.back()->decreaseRenderingOrder();
   return SoCallbackAction::CONTINUE;
 }
 
