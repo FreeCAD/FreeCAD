@@ -523,8 +523,6 @@ public:
     }
 #endif
 
-    
-
     QByteArray toBytes() const
     {
         if (this->postfix.isEmpty())
@@ -539,6 +537,21 @@ public:
         if (this->postfix.isEmpty())
             return IndexedName(this->data);
         return IndexedName();
+    }
+
+    std::string toPrefixedString() const
+    {
+        std::string res;
+        toPrefixedString(res);
+        return res;
+    }
+
+    const char *toPrefixedString(std::string &buf) const
+    {
+        if (!toIndexedName())
+            buf += ComplexGeoData::elementMapPrefix();
+        toString(buf);
+        return buf.c_str();
     }
     
     int compare(const MappedName &other) const

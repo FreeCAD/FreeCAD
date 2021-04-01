@@ -39,6 +39,7 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -211,8 +212,54 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     // Note: The validity checking has already been done in ReferenceSelection.cpp
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
     App::DocumentObject* selObj = pcSketchBased->getDocument()->getObject(msg.pObjectName);
-    if (selObj == pcSketchBased)
+    if (selObj == pcSketchBased) {
+        // The feature itself is selected, trace the selected element back to
+        // its base
+        auto baseShape = pcSketchBased->getBaseShape(true);
+        auto base = pcSketchBased->getBaseObject();
+        if (baseShape.isNull() || !base)
+            return QString();
+        auto history = Part::Feature::getElementHistory(pcSketchBased,msg.pSubName,true,true);
+        const char *element = 0;
+        std::string tmp;
+        for(auto &hist : history) {
+            if (hist.obj != base)
+                continue;
+            tmp.clear();
+            element = hist.element.toPrefixedString(tmp);
+            if (!baseShape.getSubShape(element, true).IsNull())
+                break;
+            element = nullptr;
+        }
+        if(element) {
+            if(msg.pOriginalMsg) {
+                // We are about change the sketched base object shape, meaning
+                // that this selected element may be gone soon. So remove it
+                // from the selection to avoid warning.
+                Gui::Selection().rmvSelection(msg.pOriginalMsg->pDocName,
+                                              msg.pOriginalMsg->pObjectName,
+                                              msg.pOriginalMsg->pSubName);
+            }
+
+            App::SubObjectT sel = (msg.pOriginalMsg ? msg.pOriginalMsg->Object : msg.Object).getParent();
+            auto objs = sel.getSubObjectList();
+            int i=0, idx = -1;
+            for (auto obj : objs) {
+                ++i;
+                if (obj->getLinkedObject()->isDerivedFrom(PartDesign::Body::getClassTypeId()))
+                    idx = i;
+            }
+            if (idx < 0)
+                return QString();
+            objs.resize(idx);
+            objs.push_back(base);
+            sel = App::SubObjectT(objs);
+            sel.setSubName((sel.getSubName() + element).c_str());
+            Gui::Selection().addSelection(sel);
+        }
         return QString();
+    }
+
     std::string subname = msg.pSubName;
     QString refStr;
 

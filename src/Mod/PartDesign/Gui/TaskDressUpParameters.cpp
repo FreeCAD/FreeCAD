@@ -296,7 +296,7 @@ void TaskDressUpParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 showMessage("Ambiguous selection");
                 return;
             }
-            element = hist.element.toString(tmp);
+            element = hist.element.toPrefixedString(tmp);
         }
         if(element) {
             std::vector<App::SubObjectT> sels;
