@@ -152,6 +152,14 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
         }
     }
 
+    // if successful then enable Console logger
+    Base::ILogger *console = Base::Console().Get("Console");
+    if (console) {
+        console->bMsg = true;
+        console->bWrn = true;
+        console->bErr = true;
+    }
+
     Py_INCREF(Py_None);
     return Py_None;
 }
