@@ -176,6 +176,7 @@ protected Q_SLOTS:
     /// Connect the subTask OK button to the MultiTransform task
     virtual void onSubTaskButtonOK() {}
     void onChangedSubTransform(bool);
+    void onChangedParallelTransform(bool);
     void onChangedNewSolid(bool);
     void originalSelectionChanged();
     void onChangedOffset(const QVariant &, bool, bool);

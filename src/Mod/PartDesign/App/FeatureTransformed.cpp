@@ -80,6 +80,9 @@ Transformed::Transformed()
     ADD_PROPERTY_TYPE(CopyShape,(true),"Part Design",(App::PropertyType)(App::Prop_None),
         "Make a copy of each transformed shape");
 
+    ADD_PROPERTY_TYPE(ParallelTransform,(true),"Part Design",(App::PropertyType)(App::Prop_None),
+        "Perform boolean operation on transformed feature in parallel");
+
     ADD_PROPERTY_TYPE(TransformOffset,(Base::Placement()),"Part Design",(App::PropertyType)(App::Prop_None),
         "Offset placement applied to the source shape before pattern transformation.");
 
@@ -308,7 +311,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     FC_TIME_INIT(t);
 
-    if (allowMultiSolid()) {
+    if (allowMultiSolid() && ParallelTransform.getValue()) {
         std::vector<TopoShape> fuseShapes;
         if (!support.isNull())
             fuseShapes.push_back(support);

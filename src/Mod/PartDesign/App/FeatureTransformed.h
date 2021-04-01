@@ -51,10 +51,9 @@ public:
     App::PropertyLinkSubList OriginalSubs; // to replace Originals for working with multiple solids
 
     App::PropertyBool Refine;
-
     App::PropertyBool SubTransform;
-
     App::PropertyBool CopyShape;
+    App::PropertyBool ParallelTransform;
 
     App::PropertyPlacement TransformOffset;
 

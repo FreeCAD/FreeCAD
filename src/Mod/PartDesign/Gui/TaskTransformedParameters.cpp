@@ -253,6 +253,15 @@ void TaskTransformedParameters::setupUI() {
     checkBoxSubTransform->setChecked(getObject()->SubTransform.getValue());
     connect(checkBoxSubTransform, SIGNAL(toggled(bool)), this, SLOT(onChangedSubTransform(bool)));
 
+    checkBoxParallel = new QCheckBox(this);
+    checkBoxParallel->setText(tr("Operate in parallel"));
+    checkBoxParallel->setToolTip(
+            tr("Check this option to perform boolean operation on pattern in\n"
+               "parallel. Note that this may fail if the pattern shape contains\n"
+               "overlap. Uncheck this option to perform operation in sequence."));
+    checkBoxParallel->setChecked(getObject()->SubTransform.getValue());
+    connect(checkBoxParallel, SIGNAL(toggled(bool)), this, SLOT(onChangedParallelTransform(bool)));
+
     checkBoxNewSolid = new QCheckBox(this);
     checkBoxNewSolid->setText(tr("New solid"));
     checkBoxNewSolid->setToolTip(tr("Make a separate solid using the resulting pattern shape"));
@@ -261,6 +270,7 @@ void TaskTransformedParameters::setupUI() {
 
     auto layout = qobject_cast<QBoxLayout*>(proxy->layout());
     assert(layout);
+    layout->insertWidget(0,checkBoxParallel);
     layout->insertWidget(0,checkBoxSubTransform);
     layout->insertWidget(0,checkBoxNewSolid);
 
@@ -375,6 +385,10 @@ void TaskTransformedParameters::refresh()
         if(checkBoxSubTransform) {
             QSignalBlocker blocker(checkBoxSubTransform);
             checkBoxSubTransform->setChecked(getObject()->SubTransform.getValue());
+        }
+        if(checkBoxParallel) {
+            QSignalBlocker blocker(checkBoxParallel);
+            checkBoxParallel->setChecked(getObject()->ParallelTransform.getValue());
         }
     }
     updateUI();
@@ -534,6 +548,12 @@ void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, 
 void TaskTransformedParameters::onChangedSubTransform(bool checked) {
     setupTransaction();
     getObject()->SubTransform.setValue(checked);
+    recomputeFeature();
+}
+
+void TaskTransformedParameters::onChangedParallelTransform(bool checked) {
+    setupTransaction();
+    getObject()->ParallelTransform.setValue(checked);
     recomputeFeature();
 }
 
