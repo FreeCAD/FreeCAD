@@ -62,7 +62,7 @@ using namespace Part;
 
 namespace PartDesign {
 
-PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureAddSub)
 
 Transformed::Transformed()
 {
@@ -185,6 +185,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         if(!BaseFeature.getValue()) {
             // typically InsideMultiTransform
             Shape.setValue(TopoShape());
+            AddSubShape.setValue(TopoShape());
             return App::DocumentObject::StdReturn;
         }
         std::vector<std::string> subs;
@@ -335,7 +336,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 if (shapeCopy.isNull())
                     return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
                 try {
-                    shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str(), true);
+                    shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str());
                     if(fuse)
                         fuseShapes.push_back(shapeCopy);
                     else
@@ -351,11 +352,16 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
         try {
             try {
+                std::vector<TopoShape> addsub(2);
                 if(fuseShapes.size() > 1) {
-                    if (cutShapes.size() <= 1 && NewSolid.getValue())
+                    if (cutShapes.size() <= 1 && NewSolid.getValue()) {
                         support.makECompound(fuseShapes);
-                    else
+                        addsub[0] = support;
+                    } else {
                         support.makEFuse(fuseShapes);
+                        fuseShapes.erase(fuseShapes.begin());
+                        addsub[0].makECompound(fuseShapes);
+                    }
                 }
                 if(cutShapes.size() > 1) {
                     if (support.isNull()) { // means new solid without fuseShapes
@@ -365,12 +371,28 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                             cutShapes.erase(cutShapes.begin());
                             result.makECompound(cutShapes);
                         }
+                        addsub[1] = result;
                     } else {
                         cutShapes[0] = support;
                         result.makECut(cutShapes);
+                        cutShapes.erase(cutShapes.begin());
+                        addsub[1].makECompound(cutShapes);
                     }
                 }else
                     result = support;
+
+                for (auto &s : addsub) {
+                    if (s.isNull()) {
+                        BRep_Builder builder;
+                        TopoDS_Compound comp;
+                        builder.MakeCompound(comp);
+                        // Replace null shape with an empty compound for place
+                        // holder so that we know which one is additive and
+                        // which is subtractive.
+                        s = comp;
+                    }
+                }
+                AddSubShape.setValue(TopoShape().makECompound(addsub));
             } catch (Standard_Failure& e) {
                 std::string msg("Boolean operation failed");
                 if (e.GetMessageString() != NULL)
@@ -394,6 +416,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     // to fail. The downside is that performance suffers when there are many originals. But it seems
     // safe to assume that in most cases there are few originals and many transformations
     int i=0;
+    std::vector<TopoShape> fuseShapes;
+    std::vector<TopoShape> cutShapes;
     for (TopoShape &shape : originalShapes) {
         auto &sub = originalSubs[i];
         int idx = startIndices[i];
@@ -417,7 +441,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn("Transformed: Linked shape object is empty");
 
             try {
-                shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str(), true);
+                shapeCopy = shapeCopy.makETransform(*t, ss.str().c_str());
             }catch(Standard_Failure &) {
                 std::string msg("Transformation failed ");
                 msg += sub;
@@ -439,53 +463,53 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
 
                 if (fuse) {
-                    // We cannot wait to fuse a transformation with the support until all the transformations are done,
-                    // because the "support" potentially changes with every transformation, basically when checking intersection
-                    // above you need:
-                    // 1. The original support
-                    // 2. Any extra support gained by any previous transformation of any previous feature (multi-feature transform)
-                    // 3. Any extra support gained by any previous transformation of this feature (feature multi-trasform)
-                    //
-                    // Therefore, if the transformation succeeded, then we fuse it with the support now, before checking the intersection
-                    // of the next transformation.
-
-                    /*v_transformations.push_back(t);
-                    v_transformedShapes.push_back(mkTrf.Shape());*/
-
-                    // Note: Transformations that do not intersect the support are ignored in the overlap tests
-
-                    //insert scheme here.
-                    /*TopoDS_Compound compoundTool;
-                    std::vector<TopoDS_Shape> individualTools;
-                    divideTools(v_transformedShapes, individualTools, compoundTool);*/
-
-                    // Fuse/Cut the compounded transformed shapes with the support
-                    //TopoDS_Shape result;
-                    
-                    result.makEFuse({support,shapeCopy});
-                    // we have to get the solids (fuse sometimes creates compounds)
-                    support = this->getSolid(result);
-                    // lets check if the result is a solid
-                    if (support.isNull()) {
-                        std::string msg("Resulting shape is not a solid: ");
-                        msg += sub;
-                        return new App::DocumentObjectExecReturn(msg.c_str());
-                    }
-
-                } else {
-                    result.makECut({support,shapeCopy});
-                    support = result;
+                    fuseShapes.push_back(shapeCopy);
+                    result = support.makEFuse(shapeCopy);
+                 } else {
+                     cutShapes.push_back(shapeCopy);
+                    result = support.makECut(shapeCopy);
+                 }
+                // we have to get the solids (fuse sometimes creates compounds)
+                support = this->getSolid(result);
+                // lets check if the result is a solid
+                if (support.isNull()) {
+                    std::string msg("Resulting shape is not a solid: ");
+                    msg += sub;
+                    return new App::DocumentObjectExecReturn(msg.c_str());
                 }
+
             } catch (Standard_Failure& e) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
                 // fuse operation of the transformation result will also fail
 
+                rejected.emplace_back(shape,std::vector<gp_Trsf>(t,t+1));
                 std::string msg("Transformation: Intersection check failed");
                 if (e.GetMessageString() != NULL)
                     msg += std::string(": '") + e.GetMessageString() + "'";
                 return new App::DocumentObjectExecReturn(msg.c_str());
             }
         }
+
+        std::vector<Part::TopoShape> addsub(2);
+        if (fuseShapes.size())
+            addsub[0] = TopoShape().makECompound(fuseShapes);
+        else {
+            // Replace null shape with an empty compound for place holder so
+            // that we know which one is additive and which is subtractive.
+            BRep_Builder builder;
+            TopoDS_Compound comp;
+            builder.MakeCompound(comp);
+            addsub[0] = comp;
+        }
+        if (cutShapes.size())
+            addsub[1] = TopoShape().makECompound(cutShapes);
+        else {
+            BRep_Builder builder;
+            TopoDS_Compound comp;
+            builder.MakeCompound(comp);
+            addsub[1] = comp;
+        }
+        AddSubShape.setValue(TopoShape().makECompound(addsub));
     }
     result = refineShapeIfActive(result);
 
@@ -655,6 +679,17 @@ bool Transformed::isElementGenerated(const TopoShape &shape, const Data::MappedN
         });
 
     return res;
+}
+
+void Transformed::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+{
+    Part::TopoShape res = AddSubShape.getShape();
+    addShape = res.getSubTopoShape(TopAbs_SHAPE, 1, true);
+    if (addShape.countSubShapes(TopAbs_SHAPE) == 0)
+        addShape = TopoShape();
+    subShape = res.getSubTopoShape(TopAbs_SHAPE, 2, true);
+    if (subShape.countSubShapes(TopAbs_SHAPE) == 0)
+        subShape = TopoShape();
 }
 
 }

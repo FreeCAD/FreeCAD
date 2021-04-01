@@ -24,27 +24,25 @@
 #ifndef PARTGUI_ViewProviderTransformed_H
 #define PARTGUI_ViewProviderTransformed_H
 
-#include "ViewProvider.h"
+#include "ViewProviderAddSub.h"
 
 namespace PartDesignGui {
 
 class TaskDlgTransformedParameters;
 
-class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
+class PartDesignGuiExport ViewProviderTransformed : public ViewProviderAddSub
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderTransformed);
 
 public:
     /// constructor
     ViewProviderTransformed()
-        : featureName("undefined"), pcRejectedRoot(nullptr) {}
+        : featureName("undefined") {}
     /// destructor
     virtual ~ViewProviderTransformed()
         {}
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
-
-    virtual bool onDelete(const std::vector<std::string> &) override;
 
     /// signals if the transformation contains errors
     boost::signals2::signal<void (QString msg)> signalDiagnosis;
@@ -55,13 +53,10 @@ public:
     virtual Gui::ViewProvider *startEditing(int ModNum=0) override;
 
 protected:
-    virtual bool setEdit(int ModNum) override;
-    virtual void unsetEdit(int ModNum) override;
+    virtual void checkAddSubColor() override;
+    virtual void updateAddSubShapeIndicator() override;
 
     bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
-
-    // node for the representation of rejected repetitions
-    SoGroup           * pcRejectedRoot;
 
     QString diagMessage;
 

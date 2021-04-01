@@ -182,8 +182,6 @@ void TaskMirroredParameters::onPlaneChanged(int /*num*/)
     try{
         if(planeLinks.getCurrentLink().getValue() == 0){
             // enter reference selection mode
-            hideObject();
-            showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
             addReferenceSelectionGate(false, true);

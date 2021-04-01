@@ -58,7 +58,7 @@ public:
     void setPreviewDisplayMode(bool);
 
 protected: 
-    void checkAddSubColor();
+    virtual void checkAddSubColor();
     virtual void setAddSubColor(const App::Color &color, float t);
     virtual void updateAddSubShapeIndicator();
     virtual PartGui::ViewProviderPart * getAddSubView();

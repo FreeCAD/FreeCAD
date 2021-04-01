@@ -237,8 +237,6 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
     try{
         if(axesLinks.getCurrentLink().getValue() == 0){
             // enter reference selection mode
-            hideObject();
-            showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
             addReferenceSelectionGate(true, false, false, false, true);

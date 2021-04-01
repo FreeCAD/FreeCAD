@@ -27,7 +27,7 @@
 #include <gp_Trsf.hxx>
 
 #include <App/PropertyStandard.h>
-#include "Feature.h"
+#include "FeatureAddSub.h"
 
 
 namespace PartDesign
@@ -37,7 +37,7 @@ namespace PartDesign
  * Abstract superclass of all features that are created by transformation of another feature
  * Transformations are translation, rotation and mirroring
  */
-class PartDesignExport Transformed : public PartDesign::Feature
+class PartDesignExport Transformed : public PartDesign::FeatureAddSub
 {
     PROPERTY_HEADER(PartDesign::Transformed);
 
@@ -99,6 +99,8 @@ public:
     const rejectedMap getRejectedTransformations(void) { return rejected; }
 
     virtual bool isElementGenerated(const TopoShape &shape, const Data::MappedName &name) const;
+
+    virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
 
 protected:
     virtual void handleChangedPropertyType(
