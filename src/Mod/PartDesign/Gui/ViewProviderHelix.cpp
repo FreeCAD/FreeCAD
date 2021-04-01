@@ -76,24 +76,6 @@ QIcon ViewProviderHelix::getIcon(void) const {
     return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 
-bool ViewProviderHelix::setEdit(int ModNum)
-{
-
-    if (ModNum == ViewProvider::Default ) {
-        auto* prim = static_cast<PartDesign::Helix*>(getObject());
-        setPreviewDisplayMode(prim->getAddSubType() == PartDesign::FeatureAddSub::Subtractive);
-    }
-    return ViewProviderAddSub::setEdit(ModNum);
-}
-
-void ViewProviderHelix::unsetEdit(int ModNum)
-{
-    setPreviewDisplayMode(false);
-    // Rely on parent class to:
-    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
-    PartDesignGui::ViewProvider::unsetEdit(ModNum);
-}
-
 std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren(void) const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
