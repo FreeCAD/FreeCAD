@@ -1872,7 +1872,7 @@ long ComplexGeoData::getElementHistory(const char *name,
     MappedElement mapped = getElementName(name);
     if (!mapped.name)
         return 0;
-    return getElementHistory(name, original, history);
+    return getElementHistory(mapped.name, original, history);
 }
 
 long ComplexGeoData::getElementHistory(const MappedName & name, 
@@ -1918,7 +1918,7 @@ long ComplexGeoData::getElementHistory(const MappedName & name,
 
         long tag2 = 0;
         pos = findTagInElementName(ret,&tag2,&len,nullptr,nullptr,true);
-        if(pos < 0 || (tag2!=tag && tag!=Tag && -tag!=Tag))
+        if(pos < 0 || (tag2!=tag && tag2!=-tag && tag!=Tag && -tag!=Tag))
             return tag;
         tag = tag2;
         if(history)
