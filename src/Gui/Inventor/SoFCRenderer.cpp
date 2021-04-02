@@ -1136,9 +1136,8 @@ SoFCRenderer::render(SoGLRenderAction * action)
                                     PRIVATE(this)->transpselectionsontop,
                                     false);
 
-  bool hassel = PRIVATE(this)->selstriangleontop.size()
-                    && (PRIVATE(this)->selsontop.size()
-                        || PRIVATE(this)->selslineontop.size());
+  bool hassel = PRIVATE(this)->selsontop.size()
+                        || PRIVATE(this)->selslineontop.size();
   bool hasontop = PRIVATE(this)->trianglesontop.size()
                       && PRIVATE(this)->linesontop.size();
   int pass = RenderPassNormal;
