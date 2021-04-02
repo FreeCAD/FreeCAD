@@ -129,12 +129,9 @@ public:
     std::string dataToText(int index) const;
 
     void toBytes(QByteArray &bytes, int index) const {
-        if (_postfix.size()) {
-            if (index)
-                bytes = _data + QByteArray::number(index) + _postfix;
-            else
-                bytes = _data + _postfix;
-        } if (index)
+        if (_postfix.size())
+            bytes = _data + _postfix;
+        else if (index)
             bytes = _data + QByteArray::number(index);
         else
             bytes = _data;
