@@ -51,7 +51,7 @@ protected:
     void resizeWidget();
 
     bool handleKeyEvent(const QString&);
-    void openFormulaDialog();
+    virtual void openFormulaDialog();
 
     void drawControl(QStyleOptionSpinBox&);
 

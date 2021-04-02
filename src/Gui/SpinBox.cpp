@@ -89,6 +89,8 @@ void ExpressionSpinBox::setExpression(std::shared_ptr<Expression> expr)
 
 void ExpressionSpinBox::onChange()
 {
+    Q_ASSERT(isBound());
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
