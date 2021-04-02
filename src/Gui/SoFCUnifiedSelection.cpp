@@ -877,14 +877,19 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
                     }
 
                     if (useRenderer()) {
-                        if(detailPath->getLength())
+                        if(detailPath->getLength()) {
+                            if (detail) {
+                                int idx = detailPath->findNode(vp->getRoot());
+                                if (idx >= 0)
+                                    detailPath->truncate(idx+1);
+                            }
                             manager.addSelection(selaction->SelChange->Object.getSubNameNoElement(true),
                                                  selaction->SelChange->Object.getOldElementName(),
                                                  detailPath,
                                                  detail,
                                                  getSelectionColor(),
                                                  ViewParams::getShowSelectionOnTop()); 
-                        else
+                        } else
                             manager.addSelection(selaction->SelChange->Object.getSubNameNoElement(true),
                                                  selaction->SelChange->Object.getOldElementName(),
                                                  vp->getRoot(),

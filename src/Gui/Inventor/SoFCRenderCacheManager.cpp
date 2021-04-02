@@ -86,6 +86,18 @@ struct PathHasher {
     }
     return seed;
   }
+
+  bool operator()(const PathPtr &a, const PathPtr &b) const {
+    if (a == b)
+      return true;
+    if (!a || !b || a->getLength() != b->getLength())
+      return false;
+    for (int i=0, c=a->getLength(); i<c; ++i) {
+      if (a->getNode(i) != b->getNode(i))
+        return false;
+    }
+    return true;
+  }
 };
 
 struct ElementEntry {
@@ -121,7 +133,7 @@ public:
   bool ontop;
 };
 
-typedef std::unordered_map<PathPtr, SelectionSensor, PathHasher> SelectionPathMap;
+typedef std::unordered_map<PathPtr, SelectionSensor, PathHasher, PathHasher> SelectionPathMap;
 
 class SoFCRenderCacheManagerP {
 public:
