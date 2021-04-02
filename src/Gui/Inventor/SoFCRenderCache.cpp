@@ -438,7 +438,7 @@ void
 SoFCRenderCache::increaseRenderingOrder(int priority)
 {
   if (priority)
-    PRIVATE(this)->material.order += 1000 + priority;
+    PRIVATE(this)->material.annotation += 1000 + priority;
   else
     ++PRIVATE(this)->material.annotation;
 }
@@ -447,7 +447,7 @@ void
 SoFCRenderCache::decreaseRenderingOrder(int priority)
 {
   if (priority)
-    PRIVATE(this)->material.order -= 1000 + priority;
+    PRIVATE(this)->material.annotation -= 1000 + priority;
   else
     --PRIVATE(this)->material.annotation;
 }
