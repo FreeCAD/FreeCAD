@@ -55,15 +55,9 @@ class WebGuiExport WebView : public QWebView
 
 public:
     WebView(QWidget *parent = 0);
-#ifdef QTWEBENGINE
-    // reimplement setTextSizeMultiplier
-    void setTextSizeMultiplier(qreal factor);
-#endif
 
 protected:
-#ifdef QTWEBKIT
     void mousePressEvent(QMouseEvent *event);
-#endif
     void wheelEvent(QWheelEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
 
@@ -110,15 +104,14 @@ protected Q_SLOTS:
     void onLoadProgress(int);
     void onLoadFinished(bool);
     bool chckHostAllowed(const QString& host);
+    void urlFilter(const QUrl &url);
 #ifdef QTWEBENGINE
     void onDownloadRequested(QWebEngineDownloadItem *request);
     void setWindowIcon(const QIcon &icon);
-    void urlFilter(const QUrl &url);
     void onLinkHovered(const QString& url);
 #else
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
-    void onLinkClicked (const QUrl& url);
     void onLinkHovered(const QString& link, const QString& title, const QString& textContent);
 #endif
     void onViewSource(const QUrl &url);

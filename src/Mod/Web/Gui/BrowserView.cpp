@@ -235,26 +235,18 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
 {
+#ifdef QTWEBKIT
     // Increase html font size for high DPI displays
     QRect mainScreenSize = QApplication::primaryScreen()->geometry();
     if (mainScreenSize.width() > 1920){
         setTextSizeMultiplier (mainScreenSize.width()/1920.0);
     }
+#endif
 }
-
-#ifdef QTWEBENGINE
-// implement a custom method using font minimum size
-void WebView::setTextSizeMultiplier(qreal factor)
-{
-    QWebEngineSettings *sett = settings();
-    int fontSize = sett->fontSize(QWebEngineSettings::MinimumFontSize);
-    fontSize = static_cast<int>(fontSize * factor);
-    sett->setFontSize(QWebEngineSettings::MinimumFontSize, fontSize);
-}
-#else // QTWEBKIT
 
 void WebView::mousePressEvent(QMouseEvent *event)
 {
+#ifdef QTWEBKIT
     if (event->button() == Qt::MidButton) {
         QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
         if (!r.linkUrl().isEmpty()) {
@@ -262,9 +254,9 @@ void WebView::mousePressEvent(QMouseEvent *event)
             return;
         }
     }
+#endif
     QWebEngineView::mousePressEvent(event);
 }
-#endif
 
 void WebView::wheelEvent(QWheelEvent *event)
 {
@@ -410,7 +402,7 @@ BrowserView::BrowserView(QWidget* parent)
     connect(view->page(), SIGNAL(linkHovered(const QString &, const QString &, const QString &)),
             this, SLOT(onLinkHovered(const QString &, const QString &, const QString &)));
     connect(view, SIGNAL(linkClicked(const QUrl &)),
-            this, SLOT(onLinkClicked(const QUrl &)));
+            this, SLOT(urlFilter(const QUrl &)));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
             this, SLOT(onDownloadRequested(const QNetworkRequest &)));
     connect(view->page(), SIGNAL(unsupportedContent(QNetworkReply*)),
@@ -465,11 +457,7 @@ BrowserView::~BrowserView()
     delete view;
 }
 
-#ifdef QTWEBENGINE
-void BrowserView::urlFilter(const QUrl &url)
-#else
-void BrowserView::onLinkClicked (const QUrl & url)
-#endif
+void BrowserView::urlFilter(const QUrl & url)
 {
     QString scheme   = url.scheme();
     QString host     = url.host();
@@ -604,7 +592,7 @@ void BrowserView::onUnsupportedContent(QNetworkReply* reply)
     // Do not call handleUnsupportedContent() directly otherwise we won't get
     // the metaDataChanged() signal of the reply.
     Gui::Dialog::DownloadManager::getInstance()->download(reply->url());
-    // Due to setting the policy QWebPage::DelegateAllLinks the onLinkClicked()
+    // Due to setting the policy QWebPage::DelegateAllLinks the urlFilter()
     // slot is called even when clicking on a downloadable file but the page
     // then fails to load. Thus, we reload the previous url.
     view->reload();
