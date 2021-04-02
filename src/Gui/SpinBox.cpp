@@ -151,20 +151,7 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
     setValue(0);
     updateValidator();
 
-    defaultPalette = lineEdit()->palette();
-
-    /* Icon for f(x) */
-    QFontMetrics fm(lineEdit()->font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
-    iconLabel = new ExpressionLabel(lineEdit());
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
-    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    makeLabel(lineEdit());
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
@@ -296,7 +283,7 @@ void UIntSpinBox::onChange() {
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -304,7 +291,7 @@ void UIntSpinBox::onChange() {
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+        iconLabel->setExpressionText(QString());
     }
 }
 
@@ -347,7 +334,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -357,7 +344,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+            iconLabel->setExpressionText(QString());
         }
     }
     catch (const Base::Exception & e) {
@@ -430,23 +417,9 @@ void UIntSpinBox::paintEvent(QPaintEvent*)
 
 // ----------------------------------------------------------------------------
 
-IntSpinBox::IntSpinBox(QWidget* parent) : QSpinBox(parent) {
-
-    defaultPalette = lineEdit()->palette();
-
-    /* Icon for f(x) */
-    QFontMetrics fm(lineEdit()->font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
-    iconLabel = new ExpressionLabel(lineEdit());
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
-    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
-
+IntSpinBox::IntSpinBox(QWidget* parent) : QSpinBox(parent)
+{
+    makeLabel(lineEdit());
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
 
@@ -506,7 +479,7 @@ void IntSpinBox::onChange() {
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -514,7 +487,7 @@ void IntSpinBox::onChange() {
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+        iconLabel->setExpressionText(QString());
     }
 }
 
@@ -541,7 +514,7 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -551,7 +524,7 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+            iconLabel->setExpressionText(QString());
         }
     }
     catch (const Base::Exception & e) {
@@ -624,23 +597,9 @@ void IntSpinBox::paintEvent(QPaintEvent*)
 
 // ----------------------------------------------------------------------------
 
-DoubleSpinBox::DoubleSpinBox(QWidget* parent): QDoubleSpinBox(parent) {
-
-    defaultPalette = lineEdit()->palette();
-
-    /* Icon for f(x) */
-    QFontMetrics fm(lineEdit()->font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
-    iconLabel = new ExpressionLabel(lineEdit());
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
-    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
-
+DoubleSpinBox::DoubleSpinBox(QWidget* parent): QDoubleSpinBox(parent)
+{
+    makeLabel(lineEdit());
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }
 
@@ -700,7 +659,7 @@ void DoubleSpinBox::onChange() {
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -708,7 +667,7 @@ void DoubleSpinBox::onChange() {
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+        iconLabel->setExpressionText(QString());
     }
 }
 
@@ -735,7 +694,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -745,7 +704,7 @@ void DoubleSpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+            iconLabel->setExpressionText(QString());
         }
     }
     catch (const Base::Exception & e) {

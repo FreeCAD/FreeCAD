@@ -40,6 +40,7 @@
 #include "Command.h"
 #include "InputField.h"
 #include "BitmapFactory.h"
+#include "QuantitySpinBox_p.h"
 #include "propertyeditor/PropertyItem.h"
 
 using namespace Gui;
@@ -78,7 +79,7 @@ InputField::InputField(QWidget * parent)
 {
     setValidator(new InputValidator(this));
     setFocusPolicy(Qt::WheelFocus);
-    iconLabel = new QLabel(this);
+    iconLabel = new ExpressionLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);

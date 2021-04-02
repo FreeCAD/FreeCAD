@@ -1354,23 +1354,10 @@ void LabelEditor::setInputType(InputType t)
 ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
     : QLineEdit(parent), autoClose(expressionOnly)
 {
-    defaultPalette = palette();
-
-    /* Icon for f(x) */
-    QFontMetrics fm(font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
-    iconLabel = new ExpressionLabel(this);
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    makeLabel(this);
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
-    if(expressionOnly)
+    if (expressionOnly)
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
 
@@ -1383,8 +1370,8 @@ bool ExpLineEdit::apply(const std::string& propName) {
         }
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void ExpLineEdit::bind(const ObjectIdentifier& _path) {
@@ -1428,7 +1415,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Text, Qt::lightGray);
         setPalette(p);
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -1436,7 +1423,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         setPalette(p);
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+        iconLabel->setExpressionText(QString());
     }
 }
 
@@ -1458,7 +1445,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             setPalette(p);
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -1468,7 +1455,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             setPalette(p);
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+            iconLabel->setExpressionText(QString());
         }
     }
     catch (const Base::Exception & e) {

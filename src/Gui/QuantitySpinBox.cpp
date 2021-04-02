@@ -300,20 +300,8 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     QObject::connect(this, SIGNAL(editingFinished()),
                      this, SLOT(handlePendingEmit()));
 
-    defaultPalette = lineEdit()->palette();
+    makeLabel(lineEdit());
 
-    /* Icon for f(x) */
-    QFontMetrics fm(lineEdit()->font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
-    iconLabel = new ExpressionLabel(lineEdit());
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    static_cast<ExpressionLabel *>(iconLabel)->setExpressionText(QString());
-    lineEdit()->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
     // When a style sheet is set the text margins for top/bottom must be set to avoid to squash the widget
 #ifndef Q_OS_MAC
     lineEdit()->setTextMargins(0, 2, 0, 2);
@@ -448,7 +436,7 @@ void Gui::QuantitySpinBox::onChange()
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -457,7 +445,7 @@ void Gui::QuantitySpinBox::onChange()
         QPalette p(lineEdit()->palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         lineEdit()->setPalette(p);
-        static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+        iconLabel->setExpressionText(QString());
     }
 }
 
@@ -512,7 +500,7 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -522,7 +510,7 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-            static_cast<ExpressionLabel*>(iconLabel)->setExpressionText(QString());
+            iconLabel->setExpressionText(QString());
         }
     }
     catch (const Base::Exception & e) {
