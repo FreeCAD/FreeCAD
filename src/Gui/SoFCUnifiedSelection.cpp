@@ -79,6 +79,8 @@
 
 #include <Inventor/SbDPLine.h>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <QApplication>
 #include <QtOpenGL.h>
 
@@ -596,7 +598,35 @@ SoFCUnifiedSelection::Private::getPickedList(const SbVec2s &pos,
     getPickedInfoOnTop(ret, singlePick, filter);
 
     this->rayPickAction.setPickBackFace(singlePick ? pickBackFace : 0);
-    if(ret.empty() || !singlePick) {
+    if (singlePick && pickBackFace && ret.size()) {
+        // Here means, we got some pick in the on top group. But user is
+        // holding SHIFT for backface picking. Right now, we can't pick back
+        // face beyond on top group yet. But we can pick other edge or vertex
+        // if the current on top picking is a face. In other word, we can give
+        // higher priority to edges and verteices in non on top group objects
+        // than faces in on top objects.
+        auto element = Data::ComplexGeoData::findElementName(ret.front().subname.c_str());
+        auto index = Data::IndexedName(element);
+        if (!boost::equals(index.getType(), "Vertex")
+                && !boost::equals(index.getType(), "Edge")) {
+            std::vector<PickedInfo> tmp;
+            applyOverrideMode(this->rayPickAction.getState());
+            SoOverrideElement::setPickStyleOverride(this->rayPickAction.getState(),0,false);
+            this->rayPickAction.setPickBackFace(-1);
+            this->rayPickAction.apply(pcViewer->getSoRenderManager()->getSceneGraph());
+            getPickedInfo(tmp,this->rayPickAction.getPrioPickedPointList(),singlePick,false,filter);
+
+            if (tmp.size()) {
+                auto element = Data::ComplexGeoData::findElementName(tmp.front().subname.c_str());
+                auto index = Data::IndexedName(element);
+                if (boost::equals(index.getType(), "Vertex")
+                        || boost::equals(index.getType(), "Edge")) {
+                    ret = std::move(tmp);
+                }
+            }
+        }
+    }
+    else if(ret.empty() || !singlePick) {
         applyOverrideMode(this->rayPickAction.getState());
         SoOverrideElement::setPickStyleOverride(this->rayPickAction.getState(),0,false);
         this->rayPickAction.apply(pcViewer->getSoRenderManager()->getSceneGraph());
@@ -879,9 +909,14 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
                     if (useRenderer()) {
                         if(detailPath->getLength()) {
                             if (detail) {
-                                int idx = detailPath->findNode(vp->getRoot());
-                                if (idx >= 0)
-                                    detailPath->truncate(idx+1);
+                                // The render manager requires a path without
+                                // sub-element detail (but do require
+                                // sub-object nodes in the path).
+                                detailPath->truncate(0);
+                                SoDetail *tmp = nullptr;
+                                std::string sub = selaction->SelChange->Object.getSubNameNoElement();
+                                vp->getDetailPath(sub.c_str(),detailPath,true,tmp);
+                                delete tmp;
                             }
                             manager.addSelection(selaction->SelChange->Object.getSubNameNoElement(true),
                                                  selaction->SelChange->Object.getOldElementName(),
