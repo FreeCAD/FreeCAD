@@ -300,10 +300,6 @@ private Q_SLOTS:
     /**
      * \internal
      */
-    void showMainWindow();
-    /**
-     * \internal
-     */
     void delayedStartup();
     /**
      * \internal

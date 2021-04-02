@@ -172,7 +172,6 @@ struct MainWindowP
     QTimer* actionTimer;
     QTimer* statusTimer;
     QTimer* activityTimer;
-    QTimer* visibleTimer;
     QMdiArea* mdiArea;
     QPointer<MDIView> activeView;
     QSignalMapper* windowMapper;
@@ -341,12 +340,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // update view-sensitive commands when clipboard has changed
     QClipboard *clipbd = QApplication::clipboard();
     connect(clipbd, SIGNAL(dataChanged()), this, SLOT(updateEditorActions()));
-
-    // show main window timer
-    d->visibleTimer = new QTimer(this);
-    d->visibleTimer->setObjectName(QString::fromLatin1("visibleTimer"));
-    connect(d->visibleTimer, SIGNAL(timeout()),this, SLOT(showMainWindow()));
-    d->visibleTimer->setSingleShot(true);
 
     d->windowMapper = new QSignalMapper(this);
 
@@ -1190,22 +1183,16 @@ void MainWindow::closeEvent (QCloseEvent * e)
     }
 }
 
-void MainWindow::showEvent(QShowEvent  * /*e*/)
+void MainWindow::showEvent(QShowEvent* e)
 {
-    // needed for logging
     std::clog << "Show main window" << std::endl;
-    d->visibleTimer->start(15000);
+    QMainWindow::showEvent(e);
 }
 
-void MainWindow::hideEvent(QHideEvent  * /*e*/)
+void MainWindow::hideEvent(QHideEvent* e)
 {
-    // needed for logging
     std::clog << "Hide main window" << std::endl;
-    d->visibleTimer->stop();
-}
-
-void MainWindow::showMainWindow()
-{
+    QMainWindow::hideEvent(e);
 }
 
 void MainWindow::processMessages(const QList<QByteArray> & msg)
