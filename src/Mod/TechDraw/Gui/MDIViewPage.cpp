@@ -758,9 +758,7 @@ void MDIViewPage::print(QPrinter* printer)
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
-        // FIXME: This is unused in this context, its scope is wrong. Drop the "QRect" from the next 
-        // line and test it.  -- CH 3/31/2021
-        QRect targetRect = printer->pageLayout().paintRectPixels(printer->resolution());
+        targetRect = printer->pageLayout().paintRectPixels(printer->resolution());
 #endif
 
     //bool block =
