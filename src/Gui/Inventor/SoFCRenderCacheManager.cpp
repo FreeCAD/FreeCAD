@@ -770,7 +770,8 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
   if (node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
     auto selroot = static_cast<const SoFCSelectionRoot*>(node);
     nodeptr = reinterpret_cast<intptr_t>(selroot);
-    selectable = selroot->selectionStyle.getValue() != SoFCSelectionRoot::Unpickable;
+    if (action->getCurPathCode() != SoAction::IN_PATH)
+      selectable = selroot->selectionStyle.getValue() != SoFCSelectionRoot::Unpickable;
   }
 
   RenderCachePtr cache(new SoFCRenderCache(state, nodeptr, node->getNodeId()));
