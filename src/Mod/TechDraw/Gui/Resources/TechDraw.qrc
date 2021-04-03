@@ -62,7 +62,7 @@
         <file>icons/actions/techdraw-hatch.svg</file>
         <file>icons/actions/techdraw-GeometricHatch.svg</file>
         <file>icons/actions/techdraw-toggleframe.svg</file>
-        <file>icons/actions/techdraw-RedrawPage.svg</file>
+        <file>icons/actions/TechDraw_RedrawPage.svg</file>
         <file>icons/actions/techdraw-ProjectionGroup.svg</file>
         <file>icons/actions/techdraw-SpreadsheetView.svg</file>
         <file>icons/actions/techdraw-image.svg</file>

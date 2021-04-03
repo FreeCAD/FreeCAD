@@ -256,7 +256,7 @@ CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_RedrawPage";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-RedrawPage";
+    sPixmap         = "actions/TechDraw_RedrawPage";
 }
 
 void CmdTechDrawRedrawPage::activated(int iMsg)
