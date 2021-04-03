@@ -373,28 +373,12 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     if(shadow==elementName)
         return false;
 
-    if(shadow.first.empty() && !elementName.first.empty()) {
-        // This means, we are generating the element name for the first time.
-        // The user may recomputing a model using a newer OCC version, which
-        // may cause topo name changes that cannot be handled by the new topo
-        // naming algorithm (because the name is not there yet). We shall
-        // perform a geometry search instead.
-        const auto &names = geo->searchElementCache(element);
-        if(!names.empty() && std::find(names.begin(), names.end(), element) == names.end()) {
-            std::string newsub(subname, strlen(subname) - strlen(element));
-            newsub += names.front();
-            GeoFeature::resolveElement(obj, newsub.c_str(), elementName,true,
-                    GeoFeature::ElementNameType::Export,feature);
-            FC_WARN(propertyName(this) 
-                    << " auto change element reference " << ret->getFullName() << " "
-                    << shadow.second << " -> " << elementName.second);
-        }
-    }
-
     bool missing = GeoFeature::hasMissingElement(elementName.second.c_str());
-    if(missing) {
+    if (feature == geo && (missing || reverse)) {
+        // If the referenced element is missing, or we are generating element
+        // map for the first time, or we are re-generating the element map due
+        // to version change, i.e. 'reverse', try search by geometry first
         const char *oldElement = Data::ComplexGeoData::findElementName(shadow.second.c_str());
-        // If old style element name is missing, try search by geometry
         if(!Data::ComplexGeoData::hasMissingElement(oldElement)) {
             const auto &names = geo->searchElementCache(oldElement);
             if(names.size()) {
@@ -407,7 +391,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
                         << " auto change element reference " << ret->getFullName() << " "
                         << (shadow.first.size()?shadow.first:shadow.second) << " -> "
                         << (elementName.first.size()?elementName.first:elementName.second));
-            } else if (reverse && shadow.first.size()) {
+            } else if (missing && reverse && shadow.first.size()) {
                 // reverse means we are trying to either generate the element
                 // name for the first time, or upgrade to a new map version. In
                 // case of upgrading, we still consult the original mapped name
