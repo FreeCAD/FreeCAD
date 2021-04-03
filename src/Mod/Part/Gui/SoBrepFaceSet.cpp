@@ -697,11 +697,21 @@ void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
         auto mbind = SoMaterialBindingElement::get(state);
-        SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+        auto override_flags = SoOverrideElement::getFlags(state);
+        if (mbind != SoMaterialBindingElement::OVERALL) {
+            SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+            if (!(override_flags & SoOverrideElement::MATERIAL_BINDING))
+                SoOverrideElement::setMaterialBindingOverride(state, this, true);
+        }
 
         renderShape(action,nullptr,ctx2,false);
 
-        SoMaterialBindingElement::set(state,mbind);
+        if (mbind != SoMaterialBindingElement::OVERALL) {
+            SoMaterialBindingElement::set(state,mbind);
+            if (!(override_flags & SoOverrideElement::MATERIAL_BINDING))
+                SoOverrideElement::setMaterialBindingOverride(state, this, false);
+        }
+
         glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
     }
 
