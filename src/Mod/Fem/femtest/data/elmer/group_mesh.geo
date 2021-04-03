@@ -19,7 +19,8 @@ Mesh.MeshSizeFromCurvature = 12; // number of elements per 2*pi radians, 0 to de
 // optimize the mesh
 Mesh.Optimize = 1;
 Mesh.OptimizeNetgen = 0;
-Mesh.HighOrderOptimize = 0; // for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html
+// High-order meshes optimization (0=none, 1=optimization, 2=elastic+optimization, 3=elastic, 4=fast curving)
+Mesh.HighOrderOptimize = 0;
 
 // mesh order
 Mesh.ElementOrder = 2;
@@ -45,7 +46,7 @@ Save "/tmp/tmpjVhNNb.unv";
 
 // **********************************************************************
 // Gmsh documentation:
-// http://gmsh.info/doc/texinfo/gmsh.html#Mesh
+// https://gmsh.info/doc/texinfo/gmsh.html#Mesh
 //
 // We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself: 
 //
