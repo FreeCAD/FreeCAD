@@ -816,7 +816,7 @@ SoFCVertexCacheP::render(SoState * state,
 SbBool
 SoFCVertexCache::hasOpaqueParts() const
 {
-  if (!PRIVATE(this)->triangleindexer) return FALSE;
+  if (!PRIVATE(this)->triangleindexer) return TRUE;
   if (!PRIVATE(this)->numtranspparts) return !PRIVATE(this)->hastransp;
   return PRIVATE(this)->numtranspparts < PRIVATE(this)->triangleindexer->getNumParts();
 }
@@ -1615,7 +1615,7 @@ SoFCVertexCacheP::renderImmediate(const cc_glglue * glue,
       glNormal3fv(reinterpret_cast<const GLfloat *>(&normalptr[idx]));
     }
     if (colorptr) {
-      glColor3ubv(reinterpret_cast<const GLubyte *>(&colorptr[idx*4]));
+      glColor4ubv(reinterpret_cast<const GLubyte *>(&colorptr[idx*4]));
     }
     if (texcoordptr) {
       glTexCoord4fv(reinterpret_cast<const GLfloat *>(&texcoordptr[idx]));
