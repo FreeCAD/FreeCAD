@@ -151,7 +151,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "App::PropertyBool",
                 "OptimizeStd",
                 "FEM Gmsh Mesh Params",
-                "Optimize tetra elements"
+                "Optimize tetrahedral elements"
             )
             obj.OptimizeStd = True
 
@@ -181,6 +181,15 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "Apply recombination algorithm to all surfaces"
             )
             obj.RecombineAll = False
+
+        if not hasattr(obj, "Recombine3DAll"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Recombine3DAll",
+                "FEM Gmsh Mesh Params",
+                "Apply recombination algorithm to all volumes"
+            )
+            obj.Recombine3DAll = False
 
         if not hasattr(obj, "CoherenceMesh"):
             obj.addProperty(

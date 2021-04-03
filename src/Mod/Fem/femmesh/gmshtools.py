@@ -751,8 +751,14 @@ class GmshTools():
             )
         geo.write("\n")
         if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
-            geo.write("// other mesh options\n")
+            geo.write("// recombination for surfaces\n")
             geo.write("Mesh.RecombineAll = 1;\n")
+            # only write a newline when there is not also Recombine3DAll 
+            if hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is False:
+                geo.write("\n")
+        if hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True:
+            geo.write("// recombination for volumes\n")
+            geo.write("Mesh.Recombine3DAll = 1;\n")
             geo.write("\n")
 
         geo.write("// optimize the mesh\n")
