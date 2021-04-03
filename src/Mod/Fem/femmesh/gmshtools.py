@@ -125,6 +125,19 @@ class GmshTools():
         else:
             self.algorithm3D = "1"
 
+        # RecombinationAlgorithm
+        algoRecombo = self.mesh_obj.RecombinationAlgorithm
+        if algoRecombo == "Simple":
+            self.RecombinationAlgorithm = "0"
+        elif algoRecombo == "Blossom":
+            self.RecombinationAlgorithm = "1"
+        elif algoRecombo == "Simple full-quad":
+            self.RecombinationAlgorithm = "2"
+        elif algoRecombo == "Blossom full-quad":
+            self.RecombinationAlgorithm = "3"
+        else:
+            self.algoRecombo = "0"
+
         # mesh groups
         if self.mesh_obj.GroupsOfNodes is True:
             self.group_nodes_export = True
@@ -753,12 +766,13 @@ class GmshTools():
         if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
             geo.write("// recombination for surfaces\n")
             geo.write("Mesh.RecombineAll = 1;\n")
-            # only write a newline when there is not also Recombine3DAll 
-            if hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is False:
-                geo.write("\n")
         if hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True:
             geo.write("// recombination for volumes\n")
             geo.write("Mesh.Recombine3DAll = 1;\n")
+        if ( (hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True)
+             or (hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True)):
+            geo.write("// recombination algorithm\n")
+            geo.write("Mesh.RecombinationAlgorithm = " + self.RecombinationAlgorithm + ";\n")
             geo.write("\n")
 
         geo.write("// optimize the mesh\n")
