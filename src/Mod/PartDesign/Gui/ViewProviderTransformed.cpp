@@ -168,10 +168,11 @@ void ViewProviderTransformed::checkAddSubColor()
 
     auto addsubShape = feat->AddSubShape.getShape();
     std::vector<App::Color> colors;
-    std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
-    App::PropertyColorList *props[] = {&view->PointColorArray,
-                                       &view->LineColorArray,
+    std::array<TopAbs_ShapeEnum, 2> types = {TopAbs_EDGE, TopAbs_FACE};
+    App::PropertyColorList *props[] = {&view->LineColorArray,
                                        &view->DiffuseColor};
+    addcolor.a = t;
+    subcolor.a = t;
     int j=0;
     for (auto type : types) {
         colors.clear();
