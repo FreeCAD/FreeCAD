@@ -125,6 +125,21 @@ class GmshTools():
         else:
             self.algorithm3D = "1"
 
+        # HighOrderOptimize
+        optimizers = self.mesh_obj.HighOrderOptimize
+        if optimizers == "None":
+            self.HighOrderOptimize = "0"
+        elif optimizers == "Optimization":
+            self.HighOrderOptimize = "1"
+        elif optimizers == "Elastic+Optimization":
+            self.HighOrderOptimize = "2"
+        elif optimizers == "Elastic":
+            self.HighOrderOptimize = "3"
+        elif optimizers == "Fast Curving":
+            self.HighOrderOptimize = "4"
+        else:
+            self.HighOrderOptimize = "0"
+
         # mesh groups
         if self.mesh_obj.GroupsOfNodes is True:
             self.group_nodes_export = True
@@ -767,16 +782,11 @@ class GmshTools():
         else:
             geo.write("Mesh.OptimizeNetgen = 0;\n")
         # higher order mesh optimizing
-        if hasattr(self.mesh_obj, "HighOrderOptimize") and self.mesh_obj.HighOrderOptimize is True:
-            geo.write(
-                "Mesh.HighOrderOptimize = 1; // for more HighOrderOptimize "
-                "parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
-            )
-        else:
-            geo.write(
-                "Mesh.HighOrderOptimize = 0; // for more HighOrderOptimize "
-                "parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
-            )
+        geo.write(
+            "// High-order meshes optimization (0=none, 1=optimization, 2=elastic+optimization, "
+            "3=elastic, 4=fast curving)\n"
+        )
+        geo.write("Mesh.HighOrderOptimize = " + self.HighOrderOptimize + ";\n")
         geo.write("\n")
 
         geo.write("// mesh order\n")
@@ -850,7 +860,7 @@ class GmshTools():
         # some useful information
         geo.write("// " + "*" * 70 + "\n")
         geo.write("// Gmsh documentation:\n")
-        geo.write("// http://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
+        geo.write("// https://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
         geo.write("//\n")
         geo.write(
             "// We do not check if something went wrong, like negative "

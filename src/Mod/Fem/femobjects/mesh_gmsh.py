@@ -60,16 +60,34 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         "R-tree",
         "HXT"
     ]
+    known_mesh_HighOrderOptimizers = [
+        "None",
+        "Optimization",
+        "Elastic+Optimization",
+        "Elastic",
+        "Fast curving"
+    ]
 
     def __init__(self, obj):
         super(MeshGmsh, self).__init__(obj)
         self.add_properties(obj)
 
     def onDocumentRestored(self, obj):
+        # HighOrderOptimize was once App::PropertyBool, so check this
+        HighOrderOptimizer = ""
+        if obj.HighOrderOptimize is True:
+            HighOrderOptimizer = "Optimization"
+            obj.removeProperty("HighOrderOptimize")
+        elif obj.HighOrderOptimize is False:
+            HighOrderOptimizer = "None"
+            obj.removeProperty("HighOrderOptimize")
         self.add_properties(obj)
         # refresh the list of known 3D algorithms for existing meshes
         # since some algos are meanwhile deprecated and new algos are available
         obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
+        # write the stored HighOrderOptimizer
+        if HighOrderOptimizer:
+            obj.HighOrderOptimize = HighOrderOptimizer
 
     def add_properties(self, obj):
         if not hasattr(obj, "MeshBoundaryLayerList"):
@@ -166,12 +184,13 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
 
         if not hasattr(obj, "HighOrderOptimize"):
             obj.addProperty(
-                "App::PropertyBool",
+                "App::PropertyEnumeration",
                 "HighOrderOptimize",
                 "FEM Gmsh Mesh Params",
-                "Optimize high order meshes"
+                "Optimization of high order meshes"
             )
-            obj.HighOrderOptimize = False
+            obj.HighOrderOptimize = MeshGmsh.known_mesh_HighOrderOptimizers
+            obj.HighOrderOptimize = "None"
 
         if not hasattr(obj, "RecombineAll"):
             obj.addProperty(
@@ -232,7 +251,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "mesh algorithm 2D"
             )
             obj.Algorithm2D = MeshGmsh.known_mesh_algorithm_2D
-            obj.Algorithm2D = "Automatic"  # ?
+            obj.Algorithm2D = "Automatic"
 
         if not hasattr(obj, "Algorithm3D"):
             obj.addProperty(
@@ -242,7 +261,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                 "mesh algorithm 3D"
             )
             obj.Algorithm3D = MeshGmsh.known_mesh_algorithm_3D
-            obj.Algorithm3D = "Automatic"  # ?
+            obj.Algorithm3D = "Automatic"
 
         if not hasattr(obj, "GroupsOfNodes"):
             obj.addProperty(
