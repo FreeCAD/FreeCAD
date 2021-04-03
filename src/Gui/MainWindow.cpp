@@ -1460,8 +1460,12 @@ QPixmap MainWindow::aboutImage() const
 {
     // See if we have a custom About screen image set
     QPixmap about_image;
+    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
+    if (fi.isFile() && fi.exists())
+        about_image.load(fi.filePath(), "PNG");
+
     std::string about_path = App::Application::Config()["AboutImage"];
-    if (!about_path.empty()) {
+    if (!about_path.empty() && about_image.isNull()) {
         QString path = QString::fromUtf8(about_path.c_str());
         if (QDir(path).isRelative()) {
             QString home = QString::fromUtf8(App::GetApplication().getHomePath());
