@@ -746,7 +746,7 @@ void QGVPage::setRenderer(RendererType type)
 void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 {
 #ifndef QT_NO_OPENGL
-    setRenderHint(QPainter::HighQualityAntialiasing, highQualityAntialiasing);
+    setRenderHint(QPainter::Antialiasing, highQualityAntialiasing);
 #else
     Q_UNUSED(highQualityAntialiasing);
 #endif
