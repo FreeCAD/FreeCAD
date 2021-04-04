@@ -365,7 +365,11 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     if(!transaction) {
         if(relative)
             self->Context.setValue(parent,parentSub.c_str());
-        self->update(Part::SubShapeBinder::UpdateForced);
+        try {
+            self->update(Part::SubShapeBinder::UpdateForced);
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
         return;
     }
 
