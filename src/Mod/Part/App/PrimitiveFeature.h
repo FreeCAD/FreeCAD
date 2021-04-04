@@ -186,6 +186,8 @@ public:
     App::PropertyLength Radius;
     App::PropertyLength Height;
     App::PropertyAngle Angle;
+    App::PropertyAngle FirstAngle;
+    App::PropertyAngle SecondAngle;
 
     /** @name methods override feature */
     //@{

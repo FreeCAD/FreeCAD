@@ -79,6 +79,7 @@ namespace Part {
     const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
     const App::PropertyQuantityConstraint::Constraints quantityRange  = {0.0,FLT_MAX,0.1};
+    const App::PropertyQuantityConstraint::Constraints directionAngleConstraint = { -89.99999, 89.99999, 1.0 };
 }
 
 using namespace Part;
@@ -528,6 +529,10 @@ Cylinder::Cylinder(void)
     ADD_PROPERTY_TYPE(Radius,(2.0),"Cylinder",App::Prop_None,"The radius of the cylinder");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Cylinder",App::Prop_None,"The height of the cylinder");
     ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The angle of the cylinder");
+    ADD_PROPERTY_TYPE(FirstAngle, (0.0f), "Prism", App::Prop_None, "Angle in first direction");
+    ADD_PROPERTY_TYPE(SecondAngle, (0.0f), "Prism", App::Prop_None, "Angle in second direction");
+    FirstAngle.setConstraints(&directionAngleConstraint);
+    SecondAngle.setConstraints(&directionAngleConstraint);
     Angle.setConstraints(&angleRangeU);
 }
 
@@ -539,6 +544,10 @@ short Cylinder::mustExecute() const
         return 1;
     if (Angle.isTouched())
         return 1;
+    if (FirstAngle.isTouched())
+        return 1;
+    if (SecondAngle.isTouched())
+        return 1;
     return Primitive::mustExecute();
 }
 
@@ -549,11 +558,41 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
         return new App::DocumentObjectExecReturn("Radius of cylinder too small");
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cylinder too small");
+    if (Angle.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Rotation angle of cylinder too small");
     try {
-        BRepPrimAPI_MakeCylinder mkCylr(Radius.getValue(),
-                                        Height.getValue(),
-                                        Angle.getValue()/180.0f*M_PI);
-        TopoDS_Shape ResultShape = mkCylr.Shape();
+        // create a cicle as base geometry that will be later extruded
+        gp_Circ circle;
+        circle.SetRadius(Radius.getValue());
+        BRepBuilderAPI_MakeEdge mkEdgeCircle(circle, Base::toRadians<double>(0.0),
+            Base::toRadians<double>(this->Angle.getValue()));
+        BRepBuilderAPI_MakeWire mkWire;
+        mkWire.Add(mkEdgeCircle.Edge());
+
+        // if the angle is not 360 we also need 2 lines from the end of the circle edge to the center
+        if (Angle.getValue() < 360.0) {
+            auto EdgeStart = TopExp::FirstVertex(mkEdgeCircle.Edge());
+            auto EdgeEnd = TopExp::LastVertex(mkEdgeCircle.Edge());
+
+            gp_Pnt point1 = BRep_Tool::Pnt(EdgeStart);
+            gp_Pnt point2 = BRep_Tool::Pnt(EdgeEnd);
+            gp_Pnt pointCenter(0, 0, 0);
+
+            BRepBuilderAPI_MakeEdge mkEdgeLine1(point1, pointCenter);
+            mkWire.Add(mkEdgeLine1.Edge());
+            BRepBuilderAPI_MakeEdge mkEdgeLine2(point2, pointCenter);
+            mkWire.Add(mkEdgeLine2.Edge());
+        }
+
+        BRepBuilderAPI_MakeFace FaceCircle(mkWire);
+
+        // the direction vector for the prism is the height for z and the given angle
+        BRepPrimAPI_MakePrism mkPrism(FaceCircle.Face(),
+            gp_Vec(Height.getValue() * tan(Base::toRadians<double>(FirstAngle.getValue())),
+                Height.getValue() * tan(Base::toRadians<double>(SecondAngle.getValue())),
+                Height.getValue()));
+
+        TopoDS_Shape ResultShape = mkPrism.Shape();
         this->Shape.setValue(ResultShape);
     }
     catch (Standard_Failure& e) {
@@ -576,9 +615,8 @@ Prism::Prism(void)
     ADD_PROPERTY_TYPE(FirstAngle, (0.0f), "Prism", App::Prop_None, "Angle in first direction");
     ADD_PROPERTY_TYPE(SecondAngle, (0.0f), "Prism", App::Prop_None, "Angle in second direction");
     Polygon.setConstraints(&polygonRange);
-    static const App::PropertyQuantityConstraint::Constraints angleConstraint = { -89.99999, 89.99999, 1.0 };
-    FirstAngle.setConstraints(&angleConstraint);
-    SecondAngle.setConstraints(&angleConstraint);
+    FirstAngle.setConstraints(&directionAngleConstraint);
+    SecondAngle.setConstraints(&directionAngleConstraint);
 }
 
 short Prism::mustExecute() const
