@@ -288,6 +288,8 @@ void Cell::setContent(const char * value)
     clearException();
     if (value) {
         if (owner->sheet()->isRestoring()) {
+            if (value[0] == '\0' || (value[0] == '\'' && value[1] == '\0'))
+                return;
             expression.reset(new App::StringExpression(owner->sheet(), value));
             setUsed(EXPRESSION_SET, true);
             return;
@@ -302,7 +304,10 @@ void Cell::setContent(const char * value)
             }
         }
         else if (*value == '\'') {
-            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value + 1);
+            if (value[1] == '\0')
+                value = nullptr;
+            else
+                newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value + 1);
         }
         else if (*value != '\0') {
             // check if value is just a number
