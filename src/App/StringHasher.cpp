@@ -261,7 +261,7 @@ StringIDRef StringHasher::getID(const Data::MappedName &name,
     d._postfix = name.postfixBytes();
 
     Data::IndexedName indexed;
-    if (d._postfix.size())
+    if (!d._postfix.size())
         indexed = Data::IndexedName(name.dataBytes());
     if (indexed)
         d._data = QByteArray::fromRawData(indexed.getType(), strlen(indexed.getType()));
