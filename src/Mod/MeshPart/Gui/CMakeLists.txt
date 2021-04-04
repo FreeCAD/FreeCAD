@@ -34,15 +34,6 @@ set(MeshPartGui_LIBS
     FreeCADGui
 )
 
-set(MeshPartGui_MOC_HDRS
-    CrossSections.h
-    CurveOnMesh.h
-    TaskCurveOnMesh.h
-    Tessellation.h
-)
-fc_wrap_cpp(MeshPartGui_MOC_SRCS ${MeshPartGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${MeshPartGui_MOC_SRCS})
-
 set(MeshPartGui_UIC_SRCS
     CrossSections.ui
     TaskCurveOnMesh.ui

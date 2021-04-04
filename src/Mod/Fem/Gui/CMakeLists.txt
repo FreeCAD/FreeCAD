@@ -55,51 +55,6 @@ SET(Python_SRCS
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
-set(FemGui_MOC_HDRS
-    DlgSettingsFemCcxImp.h
-    DlgSettingsFemElmerImp.h
-    DlgSettingsFemExportAbaqusImp.h
-    DlgSettingsFemGeneralImp.h
-    DlgSettingsFemGmshImp.h
-    DlgSettingsFemInOutVtkImp.h
-    DlgSettingsFemMaterialImp.h
-    DlgSettingsFemZ88Imp.h
-    PropertyFemMeshItem.h
-    TaskObjectName.h
-    TaskCreateNodeSet.h
-    TaskDlgCreateNodeSet.h
-    TaskFemConstraint.h
-    TaskFemConstraintBearing.h
-    TaskFemConstraintFixed.h
-    TaskFemConstraintForce.h
-    TaskFemConstraintFluidBoundary.h
-    TaskFemConstraintPressure.h
-    TaskFemConstraintGear.h
-    TaskFemConstraintPulley.h
-    TaskFemConstraintDisplacement.h
-    TaskFemConstraintTemperature.h
-    TaskFemConstraintHeatflux.h
-    TaskFemConstraintInitialTemperature.h
-    TaskFemConstraintPlaneRotation.h
-    TaskFemConstraintContact.h
-    TaskFemConstraintTransform.h
-    TaskTetParameter.h
-    TaskAnalysisInfo.h
-    TaskDriver.h
-    TaskDlgAnalysis.h
-    TaskDlgMeshShapeNetgen.h
-)
-if(BUILD_FEM_VTK)
-    set(FemGui_MOC_HDRS
-        ${FemGui_MOC_HDRS}
-        TaskPostBoxes.h
-        ViewProviderFemPostFunction.h
-    )
-endif(BUILD_FEM_VTK)
-fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
-
-
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemElmer.ui

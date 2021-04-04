@@ -25,26 +25,6 @@ set(SketcherGui_LIBS
     FreeCADGui
 )
 
-set(SketcherGui_MOC_HDRS
-    EditDatumDialog.h
-    TaskSketcherConstrains.h
-    TaskSketcherElements.h
-    TaskSketcherCreateCommands.h
-    TaskSketcherGeneral.h
-    TaskSketcherMessages.h
-    TaskSketcherSolverAdvanced.h
-    TaskSketcherValidation.h
-    TaskDlgEditSketch.h
-    SketchOrientationDialog.h
-    SketchMirrorDialog.h
-    SketcherSettings.h
-    SketchRectangularArrayDialog.h
-    SketcherRegularPolygonDialog.h
-    PropertyConstraintListItem.h
-)
-fc_wrap_cpp(SketcherGui_MOC_SRCS ${SketcherGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${SketcherGui_MOC_SRCS})
-
 if(BUILD_QT5)
     qt5_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
 else()

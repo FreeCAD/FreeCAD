@@ -178,13 +178,6 @@ SET(FreeCADBase_XML_SRCS
 )
 SOURCE_GROUP("XML" FILES ${FreeCADBase_XML_SRCS})
 
-set(FreeCADBase_MOC_HDRS
-    Debugger.h
-    FutureWatcherProgress.h
-)
-
-fc_wrap_cpp(FreeCADBase_MOC_SRCS ${FreeCADBase_MOC_HDRS})
-
 SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.cpp
     UnitsApiPy.cpp
