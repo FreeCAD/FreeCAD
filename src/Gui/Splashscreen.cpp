@@ -410,6 +410,7 @@ void AboutDialog::showCredits()
     creditsHTML += QString::fromLatin1("</h2><ul>");
 
     QTextStream stream(&creditsFile);
+    stream.setCodec("UTF-8");
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {
