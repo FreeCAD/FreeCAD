@@ -646,10 +646,12 @@ void Sheet::updateProperty(CellAddress key)
         else {
             std::string s;
 
-            if (cell->getStringContent(s))
+            if (cell->getStringContent(s) && !s.empty())
                 output = StringExpression::create(this, std::move(s));
-            else
-                output = StringExpression::create(this, "");
+            else {
+                this->removeDynamicProperty(key.toString().c_str());
+                return;
+            }
         }
 
         /* Eval returns either NumberExpression or StringExpression, or

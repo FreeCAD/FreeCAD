@@ -319,6 +319,8 @@ void Cell::setContent(const char * value, bool eval)
     clearException();
     if (value != 0) {
         if(owner->sheet()->isRestoring()) {
+            if (value[0] == '\'' && value[1] == '\0')
+                return;
             expression = StringExpression::create(owner->sheet(),value);
             setUsed(EXPRESSION_SET, true);
             return;
@@ -332,8 +334,12 @@ void Cell::setContent(const char * value, bool eval)
                 setParseException(e.what());
             }
         }
-        else if (*value == '\'')
-            newExpr = App::StringExpression::create(owner->sheet(), value + 1);
+        else if (*value == '\'') {
+            if (value[1] == '\0')
+                value = nullptr;
+            else
+                newExpr = App::StringExpression::create(owner->sheet(), value + 1);
+        }
         else if (*value != '\0') {
             // check if value is just a number
             char * end;
@@ -368,7 +374,7 @@ void Cell::setContent(const char * value, bool eval)
             }
         }
 
-        if(!newExpr)
+        if(!newExpr && *value != '\0')
             newExpr = StringExpression::create(owner->sheet(), value);
     }
 
@@ -380,7 +386,7 @@ void Cell::setContent(const char * value, bool eval)
         signaller.tryInvoke();
     }
     catch (Base::Exception &e) {
-        if (value) {
+        if (value && *value != '\0') {
             std::string _value = value;
             if(*value != '=') {
                 _value = "=";
