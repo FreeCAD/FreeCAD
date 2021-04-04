@@ -9289,6 +9289,7 @@ Data::IndexedName SketchObject::checkSubName(const char *sub) const{
         "RootPoint",
         "H_Axis",
         "V_Axis",
+        "Constraint",
     };
 
     if(!sub) return Data::IndexedName();
