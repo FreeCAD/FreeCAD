@@ -47,7 +47,7 @@
         <file>icons/actions/techdraw-PageDefault.svg</file>
         <file>icons/actions/techdraw-PageTemplate.svg</file>
         <file>icons/actions/techdraw-View.svg</file>
-        <file>icons/actions/techdraw-ActiveView.svg</file>
+        <file>icons/actions/TechDraw_ActiveView.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>
         <file>icons/actions/techdraw-annotation.svg</file>
         <file>icons/actions/techdraw-ClipGroup.svg</file>
@@ -72,7 +72,7 @@
         <file>icons/actions/techdraw-CosmeticVertex.svg</file>
         <file>icons/actions/techdraw-Midpoints.svg</file>
         <file>icons/actions/techdraw-Quadrants.svg</file>
-        <file>icons/actions/techdraw-facecenterline.svg</file>
+        <file>icons/actions/TechDraw_FaceCenterLine.svg</file>
         <file>icons/actions/techdraw-2linecenterline.svg</file>
         <file>icons/actions/techdraw-2pointcenterline.svg</file>
         <file>icons/actions/techdraw-line2points.svg</file>
