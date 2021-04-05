@@ -177,7 +177,8 @@ public:
     }
 };
 
-class PartExport Cylinder : public Primitive
+class PartExport Cylinder : public Primitive,
+                            public PrismExtension
 {
     PROPERTY_HEADER(Part::Cylinder);
 

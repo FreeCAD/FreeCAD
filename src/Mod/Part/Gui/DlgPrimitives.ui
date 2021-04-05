@@ -442,7 +442,7 @@
             <item>
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>Angle:</string>
+               <string>Rotation angle:</string>
               </property>
              </widget>
             </item>
@@ -541,6 +541,58 @@
               </property>
               <property name="value">
                <double>2.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="labelCylinderXSkew">
+              <property name="text">
+               <string>Angle in first direction:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::QuantitySpinBox" name="cylinderXSkew">
+              <property name="toolTip">
+               <string>Angle in first direction</string>
+              </property>
+              <property name="keyboardTracking" stdset="0">
+               <bool>false</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">deg</string>
+              </property>
+              <property name="minimum" stdset="0">
+               <double>-90.000000000000000</double>
+              </property>
+              <property name="maximum" stdset="0">
+               <double>90.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="labelCylinderYSkew">
+              <property name="text">
+               <string>Angle in second direction:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="Gui::QuantitySpinBox" name="cylinderYSkew">
+              <property name="toolTip">
+               <string>Angle in second direction</string>
+              </property>
+              <property name="keyboardTracking" stdset="0">
+               <bool>false</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">deg</string>
+              </property>
+              <property name="minimum" stdset="0">
+               <double>-90.000000000000000</double>
+              </property>
+              <property name="maximum" stdset="0">
+               <double>90.000000000000000</double>
               </property>
              </widget>
             </item>
