@@ -33,6 +33,7 @@
 # include <BRepPrimAPI_MakeCone.hxx>
 # include <BRepPrimAPI_MakeTorus.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
+# include <BRepPrim_Cylinder.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
@@ -242,6 +243,8 @@ Cylinder::Cylinder()
     Radius.setConstraints(&quantityRange);
     Height.setConstraints(&quantityRange);
 
+    Part::PrismExtension::initExtension(this);
+
     primitiveType = FeaturePrimitive::Cylinder;
 }
 
@@ -252,12 +255,18 @@ App::DocumentObjectExecReturn* Cylinder::execute(void)
         return new App::DocumentObjectExecReturn("Radius of cylinder too small");
     if (Height.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Height of cylinder too small");
+    if (Angle.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Rotation angle of cylinder too small");
     try {
         BRepPrimAPI_MakeCylinder mkCylr(Radius.getValue(),
                                         Height.getValue(),
-                                        Angle.getValue()/180.0f*M_PI);
+                                        Base::toRadians<double>(Angle.getValue()));
 
-        return FeaturePrimitive::execute(mkCylr.Shape());
+        // the direction vector for the prism is the height for z and the given angle
+        BRepPrim_Cylinder prim = mkCylr.Cylinder();
+        TopoDS_Shape result = makePrism(Height.getValue(), prim.BottomFace());
+
+        return FeaturePrimitive::execute(result);
     }
     catch (Standard_Failure& e) {
 

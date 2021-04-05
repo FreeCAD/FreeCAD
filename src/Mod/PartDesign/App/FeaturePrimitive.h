@@ -107,7 +107,7 @@ class PartDesignExport SubtractiveBox : public Box {
 };
 
 
-class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive {
+class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive, public Part::PrismExtension {
 
     PROPERTY_HEADER(PartDesign::Cylinder);
 
@@ -124,9 +124,6 @@ public:
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
-    
-protected:
-    
 };
 
 class PartDesignExport AdditiveCylinder : public Cylinder {
