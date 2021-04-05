@@ -59,8 +59,11 @@ DlgSheetConf::DlgSheetConf(Sheet *sheet, Range range, QWidget *parent)
     std::string rangeConf;
     ObjectIdentifier path;
     auto prop = prepare(from,to,rangeConf,path,true);
-    if(prop) 
+    if(prop) {
         ui->lineEditProp->setText(QString::fromUtf8(path.toString().c_str()));
+        if (auto group = prop->getGroup())
+            ui->lineEditGroup->setText(QString::fromUtf8(group));
+    }
 
     ui->lineEditStart->setText(QString::fromLatin1(from.toString().c_str()));
     ui->lineEditEnd->setText(QString::fromLatin1(to.toString().c_str()));
@@ -193,11 +196,13 @@ void DlgSheetConf::accept()
 
         // Add a dynamic PropertyEnumeration for user to switch the configuration
         std::string propName = path.getPropertyName();
+        QString groupName = ui->lineEditGroup->text().trimmed();
         if(!prop) {
             prop = obj->addDynamicProperty("App::PropertyEnumeration", propName.c_str(),
-                                ui->lineEditGroup->text().trimmed().toUtf8().constData());
+                                groupName.toUtf8().constData());
             prop->setStatus(App::Property::CopyOnChange,true);
-        }
+        } else if (groupName.size())
+            obj->changeDynamicProperty(prop, groupName.toUtf8().constData(), nullptr);
 
         // Bind the enumeration items to the column of configuration names
         Gui::cmdAppObjectArgs(obj, "setExpression('%s.Enum', '%s.cells[<<%s>>]')",
