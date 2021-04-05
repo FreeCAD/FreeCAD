@@ -422,7 +422,7 @@ _Precision Vector3<_Precision>::GetAngle (const Vector3 &rcVect) const
 
     divid = Length() * ((Vector3<_Precision>&)rcVect).Length();
 
-    if ((divid < -1e-10f) || (divid > 1e-10f)) {
+    if ((divid < -1e-14f) || (divid > 1e-14f)) {
         fNum = (*this * rcVect) / divid;
         if (fNum < -1)
             return traits_type::pi();
