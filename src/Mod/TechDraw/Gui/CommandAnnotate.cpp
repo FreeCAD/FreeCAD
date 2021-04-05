@@ -612,7 +612,7 @@ Gui::Action * CmdTechDrawCenterLineGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-facecenterline"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_FaceCenterLine"));
     p1->setObjectName(QString::fromLatin1("TechDraw_FaceCenterLine"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_FaceCenterLine"));
     QAction* p2 = pcAction->addAction(QString());
@@ -678,7 +678,7 @@ CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-facecenterline";
+    sPixmap         = "actions/TechDraw_FaceCenterLine";
 }
 
 void CmdTechDrawFaceCenterLine::activated(int iMsg)

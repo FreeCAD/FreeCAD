@@ -219,7 +219,7 @@ TaskDlgActiveView::TaskDlgActiveView(TechDraw::DrawPage* page)
     : TaskDialog()
 {
     widget  = new TaskActiveView(page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-ActiveView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_ActiveView"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
