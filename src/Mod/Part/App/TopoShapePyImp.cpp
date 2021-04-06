@@ -2069,7 +2069,7 @@ pos=Gui.ActiveDocument.ActiveView.getCameraNode().position.getValue().getValue()
 pos=App.Vector(*pos)
 
 shape=App.ActiveDocument.ActiveObject.Shape
-reflect=shape.reflectLines(ViewDir=vdir, ViewPos=pos, UpDir=udir)
+reflect=shape.reflectLines(ViewDir=vdir, ViewPos=pos, UpDir=udir, EdgeType="Sharp", Visible=True, OnShape=False)
 Part.show(reflect)
  */
 PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
