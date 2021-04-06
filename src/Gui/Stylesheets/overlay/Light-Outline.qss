@@ -1,5 +1,5 @@
 * {
-  color: palette(text);
+  color: #202020;
   alternate-background-color: rgba(250,250,250,120);
 }
 
@@ -13,7 +13,7 @@ QAbstractSpinBox,
 QDateEdit,
 QDateTimeEdit,
 Gui--PropertyEditor--PropertyEditor QLabel {
-  background : palette(base);
+  background-color: #e0e0e0;
 }
 
 QComboBox:disabled,
@@ -24,7 +24,7 @@ QPlainTextEdit:disabled,
 QTimeEdit:disabled,
 QDateEdit:disabled,
 QDateTimeEdit:disabled {
-  color: palette(mid);
+  color: gray;
 }
 
 QTabWidget::pane {
@@ -37,7 +37,7 @@ QTabBar {
 }
 
 QTabBar::tab {
-  color: palette(text);
+  color: #202020;
   background-color: rgba(100,100,100,50);
   padding: 5px;
 }
@@ -85,7 +85,7 @@ Gui--OverlayTabWidget::tab-bar:right {
 QHeaderView { background:transparent }
 QHeaderView::section {
   color: rgb(80, 80, 80);
-  background-color: rgba(250,250,250,50);
+  background-color: rgba(128,128,128,50);
   border: 1px solid rgb(100,100,100);
   padding: 2px;
 }
@@ -117,12 +117,12 @@ Gui--OverlayToolButton::focus {
 Gui--OverlayToolButton::pressed,
 Gui--OverlayToolButton::checked {
   background: rgba(150,150,150,80);
-  border: 1px inset palette(dark);
+  border: 1px inset #f5f5f5;
 }
 
 Gui--OverlayToolButton::checked:hover {
   background: rgba(150,150,150,200);
-  border: 1px inset palette(dark);
+  border: 1px inset #f5f5f5;
 }
 
 QTreeView,

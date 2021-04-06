@@ -1,5 +1,5 @@
 * {
-  color: palette(bright-text);
+  color: #f0f0f0;
   alternate-background-color: rgba(50,50,50,120);
 }
 
@@ -24,7 +24,7 @@ QPlainTextEdit:disabled,
 QTimeEdit:disabled,
 QDateEdit:disabled,
 QDateTimeEdit:disabled {
-  color: palette(dark);
+  color: darkgray;
 }
 
 QTabWidget::pane {
@@ -45,7 +45,7 @@ QTabBar {
 }
 
 QTabBar::tab {
-  color: palette(bright-text);
+  color: #f0f0f0;
   background-color: rgba(100,100,100,50);
   padding: 5px;
 }
@@ -68,7 +68,7 @@ QHeaderView::section {
 
 QToolTip {
   background-color: rgba(100,100,100,180);
-  border: 1px solid palette(dark);
+  border: 1px solid darkgray;
   border-radius:2px;
 }
 
@@ -88,17 +88,17 @@ Gui--OverlayToolButton::focus {
 
 Gui--OverlayToolButton::pressed {
   background: rgba(50,50,50,80);
-  border: 1px inset palette(dark);
+  border: 1px inset darkgray;
 }
 
 Gui--OverlayToolButton::checked {
   background: rgba(50,50,50,80);
-  border: 1px inset palette(dark);
+  border: 1px inset darkgray;
 }
 
 Gui--OverlayToolButton::checked:hover {
   background: rgba(150,150,150,200);
-  border: 1px inset palette(dark);
+  border: 1px inset darkgray;
 }
 
 QTreeView,

@@ -152,6 +152,10 @@ QMenu::item {
     text-decoration: none;
 }
 
+QMenu::item:disabled {
+    color: darkgray;
+}
+
 QMenuBar::item:selected,
 QMenuBar::item:pressed,
 QMenu::item:selected,

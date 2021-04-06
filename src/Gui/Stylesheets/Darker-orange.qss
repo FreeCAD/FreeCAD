@@ -137,7 +137,7 @@ QMenu::item:pressed {
 }
 
 QMenu::item:disabled {
-    color: palette(dark)
+    color: darkgray;
 }
 
 QMenu::right-arrow {
