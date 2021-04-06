@@ -56,6 +56,10 @@ private:
 class SheetTableView : public QTableView
 {
     Q_OBJECT
+
+    Q_PROPERTY(QColor foregroundColor READ foregroundColor WRITE setForegroundColor DESIGNABLE true SCRIPTABLE true)
+    Q_PROPERTY(QColor aliasForegroundColor READ aliasForegroundColor WRITE setAliasForegroundColor DESIGNABLE true SCRIPTABLE true)
+
 public:
     explicit SheetTableView(QWidget *parent = 0);
     ~SheetTableView();
@@ -68,6 +72,11 @@ public:
     void updateHiddenColumns();
 
     bool eventFilter(QObject *o, QEvent *ev);
+
+    QColor foregroundColor() const;
+    void setForegroundColor(const QColor &c);
+    QColor aliasForegroundColor() const;
+    void setAliasForegroundColor(const QColor &c);
 
 public Q_SLOTS:
     void mergeCells();
@@ -111,7 +120,7 @@ protected:
 #if QT_VERSION >= 0x050000
             , const QVector<int> &
 #endif
-            ) override;
+            );
 
     void contextMenuEvent (QContextMenuEvent * e);
 

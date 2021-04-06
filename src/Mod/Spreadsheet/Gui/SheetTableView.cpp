@@ -47,6 +47,7 @@
 #include <App/Range.h>
 #include "SpreadsheetDelegate.h"
 #include "SheetTableView.h"
+#include "SheetModel.h"
 #include "LineEdit.h"
 #include "PropertiesDialog.h"
 #include "DlgBindSheet.h"
@@ -1078,6 +1079,40 @@ void SheetTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &
 #else
     QTableView::dataChanged(topLeft,bottomRight);
 #endif
+}
+
+void SheetTableView::setForegroundColor(const QColor &c)
+{
+    auto m = static_cast<SheetModel*>(model());
+    if (m && c != m->foregroundColor()) {
+        m->setForegroundColor(c);
+        update();
+    }
+}
+
+QColor SheetTableView::foregroundColor() const
+{
+    auto m = static_cast<SheetModel*>(model());
+    if (m)
+        return m->foregroundColor();
+    return QColor();
+}
+
+void SheetTableView::setAliasForegroundColor(const QColor &c)
+{
+    auto m = static_cast<SheetModel*>(model());
+    if (m && c != m->aliasForegroundColor()) {
+        m->setAliasForegroundColor(c);
+        update();
+    }
+}
+
+QColor SheetTableView::aliasForegroundColor() const
+{
+    auto m = static_cast<SheetModel*>(model());
+    if (m)
+        return m->aliasForegroundColor();
+    return QColor();
 }
 
 #include "moc_SheetTableView.cpp"

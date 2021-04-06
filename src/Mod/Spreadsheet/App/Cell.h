@@ -79,6 +79,7 @@ public:
 
     void setAlias(const std::string & n, bool silent = false);
     bool getAlias(std::string & n ) const;
+    bool hasAlias() const {return isUsed(ALIAS_SET);}
 
     bool isAliasLocked(App::CellAddress *addr = nullptr) const;
 

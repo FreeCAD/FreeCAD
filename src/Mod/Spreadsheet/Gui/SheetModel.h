@@ -29,6 +29,7 @@
 
 namespace Spreadsheet {
 class Sheet;
+class Cell;
 }
 
 namespace SpreadsheetGui {
@@ -48,13 +49,20 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     Qt::ItemFlags flags(const QModelIndex &) const;
 
+    QColor foregroundColor() const;
+    void setForegroundColor(const QColor &c);
+    QColor aliasForegroundColor() const;
+    void setAliasForegroundColor(const QColor &c);
+
 private:
     void cellUpdated(App::CellAddress address);
     void rangeUpdated(const App::Range &range);
+    QColor getForeground(const Spreadsheet::Cell *cell, int number = 0) const;
 
     boost::signals2::scoped_connection cellUpdatedConnection;
     boost::signals2::scoped_connection rangeUpdatedConnection;
     Spreadsheet::Sheet * sheet;
+    QColor aliasFgColor;
     QColor aliasBgColor;
     QColor lockedAliasColor;
     QColor textFgColor;
