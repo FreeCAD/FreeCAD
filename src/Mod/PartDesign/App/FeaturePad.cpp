@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         Base::Vector3d paddingDirection;
         
         if (!UseCustomVector.getValue()) {
-            if (ReferenceAxis.getValue() == 0) {
+            if (ReferenceAxis.getValue() == nullptr) {
                 // use sketch's normal vector for direction
                 paddingDirection = SketchVector;
                 AlongSketchNormal.setReadOnly(true);

@@ -92,7 +92,7 @@ or select an edge as reference</string>
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Use custom vector for pad direction otherwise
+         <string>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</string>
         </property>
         <property name="title">

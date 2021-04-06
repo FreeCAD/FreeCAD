@@ -370,8 +370,10 @@ void TaskPadParameters::fillDirectionCombo()
     App::DocumentObject* ax = propReferenceAxis->getValue();
     const std::vector<std::string>& subList = propReferenceAxis->getSubValues();
     for (size_t i = 0; i < axesInList.size(); i++) {
-        if (ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues())
+        if (ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues()) {
             indexOfCurrent = i;
+            break;
+        }
     }
     if (indexOfCurrent == -1 && ax) {
         assert(subList.size() <= 1);
@@ -400,7 +402,7 @@ void TaskPadParameters::addAxisToCombo(App::DocumentObject* linkObj,
 {
     this->ui->directionCB->addItem(itemText);
     this->axesInList.emplace_back(new App::PropertyLinkSub);
-    App::PropertyLinkSub& lnk = *(axesInList[axesInList.size() - 1]);
+    App::PropertyLinkSub& lnk = *(axesInList.back());
     lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
 }
 
@@ -636,8 +638,7 @@ std::string TaskPadParameters::getReferenceAxis(void) const
     std::vector<std::string> sub;
     App::DocumentObject* obj;
     getReferenceAxis(obj, sub);
-    std::string axis = buildLinkSingleSubPythonStr(obj, sub);
-    return axis;
+    return buildLinkSingleSubPythonStr(obj, sub);
 }
 
 double TaskPadParameters::getXDirection(void) const
