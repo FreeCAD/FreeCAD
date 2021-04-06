@@ -1038,6 +1038,12 @@ QPlainTextEdit:focus {
     margin: 4px;
 }
 
+Gui--ExpressionTextEdit,
+Gui--ExpressionTextEdit:focus {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}
 
 /*==================================================================================================
 Tasks panel (custom FreeCAD class)
@@ -2024,8 +2030,13 @@ QTableView {
     selection-background-color: #dadfc5;
 }
 
+SpreadsheetGui--SheetTableView {
+    qproperty-foregroundColor: #505050;
+    qproperty-aliasForegroundColor: #202020;
+}
+
 QTableView::item:hover  {
-    background-color: rgba(0,0,0,10);  /* temporal: is it displayed in Linux or Windows? on OSX it isn't */
+    border: 2px solid #94b30f;
 }
 
 QTableView::item:disabled  {
@@ -2035,7 +2046,6 @@ QTableView::item:disabled  {
 QTableView::item:selected  {
     color: white;
     border-color: #dadfc5; /* same as focused background color */
-    border-bottom-color: #a5c61a; /* same as focused border color */
     background-color: #94b30f; /* should be similar to QListView::item selected background-color */
 }
 
