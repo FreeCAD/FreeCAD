@@ -2074,16 +2074,37 @@ Part.show(reflect)
  */
 PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
 {
-    static char *kwlist[] = {"ViewDir", "ViewPos", "UpDir", NULL};
+    static char *kwlist[] = {"ViewDir", "ViewPos", "UpDir", "EdgeType", "Visible", "OnShape", NULL};
 
-    PyObject *pView, *pPos, *pUp;
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", kwlist,
+    char* type="OutLine";
+    PyObject* vis = Py_True;
+    PyObject* in3d = Py_False;
+    PyObject* pPos = new Base::VectorPy(new Base::Vector3d(0,0,0));
+    PyObject* pUp = new Base::VectorPy(new Base::Vector3d(0,1,0));
+    PyObject *pView; //, *pPos, *pUp;
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|O!O!sO!O!", kwlist,
                                      &Base::VectorPy::Type, &pView,
                                      &Base::VectorPy::Type, &pPos,
-                                     &Base::VectorPy::Type, &pUp))
+                                     &Base::VectorPy::Type, &pUp,
+                                     &type,
+                                     &PyBool_Type, &vis,
+                                     &PyBool_Type, &in3d))
         return 0;
 
     try {
+        HLRBRep_TypeOfResultingEdge t;
+        std::string str = type;
+        if (str == "IsoLine")
+            t = HLRBRep_IsoLine;
+        else if (str == "Rg1Line")
+            t = HLRBRep_Rg1Line;
+        else if (str == "RgNLine")
+            t = HLRBRep_RgNLine;
+        else if (str == "Sharp")
+            t = HLRBRep_Sharp;
+        else
+            t = HLRBRep_OutLine;
+        
         Base::Vector3d v = Py::Vector(pView,false).toVector();
         Base::Vector3d p = Py::Vector(pPos,false).toVector();
         Base::Vector3d u = Py::Vector(pUp,false).toVector();
@@ -2092,7 +2113,8 @@ PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
         HLRAppli_ReflectLines reflect(shape);
         reflect.SetAxes(v.x, v.y, v.z, p.x, p.y, p.z, u.x, u.y, u.z);
         reflect.Perform();
-        TopoDS_Shape lines = reflect.GetResult();
+        TopoDS_Shape lines = reflect.GetCompoundOf3dEdges(t, PyObject_IsTrue(vis) ? Standard_True : Standard_False,
+                                                          PyObject_IsTrue(in3d) ? Standard_True : Standard_False);
         return new TopoShapePy(new TopoShape(lines));
     }
     catch (Standard_Failure& e) {
