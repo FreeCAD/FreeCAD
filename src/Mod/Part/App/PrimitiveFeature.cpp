@@ -528,7 +528,7 @@ Cylinder::Cylinder(void)
 {
     ADD_PROPERTY_TYPE(Radius,(2.0),"Cylinder",App::Prop_None,"The radius of the cylinder");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Cylinder",App::Prop_None,"The height of the cylinder");
-    ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The angle of the cylinder");
+    ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The rotation angle of the cylinder");
     Angle.setConstraints(&angleRangeU);
 
     PrismExtension::initExtension(this);
