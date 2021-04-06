@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>326</width>
-    <height>370</height>
+    <height>241</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -130,22 +130,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="1" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_4">
          <property name="leftMargin">
@@ -225,7 +209,23 @@
          </item>
         </layout>
        </item>
-      </layout>
+      <item row="1" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       </layout>
      </widget>
      <widget class="QWidget" name="Page2_cylinder">
       <layout class="QGridLayout" name="_5">
@@ -244,71 +244,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="2" column="0">
-        <layout class="QHBoxLayout" name="_6">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Rotation angle:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::QuantitySpinBox" name="cylinderAngle">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">deg</string>
-           </property>
-           <property name="value">
-            <double>360.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0">
-        <widget class="Line" name="line_2">
-         <property name="frameShape">
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_7">
          <property name="leftMargin">
@@ -420,7 +355,75 @@
          </item>
         </layout>
        </item>
-      </layout>
+      <item row="1" column="0">
+        <widget class="Line" name="line_2">
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QGridLayout" name="gridLayout_1">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="minimumSize">
+            <size>
+             <width>123</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Rotation angle:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Gui::QuantitySpinBox" name="cylinderAngle">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
+           <property name="value">
+            <double>360.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       </layout>
      </widget>
      <widget class="QWidget" name="Page3_cone">
       <layout class="QGridLayout" name="_8">
@@ -439,71 +442,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="2" column="0">
-        <layout class="QHBoxLayout" name="_9">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Angle:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::QuantitySpinBox" name="coneAngle">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">deg</string>
-           </property>
-           <property name="value">
-            <double>360.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0">
-        <widget class="Line" name="line_3">
-         <property name="frameShape">
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_10">
          <property name="leftMargin">
@@ -583,7 +521,69 @@
          </item>
         </layout>
        </item>
-      </layout>
+      <item row="1" column="0">
+        <widget class="Line" name="line_3">
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QGridLayout" name="gridLayout_7">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Angle:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Gui::QuantitySpinBox" name="coneAngle">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
+           <property name="value">
+            <double>360.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       </layout>
      </widget>
      <widget class="QWidget" name="Page4_sphere">
       <layout class="QGridLayout" name="_11">
@@ -602,7 +602,46 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="1" column="0">
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="_13">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="textLabel14">
+           <property name="text">
+            <string>Radius:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Gui::QuantitySpinBox" name="sphereRadius">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>5.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      <item row="1" column="0">
         <widget class="Line" name="line">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -716,46 +755,7 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="0">
-        <layout class="QHBoxLayout" name="_13">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="textLabel14">
-           <property name="text">
-            <string>Radius:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::QuantitySpinBox" name="sphereRadius">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>5.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
+       </layout>
      </widget>
      <widget class="QWidget" name="Page5_ellipsoid">
       <layout class="QGridLayout" name="_14">
@@ -774,29 +774,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <widget class="Line" name="line_5">
-         <property name="frameShape">
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_15">
          <property name="leftMargin">
@@ -875,6 +852,16 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="Line" name="line_5">
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
        </item>
        <item row="2" column="0">
         <layout class="QGridLayout" name="_16">
@@ -964,7 +951,20 @@
          </item>
         </layout>
        </item>
-      </layout>
+      <item row="3" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       </layout>
      </widget>
      <widget class="QWidget" name="Page6_torus">
       <layout class="QGridLayout" name="_17">
@@ -983,7 +983,66 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="1" column="0">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="_19">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="2">
+          <widget class="Gui::QuantitySpinBox" name="torusRadius1">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="textLabel20">
+           <property name="text">
+            <string>Radius 2:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="textLabel19">
+           <property name="text">
+            <string>Radius 1:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="Gui::QuantitySpinBox" name="torusRadius2">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>2.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      <item row="1" column="0">
         <widget class="Line" name="line_4">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
@@ -1097,66 +1156,7 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="0">
-        <layout class="QGridLayout" name="_19">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item row="0" column="2">
-          <widget class="Gui::QuantitySpinBox" name="torusRadius1">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>10.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="textLabel20">
-           <property name="text">
-            <string>Radius 2:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="textLabel19">
-           <property name="text">
-            <string>Radius 1:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="Gui::QuantitySpinBox" name="torusRadius2">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>2.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
+       </layout>
      </widget>
      <widget class="QWidget" name="page_prism">
       <layout class="QGridLayout" name="_20">
@@ -1521,19 +1521,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="1" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_23">
          <property name="leftMargin">
@@ -1651,7 +1638,20 @@
          </item>
         </layout>
        </item>
-      </layout>
+      <item row="1" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       </layout>
      </widget>
      <widget class="QWidget" name="page9_spiral">
       <layout class="QGridLayout" name="_24">
@@ -1670,19 +1670,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="1" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_25">
          <property name="leftMargin">
@@ -1762,7 +1749,20 @@
          </item>
         </layout>
        </item>
-      </layout>
+      <item row="1" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       </layout>
      </widget>
      <widget class="QWidget" name="page10_circle">
       <layout class="QGridLayout" name="gridLayout_3">
