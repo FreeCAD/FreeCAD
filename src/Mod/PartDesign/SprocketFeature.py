@@ -209,13 +209,6 @@ class SprocketTaskPanel:
                            "ANSI 180":[2.250, 1.460, 1.301],
                            "ANSI 200":[2.500, 1.562, 1.389],
                            "ANSI 240":[3.000, 1.875, 1.738],
-                           "Motorcycle 420":[0.500, 0.3125, 0.227],
-                           "Motorcycle 425":[0.500, 0.3125, 0.284],
-                           "Motorcycle 428":[0.500, 0.335, 0.284],
-                           "Motorcycle 520":[0.625, 0.400, 0.227],
-                           "Motorcycle 525":[0.625, 0.400, 0.284],
-                           "Motorcycle 530":[0.625, 0.400, 0.343],
-                           "Motorcycle 630":[0.75, 0.400, 0.343],
                            "Bicycle with Derailleur":[0.500, 0.3125, 0.11],
                            "Bicycle without Derailleur":[0.500, 0.3125, 0.084],
                            "ISO 606 06B":[0.375, 5.72/25.4, 5.2/25.4],
@@ -224,11 +217,18 @@ class SprocketTaskPanel:
                            "ISO 606 12B":[0.750, 11.68/25.4, 11.1/25.4],
                            "ISO 606 16B":[1.000, 17.02/25.4, 16.2/25.4],
                            "ISO 606 20B":[1.250, 19.56/25.4, 18.5/25.4],
-                           "ISO 606 24B":[1.5, 25.4/25.4, 24.1/25.4]}
+                           "ISO 606 24B":[1.500, 25.4/25.4, 24.1/25.4],
+                           "Motorcycle 420":[0.500, 0.3125, 0.227],
+                           "Motorcycle 425":[0.500, 0.3125, 0.284],
+                           "Motorcycle 428":[0.500, 0.335, 0.284],
+                           "Motorcycle 520":[0.625, 0.400, 0.227],
+                           "Motorcycle 525":[0.625, 0.400, 0.284],
+                           "Motorcycle 530":[0.625, 0.400, 0.343],
+                           "Motorcycle 630":[0.750, 0.400, 0.343],}
 
-        self.obj.Pitch           = str(SprocketReferenceRollerTable[size][0]) + " in"
-        self.obj.RollerDiameter  = str(SprocketReferenceRollerTable[size][1]) + " in"
-        self.obj.Thickness       = str(SprocketReferenceRollerTable[size][2]) + " in"
+        self.obj.Pitch          = str(SprocketReferenceRollerTable[size][0]) + " in"
+        self.obj.RollerDiameter = str(SprocketReferenceRollerTable[size][1]) + " in"
+        self.obj.Thickness      = str(SprocketReferenceRollerTable[size][2]) + " in"
         self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
         self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
@@ -268,7 +268,6 @@ class SprocketTaskPanel:
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.abortTransaction()
-
 
 
 if FreeCAD.GuiUp:
