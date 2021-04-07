@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,8 +20,18 @@
 # *                                                                         *
 # ***************************************************************************
 
+
+from collections import Counter
+from contextlib import contextmanager
+import math
+import traceback
+from pivy import coin
+from PySide import QtCore, QtGui
+
 import FreeCAD
 import FreeCADGui
+
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathJob as PathJob
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
@@ -37,8 +45,7 @@ import PathScripts.PathToolControllerGui as PathToolControllerGui
 import PathScripts.PathToolLibraryEditor as PathToolLibraryEditor
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
-import math
-import traceback
+import PathScripts.PathToolBitGui as PathToolBitGui
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -46,27 +53,17 @@ Draft = LazyLoader('Draft', globals(), 'Draft')
 Part = LazyLoader('Part', globals(), 'Part')
 DraftVecUtils = LazyLoader('DraftVecUtils', globals(), 'DraftVecUtils')
 
-from PySide import QtCore, QtGui
-from collections import Counter
-from contextlib import contextmanager
-from pivy import coin
-
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-LOGLEVEL = False
 
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 def _OpenCloseResourceEditor(obj, vobj, edit):
-    # pylint: disable=unused-argument
     job = PathUtils.findParentJob(obj)
     if job and job.ViewObject and job.ViewObject.Proxy:
         if edit:
@@ -168,7 +165,6 @@ class ViewProvider:
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
     def setEdit(self, vobj=None, mode=0):
-        # pylint: disable=unused-argument
         PathLog.track(mode)
         if 0 == mode:
             self.openTaskPanel()
@@ -187,7 +183,6 @@ class ViewProvider:
         self.taskPanel = None
 
     def unsetEdit(self, arg1, arg2):
-        # pylint: disable=unused-argument
         if self.taskPanel:
             self.taskPanel.reject(False)
 
@@ -201,14 +196,13 @@ class ViewProvider:
         return self.openTaskPanel()
 
     def uneditObject(self, obj=None):
-        # pylint: disable=unused-argument
         self.unsetEdit(None, None)
 
     def getIcon(self):
-        return ":/icons/Path-Job.svg"
+        return ":/icons/Path_Job.svg"
 
     def claimChildren(self):
-        children = self.obj.ToolController
+        children = []
         children.append(self.obj.Operations)
         if hasattr(self.obj, 'Model'):
             # unfortunately this function is called before the object has been fully loaded
@@ -220,6 +214,8 @@ class ViewProvider:
         if hasattr(self.obj, 'SetupSheet'):
             # when loading a job that didn't have a setup sheet they might not've been created yet
             children.append(self.obj.SetupSheet)
+        if hasattr(self.obj, 'Tools'):
+            children.append(self.obj.Tools)
         return children
 
     def onDelete(self, vobj, arg2=None):
@@ -245,7 +241,6 @@ class ViewProvider:
             base.ViewObject.Visibility = True
 
     def forgetBaseVisibility(self, obj, base):
-        # pylint: disable=unused-argument
         if self.baseVisibility.get(base.Name):
             visibility = self.baseVisibility[base.Name]
             visibility[0].ViewObject.Visibility = visibility[1]
@@ -269,7 +264,6 @@ class ViewProvider:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
 
     def setupContextMenu(self, vobj, menu):
-        # pylint: disable=unused-argument
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
@@ -303,7 +297,7 @@ class StockEdit(object):
                 widget.hide()
         if select:
             self.form.stock.setCurrentIndex(self.Index)
-        editor = self.editorFrame() # pylint: disable=assignment-from-none
+        editor = self.editorFrame()
         showHide(self.form.stockFromExisting, editor)
         showHide(self.form.stockFromBase, editor)
         showHide(self.form.stockCreateBox, editor)
@@ -365,7 +359,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
                 stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
             if 'zpos' in fields:
                 stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
-        except Exception: # pylint: disable=broad-except
+        except Exception:
             pass
 
     def getFields(self, obj, fields=None):
@@ -406,7 +400,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         self.form.stockExtYpos.textChanged.connect(self.checkYpos)
         self.form.stockExtZpos.textChanged.connect(self.checkZpos)
         if hasattr(self.form, 'linkStockAndModel'):
-            self.form.linkStockAndModel.setChecked(True)
+            self.form.linkStockAndModel.setChecked(False)
 
     def checkXpos(self):
         self.trackXpos = self.form.stockExtXneg.text() == self.form.stockExtXpos.text()
@@ -462,7 +456,7 @@ class StockCreateBoxEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text())
             else:
                 PathLog.error(translate('PathJob', 'Stock not a box!'))
-        except Exception: # pylint: disable=broad-except
+        except Exception:
             pass
 
     def setFields(self, obj):
@@ -498,7 +492,7 @@ class StockCreateCylinderEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text())
             else:
                 PathLog.error(translate('PathJob', 'Stock not a cylinder!'))
-        except Exception: # pylint: disable=broad-except
+        except Exception:
             pass
 
     def setFields(self, obj):
@@ -517,6 +511,7 @@ class StockCreateCylinderEdit(StockEdit):
 class StockFromExistingEdit(StockEdit):
     Index = 3
     StockType = PathStock.StockType.Unknown
+    StockLabelPrefix = 'Stock'
 
     def editorFrame(self):
         return self.form.stockFromExisting
@@ -525,7 +520,7 @@ class StockFromExistingEdit(StockEdit):
         stock = self.form.stockExisting.itemData(self.form.stockExisting.currentIndex())
         if not (hasattr(obj.Stock, 'Objects') and len(obj.Stock.Objects) == 1 and obj.Stock.Objects[0] == stock):
             if stock:
-                stock = PathJob.createResourceClone(obj, stock, 'Stock', 'Stock')
+                stock = PathJob.createResourceClone(obj, stock, self.StockLabelPrefix , 'Stock')
                 stock.ViewObject.Visibility = True
                 PathStock.SetupStockObject(stock, PathStock.StockType.Unknown)
                 stock.Proxy.execute(stock)
@@ -533,7 +528,7 @@ class StockFromExistingEdit(StockEdit):
 
     def candidates(self, obj):
         solids = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
-        if hasattr(obj, 'Model'): 
+        if hasattr(obj, 'Model'):
             job = obj
         else:
             job = PathUtils.findParentJob(obj)
@@ -551,7 +546,9 @@ class StockFromExistingEdit(StockEdit):
         index = -1
         for i, solid in enumerate(self.candidates(obj)):
             self.form.stockExisting.addItem(solid.Label, solid)
-            if solid.Label == stockName:
+            label="{}-{}".format(self.StockLabelPrefix, solid.Label)
+
+            if label == stockName:
                 index = i
         self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
 
@@ -575,6 +572,7 @@ class TaskPanel:
         self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/PathEdit.ui")
         self.template = PathJobDlg.JobTemplateExport(self.obj, self.form.jobBox.widget(1))
+        self.name = self.obj.Name
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText('#')
@@ -626,12 +624,14 @@ class TaskPanel:
         self.setupGlobal.reject()
         self.setupOps.reject()
         FreeCAD.ActiveDocument.abortTransaction()
-        if self.deleteOnReject:
+        if self.deleteOnReject and FreeCAD.ActiveDocument.getObject(self.name):
             PathLog.info("Uncreate Job")
             FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
             if self.obj.ViewObject.Proxy.onDelete(self.obj.ViewObject, None):
                 FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            PathLog.track(self.name, self.deleteOnReject, FreeCAD.ActiveDocument.getObject(self.name))
         self.cleanup(resetEdit)
         return True
 
@@ -672,7 +672,7 @@ class TaskPanel:
                     if self.form.wcslist.item(i).checkState() == QtCore.Qt.CheckState.Checked:
                         flist.append(self.form.wcslist.item(i).text())
                 self.obj.Fixtures = flist
-            except Exception: # pylint: disable=broad-except
+            except Exception:
                 FreeCAD.Console.PrintWarning("The Job was created without fixture support.  Please delete and recreate the job\r\n")
 
             self.updateTooltips()
@@ -705,7 +705,7 @@ class TaskPanel:
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
 
-        for row, tc in enumerate(sorted(self.obj.ToolController, key=lambda tc: tc.Label)):
+        for row, tc in enumerate(sorted(self.obj.Tools.Group, key=lambda tc: tc.Label)):
             self.form.activeToolController.addItem(tc.Label, tc)
             if tc == select:
                 index = row
@@ -845,7 +845,7 @@ class TaskPanel:
         # can only delete what is selected
         delete = edit
         # ... but we want to make sure there's at least one TC left
-        if len(self.obj.ToolController) == len(self.form.toolControllerList.selectedItems()):
+        if len(self.obj.Tools.Group) == len(self.form.toolControllerList.selectedItems()):
             delete = False
         # ... also don't want to delete any TCs that are already used
         if delete:
@@ -864,7 +864,15 @@ class TaskPanel:
         self.toolControllerSelect()
 
     def toolControllerAdd(self):
-        PathToolLibraryEditor.CommandToolLibraryEdit().edit(self.obj, self.updateToolController)
+        if PathPreferences.toolsUseLegacyTools():
+            PathToolLibraryEditor.CommandToolLibraryEdit().edit(self.obj, self.updateToolController)
+        else:
+            tools = PathToolBitGui.LoadTools()
+            for tool in tools:
+                tc = PathToolControllerGui.Create(name=tool.Label, tool=tool)
+                self.obj.Proxy.addToolController(tc)
+            FreeCAD.ActiveDocument.recompute()
+            self.updateToolController()
 
     def toolControllerDelete(self):
         self.objectDelete(self.form.toolControllerList)
@@ -878,7 +886,7 @@ class TaskPanel:
         elif 'Number' == prop:
             try:
                 tc.ToolNumber = int(item.text())
-            except Exception: # pylint: disable=broad-except
+            except Exception:
                 pass
             item.setText("%d" % tc.ToolNumber)
         elif 'Spindle' == prop:
@@ -890,7 +898,7 @@ class TaskPanel:
                     speed = -speed
                 tc.SpindleDir = rot
                 tc.SpindleSpeed = speed
-            except Exception: # pylint: disable=broad-except
+            except Exception:
                 pass
             item.setText("%s%g" % ('+' if tc.SpindleDir == 'Forward' else '-', tc.SpindleSpeed))
         elif 'HorizFeed' == prop or 'VertFeed' == prop:
@@ -902,65 +910,69 @@ class TaskPanel:
                 elif FreeCAD.Units.Unit() == val.Unit:
                     val = FreeCAD.Units.Quantity(item.text() + vUnit)
                     setattr(tc, prop, val)
-            except Exception: # pylint: disable=broad-except
+            except Exception:
                 pass
             item.setText("%g" % getattr(tc, prop).getValueAs(vUnit))
         else:
             try:
                 val = FreeCAD.Units.Quantity(item.text())
                 setattr(tc, prop, val)
-            except Exception: # pylint: disable=broad-except
+            except Exception:
                 pass
             item.setText("%g" % getattr(tc, prop).Value)
 
         self.template.updateUI()
 
     def modelSetAxis(self, axis):
-        def flipSel(sel):
-            PathLog.debug("flip")
-            p = sel.Object.Placement
-            loc = sel.Object.Placement.Base
-            rot = FreeCAD.Rotation(FreeCAD.Vector(1 - axis.x, 1 - axis.y, 1 - axis.z), 180)
-            sel.Object.Placement = FreeCAD.Placement(loc, p.Rotation.multiply(rot))
+        PathLog.track(axis)
 
-        def rotateSel(sel, n):
-            # p = sel.Object.Placement
-            # loc = sel.Object.Placement.Base
-            r = axis.cross(n)  # rotation axis
-            a = DraftVecUtils.angle(n, axis, r) * 180 / math.pi
+        def alignSel(sel, normal, flip=False):
+            PathLog.track("Vector(%.2f, %.2f, %.2f)" % (normal.x, normal.y, normal.z), flip)
+            vector = axis
+            if flip:
+                vector = axis.negative()
+            r = axis.cross(normal)  # rotation axis
+            a = DraftVecUtils.angle(normal, vector, r) * 180 / math.pi
             PathLog.debug("oh boy: (%.2f, %.2f, %.2f) -> %.2f" % (r.x, r.y, r.z, a))
             Draft.rotate(sel.Object, a, axis=r)
 
         selObject = None
         selFeature = None
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            selObject = sel.Object
-            for feature in sel.SubElementNames:
-                selFeature = feature
-                sub = sel.Object.Shape.getElement(feature)
-                if 'Face' == sub.ShapeType:
-                    n = sub.Surface.Axis
-                    if sub.Orientation == 'Reversed':
-                        n = FreeCAD.Vector() - n
-                        PathLog.debug("(%.2f, %.2f, %.2f) -> reversed (%s)" % (n.x, n.y, n.z, sub.Orientation))
-                    else:
-                        PathLog.debug("(%.2f, %.2f, %.2f) -> forward  (%s)" % (n.x, n.y, n.z, sub.Orientation))
+        with selectionEx() as selection:
+            for sel in selection:
+                selObject = sel.Object
+                for feature in sel.SubElementNames:
+                    selFeature = feature
+                    PathLog.track(selObject.Label, feature)
+                    sub = sel.Object.Shape.getElement(feature)
 
-                    if PathGeom.pointsCoincide(axis, n):
-                        PathLog.debug("face properly oriented (%.2f, %.2f, %.2f)" % (n.x, n.y, n.z))
-                    else:
-                        if PathGeom.pointsCoincide(axis, FreeCAD.Vector() - n):
-                            flipSel(sel)
+                    if 'Face' == sub.ShapeType:
+                        normal = sub.normalAt(0, 0)
+                        if sub.Orientation == 'Reversed':
+                            normal = FreeCAD.Vector() - normal
+                            PathLog.debug("(%.2f, %.2f, %.2f) -> reversed (%s)" % (normal.x, normal.y, normal.z, sub.Orientation))
                         else:
-                            rotateSel(sel, n)
-                if 'Edge' == sub.ShapeType:
-                    n = (sub.Vertexes[1].Point - sub.Vertexes[0].Point).normalize()
-                    if PathGeom.pointsCoincide(axis, n) or PathGeom.pointsCoincide(axis, FreeCAD.Vector() - n):
-                        # Don't really know the orientation of an edge, so let's just flip the object
-                        # and if the user doesn't like it they can flip again
-                        flipSel(sel)
+                            PathLog.debug("(%.2f, %.2f, %.2f) -> forward  (%s)" % (normal.x, normal.y, normal.z, sub.Orientation))
+
+                        if PathGeom.pointsCoincide(axis, normal):
+                            alignSel(sel, normal, True)
+                        elif PathGeom.pointsCoincide(axis, FreeCAD.Vector() - normal):
+                            alignSel(sel, FreeCAD.Vector() - normal, True)
+                        else:
+                            alignSel(sel, normal)
+
+                    elif 'Edge' == sub.ShapeType:
+                        normal = (sub.Vertexes[1].Point - sub.Vertexes[0].Point).normalize()
+                        if PathGeom.pointsCoincide(axis, normal) or PathGeom.pointsCoincide(axis, FreeCAD.Vector() - normal):
+                            # Don't really know the orientation of an edge, so let's just flip the object
+                            # and if the user doesn't like it they can flip again
+                            alignSel(sel, normal, True)
+                        else:
+                            alignSel(sel, normal)
+
                     else:
-                        rotateSel(sel, n)
+                        PathLog.track(sub.ShapeType)
+
         if selObject and selFeature:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
@@ -971,10 +983,13 @@ class TaskPanel:
             FreeCADGui.Selection.addSelection(sel.Object, sel.SubElementNames)
 
     def modelSet0(self, axis):
+        PathLog.track(axis)
         with selectionEx() as selection:
             for sel in selection:
                 selObject = sel.Object
+                PathLog.track(selObject.Label)
                 for name in sel.SubElementNames:
+                    PathLog.track(selObject.Label, name)
                     feature = selObject.Shape.getElement(name)
                     bb = feature.BoundBox
                     offset = FreeCAD.Vector(axis.x * bb.XMax, axis.y * bb.YMax, axis.z * bb.ZMax)
@@ -988,9 +1003,9 @@ class TaskPanel:
                         # if selection is not model, move the model too
                         # if the selection is not stock and there is a stock, move the stock too
                         for model in self.obj.Model.Group:
-                            if model != selObject: 
+                            if model != selObject:
                                 Draft.move(model, offset)
-                            if selObject != self.obj.Stock and self.obj.Stock: 
+                            if selObject != self.obj.Stock and self.obj.Stock:
                                 Draft.move(self.obj.Stock, offset)
 
     def modelMove(self, axis):
@@ -1040,10 +1055,10 @@ class TaskPanel:
                     p = FreeCAD.Vector() - sub.Curve.Location
                 if 'Face' == sub.ShapeType:
                     p = FreeCAD.Vector() - sub.BoundBox.Center
-                    
+
                 if p:
                     Draft.move(sel.Object, p)
-                
+
         if selObject and selFeature:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(selObject, selFeature)
@@ -1134,6 +1149,17 @@ class TaskPanel:
         # no valid selection
         return False
 
+    def isValidAxisSelection(self, sel):
+        if sel.ShapeType in ['Vertex', 'Edge', 'Face']:
+            if hasattr(sel, 'Curve') and type(sel.Curve) in [Part.Circle]:
+                return False
+            if hasattr(sel, 'Surface') and sel.Surface.curvature(0, 0, "Max") != 0:
+                return False
+            return True
+
+        # no valid selection
+        return False
+
     def updateSelection(self):
         # Remove Job object if present in Selection: source of phantom paths
         if self.obj in FreeCADGui.Selection.getSelection():
@@ -1141,26 +1167,21 @@ class TaskPanel:
 
         sel = FreeCADGui.Selection.getSelectionEx()
 
+        self.form.setOrigin.setEnabled(False)
+        self.form.moveToOrigin.setEnabled(False)
+        self.form.modelSetXAxis.setEnabled(False)
+        self.form.modelSetYAxis.setEnabled(False)
+        self.form.modelSetZAxis.setEnabled(False)
+
         if len(sel) == 1 and len(sel[0].SubObjects) == 1:
             subObj = sel[0].SubObjects[0]
             if self.isValidDatumSelection(subObj):
-                self.form.modelSetXAxis.setEnabled(False)
-                self.form.modelSetYAxis.setEnabled(False)
-                self.form.modelSetZAxis.setEnabled(False)
                 self.form.setOrigin.setEnabled(True)
                 self.form.moveToOrigin.setEnabled(True)
-            else:
+            if self.isValidAxisSelection(subObj):
                 self.form.modelSetXAxis.setEnabled(True)
                 self.form.modelSetYAxis.setEnabled(True)
                 self.form.modelSetZAxis.setEnabled(True)
-                self.form.setOrigin.setEnabled(False)
-                self.form.moveToOrigin.setEnabled(False)
-        else:
-            self.form.modelSetXAxis.setEnabled(False)
-            self.form.modelSetYAxis.setEnabled(False)
-            self.form.modelSetZAxis.setEnabled(False)
-            self.form.setOrigin.setEnabled(False)
-            self.form.moveToOrigin.setEnabled(False)
 
         if len(sel) == 0 or self.obj.Stock in [s.Object for s in sel]:
             self.form.centerInStock.setEnabled(False)
@@ -1201,7 +1222,7 @@ class TaskPanel:
 
                 # first remove all obsolete base models
                 for model, count in PathUtil.keyValueIter(obsolete):
-                    for i in range(count): # pylint: disable=unused-variable
+                    for i in range(count):
                         # it seems natural to remove the last of all the base objects for a given model
                         base = [b for b in obj.Model.Group if proxy.baseObject(obj, b) == model][-1]
                         self.vproxy.forgetBaseVisibility(obj, base)
@@ -1323,19 +1344,15 @@ class TaskPanel:
 
     # SelectionObserver interface
     def addSelection(self, doc, obj, sub, pnt):
-        # pylint: disable=unused-argument
         self.updateSelection()
 
     def removeSelection(self, doc, obj, sub):
-        # pylint: disable=unused-argument
         self.updateSelection()
 
     def setSelection(self, doc):
-        # pylint: disable=unused-argument
         self.updateSelection()
 
     def clearSelection(self, doc):
-        # pylint: disable=unused-argument
         self.updateSelection()
 
 
@@ -1351,7 +1368,7 @@ def Create(base, template=None):
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
-    except Exception as exc: # pylint: disable=broad-except
+    except Exception as exc:
         PathLog.error(exc)
         traceback.print_exc()
         FreeCAD.ActiveDocument.abortTransaction()

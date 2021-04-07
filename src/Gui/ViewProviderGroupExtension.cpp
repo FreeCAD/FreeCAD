@@ -68,7 +68,7 @@ void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
             "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(), 
+            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(),
             obj->getDocument()->getName(), obj->getNameInDocument() );
 }
 
@@ -86,7 +86,7 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
 
     //we cannot drop thing of this group into it again
     if (group->hasObject(obj))
-        return false;  
+        return false;
 
     if (group->allowObject(obj))
         return true;
@@ -112,7 +112,7 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
 
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();    
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     return std::vector<App::DocumentObject*>(group->Group.getValues());
 }
 
@@ -149,7 +149,7 @@ void ViewProviderGroupExtension::extensionHide(void) {
     // Property::User1 is used by ViewProviderDocumentObject to mark for
     // temporary visibility changes. Do not propagate the change to children.
     if (!getExtendedViewProvider()->isRestoring()
-            && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) 
+            && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1))
     {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
         for(auto obj : group->Group.getValues()) {
@@ -165,10 +165,10 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     // If the group is nonempty ask the user if he wants to delete its content
     if (group->Group.getSize() > 0) {
-        QMessageBox::StandardButton choice = 
+        QMessageBox::StandardButton choice =
             QMessageBox::question(getMainWindow(), QObject::tr ( "Delete group content?" ),
                 QObject::tr ( "The %1 is not empty, delete its content as well?")
-                    .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ), 
+                    .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ),
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
 
         if (choice == QMessageBox::Yes) {

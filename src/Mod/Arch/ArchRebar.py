@@ -21,10 +21,8 @@
 # Modified Amritpal Singh <amrit3701@gmail.com> on 07-07-2017
 
 import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
-from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -43,9 +41,9 @@ else:
 #  Rebars (or Reinforcing Bars) are metallic bars placed
 #  inside concrete structures to reinforce them.
 
-__title__="FreeCAD Rebar"
+__title__  = "FreeCAD Rebar"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 
 def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):

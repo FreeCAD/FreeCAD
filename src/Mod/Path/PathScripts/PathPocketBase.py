@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *                                                                         *
@@ -31,7 +29,7 @@ from PySide import QtCore
 
 __title__ = "Base Path Pocket Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path pocket operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())

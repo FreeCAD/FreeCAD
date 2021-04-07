@@ -31,11 +31,11 @@ namespace Gui {
 namespace Dialog {
 
 /**
- * 
+ *
  * \author Jürgen Riegel
  */
-class GuiExport DlgEditFileIncludePropertyExternal : public DlgRunExternal 
-{ 
+class GuiExport DlgEditFileIncludePropertyExternal : public DlgRunExternal
+{
     Q_OBJECT
 
 public:

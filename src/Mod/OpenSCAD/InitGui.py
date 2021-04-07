@@ -29,9 +29,6 @@
 #***************************************************************************/
 
 import FreeCAD
-param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
-openscadfilename = param.GetString('openscadexecutable')
-
 
 class OpenSCADWorkbench ( Workbench ):
     "OpenSCAD workbench object"
@@ -63,7 +60,6 @@ class OpenSCADWorkbench ( Workbench ):
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
         openscadfilename = param.GetString('openscadexecutable')
         if not openscadfilename:
-
             import OpenSCADUtils
             openscadfilename = OpenSCADUtils.searchforopenscadexe()
             if openscadfilename: #automatic search was succsessful
@@ -91,3 +87,6 @@ class OpenSCADWorkbench ( Workbench ):
 
 
 Gui.addWorkbench(OpenSCADWorkbench())
+
+# Not all of the GUI tests will require an OpenSCAD binary (CSG import and export don't)
+FreeCAD.__unit_test__ += ["TestOpenSCADGui"]

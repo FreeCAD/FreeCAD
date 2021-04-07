@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *   Copyright (c) 2015 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,7 +62,7 @@ public:
     TechDraw::DrawHatch* getViewObject() const;
 
     virtual Gui::MDIView *getMDIView() const override;
-    
+
 private:
     static App::PropertyFloatConstraint::Constraints scaleRange;
 

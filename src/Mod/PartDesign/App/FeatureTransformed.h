@@ -50,12 +50,13 @@ public:
     App::PropertyLinkList Originals;
 
     App::PropertyBool Refine;
+    App::PropertyEnumeration Overlap;
 
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,
      *         which serves as "Support" for old style workflows
      * @param silent if couldn't determine the base feature and silent == true,
-     *               silently return a nullptr, otherwise throw Base::Exception. 
+     *               silently return a nullptr, otherwise throw Base::Exception.
      *               Default is false.
      */
     virtual Part::Feature* getBaseObject(bool silent=false) const;
@@ -82,20 +83,21 @@ public:
     short mustExecute() const;
     //@}
 
-    /** returns a list of the transformations that where rejected during the last execute
+    /** returns the compound of the shapes that were rejected during the last execute
       * because they did not overlap with the support
       */
-    typedef std::map<App::DocumentObject*, std::list<gp_Trsf> > rejectedMap;
-    const rejectedMap getRejectedTransformations(void) { return rejected; }
+    TopoDS_Shape rejected;
 
 protected:
     void Restore(Base::XMLReader &reader);
     virtual void positionBySupport(void);
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
-		     TopoDS_Compound &compoundOut) const; 
+                     TopoDS_Compound &compoundOut) const;
+    static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
-    rejectedMap rejected;
+private:
+    static const char* OverlapEnums[];
 };
 
 } //namespace PartDesign

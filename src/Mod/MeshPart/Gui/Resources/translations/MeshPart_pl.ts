@@ -33,8 +33,10 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
-      <source>Curve on mesh</source>
-      <translation>Krzywa na siatce</translation>
+      <source>Creates an approximated curve on top of a mesh.
+This command only works with a 'mesh' object.</source>
+      <translation>Tworzy przybliżoną krzywą na wierzchu siatki.
+To polecenie działa tylko z obiektem typu 'mesh'.</translation>
     </message>
   </context>
   <context>
@@ -70,7 +72,7 @@
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
-      <translation>Przecięcie</translation>
+      <translation>Przekrój</translation>
     </message>
   </context>
   <context>
@@ -93,11 +95,24 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation>Przytnij płaszczyzną</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation>Przekrój z płaszczyzną</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross sections</source>
-      <translation>Przekroje</translation>
+      <translation>Przekrój poprzeczny</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -127,7 +142,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Sekcje</translation>
+      <translation>Przekroje</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -152,12 +167,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="134"/>
       <source>Connect edges if distance less than</source>
-      <translation type="unfinished">Connect edges if distance less than</translation>
+      <translation>Połącz krawędzie jeśli odległość jest mniejsza niż</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="345"/>
       <source>Failure</source>
-      <translation type="unfinished">Failure</translation>
+      <translation>Niepowodzenie</translation>
     </message>
   </context>
   <context>
@@ -170,7 +185,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
       <source>Close wire</source>
-      <translation>Krzywa zamknięta</translation>
+      <translation>Zamknij linie łamaną</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="368"/>
@@ -185,7 +200,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="615"/>
       <source>Wrong mesh picked</source>
-      <translation>Wybraną nieodpowiednią siatkę</translation>
+      <translation>Wybrano nieodpowiednią siatkę</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
@@ -201,47 +216,56 @@
       <translation>Krzywa na siatce</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
+      <translation>Naciśnij 'Start', a następnie wybierz punkty na siatce; gdy zaznaczona jest wystarczająca ilość punktów, kliknij prawym przyciskiem myszy i wybierz 'Utwórz'. Powtórz ten proces, aby utworzyć więcej krzywych. Zamknij ten panel zadań, aby zakończyć operację.
+
+Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub powierzchnią. Aby przetworzyć obiekt na siatkę, użyj narzędzi w środowisku pracy siatki.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
       <translation>Linia</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
-      <source>Snap tolerance to vertexes</source>
-      <translation>Przyciągaj tolerancje do wierzchołków</translation>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
+      <translation>Tolerancja przyciągania wierzchołków</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
       <translation>Próg połączenia</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
       <translation>Przybliżenie splajnu</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
       <translation>Tolerancja do siatki</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
       <translation>Ciągłość</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
       <source>Maximum curve degree</source>
       <translation>Maksymalny stopień krzywej</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
@@ -276,17 +300,17 @@
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation:</source>
-      <translation>Odchylenie powierzchni</translation>
+      <translation>Odchylenie powierzchni:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="33"/>
       <source>Use the standard mesher</source>
-      <translation type="unfinished">Use the standard mesher</translation>
+      <translation>Użyj standardowego generatora siatek</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
       <source>Maximal linear deflection of a mesh section from the surface of the object</source>
-      <translation type="unfinished">Maximal linear deflection of a mesh section from the surface of the object</translation>
+      <translation>Maksymalne liniowe ugięcie części oczka od powierzchni obiektu</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
@@ -296,14 +320,14 @@
     <message>
       <location filename="../../Tessellation.ui" line="74"/>
       <source>Maximal angular deflection of a mesh section to the next section</source>
-      <translation type="unfinished">Maximal angular deflection of a mesh section to the next section</translation>
+      <translation>Maksymalne ugięcie kątowe sekcji siatki do następnej sekcji</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 Surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-Surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Maksymalne odchylenie liniowe segmentu oczek sieci będzie określone jako
+Odchylenie powierzchniowe pomnożone przez długość aktualnego segmentu oczek (krawędzi)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
@@ -313,7 +337,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation type="unfinished">Mesh will get face colors of the object</translation>
+      <translation>Siatka otrzyma kolory ścian obiektu</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
@@ -325,19 +349,19 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</t
       <source>Mesh segments will be grouped according to the color of the object faces.
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
-      <translation type="unfinished">Mesh segments will be grouped according to the color of the object faces.
-These groups will be exported for mesh output formats supporting
-this feature (e.g. the format OBJ).</translation>
+      <translation>Segmenty siatki zostaną pogrupowane zgodnie z kolorem powierzchni obiektów.
+Grupy te zostaną wyeksportowane dla wyjściowych formatów siatki obsługujących
+tą funkcję (np. format OBJ).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
       <source>Define segments by face colors</source>
-      <translation>Zdefiniowanie segmentów przez kolory powierzchni</translation>
+      <translation>Zdefiniuj segmenty według kolorów ścian</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
-      <translation type="unfinished">Use the Mefisto mesher</translation>
+      <translation>Użyj generatora siatek Mefisto</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -348,18 +372,18 @@ this feature (e.g. the format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="162"/>
       <source>If this number is smaller the mesh becomes finer.
 The smallest value is 0.</source>
-      <translation type="unfinished">If this number is smaller the mesh becomes finer.
-The smallest value is 0.</translation>
+      <translation>Jeśli ta liczba jest mniejsza, siatka staje się drobniejsza.
+Najmniejszą wartością jest 0.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Szacunkowo</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
-      <translation type="unfinished">Use the Netgen mesher</translation>
+      <translation>Użyj generatora siatek Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="217"/>
@@ -405,31 +429,31 @@ The smallest value is 0.</translation>
       <location filename="../../Tessellation.ui" line="279"/>
       <source>If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</source>
-      <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
-A value in the range of 0.1-1.</translation>
+      <translation>Jeśli ten parametr jest mniejszy, siatka staje się drobniejsza.
+Wartość w zakresie 0,1-1.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge:</source>
-      <translation>Elementy na krawędź:</translation>
+      <translation>Ilość elementów na krawędź:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
 A value in the range of 0.2-10.</source>
-      <translation type="unfinished">If this parameter is larger, the mesh becomes finer.
-A value in the range of 0.2-10.</translation>
+      <translation>Jeśli ten parametr jest większy, siatka staje się drobniejsza.
+Wartość w zakresie 0,2–10.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius:</source>
-      <translation>Elementy na promień krzywizny:</translation>
+      <translation>Ilość elementów na promień krzywizny:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
       <source>Whether optimization of surface shape will be done</source>
-      <translation type="unfinished">Whether optimization of surface shape will be done</translation>
+      <translation>Czy zostanie przeprowadzona optymalizacja kształtu powierzchni</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="373"/>
@@ -439,7 +463,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="383"/>
       <source>Whether second order elements will be generated</source>
-      <translation type="unfinished">Whether second order elements will be generated</translation>
+      <translation>Czy będą generowane elementy drugiego rzędu</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="386"/>
@@ -449,7 +473,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation type="unfinished">Whether meshes will be arranged preferably using quadrilateral faces</translation>
+      <translation>Czy siatki będą układane najlepiej przy użyciu czworobocznych ścian</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -459,12 +483,12 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
       <source>Leave panel open</source>
-      <translation type="unfinished">Leave panel open</translation>
+      <translation>Pozostaw otwarty panel</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="62"/>
       <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <translation>gmsh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="226"/>
@@ -475,7 +499,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="247"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Zaznacz najpierw obwiednię w celu utworzenia siatki</translation>
+      <translation>Najpierw wybierz kształt do utworzenia siatki.</translation>
     </message>
   </context>
   <context>
@@ -501,7 +525,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Wybierz płaszczyznę którą chcesz przyciąć siatkę.</translation>
+      <translation>Proszę wybrać płaszczyznę, na której przycinasz siatkę.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -521,7 +545,7 @@ A value in the range of 0.2-10.</translation>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Above</source>
-      <translation>Ponad</translation>
+      <translation>Powyżej</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

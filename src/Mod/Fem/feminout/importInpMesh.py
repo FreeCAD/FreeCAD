@@ -24,7 +24,7 @@
 
 __title__ = "Mesh import for Abacus/CalculiX inp file format"
 __author__ = "Frantisek Loeffelmann, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __date__ = "04/08/2016"
 
 ## @package importInpMesh
@@ -214,7 +214,7 @@ def read_inp(file_name):
                 try:
                     enode = int(line_list[en])
                     elm_category[number].append(enode)
-                except:
+                except Exception:
                     elm_2nd_line = True
                     break
 

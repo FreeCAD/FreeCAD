@@ -28,7 +28,7 @@
 #include <Mod/Fem/App/FemPostFunction.h>
 #include <Inventor/SbMatrix.h>
 #include <QWidget>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class SoScale;
 class SoSurroundScale;

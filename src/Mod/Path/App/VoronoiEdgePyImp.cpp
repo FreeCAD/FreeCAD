@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) sliptonic (shopinthewoods@gmail.com) 2020               *
+ *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,9 +24,17 @@
 
 
 #ifndef _PreComp_
-# include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string.hpp>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <Geom_Parabola.hxx>
 #endif
 
+#include "Base/Exception.h"
+#include "Base/Vector3D.h"
+#include "Base/VectorPy.h"
+#include "Mod/Part/App/ArcOfParabolaPy.h"
+#include "Mod/Part/App/LineSegmentPy.h"
+#include "Mod/Part/App/TopoShapeEdgePy.h"
 #include "Mod/Path/App/Voronoi.h"
 #include "Mod/Path/App/Voronoi.h"
 #include "Mod/Path/App/VoronoiCell.h"
@@ -35,18 +43,147 @@
 #include "Mod/Path/App/VoronoiEdgePy.h"
 #include "Mod/Path/App/VoronoiVertex.h"
 #include "Mod/Path/App/VoronoiVertexPy.h"
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/PlacementPy.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
-#include <Mod/Part/App/LineSegmentPy.h>
-#include <Mod/Part/App/ArcOfParabolaPy.h>
 
-// files generated out of VoronoiEdgePy.xml
-#include "VoronoiEdgePy.cpp"
+#include "Mod/Path/App/VoronoiEdgePy.cpp"
 
 using namespace Path;
+
+namespace {
+
+  Voronoi::point_type pointFromVertex(const Voronoi::vertex_type v) {
+    Voronoi::point_type pt;
+    pt.x(v.x());
+    pt.y(v.y());
+    return pt;
+  }
+
+  Voronoi::point_type orthognalProjection(const Voronoi::point_type &point, const Voronoi::segment_type &segment) {
+    // move segment so it goes through the origin (s)
+    Voronoi::point_type offset;
+    {
+      offset.x(low(segment).x());
+      offset.y(low(segment).y());
+    }
+    Voronoi::point_type s;
+    {
+      s.x(high(segment).x() - offset.x());
+      s.y(high(segment).y() - offset.y());
+    }
+    // move point accordingly so it maintains it's relation to s (p)
+    Voronoi::point_type p;
+    {
+      p.x(point.x() - offset.x());
+      p.y(point.y() - offset.y());
+    }
+    // calculate the orthogonal projection of p onto s
+    // ((p dot s) / (s dot s)) * s (https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line)
+    // and it back by original offset to get the projected point
+    double proj = (p.x() * s.x() + p.y() * s.y()) / (s.x() * s.x() + s.y() * s.y());
+    Voronoi::point_type pt;
+    {
+      pt.x(offset.x() + proj * s.x());
+      pt.y(offset.y() + proj * s.y());
+    }
+    return pt;
+  }
+
+  double length(const Voronoi::point_type &p) {
+    return sqrt(p.x() * p.x() + p.y() * p.y());
+  }
+
+  int sideOf(const Voronoi::point_type &p, const Voronoi::segment_type &s) {
+    Voronoi::coordinate_type dxp = p.x()       - low(s).x();
+    Voronoi::coordinate_type dyp = p.y()       - low(s).y();
+    Voronoi::coordinate_type dxs = high(s).x() - low(s).x();
+    Voronoi::coordinate_type dys = high(s).y() - low(s).y();
+
+    double d = -dxs * dyp + dys * dxp;
+    if (d < 0) {
+      return -1;
+    }
+    if (d > 0) {
+      return +1;
+    }
+    return 0;
+  }
+
+  template<typename pt0_type, typename pt1_type>
+  double distanceBetween(const pt0_type &p0, const pt1_type &p1, double scale) {
+    Voronoi::point_type dist;
+    dist.x(p0.x() - p1.x());
+    dist.y(p0.y() - p1.y());
+    return length(dist) / scale;
+  }
+
+  template<typename pt0_type, typename pt1_type>
+  double signedDistanceBetween(const pt0_type &p0, const pt1_type &p1, double scale) {
+    if (length(p0) > length(p1)) {
+      return -distanceBetween(p0, p1, scale);
+    }
+    return distanceBetween(p0, p1, scale);
+  }
+
+
+  void addDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::point_type &p1, Py::List *list, double scale) {
+    if (v0) {
+      list->append(Py::Float(distanceBetween(*v0, p1, scale)));
+    } else {
+      Py_INCREF(Py_None);
+      list->append(Py::asObject(Py_None));
+    }
+  }
+
+  void addProjectedDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::segment_type &segment, Py::List *list, double scale) {
+    if (v0) {
+      Voronoi::point_type p0;
+      {
+        p0.x(v0->x());
+        p0.y(v0->y());
+      }
+      Voronoi::point_type p1 = orthognalProjection(p0, segment);
+      list->append(Py::Float(distanceBetween(*v0, p1, scale)));
+    } else {
+      Py_INCREF(Py_None);
+      list->append(Py::asObject(Py_None));
+    }
+  }
+
+  bool addDistancesToPoint(const VoronoiEdge *edge, Voronoi::point_type p, Py::List *list, double scale) {
+    addDistanceBetween(edge->ptr->vertex0(), p, list, scale);
+    addDistanceBetween(edge->ptr->vertex1(), p, list, scale);
+    return true;
+  }
+
+  bool retrieveDistances(const VoronoiEdge *edge, Py::List *list) {
+    const Voronoi::diagram_type::cell_type *c0 = edge->ptr->cell();
+    if (c0->contains_point()) {
+      return addDistancesToPoint(edge, edge->dia->retrievePoint(c0), list, edge->dia->getScale());
+    }
+    const Voronoi::diagram_type::cell_type *c1 = edge->ptr->twin()->cell();
+    if (c1->contains_point()) {
+      return addDistancesToPoint(edge, edge->dia->retrievePoint(c1), list, edge->dia->getScale());
+    }
+    // at this point both cells are sourced from segments and it does not matter which one we use
+    Voronoi::segment_type segment = edge->dia->retrieveSegment(c0);
+    addProjectedDistanceBetween(edge->ptr->vertex0(), segment, list, edge->dia->getScale());
+    addProjectedDistanceBetween(edge->ptr->vertex1(), segment, list, edge->dia->getScale());
+    return false;
+  }
+
+}
+
+std::ostream& operator<<(std::ostream& os, const Voronoi::vertex_type &v) {
+  return os << '(' << v.x() << ", " << v.y() << ')';
+}
+
+std::ostream& operator<<(std::ostream& os, const Voronoi::point_type &p) {
+  return os << '(' << p.x() << ", " << p.y() << ')';
+}
+
+std::ostream& operator<<(std::ostream& os, const Voronoi::segment_type &s) {
+  return os << '<' << low(s) << ", " << high(s) << '>';
+}
+
 
 // returns a string which represents the object e.g. when printed in python
 std::string VoronoiEdgePy::representation(void) const
@@ -92,16 +229,14 @@ int VoronoiEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 
 PyObject* VoronoiEdgePy::richCompare(PyObject *lhs, PyObject *rhs, int op) {
-  PyObject *cmp = Py_False;
+  PyObject *cmp = (op == Py_EQ) ? Py_False : Py_True;
   if (   PyObject_TypeCheck(lhs, &VoronoiEdgePy::Type)
       && PyObject_TypeCheck(rhs, &VoronoiEdgePy::Type)
-      && op == Py_EQ) {
+      && (op == Py_EQ || op == Py_NE)) {
     const VoronoiEdge *vl = static_cast<VoronoiEdgePy*>(lhs)->getVoronoiEdgePtr();
     const VoronoiEdge *vr = static_cast<VoronoiEdgePy*>(rhs)->getVoronoiEdgePtr();
-    if (vl->index == vr->index && vl->dia == vr->dia) {
-      cmp = Py_True;
-    } else {
-      std::cerr << "VoronoiEdge==(" << vl->index << " != " << vr->index << " || " << (vl->dia == vr->dia) << ")" << std::endl;
+    if (vl->dia == vr->dia && vl->index == vr->index) {
+      cmp = (op == Py_EQ) ? Py_True : Py_False;
     }
   }
   Py_INCREF(cmp);
@@ -259,43 +394,16 @@ PyObject* VoronoiEdgePy::isSecondary(PyObject *args)
   return chk;
 }
 
-namespace {
-  Voronoi::point_type orthognalProjection(const Voronoi::point_type &point, const Voronoi::segment_type &segment) {
-    // move segment so it goes through the origin (s)
-    Voronoi::point_type offset;
-    {
-      offset.x(low(segment).x());
-      offset.y(low(segment).y());
-    }
-    Voronoi::point_type s;
-    {
-      s.x(high(segment).x() - offset.x());
-      s.y(high(segment).y() - offset.y());
-    }
-    // move point accordingly so it maintains it's relation to s (p)
-    Voronoi::point_type p;
-    {
-      p.x(point.x() - offset.x());
-      p.y(point.y() - offset.y());
-    }
-    // calculate the orthogonal projection of p onto s
-    // ((p dot s) / (s dot s)) * s (https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line)
-    // and it back by original offset to get the projected point
-    double proj = (p.x() * s.x() + p.y() * s.y()) / (s.x() * s.x() + s.y() * s.y());
-    Voronoi::point_type pt;
-    {
-      pt.x(offset.x() + proj * s.x());
-      pt.y(offset.y() + proj * s.y());
-    }
-    return pt;
-  }
-}
-
-PyObject* VoronoiEdgePy::toGeom(PyObject *args)
+PyObject* VoronoiEdgePy::toShape(PyObject *args)
 {
-  double z = 0.0;
-  if (!PyArg_ParseTuple(args, "|d", &z)) {
-    throw Py::RuntimeError("single argument of type double accepted");
+  double z0 = 0.0;
+  double z1 = DBL_MAX;
+  int dbg   = 0;
+  if (!PyArg_ParseTuple(args, "|ddp", &z0, &z1, &dbg)) {
+    throw Py::RuntimeError("no, one or two arguments of type double accepted");
+  }
+  if (z1 == DBL_MAX) {
+    z1 = z0;
   }
   VoronoiEdge *e = getVoronoiEdgePtr();
   if (e->isBound()) {
@@ -305,8 +413,10 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
         auto v1 = e->ptr->vertex1();
         if (v0 && v1) {
           auto p = new Part::GeomLineSegment;
-          p->setPoints(e->dia->scaledVector(*v0, z), e->dia->scaledVector(*v1, z));
-          return new Part::LineSegmentPy(p);
+          p->setPoints(e->dia->scaledVector(*v0, z0), e->dia->scaledVector(*v1, z1));
+          Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p->handle());
+          BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
+          return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
         }
       } else {
         // infinite linear, need to clip somehow
@@ -334,7 +444,7 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
             direction.y(dx);
           }
         }
-        double k = 10.0; // <-- need something smarter here
+        double k = 2.5; // <-- need something smarter here
         Voronoi::point_type begin;
         Voronoi::point_type end;
         if (e->ptr->vertex0()) {
@@ -352,8 +462,10 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
           end.y(origin.y() + direction.y() * k);
         }
         auto p = new Part::GeomLineSegment;
-        p->setPoints(e->dia->scaledVector(begin, z), e->dia->scaledVector(end, z));
-        return new Part::LineSegmentPy(p);
+        p->setPoints(e->dia->scaledVector(begin, z0), e->dia->scaledVector(end, z1));
+        Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p->handle());
+        BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
+        return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
       }
     } else {
       // parabolic curve, which is always formed by a point and an edge
@@ -373,31 +485,103 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
         axis.x(point.x() - loc.x());
         axis.y(point.y() - loc.y());
       }
-      auto p = new Part::GeomParabola;
+      Voronoi::segment_type xaxis;
       {
-        p->setCenter(e->dia->scaledVector(point, z));
-        p->setLocation(e->dia->scaledVector(loc, z));
-        p->setAngleXU(atan2(axis.y(), axis.x()));
-        p->setFocal(sqrt(axis.x() * axis.x() + axis.y() * axis.y()) / e->dia->getScale());
+        xaxis.low(point);
+        xaxis.high(loc);
       }
-      auto a = new Part::GeomArcOfParabola;
-      {
-        a->setHandle(Handle(Geom_Parabola)::DownCast(p->handle()));
 
-        // figure out the arc parameters
-        auto v0 = e->ptr->vertex0();
-        auto v1 = e->ptr->vertex1();
-        double param0 = 0;
-        double param1 = 0;
-        if (!p->closestParameter(e->dia->scaledVector(*v0, z), param0)) {
-          std::cerr << "closestParameter(v0) failed" << std::endl;
-        }
-        if (!p->closestParameter(e->dia->scaledVector(*v1, z), param1)) {
-          std::cerr << "closestParameter(v0) failed" << std::endl;
-        }
-        a->setRange(param0, param1, false);
+      // determine distances of the end points from the x-axis, those are the parameters for
+      // the arc of the parabola in the horizontal plane
+      auto pt0 = pointFromVertex(*e->ptr->vertex0());
+      auto pt1 = pointFromVertex(*e->ptr->vertex1());
+      Voronoi::point_type pt0x = orthognalProjection(pt0, xaxis);
+      Voronoi::point_type pt1x = orthognalProjection(pt1, xaxis);
+      double dist0 = distanceBetween(pt0, pt0x, e->dia->getScale()) * sideOf(pt0, xaxis);
+      double dist1 = distanceBetween(pt1, pt1x, e->dia->getScale()) * sideOf(pt1, xaxis);
+      if (dist1 < dist0) {
+        // if the parabola is traversed in the revere direction we need to use the points
+        // on the other side of the parabola - beauty of symmetric geometries
+        dist0 = -dist0;
+        dist1 = -dist1;
       }
-      return new Part::ArcOfParabolaPy(a);
+
+      // at this point we have the direction of the x-axis and the two end points p0 and p1
+      // which means we know the plane of the parabola
+      auto p0 = e->dia->scaledVector(pt0, z0);
+      auto p1 = e->dia->scaledVector(pt1, z1);
+      // we get a third point by moving p0 along the axis of the parabola
+      auto p_ = p0 + e->dia->scaledVector(axis, 0);
+
+      // normal of the plane defined by those 3 points
+      auto norm = ((p_ - p0).Cross(p1 - p0)).Normalize();
+
+      // the next thing to figure out is the z level of the x-axis,
+      double zx = z0 - (dist0 / (dist0 - dist1)) * (z0 - z1);
+
+      auto locn = e->dia->scaledVector(loc, zx);
+      auto xdir = e->dia->scaledVector(axis, zx);
+
+      double focal;
+      if (z0 == z1) {
+        // focal length if parabola in the xy-plane is simply half the distance between the
+        // point and segment - aka the distance between point and location, aka the length of axis
+        focal = length(axis) / e->dia->getScale();
+      } else {
+        // if the parabola is not in the xy-plane we need to find the
+        // (x,y) coordinates of a point on the parabola in the parabola's
+        // coordinate system.
+        // see: http://amsi.org.au/ESA_Senior_Years/SeniorTopic2/2a/2a_2content_10.html
+        // note that above website uses Y as the symmetry axis of the parabola whereas
+        // OCC uses X as the symmetry axis. The math below is in the website's system.
+        // We already know 2 points on the parabola (p0 and p1), we know their X values
+        // (dist0 and dist1) if the parabola is in the xy-plane, and we know their orthogonal
+        // projection onto the parabola's symmetry axis Y (pt0x and pt1x). The resulting Y
+        // values are the distance between the parabola's location (loc) and the respective
+        // orthogonal projection. Pythagoras gives us the X values, using the X from the
+        // xy-plane and the difference in z.
+        // Note that this calculation also gives correct results if the parabola is in
+        // the xy-plane (z0 == z1), it's just that above calculation is so much simpler.
+        double flenX0 = sqrt(dist0 * dist0 + (z0 - zx) * (z0 - zx));
+        double flenX1 = sqrt(dist1 * dist1 + (zx - z1) * (zx - z1));
+        double flenX;
+        double flenY;
+        // if one of the points is the location, we have to use the other to get sensible values
+        if (fabs(dist0) > fabs(dist1)) {
+          flenX = flenX0;
+          flenY = distanceBetween(loc, pt0x, e->dia->getScale());
+        } else {
+          flenX = flenX1;
+          flenY = distanceBetween(loc, pt1x, e->dia->getScale());
+        }
+        // parabola: (x - p)^2 = 4*focal*(y - q)   |  (p,q) ... location of parabola
+        focal = (flenX * flenX) / (4 * fabs(flenY));
+        if (dbg) {
+          std::cerr << "segment" << segment << ", point" << point << std::endl;
+          std::cerr << "  loc" << loc << ", axis" << axis << std::endl;
+          std::cerr << "  dist0(" << dist0 << " : " << flenX0 << ", dist1(" << dist1 << " : " << flenX1 << ")" << std::endl;
+          std::cerr << "  z(" << z0 << ", " << zx << ", " << z1 << ")" << std::endl;
+        }
+        // use new X values to set the parameters
+        dist0 = dist0 >= 0 ? flenX0 : -flenX0;
+        dist1 = dist1 >= 0 ? flenX1 : -flenX1;
+      }
+
+      gp_Pnt  pbLocn(locn.x, locn.y, locn.z);
+      gp_Dir  pbNorm(norm.x, norm.y, norm.z);
+      gp_Dir  pbXdir(xdir.x, xdir.y, 0);
+
+      gp_Ax2  pb(pbLocn, pbNorm, pbXdir);
+      Handle(Geom_Parabola) parabola = new Geom_Parabola(pb, focal);
+
+      auto arc = new Part::GeomArcOfParabola;
+      arc->setHandle(parabola);
+      arc->setRange(dist0, dist1, false);
+
+      // get a shape for the parabola arc
+      Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(arc->handle());
+      BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
+      return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
     }
   }
   Py_INCREF(Py_None);
@@ -405,83 +589,12 @@ PyObject* VoronoiEdgePy::toGeom(PyObject *args)
 }
 
 
-namespace {
-
-  double distanceBetween(const Voronoi::diagram_type::vertex_type &v0, const Voronoi::point_type &p1, double scale) {
-    double x = v0.x() - p1.x();
-    double y = v0.y() - p1.y();
-    return sqrt(x * x + y * y) / scale;
-  }
-
-  void addDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::point_type &p1, Py::List *list, double scale) {
-    if (v0) {
-      list->append(Py::Float(distanceBetween(*v0, p1, scale)));
-    } else {
-      Py_INCREF(Py_None);
-      list->append(Py::asObject(Py_None));
-    }
-  }
-
-  void addProjectedDistanceBetween(const Voronoi::diagram_type::vertex_type *v0, const Voronoi::segment_type &segment, Py::List *list, double scale) {
-    if (v0) {
-      Voronoi::point_type p0;
-      {
-        p0.x(v0->x());
-        p0.y(v0->y());
-      }
-      Voronoi::point_type p1 = orthognalProjection(p0, segment);
-      list->append(Py::Float(distanceBetween(*v0, p1, scale)));
-    } else {
-      Py_INCREF(Py_None);
-      list->append(Py::asObject(Py_None));
-    }
-  }
-
-  bool addDistancesToPoint(const VoronoiEdge *edge, Voronoi::point_type p, Py::List *list, double scale) {
-    addDistanceBetween(edge->ptr->vertex0(), p, list, scale);
-    addDistanceBetween(edge->ptr->vertex1(), p, list, scale);
-    return true;
-  }
-
-  bool retrieveDistances(const VoronoiEdge *edge, Py::List *list) {
-    const Voronoi::diagram_type::cell_type *c0 = edge->ptr->cell();
-    if (c0->contains_point()) {
-      return addDistancesToPoint(edge, edge->dia->retrievePoint(c0), list, edge->dia->getScale());
-    }
-    const Voronoi::diagram_type::cell_type *c1 = edge->ptr->twin()->cell();
-    if (c1->contains_point()) {
-      return addDistancesToPoint(edge, edge->dia->retrievePoint(c1), list, edge->dia->getScale());
-    }
-    // at this point both cells are sourced from segments and it does not matter which one we use
-    Voronoi::segment_type segment = edge->dia->retrieveSegment(c0);
-    addProjectedDistanceBetween(edge->ptr->vertex0(), segment, list, edge->dia->getScale());
-    addProjectedDistanceBetween(edge->ptr->vertex1(), segment, list, edge->dia->getScale());
-    return false;
-  }
-}
-
 PyObject* VoronoiEdgePy::getDistances(PyObject *args)
 {
   VoronoiEdge *e = getVoronoiEdgeFromPy(this, args);
   Py::List list;
   retrieveDistances(e, &list);
   return Py::new_reference_to(list);
-}
-
-std::ostream& operator<<(std::ostream &str, const Voronoi::point_type &p) {
-  return str << "[" << int(p.x()) << ", " << int(p.y()) << "]";
-}
-
-std::ostream& operator<<(std::ostream &str, const Voronoi::segment_type &s) {
-  return str << '<' << low(s) << '-' << high(s) << '>';
-}
-
-static bool pointsMatch(const Voronoi::point_type &p0, const Voronoi::point_type &p1) {
-  return long(p0.x()) == long(p1.x()) && long(p0.y()) == long(p1.y());
-}
-
-static void printCompare(const char *label, const Voronoi::point_type &p0, const Voronoi::point_type &p1) {
-  std::cerr << "         " << label <<": " << pointsMatch(p1, p0) << pointsMatch(p0, p1) << "    " << p0 << ' ' << p1 << std::endl;
 }
 
 PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
@@ -501,18 +614,7 @@ PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
         a += M_PI;
       }
       return Py::new_reference_to(Py::Float(a));
-    } else {
-      std::cerr << "indices: " << std::endl;
-      std::cerr << "   " << e->dia->segments[i0] << std::endl;
-      std::cerr << "   " << e->dia->segments[i1] << std::endl;
-      std::cerr << "   connected: " << e->dia->segmentsAreConnected(i0, i1) << std::endl;
-      printCompare("l/l", low(e->dia->segments[i0]),  low(e->dia->segments[i1]));
-      printCompare("l/h", low(e->dia->segments[i0]),  high(e->dia->segments[i1]));
-      printCompare("h/l", high(e->dia->segments[i0]), low(e->dia->segments[i1]));
-      printCompare("h/h", high(e->dia->segments[i0]), high(e->dia->segments[i1]));
     }
-  } else {
-    std::cerr << "constains_segment(" << e->ptr->cell()->contains_segment() << ", " << e->ptr->twin()->cell()->contains_segment() << ")" << std::endl;
   }
   Py_INCREF(Py_None);
   return Py_None;

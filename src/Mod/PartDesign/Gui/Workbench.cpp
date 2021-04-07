@@ -409,6 +409,8 @@ void Workbench::activated()
         "PartDesign_SubtractivePipe",
         "PartDesign_AdditiveLoft",
         "PartDesign_SubtractiveLoft",
+        "PartDesign_AdditiveHelix",
+        "PartDesign_SubtractiveHelix",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
@@ -496,14 +498,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* additives = new Gui::MenuItem;
     additives->setCommand("Create an additive feature");
     *additives << "PartDesign_Pad" << "PartDesign_Revolution"
-        << "PartDesign_AdditiveLoft" << "PartDesign_AdditivePipe";
+        << "PartDesign_AdditiveLoft" << "PartDesign_AdditivePipe" << "PartDesign_AdditiveHelix";
 
     // subtractives
     Gui::MenuItem* subtractives = new Gui::MenuItem;
     subtractives->setCommand("Create a subtractive feature");
     *subtractives << "PartDesign_Pocket" << "PartDesign_Hole"
         << "PartDesign_Groove" << "PartDesign_SubtractiveLoft"
-        << "PartDesign_SubtractivePipe";
+        << "PartDesign_SubtractivePipe" << "PartDesign_SubtractiveHelix";
 
     // transformations
     Gui::MenuItem* transformations = new Gui::MenuItem;
@@ -543,6 +545,18 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Sprocket"
           << "PartDesign_InvoluteGear";
 
+    // use Part's measure features also for PartDesign
+    Gui::MenuItem* measure = new Gui::MenuItem;
+    root->insertItem(item, measure);
+    measure->setCommand("Measure");
+    *measure << "Part_Measure_Linear"
+        << "Part_Measure_Angular"
+        << "Separator"
+        << "Part_Measure_Refresh"
+        << "Part_Measure_Clear_All"
+        << "Part_Measure_Toggle_All"
+        << "Part_Measure_Toggle_3D"
+        << "Part_Measure_Toggle_Delta";
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
@@ -586,6 +600,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Revolution"
           << "PartDesign_AdditiveLoft"
           << "PartDesign_AdditivePipe"
+          << "PartDesign_AdditiveHelix"
           << "PartDesign_CompPrimitiveAdditive"
           << "Separator"
           << "PartDesign_Pocket"
@@ -593,6 +608,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Groove"
           << "PartDesign_SubtractiveLoft"
           << "PartDesign_SubtractivePipe"
+          << "PartDesign_SubtractiveHelix"
           << "PartDesign_CompPrimitiveSubtractive"
           << "Separator"
           << "PartDesign_Mirrored"
@@ -607,6 +623,18 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Thickness"
           << "Separator"
           << "PartDesign_Boolean";
+
+    // use Part's measure features also for PartDesign
+    Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
+    measure->setCommand("Measure");
+    *measure << "Part_Measure_Linear"
+        << "Part_Measure_Angular"
+        << "Separator"
+        << "Part_Measure_Refresh"
+        << "Part_Measure_Clear_All"
+        << "Part_Measure_Toggle_All"
+        << "Part_Measure_Toggle_3D"
+        << "Part_Measure_Toggle_Delta";
 
     return root;
 }

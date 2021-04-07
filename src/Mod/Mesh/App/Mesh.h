@@ -283,6 +283,10 @@ public:
     void removeDuplicatedPoints();
     void removeDuplicatedFacets();
     bool hasNonManifolds() const;
+    bool hasInvalidNeighbourhood() const;
+    bool hasPointsOutOfRange() const;
+    bool hasFacetsOutOfRange() const;
+    bool hasCorruptedFacets() const;
     void removeNonManifolds();
     void removeNonManifoldPoints();
     bool hasSelfIntersections() const;

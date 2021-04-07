@@ -376,7 +376,7 @@
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create a new sketch</source>
-      <translation type="unfinished">Create a new sketch</translation>
+      <translation>建立一個新的sketch</translation>
     </message>
   </context>
   <context>
@@ -1178,7 +1178,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="327"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>清空本體清單</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="328"/>
@@ -1188,7 +1188,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
       <source>Boolean: Accept: Input error</source>
-      <translation type="unfinished">Boolean: Accept: Input error</translation>
+      <translation>布林值: 接受: 輸出錯誤</translation>
     </message>
   </context>
   <context>
@@ -1764,7 +1764,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
-      <translation type="unfinished">Orientation mode</translation>
+      <translation>定向模式</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
@@ -1784,7 +1784,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>輔助</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
@@ -1809,12 +1809,12 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="117"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>新增邊界</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="136"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>移除邊界</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="158"/>
@@ -1868,17 +1868,17 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
       <source>Transformed</source>
-      <translation type="unfinished">Transformed</translation>
+      <translation>變換</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right Corner</source>
-      <translation type="unfinished">Right Corner</translation>
+      <translation>右角</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round Corner</source>
-      <translation type="unfinished">Round Corner</translation>
+      <translation>圓角</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
@@ -1888,12 +1888,12 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>新增邊界</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>移除邊界</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="74"/>
@@ -1911,12 +1911,12 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
-      <translation type="unfinished">Transform mode</translation>
+      <translation>變換模式</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>常數</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
@@ -2381,7 +2381,7 @@
     <message>
       <location filename="../../ViewProviderBody.cpp" line="137"/>
       <source>Toggle active body</source>
-      <translation type="unfinished">Toggle active body</translation>
+      <translation>切換active的實體</translation>
     </message>
   </context>
   <context>
@@ -2553,7 +2553,7 @@
     <message>
       <location filename="../../Command.cpp" line="679"/>
       <source>No valid planes in this document</source>
-      <translation type="unfinished">No valid planes in this document</translation>
+      <translation>在本文件的非法平面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="680"/>
@@ -2658,7 +2658,7 @@
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>選取的多重特性</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1849"/>
@@ -2678,7 +2678,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="74"/>
       <source>Failed to create a part object.</source>
-      <translation type="unfinished">Failed to create a part object.</translation>
+      <translation>建立一個part物件失敗</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="122"/>
@@ -2740,7 +2740,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>基本特性</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="192"/>
@@ -2750,7 +2750,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="368"/>
       <source>Nothing to migrate</source>
-      <translation type="unfinished">Nothing to migrate</translation>
+      <translation>沒有內容要合併</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
@@ -2796,7 +2796,7 @@ This may lead to unexpected results.</translation>
       <location filename="../../CommandBody.cpp" line="728"/>
       <location filename="../../CommandBody.cpp" line="743"/>
       <source>Features cannot be moved</source>
-      <translation type="unfinished">Features cannot be moved</translation>
+      <translation>特性無法被移動</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="707"/>
@@ -2978,7 +2978,7 @@ This feature is broken and can't be edited.</translation>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="64"/>
       <source>Edit hole</source>
-      <translation type="unfinished">Edit hole</translation>
+      <translation>編輯洞</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="77"/>

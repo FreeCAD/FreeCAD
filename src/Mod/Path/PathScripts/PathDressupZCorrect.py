@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-
+# -*- coding: utf-8 -*
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -102,6 +100,8 @@ class ObjectDressup:
         try:
             pointlist = []
             for line in f1.readlines():
+                if line == '\n':
+                    continue
                 w = line.split()
                 xval = round(float(w[0]), 2)
                 yval = round(float(w[1]), 2)
@@ -249,7 +249,7 @@ class TaskPanel:
         self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
 
     def SetProbePointFileName(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("Path_Probe", "Select Probe Point File"), None, translate("Path_Probe", "All Files (*.*)"))
+        filename = QtGui.QFileDialog.getOpenFileName(self.form, translate("Path_Probe", "Select Probe Point File"), None, translate("Path_Probe", "All Files (*.*)"))
         if filename and filename[0]:
             self.obj.probefile = str(filename[0])
             self.setFields()
@@ -300,7 +300,7 @@ class ViewProviderDressup:
 class CommandPathDressup:
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Z Depth Correction Dress-up"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Use Probe Map to correct Z depth")}

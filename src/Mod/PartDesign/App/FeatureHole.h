@@ -25,6 +25,7 @@
 #define PARTDESIGN_Hole_H
 
 #include <App/PropertyUnits.h>
+#include "json_fwd.hpp"
 #include "FeatureSketchBased.h"
 
 class Property;
@@ -36,6 +37,9 @@ class XMLReader;
 namespace PartDesign
 {
 
+static constexpr size_t ThreadClass_ISOmetric_data_size = 25;
+static constexpr size_t ThreadRunout_size = 24;
+
 class PartDesignExport Hole : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Hole);
@@ -44,11 +48,8 @@ public:
     Hole();
 
     App::PropertyBool           Threaded;
-    App::PropertyBool           ModelActualThread;
+    App::PropertyBool           ModelThread;
     App::PropertyLength         ThreadPitch;
-    App::PropertyAngle          ThreadAngle;
-    App::PropertyLength         ThreadCutOffInner;
-    App::PropertyLength         ThreadCutOffOuter;
     App::PropertyEnumeration    ThreadType;
     App::PropertyEnumeration    ThreadSize;
     App::PropertyEnumeration    ThreadClass;
@@ -56,15 +57,21 @@ public:
     App::PropertyLength         Diameter;
     App::PropertyEnumeration    ThreadDirection;
     App::PropertyEnumeration    HoleCutType;
+    App::PropertyBool           HoleCutCustomValues;
     App::PropertyLength         HoleCutDiameter;
     App::PropertyLength         HoleCutDepth;
     App::PropertyAngle          HoleCutCountersinkAngle;
     App::PropertyEnumeration    DepthType;
     App::PropertyLength         Depth;
+    App::PropertyEnumeration    ThreadDepthType;
+    App::PropertyLength         ThreadDepth;
     App::PropertyEnumeration    DrillPoint;
     App::PropertyAngle          DrillPointAngle;
+    App::PropertyBool           DrillForDepth;
     App::PropertyBool           Tapered;
     App::PropertyAngle          TaperedAngle;
+    App::PropertyBool           UseCustomThreadClearance;
+    App::PropertyLength         CustomThreadClearance;
 
     /** @name methods override feature */
     //@{
@@ -82,9 +89,19 @@ public:
         const char * designation;
         double diameter;
         double pitch;
+        double CoreHole;
     } ThreadDescription;
-
     static const ThreadDescription threadDescription[][171];
+
+    static const double metricHoleDiameters[36][4];
+
+    typedef struct {
+        std::string designation;
+        double close;
+        double normal;
+        double loose;
+    } UTSClearanceDefinition;
+    static const UTSClearanceDefinition UTSHoleDiameters[22];
 
     virtual void Restore(Base::XMLReader & reader);
 
@@ -92,10 +109,14 @@ public:
 
 protected:
     void onChanged(const App::Property* prop);
+    static const App::PropertyAngle::Constraints floatAngle;
+
 private:
     static const char* DepthTypeEnums[];
+    static const char* ThreadDepthTypeEnums[];
     static const char* ThreadTypeEnums[];
-    static const char* ThreadFitEnums[];
+    static const char* ClearanceMetricEnums[];
+    static const char* ClearanceUTSEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
 
@@ -105,12 +126,13 @@ private:
     static const char* ThreadClass_None_Enums[];
 
     /* ISO metric coarse profile */
-    static const char* HoleCutType_ISOmetric_Enums[];
+    static std::vector<std::string> HoleCutType_ISOmetric_Enums;
     static const char* ThreadSize_ISOmetric_Enums[];
     static const char* ThreadClass_ISOmetric_Enums[];
+    static const double ThreadClass_ISOmetric_data[ThreadClass_ISOmetric_data_size][2];
 
     /* ISO metric fine profile */
-    static const char* HoleCutType_ISOmetricfine_Enums[];
+    static std::vector<std::string> HoleCutType_ISOmetricfine_Enums;
     static const char* ThreadSize_ISOmetricfine_Enums[];
     static const char* ThreadClass_ISOmetricfine_Enums[];
 
@@ -129,8 +151,79 @@ private:
     static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
 
+    static const double ThreadRunout[ThreadRunout_size][2];
+
+    /* Counter-xxx */
+//public:
+    // Dimension for counterbore
+    struct CounterBoreDimension {
+        std::string thread;
+        double diameter;
+        double depth;
+        static const CounterBoreDimension nothing;
+    };
+    // Dimension for countersink
+    struct CounterSinkDimension {
+        std::string thread;
+        double diameter;
+        static const CounterSinkDimension nothing;
+    };
+
+    // cut dimensions for a screwtype
+    class CutDimensionSet {
+    public:
+        enum CutType { Counterbore, Countersink };
+        enum ThreadType { Metric, MetricFine };
+
+        CutDimensionSet():cut_type(Counterbore),thread_type(Metric),angle(0.0) {}
+        CutDimensionSet(const std::string &nme,
+              std::vector<CounterBoreDimension> &&d, CutType cut, ThreadType thread, double angle = 0.0);
+        CutDimensionSet(const std::string &nme,
+              std::vector<CounterSinkDimension> &&d, CutType cut, ThreadType thread, double angle = 0.0);
+
+        const CounterBoreDimension &get_bore(const std::string &t) const;
+        const CounterSinkDimension &get_sink(const std::string &t) const;
+
+        std::vector<CounterBoreDimension> bore_data;
+        std::vector<CounterSinkDimension> sink_data;
+        CutType cut_type;
+        ThreadType thread_type;
+        std::string name;
+        double angle;
+    };
+
+    class CutDimensionKey {
+        std::string thread_type;
+        std::string cut_name;
+    public:
+        CutDimensionKey() {}
+        CutDimensionKey(const std::string &t, const std::string &c);
+        bool operator<(const CutDimensionKey &b) const;
+    };
+
+    std::map<CutDimensionKey, CutDimensionSet> HoleCutTypeMap;
+
+    const CutDimensionSet& find_cutDimensionSet(const std::string &t,
+          const std::string &c);
+
+    const CutDimensionSet& find_cutDimensionSet(const CutDimensionKey &k);
+
+    void addCutType(const CutDimensionSet& dimensions);
+    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
+    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
     void updateHoleCutParams();
     void updateDiameterParam();
+    void updateThreadDepthParam();
+    void readCutDefinitions();
+
+    double getThreadClassClearance();
+    double getThreadRunout(int mode = 1);
+    double getThreadPitch();
+
+    // helpers for nlohmann json
+    friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);
+    friend void from_json(const nlohmann::json &j, CounterSinkDimension &t);
+    friend void from_json(const nlohmann::json &j, CutDimensionSet &t);
 };
 
 } //namespace PartDesign

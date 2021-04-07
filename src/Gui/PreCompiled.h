@@ -23,12 +23,14 @@
 
 #ifndef GUI_PRECOMPILED_H
 #define GUI_PRECOMPILED_H
- 
+
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #endif
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
@@ -75,14 +77,14 @@
 #include <bitset>
 #include <unordered_set>
 #include <unordered_map>
+#include <tuple>
 
 // Boost
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/program_options.hpp>
-#include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
-#include <boost/graph/adjacency_list.hpp>
+#include <boost_graph_adjacency_list.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>

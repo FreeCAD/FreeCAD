@@ -54,7 +54,7 @@ std::string PlacementPy::representation(void) const
 
 PyObject *PlacementPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PlacementPy and the Twin object 
+    // create a new instance of PlacementPy and the Twin object
     return new PlacementPy(new Placement);
 }
 
@@ -340,7 +340,7 @@ PyObject *PlacementPy::getCustomAttributes(const char* attr) const
 
 int PlacementPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 PyObject* PlacementPy::number_multiply_handler(PyObject *self, PyObject *other)

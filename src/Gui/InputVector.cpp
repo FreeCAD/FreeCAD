@@ -100,7 +100,7 @@ void LocationWidget::retranslateUi()
     yLabel->setText(QApplication::translate("Gui::LocationWidget", "Y:"));
     zLabel->setText(QApplication::translate("Gui::LocationWidget", "Z:"));
     dLabel->setText(QApplication::translate("Gui::LocationWidget", "Direction:"));
-    
+
     if (dValue->count() == 0) {
         dValue->insertItems(0, QStringList()
          << QApplication::translate("Gui::LocationDialog", "X")
@@ -120,7 +120,7 @@ void LocationWidget::retranslateUi()
         dValue->setItemText(0, QApplication::translate("Gui::LocationDialog", "X"));
         dValue->setItemText(1, QApplication::translate("Gui::LocationDialog", "Y"));
         dValue->setItemText(2, QApplication::translate("Gui::LocationDialog", "Z"));
-        dValue->setItemText(dValue->count()-1, 
+        dValue->setItemText(dValue->count()-1,
             QApplication::translate("Gui::LocationDialog", "User defined..."));
     }
 }

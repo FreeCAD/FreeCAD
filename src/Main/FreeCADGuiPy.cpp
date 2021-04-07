@@ -106,9 +106,7 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
             std::thread t([]() {
                 static int argc = 0;
                 static char **argv = {0};
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
                 QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-#endif
                 // This only works well if the QApplication is the very first created instance
                 // of a QObject. Otherwise the application lives in a different thread than the
                 // main thread which will cause hazardous behaviour.
@@ -150,6 +148,14 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
             PyErr_SetString(PyExc_RuntimeError, "Cannot create main window\n");
             return NULL;
         }
+    }
+
+    // if successful then enable Console logger
+    Base::ILogger *console = Base::Console().Get("Console");
+    if (console) {
+        console->bMsg = true;
+        console->bWrn = true;
+        console->bErr = true;
     }
 
     Py_INCREF(Py_None);
@@ -254,7 +260,7 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
     return Py_None;
 }
 
-struct PyMethodDef FreeCADGui_methods[] = { 
+struct PyMethodDef FreeCADGui_methods[] = {
     {"showMainWindow",FreeCADGui_showMainWindow,METH_VARARGS,
      "showMainWindow() -- Show the main window\n"
      "If no main window does exist one gets created"},

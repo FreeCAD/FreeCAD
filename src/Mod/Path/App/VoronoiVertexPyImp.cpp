@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) sliptonic (shopinthewoods@gmail.com) 2020               *
+ *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,20 +27,19 @@
 # include <boost/algorithm/string.hpp>
 #endif
 
-#include "Voronoi.h"
-#include "VoronoiPy.h"
-#include "VoronoiEdge.h"
-#include "VoronoiEdgePy.h"
-#include "VoronoiVertex.h"
-#include "VoronoiVertexPy.h"
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/PlacementPy.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
+#include "Base/Exception.h"
+#include "Base/GeometryPyCXX.h"
+#include "Base/PlacementPy.h"
+#include "Base/Vector3D.h"
+#include "Base/VectorPy.h"
+#include "Mod/Path/App/Voronoi.h"
+#include "Mod/Path/App/VoronoiEdge.h"
+#include "Mod/Path/App/VoronoiEdgePy.h"
+#include "Mod/Path/App/VoronoiPy.h"
+#include "Mod/Path/App/VoronoiVertex.h"
+#include "Mod/Path/App/VoronoiVertexPy.h"
 
-// files generated out of VoronoiVertexPy.xml
-#include "VoronoiVertexPy.cpp"
+#include "Mod/Path/App/VoronoiVertexPy.cpp"
 
 using namespace Path;
 
@@ -76,14 +75,14 @@ int VoronoiVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 
 PyObject* VoronoiVertexPy::richCompare(PyObject *lhs, PyObject *rhs, int op) {
-  PyObject *cmp = Py_False;
+  PyObject *cmp = (op == Py_EQ) ? Py_False : Py_True;
   if (   PyObject_TypeCheck(lhs, &VoronoiVertexPy::Type)
       && PyObject_TypeCheck(rhs, &VoronoiVertexPy::Type)
-      && op == Py_EQ) {
+      && (op == Py_EQ || op == Py_NE)) {
     const VoronoiVertex *vl = static_cast<VoronoiVertexPy*>(lhs)->getVoronoiVertexPtr();
     const VoronoiVertex *vr = static_cast<VoronoiVertexPy*>(rhs)->getVoronoiVertexPtr();
     if (vl->index == vr->index && vl->dia == vr->dia) {
-      cmp = Py_True;
+      cmp = (op == Py_EQ) ? Py_True : Py_False;
     }
   }
   Py_INCREF(cmp);
@@ -151,7 +150,7 @@ Py::Object VoronoiVertexPy::getIncidentEdge() const {
   return Py::asObject(new VoronoiEdgePy(new VoronoiEdge(v->dia, v->ptr->incident_edge())));
 }
 
-PyObject* VoronoiVertexPy::toGeom(PyObject *args)
+PyObject* VoronoiVertexPy::toPoint(PyObject *args)
 {
   double z = 0.0;
   if (!PyArg_ParseTuple(args, "|d", &z)) {

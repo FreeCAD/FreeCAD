@@ -73,13 +73,13 @@ void Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) cons
     //          << "Separator" << "Std_ViewDockUndockFullscreen";
 
     //    if ( Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 )
-    //        *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_TreeSelection" 
+    //        *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_TreeSelection"
     //              << "Std_RandomColor" << "Separator" << "Std_Delete";
     //}
     //else if (strcmp(recipient,"Tree") == 0)
     //{
     //    if ( Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0 )
-    //        *item << "Std_SetAppearance" << "Std_ToggleVisibility" 
+    //        *item << "Std_SetAppearance" << "Std_ToggleVisibility"
     //              << "Std_RandomColor" << "Separator" << "Std_Delete";
     //}
 }
@@ -96,7 +96,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    file->setCommand("&File");
 //    *file << "Std_New" << "Std_Open" << "Separator" << "Std_CloseActiveWindow"
 //          << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs"
-//          << "Separator" << "Std_Import" << "Std_Export" << "Std_ProjectInfo" 
+//          << "Separator" << "Std_Import" << "Std_Export" << "Std_ProjectInfo"
 //        //<< "Separator" << "Std_Print" << "Std_PrintPdf"
 //          << "Separator" << "Std_RecentFiles" << "Separator" << "Std_Quit";
 //
@@ -113,14 +113,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    stdviews->setCommand("Standard views");
 //    *stdviews << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewAxo"
 //              << "Separator" << "Std_ViewFront" << "Std_ViewRight"
-//              << "Std_ViewTop" << "Separator" << "Std_ViewRear" 
+//              << "Std_ViewTop" << "Separator" << "Std_ViewRear"
 //              << "Std_ViewLeft" << "Std_ViewBottom";
 //
 //    // stereo
 //    Gui::MenuItem* view3d = new Gui::MenuItem;
 //    view3d->setCommand("&Stereo");
-//    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff" 
-//            << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns" 
+//    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff"
+//            << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns"
 //            << "Std_ViewIvStereoOff" << "Separator" << "Std_ViewIvIssueCamPos";
 //
 //    // zoom
@@ -137,19 +137,19 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    // View
 //    Gui::MenuItem* view = new Gui::MenuItem( menuBar );
 //    view->setCommand("&View");
-//    *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Separator" 
+//    *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Separator"
 //          << stdviews << "Std_FreezeViews" << "Separator" << view3d << zoom
 //          << "Std_ViewDockUndockFullscreen" << "Std_ToggleClipPlane" << "Separator" << visu
-//          << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_RandomColor" << "Separator" 
-//          //<< "Std_MeasureDistance" << "Separator" 
-//          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
+//          << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_RandomColor" << "Separator"
+//          //<< "Std_MeasureDistance" << "Separator"
+//          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
 //          << "Std_ViewStatusBar" << "Std_UserInterface";
 //
 //    // Tools
 //    Gui::MenuItem* tool = new Gui::MenuItem( menuBar );
 //    tool->setCommand("&Tools");
 //    *tool << "Std_CommandLine" << "Std_DlgParameter" << "Separator" << "Std_DlgMacroRecord"
-//          << "Std_MacroStopRecord" << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect" 
+//          << "Std_MacroStopRecord" << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect"
 //          << "Separator" << "Std_ViewScreenShot" << "Separator" << "Std_DlgCustomize";
 //
 //    // Mesh ****************************************************************************************************
@@ -158,40 +158,40 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    // submenu analyze
 //    Gui::MenuItem* analyze = new Gui::MenuItem();
 //    analyze->setCommand("Analyze");
-//    *analyze << "Mesh_Evaluation" 
-//             << "Mesh_EvaluateFacet" 
-//             << "Mesh_CurvatureInfo" 
-//             << "Separator" 
-//             << "Mesh_EvaluateSolid" 
+//    *analyze << "Mesh_Evaluation"
+//             << "Mesh_EvaluateFacet"
+//             << "Mesh_CurvatureInfo"
+//             << "Separator"
+//             << "Mesh_EvaluateSolid"
 //             << "Mesh_BoundingBox";
 //
 //    // submenu boolean
 //    Gui::MenuItem* boolean = new Gui::MenuItem();
 //    boolean->setCommand("Boolean");
-//    *boolean << "Mesh_Union" 
-//             << "Mesh_Intersection" 
+//    *boolean << "Mesh_Union"
+//             << "Mesh_Intersection"
 //             << "Mesh_Difference";
 //
 //    mesh->setCommand("&Meshes");
-//    *mesh << "Mesh_Import" 
-//          << "Mesh_Export" 
-//          << "Mesh_FromGeometry" 
+//    *mesh << "Mesh_Import"
+//          << "Mesh_Export"
+//          << "Mesh_FromGeometry"
 //          << "Separator"
-//          << analyze 
-//          << "Mesh_HarmonizeNormals" 
-//          << "Mesh_FlipNormals" 
-//          << "Separator" 
-//          << "Mesh_FillupHoles" 
-//          << "Mesh_FillInteractiveHole" 
+//          << analyze
+//          << "Mesh_HarmonizeNormals"
+//          << "Mesh_FlipNormals"
+//          << "Separator"
+//          << "Mesh_FillupHoles"
+//          << "Mesh_FillInteractiveHole"
 //          << "Mesh_RemoveComponents"
-//          << "Mesh_RemoveCompByHand" 
-//          << "Separator" 
-//          << "Mesh_BuildRegularSolid" 
-//          << boolean << "Separator" 
+//          << "Mesh_RemoveCompByHand"
+//          << "Separator"
+//          << "Mesh_BuildRegularSolid"
+//          << boolean << "Separator"
 //          << "Mesh_PolyCut"
-//          << "Mesh_PolySplit" 
-//          << "Mesh_PolySegm" 
-//          << "Mesh_ToolMesh" 
+//          << "Mesh_PolySplit"
+//          << "Mesh_PolySegm"
+//          << "Mesh_ToolMesh"
 //          << "Mesh_VertexCurvature";
 //
 //    // Part ****************************************************************************************************
@@ -218,10 +218,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    if (mgr.getCommandByName("Sketcher_NewSketch")) {
 //        Gui::MenuItem* sketch = new Gui::MenuItem(menuBar);
 //        sketch->setCommand("Ske&tch");
-//        *sketch 
+//        *sketch
 //            << "Sketcher_NewSketch"
-//            << "Separator" 
-//            << "PartDesign_Pad" 
+//            << "Separator"
+//            << "PartDesign_Pad"
 //            << "PartDesign_Fillet"
 //        ;
 //    }
@@ -233,10 +233,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //
 //    drawing->setCommand("&Drawing");
 //    *drawing
-//        << "Drawing_Open" 
-//        << "Separator" 
-//        << "Drawing_NewA3Landscape"  
-//        << "Drawing_NewView" 
+//        << "Drawing_Open"
+//        << "Separator"
+//        << "Drawing_NewA3Landscape"
+//        << "Drawing_NewView"
 //        << "Drawing_ExportPage"
 //    ;
 //
@@ -245,10 +245,10 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    Gui::MenuItem* raytracing = new Gui::MenuItem(menuBar);
 //
 //    raytracing->setCommand("&Raytracing");
-//    *raytracing 
-//        << "Raytracing_WriteView" 
-//        << "Raytracing_WriteCamera" 
-//        << "Raytracing_WritePart"; 
+//    *raytracing
+//        << "Raytracing_WriteView"
+//        << "Raytracing_WriteCamera"
+//        << "Raytracing_WritePart";
 //    ;
 //
 //    // Drafting ****************************************************************************************************
@@ -257,7 +257,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //        Gui::MenuItem* Drafting = new Gui::MenuItem(menuBar);
 //
 //        Drafting->setCommand("&Drafting");
-//        *Drafting 
+//        *Drafting
 //            << "Draft_SelectPlane"
 //            << "Draft_Line"
 //            << "Draft_Polyline"
@@ -266,15 +266,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //            << "Draft_Rectangle"
 //            << "Draft_Text"
 //            << "Draft_Dimension"
-//            << "Separator" 
-//            << "Draft_Move" 
-//            << "Draft_Rotate" 
-//            << "Draft_Offset" 
-//            << "Draft_Trimex" 
-//            << "Draft_Upgrade" 
-//            << "Draft_Downgrade" 
-//            << "Draft_Scale" 
-//            << "Separator" 
+//            << "Separator"
+//            << "Draft_Move"
+//            << "Draft_Rotate"
+//            << "Draft_Offset"
+//            << "Draft_Trimex"
+//            << "Draft_Upgrade"
+//            << "Draft_Downgrade"
+//            << "Draft_Scale"
+//            << "Separator"
 //            << "Draft_ApplyStyle"
 //        ;
 //    }
@@ -289,7 +289,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    *wnd << "Std_ActivateNextWindow" << "Std_ActivatePrevWindow" << "Separator"
 //         << "Std_TileWindows" << "Std_CascadeWindows"
 //         << "Std_ArrangeIcons" << "Separator" << "Std_WindowsMenu" << "Std_Windows";
-//    
+//
 //    // help ****************************************************************************************************
 //    // Separator
 //    Gui::MenuItem* sep = new Gui::MenuItem( menuBar );
@@ -298,21 +298,21 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 //    // Help
 //    Gui::MenuItem* helpWebsites = new Gui::MenuItem;
 //    helpWebsites->setCommand("&Online-help");
-//    *helpWebsites << "Std_OnlineHelpWebsite" 
-//                  << "Std_FreeCADWebsite" 
+//    *helpWebsites << "Std_OnlineHelpWebsite"
+//                  << "Std_FreeCADWebsite"
 //                  << "Std_PythonWebsite";
 //
 //    Gui::MenuItem* help = new Gui::MenuItem( menuBar );
 //    help->setCommand("&Help");
-//    *help << "Std_OnlineHelp" 
+//    *help << "Std_OnlineHelp"
 //          << "Std_PythonHelp"
-//          << helpWebsites  
-//          << "Separator" 
-//          << "Test_Test" 
-//          << "Separator" 
+//          << helpWebsites
+//          << "Separator"
+//          << "Test_Test"
+//          << "Separator"
 //          << "Std_About"
-//          << "Std_AboutQt" 
-//          << "Separator" 
+//          << "Std_AboutQt"
+//          << "Separator"
 //          << "Std_WhatsThis" ;
 //
 //      return menuBar;
@@ -328,9 +328,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *navigation << "Web_BrowserSetURL"
                 << "Separator"
                 << "Web_OpenWebsite"
-                << "Separator" 
-                << "Web_BrowserBack" 
-                << "Web_BrowserNext" 
+                << "Separator"
+                << "Web_BrowserBack"
+                << "Web_BrowserNext"
                 << "Web_BrowserRefresh"
                 << "Web_BrowserStop"
                 << "Separator"

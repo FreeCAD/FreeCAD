@@ -50,7 +50,7 @@ public:
     void hideDebugMarker();
 
 public Q_SLOTS:
-    /** Inserts a '#' at the beginning of each selected line or the current line if 
+    /** Inserts a '#' at the beginning of each selected line or the current line if
      * nothing is selected
      */
     void onComment();

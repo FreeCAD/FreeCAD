@@ -24,10 +24,12 @@
 #ifndef _SoFCSelectionAction_h
 #define _SoFCSelectionAction_h
 
-//#include <Inventor/SoAction.h> 
+//#include <Inventor/SoAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/events/SoSubEvent.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/fields/SoSFColor.h>
+#include <Inventor/fields/SoSFString.h>
 #include <Inventor/SbColor.h>
 #include <vector>
 
@@ -65,7 +67,7 @@ private:
 
 /**
  * The SoFCSelectionAction class is used to inform an SoFCSelection node
- * whether an object gets selected. 
+ * whether an object gets selected.
  * @author Jürgen Riegel
  */
 class GuiExport SoFCSelectionAction : public SoAction
@@ -90,7 +92,7 @@ private:
 
 /**
  * The SoFCEnableSelectionAction class is used to inform an SoFCSelection node
- * whether selection is enabled or disabled. 
+ * whether selection is enabled or disabled.
  * @author Werner Mayer
  */
 class GuiExport SoFCEnableSelectionAction : public SoAction
@@ -101,7 +103,7 @@ public:
     SoFCEnableSelectionAction (const SbBool& sel);
     ~SoFCEnableSelectionAction();
 
-    const SbBool& selection;
+    SbBool selection;
 
     static void initClass();
     static void finish(void);
@@ -115,7 +117,7 @@ private:
 
 /**
  * The SoFCEnableHighlightAction class is used to inform an SoFCSelection node
- * whether preselection is enabled or disabled. 
+ * whether preselection is enabled or disabled.
  * @author Werner Mayer
  */
 class GuiExport SoFCEnableHighlightAction : public SoAction
@@ -126,7 +128,7 @@ public:
     SoFCEnableHighlightAction (const SbBool& sel);
     ~SoFCEnableHighlightAction();
 
-    const SbBool& highlight;
+    SbBool highlight;
 
     static void initClass();
     static void finish(void);
@@ -140,7 +142,7 @@ private:
 
 /**
  * The SoFCSelectionColorAction class is used to inform an SoFCSelection node
- * which selection color is used. 
+ * which selection color is used.
  * @author Werner Mayer
  */
 class GuiExport SoFCSelectionColorAction : public SoAction
@@ -151,7 +153,7 @@ public:
     SoFCSelectionColorAction (const SoSFColor& col);
     ~SoFCSelectionColorAction();
 
-    const SoSFColor& selectionColor;
+    SoSFColor selectionColor;
 
     static void initClass();
     static void finish(void);
@@ -165,7 +167,7 @@ private:
 
 /**
  * The SoFCHighlightColorAction class is used to inform an SoFCSelection node
- * which preselection color is used. 
+ * which preselection color is used.
  * @author Werner Mayer
  */
 class GuiExport SoFCHighlightColorAction : public SoAction
@@ -176,7 +178,7 @@ public:
     SoFCHighlightColorAction (const SoSFColor& col);
     ~SoFCHighlightColorAction();
 
-    const SoSFColor& highlightColor;
+    SoSFColor highlightColor;
 
     static void initClass();
     static void finish(void);
@@ -190,7 +192,7 @@ private:
 
 /**
  * The SoFCDocumentAction class is used to inform an SoFCSelection node
- * when a document has been renamed. 
+ * when a document has been renamed.
  * @author Werner Mayer
  */
 class GuiExport SoFCDocumentAction : public SoAction
@@ -201,7 +203,7 @@ public:
     SoFCDocumentAction (const SoSFString& docName);
     ~SoFCDocumentAction();
 
-    const SoSFString& documentName;
+    SoSFString documentName;
 
     static void initClass();
     static void finish(void);
@@ -370,4 +372,4 @@ private:
 } // namespace Gui
 
 
-#endif // _SoFCSelectionAction_h 
+#endif // _SoFCSelectionAction_h

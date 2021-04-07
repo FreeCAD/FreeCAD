@@ -41,7 +41,7 @@ import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -63,32 +63,26 @@ class Array(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Creates an array from a selected object. "
-                "By default, it is a 2x2 orthogonal array.\n"
-                "Once the array is created its type can be changed "
-                "to polar or circular, and its properties can be modified.")
 
         return {'Pixmap': 'Draft_Array',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Array", "Array"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Array", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Array", "Creates an array from a selected object.\nBy default, it is a 2x2 orthogonal array.\nOnce the array is created its type can be changed\nto polar or circular, and its properties can be modified.")}
 
-    def Activated(self, name=_tr("Array")):
+    def Activated(self, name=translate("draft","Array")):
         """Execute when the command is called."""
         super(Array, self).Activated(name=name)
         if not Gui.Selection.getSelection():
             if self.ui:
                 self.ui.selectUi()
                 _msg(translate("draft", "Select an object to array"))
-                self.call = \
-                    self.view.addEventCallback("SoEvent",
-                                               gui_tool_utils.selectObject)
+                self.call = self.view.addEventCallback(
+                    "SoEvent",
+                     gui_tool_utils.selectObject)
         else:
             self.proceed()
 
     def proceed(self):
         """Proceed with the command if one object was selected."""
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
         if Gui.Selection.getSelection():
             obj = Gui.Selection.getSelection()[0]
             Gui.addModule("Draft")
@@ -120,17 +114,14 @@ class LinkArray(Array):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Like the Array tool, but creates a 'Link array' instead.\n"
-                "A 'Link array' is more efficient when handling many copies "
-                "but the 'Fuse' option cannot be used.")
 
         return {'Pixmap': 'Draft_LinkArray',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_LinkArray", "LinkArray"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_LinkArray", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_LinkArray", "Like the Array tool, but creates a 'Link array' instead.\nA 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(LinkArray, self).Activated(name=_tr("Link array"))
+        super(LinkArray, self).Activated(name=translate("draft","Link array"))
 
 
 Gui.addCommand('Draft_LinkArray', LinkArray())

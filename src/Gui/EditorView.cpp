@@ -166,7 +166,7 @@ void EditorView::closeEvent(QCloseEvent* event)
 
 void EditorView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)
 {
-    Q_UNUSED(rCaller); 
+    Q_UNUSED(rCaller);
     ParameterGrp::handle hPrefGrp = getWindowParameter();
     if (strcmp(rcReason, "EnableLineNumber") == 0) {
         //bool show = hPrefGrp->GetBool( "EnableLineNumber", true );
@@ -178,7 +178,7 @@ void EditorView::checkTimestamp()
     QFileInfo fi(d->fileName);
     uint timeStamp =  fi.lastModified().toTime_t();
     if (timeStamp != d->timeStamp) {
-        switch( QMessageBox::question( this, tr("Modified file"), 
+        switch( QMessageBox::question( this, tr("Modified file"),
                 tr("%1.\n\nThis has been modified outside of the source editor. Do you want to reload it?").arg(d->fileName),
                 QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) )
         {
@@ -300,10 +300,10 @@ bool EditorView::canClose(void)
     if ( !d->textEdit->document()->isModified() )
         return true;
     this->setFocus(); // raises the view to front
-    switch( QMessageBox::question(this, tr("Unsaved document"), 
+    switch( QMessageBox::question(this, tr("Unsaved document"),
                                     tr("The document has been modified.\n"
                                        "Do you want to save your changes?"),
-                                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No, 
+                                     QMessageBox::Yes|QMessageBox::Default, QMessageBox::No,
                                      QMessageBox::Cancel|QMessageBox::Escape))
     {
         case QMessageBox::Yes:
@@ -380,7 +380,7 @@ void EditorView::copy(void)
 }
 
 /**
- * Pastes the text from the clipboard into the text edit at the current cursor position. 
+ * Pastes the text from the clipboard into the text edit at the current cursor position.
  * If there is no text in the clipboard nothing happens.
  */
 void EditorView::paste(void)
@@ -531,7 +531,7 @@ void EditorView::redoAvailable(bool redo)
 
 void EditorView::contentsChange(int position, int charsRemoved, int charsAdded)
 {
-    Q_UNUSED(position); 
+    Q_UNUSED(position);
     if (d->lock)
         return;
     if (charsRemoved > 0 && charsAdded > 0)

@@ -94,5 +94,10 @@ Usage: menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcut
 </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getAction">
+      <Documentation>
+          <UserDocu>getAction() -> list of QAction</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

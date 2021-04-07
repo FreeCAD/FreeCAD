@@ -341,7 +341,7 @@ Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
         throw Py::Exception();
 
     _cParamGrp->SetInt(pstr,Int);
-    return Py::None(); 
+    return Py::None();
 }
 
 Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
@@ -420,7 +420,7 @@ Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
         throw Py::Exception();
 
     _cParamGrp->SetFloat(pstr,Float);
-    return Py::None(); 
+    return Py::None();
 }
 
 Py::Object ParameterGrpPy::getFloat(const Py::Tuple& args)
@@ -456,7 +456,7 @@ Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
         throw Py::Exception();
 
     _cParamGrp->SetASCII(pstr,str);
-    return Py::None(); 
+    return Py::None();
 }
 
 Py::Object ParameterGrpPy::getString(const Py::Tuple& args)

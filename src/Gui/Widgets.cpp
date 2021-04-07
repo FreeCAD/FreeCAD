@@ -66,7 +66,7 @@ using namespace Base;
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
+    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
             this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
 }
 
@@ -78,7 +78,7 @@ CommandIconView::~CommandIconView ()
 }
 
 /**
- * Stores the name of the selected commands for drag and drop. 
+ * Stores the name of the selected commands for drag and drop.
  */
 void CommandIconView::startDrag (Qt::DropActions supportedActions)
 {
@@ -106,7 +106,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
 }
 
 /**
- * This slot is called when a new item becomes current. \a item is the new current item 
+ * This slot is called when a new item becomes current. \a item is the new current item
  * (or 0 if no item is now current). This slot emits the emitSelectionChanged()
  * signal for its part.
  */
@@ -633,8 +633,8 @@ ColorButton::~ColorButton()
     delete d;
 }
 
-/** 
- * Sets the color \a c to the button. 
+/**
+ * Sets the color \a c to the button.
  */
 void ColorButton::setColor(const QColor& c)
 {
@@ -643,7 +643,7 @@ void ColorButton::setColor(const QColor& c)
     update();
 }
 
-/** 
+/**
  * Returns the current color of the button.
  */
 QColor ColorButton::color() const
@@ -716,7 +716,7 @@ void ColorButton::paintEvent (QPaintEvent * e)
         }
     }
 
-    // overpaint the rectangle to paint icon and text 
+    // overpaint the rectangle to paint icon and text
     QStyleOptionButton opt;
     opt.init(this);
     opt.text = text();
@@ -759,14 +759,10 @@ void ColorButton::onChooseColor()
 {
     if (!d->allowChange)
         return;
-#if QT_VERSION >= 0x040500
     if (d->modal) {
-#endif
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
-#if QT_VERSION >= 0x050000
         cd.setOptions(QColorDialog::DontUseNativeDialog);
-#endif
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -774,6 +770,7 @@ void ColorButton::onChooseColor()
         }
 
         cd.setCurrentColor(currentColor);
+        cd.adjustSize();
         if (cd.exec() == QDialog::Accepted) {
             QColor c = cd.selectedColor();
             if (c.isValid()) {
@@ -785,15 +782,12 @@ void ColorButton::onChooseColor()
             setColor(currentColor);
             changed();
         }
-#if QT_VERSION >= 0x040500
     }
     else {
         if (d->cd.isNull()) {
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
-#if QT_VERSION >= 0x050000
             d->cd->setOptions(QColorDialog::DontUseNativeDialog);
-#endif
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),
                     this, SLOT(onRejected()));
@@ -802,7 +796,6 @@ void ColorButton::onChooseColor()
         }
         d->cd->show();
     }
-#endif
 }
 
 void ColorButton::onColorChosen(const QColor& c)
@@ -824,6 +817,10 @@ UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
 {
     _url = QString::fromLatin1("http://localhost");
     setToolTip(this->_url);
+
+    if (qApp->styleSheet().isEmpty()) {
+        setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
+    }
 }
 
 UrlLabel::~UrlLabel()
@@ -1023,7 +1020,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
                 removeEventFilter();
                 this->hidden = true;
             }
-            else if (e->type() == QEvent::Timer && 
+            else if (e->type() == QEvent::Timer &&
                 !this->hidden && displayTime.elapsed() < 5000) {
                 return true;
             }
@@ -1354,30 +1351,18 @@ void LabelEditor::setInputType(InputType t)
 
 // --------------------------------------------------------------------
 
-ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly) 
-    : QLineEdit(parent), autoClose(expressionOnly) 
+ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
+    : QLineEdit(parent), autoClose(expressionOnly)
 {
-    defaultPalette = palette();
-
-    /* Icon for f(x) */
-    QFontMetrics fm(font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
-    iconLabel = new ExpressionLabel(this);
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    makeLabel(this);
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
-    if(expressionOnly) 
+    if (expressionOnly)
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
 
 bool ExpLineEdit::apply(const std::string& propName) {
-    
+
     if (!ExpressionBinding::apply(propName)) {
         if(!autoClose) {
             QString val = QString::fromUtf8(Base::Interpreter().strToPython(text().toUtf8()).c_str());
@@ -1385,12 +1370,12 @@ bool ExpLineEdit::apply(const std::string& propName) {
         }
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void ExpLineEdit::bind(const ObjectIdentifier& _path) {
-    
+
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
@@ -1399,7 +1384,7 @@ void ExpLineEdit::bind(const ObjectIdentifier& _path) {
     iconLabel->show();
 }
 
-void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
+void ExpLineEdit::setExpression(std::shared_ptr<Expression> expr)
 {
     Q_ASSERT(isBound());
 
@@ -1416,7 +1401,7 @@ void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
 }
 
 void ExpLineEdit::onChange() {
-    
+
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         if(result->isDerivedFrom(App::StringExpression::getClassTypeId()))
@@ -1430,7 +1415,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Text, Qt::lightGray);
         setPalette(p);
-        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -1438,7 +1423,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         setPalette(p);
-        iconLabel->setToolTip(QString());
+        iconLabel->setExpressionText(QString());
     }
 }
 
@@ -1460,7 +1445,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             setPalette(p);
-            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -1470,7 +1455,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             setPalette(p);
-            iconLabel->setToolTip(QString());
+            iconLabel->setExpressionText(QString());
         }
     }
     catch (const Base::Exception & e) {
@@ -1507,11 +1492,11 @@ void ExpLineEdit::finishFormulaDialog()
     if (box->result() == QDialog::Accepted)
         setExpression(box->getExpression());
     else if (box->discardedFormula())
-        setExpression(boost::shared_ptr<Expression>());
+        setExpression(std::shared_ptr<Expression>());
 
     box->deleteLater();
 
-    if(autoClose) 
+    if(autoClose)
         this->deleteLater();
 }
 

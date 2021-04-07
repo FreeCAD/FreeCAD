@@ -68,7 +68,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         radius within precision.
 
     tol(1e-3): Tolerance used to check if the shapes are planar and coplanar.
-        Consider change to tol=-1 for a more accurate analisis.
+        Consider change to tol=-1 for a more accurate analysis.
     """
 
     if not App.ActiveDocument:
@@ -127,7 +127,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
 
     else:
-        # supose all geometries are straight lines or points
+        # suppose all geometries are straight lines or points
         points = [vertex.Point for shape in shapes_list for vertex in shape.Vertexes]
         if len(points) >= 2:
             poly = Part.makePolygon(points)

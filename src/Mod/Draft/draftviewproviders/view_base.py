@@ -383,13 +383,19 @@ class ViewProviderDraft(object):
 
         Returns
         -------
-        bool
+        bool or None
             It is `True` if `mode` is 0, and `Draft_Edit` ran successfully.
+            None if mode is not zero.
             It is `False` otherwise.
         """
         if mode == 0 and App.GuiUp: #remove guard after splitting every viewprovider
             Gui.runCommand("Draft_Edit")
             return True
+        elif mode != 0:
+            # Act like this function doesn't even exist, so the command falls back to Part (e.g. in the
+            # case of an unrecognized context menu action)
+            return None 
+
         return False
 
     def unsetEdit(self, vobj, mode=0):
@@ -515,14 +521,14 @@ _ViewProviderDraftAlt = ViewProviderDraftAlt
 class ViewProviderDraftPart(ViewProviderDraftAlt):
     """A view provider that displays a Part icon instead of a Draft icon.
 
-    The `getIcon` method is overridden to provide `Tree_Part.svg`.
+    The `getIcon` method is overridden to provide `Part_3D_object.svg`.
     """
 
     def __init__(self, vobj):
         super(ViewProviderDraftPart, self).__init__(vobj)
 
     def getIcon(self):
-        return ":/icons/Tree_Part.svg"
+        return ":/icons/Part_3D_object.svg"
 
 
 # Alias for compatibility with v0.18 and earlier

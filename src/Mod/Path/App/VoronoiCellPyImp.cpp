@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) sliptonic (shopinthewoods@gmail.com) 2020               *
+ *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,19 +27,18 @@
 # include <boost/algorithm/string.hpp>
 #endif
 
+#include "Base/Exception.h"
+#include "Base/GeometryPyCXX.h"
+#include "Base/PlacementPy.h"
+#include "Base/Vector3D.h"
+#include "Base/VectorPy.h"
 #include "Mod/Path/App/Voronoi.h"
 #include "Mod/Path/App/VoronoiCell.h"
 #include "Mod/Path/App/VoronoiCellPy.h"
 #include "Mod/Path/App/VoronoiEdge.h"
 #include "Mod/Path/App/VoronoiEdgePy.h"
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/PlacementPy.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
 
-// files generated out of VoronoiCellPy.xml
-#include "VoronoiCellPy.cpp"
+#include "Mod/Path/App/VoronoiCellPy.cpp"
 
 using namespace Path;
 
@@ -75,14 +74,14 @@ int VoronoiCellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 
 PyObject* VoronoiCellPy::richCompare(PyObject *lhs, PyObject *rhs, int op) {
-  PyObject *cmp = Py_False;
+  PyObject *cmp = (op == Py_EQ) ? Py_False : Py_True;
   if (   PyObject_TypeCheck(lhs, &VoronoiCellPy::Type)
       && PyObject_TypeCheck(rhs, &VoronoiCellPy::Type)
-      && op == Py_EQ) {
+      && (op == Py_EQ || op == Py_NE)) {
     const VoronoiCell *vl = static_cast<VoronoiCellPy*>(lhs)->getVoronoiCellPtr();
     const VoronoiCell *vr = static_cast<VoronoiCellPy*>(rhs)->getVoronoiCellPtr();
     if (vl->index == vr->index && vl->dia == vr->dia) {
-      cmp = Py_True;
+      cmp = (op == Py_EQ) ? Py_True : Py_False;
     }
   }
   Py_INCREF(cmp);

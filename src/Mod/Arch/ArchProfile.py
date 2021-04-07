@@ -19,9 +19,9 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__= "FreeCAD Profile"
+__title__  = "FreeCAD Profile"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchProfile
 #  \ingroup ARCH
@@ -109,7 +109,7 @@ def makeProfile(profile=[0,'REC','REC100x100','R',100,100]):
 
 
 class Arch_Profile:
-    
+
     """The FreeCAD Arch_Profile command definition"""
 
     def GetResources(self):

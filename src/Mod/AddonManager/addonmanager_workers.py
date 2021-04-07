@@ -24,9 +24,7 @@
 import os
 import re
 import shutil
-import stat
 import sys
-import tempfile
 
 from PySide import QtCore, QtGui
 
@@ -423,7 +421,7 @@ class ShowWorker(QtCore.QThread):
                         p = p.decode("utf-8")
                     u.close()
                     desc = utils.fix_relative_links(p, readmeurl.rsplit("/README.md")[0])
-                    if NOMARKDOWN or not have_markdown:
+                    if not NOMARKDOWN and have_markdown:
                         desc = markdown.markdown(desc, extensions=["md_in_html"])
                     else:
                         message = """
@@ -768,7 +766,7 @@ class InstallWorker(QtCore.QThread):
                                                      str(self.repos[idx][0]) + "\n")
                     if have_git:
                         self.info_label.emit("Cloning module...")
-                        repo = git.Repo.clone_from(self.repos[idx][1], clonedir, branch="master")
+                        repo = git.Repo.clone_from(self.repos[idx][1], clonedir)
 
                         # Make sure to clone all the submodules as well
                         if repo.submodules:

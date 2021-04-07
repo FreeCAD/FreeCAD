@@ -24,7 +24,7 @@
     </message>
     <message>
       <source>Align bottom</source>
-      <translation>In basso</translation>
+      <translation>Allinea in basso</translation>
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>In centro orizzontale</translation>
+      <translation>Allinea al centro</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Centra il contenuto delle celle selezionate</translation>
+      <translation>Allinea al centro il contenuto delle celle selezionate</translation>
     </message>
   </context>
   <context>
@@ -54,7 +54,7 @@
     </message>
     <message>
       <source>Align left</source>
-      <translation>A sinistra</translation>
+      <translation>Allinea a sinistra</translation>
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
@@ -69,7 +69,7 @@
     </message>
     <message>
       <source>Align right</source>
-      <translation>A destra</translation>
+      <translation>Allinea a destra</translation>
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
       <source>Align top</source>
-      <translation>In alto</translation>
+      <translation>Allinea in alto</translation>
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
@@ -99,7 +99,7 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>In centro verticale</translation>
+      <translation>Allinea verticalmente al centro</translation>
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
@@ -231,6 +231,89 @@
     <message>
       <source>Custom Color</source>
       <translation>Colore personalizzato</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Unisci le celle</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Dividi cella</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Cella allineata a sinistra</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Cella centrata</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Cella allineata a destra</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Cella allineata in alto</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Cella allineata in basso</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Celle centrate verticalmente</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Imposta testo in grassetto</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Imposta il testo in corsivo</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Imposta il testo sottolineato</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Crea folgio di calcolo</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Imposta proprieta cella</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Modifica cella</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Inserisci righe</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Rimuovi righe</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Inserisci colonne</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Svuota cella(e)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Imposta colore di primo piano</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Impostya colore di sfondo</translation>
     </message>
   </context>
   <context>

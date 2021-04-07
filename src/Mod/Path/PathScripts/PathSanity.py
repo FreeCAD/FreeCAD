@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   (c) Sliptonic (shopinthewoods@gmail.com)  2016                        *
+# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -47,24 +48,57 @@ def translate(context, text, disambig=None):
 
 
 LOG_MODULE = 'PathSanity'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
+# PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
 # PathLog.trackModule('PathSanity')
 
 
 class CommandPathSanity:
-    baseobj = None
-    outputpath = PathPreferences.defaultOutputFile()
-    if outputpath == "":
-        outputpath = PathPreferences.macroFilePath()
-    if outputpath[-1] !=  os.sep:
-        outputpath += os.sep
-    if not os.path.exists(outputpath):
-        os.makedirs(outputpath)
 
-    squawkData = {"items": []}
+    def resolveOutputPath(self, job):
+        if job.PostProcessorOutputFile != "":
+            filepath = job.PostProcessorOutputFile
+        elif PathPreferences.defaultOutputFile() != "":
+            filepath = PathPreferences.defaultOutputFile()
+        else:
+            filepath = PathPreferences.macroFilePath()
+
+        if '%D' in filepath:
+            D = FreeCAD.ActiveDocument.FileName
+            if D:
+                D = os.path.dirname(D)
+                # in case the document is in the current working directory
+                if not D:
+                    D = '.'
+            else:
+                FreeCAD.Console.PrintError("Please save document in order to resolve output path!\n")
+                return None
+            filepath = filepath.replace('%D', D)
+
+        if '%d' in filepath:
+            d = FreeCAD.ActiveDocument.Label
+            filepath = filepath.replace('%d', d)
+
+        if '%j' in filepath:
+            j = job.Label
+            filepath = filepath.replace('%j', j)
+
+        if '%M' in filepath:
+            pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
+            M = pref.GetString("MacroPath", FreeCAD.getUserAppDataDir())
+            filepath = filepath.replace('%M', M)
+
+        PathLog.debug('filepath: {}'.format(filepath))
+
+        # starting at the derived filename, iterate up until we have a valid
+        # directory to write to
+        while not os.path.isdir(filepath):
+            filepath = os.path.dirname(filepath)
+
+        PathLog.debug('filepath: {}'.format(filepath))
+        return filepath + os.sep
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Sanity',
+        return {'Pixmap': 'Path_Sanity',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Sanity",
                     "Check the path job for common errors"),
                 'Accel': "P, S",
@@ -77,9 +111,10 @@ class CommandPathSanity:
 
     def Activated(self):
         # if everything is ok, execute
-        self.squawkData["items"] = []
+        self.squawkData = {"items": []}
 
         obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        self.outputpath = self.resolveOutputPath(obj)
         data = self.__summarize(obj)
         html = self.__report(data)
         if html is not None:
@@ -369,8 +404,8 @@ class CommandPathSanity:
 
         # Save the report
 
-        reportraw = self.outputpath + '/setupreport.asciidoc'
-        reporthtml = self.outputpath + '/setupreport.html'
+        reportraw = self.outputpath + 'setupreport.asciidoc'
+        reporthtml = self.outputpath + 'setupreport.html'
         with open(reportraw, 'w') as fd:
             fd.write(report)
             fd.close()
@@ -482,7 +517,7 @@ class CommandPathSanity:
         data = {}
 
         try:
-            for TC in obj.ToolController:
+            for TC in obj.Tools.Group:
                 if not hasattr(TC.Tool, 'BitBody'):
                     self.squawk("PathSanity",
                     "Tool number {} is a legacy tool. Legacy tools not \
@@ -505,7 +540,7 @@ class CommandPathSanity:
 
                 tooldata['partNumber'] = ""
                 imagedata = TC.Tool.Proxy.getBitThumbnail(TC.Tool)
-                imagepath = '{}/T{}.png'.format(self.outputpath, TC.ToolNumber)
+                imagepath = '{}T{}.png'.format(self.outputpath, TC.ToolNumber)
                 tooldata['feedrate'] = str(TC.HorizFeed)
                 if TC.HorizFeed.Value == 0.0:
                     self.squawk("PathSanity",
@@ -646,7 +681,7 @@ class CommandPathSanity:
             view.showNormal()
             view.resize(320, 320)
 
-            imagepath = '{}/origin'.format(self.outputpath)
+            imagepath = '{}origin'.format(self.outputpath)
 
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.SendMsgToActiveView("PerspectiveCamera")

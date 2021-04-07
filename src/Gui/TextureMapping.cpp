@@ -65,7 +65,7 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
     for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
         formats << QString::fromLatin1("*.%1").arg(QLatin1String(*it));
     }
-    
+
     ui->fileChooser->setFilter(tr("Image files (%1)").arg(formats.join(QLatin1String(" "))));
 
     this->tex = new SoTexture2();

@@ -43,7 +43,7 @@ class PartWorkbench(Gui.Workbench):
         import PartGui
 
         try:
-            import BasicShapes.Shapes
+            import BasicShapes.CommandShapes
         except ImportError as err:
             App.Console.PrintError("'BasicShapes' package cannot be loaded. "
                                    "{err}\n".format(err=str(err)))

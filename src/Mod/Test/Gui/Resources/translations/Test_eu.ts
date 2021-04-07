@@ -86,7 +86,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="248"/>
       <source>Run:</source>
-      <translation>Exekutatu:</translation>
+      <translation>Distantzia:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="258"/>

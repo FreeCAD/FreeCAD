@@ -28,10 +28,10 @@
 #include "DocumentObject.h"
 
 namespace App {
-    
+
 /**
  * @brief Extension with special document object calls
- * 
+ *
  */
 class AppExport DocumentObjectExtension : public App::Extension
 {
@@ -47,12 +47,12 @@ public:
 
     App::DocumentObject*       getExtendedObject();
     const App::DocumentObject* getExtendedObject() const;
-  
+
     //override if execution is necessary
     virtual short extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);
-    
-    
+
+
     /// get called after setting the document
     virtual void onExtendedSettingDocument();
     /// get called after a document has been fully restored
@@ -63,8 +63,8 @@ public:
     virtual void onExtendedUnsetupObject();
 
     virtual PyObject* getExtensionPyObject(void) override;
-    
-    /// returns the type name of the ViewProviderExtension which is automatically attached 
+
+    /// returns the type name of the ViewProviderExtension which is automatically attached
     /// to the viewprovider object when it is initiated
     virtual const char* getViewProviderExtensionName(void) const {return "";}
 
@@ -73,7 +73,7 @@ public:
      *
      * @return Return turn if handled, the sub object is returned in \c ret
      */
-    virtual bool extensionGetSubObject( DocumentObject *&ret, const char *subname, 
+    virtual bool extensionGetSubObject( DocumentObject *&ret, const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const;
 
     /** Get name references of all sub objects

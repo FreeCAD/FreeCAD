@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -24,7 +23,7 @@
 import FreeCAD,Draft,ArchCommands,ArchFloor
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtCore
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
@@ -35,9 +34,9 @@ else:
         return txt
     # \endcond
 
-__title__="FreeCAD Building"
+__title__  = "FreeCAD Building"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchBuilding
 #  \ingroup ARCH

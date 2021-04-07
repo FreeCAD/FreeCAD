@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +21,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheet as PathSetupSheet
@@ -58,8 +55,12 @@ class JobTemplate:
     PostProcessor = 'Post'
     PostProcessorArgs = 'PostArgs'
     PostProcessorOutputFile = 'Output'
+    Fixtures = 'Fixtures'
+    OrderOutputBy = 'OrderOutputBy'
+    SplitOutput = 'SplitOutput'
     SetupSheet = 'SetupSheet'
     Stock = 'Stock'
+    # TCs are grouped under Tools in a job, the template refers to them directly though
     ToolController = 'ToolController'
     Version = 'Version'
 
@@ -85,7 +86,8 @@ def createResourceClone(obj, orig, name, icon):
     clone.addProperty('App::PropertyString', 'PathResource')
     clone.PathResource = name
     if clone.ViewObject:
-        PathIconViewProvider.Attach(clone.ViewObject, icon)
+        import PathScripts.PathIconViewProvider
+        PathScripts.PathIconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
         clone.ViewObject.Transparency = 80
     obj.Document.recompute()  # necessary to create the clone shape
@@ -94,6 +96,13 @@ def createResourceClone(obj, orig, name, icon):
 
 def createModelResourceClone(obj, orig):
     return createResourceClone(obj, orig, 'Model', 'BaseGeometry')
+
+
+class NotificationClass(QtCore.QObject):
+    updateTC = QtCore.Signal(object, object)
+
+
+Notification = NotificationClass()
 
 
 class ObjectJob:
@@ -115,7 +124,6 @@ class ObjectJob:
 
         obj.addProperty("App::PropertyLink", "Stock", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Solid object to be used as stock."))
         obj.addProperty("App::PropertyLink", "Operations", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Compound path of all operations in the order they are processed."))
-        obj.addProperty("App::PropertyLinkList", "ToolController", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of tool controllers available for this job."))
 
         obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Split output into multiple gcode files"))
         obj.addProperty("App::PropertyEnumeration", "OrderOutputBy", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "If multiple WCS, order the output this way"))
@@ -145,6 +153,7 @@ class ObjectJob:
 
         self.setupSetupSheet(obj)
         self.setupBaseModel(obj, models)
+        self.setupToolTable(obj)
 
         self.tooltip = None
         self.tooltipArgs = None
@@ -166,7 +175,8 @@ class ObjectJob:
             obj.addProperty('App::PropertyLink', 'SetupSheet', 'Base', QtCore.QT_TRANSLATE_NOOP('PathJob', 'SetupSheet holding the settings for this job'))
             obj.SetupSheet = PathSetupSheet.Create()
             if obj.SetupSheet.ViewObject:
-                PathIconViewProvider.Attach(obj.SetupSheet.ViewObject, 'SetupSheet')
+                import PathScripts.PathIconViewProvider
+                PathScripts.PathIconViewProvider.Attach(obj.SetupSheet.ViewObject, 'SetupSheet')
         self.setupSheet = obj.SetupSheet.Proxy
 
     def setupBaseModel(self, obj, models=None):
@@ -185,6 +195,18 @@ class ObjectJob:
             obj.Model.addObject(obj.Base)
             obj.Base = None
             obj.removeProperty('Base')
+
+    def setupToolTable(self, obj):
+        if not hasattr(obj, 'Tools'):
+            obj.addProperty("App::PropertyLink", "Tools", "Base", QtCore.QT_TRANSLATE_NOOP("PathJob", "Collection of all tool controllers for the job"))
+            toolTable = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Tools")
+            toolTable.Label = 'Tools'
+            if toolTable.ViewObject:
+                toolTable.ViewObject.Visibility = False
+            if hasattr(obj, 'ToolController'):
+                toolTable.addObjects(obj.ToolController)
+                obj.removeProperty('ToolController')
+            obj.Tools = toolTable
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
@@ -229,14 +251,16 @@ class ObjectJob:
 
         # Tool controllers might refer to either legacy tool or toolbit
         PathLog.debug('taking down tool controller')
-        for tc in obj.ToolController:
+        for tc in obj.Tools.Group:
             if hasattr(tc.Tool, "Proxy"):
                 PathUtil.clearExpressionEngine(tc.Tool)
                 doc.removeObject(tc.Tool.Name)
             PathUtil.clearExpressionEngine(tc)
             tc.Proxy.onDelete(tc)
             doc.removeObject(tc.Name)
-        obj.ToolController = []
+        obj.Tools.Group = []
+        doc.removeObject(obj.Tools.Name)
+        obj.Tools = None
 
         # SetupSheet
         PathUtil.clearExpressionEngine(obj.SetupSheet)
@@ -263,12 +287,26 @@ class ObjectJob:
         self.setupBaseModel(obj)
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
+        self.setupToolTable(obj)
+
         obj.setEditorMode('Operations', 2)  # hide
         obj.setEditorMode('Placement', 2)
 
         if not hasattr(obj, 'CycleTime'):
             obj.addProperty("App::PropertyString", "CycleTime", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Operations Cycle Time Estimation"))
             obj.setEditorMode('CycleTime', 1)  # read-only
+
+        if not hasattr(obj, "Fixtures"):
+            obj.addProperty("App::PropertyStringList", "Fixtures", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "The Work Coordinate Systems for the Job"))
+            obj.Fixtures = ['G54']
+
+        if not hasattr(obj, "OrderOutputBy"):
+            obj.addProperty("App::PropertyEnumeration", "OrderOutputBy", "WCS", QtCore.QT_TRANSLATE_NOOP("PathJob", "If multiple WCS, order the output this way"))
+            obj.OrderOutputBy = ['Fixture', 'Tool', 'Operation']
+
+        if not hasattr(obj, "SplitOutput"):
+            obj.addProperty("App::PropertyBool", "SplitOutput", "Output", QtCore.QT_TRANSLATE_NOOP("PathJob", "Split output into multiple gcode files"))
+            obj.SplitOutput = False
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
@@ -327,8 +365,17 @@ class ObjectJob:
                 if attrs.get(JobTemplate.Stock):
                     obj.Stock = PathStock.CreateFromTemplate(obj, attrs.get(JobTemplate.Stock))
 
+                if attrs.get(JobTemplate.Fixtures):
+                    obj.Fixtures = [x for y in attrs.get(JobTemplate.Fixtures) for x in y]
+
+                if attrs.get(JobTemplate.OrderOutputBy):
+                    obj.OrderOutputBy = attrs.get(JobTemplate.OrderOutputBy)
+
+                if attrs.get(JobTemplate.SplitOutput):
+                    obj.SplitOutput = attrs.get(JobTemplate.SplitOutput)
+
                 PathLog.debug("setting tool controllers (%d)" % len(tcs))
-                obj.ToolController = tcs
+                obj.Tools.Group = tcs
             else:
                 PathLog.error(translate('PathJob', "Unsupported PathJob template version %s") % attrs.get(JobTemplate.Version))
         if not tcs:
@@ -341,6 +388,9 @@ class ObjectJob:
         if obj.PostProcessor:
             attrs[JobTemplate.PostProcessor] = obj.PostProcessor
             attrs[JobTemplate.PostProcessorArgs] = obj.PostProcessorArgs
+            attrs[JobTemplate.Fixtures] = [{f: True} for f in obj.Fixtures]
+            attrs[JobTemplate.OrderOutputBy] = obj.OrderOutputBy
+            attrs[JobTemplate.SplitOutput] = obj.SplitOutput
         if obj.PostProcessorOutputFile:
             attrs[JobTemplate.PostProcessorOutputFile] = obj.PostProcessorOutputFile
         attrs[JobTemplate.GeometryTolerance] = str(obj.GeometryTolerance.Value)
@@ -408,13 +458,13 @@ class ObjectJob:
             op.Path.Center = self.obj.Operations.Path.Center
 
     def addToolController(self, tc):
-        group = self.obj.ToolController
+        group = self.obj.Tools.Group
         PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
         if tc.Name not in [str(t.Name) for t in group]:
             tc.setExpression('VertRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.VertRapid))
             tc.setExpression('HorizRapid', "%s.%s" % (self.setupSheet.expressionReference(), PathSetupSheet.Template.HorizRapid))
-            group.append(tc)
-            self.obj.ToolController = group
+            self.obj.Tools.addObject(tc)
+            Notification.updateTC.emit(self.obj, tc)
 
     def allOperations(self):
         ops = []

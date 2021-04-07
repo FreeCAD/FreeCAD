@@ -55,7 +55,7 @@ std::string VectorPy::representation(void) const
 
 PyObject *VectorPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of VectorPy and the Twin object 
+    // create a new instance of VectorPy and the Twin object
     return new VectorPy(new Vector3d);
 }
 
@@ -330,7 +330,7 @@ PyObject*  VectorPy::negative(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
-        
+
     VectorPy::PointerType this_ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
     Base::Vector3d v = -(*this_ptr);
     return new VectorPy(v);

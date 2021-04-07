@@ -117,7 +117,7 @@
           </widget>
          </item>
          <item>
-          <widget class="Gui::PrefFileChooser" name="MacroPath_2" native="true">
+          <widget class="Gui::PrefFileChooser" name="MacroPath_2">
            <property name="fileName" stdset="0">
             <string>FullScript.FCScript</string>
            </property>
@@ -216,7 +216,7 @@
           <number>6</number>
          </property>
          <item row="0" column="0">
-          <widget class="Gui::PrefFileChooser" name="MacroPath" native="true">
+          <widget class="Gui::PrefFileChooser" name="MacroPath">
            <property name="toolTip">
             <string>The directory in which the application will search for macros</string>
            </property>

@@ -59,6 +59,7 @@
 #include "FeatureLoft.h"
 #include "ShapeBinder.h"
 #include "FeatureBase.h"
+#include "FeatureHelix.h"
 
 namespace PartDesign {
 extern PyObject* initModule();
@@ -116,6 +117,9 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::Loft                        ::init();
     PartDesign::AdditiveLoft                ::init();
     PartDesign::SubtractiveLoft             ::init();
+    PartDesign::Helix                       ::init();
+    PartDesign::AdditiveHelix               ::init();
+    PartDesign::SubtractiveHelix            ::init();
     PartDesign::ShapeBinder                 ::init();
     PartDesign::SubShapeBinder              ::init();
     PartDesign::Plane                       ::init();

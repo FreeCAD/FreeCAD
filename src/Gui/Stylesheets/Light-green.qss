@@ -1877,6 +1877,7 @@ QToolBar > QPushButton:!checked {
     background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #f5f5f5, stop:1 #e6e6e6);
     border: 1px solid #d2d2d2;
     border-bottom-color: #c3c3c3; /* simulates shadow under the button */
+    text-align: left; /* bug fix #4559 */
 }
 
 QToolBar > QPushButton:checked:hover {

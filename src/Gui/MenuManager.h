@@ -68,7 +68,7 @@ private:
  * The MenuManager class is responsible for the creation of menus and context menus and appending them
  * to the main window.
  * @see ToolBoxManager
- * @see ToolBarManager 
+ * @see ToolBarManager
  * @author Werner Mayer
  */
 class GuiExport MenuManager
@@ -103,4 +103,4 @@ private:
 } // namespace Gui
 
 
-#endif // GUI_MENUMANAGER_H 
+#endif // GUI_MENUMANAGER_H

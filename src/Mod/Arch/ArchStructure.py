@@ -48,9 +48,9 @@ else:
 #  elements that have a structural function, that is, that
 #  support other parts of the building.
 
-__title__="FreeCAD Structure"
+__title__= "FreeCAD Structure"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 #Reads preset profiles and categorizes them
@@ -116,7 +116,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             elif height and not length:
                 obj.Width = w
                 obj.Length = h
-            
+
     if not height and not length:
         obj.IfcType = "Undefined"
     elif obj.Length > obj.Height:
@@ -285,7 +285,7 @@ class _CommandStructure:
         if self.Profile is not None:
             try: # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
-            except:
+            except Exception:
                 pass
             if ("Precast" in self.Profile) and self.precastvalues:
                 # precast concrete
@@ -344,7 +344,7 @@ class _CommandStructure:
             self.Activated()
 
     def _createItemlist(self, baselist):
-        
+
         "create nice labels for presets in the task panel"
 
         ilist=[]
@@ -475,7 +475,7 @@ class _CommandStructure:
         if FreeCADGui.Control.activeDialog():
             try: # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
-            except:
+            except Exception:
                 pass
             if self.Height >= self.Length:
                 delta = Vector(0,0,self.Height/2)
@@ -739,7 +739,7 @@ class _Structure(ArchComponent.Component):
                     if obj.Base.Shape.Solids:
                         return None
                     elif obj.Base.Shape.Faces:
-                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tolerance=0.01):
+                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tol=0.01):
                             return None
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
@@ -762,7 +762,7 @@ class _Structure(ArchComponent.Component):
                             if obj.FaceMaker != "None":
                                 try:
                                     baseface = Part.makeFace(obj.Base.Shape.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
-                                except:
+                                except Exception:
                                     FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
                                     return None
                                 if len(baseface.Faces) > 1:
@@ -774,7 +774,7 @@ class _Structure(ArchComponent.Component):
                                     p0 = w.OrderedVertexes[0].Point
                                     p1 = w.OrderedVertexes[-1].Point
                                     if p0 != p1:
-                                        e = Part.Line(p0,p1).toShape()
+                                        e = Part.LineSegment(p0,p1).toShape()
                                         w.add(e)
                                 w.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(w)

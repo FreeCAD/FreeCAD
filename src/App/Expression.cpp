@@ -3258,16 +3258,16 @@ static void initParser(const App::DocumentObject *owner)
     }
 }
 
-std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &str)
+std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
 {
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    std::vector<boost::tuple<int, int, std::string> > result;
+    std::vector<std::tuple<int, int, std::string> > result;
     int token;
 
     column = 0;
     try {
         while ( (token  = ExpressionParserlex()) != 0)
-            result.push_back(boost::make_tuple(token, ExpressionParser::last_column, yytext));
+            result.push_back(std::make_tuple(token, ExpressionParser::last_column, yytext));
     }
     catch (...) {
         // Ignore all exceptions

@@ -269,13 +269,13 @@ void Placement::applyPlacement(const QString& data, bool incremental)
         }
         catch (...) {
         }
-        document->openCommand("Placement");
+        document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
     }
     else {
         std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
             (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
         if (!sel.empty()) {
-            document->openCommand("Placement");
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
             for (std::vector<App::DocumentObject*>::iterator it=sel.begin();it!=sel.end();++it) {
                 std::map<std::string,App::Property*> props;
                 (*it)->getPropertyMap(props);
@@ -875,7 +875,7 @@ void TaskPlacement::setPropertyName(const QString& name)
 }
 
 QDialogButtonBox::StandardButtons TaskPlacement::getStandardButtons() const
-{ 
+{
     return QDialogButtonBox::Ok|
            QDialogButtonBox::Cancel|
            QDialogButtonBox::Apply;

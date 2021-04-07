@@ -96,6 +96,8 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
 {
     QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
+    // Call the extensions
+    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProvider::setEdit(int ModNum)
@@ -219,7 +221,7 @@ void ViewProvider::setTipIcon(bool onoff) {
     signalChangeIcon();
 }
 
-QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
+QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
 {
     QIcon mergedicon = orig;
 
@@ -246,7 +248,7 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 
     }
 
-    return Gui::ViewProvider::mergeOverlayIcons(mergedicon);
+    return Gui::ViewProvider::mergeColorfulOverlayIcons (mergedicon);
 }
 
 bool ViewProvider::onDelete(const std::vector<std::string> &)

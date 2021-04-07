@@ -68,7 +68,6 @@ TaskGeomHatch::TaskGeomHatch(TechDraw::DrawGeomHatch* inHatch,TechDrawGui::ViewP
 
 TaskGeomHatch::~TaskGeomHatch()
 {
-    delete ui;
 }
 
 

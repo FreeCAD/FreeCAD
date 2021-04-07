@@ -36,7 +36,7 @@ using namespace PartGui;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderPlaneParametric, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderPlaneParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderPlaneParametric::ViewProviderPlaneParametric()

@@ -24,7 +24,7 @@
 #ifndef PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERLINEPARAMETRIC_H
 
-#include "ViewProvider.h"
+#include "ViewProviderPrimitive.h"
 
 
 class TopoDS_Shape;
@@ -36,7 +36,7 @@ class SoTransform;
 namespace PartGui {
 
 
-class PartGuiExport ViewProviderLineParametric:public ViewProviderPart
+class PartGuiExport ViewProviderLineParametric : public ViewProviderPrimitive
 {
     PROPERTY_HEADER(PartGui::ViewProviderLineParametric);
 

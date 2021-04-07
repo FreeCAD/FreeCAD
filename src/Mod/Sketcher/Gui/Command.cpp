@@ -141,7 +141,7 @@ CmdSketcherNewSketch::CmdSketcherNewSketch()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create sketch");
-    sToolTipText    = QT_TR_NOOP("Create a new sketch");
+    sToolTipText    = QT_TR_NOOP("Create a new sketch.");
     sWhatsThis      = "Sketcher_NewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_NewSketch";
@@ -179,7 +179,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
             QString text = QInputDialog::getItem(Gui::getMainWindow(),
                 qApp->translate("Sketcher_NewSketch", "Sketch attachment"),
                 qApp->translate("Sketcher_NewSketch", "Select the method to attach this sketch to selected object"),
-                items, iSugg, false, &ok);
+                items, iSugg, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
             if (!ok) return;
             int index = items.indexOf(text);
             if (index == 0){
@@ -204,22 +204,23 @@ void CmdSketcherNewSketch::activated(int iMsg)
         // create Sketch on Face
         std::string FeatName = getUniqueObjectName("Sketch");
 
-        openCommand("Create a Sketch on Face");
-        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch on a face"));
+        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
         if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(mapmode).c_str());
         else
             assert(0 /* mapmode index out of range */);
-        doCommand(Gui,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
+        doCommand(Gui,"App.activeDocument().%s.Support = %s", FeatName.c_str(), supportString.c_str());
         doCommand(Gui,"App.activeDocument().recompute()");  // recompute the sketch placement based on its support
-        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+        doCommand(Gui,"Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 
-        Part::Feature *part = static_cast<Part::Feature*>(support.getValue());//if multi-part support, this will return 0
+        Part::Feature *part = static_cast<Part::Feature*>(support.getValue());  // if multi-part support, this will return 0
         if (part){
             App::DocumentObjectGroup* grp = part->getGroup();
             if (grp) {
-                doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
-                             ,grp->getNameInDocument(),FeatName.c_str());
+                doCommand(Doc,
+                          "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                          grp->getNameInDocument(), FeatName.c_str());
             }
         }
     }
@@ -227,6 +228,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         // ask user for orientation
         SketchOrientationDialog Dlg;
 
+        Dlg.adjustSize();
         if (Dlg.exec() != QDialog::Accepted)
             return; // canceled
         Base::Vector3d p = Dlg.Pos.getPosition();
@@ -234,11 +236,14 @@ void CmdSketcherNewSketch::activated(int iMsg)
 
         std::string FeatName = getUniqueObjectName("Sketch");
 
-        openCommand("Create a new Sketch");
-        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
-        doCommand(Doc,"App.activeDocument().%s.MapMode = \"%s\"",FeatName.c_str(),AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
-        doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch"));
+        doCommand(Doc, "App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
+        doCommand(Doc,
+                  "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), App.Rotation(%f, %f, %f, %f))",
+                  FeatName.c_str(), p.x, p.y, p.z, r[0], r[1], r[2], r[3]);
+        doCommand(Doc,"App.activeDocument().%s.MapMode = \"%s\"",
+                  FeatName.c_str(), AttachEngine::getModeName(Attacher::mmDeactivated).c_str());
+        doCommand(Gui,"Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
 
 }
@@ -259,7 +264,7 @@ CmdSketcherEditSketch::CmdSketcherEditSketch()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Edit sketch");
-    sToolTipText    = QT_TR_NOOP("Edit the selected sketch");
+    sToolTipText    = QT_TR_NOOP("Edit the selected sketch.");
     sWhatsThis      = "Sketcher_EditSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_EditSketch";
@@ -272,7 +277,6 @@ void CmdSketcherEditSketch::activated(int iMsg)
 
     if (SketchFilter.match()) {
         Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(SketchFilter.Result[0][0].getObject());
-        openCommand("Edit Sketch");
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",Sketch->getNameInDocument());
     }
 }
@@ -290,7 +294,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Leave sketch");
-    sToolTipText    = QT_TR_NOOP("Close the editing of the sketch");
+    sToolTipText    = QT_TR_NOOP("Finish editing the active sketch.");
     sWhatsThis      = "Sketcher_LeaveSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_LeaveSketch";
@@ -309,11 +313,9 @@ void CmdSketcherLeaveSketch::activated(int iMsg)
             vp->purgeHandler();
     }
 
-    openCommand("Sketch changed");
+    // See also TaskDlgEditSketch::reject
     doCommand(Gui,"Gui.activeDocument().resetEdit()");
     doCommand(Doc,"App.ActiveDocument.recompute()");
-    commitCommand();
-
 }
 
 bool CmdSketcherLeaveSketch::isActive(void)
@@ -336,7 +338,9 @@ CmdSketcherStopOperation::CmdSketcherStopOperation()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Stop operation");
-    sToolTipText    = QT_TR_NOOP("Stop current operation");
+    sToolTipText    = QT_TR_NOOP("When in edit mode, "
+                                 "stop the active operation "
+                                 "(drawing, constraining, etc.).");
     sWhatsThis      = "Sketcher_StopOperation";
     sStatusTip      = sToolTipText;
     sPixmap         = "process-stop";
@@ -375,7 +379,8 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Reorient sketch...");
-    sToolTipText    = QT_TR_NOOP("Reorient the selected sketch");
+    sToolTipText    = QT_TR_NOOP("Place the selected sketch on one of the global coordinate planes.\n"
+                                 "This will clear the 'Support' property, if any.");
     sWhatsThis      = "Sketcher_ReorientSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ReorientSketch";
@@ -406,49 +411,91 @@ void CmdSketcherReorientSketch::activated(int iMsg)
 
     // do the right view direction
     std::string camstring;
-    switch(Dlg.DirType){
+    switch (Dlg.DirType) {
         case 0:
-            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA \\n "
-                "position 0 0 87 \\n orientation 0 0 1  0 \\n nearDistance -112.88701 \\n farDistance 287.28702 \\n "
-                "aspectRatio 1 \\n focalDistance 87 \\n height 143.52005 }";
+            camstring = "#Inventor V2.1 ascii\\n"
+                "OrthographicCamera {\\n"
+                " viewportMapping ADJUST_CAMERA\\n"
+                "  position 0 0 87\\n"
+                "  orientation 0 0 1  0\\n"
+                "  nearDistance -112.88701\\n"
+                "  farDistance 287.28702\\n"
+                "  aspectRatio 1\\n"
+                "  focalDistance 87\\n"
+                "  height 143.52005 }";
             break;
         case 1:
-            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA \\n "
-                "position 0 0 -87 \\n orientation -1 0 0  3.1415927 \\n nearDistance -112.88701 \\n farDistance 287.28702 \\n "
-                "aspectRatio 1 \\n focalDistance 87 \\n height 143.52005 }";
+            camstring = "#Inventor V2.1 ascii\\n"
+                "OrthographicCamera {\\n"
+                " viewportMapping ADJUST_CAMERA\\n"
+                "  position 0 0 -87\\n"
+                "  orientation -1 0 0  3.1415927\\n"
+                "  nearDistance -112.88701\\n"
+                "  farDistance 287.28702\\n "
+                "  aspectRatio 1\\n"
+                "  focalDistance 87\\n"
+                "  height 143.52005 }";
             break;
         case 2:
-            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n "
-                "position 0 -87 0 \\n  orientation -1 0 0  4.712389\\n  nearDistance -112.88701\\n  farDistance 287.28702\\n "
-                "aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
+            camstring = "#Inventor V2.1 ascii\\n"
+                "OrthographicCamera {\\n"
+                " viewportMapping ADJUST_CAMERA\\n"
+                "  position 0 -87 0\\n"
+                "  orientation -1 0 0  4.712389\\n"
+                "  nearDistance -112.88701\\n"
+                "  farDistance 287.28702\\n"
+                "  aspectRatio 1\\n"
+                "  focalDistance 87\\n"
+                "  height 143.52005\\n\\n}";
             break;
         case 3:
-            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n "
-                "position 0 87 0 \\n  orientation 0 0.70710683 0.70710683  3.1415927\\n  nearDistance -112.88701\\n  farDistance 287.28702\\n "
-                "aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
+            camstring = "#Inventor V2.1 ascii\\n"
+                "OrthographicCamera {\\n"
+                " viewportMapping ADJUST_CAMERA\\n"
+                "  position 0 87 0\\n"
+                "  orientation 0 0.70710683 0.70710683  3.1415927\\n"
+                "  nearDistance -112.88701\\n"
+                "  farDistance 287.28702\\n"
+                "  aspectRatio 1\\n"
+                "  focalDistance 87\\n"
+                "  height 143.52005\\n\\n}";
             break;
         case 4:
-            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n "
-                "position 87 0 0 \\n  orientation 0.57735026 0.57735026 0.57735026  2.0943952 \\n  nearDistance -112.887\\n  farDistance 287.28699\\n "
-                "aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
+            camstring = "#Inventor V2.1 ascii\\n"
+                "OrthographicCamera {\\n"
+                " viewportMapping ADJUST_CAMERA\\n"
+                "  position 87 0 0\\n"
+                "  orientation 0.57735026 0.57735026 0.57735026  2.0943952\\n"
+                "  nearDistance -112.887\\n"
+                "  farDistance 287.28699\\n"
+                "  aspectRatio 1\\n"
+                "  focalDistance 87\\n"
+                "  height 143.52005\\n\\n}";
             break;
         case 5:
-            camstring = "#Inventor V2.1 ascii \\n OrthographicCamera {\\n viewportMapping ADJUST_CAMERA\\n "
-                "position -87 0 0 \\n  orientation -0.57735026 0.57735026 0.57735026  4.1887903 \\n  nearDistance -112.887\\n  farDistance 287.28699\\n "
-                "aspectRatio 1\\n  focalDistance 87\\n  height 143.52005\\n\\n}";
+            camstring = "#Inventor V2.1 ascii\\n"
+                "OrthographicCamera {\\n"
+                " viewportMapping ADJUST_CAMERA\\n"
+                "  position -87 0 0\\n"
+                "  orientation -0.57735026 0.57735026 0.57735026  4.1887903\\n"
+                "  nearDistance -112.887\\n"
+                "  farDistance 287.28699\\n"
+                "  aspectRatio 1\\n"
+                "  focalDistance 87\\n"
+                "  height 143.52005\\n\\n}";
             break;
     }
 
-    openCommand("Reorient Sketch");
-    Gui::cmdAppObjectArgs(sketch, "Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
-                                , p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
-    doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",sketch->getNameInDocument());
+    openCommand(QT_TRANSLATE_NOOP("Command", "Reorient sketch"));
+    Gui::cmdAppObjectArgs(sketch,
+                          "Placement = App.Placement(App.Vector(%f, %f, %f), App.Rotation(%f, %f, %f, %f))",
+                          p.x, p.y, p.z, r[0], r[1], r[2], r[3]);
+    doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')", sketch->getNameInDocument());
 }
 
 bool CmdSketcherReorientSketch::isActive(void)
 {
-    return Gui::Selection().countObjectsOfType
-        (Sketcher::SketchObject::getClassTypeId()) == 1;
+    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherMapSketch)
@@ -459,7 +506,9 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Map sketch to face...");
-    sToolTipText    = QT_TR_NOOP("Map a sketch to a face");
+    sToolTipText    = QT_TR_NOOP("Set the 'Support' of a sketch.\n"
+                                 "First select the supporting geometry, for example, a face or an edge of a solid object,\n"
+                                 "then call this command, then choose the desired sketch.");
     sWhatsThis      = "Sketcher_MapSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_MapSketch";
@@ -469,7 +518,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString msg_str;
-    try{
+    try {
         Attacher::eMapMode suggMapMode;
         std::vector<Attacher::eMapMode> validModes;
 
@@ -493,15 +542,15 @@ void CmdSketcherMapSketch::activated(int iMsg)
         QString text = QInputDialog::getItem(Gui::getMainWindow(),
             qApp->translate("Sketcher_MapSketch", "Select sketch"),
             qApp->translate("Sketcher_MapSketch", "Select a sketch from the list"),
-            items, 0, false, &ok);
-        if (!ok) return;
+            items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
+        if (!ok)
+            return;
         int index = items.indexOf(text);
         Part2DObject* sketch = static_cast<Part2DObject*>(sketches[index]);
 
-
         // check circular dependency
         std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
-        for (size_t i = 0  ;  i < selobjs.size()  ;  ++i){
+        for (size_t i = 0; i < selobjs.size(); ++i) {
             App::DocumentObject* part = static_cast<Part::Feature*>(selobjs[i].getObject());
             if (!part) {
                 assert(0);
@@ -509,7 +558,8 @@ void CmdSketcherMapSketch::activated(int iMsg)
             }
             std::vector<App::DocumentObject*> input = part->getOutList();
             if (std::find(input.begin(), input.end(), sketch) != input.end()) {
-                throw ExceptionWrongInput(QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!"));
+                throw ExceptionWrongInput(QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. "
+                                                     "Circular dependencies are not allowed."));
             }
         }
 
@@ -538,41 +588,46 @@ void CmdSketcherMapSketch::activated(int iMsg)
         //QStringList items; //already defined
         items.clear();
         items.push_back(QObject::tr("Don't attach"));
-        int iSugg = 0;//index of the auto-suggested mode in the list of valid modes
-        int iCurr = 0;//index of current mode in the list of valid modes
-        for (size_t i = 0  ;  i < validModes.size()  ;  ++i){
+        int iSugg = 0; //index of the auto-suggested mode in the list of valid modes
+        int iCurr = 0; //index of current mode in the list of valid modes
+        for (size_t i = 0; i < validModes.size(); ++i) {
             items.push_back(QString::fromLatin1(AttachEngine::getModeName(validModes[i]).c_str()));
             if (validModes[i] == curMapMode) {
                 iCurr = items.size() - 1;
                 items.back().append(bCurIncompatible?
-                                        qApp->translate("Sketcher_MapSketch"," (incompatible with selection)")
+                                        qApp->translate("Sketcher_MapSketch", " (incompatible with selection)")
                                       :
-                                        qApp->translate("Sketcher_MapSketch"," (current)")  );
+                                        qApp->translate("Sketcher_MapSketch", " (current)"));
             }
-            if (validModes[i] == suggMapMode){
+            if (validModes[i] == suggMapMode) {
                 iSugg = items.size() - 1;
-                if(iSugg == 1){
-                    iSugg = 0;//redirect deactivate to detach
+                if(iSugg == 1) {
+                    iSugg = 0;  // redirect deactivate to detach
                 } else {
-                    items.back().append(qApp->translate("Sketcher_MapSketch"," (suggested)"));
+                    items.back().append(qApp->translate("Sketcher_MapSketch", " (suggested)"));
                 }
             }
         }
         // * execute the dialog
-        text = QInputDialog::getItem(Gui::getMainWindow()
-            ,qApp->translate("Sketcher_MapSketch", "Sketch attachment")
-            ,bCurIncompatible?
-              qApp->translate("Sketcher_MapSketch", "Current attachment mode is incompatible with the new selection. Select the method to attach this sketch to selected objects.")
-              :
-              qApp->translate("Sketcher_MapSketch", "Select the method to attach this sketch to selected objects.")
-            ,items
-            , bCurIncompatible ? iSugg : iCurr
-            , false
-            , &ok);
+        text = QInputDialog::getItem(Gui::getMainWindow(),
+                                     qApp->translate("Sketcher_MapSketch", "Sketch attachment"),
+                                     bCurIncompatible ?
+                                         qApp->translate("Sketcher_MapSketch",
+                                                         "Current attachment mode is incompatible with the new selection.\n"
+                                                         "Select the method to attach this sketch to selected objects.")
+                                         :
+                                         qApp->translate("Sketcher_MapSketch",
+                                                         "Select the method to attach this sketch to selected objects."),
+                                     items,
+                                     bCurIncompatible ? iSugg : iCurr,
+                                     false,
+                                     &ok, 
+                                     Qt::MSWindowsFixedSizeDialogHint);
         // * collect dialog result
-        if (!ok) return;
+        if (!ok)
+            return;
         index = items.indexOf(text);
-        if (index == 0){
+        if (index == 0) {
             bAttach = false;
             suggMapMode = Attacher::mmDeactivated;
         } else {
@@ -586,12 +641,12 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::Selection().getAsPropertyLinkSubList(support);
             std::string supportString = support.getPyReprString();
 
-            openCommand("Attach Sketch");
+            openCommand(QT_TRANSLATE_NOOP("Command", "Attach sketch"));
             Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "Support = %s",supportString.c_str());
             commitCommand();
         } else {
-            openCommand("Detach Sketch");
+            openCommand(QT_TRANSLATE_NOOP("Command", "Detach sketch"));
             Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "Support = None");
             commitCommand();
@@ -599,25 +654,32 @@ void CmdSketcherMapSketch::activated(int iMsg)
     } catch (ExceptionWrongInput &e) {
         QMessageBox::warning(Gui::getMainWindow(),
                              qApp->translate("Sketcher_MapSketch", "Map sketch"),
-                             qApp->translate("Sketcher_MapSketch", "Can't map a sketch to support:\n"
-                                         "%1").arg(e.ErrMsg.length() ? e.ErrMsg : msg_str));
+                             qApp->translate("Sketcher_MapSketch",
+                                             "Can't map a sketch to support:\n"
+                                             "%1").arg(e.ErrMsg.length() ? e.ErrMsg : msg_str));
     }
 }
 
 bool CmdSketcherMapSketch::isActive(void)
 {
-    return getActiveGuiDocument() != 0;
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    Base::Type sketch_type = Base::Type::fromName("Sketcher::SketchObject");
+    if (doc && doc->countObjectsOfType(sketch_type) > 0)
+        return true;
+
+    return false;
 }
 
 DEF_STD_CMD_A(CmdSketcherViewSketch)
 
 CmdSketcherViewSketch::CmdSketcherViewSketch()
-  : Command("Sketcher_ViewSketch")
+    : Command("Sketcher_ViewSketch")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("View sketch");
-    sToolTipText    = QT_TR_NOOP("View sketch perpendicular to sketch plane");
+    sToolTipText    = QT_TR_NOOP("When in edit mode, "
+                                 "set the camera orientation perpendicular to the sketch plane.");
     sWhatsThis      = "Sketcher_ViewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSketch";
@@ -655,7 +717,8 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Validate sketch...");
-    sToolTipText    = QT_TR_NOOP("Validate sketch");
+    sToolTipText    = QT_TR_NOOP("Validate a sketch by looking at missing coincidences,\n"
+                                 "invalid constraints, degenerated geometry, etc.");
     sWhatsThis      = "Sketcher_ValidateSketch";
     sStatusTip      = sToolTipText;
     eType           = 0;
@@ -669,7 +732,7 @@ void CmdSketcherValidateSketch::activated(int iMsg)
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("CmdSketcherValidateSketch", "Wrong selection"),
-            qApp->translate("CmdSketcherValidateSketch", "Select one sketch, please."));
+            qApp->translate("CmdSketcherValidateSketch", "Select only one sketch."));
         return;
     }
 
@@ -679,18 +742,22 @@ void CmdSketcherValidateSketch::activated(int iMsg)
 
 bool CmdSketcherValidateSketch::isActive(void)
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    if (Gui::Control().activeDialog())
+        return false;
+    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
 
 DEF_STD_CMD_A(CmdSketcherMirrorSketch)
 
 CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
-: Command("Sketcher_MirrorSketch")
+    : Command("Sketcher_MirrorSketch")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Mirror sketch");
-    sToolTipText    = QT_TR_NOOP("Mirror sketch");
+    sToolTipText    = QT_TR_NOOP("Create a new mirrored sketch for each selected sketch\n"
+                                 "by using the X or Y axes, or the origin point,\n"
+                                 "as mirroring reference.");
     sWhatsThis      = "Sketcher_MirrorSketch";
     sStatusTip      = sToolTipText;
     eType           = 0;
@@ -704,59 +771,46 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
     if (selection.size() < 1) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("CmdSketcherMirrorSketch", "Wrong selection"),
-            qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches, please."));
+            qApp->translate("CmdSketcherMirrorSketch", "Select one or more sketches."));
         return;
     }
 
-    // Ask the user which kind of mirroring he wants
-    SketchMirrorDialog * smd = new SketchMirrorDialog();
-
-    int refgeoid=-1;
-    Sketcher::PointPos refposid=Sketcher::none;
-
-    if( smd->exec() == QDialog::Accepted ){
-        refgeoid=smd->RefGeoid;
-        refposid=smd->RefPosid;
-
-        delete smd;
-    }
-    else {
-        delete smd;
+    int refgeoid = -1;
+    Sketcher::PointPos refposid = Sketcher::none;
+    // Ask the user the type of mirroring
+    SketchMirrorDialog smd;
+    if (smd.exec() != QDialog::Accepted)
         return;
-    }
+
+    refgeoid = smd.RefGeoid;
+    refposid = smd.RefPosid;
 
     App::Document* doc = App::GetApplication().getActiveDocument();
-
-    openCommand("Create a mirror Sketch for each sketch");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create a mirrored sketch for each selected sketch"));
 
     for (std::vector<Gui::SelectionObject>::const_iterator it=selection.begin(); it != selection.end(); ++it) {
         // create Sketch
         std::string FeatName = getUniqueObjectName("MirroredSketch");
-
-        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
-
+        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
         Sketcher::SketchObject* mirrorsketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
 
         const Sketcher::SketchObject* Obj = static_cast<const Sketcher::SketchObject*>((*it).getObject());
-
         Base::Placement pl = Obj->Placement.getValue();
-
         Base::Vector3d p = pl.getPosition();
         Base::Rotation r = pl.getRotation();
 
-        doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))",
+        doCommand(Doc,
+                  "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), App.Rotation(%f, %f, %f, %f))",
                   FeatName.c_str(),
-                  p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+                  p.x, p.y, p.z, r[0], r[1], r[2], r[3]);
 
         Sketcher::SketchObject* tempsketch = new Sketcher::SketchObject();
-
-        int addedGeometries=tempsketch->addGeometry(Obj->getInternalGeometry());
-
-        int addedConstraints=tempsketch->addConstraints(Obj->Constraints.getValues());
+        int addedGeometries = tempsketch->addGeometry(Obj->getInternalGeometry());
+        int addedConstraints = tempsketch->addConstraints(Obj->Constraints.getValues());
 
         std::vector<int> geoIdList;
 
-        for(int i=0;i<=addedGeometries;i++)
+        for (int i=0; i<=addedGeometries; i++)
             geoIdList.push_back(i);
 
         tempsketch->addSymmetric(geoIdList, refgeoid, refposid);
@@ -770,27 +824,34 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 
         for (std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
 
-            if ((*itc)->First!=Sketcher::Constraint::GeoUndef || (*itc)->First==Sketcher::GeoEnum::HAxis || (*itc)->First==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
-                (*itc)->First-=(addedGeometries+1);
-            if ((*itc)->Second!=Sketcher::Constraint::GeoUndef || (*itc)->Second==Sketcher::GeoEnum::HAxis || (*itc)->Second==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
-                (*itc)->Second-=(addedGeometries+1);
-            if ((*itc)->Third!=Sketcher::Constraint::GeoUndef || (*itc)->Third==Sketcher::GeoEnum::HAxis || (*itc)->Third==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
-                (*itc)->Third-=(addedGeometries+1);
+            if ((*itc)->First != Sketcher::Constraint::GeoUndef
+                    || (*itc)->First == Sketcher::GeoEnum::HAxis
+                    || (*itc)->First == Sketcher::GeoEnum::VAxis)
+                // not x, y axes or origin
+                (*itc)->First -= (addedGeometries + 1);
+            if ((*itc)->Second != Sketcher::Constraint::GeoUndef
+                    || (*itc)->Second == Sketcher::GeoEnum::HAxis
+                    || (*itc)->Second == Sketcher::GeoEnum::VAxis)
+                // not x, y axes or origin
+                (*itc)->Second -= (addedGeometries + 1);
+            if ((*itc)->Third != Sketcher::Constraint::GeoUndef
+                    || (*itc)->Third == Sketcher::GeoEnum::HAxis
+                    || (*itc)->Third == Sketcher::GeoEnum::VAxis)
+                // not x, y axes or origin
+                (*itc)->Third -= (addedGeometries + 1);
         }
 
         mirrorsketch->addGeometry(mirrorgeo);
         mirrorsketch->addConstraints(mirrorconstr);
-
         delete tempsketch;
     }
 
     doCommand(Gui,"App.activeDocument().recompute()");
-
 }
 
 bool CmdSketcherMirrorSketch::isActive(void)
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0;
 }
 
 DEF_STD_CMD_A(CmdSketcherMergeSketches)
@@ -801,7 +862,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Merge sketches");
-    sToolTipText    = QT_TR_NOOP("Merge sketches");
+    sToolTipText    = QT_TR_NOOP("Create a new sketch from merging two or more selected sketches.");
     sWhatsThis      = "Sketcher_MergeSketches";
     sStatusTip      = sToolTipText;
     eType           = 0;
@@ -815,7 +876,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     if (selection.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(),
                              qApp->translate("CmdSketcherMergeSketches", "Wrong selection"),
-                             qApp->translate("CmdSketcherMergeSketches", "Select at least two sketches, please."));
+                             qApp->translate("CmdSketcherMergeSketches", "Select at least two sketches."));
         return;
     }
 
@@ -824,13 +885,13 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     // create Sketch
     std::string FeatName = getUniqueObjectName("Sketch");
 
-    openCommand("Create a merge Sketch");
-    doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+    openCommand(QT_TRANSLATE_NOOP("Command", "Merge sketches"));
+    doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
 
     Sketcher::SketchObject* mergesketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
 
-    int baseGeometry=0;
-    int baseConstraints=0;
+    int baseGeometry = 0;
+    int baseConstraints = 0;
 
     for (std::vector<Gui::SelectionObject>::const_iterator it=selection.begin(); it != selection.end(); ++it) {
         const Sketcher::SketchObject* Obj = static_cast<const Sketcher::SketchObject*>((*it).getObject());
@@ -841,18 +902,21 @@ void CmdSketcherMergeSketches::activated(int iMsg)
         for (int i=0; i<=(addedConstraints-baseConstraints); i++){
             Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
 
-            if (constraint->First!=Sketcher::Constraint::GeoUndef &&
-                constraint->First!=Sketcher::GeoEnum::HAxis &&
-                constraint->First!=Sketcher::GeoEnum::VAxis) // not x, y axes or origin
-                constraint->First+=baseGeometry;
-            if (constraint->Second!=Sketcher::Constraint::GeoUndef &&
-                constraint->Second!=Sketcher::GeoEnum::HAxis &&
-                constraint->Second!=Sketcher::GeoEnum::VAxis) // not x, y axes or origin
-                constraint->Second+=baseGeometry;
-            if (constraint->Third!=Sketcher::Constraint::GeoUndef &&
-                constraint->Third!=Sketcher::GeoEnum::HAxis &&
-                constraint->Third!=Sketcher::GeoEnum::VAxis) // not x, y axes or origin
-                constraint->Third+=baseGeometry;
+            if (constraint->First != Sketcher::Constraint::GeoUndef &&
+                    constraint->First != Sketcher::GeoEnum::HAxis &&
+                    constraint->First != Sketcher::GeoEnum::VAxis)
+                // not x, y axes or origin
+                constraint->First += baseGeometry;
+            if (constraint->Second != Sketcher::Constraint::GeoUndef &&
+                    constraint->Second != Sketcher::GeoEnum::HAxis &&
+                    constraint->Second != Sketcher::GeoEnum::VAxis)
+                // not x, y axes or origin
+                constraint->Second += baseGeometry;
+            if (constraint->Third != Sketcher::Constraint::GeoUndef &&
+                    constraint->Third != Sketcher::GeoEnum::HAxis &&
+                    constraint->Third != Sketcher::GeoEnum::VAxis)
+                // not x, y axes or origin
+                constraint->Third += baseGeometry;
         }
 
         baseGeometry=addedGeometries+1;
@@ -860,14 +924,15 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     }
 
     // apply the placement of the first sketch in the list (#0002434)
-    doCommand(Doc,"App.activeDocument().ActiveObject.Placement=App.activeDocument().%s.Placement"
-                 ,selection.front().getFeatName());
-    doCommand(Doc,"App.activeDocument().recompute()");
+    doCommand(Doc,
+              "App.activeDocument().ActiveObject.Placement = App.activeDocument().%s.Placement",
+              selection.front().getFeatName());
+    doCommand(Doc, "App.activeDocument().recompute()");
 }
 
 bool CmdSketcherMergeSketches::isActive(void)
 {
-    return (hasActiveDocument() && !Gui::Control().activeDialog());
+    return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 1;
 }
 
 // Acknowledgement of idea and original python macro goes to SpritKopf:
@@ -881,7 +946,8 @@ CmdSketcherViewSection::CmdSketcherViewSection()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("View section");
-    sToolTipText    = QT_TR_NOOP("Switches between section and full view");
+    sToolTipText    = QT_TR_NOOP("When in edit mode, "
+                                 "switch between section view and full view.");
     sWhatsThis      = "Sketcher_ViewSection";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSection";

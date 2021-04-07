@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -31,16 +29,18 @@ import PySide
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "A container for all default values and job specific configuration values."
 
 _RegisteredOps = {}
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class Template:
     # pylint: disable=no-init
@@ -55,13 +55,17 @@ class Template:
     StartDepthExpression = 'StartDepthExpression'
     FinalDepthExpression = 'FinalDepthExpression'
     StepDownExpression = 'StepDownExpression'
+    Fixtures = 'Fixtures'
+    OrderOutputBy = 'OrderOutputBy'
+    SplitOutput = 'SplitOutput'
 
     All = [HorizRapid, VertRapid, CoolantMode, SafeHeightOffset, SafeHeightExpression, ClearanceHeightOffset, ClearanceHeightExpression, StartDepthExpression, FinalDepthExpression, StepDownExpression]
 
 
 def _traverseTemplateAttributes(attrs, codec):
+    PathLog.debug(attrs)
     coded = {}
-    for key,value in PathUtil.keyValueIter(attrs):
+    for key, value in PathUtil.keyValueIter(attrs):
         if type(value) == dict:
             PathLog.debug("%s is a dict" % key)
             coded[key] = _traverseTemplateAttributes(value, codec)
@@ -76,13 +80,14 @@ def _traverseTemplateAttributes(attrs, codec):
             coded[key] = value
     return coded
 
+
 class SetupSheet:
     '''Property container object used by a Job to hold global reference values. '''
 
     TemplateReference = '${SetupSheet}'
 
     DefaultSafeHeightOffset      = '3 mm'
-    DefaultClearanceHeightOffset = '5 mm' 
+    DefaultClearanceHeightOffset = '5 mm'
     DefaultSafeHeightExpression      = "OpStockZMax+${SetupSheet}.SafeHeightOffset"
     DefaultClearanceHeightExpression = "OpStockZMax+${SetupSheet}.ClearanceHeightOffset"
 
@@ -90,24 +95,24 @@ class SetupSheet:
     DefaultFinalDepthExpression = 'OpFinalDepth'
     DefaultStepDownExpression   = 'OpToolDiameter'
 
-    DefaultCoolantModes = ['None', 'Flood', 'Mist'] 
-   
+    DefaultCoolantModes = ['None', 'Flood', 'Mist']
+
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty('App::PropertySpeed', 'VertRapid',  'ToolController', translate('PathSetupSheet', 'Default speed for horizontal rapid moves.'))
+        obj.addProperty('App::PropertySpeed', 'VertRapid', 'ToolController', translate('PathSetupSheet', 'Default speed for horizontal rapid moves.'))
         obj.addProperty('App::PropertySpeed', 'HorizRapid', 'ToolController', translate('PathSetupSheet', 'Default speed for vertical rapid moves.'))
 
         obj.addProperty('App::PropertyStringList', 'CoolantModes', 'CoolantMode', translate('PathSetupSheet', 'Coolant Modes'))
         obj.addProperty('App::PropertyEnumeration', 'CoolantMode', 'CoolantMode', translate('PathSetupSheet', 'Default coolant mode.'))
 
-        obj.addProperty('App::PropertyLength', 'SafeHeightOffset',          'OperationHeights', translate('PathSetupSheet', 'The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.'))
-        obj.addProperty('App::PropertyString', 'SafeHeightExpression',      'OperationHeights', translate('PathSetupSheet', 'Expression set for the SafeHeight of new operations.'))
-        obj.addProperty('App::PropertyLength', 'ClearanceHeightOffset',     'OperationHeights', translate('PathSetupSheet', 'The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.'))
+        obj.addProperty('App::PropertyLength', 'SafeHeightOffset', 'OperationHeights', translate('PathSetupSheet', 'The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.'))
+        obj.addProperty('App::PropertyString', 'SafeHeightExpression', 'OperationHeights', translate('PathSetupSheet', 'Expression set for the SafeHeight of new operations.'))
+        obj.addProperty('App::PropertyLength', 'ClearanceHeightOffset', 'OperationHeights', translate('PathSetupSheet', 'The usage of this field depends on ClearanceHeightExpression - by default is value is added to StartDepth and used for ClearanceHeight of an operation.'))
         obj.addProperty('App::PropertyString', 'ClearanceHeightExpression', 'OperationHeights', translate('PathSetupSheet', 'Expression set for the ClearanceHeight of new operations.'))
 
         obj.addProperty('App::PropertyString', 'StartDepthExpression', 'OperationDepths', translate('PathSetupSheet', 'Expression used for StartDepth of new operations.'))
         obj.addProperty('App::PropertyString', 'FinalDepthExpression', 'OperationDepths', translate('PathSetupSheet', 'Expression used for FinalDepth of new operations.'))
-        obj.addProperty('App::PropertyString', 'StepDownExpression',   'OperationDepths', translate('PathSetupSheet', 'Expression used for StepDown of new operations.'))
+        obj.addProperty('App::PropertyString', 'StepDownExpression', 'OperationDepths', translate('PathSetupSheet', 'Expression used for StepDown of new operations.'))
 
         obj.SafeHeightOffset          = self.decodeAttributeString(self.DefaultSafeHeightOffset)
         obj.ClearanceHeightOffset     = self.decodeAttributeString(self.DefaultClearanceHeightOffset)
@@ -156,31 +161,38 @@ class SetupSheet:
             return False
         return True
 
+    def hasDefaultCoolantMode(self):
+        return self.obj.CoolantMode == "None"
+
     def setFromTemplate(self, attrs):
         '''setFromTemplate(attrs) ... sets the default values from the given dictionary.'''
         for name in Template.All:
             if attrs.get(name) is not None:
                 setattr(self.obj, name, attrs[name])
 
-        for opName,op in PathUtil.keyValueIter(_RegisteredOps):
+        for opName, op in PathUtil.keyValueIter(_RegisteredOps):
             opSetting = attrs.get(opName)
             if opSetting is not None:
                 prototype = op.prototype(opName)
                 for propName in op.properties():
                     value = opSetting.get(propName)
-                    if not value is None:
+                    if value is not None:
                         prop = prototype.getProperty(propName)
                         propertyName = OpPropertyName(opName, propName)
                         propertyGroup = OpPropertyGroup(opName)
                         prop.setupProperty(self.obj, propertyName, propertyGroup, prop.valueFromString(value))
 
-
-    def templateAttributes(self, includeRapids=True, includeCoolantMode=True, includeHeights=True, includeDepths=True, includeOps=None):
+    def templateAttributes(self,
+                           includeRapids=True,
+                           includeCoolantMode=True,
+                           includeHeights=True,
+                           includeDepths=True,
+                           includeOps=None):
         '''templateAttributes(includeRapids, includeHeights, includeDepths) ... answers a dictionary with the default values.'''
         attrs = {}
 
         if includeRapids:
-            attrs[Template.VertRapid]  = self.obj.VertRapid.UserString
+            attrs[Template.VertRapid] = self.obj.VertRapid.UserString
             attrs[Template.HorizRapid] = self.obj.HorizRapid.UserString
 
         if includeCoolantMode:
@@ -234,6 +246,7 @@ class SetupSheet:
     def encodeAttributeString(self, attr):
         '''encodeAttributeString(attr) ... return the encoded string of a template attribute.'''
         return PathUtil.toUnicode(attr.replace(self.expressionReference(), self.TemplateReference))
+
     def decodeAttributeString(self, attr):
         '''decodeAttributeString(attr) ... return the decoded string of a template attribute.'''
         return PathUtil.toUnicode(attr.replace(self.TemplateReference, self.expressionReference()))
@@ -249,7 +262,7 @@ class SetupSheet:
     def operationsWithSettings(self):
         '''operationsWithSettings() ... returns a list of operations which currently have some settings defined.'''
         ops = []
-        for name,value in PathUtil.keyValueIter(_RegisteredOps):
+        for name, value in PathUtil.keyValueIter(_RegisteredOps):
             for prop in value.registeredPropertyNames(name):
                 if hasattr(self.obj, prop):
                     ops.append(name)
@@ -264,25 +277,26 @@ class SetupSheet:
                 propName = OpPropertyName(opName, prop)
                 if hasattr(self.obj, propName):
                     setattr(obj, prop, getattr(self.obj, propName))
-        except Exception: # pylint: disable=broad-except
+        except Exception:
             PathLog.info("SetupSheet has no support for {}".format(opName))
-            #traceback.print_exc()
+            # traceback.print_exc()
 
     def onDocumentRestored(self, obj):
 
         if not hasattr(obj, 'CoolantModes'):
             obj.addProperty('App::PropertyStringList', 'CoolantModes', 'CoolantMode', translate('PathSetupSheet', 'Coolant Modes'))
             obj.CoolantModes = self.DefaultCoolantModes
-        
 
         if not hasattr(obj, 'CoolantMode'):
             obj.addProperty('App::PropertyEnumeration', 'CoolantMode', 'CoolantMode', translate('PathSetupSheet', 'Default coolant mode.'))
             obj.CoolantMode = self.DefaultCoolantModes
 
-def Create(name = 'SetupSheet'):
+
+def Create(name='SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
     obj.Proxy = SetupSheet(obj)
     return obj
+
 
 class _RegisteredOp(object):
 
@@ -298,14 +312,19 @@ class _RegisteredOp(object):
         self.factory("OpPrototype.%s" % name, ptt)
         return ptt
 
+
 def RegisterOperation(name, objFactory, setupProperties):
-    global _RegisteredOps # pylint: disable=global-statement
+    global _RegisteredOps
     _RegisteredOps[name] = _RegisteredOp(objFactory, setupProperties)
+
 
 def OpNamePrefix(name):
     return name.replace('Path', '').replace(' ', '').replace('_', '')
 
+
 def OpPropertyName(opName, propName):
     return "{}{}".format(OpNamePrefix(opName), propName)
+
+
 def OpPropertyGroup(opName):
     return "Op {}".format(opName)

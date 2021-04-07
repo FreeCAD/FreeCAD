@@ -548,7 +548,7 @@ void CmdTechDrawAnnotation::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("Annotation");
-    openCommand("Create Annotation");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewAnnotation','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     updateActive();
@@ -612,7 +612,7 @@ Gui::Action * CmdTechDrawCenterLineGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-facecenterline"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_FaceCenterLine"));
     p1->setObjectName(QString::fromLatin1("TechDraw_FaceCenterLine"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_FaceCenterLine"));
     QAction* p2 = pcAction->addAction(QString());
@@ -678,7 +678,7 @@ CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-facecenterline";
+    sPixmap         = "actions/TechDraw_FaceCenterLine";
 }
 
 void CmdTechDrawFaceCenterLine::activated(int iMsg)
@@ -1254,7 +1254,7 @@ CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Change Appearance of Lines");
-    sToolTipText    = "Change Appearance of selected Lines";
+    sToolTipText    = QT_TR_NOOP("Change Appearance of selected Lines");
     sWhatsThis      = "TechDraw_DecorateLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-DecorateLine";

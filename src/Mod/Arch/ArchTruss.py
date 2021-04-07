@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2020 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -21,19 +20,16 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch Truss"
+__title__  = "FreeCAD Arch Truss"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
-import math,sys
+import math
 import FreeCAD
-import Draft
 import ArchComponent
-import ArchCommands
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:

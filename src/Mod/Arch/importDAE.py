@@ -34,9 +34,9 @@ else:
 #
 #  This module provides tools to import and export Collada (.dae) files.
 
-__title__="FreeCAD Collada importer"
+__title__  = "FreeCAD Collada importer"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 DEBUG = True
 
@@ -47,9 +47,9 @@ except NameError:
     pass
 
 def checkCollada():
-    
+
     "checks if collada if available"
-    
+
     global collada
     COLLADA = None
     try:
@@ -59,12 +59,12 @@ def checkCollada():
         return False
     else:
         return True
-        
-        
+
+
 def triangulate(shape):
-    
+
     "triangulates the given face"
-    
+
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     mesher = p.GetInt("ColladaMesher",0)
     tessellation = p.GetFloat("ColladaTessellation",1.0)
@@ -83,12 +83,12 @@ def triangulate(shape):
                SegPerRadius=segsperradius,SecondOrder=secondorder,Optimize=optimize,
                AllowQuad=allowquads).Topology
 
-    
+
 def open(filename):
 
     "called when freecad wants to open a file"
 
-    if not checkCollada(): 
+    if not checkCollada():
         return
     docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
     doc = FreeCAD.newDocument(docname)
@@ -102,7 +102,7 @@ def insert(filename,docname):
 
     "called when freecad wants to import a file"
 
-    if not checkCollada(): 
+    if not checkCollada():
         return
     try:
         doc = FreeCAD.getDocument(docname)
@@ -129,9 +129,9 @@ def decode(name):
 
 
 def read(filename):
-    
+
     "reads a DAE file"
-    
+
     global col
     col = collada.Collada(filename, ignore=[collada.DaeUnsupportedError])
     # Read the unitmeter info from dae file and compute unit to convert to mm
@@ -186,12 +186,12 @@ def read(filename):
 
 
 def export(exportList,filename,tessellation=1,colors=None):
-    
+
     """export(exportList,filename,tessellation=1,colors=None) -- exports FreeCAD contents to a DAE file.
     colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
     to be used in non-GUI mode if you want to be able to export colors. Tessellation is used when breaking
     curved surfaces into triangles."""
-    
+
     if not checkCollada(): return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scale = p.GetFloat("ColladaScalingFactor",1.0)

@@ -1,31 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-#  importXLSX.py
-#  
-#  This library imports an Excel-XLSX-file into FreeCAD.
-#  
-#  Copyright (C) 2016  Ulrich Brammer <ulrich1a@users.sourceforge.net>
-#  
-#  This library is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU Lesser General Public
-#  License as published by the Free Software Foundation; either
-#  version 2.1 of the License, or (at your option) any later version.
-#  
-#  This library is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-#  Lesser General Public License for more details.
-#  
-#  You should have received a copy of the GNU Lesser General Public
-#  License along with this library; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
-#  MA  02110-1301  USA
+#***************************************************************************
+#*   Copyright (c) 2016 Ulrich Brammer <ulrich1a@users.sourceforge.net>    *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU General Public License (GPL)            *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   FreeCAD is distributed in the hope that it will be useful,            *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with FreeCAD; if not, write to the Free Software        *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#***************************************************************************/
+
 from __future__ import print_function
 
-__title__="FreeCAD Spreadsheet Workbench - XLSX importer"
-__author__ =  "Ulrich Brammer <ulrich1a@users.sourceforge.net>"
-__url__ = ["http://www.freecadweb.org"]
+__title__  = "FreeCAD Spreadsheet Workbench - XLSX importer"
+__author__ = "Ulrich Brammer <ulrich1a@users.sourceforge.net>"
+__url__    = ["https://www.freecadweb.org"]
 
 '''
 This library imports an Excel-XLSX-file into FreeCAD.
@@ -94,10 +93,10 @@ branchLower ={
   '=':None
   }
 
-branchHigher = {'=':None}  
+branchHigher = {'=':None}
 
 
-# Needed to get a reference from a string to a dict 
+# Needed to get a reference from a string to a dict
 treeDict = {
   'branchLower':branchLower,
   'branchHigher':branchHigher
@@ -108,7 +107,7 @@ treeDict = {
 # levelchange: -1: tree down, 0, +1: tree up
 # replacement token
 # function-state: needed to do something special in the parser
-#     0 = normal, 1 = the pi-case, 2 = angle-function, 
+#     0 = normal, 1 = the pi-case, 2 = angle-function,
 #     3 = IF-function, 4 = IF-truecase, 5 IF-falsecase
 
 
@@ -153,13 +152,13 @@ tokenDic = {
   'MIN'  :( 0, 'min',  0),
   'STDEVA':( 0, 'stddev',0),
   'SUM'  :( 0, 'sum',  0),
-  'PI'   :( 0, 'pi',   1) 
+  'PI'   :( 0, 'pi',   1)
   }
 
 
 class exprNode(object):
   ''' This defines a tree class for expression parsing.
-  A tree is built, to step down into the levels of the expression.'''   
+  A tree is built, to step down into the levels of the expression.'''
   def __init__(self, parent, state, actIndex):
     self.state = state #see comment: State used for Angle-functions and IF-function
     self.parent = parent # Parent tree node
@@ -217,15 +216,15 @@ class FormulaTranslator(object):
               tokenComplete = True
         self.tokenList.append(theTok)
         self.getNextToken(theExpr)
-          
-    
+
+
   def isKey(self, theExpr):
     #print('look up: ', theExpr)
     keyToken = False
     lenExpr = len(theExpr)
     if theExpr[0] in sepToken:
       branch = sepToken[theExpr[0]]
-      
+
       if branch is None:
         keyToken = True
       else:
@@ -240,8 +239,8 @@ class FormulaTranslator(object):
         else:
           keyToken = True
     return keyToken
-          
-  
+
+
 
   def parseExpr(self, treeNode):
     token = self.tokenList[treeNode.lIndex]
@@ -253,30 +252,30 @@ class FormulaTranslator(object):
       newToken = token
       funcState = 0
     #print('treeNode.state: ', treeNode.state, ' my.index: ', treeNode.lIndex-1, ' ', token, ' fState: ', funcState)
-      
+
     if token == ',':
       if (treeNode.state == 4):
         newToken = ':'
-        treeNode.state = 6      
+        treeNode.state = 6
       if (treeNode.state == 3):
         newToken = '?'
         treeNode.state = 4
-      
+
     if funcState == 3:
       funcState = 0
       newNode = exprNode(treeNode, 3, treeNode.lIndex)
-      self.parseIF(newNode) 
+      self.parseIF(newNode)
     else:
       treeNode.result = treeNode.result + newToken
-      
+
     if funcState == 2:
       funcState = 0
       newNode = exprNode(treeNode, 2, treeNode.lIndex)
-      self.parseAngle(newNode) 
+      self.parseAngle(newNode)
       treeNode.result = treeNode.result + ')'
-    elif funcState == 1: 
+    elif funcState == 1:
       treeNode.lIndex += 2  # do skip the 2 parentheses of the PI()
-      
+
     if lChange == -1:
       #print 'state: ', treeNode.state, 'parent.result: ', treeNode.parent.result, ' mine: ', treeNode.result
       treeNode.parent.result = treeNode.parent.result + treeNode.result
@@ -286,12 +285,12 @@ class FormulaTranslator(object):
         #print(' Look up more token above')
         if treeNode.lIndex < len(self.tokenList):
           self.parseExpr(treeNode.parent)
-        
+
     elif lChange == 1:
       #print('Go one level down')
       newNode = exprNode(treeNode, 1, treeNode.lIndex)
-      self.parseExpr(newNode) 
-      treeNode.lIndex = newNode.lIndex 
+      self.parseExpr(newNode)
+      treeNode.lIndex = newNode.lIndex
     else:
       if treeNode.lIndex < len(self.tokenList):
         #print('parse to the end')
@@ -303,7 +302,7 @@ class FormulaTranslator(object):
     #print('IF state: ', treeNode.state)
     treeNode.result = treeNode.result + '('
     treeNode.lIndex += 1
-    self.parseExpr(treeNode) 
+    self.parseExpr(treeNode)
     #print('IF result: ', treeNode.result)
     return
 
@@ -311,7 +310,7 @@ class FormulaTranslator(object):
     #print('Angle state: ', treeNode.state)
     treeNode.result = treeNode.result + '(1rad*('
     treeNode.lIndex += 1
-    self.parseExpr(treeNode) 
+    self.parseExpr(treeNode)
     #print('angle result: ', treeNode.result)
 
 
@@ -331,7 +330,7 @@ def handleWorkSheet(theDom, actSheet, strList):
   rows = theDom.getElementsByTagName("row")
   for row in rows:
     handleCells(row.getElementsByTagName("c"), actSheet, strList)
-  
+
 
 def handleCells(cellList, actCellSheet, sList):
   for cell in cellList:
@@ -346,14 +345,14 @@ def handleCells(cellList, actCellSheet, sList):
       cellType = 'n'   # FIXME: some cells don't have t and s attributes
 
     #print("reference: ", ref, ' Cell type: ', cellType)
-    
+
     if cellType == 'inlineStr':
       iStringList = cell.getElementsByTagName("is")
       #print('iString: ', iStringList)
       for stringEle in iStringList:
         tElement = stringEle.getElementsByTagName('t')[0]
         theString = getText(tElement.childNodes)
-        
+
         #print('theString: ', theString)
         actCellSheet.set(ref, theString)
 
@@ -391,7 +390,7 @@ def handleWorkBook(theBook, sheetDict, Doc):
     #print("sheetFile: ", sheetFile)
     # add FreeCAD-spreadsheet
     sheetDict[sheetName] = (Doc.addObject('Spreadsheet::Sheet', sheetName), sheetFile)
-    
+
   theAliases = theBook.getElementsByTagName("definedName")
   for theAlias in theAliases:
     aliAtts = theAlias.attributes
@@ -420,39 +419,39 @@ def open(nameXLSX):
 
   if len(nameXLSX) > 0:
     z=zipfile.ZipFile(nameXLSX)
-    
+
     theDoc = App.newDocument()
-    
+
     sheetDict = dict()
     stringList = []
-    
+
     theBookFile=z.open('xl/workbook.xml')
     theBook = xml.dom.minidom.parse(theBookFile)
     handleWorkBook(theBook, sheetDict, theDoc)
     theBook.unlink()
-    
+
     if 'xl/sharedStrings.xml' in z.namelist():
       theStringFile=z.open('xl/sharedStrings.xml')
       theStrings = xml.dom.minidom.parse(theStringFile)
       handleStrings(theStrings, stringList)
       theStrings.unlink()
-    
+
     for sheetSpec in sheetDict:
       #print("sheetSpec: ", sheetSpec)
       theSheet, sheetFile = sheetDict[sheetSpec]
       f=z.open('xl/worksheets/' + sheetFile)
       myDom = xml.dom.minidom.parse(f)
-      
+
       handleWorkSheet(myDom, theSheet, stringList)
       myDom.unlink()
-    
+
     z.close()
     # This is needed more than once, otherwise some references are not calculated!
     theDoc.recompute()
     theDoc.recompute()
     theDoc.recompute()
     return theDoc
-    
+
 def insert(nameXLSX,docname):
   try:
           theDoc=App.getDocument(docname)
@@ -468,22 +467,22 @@ def insert(nameXLSX,docname):
   theBook = xml.dom.minidom.parse(theBookFile)
   handleWorkBook(theBook, sheetDict, theDoc)
   theBook.unlink()
-  
+
   if 'xl/sharedStrings.xml' in z.namelist():
     theStringFile=z.open('xl/sharedStrings.xml')
     theStrings = xml.dom.minidom.parse(theStringFile)
     handleStrings(theStrings, stringList)
     theStrings.unlink()
-  
+
   for sheetSpec in sheetDict:
     #print("sheetSpec: ", sheetSpec)
     theSheet, sheetFile = sheetDict[sheetSpec]
     f=z.open('xl/worksheets/' + sheetFile)
     myDom = xml.dom.minidom.parse(f)
-    
+
     handleWorkSheet(myDom, theSheet, stringList)
     myDom.unlink()
-  
+
   z.close()
   # This is needed more than once, otherwise some references are not calculated!
   theDoc.recompute()

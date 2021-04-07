@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -27,7 +25,7 @@ from __future__ import print_function
 
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of 3D Surface operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 
@@ -498,8 +496,8 @@ class ObjectSurface(PathOp.ObjectOp):
         # set cut mode; reverse as needed
         if obj.CutMode == 'Climb':
             self.CutClimb = True
-        if obj.CutPatternReversed is True:
-            if self.CutClimb is True:
+        if obj.CutPatternReversed:
+            if self.CutClimb:
                 self.CutClimb = False
             else:
                 self.CutClimb = True
@@ -921,9 +919,11 @@ class ObjectSurface(PathOp.ObjectOp):
         elif obj.CutPattern in ['Line', 'Spiral', 'ZigZag']:
             stpOvr = list()
             if obj.CutPattern == 'Line':
-                PNTSET = PathSurfaceSupport.pathGeomToLinesPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
+                # PNTSET = PathSurfaceSupport.pathGeomToLinesPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
+                PNTSET = PathSurfaceSupport.pathGeomToLinesPointSet(self, obj, pathGeom)
             elif obj.CutPattern == 'ZigZag':
-                PNTSET = PathSurfaceSupport.pathGeomToZigzagPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
+                # PNTSET = PathSurfaceSupport.pathGeomToZigzagPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
+                PNTSET = PathSurfaceSupport.pathGeomToZigzagPointSet(self, obj, pathGeom)
             elif obj.CutPattern == 'Spiral':
                 PNTSET = PathSurfaceSupport.pathGeomToSpiralPointSet(obj, pathGeom)
 
@@ -940,7 +940,8 @@ class ObjectSurface(PathOp.ObjectOp):
         elif obj.CutPattern in ['Circular', 'CircularZigZag']:
             # PNTSET is list, by stepover.
             # Each stepover is a list containing arc/loop descriptions, (sp, ep, cp)
-            PNTSET = PathSurfaceSupport.pathGeomToCircularPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps, self.tmpCOM)
+            # PNTSET = PathSurfaceSupport.pathGeomToCircularPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps, self.tmpCOM)
+            PNTSET = PathSurfaceSupport.pathGeomToCircularPointSet(self, obj, pathGeom)
 
             for so in range(0, len(PNTSET)):
                 stpOvr = list()
@@ -1805,6 +1806,9 @@ class ObjectSurface(PathOp.ObjectOp):
                         lo = ocl.Line(p2, p1)
                     else:
                         lo = ocl.Line(p1, p2)
+                else:
+                    # default to line-object
+                    lo = ocl.Line(p1, p2)
             else:
                 lo = ocl.Line(p1, p2)   # line-object
 

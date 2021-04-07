@@ -86,7 +86,7 @@ void BaseView::setDocument(Gui::Document* pcDocument)
     if (_pcDocument)
         _pcDocument->detachView(this, true);
     if (pcDocument)
-        pcDocument->attachView(this,true);	
+        pcDocument->attachView(this,true);
 
     // set the new document as the active one
     _pcDocument = pcDocument;

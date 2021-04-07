@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -21,6 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 import FreeCAD
 import Path
 import math
@@ -242,7 +241,7 @@ class CommandPathDressup:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Axis Map Dress-up"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "Remap one axis to another.")}

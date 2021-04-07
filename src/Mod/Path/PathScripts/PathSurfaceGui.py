@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathSurface as PathSurface
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
@@ -32,7 +31,7 @@ from PySide import QtCore
 
 __title__ = "Path Surface Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Surface operation page controller and command implementation."
 
 
@@ -228,9 +227,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 Command = PathOpGui.SetupOperation('Surface',
         PathSurface.Create,
         TaskPanelOpPage,
-        'Path-3DSurface',
-        QtCore.QT_TRANSLATE_NOOP("Surface", "3D Surface"),
-        QtCore.QT_TRANSLATE_NOOP("Surface", "Create a 3D Surface Operation from a model"),
+        'Path_3DSurface',
+        QtCore.QT_TRANSLATE_NOOP("Path_Surface", "3D Surface"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Surface", "Create a 3D Surface Operation from a model"),
         PathSurface.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathSurfaceGui... done\n")

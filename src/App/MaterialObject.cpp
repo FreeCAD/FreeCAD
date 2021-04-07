@@ -34,7 +34,7 @@ using namespace App;
 PROPERTY_SOURCE(App::MaterialObject, App::DocumentObject)
 
 
-MaterialObject::MaterialObject() 
+MaterialObject::MaterialObject()
 {
     ADD_PROPERTY_TYPE(Material,(),"Material",Prop_None,"Material key/value map");
 

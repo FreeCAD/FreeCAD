@@ -1,7 +1,5 @@
 #  -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -539,7 +537,7 @@ class CommandDressupDragknife:
     # pylint: disable=no-init
 
     def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
+        return {'Pixmap': 'Path_Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupDragKnife", "DragKnife Dress-up"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupDragKnife", "Modifies a path to add dragknife corner actions")}
 

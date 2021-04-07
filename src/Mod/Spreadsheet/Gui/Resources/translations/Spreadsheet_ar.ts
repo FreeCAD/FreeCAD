@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>دمج الخلايا</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>تقسيم الخلية</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>محاذاة الخلية لليسار</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>توسيط الخلية</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>محاذاة الخلية لليمين</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>محاذاة الخلية للأعلى</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>محاذاة الخلية للأسفل</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>محاذاة الخلايا للوسط رأسيًا</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>تعيين نص بالخط العريض</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>تعيين نص مائل</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>تسطير النص</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>إنشاء جدول بيانات</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>تعيين خصائص الخلية</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>تعديل الخلية</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>إدراج صفوف</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>إزالة صفوف</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>إدراج أعمدة</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>مسح الخلية (خلايا)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>تعيين اللون الأمامي</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>تعيين لون الخلفية</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -357,22 +440,22 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>جدول البيانات لا يدعم تحديد النطاق عند اللصق.
+الرجاء تحديد خلية واحدة فقط.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
-      <translation type="unfinished">Copy &amp; Paste failed</translation>
+      <translation>فشل النسخ واللصق</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>الاسم المستعار يحتوي على أحرف غير صالحة!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>الرجوع إلى الخلية بواسطة الاسم المستعار، على سبيل المثال
+Spreadsheet.my_alias_name بدلاً من Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -458,17 +541,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>والمحتوى:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>والاسم المستعار:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>الرجوع إلى الخلية بواسطة الاسم المستعار، على سبيل المثال
+Spreadsheet.my_alias_name بدلاً من Spreadsheet.B1</translation>
     </message>
   </context>
   <context>

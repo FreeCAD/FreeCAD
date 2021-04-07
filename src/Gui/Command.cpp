@@ -93,9 +93,9 @@ using namespace Gui::DockWnd;
  *
  * \section wayout Way out
  * To solve these problems we have introduced the command framework to decouple QAction and MainWindow. The base classes of the framework are
- * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world. 
+ * \a Gui::CommandBase and \a Gui::Action that represent the link between Qt's QAction world and the FreeCAD's command world.
  *
- * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created 
+ * The Action class holds a pointer to QAction and CommandBase and acts as a mediator and -- to save memory -- that gets created
  * (@ref Gui::CommandBase::createAction()) not before it is added (@ref Gui::Command::addTo()) to a menu or toolbar.
  *
  * Now, the implementation of the slots of MainWindow can be done in the method \a activated() of subclasses of Command instead.
@@ -375,68 +375,78 @@ void Command::setupCheckable(int iMsg) {
 void Command::invoke(int i, TriggerSource trigger)
 {
     CommandTrigger cmdTrigger(_trigger,trigger);
-    if(displayText.empty()) {
+    if (displayText.empty()) {
         displayText = getMenuText();
         boost::replace_all(displayText,"&","");
-        if(displayText.empty())
+        if (displayText.empty())
             displayText = getName();
     }
-
-    // Because Transaction now captures ViewObject changes, auto named
-    // transaction is disabled here to avoid too many unnecessary transactions.
-    //
-    // App::AutoTransaction committer((eType&NoTransaction)?0:displayText.c_str(),true);
-    App::AutoTransaction committer(0,true);
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
 #endif
-    // set the application module type for the macro
-    getGuiApplication()->macroManager()->setModule(sAppModule);
+
+    _invoke(i, bCanLog && !_busy);
+}
+
+void Command::_invoke(int id, bool disablelog)
+{
     try {
-        std::unique_ptr<LogDisabler> disabler;
-        if(bCanLog && !_busy)
-            disabler.reset(new LogDisabler);
+        // Because Transaction now captures ViewObject changes, auto named
+        // transaction is disabled here to avoid too many unnecessary transactions.
+        //
+        App::AutoTransaction committer(nullptr, true);
+
+        // set the application module type for the macro
+        getGuiApplication()->macroManager()->setModule(sAppModule);
+
+        std::unique_ptr<LogDisabler> logdisabler;
+        if (disablelog)
+            logdisabler.reset(new LogDisabler);
+
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
             auto editDoc = getGuiApplication()->editDocument();
-            if(!disabler)
-                activated( i );
+
+            if (!logdisabler) {
+                activated(id);
+            }
             else {
-                Gui::SelectionLogDisabler disabler;
+                Gui::SelectionLogDisabler seldisabler;
                 auto lines = manager->getLines();
                 std::ostringstream ss;
                 ss << "### Begin command " << sName;
                 // Add a pending line to mark the start of a command
                 PendingLine pending(MacroManager::Cmt, ss.str().c_str());
-                activated( i );
                 ss.str("");
-                if(manager->getLines() == lines) {
+
+                activated(id);
+
+                if (manager->getLines() == lines) {
                     // This command does not record any lines, lets do it for
-                    // him. The above LogDisabler is to prevent nested command
+                    // it. The above LogDisabler is to prevent nested command
                     // logging, i.e. we only auto log the first invoking
                     // command.
 
                     // Cancel the above pending line first
                     pending.cancel();
-                    ss << "Gui.runCommand('" << sName << "'," << i << ')';
-                    if(eType & AlterDoc)
-                        manager->addLine(MacroManager::App, ss.str().c_str());
-                    else
-                        manager->addLine(MacroManager::Gui, ss.str().c_str());
-                }else{
+                    ss << "Gui.runCommand('" << sName << "'," << id << ')';
+                    manager->addLine(MacroManager::Gui, ss.str().c_str());
+                }
+                else {
                     // In case the command has any output to the console, lets
                     // mark the end of the command here
                     ss << "### End command " << sName;
                     manager->addLine(MacroManager::Cmt, ss.str().c_str());
                 }
             }
+
             getMainWindow()->updateActions();
 
             // If this command starts an editing, let the transaction persist
-            if(!editDoc && getGuiApplication()->editDocument())
+            if (!editDoc && getGuiApplication()->editDocument())
                 committer.setEnable(false);
         }
     }
@@ -466,7 +476,7 @@ void Command::invoke(int i, TriggerSource trigger)
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", i);
+        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
@@ -482,7 +492,7 @@ void Command::testActive(void)
     }
 
     if (!(eType & ForEdit)) { // special case for commands which are only in some edit modes active
-        
+
         if ((!Gui::Control().isAllowedAlterDocument()  && eType & AlterDoc)    ||
             (!Gui::Control().isAllowedAlterView()      && eType & Alter3DView) ||
             (!Gui::Control().isAllowedAlterSelection() && eType & AlterSelection)) {
@@ -542,8 +552,8 @@ std::string Command::getUniqueObjectName(const char *BaseName, const App::Docume
     return doc->getUniqueObjectName(BaseName);
 }
 
-std::string Command::getObjectCmd(const char *Name, const App::Document *doc, 
-        const char *prefix, const char *postfix, bool gui) 
+std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
+        const char *prefix, const char *postfix, bool gui)
 {
     if(!doc) doc = App::GetApplication().getActiveDocument();
     if(!doc || !Name)
@@ -551,7 +561,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
     std::ostringstream str;
     if(prefix)
         str << prefix;
-    str << (gui?"Gui":"App") << ".getDocument('" << doc->getName() 
+    str << (gui?"Gui":"App") << ".getDocument('" << doc->getName()
         << "').getObject('" << Name << "')";
     if(postfix)
         str << postfix;
@@ -559,7 +569,7 @@ std::string Command::getObjectCmd(const char *Name, const App::Document *doc,
 }
 
 std::string Command::getObjectCmd(const App::DocumentObject *obj,
-        const char *prefix, const char *postfix, bool gui) 
+        const char *prefix, const char *postfix, bool gui)
 {
     if(!obj || !obj->getNameInDocument())
         return std::string("None");
@@ -651,7 +661,7 @@ void Command::printPyCaller() {
     if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
     PyFrameObject* frame = PyEval_GetFrame();
-    if(!frame) 
+    if(!frame)
         return;
     int line = PyFrame_GetLineNumber(frame);
 #if PY_MAJOR_VERSION >= 3
@@ -663,7 +673,7 @@ void Command::printPyCaller() {
 }
 
 void Command::printCaller(const char *file, int line) {
-    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) 
+    if(!FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
     std::ostringstream str;
 #ifdef FC_OS_WIN32
@@ -720,7 +730,7 @@ void Command::addModule(DoCmd_Type eType,const char* sModuleName)
 
 std::string Command::_assureWorkbench(const char *file, int line, const char * sName)
 {
-    // check if the WB is already open? 
+    // check if the WB is already open?
     std::string actName = WorkbenchManager::instance()->active()->name();
     // if yes, do nothing
     if(actName == sName)
@@ -995,6 +1005,7 @@ Command *GroupCommand::addCommand(const char *name) {
 
 Action * GroupCommand::createAction(void) {
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    pcAction->setMenuRole(QAction::NoRole);
     pcAction->setDropDownMenu(true);
     pcAction->setExclusive(false);
     pcAction->setCheckable(true);
@@ -1039,7 +1050,7 @@ void GroupCommand::languageChange() {
 void GroupCommand::setup(Action *pcAction) {
 
     pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
-    
+
     int idx = pcAction->property("defaultAction").toInt();
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
@@ -1083,7 +1094,7 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     QDir d;
     if (!systemMacro) {
@@ -1099,7 +1110,7 @@ void MacroCommand::activated(int iMsg)
         QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
         d = QDir(dirstr);
     }
-    
+
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
     if (!fi.exists()) {
         QMessageBox::critical(Gui::getMainWindow(),

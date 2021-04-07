@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Wandererfan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2017 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -85,12 +85,12 @@ Base::Vector3d LineSet::calcApparentStart(TechDraw::BaseGeom* g)
     Base::Vector3d result;
     Base::Vector3d start(g->getStartPoint().x,g->getStartPoint().y,0.0);
     double angle = getPATLineSpec().getAngle();
-    if (angle == 0.0) {             //horizontal 
+    if (angle == 0.0) {             //horizontal
         result = Base::Vector3d(getMinX(),start.y,0.0);
     } else if ((angle == 90.0) ||
                (angle == -90.0)) {  //vertical
         result = Base::Vector3d(start.x,getMinY(),0.0);
-    } else {               
+    } else {
         double slope = getPATLineSpec().getSlope();
         double y     = getMinY();
         double x = ((y - start.y) / slope) + start.x;
@@ -162,7 +162,7 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeom* g, double &offs
     double distX,distY;
     int overlayIndex = 0;
     //interval & offset are not patternscaled
-    
+
 //figure out which line this is in the overlay
     if (angle == 0.0) {      //odd case - horizontal line
         distY = (thisStart.y - atomStart.y);                                       //this is patternscaled
@@ -202,12 +202,12 @@ Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeom* g, double &offs
             } else {
 //                //ugly case - partial pattern
                 result = gStart;
-                offset = patsStartOrg - (int)patsStartOrg;        //fraction of a patternLength 
+                offset = patsStartOrg - (int)patsStartOrg;        //fraction of a patternLength
                 offset = offset * patternLength;
             }
-        } else if (lenStartOrg > lenEndOrg) {                          //origin is after end 
+        } else if (lenStartOrg > lenEndOrg) {                          //origin is after end
             double c = ceil(patsEndOrg);
-            if (c <= patsStartOrg) {                      //c is an integer pattern count in [patsStartOrg,patsEndOrg]                    
+            if (c <= patsStartOrg) {                      //c is an integer pattern count in [patsStartOrg,patsEndOrg]
                 result = lineOrigin - c*patternLength*getUnitDir();
                 offset = 0.0;
             } else {
@@ -320,7 +320,7 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
         Base::Console().Message( "Could not find pattern: %s\n",parmName.c_str() );
         return result;
     }
-    
+
     //decode definition lines into PATLineSpec objects
     for (auto& l: lineSpecs) {
         PATLineSpec hl(l);
@@ -431,7 +431,7 @@ bool PATLineSpec::isDashed(void)
 
 //! X component of distance between lines
 double PATLineSpec::getIntervalX(void)
-{ 
+{
     if (getAngle() == 0.0) {
         return 0.0;
     } else if ((getAngle() == 90.0) || (getAngle() == -90.0)) {
@@ -444,14 +444,14 @@ double PATLineSpec::getIntervalX(void)
 
 //! Y component of distance between lines
 double PATLineSpec::getIntervalY(void)
-{ 
+{
     if (getAngle() == 0.0) {
         return getInterval();
     } else if ((getAngle() == 90.0) || (getAngle() == -90.0)) {
         return 0.0;
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() * tan(perpAngle * M_PI/180.0)); 
+        return fabs(getInterval() * tan(perpAngle * M_PI/180.0));
     }
 }
 
@@ -484,7 +484,7 @@ void DashSpec::dump(const char* title)
     }
     Base::Console().Message("DUMP - DashSpec - %s\n",ss.str().c_str());
 }
- 
+
 
 
 

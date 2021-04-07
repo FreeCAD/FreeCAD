@@ -120,7 +120,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Insert a new View of a Part in the active drawing</source>
-      <translation>Lisää uusi näkymä aktiivisen piirustuksen osasta</translation>
+      <translation>Lisää uusi näkymä aktiivisen piirustuksen osaan</translation>
     </message>
   </context>
   <context>
@@ -170,12 +170,12 @@
     <message>
       <location filename="../../Command.cpp" line="394"/>
       <source>Insert orthographic views</source>
-      <translation>Lisää Ortografisia näkymiä</translation>
+      <translation>Lisää ortografisia näkymiä</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="395"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Lisää ortografinen projektio aktiivisen teknisen piirroksen osasta</translation>
+      <translation>Lisää ortografinen projektio aktiivisen teknisen piirroksen osaan</translation>
     </message>
   </context>
   <context>
@@ -213,7 +213,7 @@
       <location filename="../../Command.cpp" line="761"/>
       <location filename="../../Command.cpp" line="763"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+      <translation>Lisää valitun kohteen vedosnäkymän aktiivisessa piirroksessa</translation>
     </message>
   </context>
   <context>
@@ -238,128 +238,134 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="215"/>
+      <location filename="../../DrawingView.cpp" line="219"/>
       <source>&amp;Background</source>
       <translation>&amp;Tausta</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="221"/>
+      <location filename="../../DrawingView.cpp" line="225"/>
       <source>&amp;Outline</source>
       <translation>&amp;Jäsennys</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="227"/>
+      <location filename="../../DrawingView.cpp" line="231"/>
       <source>&amp;Native</source>
       <translation>&amp;Paikallinen</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="231"/>
+      <location filename="../../DrawingView.cpp" line="235"/>
       <source>&amp;OpenGL</source>
       <translation>&amp;OpenGL</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="234"/>
+      <location filename="../../DrawingView.cpp" line="238"/>
       <source>&amp;Image</source>
       <translation>&amp;Kuva</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="238"/>
+      <location filename="../../DrawingView.cpp" line="242"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation>&amp;Korkealaatuinen reunojen pehmennys</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="276"/>
+      <location filename="../../DrawingView.cpp" line="284"/>
       <source>Open SVG File</source>
       <translation>Avaa SVG-tiedosto</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="277"/>
+      <location filename="../../DrawingView.cpp" line="285"/>
       <source>Could not open file '%1'.</source>
       <translation>Tiedostoa '%1' ei voitu avata.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="364"/>
+      <location filename="../../DrawingView.cpp" line="408"/>
       <source>&amp;Renderer</source>
       <translation>&amp;Renderöinti</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="469"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>Export PDF</source>
       <translation>Vie PDF-asiakirjaan</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="470"/>
+      <location filename="../../DrawingView.cpp" line="514"/>
       <source>PDF file</source>
       <translation>PDF-tiedosto</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="486"/>
+      <location filename="../../DrawingView.cpp" line="530"/>
       <source>Page sizes</source>
       <translation>Sivukoot</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="487"/>
+      <location filename="../../DrawingView.cpp" line="532"/>
+      <location filename="../../DrawingView.cpp" line="545"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="489"/>
+      <location filename="../../DrawingView.cpp" line="534"/>
+      <location filename="../../DrawingView.cpp" line="547"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="491"/>
+      <location filename="../../DrawingView.cpp" line="536"/>
+      <location filename="../../DrawingView.cpp" line="549"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="493"/>
+      <location filename="../../DrawingView.cpp" line="538"/>
+      <location filename="../../DrawingView.cpp" line="551"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="495"/>
+      <location filename="../../DrawingView.cpp" line="540"/>
+      <location filename="../../DrawingView.cpp" line="553"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="497"/>
+      <location filename="../../DrawingView.cpp" line="542"/>
+      <location filename="../../DrawingView.cpp" line="555"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="578"/>
+      <location filename="../../DrawingView.cpp" line="666"/>
       <source>Different orientation</source>
       <translation>Erilainen sivun suunta</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="579"/>
+      <location filename="../../DrawingView.cpp" line="667"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Tulostin käyttää eri paperisuuntaa kuin piirroksesi.
 Haluatko jatkaa?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="586"/>
-      <location filename="../../DrawingView.cpp" line="594"/>
+      <location filename="../../DrawingView.cpp" line="674"/>
+      <location filename="../../DrawingView.cpp" line="682"/>
       <source>Different paper size</source>
       <translation>Erilainen paperikoko</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="587"/>
-      <location filename="../../DrawingView.cpp" line="595"/>
+      <location filename="../../DrawingView.cpp" line="675"/>
+      <location filename="../../DrawingView.cpp" line="683"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Tulostin käyttää eri paperikokoa kuin piirros.
 Haluatko jatkaa?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="606"/>
+      <location filename="../../DrawingView.cpp" line="694"/>
       <source>Opening file failed</source>
       <translation>Tiedoston avaaminen epäonnistui</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="607"/>
+      <location filename="../../DrawingView.cpp" line="695"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>Tiedostoon ”%1” ei voida tallentaa.</translation>
     </message>
@@ -425,7 +431,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="561"/>
       <source>Show hidden lines</source>
-      <translation>Näytä piilotetut tiedostot</translation>
+      <translation>Näytä piilotetut viivat</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="568"/>
@@ -440,7 +446,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="587"/>
       <source>Axis out and right</source>
-      <translation type="unfinished">Axis out and right</translation>
+      <translation>Akseli ulos ja oikealle</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="594"/>
@@ -510,7 +516,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="667"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>Näytä projekti</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="674"/>
@@ -619,7 +625,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="92"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation type="unfinished">There is currently no active document to complete the operation</translation>
+      <translation>Toiminnon loppuun saattamiseen ei tällä hetkellä ole aktiivista asiakirjaa</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="97"/>
@@ -629,7 +635,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="98"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation type="unfinished">There is currently no active view to complete the operation</translation>
+      <translation>Toiminnon loppuun saattamiseen ei tällä hetkellä ole aktiivista näkymää</translation>
     </message>
   </context>
   <context>
@@ -738,7 +744,7 @@ Haluatko jatkaa?</translation>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Valitse täsmälleen yksi kohde.</translation>
+      <translation>Valitse täsmälleen yksi taulukkokohde.</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="54"/>

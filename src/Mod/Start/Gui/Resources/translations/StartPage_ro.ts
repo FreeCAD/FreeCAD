@@ -209,6 +209,11 @@ de documentare, help pentru atelier și documentarea comenzilor individuale făr
       <source>Notes</source>
       <translation>Note</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Open start page preferences</source>
+      <translation type="unfinished">Open start page preferences</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>

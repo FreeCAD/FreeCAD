@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation>Decimacija...</translation>
+      <translation>Desetkanje ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
       <location filename="../../Command.cpp" line="1466"/>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Decimates a mesh</source>
-      <translation>Decimacija mreže</translation>
+      <translation>Zdesetka ploskovje</translation>
     </message>
   </context>
   <context>
@@ -517,17 +517,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="1877"/>
       <source>Scale...</source>
       <translation>Povečava...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1832"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Scale selected meshes</source>
       <translation>Spremeni velikost izbranega ploskovja</translation>
     </message>
@@ -606,6 +606,24 @@
       <location filename="../../Command.cpp" line="1404"/>
       <source>Smooth the selected meshes</source>
       <translation>Zgladi izbrana ploskovja</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSplitComponents</name>
+    <message>
+      <location filename="../../Command.cpp" line="1830"/>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1831"/>
+      <source>Split by components</source>
+      <translation>Razcepi na sestavine</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1832"/>
+      <source>Split selected mesh into its components</source>
+      <translation>Razcepi izbrano ploskovje na sestavine</translation>
     </message>
   </context>
   <context>
@@ -717,11 +735,173 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Mesh Mesh Create</source>
+      <translation>Ustvari ploskovje</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="188"/>
+      <source>Segment by tool mesh</source>
+      <translation>Razčlenitev z orodjem ploskovij</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="243"/>
+      <source>Mesh union</source>
+      <translation>Seštevek ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="312"/>
+      <source>Mesh difference</source>
+      <translation>Razlika ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="383"/>
+      <source>Mesh intersection</source>
+      <translation>Presek ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="469"/>
+      <source>Import Mesh</source>
+      <translation>Uvozi ploskovje</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="665"/>
+      <source>Mesh VertexCurvature</source>
+      <translation>OgliščnaUkrivljenost ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../DlgSmoothing.cpp" line="178"/>
+      <source>Mesh Smoothing</source>
+      <translation>Glajenje ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1505"/>
+      <source>Harmonize mesh normals</source>
+      <translation>Uskladi normale ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1539"/>
+      <source>Flip mesh normals</source>
+      <translation>Obrni normale ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1650"/>
+      <source>Fill up holes</source>
+      <translation>Zapolni luknje</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1801"/>
+      <source>Mesh merge</source>
+      <translation>Združi ploskovje</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1844"/>
+      <source>Mesh split</source>
+      <translation>Razcepi ploskovje</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1896"/>
+      <source>Mesh scale</source>
+      <translation>Velikost ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.cpp" line="147"/>
+      <source>Mesh Decimating</source>
+      <translation>Desetkanje ploskovja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
+      <source>Harmonize normals</source>
+      <translation>Uskladi normale</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
+      <source>Remove non-manifolds</source>
+      <translation>Odstrani nemnogoterosti</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
+      <source>Fix indices</source>
+      <translation>Popravi kazala</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
+      <source>Remove degenerated faces</source>
+      <translation>Odstrani izrojene ploskve</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
+      <source>Remove duplicated faces</source>
+      <translation>Odstrani podvojene ploskve</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
+      <source>Remove duplicated points</source>
+      <translation>Odstrani podvojene točke</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
+      <source>Fix self-intersections</source>
+      <translation>Popravi samosečnosti</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
+      <source>Remove folds</source>
+      <translation>Odstrani pregibe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
+      <source>Repair mesh</source>
+      <translation>Popravi ploskovje</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.cpp" line="130"/>
+      <source>Delete selection</source>
+      <translation>Izbriši izbor</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="874"/>
+      <location filename="../../ViewProvider.cpp" line="929"/>
+      <source>Cut</source>
+      <translation>Izreži</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="883"/>
+      <location filename="../../ViewProvider.cpp" line="990"/>
+      <source>Trim</source>
+      <translation>Prireži</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1067"/>
+      <source>Split</source>
+      <translation>Razdeli</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1131"/>
+      <source>Segment</source>
+      <translation>Odsek</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1726"/>
+      <source>Delete</source>
+      <translation>Izbriši</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1833"/>
+      <source>Fill hole</source>
+      <translation>Zapolni luknjo</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::DlgDecimating</name>
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Decimiranje</translation>
+      <translation>Desetkanje</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
@@ -742,17 +922,17 @@
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="91"/>
       <source>Absolute number</source>
-      <translation>Absolutno število</translation>
+      <translation>Neodnosno število</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation>Absolutno število (Maksimalno: %1)</translation>
+      <translation>Neodnosno število (Največ: %1)</translation>
     </message>
   </context>
   <context>
@@ -851,7 +1031,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="507"/>
       <source>Degenerated faces</source>
-      <translation>Popačene ploskve</translation>
+      <translation>Izrojene ploskve</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="587"/>
@@ -994,7 +1174,7 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="733"/>
       <source>%1 degenerated faces</source>
-      <translation>%1 popačenih ploskev</translation>
+      <translation>%1 izrojenih ploskev</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="758"/>
@@ -1280,7 +1460,7 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="37"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Ta parameter prikazuje ali je pri zapisovanju datoteke
+      <translation>Ta določilka nakazuje ali je pri zapisovanju datoteke
  v zapis AMF uporabljeno ZIP stiskanje</translation>
     </message>
   </context>
@@ -1447,7 +1627,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../DlgSmoothing.ui" line="49"/>
       <source>Parameter</source>
-      <translation>Parameter</translation>
+      <translation>Določilka</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
@@ -1475,7 +1655,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="98"/>
       <source>Automatic</source>
-      <translation>Avtomatsko</translation>
+      <translation>Samodejno</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>
@@ -1628,7 +1808,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
       <source>Angle:</source>
-      <translation>Kot:</translation>
+      <translation>Kót:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1694,7 +1874,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../RemoveComponents.ui" line="63"/>
       <location filename="../../RemoveComponents.ui" line="182"/>
       <source>Components</source>
-      <translation>Komponente</translation>
+      <translation>Sestavine</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="83"/>
@@ -1756,7 +1936,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../Segmentation.ui" line="252"/>
       <location filename="../../Segmentation.ui" line="286"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="63"/>
@@ -1800,12 +1980,12 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Max. Curvature</source>
-      <translation>Maks. Ukrivljenost</translation>
+      <translation>Najv. Ukrivljenost</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Min. Curvature</source>
-      <translation>Min. Ukrivljenost</translation>
+      <translation>Najm. Ukrivljenost</translation>
     </message>
   </context>
   <context>
@@ -1825,7 +2005,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../SegmentationBestFit.ui" line="82"/>
       <location filename="../../SegmentationBestFit.ui" line="135"/>
       <source>Tolerance</source>
-      <translation>Toleranca</translation>
+      <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="46"/>
@@ -1839,7 +2019,7 @@ s Phongovim senčenjem doseže gladkejši videz.
       <location filename="../../SegmentationBestFit.ui" line="116"/>
       <location filename="../../SegmentationBestFit.ui" line="169"/>
       <source>Parameters...</source>
-      <translation>Spremenljivke ...</translation>
+      <translation>Določilke ...</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -2057,12 +2237,12 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Stisnjen X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -2087,7 +2267,7 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Oblika približevalnice</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
@@ -2135,12 +2315,12 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <translation>Zapolni luknje z največjim številom robov:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="1891"/>
       <source>Scaling</source>
       <translation>Skaliranje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1846"/>
+      <location filename="../../Command.cpp" line="1892"/>
       <source>Enter scaling factor:</source>
       <translation>Vnesite skalirni faktor:</translation>
     </message>
@@ -2211,12 +2391,12 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Meshes</source>
-      <translation>&amp;Mreže</translation>
+      <translation>&amp;Ploskovja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh tools</source>
-      <translation>Orodja za mreže</translation>
+      <translation>Orodja za ploskovja</translation>
     </message>
   </context>
 </TS>

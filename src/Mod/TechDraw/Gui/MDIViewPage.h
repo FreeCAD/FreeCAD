@@ -128,7 +128,7 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
-    QPrinter::PaperSize getPaperSize(int w, int h) const;
+
     void setDimensionGroups(void);
     void setBalloonGroups(void);
     void setLeaderGroups(void);
@@ -159,8 +159,9 @@ private:
     QTimer *m_timer;
 
     QString m_currentPath;
-    QPrinter::Orientation m_orientation;
-    QPrinter::PaperSize m_paperSize;
+    QPageLayout::Orientation m_orientation;
+    QPageSize::PageSizeId m_paperSize;
+    qreal pagewidth, pageheight;
     ViewProviderPage *m_vpPage;
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order

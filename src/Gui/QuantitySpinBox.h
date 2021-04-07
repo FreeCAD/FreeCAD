@@ -24,10 +24,9 @@
 #ifndef GUI_QUANTITYSPINBOX_H
 #define GUI_QUANTITYSPINBOX_H
 
-#include <QAbstractSpinBox>
 #include <Base/UnitsSchema.h>
 #include <Gui/MetaTypes.h>
-#include "ExpressionBinding.h"
+#include <Gui/SpinBox.h>
 
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)
@@ -36,7 +35,7 @@ Q_DECLARE_METATYPE(Base::Quantity)
 namespace Gui {
 
 class QuantitySpinBoxPrivate;
-class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBinding
+class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionSpinBox
 {
     Q_OBJECT
 
@@ -50,8 +49,6 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionBind
     Q_PROPERTY(QString expression READ expressionText)
 
 public:
-    using ExpressionBinding::apply;
-
     explicit QuantitySpinBox(QWidget *parent = 0);
     virtual ~QuantitySpinBox();
 
@@ -66,7 +63,7 @@ public:
 
     /** Sets the Unit this widget is working with.
      *  After setting the Unit the widget will only accept
-     *  user input with this unit type. Or if the user input 
+     *  user input with this unit type. Or if the user input
      *  a value without unit, this one will be added to the resulting
      *  Quantity.
      */
@@ -79,17 +76,17 @@ public:
 
     /// Get the value of the singleStep property
     double singleStep() const;
-    /// Set the value of the singleStep property 
+    /// Set the value of the singleStep property
     void setSingleStep(double val);
 
     /// Gets the value of the minimum property
     double minimum() const;
-    /// Sets the value of the minimum property 
+    /// Sets the value of the minimum property
     void setMinimum(double min);
 
     /// Gets the value of the maximum property
     double maximum() const;
-    /// Sets the value of the maximum property 
+    /// Sets the value of the maximum property
     void setMaximum(double max);
 
     /// Gets the number of decimals
@@ -128,9 +125,10 @@ public:
     QSize minimumSizeHint() const;
     bool event(QEvent *event);
 
-    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void setNumberExpression(App::NumberExpression*);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
+    using ExpressionSpinBox::apply;
 
 public Q_SLOTS:
     /// Sets the field with a quantity
@@ -140,14 +138,10 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void userInput(const QString & text);
-    void openFormulaDialog();
-    void finishFormulaDialog();
     void handlePendingEmit();
 
-    //get notified on expression change
-    virtual void onChange();
-
 protected:
+    virtual void openFormulaDialog();
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
     virtual void hideEvent(QHideEvent * event);

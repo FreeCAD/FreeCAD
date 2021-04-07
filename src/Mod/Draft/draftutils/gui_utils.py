@@ -38,7 +38,6 @@ of the objects or the 3D view.
 # @{
 import math
 import os
-import six
 
 import FreeCAD as App
 import draftutils.utils as utils
@@ -65,14 +64,15 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
-        v = Gui.ActiveDocument.ActiveView
-        if "View3DInventor" in str(type(v)):
-            return v
+        if Gui.ActiveDocument:
+            v = Gui.ActiveDocument.ActiveView
+            if "View3DInventor" in str(type(v)):
+                return v
 
-        # print("Debug: Draft: Warning, not working in active view")
-        v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
-        if v:
-            return v[0]
+            # print("Debug: Draft: Warning, not working in active view")
+            v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
+            if v:
+                return v[0]
 
     _wrn(_tr("No graphical interface"))
     return None
@@ -100,17 +100,17 @@ def autogroup(obj):
     obj: App::DocumentObject
         Any type of object that will be stored in the group.
     """
-    
+
     # check for required conditions for autogroup to work
     if not App.GuiUp:
         return
     if not hasattr(Gui,"draftToolBar"):
         return
     if not hasattr(Gui.draftToolBar,"autogroup"):
-        return        
+        return
     if Gui.draftToolBar.isConstructionMode():
         return
-    
+
     # autogroup code
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
@@ -123,13 +123,13 @@ def autogroup(obj):
                 gr = active_group.Group
                 gr.append(obj)
                 active_group.Group = gr
-                
+
     else:
 
         if Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
             # add object to active Arch Container
             Gui.ActiveDocument.ActiveView.getActiveObject("Arch").addObject(obj)
-            
+
         elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
             # add object to active part and change it's placement accordingly
             # so object does not jump to different position, works with App::Link
@@ -350,7 +350,9 @@ def format_object(target, origin=None):
     if ui:
         doc = App.ActiveDocument
         if ui.isConstructionMode():
-            col = fcol = ui.getDefaultColor("constr")
+            lcol = fcol = ui.getDefaultColor("constr")
+            tcol = lcol
+            fcol = lcol
             grp = doc.getObject("Draft_Construction")
             if not grp:
                 grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
@@ -359,25 +361,27 @@ def format_object(target, origin=None):
             if hasattr(obrep, "Transparency"):
                 obrep.Transparency = 80
         else:
-            col = ui.getDefaultColor("ui")
+            lcol = ui.getDefaultColor("line")
+            tcol = ui.getDefaultColor("text")
             fcol = ui.getDefaultColor("face")
-        col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
+        lcol = (float(lcol[0]), float(lcol[1]), float(lcol[2]), 0.0)
+        tcol = (float(tcol[0]), float(tcol[1]), float(tcol[2]), 0.0)
         fcol = (float(fcol[0]), float(fcol[1]), float(fcol[2]), 0.0)
-        lw = ui.linewidth
-        fs = ui.fontsize
+        lw = utils.getParam("linewidth",2)
+        fs = utils.getParam("textheight",0.20)
         if not origin or not hasattr(origin, 'ViewObject'):
             if "FontSize" in obrep.PropertiesList:
                 obrep.FontSize = fs
             if "TextSize" in obrep.PropertiesList:
                 obrep.TextSize = fs
             if "TextColor" in obrep.PropertiesList:
-                obrep.TextColor = col
+                obrep.TextColor = tcol
             if "LineWidth" in obrep.PropertiesList:
                 obrep.LineWidth = lw
             if "PointColor" in obrep.PropertiesList:
-                obrep.PointColor = col
+                obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = col
+                obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:
@@ -594,63 +598,35 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             buffersize = p.byteCount()
             width = size[0]
             height = size[1]
-            numcomponents = int(float(buffersize) / (width * height))
+            numcomponents = int(buffersize / (width * height))
 
             img = coin.SoSFImage()
-            byteList = []
-            # isPy2 = sys.version_info.major < 3
-            isPy2 = six.PY2
+            byteList = bytearray()
 
             # The SoSFImage needs to be filled with bytes.
             # The pixel information is converted into a Qt color, gray,
             # red, green, blue, or transparency (alpha),
             # depending on the input image.
-            #
-            # If Python 2 is used, the color is turned into a character,
-            # which is of type 'byte', and added to the byte list.
-            # If Python 3 is used, characters are unicode strings,
-            # so they need to be encoded into 'latin-1'
-            # to produce the correct bytes for the list.
             for y in range(height):
                 # line = width*numcomponents*(height-(y));
                 for x in range(width):
-                    rgb = p.pixel(x, y)
-                    if numcomponents == 1 or numcomponents == 2:
-                        gray = chr(QtGui.qGray(rgb))
-                        if isPy2:
-                            byteList.append(gray)
-                        else:
-                            byteList.append(gray.encode('latin-1'))
+                    rgba = p.pixel(x, y)
+                    if numcomponents <= 2:
+                        byteList.append(QtGui.qGray(rgba))
 
                         if numcomponents == 2:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
-                    elif numcomponents == 3 or numcomponents == 4:
-                        red = chr(QtGui.qRed(rgb))
-                        green = chr(QtGui.qGreen(rgb))
-                        blue = chr(QtGui.qBlue(rgb))
+                            byteList.append(QtGui.qAlpha(rgba))
 
-                        if isPy2:
-                            byteList.append(red)
-                            byteList.append(green)
-                            byteList.append(blue)
-                        else:
-                            byteList.append(red.encode('latin-1'))
-                            byteList.append(green.encode('latin-1'))
-                            byteList.append(blue.encode('latin-1'))
+                    elif numcomponents <= 4:
+                        byteList.append(QtGui.qRed(rgba))
+                        byteList.append(QtGui.qGreen(rgba))
+                        byteList.append(QtGui.qBlue(rgba))
 
                         if numcomponents == 4:
-                            alpha = chr(QtGui.qAlpha(rgb))
-                            if isPy2:
-                                byteList.append(alpha)
-                            else:
-                                byteList.append(alpha.encode('latin-1'))
+                            byteList.append(QtGui.qAlpha(rgba))
                     # line += numcomponents
 
-            _bytes = b"".join(byteList)
+            _bytes = bytes(byteList)
             img.setValue(size, numcomponents, _bytes)
         except FileNotFoundError as exc:
             _wrn("load_texture: {0}, {1}".format(exc.strerror,

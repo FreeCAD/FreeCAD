@@ -515,12 +515,12 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation>Bezugsobjekt erstellen</translation>
+      <translation>Formbinder erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>Create a new shape binder</source>
-      <translation>Erstelle ein neues Bezugsobjekt</translation>
+      <translation>Neuen Formbinder erstellen</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation>Erzeugen eines aufgedickten Körpers</translation>
+      <translation>Erzeugen eines aufgedickten Volumenkörpers</translation>
     </message>
   </context>
   <context>
@@ -588,7 +588,7 @@
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
       <source>Create an additive primitive</source>
-      <translation>Erzeugen eines zusätzlichen geometrischen Körpers</translation>
+      <translation>Erzeugen eines zusätzlichen Grundkörpers</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="191"/>
@@ -700,7 +700,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="47"/>
       <source>No wire in sketch</source>
-      <translation>Kein geschlossener Kantenzug in Skizze</translation>
+      <translation>Kein Kantenzug in Skizze</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
@@ -1291,7 +1291,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation>Von anderen Körpern des gleichen Teils</translation>
+      <translation>Von anderen Körpern des selben Teils</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
@@ -1326,7 +1326,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="67"/>
       <source>No wire in sketch</source>
-      <translation>Kein geschlossener Kantenzug in Skizze</translation>
+      <translation>Kein Kantenzug in Skizze</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="68"/>
@@ -1407,12 +1407,12 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="70"/>
       <source>ISO metric coarse profile</source>
-      <translation>ISO metrisches Grobprofil</translation>
+      <translation>metrisches ISO Regelgewinde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric fine profile</source>
-      <translation>ISO metrisches Feinprofil</translation>
+      <translation>metrisches ISO Feingewinde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
@@ -1819,7 +1819,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="158"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation>Setzen Sie den konstanten binormalen Vektor, der verwendet wird, um die Profilorientierung zu berechnen</translation>
+      <translation>Den konstanten binormalen Vektor einstellen, der zur Berechnung der Profilorientierung dient</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="182"/>
@@ -1839,7 +1839,7 @@
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="365"/>
       <source>Section orientation</source>
-      <translation>Schnittorientierung</translation>
+      <translation>Ausrichtung des Abschnitts</translation>
     </message>
   </context>
   <context>
@@ -1921,7 +1921,7 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation>Mehrere Schnitte</translation>
+      <translation>Mehrere Abschnitte</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
@@ -2300,7 +2300,7 @@
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="124"/>
       <source>Make thickness inwards</source>
-      <translation>Erzeugen einer Hülle mit innen liegendem Volumen</translation>
+      <translation>Dicke nach innen auftragen</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="98"/>
@@ -2399,32 +2399,32 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Erzeugen einer zu addierenden Kugel mit Angabe von Radius und verschiedenen Winkeln</translation>
+      <translation>Erzeuge eine zusätzliche Kugel durch Angabe von Radius und verschiedene Winkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cone</source>
-      <translation>Erzeugen eines zu addierenden Kegels</translation>
+      <translation>Erzeuge einen zusätzlichen Kegel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive ellipsoid</source>
-      <translation>Erzeugen eines zu addierenden Ellipsoids</translation>
+      <translation>Erzeuge eine zusätzliches Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive torus</source>
-      <translation>Erzeugen eines zu addierenden Torus'</translation>
+      <translation>Erzeuge einen zusätzlichen Torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive prism</source>
-      <translation>Erzeugen eines zu addierenden Prismas</translation>
+      <translation>Erzeuge eine zusätzliches Prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive wedge</source>
-      <translation>Erzeugen eines zu addierenden Keils</translation>
+      <translation>Erzeuge einen zusätzlichen Keil</translation>
     </message>
   </context>
   <context>
@@ -2432,17 +2432,17 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="357"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Erzeuge einen abzuziehenden Quader mit Angabe von Breite, Höhe und Länge</translation>
+      <translation>Erzeuge einen abzuziehenden Quader durch Angabe von Breite, Höhe und Länge</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="361"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Erzeuge einen abzuziehenden Zylinder mit Angabe von Radius, Höhe und Sektorwinkel</translation>
+      <translation>Erzeuge einen abzuziehenden Zylinder durch Angabe von Radius, Höhe und Sektorwinkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="365"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Erzeuge eine abzuziehende Kugel mit Angabe von Radius und verschiedenen Winkeln</translation>
+      <translation>Erzeuge eine abzuziehende Kugel durch Angabe von Radius und verschiedenen Winkeln</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="369"/>
@@ -2452,7 +2452,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="373"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Erzeuge einen abzuziehenden Ellipsoid</translation>
+      <translation>Erzeuge ein abzuziehendes Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="377"/>
@@ -2518,7 +2518,7 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation>Kein aktiver Körper. Bitte aktiviere einen Körper vor dem Einfügen eines Bezugselements.</translation>
+      <translation>Kein aktiver Körper. Bitte aktiviere einen Körper vor dem Einfügen eines Bezugs.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="475"/>
@@ -2638,7 +2638,7 @@
     <message>
       <location filename="../../Command.cpp" line="1544"/>
       <source>Shape of the selected Part is empty</source>
-      <translation>Gewähltes Objekt ist hohl</translation>
+      <translation>Gewähltes Teil ist hohl</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1556"/>
@@ -2653,7 +2653,7 @@
     <message>
       <location filename="../../Command.cpp" line="1843"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation>Bitte zuerst ein abzuziehendes oder zu addierendes Merkmal erzeugen.</translation>
+      <translation>Bitte zuerst ein abzuziehendes oder zu addierendes Element erzeugen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1848"/>
@@ -2663,7 +2663,7 @@
     <message>
       <location filename="../../Command.cpp" line="1849"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation>Bitte wählen Sie zuerst ein additives oder subtraktives Element.</translation>
+      <translation>Bitte wählen Sie zuerst ein additives oder subtraktives Element aus.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1856"/>
@@ -2673,7 +2673,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
       <source>Part creation failed</source>
-      <translation>Erzeugen der Baugruppe ist fehlgeschlagen</translation>
+      <translation>Erzeugen des Teils ist fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="74"/>
@@ -2687,27 +2687,27 @@
       <location filename="../../CommandBody.cpp" line="142"/>
       <location filename="../../CommandBody.cpp" line="191"/>
       <source>Bad base feature</source>
-      <translation>Ungeeignetes Basis-Objekt</translation>
+      <translation>Ungeeignetes Basis-Element</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="123"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>Körper kann nicht auf einem PartDesign-Objekt basieren.</translation>
+      <translation>Körper kann nicht auf einem PartDesign-Element basieren.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="128"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>%1 gehört bereits zu einem Körper, kann nicht als Basis-Objekt für einen anderen Körper verwendet werden.</translation>
+      <translation>%1 gehört bereits zu einem Körper, kann nicht als Basis-Element für einen anderen Körper verwendet werden.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
       <source>Body can't be based on another body.</source>
-      <translation>Körper kann nicht auf einem anderen Körper basieren.</translation>
+      <translation>Ein Körper kann nicht auf einem anderen Körper basieren.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Basis-Objekt (%1) gehört zu einer anderen Baugruppe.</translation>
+      <translation>Das Basis-Element (%1) gehört zu einer anderen Teil.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
@@ -2738,12 +2738,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="184"/>
       <source>Base feature</source>
-      <translation>Basis-Objekt</translation>
+      <translation>Basis-Element</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="192"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation>Körper kann nicht auf mehr als einem Objekt basieren.</translation>
+      <translation>Ein Körper kann nicht auf mehr als einem Element basieren.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="368"/>
@@ -2753,7 +2753,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation>Keine PartDesign-Objekte gefunden, die nicht zu einem Körper gehören. Nichts zu migrieren.</translation>
+      <translation>Keine PartDesign-Elemente gefunden, die nicht zu einem Körper gehören. Nichts zu migrieren.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
@@ -3012,7 +3012,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="184"/>
       <source>Edit shape binder</source>
-      <translation>Bezugsobjekt bearbeiten</translation>
+      <translation>Formbinder bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="152"/>

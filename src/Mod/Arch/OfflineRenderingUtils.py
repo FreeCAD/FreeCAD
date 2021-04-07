@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
 #*   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -249,7 +248,7 @@ def saveDiffuseColor(colorlist):
         else:
             return bytes((i,))
     # if too many colors, bail out and use only the first one for now...
-    if len(colorlist) > 254: 
+    if len(colorlist) > 254:
         colorlist = colorlist[:1]
         print("debug: too many colors, reducing")
     output = tochr(len(colorlist))+3*tochr(0)

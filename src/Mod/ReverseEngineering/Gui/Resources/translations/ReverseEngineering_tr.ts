@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation>Silindiri yaklaştırma</translation>
+      <translation>Bir silindir yaklaştırın</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Approximate a plane</source>
-      <translation>Bir düzleme yaklaşık</translation>
+      <translation>Bir düzlem yaklaştırın</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation>Polinom yüzeyi</translation>
+      <translation>Çokgensel yüzey</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Approximate a polynomial surface</source>
-      <translation type="unfinished">Approximate a polynomial surface</translation>
+      <translation>Bir çokgen yüzeyinin yaklaşık değeri</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Bir kürenin yaklaşık değeri</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Approximate a B-spline surface</source>
-      <translation>B-spline yüzeyinin yaklaşık değeri</translation>
+      <translation>Bir B-spline yüzeyinin yaklaşık değeri</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="491"/>
       <source>Wire from mesh boundary...</source>
-      <translation type="unfinished">Wire from mesh boundary...</translation>
+      <translation>Elek sınırından telle bağlayın...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation type="unfinished">Create wire from mesh boundaries</translation>
+      <translation>Elek sınırlarından tel oluşturun</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="557"/>
       <source>Poisson...</source>
-      <translation>Poisson...</translation>
+      <translation>Poisson Dağılımına isim veren Poisson...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="558"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson yüzey yeniden oluşumu</translation>
+      <translation>Poisson yüzeyi yeniden inşası</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation type="unfinished">Mesh segmentation...</translation>
+      <translation>Örgü bölütleme...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="381"/>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>From components</source>
-      <translation type="unfinished">From components</translation>
+      <translation>Bileşenlerden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Create mesh segments from components</source>
-      <translation type="unfinished">Create mesh segments from components</translation>
+      <translation>Bileşenlerden elek bölümleri oluşturun</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation type="unfinished">Manual segmentation...</translation>
+      <translation>Elle bölümleme...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="413"/>
       <source>Create mesh segments manually</source>
-      <translation type="unfinished">Create mesh segments manually</translation>
+      <translation>El yoluyla elek bölümleri oluşturun</translation>
     </message>
   </context>
   <context>
@@ -197,7 +197,55 @@
       <location filename="../../Command.cpp" line="592"/>
       <location filename="../../Command.cpp" line="593"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Yapısal nokta bulutlarının üçgenlemesi</translation>
+      <translation>Yapılandırılmış nokta bulutlarının üçgenliği</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Fit plane</source>
+      <translation type="unfinished">Fit plane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="221"/>
+      <source>Fit cylinder</source>
+      <translation type="unfinished">Fit cylinder</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="287"/>
+      <source>Fit sphere</source>
+      <translation type="unfinished">Fit sphere</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="335"/>
+      <source>Fit polynomial surface</source>
+      <translation type="unfinished">Fit polynomial surface</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="601"/>
+      <source>View triangulation</source>
+      <translation type="unfinished">View triangulation</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <source>Placement</source>
+      <translation>Yerleşim</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <source>Fit B-Spline</source>
+      <translation type="unfinished">Fit B-Spline</translation>
+    </message>
+    <message>
+      <location filename="../../Poisson.cpp" line="101"/>
+      <source>Poisson reconstruction</source>
+      <translation type="unfinished">Poisson reconstruction</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <source>Segmentation</source>
+      <translation>Bölümlenme</translation>
     </message>
   </context>
   <context>
@@ -242,7 +290,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation>Boyutu faktörü</translation>
+      <translation>Boyut etkeni</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>
@@ -252,12 +300,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="227"/>
       <source>Total Weight</source>
-      <translation>Toplam ağırlık</translation>
+      <translation>Toplam Ağırlık</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="256"/>
       <source>Length of gradient</source>
-      <translation>Eğim uzunluğu</translation>
+      <translation>Gradyan uzunluğu</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="285"/>
@@ -290,7 +338,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="208"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Yerel yönlendirme almak için lütfen tek bir yerleşim nesnesi seçin.</translation>
+      <translation>Yerel yönlendirme almak için lütfen yalnızca bir tane yerleşim nesnesi seçin.</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="167"/>
@@ -304,7 +352,7 @@
     <message>
       <location filename="../../Poisson.ui" line="14"/>
       <source>Poisson</source>
-      <translation>Poisson</translation>
+      <translation>Poisson Dağılımına isim veren Poisson</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="20"/>
@@ -384,7 +432,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="53"/>
       <source>Curvature tolerance</source>
-      <translation type="unfinished">Curvature tolerance</translation>
+      <translation>Eğrilik toleransı</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="70"/>
@@ -473,7 +521,7 @@
       <location filename="../../SegmentationManual.ui" line="218"/>
       <location filename="../../SegmentationManual.ui" line="271"/>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>Algıla</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -503,17 +551,17 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Bölümlenme</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="316"/>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>Elekten bölümleri kesin</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="326"/>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Bölüm gizleme</translation>
     </message>
   </context>
   <context>

@@ -3,11 +3,14 @@
         <file>icons/preferences-openscad.svg</file>
         <file>icons/OpenSCAD_AddOpenSCADElement.svg</file>
         <file>icons/OpenSCAD_ColorCodeShape.svg</file>
+        <file>icons/OpenSCAD_Edgestofaces.svg</file>
+        <file>icons/OpenSCAD_ExpandPlacements.svg</file>
         <file>icons/OpenSCAD_RefineShapeFeature.svg</file>
         <file>icons/OpenSCAD_MirrorMeshFeature.svg</file>
         <file>icons/OpenSCAD_ScaleMeshFeature.svg</file>
         <file>icons/OpenSCAD_IncreaseToleranceFeature.svg</file>
         <file>icons/OpenSCAD_ReplaceObject.svg</file>
+        <file>icons/OpenSCAD_ResizeMeshFeature.svg</file>
         <file>icons/OpenSCAD_RemoveSubtree.svg</file>
         <file>icons/OpenSCAD_Explode_Group.svg</file>
         <file>icons/OpenSCAD_MeshBooleans.svg</file>

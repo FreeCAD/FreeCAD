@@ -358,6 +358,7 @@
 #include <Geom_Parabola.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_ToroidalSurface.hxx>
+#include <GeomAdaptor.hxx>
 #include <GeomAdaptor_HCurve.hxx>
 #include <GeomAdaptor_Surface.hxx>
 #include <GeomAPI.hxx>

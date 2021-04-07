@@ -181,8 +181,8 @@
       <location filename="../../Command.cpp" line="338"/>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Camera quan sát hiện tại không có góc rộng và do đó kết quả của hình ảnh POV-Ray sau này có thể sẽ khác với những gì bạn mong đợi.
+Bạn có muốn tiếp tục?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -209,14 +209,14 @@ Do you want to continue?</translation>
       <location filename="../../Command.cpp" line="353"/>
       <location filename="../../Command.cpp" line="788"/>
       <source>Cannot create a project because there is no template installed.</source>
-      <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
+      <translation>Không thể tạo dự án vì không có mẫu cài đặt sẵn.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
-Do you want to continue?</translation>
+      <translation>Camera quan sát hiện tại không có góc rộng và do đó kết quả của hình ảnh POV-Ray sau này có thể sẽ khác với những gì bạn mong đợi.
+Bạn có muốn tiếp tục?</translation>
     </message>
   </context>
   <context>
@@ -472,7 +472,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettingsRayImp.cpp" line="47"/>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from %1</translation>
+      <translation>Đường dẫn đến tệp POV-Ray có thể thực hiện được, nếu bạn muốn kết xuất từ %1</translation>
     </message>
   </context>
   <context>

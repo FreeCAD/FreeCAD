@@ -99,13 +99,32 @@ def scale(objectslist, scale=App.Vector(1,1,1),
                 scale_vertex(newobj, index, scale, center)
         elif hasattr(obj,'Shape'):
             newobj.Shape = scaled_shape
-        elif (obj.TypeId == "App::Annotation"):
-            factor = scale.y * obj.ViewObject.FontSize
-            newobj.ViewObject.FontSize = factor
+        elif hasattr(obj,"Position"):
             d = obj.Position.sub(center)
             newobj.Position = center.add(App.Vector(d.x * scale.x,
                                                     d.y * scale.y,
                                                     d.z * scale.z))
+        elif hasattr(obj,"Placement"):
+            d = obj.Placement.Base.sub(center)
+            newobj.Placement.Base = center.add(App.Vector(d.x * scale.x,
+                                                    d.y * scale.y,
+                                                    d.z * scale.z))
+            if hasattr(obj,"Height"):
+                obj.setExpression('Height', None)
+                obj.Height = obj.Height * scale.y
+            if hasattr(obj,"Width"):
+                obj.setExpression('Width', None)
+                obj.Width = obj.Width * scale.x
+            if hasattr(obj,"XSize"):
+                obj.setExpression('XSize', None)
+                obj.XSize = obj.XSize * scale.x
+            if hasattr(obj,"YSize"):
+                obj.setExpression('YSize', None)
+                obj.YSize = obj.YSize * scale.y
+        if obj.ViewObject and hasattr(obj.ViewObject,"FontSize"):
+            obj.ViewObject.FontSize = obj.ViewObject.FontSize * scale.y
+                
+                
         if copy:
             gui_utils.format_object(newobj,obj)
         newobjlist.append(newobj)

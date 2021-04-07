@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -31,7 +29,7 @@ from PySide import QtCore
 
 __title__ = "Path Face Mill Operation UI"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Face Mill operation page controller and command implementation."
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
@@ -44,9 +42,9 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
 Command = PathOpGui.SetupOperation('MillFace',
         PathMillFace.Create,
         TaskPanelOpPage,
-        'Path-Face',
-        QtCore.QT_TRANSLATE_NOOP("PathFace", "Face"),
-        QtCore.QT_TRANSLATE_NOOP("PathFace", "Create a Facing Operation from a model or face"),
+        'Path_Face',
+        QtCore.QT_TRANSLATE_NOOP("Path_Face", "Face"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Face", "Create a Facing Operation from a model or face"),
         PathMillFace.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathMillFaceGui... done\n")

@@ -210,7 +210,7 @@ void CmdTechDrawDimension::activated(int iMsg)
 //        return;
 //    }
 
-//    openCommand("Create Dimension");
+//    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
 //    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
 //    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
 //                                                       ,dimType.c_str());
@@ -330,7 +330,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Radius");
@@ -452,7 +452,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Diameter");
@@ -549,7 +549,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')", FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'", FeatName.c_str()
                                                        , "Distance");
@@ -650,7 +650,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"DistanceX");
@@ -752,7 +752,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"DistanceY");
@@ -843,7 +843,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Angle");
@@ -932,7 +932,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
         return;
     }
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Angle3Pt");
@@ -1359,7 +1359,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     TechDraw::LandmarkDimension *dim = 0;
     std::string FeatName = getUniqueObjectName("LandmarkDim");
 
-    openCommand("Create Dimension");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::LandmarkDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     if (objects.size() == 2) {

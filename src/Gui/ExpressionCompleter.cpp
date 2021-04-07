@@ -1,3 +1,25 @@
+/***************************************************************************
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -59,12 +81,12 @@ public:
     }
 
     // This ExpressionCompleter model works without any pysical items.
-    // Everything item related is stored inside QModelIndex.InternalPointer/InternalId(), 
+    // Everything item related is stored inside QModelIndex.InternalPointer/InternalId(),
     // using the following Info structure.
     //
     // The Info contains two indices, one for document and the other for object.
     // For 32-bit system, the index is 16bit which limits the size to 64K. For
-    // 64-bit system, the index is 32bit. 
+    // 64-bit system, the index is 32bit.
     //
     // The "virtual" items are organized as a tree. The root items are special,
     // which consists of three types in the following order,
@@ -142,7 +164,7 @@ public:
         App::Document *doc = 0;
         App::DocumentObject *obj = 0;
         App::Property *prop = 0;
-        if(idx>=0 && idx<docSize) 
+        if(idx>=0 && idx<docSize)
             doc = docs[idx/2];
         else {
             doc = App::GetApplication().getDocument(currentDoc.c_str());
@@ -175,7 +197,7 @@ public:
             }
         }
         if(info.d.doc<0) {
-            if(count) 
+            if(count)
                 *count = docSize + objSize + propSize;
             if(idx>=0 && v) {
                 QString res;
@@ -189,7 +211,7 @@ public:
                     if(sep && !noProperty)
                         res += QLatin1Char('.');
                 } else {
-                    if(idx & 1) 
+                    if(idx & 1)
                         res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
                     else
                         res = QString::fromLatin1(doc->getName());
@@ -237,7 +259,7 @@ public:
             if(count)
                 *count = propSize;
         }
-        if(v) 
+        if(v)
             *v = QString::fromLatin1(prop->getName());
         return;
     }
@@ -287,7 +309,7 @@ public:
             row = -1;
         }else{
             info = getInfo(parent);
-            if(info.d.doc<0) 
+            if(info.d.doc<0)
                 info.d.doc = parent.row();
             else if(info.d.obj<0)
                 info.d.obj = parent.row();
@@ -318,7 +340,7 @@ private:
  * @param parent Parent object owning the completer.
  */
 
-ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, 
+ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj,
         QObject *parent, bool noProperty)
     : QCompleter(parent), currentObj(currentDocObj), noProperty(noProperty)
 {
@@ -348,6 +370,10 @@ void ExpressionCompleter::setNoProperty(bool enabled) {
     auto m = model();
     if(m)
         static_cast<ExpressionCompleterModel*>(m)->setNoProperty(enabled);
+}
+
+void ExpressionCompleter::setRequireLeadingEqualSign(bool enabled) {
+    requireLeadingEqualSign = enabled;
 }
 
 QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
@@ -393,7 +419,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
                 l << Base::Tools::fromStdString(*sli);
                 ++sli;
             }
-            FC_TRACE("split path " << path 
+            FC_TRACE("split path " << path
                     << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
             return l;
         }
@@ -428,21 +454,26 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 {
     init();
 
-    using namespace boost::tuples;
     std::string completionPrefix;
 
     // Compute start; if prefix starts with =, start parsing from offset 1.
     int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
 
+    if (requireLeadingEqualSign && start != 1) {
+        if (auto p = popup())
+            p->setVisible(false);
+        return;
+    }
+
     std::string expression = Base::Tools::toStdString(prefix.mid(start));
 
     // Tokenize prefix
-    std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
+    std::vector<std::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
 
     // No tokens
     if (tokens.size() == 0) {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
         return;
     }
 
@@ -477,7 +508,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
             stringing = false;
             break;
         }
-        if(token==ExpressionParser::LT 
+        if(token==ExpressionParser::LT
             && i && get<0>(tokens[i-1])==ExpressionParser::LT)
         {
             --i;
@@ -488,8 +519,8 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // Not an unclosed string and the last character is a space
     if(!stringing && prefix.size() && prefix[prefixEnd-1] == QChar(32)) {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
         return;
     }
 
@@ -497,7 +528,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         i = static_cast<ssize_t>(tokens.size()) - 1;
         for(;i>=0;--i) {
             int token = get<0>(tokens[i]);
-            if (token != '.' && token != '#' && 
+            if (token != '.' && token != '#' &&
                 token != ExpressionParser::IDENTIFIER &&
                 token != ExpressionParser::STRING &&
                 token != ExpressionParser::UNIT)
@@ -528,17 +559,18 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     if (!completionPrefix.empty() && widget()->hasFocus())
         complete();
     else {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
     }
 }
 
-ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
+ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, bool requireLeadingEqualSign)
     : QLineEdit(parent)
-    , completer(0)
+    , completer(nullptr)
     , block(true)
     , noProperty(noProperty)
     , exactMatch(false)
+    , requireLeadingEqualSign(requireLeadingEqualSign)
 {
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
@@ -553,10 +585,9 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer = new ExpressionCompleter(currentDocObj, this, noProperty);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+        completer->setRequireLeadingEqualSign(requireLeadingEqualSign);
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-#endif
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
         connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
@@ -571,10 +602,9 @@ void ExpressionLineEdit::setNoProperty(bool enabled) {
 
 void ExpressionLineEdit::setExactMatch(bool enabled) {
     exactMatch = enabled;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
     if (completer)
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
-#endif
+
 }
 
 bool ExpressionLineEdit::completerActive() const
@@ -616,7 +646,6 @@ void ExpressionLineEdit::keyPressEvent(QKeyEvent *e) {
 
 void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
     QMenu *menu = createStandardContextMenu();
     menu->addSeparator();
     QAction* match = menu->addAction(tr("Exact match"));
@@ -637,9 +666,6 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
     }
 
     delete menu;
-#else
-    QLineEdit::contextMenuEvent(event);
-#endif
 }
 
 
@@ -647,7 +673,7 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 
 ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     : QPlainTextEdit(parent)
-    , completer(0)
+    , completer(nullptr)
     , block(true)
     , exactMatch(false)
 {
@@ -656,10 +682,8 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
 
 void ExpressionTextEdit::setExactMatch(bool enabled) {
     exactMatch = enabled;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
     if (completer)
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
-#endif
 }
 
 void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
@@ -669,12 +693,10 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
         return;
     }
 
-    if (currentDocObj != 0) {
+    if (currentDocObj != nullptr) {
         completer = new ExpressionCompleter(currentDocObj, this);
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-#endif
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
@@ -723,7 +745,6 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent *e) {
 
 void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
     QMenu *menu = createStandardContextMenu();
     menu->addSeparator();
     QAction* match = menu->addAction(tr("Exact match"));
@@ -744,9 +765,6 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
     }
 
     delete menu;
-#else
-    QPlainTextEdit::contextMenuEvent(event);
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////

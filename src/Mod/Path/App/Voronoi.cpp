@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) sliptonic (shopinthewoods@gmail.com) 2020               *
+ *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -235,7 +235,7 @@ double Voronoi::diagram_type::angleOfSegment(int i, Voronoi::diagram_type::angle
     Voronoi::point_type p1 = high(segments[i]);
     double ang = 0;
     if (p0.x() == p1.x()) {
-      if ((p0.y() > 0 && p1.y() > 0) || (p0.y() > 0 && p1.y() > 0)) {
+      if (p0.y() < p1.y()) {
         ang = M_PI_2;
       } else {
         ang = -M_PI_2;
@@ -264,7 +264,7 @@ bool Voronoi::diagram_type::segmentsAreConnected(int i, int j) const {
 }
 
 void Voronoi::colorColinear(Voronoi::color_type color, double degree) {
-  double rad = degree * M_PI / 180; 
+  double rad = degree * M_PI / 180;
 
   Voronoi::diagram_type::angle_map_t angle;
   int psize = vd->points.size();

@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -39,7 +39,7 @@
 using namespace Gui;
 using namespace Gui::Dialog;
 
-DlgAddProperty::DlgAddProperty(QWidget* parent, 
+DlgAddProperty::DlgAddProperty(QWidget* parent,
         std::unordered_set<App::PropertyContainer *> &&c)
   : QDialog( parent )
   , containers(std::move(c))
@@ -92,7 +92,7 @@ void DlgAddProperty::accept()
 {
     std::string name = ui->edtName->text().toUtf8().constData();
     std::string group = ui->edtGroup->text().toUtf8().constData();
-    if(name.empty() || group.empty() 
+    if(name.empty() || group.empty()
             || name != Base::Tools::getIdentifier(name)
             || group != Base::Tools::getIdentifier(group))
     {

@@ -49,7 +49,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
 from draftutils.messages import _msg
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -60,26 +60,23 @@ class Join(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Joins the selected lines or polylines "
-                "into a single object.\n"
-                "The lines must share a common point at the start "
-                "or at the end for the operation to succeed.")
 
         return {'Pixmap': 'Draft_Join',
                 'Accel': "J, O",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Join", "Join"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Join", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Join", "Joins the selected lines or polylines into a single object.\nThe lines must share a common point at the start or at the end for the operation to succeed.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Join, self).Activated(name=_tr("Join"))
+        super(Join, self).Activated(name=translate("draft","Join"))
         if not self.ui:
             return
         if not Gui.Selection.getSelection():
             self.ui.selectUi()
             _msg(translate("draft", "Select an object to join"))
-            self.call = self.view.addEventCallback("SoEvent",
-                                                   gui_tool_utils.selectObject)
+            self.call = self.view.addEventCallback(
+                "SoEvent",
+                gui_tool_utils.selectObject)
         else:
             self.proceed()
 
@@ -90,8 +87,6 @@ class Join(gui_base_original.Modifier):
         visually share a point. This is due to the underlying `joinWires`
         method not handling the points correctly.
         """
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
         if Gui.Selection.getSelection():
             self.print_selection()
             Gui.addModule("Draft")
@@ -112,7 +107,7 @@ class Join(gui_base_original.Modifier):
             labels.append(obj.Label)
 
         labels = ", ".join(labels)
-        _msg(_tr("Selection:") + " {}".format(labels))
+        _msg(translate("draft","Selection:") + " {}".format(labels))
 
 
 Gui.addCommand('Draft_Join', Join())

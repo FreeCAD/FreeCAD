@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfile as PathProfile
@@ -39,6 +38,7 @@ __doc__ = "Profile operation page controller and command implementation."
 
 FeatureSide       = 0x01
 FeatureProcessing = 0x02
+
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -129,8 +129,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def updateVisibility(self):
         hasFace = False
-        hasGeom = False
-        fullModel = False
         objBase = list()
 
         if hasattr(self.obj, 'Base'):
@@ -142,8 +140,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                     if sub[:4] == 'Face':
                         hasFace = True
                         break
-        else:
-            fullModel = True
 
         if hasFace:
             self.form.processCircles.show()
@@ -162,9 +158,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 Command = PathOpGui.SetupOperation('Profile',
         PathProfile.Create,
         TaskPanelOpPage,
-        'Path-Contour',
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile"),
-        QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile entire model, selected face(s) or selected edge(s)"),
+        'Path_Contour',
+        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
+        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"),
         PathProfile.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")

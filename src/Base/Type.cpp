@@ -37,7 +37,7 @@ using namespace Base;
 using namespace std;
 
 
-struct Base::TypeData 
+struct Base::TypeData
 {
   TypeData(const char *theName,
            const Type type = Type::badType(),
@@ -176,7 +176,7 @@ void Type::destruct(void)
 Type Type::fromName(const char *name)
 {
   std::map<std::string,unsigned int>::const_iterator pos;
-  
+
   pos = typemap.find(name);
   if (pos != typemap.end())
     return typedata[pos->second]->type;
@@ -204,7 +204,7 @@ const Type Type::getParent(void) const
 
 bool Type::isDerivedFrom(const Type type) const
 {
-  
+
   Type temp(*this);
   do {
     if (temp == type)

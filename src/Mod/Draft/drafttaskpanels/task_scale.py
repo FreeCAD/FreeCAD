@@ -53,21 +53,21 @@ class ScaleTaskPanel:
         layout.addWidget(self.xLabel, 0, 0, 1, 1)
         self.xValue = QtGui.QDoubleSpinBox()
         self.xValue.setRange(0.0000001, 1000000.0)
-        self.xValue.setDecimals(Draft.getParam("precision"))
+        self.xValue.setDecimals(Draft.precision())
         self.xValue.setValue(1)
         layout.addWidget(self.xValue,0,1,1,1)
         self.yLabel = QtGui.QLabel()
         layout.addWidget(self.yLabel,1,0,1,1)
         self.yValue = QtGui.QDoubleSpinBox()
         self.yValue.setRange(.0000001,1000000.0)
-        self.yValue.setDecimals(Draft.getParam("precision"))
+        self.yValue.setDecimals(Draft.precision())
         self.yValue.setValue(1)
         layout.addWidget(self.yValue,1,1,1,1)
         self.zLabel = QtGui.QLabel()
         layout.addWidget(self.zLabel,2,0,1,1)
         self.zValue = QtGui.QDoubleSpinBox()
         self.zValue.setRange(.0000001,1000000.0)
-        self.zValue.setDecimals(Draft.getParam("precision"))
+        self.zValue.setDecimals(Draft.precision())
         self.zValue.setValue(1)
         layout.addWidget(self.zValue,2,1,1,1)
         self.lock = QtGui.QCheckBox()
@@ -119,9 +119,12 @@ class ScaleTaskPanel:
     def setValue(self, val=None):
         """Set the value of the points."""
         if self.lock.isChecked():
-            self.xValue.setValue(val)
-            self.yValue.setValue(val)
-            self.zValue.setValue(val)
+            if not self.xValue.hasFocus():
+                self.xValue.setValue(val)
+            if not self.yValue.hasFocus():
+                self.yValue.setValue(val)
+            if not self.zValue.hasFocus():
+                self.zValue.setValue(val)
         if self.sourceCmd:
             self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
 

@@ -38,13 +38,18 @@
 
 using namespace App;
 
-FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o) 
+FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o)
     : object(o), has__object__(false)
 {
 }
 
 FeaturePythonImp::~FeaturePythonImp()
 {
+    Base::PyGILStateLocker lock;
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) py_##_name = Py::None();
+
+    FC_PY_FEATURE_PYTHON
 }
 
 void FeaturePythonImp::init(PyObject *pyobj) {
@@ -223,7 +228,7 @@ void FeaturePythonImp::onDocumentRestored()
     }
 }
 
-bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname, 
+bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
     PyObject **pyObj, Base::Matrix4D *_mat, bool transform, int depth) const
 {
     FC_PY_CALL_CHECK(getSubObject);
@@ -251,13 +256,13 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
             throw Py::TypeError("getSubObject expects return type of tuple");
         Py::Sequence seq(res);
         if(seq.length() < 2 ||
-                (!seq.getItem(0).isNone() && 
+                (!seq.getItem(0).isNone() &&
                  !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
                 !PyObject_TypeCheck(seq.getItem(1).ptr(),&Base::MatrixPy::Type))
         {
             throw Py::TypeError("getSubObject expects return type of (obj,matrix,pyobj)");
         }
-        if(_mat) 
+        if(_mat)
             *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(1).ptr())->getMatrixPtr();
         if(pyObj) {
             if(seq.length()>2)
@@ -296,7 +301,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
         if(!res.isSequence())
             throw Py::TypeError("getSubObjects expects return type of tuple");
         Py::Sequence seq(res);
-        for(size_t i=0;i<seq.length();++i) {
+        for(Py_ssize_t i=0;i<seq.length();++i) {
             Py::Object name(seq[i].ptr());
             if(!name.isString())
                 throw Py::TypeError("getSubObjects expects string in returned sequence");
@@ -315,7 +320,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
     }
 }
 
-bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse, 
+bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
         Base::Matrix4D *_mat, bool transform, int depth) const
 {
     FC_PY_CALL_CHECK(getLinkedObject);
@@ -339,13 +344,13 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
             throw Py::TypeError("getLinkedObject expects return type of (object,matrix)");
         Py::Sequence seq(res);
         if(seq.length() != 2 ||
-                (!seq.getItem(0).isNone() && 
+                (!seq.getItem(0).isNone() &&
                  !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
                 !PyObject_TypeCheck(seq.getItem(1).ptr(),&Base::MatrixPy::Type))
         {
             throw Py::TypeError("getLinkedObject expects return type of (object,matrix)");
         }
-        if(_mat) 
+        if(_mat)
             *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(1).ptr())->getMatrixPtr();
         if(seq.getItem(0).isNone())
             ret = object;
@@ -520,7 +525,7 @@ int FeaturePythonImp::canLoadPartial() const {
 FeaturePythonImp::ValueT
 FeaturePythonImp::redirectSubName(std::ostringstream &ss,
                                   App::DocumentObject *topParent,
-                                  App::DocumentObject *child) const 
+                                  App::DocumentObject *child) const
 {
     _FC_PY_CALL_CHECK(redirectSubName,return(NotImplemented));
     Base::PyGILStateLocker lock;

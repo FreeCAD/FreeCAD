@@ -175,7 +175,7 @@ bool TaskSmoothing::accept()
         return true;
 
     Gui::WaitCursor wc;
-    Gui::Command::openCommand("Mesh Smoothing");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"));
 
     bool hasSelection = false;
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {

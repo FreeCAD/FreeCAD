@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="88"/>
-      <location filename="../../BrowserView.cpp" line="741"/>
+      <location filename="../../BrowserView.cpp" line="748"/>
       <source>Browser</source>
       <translation>Brskalnik</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="563"/>
       <source>File does not exist!</source>
       <translation>Datoteka ne obstaja!</translation>
     </message>
@@ -142,18 +142,24 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="547"/>
-      <location filename="../../BrowserView.cpp" line="552"/>
+      <location filename="../../BrowserView.cpp" line="551"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="552"/>
+      <location filename="../../BrowserView.cpp" line="556"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Med nalaganjem datoteke je prišlo do napake. Nekateri podatki so se lahko spremenili ali pa se sploh niso obnovili. Poglej v okno poročil za podrobnejše informacije o vpletenih objektih.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="712"/>
+      <location filename="../../BrowserView.cpp" line="559"/>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Pri nalaganju datoteke je prišlo do resnih napak. Določeni podatki so bili lahko spremenjeni ali pa sploh niso bili obnovljeni. Če projekt shranite, bo najverjetneje prišlo do izgube podatkov.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="719"/>
       <source>Loading %1...</source>
       <translation>Nalaganje %1 …</translation>
     </message>
@@ -161,17 +167,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="308"/>
       <source>Open in External Browser</source>
       <translation>Odpri v zunanjem brskalniku</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="308"/>
+      <location filename="../../BrowserView.cpp" line="312"/>
       <source>Open in new window</source>
       <translation>Odpri v novem oknu</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="340"/>
+      <location filename="../../BrowserView.cpp" line="344"/>
       <source>View source</source>
       <translation>Prikaz vira</translation>
     </message>

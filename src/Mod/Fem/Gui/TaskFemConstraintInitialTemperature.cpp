@@ -106,7 +106,7 @@ TaskDlgFemConstraintInitialTemperature::TaskDlgFemConstraintInitialTemperature(V
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintInitialTemperature(ConstraintView);;
+    this->parameter = new TaskFemConstraintInitialTemperature(ConstraintView);
 
     Content.push_back(parameter);
 }

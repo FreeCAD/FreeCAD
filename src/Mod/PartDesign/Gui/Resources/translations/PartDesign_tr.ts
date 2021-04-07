@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="1404"/>
       <source>Additive loft</source>
-      <translation>İlave Çatılama</translation>
+      <translation>Çatıla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Additive pipe</source>
-      <translation>Ilave boru</translation>
+      <translation>Borula</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>Create a datum line</source>
-      <translation>Bir referans çizgisi oluştur</translation>
+      <translation>Bir referans doğrusu oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Create a new datum line</source>
-      <translation>Yeni bir referans çizgisi oluştur</translation>
+      <translation>Yeni bir referans doğrusu oluştur</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1878"/>
       <source>Mirrored</source>
-      <translation>Yansıtılmış</translation>
+      <translation>Aynala</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1879"/>
@@ -425,7 +425,7 @@
     <message>
       <location filename="../../Command.cpp" line="1083"/>
       <source>Pocket</source>
-      <translation>Oyuk</translation>
+      <translation>Boşluk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1084"/>
@@ -479,12 +479,12 @@
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Revolution</source>
-      <translation>Döndürme</translation>
+      <translation>Döndür</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Revolve a selected sketch</source>
-      <translation>Seçili bir eskizi döndürerek katı oluştur</translation>
+      <translation>Seçili bir eskizi döndürerek katı cisim oluştur</translation>
     </message>
   </context>
   <context>
@@ -515,7 +515,7 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation>Şekil bağlayıcı oluşturma</translation>
+      <translation>Bir şekil bağlayıcı oluştur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Subtractive pipe</source>
-      <translation>Subtractive boru</translation>
+      <translation>Çıkarılabilir borulama</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>
@@ -667,12 +667,12 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Subtractive Ellipsoid</source>
-      <translation>Çıkarımcı elipsoid</translation>
+      <translation>Çıkarılabilir Elipsoit</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Subtractive Torus</source>
-      <translation>Çıkarılabilir Yumru</translation>
+      <translation>Çıkarılabilir Halka</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
@@ -1721,7 +1721,7 @@
     <message>
       <location filename="../../TaskPadParameters.cpp" line="56"/>
       <source>Pad parameters</source>
-      <translation>Kalınlık verme parametreleri</translation>
+      <translation>Kalınlık parametreleri</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="63"/>
@@ -2158,7 +2158,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="61"/>
       <source>Revolution parameters</source>
-      <translation>Dönüş değişkenleri</translation>
+      <translation>Döndürme değişkenleri</translation>
     </message>
   </context>
   <context>
@@ -2229,7 +2229,7 @@
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
       <source>Datum shape parameters</source>
-      <translation>Veri şekli parametreleri</translation>
+      <translation>Referans şekil parametreleri</translation>
     </message>
   </context>
   <context>
@@ -2337,7 +2337,7 @@
       <location filename="../../TaskTransformedParameters.cpp" line="198"/>
       <location filename="../../TaskTransformedParameters.cpp" line="234"/>
       <source>Construction line %1</source>
-      <translation>İnşaat hattı %1</translation>
+      <translation>Yapı hattı %1</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="212"/>
@@ -2394,27 +2394,27 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation>Radyusun yarıçapı, yüksekliği ve açısı ile ek bir silindir oluşturun</translation>
+      <translation>Yarıçapı, yüksekliği ve açısına göre bir katkı silindir oluşturun</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Onun yarıçapı ve çeşitli açıları ile bir katkı küresi oluşturun</translation>
+      <translation>Yarıçapı ve çeşitli açıları ile ek bir küre oluşturun</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cone</source>
-      <translation>Katkılı bir koni oluşturun</translation>
+      <translation>İlave bir koni oluşturun</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive ellipsoid</source>
-      <translation>Katkılı bir elipsoit oluşturun</translation>
+      <translation>İlave bir elipsoit oluşturun</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive torus</source>
-      <translation>Katkılı bir torus yarat</translation>
+      <translation>İlave bir halka oluşturun</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
@@ -2457,7 +2457,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="377"/>
       <source>Create a subtractive torus</source>
-      <translation>Çıkarılabilir bir simit oluştur</translation>
+      <translation>Çıkarılabilir bir halka oluştur</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="381"/>
@@ -2633,7 +2633,7 @@
     <message>
       <location filename="../../Command.cpp" line="1534"/>
       <source>%1 works only on parts.</source>
-      <translation>% 1 yalnızca parçalar üzerinde çalışıyor.</translation>
+      <translation>%1 sadece parçalar üzerinde çalışır.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1544"/>
@@ -2697,7 +2697,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="128"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation>% 1 zaten bir cisim ait, başka bir cisim için temel özellik olarak kullanamıyor.</translation>
+      <translation>%1 zaten bir gövdeye ait, başka bir gövde için temel özellik olarak kullanılamaz.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="135"/>
@@ -2707,7 +2707,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="143"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Temel özellik (% 1) başka bir parçaya ait.</translation>
+      <translation>Temel özellik (%1) başka bir parçaya ait.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
@@ -2863,7 +2863,7 @@ Bu, beklenmedik sonuçlara neden olabilir.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="167"/>
       <source>Construction line %1</source>
-      <translation>İnşaat hattı %1</translation>
+      <translation>Yapı hattı %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="84"/>
@@ -3013,7 +3013,7 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="184"/>
       <source>Edit shape binder</source>
-      <translation>Şekil bağlayıcı düzenle</translation>
+      <translation>Şekil bağlayıcıyı düzenle</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="152"/>
@@ -3033,7 +3033,7 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Düzenlediğiniz "% 1" belgesi, PartDesign tezgahının eski bir sürümüyle tasarlandı.</translation>
+      <translation>Düzenlediğiniz "%1" belgesi, ParçaTasarımı (PartDesign) tezgahının eski bir sürümüyle tasarlandı.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="147"/>
@@ -3043,7 +3043,7 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="150"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>"% 1" belgesi ya eski PartDesign'dan geçiş işleminin ortasında veya biraz bozuk bir yapıya sahip gibi görünüyor.</translation>
+      <translation>"%1" belgesi ya eski ParçaTasarımı'dan (PartDesign) geçiş sürecinin ortasında ya da biraz bozuk bir yapıya sahip görünüyor.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="154"/>
@@ -3161,7 +3161,7 @@ Buna karşın, daha sonra istediğiniz an 'ParçaTasarımı-&gt;Geçiş...' ('Pa
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="399"/>
       <source> Custom thread length</source>
-      <translation> Özel iplik uzunluğu</translation>
+      <translation> Özel diş uzunluğu</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="423"/>

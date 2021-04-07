@@ -107,8 +107,8 @@ std::string LineFormat::toString(void) const
 //static preference getters.
 double LineFormat::getDefEdgeWidth()
 {
-    std::string lgName = Preferences::lineGroup();
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    int lgNumber = Preferences::lineGroup();
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgNumber);
 
     double width = lg->getWeight("Graphic");
     delete lg; 

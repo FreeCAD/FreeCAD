@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2018 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -46,19 +46,12 @@ DlgObjectSelection::DlgObjectSelection(
     ui->setupUi(this);
 
     // make sure to show a horizontal scrollbar if needed
-#if QT_VERSION >= 0x050000
     ui->depList->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     ui->treeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    ui->depList->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-    ui->depList->header()->setResizeMode(1, QHeaderView::ResizeToContents);
-    ui->depList->header()->setResizeMode(2, QHeaderView::ResizeToContents);
-    ui->depList->header()->setResizeMode(3, QHeaderView::ResizeToContents);
-    ui->treeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
+
     ui->depList->header()->setStretchLastSection(false);
     ui->depList->headerItem()->setText(0, tr("Dependency"));
     ui->depList->headerItem()->setText(1, tr("Document"));
@@ -196,7 +189,7 @@ App::DocumentObject *DlgObjectSelection::objFromItem(QTreeWidgetItem *item) {
 }
 
 void DlgObjectSelection::onItemExpanded(QTreeWidgetItem * item) {
-    if(item->childCount()) 
+    if(item->childCount())
         return;
     auto obj = objFromItem(item);
     if(!obj)

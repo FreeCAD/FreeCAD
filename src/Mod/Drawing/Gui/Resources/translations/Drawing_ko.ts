@@ -238,126 +238,132 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="215"/>
+      <location filename="../../DrawingView.cpp" line="219"/>
       <source>&amp;Background</source>
       <translation type="unfinished">&amp;Background</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="221"/>
+      <location filename="../../DrawingView.cpp" line="225"/>
       <source>&amp;Outline</source>
       <translation type="unfinished">&amp;Outline</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="227"/>
+      <location filename="../../DrawingView.cpp" line="231"/>
       <source>&amp;Native</source>
       <translation type="unfinished">&amp;Native</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="231"/>
+      <location filename="../../DrawingView.cpp" line="235"/>
       <source>&amp;OpenGL</source>
       <translation>&amp; OpenGL</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="234"/>
+      <location filename="../../DrawingView.cpp" line="238"/>
       <source>&amp;Image</source>
       <translation type="unfinished">&amp;Image</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="238"/>
+      <location filename="../../DrawingView.cpp" line="242"/>
       <source>&amp;High Quality Antialiasing</source>
       <translation type="unfinished">&amp;High Quality Antialiasing</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="276"/>
+      <location filename="../../DrawingView.cpp" line="284"/>
       <source>Open SVG File</source>
       <translation type="unfinished">Open SVG File</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="277"/>
+      <location filename="../../DrawingView.cpp" line="285"/>
       <source>Could not open file '%1'.</source>
       <translation type="unfinished">Could not open file '%1'.</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="364"/>
+      <location filename="../../DrawingView.cpp" line="408"/>
       <source>&amp;Renderer</source>
       <translation type="unfinished">&amp;Renderer</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="469"/>
+      <location filename="../../DrawingView.cpp" line="513"/>
       <source>Export PDF</source>
-      <translation>PDF 내보내기</translation>
+      <translation>PDF로 내보내기</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="470"/>
+      <location filename="../../DrawingView.cpp" line="514"/>
       <source>PDF file</source>
       <translation>PDF 파일</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="486"/>
+      <location filename="../../DrawingView.cpp" line="530"/>
       <source>Page sizes</source>
       <translation>페이지 크기</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="487"/>
+      <location filename="../../DrawingView.cpp" line="532"/>
+      <location filename="../../DrawingView.cpp" line="545"/>
       <source>A0</source>
       <translation>A0</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="489"/>
+      <location filename="../../DrawingView.cpp" line="534"/>
+      <location filename="../../DrawingView.cpp" line="547"/>
       <source>A1</source>
       <translation>A1</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="491"/>
+      <location filename="../../DrawingView.cpp" line="536"/>
+      <location filename="../../DrawingView.cpp" line="549"/>
       <source>A2</source>
       <translation>A2</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="493"/>
+      <location filename="../../DrawingView.cpp" line="538"/>
+      <location filename="../../DrawingView.cpp" line="551"/>
       <source>A3</source>
       <translation>A3</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="495"/>
+      <location filename="../../DrawingView.cpp" line="540"/>
+      <location filename="../../DrawingView.cpp" line="553"/>
       <source>A4</source>
       <translation>A4</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="497"/>
+      <location filename="../../DrawingView.cpp" line="542"/>
+      <location filename="../../DrawingView.cpp" line="555"/>
       <source>A5</source>
       <translation>A5</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="578"/>
+      <location filename="../../DrawingView.cpp" line="666"/>
       <source>Different orientation</source>
       <translation type="unfinished">Different orientation</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="579"/>
+      <location filename="../../DrawingView.cpp" line="667"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>프린터 사용중인 방향이 현재 드로잉과는 다릅니다. 계속 진행하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="586"/>
-      <location filename="../../DrawingView.cpp" line="594"/>
+      <location filename="../../DrawingView.cpp" line="674"/>
+      <location filename="../../DrawingView.cpp" line="682"/>
       <source>Different paper size</source>
       <translation>다른 용지 크기</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="587"/>
-      <location filename="../../DrawingView.cpp" line="595"/>
+      <location filename="../../DrawingView.cpp" line="675"/>
+      <location filename="../../DrawingView.cpp" line="683"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>프린터가 사용중인 종이 크기가 현재 드로잉과는 다릅니다. 계속 진행하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="606"/>
+      <location filename="../../DrawingView.cpp" line="694"/>
       <source>Opening file failed</source>
       <translation>파일 열기 실패</translation>
     </message>
     <message>
-      <location filename="../../DrawingView.cpp" line="607"/>
+      <location filename="../../DrawingView.cpp" line="695"/>
       <source>Can't open file '%1' for writing.</source>
       <translation>쓰기에 사용할 '%1' 파일을 열 수 없습니다.</translation>
     </message>

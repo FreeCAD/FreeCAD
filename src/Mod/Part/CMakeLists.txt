@@ -31,6 +31,14 @@ set(BasicShapes_Scripts
     BasicShapes/Shapes.py
 )
 
+if(BUILD_GUI)
+    list (APPEND BasicShapes_Scripts
+          BasicShapes/CommandShapes.py
+          BasicShapes/ViewProviderShapes.py
+          BasicShapes/TaskTube.ui
+    )
+endif(BUILD_GUI)
+
 set(BOPTools_Scripts
     BOPTools/__init__.py
     BOPTools/GeneralFuseResult.py

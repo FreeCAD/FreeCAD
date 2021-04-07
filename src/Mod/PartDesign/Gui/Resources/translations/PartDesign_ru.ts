@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="1666"/>
       <source>Make a draft on a face</source>
-      <translation>Создать набросок на грани</translation>
+      <translation>Сделать уклон грани</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="1237"/>
       <source>Groove a selected sketch</source>
-      <translation>Гравировать выбранный эскиз</translation>
+      <translation>Создать паз выбранным эскизом</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation>Создать толстое твердое тело</translation>
+      <translation>Создать полое тело</translation>
     </message>
   </context>
   <context>
@@ -1248,7 +1248,7 @@
     <message>
       <location filename="../../TaskDraftParameters.ui" line="49"/>
       <source>Draft angle</source>
-      <translation>Угол притяжки</translation>
+      <translation>Угол уклона</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="79"/>
@@ -2842,7 +2842,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="303"/>
       <source>Missing neutral plane</source>
-      <translation>Отсутствуют нейтральные плоскости</translation>
+      <translation>Отсутствуют нейтральная плоскость</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="304"/>

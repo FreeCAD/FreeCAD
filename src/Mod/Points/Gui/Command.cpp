@@ -85,7 +85,7 @@ void CmdPointsImport::activated(int iMsg)
     if (!fn.isEmpty()) {
         fn = Base::Tools::escapeEncodeFilename(fn);
         Gui::Document* doc = getActiveGuiDocument();
-        openCommand("Import points");
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import points"));
         addModule(Command::App, "Points");
         doCommand(Command::Doc, "Points.insert(\"%s\", \"%s\")",
                   fn.toUtf8().data(), doc->getDocument()->getName());
@@ -165,7 +165,7 @@ void CmdPointsTransform::activated(int iMsg)
     Base::Placement trans;
     trans.setRotation(Base::Rotation(Base::Vector3d(0.0, 0.0, 1.0), 1.570796));
 
-    openCommand("Transform points");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Transform points"));
     //std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
     //for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
     //    Base::Placement p = static_cast<Points::Feature*>(*it)->Placement.getValue();
@@ -191,6 +191,7 @@ CmdPointsConvert::CmdPointsConvert()
     sToolTipText  = QT_TR_NOOP("Convert to points");
     sWhatsThis    = "Points_Convert";
     sStatusTip    = QT_TR_NOOP("Convert to points");
+    sPixmap       = "Points_Convert";
 }
 
 void CmdPointsConvert::activated(int iMsg)
@@ -199,12 +200,12 @@ void CmdPointsConvert::activated(int iMsg)
 
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance"),
-        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok);
+        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
 
     Gui::WaitCursor wc;
-    openCommand("Convert to points");
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to points"));
     std::vector<App::DocumentObject*> geoObject = getSelection().getObjectsOfType(Base::Type::fromName("App::GeoFeature"));
 
     bool addedPoints = false;
@@ -321,6 +322,7 @@ CmdPointsMerge::CmdPointsMerge()
     sToolTipText  = QT_TR_NOOP("Merge several point clouds into one");
     sWhatsThis    = "Points_Merge";
     sStatusTip    = QT_TR_NOOP("Merge several point clouds into one");
+    sPixmap       = "Points_Merge";
 }
 
 void CmdPointsMerge::activated(int iMsg)
@@ -363,6 +365,7 @@ CmdPointsStructure::CmdPointsStructure()
     sToolTipText  = QT_TR_NOOP("Convert points to structured point cloud");
     sWhatsThis    = "Points_Structure";
     sStatusTip    = QT_TR_NOOP("Convert points to structured point cloud");
+    sPixmap       = "Points_Structure";
 }
 
 void CmdPointsStructure::activated(int iMsg)

@@ -91,7 +91,7 @@ bool Assistant::startAssistant()
         QString app = QCoreApplication::applicationDirPath() + QDir::separator();
 #else
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
-#endif 
+#endif
         app += QLatin1String("assistant");
 
         // get the name of the executable and the doc path

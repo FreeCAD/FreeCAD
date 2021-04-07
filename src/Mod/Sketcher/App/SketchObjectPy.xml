@@ -28,6 +28,11 @@
         <UserDocu>delete a geometric object from the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="delGeometries">
+      <Documentation>
+        <UserDocu>delete a list of geometric objects from the sketch, including any internal alignment geometry thereof</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="deleteAllGeometry">
         <Documentation>
             <UserDocu>delete all the geometry objects and constraints from the sketch except external geometry</UserDocu>
@@ -46,6 +51,11 @@
     <Methode Name="setConstruction">
       <Documentation>
         <UserDocu>set construction mode of a geometry on or off</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getConstruction">
+      <Documentation>
+        <UserDocu>returns the construction mode of a geometry</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addConstraint">
@@ -257,6 +267,11 @@ If there is no such constraint an exception is raised.
             <UserDocu>Increases the given BSpline Degree by a number of degrees</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="decreaseBSplineDegree">
+        <Documentation>
+            <UserDocu>Decreases the given BSpline Degree by a number of degrees by approximating this curve</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="modifyBSplineKnotMultiplicity">
         <Documentation>
             <UserDocu>Increases or reduces the given BSpline knot multiplicity</UserDocu>
@@ -445,5 +460,23 @@ If there is no such constraint an exception is raised.
       </Documentation>
       <Parameter Name="AxisCount" Type="Long"/>
     </Attribute>
+    <Attribute Name="GeometryFacadeList" ReadOnly="false">
+      <Documentation>
+        <UserDocu>
+          Return a list of GeometryFacade objects corresponding to the PropertyGeometryList
+        </UserDocu>
+      </Documentation>
+      <Parameter Name="GeometryFacadeList" Type="List"/>
+    </Attribute>
+    <Methode Name="setGeometryId">
+      <Documentation>
+        <UserDocu>sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getGeometryId">
+      <Documentation>
+        <UserDocu>gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

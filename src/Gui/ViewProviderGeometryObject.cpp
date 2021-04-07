@@ -34,14 +34,15 @@
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/sensors/SoNodeSensor.h> 
+# include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h> 
+# include <Inventor/actions/SoRayPickAction.h>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -90,8 +91,8 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     }
     else {
         unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
-        r = ((shcol >> 24) & 0xff) / 255.0; 
-        g = ((shcol >> 16) & 0xff) / 255.0; 
+        r = ((shcol >> 24) & 0xff) / 255.0;
+        g = ((shcol >> 16) & 0xff) / 255.0;
         b = ((shcol >> 8) & 0xff) / 255.0;
     }
 
@@ -250,6 +251,14 @@ unsigned long ViewProviderGeometryObject::getBoundColor() const
     return bbcol;
 }
 
+namespace {
+float getBoundBoxFontSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    return hGrp->GetFloat("BoundingBoxFontSize", 10.0);
+}
+}
+
 void ViewProviderGeometryObject::showBoundingBox(bool show)
 {
     if (!pcBoundSwitch && show) {
@@ -265,6 +274,9 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
 
         pcBoundColor->rgb.setValue(r, g, b);
         pBoundingSep->addChild(pcBoundColor);
+        SoFont* font = new SoFont();
+        font->size.setValue(getBoundBoxFontSize());
+        pBoundingSep->addChild(font);
 
         pBoundingSep->addChild(new SoResetTransform());
         pBoundingSep->addChild(pcBoundingBox);

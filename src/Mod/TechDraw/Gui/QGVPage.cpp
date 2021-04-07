@@ -478,6 +478,7 @@ QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
     ourScene->addItem(dimGroup);
 
     dimGroup->setViewPartFeature(dim);
+    dimGroup->dvDimension = dim;
 
     // Find if it belongs to a parent
     QGIView *parent = 0;
@@ -745,7 +746,7 @@ void QGVPage::setRenderer(RendererType type)
 void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 {
 #ifndef QT_NO_OPENGL
-    setRenderHint(QPainter::HighQualityAntialiasing, highQualityAntialiasing);
+    setRenderHint(QPainter::Antialiasing, highQualityAntialiasing);
 #else
     Q_UNUSED(highQualityAntialiasing);
 #endif
@@ -1026,11 +1027,7 @@ void QGVPage::wheelEvent(QWheelEvent *event)
     }
 
     QPointF center = mapToScene(viewport()->rect().center());
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     int delta = event->angleDelta().y();
-#else
-    int delta = event->delta();
-#endif
     qreal factor = std::pow(mouseBase, delta / mouseAdjust);
     scale(factor, factor);
 
@@ -1194,10 +1191,10 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 
         std::string FeatName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
         std::string PageName = getDrawPage()->getNameInDocument();
-        Gui::Command::openCommand("Create Balloon");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
         TechDraw::DrawViewBalloon *balloon = 0;
 
-        Gui::Command::openCommand("Create Balloon");
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
         Command::doCommand(Command::Doc,"App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",FeatName.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 

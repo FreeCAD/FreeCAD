@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver calculix ccx tools task panel for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package task_solver_ccxtools
 #  \ingroup FEM
@@ -285,7 +285,7 @@ class _TaskPanel:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             self.fea.load_results()
-        except:
+        except Exception:
             FreeCAD.Console.PrintError("loading results failed\n")
 
         QApplication.restoreOverrideCursor()

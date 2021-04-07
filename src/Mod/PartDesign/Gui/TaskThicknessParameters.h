@@ -60,7 +60,7 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    Ui_TaskThicknessParameters* ui;
+    std::unique_ptr<Ui_TaskThicknessParameters> ui;
 };
 
 /// simulation dialog for the TaskView

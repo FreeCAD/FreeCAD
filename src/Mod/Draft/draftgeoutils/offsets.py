@@ -153,8 +153,16 @@ def offset(edge, vector, trim=False):
             return Part.ArcOfCircle(curve,
                                     edge.FirstParameter,
                                     edge.LastParameter).toShape()
+    elif geomType(edge) == "Ellipse":
+        rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
+        curve = edge.Curve.copy()
+        if vector.getAngle(rad) < 1:
+            curve.MajorRadius = curve.MajorRadius+vector.Length
+            curve.MinorRadius = curve.MinorRadius+vector.Length
         else:
-            return curve.toShape()
+            curve.MajorRadius = curve.MajorRadius-vector.Length
+            curve.MinorRadius = curve.MinorRadius-vector.Length
+        return curve.toShape()
     else:
         return None
 
@@ -225,7 +233,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     else:
         norm = get_normal(wire)  # norm = Vector(0, 0, 1)
         # for backward compatibility with previous getNormal implementation
-        if norm == None:
+        if norm is None:
             norm = App.Vector(0, 0, 1)
 
     closed = isReallyClosed(wire)
@@ -280,7 +288,7 @@ def offsetWire(wire, dvec, bind=False, occ=False,
     # ('legacy/backward-compatible' mode)
     if not firstDir:
         # need to test against Part.Circle, not Part.ArcOfCircle
-        if isinstance(e.Curve, Part.Circle):
+        if isinstance(e.Curve, (Part.Circle,Part.Ellipse)):
             v0 = e.tangentAt(e.FirstParameter).cross(norm)
         else:
             v0 = vec(e).cross(norm)

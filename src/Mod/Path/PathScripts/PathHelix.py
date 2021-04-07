@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Lorenz Hüdepohl <dev@stellardeath.org>             *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -36,7 +34,7 @@ from PySide import QtCore
 
 __title__ = "Path Helix Drill Operation"
 __author__ = "Lorenz Hüdepohl"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of Helix Drill operation"
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2016"

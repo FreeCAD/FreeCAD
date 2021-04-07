@@ -49,7 +49,6 @@ PyObject *PartPy::getCustomAttributes(const char* /*attr*/) const
 
 int PartPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
-
 

@@ -21,7 +21,7 @@
 
 import six
 
-import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,math,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -37,9 +37,9 @@ else:
         return txt
     # \endcond
 
-__title__="FreeCAD Axis System"
+__title__  = "FreeCAD Axis System"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecadweb.org"
+__url__    = "https://www.freecadweb.org"
 
 ## @package ArchAxis
 #  \ingroup ARCH
@@ -461,7 +461,7 @@ class _ViewProviderAxis:
                                     cin = coin.SoInput()
                                     cin.setBuffer(buf)
                                     cob = coin.SoDB.readAll(cin)
-                                except:
+                                except Exception:
                                     import re
                                     # workaround for pivy SoInput.setBuffer() bug
                                     buf = buf.replace("\n","")
@@ -492,7 +492,7 @@ class _ViewProviderAxis:
                                     if vobj.FontName:
                                         try:
                                             fn = str(vobj.FontName)
-                                        except:
+                                        except Exception:
                                             pass
                                 fo.name = fn
                                 fo.size = fs
@@ -560,7 +560,7 @@ class _ViewProviderAxis:
                                     if vobj.FontName:
                                         try:
                                             fn = str(vobj.FontName)
-                                        except:
+                                        except Exception:
                                             pass
                                 fo.name = fn
                                 fo.size = fs
@@ -1001,8 +1001,9 @@ class AxisSystemTaskPanel:
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
         elif obj.isDerivedFrom("App::DocumentObjectGroup"):
             return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        elif hasattr(obj.ViewObject, "Icon"):
+            return QtGui.QIcon(obj.ViewObject.Icon)
+        return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
 

@@ -80,6 +80,17 @@ class ViewProviderLayer:
                              _tip)
             vobj.OverrideShapeColorChildren = True
 
+        if "UsePrintColor" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "If it is true, the print color "
+                                     "will be used when objects in this "
+                                     "layer are placed on a TechDraw page")
+            vobj.addProperty("App::PropertyBool",
+                             "UsePrintColor",
+                             "Print",
+                             _tip)
+
+
     def set_visual_properties(self, vobj, properties):
         """Set visual properties only if they don't already exist."""
         view_group = App.ParamGet("User parameter:BaseApp/Preferences/View")
@@ -144,6 +155,16 @@ class ViewProviderLayer:
                              "Layer",
                              _tip)
             vobj.Transparency = 0
+
+        if "LinePrintColor" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "The line color of the objects "
+                                     "contained within this layer, "
+                                     "when used on a TechDraw page")
+            vobj.addProperty("App::PropertyColor",
+                             "LinePrintColor",
+                             "Print",
+                             _tip)
 
     def getIcon(self):
         """Return the path to the icon used by the viewprovider.
@@ -382,6 +403,11 @@ class ViewProviderLayerContainer:
                                 menu)
         action1.triggered.connect(self.merge_by_name)
         menu.addAction(action1)
+        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_NewLayer.svg"),
+                                translate("Draft", "Add new layer"),
+                                menu)
+        action2.triggered.connect(self.add_layer)
+        menu.addAction(action2)
 
     def merge_by_name(self):
         """Merge the layers that have the same name."""
@@ -441,6 +467,12 @@ class ViewProviderLayerContainer:
             else:
                 _msg("InList not empty. "
                      "Unable to delete layer: " + layer.Label)
+
+    def add_layer(self):
+        """Creates a new layer"""
+        import Draft
+        Draft.make_layer()
+        App.ActiveDocument.recompute()
 
     def __getstate__(self):
         """Return a tuple of objects to save or None."""

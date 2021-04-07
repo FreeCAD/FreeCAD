@@ -2,11 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ko" sourcelanguage="en">
   <context>
+    <name>Image_Scaling</name>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <source>Scale image plane</source>
+      <translation>이미지 평면 크기 조정</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>두 점들 사이에 정의된 거리를 이용해서 이미지 평면을 스케일링</translation>
+    </message>
+  </context>
+  <context>
     <name>Dialog</name>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>이미지 평면 크기 조정</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
@@ -37,19 +50,6 @@
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
       <translation>이미지 평면을 선택하고 거리를 입력</translation>
-    </message>
-  </context>
-  <context>
-    <name>Image_Scaling</name>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
-      <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>두 점들 사이에 정의된 거리를 이용해서 이미지 평면을 스케일링</translation>
     </message>
   </context>
   <context>

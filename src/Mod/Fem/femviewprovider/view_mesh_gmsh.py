@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM mesh gmsh ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package view_mesh_gmsh
 #  \ingroup FEM
@@ -96,10 +96,9 @@ class VPMeshGmsh:
         )
     """
 
-    # overwrite unsetEdit, hide mesh object on task panel exit
+    # overwrite unsetEdit
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
-        self.ViewObject.hide()
         return True
 
     def doubleClicked(self, vobj):

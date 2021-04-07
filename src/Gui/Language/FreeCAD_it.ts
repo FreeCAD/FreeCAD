@@ -121,6 +121,81 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Edit</source>
+      <translation>Modifica</translation>
+    </message>
+    <message>
+      <source>Import</source>
+      <translation>Importa</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Elimina</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Incolla espressioni</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Crea un gruppo di link</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Crea un link</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Crea un link relativo</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Importa un link</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Importa tutti i link</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Inserimento misurazione</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Inserimento documento di testo</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Aggiungi parte</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Aggiungi gruppo</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Allinea</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Posizionamento</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Trasforma</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Collega trasformazione</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Misura la distanza</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
@@ -2533,6 +2608,30 @@ opening or creation</source>
       <source>Show axis cross by default</source>
       <translation>Mostra di default il sistema di assi</translation>
     </message>
+    <message>
+      <source>Pick radius (px):</source>
+      <translation>Raggio di selezione (px):</translation>
+    </message>
+    <message>
+      <source>Area for picking elements in 3D view.
+Larger value eases to pick things, but can make small features impossible to select.
+               </source>
+      <translation>Area per selezionare gli elementi nella vista 3D.
+Un valore maggiore facilita la selezione delle cose, ma può rendere impossibile la selezione di funzionalità piccole.
+               </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Questa opzione è utile per risolvere i problemi della scheda grafica e del driver.
+
+La modifica di questa opzione richiede un riavvio dell'applicazione.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Usa software OpenGL</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -3153,6 +3252,29 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
+    <message>
+      <source>Unloaded Workbenches</source>
+      <translation>Ambienti di lavoro scaricati</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carica i workbenches selezionati, aggiungendo le loro finestre di preferenze alle impostazioni di preferenze.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Carica la selezione</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ambienti di lavoro disponibili non caricati&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Per preservare le risorse, FreeCAD non carica gli ambienti di lavoro finché non vengono utilizzati. Il loro caricamento può fornire l'accesso a preferenze aggiuntive relative alla loro funzionalità.&lt;/p&gt;&lt;p&gt;I seguenti ambienti di lavoro sono disponibili nella tua installazione, ma non sono ancora caricati:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
     <message>
       <source>Macro</source>
@@ -3232,7 +3354,7 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>How many macros should be listed in recent macros list</source>
-      <translation>Quante macro dovrebbero essere elencate nell'elenco delle macro recenti</translation>
+      <translation>Quante macro devono essere elencate nella lista delle macro recenti</translation>
     </message>
     <message>
       <source>Shortcut count</source>
@@ -3240,11 +3362,11 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>How many recent macros should have shortcuts</source>
-      <translation>Quante macro recenti dovrebbero avere scorciatoie</translation>
+      <translation>Quante macro recenti devono avere scorciatoie</translation>
     </message>
     <message>
       <source>Keyboard Modifiers</source>
-      <translation>Modificatori Tastiera</translation>
+      <translation>Modificatori tastiera</translation>
     </message>
     <message>
       <source>Keyboard modifiers, default = Ctrl+Shift+</source>
@@ -3396,10 +3518,6 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
       <translation>Le rotazioni in 3D utilizzeranno la posizione corrente del cursore come centro per la rotazione</translation>
     </message>
     <message>
-      <source>Rotate at cursor</source>
-      <translation>Rotazione al cursore</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Isometrica</translation>
     </message>
@@ -3446,6 +3564,49 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Orientamento predefinito della fotocamera quando si crea un nuovo documento o si seleziona la vista iniziale</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Modalità rotazione</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Centro finestra</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Trascina al cursore</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Centro oggetto</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Selezione</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Passa automaticamente alla vista 3D contenente l'elemento selezionato</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Espande automaticamente la struttura quando l'oggetto corrispondente viene selezionato nella vista 3D</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Preseleziona l'oggetto nella vista 3D quando il mouse sopra l'elemento ad albero</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Registra la selezione nella vista ad albero per andare indietro/avanti usando il pulsante di navigazione</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Aggiunge caselle di selezione nell'albero del modello</translation>
     </message>
   </context>
   <context>
@@ -3590,10 +3751,6 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
       <translation>Colore semplice</translation>
     </message>
     <message>
-      <source>Pick radius (px):</source>
-      <translation>Raggio di selezione (px):</translation>
-    </message>
-    <message>
       <source>Object being edited</source>
       <translation>Oggetto in fase di modifica</translation>
     </message>
@@ -3608,12 +3765,6 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
     <message>
       <source>Enable selection highlighting and use specified color</source>
       <translation>Abilita l'evidenziazione della selezione e usa il colore specificato</translation>
-    </message>
-    <message>
-      <source>Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.</source>
-      <translation>Area per la selezione degli elementi nella vista 3D.
-Un valore più grande facilita la selezione, ma può rendere impossibile la selezione di piccole funzioni.</translation>
     </message>
     <message>
       <source>Background color for the model view</source>
@@ -5223,6 +5374,10 @@ How do you want to proceed?</source>
       <source>Expression...</source>
       <translation>Espressione...</translation>
     </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Espansione automatica</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5369,7 +5524,7 @@ Vuoi uscire senza salvare i tuoi dati?</translation>
     <name>Gui::RecentMacrosAction</name>
     <message>
       <source>Run macro %1 (Shift+click to edit) shortcut: %2</source>
-      <translation type="unfinished">Run macro %1 (Shift+click to edit) shortcut: %2</translation>
+      <translation>Esegue la macro %1 (Maiusc+clic per modificare) scorciatoia: %2</translation>
     </message>
     <message>
       <source>File not found</source>
@@ -6715,7 +6870,7 @@ Scegli 'Annulla' per interrompere</translation>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
-      <translation type="unfinished">Identical physical path detected. It may cause unwanted overwrite of existing document!
+      <translation>Identico percorso fisico rilevato. Può causare una sovrascrittura indesiderata del documento esistente!
 
 </translation>
     </message>
@@ -6727,33 +6882,49 @@ Scegli 'Annulla' per interrompere</translation>
       <source>
 
 Please check report view for more...</source>
-      <translation type="unfinished">
+      <translation>
 
-Please check report view for more...</translation>
+Si prega di controllare la vista report per ulteriori informazioni...</translation>
     </message>
     <message>
       <source>
 
 Pyhsical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Pyhsical path: </translation>
+Percorso fisico: </translation>
     </message>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>
+Documento: </translation>
     </message>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+  Percorso: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
-      <translation type="unfinished">Identical physical path</translation>
+      <translation>Percorso fisico identico</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Errore</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Si sono verificati degli errori durante il caricamento del file. Alcuni dati potrebbero essere stati modificati o non acquisiti. Guardare nella vista report per avere informazioni più specifiche sugli oggetti coinvolti.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Ci sono stati errori gravi durante il caricamento del file. Alcuni dati potrebbero essere stati modificati o non recuperati affatto. Il salvataggio del progetto molto probabilmente si tradurrà in perdita di dati.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Ambienti di lavoro</translation>
     </message>
   </context>
   <context>
@@ -7074,7 +7245,7 @@ Document: </translation>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>Registra &amp;Macro...</translation>
+      <translation>Registra una &amp;macro...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
@@ -7198,8 +7369,8 @@ Document: </translation>
       <translation>Nessuna selezione</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Si prega di selezionare prima gli oggetti che si desidera esportare.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Selezionare gli oggetti da esportare prima di scegliere Esporta.</translation>
     </message>
   </context>
   <context>
@@ -7226,6 +7397,21 @@ Document: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Ricalcola la Funzione o il documento</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Aiuto</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Dona</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Dona per contribuire allo sviluppo di FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -7417,7 +7603,7 @@ Document: </translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation>Importa link</translation>
+      <translation>Importa un link</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
@@ -7477,7 +7663,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation>Crea un sotto-link</translation>
+      <translation>Crea un link relativo</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
@@ -7567,11 +7753,11 @@ Document: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation>Scollega</translation>
+      <translation>Annulla il link</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation>Pulisci i livelli dei collegamenti</translation>
+      <translation>Elimina il link e lo sostituisce con l'oggetto</translation>
     </message>
   </context>
   <context>
@@ -7969,11 +8155,11 @@ Document: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Macro recenti</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Elenco delle macro recenti</translation>
     </message>
   </context>
   <context>
@@ -8813,6 +8999,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista standard</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Ripristina fotocamera salvata</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Ripristina le impostazioni della fotocamera salvata</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8855,6 +9056,21 @@ Document: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Ruota la vista in senso orario di 90°</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista standard</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Salva la fotocamera corrente</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Salva le impostazioni attuali della fotocamera</translation>
     </message>
   </context>
   <context>

@@ -1,5 +1,3 @@
-# Unit test for the Arch module
-
 #***************************************************************************
 #*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
@@ -22,6 +20,8 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************/
+
+# Unit test for the Arch module
 
 import os
 import unittest

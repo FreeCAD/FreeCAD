@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   (c) sliptonic (shopinthewoods@gmail.com) 2014                        *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -64,7 +64,7 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
-USE_TLO = True # if true G43 will be output following tool changes 
+USE_TLO = True # if true G43 will be output following tool changes
 OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
@@ -188,7 +188,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, 'Active'): 
+        if hasattr(obj, 'Active'):
             if not obj.Active:
                 continue
         if hasattr(obj, 'Base') and hasattr(obj.Base, 'Active'):
@@ -255,7 +255,7 @@ def export(objectslist, filename, argstring):
         # turn coolant off if required
         if not coolantMode == 'None':
             if OUTPUT_COMMENTS:
-                gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'    
+                gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'
             gcode  += linenumber() +'M9' + '\n'
 
     # do the post_amble
@@ -338,12 +338,12 @@ def parse(pathobj):
                 if hasattr(pathobj.ToolController, 'HorizRapid') and pathobj.ToolController.HorizRapid > 0:
                     opHorizRapid = Units.Quantity(pathobj.ToolController.HorizRapid, FreeCAD.Units.Velocity)
                 else:
-                    FreeCAD.Console.PrintWarning('Tool Controller Horizontal Rapid Values are unset'+ '\n') 
+                    FreeCAD.Console.PrintWarning('Tool Controller Horizontal Rapid Values are unset'+ '\n')
 
                 if hasattr(pathobj.ToolController, 'VertRapid') and pathobj.ToolController.VertRapid > 0:
                     opVertRapid = Units.Quantity(pathobj.ToolController.VertRapid, FreeCAD.Units.Velocity)
                 else:
-                    FreeCAD.Console.PrintWarning('Tool Controller Vertical Rapid Values are unset'+ '\n') 
+                    FreeCAD.Console.PrintWarning('Tool Controller Vertical Rapid Values are unset'+ '\n')
 
         for c in pathobj.Path.Commands:
 
@@ -355,8 +355,8 @@ def parse(pathobj):
                     command = 'G1'
                 else:
                     outstring.append('(Tool Controller Rapid Values are unset)' + '\n')
-                       
-            
+
+
             outstring.append(command)
 
             # if modal: suppress the command if it is the same as the last one
@@ -392,7 +392,7 @@ def parse(pathobj):
                             pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
                                 param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
-                            
+
             if adaptiveOp and c.Name in ["G0", "G00"]:
                 if opHorizRapid and opVertRapid:
                     if 'Z' not in c.Parameters:
@@ -434,4 +434,4 @@ def parse(pathobj):
 
         return out
 
-print(__name__ + " gcode postprocessor loaded.")
+# print(__name__ + " gcode postprocessor loaded.")

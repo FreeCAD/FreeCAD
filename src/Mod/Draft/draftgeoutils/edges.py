@@ -114,8 +114,8 @@ def isSameLine(e1, e2):
 def is_line(bspline):
     """Return True if the given BSpline curve is a straight line."""
 
-# previous implementation may fail for a multipole striaght spline due
-# a second order error in tolerance, wich introduce a difference of 1e-14
+# previous implementation may fail for a multipole straight spline due
+# a second order error in tolerance, which introduce a difference of 1e-14
 # in the values of the tangents. Also, may fail on a periodic spline.
 #    step = bspline.LastParameter/10
 #    b = bspline.tangent(0)
@@ -127,7 +127,7 @@ def is_line(bspline):
     start_point = bspline.StartPoint
     end_point = bspline.EndPoint
     dist_start_end = end_point.distanceToPoint(start_point)
-    if (dist_start_end == bspline.length()) < 1e-7:
+    if abs(bspline.length() - dist_start_end) < 1e-7:
         return True
 
     return False

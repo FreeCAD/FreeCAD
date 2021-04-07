@@ -29,8 +29,8 @@
 namespace Gui {
 
 /**
- * This class sets a waitcursor automatically while a slow operation is running. 
- * Therefore you just have to create an instance of WaitCursor before the time 
+ * This class sets a waitcursor automatically while a slow operation is running.
+ * Therefore you just have to create an instance of WaitCursor before the time
  * consuming operation starts.
  *
  * \code:
@@ -39,7 +39,7 @@ namespace Gui {
  * ...                   // slow operation
  * ...
  * \endcode
- *  
+ *
  * Sometimes you have two slow operations with some user interactions in between them.
  * Avoiding to show the waiting cursor then you have to call the methods @ref restoreCursor()
  * and setWaitCursor manually, like:
@@ -55,7 +55,7 @@ namespace Gui {
  * ...
  * ...                  // 2nd slow operation
  * \endcode
- *  
+ *
  * @author Werner Mayer
  */
 class GuiExport WaitCursor
@@ -84,5 +84,5 @@ private:
 
 } // namespace Gui
 
-#endif // GUI_WAIT_CURSOR_H 
+#endif // GUI_WAIT_CURSOR_H
 

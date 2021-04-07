@@ -208,6 +208,11 @@
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+        <source>Open start page preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>
@@ -281,11 +286,6 @@
     <message>
         <location filename="../../DlgStartPreferences.ui" line="91"/>
         <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgStartPreferences.ui" line="110"/>
-        <source>An optional custom folder to be displayed at the bottom of the first page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -456,11 +456,6 @@
     <message>
         <location filename="../../DlgStartPreferences.ui" line="603"/>
         <source>Close start page after loading</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgStartPreferences.ui" line="610"/>
-        <source>Close &amp; switch on file open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <Python.h>
+# include <QMenu>
 #endif
 
 #include "ViewProviderHelixParametric.h"
@@ -32,12 +33,13 @@
 using namespace PartGui;
 
 
-PROPERTY_SOURCE(PartGui::ViewProviderHelixParametric, PartGui::ViewProviderSpline)
+PROPERTY_SOURCE(PartGui::ViewProviderHelixParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderHelixParametric::ViewProviderHelixParametric()
 {
     sPixmap = "Part_Helix_Parametric";
+    extension.initExtension(this);
 }
 
 ViewProviderHelixParametric::~ViewProviderHelixParametric()
@@ -55,14 +57,20 @@ std::vector<std::string> ViewProviderHelixParametric::getDisplayModes(void) cons
     return StrList;
 }
 
+void ViewProviderHelixParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderPrimitive::setupContextMenu(menu, receiver, member);
+}
+
 // ------------------------------------------------------------------
 
-PROPERTY_SOURCE(PartGui::ViewProviderSpiralParametric, PartGui::ViewProviderSpline)
+PROPERTY_SOURCE(PartGui::ViewProviderSpiralParametric, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderSpiralParametric::ViewProviderSpiralParametric()
 {
     sPixmap = "Part_Spiral_Parametric";
+    extension.initExtension(this);
 }
 
 ViewProviderSpiralParametric::~ViewProviderSpiralParametric()
@@ -78,4 +86,9 @@ std::vector<std::string> ViewProviderSpiralParametric::getDisplayModes(void) con
     StrList.push_back("Points");
 
     return StrList;
+}
+
+void ViewProviderSpiralParametric::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderPrimitive::setupContextMenu(menu, receiver, member);
 }

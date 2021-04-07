@@ -117,7 +117,7 @@ protected:
 
     virtual void redrawHighlighted(SoAction * act, SbBool flag);
 
-    virtual SbBool readInstance(SoInput *  in, unsigned short  flags); 
+    virtual SbBool readInstance(SoInput *  in, unsigned short  flags);
 
 private:
     static int getPriority(const SoPickedPoint*);

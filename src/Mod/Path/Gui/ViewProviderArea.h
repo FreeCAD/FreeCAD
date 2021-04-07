@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2017 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -20,7 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #ifndef PATH_ViewProviderArea_H
 #define PATH_ViewProviderArea_H
 
@@ -38,7 +37,7 @@ public:
     ViewProviderArea();
     virtual ~ViewProviderArea();
 
-    /// grouping handling 
+    /// grouping handling
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
     virtual void updateData(const App::Property*);
     virtual bool onDelete(const std::vector<std::string> &);

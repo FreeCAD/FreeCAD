@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) sliptonic (shopinthewoods@gmail.com) 2020               *
+ *   Copyright (c) 2020 sliptonic <shopinthewoods@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,21 +27,20 @@
 # include <boost/algorithm/string.hpp>
 #endif
 
+#include "Base/Exception.h"
+#include "Base/GeometryPyCXX.h"
+#include "Base/Vector3D.h"
+#include "Base/VectorPy.h"
 #include "Mod/Path/App/Voronoi.h"
 #include "Mod/Path/App/VoronoiCell.h"
+#include "Mod/Path/App/VoronoiCellPy.h"
 #include "Mod/Path/App/VoronoiEdge.h"
+#include "Mod/Path/App/VoronoiEdgePy.h"
+#include "Mod/Path/App/VoronoiPy.h"
 #include "Mod/Path/App/VoronoiVertex.h"
-#include <Base/Exception.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/Vector3D.h>
-#include <Base/VectorPy.h>
+#include "Mod/Path/App/VoronoiVertexPy.h"
 
-// files generated out of VoronoiPy.xml
-#include "VoronoiPy.h"
-#include "VoronoiPy.cpp"
-#include "VoronoiCellPy.h"
-#include "VoronoiEdgePy.h"
-#include "VoronoiVertexPy.h"
+#include "Mod/Path/App/VoronoiPy.cpp"
 
 using namespace Path;
 
@@ -186,7 +185,11 @@ static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, c
 #endif
       PyObject *vx = new VoronoiVertexPy(new VoronoiVertex(dia, v));
       PyObject *arglist = Py_BuildValue("(O)", vx);
+#if PY_VERSION_HEX < 0x03090000
       PyObject *result = PyEval_CallObject(callback, arglist);
+#else
+      PyObject *result = PyObject_CallObject(callback, arglist);
+#endif
       Py_DECREF(arglist);
       Py_DECREF(vx);
       if (result == NULL) {

@@ -44,7 +44,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
 from draftutils.messages import _msg, _err
-from draftutils.translate import translate, _tr
+from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -58,12 +58,11 @@ class Fillet(gui_base_original.Creator):
         self.featureName = "Fillet"
 
     def GetResources(self):
-        """Set icon, menu and tooltip."""
-        _tip = "Creates a fillet between two selected wires or edges."
+        """Set icon, menu and tooltip.""" 
 
         return {'Pixmap': 'Draft_Fillet',
                 'MenuText': QT_TRANSLATE_NOOP("Draft", "Fillet"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft", "Creates a fillet between two selected wires or edges.")}
 
     def Activated(self, name=translate("Draft", "Fillet")):
         """Execute when the command is called."""
@@ -110,7 +109,7 @@ class Fillet(gui_base_original.Creator):
             # self.linetrack = trackers.lineTracker(dotted=True)
             # self.arctrack = trackers.arcTracker()
             # self.call = self.view.addEventCallback("SoEvent", self.action)
-            _msg(_tr("Enter radius."))
+            _msg(translate("draft","Enter radius."))
 
     def action(self, arg):
         """Scene event handler. CURRENTLY NOT USED.
@@ -129,12 +128,12 @@ class Fillet(gui_base_original.Creator):
     def set_delete(self):
         """Execute as a callback when the delete checkbox changes."""
         self.delete = self.ui.check_delete.isChecked()
-        _msg(_tr("Delete original objects: ") + str(self.delete))
+        _msg(translate("draft","Delete original objects:") + " " + str(self.delete))
 
     def set_chamfer(self):
         """Execute as a callback when the chamfer checkbox changes."""
         self.chamfer = self.ui.check_chamfer.isChecked()
-        _msg(_tr("Chamfer mode: ") + str(self.chamfer))
+        _msg(translate("draft","Chamfer mode:") + " " + str(self.chamfer))
 
     def numericRadius(self, rad):
         """Validate the entry radius in the user interface.
@@ -151,7 +150,7 @@ class Fillet(gui_base_original.Creator):
         wires = Gui.Selection.getSelection()
 
         if not wires or len(wires) != 2:
-            _err(_tr("Two elements needed."))
+            _err(translate("draft","Two elements needed."))
             return
 
         for o in wires:

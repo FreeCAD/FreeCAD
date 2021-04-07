@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Create a local coordinate system</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Create a new local coordinate system</translation>
     </message>
   </context>
   <context>
@@ -376,7 +376,7 @@
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create a new sketch</source>
-      <translation type="unfinished">Create a new sketch</translation>
+      <translation>Δημιουργία νέας επαφής</translation>
     </message>
   </context>
   <context>
@@ -795,7 +795,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>The requested feature cannot be created. The reason may be that:
 
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -811,7 +811,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>The requested feature cannot be created. The reason may be that:
 
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -827,7 +827,7 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>The requested feature cannot be created. The reason may be that:
 
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -1291,7 +1291,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>From other bodies of the same part</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
@@ -1883,7 +1883,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Path to sweep along</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2523,32 +2523,32 @@
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Several sub-elements selected</source>
-      <translation type="unfinished">Several sub-elements selected</translation>
+      <translation>Several sub-elements selected</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation type="unfinished">You have to select a single face as support for a sketch!</translation>
+      <translation>You have to select a single face as support for a sketch!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>No support face selected</source>
-      <translation type="unfinished">No support face selected</translation>
+      <translation>No support face selected</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>You have to select a face as support for a sketch!</source>
-      <translation type="unfinished">You have to select a face as support for a sketch!</translation>
+      <translation>You have to select a face as support for a sketch!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="496"/>
       <source>No planar support</source>
-      <translation type="unfinished">No planar support</translation>
+      <translation>No planar support</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="497"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation type="unfinished">You need a planar face as support for a sketch!</translation>
+      <translation>You need a planar face as support for a sketch!</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="679"/>
@@ -2755,7 +2755,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
+      <translation>No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
@@ -2880,7 +2880,7 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
     </message>
@@ -3055,7 +3055,7 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
+      <translation>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
     </message>

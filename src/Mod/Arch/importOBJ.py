@@ -82,7 +82,7 @@ def getIndices(obj,shape,offsetv,offsetvn):
                         mesh = MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                         FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
-            except: # unimplemented curve type
+            except Exception: # unimplemented curve type
                 if obj.isDerivedFrom("App::Link"):
                     if obj.Shape:
                         myshape = obj.Shape.copy(False)
@@ -248,10 +248,10 @@ def export(exportList,filename,colors=None):
                         outfile.write("f" + f + "\n")
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + decode(filename) + "\n")
-    if materials: 
+    if materials:
         outfile = pythonopen(filenamemtl,"w")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
-        outfile.write("# http://www.freecadweb.org\n")
+        outfile.write("# https://www.freecadweb.org\n")
         kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"Tr "}
         done = [] # store names to avoid duplicates
         for mat in materials:

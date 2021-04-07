@@ -211,13 +211,6 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
         }
     }
 
-    //check for logical range 
-    if ( (sColStart > sColEnd) ||
-         (iRowStart > iRowEnd) ) {
-        Base::Console().Error("%s - cell range is illogical\n",getNameInDocument());
-        return result.str();
-    }
-
     std::vector<std::string> availcolumns = getAvailColumns();
 
     //validate range start column in sheet's available columns
@@ -233,6 +226,13 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
     if (iAvailColEnd < 0) {
         Base::Console().Error("DVS - %s - end Column (%s) is invalid\n",
                               getNameInDocument(), sColEnd.c_str());
+        return result.str();
+    }
+
+    //check for logical range
+    if ( (iAvailColStart > iAvailColEnd) ||
+         (iRowStart > iRowEnd) ) {
+        Base::Console().Error("%s - cell range is illogical\n",getNameInDocument());
         return result.str();
     }
 

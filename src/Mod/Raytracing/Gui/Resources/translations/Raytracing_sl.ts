@@ -357,12 +357,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="26"/>
       <source>Mesh export settings</source>
-      <translation>Nastavitve izvoza mreže</translation>
+      <translation>Nastavitve izvoza ploskovja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="52"/>
       <source>Max mesh deviation:</source>
-      <translation>Največje odstopanje mreže:</translation>
+      <translation>Najv. odstopanje ploskovja:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsRay.ui" line="80"/>

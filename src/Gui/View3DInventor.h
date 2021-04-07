@@ -58,7 +58,7 @@ protected:
 };
 
 /** The 3D view window
- *  It consists out of the 3D view 
+ *  It consists out of the 3D view
  *  \author Juergen Riegel
  */
 class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverType
@@ -93,7 +93,7 @@ public:
     /**
      * If \a b is set to \a FullScreen the MDI view is displayed in full screen mode, if \a b
      * is set to \a TopLevel then it is displayed as an own top-level window, otherwise (\a Normal)
-     * as tabbed window. 
+     * as tabbed window.
      * This method is reimplemented from MDIView to set the this widget as the proxy of the embedded
      * GL widget to get all key events in \a TopLevel or \a Fullscreen mode.
      */

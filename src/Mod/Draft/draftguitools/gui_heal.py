@@ -35,7 +35,7 @@ import FreeCADGui as Gui
 import Draft
 import draftguitools.gui_base as gui_base
 
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 
 class Heal(gui_base.GuiCommandSimplest):
@@ -48,20 +48,15 @@ class Heal(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super(Heal, self).__init__(name=_tr("Heal"))
+        super(Heal, self).__init__(name=translate("draft","Heal"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Heal faulty Draft objects saved with an earlier version "
-                "of the program.\n"
-                "If an object is selected it will try to heal that object "
-                "in particular,\n"
-                "otherwise it will try to heal all objects "
-                "in the active document.")
+        _tip = ()
 
         return {'Pixmap': 'Draft_Heal',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Heal", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Heal", "Heal faulty Draft objects saved with an earlier version of the program.\nIf an object is selected it will try to heal that object in particular,\notherwise it will try to heal all objects in the active document.")}
 
     def Activated(self):
         """Execute when the command is called."""

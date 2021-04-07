@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 WandererFan    <wandererfan@gmail.com>             *
+ *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -137,15 +137,15 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     builder.MakeCompound(comp);
     bool found = false;
     for (auto& s:sourceShapes) {
-        if (s.IsNull()) {
-            continue;    //has no shape
+        if (s.IsNull() || Part::TopoShape(s).isInfinite()) {
+            continue;    // has no shape or the shape is infinite
         }
         found = true;
         BRepBuilderAPI_Copy BuilderCopy(s);
         TopoDS_Shape shape = BuilderCopy.Shape();
         builder.Add(comp, shape);
     }
-    //it appears that an empty compound is !IsNull(), so we need to check a different way 
+    //it appears that an empty compound is !IsNull(), so we need to check a different way
     //if we added anything to the compound.
     if (!found) {
         Base::Console().Error("SE::getSourceShapes - source shape is empty!\n");
@@ -163,32 +163,44 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
         return xSourceShapes;
     }
 
+    bool needsTransform = false;
     std::vector<App::DocumentObject*> children = xLink->getLinkedChildren();
-    Base::Placement linkPlm;
+    Base::Placement linkPlm;  // default constructor is an identity placement, i.e. no rotation nor translation
     if (xLink->hasPlacement()) {
         linkPlm = xLink->getLinkPlacementProperty()->getValue();
+        needsTransform = true;
+    }
+    Base::Matrix4D linkScale;  // default constructor is an identity matrix, possibly scale it with link's scale
+    if(xLink->getScaleProperty() || xLink->getScaleVectorProperty()) {
+        linkScale.scale(xLink->getScaleVector());
+        needsTransform = true;
     }
 
+    Base::Matrix4D netTransform;
     if (!children.empty()) {
         for (auto& l:children) {
-//What to do with LinkGroup???
-//            if (l->getTypeId().isDerivedFrom(App::LinkGroup::getClassTypeId())) {
-//                Base::Console().Message("SE::getXShapes - found a LinkGroup\n");
-//            }
+            bool childNeedsTransform = false;
             Base::Placement childPlm;
+            Base::Matrix4D childScale;
             if (l->getTypeId().isDerivedFrom(App::LinkElement::getClassTypeId())) {
                 App::LinkElement* cLinkElem = static_cast<App::LinkElement*>(l);
                 if (cLinkElem->hasPlacement()) {
                     childPlm = cLinkElem->getLinkPlacementProperty()->getValue();
+                    childNeedsTransform = true;
                 }
-            }            
+                if(cLinkElem->getScaleProperty() || cLinkElem->getScaleVectorProperty()) {
+                    childScale.scale(cLinkElem->getScaleVector());
+                    childNeedsTransform = true;
+                }
+            }
             auto shape = Part::Feature::getShape(l);
             if(!shape.IsNull()) {
-                Base::Placement netPlm = linkPlm;
-                netPlm *= childPlm;
-                if (xLink->hasPlacement()) {
+                if (needsTransform || childNeedsTransform) {
+                    // Multiplication is associative, but the braces show the idea of combining the two transforms:
+                    // ( link placement and scale ) combined to ( child placement and scale )
+                    netTransform = (linkPlm.toMatrix() * linkScale) * (childPlm.toMatrix() * childScale);
                     Part::TopoShape ts(shape);
-                    ts.setPlacement(netPlm);
+                    ts.transformGeometry(netTransform);
                     shape = ts.getShape();
                 }
                 if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
@@ -209,9 +221,11 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
         if (link != nullptr) {
             auto shape = Part::Feature::getShape(link);
             if(!shape.IsNull()) {
-                if (xLink->hasPlacement()) {
+                if (needsTransform) {
+                    // Transform is just link placement and scale, no child objects
+                    netTransform = linkPlm.toMatrix() * linkScale;
                     Part::TopoShape ts(shape);
-                    ts.setPlacement(linkPlm);
+                    ts.transformGeometry(netTransform);
                     shape = ts.getShape();
                 }
 
@@ -234,7 +248,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
 {
 //    Base::Console().Message("SE::getShapesFromObject(%s)\n", docObj->getNameInDocument());
     std::vector<TopoDS_Shape> result;
-    
+
     const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(docObj);
     App::Property* gProp = docObj->getPropertyByName("Group");
     App::Property* sProp = docObj->getPropertyByName("Shape");
@@ -313,7 +327,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         TopExp_Explorer expSolid(shapeIn, TopAbs_SOLID);
         for (int i = 1; expSolid.More(); expSolid.Next(), i++) {
             TopoDS_Solid s = TopoDS::Solid(expSolid.Current());
-            if (!s.IsNull()) {
+            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
                 extShapes.push_back(s);
             }
         }
@@ -322,7 +336,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
         for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
             TopoDS_Shape s = expEdge.Current();
-            if (!s.IsNull()) {
+            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
                 extEdges.push_back(s);
             }
         }
@@ -331,17 +345,17 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         TopExp_Explorer expSolid(shapeIn, TopAbs_SOLID);
         for (int i = 1; expSolid.More(); expSolid.Next(), i++) {
             TopoDS_Solid s = TopoDS::Solid(expSolid.Current());
-            if (!s.IsNull()) {
+            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
                 extShapes.push_back(s);
             }
         }
-        //vs using 2d geom as construction geom? 
-        //get edges not part of a solid 
+        //vs using 2d geom as construction geom?
+        //get edges not part of a solid
         //???? should this look for Faces(Wires?) before Edges?
         TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
         for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
             TopoDS_Shape s = expEdge.Current();
-            if (!s.IsNull()) {
+            if (!s.IsNull() && !Part::TopoShape(s).isInfinite()) {
                 extEdges.push_back(s);
             }
         }
@@ -349,7 +363,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
         //not a Compound or a CompSolid just push_back shape_In)
         extShapes.push_back(shapeIn);
     }
-    
+
     result = extShapes;
     if (!extEdges.empty()) {
         result.insert(std::end(result), std::begin(extEdges), std::end(extEdges));
@@ -375,11 +389,11 @@ bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 //    if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
 //        result = true;
 //    } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
-//        result = true; 
+//        result = true;
 //    } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
-//        result = true; 
+//        result = true;
 //    } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
-//        result = true; 
+//        result = true;
 //    }
     return result;
 }
@@ -389,7 +403,7 @@ bool ShapeExtractor::isPointType(App::DocumentObject* obj)
     bool result = false;
     Base::Type t = obj->getTypeId();
     if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
-        result = true; 
+        result = true;
     } else if (isDraftPoint(obj)) {
         result = true;
     }
@@ -443,7 +457,7 @@ bool ShapeExtractor::prefAdd2d(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("ShowLoose2d", false); 
+    bool result = hGrp->GetBool("ShowLoose2d", false);
     return result;
 }
-    
+

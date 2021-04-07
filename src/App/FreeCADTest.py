@@ -1,10 +1,3 @@
-# FreeCAD test module
-# (c) 2002 Jürgen Riegel
-#
-# Testing the function of the base system and run
-# (if existing) the test function of the modules
-#
-
 #***************************************************************************
 #*   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
 #*                                                                         *
@@ -27,6 +20,12 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************/
+
+# FreeCAD test module
+#
+# Testing the function of the base system and run
+# (if existing) the test function of the modules
+
 
 
 Log ("FreeCAD test running...\n\n")

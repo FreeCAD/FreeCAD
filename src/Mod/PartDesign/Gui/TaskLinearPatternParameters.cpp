@@ -63,11 +63,11 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskLinearPatternParameters */
 
 TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
-        : TaskTransformedParameters(TransformedView, parent)
+    : TaskTransformedParameters(TransformedView, parent)
+    , ui(new Ui_TaskLinearPatternParameters)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskLinearPatternParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -83,10 +83,9 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(ViewProviderTransformed
 }
 
 TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout)
-        : TaskTransformedParameters(parentTask)
+        : TaskTransformedParameters(parentTask), ui(new Ui_TaskLinearPatternParameters)
 {
     proxy = new QWidget(parentTask);
-    ui = new Ui_TaskLinearPatternParameters();
     ui->setupUi(proxy);
     connect(ui->buttonOK, SIGNAL(pressed()),
             parentTask, SLOT(onSubTaskButtonOK()));
@@ -106,7 +105,7 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
     setupUI();
 }
 
-void TaskLinearPatternParameters::setupUI()
+void TaskLinearPatternParameters::connectSignals()
 {
     connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
     connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
@@ -140,7 +139,10 @@ void TaskLinearPatternParameters::setupUI()
             this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
+}
 
+void TaskLinearPatternParameters::setupUI()
+{
     // Get the feature data
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
     std::vector<App::DocumentObject*> originals = pcLinearPattern->Originals.getValues();
@@ -158,8 +160,9 @@ void TaskLinearPatternParameters::setupUI()
     // ---------------------
 
     ui->spinLength->bind(pcLinearPattern->Length);
-    ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcLinearPattern->Occurrences);
+    ui->spinOccurrences->setMaximum(pcLinearPattern->Occurrences.getMaximum());
+    ui->spinOccurrences->setMinimum(pcLinearPattern->Occurrences.getMinimum());
 
     ui->comboDirection->setEnabled(true);
     ui->checkReverse->setEnabled(true);
@@ -192,6 +195,7 @@ void TaskLinearPatternParameters::setupUI()
     }
 
     updateUI();
+    connectSignals();
 }
 
 void TaskLinearPatternParameters::updateUI()
@@ -415,7 +419,6 @@ TaskLinearPatternParameters::~TaskLinearPatternParameters()
         Base::Console().Error ("%s\n", ex.what () );
     }
 
-    delete ui;
     if (proxy)
         delete proxy;
 }

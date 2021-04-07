@@ -80,11 +80,11 @@ bool ViewProviderDocumentObjectGroup::isShow(void) const
 
 QIcon ViewProviderDocumentObjectGroup::getIcon(void) const
 {
-    return mergeOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
+    return mergeGreyableOverlayIcons (Gui::BitmapFactory().iconFromTheme(sPixmap));
 }
 
 /**
- * Extracts the associated view providers of the objects of the associated object group group. 
+ * Extracts the associated view providers of the objects of the associated object group group.
  */
 void ViewProviderDocumentObjectGroup::getViewProviders(std::vector<ViewProviderDocumentObject*>& vp) const
 {

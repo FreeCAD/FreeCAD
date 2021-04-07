@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM select widget"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package FemSelectWidget
 #  \ingroup FEM
@@ -231,7 +231,7 @@ class SmallListView(QtGui.QListView):
 
 class GeometryElementsSelection(QtGui.QWidget):
 
-    def __init__(self, ref, eltypes=[], multigeom=True):
+    def __init__(self, ref, eltypes, multigeom, showHintEmptyList):
         super(GeometryElementsSelection, self).__init__()
         # init ui stuff
         FreeCADGui.Selection.clearSelection()
@@ -240,6 +240,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         self.obj_notvisible = []
         self.initElemTypes(eltypes)
         self.allow_multiple_geom_types = multigeom
+        self.showHintEmptyList = showHintEmptyList
         # print(self.allow_multiple_geom_types)
         self.initUI()
         # set references and fill the list widget
@@ -276,11 +277,20 @@ class GeometryElementsSelection(QtGui.QWidget):
         # label
         self._helpTextLbl = QtGui.QLabel()
         self._helpTextLbl.setWordWrap(True)
-        self._helpTextLbl.setText(self.tr(
-            'Click on "Add" and select geometric elements to add them to the list. '
-            "If no geometry is added to the list, all remaining ones are used. "
-            "The following geometry elements are allowed to select: "
-        ) + self.sel_elem_text)
+        helpTextPart1 = self.tr('Click on "Add" and select geometric elements to add them to the list.')
+        helpTextPart2 = self.tr("The following geometry elements are allowed to select: ") + self.sel_elem_text
+        helpTextPart3 = self.tr("If no geometry is added to the list, all remaining ones are used.")
+        if self.showHintEmptyList is True:
+            self._helpTextLbl.setText(
+                helpTextPart1 + "\n" +
+                helpTextPart2 + "\n" +
+                helpTextPart3
+            )
+        else:
+            self._helpTextLbl.setText(
+                helpTextPart1 + "\n" +
+                helpTextPart2
+            )
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list

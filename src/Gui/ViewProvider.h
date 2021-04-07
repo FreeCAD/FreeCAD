@@ -29,7 +29,7 @@
 #include <string>
 #include <bitset>
 #include <QIcon>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/TransactionalObject.h>
@@ -83,7 +83,7 @@ enum ViewStatus {
 };
 
 
-/** Convenience smart pointer to wrap coin node. 
+/** Convenience smart pointer to wrap coin node.
  *
  * It is basically boost::intrusive plus implicit pointer conversion to save the
  * trouble of typing get() all the time.
@@ -173,7 +173,7 @@ public:
      * @param subname: dot separated string reference to the sub element
      * @param pPath: output coin path leading to the returned element detail
      * @param append: If true, pPath will be first appended with the root node and
-     * the mode switch node of this view provider. 
+     * the mode switch node of this view provider.
      *
      * @return the coint detail of the subelement
      *
@@ -237,11 +237,19 @@ public:
     /** @name Methods used by the Tree
       * If you want to take control over the
       * appearance of your object in the tree you
-      * can reimplemnt these methods.
+      * can reimplement these methods.
      */
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon(void) const;
+
+     /** @name Methods used by the Tree
+     * If you want to take control over the
+     * viewprovider specific overlay icons that will be drawn with color
+     * regardless of whether the icon is greyed out or not, such as status, you
+     * can reimplement this method.
+     */
+    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const;
 
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
@@ -276,7 +284,7 @@ public:
     virtual bool canDragAndDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
-    /** Query object dropping with full quanlified name 
+    /** Query object dropping with full qualified name
      *
      * Tree view now calls this function instead of canDropObject(), and may
      * query for objects from other document. The default implementation
@@ -298,13 +306,13 @@ public:
      *
      * @return Return whether the dropping action is allowed.
      * */
-    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements) const;
 
     /// return a subname referencing the sub-object holding the dropped objects
     virtual std::string getDropPrefix() const { return std::string(); }
 
-    /** Add an object with full quanlified name to the view provider by drag and drop
+    /** Add an object with full qualified name to the view provider by drag and drop
      *
      * @param obj: the object being dropped
      *
@@ -322,7 +330,7 @@ public:
      * object, which may or may not be the actual dropped object, e.g. it may be
      * a link.
      */
-    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
             const char *subname, const std::vector<std::string> &elements);
     /** Replace an object to the view provider by drag and drop
      *
@@ -393,7 +401,7 @@ public:
     const std::string getOverrideMode();
     //@}
 
-    /** @name Color management methods 
+    /** @name Color management methods
      */
     //@{
     virtual std::map<std::string, App::Color> getElementColors(const char *element=0) const {
@@ -446,7 +454,11 @@ public:
 
     /// is called when the provider is in edit and a key event occurs. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
-    /// is called by the tree if the user double click on the object
+    /// Is called by the tree if the user double clicks on the object. It returns the string
+    /// for the transaction that will be shown in the undo/redo dialog.
+    /// If null is returned then no transaction will be opened.
+    virtual const char* getTransactionText() const { return nullptr; }
+    /// is called by the tree if the user double clicks on the object
     virtual bool doubleClicked(void) { return false; }
     /// is called when the provider is in edit and the mouse is moved
     virtual bool mouseMove(const SbVec2s &cursorPos, View3DInventorViewer* viewer);
@@ -454,7 +466,7 @@ public:
     virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
                                     const View3DInventorViewer* viewer);
     /// set up the context-menu with the supported edit modes
-    virtual void setupContextMenu(QMenu*, QObject*, const char*) {}
+    virtual void setupContextMenu(QMenu*, QObject*, const char*);
 
     /** @name direct handling methods
      *  This group of methods is to direct influence the
@@ -503,7 +515,7 @@ public:
     void setDefaultMode(int);
     int getDefaultMode() const;
     //@}
-    
+
     virtual void setRenderCacheMode(int);
 
 protected:
@@ -526,13 +538,12 @@ protected:
     /// Reimplemented from subclass
     void onChanged(const App::Property* prop);
 
-
     /** @name Methods used by the Tree
      * If you want to take control over the
-     * viewprovider specific overlay icons, such as status, you
-     * can reimplement this method.
+     * viewprovider specific overlay icons, that will be grayed out together
+     * with the base icon, you can reimplement this method.
      */
-    virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
+    virtual QIcon mergeGreyableOverlayIcons (const QIcon & orig) const;
 
     /// Turn on mode switch
     virtual void setModeSwitch();

@@ -70,6 +70,7 @@ void ControlPy::init_type()
     add_varargs_method("isAllowedAlterView",&ControlPy::isAllowedAlterView,"isAllowedAlterView()");
     add_varargs_method("isAllowedAlterSelection",&ControlPy::isAllowedAlterSelection,"isAllowedAlterSelection()");
     add_varargs_method("showTaskView",&ControlPy::showTaskView,"showTaskView()");
+    add_varargs_method("showModelView",&ControlPy::showModelView,"showModelView()");
 }
 
 ControlPy::ControlPy()
@@ -178,6 +179,14 @@ Py::Object ControlPy::showTaskView(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object ControlPy::showModelView(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    Gui::Control().showModelView();
+    return Py::None();
+}
+
 // ------------------------------------------------------------------
 
 TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
@@ -280,9 +289,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
 {
     if (dlg.hasAttr(std::string("ui"))) {
         UiLoader loader;
-#if QT_VERSION >= 0x040500
         loader.setLanguageChangeEnabled(true);
-#endif
         QString fn, icon;
         Py::String ui(dlg.getAttr(std::string("ui")));
         std::string path = (std::string)ui;
@@ -337,8 +344,20 @@ TaskDialogPython::~TaskDialogPython()
     std::vector< QPointer<QWidget> > guarded;
     guarded.insert(guarded.begin(), Content.begin(), Content.end());
     Content.clear();
+
     Base::PyGILStateLocker lock;
+
+    // The widgets stored in the 'form' attribute will be deleted.
+    // Thus, set this attribute to None to make sure that when using
+    // the same dialog instance for a task panel won't segfault.
+    if (this->dlg.hasAttr(std::string("form"))) {
+        this->dlg.setAttr(std::string("form"), Py::None());
+    }
     this->dlg = Py::None();
+
+    // Assigning None to 'dlg' may destroy some of the stored widgets.
+    // By guarding them with QPointer their pointers will be set to null
+    // so that the destructor of the base class can reliably call 'delete'.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
 }
 

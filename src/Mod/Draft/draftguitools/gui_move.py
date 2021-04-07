@@ -57,16 +57,11 @@ class Move(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = ("Moves the selected objects from one base point "
-                "to another point.\n"
-                'If the "copy" option is active, it will create '
-                "displaced copies.\n"
-                "CTRL to snap, SHIFT to constrain.")
 
         return {'Pixmap': 'Draft_Move',
                 'Accel': "M, V",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Move", "Move"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Move", _tip)}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects from one base point to another point.\nIf the \"copy\" option is active, it will create displaced copies.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -99,7 +94,7 @@ class Move(gui_base_original.Modifier):
                                       spaces=True,
                                       noarchchild=True)
         self.selected_subelements = Gui.Selection.getSelectionEx()
-        self.ui.lineUi(self.name)
+        self.ui.lineUi(self.name, icon="Draft_Move")
         self.ui.modUi()
         if self.copymode:
             self.ui.isCopy.setChecked(True)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Shsi Seger (shaise at gmail) 2017                       *
+ *   Copyright (c) 2017 Shsi Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
 
 #include "PreCompiled.h"
 
@@ -61,7 +60,7 @@ void PathSim::BeginSimulation(Part::TopoShape * stock, float resolution)
 
 void PathSim::SetToolShape(const TopoDS_Shape& toolShape, float resolution)
 {
-	m_tool = new cSimTool(toolShape, resolution);	
+	m_tool = new cSimTool(toolShape, resolution);
 }
 
 Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)

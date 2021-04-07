@@ -53,7 +53,7 @@ int MakePrismPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* Direction;
     int Fuse;
     PyObject* Modify;
-    static char* keywords[] = {"Sbase", "Pbase", "Skface", "Direction", "Fuse", "Modifiy", nullptr};
+    static char* keywords[] = {"Sbase", "Pbase", "Skface", "Direction", "Fuse", "Modify", nullptr};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!O!iO!", keywords,
                                     &(TopoShapePy::Type), &Sbase,
                                     &(TopoShapePy::Type), &Pbase,
@@ -110,7 +110,7 @@ PyObject* MakePrismPy::init(PyObject *args,  PyObject* kwds)
     PyObject* Direction;
     int Fuse;
     PyObject* Modify;
-    static char* keywords[] = {"Sbase", "Pbase", "Skface", "Direction", "Fuse", "Modifiy", nullptr};
+    static char* keywords[] = {"Sbase", "Pbase", "Skface", "Direction", "Fuse", "Modify", nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!O!iO!", keywords,
                                      &(TopoShapePy::Type), &Sbase,
                                      &(TopoShapePy::Type), &Pbase,

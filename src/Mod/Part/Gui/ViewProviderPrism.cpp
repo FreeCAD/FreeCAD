@@ -35,7 +35,7 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderPrism, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderPrism, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderPrism::ViewProviderPrism()
@@ -67,7 +67,7 @@ std::vector<std::string> ViewProviderPrism::getDisplayModes(void) const
 //**************************************************************************
 // Construction/Destruction
 
-PROPERTY_SOURCE(PartGui::ViewProviderWedge, PartGui::ViewProviderPart)
+PROPERTY_SOURCE(PartGui::ViewProviderWedge, PartGui::ViewProviderPrimitive)
 
 
 ViewProviderWedge::ViewProviderWedge()

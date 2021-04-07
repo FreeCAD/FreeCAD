@@ -85,11 +85,6 @@ UnitTestDialog::UnitTestDialog(QWidget* parent, Qt::WindowFlags f)
   , ui(new Ui_UnitTest)
 {
     ui->setupUi(this);
-#if QT_VERSION < 0x050000
-    // As it doesn't seem to be able to change the "Highlight" color for the active colorgroup
-    // we force e.g. the "Motif" style only for the progressbar to change the color to green or red.
-    ui->progressBar->setStyle(QStyleFactory::create(QString::fromLatin1("Motif")));
-#endif
     setProgressColor(QColor(40,210,43)); // a darker green
     ui->progressBar->setAlignment(Qt::AlignCenter);
 
@@ -111,7 +106,6 @@ UnitTestDialog::~UnitTestDialog()
  */
 void UnitTestDialog::setProgressColor(const QColor& col)
 {
-#if QT_VERSION >= 0x050000
     QString qss = QString::fromLatin1(
         "QProgressBar {\n"
         "    border: 2px solid grey;\n"
@@ -123,12 +117,6 @@ void UnitTestDialog::setProgressColor(const QColor& col)
         "}"
     ).arg(col.name());
     ui->progressBar->setStyleSheet(qss);
-#else
-    QPalette pl = ui->progressBar->palette();
-    pl.setColor(QPalette::Active, QPalette::Highlight, col);
-    pl.setColor(QPalette::Inactive, QPalette::Highlight, col);
-    ui->progressBar->setPalette(pl);
-#endif
 }
 
 /**
@@ -173,7 +161,7 @@ void UnitTestDialog::on_helpButton_clicked()
  */
 void UnitTestDialog::on_aboutButton_clicked()
 {
-    QMessageBox::information(this, tr("About FreeCAD UnitTest"), tr( 
+    QMessageBox::information(this, tr("About FreeCAD UnitTest"), tr(
         "Copyright (c) Werner Mayer\n\n"
         "FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for "
         "ones own modules."));
@@ -291,7 +279,7 @@ void UnitTestDialog::setStatusText(const QString& text)
 
 /**
  * Sets the progress of the progress bar whereas fraction is in between 0.0 and 1.0.
- * It also sets the color of the progress bar to red if a failure or error in the unit 
+ * It also sets the color of the progress bar to red if a failure or error in the unit
  * test occurred.
  */
 void UnitTestDialog::setProgressFraction(float fraction, const QString& color)

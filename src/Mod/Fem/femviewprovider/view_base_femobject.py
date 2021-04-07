@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM base constraint ViewProvider"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package view_base_femobject
 #  \ingroup FEM
@@ -56,7 +56,7 @@ class VPBaseFemObject(object):
             return ""
         if not hasattr(self.Object.Proxy, "Type"):
             FreeCAD.Console.PrintMessage(
-                "{}: Proxy does has not have attribte Type.\n"
+                "{}: Proxy does has not have attribute Type.\n"
                 .format(self.Object.Name)
             )
             return ""
