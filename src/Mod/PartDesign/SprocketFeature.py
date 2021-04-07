@@ -82,14 +82,51 @@ class Sprocket:
     The Sprocket object
     """
 
+    """
+        ANSI B29.1-2011 standard roller chain sizes in USCS units (inches)
+        {size: [Pitch, Roller Diameter]}
+        """
+    SprocketReferenceRollerTable = {"ANSI 25": [0.250, 0.130, 0.110],
+                           "ANSI 35": [0.375, 0.200, 0.168],
+                           "ANSI 41": [0.500, 0.306, 0.227],
+                           "ANSI 40": [0.500, 0.312, 0.284],
+                           "ANSI 50": [0.625, 0.400, 0.343],
+                           "ANSI 60": [0.750, 0.469, 0.459],
+                           "ANSI 80": [1.000, 0.625, 0.575],
+                           "ANSI 100":[1.250, 0.750, 0.692],
+                           "ANSI 120":[1.500, 0.875, 0.924],
+                           "ANSI 140":[1.750, 1.000, 0.924],
+                           "ANSI 160":[2.000, 1.125, 1.156],
+                           "ANSI 180":[2.250, 1.460, 1.301],
+                           "ANSI 200":[2.500, 1.562, 1.389],
+                           "ANSI 240":[3.000, 1.875, 1.738],
+                           "Bicycle with Derailleur":[0.500, 0.3125, 0.11],
+                           "Bicycle without Derailleur":[0.500, 0.3125, 0.084],
+                           "ISO 606 06B":[0.375, 5.72/25.4, 5.2/25.4],
+                           "ISO 606 08B":[0.500, 7.75/25.4, 7.0/25.4],
+                           "ISO 606 10B":[0.625, 9.65/25.4, 9.1/25.4],
+                           "ISO 606 12B":[0.750, 11.68/25.4, 11.1/25.4],
+                           "ISO 606 16B":[1.000, 17.02/25.4, 16.2/25.4],
+                           "ISO 606 20B":[1.250, 19.56/25.4, 18.5/25.4],
+                           "ISO 606 24B":[1.500, 25.4/25.4, 24.1/25.4],
+                           "Motorcycle 420":[0.500, 0.3125, 0.227],
+                           "Motorcycle 425":[0.500, 0.3125, 0.284],
+                           "Motorcycle 428":[0.500, 0.335, 0.284],
+                           "Motorcycle 520":[0.625, 0.400, 0.227],
+                           "Motorcycle 525":[0.625, 0.400, 0.284],
+                           "Motorcycle 530":[0.625, 0.400, 0.343],
+                           "Motorcycle 630":[0.750, 0.400, 0.343]}
+
     def __init__(self,obj):
         self.Type = "Sprocket"
         obj.addProperty("App::PropertyInteger","NumberOfTeeth","Sprocket","Number of gear teeth")
         obj.addProperty("App::PropertyLength","Pitch","Sprocket","Chain Pitch")
         obj.addProperty("App::PropertyLength","RollerDiameter","Sprocket","Roller Diameter")
-        obj.addProperty("App::PropertyString","SprocketReference","Sprocket","Sprocket Reference")
+        obj.addProperty("App::PropertyEnumeration","SprocketReference","Sprocket","Sprocket Reference")
         obj.addProperty("App::PropertyLength","Thickness","Sprocket","Thickness as stated in the reference specification")
 
+        obj.SprocketReference = list(self.SprocketReferenceRollerTable.keys())
+        
         obj.NumberOfTeeth = 50
         obj.Pitch = "0.375 in" 
         obj.RollerDiameter = "0.20 in"
@@ -191,44 +228,10 @@ class SprocketTaskPanel:
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
     def sprocketReferenceChanged(self, size):
-        """
-        ANSI B29.1-2011 standard roller chain sizes in USCS units (inches)
-        {size: [Pitch, Roller Diameter]}
-        """
-        SprocketReferenceRollerTable = {"ANSI 25": [0.250, 0.130, 0.110],
-                           "ANSI 35": [0.375, 0.200, 0.168],
-                           "ANSI 41": [0.500, 0.306, 0.227],
-                           "ANSI 40": [0.500, 0.312, 0.284],
-                           "ANSI 50": [0.625, 0.400, 0.343],
-                           "ANSI 60": [0.750, 0.469, 0.459],
-                           "ANSI 80": [1.000, 0.625, 0.575],
-                           "ANSI 100":[1.250, 0.750, 0.692],
-                           "ANSI 120":[1.500, 0.875, 0.924],
-                           "ANSI 140":[1.750, 1.000, 0.924],
-                           "ANSI 160":[2.000, 1.125, 1.156],
-                           "ANSI 180":[2.250, 1.460, 1.301],
-                           "ANSI 200":[2.500, 1.562, 1.389],
-                           "ANSI 240":[3.000, 1.875, 1.738],
-                           "Bicycle with Derailleur":[0.500, 0.3125, 0.11],
-                           "Bicycle without Derailleur":[0.500, 0.3125, 0.084],
-                           "ISO 606 06B":[0.375, 5.72/25.4, 5.2/25.4],
-                           "ISO 606 08B":[0.500, 7.75/25.4, 7.0/25.4],
-                           "ISO 606 10B":[0.625, 9.65/25.4, 9.1/25.4],
-                           "ISO 606 12B":[0.750, 11.68/25.4, 11.1/25.4],
-                           "ISO 606 16B":[1.000, 17.02/25.4, 16.2/25.4],
-                           "ISO 606 20B":[1.250, 19.56/25.4, 18.5/25.4],
-                           "ISO 606 24B":[1.500, 25.4/25.4, 24.1/25.4],
-                           "Motorcycle 420":[0.500, 0.3125, 0.227],
-                           "Motorcycle 425":[0.500, 0.3125, 0.284],
-                           "Motorcycle 428":[0.500, 0.335, 0.284],
-                           "Motorcycle 520":[0.625, 0.400, 0.227],
-                           "Motorcycle 525":[0.625, 0.400, 0.284],
-                           "Motorcycle 530":[0.625, 0.400, 0.343],
-                           "Motorcycle 630":[0.750, 0.400, 0.343],}
-
-        self.obj.Pitch          = str(SprocketReferenceRollerTable[size][0]) + " in"
-        self.obj.RollerDiameter = str(SprocketReferenceRollerTable[size][1]) + " in"
-        self.obj.Thickness      = str(SprocketReferenceRollerTable[size][2]) + " in"
+        self.obj.Pitch          = str(Sprocket.SprocketReferenceRollerTable[size][0]) + " in"
+        self.obj.RollerDiameter = str(Sprocket.SprocketReferenceRollerTable[size][1]) + " in"
+        self.obj.Thickness      = str(Sprocket.SprocketReferenceRollerTable[size][2]) + " in"
+        self.obj.SprocketReference = str(size)
         self.form.Quantity_Pitch.setText(self.obj.Pitch.UserString)
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
         self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
