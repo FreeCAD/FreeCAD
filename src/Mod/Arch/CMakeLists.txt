@@ -2,6 +2,22 @@ IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Arch_QRC_SRCS Resources/Arch.qrc)
 ENDIF (BUILD_GUI)
 
+SET(Arch_make
+    arch/make/make_twistedbridge.py
+)
+
+SET(Arch_objects
+    arch/objects/twistedbridge.py
+)
+
+SET(Arch_viewproviders
+    arch/viewproviders/view_twistedbridge.py
+)
+
+SET(Arch_guitools
+    arch/commands/gui_twistedbridge.py
+)
+
 SET(Arch_SRCS
     Init.py
     InitGui.py
@@ -17,6 +33,7 @@ SET(Arch_SRCS
     importIFCmulticore.py
     exportIFCHelper.py
     Arch.py
+    ArchGui.py
     ArchBuilding.py
     ArchFloor.py
     ArchSite.py
@@ -76,17 +93,31 @@ SET(Arch_presets
     Presets/ifc_contexts_IFC4.json
 )
 
-SOURCE_GROUP("" FILES ${Arch_SRCS})
+SOURCE_GROUP("" FILES
+    ${Arch_SRCS}
+    ${Arch_make}
+    ${Arch_objects}
+    ${Arch_viewproviders}
+    ${Arch_guitools})
 
 SET(ArchGuiIcon_SVG
     Resources/icons/ArchWorkbench.svg
 )
 
 ADD_CUSTOM_TARGET(Arch ALL
-    SOURCES ${Arch_SRCS} ${Arch_QRC_SRCS} ${Dice3DS_SRCS} ${Arch_presets} ${ArchGuiIcon_SVG}
+    SOURCES ${Arch_SRCS}
+    ${Arch_make}
+    ${Arch_objects}
+    ${Arch_viewproviders}
+    ${Arch_guitools}
+    ${Arch_QRC_SRCS} ${Dice3DS_SRCS} ${Arch_presets} ${ArchGuiIcon_SVG}
 )
 
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS})
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS}
+    ${Arch_make}
+    ${Arch_objects}
+    ${Arch_viewproviders}
+    ${Arch_guitools})
 fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Dice3DS_SRCS})
 fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Arch" ${ArchGuiIcon_SVG})
 
@@ -108,6 +139,12 @@ INSTALL(
         ${Arch_SRCS}
         ${Arch_QRC_SRCS}
     DESTINATION Mod/Arch
+)
+
+INSTALL(
+    DIRECTORY
+        arch
+    DESTINATION Mod/Arch/
 )
 
 INSTALL(
