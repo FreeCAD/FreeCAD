@@ -682,7 +682,7 @@ ViewPos(origin) and UpDir(up direction).
 If OnShape is True, the returned edges are the corresponding 3D reflect lines located on the shape.
 EdgeType is a string defining the type of result edges :
 - IsoLine : isoparametric line
-- OutLine : outline (silouhette) edge
+- OutLine : outline (silhouette) edge
 - Rg1Line : smooth edge of G1-continuity between two surfaces
 - RgNLine : sewn edge of CN-continuity on one surface
 - Sharp : sharp edge (of C0-continuity)
