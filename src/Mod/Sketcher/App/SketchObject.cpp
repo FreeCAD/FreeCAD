@@ -1797,33 +1797,34 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
                 delConstraintOnPoint(GeoId2, PosId2, false);
             }
 
-            Sketcher::Constraint tangent1, tangent2;
+            auto tangent1 = std::make_unique<Sketcher::Constraint>();
+            auto tangent2 = std::make_unique<Sketcher::Constraint>();
 
-            tangent1.Type = Sketcher::Tangent;
-            tangent1.First = GeoId1;
-            tangent1.FirstPos = PosId1;
-            tangent1.Second = filletId;
+            tangent1->Type = Sketcher::Tangent;
+            tangent1->First = GeoId1;
+            tangent1->FirstPos = PosId1;
+            tangent1->Second = filletId;
 
-            tangent2.Type = Sketcher::Tangent;
-            tangent2.First = GeoId2;
-            tangent2.FirstPos = PosId2;
-            tangent2.Second = filletId;
+            tangent2->Type = Sketcher::Tangent;
+            tangent2->First = GeoId2;
+            tangent2->FirstPos = PosId2;
+            tangent2->Second = filletId;
 
             if (dist1.Length() < dist2.Length()) {
-                tangent1.SecondPos = start;
-                tangent2.SecondPos = end;
+                tangent1->SecondPos = start;
+                tangent2->SecondPos = end;
                 movePoint(GeoId1, PosId1, arc->getStartPoint(/*emulateCCW=*/true),false,true);
                 movePoint(GeoId2, PosId2, arc->getEndPoint(/*emulateCCW=*/true),false,true);
             }
             else {
-                tangent1.SecondPos = end;
-                tangent2.SecondPos = start;
+                tangent1->SecondPos = end;
+                tangent2->SecondPos = start;
                 movePoint(GeoId1, PosId1, arc->getEndPoint(/*emulateCCW=*/true),false,true);
                 movePoint(GeoId2, PosId2, arc->getStartPoint(/*emulateCCW=*/true),false,true);
             }
 
-            addConstraint(&tangent1);
-            addConstraint(&tangent2);
+            addConstraint(std::move(tangent1));
+            addConstraint(std::move(tangent2));
         }
 
         if (noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
