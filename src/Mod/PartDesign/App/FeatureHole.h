@@ -103,7 +103,7 @@ public:
     } UTSClearanceDefinition;
     static const UTSClearanceDefinition UTSHoleDiameters[22];
 
-    virtual void Restore(Base::XMLReader & reader);
+    virtual void onDocumentRestored();
 
     virtual void updateProps();
 

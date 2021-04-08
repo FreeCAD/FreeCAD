@@ -720,8 +720,16 @@ Hole::Hole()
 
 }
 
+static inline bool _isRestoring(const App::Document *doc)
+{
+    return !doc || doc->testStatus(App::Document::Restoring) || doc->isPerformingTransaction();
+}
+
 void Hole::updateHoleCutParams()
 {
+    if (_isRestoring(getDocument()))
+        return;
+
     std::string holeCutTypeStr = HoleCutType.getValueAsString();
 
     // there is no cut, thus return
@@ -999,6 +1007,9 @@ double Hole::getThreadPitch()
 
 void Hole::updateThreadDepthParam()
 {
+    if (_isRestoring(getDocument()))
+        return;
+
     std::string method(DepthType.getValueAsString());
     double drillDepth;
     if ( method == "Dimension" ) {
@@ -1022,24 +1033,17 @@ void Hole::updateThreadDepthParam()
 
 void Hole::updateDiameterParam()
 {
+    if (_isRestoring(getDocument()))
+        return;
+
     // Diameter parameter depends on Threaded, ThreadType, ThreadSize, and ThreadFit
 
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
-    if (threadType < 0) {
-        // When restoring the feature it might be in an inconsistent state.
-        // So, just silently ignore it instead of throwing an exception.
-        if (isRestoring())
-            return;
+    if (threadType < 0)
         throw Base::IndexError("Thread type out of range");
-    }
-    if (threadSize < 0) {
-        // When restoring the feature it might be in an inconsistent state.
-        // So, just silently ignore it instead of throwing an exception.
-        if (isRestoring())
-            return;
+    if (threadSize < 0)
         throw Base::IndexError("Thread size out of range");
-    }
     double diameter = threadDescription[threadType][threadSize].diameter;
     double pitch = threadDescription[threadType][threadSize].pitch;
     double clearance = 0.0;
@@ -1553,10 +1557,9 @@ short Hole::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-void Hole::Restore(Base::XMLReader &reader)
+void Hole::onDocumentRestored()
 {
-    ProfileBased::Restore(reader);
-
+    ProfileBased::onDocumentRestored();
     updateProps();
 }
 
