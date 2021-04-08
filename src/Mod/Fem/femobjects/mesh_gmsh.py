@@ -65,6 +65,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         "Blossom",
         "Simple full-quad",
         "Blossom full-quad"
+    ]
     known_mesh_HighOrderOptimizers = [
         "None",
         "Optimization",
