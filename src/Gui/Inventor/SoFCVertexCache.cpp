@@ -1712,11 +1712,13 @@ uint32_t
 SoFCVertexCacheP::getColor(const SoFCVertexArrayIndexer * indexer, int part) const
 {
   uint32_t color = this->firstcolor;
-  if (!indexer || part < 0 || !this->colorpervertex)
+  if (!indexer || part < 0 || !this->colorpervertex || !this->colorarray)
     return color;
 
   const uint8_t * colors = this->colorarray->getArrayPtr();
+  int colorlen = this->colorarray->getLength();
   const int * indices = indexer->getIndices();
+  int numindices = indexer->getNumIndices();
 
   int numparts = indexer->getNumParts();
   if (!numparts) {
@@ -1732,25 +1734,31 @@ SoFCVertexCacheP::getColor(const SoFCVertexArrayIndexer * indexer, int part) con
       unit = 3;
     }
     part *= unit;
-    if (part >= indexer->getNumIndices())
+    if (part < 0 || part >= numindices)
       return color;
 
-    colors += indices[part]*4;
-    color = colors[0] << 24;
-    color |= colors[1] << 16;
-    color |= colors[2] << 8;
-    color |= colors[3];
+    int idx = indices[part]*4;
+    if (idx >= 0 && idx+3 < colorlen) {
+      colors += idx;
+      color = colors[0] << 24;
+      color |= colors[1] << 16;
+      color |= colors[2] << 8;
+      color |= colors[3];
+    }
     return color;
   }
   if (part >= numparts)
     return color;
 
   const GLint * parts = indexer->getPartOffsets();
-  colors += indices[part ? parts[part-1] : 0] * 4;
-  color = colors[0] << 24;
-  color |= colors[1] << 16;
-  color |= colors[2] << 8;
-  color |= colors[3];
+  int idx = indices[part ? parts[part-1] : 0] * 4;
+  if (idx >= 0 && idx+3 < colorlen) {
+    colors += idx;
+    color = colors[0] << 24;
+    color |= colors[1] << 16;
+    color |= colors[2] << 8;
+    color |= colors[3];
+  }
   return color;
 }
 
