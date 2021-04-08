@@ -135,6 +135,8 @@ public:
     void startSplasher(void);
     /** Stops the splasher after startup. */
     void stopSplasher(void);
+    /* The image of the About dialog, it might be empty. */
+    QPixmap aboutImage() const;
     /* The image of the splash screen of the application. */
     QPixmap splashImage() const;
     /** Shows the online documentation. */

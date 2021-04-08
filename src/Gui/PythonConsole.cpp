@@ -963,7 +963,7 @@ void PythonConsole::changeEvent(QEvent *e)
 
 void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
 {
-  if (e->button() == Qt::MidButton && e->spontaneous())
+  if (e->button() == Qt::MiddleButton && e->spontaneous())
   {
     // on Linux-like systems the middle mouse button is typically connected to a paste operation
     // which will insert some text at the mouse position

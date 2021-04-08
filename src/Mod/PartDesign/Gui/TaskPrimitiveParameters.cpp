@@ -87,6 +87,10 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->cylinderHeight->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height);
             ui->cylinderRadius->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getValue());
             ui->cylinderRadius->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius);
+            ui->cylinderXSkew->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->FirstAngle.getValue());
+            ui->cylinderXSkew->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->FirstAngle);
+            ui->cylinderYSkew->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->SecondAngle.getValue());
+            ui->cylinderYSkew->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->SecondAngle);
             ui->cylinderAngle->setMaximum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getMaximum());
             ui->cylinderAngle->setMinimum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getMinimum());
             ui->cylinderHeight->setMaximum(INT_MAX);
@@ -278,6 +282,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     // cylinder
     connect(ui->cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
     connect(ui->cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
+    connect(ui->cylinderXSkew, SIGNAL(valueChanged(double)), this, SLOT(onCylinderXSkewChanged(double)));
+    connect(ui->cylinderYSkew, SIGNAL(valueChanged(double)), this, SLOT(onCylinderYSkewChanged(double)));
     connect(ui->cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
 
     // cone
@@ -385,6 +391,40 @@ void TaskBoxPrimitives::onCylinderHeightChanged(double v) {
 void TaskBoxPrimitives::onCylinderRadiusChanged(double v) {
     PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
     cyl->Radius.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onCylinderXSkewChanged(double v) {
+    PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
+    // we must assure that if the user incremented from e.g. 85 degree with the
+    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    if ((v < 90.0) && (v > -90.0)) {
+        cyl->FirstAngle.setValue(v);
+    }
+    else {
+        if (v == 90.0)
+            cyl->FirstAngle.setValue(cyl->FirstAngle.getMaximum());
+        else if (v == -90.0)
+            cyl->FirstAngle.setValue(cyl->FirstAngle.getMinimum());
+        ui->cylinderXSkew->setValue(cyl->FirstAngle.getQuantityValue());
+    }
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onCylinderYSkewChanged(double v) {
+    PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
+    // we must assure that if the user incremented from e.g. 85 degree with the
+    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    if ((v < 90.0) && (v > -90.0)) {
+        cyl->SecondAngle.setValue(v);
+    }
+    else {
+        if (v == 90.0)
+            cyl->SecondAngle.setValue(cyl->SecondAngle.getMaximum());
+        else if (v == -90.0)
+            cyl->SecondAngle.setValue(cyl->SecondAngle.getMinimum());
+        ui->cylinderYSkew->setValue(cyl->SecondAngle.getQuantityValue());
+    }
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
@@ -665,11 +705,15 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                 cmd = QString::fromLatin1(
                     "%1.Radius=%2\n"
                     "%1.Height=%3\n"
-                    "%1.Angle=%4\n")
+                    "%1.Angle=%4\n"
+                    "%1.FirstAngle=%5\n"
+                    "%1.SecondAngle=%6\n")
                     .arg(name)
                     .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui->cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->cylinderXSkew->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->cylinderYSkew->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
 
             case 3:  // cone

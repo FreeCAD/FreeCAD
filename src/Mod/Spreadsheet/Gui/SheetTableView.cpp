@@ -116,6 +116,7 @@ SheetTableView::SheetTableView(QWidget *parent)
             const auto selection = selectionModel()->selectedRows();
             const auto & [min, max] = selectedMinMaxRows(selection);
             if (bool isContiguous = max - min == selection.size() - 1) {
+                Q_UNUSED(isContiguous)
                 /*: This is shown in the context menu for the vertical header in a spreadsheet.
                     The number refers to how many lines are selected and will be inserted. */
                 auto insertBefore = menu.addAction(tr("Insert %n row(s) above", "", selection.size()));
@@ -140,6 +141,7 @@ SheetTableView::SheetTableView(QWidget *parent)
             const auto selection = selectionModel()->selectedColumns();
             const auto & [min, max] = selectedMinMaxColumns(selection);
             if (bool isContiguous = max - min == selection.size() - 1) {
+                Q_UNUSED(isContiguous)
                 /*: This is shown in the context menu for the horizontal header in a spreadsheet.
                     The number refers to how many lines are selected and will be inserted. */
                 auto insertAbove = menu.addAction(tr("Insert %n column(s) left", "", selection.size()));
@@ -246,6 +248,7 @@ void SheetTableView::insertRowsAfter()
     const auto rows = selectionModel()->selectedRows();
     const auto & [min, max] = selectedMinMaxRows(rows);
     assert(max - min == rows.size() - 1);
+    Q_UNUSED(min)
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert rows"));
     Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(max + 1).c_str(), rows.size());
@@ -318,6 +321,7 @@ void SheetTableView::insertColumnsAfter()
     const auto columns = selectionModel()->selectedColumns();
     const auto & [min, max] = selectedMinMaxColumns(columns);
     assert(max - min == columns.size() - 1);
+    Q_UNUSED(min)
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert columns"));
     Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)", columnName(max + 1).c_str(), columns.size());

@@ -63,6 +63,8 @@ public Q_SLOTS:
     void onBoxHeightChanged(double);
     void onCylinderRadiusChanged(double);
     void onCylinderHeightChanged(double);
+    void onCylinderXSkewChanged(double);
+    void onCylinderYSkewChanged(double);
     void onCylinderAngleChanged(double);
     void onSphereRadiusChanged(double);
     void onSphereAngle1Changed(double);

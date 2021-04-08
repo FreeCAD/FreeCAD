@@ -206,7 +206,7 @@ MouseP::mouseButtonEvent(QMouseEvent * event)
   case Qt::RightButton:
     this->mousebutton->setButton(SoMouseButtonEvent::BUTTON2);
     break;
-  case Qt::MidButton:
+  case Qt::MiddleButton:
     this->mousebutton->setButton(SoMouseButtonEvent::BUTTON3);
     break;
   default:

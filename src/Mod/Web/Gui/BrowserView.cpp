@@ -247,7 +247,7 @@ WebView::WebView(QWidget *parent)
 void WebView::mousePressEvent(QMouseEvent *event)
 {
 #ifdef QTWEBKIT
-    if (event->button() == Qt::MidButton) {
+    if (event->button() == Qt::MiddleButton) {
         QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
         if (!r.linkUrl().isEmpty()) {
             openLinkInNewWindow(r.linkUrl());

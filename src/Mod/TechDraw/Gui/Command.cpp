@@ -256,7 +256,7 @@ CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_RedrawPage";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-RedrawPage";
+    sPixmap         = "actions/TechDraw_RedrawPage";
 }
 
 void CmdTechDrawRedrawPage::activated(int iMsg)
@@ -436,7 +436,7 @@ CmdTechDrawActiveView::CmdTechDrawActiveView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_ActiveView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-ActiveView";
+    sPixmap         = "actions/TechDraw_ActiveView";
 }
 
 void CmdTechDrawActiveView::activated(int iMsg)

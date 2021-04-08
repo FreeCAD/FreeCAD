@@ -358,6 +358,10 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui->cylinderRadius->bind(cyl->Radius);
             ui->cylinderHeight->setValue(cyl->Height.getQuantityValue());
             ui->cylinderHeight->bind(cyl->Height);
+            ui->cylinderXSkew->setValue(cyl->FirstAngle.getQuantityValue());
+            ui->cylinderXSkew->bind(cyl->FirstAngle);
+            ui->cylinderYSkew->setValue(cyl->SecondAngle.getQuantityValue());
+            ui->cylinderYSkew->bind(cyl->SecondAngle);
             ui->cylinderAngle->setValue(cyl->Angle.getQuantityValue());
             ui->cylinderAngle->bind(cyl->Angle);
 
@@ -365,6 +369,8 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCylinder(QWidget*)));
             connectSignalMapper(ui->cylinderRadius, SIGNAL(valueChanged(double)), mapper);
             connectSignalMapper(ui->cylinderHeight, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui->cylinderXSkew, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui->cylinderYSkew, SIGNAL(valueChanged(double)), mapper);
             connectSignalMapper(ui->cylinderAngle, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Cone::getClassTypeId()) {
@@ -744,12 +750,16 @@ QString DlgPrimitives::createCylinder(const QString& objectName, const QString& 
         "App.ActiveDocument.%1.Radius=%2\n"
         "App.ActiveDocument.%1.Height=%3\n"
         "App.ActiveDocument.%1.Angle=%4\n"
-        "App.ActiveDocument.%1.Placement=%5\n"
-        "App.ActiveDocument.%1.Label='%6'\n")
+        "App.ActiveDocument.%1.FirstAngle=%5\n"
+        "App.ActiveDocument.%1.SecondAngle=%6\n"
+        "App.ActiveDocument.%1.Placement=%7\n"
+        "App.ActiveDocument.%1.Label='%8'\n")
         .arg(objectName)
         .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
         .arg(ui->cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
         .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->cylinderXSkew->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+        .arg(ui->cylinderYSkew->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
         .arg(placement)
         .arg(tr("Cylinder"));
 }
@@ -1493,6 +1503,12 @@ void DlgPrimitives::onChangeCylinder(QWidget* widget)
     }
     else if (widget == ui->cylinderAngle) {
         cyl->Angle.setValue(ui->cylinderAngle->value().getValue());
+    }
+    else if (widget == ui->cylinderXSkew) {
+        cyl->FirstAngle.setValue(ui->cylinderXSkew->value().getValue());
+    }
+    else if (widget == ui->cylinderYSkew) {
+        cyl->SecondAngle.setValue(ui->cylinderYSkew->value().getValue());
     }
 
     cyl->recomputeFeature();
