@@ -1467,11 +1467,10 @@ struct ColorInfo {
 
 void ViewProviderPartExt::updateColors(App::Document *sourceDoc, bool forceColorMap) 
 {
-    if(isRestoring() 
-            || !pcObject 
-            || !pcObject->getNameInDocument() 
-            || pcObject->isRestoring() 
-            || UpdatingColor)
+    if (UpdatingColor
+            || !getObject()
+            || !getObject()->getDocument()
+            || getObject()->getDocument()->testStatus(App::Document::Restoring))
         return;
 
     auto geoFeature = Base::freecad_dynamic_cast<App::GeoFeature>(pcObject);
@@ -1685,6 +1684,14 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
 
 void ViewProviderPartExt::updateVisual()
 {
+    if (!getObject()
+            || !getObject()->getDocument()
+            || getObject()->getDocument()->testStatus(App::Document::Restoring))
+    {
+        VisualTouched = true;
+        return;
+    }
+
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
 
@@ -2130,5 +2137,12 @@ void ViewProviderPartExt::reattach(App::DocumentObject *obj)
 {
     inherited::reattach(obj);
     if(isUpdateForced() || Visibility.getValue()) 
+        updateVisual();
+}
+
+void ViewProviderPartExt::finishRestoring()
+{
+    inherited::finishRestoring();
+    if(VisualTouched && (isUpdateForced() || Visibility.getValue()))
         updateVisual();
 }

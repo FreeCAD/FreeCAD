@@ -181,6 +181,7 @@ public:
 
     virtual void reattach(App::DocumentObject *) override;
     virtual void beforeDelete() override;
+    virtual void finishRestoring() override;
 
 protected:
     bool setEdit(int ModNum) override;
