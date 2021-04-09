@@ -15,7 +15,7 @@
    height="64"
    id="svg2160"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="techdraw-symbol.svg">
+   sodipodi:docname="TechDraw_Symbol.svg">
   <metadata
      id="metadata8">
     <rdf:RDF>
@@ -30,7 +30,7 @@
             <dc:title>[WandererFan]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>techdraw-symbol</dc:title>
+        <dc:title>TechDraw_Symbol</dc:title>
         <dc:date>2016-01-14</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -38,7 +38,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/actions/techdraw-symbol.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/actions/TechDraw_Symbol.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
