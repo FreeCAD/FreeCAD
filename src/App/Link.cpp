@@ -1276,19 +1276,18 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
 
         if(!_getShowElementValue()) {
             if(getScaleListProperty()) {
+                auto prop = getScaleListProperty();
                 auto scales = getScaleListValue();
                 scales.resize(elementCount,Base::Vector3d(1,1,1));
-                getScaleListProperty()->setStatus(Property::User3,true);
-                getScaleListProperty()->setValue(scales);
-                getScaleListProperty()->setStatus(Property::User3,false);
+                Base::ObjectStatusLocker<Property::Status,Property> guard(Property::User3, prop);
+                prop->setValue(scales);
             }
             if(getPlacementListProperty()) {
                 auto prop = getPlacementListProperty();
                 Base::ObjectStatusLocker<Property::Status,Property> guard(Property::User3, prop);
-                if(prop->getSize() < elementCount) {
+                if(prop->getSize() < elementCount)
                     signalNewLinkElements(*parent, prop->getSize(), elementCount, nullptr);
-                }else
-                    prop->setSize(elementCount);
+                prop->setSize(elementCount);
             }
             if (getMatrixListProperty()) {
                 auto prop = getMatrixListProperty();
