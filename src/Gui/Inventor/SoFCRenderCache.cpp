@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <iostream>
 #include <unordered_map>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
@@ -58,6 +59,8 @@
 #include "SoFCDetail.h"
 #include "SoFCDiffuseElement.h"
 #include "SoFCDisplayModeElement.h"
+
+#include <Gui/ViewProviderLink.h>
 
 using namespace Gui;
 
@@ -122,6 +125,7 @@ public:
   std::vector<CacheEntry> caches;
   SbFCUniqueId nodeid;
   intptr_t nodeptr;
+  SbName nodename;
 
   Material material;
   uint32_t facecolor;
@@ -139,11 +143,23 @@ static inline const T * constElement(SoState * state)
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
-SoFCRenderCache::SoFCRenderCache(SoState *state, intptr_t nodeptr, SbFCUniqueId nodeid)
+SoFCRenderCache::SoFCRenderCache(SoState *state, const SoNode *node)
   : SoCache(state), pimpl(new SoFCRenderCacheP)
 {
-  PRIVATE(this)->nodeptr = nodeptr;
-  PRIVATE(this)->nodeid = nodeid;
+  PRIVATE(this)->nodeptr = reinterpret_cast<intptr_t>(node);
+  PRIVATE(this)->nodeid = node->getNodeId();
+
+#ifdef FCCOIN_TRACE_CACHE_NAME
+  PRIVATE(this)->nodename = node->getName();
+  if (PRIVATE(this)->nodename.getLength() == 0) {
+    auto obj = ViewProviderLink::linkedObjectByNode(const_cast<SoNode*>(node));
+    if (obj) {
+      std::string name("_");
+      name += obj->getNameInDocument();
+      PRIVATE(this)->nodename = name.c_str();
+    }
+  }
+#endif
 }
 
 SoFCRenderCache::~SoFCRenderCache()
@@ -752,9 +768,35 @@ SoFCRenderCache::beginChildCaching(SoState *state, SoFCVertexCache * cache)
 }
 
 void
-SoFCRenderCache::endChildCaching(SoState * state, SoCache * cache)
+SoFCRenderCache::endChildCaching(SoState * state, SoFCVertexCache * vcache)
 {
+  if (!vcache->getNumVertices()) {
+      if (PRIVATE(this)->caches.size()
+          && PRIVATE(this)->caches.back().vcache == vcache)
+    {
+      PRIVATE(this)->caches.pop_back();
+    }
+  }
+  this->addCacheDependency(state, vcache);
+}
+
+void
+SoFCRenderCache::endChildCaching(SoState * state, SoFCRenderCache * cache)
+{
+  if (PRIVATE(cache)->caches.empty()) {
+      if (PRIVATE(this)->caches.size()
+          && PRIVATE(this)->caches.back().cache == cache)
+    {
+      PRIVATE(this)->caches.pop_back();
+    }
+  }
   this->addCacheDependency(state, cache);
+}
+
+SbBool
+SoFCRenderCache::isEmpty() const
+{
+  return PRIVATE(this)->caches.empty();
 }
 
 class MyMultiTextureImageElement : public SoMultiTextureImageElement
@@ -860,7 +902,7 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
 }
 
 const SoFCRenderCache::VertexCacheMap &
-SoFCRenderCache::getVertexCaches(bool finalize)
+SoFCRenderCache::getVertexCaches(bool finalize, int depth)
 {
   auto & vcachemap = PRIVATE(this)->vcachemap;
   if (!vcachemap.empty())
@@ -925,7 +967,7 @@ SoFCRenderCache::getVertexCaches(bool finalize)
       continue;
     }
     auto it = vcachemap.end();
-    const auto & childvcaches = entry.cache->getVertexCaches(); 
+    const auto & childvcaches = entry.cache->getVertexCaches(false, depth+1); 
     for (const auto & child : childvcaches) {
       Material material = PRIVATE(this)->mergeMaterial(
             entry.matrix, entry.identity, entry.material, child.first);
@@ -969,6 +1011,15 @@ SoFCRenderCache::getVertexCaches(bool finalize)
       ++it;
     }
   }
+
+#ifdef FCCOIN_TRACE_ACHE_NAME
+  std::size_t count = 0;
+  for (auto &v : vcachemap)
+    count += v.second.size();
+  for (int i=0; i<depth; ++i)
+    std::cerr << ' ';
+  std::cerr << count << ": " << PRIVATE(this)->nodename.getString() << "\n";
+#endif
 
   return vcachemap;
 }

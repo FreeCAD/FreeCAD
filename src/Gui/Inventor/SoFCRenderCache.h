@@ -339,7 +339,7 @@ public:
 
   typedef std::map<Material, std::vector<VertexCacheEntry> > VertexCacheMap;
 
-  SoFCRenderCache(SoState * state, intptr_t nodeptr, SbFCUniqueId nodeid);
+  SoFCRenderCache(SoState * state, const SoNode *node);
   virtual ~SoFCRenderCache();
 
   static void initClass();
@@ -348,6 +348,8 @@ public:
   SbFCUniqueId getNodeId() const;
 
   virtual SbBool isValid(const SoState * state) const;
+
+  SbBool isEmpty() const;
 
   void addTexture(SoState * state, const SoTexture * texture);
   void addTextureTransform(SoState * state, const SoNode *);
@@ -360,7 +362,7 @@ public:
 
   void setDepthBuffer(SoState *state, const SoDepthBuffer *);
 
-  const VertexCacheMap & getVertexCaches(bool finalize=false);
+  const VertexCacheMap & getVertexCaches(bool finalize=false, int depth=0);
 
   VertexCacheMap buildHighlightCache(int order,
                                      const SoDetail * detail,
@@ -374,7 +376,8 @@ public:
   void beginChildCaching(SoState * state, SoFCRenderCache * cache);
   void beginChildCaching(SoState * state, SoFCVertexCache * cache);
 
-  void endChildCaching(SoState * state, SoCache * cache);
+  void endChildCaching(SoState * state, SoFCRenderCache * cache);
+  void endChildCaching(SoState * state, SoFCVertexCache * vcache);
 
   void addChildCache(SoState * state, SoFCRenderCache * cache);
   void addChildCache(SoState * state, SoFCVertexCache * cache);

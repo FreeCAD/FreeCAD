@@ -765,16 +765,12 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
 
   state->push();
 
-  intptr_t nodeptr = 0;
   bool selectable = true;
-  if (node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
-    auto selroot = static_cast<const SoFCSelectionRoot*>(node);
-    nodeptr = reinterpret_cast<intptr_t>(selroot);
-    if (action->getCurPathCode() != SoAction::IN_PATH)
-      selectable = selroot->selectionStyle.getValue() != SoFCSelectionRoot::Unpickable;
-  }
+  auto selroot = static_cast<const SoFCSelectionRoot*>(node);
+  if (action->getCurPathCode() != SoAction::IN_PATH)
+    selectable = selroot->selectionStyle.getValue() != SoFCSelectionRoot::Unpickable;
 
-  RenderCachePtr cache(new SoFCRenderCache(state, nodeptr, node->getNodeId()));
+  RenderCachePtr cache(new SoFCRenderCache(state, node));
 
   if (sensor)
     sensor->caches.push_back(cache);
@@ -812,6 +808,8 @@ SoFCRenderCacheManagerP::postSeparator(void *userdata,
     cache->close(state);
     if (self->stack.size())
       self->stack.back()->endChildCaching(state, cache);
+    else if (cache->isEmpty() && self->caches.size() && self->caches.back() == cache)
+      self->caches.pop_back();
   }
   return SoCallbackAction::CONTINUE;
 }
