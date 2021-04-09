@@ -179,7 +179,7 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
     if (dvm != nullptr) {
         sPixmap = "TechDraw_Tree_Multi";
     } else if (dvd != nullptr) {
-        sPixmap = "actions/techdraw-DetailView";
+        sPixmap = "actions/TechDraw_DetailView";
     }
 
     ViewProviderDrawingView::attach(pcFeat);
