@@ -115,6 +115,8 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
     try {
         origin = group->getOrigin ();
         assert (origin);
+        if (origin->OriginFeatures.getSize() == 0)
+            return;
 
         Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider(origin);
         if (!vp) {
