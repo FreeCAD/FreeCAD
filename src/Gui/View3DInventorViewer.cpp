@@ -3257,6 +3257,8 @@ void View3DInventorViewer::actualRedraw()
 {
     switch (renderType) {
     case Native:
+        if (guiDocument && guiDocument->getDocument()->testStatus(App::Document::Recomputing))
+            break;
         renderScene();
         break;
     case Framebuffer:
