@@ -75,7 +75,7 @@ const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
 
 ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/techdraw-RichTextAnnotation";
+    sPixmap = "actions/TechDraw_RichTextAnnotation";
 
     static const char *group = "Frame Format";
 

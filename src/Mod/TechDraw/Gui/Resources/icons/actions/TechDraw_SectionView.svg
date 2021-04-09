@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64" height="64" id="svg249" sodipodi:version="0.32" inkscape:version="0.48.5 r10040" sodipodi:docname="techdraw-viewsection.svg" inkscape:export-filename="/home/jimmac/gfx/novell/pdes/trunk/docs/BIGmime-text.png" inkscape:export-xdpi="240.00000" inkscape:export-ydpi="240.00000" inkscape:output_extension="org.inkscape.output.svg.inkscape" version="1.1">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64" height="64" id="svg249" sodipodi:version="0.32" inkscape:version="0.48.5 r10040" sodipodi:docname="TechDraw_SectionView.svg" inkscape:export-filename="/home/jimmac/gfx/novell/pdes/trunk/docs/BIGmime-text.png" inkscape:export-xdpi="240.00000" inkscape:export-ydpi="240.00000" inkscape:output_extension="org.inkscape.output.svg.inkscape" version="1.1">
   <defs id="defs3">
     <linearGradient id="linearGradient4289" inkscape:collect="always">
       <stop id="stop4291" offset="0" style="stop-color:#888a85;stop-opacity:1"/>
@@ -164,7 +164,7 @@
         </dc:creator>
         <dc:source>http://agryson.net</dc:source>
         <cc:license rdf:resource="https://www.gnu.org/copyleft/lesser.html"/>
-        <dc:title>techdraw-viewsection</dc:title>
+        <dc:title>TechDraw_SectionView</dc:title>
         <dc:date>2016-01-14</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -172,7 +172,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/actions/techdraw-viewsection.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/actions/TechDraw_SectionView.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>

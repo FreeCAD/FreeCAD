@@ -47,7 +47,7 @@
         <file>icons/actions/techdraw-ArchView.svg</file>
         <file>icons/actions/TechDraw_ExportPageDXF.svg</file>
         <file>icons/actions/TechDraw_ExportPageSVG.svg</file>
-        <file>icons/actions/techdraw-SectionView.svg</file>
+        <file>icons/actions/TechDraw_SectionView.svg</file>
         <file>icons/actions/techdraw-hatch.svg</file>
         <file>icons/actions/techdraw-GeometricHatch.svg</file>
         <file>icons/actions/techdraw-toggleframe.svg</file>
@@ -55,14 +55,14 @@
         <file>icons/actions/techdraw-ProjectionGroup.svg</file>
         <file>icons/actions/TechDraw_PageDefault.svg</file>
         <file>icons/actions/TechDraw_PageTemplate.svg</file>
-        <file>icons/actions/techdraw-SpreadsheetView.svg</file>
+        <file>icons/actions/TechDraw_SpreadsheetView.svg</file>
         <file>icons/actions/techdraw-image.svg</file>
-        <file>icons/actions/techdraw-DetailView.svg</file>
+        <file>icons/actions/TechDraw_DetailView.svg</file>
         <file>icons/actions/techdraw-LeaderLine.svg</file>
-        <file>icons/actions/techdraw-RichTextAnnotation.svg</file>
+        <file>icons/actions/TechDraw_RichTextAnnotation.svg</file>
         <file>icons/actions/techdraw-CosmeticVertex.svg</file>
-        <file>icons/actions/techdraw-Midpoints.svg</file>
-        <file>icons/actions/techdraw-Quadrants.svg</file>
+        <file>icons/actions/TechDraw_Midpoints.svg</file>
+        <file>icons/actions/TechDraw_Quadrants.svg</file>
         <file>icons/actions/TechDraw_FaceCenterLine.svg</file>
         <file>icons/actions/techdraw-2linecenterline.svg</file>
         <file>icons/actions/techdraw-2pointcenterline.svg</file>
@@ -70,7 +70,7 @@
         <file>icons/actions/techdraw-CosmeticEraser.svg</file>
         <file>icons/actions/techdraw-DecorateLine.svg</file>
         <file>icons/actions/techdraw-facedecor.svg</file>
-        <file>icons/actions/techdraw-showall.svg</file>
+        <file>icons/actions/TechDraw_ShowAll.svg</file>
         <file>icons/actions/TechDraw_Symbol.svg</file>
         <file>icons/actions/TechDraw_Tile.svg</file>
         <file>icons/actions/TechDraw_WeldSymbol.svg</file>

@@ -470,7 +470,7 @@ CmdTechDrawSectionView::CmdTechDrawSectionView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_SectionView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-SectionView";
+    sPixmap         = "actions/TechDraw_SectionView";
 }
 
 void CmdTechDrawSectionView::activated(int iMsg)
@@ -520,7 +520,7 @@ CmdTechDrawDetailView::CmdTechDrawDetailView()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_DetailView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-DetailView";
+    sPixmap         = "actions/TechDraw_DetailView";
 }
 
 void CmdTechDrawDetailView::activated(int iMsg)
@@ -1248,7 +1248,7 @@ CmdTechDrawSpreadsheetView::CmdTechDrawSpreadsheetView()
     sToolTipText  = QT_TR_NOOP("Insert View to a spreadsheet");
     sWhatsThis    = "TechDraw_SpreadsheetView";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-SpreadsheetView";
+    sPixmap       = "actions/TechDraw_SpreadsheetView";
 }
 
 void CmdTechDrawSpreadsheetView::activated(int iMsg)
