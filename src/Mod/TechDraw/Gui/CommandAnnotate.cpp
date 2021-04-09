@@ -1401,7 +1401,7 @@ CmdTechDrawWeldSymbol::CmdTechDrawWeldSymbol()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_WeldSymbol";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-weldsymbol";
+    sPixmap         = "actions/TechDraw_WeldSymbol";
 }
 
 void CmdTechDrawWeldSymbol::activated(int iMsg)

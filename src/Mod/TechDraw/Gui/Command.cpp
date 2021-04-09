@@ -114,7 +114,7 @@ CmdTechDrawPageDefault::CmdTechDrawPageDefault()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_PageDefault";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-PageDefault";
+    sPixmap         = "actions/TechDraw_PageDefault";
 }
 
 void CmdTechDrawPageDefault::activated(int iMsg)
@@ -177,7 +177,7 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_PageTemplate";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-PageTemplate";
+    sPixmap         = "actions/TechDraw_PageTemplate";
 }
 
 void CmdTechDrawPageTemplate::activated(int iMsg)
@@ -1058,7 +1058,7 @@ CmdTechDrawSymbol::CmdTechDrawSymbol()
     sToolTipText  = QT_TR_NOOP("Insert symbol from an SVG file");
     sWhatsThis    = "TechDraw_Symbol";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-symbol";
+    sPixmap       = "actions/TechDraw_Symbol";
 }
 
 void CmdTechDrawSymbol::activated(int iMsg)
@@ -1307,7 +1307,7 @@ CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageSVG";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ExportPageSVG";
+    sPixmap       = "actions/TechDraw_ExportPageSVG";
 }
 
 void CmdTechDrawExportPageSVG::activated(int iMsg)
@@ -1351,7 +1351,7 @@ CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageDXF";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ExportPageDXF";
+    sPixmap       = "actions/TechDraw_ExportPageDXF";
 }
 
 void CmdTechDrawExportPageDXF::activated(int iMsg)
