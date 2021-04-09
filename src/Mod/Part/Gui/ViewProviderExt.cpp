@@ -254,15 +254,20 @@ public:
 // Construction/Destruction
 
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0,64.0,1.0};
-App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange =
-    {PartParams::MinimumDeviation(),100.0,0.01};
-App::PropertyQuantityConstraint::Constraints ViewProviderPartExt::angDeflectionRange =
-    {PartParams::MinimumAngularDeflection(),180.0,0.05};
+App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.01,100.0,0.01};
+App::PropertyQuantityConstraint::Constraints ViewProviderPartExt::angDeflectionRange = {1.0,180.0,0.05};
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
 const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",NULL};
 
 ViewProviderPartExt::ViewProviderPartExt() 
 {
+    static bool _inited;
+    if (!_inited) {
+        _inited = true;
+        tessRange = {PartParams::MinimumDeviation(),100.0,0.01};
+        angDeflectionRange = {PartParams::MinimumAngularDeflection(),180.0,0.05};
+    }
+
     UpdatingColor = false;
     VisualTouched = true;
     forceUpdateCount = 0;
