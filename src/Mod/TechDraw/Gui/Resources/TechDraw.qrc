@@ -35,7 +35,6 @@
         <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>
         <file>icons/techdraw-landmarkdistance.svg</file>
-        <file>icons/preferences-techdraw.svg</file>
         <file>icons/actions/techdraw-View.svg</file>
         <file>icons/actions/TechDraw_ActiveView.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>
@@ -106,6 +105,8 @@
         <file>icons/rectangle.svg</file>
         <file>icons/triangle.svg</file>
         <file>icons/square.svg</file>
+
+        <!-- MRTE -->
         <file>icons/MRTE/menu.svg</file>
         <file>icons/MRTE/bgColor.svg</file>
         <file>icons/MRTE/fgColor.svg</file>
@@ -126,6 +127,11 @@
         <file>icons/MRTE/edit-undo.svg</file>
         <file>icons/MRTE/edit-redo.svg</file>
         <file>icons/MRTE/internet-web-browser.svg</file>
+
+        <!-- main wb icon and preferences icons -->
+        <file>icons/preferences-techdraw.svg</file>
+
+        <!-- translations -->
         <file>translations/TechDraw_af.qm</file>
         <file>translations/TechDraw_zh-CN.qm</file>
         <file>translations/TechDraw_zh-TW.qm</file>
