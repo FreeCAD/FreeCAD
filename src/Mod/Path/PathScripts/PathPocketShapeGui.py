@@ -75,6 +75,7 @@ class _Extension(object):
         hnt = coin.SoShapeHints()
 
         if not ext is None:
+            numVert = list()  # track number of verticies in each polygon face
             try:
                 wire =  ext.getWire()
             except FreeCAD.Base.FreeCADError:
@@ -86,8 +87,22 @@ class _Extension(object):
                     p2 = list(reversed(p1))
                     polygon = [(p.x, p.y, p.z) for p in (p0 + p2)]
                 else:
-                    poly = [p for p in wire.discretize(Deflection=0.02)][:-1]
-                    polygon = [(p.x, p.y, p.z) for p in poly]
+                    if ext.extFaces:
+                        # Create polygon for each extension face in compound extensions
+                        allPolys = list()
+                        extFaces = ext.getExtensionFaces(wire)
+                        for f in extFaces:
+                            pCnt = 0
+                            for w in f.Wires:
+                                poly = [p for p in w.discretize(Deflection=0.01)]
+                                pCnt += len(poly)
+                                allPolys.extend(poly)
+                            numVert.append(pCnt)
+                        polygon = [(p.x, p.y, p.z) for p in allPolys]
+                    else:
+                        # poly = [p for p in wire.discretize(Deflection=0.02)][:-1]
+                        poly = [p for p in wire.discretize(Deflection=0.02)]
+                        polygon = [(p.x, p.y, p.z) for p in poly]
                 crd.point.setValues(polygon)
             else:
                 return None
@@ -97,6 +112,10 @@ class _Extension(object):
 
             hnt.faceType = coin.SoShapeHints.UNKNOWN_FACE_TYPE
             hnt.vertexOrdering = coin.SoShapeHints.CLOCKWISE
+
+            if numVert:
+                # Transfer vertex counts for polygon faces
+                fce.numVertices.setValues(tuple(numVert))
 
             sep.addChild(pos)
             sep.addChild(mat)
