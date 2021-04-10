@@ -704,7 +704,7 @@ SoFCVertexCacheP::checkTransparency()
     }
     if (prev < numparts) {
       this->opaquepartarray.push_back((prev ? parts[prev-1] : 0) * typesize);
-      this->opaquepartcounts.push_back(parts[numparts-1] - parts[prev-1]);
+      this->opaquepartcounts.push_back(parts[numparts-1] - (prev ? parts[prev-1] : 0));
     }
   }
 }
