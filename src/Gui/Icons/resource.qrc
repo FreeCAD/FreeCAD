@@ -162,6 +162,7 @@
         <file>Std_HideSelection.svg</file>
         <file>Std_Import.svg</file>
         <file>Std_MergeProjects.svg</file>
+        <file>Std_MarkToRecompute.svg</file>
         <file>Std_PrintPdf.svg</file>
         <file>Std_RandomColor.svg</file>
         <file>Std_RecentFiles.svg</file>
