@@ -701,23 +701,21 @@ bool SheetTableView::event(QEvent *event)
                 return true;
             }
         }
-        // DO NOT capture Enter/Return key. Because when there user press
-        // Enter/Return on an unediting cell, we are supposed to trigger
-        // editing by conversion, which is not implemented here, but Qt 5
-        // default implement seems working pretty well.
-        //
-        // else if (kevent->key() == Qt::Key_Enter || kevent->key() == Qt::Key_Return) {
-        //     QModelIndex c = currentIndex();
-        //
-        //     if (kevent->modifiers() == 0) {
-        //         setCurrentIndex(model()->index(qMin(c.row() + 1, model()->rowCount() - 1), c.column()));
-        //         return true;
-        //     }
-        //     else if (kevent->modifiers() == Qt::ShiftModifier) {
-        //         setCurrentIndex(model()->index(qMax(c.row() - 1, 0), c.column()));
-        //         return true;
-        //     }
-        // }
+        else if (kevent->key() == Qt::Key_Enter || kevent->key() == Qt::Key_Return) {
+            QModelIndex c = currentIndex();
+
+            if (kevent->modifiers() == 0) {
+                if (currentEditIndex != c)
+                    edit(c);
+                else
+                    setCurrentIndex(model()->index(qMin(c.row() + 1, model()->rowCount() - 1), c.column()));
+                return true;
+            }
+            else if (kevent->modifiers() == Qt::ShiftModifier) {
+                setCurrentIndex(model()->index(qMax(c.row() - 1, 0), c.column()));
+                return true;
+            }
+        }
         else if (kevent->key() == Qt::Key_Delete) {
             deleteSelection();
             return true;
