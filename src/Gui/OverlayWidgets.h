@@ -330,6 +330,7 @@ private:
     QColor textcolor;
     int timerId = 0;
     bool blink = false;
+    bool mouseMovePending = false;
 };
 
 class OverlaySizeGrip: public QWidget

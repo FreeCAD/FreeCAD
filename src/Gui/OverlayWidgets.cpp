@@ -1977,11 +1977,16 @@ void OverlayTitleBar::timerEvent(QTimerEvent *ev)
 
 void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
 {
-    if (_Dragging != this) {
-        if (qobject_cast<QDockWidget*>(parentWidget()))
-            me->ignore();
-        return;
+    if (_Dragging != this && mouseMovePending && (me->buttons() & Qt::LeftButton)) {
+        auto d = dragOffset - me->pos();
+        if (d.x()*d.x() + d.y()*d.y() < 16)
+            return;
+        mouseMovePending = false;
+        _Dragging = this;
     }
+
+    if (_Dragging != this)
+        return;
 
     if (!(me->buttons() & Qt::LeftButton)) {
         _Dragging = nullptr;
@@ -1998,6 +2003,7 @@ void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
 
 void OverlayTitleBar::mousePressEvent(QMouseEvent *me)
 {
+    mouseMovePending = false;
     QWidget *parent = parentWidget();
     if (_Dragging || !parent || !getMainWindow() || me->button() != Qt::LeftButton)
         return;
@@ -2032,26 +2038,20 @@ void OverlayTitleBar::mousePressEvent(QMouseEvent *me)
                                 std::min(mwSize.height()/2, dragSize.height())));
 
     dragOffset = me->pos();
-    _Dragging = this;
     setCursor(Qt::ClosedHandCursor);
-    OverlayManager::instance()->dragDockWidget(me->globalPos(),
-                                               parentWidget(),
-                                               dragOffset,
-                                               dragSize);
+    mouseMovePending = true;
 }
 
 void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
 {
-    if (_Dragging != this) {
-        if (qobject_cast<QDockWidget*>(parentWidget()))
-            me->ignore();
+    setCursor(Qt::OpenHandCursor);
+    mouseMovePending = false;
+    if (_Dragging != this)
         return;
-    }
 
     if (me->button() != Qt::LeftButton)
         return;
 
-    setCursor(Qt::OpenHandCursor);
     _Dragging = nullptr;
     OverlayManager::instance()->dragDockWidget(me->globalPos(), 
                                                parentWidget(),
