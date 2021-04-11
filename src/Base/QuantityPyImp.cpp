@@ -672,25 +672,31 @@ void  QuantityPy::setFormat(Py::Dict arg)
 
 PyObject *QuantityPy::getCustomAttributes(const char* attr) const
 {
+    QuantityPy* py = nullptr;
     if (strcmp(attr, "Torr") == 0) {
-        return new QuantityPy(new Quantity(Quantity::Torr));
+        py = new QuantityPy(new Quantity(Quantity::Torr));
     }
     else if (strcmp(attr, "mTorr") == 0) {
-        return new QuantityPy(new Quantity(Quantity::mTorr));
+        py = new QuantityPy(new Quantity(Quantity::mTorr));
     }
     else if (strcmp(attr, "yTorr") == 0) {
-        return new QuantityPy(new Quantity(Quantity::yTorr));
+        py = new QuantityPy(new Quantity(Quantity::yTorr));
     }
     else if (strcmp(attr, "PoundForce") == 0) {
-        return new QuantityPy(new Quantity(Quantity::PoundForce));
+        py = new QuantityPy(new Quantity(Quantity::PoundForce));
     }
     else if (strcmp(attr, "AngularMinute") == 0) {
-        return new QuantityPy(new Quantity(Quantity::AngMinute));
+        py = new QuantityPy(new Quantity(Quantity::AngMinute));
     }
     else if (strcmp(attr, "AngularSecond") == 0) {
-        return new QuantityPy(new Quantity(Quantity::AngSecond));
+        py = new QuantityPy(new Quantity(Quantity::AngSecond));
     }
-    return 0;
+
+    if (py) {
+        py->setNotTracking();
+    }
+
+    return py;
 }
 
 int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
