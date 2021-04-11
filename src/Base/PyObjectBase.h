@@ -463,12 +463,10 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 #define __PY_CATCH(R)                                               \
     catch(Base::AbortException &e)                                  \
     {                                                               \
-        e.ReportException();                                        \
         _Py_ErrorObj(R,Base::BaseExceptionFreeCADAbort,e.getPyObject());\
     }                                                               \
     catch(Base::Exception &e)                                       \
     {                                                               \
-        e.ReportException();                                        \
         auto pye = e.getPyExceptionType();                          \
         if(!pye)                                                    \
             pye = Base::BaseExceptionFreeCADError;                  \

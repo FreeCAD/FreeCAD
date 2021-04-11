@@ -617,13 +617,11 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
     } // Please sync the following catch implementation with PY_CATCH
     catch(Base::AbortException &e)
     {
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
         return NULL;
     }
     catch(Base::Exception &e)
     {
-        e.ReportException();
         auto pye = e.getPyExceptionType();
         if(!pye)
             pye = Base::BaseExceptionFreeCADError;
@@ -782,13 +780,11 @@ PyObject *@self.export.Name@::_getattr(const char *attr)			// __getattr__ functi
     } // Please sync the following catch implementation with PY_CATCH
     catch(Base::AbortException &e)
     {
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
         return NULL;
     }
     catch(Base::Exception &e)
     {
-        e.ReportException();
         auto pye = e.getPyExceptionType();
         if(!pye)
             pye = Base::BaseExceptionFreeCADError;
@@ -844,13 +840,11 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
     } // Please sync the following catch implementation with PY_CATCH
     catch(Base::AbortException &e)
     {
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
         return -1;
     }
     catch(Base::Exception &e)
     {
-        e.ReportException();
         auto pye = e.getPyExceptionType();
         if(!pye)
             pye = Base::BaseExceptionFreeCADError;
