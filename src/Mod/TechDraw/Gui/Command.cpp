@@ -861,7 +861,7 @@ CmdTechDrawClipGroup::CmdTechDrawClipGroup()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroup";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroup";
+    sPixmap       = "actions/TechDraw_ClipGroup";
 }
 
 void CmdTechDrawClipGroup::activated(int iMsg)
@@ -900,7 +900,7 @@ CmdTechDrawClipGroupAdd::CmdTechDrawClipGroupAdd()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroupAdd";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroupAdd";
+    sPixmap       = "actions/TechDraw_ClipGroupAdd";
 }
 
 void CmdTechDrawClipGroupAdd::activated(int iMsg)
@@ -983,7 +983,7 @@ CmdTechDrawClipGroupRemove::CmdTechDrawClipGroupRemove()
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipGroupRemove";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-ClipGroupRemove";
+    sPixmap       = "actions/TechDraw_ClipGroupRemove";
 }
 
 void CmdTechDrawClipGroupRemove::activated(int iMsg)
