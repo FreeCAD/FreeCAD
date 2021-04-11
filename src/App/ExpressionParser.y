@@ -36,7 +36,6 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
        #define yyerror ExpressionParser_yyerror
 %}
 
-     /* Bison declarations.  */
      %token FUNC
      %token ONE
      %token NUM
@@ -66,16 +65,14 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %type <string_or_identifier> document
      %type <string_or_identifier> object
      %type <ivalue> integer
-     %left ONE NUM INTEGER CONSTANT
-     %left EQ NEQ LT GT GTE LTE
-     %left '?' ':'
+     %precedence EQ NEQ LT GT GTE LTE
+     %precedence ':'
      %left MINUSSIGN '+'
      %left '*' '/' '%'
      %precedence NUM_AND_UNIT
-     %left '^'    /* exponentiation */
-     %left EXPONENT
-     %left NEG     /* negation--unary minus */
-     %left POS     /* unary plus */
+     %left '^'
+     %precedence NEG
+     %precedence POS
 
 %destructor { delete $$; } num range exp cond unit_exp indexable
 %destructor { delete $$; } <component>
