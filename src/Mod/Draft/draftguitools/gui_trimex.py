@@ -120,7 +120,7 @@ class Trimex(gui_base_original.Modifier):
             self.extrudeMode = True
             self.ghost = [trackers.ghostTracker([self.obj])]
             self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-            self.ghost += [trackers.lineTracker()] * len(self.obj.Shape.Vertexes)
+            self.ghost += [trackers.lineTracker() for _v in self.obj.Shape.Vertexes]
         elif len(self.obj.Shape.Faces) > 1:
             # face extrude mode, a new object is created
             ss = Gui.Selection.getSelectionEx()[0]
@@ -131,7 +131,7 @@ class Trimex(gui_base_original.Modifier):
                     self.extrudeMode = True
                     self.ghost = [trackers.ghostTracker([self.obj])]
                     self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                    self.ghost += [trackers.lineTracker()] * len(self.obj.Shape.Vertexes)
+                    self.ghost += [trackers.lineTracker() for _v in self.obj.Shape.Vertexes]
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
