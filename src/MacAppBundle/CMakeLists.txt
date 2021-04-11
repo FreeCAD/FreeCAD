@@ -111,7 +111,7 @@ install(CODE "execute_process(COMMAND chmod -R a+w ${CMAKE_INSTALL_LIBDIR})")
 
 get_filename_component(APP_PATH ${CMAKE_INSTALL_PREFIX} PATH)
 
-file(glob CONFIG_ICU "/usr/local/Cellar/icu4c*/*/lib")
+file(GLOB CONFIG_ICU "/usr/local/Cellar/icu4c*/*/lib")
 
 execute_process(
        COMMAND find /usr/local/Cellar/nglib -name MacOS
