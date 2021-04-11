@@ -48,11 +48,11 @@
         <file>icons/actions/TechDraw_ExportPageDXF.svg</file>
         <file>icons/actions/TechDraw_ExportPageSVG.svg</file>
         <file>icons/actions/TechDraw_SectionView.svg</file>
-        <file>icons/actions/techdraw-hatch.svg</file>
-        <file>icons/actions/techdraw-GeometricHatch.svg</file>
+        <file>icons/actions/TechDraw_Hatch.svg</file>
+        <file>icons/actions/TechDraw_GeometricHatch.svg</file>
         <file>icons/actions/techdraw-toggleframe.svg</file>
         <file>icons/actions/TechDraw_RedrawPage.svg</file>
-        <file>icons/actions/techdraw-ProjectionGroup.svg</file>
+        <file>icons/actions/TechDraw_ProjectionGroup.svg</file>
         <file>icons/actions/TechDraw_PageDefault.svg</file>
         <file>icons/actions/TechDraw_PageTemplate.svg</file>
         <file>icons/actions/TechDraw_SpreadsheetView.svg</file>

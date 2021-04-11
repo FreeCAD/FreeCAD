@@ -569,7 +569,7 @@ CmdTechDrawProjectionGroup::CmdTechDrawProjectionGroup()
     sToolTipText    = QT_TR_NOOP("Insert multiple linked views of drawable object(s)");
     sWhatsThis      = "TechDraw_ProjectionGroup";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-ProjectionGroup";
+    sPixmap         = "actions/TechDraw_ProjectionGroup";
 }
 
 void CmdTechDrawProjectionGroup::activated(int iMsg)

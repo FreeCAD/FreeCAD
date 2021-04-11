@@ -207,7 +207,7 @@ CmdTechDrawHatch::CmdTechDrawHatch()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-hatch";
+    sPixmap         = "actions/TechDraw_Hatch";
 }
 
 void CmdTechDrawHatch::activated(int iMsg)
@@ -328,7 +328,7 @@ CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-GeometricHatch";
+    sPixmap         = "actions/TechDraw_GeometricHatch";
 }
 
 void CmdTechDrawGeometricHatch::activated(int iMsg)
