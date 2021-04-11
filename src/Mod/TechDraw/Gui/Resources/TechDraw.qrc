@@ -40,9 +40,9 @@
         <file>icons/actions/TechDraw_ActiveView.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>
         <file>icons/actions/techdraw-annotation.svg</file>
-        <file>icons/actions/techdraw-ClipGroup.svg</file>
-        <file>icons/actions/techdraw-ClipGroupAdd.svg</file>
-        <file>icons/actions/techdraw-ClipGroupRemove.svg</file>
+        <file>icons/actions/TechDraw_ClipGroup.svg</file>
+        <file>icons/actions/TechDraw_ClipGroupAdd.svg</file>
+        <file>icons/actions/TechDraw_ClipGroupRemove.svg</file>
         <file>icons/actions/techdraw-DraftView.svg</file>
         <file>icons/actions/techdraw-ArchView.svg</file>
         <file>icons/actions/TechDraw_ExportPageDXF.svg</file>
