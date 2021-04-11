@@ -56,24 +56,25 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
-
-#include "../App/PartFeature.h"
 #include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Part/App/PartFeature.h>
+
+#include "BoxSelection.h"
+#include "CrossSections.h"
+#include "Cutting.h"
 #include "DlgBooleanOperation.h"
 #include "DlgExtrusion.h"
-#include "DlgRevolution.h"
 #include "DlgFilletEdges.h"
 #include "DlgPrimitives.h"
 #include "DlgProjectionOnSurface.h"
-#include "CrossSections.h"
+#include "DlgRevolution.h"
 #include "Mirroring.h"
-#include "ViewProvider.h"
-#include "TaskShapeBuilder.h"
-#include "TaskLoft.h"
-#include "TaskSweep.h"
-#include "TaskDimension.h"
 #include "TaskCheckGeometry.h"
-#include "BoxSelection.h"
+#include "TaskDimension.h"
+#include "TaskLoft.h"
+#include "TaskShapeBuilder.h"
+#include "TaskSweep.h"
+#include "ViewProvider.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2468,6 +2469,69 @@ bool CmdPartProjectionOnSurface::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
+//===========================================================================
+// Part_CuttingView
+//===========================================================================
+
+DEF_STD_CMD_AC(CmdPartCuttingView)
+
+CmdPartCuttingView::CmdPartCuttingView()
+    : Command("Part_CuttingView")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Cut view");
+    sToolTipText = QT_TR_NOOP("Creates a cut view of visible part objects");
+    sWhatsThis = "Part_CuttingView";
+    sStatusTip = sToolTipText;
+    eType = Alter3DView;
+}
+
+Gui::Action* CmdPartCuttingView::createAction(void)
+{
+    Gui::Action* pcAction = (Gui::Action*)Gui::Command::createAction();
+#if 0
+    pcAction->setCheckable(true);
+#endif
+    return pcAction;
+}
+
+void CmdPartCuttingView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    static QPointer<PartGui::Cutting> cutting = nullptr;
+    if (!cutting) {
+        Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+        if (view) {
+            cutting = PartGui::Cutting::makeDockWidget(view);
+        }
+    }
+}
+
+bool CmdPartCuttingView::isActive(void)
+{
+#if 0
+    Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    if (view) {
+        Gui::Action* action = qobject_cast<Action*>(_pcAction);
+        if (action->isChecked() != view->hasClippingPlane())
+            action->setChecked(view->hasClippingPlane());
+        return true;
+    }
+    else {
+        Gui::Action* action = qobject_cast<Action*>(_pcAction);
+        if (action->isChecked())
+            action->setChecked(false);
+        return false;
+    }
+#else
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
+    return view ? true : false;
+#endif
+}
+
+//---------------------------------------------------------------
+
 void CreatePartCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2518,4 +2582,5 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdMeasureToggleDelta());
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
+    rcCmdMgr.addCommand(new CmdPartCuttingView());
 }

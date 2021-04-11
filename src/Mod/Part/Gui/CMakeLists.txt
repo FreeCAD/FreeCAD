@@ -40,6 +40,7 @@ endif()
 
 set(PartGui_MOC_HDRS
     CrossSections.h
+    Cutting.h
     Mirroring.h
     DlgBooleanOperation.h
     DlgExtrusion.h
@@ -76,6 +77,7 @@ endif()
 
 set(PartGui_UIC_SRCS
     CrossSections.ui
+    Cutting.ui
     Mirroring.ui
     DlgBooleanOperation.ui
     DlgExtrusion.ui
@@ -121,6 +123,9 @@ SET(PartGui_SRCS
     CrossSections.cpp
     CrossSections.h
     CrossSections.ui
+    Cutting.cpp
+    Cutting.h
+    Cutting.ui
     Mirroring.cpp
     Mirroring.h
     Mirroring.ui
@@ -258,7 +263,7 @@ SET(PartGui_SRCS
     TaskDimension.h
     TaskCheckGeometry.cpp
     TaskCheckGeometry.h
-    TaskAttacher.h 
+    TaskAttacher.h
     TaskAttacher.cpp 
 )
 

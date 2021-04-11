@@ -53,6 +53,6 @@ private:
   std::unique_ptr<Ui_DlgSettingsObjectColor> ui;
 };
 
-} // namespace Gui
+} // namespace PartGui
 
 #endif // PARTGUI_DIALOG_DLGSETTINGSOBJECTCOLOR_H
