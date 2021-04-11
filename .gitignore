@@ -11,6 +11,7 @@
 *.manifest
 *.o
 *.orig
+*.output
 qrc_*.cpp
 BuildLog.htm
 cmake_install.cmake
