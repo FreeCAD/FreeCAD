@@ -55,7 +55,7 @@ public:
     TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = 0);
     ~TaskBoxPrimitives();
 
-    void setPrimitive(App::DocumentObject *);
+    bool setPrimitive(App::DocumentObject *);
 
 public Q_SLOTS:
     void onBoxLengthChanged(double);
