@@ -1143,6 +1143,15 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         sheet.setAlias('C3','test')
 
+    def testParensAroundCondition(self):
+        """ Parens around a condition should be accepted """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        sheet.set('A1', '=(1 == 1) ? 1 : 0')
+        self.doc.recompute()
+        self.assertEqual(sheet.getContents('A1'), '=1 == 1 ? 1 : 0')
+        self.assertEqual(sheet.A1, 1)
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)

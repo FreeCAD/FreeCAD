@@ -105,6 +105,7 @@ exp:      num                			{ $$ = $1;                                      
         | indexable       			    { $$ = $1;                                                                        }
         | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1.first, std::move($1.second), $2);        }
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
+        | '(' exp ')'                           { $$ = $2; }
         ;
 
 num:       ONE                                  { $$ = new NumberExpression(DocumentObject, Quantity($1));                        }
@@ -129,6 +130,7 @@ cond: exp EQ exp                                { $$ = new OperatorExpression(Do
     | exp GT exp                                { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GT, $3);    }
     | exp GTE exp                               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::GTE, $3);   }
     | exp LTE exp                               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::LTE, $3);   }
+    | '(' cond ')'                              { $$ = $2; }
     ;
 
 unit_exp: UNIT                                  { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
@@ -206,8 +208,7 @@ indexer
     ;
 
 indexable
-    : '(' exp ')'                           { $$ = $2; }
-    | identifier indexer                    { $$ = new VariableExpression(DocumentObject,$1); $$->addComponent($2); }
+    : identifier indexer                    { $$ = new VariableExpression(DocumentObject,$1); $$->addComponent($2); }
     | indexable indexer                     { $1->addComponent(std::move($2)); $$ = $1; }
     | indexable '.' IDENTIFIER              { $1->addComponent(Expression::createComponent($3)); $$ = $1; }
     ;
