@@ -11,7 +11,7 @@
             <dc:title>[WandererFan]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>techdraw-hatch</dc:title>
+        <dc:title>TechDraw_Hatch</dc:title>
         <dc:date>2016-01-14</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -19,7 +19,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/actions/techdraw-hatch.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/actions/TechDraw_Hatch.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
