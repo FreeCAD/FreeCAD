@@ -171,7 +171,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonCursor = new QLabel(this);
-    balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")));
+    balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/TechDraw_Balloon.svg")));
     balloonCursor->hide();
 
     resetCachedContent();
@@ -1114,7 +1114,7 @@ void QGVPage::enterEvent(QEvent *event)
     QGraphicsView::enterEvent(event);
     if(getDrawPage()->balloonPlacing) {
         balloonCursor->hide();
-        QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/cursor-balloon.png")),0,32));
+        QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/TechDraw_Balloon.svg")),0,32));
       } else {
         QApplication::restoreOverrideCursor();
         viewport()->setCursor(Qt::ArrowCursor);
