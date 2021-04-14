@@ -35,6 +35,8 @@ import os
 import six
 import sys
 import time
+import math
+
 from os.path import join
 
 import FreeCAD
@@ -204,6 +206,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_displacement(inpfileMain)
         self.write_constraints_sectionprint(inpfileMain)
         self.write_constraints_selfweight(inpfileMain)
+        self.write_constraints_centrif(inpfileMain)
         self.write_constraints_force(inpfileMain, self.split_inpfile)
         self.write_constraints_pressure(inpfileMain, self.split_inpfile)
         self.write_constraints_temperature(inpfileMain)
@@ -910,6 +913,49 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         # are written in the material element sets already
 
     # ********************************************************************************************
+    # constraints centrif
+    def write_constraints_centrif(self, f):
+        if not self.centrif_objects:
+            return
+
+        # write constraint to file
+        f.write("\n***********************************************************\n")
+        f.write("** Centrif Constraint\n")
+        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        for femobj in self.centrif_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            centrif_obj = femobj["Object"]
+            refobj=centrif_obj.AxisReference[0][0]
+            subobj=centrif_obj.AxisReference[0][1][0]
+            axis=refobj.Shape.getElement(subobj)
+
+            if  axis.Curve.TypeId == "Part::GeomLine":
+                axiscopy=axis.copy()        # apply global placement to copy
+                axiscopy.Placement = refobj.getGlobalPlacement()
+                direction = axiscopy.Curve.Direction
+                location = axiscopy.Curve.Location
+            else:             # no line found, set default
+                location = FreeCAD.Vector(0., 0., 0.)
+                direction = FreeCAD.Vector(0., 0., 1.)
+
+            f.write("** " + centrif_obj.Label + "\n")
+            f.write("*DLOAD\n")
+            f.write(
+                "{},CENTRIF,{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G},{:.13G}\n"
+                .format(
+                    centrif_obj.Name,
+                    (2. * math.pi * float(centrif_obj.RotationFrequency.getValueAs("1/s"))) ** 2,
+                    location.x,
+                    location.y,
+                    location.z,
+                    direction.x,
+                    direction.y,
+                    direction.z
+                )
+            )
+            f.write("\n")
+
+    # ********************************************************************************************
     # constraints force
     def write_constraints_force(self, f, inpfile_split=None):
         if not self.force_objects:
@@ -1411,6 +1457,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             elif len(self.fluidsection_objects) > 1:
                 self.get_ccx_elsets_multiple_mat_multiple_fluid()
 
+        if len(self.centrif_objects) > 0:
+            self.get_ccx_elsets_centrif_constraint()
+
         # TODO: some elementIDs are collected for 1D-Flow calculation,
         # this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
         for ccx_elset in self.ccx_elsets:
@@ -1740,17 +1789,35 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             ccx_elset["ccx_mat_name"] = mat_obj.Material["Name"]
             self.ccx_elsets.append(ccx_elset)
 
+    def get_ccx_elsets_centrif_constraint(self):
+        for centrif_data in self.centrif_objects:
+            centrif_obj = centrif_data["Object"]
+            ccx_elset = {}
+            ccx_elset["ccx_elset"] = meshtools.get_femmesh_groupdata_sets_by_name(
+                self.mesh_object.FemMesh, centrif_data, "Volume"
+            )
+            ccx_elset["ccx_elset_name"] =  centrif_obj.Name
+            ccx_elset["centrif_obj"] = centrif_obj
+            self.ccx_elsets.append(ccx_elset)
+
+    def is_DENSITY_card_needed(self):
+        if self.analysis_type == "frequency":
+            return True
+        if self.selfweight_objects:
+            return True
+        if (self.analysis_type == "thermomech"
+            and not self.solver_obj.ThermoMechSteadyState):
+            return True
+        if self.centrif_objects:
+            return True
+        return False
+
     def write_materials(self, f):
         f.write("\n***********************************************************\n")
         f.write("** Materials\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
         f.write("** Young\'s modulus unit is MPa = N/mm2\n")
-        if self.analysis_type == "frequency" \
-                or self.selfweight_objects \
-                or (
-                    self.analysis_type == "thermomech"
-                    and not self.solver_obj.ThermoMechSteadyState
-                ):
+        if self.is_DENSITY_card_needed() == True:
             f.write("** Density\'s unit is t/mm^3\n")
         if self.analysis_type == "thermomech":
             f.write("** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3\n")
@@ -1766,12 +1833,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 YM = FreeCAD.Units.Quantity(mat_obj.Material["YoungsModulus"])
                 YM_in_MPa = float(YM.getValueAs("MPa"))
                 PR = float(mat_obj.Material["PoissonRatio"])
-            if self.analysis_type == "frequency" \
-                    or self.selfweight_objects \
-                    or (
-                        self.analysis_type == "thermomech"
-                        and not self.solver_obj.ThermoMechSteadyState
-                    ):
+            if self.is_DENSITY_card_needed() == True:
                 density = FreeCAD.Units.Quantity(mat_obj.Material["Density"])
                 density_in_tonne_per_mm3 = float(density.getValueAs("t/mm^3"))
             if self.analysis_type == "thermomech":
@@ -1796,12 +1858,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 f.write("*ELASTIC\n")
                 f.write("{0:.0f}, {1:.3f}\n".format(YM_in_MPa, PR))
 
-            if self.analysis_type == "frequency" \
-                    or self.selfweight_objects \
-                    or (
-                        self.analysis_type == "thermomech"
-                        and not self.solver_obj.ThermoMechSteadyState
-                    ):
+            if self.is_DENSITY_card_needed() == True:
                 f.write("*DENSITY\n")
                 f.write("{0:.3e}\n".format(density_in_tonne_per_mm3))
             if self.analysis_type == "thermomech":
@@ -1914,6 +1971,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                     section_geo = str(shellth_obj.Thickness.getValueAs("mm")) + "\n"
                     f.write(section_def)
                     f.write(section_geo)
+                elif "centrif_obj"in ccx_elset:
+                    pass
                 else:  # solid mesh
                     elsetdef = "ELSET=" + ccx_elset["ccx_elset_name"] + ", "
                     material = "MATERIAL=" + ccx_elset["mat_obj_name"]
@@ -1927,7 +1986,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 # M .. Material
 # B .. Beam
 # R .. BeamRotation
-# D ..Direction
+# D .. Direction
 # F .. Fluid
 # S .. Shell,
 # TODO write comment into input file to elset ids and elset attributes

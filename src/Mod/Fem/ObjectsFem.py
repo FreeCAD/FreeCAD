@@ -98,6 +98,21 @@ def makeConstraintBodyHeatSource(
     return obj
 
 
+def makeConstraintCentrif(
+    doc,
+    name="ConstraintCentrif"
+):
+    """makeConstraintCentrif(document, [name]):
+    creates a centrif object to define centrifugal body load constraint"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_centrif
+    constraint_centrif.ConstraintCentrif(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_centrif
+        view_constraint_centrif.VPConstraintCentrif(obj.ViewObject)
+    return obj
+
+
 def makeConstraintContact(
     doc,
     name="ConstraintContact"
@@ -285,7 +300,7 @@ def makeConstraintTie(
     name="ConstraintTie"
 ):
     """makeConstraintTie(document, [name]):
-    creates an tie object to define bonded faces constraint"""
+    creates a tie object to define bonded faces constraint"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_tie
     constraint_tie.ConstraintTie(obj)
@@ -310,7 +325,7 @@ def makeConstraintSectionPrint(
     name="ConstraintSectionPrint"
 ):
     """makeConstraintSectionPrint(document, [name]):
-    creates an section print object to evaluate forces and moments of defined face"""
+    creates a section print object to evaluate forces and moments of defined face"""
     obj = doc.addObject("Fem::ConstraintPython", name)
     from femobjects import constraint_sectionprint
     constraint_sectionprint.ConstraintSectionPrint(obj)

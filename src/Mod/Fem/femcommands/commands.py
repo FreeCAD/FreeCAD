@@ -162,6 +162,17 @@ class _ConstraintBodyHeatSource(CommandManager):
         self.do_activated = "add_obj_on_gui_noset_edit"
 
 
+class _ConstraintCentrif(CommandManager):
+    "The FEM_ConstraintCentrif command definition"
+
+    def __init__(self):
+        super(_ConstraintCentrif, self).__init__()
+        self.menuetext = "Constraint centrif"
+        self.tooltip = "Creates a FEM constraint centrif"
+        self.is_active = "with_analysis"
+        self.do_activated = "add_obj_on_gui_set_edit"
+
+
 class _ConstraintElectrostaticPotential(CommandManager):
     "The FEM_ConstraintElectrostaticPotential command definition"
 
@@ -814,6 +825,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ConstraintBodyHeatSource",
     _ConstraintBodyHeatSource()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintCentrif",
+    _ConstraintCentrif()
 )
 FreeCADGui.addCommand(
     "FEM_ConstraintElectrostaticPotential",

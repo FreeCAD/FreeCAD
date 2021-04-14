@@ -60,6 +60,7 @@ class FemInputWriter():
         self.fluidsection_objects = member.geos_fluidsection
         self.shellthickness_objects = member.geos_shellthickness
         # constraints
+        self.centrif_objects = member.cons_centrif
         self.contact_objects = member.cons_contact
         self.displacement_objects = member.cons_displacement
         self.fixed_objects = member.cons_fixed
