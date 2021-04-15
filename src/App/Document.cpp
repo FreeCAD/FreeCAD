@@ -3068,8 +3068,17 @@ const char* Document::getName() const
     return myName.c_str();
 }
 
-std::string Document::getFullName() const {
+std::string Document::getFullName(bool python) const {
+    if(python) {
+        std::ostringstream ss;
+        ss << "FreeCAD.getDocument('" << myName << "')";
+        return ss.str();
+    }
     return myName;
+}
+
+App::Document *Document::getOwnerDocument() const {
+    return const_cast<App::Document*>(this);
 }
 
 const char* Document::getProgramVersion() const

@@ -687,8 +687,14 @@ ViewProviderDocumentObject *ViewProviderDocumentObject::getLinkedViewProvider(
     return res;
 }
 
-std::string ViewProviderDocumentObject::getFullName() const {
-    if(pcObject)
-        return pcObject->getFullName() + ".ViewObject";
-    return std::string("?");
+std::string ViewProviderDocumentObject::getFullName(bool python) const {
+    if (!isAttachedToDocument())
+        return "?";
+    if (pcObject)
+        return pcObject->getFullName(python) + ".ViewObject";
+    return std::string(python?"None":"?");
+}
+
+App::Document *ViewProviderDocumentObject::getOwnerDocument() const {
+    return pcObject?pcObject->getDocument():0;
 }

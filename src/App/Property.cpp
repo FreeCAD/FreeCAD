@@ -78,17 +78,15 @@ bool Property::isValidName(const char* name)
     return name && name[0] != '\0';
 }
 
-std::string Property::getFullName() const {
-    std::string name;
-    if(myName) {
-        if(father)
-            name = father->getFullName() + ".";
-        else
-            name = "?.";
-        name += myName;
-    }else
-        return "?";
-    return name;
+std::string Property::getFullName(bool python) const {
+    if(!myName || (python && !father)) 
+        return std::string(python?"None":"?");
+    std::ostringstream ss;
+    if(father)
+        ss << father->getFullName(python) 
+            << '.' << father->getPropertyPrefix();
+    ss << myName;
+    return ss.str();
 }
 
 std::string Property::getFileName(const char *postfix, const char *prefix) const {

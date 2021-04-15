@@ -259,13 +259,24 @@ const char* DocumentObject::getStatusString(void) const
         return "Valid";
 }
 
-std::string DocumentObject::getFullName() const {
-    if(!getDocument() || !pcNameInDocument)
-        return "?";
-    std::string name(getDocument()->getName());
-    name += '#';
-    name += *pcNameInDocument;
-    return name;
+std::string DocumentObject::getFullName(bool python) const {
+    if(!getDocument() || !pcNameInDocument) {
+        if(python)
+            return std::string("None");
+        return std::string("?") + Base::Tools::getIdentifier(oldLabel);
+    }
+
+    std::ostringstream ss;
+    if(python) {
+        ss << "FreeCAD.getDocument('" << getDocument()->getName()
+            << "').getObject('" << *pcNameInDocument << "')";
+    }else
+        ss << getDocument()->getName() << '#' << *pcNameInDocument;
+    return ss.str();
+}
+
+App::Document *DocumentObject::getOwnerDocument() const {
+    return _pDoc;
 }
 
 const char *DocumentObject::getNameInDocument() const

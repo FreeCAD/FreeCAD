@@ -142,7 +142,9 @@ public:
     virtual ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=nullptr, bool recursive=false) const;
 
-    virtual std::string getFullName() const override;
+    virtual std::string getFullName(bool python=false) const override;
+
+    virtual App::Document *getOwnerDocument() const override;
 
     /** Allow this class to be used as an override for the original view provider of the given object
      *

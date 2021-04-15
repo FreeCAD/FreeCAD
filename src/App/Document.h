@@ -545,7 +545,9 @@ public:
 
     virtual PyObject *getPyObject(void) override;
 
-    virtual std::string getFullName() const override;
+    virtual std::string getFullName(bool python=false) const override;
+
+    virtual App::Document *getOwnerDocument() const override;
 
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();

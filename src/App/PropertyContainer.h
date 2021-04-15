@@ -40,6 +40,7 @@ namespace App
 class Property;
 class PropertyContainer;
 class DocumentObject;
+class Document;
 class Extension;
 
 enum PropertyType
@@ -158,7 +159,17 @@ public:
 
   virtual unsigned int getMemSize (void) const;
 
-  virtual std::string getFullName() const {return std::string();}
+  /** Return a fully qualified name for this container
+   *  @param python: if true, then return an expression for accessing this container in Python
+   */
+  virtual std::string getFullName(bool python=false) const {
+      (void)python;
+      return std::string();
+  }
+
+  /// Return owner document of this container
+  virtual App::Document *getOwnerDocument() const 
+    {return nullptr;}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
