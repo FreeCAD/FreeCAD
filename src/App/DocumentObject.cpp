@@ -1270,6 +1270,20 @@ bool DocumentObject::adjustRelativeLinks(
     return touched;
 }
 
+std::string DocumentObject::getElementMapVersion(const App::Property *_prop, bool restored) const {
+    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    if(!prop) 
+        return std::string();
+    return prop->getElementMapVersion(restored);
+}
+
+bool DocumentObject::checkElementMapVersion(const App::Property *_prop, const char *ver) const {
+    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    if(!prop) 
+        return false;
+    return prop->checkElementMapVersion(ver);
+}
+
 const std::string &DocumentObject::hiddenMarker() {
     static std::string marker("!hide");
     return marker;

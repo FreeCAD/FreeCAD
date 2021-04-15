@@ -25,10 +25,15 @@
 
 #include <App/GeoFeaturePy.h>
 
+#include <Base/Console.h>
+#include <App/Link.h>
+#include "ComplexGeoData.h"
+#include "Document.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
-#include "ComplexGeoData.h"
+#include "MappedElement.h"
 
+FC_LOG_LEVEL_INIT("GeoFeature",true,true)
 
 using namespace App;
 
@@ -43,6 +48,8 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 GeoFeature::GeoFeature(void)
 {
     ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
+    ADD_PROPERTY_TYPE(_ElementMapVersion,(""),"Base",
+            (App::PropertyType)(Prop_Output|Prop_Hidden|Prop_Transient),"");
 }
 
 GeoFeature::~GeoFeature(void)
@@ -90,7 +97,34 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
     if(!name)
         return ret;
 
-    ret.second = name;
+    auto prop = getPropertyOfGeometry();
+    if(!prop) return std::make_pair("", name);
+
+    auto geo = prop->getComplexData();
+    if(!geo) return std::make_pair("", name);
+
+    Data::MappedElement mapped = geo->getElementName(name);
+
+    if (mapped.index && mapped.name) {
+        std::ostringstream ss;
+        ss << Data::ComplexGeoData::elementMapPrefix()
+           << mapped.name << '.' << mapped.index;
+        ret.first = ss.str();
+        mapped.index.toString(ret.second);
+    } else if (mapped.name) {
+        FC_TRACE("element mapped name not found " << name << " in " << getFullName());
+        ret.first = name;
+        const char *dot = strrchr(name,'.');
+        if(dot) {
+            // deliberately mangle the old style element name to signal a
+            // missing reference
+            ret.second = Data::ComplexGeoData::missingPrefix();
+            ret.second += dot+1;
+        }
+    } else {
+        mapped.index.toString(ret.second);
+    }
+
     return ret;
 }
 
@@ -108,11 +142,16 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
         return nullptr;
-    obj = sobj->getLinkedObject(true);
-    auto geo = dynamic_cast<GeoFeature*>(obj);
+    auto linked = sobj->getLinkedObject(true);
+    auto geo = Base::freecad_dynamic_cast<GeoFeature>(linked);
+    if(!geo && linked) {
+        auto ext = linked->getExtensionByType<LinkBaseExtension>(true);
+        if(ext) 
+            geo = Base::freecad_dynamic_cast<GeoFeature>(ext->getTrueLinkedObject(true));
+    }
     if(geoFeature) 
         *geoFeature = geo;
-    if(!obj || (filter && obj!=filter))
+    if(filter && geo!=filter)
         return nullptr;
     if(!element || !element[0]) {
         if(append) 
@@ -139,3 +178,78 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     return sobj;
 }
 
+bool GeoFeature::hasMissingElement(const char *subname) {
+    return Data::ComplexGeoData::hasMissingElement(subname);
+    if(!subname)
+        return false;
+    auto dot = strrchr(subname,'.');
+    if(!dot)
+        return subname[0]=='?';
+    return dot[1]=='?';
+}
+
+void GeoFeature::updateElementReference() {
+    auto prop = getPropertyOfGeometry();
+    if(!prop) return;
+    auto geo = prop->getComplexData();
+    if(!geo) return;
+    bool reset = false;
+    auto version = getElementMapVersion(prop);
+    if(_ElementMapVersion.getStrValue().empty()) 
+        _ElementMapVersion.setValue(version);
+    else if(_ElementMapVersion.getStrValue()!=version) {
+        reset = true;
+        _ElementMapVersion.setValue(version);
+    }
+    PropertyLinkBase::updateElementReferences(this,reset);
+}
+
+void GeoFeature::onChanged(const Property *prop) {
+    if(prop==getPropertyOfGeometry()) {
+        if(getDocument() && !getDocument()->testStatus(Document::Restoring)
+                         && !getDocument()->isPerformingTransaction())
+        {
+            updateElementReference();
+        }
+    }
+    DocumentObject::onChanged(prop);
+}
+
+void GeoFeature::onDocumentRestored() {
+    if(!getDocument()->testStatus(Document::Status::Importing))
+        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(),true));
+    DocumentObject::onDocumentRestored();
+}
+
+const std::vector<std::string>&
+GeoFeature::searchElementCache(const std::string &element,
+                               bool checkGeometry,
+                               double tol,
+                               double atol) const
+{
+    static std::vector<std::string> none;
+    (void)element;
+    (void)checkGeometry;
+    (void)tol;
+    (void)atol;
+    return none;
+}
+
+const std::vector<const char *>&
+GeoFeature::getElementTypes(bool /*all*/) const
+{
+    static std::vector<const char *> nil;
+    auto prop = getPropertyOfGeometry();
+    if (!prop)
+        return nil;
+    return prop->getComplexData()->getElementTypes();
+}
+
+std::vector<Data::IndexedName>
+GeoFeature::getHigherElements(const char *element, bool silent) const
+{
+    auto prop = getPropertyOfGeometry();
+    if (!prop)
+        return {};
+    return prop->getComplexData()->getHigherElements(element, silent);
+}
