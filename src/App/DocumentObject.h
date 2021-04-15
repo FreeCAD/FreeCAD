@@ -290,6 +290,20 @@ public:
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList &linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub &linkTo) const;
 
+    /** Return the element map version of the geometry data stored in the given property
+     *
+     * @param prop: the geometry property to query for element map version
+     * @param restored: whether to query for the restored element map version.
+     *                  In case of version upgrade, the restored version may
+     *                  be different from the current version.
+     *
+     * @return Return the element map version string.
+     */
+    virtual std::string getElementMapVersion(const App::Property *prop, bool restored=false) const;
+
+    /// Return true to signal re-generation of geometry element names
+    virtual bool checkElementMapVersion(const App::Property *prop, const char *ver) const;
+       
 public:
     /** mustExecute
      *  We call this method to check if the object was modified to

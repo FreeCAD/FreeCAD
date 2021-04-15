@@ -26,6 +26,12 @@
             </Documentation>
             <Parameter Name="Value" Type="Int"/>
         </Attribute>
+        <Attribute Name="Related" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Return the related string IDs</UserDocu>
+            </Documentation>
+            <Parameter Name="Related" Type="List"/>
+        </Attribute>
         <Attribute Name="Data" ReadOnly="true">
             <Documentation>
                 <UserDocu>Return the data associated with this ID</UserDocu>

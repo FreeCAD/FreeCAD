@@ -24,7 +24,9 @@
 #ifndef APP_GEOFEATURE_H
 #define APP_GEOFEATURE_H
 
+#include <memory>
 #include "DocumentObject.h"
+#include "MappedElement.h"
 #include "PropertyGeo.h"
 
 
@@ -40,6 +42,7 @@ class AppExport GeoFeature : public App::DocumentObject
 
 public:
     PropertyPlacement Placement;
+    PropertyString _ElementMapVersion;
 
     /// Constructor
     GeoFeature(void);
@@ -80,10 +83,17 @@ public:
      * @param name: input name
      * @param type: desired element name type to return
      *
-     * @return a pair(newName,oldName). New element name may be empty.
+     * This function relies on ComplexGeoData::elementMapPrefix() to decide
+     * whether it is a forward query, i.e. mapped -> original, or reverse
+     * query.  The reason being that, unlike ComplexGeoData who deals with the
+     * actual element map data, GeoFeature here sits at a higher level.
+     * GeoFeature should be dealing with whatever various PropertyLinkSub(s) is
+     * assigned.
      *
-     * This function currently is does nothing. The new style element name
-     * generation will be added in the next batch of patches.
+     * This function is made virtual, so that inherited class can do something
+     * unusual, such as Sketcher::SketcherObject, which uses this to expose its
+     * private geometries without a correpsonding TopoShape, and yet being
+     * source code compatible.
      */
     virtual std::pair<std::string,std::string> getElementName(
             const char *name, ElementNameType type=Normal) const;
@@ -107,6 +117,8 @@ public:
             bool append=false, ElementNameType type=Normal,
             const DocumentObject *filter=nullptr,const char **element=nullptr, GeoFeature **geo=nullptr);
 
+    static bool hasMissingElement(const char *subname);
+
     /**
      * @brief Calculates the placement in the global reference coordinate system
      * 
@@ -120,6 +132,46 @@ public:
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+
+    /** Search sub element using internal cached geometry
+     *
+     * @param element: element name
+     * @param checkGeometry: search element by comparing geometry
+     * @param tol: coordinate tolerance
+     * @param atol: angle tolerance
+     *
+     * @return Returns a list of found element reference to the new goemetry.
+     * The returned value will be invalidated when the geometry is changed.
+     *
+     * Before changing the property of geometry, GeoFeature will internally
+     * make a snapshot of all referenced element geometry. After change, user
+     * code may call this function to search for the new element name that
+     * reference to the same geometry of the old element.
+     */
+    virtual const std::vector<std::string>& searchElementCache(const std::string &element,
+                                                               bool checkGeometry = true,
+                                                               double tol = 1e-7,
+                                                               double atol = 1e-10) const;
+
+
+    /// Return the object that owns the shape that contains the give element name
+    virtual DocumentObject *getElementOwner(const Data::MappedName & /*name*/) const
+    {return nullptr;}
+
+    virtual const std::vector<const char *>& getElementTypes(bool all=true) const;
+
+    /// Return the higher level element names of the given element
+    virtual std::vector<Data::IndexedName> getHigherElements(const char *name, bool silent=false) const;
+
+protected:
+    virtual void onChanged(const Property* prop);
+    virtual void onDocumentRestored();
+    void updateElementReference();
+    std::pair<std::string,std::string> _getElementName(const char *name, const Data::MappedElement &mapped) const;
+
+private:
+    std::vector<Data::MappedElement> _elementMapCache;
+    std::string _elementMapVersion;
 };
 
 } //namespace App

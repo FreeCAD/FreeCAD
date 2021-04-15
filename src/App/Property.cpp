@@ -34,6 +34,7 @@
 #include <CXX/Objects.hxx>
 
 #include "Application.h"
+#include "Document.h"
 #include "DocumentObject.h"
 #include "Property.h"
 #include "ObjectIdentifier.h"
@@ -78,6 +79,12 @@ bool Property::hasName() const
 bool Property::isValidName(const char* name)
 {
     return name && name[0] != '\0';
+}
+
+void Property::SetRestoreError(const char * msg)
+{
+    if (auto doc = father->getOwnerDocument())
+        doc->setErrorDescription(this, msg);
 }
 
 std::string Property::getFullName(bool python) const {

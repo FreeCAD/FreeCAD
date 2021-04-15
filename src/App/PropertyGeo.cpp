@@ -23,19 +23,30 @@
 
 #include "PreCompiled.h"
 
-#include <Base/MatrixPy.h>
-#include <Base/PlacementPy.h>
-#include <Base/Reader.h>
+#ifndef _PreComp_
+#	include <assert.h>
+#endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
+/// Here the FreeCAD includes sorted by Base,App,Gui......
+
+#include <Base/Exception.h>
+#include <Base/MatrixPy.h>
+#include <Base/Reader.h>
+#include <Base/PlacementPy.h>
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 #include <Base/Rotation.h>
 #include <Base/RotationPy.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
+#include <Base/Writer.h>
 #include <Base/VectorPy.h>
 #include <Base/Writer.h>
 
+#include "Document.h"
+#include "DocumentObject.h"
 #include "PropertyGeo.h"
 #include "Placement.h"
 #include "ObjectIdentifier.h"
@@ -1135,4 +1146,49 @@ PropertyComplexGeoData::PropertyComplexGeoData()
 PropertyComplexGeoData::~PropertyComplexGeoData()
 {
 
+}
+
+std::string PropertyComplexGeoData::getElementMapVersion(bool) const {
+    auto data = getComplexData();
+    if(!data)
+        return std::string();
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    if(owner && owner->getDocument()
+             && owner->getDocument()->getStringHasher()==data->Hasher)
+        ss << "1.";
+    else
+        ss << "0.";
+    ss << data->getElementMapVersion();
+    return ss.str();
+}
+
+bool PropertyComplexGeoData::checkElementMapVersion(const char * ver) const
+{
+    auto data = getComplexData();
+    if(!data)
+        return false;
+    auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+    std::ostringstream ss;
+    const char *prefix;
+    if(owner && owner->getDocument()
+             && owner->getDocument()->getStringHasher() == data->Hasher)
+        prefix = "1.";
+    else
+        prefix = "0.";
+    if (!boost::starts_with(ver, prefix))
+        return true;
+    return data->checkElementMapVersion(ver+2);
+}
+
+void PropertyComplexGeoData::afterRestore()
+{
+    auto data = getComplexData();
+    if (data && data->isRestoreFailed()) {
+        data->resetRestoreFailure();
+        auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+        if (owner && owner->getDocument() && !owner->getDocument()->testStatus(App::Document::PartialDoc))
+            owner->getDocument()->addRecomputeObject(owner);
+    }
+    PropertyGeometry::afterRestore();
 }
