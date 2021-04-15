@@ -221,15 +221,52 @@ void PropertyContainer::handleChangedPropertyType(XMLReader &reader, const char 
 
 PropertyData PropertyContainer::propertyData;
 
-void PropertyContainer::Save (Base::Writer &writer) const 
+namespace App {
+class PropertyContainerP
 {
-    std::map<std::string,Property*> Map;
+public:
+    std::map<std::string, Property*> propertyMap;
+    std::vector<Property*> transients;
+
+    void clear()
+    {
+        propertyMap.clear();
+        transients.clear();
+    }
+};
+
+struct PropertyContainerPGuard
+{
+    PropertyContainerPGuard(PropertyContainerP & priv)
+        :priv(priv)
+    {}
+
+    ~PropertyContainerPGuard()
+    {
+        priv.clear();
+    }
+
+    PropertyContainerP & priv;
+};
+}
+
+void PropertyContainer::beforeSave() const
+{
+    if (!_pimpl)
+        _pimpl.reset(new PropertyContainerP);
+    else
+        _pimpl->clear();
+
+    auto & Map = _pimpl->propertyMap;
+    auto & transients = _pimpl->transients;
+
     getPropertyMap(Map);
 
-    std::vector<Property*> transients;
     for(auto it=Map.begin();it!=Map.end();) {
         auto prop = it->second;
-        if(prop->testStatus(Property::PropNoPersist)) {
+        if (prop->getContainer() != this
+                || prop->testStatus(Property::PropNoPersist))
+        {
             it = Map.erase(it);
             continue;
         }
@@ -239,9 +276,22 @@ void PropertyContainer::Save (Base::Writer &writer) const
         {
             transients.push_back(prop);
             it = Map.erase(it);
-        }else
+        } else {
+            prop->beforeSave();
             ++it;
+        }
     }
+}
+
+void PropertyContainer::Save (Base::Writer &writer) const 
+{
+    if (!_pimpl || _pimpl->propertyMap.empty())
+        beforeSave();
+
+    PropertyContainerPGuard guard(*_pimpl);
+
+    auto & Map = _pimpl->propertyMap;
+    auto & transients = _pimpl->transients;
 
     writer.incInd(); // indentation for 'Properties Count'
     writer.Stream() << writer.ind() << "<Properties Count=\"" << Map.size()
@@ -275,8 +325,8 @@ void PropertyContainer::Save (Base::Writer &writer) const
         if(it->second->testStatus(Property::Transient) 
                 || it->second->getType() & Prop_Transient) 
         {
+            writer.Stream() << "</Property>\n";
             writer.decInd();
-            writer.Stream() << "</Property>" << std::endl;
             continue;
         }
 
@@ -326,14 +376,21 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         reader.readElement("_Property");
         Property* prop = getPropertyByName(reader.getAttribute("name"));
         if(prop)
-            FC_TRACE("restore transient '" << prop->getName() << "'");
-        if(prop && reader.hasAttribute("status"))
-            prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
+            FC_TRACE("restore transient '" << prop->getFullName() << "'");
+        if(prop && reader.hasAttribute("status")) {
+            decltype(Property::StatusBits) status(reader.getAttributeAsUnsigned("status"));
+            status.reset(Property::User1);
+            status.reset(Property::User2);
+            status.reset(Property::User3);
+            prop->setStatusValue(status.to_ulong());
+        }
     }
 
     for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
+        int guard;
+        reader.readElement("Property",&guard);
         std::string PropName = reader.getAttribute("name");
+        Base::ReaderContext rctx(PropName);
         std::string TypeName = reader.getAttribute("type");
         // NOTE: We must also check the type of the current property because a
         // subclass of PropertyContainer might change the type of a property but
@@ -346,7 +403,13 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
 
             decltype(Property::StatusBits) status;
             if(reader.hasAttribute("status")) {
-                status = decltype(status)(reader.getAttributeAsUnsigned("status"));
+                status = decltype(Property::StatusBits)(reader.getAttributeAsUnsigned("status"));
+
+                // User1~3 are currently reserved for various temporary usage.
+                // To avoid some potential problems, no persistence at the moment.
+                status.reset(Property::User1);
+                status.reset(Property::User2);
+                status.reset(Property::User3);
                 if(prop)
                     prop->setStatusValue(status.to_ulong());
             }
@@ -357,10 +420,10 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
                         && !status.test(Property::PropTransient)
                         && !prop->testStatus(Property::PropTransient))
                 {
-                    FC_TRACE("restore property '" << prop->getName() << "'");
+                    FC_TRACE("restoring property " << prop->getFullName());
                     prop->Restore(reader);
                 }else
-                    FC_TRACE("skip transient '" << prop->getName() << "'");
+                    FC_TRACE("skip transient " << prop->getFullName());
             }
             // name matches but not the type
             else if (prop) {
@@ -377,29 +440,38 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
                 reader.clearPartialRestoreProperty();
             }
         }
-        catch (const Base::XMLParseException&) {
+        catch (Base::XMLParseException &e) {
+            FC_ERR(e.what() << " while parsing " << getFullName() << '.' << PropName);
+            e.setReported(true);
             throw; // re-throw
         }
-        catch (const Base::RestoreError &) {
+        catch (const Base::RestoreError &e) {
+            e.ReportException();
             reader.setPartialRestore(true);
             reader.clearPartialRestoreProperty();
-            Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << "): was subject to a partial restore.");
         }
         catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
+            e.ReportException();
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << ") restore error.");
         }
         catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << ") restore error: " << e.what());
         }
         catch (const char* e) {
-            Base::Console().Error("%s\n", e);
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << ") restore error: " << e);
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
+            FC_ERR(getFullName() << '.' << PropName << " (" << TypeName
+                    << ") restore error: Unknown C++ exception thrown\n");
         }
 #endif
-        reader.readEndElement("Property");
+        reader.readEndElement("Property",&guard);
     }
     reader.readEndElement("Properties");
 }
