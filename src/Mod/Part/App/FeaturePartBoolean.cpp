@@ -114,17 +114,17 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         }
 
         std::vector<ShapeHistory> history;
-        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, BaseShape));
-        history.push_back(buildHistory(*mkBool.get(), TopAbs_FACE, resShape, ToolShape));
+        history.emplace_back(*mkBool.get(), TopAbs_FACE, resShape, BaseShape);
+        history.emplace_back(*mkBool.get(), TopAbs_FACE, resShape, ToolShape);
 
         if (this->Refine.getValue()) {
             try {
                 TopoDS_Shape oldShape = resShape;
                 BRepBuilderAPI_RefineModel mkRefine(oldShape);
                 resShape = mkRefine.Shape();
-                ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
-                history[0] = joinHistory(history[0], hist);
-                history[1] = joinHistory(history[1], hist);
+                ShapeHistory hist(mkRefine, TopAbs_FACE, resShape, oldShape);
+                history[0].join(hist);
+                history[1].join(hist);
             }
             catch (Standard_Failure&) {
                 // do nothing

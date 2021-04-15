@@ -31,6 +31,8 @@
 #include <map>
 #include <vector>
 
+class BRepBuilderAPI_MakeShape;
+
 namespace Part
 {
 
@@ -114,6 +116,21 @@ struct PartExport ShapeHistory {
 
     TopAbs_ShapeEnum type;
     MapList shapeMap;
+
+    ShapeHistory() {}
+    /**
+     * Build a history of changes
+     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
+     * type: The type of object we are interested in, e.g. TopAbs_FACE
+     * newS: The new shape that was created by the operation
+     * oldS: The original shape prior to the operation
+     */
+    ShapeHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
+                 const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    void reset(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
+               const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
+    void join(const ShapeHistory &newH);
+
 };
 
 class PartExport PropertyShapeHistory : public App::PropertyLists

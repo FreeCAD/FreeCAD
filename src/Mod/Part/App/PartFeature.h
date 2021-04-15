@@ -116,16 +116,6 @@ protected:
     /// recalculate the feature
     virtual App::DocumentObjectExecReturn *execute() override;
     virtual void onChanged(const App::Property* prop) override;
-    /**
-     * Build a history of changes
-     * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
-     * type: The type of object we are interested in, e.g. TopAbs_FACE
-     * newS: The new shape that was created by the operation
-     * oldS: The original shape prior to the operation
-     */
-    ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
-        const TopoDS_Shape& newS, const TopoDS_Shape& oldS);
-    ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&);
 };
 
 class FilletBase : public Part::Feature
