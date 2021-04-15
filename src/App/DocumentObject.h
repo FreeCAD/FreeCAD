@@ -139,7 +139,8 @@ public:
     /// returns the name that is safe to be exported to other document
     std::string getExportName(bool forced=false) const;
     /// Return the object full name of the form DocName#ObjName
-    virtual std::string getFullName() const override;
+    virtual std::string getFullName(bool python=false) const override;
+    virtual App::Document *getOwnerDocument() const override;
     virtual bool isAttachedToDocument() const override;
     virtual const char* detachFromDocument() override;
     /// gets the document in which this Object is handled

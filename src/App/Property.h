@@ -132,7 +132,10 @@ public:
      */
     static bool isValidName(const char* name);
 
-    std::string getFullName() const;
+    /** Return a fully qualified property name that include its own's name
+     * @param python: if true, then return an expression for accessing this property in Python
+     */
+    virtual std::string getFullName(bool python=false) const;
 
     /// Get the class name of the associated property editor item
     virtual const char* getEditorName(void) const { return ""; }
