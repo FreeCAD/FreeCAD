@@ -93,6 +93,15 @@ It describes the common behavior of these objects when:
             <UserDocu>Returns a list with information about the geometry extensions.</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="isSame" Const="true">
+        <Documentation>
+            <UserDocu>
+isSame(geometry, tol=1e-7, atol=1e-10)
+
+Test if two geometries are the same.
+            </UserDocu>
+        </Documentation>
+    </Methode>
     <Attribute Name="Tag" ReadOnly="true">
       <Documentation>
         <UserDocu>Gives the tag of the geometry as string.</UserDocu>
