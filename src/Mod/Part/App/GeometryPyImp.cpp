@@ -440,6 +440,17 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
 
 }
 
+PyObject* GeometryPy::isSame(PyObject *args)
+{
+    PyObject *pygeo;
+    double tol = 1e-7;
+    double atol = 1e-10;
+    if (!PyArg_ParseTuple(args, "O!|dd", &GeometryPy::Type, &pygeo,&tol,&atol))
+        return NULL;
+    return Py::new_reference_to(Py::Boolean(getGeometryPtr()->isSame(
+                    *static_cast<GeometryPy*>(pygeo)->getGeometryPtr(), tol, atol)));
+}
+
 Py::String GeometryPy::getTag(void) const
 {
     std::string tmp = boost::uuids::to_string(getGeometryPtr()->getTag());
