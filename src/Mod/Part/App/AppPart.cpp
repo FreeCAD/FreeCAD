@@ -390,6 +390,7 @@ PyMOD_INIT_FUNC(Part)
     Part::PropertyGeometryList  ::init();
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
+    Part::PropertyShapeCache    ::init();
 
     Part::FaceMaker             ::init();
     Part::FaceMakerPublic       ::init();
@@ -498,6 +499,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomSurface             	::init();
     Part::GeomBezierSurface       	::init();
     Part::GeomBSplineSurface      	::init();
+    Part::GeomElementarySurface     ::init();
     Part::GeomCylinder            	::init();
     Part::GeomCone                	::init();
     Part::GeomSphere              	::init();

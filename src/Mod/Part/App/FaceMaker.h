@@ -32,6 +32,9 @@
 #include <memory>
 #include <Mod/Part/PartGlobal.h>
 
+#include <App/StringHasher.h>
+#include "TopoShape.h"
+
 namespace Part
 {
 
@@ -51,6 +54,11 @@ public:
     FaceMaker() {}
     virtual ~FaceMaker() {}
 
+    void addTopoShape(const TopoShape &s);
+    void useTopoCompound(const TopoShape &comp);
+    const TopoShape &getTopoShape() const;
+    const TopoShape &TopoFace() const;
+
     virtual void addWire(const TopoDS_Wire& w);
     /**
      * @brief addShape: add another wire, edge, or compound. If compound is
@@ -66,6 +74,8 @@ public:
      * @param comp
      */
     virtual void useCompound(const TopoDS_Compound &comp);
+
+    virtual void setPlane(const gp_Pln &) {}
 
     /**
      * @brief Face: returns the face (result). If result is not a single face,
@@ -84,11 +94,16 @@ public:
     static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
     static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);
 
+    const char *MyOp = 0;
+    App::StringHasherRef MyHasher;
+
 protected:
-    std::vector<TopoDS_Shape> mySourceShapes; //wire or compound
+    std::vector<TopoShape> mySourceShapes; //wire or compound
     std::vector<TopoDS_Wire> myWires; //wires from mySourceShapes
     std::vector<TopoDS_Compound> myCompounds; //compounds, for recursive processing
     std::vector<TopoDS_Shape> myShapesToReturn;
+    std::vector<TopoDS_Shape> myInputFaces;
+    TopoShape myTopoShape;
 
     /**
      * @brief Build_Essence: build routine that can assume there is no nesting.
@@ -100,6 +115,7 @@ protected:
      * whole Build().
      */
     virtual void Build_Essence() = 0;
+    void postBuild();
 
     static void throwNotImplemented();
 };
