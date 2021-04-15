@@ -385,18 +385,18 @@ class DocumentItem::ExpandInfo :
     public std::unordered_map<std::string, DocumentItem::ExpandInfoPtr>
 {
 public:
-    void restore(Base::XMLReader& reader) {
-        int level = reader.level();
+    void restore(Base::XMLReader &reader) {
         int count = reader.getAttributeAsInteger("count");
-        for (int i = 0; i < count; ++i) {
-            reader.readElement("Expand");
-            auto& entry = (*this)[reader.getAttribute("name")];
-            if (!reader.hasAttribute("count"))
-                continue;
-            entry.reset(new ExpandInfo);
-            entry->restore(reader);
+        for(int i=0;i<count;++i) {
+            int guard;
+            reader.readElement("Expand",&guard);
+            auto &entry = (*this)[reader.getAttribute("name")];
+            if(reader.hasAttribute("count")) {
+                entry.reset(new ExpandInfo);
+                entry->restore(reader);
+            }
+            reader.readEndElement("Expand",&guard);
         }
-        reader.readEndElement("Expand", level - 1);
     }
 };
 

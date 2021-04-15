@@ -44,8 +44,8 @@ namespace Gui {
 class XMLMergeReader : public Base::XMLReader
 {
 public:
-    XMLMergeReader(std::map<std::string, std::string>& name, const char* FileName, std::istream& str)
-      : Base::XMLReader(FileName, str), nameMap(name)
+    XMLMergeReader(std::map<std::string, std::string>& name, Base::Reader &reader)
+      : Base::XMLReader(reader), nameMap(name)
     {}
 
     void addName(const char* s1, const char* s2)
@@ -146,7 +146,8 @@ MergeDocuments::importObjects(std::istream& input)
 {
     this->nameMap.clear();
     this->stream = new zipios::ZipInputStream(input);
-    XMLMergeReader reader(this->nameMap,"<memory>", *stream);
+    Base::ZipReader zreader(*this->stream,std::string("<memory>"));
+    XMLMergeReader reader(this->nameMap, zreader);
     std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
     delete this->stream;
@@ -164,7 +165,7 @@ void MergeDocuments::importObject(const std::vector<App::DocumentObject*>& o, Ba
     }
     Restore(r);
 
-    r.readFiles(*this->stream);
+    r.readFiles();
 }
 
 void MergeDocuments::exportObject(const std::vector<App::DocumentObject*>& o, Base::Writer & w)

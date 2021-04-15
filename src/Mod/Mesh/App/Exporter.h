@@ -108,7 +108,8 @@ class AmfExporter : public Exporter
         bool addMesh(const char *name, const MeshObject & mesh) override;
 
     private:
-        std::ostream *outputStreamPtr;
+        std::ostream *outputStreamPtr = nullptr;
+        std::ostream *fileStreamPtr = nullptr;
         int nextObjectIndex;
 
     /// Helper for putting Base::Vector3f objects into a std::map in addMesh()

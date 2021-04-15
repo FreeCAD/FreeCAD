@@ -141,6 +141,10 @@ public:
      * @see Base::Reader,Base::XMLReader
      */
     virtual void RestoreDocFile(Reader &/*reader*/);
+
+    /// Called by reader to set restoring error
+    virtual void SetRestoreError(const char *) {}
+
     /// Encodes an attribute upon saving.
     static std::string encodeAttribute(const std::string&);
 

@@ -55,20 +55,6 @@ using namespace Spreadsheet;
 
 /////////////////////////////////////////////////////////
 
-// expose the read() function for simpler partial xml reading in setExpression()
-class ReaderPrivate: public Base::XMLReader {
-public:
-    ReaderPrivate(const char* FileName, std::istream &is)
-        :XMLReader(FileName,is)
-    {}
-
-    bool read() {
-        return XMLReader::read();
-    }
-};
-
-///////////////////////////////////////////////////////////
-
 const int Cell::EXPRESSION_SET       = 1;
 const int Cell::ALIGNMENT_SET        = 4;
 const int Cell::STYLE_SET            = 8;
@@ -191,9 +177,11 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
             FC_WARN("Unknown style of cell "
                 << owner->sheet()->getFullName() << '.' << address.toString());
         else {
+            const auto &content = expr->comment;
             try {
-                std::istringstream in(expr->comment);
-                ReaderPrivate reader("<memory>", in);
+                std::istringstream in(content);
+                XMLReader reader("<memory>", in);
+                // reader.readElement("Cell");
                 reader.read();
                 restore(reader,true);
             }catch(Base::Exception &e) {

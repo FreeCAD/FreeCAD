@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/algorithm/string.hpp>
 # include <boost/regex.hpp>
 #endif
 
@@ -434,7 +435,7 @@ void Toolpath::recalculate(void) // recalculates the path cache
 
 unsigned int Toolpath::getMemSize (void) const
 {
-    return toGCode().size();
+    return vpcCommands.size() * 100;
 }
 
 void Toolpath::setCenter(const Base::Vector3d &c)
@@ -445,45 +446,86 @@ void Toolpath::setCenter(const Base::Vector3d &c)
 
 static void saveCenter(Writer &writer, const Base::Vector3d &center)
 {
-    writer.Stream() << writer.ind() << "<Center x=\"" << center.x << "\" y=\"" << center.y << "\" z=\"" << center.z << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Center x=\"" << center.x << "\" y=\"" << center.y << "\" z=\"" << center.z << "\"/>\n";
 }
 
 void Toolpath::Save (Writer &writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<Path count=\"" <<  getSize() << "\" version=\"" << SchemaVersion << "\">" << std::endl;
+        writer.Stream() << writer.ind() << "<Path count=\"" <<  getSize() 
+            << "\" version=\"" << SchemaVersion << "\">\n";
         writer.incInd();
         saveCenter(writer, center);
-        for(unsigned int i = 0; i < getSize(); i++) {
-            vpcCommands[i]->Save(writer);
-        }
+        writer.Stream() << writer.ind() << "<Commands>\n";
+        auto &s = writer.beginCharStream(false) << '\n';
+        for(auto &cmd : vpcCommands)
+            s << cmd->toGCode() << '\n';
+        writer.endCharStream() << '\n' << writer.ind() << "</Commands>\n";
         writer.decInd();
     } else {
         writer.Stream() << writer.ind()
-            << "<Path file=\"" << writer.addFile((writer.ObjectName+".nc").c_str(), this) << "\" version=\"" << SchemaVersion << "\">" << std::endl;
+            << "<Path file=\"" << writer.addFile((filename+".nc").c_str(), this) 
+            << "\" version=\"" << SchemaVersion << "\">\n";
         writer.incInd();
         saveCenter(writer, center);
         writer.decInd();
     }
-    writer.Stream() << writer.ind() << "</Path>" << std::endl;
+    writer.Stream() << writer.ind() << "</Path>\n";
+}
+
+void Toolpath::setFileName(const char *file) const {
+    if(!file)
+        file = "";
+    filename = file;
 }
 
 void Toolpath::SaveDocFile (Base::Writer &writer) const
 {
-    if (toGCode().empty())
-        return;
-    writer.Stream() << toGCode();
+    for(auto &cmd : vpcCommands)
+        writer.Stream() << cmd->toGCode() << '\n';
 }
 
 void Toolpath::Restore(XMLReader &reader)
 {
     reader.readElement("Path");
-    std::string file (reader.getAttribute("file") );
 
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
+    if(reader.hasAttribute("file")) {
+        std::string file (reader.getAttribute("file") );
+        if (!file.empty()) {
+            // initiate a file read
+            reader.addFile(file.c_str(),this);
+        }
     }
+    unsigned count = reader.getAttributeAsUnsigned("count","0");
+    if (reader.hasAttribute("version")) {
+        int version = reader.getAttributeAsInteger("version");
+        if (version >= Toolpath::SchemaVersion) {
+            reader.readElement("Center");
+            double x = reader.getAttributeAsFloat("x");
+            double y = reader.getAttributeAsFloat("y");
+            double z = reader.getAttributeAsFloat("z");
+            Base::Vector3d center(x, y, z);
+            setCenter(center);
+        }
+    }
+    clear();
+    if(count) {
+        reader.readElement("Commands");
+        auto &s = reader.beginCharStream(false);
+        vpcCommands.resize(count);
+        std::string line;
+        for(auto &cmd : vpcCommands) {
+            cmd = new Command;
+            while(std::getline(s,line)) {
+                boost::trim(line);
+                if(!line.empty())
+                    break;
+            }
+            cmd->setFromGCode(line);
+        }
+        reader.readEndElement("Commands");
+    }
+    reader.readEndElement("Path");
 }
 
 void Toolpath::RestoreDocFile(Base::Reader &reader)

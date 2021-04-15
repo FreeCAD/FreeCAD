@@ -222,7 +222,8 @@ AmfExporter::AmfExporter( std::string fileName,
     }
 
     if (compress) {
-        auto *zipStreamPtr( new zipios::ZipOutputStream(fi.filePath()) );
+        fileStreamPtr = new Base::ofstream(fi, std::ios::out | std::ios::binary);
+        auto *zipStreamPtr( new zipios::ZipOutputStream(*fileStreamPtr) );
 
         // ISO 52915 specifies that compressed AMF files are zip-compressed and
         // must contain the AMF XML in an entry with the same name as the
@@ -261,6 +262,7 @@ AmfExporter::~AmfExporter()
                          << "</amf>\n";
         delete outputStreamPtr;
     }
+    delete fileStreamPtr;
 }
 
 bool AmfExporter::addMesh(const char *name, const MeshObject & mesh)

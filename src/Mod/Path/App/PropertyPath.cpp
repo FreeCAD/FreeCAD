@@ -105,11 +105,13 @@ unsigned int PropertyPath::getMemSize (void) const
 
 void PropertyPath::Save (Base::Writer &writer) const
 {
+    _Path.setFileName(getFileName().c_str());
     _Path.Save(writer);
 }
 
 void PropertyPath::Restore(Base::XMLReader &reader)
 {
+#if 0
     reader.readElement("Path");
 
     std::string file (reader.getAttribute("file") );
@@ -129,6 +131,11 @@ void PropertyPath::Restore(Base::XMLReader &reader)
             _Path.setCenter(center);
         }
     }
+#else
+    aboutToSetValue();
+    _Path.Restore(reader);
+    hasSetValue();
+#endif
 }
 
 void PropertyPath::SaveDocFile (Base::Writer &) const
@@ -138,6 +145,22 @@ void PropertyPath::SaveDocFile (Base::Writer &) const
 
 void PropertyPath::RestoreDocFile(Base::Reader &reader)
 {
+    // Since we are calling  _Path.Restore() above, RestoreDocFile will be called 
+    // on _Path instead. I guess the reason for the original 'unnatural'
+    // implementation is because 
+    //
+    // a) Need to call aboutToSetValue(), which is now called inside
+    //    PropertyPath::Restore(). Besides, I don't think aboutTo/hasSetValue() does
+    //    anything useful during restore, unless someone want to undo from a restore?
+    //    Even so, the above call inside Restore() is enough
+    //
+    // b) Need to to manually set ObjectStatus::Restore because App::Document has
+    //    reset that flag when calling RestoreDocFile. However, this is no
+    //    longer the case, the flag will remain until calling onDocumentRestored().
+
+#if 1
+    (void)reader;
+#else
     App::PropertyContainer *container = getContainer();
     App::DocumentObject *obj = nullptr;
     if (container->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
@@ -155,6 +178,7 @@ void PropertyPath::RestoreDocFile(Base::Reader &reader)
     if (obj) {
         obj->setStatus(App::ObjectStatus::Restore, false);
     }
+#endif
 }
 
 

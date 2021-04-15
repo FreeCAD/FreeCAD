@@ -196,6 +196,11 @@ public:
     }
     //@}
 
+    /** @name Save/restore */
+    //@{
+    void setPersistenceFileName(const char *name) const;
+    //@}
+
 protected:
 
     /// from local to outside
@@ -215,8 +220,12 @@ protected:
                               static_cast<float>(tmp.y),
                               static_cast<float>(tmp.z));
     }
+
 public:
     mutable long Tag;
+protected:
+    mutable std::string _PersistenceName;
+
 };
 
 } //namespace App

@@ -934,8 +934,6 @@ DocumentObject *DocumentObject::getLinkedObject(
 
 void DocumentObject::Save (Base::Writer &writer) const
 {
-    if (this->getNameInDocument())
-        writer.ObjectName = this->getNameInDocument();
     App::ExtensionContainer::Save(writer);
 }
 
