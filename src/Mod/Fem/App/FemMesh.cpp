@@ -2503,14 +2503,10 @@ Base::BoundBox3d FemMesh::getBoundBox(void) const
     return box;
 }
 
-std::vector<const char*> FemMesh::getElementTypes(void) const
+const std::vector<const char*>& FemMesh::getElementTypes(void) const
 {
-    std::vector<const char*> temp;
-    temp.push_back("Vertex");
-    temp.push_back("Edge");
-    temp.push_back("Face");
-    temp.push_back("Volume");
-
+    static std::vector<const char*> temp = 
+        {"Vertex", "Edge", "Face", "Volume"};
     return temp;
 }
 

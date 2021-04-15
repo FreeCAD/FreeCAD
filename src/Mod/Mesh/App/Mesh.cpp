@@ -93,11 +93,12 @@ MeshObject::~MeshObject()
 {
 }
 
-std::vector<const char*> MeshObject::getElementTypes() const
+const std::vector<const char*>& MeshObject::getElementTypes() const
 {
-    std::vector<const char*> temp;
-    temp.push_back("Mesh");
-    temp.push_back("Segment");
+    static std::vector<const char*> temp = {
+        "Mesh", // that's the mesh itself
+        "Segment"
+    };
 
     return temp;
 }
