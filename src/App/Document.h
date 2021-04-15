@@ -23,12 +23,21 @@
 #ifndef APP_DOCUMENT_H
 #define APP_DOCUMENT_H
 
+#include <CXX/Objects.hxx>
+#include <Base/Observer.h>
+#include <Base/Persistence.h>
+#include <Base/Type.h>
+#include <Base/Handle.h>
+
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
 #include "PropertyStandard.h"
 
+#include <memory>
 #include <map>
 #include <vector>
+
+class QByteArray;
 
 namespace Base {
     class Writer;
@@ -43,6 +52,8 @@ namespace App
     class DocumentPy; // the python document class
     class Application;
     class Transaction;
+    class StringHasher;
+    typedef Base::Reference<StringHasher> StringHasherRef;
 }
 
 namespace App
@@ -68,6 +79,7 @@ public:
         RestoreError = 10,
         LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
         IgnoreErrorOnRecompute = 12, // Don't report errors if the recompute failed
+        RecomputeOnRestore = 13, // Mark pending recompute on restore for migration purpose
     };
 
     /** @name Properties */
@@ -109,6 +121,8 @@ public:
     PropertyString TipName;
     /// Whether to show hidden items in TreeView
     PropertyBool ShowHidden;
+    /// Whether to use hasher on topological naming
+    PropertyBool UseHasher;
     //@}
 
     /** @name Signals of the document */
@@ -472,6 +486,38 @@ public:
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList
     (const App::DocumentObject* from, const App::DocumentObject* to) const;
     //@}
+
+    /** Called by property during properly save its containing StringHasher
+     *
+     * @param hasher: the input hasher
+     * @return Returns a pair<bool,int>. Boolean member indicate if the
+     * StringHasher has been saved before. The Integer is the hasher index.
+     *
+     * The StringHasher object is designed to be shared among multiple objects.
+     * So, we must not save duplicate copies of the same hasher. And must be
+     * able to restore with the same sharing relationship. This function returns
+     * whether the hasher has been saved before by other objects, and the index
+     * of the hasher. If the hasher has not been saved before, the object must
+     * save the hasher by calling StringHasher::Save
+     */
+    std::pair<bool,int> addStringHasher(const StringHasherRef & hasher) const;
+
+    /** Called by property to restore its containing StringHasher
+     *
+     * @param index: the index previously returned by calling addStringHasher()
+     * during save. Or if is negative, then return document's own string hasher
+     * if UseHasher is True
+     *
+     * @return Return the resulting string hasher.
+     *
+     * The caller is responsible to restore the hasher itself if it is the first
+     * owner of the hasher, i.e. return addStringHasher() returns true during
+     * save
+     */
+    StringHasherRef getStringHasher(int index=-1) const;
+
+    /// Return the document's own hasher regardless of UseHasher
+    StringHasherRef getHasher() const;
 
     /** Return the links to a given object
      *
