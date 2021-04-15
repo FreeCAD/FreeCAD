@@ -447,7 +447,7 @@ Qt::PenStyle TaskCenterLine::getCenterStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CosmoCLStyle", 2));
+    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CenterLine", 2));
     return centerStyle;
 }
 
