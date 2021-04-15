@@ -249,6 +249,11 @@ public:
 
 
 protected:
+  /** get called by the container when a property has changed
+   *
+   * This function is called before onChanged()
+    */
+  virtual void onEarlyChange(const Property* /*prop*/){}
   /// get called by the container when a property has changed
   virtual void onChanged(const Property* /*prop*/){}
   /// get called before the value is changed
