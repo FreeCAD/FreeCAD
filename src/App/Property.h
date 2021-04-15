@@ -264,6 +264,8 @@ public:
      */
     int64_t getID() const {return _id;}
 
+    virtual void beforeSave() const {}
+
     friend class PropertyContainer;
     friend struct PropertyData;
     friend class DynamicProperty;
