@@ -186,11 +186,13 @@ public:
     bool save (void);
     bool saveAs(const char* file);
     bool saveCopy(const char* file) const;
+    void save(Base::Writer &writer, bool archive) const;
     /// Restore the document from the file in Property Path
     void restore (const char *filename=nullptr,
             bool delaySignal=false, const std::vector<std::string> &objNames={});
-    bool afterRestore(bool checkPartial=false);
-    bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);
+    /// Restore the document from a pre-constructed xml reader
+    void restore (Base::XMLReader &xmlReader,
+            bool delaySignal=false, const std::vector<std::string> &objNames={});
     enum ExportStatus {
         NotExporting,
         Exporting,
@@ -343,6 +345,10 @@ public:
     bool recomputeFeature(DocumentObject* Feat,bool recursive=false);
     /// get the text of the error of a specified object
     const char* getErrorDescription(const App::DocumentObject*) const;
+    /// set the text of the error of a specified object
+    void setErrorDescription(App::DocumentObject *, const char *);
+    /// set the text of the error of a specified object
+    void setErrorDescription(App::Property *, const char *);
     /// return the status bits
     bool testStatus(Status pos) const;
     /// set the status bits
@@ -511,6 +517,9 @@ public:
 protected:
     /// Construction
     Document(const char *name = "");
+
+    bool afterRestore(bool checkPartial=false);
+    bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);

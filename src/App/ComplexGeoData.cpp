@@ -262,3 +262,10 @@ bool ComplexGeoData::hasMissingElement(const char *subname) {
         subname = dot+1;
     return boost::starts_with(subname,missingPrefix());
 }
+
+void ComplexGeoData::setPersistenceFileName(const char *filename) const {
+    if(!filename)
+        filename = "";
+    _PersistenceName = filename;
+}
+

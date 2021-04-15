@@ -33,8 +33,11 @@
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-#include "FileInfo.h"
+#include <boost/iostreams/concepts.hpp>
 
+#include "FileInfo.h"
+#include "Writer.h"
+#include "Stream.h"
 
 namespace zipios {
 class ZipInputStream;
@@ -47,7 +50,8 @@ XERCES_CPP_NAMESPACE_END
 
 namespace Base
 {
-class Persistence;
+
+class Reader;
 
 /** The XML reader class
  * This is an important helper class for the store and retrieval system
@@ -124,8 +128,16 @@ public:
         PartialRestoreInObject = 3              // Local to the object partially restored itself
     };
     /// open the file and read the first element
-    XMLReader(const char* FileName, std::istream&);
+    XMLReader(Base::Reader &reader, std::size_t bufsize=16*1024);
+    XMLReader(const char *name, std::istream &, std::size_t bufsize=16*1024);
     ~XMLReader();
+
+    /** @name boost iostream device interface */
+    //@{
+    typedef boost::iostreams::source_tag category;
+    typedef char char_type;
+    std::streamsize read(char_type* s, std::streamsize n);
+    //@}
 
     bool isValid() const { return _valid; }
     bool isVerbose() const { return _verbose; }
@@ -137,28 +149,68 @@ public:
     const char* localName() const;
     /// get the current element level
     int level() const;
-    /// read until a start element is found (\<name\>) or start-end element (\<name/\>) (with special name if given)
-    void readElement   (const char* ElementName=nullptr);
-
+    /** read until a start element is found (\<name\>) or start-end element (\<name/\>) (with special name if given)
+     *
+     * @param ElementName: element name to look for. If NULL, then the
+     * parser will return when encounter any start element. If not NULL,
+     * then the parser will only search within the current element for
+     * any child element start with this name, and throw exception if
+     * not found.
+     *
+     * @param guard: The guard is used to protect against over reading when
+     * calling readEndElement(). When the guard is not given, it is possible
+     * for the matching readEndElement() call to acsend above the current level
+     * (at the time of calling readElement()) and look for end element in
+     * parent or sibling elements, potentially skipping elements in between
+     * without caller noticing. If the guard is given, it will be assigned the
+     * element level immediate above the found start element, and you must pass
+     * the same pointered integer when calling readEndElement() to disarm the
+     * guard. Every following call of read(End)Element() will check if the
+     * current level goes above the current guard, and throw exception if it
+     * does. The reader internally keeps a stack of guards, so you can setup
+     * additional guard when calling readElement() at deeper level.
+     */
+    void readElement   (const char* ElementName=0, int *guard=0);
     /** read until an end element is found
      *
      * @param ElementName: optional end element name to look for. If given, then
      * the parser will read until this name is found.
      *
-     * @param level: optional level to look for. If given, then the parser will
-     * read until this level. Note that the parse only increase the level when
-     * finding a start element, not start-end element, and decrease the level
-     * after finding an end element. So, if you obtain the parser level after
-     * calling readElement(), you should specify a level minus one when calling
-     * this function. This \c level parameter is only useful if you know the
-     * child element may have the same name as its parent, otherwise, using \c
-     * ElementName is enough.
+     * @param guard: optional level guard. @sa readElement().
      */
-    void readEndElement(const char* ElementName=nullptr, int level=-1);
-    /// read until characters are found
-    void readCharacters();
-    /// read binary file
-    void readBinFile(const char*);
+    void readEndElement(const char* ElementName=0, int *guard=0);
+    /** Read element character content and save to a file
+     *
+     *  @param filename: file name to save into
+     *  @param base64: whether to decode data with base64 before saving
+     *
+     *  This function assumes you are in the middle of an element, or else
+     *  exception will be thrown.
+     */
+    void readCharacters(const char *filename, bool base64);
+    /** Read element character content as text string
+     *
+     *  This function reads the entire character content of the current element
+     *  and return it as a string. This function assumes you are in the middle
+     *  of an element, or else exception will be thrown.
+     *
+     *  For more memory efficient reading of large amount of characters,
+     *  consider using beginCharStream().
+     */
+    std::string readCharacters();
+    /** Obtain an input stream for reading characters
+     *
+     *  @param base64: whether to decode data using base64
+     *
+     *  @return Return a input stream for reading characters. The stream will be
+     *  auto destroyed when you call with readElement() or readEndElement(), or
+     *  you can end it explicitly with endCharStream().
+     */
+    std::istream &beginCharStream(bool base64);
+    /// Manually end the current character stream
+    void endCharStream();
+    /// Obtain the current character stream
+    std::istream &charStream();
     //@}
 
     /** @name Attribute handling */
@@ -168,20 +220,31 @@ public:
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
     /// return the named attribute as an interer (does type checking)
-    long getAttributeAsInteger(const char* AttrName) const;
-    unsigned long getAttributeAsUnsigned(const char* AttrName) const;
+    long getAttributeAsInteger(const char* AttrName, const char *def=0) const;
+    unsigned long getAttributeAsUnsigned(const char* AttrName, const char *def=0) const;
     /// return the named attribute as a double floating point (does type checking)
-    double getAttributeAsFloat(const char* AttrName) const;
+    double getAttributeAsFloat(const char* AttrName, const char *def=0) const;
     /// return the named attribute as a double floating point (does type checking)
-    const char* getAttribute(const char* AttrName) const;
+    const char* getAttribute(const char* AttrName, const char *def=0) const;
     //@}
 
     /** @name additional file reading */
     //@{
     /// add a read request of a persistent object
     const char *addFile(const char* Name, Base::Persistence *Object);
+    /// add a read request of a persistent object
+    const char *addFile(const std::string &Name, Base::Persistence *Object) {
+        return addFile(Name.c_str(),Object);
+    }
     /// process the requested file writes
-    void readFiles(zipios::ZipInputStream &zipstream) const;
+    void readFiles();
+
+    struct FileEntry {
+        std::string FileName;
+        Base::Persistence *Object;
+    };
+    const std::vector<FileEntry> &getFileList() const;
+
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
     bool isRegistered(Base::Persistence *Object) const;
@@ -208,15 +271,13 @@ public:
     bool testStatus(ReaderStatus pos) const;
     /// set the status bits
     void setStatus(ReaderStatus pos, bool on);
-    struct FileEntry {
-        std::string FileName;
-        Base::Persistence *Object;
-    };
-    std::vector<FileEntry> FileList;
 
-protected:
     /// read the next element
     bool read();
+
+protected:
+
+    void init(std::size_t bufsize);
 
     // -----------------------------------------------------------------------
     //  Handlers for the SAX ContentHandler interface
@@ -259,11 +320,10 @@ protected:
     void resetErrors();
     //@}
 
-
     int Level;
     std::string LocalName;
     std::string Characters;
-    unsigned int CharacterCount;
+    std::streamsize CharacterOffset;
 
     std::map<std::string,std::string> AttrMap;
     typedef std::map<std::string,std::string> AttrMapType;
@@ -287,26 +347,80 @@ protected:
     bool _valid;
     bool _verbose;
 
+    std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
 
+    std::vector<int*> Guards;
+
     std::bitset<32> StatusBits;
+
+    std::unique_ptr<std::istream> CharStream;
+
+    Base::Reader *_reader;
+    bool _ownReader;
 };
 
 class BaseExport Reader : public std::istream
 {
 public:
-    Reader(std::istream&, const std::string&, int version);
-    std::istream& getStream();
-    std::string getFileName() const;
+    Reader(std::istream&, const std::string&, XMLReader *parent=0);
+
+    XMLReader *getParent() const;
+    const std::string &getFileName() const;
     int getFileVersion() const;
-    void initLocalReader(std::shared_ptr<Base::XMLReader>);
-    std::shared_ptr<Base::XMLReader> getLocalReader() const;
+    int getDocumentSchema() const;
+
+    friend class XMLReader;
+
+protected:
+    Reader(const std::string&, XMLReader *parent=0);
+
+    typedef XMLReader::FileEntry FileEntry;
+    virtual void readFiles(XMLReader &) {};
 
 private:
-    std::istream& _str;
     std::string _name;
-    int fileVersion;
-    std::shared_ptr<Base::XMLReader> localreader;
+    XMLReader *_parent;
+};
+
+class BaseExport ZipReader : public Base::Reader
+{
+public:
+    ZipReader(zipios::ZipInputStream &, const std::string&, XMLReader *parent=0);
+
+protected:
+    virtual void readFiles(XMLReader &reader);
+
+    zipios::ZipInputStream &_stream;
+};
+
+class BaseExport FileReader : public Base::Reader
+{
+public:
+    FileReader(const Base::FileInfo &fi, const std::string &name = std::string(), XMLReader *parent=0);
+
+protected:
+    virtual void readFiles(XMLReader &reader);
+
+    std::string _dir;
+    Base::ifstream _stream;
+};
+
+
+/// Helper class for providing diagnoistic information in the process if xml parsing
+class BaseExport ReaderContext {
+private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
+    void init(const char *name);
+
+public:
+    ReaderContext(const char *name);
+    ReaderContext(const std::string &name);
+    ~ReaderContext();
+
+private:
+    std::size_t size;
 };
 
 }

@@ -201,6 +201,8 @@ public:
     //@{
     /// set a string value
     void  SetASCII(const char* Name, const char *sValue);
+    /// set a string value
+    void  SetASCII(const char* Name, const std::string &sValue) { SetASCII(Name, sValue.c_str()); }
     /// read a string values
     std::string GetASCII(const char* Name, const char * pPreset=nullptr) const;
     /// remove a string value from this group

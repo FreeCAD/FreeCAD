@@ -22,11 +22,17 @@
    3. This notice may not be removed or altered from any source distribution.
 
    René Nyffenegger rene.nyffenegger@adp-gmbh.ch
-*/
 
+
+   Copyright (C) 2019 Zheng Lei (realthunder.dev@gmail.com)
+
+   * Added support of in-line transformation using boost iostream for memory
+     efficiency
+*/
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <iostream>
 # include <string>
 #endif
 
@@ -39,12 +45,31 @@ static const std::string base64_chars =
              "0123456789+/";
 
 
-static inline bool is_base64(unsigned char c) {
-  return (isalnum(c) || (c == '+') || (c == '/'));
+const signed char *Base::base64_decode_table() {
+    static const signed char _table[] = {
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -2, -2, -2, -1, -2, -1, -1, //   0-15
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, //  16-31
+        -2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, //  32-47
+        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -2, -1, -1, //  48-63
+        -1,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, //  64-79
+        15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, //  80-95
+        -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, //  96-111
+        41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1, // 112-127
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 128-143
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 144-159
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 160-175
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 176-191
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 192-207
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 208-223
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 224-239
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1  // 240-255
+    };
+    return _table;
 }
 
-std::string Base::base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
-  std::string ret;
+std::size_t Base::base64_encode(char *out, void const* in, std::size_t in_len) {
+  char *ret = out;
+  unsigned char const *bytes_to_encode = reinterpret_cast<unsigned char const*>(in);
   int i = 0;
   int j = 0;
   unsigned char char_array_3[3];
@@ -59,7 +84,7 @@ std::string Base::base64_encode(unsigned char const* bytes_to_encode, unsigned i
       char_array_4[3] = char_array_3[2] & 0x3f;
 
       for(i = 0; (i <4) ; i++)
-        ret += base64_chars[char_array_4[i]];
+        *ret++ = base64_chars[char_array_4[i]];
       i = 0;
     }
   }
@@ -75,37 +100,41 @@ std::string Base::base64_encode(unsigned char const* bytes_to_encode, unsigned i
     char_array_4[3] = char_array_3[2] & 0x3f;
 
     for (j = 0; (j < i + 1); j++)
-      ret += base64_chars[char_array_4[j]];
+      *ret++ = base64_chars[char_array_4[j]];
 
     while((i++ < 3))
-      ret += '=';
+      *ret++ = '=';
 
   }
 
-  return ret;
-
+  return ret-out;
 }
 
-std::string Base::base64_decode(std::string const& encoded_string) {
-  int in_len = encoded_string.size();
+std::pair<std::size_t, std::size_t> Base::base64_decode(
+        void *_out, char const *in, std::size_t in_len) 
+{
+  unsigned char *out = reinterpret_cast<unsigned char*>(_out);
+  unsigned char *ret = out;
+  char const *input = in;
   int i = 0;
   int j = 0;
-  int in_ = 0;
   unsigned char char_array_4[4], char_array_3[3];
-  std::string ret;
 
-  while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
-    char_array_4[i++] = encoded_string[in_]; in_++;
+  static const signed char *table = base64_decode_table();
+
+  while (in_len-- && *in != '=') {
+    const signed char v = table[(int)(*in++)];
+    if(v < 0)
+        break;
+
+    char_array_4[i++] = (unsigned char)v;
     if (i ==4) {
-      for (i = 0; i <4; i++)
-        char_array_4[i] = base64_chars.find(char_array_4[i]);
-
       char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
       char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
       char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
       for (i = 0; (i < 3); i++)
-        ret += char_array_3[i];
+        *ret++ = char_array_3[i];
       i = 0;
     }
   }
@@ -114,15 +143,13 @@ std::string Base::base64_decode(std::string const& encoded_string) {
     for (j = i; j <4; j++)
       char_array_4[j] = 0;
 
-    for (j = 0; j <4; j++)
-      char_array_4[j] = base64_chars.find(char_array_4[j]);
-
     char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
     char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
     char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-    for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
+    for (j = 0; (j < i - 1); j++) *ret++ = char_array_3[j];
   }
 
-  return ret;
+  return std::make_pair((std::size_t)(ret-out), (std::size_t)(in-input));
 }
+

@@ -124,13 +124,14 @@ void Persistence::dumpToStream(std::ostream& stream, int compression)
 void Persistence::restoreFromStream(std::istream& stream)
 {
     zipios::ZipInputStream zipstream(stream);
-    Base::XMLReader reader("", zipstream);
+    Base::ZipReader zreader(zipstream,std::string("<stream>"));
+    Base::XMLReader reader(zreader);
 
     if (!reader.isValid())
         throw Base::ValueError("Unable to construct reader");
 
     reader.readElement("Content");
     Restore(reader);
-    reader.readFiles(zipstream);
+    reader.readFiles();
     restoreFinished();
 }

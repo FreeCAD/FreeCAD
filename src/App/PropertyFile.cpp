@@ -354,19 +354,17 @@ void PropertyFileIncluded::Save (Base::Writer &writer) const
             _cValue = fi.filePath();
     }
 
-    if (writer.isForceXML()) {
+    if (writer.isForceXML()>3) {
         if (!_cValue.empty()) {
             Base::FileInfo file(_cValue.c_str());
             writer.Stream() << writer.ind() << "<FileIncluded data=\""
-                            << file.fileName() << "\">" << std::endl;
+                            << encodeAttribute(file.fileName()) << "\">\n";
             // write the file in the XML stream
-            writer.incInd();
             writer.insertBinFile(_cValue.c_str());
-            writer.decInd();
-            writer.Stream() << writer.ind() <<"</FileIncluded>" << endl;
+            writer.Stream() << writer.ind() <<"</FileIncluded>\n";
         }
         else {
-            writer.Stream() << writer.ind() << "<FileIncluded data=\"\"/>" << std::endl;
+            writer.Stream() << writer.ind() << "<FileIncluded data=\"\"/>\n";
         }
     }
     else {
@@ -406,7 +404,7 @@ void PropertyFileIncluded::Restore(Base::XMLReader &reader)
             // is in the document transient path
             aboutToSetValue();
             _cValue = getDocTransientPath() + "/" + file;
-            reader.readBinFile(_cValue.c_str());
+            reader.readCharacters(_cValue.c_str(),true);
             reader.readEndElement("FileIncluded");
             _BaseFileName = file;
             // set read-only after restoring the file
@@ -427,12 +425,7 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
         throw Base::FileSystemError(str.str());
     }
 
-    // copy plain data
-    unsigned char c;
-    std::ostream& to = writer.Stream();
-    while (from.get((char&)c)) {
-        to.put((char)c);
-    }
+    writer.Stream() << from.rdbuf();
 }
 
 void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
@@ -443,7 +436,7 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
         // same file of another object (e.g. for copy&paste of objects inside the same document).
         return;
     }
-    Base::ofstream to(fi, std::ios::out | std::ios::binary);
+    Base::ofstream to(fi, std::ios::out | std::ios::binary | std::ios::trunc);
     if (!to) {
         std::stringstream str;
         str << "PropertyFileIncluded::RestoreDocFile(): "
@@ -453,10 +446,8 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 
     // copy plain data
     aboutToSetValue();
-    unsigned char c;
-    while (reader.get((char&)c)) {
-        to.put((char)c);
-    }
+
+    reader >> to.rdbuf();
     to.close();
 
     // set read-only after restoring the file

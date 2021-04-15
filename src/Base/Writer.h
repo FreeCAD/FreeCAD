@@ -25,10 +25,12 @@
 
 
 #include <set>
+#include <unordered_set>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <cassert>
+#include <memory>
 
 #ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
@@ -58,25 +60,44 @@ class BaseExport Writer
 {
 
 public:
-    Writer();
+    Writer(short indent_size=2);
     virtual ~Writer();
 
     /// switch the writer in XML only mode (no files allowed)
-    void setForceXML(bool on);
+    void setForceXML(int on);
     /// check on state
-    bool isForceXML();
+    int isForceXML();
+
+    /// split xml among each object
+    void setSplitXML(bool on);
+    /// check whether to split xml among each object
+    bool isSplitXML();
+
+    /// set preference of binary output
+    void setPreferBinary(bool on);
+    bool isPreferBinary() const;
+
     void setFileVersion(int);
     int getFileVersion() const;
+
+    /// put the next entry with a give name
+    virtual void putNextEntry(const char *filename, const char *objName=0);
 
     /// insert a file as CDATA section in the XML file
     void insertAsciiFile(const char* FileName);
     /// insert a binary file BASE64 coded as CDATA section in the XML file
-    void insertBinFile(const char* FileName);
+    void insertBinFile(const char* FileName, unsigned base64_line_size=80);
+    /// insert text string as CDATA 
+    void insertText(const std::string &s);
 
     /** @name additional file writing */
     //@{
     /// add a write request of a persistent object
-    std::string addFile(const char* Name, const Base::Persistence *Object);
+    const std::string &addFile(const char* Name, const Base::Persistence *Object);
+    /// add a write request of a persistent object
+    const std::string &addFile(const std::string &Name, const Base::Persistence *Object) {
+        return addFile(Name.c_str(),Object);
+    }
     /// process the requested file storing
     virtual void writeFiles()=0;
     /// get all registered file names
@@ -94,6 +115,11 @@ public:
     /// Clear modes
     void clearModes();
     //@}
+
+    /// Obtain the current file name
+    const char *getCurrentFileName() const {
+        return ObjectName.c_str();
+    }
 
     /** @name Error handling */
     //@{
@@ -115,8 +141,24 @@ public:
 
     virtual std::ostream &Stream()=0;
 
-    /// name for underlying file saves
-    std::string ObjectName;
+    /** Create an output stream for storing character content
+     * @param base64: If true, the input will be base64 encoded before storing.
+     *                If false, the input is assumed to be valid character with
+     *                the current XML encoding, and will be enclosed inside
+     *                CDATA section.  The stream will scan the input and
+     *                properly escape any CDATA ending inside.
+     * @param line_size: specifies the line size of the base64 output
+     * @return Returns an output stream.
+     *
+     * You must call endCharStream() to end the current character stream.
+     */
+    std::ostream &beginCharStream(bool base64, unsigned line_size=80);
+    /** End the current character output stream
+     * @return Returns the normal writer stream for convenience
+     */
+    std::ostream &endCharStream();
+    /// Return the current character output stream
+    std::ostream &charStream();
 
 protected:
     std::string getUniqueFileName(const char *Name);
@@ -126,18 +168,28 @@ protected:
     };
     std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
+    std::unordered_set<std::string> FileNameSet;
     std::vector<std::string> Errors;
     std::set<std::string> Modes;
 
-    short indent;
-    char indBuf[1024];
+    int indent;
+    short indent_size;
+    char indBuf[65];
 
-    bool forceXML;
+    int forceXML;
+    bool splitXML;
+    bool preferBinary;
+
     int fileVersion;
 
 private:
     Writer(const Writer&);
     Writer& operator=(const Writer&);
+
+private:
+    std::string ObjectName;
+    std::unique_ptr<std::ostream> CharStream;
+    bool CharBase64 = false;
 };
 
 
@@ -160,7 +212,7 @@ public:
 
     void setComment(const char* str){ZipStream.setComment(str);}
     void setLevel(int level){ZipStream.setLevel( level );}
-    void putNextEntry(const char* str){ZipStream.putNextEntry(str);}
+    virtual void putNextEntry(const char *filename, const char *objName=0);
 
 private:
     zipios::ZipOutputStream ZipStream;
@@ -176,12 +228,15 @@ class BaseExport StringWriter : public Writer
 {
 
 public:
+    StringWriter();
+
     virtual std::ostream &Stream(){return StrStream;}
     std::string getString() const {return StrStream.str();}
-    virtual void writeFiles(){}
+    virtual void writeFiles();
+    void clear() { StrStream.str(""); }
 
 private:
-    std::stringstream StrStream;
+    std::ostringstream StrStream;
 };
 
 /*! The FileWriter class
@@ -195,7 +250,7 @@ public:
     FileWriter(const char* DirName);
     virtual ~FileWriter();
 
-    void putNextEntry(const char* file);
+    virtual void putNextEntry(const char *filename, const char *objName=nullptr);
     virtual void writeFiles();
 
     virtual std::ostream &Stream(){return FileStream;}

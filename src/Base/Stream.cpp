@@ -28,13 +28,13 @@
 # include <QByteArray>
 # include <QIODevice>
 # include <cstring>
-#ifdef __GNUC__
-# include <cstdint>
+# ifdef __GNUC__
+#  include <cstdint>
+# endif
+# include <climits>
 #endif
-#endif
-
+#include <iomanip>
 #include "Stream.h"
-#include "Swap.h"
 #include <CXX/Objects.hxx>
 
 
@@ -58,170 +58,114 @@ void Stream::setByteOrder(ByteOrder bo)
     _swap = (bo == BigEndian);
 }
 
-OutputStream::OutputStream(std::ostream &rout) : _out(rout)
+OutputStream::OutputStream(std::ostream &rout, bool binary)
+    : _out(rout), _binary(binary)
 {
+    if(!_binary)
+        _out << std::setprecision(std::numeric_limits<double>::max_digits10);
 }
 
-OutputStream::~OutputStream()
-{
-}
+OutputStream& OutputStream::operator << (const char *s) {
+    if(_binary) {
+        uint32_t len = s?std::strlen(s):0;
+        (*this) << len;
+        _out.write(s,len);
+        return *this;
+    }
 
-OutputStream& OutputStream::operator << (bool b)
-{
-    _out.write((const char*)&b, sizeof(bool));
+    // for text mode, we count the line so that we can deal with potential eol
+    // conversion by external software.
+    uint32_t count=0;
+    for(const char *c=s;*c;++c) {
+        if(*c == '\n')
+            ++count;
+    }
+    // Stores the line count followed by a colon as the dimilter. We don't use
+    // whitespace because the input stream may also start with whitespace.
+    _out << count << ':';
+
+    // Stores the text, and normalize the end of line to a single '\n'.
+    for(char c=*s++; c; c=*s++) {
+        if(c == '\r') {
+            c = *s++;
+            if(!c)
+                break;
+            if(c!='\n') {
+                // We allow '\r' if it is not at the end of a line
+                _out.put('\r');
+            }
+        }
+        _out.put(c);
+    }
+
+    // Add an extra newline as the delimiter for the following data.
+    _out.put('\n');
     return *this;
 }
 
-OutputStream& OutputStream::operator << (int8_t ch)
+// --------------------------------------------------------
+
+InputStream::InputStream(std::istream &rin, bool binary)
+    : _in(rin), _binary(binary)
 {
-    _out.write((const char*)&ch, sizeof(int8_t));
+}
+
+InputStream& InputStream::operator >> (std::string &s) {
+    if(_binary) {
+        uint32_t len;
+        (*this) >> len;
+        s.resize(len);
+        _in.read(&s[0],len);
+        return *this;
+    }
+
+    uint32_t count;
+    char c;
+    // The count is followed by a colon as the delimiter. The string is allowed
+    // to start with any character.
+    _in >> count >> c;
+
+    _ss.str("");
+    for(uint32_t i=0; i<count && _in ;++i) {
+        for(;;) {
+            if(!_in.get(c))
+                break;
+            // Normalize \r\n to \n
+            if(c == '\r') {
+                if(!_in.get(c))
+                    break;
+                if(c == '\n')
+                    break;
+                _ss.put('\r');
+                _ss.put(c);
+            } else {
+                _ss.put(c);
+                if(c == '\n')
+                    break;
+            }
+        }
+    }
+
+    // Reading the last line
+    while(_in.get(c)) {
+        // Normalize \r\n to \n, but DO NOT insert '\n' into the extracted
+        // line, because the last '\n' is inserted by us (See OutputStream
+        // operator>>(const char*) above)
+        if(c == '\r') {
+            if(!_in.get(c))
+                break;
+            if(c == '\n')
+                break;
+            _ss.put('\r');
+        } else if(c == '\n')
+            break;
+
+        _ss.put(c);
+    }
+
+    s = _ss.str();
     return *this;
 }
-
-OutputStream& OutputStream::operator << (uint8_t uch)
-{
-    _out.write((const char*)&uch, sizeof(uint8_t));
-    return *this;
-}
-
-OutputStream& OutputStream::operator << (int16_t s)
-{
-    if (_swap) SwapEndian<int16_t>(s);
-    _out.write((const char*)&s, sizeof(int16_t));
-    return *this;
-}
-
-OutputStream& OutputStream::operator << (uint16_t us)
-{
-    if (_swap) SwapEndian<uint16_t>(us);
-    _out.write((const char*)&us, sizeof(uint16_t));
-    return *this;
-}
-
-OutputStream& OutputStream::operator << (int32_t i)
-{
-    if (_swap) SwapEndian<int32_t>(i);
-    _out.write((const char*)&i, sizeof(int32_t));
-    return *this;
-}
-
-OutputStream& OutputStream::operator << (uint32_t ui)
-{
-    if (_swap) SwapEndian<uint32_t>(ui);
-    _out.write((const char*)&ui, sizeof(uint32_t));
-    return *this;
-}
-
-OutputStream& OutputStream::operator << (int64_t l)
-{
-    if (_swap) SwapEndian<int64_t>(l);
-    _out.write((const char*)&l, sizeof(int64_t));
-    return *this;
-}
-
-OutputStream& OutputStream::operator << (uint64_t ul)
-{
-    if (_swap) SwapEndian<uint64_t>(ul);
-    _out.write((const char*)&ul, sizeof(uint64_t));
-    return *this;
-}
-
-OutputStream& OutputStream::operator << (float f)
-{
-    if (_swap) SwapEndian<float>(f);
-    _out.write((const char*)&f, sizeof(float));
-    return *this;
-}
-
-OutputStream& OutputStream::operator << (double d)
-{
-    if (_swap) SwapEndian<double>(d);
-    _out.write((const char*)&d, sizeof(double));
-    return *this;
-}
-
-InputStream::InputStream(std::istream &rin) : _in(rin)
-{
-}
-
-InputStream::~InputStream()
-{
-}
-
-InputStream& InputStream::operator >> (bool& b)
-{
-    _in.read((char*)&b, sizeof(bool));
-    return *this;
-}
-
-InputStream& InputStream::operator >> (int8_t& ch)
-{
-    _in.read((char*)&ch, sizeof(int8_t));
-    return *this;
-}
-
-InputStream& InputStream::operator >> (uint8_t& uch)
-{
-    _in.read((char*)&uch, sizeof(uint8_t));
-    return *this;
-}
-
-InputStream& InputStream::operator >> (int16_t& s)
-{
-    _in.read((char*)&s, sizeof(int16_t));
-    if (_swap) SwapEndian<int16_t>(s);
-    return *this;
-}
-
-InputStream& InputStream::operator >> (uint16_t& us)
-{
-    _in.read((char*)&us, sizeof(uint16_t));
-    if (_swap) SwapEndian<uint16_t>(us);
-    return *this;
-}
-
-InputStream& InputStream::operator >> (int32_t& i)
-{
-    _in.read((char*)&i, sizeof(int32_t));
-    if (_swap) SwapEndian<int32_t>(i);
-    return *this;
-}
-
-InputStream& InputStream::operator >> (uint32_t& ui)
-{
-    _in.read((char*)&ui, sizeof(uint32_t));
-    if (_swap) SwapEndian<uint32_t>(ui);
-    return *this;
-}
-
-InputStream& InputStream::operator >> (int64_t& l)
-{
-    _in.read((char*)&l, sizeof(int64_t));
-    if (_swap) SwapEndian<int64_t>(l);
-    return *this;
-}
-
-InputStream& InputStream::operator >> (uint64_t& ul)
-{
-    _in.read((char*)&ul, sizeof(uint64_t));
-    if (_swap) SwapEndian<uint64_t>(ul);
-    return *this;
-}
-
-InputStream& InputStream::operator >> (float& f)
-{
-    _in.read((char*)&f, sizeof(float));
-    if (_swap) SwapEndian<float>(f);
-    return *this;
-}
-
-InputStream& InputStream::operator >> (double& d)
-{
-    _in.read((char*)&d, sizeof(double));
-    if (_swap) SwapEndian<double>(d);
-    return *this;
-}
-
 // ----------------------------------------------------------------------
 
 ByteArrayOStreambuf::ByteArrayOStreambuf(QByteArray& ba) : _buffer(new QBuffer(&ba))

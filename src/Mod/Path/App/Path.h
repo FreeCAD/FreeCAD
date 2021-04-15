@@ -75,9 +75,12 @@ namespace Path
             const Base::Vector3d& getCenter() const { return center; }
             void setCenter(const Base::Vector3d &c);
 
+            void setFileName(const char *name) const;
+
             static const int SchemaVersion = 2;
 
         protected:
+            mutable std::string filename;
             std::vector<Command*> vpcCommands;
             Base::Vector3d center;
             //KDL::Path_Composite *pcPath;

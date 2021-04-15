@@ -29,9 +29,12 @@
 #endif
 
 #include <fstream>
+#include <ios>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
+#include "Swap.h"
 #include "FileInfo.h"
 
 
@@ -66,20 +69,121 @@ protected:
 class BaseExport OutputStream : public Stream
 {
 public:
-    OutputStream(std::ostream &rout);
-    ~OutputStream();
+    /** Constructor
+     * @param rout: output downstream
+     * @param binary: whether to output as text or not
+     */
+    OutputStream(std::ostream &rout, bool binary=true);
 
-    OutputStream& operator << (bool b);
-    OutputStream& operator << (int8_t ch);
-    OutputStream& operator << (uint8_t uch);
-    OutputStream& operator << (int16_t s);
-    OutputStream& operator << (uint16_t us);
-    OutputStream& operator << (int32_t i);
-    OutputStream& operator << (uint32_t ui);
-    OutputStream& operator << (int64_t l);
-    OutputStream& operator << (uint64_t ul);
-    OutputStream& operator << (float f);
-    OutputStream& operator << (double d);
+    OutputStream& operator << (bool b) {
+        if(_binary)
+            _out.write((const char*)&b, sizeof(bool));
+        else
+            _out << b << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (int8_t ch) {
+        if(_binary)
+            _out.write((const char*)&ch, sizeof(int8_t));
+        else 
+            _out << ch << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (uint8_t uch) {
+        if(_binary)
+            _out.write((const char*)&uch, sizeof(uint8_t));
+        else
+            _out << uch << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (int16_t s) {
+        if(_binary) {
+            if (_swap) SwapEndian<int16_t>(s);
+            _out.write((const char*)&s, sizeof(int16_t));
+        }else 
+            _out << s << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (uint16_t us) {
+        if(_binary) {
+            if (_swap) SwapEndian<uint16_t>(us);
+            _out.write((const char*)&us, sizeof(uint16_t));
+        }else 
+            _out << us << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (int32_t i) {
+        if(_binary) {
+            if (_swap) SwapEndian<int32_t>(i);
+            _out.write((const char*)&i, sizeof(int32_t));
+        }else 
+            _out << i << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (uint32_t ui) {
+        if(_binary) {
+            if (_swap) SwapEndian<uint32_t>(ui);
+            _out.write((const char*)&ui, sizeof(uint32_t));
+        }else 
+            _out << ui << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (int64_t l) {
+        if(_binary) {
+            if (_swap) SwapEndian<int64_t>(l);
+            _out.write((const char*)&l, sizeof(int64_t));
+        }else 
+            _out << l << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (uint64_t ul) {
+        if(_binary) {
+            if (_swap) SwapEndian<uint64_t>(ul);
+            _out.write((const char*)&ul, sizeof(uint64_t));
+        }else 
+            _out << ul << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (float f) {
+        if(_binary) {
+            if (_swap) SwapEndian<float>(f);
+            _out.write((const char*)&f, sizeof(float));
+        }else 
+            _out << f << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (double d) {
+        if(_binary) {
+            if (_swap) SwapEndian<double>(d);
+            _out.write((const char*)&d, sizeof(double));
+        }else 
+            _out << d << '\n';
+        return *this;
+    }
+
+    OutputStream& operator << (const char *s);
+
+    OutputStream& operator << (const std::string &s) {
+        return (*this) << s.c_str();
+    }
+
+    OutputStream& operator << (char c) {
+        _out.put(c);
+        return *this;
+    }
+
+
+    bool isBinary() const {return _binary;}
 
 private:
     OutputStream (const OutputStream&);
@@ -87,6 +191,7 @@ private:
 
 private:
     std::ostream& _out;
+    bool _binary;
 };
 
 /**
@@ -96,20 +201,120 @@ private:
 class BaseExport InputStream : public Stream
 {
 public:
-    InputStream(std::istream &rin);
-    ~InputStream();
+    /** Constructor
+     * @param rin: upstream input
+     * @param binary: whether read the stream as text or not
+     */
+    InputStream(std::istream &rin, bool binary=true);
 
-    InputStream& operator >> (bool& b);
-    InputStream& operator >> (int8_t& ch);
-    InputStream& operator >> (uint8_t& uch);
-    InputStream& operator >> (int16_t& s);
-    InputStream& operator >> (uint16_t& us);
-    InputStream& operator >> (int32_t& i);
-    InputStream& operator >> (uint32_t& ui);
-    InputStream& operator >> (int64_t& l);
-    InputStream& operator >> (uint64_t& ul);
-    InputStream& operator >> (float& f);
-    InputStream& operator >> (double& d);
+    InputStream& operator >> (bool& b) {
+        if(_binary)
+            _in.read((char*)&b, sizeof(bool));
+        else
+            _in >> b;
+        return *this;
+    }
+
+    InputStream& operator >> (int8_t& ch) {
+        if(_binary)
+            _in.read((char*)&ch, sizeof(int8_t));
+        else {
+            int i;
+            _in >> i;
+            ch = (int8_t)i;
+        }
+        return *this;
+    }
+
+    InputStream& operator >> (uint8_t& uch) {
+        if(_binary)
+            _in.read((char*)&uch, sizeof(uint8_t));
+        else {
+            unsigned u;
+            _in >> u;
+            uch = (uint8_t)u;
+        }
+        return *this;
+    }
+
+    InputStream& operator >> (int16_t& s) {
+        if(_binary) {
+            _in.read((char*)&s, sizeof(int16_t));
+            if (_swap) SwapEndian<int16_t>(s);
+        } else 
+            _in >> s;
+        return *this;
+    }
+
+    InputStream& operator >> (uint16_t& us) {
+        if(_binary) {
+            _in.read((char*)&us, sizeof(uint16_t));
+            if (_swap) SwapEndian<uint16_t>(us);
+        } else 
+            _in >> us;
+        return *this;
+    }
+
+    InputStream& operator >> (int32_t& i) {
+        if(_binary) {
+            _in.read((char*)&i, sizeof(int32_t));
+            if (_swap) SwapEndian<int32_t>(i);
+        } else 
+            _in >> i;
+        return *this;
+    }
+
+    InputStream& operator >> (uint32_t& ui) {
+        if(_binary) {
+            _in.read((char*)&ui, sizeof(uint32_t));
+            if (_swap) SwapEndian<uint32_t>(ui);
+        } else 
+            _in >> ui;
+        return *this;
+    }
+
+    InputStream& operator >> (int64_t& l) {
+        if(_binary) {
+            _in.read((char*)&l, sizeof(int64_t));
+            if (_swap) SwapEndian<int64_t>(l);
+        } else 
+            _in >> l;
+        return *this;
+    }
+
+    InputStream& operator >> (uint64_t& ul) {
+        if(_binary) {
+            _in.read((char*)&ul, sizeof(uint64_t));
+            if (_swap) SwapEndian<uint64_t>(ul);
+        } else 
+            _in >> ul;
+        return *this;
+    }
+
+    InputStream& operator >> (float& f) {
+        if(_binary) {
+            _in.read((char*)&f, sizeof(float));
+            if (_swap) SwapEndian<float>(f);
+        } else 
+            _in >> f;
+        return *this;
+    }
+
+    InputStream& operator >> (double& d) {
+        if(_binary) {
+            _in.read((char*)&d, sizeof(double));
+            if (_swap) SwapEndian<double>(d);
+        } else 
+            _in >> d;
+        return *this;
+    }
+
+    InputStream& operator >> (std::string &s);
+
+    InputStream& operator >> (char &c) {
+        c = (char)_in.get();
+        return *this;
+    }
 
     operator bool() const
     {
@@ -117,12 +322,16 @@ public:
         return !_in.eof();
     }
 
+    bool isBinary() const {return _binary;}
+
 private:
     InputStream (const InputStream&);
     void operator = (const InputStream&);
 
 private:
     std::istream& _in;
+    std::ostringstream _ss;
+    bool _binary;
 };
 
 // ----------------------------------------------------------------------------
@@ -339,6 +548,9 @@ class FileInfo;
 class ofstream : public std::ofstream
 {
 public:
+    ofstream()
+    {}
+
     ofstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::out | std::ios::trunc)
 #ifdef _MSC_VER
@@ -348,6 +560,17 @@ public:
 #endif
     {
     }
+
+    void open(const FileInfo &fi, ios_base::openmode mode =
+                                 std::ios::out | std::ios::trunc)
+    {
+#ifdef _MSC_VER
+        std::ofstream::open(fi.toStdWString().c_str(), mode);
+#else
+        std::ofstream::open(fi.filePath().c_str(), mode);
+#endif
+    }
+
     virtual ~ofstream()
     {
     }
@@ -362,6 +585,8 @@ public:
 class ifstream : public std::ifstream
 {
 public:
+    ifstream() {}
+
     ifstream(const FileInfo& fi, ios_base::openmode mode =
                                  std::ios::in)
 #ifdef _MSC_VER
@@ -371,6 +596,17 @@ public:
 #endif
     {
     }
+
+    void open(const FileInfo &fi, ios_base::openmode mode =
+                                 std::ios::in)
+    {
+#ifdef _MSC_VER
+        std::ifstream::open(fi.toStdWString().c_str(), mode);
+#else
+        std::ifstream::open(fi.filePath().c_str(), mode);
+#endif
+    }
+
     virtual ~ifstream()
     {
     }
