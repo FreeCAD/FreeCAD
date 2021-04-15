@@ -86,7 +86,7 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         }
         delete ts;
 
-        ShapeHistory history = buildHistory(mkChamfer, TopAbs_FACE, shape, baseShape);
+        ShapeHistory history(mkChamfer, TopAbs_FACE, shape, baseShape);
         this->Shape.setValue(shape);
 
         // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
