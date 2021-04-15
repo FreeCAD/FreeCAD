@@ -9,6 +9,7 @@
       Namespace="Part"
       FatherInclude="App/ComplexGeoDataPy.h"
       FatherNamespace="Data"
+ 	  RichCompare="true"
       Constructor="true">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
@@ -509,6 +510,11 @@ Returns: result of offsetting (wire or face or compound of those). Compounding
 structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeEvolved" Const="true" Keyword="true">
+        <Documentation>
+            <UserDocu>Profile along the spine</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="makeWires" Const="true">
       <Documentation>
         <UserDocu>make wire(s) using the edges of this shape
@@ -622,7 +628,7 @@ isInfinite() -> bool
     <Methode Name="findPlane" Const="true">
       <Documentation>
           <UserDocu>return a plane if the shape is planar
-findPlane(tol=None) -> Shape
+findPlane(tol=None) -> Plane
           </UserDocu>
       </Documentation>
     </Methode>
@@ -802,19 +808,54 @@ infos contains additional info on the solutions. It is a list of tuples:
     params1, params2 are parameters of internal space of the elements. For
     vertices, params is None. For edges, params is one float, u. For faces,
     params is a tuple (u,v). </UserDocu>
-      </Documentation>
-    </Methode>
+	  </Documentation>
+	</Methode>
     <Methode Name="getElement" Const="true">
       <Documentation>
-        <UserDocu>Returns a SubElement
-getElement(elementName) -> Face | Edge | Vertex
-        </UserDocu>
+        <UserDocu>Returns a SubElement</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="countElement" Const="true">
       <Documentation>
-        <UserDocu>Returns the count of a type of element
-countElement(type) -> int
+        <UserDocu>Returns the count of a type of element</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="mapSubElement">
+      <Documentation>
+        <UserDocu>
+mapSubElement(shape|[shape...], op='') - maps the sub element of other shape
+
+shape:  other shape or sequence of shapes to map the sub-elements
+op:     optional string prefix to append before the mapped sub element names
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="mapShapes">
+      <Documentation>
+        <UserDocu>
+mapShapes(generated, modified, op='')
+
+generate element names with user defined mapping
+
+generated: a list of tuple(src, dst) that indicating src shape or shapes
+           generates dst shape or shapes. Note that the dst shape or shapes 
+           must be sub-shapes of this shape.
+modified: a list of tuple(src, dst) that indicating src shape or shapes
+          modifies into dst shape or shapes. Note that the dst shape or
+          shapes must be sub-shapes of this shape.
+op: optional string prefix to append before the mapped sub element names
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getElementHistory" Const="true">
+      <Documentation>
+        <UserDocu>
+getElementHistory(name) - returns the element mapped name history
+
+name: mapped element name belonging to this shape
+
+Returns tuple(sourceShapeTag, sourceName, [intermediateNames...]),
+or None if no history.
         </UserDocu>
       </Documentation>
     </Methode>
@@ -900,8 +941,68 @@ Returns True if at least one tolerance of the sub-shape has been modified
     <Methode Name="optimalBoundingBox" Const="true">
       <Documentation>
         <UserDocu>Get the optimal bounding box
+
 optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
         </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearCache" Const="true">
+      <Documentation>
+        <UserDocu>Clear internal sub-shape cache</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="findSubShape" Const="true">
+      <Documentation>
+          <UserDocu>
+findSubShape(shape) -> (type_name, index)
+
+Find sub shape and return the shape type name and index. If not found,
+then return (None, 0)
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="searchSubShape" Const="true" Keyword="true">
+      <Documentation>
+          <UserDocu>
+searchSubShape(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape
+
+shape: input elementary shape, currently only support Face, Edge, or Vertex
+
+needName: if True, return a list of tuple(name, shape), or else return a list
+          of shapes.
+
+checkGeometry: whether to compare geometry
+
+tol: distance tolerance
+
+atol: angular tolerance
+
+Search sub shape by checking vertex coordinates and comparing the underlying
+geometries, This can find shapes that are copied. It currently only works with
+elementary shapes, Face, Edge, Vertex.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getChildShapes" Const="true">
+      <Documentation>
+          <UserDocu>
+getChildShapes(shapetype, avoidtype='') -> list(Shape)
+
+Return a list of child sub-shapes of given type.
+
+shapetype: the type of requesting sub shapes
+avoidtype: optional shape type to skip when exploring
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isLinearEdge" Const="true">
+      <Documentation>
+          <UserDocu>Check if the shape is a linear edge</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPlanarFace" Const="true">
+      <Documentation>
+          <UserDocu>isPlanarFace(tol=1e-7) -- Check if the shape is a planar face</UserDocu>
       </Documentation>
     </Methode>
     <!--

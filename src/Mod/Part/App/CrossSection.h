@@ -26,7 +26,9 @@
 
 #include <Mod/Part/PartGlobal.h>
 #include <list>
+#include <vector>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include "TopoShape.h"
 
 class TopoDS_Shape;
 class TopoDS_Wire;
@@ -48,6 +50,23 @@ private:
 private:
     double a,b,c;
     const TopoDS_Shape& s;
+};
+
+class PartExport TopoCrossSection
+{
+public:
+    TopoCrossSection(double a, double b, double c, const TopoShape& s, const char *op=0);
+    void slice(int idx, double d, std::vector<TopoShape> &wires) const;
+    TopoShape slice(int idx, double d) const;
+
+private:
+    void sliceNonSolid(int idx, double d, const TopoShape&, std::vector<TopoShape>& wires) const;
+    void sliceSolid(int idx, double d, const TopoShape&, std::vector<TopoShape>& wires) const;
+
+private:
+    double a,b,c;
+    const TopoShape& shape;
+    const char *op;
 };
 
 }

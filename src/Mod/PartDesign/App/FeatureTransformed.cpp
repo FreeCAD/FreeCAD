@@ -260,9 +260,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn("Shape of addsub feature is empty");
             gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
             if (!fuseShape.isNull())
-                fuseShape = fuseShape.makeTransform(trsf);
+                fuseShape = fuseShape.makETransform(trsf);
             if (!cutShape.isNull())
-                cutShape = cutShape.makeTransform(trsf);
+                cutShape = cutShape.makETransform(trsf);
         }
         else {
             return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");

@@ -202,10 +202,10 @@ public:
     const TopTools_ListOfShape& Modified(const TopoDS_Shape& S);
     Standard_Boolean IsDeleted(const TopoDS_Shape& S);
 
-private:
+protected:
     void LogModifications(const ModelRefine::FaceUniter& uniter);
 
-private:
+protected:
     TopTools_DataMapOfShapeListOfShape myModified;
     TopTools_ListOfShape myEmptyList;
     TopTools_ListOfShape myDeleted;
