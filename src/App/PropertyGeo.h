@@ -541,6 +541,18 @@ public:
     virtual const Data::ComplexGeoData* getComplexData() const = 0;
     virtual Base::BoundBox3d getBoundingBox() const = 0;
     //@}
+
+    /** Return the element map version
+     *
+     * @param persisted: if true, return the restored element map version. Or
+     * else, return the current element map version
+     */
+    virtual std::string getElementMapVersion(bool restored=false) const;
+
+    /// Return true to signal element map version change
+    virtual bool checkElementMapVersion(const char * ver) const;
+
+    virtual void afterRestore();
 };
 
 } // namespace App

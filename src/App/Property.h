@@ -254,6 +254,8 @@ public:
     /// Compare if this property has the same content as the given one
     virtual bool isSame(const Property &other) const;
 
+    virtual void SetRestoreError(const char *) override;
+
     /** Return a unique ID for the property
      *
      * The ID of a property is generated from a monotonically increasing

@@ -242,6 +242,31 @@ public:
 
 // ----------------------------------------------------------------------------
 
+/** Temporary shorten a sub-object path for more efficient traversal */
+class StringGuard {
+public:
+    StringGuard(char *c)
+        :c(c)
+    {
+        v1 = c[0];
+        v2 = c[1];
+        c[0] = '.';
+        c[1] = 0;
+    }
+    ~StringGuard()
+    {
+        c[0] = v1;
+        c[1] = v2;
+    }
+
+    char *c;
+    char v1;
+    char v2;
+};
+
+
+// ----------------------------------------------------------------------------
+
 struct BaseExport Tools
 {
     static std::string getUniqueName(const std::string&, const std::vector<std::string>&,int d=0);

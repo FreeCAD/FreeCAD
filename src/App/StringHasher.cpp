@@ -45,6 +45,7 @@
 #include <App/StringHasher.h>
 #include <App/StringHasherPy.h>
 #include <App/StringIDPy.h>
+#include <App/MappedElement.h>
 #include <App/DocumentParams.h>
 
 FC_LOG_LEVEL_INIT("App",true,true)
@@ -248,6 +249,99 @@ StringIDRef StringHasher::getID(const QByteArray &data, bool binary, bool hashab
 
     StringIDRef sid(new StringID(lastID()+1,d._data,binary,hashed));
     return StringIDRef(insert(sid));
+}
+
+StringIDRef StringHasher::getID(const Data::MappedName &name, 
+                                const QVector<StringIDRef> & sids)
+{
+    StringID d;
+    d._postfix = name.postfixBytes();
+
+    Data::IndexedName indexed;
+    if (!d._postfix.size())
+        indexed = Data::IndexedName(name.dataBytes());
+    if (indexed)
+        d._data = QByteArray::fromRawData(indexed.getType(), strlen(indexed.getType()));
+    else
+        d._data = name.dataBytes();
+
+    auto it = _hashes->left.find(&d);
+    if(it!=_hashes->left.end()) {
+        auto res = StringIDRef(it->first);
+        if (indexed)
+            res._index = indexed.getIndex();
+        return res;
+    }
+
+    if (!indexed && name.isRaw())
+        d._data = QByteArray(name.dataBytes().constData(),
+                             name.dataBytes().size());
+
+    StringIDRef postfixRef;
+    if (d._postfix.size() && d._postfix.indexOf("#") < 0) {
+        postfixRef = getID(d._postfix, false, false);
+        postfixRef.toBytes(d._postfix);
+    }
+
+    StringIDRef indexRef;
+    if (indexed)
+        indexRef = getID(d._data, false, false);
+
+    StringIDRef sid(new StringID(lastID()+1,d._data,false,false));
+    StringID & id = *sid._sid;
+    if (d._postfix.size()) {
+        id._flags.set(StringID::Postfixed);
+        id._postfix = d._postfix;
+    }
+
+    int count = 0;
+    for (auto & s : sids) {
+        if (s && s._sid->_hasher == this)
+            ++count;
+    }
+
+    int extra = (postfixRef ? 1 : 0) + (indexRef ? 1 : 0);
+    if (count == sids.size() && !postfixRef && !indexRef)
+        id._sids = sids;
+    else {
+        id._sids.reserve(count + extra);
+        if (postfixRef) {
+            id._flags.set(StringID::PostfixEncoded);
+            id._sids.push_back(postfixRef);
+        }
+        if (indexRef) {
+            id._flags.set(StringID::Indexed);
+            id._sids.push_back(indexRef);
+        }
+        for (auto &s : sids) {
+            if (s && s._sid->_hasher == this)
+                id._sids.push_back(s);
+        }
+    }
+    if (id._sids.size() > 10) {
+        std::sort(id._sids.begin()+extra, id._sids.end());
+        id._sids.erase(std::unique(id._sids.begin()+extra, id._sids.end()), id._sids.end());
+    }
+
+    if (id._postfix.size() && !indexed) {
+        StringID::IndexID res = StringID::fromString(id._data);
+        if (res.id > 0) {
+            int offset = id.isPostfixEncoded() ? 1 : 0;
+            for (int i=offset; i<id._sids.size();++i) {
+                if (id._sids[i].value() == res.id) {
+                    if (i!=offset)
+                        std::swap(id._sids[offset], id._sids[i]);
+                    if (res.index != 0)
+                        id._flags.set(StringID::PrefixIDIndex);
+                    else
+                        id._flags.set(StringID::PrefixID);
+                    break;
+                }
+            }
+        }
+    }
+
+    return StringIDRef(insert(sid), indexed.getIndex());
 }
 
 StringIDRef StringHasher::getID(long id, int index) const {

@@ -118,6 +118,8 @@ public:
     void operator=(const Property*);
     /*! Equality operator */
     bool operator==(const DocumentObjectT&) const;
+    /*! Less than operator */
+    bool operator<(const DocumentObjectT &other) const;
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
@@ -230,8 +232,10 @@ public:
 
     /** Return the old style sub-element name
      * @param index: if given, then return the element type, and extract the index
+     * @param fallback: if true, then fallback to new style element name if
+     * there is no old style name.
      */
-    std::string getOldElementName(int *index=nullptr) const;
+    std::string getOldElementName(int *index=nullptr, bool fallback=true) const;
 
     /// Return the sub-object
     DocumentObject *getSubObject() const;

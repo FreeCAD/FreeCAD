@@ -26,8 +26,11 @@
 
 #include <list>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
+#include <unordered_set>
+#include <unordered_map>
 #include "Property.h"
 
 namespace Base {
@@ -38,6 +41,8 @@ namespace App
 {
 class DocumentObject;
 class Document;
+class GeoFeature;
+class SubObjectT;
 
 class DocInfo;
 typedef std::shared_ptr<DocInfo> DocInfoPtr;
@@ -254,7 +259,7 @@ public:
 
     /// Helper function to return linked objects using an std::inserter
     template<class T>
-    void getLinkedObjects(T &inserter, bool all=false) const {
+    void getLinkedObjects(T inserter, bool all=false) const {
         std::vector<App::DocumentObject*> ret;
         getLinks(ret,all);
         std::copy(ret.begin(),ret.end(),inserter);
@@ -262,7 +267,7 @@ public:
 
     /// Helper function to return a map of linked object and its subname references
     void getLinkedElements(std::map<App::DocumentObject*, std::vector<std::string> > &elements,
-            bool newStyle=true, bool all=true) const
+            bool newStyle=true, bool all=false) const
     {
         std::vector<App::DocumentObject*> ret;
         std::vector<std::string> subs;
@@ -275,12 +280,14 @@ public:
 
     /// Helper function to return a map of linked object and its subname references
     std::map<App::DocumentObject*, std::vector<std::string> >
-        linkedElements(bool newStyle=true, bool all=true) const
+        linkedElements(bool newStyle=true, bool all=false) const
     {
         std::map<App::DocumentObject*, std::vector<std::string> > ret;
         getLinkedElements(ret,newStyle,all);
         return ret;
     }
+
+    std::vector<App::SubObjectT> linkedElementsT(bool all) const;
     //@}
 
     virtual bool isSame(const Property &other) const override;
@@ -346,6 +353,8 @@ public:
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject *feature, bool reverse=false);
 
+    /// Obtain link properties that contain element references to a given object
+    static const std::unordered_set<PropertyLinkBase*>& getElementReferences(DocumentObject *);
 
     /** Helper function for update individual element reference
      *
@@ -538,12 +547,15 @@ public:
         LinkAllowPartial,
         LinkRestoreLabel,
         LinkSyncSubObject, // used by DlgPropertyLink
+        LinkNewElement, // return new element name in getPyObject
     };
     inline bool testFlag(int flag) const {
         return _Flags.test((std::size_t)flag);
     }
 
     virtual void setAllowPartial(bool enable) { (void)enable; }
+
+    void setReturnNewElement(bool enable);
 
 protected:
     virtual void hasSetValue() override;
@@ -1052,6 +1064,7 @@ class PropertyXLinkSubList;
 class AppExport PropertyXLink : public PropertyLinkGlobal
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    typedef PropertyLinkGlobal inherited;
 
 public:
     PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=nullptr);
@@ -1137,6 +1150,7 @@ public:
 
     virtual void setAllowPartial(bool enable) override;
 
+    virtual std::string getFullName(bool python=false) const override;
     const char *getFilePath() const {
         return filePath.c_str();
     }
@@ -1169,6 +1183,7 @@ protected:
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
     PropertyLinkBase *parentProp;
+    mutable std::string tmpShadow;
 };
 
 
@@ -1198,10 +1213,10 @@ class AppExport PropertyXLinkSubList: public PropertyLinkBase
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
+public:
     typedef typename AtomicPropertyChangeInterface<PropertyXLinkSubList>::AtomicPropertyChange atomic_change;
     friend atomic_change;
 
-public:
     PropertyXLinkSubList();
     virtual ~PropertyXLinkSubList();
 

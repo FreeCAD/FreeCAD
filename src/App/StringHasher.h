@@ -33,6 +33,10 @@
 #include <Base/Handle.h>
 #include <Base/Persistence.h>
 
+namespace Data{
+class MappedName;
+}
+
 namespace App {
 
 class StringHasher;
@@ -425,6 +429,10 @@ public:
 
     /** Map text or binary data to an integer */
     StringIDRef getID(const QByteArray & data, bool binary, bool hashable=true, bool nocopy=false);
+
+    /** Map geometry element name to an integer */
+    StringIDRef getID(const Data::MappedName & name,
+                      const QVector<StringIDRef> & sids);
 
     /** Obtain the reference counted StringID object from numerical id
      *
