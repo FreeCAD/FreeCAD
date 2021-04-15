@@ -127,15 +127,15 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                     throw BooleanException("Intersection failed");
                 resShape = mkCommon.Shape();
 
-                ShapeHistory hist1 = buildHistory(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape1());
-                ShapeHistory hist2 = buildHistory(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape2());
+                ShapeHistory hist1(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape1());
+                ShapeHistory hist2(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape2());
                 if (history.empty()) {
                     history.push_back(hist1);
                     history.push_back(hist2);
                 }
                 else {
                     for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
-                        *jt = joinHistory(*jt, hist1);
+                        jt->join(hist1);
                     history.push_back(hist2);
                 }
             }
@@ -155,9 +155,9 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                     TopoDS_Shape oldShape = resShape;
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);
                     resShape = mkRefine.Shape();
-                    ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, resShape, oldShape);
+                    ShapeHistory hist(mkRefine, TopAbs_FACE, resShape, oldShape);
                     for (std::vector<ShapeHistory>::iterator jt = history.begin(); jt != history.end(); ++jt)
-                        *jt = joinHistory(*jt, hist);
+                        jt->join(hist);
                 }
                 catch (Standard_Failure&) {
                     // do nothing
