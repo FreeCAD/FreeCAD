@@ -221,6 +221,8 @@ SET(Features_SRCS
     AttachExtension.cpp
     PrismExtension.cpp
     PrismExtension.h
+    PartParams.h
+    PartParams.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -526,7 +528,9 @@ SET(Part_SRCS
     ProgressIndicator.cpp
     ProgressIndicator.h
     TopoShape.cpp
+    TopoShapeEx.cpp
     TopoShape.h
+    TopoShapeOpCode.h
     edgecluster.cpp
     edgecluster.h
     modelRefine.cpp

@@ -33,7 +33,9 @@
 #include <memory>
 
 #include "FaceMaker.h"
+#include <App/MappedElement.h>
 #include "TopoShape.h"
+#include "TopoShapeOpCode.h"
 
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass)
@@ -46,6 +48,11 @@ void Part::FaceMaker::addWire(const TopoDS_Wire& w)
 
 void Part::FaceMaker::addShape(const TopoDS_Shape& sh)
 {
+    addTopoShape(sh);
+}
+
+void Part::FaceMaker::addTopoShape(const TopoShape& shape) {
+    const TopoDS_Shape &sh = shape.getShape();
     if(sh.IsNull())
         throw Base::ValueError("Input shape is null.");
     switch(sh.ShapeType()){
@@ -58,11 +65,14 @@ void Part::FaceMaker::addShape(const TopoDS_Shape& sh)
         case TopAbs_EDGE:
             this->myWires.push_back(BRepBuilderAPI_MakeWire(TopoDS::Edge(sh)).Wire());
         break;
+        case TopAbs_FACE:
+            this->myInputFaces.push_back(sh);
+        break;
         default:
             throw Base::TypeError("Shape must be a wire, edge or compound. Something else was supplied.");
         break;
     }
-    this->mySourceShapes.push_back(sh);
+    this->mySourceShapes.push_back(shape);
 }
 
 void Part::FaceMaker::useCompound(const TopoDS_Compound& comp)
@@ -73,20 +83,35 @@ void Part::FaceMaker::useCompound(const TopoDS_Compound& comp)
     }
 }
 
+void Part::FaceMaker::useTopoCompound(const TopoShape& comp)
+{
+    for(auto &s : comp.getSubTopoShapes())
+        this->addTopoShape(s);
+}
+
 const TopoDS_Face& Part::FaceMaker::Face()
 {
-    const TopoDS_Shape &sh = this->Shape();
-    if(sh.IsNull())
+    return TopoDS::Face(TopoFace().getShape());
+}
+
+const Part::TopoShape &Part::FaceMaker::TopoFace() const{
+    if(this->myTopoShape.isNull())
         throw NullShapeException("Part::FaceMaker: result shape is null.");
-    if (sh.ShapeType() != TopAbs_FACE)
+    if (this->myTopoShape.getShape().ShapeType() != TopAbs_FACE)
         throw Base::TypeError("Part::FaceMaker: return shape is not a single face.");
-    return TopoDS::Face(sh);
+    return this->myTopoShape;
+}
+
+const Part::TopoShape &Part::FaceMaker::getTopoShape() const{
+    if(this->myTopoShape.isNull())
+        throw NullShapeException("Part::FaceMaker: result shape is null.");
+    return this->myTopoShape;
 }
 
 void Part::FaceMaker::Build()
 {
     this->NotDone();
-    this->myShapesToReturn.clear();
+    this->myShapesToReturn = this->myInputFaces;
     this->myGenerated.Clear();
 
     this->Build_Essence();//adds stuff to myShapesToReturn
@@ -114,6 +139,7 @@ void Part::FaceMaker::Build()
 
     if(this->myShapesToReturn.empty()){
         //nothing to do, null shape will be returned.
+        this->myShape = TopoDS_Shape();
     } else if (this->myShapesToReturn.size() == 1){
         this->myShape = this->myShapesToReturn[0];
     } else {
@@ -125,6 +151,71 @@ void Part::FaceMaker::Build()
         }
         this->myShape = cmp_res;
     }
+
+    postBuild();
+}
+
+struct ElementName {
+    long tag;
+    Data::MappedName name;
+    Data::ElementIDRefs sids;
+
+    ElementName(long t, const Data::MappedName &n, const Data::ElementIDRefs &sids)
+        :tag(t),name(n), sids(sids)
+    {}
+
+    inline bool operator<(const ElementName &other) const {
+        if(tag<other.tag)
+            return true;
+        if(tag>other.tag)
+            return false;
+        return Data::ElementNameComp()(name,other.name);
+    }
+};
+
+void Part::FaceMaker::postBuild() {
+    this->myTopoShape.setShape(this->myShape);
+    this->myTopoShape.Hasher = this->MyHasher;
+    this->myTopoShape.mapSubElement(this->mySourceShapes);
+    int i = 0;
+    const char *op = this->MyOp;
+    if(!op) op = Part::OpCodes::Face;
+    const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
+    // name the face using the edges of its outer wire
+    for(auto &face : faces) {
+        ++i;
+        TopoShape wire = face.splitWires();
+        wire.mapSubElement(face);
+        std::set<ElementName> edgeNames;
+        int count = wire.countSubShapes(TopAbs_EDGE);
+        for(int i=1;i<=count;++i) {
+            Data::ElementIDRefs sids;
+            Data::MappedName name = face.getMappedName(
+                    Data::IndexedName::fromConst("Edge",i), false, &sids);
+            if(!name)
+                continue;
+            edgeNames.emplace(wire.getElementHistory(name),name,sids);
+        }
+        if(edgeNames.empty())
+            continue;
+
+        std::vector<Data::MappedName> names;
+        Data::ElementIDRefs sids;
+#if 0
+        for (auto &e : edgeNames) {
+            names.insert(e.name);
+            sids += e.sids;
+        }
+#else
+        // We just use the first source element name to make the face name more
+        // stable
+        names.push_back(edgeNames.begin()->name);
+        sids = edgeNames.begin()->sids;
+#endif
+        this->myTopoShape.setElementComboName(
+                Data::IndexedName::fromConst("Face",i),names,op,nullptr,&sids);
+    }
+    this->myTopoShape.initCache(true);
     this->Done();
 }
 

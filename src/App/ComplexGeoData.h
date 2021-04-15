@@ -212,7 +212,7 @@ public:
 
     /// Find the start of an element name in a subname
     static const char *findElementName(const char *subname);
-    
+
     /// Check if the given subname contains element name
     static bool hasElementName(const char *subname) {
         subname = findElementName(subname);
@@ -243,7 +243,7 @@ public:
      * @param sid: optional output of and App::StringID involved forming this mapped name
      * @return Returns the mapped name.
      */
-    MappedName getMappedName(const IndexedName & element, 
+    MappedName getMappedName(const IndexedName & element,
                              bool allowUnmapped = false,
                              ElementIDRefs *sid = nullptr) const;
 
@@ -322,7 +322,7 @@ public:
 
     /// Reverse hashElementName()
     MappedName dehashElementName(const MappedName & name) const;
-     
+
     /// Append the Tag (if and only if it is non zero) into the element map
     virtual void reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix=0) {
         (void)tag;
@@ -330,10 +330,10 @@ public:
         (void)postfix;
     }
 
-    long getElementHistory(const char *name, 
+    long getElementHistory(const char *name,
             MappedName *original=0, std::vector<MappedName> *history=0) const;
 
-    long getElementHistory(const MappedName & name, 
+    long getElementHistory(const MappedName & name,
             MappedName *original=0, std::vector<MappedName> *history=0) const;
 
     void encodeElementName(char element_type, MappedName & name, std::ostringstream &ss,
@@ -359,7 +359,7 @@ public:
 
     /// Set the entire element map
     void setElementMap(const std::vector<MappedElement> &elements);
-    
+
     /// Get the current element map size
     size_t getElementMapSize(bool flush=true) const;
 
@@ -447,7 +447,7 @@ public:
 
 protected:
     virtual MappedName renameDuplicateElement(int index,
-									         const IndexedName & element, 
+									         const IndexedName & element,
            								     const IndexedName & element2,
 										     const MappedName & name,
 										     ElementIDRefs &sids);

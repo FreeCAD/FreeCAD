@@ -688,7 +688,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         else {
             for (size_t i = 0; i < shapes.size(); ++i) {
                 auto& shape = shapes[i];
-                shape = shape.makeTransform(*shapeMats[i]);
+                shape = shape.makETransform(*shapeMats[i]);
                 // if(shape.Hasher
                 //         && shape.getElementMapSize()
                 //         && shape.Hasher != getDocument()->getStringHasher())
@@ -704,7 +704,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             return;
         }
 
-        result.makeCompound(shapes);
+        result.makECompound(shapes);
 
         bool fused = false;
         if (Fuse.getValue()) {
@@ -724,7 +724,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             }
             else if (!solid.isNull()) {
                 // wrap the single solid in compound to keep its placement
-                result.makeCompound({ solid });
+                result.makECompound({ solid });
                 fused = true;
             }
         }
@@ -749,15 +749,15 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             && !result.hasSubShape(TopAbs_FACE)
             && result.hasSubShape(TopAbs_EDGE))
         {
-            result = result.makeWires();
+            result = result.makEWires();
             try {
-                result = result.makeFace(nullptr);
+                result = result.makEFace(nullptr);
             }
             catch (...) {}
         }
 
         if (Refine.getValue())
-            result = result.makeRefine();
+            result = result.makERefine();
 
         result.setPlacement(Placement.getValue());
         Shape.setValue(result);

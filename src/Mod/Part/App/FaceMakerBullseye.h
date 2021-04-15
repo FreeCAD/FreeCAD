@@ -53,7 +53,7 @@ public:
      * planar or on the supplied plane, potentially speeding things up.
      * @param plane FIXME: the plane is not propagated if processing compounds.
      */
-    void setPlane(const gp_Pln& plane);
+    void setPlane(const gp_Pln& plane) override;
 
     virtual std::string getUserFriendlyName() const override;
     virtual std::string getBriefExplanation() const override;

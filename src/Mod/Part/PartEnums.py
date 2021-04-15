@@ -33,6 +33,29 @@ class JoinType(IntEnum):
     Intersection = 2
 
 class Shape(IntEnum):
+    '''
+    Provides information about the continuity of a curve.
+
+    Cooresponds to OCCT type GeomAbs_Shape, with the following values,
+
+    C0: only geometric continuity.
+
+    G1: for each point on the curve, the tangent vectors 'on the right' and 'on the left'
+        are collinear with the same orientation.
+
+    C1: continuity of the first derivative. The 'C1' curve is also 'G1' but, in addition,
+        the tangent vectors 'on the right' and 'on the left' are equal.
+
+    G2: for each point on the curve, the normalized normal vectors 'on the right' and 'on
+        the left' are equal.
+
+    C2: continuity of the second derivative.
+
+    C3: continuity of the third derivative.
+
+    CN: continuity of the N-th derivative, whatever is the value given for N (infinite order
+        of continuity). Also provides information about the continuity of a surface.
+    '''
     C0 = 0
     G1 = 1
     C1 = 2
@@ -42,6 +65,15 @@ class Shape(IntEnum):
     CN = 6
 
 class FillingStyle(IntEnum):
+    '''
+    Controls the flattness of the a surface.
+
+    Coorespondings to OCCT GeomFill_FillingStyle with the following values,
+
+    StretchStyle: with the flattest patches,
+    CoonsStyle: a rounded style with less depth than 'curved',
+    CurvedStyle: the style with the most rounded patches.
+    '''
     StretchStyle = 0
     CoonsStyle = 1
     CurvedStyle = 2

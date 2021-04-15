@@ -45,6 +45,7 @@
 #endif
 
 #include "CrossSection.h"
+#include "TopoShapeOpCode.h"
 
 using namespace Part;
 
@@ -199,3 +200,97 @@ void CrossSection::connectWires (const TopTools_IndexedMapOfShape& wireMap, std:
         wires.push_back(aFix.Wire());
     }
 }
+
+///////////////////////////////////////////////////////////////////////////
+TopoCrossSection::TopoCrossSection(double a, double b, double c, const TopoShape& s, const char *op)
+  : a(a), b(b), c(c), shape(s), op(op?op:Part::OpCodes::Slice)
+{
+}
+
+void TopoCrossSection::slice(int idx, double d, std::vector<TopoShape> &wires) const {
+    // Fixes: 0001228: Cross section of Torus in Part Workbench fails or give wrong results
+    // Fixes: 0001137: Incomplete slices when using Part.slice on a torus
+    bool found = false;
+    for(auto &s : shape.getSubTopoShapes(TopAbs_SOLID)) {
+        sliceSolid(idx, d, s, wires);
+        found = true;
+    }
+    if(!found) {
+        for(auto &s : shape.getSubTopoShapes(TopAbs_SHELL)) {
+            sliceNonSolid(idx, d, s, wires);
+            found = true;
+        }
+        if(!found) {
+            for(auto &s : shape.getSubTopoShapes(TopAbs_FACE))
+                sliceNonSolid(idx, d, s, wires);
+        }
+    }
+}
+
+TopoShape TopoCrossSection::slice(int idx, double d) const {
+    std::vector<TopoShape> wires;
+    slice(idx,d,wires);
+    return TopoShape().makECompound(wires,0,false);
+}
+
+void TopoCrossSection::sliceNonSolid(int idx, double d, 
+        const TopoShape& shape, std::vector<TopoShape>& wires) const
+{
+    BRepAlgoAPI_Section cs(shape.getShape(), gp_Pln(a,b,c,-d));
+    if (cs.IsDone()) {
+        std::string prefix(op);
+        if(idx>1) {
+            prefix += '_';
+            prefix += std::to_string(idx);
+        }
+        auto res = TopoShape().makEShape(cs,shape,prefix.c_str()).makEWires().getSubTopoShapes(TopAbs_WIRE);
+        wires.insert(wires.end(),res.begin(),res.end());
+    }
+}
+
+void TopoCrossSection::sliceSolid(int idx, double d, 
+        const TopoShape& shape, std::vector<TopoShape>& wires) const
+{
+    gp_Pln slicePlane(a,b,c,-d);
+    BRepBuilderAPI_MakeFace mkFace(slicePlane);
+    TopoShape face(idx);
+    face.setShape(mkFace.Face());
+
+    // Make sure to choose a point that does not lie on the plane (fixes #0001228)
+    gp_Vec tempVector(a,b,c);
+    tempVector.Normalize();//just in case.
+    tempVector *= (d+1.0);
+    gp_Pnt refPoint(0.0, 0.0, 0.0);
+    refPoint.Translate(tempVector);
+
+    BRepPrimAPI_MakeHalfSpace mkSolid(TopoDS::Face(face.getShape()), refPoint);
+    TopoShape solid(idx);
+    std::string prefix(op);
+    if(idx>1) {
+        prefix += '_';
+        prefix += std::to_string(idx);
+    }
+    solid.makEShape(mkSolid,face,prefix.c_str());
+    BRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
+
+    if (mkCut.IsDone()) {
+        TopoShape res(shape.Tag,shape.Hasher);
+        std::vector<TopoShape> shapes;
+        shapes.push_back(shape);
+        shapes.push_back(solid);
+        res.makEShape(mkCut,shapes,prefix.c_str());
+        for(auto &face : res.getSubTopoShapes(TopAbs_FACE)) {
+            BRepAdaptor_Surface adapt(TopoDS::Face(face.getShape()));
+            if (adapt.GetType() == GeomAbs_Plane) {
+                gp_Pln plane = adapt.Plane();
+                if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion()) &&
+                    plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
+                    auto repaired_wires = TopoShape(face.Tag).makEWires(
+                            face.getSubTopoShapes(TopAbs_EDGE),prefix.c_str(),true).getSubTopoShapes(TopAbs_WIRE);
+                    wires.insert(wires.end(),repaired_wires.begin(),repaired_wires.end());
+                }
+            }
+        }
+    }
+}
+

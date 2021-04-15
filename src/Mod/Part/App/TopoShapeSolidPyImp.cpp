@@ -51,6 +51,7 @@
 #include "TopoShape.h"
 #include "Tools.h"
 #include "OCCError.h"
+#include "PartPyCXX.h"
 
 // inclusion of the generated files (generated out of TopoShapeSolidPy.xml)
 #include "TopoShapeShellPy.h"
@@ -89,6 +90,9 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
     try {
+#ifndef FC_NO_ELEMENT_MAP
+        getTopoShapePtr()->makESolid(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
+#else
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
             ->getTopoShapePtr()->getShape();
         //first, if we were given a compsolid, try making a solid out of it
@@ -125,13 +129,8 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
         }
 
-    }
-    catch (Standard_Failure& err) {
-        std::stringstream errmsg;
-        errmsg << "Creation of solid failed: " << err.GetMessageString();
-        PyErr_SetString(PartExceptionOCCError, errmsg.str().c_str());
-        return -1;
-    }
+#endif
+    } _PY_CATCH_OCC(return(-1))
 
     return 0;
 }
@@ -218,7 +217,14 @@ Py::Object TopoShapeSolidPy::getOuterShell(void) const
     const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
     if (!shape.IsNull() && shape.ShapeType() == TopAbs_SOLID)
         shell = BRepClass3d::OuterShell(TopoDS::Solid(shape));
+#ifndef FC_NO_ELEMENT_MAP
+    TopoShape res;
+    res.setShape(shell);
+    res.mapSubElement(*getTopoShapePtr());
+    return shape2pyshape(res);
+#else
     return Py::Object(new TopoShapeShellPy(new TopoShape(shell)),true);
+#endif
 }
 
 PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
@@ -236,12 +242,7 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
         double r = props.MomentOfInertia(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
@@ -259,12 +260,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
         double r = props.RadiusOfGyration(gp_Ax1(Base::convertTo<gp_Pnt>(pnt),
                                                 Base::convertTo<gp_Dir>(dir)));
         return PyFloat_FromDouble(r);
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
+    } PY_CATCH_OCC
 }
 
 PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
@@ -318,13 +314,14 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     try {
         builder.MakeOffsetShape();
         const TopoDS_Shape& offsetshape = builder.Shape();
+#ifndef FC_NO_ELEMENT_MAP
+        TopoShape res;
+        res.setShape(offsetshape);
+        return Py::new_reference_to(shape2pyshape(res));
+#else
         return new TopoShapeSolidPy(new TopoShape(offsetshape));
-    }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
+#endif
+    } PY_CATCH_OCC
 }
 
 PyObject *TopoShapeSolidPy::getCustomAttributes(const char* /*attr*/) const

@@ -30,7 +30,6 @@
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepAdaptor_HSurface.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Curve.hxx>
@@ -213,6 +212,35 @@ Geometry::Geometry()
 Geometry::~Geometry()
 {
 
+}
+
+bool Geometry::hasSameExtensions(const Geometry &other) const
+{
+    // We skip non persistent extension while doing comparison. Not sure if
+    // this will cause any problem.
+    size_t i = 0;
+    for (const auto &e : extensions) {
+        if (auto ext = Base::freecad_dynamic_cast<
+                const GeometryPersistenceExtension>(e.get())) {
+            for (;i < other.extensions.size(); ++i) {
+                if (auto extOther = Base::freecad_dynamic_cast<
+                        const GeometryPersistenceExtension>(other.extensions[i].get())) {
+                    if (!ext->isSame(*extOther))
+                        return false;
+                    break;
+                }
+            }
+            if (i >= other.extensions.size())
+                return false;
+            ++i;
+        }
+    }
+    for (;i < other.extensions.size(); ++i) {
+        if (Base::freecad_dynamic_cast<const GeometryPersistenceExtension>(
+                    other.extensions[i].get()))
+            return false;
+    }
+    return true;
 }
 
 // Persistence implementer
@@ -640,6 +668,115 @@ TopoDS_Shape GeomCurve::toShape() const
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
     BRepBuilderAPI_MakeEdge mkBuilder(c, c->FirstParameter(), c->LastParameter());
     return mkBuilder.Shape();
+}
+
+// Copied from OCC BRepBndLib_1.cxx
+//=======================================================================
+// Function : IsLinear
+// purpose : Returns TRUE if theC is line-like.
+//=======================================================================
+static Standard_Boolean IsLinear(const Adaptor3d_Curve& theC)
+{
+    const GeomAbs_CurveType aCT = theC.GetType();
+    if(aCT == GeomAbs_OffsetCurve)
+    {
+        return IsLinear(GeomAdaptor_Curve(theC.OffsetCurve()->BasisCurve()));
+    }
+
+    if((aCT == GeomAbs_BSplineCurve) || (aCT == GeomAbs_BezierCurve))
+    {
+        // Indeed, curves with C0-continuity and degree==1, may be 
+        // represented with set of points. It will be possible made
+        // in the future.
+
+        return ((theC.Degree() == 1) &&
+                (theC.Continuity() != GeomAbs_C0));
+    }
+
+    if(aCT == GeomAbs_Line)
+    {
+        return Standard_True;
+    }
+
+    return Standard_False;
+}
+
+bool GeomCurve::isLinear(Base::Vector3d *dir, Base::Vector3d *base) const
+{
+    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
+    return isLinear(c, dir, base);
+}
+
+bool GeomCurve::isLinear(const Handle(Geom_Curve) &c, Base::Vector3d *dir, Base::Vector3d *base)
+{
+    GeomAdaptor_Curve adaptor(c);
+    if (!IsLinear(adaptor))
+        return false;
+
+    if (dir || base) {
+        if (adaptor.GetType() == GeomAbs_Line) {
+            // Special treatment of Geom_Line because it is infinite
+            Handle(Geom_Line) curv = Handle(Geom_Line)::DownCast(c);
+            if (base) {
+                gp_Pnt Pos = curv->Lin().Location();
+                *base = Base::Vector3d(Pos.X(), Pos.Y(), Pos.Z());
+            }
+            if (dir) {
+                gp_Dir Dir = curv->Lin().Direction();
+                *dir = Base::Vector3d(Dir.X(), Dir.Y(), Dir.Z());
+            }
+            return true;
+        }
+        try {
+            GeomLProp_CLProps prop1(c,c->FirstParameter(),0,Precision::Confusion());
+            GeomLProp_CLProps prop2(c,c->LastParameter(),0,Precision::Confusion());
+            const gp_Pnt &p1 = prop1.Value();
+            const gp_Pnt &p2 = prop2.Value();
+            if (base)
+                *base = Base::Vector3d(p1.X(), p1.Y(), p1.Z());
+            if (dir)
+                *dir = Base::Vector3d(p2.X() - p1.X(), p2.Y() - p1.Y(), p2.Z() - p1.Z());
+        }
+        catch (Standard_Failure& e) {
+            THROWM(Base::CADKernelError,e.GetMessageString())
+        }
+    }
+    return true;
+}
+
+GeomLine* GeomCurve::toLine(bool clone) const
+{
+    if (!isLinear())
+        return nullptr;
+
+    auto p1 = pointAtParameter(getFirstParameter());
+    auto p2 = pointAtParameter(getLastParameter());
+    auto res = new GeomLine(p1, p2-p1);
+    res->copyNonTag(this);
+    if (clone)
+        res->tag = this->tag;
+    return res;
+}
+
+GeomLineSegment* GeomCurve::toLineSegment(bool clone) const
+{
+    if (!isLinear())
+        return nullptr;
+
+    Base::Vector3d start, end;
+    if (isDerivedFrom(GeomBoundedCurve::getClassTypeId())) {
+        start = static_cast<const GeomBoundedCurve*>(this)->getStartPoint();
+        end = static_cast<const GeomBoundedCurve*>(this)->getEndPoint();
+    } else {
+        start = pointAtParameter(getFirstParameter());
+        end = pointAtParameter(getLastParameter());
+    }
+    auto res = new GeomLineSegment;
+    res->setPoints(start, end);
+    res->copyNonTag(this);
+    if (clone)
+        res->tag = this->tag;
+    return res;
 }
 
 GeomBSplineCurve* GeomCurve::toBSpline(double first, double last) const
@@ -1819,8 +1956,14 @@ PyObject *GeomBSplineCurve::getPyObject(void)
 
 bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(_other.getTypeId() != getTypeId())
+    if(_other.getTypeId() != getTypeId()) {
+        if (isLinear() && _other.isDerivedFrom(GeomCurve::getClassTypeId())) {
+            std::unique_ptr<Geometry> geo(toLineSegment());
+            if (geo)
+                return geo->isSame(_other, tol, atol);
+        }
         return false;
+    }
 
     auto &other = static_cast<const GeomBSplineCurve &>(_other);
     (void)atol;
@@ -2061,7 +2204,9 @@ bool GeomTrimmedCurve::isSame(const Geometry &_other, double tol, double atol) c
 
     std::unique_ptr<Geometry> b(makeFromCurve(basis));
     std::unique_ptr<Geometry> b1(makeFromCurve(basis1));
-    return b && b1 && b->isSame(*b1, tol, atol);
+    if (b && b1 && b->isSame(*b1, tol, atol))
+        return true;
+    return false;
 }
 
 bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
@@ -4194,8 +4339,14 @@ PyObject *GeomLine::getPyObject(void)
 
 bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(_other.getTypeId() != getTypeId())
+    if(_other.getTypeId() != getTypeId()) {
+        if (_other.isDerivedFrom(GeomCurve::getClassTypeId())) {
+            std::unique_ptr<Geometry> geo(static_cast<const GeomCurve&>(_other).toLine());
+            if (geo)
+                return isSame(*geo, tol, atol);
+        }
         return false;
+    }
 
     auto &other = static_cast<const GeomLine &>(_other);
 
@@ -4468,6 +4619,88 @@ GeomSurface::GeomSurface()
 
 GeomSurface::~GeomSurface()
 {
+}
+
+// Copied from OCC BRepBndLib_1.cxx
+//=======================================================================
+// Function : IsPlanar
+// purpose : Returns TRUE if theS is plane-like.
+//=======================================================================
+static Standard_Boolean IsPlanar(const Adaptor3d_Surface& theS)
+{
+    const GeomAbs_SurfaceType aST = theS.GetType();
+    if(aST == GeomAbs_OffsetSurface)
+    {
+# if OCC_VERSION_HEX < 0x070600
+        return IsPlanar(theS.BasisSurface()->Surface());
+#else
+        return IsPlanar(*theS.BasisSurface());
+#endif
+    }
+
+    if(aST == GeomAbs_SurfaceOfExtrusion)
+    {
+# if OCC_VERSION_HEX < 0x070600
+        return IsLinear(theS.BasisCurve()->Curve());
+#else
+        return IsLinear(*theS.BasisCurve());
+#endif
+    }
+
+    if((aST == GeomAbs_BSplineSurface) || (aST == GeomAbs_BezierSurface))
+    {
+        if((theS.UDegree() != 1) || (theS.VDegree() != 1))
+            return Standard_False;
+
+        // Indeed, surfaces with C0-continuity and degree==1, may be 
+        // represented with set of points. It will be possible made
+        // in the future.
+
+        return ((theS.UContinuity() != GeomAbs_C0) && (theS.VContinuity() != GeomAbs_C0));
+    }
+
+    if(aST == GeomAbs_Plane)
+    {
+        return Standard_True;
+    }
+
+    return Standard_False;
+}
+
+bool GeomSurface::isPlanar(gp_Pln *pln, double tol) const
+{
+    Handle(Geom_Surface) s = Handle(Geom_Surface)::DownCast(handle());
+    return isPlanar(s, pln, tol);
+}
+
+bool GeomSurface::isPlanar(const Handle(Geom_Surface) &s, gp_Pln *pln, double tol)
+{
+    GeomLib_IsPlanarSurface check(s, tol);
+    if (!check.IsPlanar())
+        return false;
+    if (pln)
+        *pln = check.Plan();
+    return true;
+}
+
+GeomPlane* GeomSurface::toPlane(bool clone, double tol) const
+{
+    if (isDerivedFrom(GeomPlane::getClassTypeId())) {
+        if (clone)
+            return static_cast<GeomPlane*>(this->clone());
+        else
+            return static_cast<GeomPlane*>(this->copy());
+    }
+
+    gp_Pln pln;
+    if (!isPlanar(&pln, tol))
+        return nullptr;
+
+    auto res = new GeomPlane(pln);
+    res->copyNonTag(this);
+    if (clone)
+        res->tag = this->tag;
+    return res;
 }
 
 TopoDS_Shape GeomSurface::toShape() const
@@ -4748,8 +4981,14 @@ PyObject *GeomBSplineSurface::getPyObject(void)
 
 bool GeomBSplineSurface::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(_other.getTypeId() != getTypeId())
+    if(_other.getTypeId() != getTypeId()) {
+        if (_other.isDerivedFrom(GeomSurface::getClassTypeId()) && isPlanar()) {
+            std::unique_ptr<Geometry> geo(toPlane());
+            if (geo)
+                return geo->isSame(_other, tol, atol);
+        }
         return false;
+    }
 
     auto &other = static_cast<const GeomBSplineSurface &>(_other);
     Standard_Integer uc = mySurface->NbUPoles();
@@ -5270,8 +5509,14 @@ PyObject *GeomPlane::getPyObject(void)
 
 bool GeomPlane::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(_other.getTypeId() != getTypeId())
+    if(_other.getTypeId() != getTypeId()) {
+        if (_other.isDerivedFrom(GeomSurface::getClassTypeId())) {
+            std::unique_ptr<Geometry> geo(static_cast<const GeomSurface&>(_other).toPlane());
+            if (geo)
+                return isSame(*geo, tol, atol);
+        }
         return false;
+    }
 
     auto &other = static_cast<const GeomPlane &>(_other);
     return GeomElementarySurface::isSame(other,tol,atol);
