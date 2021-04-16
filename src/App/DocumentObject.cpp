@@ -165,14 +165,13 @@ App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
 {
     //execute extensions but stop on error
     this->setStatus(App::RecomputeExtension, false); // reset the flag
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector) {
-        auto ret = ext->extensionExecute();
-        if (ret != StdReturn)
-            return ret;
-    }
+    App::DocumentObjectExecReturn *res = StdReturn;
+    foreachExtension<DocumentObjectExtension>([&res](DocumentObjectExtension *ext) {
+        res = ext->extensionExecute();
+        return res != StdReturn;
+    });
 
-    return StdReturn;
+    return res;
 }
 
 bool DocumentObject::recomputeFeature(bool recursive)
@@ -234,15 +233,9 @@ bool DocumentObject::mustRecompute(void) const
 
 short DocumentObject::mustExecute(void) const
 {
-    if (ExpressionEngine.isTouched())
+    if (ExpressionEngine.isTouched()
+            || queryExtension(&DocumentObjectExtension::extensionMustExecute))
         return 1;
-
-    //ask all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector) {
-        if (ext->extensionMustExecute())
-            return 1;
-    }
 
     return 0;
 }
@@ -833,14 +826,13 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
 {
     DocumentObject *ret = nullptr;
-    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : exts) {
-        if(ext->extensionGetSubObject(ret,subname,pyObj,mat,transform, depth))
-            return ret;
-    }
+    if(queryExtension(&DocumentObjectExtension::extensionGetSubObject, ret, subname, pyObj, mat, transform, depth))
+        return ret;
 
     std::string name;
     const char *dot=nullptr;
+    while(subname && *subname=='.')
+        ++subname; // skip leading .
     if(!subname || !(dot=strchr(subname,'.'))) {
         ret = const_cast<DocumentObject*>(this);
     }else if(subname[0]=='$') {
@@ -898,11 +890,7 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subnam
 
 std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
     std::vector<std::string> ret;
-    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : exts) {
-        if(ext->extensionGetSubObjects(ret,reason))
-            return ret;
-    }
+    callExtension(&DocumentObjectExtension::extensionGetSubObjects,ret,reason);
     return ret;
 }
 
@@ -938,11 +926,8 @@ DocumentObject *DocumentObject::getLinkedObject(
         bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
 {
     DocumentObject *ret = nullptr;
-    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : exts) {
-        if(ext->extensionGetLinkedObject(ret,recursive,mat,transform,depth))
-            return ret;
-    }
+    if(queryExtension(&DocumentObjectExtension::extensionGetLinkedObject, ret, recursive, mat, transform, depth))
+        return ret;
     if(transform && mat) {
         auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
         if(pla)
@@ -1008,9 +993,7 @@ void DocumentObject::renameObjectIdentifiers(const std::map<ObjectIdentifier, Ob
 void DocumentObject::onDocumentRestored()
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
-        ext->onExtendedDocumentRestored();
+    callExtension(&DocumentObjectExtension::onExtendedDocumentRestored);
     if(Visibility.testStatus(Property::Output))
         Visibility.setStatus(Property::NoModify,true);
 }
@@ -1023,25 +1006,19 @@ void DocumentObject::onUndoRedoFinished()
 void DocumentObject::onSettingDocument()
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
-        ext->onExtendedSettingDocument();
+    callExtension(&DocumentObjectExtension::onExtendedSettingDocument);
 }
 
 void DocumentObject::setupObject()
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
-        ext->onExtendedSetupObject();
+    callExtension(&DocumentObjectExtension::onExtendedSetupObject);
 }
 
 void DocumentObject::unsetupObject()
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
-        ext->onExtendedUnsetupObject();
+    callExtension(&DocumentObjectExtension::onExtendedUnsetupObject);
 }
 
 void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
@@ -1071,31 +1048,25 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 }
 
 int DocumentObject::setElementVisible(const char *element, bool visible) {
-    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
-        int ret = ext->extensionSetElementVisible(element,visible);
-        if(ret>=0)
-            return ret;
-    }
-
-    return -1;
+    int res = -1;
+    foreachExtension<DocumentObjectExtension>([&res,element,visible](DocumentObjectExtension *ext) {
+        res = ext->extensionSetElementVisible(element,visible);
+        return res>=0;
+    });
+    return res;
 }
 
 int DocumentObject::isElementVisible(const char *element) const {
-    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
-        int ret = ext->extensionIsElementVisible(element);
-        if(ret>=0)
-            return ret;
-    }
-
-    return -1;
+    int res = -1;
+    foreachExtension<DocumentObjectExtension>([&res,element](DocumentObjectExtension *ext) {
+        res = ext->extensionIsElementVisible(element);
+        return res>=0;
+    });
+    return res;
 }
 
 bool DocumentObject::hasChildElement() const {
-    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
-        if(ext->extensionHasChildElement())
-            return true;
-    }
-    return false;
+    return queryExtension(&DocumentObjectExtension::extensionHasChildElement);
 }
 
 DocumentObject *DocumentObject::resolve(const char *subname, 

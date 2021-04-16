@@ -63,19 +63,21 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
     pcGroupBack = nullptr;
 }
 
-
-std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D(void) const {
+void ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D(
+        std::vector<App::DocumentObject*> &children) const 
+{
 
     //all object in the group must be claimed in 3D, as we are a coordinate system for all of them
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     if (ext) {
-        auto objs = ext->Group.getValues();
-        return objs;
+        const auto &objs = ext->Group.getValues();
+        children.insert(children.end(),objs.begin(),objs.end());
     }
-    return std::vector<App::DocumentObject*>();
 }
 
-std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(void) const {
+void ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(
+        std::vector<App::DocumentObject *> &children) const 
+{
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     const std::vector<App::DocumentObject*> &model = group->Group.getValues ();
@@ -89,8 +91,8 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
         if (!vp || vp == getExtendedViewProvider()) { continue; }
 
-        auto children = vp->claimChildren();
-        std::remove_copy ( children.begin (), children.end (), std::inserter (outSet, outSet.begin () ), nullptr);
+        auto objs = vp->claimChildren();
+        std::remove_copy ( objs.begin (), objs.end (), std::inserter (outSet, outSet.begin () ), nullptr);
     }
 
     // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
@@ -102,16 +104,16 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
             obj->setStatus(App::ObjectStatus::GeoExcluded,true);
         else {
             obj->setStatus(App::ObjectStatus::GeoExcluded,false);
-            Result.push_back(obj);
+            children.push_back(obj);
         }
     }
-    return Result;
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionFinishRestoring()
 {
     // setup GeoExlcuded flag for children
-    extensionClaimChildren();
+    std::vector<App::DocumentObject*> children;
+    extensionClaimChildren(children);
     ViewProviderGroupExtension::extensionFinishRestoring();
 }
 
@@ -129,15 +131,14 @@ void ViewProviderGeoFeatureGroupExtension::extensionSetDisplayMode(const char* M
     ViewProviderGroupExtension::extensionSetDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderGeoFeatureGroupExtension::extensionGetDisplayModes(void) const
+void ViewProviderGeoFeatureGroupExtension::extensionGetDisplayModes(std::vector<std::string> &StrList) const
 {
     // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderGroupExtension::extensionGetDisplayModes();
+    ViewProviderGroupExtension::extensionGetDisplayModes(StrList);
 
     // add your own modes
     StrList.push_back("Group");
 
-    return StrList;
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Property* prop)
