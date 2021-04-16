@@ -304,6 +304,11 @@ public:
     int getElementIndex(const char *subname, const char **psubname=nullptr) const;
     void elementNameFromIndex(int idx, std::ostream &ss) const;
 
+    static std::vector<std::string> getHiddenSubnames(
+            const App::DocumentObject *obj, const char *prefix=0);
+
+    static bool isSubnameHidden(const App::DocumentObject *obj, const char *subname);
+
     DocumentObject *getContainer();
     const DocumentObject *getContainer() const;
 

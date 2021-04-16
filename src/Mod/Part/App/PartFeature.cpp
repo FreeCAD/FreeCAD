@@ -524,23 +524,60 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
     return getTopoShape(obj,subname,needSubElement,pmat,powner,resolveLink,transform,true).getShape();
 }
 
-#if 0 // remove the function as it's not used
 static inline bool checkLink(const App::DocumentObject *obj) {
     return obj->getExtensionByType<App::LinkBaseExtension>(obj)
             || obj->getExtensionByType<App::GeoFeatureGroupExtension>(obj);
 }
-#endif
 
 static bool checkLinkVisibility(std::set<std::string> &hiddens,
         bool check, const App::DocumentObject *&lastLink,
         const App::DocumentObject *obj, const char *subname)
 {
-    (void)hiddens;
-    (void)check;
-    (void)lastLink;
-    (void)obj;
-    (void)subname;
-    //Stub to be filled in subsequent patches;
+    if(!obj || !obj->getNameInDocument())
+        return false;
+
+    if(checkLink(obj)) {
+        lastLink = obj;
+        for(auto &s : App::LinkBaseExtension::getHiddenSubnames(obj))
+            hiddens.emplace(std::move(s));
+    }
+
+    if(!subname || !subname[0])
+        return true;
+
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    std::string sub(subname,element-subname);
+
+    for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
+        char c = sub[pos+1];
+        sub[pos+1] = 0;
+
+        for(auto it=hiddens.begin();it!=hiddens.end();) {
+            if(!boost::starts_with(*it,CharRange(sub.c_str(),sub.c_str()+pos+1)))
+                it = hiddens.erase(it);
+            else {
+                if(check && it->size()==pos+1)
+                    return false;
+                ++it;
+            }
+        }
+        auto sobj = obj->getSubObject(sub.c_str());
+        if(!sobj || !sobj->getNameInDocument())
+            return false;
+        if(checkLink(sobj)) {
+            for(auto &s : App::LinkBaseExtension::getHiddenSubnames(sobj))
+                hiddens.insert(std::string(sub)+s);
+            lastLink = sobj;
+        }
+        sub[pos+1] = c;
+    }
+
+    std::set<std::string> res;
+    for(auto &s : hiddens) {
+        if(s.size()>sub.size())
+            res.insert(s.c_str()+sub.size());
+    }
+    hiddens = std::move(res);
     return true;
 }
 
