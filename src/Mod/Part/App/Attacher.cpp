@@ -67,6 +67,8 @@
 #include <App/OriginFeature.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObserver.h>
+#include <App/MappedElement.h>
 
 using namespace Part;
 using namespace Attacher;
@@ -176,13 +178,61 @@ AttachEngine::AttachEngine()
 {
 }
 
+void AttachEngine::setReferences(const App::PropertyLinkSubList &references) {
+    std::string docname;
+    std::vector<std::string> names;
+    for(auto obj : references.getValues()) {
+        if(!obj->getNameInDocument())
+            throw AttachEngineException("AttachEngine::invalid object");
+        if(docname.empty())
+            docname = obj->getDocument()->getName();
+        else if(docname!=obj->getDocument()->getName())
+            throw AttachEngineException("AttachEngine::object from multiple document");
+        names.emplace_back(obj->getNameInDocument());
+    }
+    this->docName = docname;
+    this->objNames = std::move(names);
+    this->subnames.clear();
+    this->subnames.reserve(this->objNames.size());
+    this->shadowSubs.clear();
+    this->shadowSubs.reserve(this->objNames.size());
+    for(auto &shadow : references.getShadowSubs()) {
+        this->shadowSubs.push_back(shadow.first);
+        this->subnames.push_back(shadow.second);
+    }
+    assert(this->objNames.size() == this->subnames.size());
+}
+
+void AttachEngine::setReferences(const std::vector<App::SubObjectT> &references) {
+    std::string docname;
+    std::vector<std::string> names;
+    std::vector<std::string> subnames;
+    std::vector<std::string> shadowSubs;
+    for (auto &ref : references) {
+        if(!ref.getSubObject())
+            FC_THROWM(AttachEngineException,
+                    "AttachEngine::invalid object " << ref.getSubObjectFullName());
+        if(docname.empty())
+            docname = ref.getDocumentName();
+        else if(docname!=ref.getDocumentName())
+            throw AttachEngineException("AttachEngine::object from multiple document");
+        names.push_back(ref.getObjectName());
+        subnames.push_back(ref.getSubNameNoElement() + ref.getOldElementName());
+        shadowSubs.push_back(ref.getSubNameNoElement() + ref.getNewElementName());
+    }
+    this->docName = docname;
+    this->objNames = std::move(names);
+    this->subnames = std::move(subnames);
+    this->shadowSubs = std::move(shadowSubs);
+}
+
 void AttachEngine::setUp(const App::PropertyLinkSubList &references,
                          eMapMode mapMode, bool mapReverse,
                          double attachParameter,
                          double surfU, double surfV,
                          const Base::Placement &attachmentOffset)
 {
-    this->references.Paste(references);
+    setReferences(references);
     this->mapMode = mapMode;
     this->mapReverse = mapReverse;
     this->attachParameter = attachParameter;
@@ -193,13 +243,16 @@ void AttachEngine::setUp(const App::PropertyLinkSubList &references,
 
 void AttachEngine::setUp(const AttachEngine &another)
 {
-    setUp(another.references,
-          another.mapMode,
-          another.mapReverse,
-          another.attachParameter,
-          another.surfU,
-          another.surfV,
-          another.attachmentOffset);
+    this->docName = another.docName;
+    this->objNames = another.objNames;
+    this->subnames = another.subnames;
+    this->shadowSubs = another.shadowSubs;
+    this->mapMode = another.mapMode;
+    this->mapReverse = another.mapReverse;
+    this->attachParameter = another.attachParameter;
+    this->surfU = another.surfU;
+    this->surfV = another.surfV;
+    this->attachmentOffset = another.attachmentOffset;
 }
 
 Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
@@ -328,7 +381,7 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
     std::vector<TopoDS_Shape> shapeStorage;
     std::vector<eRefType> typeStr;
     try{
-        readLinks(this->references, parts, shapes, shapeStorage, typeStr);
+        readLinks(getRefObjects(),subnames, parts, shapes, shapeStorage, typeStr);
     } catch (Base::Exception &err) {
         result.references_Types = typeStr;
         result.message = SuggestResult::srLinkBroken;
@@ -519,7 +572,7 @@ eRefType AttachEngine::getShapeType(const App::DocumentObject *obj, const std::s
     std::vector<const TopoDS_Shape*> shapes;
     std::vector<TopoDS_Shape> copiedShapeStorage;
     std::vector<eRefType> types;
-    readLinks(tmpLink, parts, shapes, copiedShapeStorage, types);
+    readLinks(tmpLink.getValues(),tmpLink.getSubValues(), parts, shapes, copiedShapeStorage, types);
 
     assert(types.size() == 1);
     return types[0];
@@ -757,22 +810,21 @@ GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoD
  * \param storage is a buffer storing what some of the pointers in shapes point to. It is needed, since
  * subshapes are copied in the process (but copying a whole shape of an object can potentially be slow).
  */
-void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
+void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
+                             const std::vector<std::string> &sub,
                              std::vector<App::GeoFeature*> &geofs,
                              std::vector<const TopoDS_Shape*> &shapes,
                              std::vector<TopoDS_Shape> &storage,
                              std::vector<eRefType> &types)
 {
-    verifyReferencesAreSafe(references);
-    const std::vector<App::DocumentObject*> &objs = references.getValues();
-    const std::vector<std::string> &sub = references.getSubValues();
     geofs.resize(objs.size());
     storage.reserve(objs.size());
     shapes.resize(objs.size());
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
         if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            throw AttachEngineException("AttachEngine3D: link points to something that is not App::GeoFeature");
+            FC_THROWM(AttachEngineException,"AttachEngine3D: attached to a non App::GeoFeature '"
+                        << objs[i]->getNameInDocument() << "'");
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);
         geofs[i] = geof;
@@ -780,17 +832,28 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
         if (geof->isDerivedFrom(Part::Feature::getClassTypeId())){
             shape = (static_cast<Part::Feature*>(geof)->Shape.getShape());
             if (shape.isNull()){
-                throw AttachEngineException("AttachEngine3D: Part has null shape");
+                FC_THROWM(AttachEngineException,"AttachEngine3D: Part has null shape " 
+                        << objs[i]->getNameInDocument());
             }
             if (sub[i].length()>0){
                 try{
                     shape = Part::Feature::getTopoShape(geof, sub[i].c_str(), true);
+                    if (shape.isNull())
+                        FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
+                                << objs[i]->getNameInDocument() << '.' << sub[i]);
                     storage.push_back(shape.getShape());
                 } catch (Standard_Failure &e){
-                    throw AttachEngineException("AttachEngine3D: subshape not found");
+                    FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
+                            << objs[i]->getNameInDocument() << '.' << sub[i] 
+                            << std::endl << e.GetMessageString());
+                } catch (Base::CADKernelError &e){
+                    FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
+                            << objs[i]->getNameInDocument() << '.' << sub[i] 
+                            << std::endl << e.what());
                 }
                 if(storage[storage.size()-1].IsNull())
-                    throw AttachEngineException("AttachEngine3D: subshape not found");
+                    FC_THROWM(AttachEngineException, "AttachEngine3D: null subshape "
+                            << objs[i]->getNameInDocument() << '.' << sub[i]);
             } else {
                 storage.push_back(shape.getShape());
             }
@@ -848,21 +911,74 @@ void AttachEngine::throwWrongMode(eMapMode mmode)
     throw Base::ValueError(errmsg.str().c_str());
 }
 
-void AttachEngine::verifyReferencesAreSafe(const App::PropertyLinkSubList &references)
+std::vector<App::DocumentObject*> AttachEngine::getRefObjects() const 
 {
-    const std::vector<App::DocumentObject*> links =  references.getValues();
-    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for(App::DocumentObject* lnk : links){
-        bool found = false;
-        for(App::Document* doc : docs){
-            if(doc->isIn(lnk)){
-                found = true;
-            }
-        }
-        if (!found){
-            throw AttachEngineException("AttachEngine: verifyReferencesAreSafe: references point to deleted object.");
+    std::vector<App::DocumentObject*> objs;
+    if(objNames.empty())
+        return objs;
+    auto doc = App::GetApplication().getDocument(docName.c_str());
+    if(!doc) 
+        FC_THROWM(AttachEngineException,"AttachEngine: document '" << docName << "' not found");
+    objs.reserve(objNames.size());
+    for(auto &name : objNames) {
+        objs.push_back(doc->getObject(name.c_str()));
+        if(!objs.back())
+            FC_THROWM(AttachEngineException,
+                    "AttachEngine: object '" << docName << "#" << name << "' not found");
+    }
+    return objs;
+}
+
+Base::Placement AttachEngine::calculateAttachedPlacement(
+        const Base::Placement &origPlacement, bool *subChanged)
+{
+    std::map<int,std::pair<std::string,std::string> > subChanges;
+    int i=-1;
+    auto objs = getRefObjects();
+    for(auto obj : objs) {
+        ++i;
+        auto &sub = subnames[i];
+        auto &shadow = shadowSubs[i];
+        if(shadow.empty() || !Data::ComplexGeoData::hasMissingElement(sub.c_str()))
+            continue;
+        auto related = Part::Feature::getRelatedElements(obj,shadow.c_str(),true,false);
+        if(related.size()) {
+            auto &res = subChanges[i];
+            res.first = Data::ComplexGeoData::elementMapPrefix();
+            related.front().name.toString(res.first);
+            res.second.clear();
+            related.front().index.toString(res.second);
+        } else {
+            std::string name = Data::ComplexGeoData::oldElementName(shadow.c_str());
+            if (name.size()) {
+                auto &res = subChanges[i];
+                res.first.clear();
+                res.second = name;
+            }else
+                subnames[i] = shadow;
         }
     }
+    if(subChanges.size()) {
+        // In case there is topological name changes, we only auto change the
+        // subname if the calculated placement stays the same. If not, just
+        // proceed as normal, which will throw exception and catch user's
+        // attention.
+        auto subs = subnames;
+        for(auto &v : subChanges)
+            subs[v.first] = v.second.second;
+        auto pla = _calculateAttachedPlacement(objs,subs,origPlacement);
+        // check equal placement with some tolerance
+        if(pla.getPosition().IsEqual(origPlacement.getPosition(),1e-7)
+            && pla.getRotation().isSame(origPlacement.getRotation(),1e-12))
+        {
+            if(subChanged) *subChanged = true;
+            subnames = std::move(subs);
+            for(auto &v : subChanges)
+                shadowSubs[v.first] = v.second.first;
+            return pla;
+        }
+    }
+    return _calculateAttachedPlacement(objs,subnames,origPlacement);
 }
 
 
@@ -979,7 +1095,10 @@ AttachEngine3D* AttachEngine3D::copy() const
     return p;
 }
 
-Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement& origPlacement) const
+Base::Placement AttachEngine3D::_calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*>&objs, 
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const
 {
     const eMapMode mmode = this->mapMode;
     if (mmode == mmDeactivated)
@@ -988,11 +1107,10 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
     std::vector<const TopoDS_Shape*> shapes;
     std::vector<TopoDS_Shape> copiedShapeStorage;
     std::vector<eRefType> types;
-    readLinks(this->references, parts, shapes, copiedShapeStorage, types);
+    readLinks(objs,subs, parts, shapes, copiedShapeStorage, types);
 
     if (parts.size() == 0)
         throw ExceptionCancel();
-
 
     //common stuff for all map modes
     gp_Pnt refOrg (0.0,0.0,0.0);//origin of linked object
@@ -1016,7 +1134,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (need one vertex).");
         const TopoDS_Shape &sh = *shapes[0];
         if (sh.IsNull())
-            throw Base::ValueError("Null face in AttachEngine3D::calculateAttachedPlacement()!");
+            throw Base::ValueError("Null shape in AttachEngine3D::calculateAttachedPlacement()!");
         if (sh.ShapeType() != TopAbs_VERTEX)
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (need one vertex).");
         gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(sh));
@@ -1121,28 +1239,31 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         if (shapes.size() < 1)
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: no subobjects specified (needed one planar face).");
 
-        const TopoDS_Face &face = TopoDS::Face(*(shapes[0]));
-        if (face.IsNull())
-            throw Base::ValueError("Null face in AttachEngine3D::calculateAttachedPlacement()!");
-
+        TopoDS_Face face;
         gp_Pln plane;
-        BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() == GeomAbs_Plane) {
-            plane = adapt.Plane();
-        }
-        else {
-            TopLoc_Location loc;
-            Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-            GeomLib_IsPlanarSurface check(surf);
-            if (check.IsPlanar())
-                plane = check.Plan();
-            else
-                throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
-        }
-
         bool Reverse = false;
-        if (face.Orientation() == TopAbs_REVERSED)
-            Reverse = true;
+        try { face = TopoDS::Face(*(shapes[0])); } catch(...) {}
+        if (face.IsNull()) {
+            if (!TopoShape(*shapes[0]).findPlane(plane))
+                throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+        } else {
+            BRepAdaptor_Surface adapt(face);
+            if (adapt.GetType() == GeomAbs_Plane) {
+                plane = adapt.Plane();
+            }
+            else {
+                TopLoc_Location loc;
+                Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                GeomLib_IsPlanarSurface check(surf);
+                if (check.IsPlanar())
+                    plane = check.Plan();
+                else
+                    throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+            }
+
+            if (face.Orientation() == TopAbs_REVERSED)
+                Reverse = true;
+        }
 
         Standard_Boolean ok = plane.Direct();
         if (!ok) {
@@ -1170,11 +1291,13 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
             bThruVertex = true;
         }
 
-        const TopoDS_Face &face = TopoDS::Face(*(shapes[0]));
+        TopoDS_Face face;
+        try { face = TopoDS::Face(*(shapes[0])); } catch(...) {}
         if (face.IsNull())
             throw Base::ValueError("Null face in AttachEngine3D::calculateAttachedPlacement()!");
 
-        const TopoDS_Vertex &vertex = TopoDS::Vertex(*(shapes[1]));
+        TopoDS_Vertex vertex;
+        try { vertex = TopoDS::Vertex(*(shapes[1])); } catch(...) {}
         if (vertex.IsNull())
             throw Base::ValueError("Null vertex in AttachEngine3D::calculateAttachedPlacement()!");
 
@@ -1233,7 +1356,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
             bThruVertex = true;
         }
 
-        const TopoDS_Edge &path = TopoDS::Edge(*(shapes[0]));
+        TopoDS_Edge path;
+        try { path = TopoDS::Edge(*(shapes[0])); } catch(...) {}
         if (path.IsNull())
             throw Base::ValueError("Null path in AttachEngine3D::calculateAttachedPlacement()!");
 
@@ -1252,7 +1376,8 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         //if a point is specified, use the point as a point of mapping, otherwise use parameter value from properties
         gp_Pnt p_in;
         if (shapes.size() >= 2) {
-            TopoDS_Vertex vertex = TopoDS::Vertex(*(shapes[1]));
+            TopoDS_Vertex vertex;
+            try { TopoDS::Vertex(*(shapes[1])); } catch(...) {}
             if (vertex.IsNull())
                 throw Base::ValueError("Null vertex in AttachEngine3D::calculateAttachedPlacement()!");
             p_in = BRep_Tool::Pnt(vertex);
@@ -1423,7 +1548,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         BRepAdaptor_Curve adapts[4];
         gp_Lin lines[4];
         for(int i=0  ;  i<4  ;  i++){
-            edges[i] = &TopoDS::Edge(*(shapes[i]));
+            try { edges[i] = &TopoDS::Edge(*(shapes[i])); } catch(...){}
             if (edges[i]->IsNull())
                 throw Base::ValueError("Null edge in AttachEngine3D::calculateAttachedPlacement()!");
 
@@ -1642,13 +1767,16 @@ AttachEnginePlane *AttachEnginePlane::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePlane::calculateAttachedPlacement(const Base::Placement& origPlacement) const
+Base::Placement AttachEnginePlane::_calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*>&objs, 
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const
 {
     //re-use Attacher3d
     Base::Placement plm;
     AttachEngine3D attacher3D;
     attacher3D.setUp(*this);
-    plm = attacher3D.calculateAttachedPlacement(origPlacement);
+    plm = attacher3D._calculateAttachedPlacement(objs,subs,origPlacement);
     return plm;
 }
 
@@ -1706,7 +1834,10 @@ AttachEngineLine *AttachEngineLine::copy() const
     return p;
 }
 
-Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placement& origPlacement) const
+Base::Placement AttachEngineLine::_calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*>&objs, 
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -1756,7 +1887,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         std::vector<const TopoDS_Shape*> shapes;
         std::vector<TopoDS_Shape> copiedShapeStorage;
         std::vector<eRefType> types;
-        readLinks(this->references, parts, shapes, copiedShapeStorage, types);
+        readLinks(objs,subs, parts, shapes, copiedShapeStorage, types);
 
         if (parts.size() == 0)
             throw ExceptionCancel();
@@ -1847,7 +1978,10 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         case mm1Asymptote2:{
             if (shapes[0]->IsNull())
                 throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
-            const TopoDS_Edge &e = TopoDS::Edge(*(shapes[0]));
+            TopoDS_Edge e;
+            try { e = TopoDS::Edge(*(shapes[0])); } catch(...) {}
+            if (e.IsNull())
+                throw Base::ValueError("Null edge in AttachEngineLine::calculateAttachedPlacement()!");
             BRepAdaptor_Curve adapt (e);
             if (adapt.GetType() != GeomAbs_Hyperbola)
                 throw Base::ValueError("AttachEngineLine::calculateAttachedPlacement: Asymptotes are available only for hyperbola-shaped edges, the one supplied is not.");
@@ -1862,7 +1996,10 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         case mm1Directrix2:{
             if (shapes[0]->IsNull())
                 throw Base::ValueError("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
-            const TopoDS_Edge &e = TopoDS::Edge(*(shapes[0]));
+            TopoDS_Edge e;
+            try { e = TopoDS::Edge(*(shapes[0])); } catch(...) {}
+            if (e.IsNull())
+                throw Base::ValueError("Null edge in AttachEngineLine::calculateAttachedPlacement()!");
             BRepAdaptor_Curve adapt (e);
             gp_Ax1 dx1, dx2;//vars to receive directrices
             switch(adapt.GetType()){
@@ -1924,7 +2061,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(const Base::Placeme
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
         attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
-        plm = attacher3D.calculateAttachedPlacement(origPlacement);
+        plm = attacher3D._calculateAttachedPlacement(objs,subs,origPlacement);
         plm *= presuperPlacement;
     }
     plm *= this->attachmentOffset;
@@ -1975,7 +2112,10 @@ AttachEnginePoint *AttachEnginePoint::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placement& origPlacement) const
+Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*>&objs, 
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -2004,7 +2144,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placem
         std::vector<const TopoDS_Shape*> shapes;
         std::vector<TopoDS_Shape> copiedShapeStorage;
         std::vector<eRefType> types;
-        readLinks(this->references, parts, shapes, copiedShapeStorage, types);
+        readLinks(objs,subs, parts, shapes, copiedShapeStorage, types);
 
         if (parts.empty())
             throw ExceptionCancel();
@@ -2040,7 +2180,10 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placem
         case mm0Focus2:{
             if (shapes[0]->IsNull())
                 throw Base::ValueError("Null shape in AttachEnginePoint::calculateAttachedPlacement()!");
-            const TopoDS_Edge &e = TopoDS::Edge(*(shapes[0]));
+            TopoDS_Edge e;
+            try { e = TopoDS::Edge(*(shapes[0])); } catch(...) {}
+            if (e.IsNull())
+                throw Base::ValueError("Null edge in AttachEnginePoint::calculateAttachedPlacement()!");
             BRepAdaptor_Curve adapt (e);
             gp_Pnt f1, f2;
             switch(adapt.GetType()){
@@ -2093,7 +2236,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(const Base::Placem
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
         attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
-        plm = attacher3D.calculateAttachedPlacement(origPlacement);
+        plm = attacher3D._calculateAttachedPlacement(objs,subs,origPlacement);
     }
     plm *= this->attachmentOffset;
     return plm;
