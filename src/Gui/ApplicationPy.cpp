@@ -737,11 +737,7 @@ PyObject* Application::sGetLocale(PyObject * /*self*/, PyObject *args)
         return NULL;
 
     std::string locale = Translator::instance()->activeLanguage();
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_FromString(locale.c_str());
-#else
-    return PyString_FromString(locale.c_str());
-#endif
 }
 
 PyObject* Application::sSetLocale(PyObject * /*self*/, PyObject *args)
@@ -819,11 +815,7 @@ PyObject* Application::sAddPreferencePage(PyObject * /*self*/, PyObject *args)
 
     PyObject* dlg;
     // old style classes
-#if PY_MAJOR_VERSION >= 3
     if (PyArg_ParseTuple(args, "O!s", &PyType_Type, &dlg, &grp)) {
-#else
-    if (PyArg_ParseTuple(args, "O!s", &PyClass_Type, &dlg, &grp)) {
-#endif
         // add to the preferences dialog
         new PrefPagePyProducer(Py::Object(dlg), grp);
 

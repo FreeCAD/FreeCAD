@@ -2681,6 +2681,7 @@ void TreeWidget::setupText()
 
     this->markRecomputeAction->setText(tr("Mark to recompute"));
     this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+    this->markRecomputeAction->setIcon(BitmapFactory().iconFromTheme("Std_MarkToRecompute"));
 
     this->recomputeObjectAction->setText(tr("Recompute object"));
     this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
