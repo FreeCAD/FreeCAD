@@ -1597,36 +1597,35 @@ TopoShape &TopoShape::makERuledSurface(const std::vector<TopoShape> &shapes,
     return makESHAPE(ruledShape,Mapper(),shapes,op);
 }
 
-struct MapperMaker: Part::TopoShape::Mapper {
-    BRepBuilderAPI_MakeShape &maker;
-    MapperMaker(BRepBuilderAPI_MakeShape &maker)
-        :maker(maker)
-    {}
-    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override {
-        _res.clear();
-        try {
-            TopTools_ListIteratorOfListOfShape it;
-            for (it.Initialize(maker.Modified(s)); it.More(); it.Next())
-                _res.push_back(it.Value());
-        } catch (const Standard_Failure & e) {
-            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
-        }
-        return _res;
+const std::vector<TopoDS_Shape> &
+MapperMaker::modified(const TopoDS_Shape &s) const
+{
+    _res.clear();
+    try {
+        TopTools_ListIteratorOfListOfShape it;
+        for (it.Initialize(maker.Modified(s)); it.More(); it.Next())
+            _res.push_back(it.Value());
+    } catch (const Standard_Failure & e) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Exception on shape mapper: " << e.GetMessageString());
     }
-    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override {
-        _res.clear();
-        try {
-            TopTools_ListIteratorOfListOfShape it;
-            for (it.Initialize(maker.Generated(s)); it.More(); it.Next())
-                _res.push_back(it.Value());
-        } catch (const Standard_Failure & e) {
-            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
-        }
-        return _res;
+    return _res;
+}
+
+const std::vector<TopoDS_Shape> &
+MapperMaker::generated(const TopoDS_Shape &s) const
+{
+    _res.clear();
+    try {
+        TopTools_ListIteratorOfListOfShape it;
+        for (it.Initialize(maker.Generated(s)); it.More(); it.Next())
+            _res.push_back(it.Value());
+    } catch (const Standard_Failure & e) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Exception on shape mapper: " << e.GetMessageString());
     }
-};
+    return _res;
+}
 
 struct MapperThruSections: MapperMaker {
     TopoShape firstProfile;

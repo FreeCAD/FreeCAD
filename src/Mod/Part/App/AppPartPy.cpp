@@ -1943,9 +1943,9 @@ private:
             throw Py::Exception();
 
         try {
-            TopoDS_Shape initShape = static_cast<TopoShapePy*>
-                    (shape)->getTopoShapePtr()->getShape();
-            BRepFeat_SplitShape splitShape(initShape);
+            std::vector<TopoShape> sources;
+            sources.push_back(*static_cast<TopoShapePy*>(shape)->getTopoShapePtr());
+            BRepFeat_SplitShape splitShape(sources.back().getShape());
             splitShape.SetCheckInterior(PyObject_IsTrue(checkInterior) ? Standard_True : Standard_False);
 
             Py::Sequence seq(list);
@@ -1953,7 +1953,8 @@ private:
                 Py::Tuple tuple(*it);
                 Py::TopoShape sh1(tuple[0]);
                 Py::TopoShape sh2(tuple[1]);
-                const TopoDS_Shape& shape1= sh1.extensionObject()->getTopoShapePtr()->getShape();
+                sources.push_back(*sh1.extensionObject()->getTopoShapePtr());
+                const TopoDS_Shape& shape1= sources.back().getShape();
                 const TopoDS_Shape& shape2= sh2.extensionObject()->getTopoShapePtr()->getShape();
                 if (shape1.IsNull() || shape2.IsNull())
                     throw Py::RuntimeError("Cannot add null shape");
@@ -1989,14 +1990,25 @@ private:
             const TopTools_ListOfShape& l = splitShape.Left();
 
             Py::List list1;
+            Py::List list2;
+#ifndef FC_NO_ELEMENT_MAP
+            MapperMaker mapper(splitShape);
+            for (TopTools_ListIteratorOfListOfShape it(d); it.More(); it.Next()) {
+                TopoShape s(0, sources.front().Hasher);
+                list1.append(shape2pyshape(s.makESHAPE(it.Value(), mapper, sources, TOPOP_SPLIT)));
+            }
+            for (TopTools_ListIteratorOfListOfShape it(l); it.More(); it.Next()) {
+                TopoShape s(0, sources.front().Hasher);
+                list2.append(shape2pyshape(s.makESHAPE(it.Value(), mapper, sources, TOPOP_SPLIT)));
+            }
+#else
             for (TopTools_ListIteratorOfListOfShape it(d); it.More(); it.Next()) {
                 list1.append(shape2pyshape(it.Value()));
             }
-
-            Py::List list2;
             for (TopTools_ListIteratorOfListOfShape it(l); it.More(); it.Next()) {
                 list2.append(shape2pyshape(it.Value()));
             }
+#endif
 
             Py::Tuple tuple(2);
             tuple.setItem(0, list1);

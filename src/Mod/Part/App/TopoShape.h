@@ -446,7 +446,7 @@ public:
         return TopoShape(0,Hasher).makEShape(mkShape,*this,op);
     }
 
-    struct Mapper {
+    struct PartExport Mapper {
         mutable std::vector<TopoDS_Shape> _res;
         virtual ~Mapper() {}
         virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &) const {
@@ -926,6 +926,15 @@ struct ShapeHasher {
     inline bool operator()(const TopoDS_Shape &a, const TopoDS_Shape &b) const {
         return a.IsSame(b);
     }
+};
+
+struct PartExport MapperMaker: TopoShape::Mapper {
+    BRepBuilderAPI_MakeShape &maker;
+    MapperMaker(BRepBuilderAPI_MakeShape &maker)
+        :maker(maker)
+    {}
+    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override;
+    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override;
 };
 
 struct PartExport ShapeMapper: TopoShape::Mapper {
