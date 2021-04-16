@@ -108,10 +108,10 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
 
-std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
-
+void ViewProviderGroupExtension::extensionClaimChildren(std::vector<App::DocumentObject*> &children) const {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    return std::vector<App::DocumentObject*>(group->Group.getValues());
+    const auto &objs = group->Group.getValues();
+    children.insert(children.end(),objs.begin(),objs.end());
 }
 
 void ViewProviderGroupExtension::extensionShow(void) {

@@ -132,6 +132,68 @@ public:
         return static_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId(),derived,no_except));
     }
 
+    /** Helpers for iterator over extensions of a given type */
+    //@{
+
+    /** Helper structs to deduce the class type of a class function pointer type */
+    //@{
+    template<typename T> struct ClassOf {};
+    template<typename R, typename C>
+        struct ClassOf<R (C::*)>{   using type = C;    };
+    //@}
+
+    /** Call an extension member function for each extension of the given type
+     * @param f: the member function pointer of some extension class
+     * @param args: variadic parameters passed to the member function
+     */
+    template<typename F, class... Args>
+    void callExtension(F&& f, Args&&... args) const {
+        for(auto entry : _extensions) {            
+            if(entry.first.isDerivedFrom(ClassOf<F>::type::getExtensionClassTypeId()))
+                (static_cast<typename ClassOf<F>::type*>(entry.second)->*f)(std::forward<Args>(args)...);
+        }
+    }
+
+    /** Query using an extension member function
+     * @param f: the member function pointer of some extension class
+     * @param args: variadic parameters passed to the member function
+     *
+     * @return Returns true if the iteratorion is terminated prematurely, or else false.
+     *
+     * The iteration over the contained extensions is terminated as soon as the
+     * extension method call returns true.
+     */
+    template<typename F, class... Args>
+    bool queryExtension(F&& f, Args&&... args) const {
+        for(auto entry : _extensions) {            
+            if(entry.first.isDerivedFrom(ClassOf<F>::type::getExtensionClassTypeId())) {
+                if((static_cast<typename ClassOf<F>::type*>(entry.second)->*f)(std::forward<Args>(args)...))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /** Invoke a callable for each extension of a given type
+     * @param f: the callable that accepts one argument of an extension, and
+     * returns any value that is convertible to boolean.
+     *
+     * @return Returns true if the iteratorion is terminated prematurely, or else false.
+     *
+     * The iteration over the contained extensions is terminated as soon as the
+     * extension method call returns true.
+     */
+    template<typename T, typename F>
+    bool foreachExtension(F f) const {
+        for(auto entry : _extensions) {            
+            if(entry.first.isDerivedFrom(T::getExtensionClassTypeId())) {
+                if(f(static_cast<T*>(entry.second)))
+                    return true;
+            }
+        }
+        return false;
+    }
+    
     //get all extensions which have the given base class
     std::vector<Extension*> getExtensionsDerivedFrom(Base::Type type) const;
     template<typename ExtensionT>
