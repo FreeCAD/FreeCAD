@@ -293,7 +293,7 @@ public:
     virtual void onExtendedDocumentRestored() override;
 
     virtual int extensionSetElementVisible(const char *, bool) override;
-    virtual int extensionIsElementVisible(const char *) override;
+    virtual int extensionIsElementVisible(const char *) const override;
     virtual bool extensionHasChildElement() const override;
 
     virtual PyObject* getExtensionPyObject(void) override;
