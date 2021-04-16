@@ -1012,7 +1012,7 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
     return -1;
 }
 
-int LinkBaseExtension::extensionIsElementVisible(const char *element) {
+int LinkBaseExtension::extensionIsElementVisible(const char *element) const {
     int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
     if(index>=0) {
         auto propElementVis = getVisibilityListProperty();
