@@ -312,6 +312,44 @@ SubObjectT::SubObjectT(const char *docName, const char *objName, const char *s)
 {
 }
 
+SubObjectT::SubObjectT(const std::vector<App::DocumentObject*> &objs, const char *s)
+{
+    if (objs.empty())
+        return;
+
+    static_cast<DocumentObjectT&>(*this) = objs.front();
+    std::ostringstream ss;
+    for (auto it = objs.begin()+1; it!=objs.end(); ++it) {
+        auto obj = *it;
+        if (!obj || !obj->getNameInDocument())
+            continue;
+        ss << obj->getNameInDocument() << ".";
+    }
+    if (s)
+        ss << s;
+    subname = ss.str();
+}
+
+SubObjectT::SubObjectT(std::vector<App::DocumentObject*>::const_iterator begin,
+                       std::vector<App::DocumentObject*>::const_iterator end,
+                       const char *s)
+{
+    if (begin == end)
+        return;
+
+    static_cast<DocumentObjectT&>(*this) = *begin;
+    std::ostringstream ss;
+    for (auto it = begin+1; it != end; ++it) {
+        auto obj = *it;
+        if (!obj || !obj->getNameInDocument())
+            continue;
+        ss << obj->getNameInDocument() << ".";
+    }
+    if (s)
+        ss << s;
+    subname = ss.str();
+}
+
 bool SubObjectT::operator<(const SubObjectT &other) const {
     if(getDocumentName() < other.getDocumentName())
         return true;
@@ -371,25 +409,76 @@ void SubObjectT::setSubName(const char *s) {
     subname = s?s:"";
 }
 
+bool SubObjectT::normalize()
+{
+    std::ostringstream ss;
+    auto objs = getSubObjectList();
+    for (unsigned i=1; i<objs.size(); ++i)
+        ss << objs[i]->getNameInDocument() << ".";
+    if (objs.front()->getSubObject(ss.str().c_str()) != objs.back()) {
+        // something went wrong
+        return false;
+    }
+    ss << getOldElementName();
+    std::string sub = ss.str();
+    if (subname != sub) {
+        subname = std::move(sub);
+        return true;
+    }
+    return false;
+}
+
+SubObjectT App::SubObjectT::normalized() const
+{
+    SubObjectT res(*this);
+    res.normalize();
+    return res;
+}
+
 const std::string &SubObjectT::getSubName() const {
     return subname;
 }
 
-std::string SubObjectT::getSubNameNoElement() const {
-    return Data::ComplexGeoData::noElementName(subname.c_str());
+std::string SubObjectT::getSubNameNoElement(bool withObjName) const {
+    if (!withObjName)
+        return Data::ComplexGeoData::noElementName(subname.c_str());
+    std::string res(getObjectName());
+    res += ".";
+    const char * element = Data::ComplexGeoData::findElementName(subname.c_str());
+    if(element)
+        return res.insert(res.size(), subname.c_str(), element - subname.c_str());
+    return res;
 }
 
 const char *SubObjectT::getElementName() const {
     return Data::ComplexGeoData::findElementName(subname.c_str());
 }
 
-std::string SubObjectT::getNewElementName() const {
+bool SubObjectT::hasSubObject() const {
+    return Data::ComplexGeoData::findElementName(subname.c_str()) != subname.c_str();
+}
+
+bool SubObjectT::hasSubElement() const {
+    auto element = getElementName();
+    return element && element[0];
+}
+
+std::string SubObjectT::getNewElementName(bool fallback) const {
+    const char *elementName = Data::ComplexGeoData::findElementName(subname.c_str());
+    if (!elementName || !elementName[0])
+        return std::string();
+    std::string name = Data::ComplexGeoData::newElementName(elementName);
+    if (name.size())
+        return name;
+
     std::pair<std::string, std::string> element;
     auto obj = getObject();
     if(!obj)
         return std::string();
     GeoFeature::resolveElement(obj,subname.c_str(),element);
-    return std::move(element.first);
+    if (!element.first.empty() || !fallback)
+        return std::move(element.first);
+    return std::move(element.second);
 }
 
 std::string SubObjectT::getOldElementName(int *index, bool fallback) const {
@@ -421,7 +510,6 @@ std::string SubObjectT::getOldElementName(int *index, bool fallback) const {
     }
     return name;
 }
-
 App::DocumentObject *SubObjectT::getSubObject() const {
     auto obj = getObject();
     if(obj)
@@ -443,6 +531,38 @@ std::vector<App::DocumentObject*> SubObjectT::getSubObjectList() const {
     if(obj)
         return obj->getSubObjectList(subname.c_str());
     return {};
+}
+
+SubObjectT SubObjectT::getParent() const {
+    const char *pos  = Data::ComplexGeoData::findElementName(subname.c_str());
+    if (!pos || pos == subname.c_str())
+        return SubObjectT();
+
+    if(*pos != '.')
+        --pos;
+    if(--pos <= subname.c_str())
+        return SubObjectT();
+
+    bool found = false;
+    for(;pos!=subname.c_str();--pos) {
+        if(*pos != '.') {
+            found = true;
+            continue;
+        }
+        if(found)
+            return SubObjectT(getDocumentName().c_str(),
+                    getObjectName().c_str(), std::string(subname.c_str(), pos+1).c_str());
+    }
+    return SubObjectT(getDocumentName().c_str(), getObjectName().c_str(), nullptr);
+}
+
+SubObjectT SubObjectT::getChild(const App::DocumentObject *child) const
+{
+    if (getObjectName().empty())
+        return SubObjectT(child);
+    SubObjectT res = *this;
+    res.setSubName(getSubNameNoElement() + child->getNameInDocument() + ".");
+    return res;
 }
 
 std::string SubObjectT::getObjectFullName(const char *docName) const
@@ -480,6 +600,43 @@ std::string SubObjectT::getSubObjectFullName(const char *docName) const
     if (sobj && sobj->Label.getStrValue() != sobj->getNameInDocument())
         ss << " (" << sobj->Label.getValue() << ")";
     return ss.str();
+}
+
+PyObject *SubObjectT::getPyObject() const
+{
+    auto obj = getObject();
+    if (!obj)
+        return Py::new_reference_to(Py::Object());
+    if (subname.empty())
+        return obj->getPyObject();
+    return Py::new_reference_to(Py::TupleN(
+                Py::asObject(obj->getPyObject()), Py::String(subname)));
+}
+
+void SubObjectT::setPyObject(PyObject *pyobj)
+{
+    try {
+        if (!pyobj)
+            throw Base::ValueError("Invalid object");
+        if (PyObject_TypeCheck(pyobj, &App::DocumentObjectPy::Type)) {
+            this->operator=(static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr());
+            return;
+        } else if (PySequence_Check(pyobj) && PySequence_Size(pyobj)==2) {
+            Py::Sequence seq(pyobj);
+            App::DocumentObject *obj;
+            PropertyString tmp;
+            if (PyObject_TypeCheck(seq[0].ptr(), &App::DocumentObjectPy::Type)) {
+                obj = static_cast<App::DocumentObjectPy*>(seq[0].ptr())->getDocumentObjectPtr();
+                tmp.setPyObject(seq[1].ptr());
+                this->operator=(App::SubObjectT(obj, tmp.getValue()));
+                return;
+            }
+        }
+    } catch (Py::Exception &) {
+        Base::PyException e;
+    } catch (...) {
+    }
+    throw Base::ValueError("Expect either document object or tuple(obj, subname)");
 }
 
 // -----------------------------------------------------------------------------
