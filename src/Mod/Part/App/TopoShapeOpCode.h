@@ -58,6 +58,7 @@
 #define TOPOP_PIPE      "PIP"
 #define TOPOP_PIPE_SHELL "PSH"
 #define TOPOP_SHELL     "SHL"
+#define TOPOP_SHELL_FILL "SHF"
 #define TOPOP_SOLID     "SLD"
 #define TOPOP_RULED_SURFACE "RSF"
 #define TOPOP_MIRROR    "MIR"

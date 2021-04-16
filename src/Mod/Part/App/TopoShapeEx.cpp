@@ -171,6 +171,7 @@
 # include <TopTools_DataMapIteratorOfDataMapOfShapeListOfShape.hxx>
 # include <GeomFill_FillingStyle.hxx>
 # include <GeomFill_BSplineCurves.hxx>
+# include <BRepFill_Generator.hxx>
 
 #include <array>
 #include <deque>
@@ -2679,6 +2680,45 @@ TopoShape &TopoShape::makEShell(bool silent, const char *op) {
             FC_THROWM(Base::CADKernelError, "Failed to make shell: " << e.GetMessageString());
     }
 
+    return *this;
+}
+
+struct MapperFill: Part::TopoShape::Mapper {
+    BRepFill_Generator &maker;
+    MapperFill(BRepFill_Generator &maker)
+        :maker(maker)
+    {}
+    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override {
+        _res.clear();
+        try {
+            TopTools_ListIteratorOfListOfShape it;
+            for (it.Initialize(maker.GeneratedShapes(s)); it.More(); it.Next())
+                _res.push_back(it.Value());
+        } catch (const Standard_Failure & e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+        }
+        return _res;
+    }
+};
+
+TopoShape &TopoShape::makEShellFromWires(const std::vector<TopoShape> &wires, bool silent, const char *op)
+{
+    BRepFill_Generator maker;
+    for (auto &w : wires) {
+        if (w.shapeType(silent) == TopAbs_WIRE)
+            maker.AddWire(TopoDS::Wire(w.getShape()));
+    }
+    if (wires.empty()) {
+        if (silent) {
+            _Shape.Nullify();
+            return *this;
+        }
+        FC_THROWM(NullShapeException,"No input shapes");
+    }
+    _Shape.Nullify();
+    maker.Perform();
+    this->makESHAPE(maker.Shell(), MapperFill(maker), wires, op);
     return *this;
 }
 

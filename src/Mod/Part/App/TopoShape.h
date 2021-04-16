@@ -640,6 +640,11 @@ public:
 
     TopoShape &makEShell(bool silent=true, const char *op=0);
 
+    TopoShape &makEShellFromWires(const std::vector<TopoShape> &wires, bool silent=true, const char *op=0);
+    TopoShape &makEShellFromWires(bool silent=true, const char *op=0) {
+        return makEShellFromWires(getSubTopoShapes(TopAbs_WIRE), silent, op);
+    }
+
     TopoShape &replacEShape(const TopoShape &shape, const std::vector<std::pair<TopoShape,TopoShape> > &s);
     TopoShape replacEShape(const std::vector<std::pair<TopoShape,TopoShape> > &s) const {
         return TopoShape(0,Hasher).replacEShape(*this,s);
