@@ -91,7 +91,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
 #ifndef FC_NO_ELEMENT_MAP
-    PY_TRY {
+    try {
         getTopoShapePtr()->makEBoolean(Part::OpCodes::Shell,getPyShapes(obj));
     } _PY_CATCH_OCC(return(-1))
 #else
@@ -100,7 +100,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     TopoDS_Shell shell;
     //BRepOffsetAPI_Sewing mkShell;
     builder.MakeShell(shell);
-
+    
     try {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {

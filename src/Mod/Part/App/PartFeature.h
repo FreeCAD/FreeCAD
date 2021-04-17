@@ -54,6 +54,7 @@ class PartFeaturePy;
  */
 class PartExport Feature : public App::GeoFeature
 {
+    typedef App::GeoFeature inherited;
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Feature);
 
 public:
@@ -73,6 +74,9 @@ public:
     virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
 
     virtual PyObject* getPyObject(void) override;
+
+    virtual std::pair<std::string,std::string> getElementName(
+            const char *name, ElementNameType type=Normal) const override;
 
     static std::list<Data::HistoryItem> getElementHistory(App::DocumentObject *obj,
             const char *name, bool recursive=true, bool sameType=false);
@@ -172,8 +176,15 @@ public:
 
     App::PropertyLink   Base;
     PropertyFilletEdges Edges;
+    App::PropertyLinkSub   EdgeLinks;
 
-    short mustExecute() const override;
+    virtual short mustExecute() const override;
+    virtual void onUpdateElementReference(const App::Property *prop) override;
+
+protected:
+    virtual void onDocumentRestored() override;
+    virtual void onChanged(const App::Property *) override;
+    void syncEdgeLink();
 };
 
 typedef App::FeaturePythonT<Feature> FeaturePython;
@@ -197,13 +208,13 @@ public:
  * Useful for the "up to face" options to pocket or pad
  */
 struct cutFaces {
-    TopoDS_Face face;
+    TopoShape face;
     double distsq;
 };
 
 PartExport
-std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
-                                        const TopoDS_Shape& face, const gp_Dir& dir);
+std::vector<cutFaces> findAllFacesCutBy(const TopoShape& shape,
+                                        const TopoShape& face, const gp_Dir& dir);
 
 /**
   * Check for intersection between the two shapes. Only solids are guaranteed to work properly

@@ -179,7 +179,8 @@ void Part::FaceMaker::postBuild() {
     this->myTopoShape.mapSubElement(this->mySourceShapes);
     int i = 0;
     const char *op = this->MyOp;
-    if(!op) op = Part::OpCodes::Face;
+    if(!op)
+        op = Part::OpCodes::Face;
     const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
     // name the face using the edges of its outer wire
     for(auto &face : faces) {

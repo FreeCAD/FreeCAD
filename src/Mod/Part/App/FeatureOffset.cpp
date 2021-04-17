@@ -25,8 +25,8 @@
 #endif
 
 
+#include <App/Document.h>
 #include "FeatureOffset.h"
-#include <App/Link.h>
 
 
 using namespace Part;
@@ -80,18 +80,27 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     App::DocumentObject* source = Source.getValue();
     if (!source)
         return new App::DocumentObjectExecReturn("No source shape linked.");
+    auto shape = Feature::getTopoShape(source);
+    if(shape.isNull())
+        return new App::DocumentObjectExecReturn("Invalid source link");
+
     double offset = Value.getValue();
     double tol = Precision::Confusion();
     bool inter = Intersection.getValue();
     bool self = SelfIntersection.getValue();
     short mode = (short)Mode.getValue();
-    short join = (short)Join.getValue();
     bool fill = Fill.getValue();
-    const TopoShape& shape = Feature::getShape(source);
+#ifdef FC_NO_ELEMENT_MAP
+    short join = (short)Join.getValue();
     if (fabs(offset) > 2*tol)
         this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
     else
         this->Shape.setValue(shape);
+#else
+    auto join = static_cast<TopoShape::JoinType>(Join.getValue());
+    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEOffset(
+                shape,offset,tol,inter,self,mode,join,fill));
+#endif
     return App::DocumentObject::StdReturn;
 }
 
@@ -132,22 +141,27 @@ short Offset2D::mustExecute() const
 App::DocumentObjectExecReturn *Offset2D::execute(void)
 {
     App::DocumentObject* source = Source.getValue();
-
-    if (!source) {
+    if (!source)
        return new App::DocumentObjectExecReturn("No source shape linked.");
-    }
-    const TopoShape shape = Part::Feature::getTopoShape(source);
-    if (shape.isNull()) {
-        return new App::DocumentObjectExecReturn("No source shape linked.");
-    }
+
+    auto shape = Feature::getTopoShape(source);
+    if(shape.isNull())
+        return new App::DocumentObjectExecReturn("Invalid source link");
+
     double offset = Value.getValue();
     short mode = (short)Mode.getValue();
-    short join = (short)Join.getValue();
     bool fill = Fill.getValue();
     bool inter = Intersection.getValue();
     if (mode == 2)
         return new App::DocumentObjectExecReturn("Mode 'Recto-Verso' is not supported for 2D offset.");
 
+#ifdef FC_NO_ELEMENT_MAP
+    short join = (short)Join.getValue();
     this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0, inter));
-    return App::DocumentObject::StdReturn;
+#else
+    auto join = static_cast<TopoShape::JoinType>(Join.getValue());
+    this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEOffset2D(
+                shape,offset,join,fill,mode==0,inter));
+#endif
+    return Part::Feature::execute();
 }

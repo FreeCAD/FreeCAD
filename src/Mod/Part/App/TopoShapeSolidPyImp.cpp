@@ -48,10 +48,10 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
-#include "TopoShape.h"
-#include "Tools.h"
 #include "OCCError.h"
 #include "PartPyCXX.h"
+#include "Tools.h"
+#include "TopoShape.h"
 
 // inclusion of the generated files (generated out of TopoShapeSolidPy.xml)
 #include "TopoShapeShellPy.h"

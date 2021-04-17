@@ -26,8 +26,8 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-
 #include "PartFeature.h"
+#include "ExtrusionHelper.h"
 #include "FaceMakerCheese.h"
 
 namespace Part
@@ -51,24 +51,11 @@ public:
     App::PropertyBool Symmetric;
     App::PropertyAngle TaperAngle;
     App::PropertyAngle TaperAngleRev;
+    App::PropertyAngle InnerTaperAngle;
+    App::PropertyAngle InnerTaperAngleRev;
     App::PropertyString FaceMakerClass;
-
-
-    /**
-     * @brief The ExtrusionParameters struct is supposed to be filled with final
-     * extrusion parameters, after resolving links, applying mode logic,
-     * reversing, etc., and be passed to extrudeShape.
-     */
-    struct ExtrusionParameters {
-        gp_Dir dir;
-        double lengthFwd;
-        double lengthRev;
-        bool solid;
-        double taperAngleFwd; //in radians
-        double taperAngleRev;
-        std::string faceMakerClass;
-        ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
-    };
+    App::PropertyBool UsePipeForDraft;
+    App::PropertyBool Linearize;
 
     /** @name methods override feature */
     //@{
@@ -87,7 +74,7 @@ public:
      * @param params: extrusion parameters
      * @return result of extrusion
      */
-    static TopoShape extrudeShape(const TopoShape& source, const ExtrusionParameters& params);
+    static void extrudeShape(TopoShape &result, const TopoShape &source, const ExtrusionParameters& params);
 
     /**
      * @brief fetchAxisLink: read AxisLink to obtain the direction and
@@ -119,7 +106,6 @@ public: //mode enumerations
         dmNormal
     };
     static const char* eDirModeStrings[];
-
 protected:
     virtual void setupObject() override;
 };

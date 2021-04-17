@@ -936,6 +936,10 @@ bool TopoShape::canMapElement(const TopoShape &other) const {
 }
 
 void TopoShape::mapSubElement(const std::vector<TopoShape> &shapes, const char *op) {
+#ifdef FC_NO_ELEMENT_MAP
+    return;
+#endif
+
     if (shapes.empty())
         return;
 
@@ -1023,6 +1027,10 @@ void TopoShape::copyElementMap(const TopoShape &s, const char *op)
 }
 
 void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool forceHasher) {
+#ifdef FC_NO_ELEMENT_MAP
+    return;
+#endif
+
     if(!canMapElement(other))
         return;
 
@@ -5568,8 +5576,8 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner,
     // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
     // code shows it works by creating face using each wire, and then test using
     // BRepTopAdaptor_FClass2d::PerformInfinitePoint() to check if it is an out
-    // bound wire. And practice shows it sometimes returns the in correct
-    // result.  Need more investigation. Note that this may be related to
+    // bound wire. And practice shows it sometimes returns the incorrect
+    // result. Need more investigation. Note that this may be related to
     // unreliable solid face orientation
     // (https://forum.freecadweb.org/viewtopic.php?p=446006#p445674)
     //

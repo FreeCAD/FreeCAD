@@ -55,8 +55,6 @@ public:
     /// Returns a point of the feature it counts as it's base
     virtual Base::Vector3d getBasePoint () const;
 
-    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
-            Base::Matrix4D *mat, bool transform, int depth) const override;
 protected:
     void onDocumentRestored() override;
     void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;

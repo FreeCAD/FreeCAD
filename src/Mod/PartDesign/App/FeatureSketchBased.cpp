@@ -452,7 +452,7 @@ void ProfileBased::getUpToFace(TopoDS_Face& upToFace,
                 it_far = it;
             else if (it->distsq < it_near->distsq)
                 it_near = it;
-        upToFace = (method == "UpToLast" ? it_far->face : it_near->face);
+        upToFace = TopoDS::Face(method == "UpToLast" ? it_far->face.getShape() : it_near->face.getShape());
     }
 
     // Check whether the face has limits or not. Unlimited faces have no wire

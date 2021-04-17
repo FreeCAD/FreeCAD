@@ -32,6 +32,8 @@
 #endif
 
 
+#include <App/Document.h>
+#include "TopoShapeOpCode.h"
 #include "FeatureFillet.h"
 #include <Base/Exception.h>
 
@@ -52,13 +54,16 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
 
-    auto baseShape = Feature::getShape(link);
-
     try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
+
+        TopoShape baseTopoShape = Feature::getTopoShape(link);
+        auto baseShape = baseTopoShape.getShape();
         BRepFilletAPI_MakeFillet mkFillet(baseShape);
+
+#ifdef FC_NO_ELEMENT_MAP
         TopTools_IndexedMapOfShape mapOfShape;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
 
@@ -95,7 +100,36 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         prop.setContainer(this);
         prop.touch();
 
-        return App::DocumentObject::StdReturn;
+#else
+        const auto &vals = EdgeLinks.getSubValues();
+        const auto &subs = EdgeLinks.getShadowSubs();
+        if(subs.size()!=(size_t)Edges.getSize())
+            return new App::DocumentObjectExecReturn("Edge link size mismatch");
+        size_t i=0;
+        for(const auto &info : Edges.getValues()) {
+            auto &sub = subs[i];
+            auto &ref = sub.first.size()?sub.first:vals[i];
+            ++i;
+            TopoDS_Shape edge;
+            try {
+                edge = baseTopoShape.getSubShape(ref.c_str());
+            }catch(...){}
+            if(edge.IsNull())
+                return new App::DocumentObjectExecReturn("Invalid edge link");
+            double radius1 = info.radius1;
+            double radius2 = info.radius2;
+            mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
+        }
+
+        TopoDS_Shape shape = mkFillet.Shape();
+        if (shape.IsNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
+
+        TopoShape res(0,getDocument()->getStringHasher());
+        this->Shape.setValue(res.makEShape(mkFillet,baseTopoShape,Part::OpCodes::Fillet));
+#endif
+
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

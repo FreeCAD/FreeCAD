@@ -47,6 +47,7 @@
 # include <Inventor/details/SoLineDetail.h>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "DlgFilletEdges.h"
 #include "ui_DlgFilletEdges.h"
 #include "SoBrepFaceSet.h"
@@ -58,9 +59,11 @@
 #include "../App/FeatureFillet.h"
 #include "../App/FeatureChamfer.h"
 #include <Base/UnitsApi.h>
+#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -72,6 +75,8 @@
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Window.h>
+
+FC_LOG_LEVEL_INIT("Fillet",true,true);
 
 using namespace PartGui;
 namespace bp = boost::placeholders;
@@ -567,6 +572,16 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 {
     App::DocumentObject* base = d->fillet->Base.getValue();
     const std::vector<Part::FilletElement>& e = d->fillet->Edges.getValues();
+    const auto &subs = d->fillet->EdgeLinks.getShadowSubs();
+    if(subs.size()!=e.size()) {
+        FC_ERR("edge link size mismatch");
+        return;
+    }
+    std::set<std::string> subSet;
+    for(auto &sub : subs) 
+        subSet.insert(sub.first.empty()?sub.second:sub.first);
+
+    std::string tmp;
     std::vector<App::DocumentObject*>::const_iterator it = std::find(objs.begin(), objs.end(), base);
     if (it != objs.end()) {
         // toggle visibility
@@ -588,7 +603,41 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         std::vector<std::string> subElements;
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         bool block = model->blockSignals(true); // do not call toggleCheckState
-        for (std::vector<Part::FilletElement>::const_iterator et = e.begin(); et != e.end(); ++et) {
+        auto baseShape = Part::Feature::getTopoShape(base);
+        std::set<Part::FilletElement> elements;
+        for(size_t i=0;i<e.size();++i) {
+            auto &sub = subs[i];
+            if(sub.first.empty()) {
+                int idx = 0;
+                sscanf(sub.second.c_str(),"Edge%d",&idx);
+                if(idx==0)
+                    FC_WARN("missing element reference: " << sub.second);
+                else
+                    elements.insert(e[i]);
+                continue;
+            }
+            auto &ref = sub.first;
+            Part::TopoShape edge;
+            try {
+                edge = baseShape.getSubShape(ref.c_str());
+            }catch(...) {}
+            if(!edge.isNull())  {
+                elements.insert(e[i]);
+                continue;
+            }
+            FC_WARN("missing element reference: " << base->getFullName() << "." << ref);
+            
+            for(auto &mapped : Part::Feature::getRelatedElements(base,ref.c_str())) {
+                tmp.clear();
+                if(!subSet.insert(mapped.index.toString(tmp)).second
+                        || !subSet.insert(mapped.name.toString(0)).second)
+                    continue;
+                FC_WARN("guess element reference: " << ref << " -> " << mapped.index);
+                elements.emplace(mapped.index.getIndex(),e[i].radius1,e[i].radius2);
+            }
+        }
+
+        for (auto et=elements.begin();et!=elements.end();++et) {
             std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et->edgeid);
             if (it != d->edge_ids.end()) {
                 int index = it - d->edge_ids.begin();
@@ -962,6 +1011,7 @@ bool DlgFilletEdges::accept()
 
     QByteArray to = name.toLatin1();
     QByteArray from = shape.toLatin1();
+    Gui::Command::copyVisual(to, "ShapeColor", from);
     Gui::Command::copyVisual(to, "LineColor", from);
     Gui::Command::copyVisual(to, "PointColor", from);
     return true;
