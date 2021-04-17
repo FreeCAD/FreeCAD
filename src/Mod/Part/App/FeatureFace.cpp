@@ -42,6 +42,7 @@
 #endif
 
 #include <Base/Placement.h>
+#include <App/Document.h>
 
 #include "FeatureFace.h"
 #include "FaceMaker.h"
@@ -82,12 +83,11 @@ App::DocumentObjectExecReturn *Face::execute(void)
         return new App::DocumentObjectExecReturn("No shapes linked");
 
     std::unique_ptr<FaceMaker> facemaker = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
+    facemaker->MyHasher = getDocument()->getStringHasher();
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        if (!(*it))
-            return new App::DocumentObjectExecReturn("Linked object is not a Part object (has no Shape).");
-        TopoDS_Shape shape = Feature::getShape(*it);
-        if (shape.IsNull())
+        auto shape = Feature::getTopoShape(*it);
+        if (shape.isNull())
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
 
         // this is a workaround for an obscure OCC bug which leads to empty tessellations
@@ -100,19 +100,17 @@ App::DocumentObjectExecReturn *Face::execute(void)
                 return new App::DocumentObjectExecReturn("Linked shape object is empty");
         }*/
 
-        if(links.size() == 1 && shape.ShapeType() == TopAbs_COMPOUND)
-            facemaker->useCompound(TopoDS::Compound(shape));
+        if(links.size() == 1 && shape.getShape().ShapeType() == TopAbs_COMPOUND)
+            facemaker->useTopoCompound(shape);
         else
-            facemaker->addShape(shape);
+            facemaker->addTopoShape(shape);
     }
 
     facemaker->Build();
-
-    TopoDS_Shape aFace = facemaker->Shape();
-    if (aFace.IsNull())
+    TopoShape ret = facemaker->getTopoShape();
+    if (ret.isNull())
         return new App::DocumentObjectExecReturn("Creating face failed (null shape result)");
-    this->Shape.setValue(aFace);
-
-    return App::DocumentObject::StdReturn;
+    this->Shape.setValue(ret);
+    return Part::Feature::execute();
 }
 

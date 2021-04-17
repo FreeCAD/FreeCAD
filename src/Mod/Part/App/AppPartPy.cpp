@@ -881,7 +881,7 @@ private:
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObj);
         Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
         // copy the data
-        pcFeature->Shape.setValue(pShape->getTopoShapePtr()->getShape());
+        pcFeature->Shape.setValue(*pShape->getTopoShapePtr());
         pcDoc->recompute();
         return Py::asObject(pcFeature->getPyObject());
     }
@@ -1882,7 +1882,6 @@ private:
 #else
         if (!PyArg_ParseTuple(args.ptr(), "O", &pylist))
             throw Py::Exception();
-
         try {
             BRepFill_Generator fill;
             Py::Sequence list(pylist);
@@ -2501,7 +2500,12 @@ private:
                 &mat,&subObj,retType==2,PyObject_IsTrue(transform) ? true : false,
                 PyObject_IsTrue(noElementMap) ? true : false);
         if (PyObject_IsTrue(refine) ? true : false) {
+#ifndef FC_NO_ELMENT_MAP
             shape = TopoShape(0,shape.Hasher).makERefine(shape);
+#else
+            BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
+            shape.setShape(mkRefine.Shape());
+#endif
         }
         Py::Object sret(shape2pyshape(shape));
         if(retType==0)

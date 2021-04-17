@@ -68,7 +68,7 @@ App::DocumentObjectExecReturn *Part::Polygon::execute(void)
     if (!poly.IsDone())
         throw Base::CADKernelError("Cannot create polygon because less than two vertices are given");
     TopoDS_Wire wire = poly.Wire();
-    this->Shape.setValue(wire);
+    this->Shape.setValue(wire,false);
 
     return App::DocumentObject::StdReturn;
 }

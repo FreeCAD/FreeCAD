@@ -32,7 +32,6 @@
 #include "OCCError.h"
 #include "PartPyCXX.h"
 #include "TopoShape.h"
-
 // inclusion of the generated files (generated out of TopoShapeCompSolidPy.xml)
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeCompSolidPy.h"

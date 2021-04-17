@@ -36,8 +36,10 @@
 #include "FeaturePartCommon.h"
 #include "modelRefine.h"
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
+#include "TopoShapeOpCode.h"
 
 using namespace Part;
 
@@ -46,6 +48,10 @@ PROPERTY_SOURCE(Part::Common, Part::Boolean)
 
 Common::Common(void)
 {
+}
+
+const char *Common::opCode() const {
+    return Part::OpCodes::Common;
 }
 
 BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, const TopoDS_Shape& tool) const
@@ -84,6 +90,7 @@ short MultiCommon::mustExecute() const
 
 App::DocumentObjectExecReturn *MultiCommon::execute(void)
 {
+#ifdef FC_NO_ELEMENT_MAP
     std::vector<TopoDS_Shape> s;
     std::vector<App::DocumentObject*> obj = Shapes.getValues();
 
@@ -197,5 +204,33 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
         throw Base::CADKernelError("Not enough shape objects linked");
     }
 
-    return App::DocumentObject::StdReturn;
+#else
+    std::vector<TopoShape> shapes;
+    for(auto obj : Shapes.getValues()) {
+        TopoShape sh = Feature::getTopoShape(obj);
+        if(sh.isNull())
+            return new App::DocumentObjectExecReturn("Input shape is null");
+        shapes.push_back(sh);
+    }
+
+    TopoShape res(0,getDocument()->getStringHasher());
+    res.makEBoolean(Part::OpCodes::Common,shapes);
+    if (res.isNull())
+        throw Base::RuntimeError("Resulting shape is null");
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
+    if (hGrp->GetBool("CheckModel", false)) {
+        BRepCheck_Analyzer aChecker(res.getShape());
+        if (! aChecker.IsValid() ) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
+    }
+
+    if (this->Refine.getValue()) 
+        res = res.makERefine();
+    this->Shape.setValue(res);
+#endif
+
+    return Part::Feature::execute();
 }

@@ -198,6 +198,20 @@ private:
 struct PartExport FilletElement {
     int edgeid;
     double radius1, radius2;
+
+    FilletElement(int id=0,double r1=1.0,double r2=1.0)
+        :edgeid(id),radius1(r1),radius2(r2)
+    {}
+
+    bool operator<(const FilletElement &other) const {
+        return edgeid < other.edgeid;
+    }
+
+    bool operator==(const FilletElement &other) const {
+        return edgeid == other.edgeid
+            && radius1 == other.radius1
+            && radius2 == other.radius2;
+    }
 };
 
 class PartExport PropertyFilletEdges : public App::PropertyLists
@@ -244,6 +258,7 @@ public:
 private:
     std::vector<FilletElement> _lValueList;
 };
+
 
 class PartExport PropertyShapeCache: public App::Property {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();

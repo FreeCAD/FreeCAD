@@ -35,9 +35,9 @@
 # include <TopExp_Explorer.hxx>
 #endif
 
-#include "TopoShapeOpCode.h"
-#include "PartPyCXX.h"
 #include "OCCError.h"
+#include "PartPyCXX.h"
+#include "TopoShapeOpCode.h"
 
 // inclusion of the generated files (generated out of TopoShapeCompoundPy.xml)
 #include "TopoShapeCompoundPy.h"
@@ -73,7 +73,7 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
 #ifndef FC_NO_ELEMENT_MAP
-    PY_TRY {
+    try {
         getTopoShapePtr()->makECompound(getPyShapes(pcObj));
     } _PY_CATCH_OCC(return(-1))
     return 0;
@@ -157,7 +157,6 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
             builder.Add(comp, hWires->Value(i));
         }
 
-        getTopoShapePtr()->setShape(comp);
         return new TopoShapeCompoundPy(new TopoShape(comp));
 #endif
     } PY_CATCH_OCC

@@ -36,6 +36,7 @@
 #include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <App/Application.h>
+#include <App/Document.h>
 #include "FaceMaker.h"
 
 using namespace Part;
@@ -90,13 +91,11 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
     if (!axisLink.getValue())
         return false;
 
-    auto linked = axisLink.getValue();
-
     TopoDS_Shape axEdge;
     if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
-        axEdge = Feature::getTopoShape(linked, axisLink.getSubValues()[0].c_str(), true /*need element*/).getShape();
+        axEdge = Feature::getShape(axisLink.getValue(),axisLink.getSubValues()[0].c_str(),true);
     } else {
-        axEdge = Feature::getShape(linked);
+        axEdge = Feature::getShape(axisLink.getValue());
     }
 
     if (axEdge.IsNull())
@@ -152,15 +151,16 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             angle = angle_edge;
 
         //apply "midplane" symmetry
-        TopoShape sourceShape = Feature::getShape(link);
+        TopoShape sourceShape = Feature::getTopoShape(link);
         if (Symmetric.getValue()) {
             //rotate source shape backwards by half angle, to make resulting revolution symmetric to the profile
             gp_Trsf mov;
             mov.SetRotation(revAx, angle * (-0.5));
             TopLoc_Location loc(mov);
-            sourceShape.setShape(sourceShape.getShape().Moved(loc));
+            sourceShape.setShape(TopoShape::moved(sourceShape.getShape(),loc),false);
         }
 
+#ifdef FC_NO_ELEMENT_MAP
         //"make solid" processing: make faces from wires.
         Standard_Boolean makeSolid = Solid.getValue() ? Standard_True : Standard_False;
         if (makeSolid){
@@ -192,7 +192,15 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         if (revolve.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(revolve);
-        return App::DocumentObject::StdReturn;
+#else
+        TopoShape revolve(0,getDocument()->getStringHasher());
+        revolve.makERevolve(sourceShape,revAx,angle,Solid.getValue()?FaceMakerClass.getValue():0);
+        if (revolve.isNull())
+            return new App::DocumentObjectExecReturn("Resulting shape is null");
+        this->Shape.setValue(revolve);
+
+#endif
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

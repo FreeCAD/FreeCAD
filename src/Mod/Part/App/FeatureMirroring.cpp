@@ -32,8 +32,8 @@
 #endif
 
 
+#include <App/Document.h>
 #include "FeatureMirroring.h"
-
 
 using namespace Part;
 
@@ -102,10 +102,11 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
     Base::Vector3d norm = Normal.getValue();
 
     try {
+        gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
+#ifdef FC_NO_ELEMENT_MAP
         const TopoDS_Shape& shape = Feature::getShape(link);
         if (shape.IsNull())
-            Standard_Failure::Raise("Cannot mirroR empty shape");
-        gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
+            Standard_Failure::Raise("Cannot mirror empty shape");
         gp_Trsf mat;
         mat.SetMirror(ax2);
         TopLoc_Location loc = shape.Location();
@@ -113,7 +114,13 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
         mat = placement * mat;
         BRepBuilderAPI_Transform mkTrf(shape, mat);
         this->Shape.setValue(mkTrf.Shape());
-        return App::DocumentObject::StdReturn;
+#else
+        auto shape = Feature::getTopoShape(link);
+        if (shape.isNull())
+            Standard_Failure::Raise("Cannot mirror empty shape");
+        this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makEMirror(shape,ax2));
+#endif
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

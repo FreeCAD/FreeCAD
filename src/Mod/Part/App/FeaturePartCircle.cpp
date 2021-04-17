@@ -69,7 +69,7 @@ App::DocumentObjectExecReturn *Circle::execute(void)
     BRepBuilderAPI_MakeEdge clMakeEdge(circle, Base::toRadians<double>(this->Angle1.getValue()),
                                                Base::toRadians<double>(this->Angle2.getValue()));
     const TopoDS_Edge& edge = clMakeEdge.Edge();
-    this->Shape.setValue(edge);
+    this->Shape.setValue(edge,false);
     return Primitive::execute();
 }
 

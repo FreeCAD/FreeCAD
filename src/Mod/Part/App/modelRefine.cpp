@@ -1128,6 +1128,11 @@ bool FaceUniter::process()
                     it->second = sew.Modified(it->second);
                     break;
                 }
+                else if (sew.IsModifiedSubShape(it->second))
+                {
+                    it->second = sew.ModifiedSubShape(it->second);
+                    break;
+                }
             }
         }
         else

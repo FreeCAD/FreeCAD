@@ -59,6 +59,11 @@ short Compound::mustExecute() const
 App::DocumentObjectExecReturn *Compound::execute(void)
 {
     try {
+        // avoid duplicates without changing the order
+        // See also ViewProviderCompound::updateData
+        std::set<DocumentObject*> tempLinks;
+
+#ifdef FC_NO_ELEMENT_MAP
         std::vector<ShapeHistory> history;
         int countFaces = 0;
 
@@ -66,11 +71,8 @@ App::DocumentObjectExecReturn *Compound::execute(void)
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
 
-        // avoid duplicates without changing the order
-        // See also ViewProviderCompound::updateData
-        std::set<DocumentObject*> tempLinks;
-
         const std::vector<DocumentObject*>& links = Links.getValues();
+        std::vector<TopoShape> shapes;
         for (std::vector<DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
             if (*it) {
                 auto pos = tempLinks.insert(*it);
@@ -98,8 +100,19 @@ App::DocumentObjectExecReturn *Compound::execute(void)
         prop.setValues(history);
         prop.setContainer(this);
         prop.touch();
+#else
+        std::vector<TopoShape> shapes;
+        for(auto obj : Links.getValues()) {
+            if(!tempLinks.insert(obj).second)
+                continue;
+            auto sh = Feature::getTopoShape(obj);
+            if(!sh.isNull())
+                shapes.push_back(sh);
+        }
+        this->Shape.setValue(TopoShape().makECompound(shapes));
+#endif
 
-        return App::DocumentObject::StdReturn;
+        return Part::Feature::execute();
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

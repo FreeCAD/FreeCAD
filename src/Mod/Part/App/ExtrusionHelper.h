@@ -28,10 +28,45 @@
 #include <vector>
 #include <gp_Dir.hxx>
 #include <TopoDS_Shape.hxx>
+#include <App/StringHasher.h>
 #include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {
+
+class TopoShape;
+
+/**
+ * @brief The ExtrusionParameters struct is supposed to be filled with final
+ * extrusion parameters, after resolving links, applying mode logic,
+ * reversing, etc., and be passed to extrudeShape.
+ */
+struct ExtrusionParameters {
+    gp_Dir dir;
+    double lengthFwd;
+    double lengthRev;
+    bool solid;
+    bool innertaper;
+    bool usepipe;
+    bool linearize;
+    double taperAngleFwd; //in radians
+    double taperAngleRev;
+    double innerTaperAngleFwd; //in radians
+    double innerTaperAngleRev;
+    std::string faceMakerClass;
+    ExtrusionParameters()
+        : lengthFwd(0)
+        , lengthRev(0)
+        , solid(false)
+        , innertaper(false)
+        , usepipe(false)
+        , linearize(false)
+        , taperAngleFwd(0)
+        , taperAngleRev(0)
+        , innerTaperAngleFwd(0)
+        , innerTaperAngleRev(0)
+    {}// constructor to keep garbage out
+};
 
 class PartExport ExtrusionHelper
 {
@@ -50,6 +85,7 @@ public:
                           bool isSolid,
                           std::list<TopoDS_Shape>& drafts,
                           bool isPartDesign);
+
     /**
      * @brief checkInnerWires: Checks what wires are inner ones by taking a set of prisms created with every wire.
      * The prisms are cut from each other. If the moment of inertia thereby changes, the prism wire is an inner wire.
@@ -67,6 +103,12 @@ public:
                                          double offset,
                                          bool isSecond,
                                          TopoDS_Wire& result);
+
+    /** Same as makeDraft() with support of element mapping
+     */
+    static void makEDraft(const ExtrusionParameters& params, const TopoShape&, 
+            std::vector<TopoShape>&, App::StringHasherRef hasher);
+
 };
 
 } //namespace Part
