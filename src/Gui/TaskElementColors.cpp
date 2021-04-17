@@ -40,9 +40,8 @@
 #include "Document.h"
 #include "FileDialog.h"
 #include "Selection.h"
-#include "SelectionObject.h"
+#include "ViewParams.h"
 #include "ViewProviderLink.h"
-
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
@@ -59,7 +58,6 @@ public:
     Document *vpDoc;
     std::map<std::string,QListWidgetItem*> elements;
     std::vector<QListWidgetItem*> items;
-    std::string hiddenSub;
     Connection connectDelDoc;
     Connection connectDelObj;
     QPixmap px;
@@ -196,31 +194,108 @@ public:
     }
 
     void accept() {
-        if(touched && ui->recompute->isChecked()) {
-            auto obj = vp->getObject();
-            obj->touch();
-            obj->getDocument()->recompute(obj->getInListRecursive());
+        if(touched) {
             touched = false;
+            if(ui->recompute->isChecked()) {
+                auto obj = vp->getObject();
+                auto objs = obj->getInListRecursive();
+                objs.push_back(obj);
+                for (auto o : objs)
+                    o->enforceRecompute();
+                obj->getDocument()->recompute(objs);
+            } else {
+                for (auto obj : App::Document::getDependencyList(
+                                {vp->getObject()}, App::Document::DepSort))
+                {
+                    auto vp = Application::Instance->getViewProvider(obj);
+                    if (vp)
+                        vp->updateColors();
+                }
+            }
         }
         App::GetApplication().closeActiveTransaction();
     }
 
     void removeAll() {
-        if(elements.size()) {
-            hiddenSub.clear();
-            ui->elementList->clear();
-            elements.clear();
-            apply();
+        if(elements.empty())
+            return;
+
+        auto itFace = elements.find("Face");
+        auto itEdge = elements.find("Edge");
+        auto itVertex = elements.find("Vertex");
+        bool revert = false;
+        for (auto & v : elements) {
+            if (itFace != elements.end() && v.first != "Face" && boost::starts_with(v.first, "Face")) {
+                revert = true;
+                v.second->setData(Qt::UserRole, itFace->second->data(Qt::UserRole));
+            }
+            if (itEdge != elements.end() && v.first != "Edge" && boost::starts_with(v.first, "Edge")) {
+                revert = true;
+                v.second->setData(Qt::UserRole, itEdge->second->data(Qt::UserRole));
+            }
+            if (itVertex != elements.end() && v.first != "Vertex" && boost::starts_with(v.first, "Vertex")) {
+                revert = true;
+                v.second->setData(Qt::UserRole, itVertex->second->data(Qt::UserRole));
+            }
         }
+        if (revert)
+            apply();
+        ui->elementList->clear();
+        elements.clear();
+        apply();
     }
 
     void removeItems() {
+        std::vector<QListWidgetItem*> faces;
+        std::vector<QListWidgetItem*> edges;
+        std::vector<QListWidgetItem*> vertexes;
+        std::vector<std::string> subs;
         for(auto item : ui->elementList->selectedItems()) {
-            std::string sub = qPrintable(item->data(Qt::UserRole+1).value<QString>());
-            if(sub == hiddenSub)
-                hiddenSub.clear();
-            elements.erase(sub);
-            delete item;
+            subs.push_back(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
+            if (subs.back() != "Face" && boost::starts_with(subs.back(), "Face"))
+                faces.push_back(item);
+            else if (subs.back() != "Edge" && boost::starts_with(subs.back(), "Edge"))
+                edges.push_back(item);
+            else if (subs.back() != "Vertex" && boost::starts_with(subs.back(), "Vertex"))
+                vertexes.push_back(item);
+        }
+
+        // In order to better support backward compatibility, Part view provider
+        // still allow user to set color through DiffuseColor. So when doing
+        // color mapping, it will not touch any element color that are not
+        // explicitly set through ColoredElements property. Therefore, when the
+        // user removes colored elements here, we must explicitly revert only
+        // those element too. Same for the removeAll() above.
+        if (faces.size()) {
+            auto it = elements.find("Face");
+            if (it != elements.end()) {
+                for (auto item : faces)
+                    item->setData(Qt::UserRole, it->second->data(Qt::UserRole));
+            }
+        }
+        if (edges.size()) {
+            auto it = elements.find("Edge");
+            if (it != elements.end()) {
+                for (auto item : edges)
+                    item->setData(Qt::UserRole, it->second->data(Qt::UserRole));
+            }
+        }
+        if (vertexes.size()) {
+            auto it = elements.find("Vertex");
+            if (it != elements.end()) {
+                for (auto item : vertexes)
+                    item->setData(Qt::UserRole, it->second->data(Qt::UserRole));
+            }
+        }
+        apply();
+
+        // now remove the items
+        for (auto & sub : subs) {
+            auto it = elements.find(sub);
+            if (it != elements.end()) {
+                delete it->second;
+                elements.erase(it);
+            }
         }
         apply();
     }
@@ -287,8 +362,6 @@ public:
         }
         for(auto item : ui->elementList->selectedItems()) {
             std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
-            if(ViewProvider::hasHiddenMarker(name.c_str()))
-                continue;
             auto &v = sels[name];
             if(!v)
                 Selection().addSelection(editDoc.c_str(),
@@ -317,12 +390,8 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     if(noHide)
         d->ui->hideSelection->setVisible(false);
 
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute",true));
-    d->ui->onTop->setChecked(hPart->GetBool("ColorOnTop",true));
-    if(d->ui->onTop->isChecked())
-        d->vpParent->OnTopWhenSelected.setValue(3);
+    d->ui->recompute->setChecked(ViewParams::instance()->getColorRecompute());
+    d->ui->onTop->setChecked(ViewParams::instance()->getColorOnTop());
 
     Selection().addSelectionGate(d, ResolveMode::NoResolve);
 
@@ -342,15 +411,11 @@ ElementColors::~ElementColors()
 }
 
 void ElementColors::on_recompute_clicked(bool checked) {
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    hPart->SetBool("ColorRecompute",checked);
+    ViewParams::instance()->setColorRecompute(checked);
 }
 
 void ElementColors::on_onTop_clicked(bool checked) {
-    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    hPart->SetBool("ColorOnTop",checked);
+    ViewParams::instance()->setColorOnTop(checked);
     d->vpParent->OnTopWhenSelected.setValue(checked?3:d->onTopMode);
 }
 
@@ -414,8 +479,12 @@ void ElementColors::on_addSelection_clicked()
                 break;
             }
             for(auto &sub : subs) {
-                if(boost::starts_with(sub,d->editSub))
-                    d->addItem(-1,sub.c_str()+d->editSub.size(),true);
+                if(!boost::starts_with(sub,d->editSub))
+                    continue;
+                std::string s(sub.c_str()+d->editSub.size());
+                if(s.empty() || s.back() == '.')
+                    s += "Face";
+                d->addItem(-1,s.c_str(),true);
             }
             break;
         }
@@ -468,23 +537,13 @@ void ElementColors::changeEvent(QEvent *e)
 void ElementColors::leaveEvent(QEvent *e) {
     QWidget::leaveEvent(e);
     Selection().rmvPreselect();
-    if(d->hiddenSub.size()) {
-        d->vp->partialRender({d->hiddenSub},false);
-        d->hiddenSub.clear();
-    }
 }
 
 void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
     std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
-    if(d->hiddenSub.size()) {
-        d->vp->partialRender({d->hiddenSub},false);
-        d->hiddenSub.clear();
-    }
-    if(ViewProvider::hasHiddenMarker(name.c_str())) {
-        d->hiddenSub = name;
-        d->vp->partialRender({name},true);
-        name.resize(name.size()-ViewProvider::hiddenMarker().size());
-    }
+    const char *hidden = ViewProvider::hasHiddenMarker(name.c_str());
+    if(hidden)
+        name.resize(name.size()-std::strlen(hidden));
     Selection().setPreselect(d->editDoc.c_str(),
             d->editObj.c_str(), (d->editSub+name).c_str(),0,0,0,
             d->ui->onTop->isChecked() ? Gui::SelectionChanges::MsgSource::TreeView

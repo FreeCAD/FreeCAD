@@ -905,7 +905,6 @@ void LinkBaseExtension::monitorOnChangeCopyObjects(
     if (getLinkCopyOnChangeValue() == CopyOnChangeDisabled)
         return;
     for(auto obj : objs) {
-        obj->setStatus(App::ObjectStatus::TouchOnColorChange, true);
         copyOnChangeSrcConns.push_back(obj->signalChanged.connect(
             [this](const DocumentObject &, const Property &) {
                 if (auto prop = this->getLinkCopyOnChangeTouchedProperty()) {
