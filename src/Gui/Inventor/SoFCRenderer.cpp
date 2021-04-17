@@ -732,13 +732,21 @@ SoFCRenderer::setHighlight(VertexCacheMap && caches)
         PRIVATE(this)->highlightbbox.extendBy(PRIVATE(this)->hlentries.back().bbox);
       }
 
-      if (!fulltransp && (!material.pervertexcolor
-                          || ventry.cache->hasOpaqueParts()))
-        PRIVATE(this)->opaquehighlight.emplace_back(idx);
+      if (material.overrideflags.test(Material::FLAG_TRANSPARENCY)) {
+        if ((material.diffuse & 0xff) != 0xff)
+          PRIVATE(this)->transphighlight.emplace_back(idx);
+        else
+          PRIVATE(this)->opaquehighlight.emplace_back(idx);
+      }
+      else {
+        if (!fulltransp && (!material.pervertexcolor
+                            || ventry.cache->hasOpaqueParts()))
+          PRIVATE(this)->opaquehighlight.emplace_back(idx);
 
-      if (fulltransp || (material.pervertexcolor
-                          && ventry.cache->hasTransparency()))
-        PRIVATE(this)->transphighlight.emplace_back(idx);
+        if (fulltransp || (material.pervertexcolor
+                            && ventry.cache->hasTransparency()))
+          PRIVATE(this)->transphighlight.emplace_back(idx);
+      }
     }
   }
   PRIVATE(this)->applyKeys(PRIVATE(this)->highlightkeys);
