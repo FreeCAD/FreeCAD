@@ -227,6 +227,20 @@ private:
 };
 
 
+/** Convenient class to auto update colors for all affect objects
+ */
+class GuiExport ColorUpdater
+{
+public:
+    ColorUpdater();
+    ~ColorUpdater();
+    static void addObject(App::DocumentObject *obj);
+private:
+    /// Private new operator to prevent heap allocation
+    void* operator new(size_t size);
+};
+
+
 } // namespace Gui
 
 #endif // GUI_VIEWPROVIDER_DOCUMENTOBJECT_H

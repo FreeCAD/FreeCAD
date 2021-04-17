@@ -54,6 +54,58 @@ FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 
+///////////////////////////////////////////////////////////////////////////
+//
+static int _ColorUpdateCounter;
+static std::set<App::DocumentObjectT> _ColorChangedObjects;
+
+ColorUpdater::ColorUpdater()
+{
+    if (_ColorUpdateCounter >= 0)
+        ++_ColorUpdateCounter;
+}
+
+ColorUpdater::~ColorUpdater()
+{
+    if (_ColorUpdateCounter <= 0
+            || --_ColorUpdateCounter > 0
+            || _ColorChangedObjects.empty())
+        return;
+    // To prevent infinite recursive update
+    _ColorUpdateCounter = -1;
+    try {
+        std::set<App::DocumentObject*> inset;
+        for (const auto &objT : _ColorChangedObjects) {
+            if (auto obj = objT.getObject()) {
+                if (!obj->isRecomputing() && !obj->isTouched())
+                    obj->getInListEx(inset, true);
+            }
+        }
+        std::vector<App::DocumentObject*> objs(inset.begin(), inset.end());
+        for (auto obj : App::Document::getDependencyList(objs, App::Document::DepSort)) {
+            if (obj->isRecomputing() || obj->isTouched() || !inset.count(obj))
+                continue;
+            if (auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                        Gui::Application::Instance->getViewProvider(obj))) {
+                vp->checkColorUpdate();
+            }
+        }
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    } catch (...)
+    {}
+    _ColorChangedObjects.clear();
+    _ColorUpdateCounter = 0;
+}
+
+void ColorUpdater::addObject(App::DocumentObject *obj)
+{
+    if (_ColorUpdateCounter && obj && !obj->isRecomputing() && !obj->isTouched())
+        _ColorChangedObjects.emplace(obj);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////
 
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
@@ -97,16 +149,12 @@ void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::T
 void ViewProviderDocumentObject::startRestoring()
 {
     hide();
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        ext->extensionStartRestoring();
+    callExtension(&ViewProviderExtension::extensionStartRestoring);
 }
 
 void ViewProviderDocumentObject::finishRestoring()
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        ext->extensionFinishRestoring();
+    callExtension(&ViewProviderExtension::extensionFinishRestoring);
 }
 
 bool ViewProviderDocumentObject::isAttachedToDocument() const
@@ -278,6 +326,8 @@ void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& te
 void ViewProviderDocumentObject::setModeSwitch() {
     if(isShowable())
         ViewProvider::setModeSwitch();
+    else
+        callExtension(&ViewProviderExtension::extensionModeSwitchChange);
 }
 
 void ViewProviderDocumentObject::show(void)
@@ -357,15 +407,12 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     }
 
     //attach the extensions
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionAttach(pcObj);
+    callExtension(&ViewProviderExtension::extensionAttach,pcObj);
 }
 
 void ViewProviderDocumentObject::reattach(App::DocumentObject *pcObj) {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionReattach(pcObj);
+    setStatus(Detach, false);
+    callExtension(&ViewProviderExtension::extensionReattach,pcObj);
 }
 
 void ViewProviderDocumentObject::update(const App::Property* prop)
@@ -505,11 +552,8 @@ PyObject* ViewProviderDocumentObject::getPyObject()
 bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(ext->extensionCanDropObjectEx(obj,owner,subname,elements))
-            return true;
-    }
+    if(queryExtension(&ViewProviderExtension::extensionCanDropObjectEx,obj,owner,subname,elements))
+        return true;
     if(obj && obj->getDocument()!=getObject()->getDocument())
         return false;
     return canDropObject(obj);
@@ -583,10 +627,8 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
 {
     if(!isSelectable())
         return false;
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        if(ext->extensionGetElementPicked(pp,subname))
-            return true;
+    if(queryExtension(&ViewProviderExtension::extensionGetElementPicked,pp,subname))
+        return true;
 
     auto childRoot = getChildRoot();
     int idx;

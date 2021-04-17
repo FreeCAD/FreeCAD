@@ -194,25 +194,6 @@ public:
     }
 
     void accept() {
-        if(touched) {
-            touched = false;
-            if(ui->recompute->isChecked()) {
-                auto obj = vp->getObject();
-                auto objs = obj->getInListRecursive();
-                objs.push_back(obj);
-                for (auto o : objs)
-                    o->enforceRecompute();
-                obj->getDocument()->recompute(objs);
-            } else {
-                for (auto obj : App::Document::getDependencyList(
-                                {vp->getObject()}, App::Document::DepSort))
-                {
-                    auto vp = Application::Instance->getViewProvider(obj);
-                    if (vp)
-                        vp->updateColors();
-                }
-            }
-        }
         App::GetApplication().closeActiveTransaction();
     }
 
@@ -390,7 +371,6 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     if(noHide)
         d->ui->hideSelection->setVisible(false);
 
-    d->ui->recompute->setChecked(ViewParams::instance()->getColorRecompute());
     d->ui->onTop->setChecked(ViewParams::instance()->getColorOnTop());
 
     Selection().addSelectionGate(d, ResolveMode::NoResolve);
@@ -408,10 +388,6 @@ ElementColors::~ElementColors()
     d->connectDelDoc.disconnect();
     d->connectDelObj.disconnect();
     Selection().rmvSelectionGate();
-}
-
-void ElementColors::on_recompute_clicked(bool checked) {
-    ViewParams::instance()->setColorRecompute(checked);
 }
 
 void ElementColors::on_onTop_clicked(bool checked) {

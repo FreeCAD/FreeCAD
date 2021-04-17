@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="ViewProviderDocumentObjectPy"
+    Name="ViewProviderPartExtPy"
+    Twin="ViewProviderPartExt"
+    TwinPointer="ViewProviderPartExt"
+    Include="Mod/Part/Gui/ViewProviderExt.h"
+    Namespace="PartGui"
+    FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+    FatherNamespace="Gui">
+    <Documentation>
+      <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+      <UserDocu>This is the father of all Part ViewProvider classes</UserDocu>
+    </Documentation>
+    <Methode Name="mapShapeColors">
+        <Documentation>
+            <UserDocu>
+mapShapeColors(sourceDoc=None): Update shape colors based on the element map inside the shape
+
+sourceDoc: the document of the source object in case the shape comes from another document. 
+           If None, then use the owner document
+            </UserDocu>
+        </Documentation>
+    </Methode>
+    <Attribute Name="ShapePropertyName">
+        <Documentation>
+            <UserDocu>Set/get shape property name</UserDocu>
+        </Documentation>
+		<Parameter Name="ShapePropertyName" Type="String" />
+    </Attribute>
+    <Attribute Name="ElementColors">
+        <Documentation>
+            <UserDocu>Set/get element colors as a dict(name:color)</UserDocu>
+        </Documentation>
+		<Parameter Name="ElementColors" Type="Dict" />
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
