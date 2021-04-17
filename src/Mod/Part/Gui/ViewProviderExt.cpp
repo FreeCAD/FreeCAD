@@ -1354,7 +1354,7 @@ static App::Color getElementColor(App::Color color,
         // or may not contain a valid element name for the previous step. We can
         // only decide after another loop hits here.
         tag = shape.getElementHistory(mapped,&original,&history);
-        Data::IndexedName element = shape.getIndexedName(history.empty()?original:history.back());
+        Data::IndexedName element = shape.getIndexedName(history.empty()?mapped:history.back());
         auto idx = Part::TopoShape::shapeTypeAndIndex(element);
         if(idx.second>0 && idx.second<=(int)shape.countSubShapes(idx.first)) {
             if(idx.first==type) {
