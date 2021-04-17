@@ -872,17 +872,30 @@ private:
     {
         PyObject *pcObj = nullptr;
         char *name = "Shape";
-        if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(TopoShapePy::Type), &pcObj, &name))
+        if (!PyArg_ParseTuple(args.ptr(), "O|s", &pcObj, &name))
             throw Py::Exception();
 
         App::Document *pcDoc = App::GetApplication().getActiveDocument();
         if (!pcDoc)
             pcDoc = App::GetApplication().newDocument();
-        TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObj);
+        App::Document *pcSrcDoc = nullptr;
+        TopoShape shape;
+        if (PyObject_TypeCheck(pcObj, &TopoShapePy::Type))
+            shape = *static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr();
+        else if (PyObject_TypeCheck(pcObj, &GeometryPy::Type))
+            shape = static_cast<GeometryPy*>(pcObj)->getGeometryPtr()->toShape();
+        else if (PyObject_TypeCheck(pcObj, &App::DocumentObjectPy::Type)) {
+            auto obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
+            pcSrcDoc = obj->getDocument();
+            shape = Feature::getTopoShape(obj);
+        }
+        else
+            throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
         // copy the data
-        pcFeature->Shape.setValue(*pShape->getTopoShapePtr());
-        pcDoc->recompute();
+        pcFeature->Shape.setValue(shape);
+        pcFeature->signalMapShapeColors(pcSrcDoc);
+        pcFeature->purgeTouched();
         return Py::asObject(pcFeature->getPyObject());
     }
     Py::Object getFacets(const Py::Tuple& args)

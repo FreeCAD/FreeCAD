@@ -63,6 +63,7 @@ public:
     virtual ~Feature();
 
     PropertyPartShape Shape;
+    App::PropertyLinkSubHidden ColoredElements;
 
     /** @name methods override feature */
     //@{
@@ -153,6 +154,12 @@ public:
                                                                double atol = 1e-10) const override;
 
     virtual const std::vector<const char*>& getElementTypes(bool all=false) const override;
+
+    boost::signals2::signal<void (App::Document *)> signalMapShapeColors;
+
+    static Feature *create(const TopoShape &s,
+                           const char *name = nullptr,
+                           App::Document *doc = nullptr);
 
 protected:
     /// recompute only this object

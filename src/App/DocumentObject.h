@@ -66,7 +66,6 @@ enum ObjectStatus {
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
     RecomputeExtension = 19, // mark the object to recompute its extensions
-    TouchOnColorChange = 20, // inform view provider touch object on color change
 };
 
 /** Return object for feature execution

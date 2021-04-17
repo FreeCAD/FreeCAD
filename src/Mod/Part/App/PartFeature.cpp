@@ -95,6 +95,8 @@ PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 Feature::Feature(void)
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
+    ADD_PROPERTY_TYPE(ColoredElements, (0), "",
+            (App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly|App::Prop_Output),"");
 }
 
 Feature::~Feature()
@@ -1301,6 +1303,21 @@ const std::vector<const char *>& Feature::getElementTypes(bool all) const
         res.push_back(TopoShape::shapeName(TopAbs_COMPSOLID).c_str());
         res.push_back(TopoShape::shapeName(TopAbs_COMPOUND).c_str());
     }
+    return res;
+}
+
+Feature *Feature::create(const TopoShape &s, const char *name, App::Document *doc)
+{
+    if (!name || !name[0])
+        name = "Shape";
+    if (!doc) {
+        doc = App::GetApplication().getActiveDocument();
+        if (!doc)
+            doc = App::GetApplication().newDocument();
+    }
+    auto res = static_cast<Part::Feature*>(doc->addObject("Part::Feature", name));
+    res->Shape.setValue(s);
+    res->purgeTouched();
     return res;
 }
 
