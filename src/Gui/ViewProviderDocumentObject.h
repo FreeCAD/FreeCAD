@@ -160,6 +160,8 @@ public:
     /** Start the edit mode with ViewProvider::Default */
     void startDefaultEditMode();
 
+    virtual void checkColorUpdate() {}
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.

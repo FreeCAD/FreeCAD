@@ -411,6 +411,10 @@ public:
     virtual void setElementColors(const std::map<std::string, App::Color> &colors) {
         (void)colors;
     }
+    virtual void updateColors(App::Document *sourceDoc=0, bool forceColorMap=false) {
+        (void)sourceDoc;
+        (void)forceColorMap;
+    }
     static const std::string &hiddenMarker();
     static const char *hasHiddenMarker(const char *subname);
     //@}
