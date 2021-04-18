@@ -297,12 +297,13 @@ private:
         if (!vp)
             return;
         if(colors.empty()) {
-            // vp->MapFaceColor.setValue(true);
-            // vp->MapLineColor.setValue(true);
-            // vp->updateColors(0,true);
+            vp->MapFaceColor.setValue(true);
+            vp->MapLineColor.setValue(true);
+            vp->MapTransparency.setValue(true);
+            vp->updateColors(0,true);
             return;
         }
-        // vp->MapFaceColor.setValue(false);
+        vp->MapFaceColor.setValue(false);
         if(colors.size() == 1) {
             vp->ShapeColor.setValue(colors.front());
             vp->Transparency.setValue(100 * colors.front().a);
@@ -315,7 +316,7 @@ private:
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
         if (!vp)
             return;
-        // vp->MapLineColor.setValue(false);
+        vp->MapLineColor.setValue(false);
         if(colors.size() == 1)
             vp->LineColor.setValue(colors.front());
         else
@@ -345,8 +346,7 @@ private:
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if(!vp)
             return;
-        (void)colors;
-        // vp->setElementColors(colors);
+        vp->setElementColors(colors);
     }
 };
 
@@ -399,10 +399,11 @@ private:
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
-        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",nullptr};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!i",
+        PyObject *legacy = Py_None;
+        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode","legacy",nullptr};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sO!O!O!iO",
                     kwd_list,"utf-8",&Name,&DocName,&PyBool_Type,&importHidden,&PyBool_Type,&merge,
-                    &PyBool_Type,&useLinkGroup,&mode))
+                    &PyBool_Type,&useLinkGroup,&mode,&legacy))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -520,6 +521,8 @@ private:
                 ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden) ? true : false);
             if (useLinkGroup != Py_None)
                 ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup) ? true : false);
+            if (legacy != Py_None)
+                ocaf.setUseLegacyImporter(PyObject_IsTrue(legacy));
             ocaf.setMode(mode);
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
