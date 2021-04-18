@@ -63,6 +63,7 @@ RuledSurface::RuledSurface()
     ADD_PROPERTY_TYPE(Curve1,(0),"Ruled Surface",App::Prop_None,"Curve of ruled surface");
     ADD_PROPERTY_TYPE(Curve2,(0),"Ruled Surface",App::Prop_None,"Curve of ruled surface");
     ADD_PROPERTY_TYPE(Orientation,((long)0),"Ruled Surface",App::Prop_None,"Orientation of ruled surface");
+    ADD_PROPERTY_TYPE(_Version,(0),"Base",App::Prop_Hidden, "");
     Orientation.setEnums(OrientationEnums);
 }
 
@@ -75,6 +76,11 @@ short RuledSurface::mustExecute() const
     if (Orientation.isTouched())
         return 1;
     return 0;
+}
+
+void RuledSurface::setupObject()
+{
+    _Version.setValue(1);
 }
 
 void RuledSurface::onChanged(const App::Property* prop)
@@ -271,8 +277,17 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
             if(shapes.back().isNull())
                 return new App::DocumentObjectExecReturn("Invalid link.");
         }
-        this->Shape.setValue(TopoShape(0,getDocument()->getStringHasher()).makERuledSurface(
-                    shapes,Orientation.getValue()));
+        TopoShape res(0, getDocument()->getStringHasher());
+        res.makERuledSurface(shapes, Orientation.getValue());
+        if (_Version.getValue() > 0) {
+            if (!res.getShape().Location().IsIdentity()) {
+                // wrap the result into a compound to preserve its placement, and
+                // not distrub the object's user defined placement
+                res.makECompound({res});
+            }
+        } else 
+            Placement.setValue(res.getPlacement());
+        this->Shape.setValue(res);
 
 #endif
         return Part::Feature::execute();

@@ -41,6 +41,7 @@ public:
     App::PropertyEnumeration Orientation;
     App::PropertyLinkSub Curve1;
     App::PropertyLinkSub Curve2;
+    App::PropertyInteger _Version;
 
     /** @name methods override feature */
     //@{
@@ -50,6 +51,7 @@ public:
     const char* getViewProviderName(void) const {
         return "PartGui::ViewProviderRuledSurface";
     }
+    void setupObject();
     //@}
 
 protected:
