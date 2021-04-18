@@ -74,12 +74,12 @@ public:
     virtual ~ImportOCAF2();
     App::DocumentObject* loadShapes();
     void setMerge(bool enable) { merge=enable;};
+    void setUseLegacyImporter(bool enable) { useLegacyImporter=enable; }
     void setUseLinkGroup(bool enable) { useLinkGroup=enable; }
     void setBaseName(bool enable) { useBaseName=enable; }
     void setImportHiddenObject(bool enable) {importHidden=enable;}
     void setReduceObjects(bool enable) {reduceObjects=enable;}
     void setShowProgress(bool enable) {showProgress=enable;}
-    void setExpandCompound(bool enable) {expandCompound=enable;}
 
     enum ImportMode {
         SingleDoc = 0,
@@ -104,6 +104,8 @@ private:
         int free = true;
     };
 
+    struct ColorInfo;
+
     App::DocumentObject *loadShape(App::Document *doc, TDF_Label label, 
             const TopoDS_Shape &shape, bool baseOnly=false, bool newDoc=true);
     App::Document *getDocument(App::Document *doc, TDF_Label label);
@@ -116,9 +118,8 @@ private:
             const boost::dynamic_bitset<> &visibilities, bool canReduce=false);
     bool getColor(const TopoDS_Shape &shape, Info &info, bool check=false, bool noDefault=false);
     void getSHUOColors(TDF_Label label, std::map<std::string,App::Color> &colors, bool appendFirst);
-    void setObjectName(Info &info, TDF_Label label);
+    void setObjectName(Info &info, TDF_Label label, bool checkExistingName=false);
     std::string getLabelName(TDF_Label label);
-    App::DocumentObject *expandShape(App::Document *doc, TDF_Label label, const TopoDS_Shape &shape);
 
     virtual void applyEdgeColors(Part::Feature*, const std::vector<App::Color>&) {}
     virtual void applyFaceColors(Part::Feature*, const std::vector<App::Color>&) {}
@@ -147,12 +148,12 @@ private:
     Handle(XCAFDoc_ColorTool) aColorTool;
     bool merge;
     std::string default_name;
+    bool useLegacyImporter;
     bool useLinkGroup;
     bool useBaseName;
     bool importHidden;
     bool reduceObjects;
     bool showProgress;
-    bool expandCompound;
 
     int mode;
     std::string filePath;
@@ -160,6 +161,16 @@ private:
     std::unordered_map<TopoDS_Shape, Info, ShapeHasher> myShapes;
     std::unordered_map<TDF_Label, std::string, LabelHasher> myNames;
     std::unordered_map<App::DocumentObject*, App::PropertyPlacement*> myCollapsedObjects;
+
+    struct DocumentInfo {
+        App::Document *doc;
+        std::vector<App::DocumentObject*> &children;
+        DocumentInfo(App::Document *d, std::vector<App::DocumentObject*> &objs)
+            :doc(d), children(objs)
+        {}
+    };
+    std::vector<DocumentInfo> myDocumentStack;
+    std::vector<App::Document*> myNewDocuments;
 
     App::Color defaultFaceColor;
     App::Color defaultEdgeColor;
