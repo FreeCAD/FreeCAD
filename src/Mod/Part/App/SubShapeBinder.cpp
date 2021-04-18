@@ -134,7 +134,7 @@ SubShapeBinder::~SubShapeBinder() {
 }
 
 void SubShapeBinder::setupObject() {
-    _Version.setValue(7);
+    _Version.setValue(8);
     checkPropertyStatus();
 }
 
@@ -562,12 +562,25 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 if (!done) {
                     try {
                         result = result.makEFace(0);
+                        done = true;
                     } catch(Base::Exception & e) {
                         FC_LOG(getFullName() << " Failed to make face: " << e.what());
                     } catch(Standard_Failure & e) {
                         FC_LOG(getFullName() << " Failed to make face: " << e.GetMessageString());
                     } catch(...) {
                         FC_LOG(getFullName() << " Failed to make face");
+                    }
+
+                    if (!done && _Version.getValue() > 7) {
+                        try {
+                            result = result.makERuledSurface(result.getSubTopoShapes(TopAbs_WIRE));
+                        } catch(Base::Exception & e) {
+                            FC_LOG(getFullName() << " Failed to make ruled face: " << e.what());
+                        } catch(Standard_Failure & e) {
+                            FC_LOG(getFullName() << " Failed to make ruled face: " << e.GetMessageString());
+                        } catch(...) {
+                            FC_LOG(getFullName() << " Failed to make ruled face");
+                        }
                     }
                 }
             }
