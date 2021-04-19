@@ -48,6 +48,8 @@ public:
     enum MigrationType {
             None                    = 0,
             Construction            = 1,
+            GeometryId              = 2,
+            ExternalReference       = 3,
             NumMigrationType        // Must be the last
     };
 
@@ -60,12 +62,26 @@ public:
 
 
     virtual bool getConstruction() const {return ConstructionState;}
-    virtual void setConstruction(bool construction) {ConstructionState = construction;}
+    virtual void setConstruction(bool construction)
+        {ConstructionState = construction; setMigrationType(Construction);}
+
+    long getId() const {return Id;}
+    void setId(long id) {Id = id; setMigrationType(GeometryId);}
+
+    const std::string &getRef() const {return Ref;}
+    int getRefIndex() const {return RefIndex;}
+    unsigned long getFlags() const {return Flags;}
+    void setReference(const char *ref, int index, unsigned long flags) {
+        Ref = ref ? ref : "";
+        RefIndex = index;
+        Flags = flags;
+        setMigrationType(ExternalReference);
+    }
 
     virtual bool testMigrationType(int flag) const { return GeometryMigrationFlags.test((size_t)(flag)); };
-    virtual void setMigrationType(int flag, bool v=true) { GeometryMigrationFlags.set((size_t)(flag), v); };
 
 protected:
+    virtual void setMigrationType(int flag, bool v=true) { GeometryMigrationFlags.set((size_t)(flag), v); };
     virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
 
 private:
@@ -75,7 +91,10 @@ private:
     using MigrationTypeFlagType = std::bitset<32>;
     MigrationTypeFlagType           GeometryMigrationFlags;
     bool                            ConstructionState;
-
+    long                            Id = 0;
+    int                             RefIndex = -1;
+    unsigned long                   Flags = 0;
+    std::string                     Ref;
 };
 
 } //namespace Part
