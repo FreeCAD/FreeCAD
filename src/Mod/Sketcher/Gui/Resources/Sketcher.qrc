@@ -170,6 +170,12 @@
         <file>icons/geometry/Sketcher_Split.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
         <file>icons/geometry/Sketcher_Trimming.svg</file>
+        <file>icons/geometry/Sketcher_Defining.svg</file>
+        <file>icons/geometry/Sketcher_Detach.svg</file>
+        <file>icons/geometry/Sketcher_Attach.svg</file>
+        <file>icons/geometry/Sketcher_ToggleFreeze.svg</file>
+        <file>icons/geometry/Sketcher_Sync.svg</file>
+        <file>icons/geometry/Sketcher_FixExternal.svg</file>
     </qresource>
     <qresource>
         <file>icons/obsolete/Sketcher_ConstrainCoincident_old.svg</file>
@@ -237,6 +243,9 @@
         <file>icons/tools/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/tools/Sketcher_Symmetry.svg</file>
+        <file>icons/tools/Sketcher_SwapID.svg</file>
+        <file>icons/tools/Sketcher_SketchExport.svg</file>
+        <file>icons/tools/Sketcher_SketchExportCompound.svg</file>
     </qresource>
     <qresource>
         <file>icons/dialogs/Sketcher_Settings.svg</file>
