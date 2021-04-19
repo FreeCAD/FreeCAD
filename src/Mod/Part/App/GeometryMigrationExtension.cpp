@@ -42,6 +42,11 @@ void GeometryMigrationExtension::copyAttributes(Part::GeometryExtension * cpy) c
     Part::GeometryExtension::copyAttributes(cpy);
     static_cast<GeometryMigrationExtension *>(cpy)->ConstructionState = this->ConstructionState;
     static_cast<GeometryMigrationExtension *>(cpy)->GeometryMigrationFlags  = this->GeometryMigrationFlags;
+
+    static_cast<GeometryMigrationExtension *>(cpy)->Id = this->Id;
+    static_cast<GeometryMigrationExtension *>(cpy)->Flags = this->Flags;
+    static_cast<GeometryMigrationExtension *>(cpy)->Ref = this->Ref;
+    static_cast<GeometryMigrationExtension *>(cpy)->RefIndex = this->RefIndex;
 }
 
 std::unique_ptr<Part::GeometryExtension> GeometryMigrationExtension::copy(void) const

@@ -91,7 +91,7 @@ public:
     virtual PyObject *getPyObject(void) override;
 
     virtual long getId() const override {return Id;}
-    virtual void setId(long id) override {Id = id;}
+    virtual void setId(long id) override;
 
     virtual InternalType::InternalType getInternalType() const override {return InternalGeometryType;}
     virtual void setInternalType(InternalType::InternalType type) override {InternalGeometryType = type;}

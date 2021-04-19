@@ -124,6 +124,8 @@ public: // Utility methods
     static void setConstruction(Part::Geometry * geometry, bool construction);
     static bool isInternalType(const Part::Geometry * geometry, InternalType::InternalType type);
     static bool getBlocked(const Part::Geometry * geometry);
+    static int getId(const Part::Geometry * geometry);
+    static void setId(Part::Geometry * geometry, int id);
 
 public:
     // Explicit deletion to show intent (not that it is needed)

@@ -70,22 +70,32 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader &reader)
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     if(reader.hasAttribute("id"))
-        Id = reader.getAttributeAsInteger("id");
+        this->setId(reader.getAttributeAsInteger("id"));
 
-    InternalGeometryType = (InternalType::InternalType) reader.getAttributeAsInteger("internalGeometryType");
+    InternalGeometryType = (InternalType::InternalType)
+        reader.getAttributeAsInteger("internalGeometryType", "0");
 
-    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
+    if (reader.hasAttribute("geometryModeFlags"))
+        GeometryModeFlags = GeometryModeFlagType(
+                reader.getAttribute("geometryModeFlags"));
 
     if(reader.hasAttribute("geometryLayer"))
         GeometryLayer = reader.getAttributeAsInteger("geometryLayer");
+}
 
+void SketchGeometryExtension::setId(long id)
+{
+    Id = id;
+    long v = _GeometryID;
+    while(v < Id && !_GeometryID.compare_exchange_weak(v, id))
+        ;
 }
 
 void SketchGeometryExtension::saveAttributes(Base::Writer &writer) const
 {
     Part::GeometryPersistenceExtension::saveAttributes(writer);
 
-    writer.Stream() // << "\" id=\"" << Id // This is removed as the stored Id is not used and it may interfere with RT's future implementation
+    writer.Stream() << "\" id=\"" << Id
                     << "\" internalGeometryType=\"" << (int) InternalGeometryType
                     << "\" geometryModeFlags=\""    << GeometryModeFlags.to_string()
                     << "\" geometryLayer=\""        << GeometryLayer;

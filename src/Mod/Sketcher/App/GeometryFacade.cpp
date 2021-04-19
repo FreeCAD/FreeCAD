@@ -136,6 +136,18 @@ void GeometryFacade::copyId(const Part::Geometry * src, Part::Geometry * dst)
     gfdst->setId(gfsrc->getId());
 }
 
+int GeometryFacade::getId(const Part::Geometry * geometry)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getId();
+}
+
+void GeometryFacade::setId(Part::Geometry * geometry, int id)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->setId(id);
+}
+
 bool GeometryFacade::getConstruction(const Part::Geometry * geometry)
 {
     throwOnNullPtr(geometry);
