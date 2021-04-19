@@ -1590,6 +1590,7 @@ StdCmdTransformManip::StdCmdTransformManip()
     sToolTipText  = QT_TR_NOOP("Transform the selected object in the 3d view");
     sStatusTip    = QT_TR_NOOP("Transform the selected object in the 3d view");
     sWhatsThis    = "Std_TransformManip";
+    sPixmap       = "Std_TransformManip";
 }
 
 void StdCmdTransformManip::activated(int iMsg)
