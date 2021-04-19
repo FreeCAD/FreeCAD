@@ -4,6 +4,13 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+# In previous versions this target copied mtextedit.h to the binary directory that causes
+# automoc to generate linking errors.
+if (EXISTS ${CMAKE_CURRENT_BINARY_DIR}/mtextedit.h)
+    file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/mtextedit.h)
+    execute_process(COMMAND "${CMAKE_COMMAND}" -E touch_nocreate "${CMAKE_CURRENT_SOURCE_DIR}/mtextedit.h")
+endif()
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -83,11 +90,6 @@ SET(MRTE_SRCS
     mtextedit.cpp
     mtextedit.h
 )
-
-SET(MRTE_HDRS 
-    mtextedit.h
-)
-
 
 SET(TechDrawGui_SRCS
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/InitGui.py
