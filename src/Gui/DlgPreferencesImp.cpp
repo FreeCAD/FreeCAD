@@ -466,4 +466,17 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
     }
 }
 
+void DlgPreferencesImp::reload()
+{
+    for (int i = 0; i < ui->tabWidgetStack->count(); i++) {
+        QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+        for (int j = 0; j < tabWidget->count(); j++) {
+            PreferencePage* page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
+            if (page)
+                page->loadSettings();
+        }
+    }
+    applyChanges();
+}
+
 #include "moc_DlgPreferencesImp.cpp"

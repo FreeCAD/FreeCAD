@@ -33,11 +33,16 @@
 #include "ui_DlgGeneral.h"
 #include "Action.h"
 #include "Application.h"
+#include "Command.h"
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "PrefWidgets.h"
 #include "PythonConsole.h"
 #include "Language/Translator.h"
+#include "Gui/PreferencePackManager.h"
+#include "DlgPreferencesImp.h"
+
+#include "DlgCreateNewPreferencePackImp.h"
 
 using namespace Gui::Dialog;
 
@@ -82,6 +87,15 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
         else
             ui->AutoloadModuleCombo->addItem(px, it.key(), QVariant(it.value()));
     }
+
+    recreatePreferencePackMenu();
+    connect(ui->PreferencePacks, &QTableWidget::itemSelectionChanged, this, &DlgGeneralImp::preferencePackSelectionChanged);
+    connect(ui->ApplyPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::applyPreferencePackClicked);
+    connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgGeneralImp::saveAsNewPreferencePack);
+
+    // Future work: the Add-On Manager will be modified to include a section for Preference Packs, at which point this
+    // button will be enabled to open the Add-On Manager to that tab.
+    ui->ManagePreferencePacks->hide();
 }
 
 /**
@@ -298,5 +312,91 @@ void DlgGeneralImp::changeEvent(QEvent *e)
         QWidget::changeEvent(e);
     }
 }
+
+void DlgGeneralImp::recreatePreferencePackMenu()
+{
+    // Populate the Preference Packs list
+    auto appearancePacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Appearance);
+    auto behaviorPacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Behavior);
+    auto combinationPacks = Application::Instance->prefPackManager()->preferencePackNames(PreferencePack::Type::Combination);
+
+    ui->PreferencePacks->setRowCount(appearancePacks.size() + behaviorPacks.size() + combinationPacks.size());
+
+    int row = 0;
+    for (const auto& pack : appearancePacks) {
+        auto name = new QTableWidgetItem(QString::fromStdString(pack));
+        ui->PreferencePacks->setItem(row, 0, name);
+        auto kind = new QTableWidgetItem(tr("Appearance"));
+        ui->PreferencePacks->setItem(row, 1, kind);
+        ++row;
+    }
+    for (const auto& pack : behaviorPacks) {
+        auto name = new QTableWidgetItem(QString::fromStdString(pack));
+        ui->PreferencePacks->setItem(row, 0, name);
+        auto kind = new QTableWidgetItem(tr("Behavior"));
+        ui->PreferencePacks->setItem(row, 1, kind);
+        ++row;
+    }
+    for (const auto& pack : combinationPacks) {
+        auto name = new QTableWidgetItem(QString::fromStdString(pack));
+        ui->PreferencePacks->setItem(row, 0, name);
+        auto kind = new QTableWidgetItem(tr("Combination"));
+        ui->PreferencePacks->setItem(row, 1, kind);
+        ++row;
+    }
+    ui->PreferencePacks->setRangeSelected(QTableWidgetSelectionRange(), true);
+    ui->ApplyPreferencePack->setEnabled(false);
+}
+
+void DlgGeneralImp::preferencePackSelectionChanged()
+{
+    if (ui->PreferencePacks->selectedItems().isEmpty())
+        ui->ApplyPreferencePack->setEnabled(false);
+    else
+        ui->ApplyPreferencePack->setEnabled(true);
+}
+
+void DlgGeneralImp::saveAsNewPreferencePack()
+{
+    // Create and run a modal New PreferencePack dialog box
+    newPreferencePackDialog = std::make_unique<DlgCreateNewPreferencePackImp>(this);
+    newPreferencePackDialog->setPreferencePackTemplates(Application::Instance->prefPackManager()->templateFiles());
+    connect(newPreferencePackDialog.get(), &DlgCreateNewPreferencePackImp::accepted, this, &DlgGeneralImp::newPreferencePackDialogAccepted);
+    newPreferencePackDialog->open();
+}
+
+void DlgGeneralImp::newPreferencePackDialogAccepted() 
+{
+    auto preferencePackTemplates = Application::Instance->prefPackManager()->templateFiles();
+    auto selection = newPreferencePackDialog->selectedTemplates();
+    std::vector<PreferencePackManager::TemplateFile> selectedTemplates;
+    std::copy_if(preferencePackTemplates.begin(), preferencePackTemplates.end(), std::back_inserter(selectedTemplates), [selection](PreferencePackManager::TemplateFile& t) {
+        for (const auto& item : selection)
+            if (item.group == t.group && item.name == t.name)
+                return true;
+        return false;
+        });
+    auto preferencePackName = newPreferencePackDialog->preferencePackName();
+    Application::Instance->prefPackManager()->save(preferencePackName, selectedTemplates);
+    Application::Instance->prefPackManager()->rescan();
+    recreatePreferencePackMenu();
+}
+
+void DlgGeneralImp::applyPreferencePackClicked()
+{
+    auto selectedPreferencePacks = ui->PreferencePacks->selectedItems();
+
+    for (const auto pack : selectedPreferencePacks) {
+        if (pack->column() == 0) {
+            auto packName = pack->text().toStdString();
+            if (Application::Instance->prefPackManager()->apply(packName)) {
+                auto parentDialog = qobject_cast<DlgPreferencesImp*> (this->window());
+                if (parentDialog)
+                    parentDialog->reload();
+            }
+        }
+    }
+}
+
 
 #include "moc_DlgGeneralImp.cpp"
