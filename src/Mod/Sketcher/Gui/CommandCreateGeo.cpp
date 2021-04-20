@@ -1523,6 +1523,341 @@ bool CmdSketcherExternal::isActive(void)
     return isCommandActive(getActiveGuiDocument());
 }
 
+DEF_STD_CMD_A(CmdSketcherDefining);
+
+CmdSketcherDefining::CmdSketcherDefining()
+  : Command("Sketcher_Defining")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Defining geometry");
+    sToolTipText    = QT_TR_NOOP("Create an defining edge linked to an external geometry");
+    sWhatsThis      = "Sketcher_Defining";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Defining";
+    sAccel          = "X, C";
+    eType           = ForEdit;
+}
+
+static Sketcher::SketchObject *getExternalSelection(std::vector<int> *sels=0, bool force=false) {
+    auto doc = Gui::Application::Instance->editDocument();
+    if(!doc)
+        return 0;
+    auto sketchgui = dynamic_cast<ViewProviderSketch*>(doc->getInEdit());
+    if (!sketchgui)
+        return 0;
+    auto sketch = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+    for(auto &sel : Gui::Selection().getCompleteSelection()) {
+        int geoId;
+        if(sel.pObject != sketch
+                || !sketch->geoIdFromShapeType(sel.SubName,geoId)
+                || geoId>Sketcher::GeoEnum::RefExt)
+            continue;
+        if(!sels)
+            return sketch;
+        sels->push_back(geoId);
+    }
+    if(!force && (!sels || sels->empty()))
+        return 0;
+    return sketch;
+}
+
+void CmdSketcherDefining::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::vector<int> sels;
+    auto sketch = getExternalSelection(&sels);
+    if(!sketch)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerExternal(true));
+    else {
+        Gui::Selection().clearSelection();
+        openCommand("Toggle defining geometry");
+        sketch->toggleConstructions(sels);
+        tryAutoRecomputeIfNotSolve(sketch);
+        commitCommand();
+    }
+}
+
+bool CmdSketcherDefining::isActive(void)
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+DEF_STD_CMD_A(CmdSketcherAttach);
+
+CmdSketcherAttach::CmdSketcherAttach()
+  : Command("Sketcher_Attach")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Attach geometry");
+    sToolTipText    = QT_TR_NOOP("Attach a missing or detached geometry to a new external geometry element");
+    sWhatsThis      = "Sketcher_Attach";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Attach";
+    sAccel          = "X, A";
+    eType           = ForEdit;
+}
+
+void CmdSketcherAttach::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> sels;
+    auto sketch = getExternalSelection(&sels);
+    if(!sketch)
+        return;
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerExternal(std::move(sels)));
+}
+
+bool CmdSketcherAttach::isActive(void)
+{
+    return getExternalSelection()!=0;
+}
+
+DEF_STD_CMD_A(CmdSketcherDetach);
+
+CmdSketcherDetach::CmdSketcherDetach()
+  : Command("Sketcher_Detach")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Detach geometry");
+    sToolTipText    = QT_TR_NOOP("Detach an external geometry");
+    sWhatsThis      = "Sketcher_Detach";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Detach";
+    sAccel          = "X, D";
+    eType           = ForEdit;
+}
+
+void CmdSketcherDetach::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> sels;
+    auto sketch = getExternalSelection(&sels);
+    if(!sketch)
+        return;
+
+    Gui::Selection().clearSelection();
+
+    openCommand("Detach external geometry");
+    if(sketch->detachExternal(sels)) {
+        abortCommand();
+        return;
+    }
+    tryAutoRecomputeIfNotSolve(sketch);
+    commitCommand();
+}
+
+bool CmdSketcherDetach::isActive(void)
+{
+    return getExternalSelection()!=0;
+}
+
+DEF_STD_CMD_A(CmdSketcherToggleFreeze);
+
+CmdSketcherToggleFreeze::CmdSketcherToggleFreeze()
+  : Command("Sketcher_ToggleFreeze")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Toggle freeze");
+    sToolTipText    = QT_TR_NOOP("Toggle freeze of an external geometry");
+    sWhatsThis      = "Sketcher_ToggleFreeze";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_ToggleFreeze";
+    sAccel          = "X, F";
+    eType           = ForEdit;
+}
+
+void CmdSketcherToggleFreeze::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> sels;
+    auto sketch = getExternalSelection(&sels);
+    if(!sketch)
+        return;
+    Gui::Selection().clearSelection();
+    openCommand("Toggle freeze geometry");
+    if(sketch->toggleFreeze(sels)) {
+        abortCommand();
+        return;
+    }
+    tryAutoRecomputeIfNotSolve(sketch);
+    commitCommand();
+}
+
+bool CmdSketcherToggleFreeze::isActive(void)
+{
+    return getExternalSelection(0)!=0;
+}
+
+DEF_STD_CMD_A(CmdSketcherSync);
+
+CmdSketcherSync::CmdSketcherSync()
+  : Command("Sketcher_Sync")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Sync geometry");
+    sToolTipText    = QT_TR_NOOP("Synchronize a frozen external geometry");
+    sWhatsThis      = "Sketcher_Sync";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Sync";
+    sAccel          = "X, S";
+    eType           = ForEdit;
+}
+
+void CmdSketcherSync::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> sels;
+    auto sketch = getExternalSelection(&sels);
+    if(!sketch)
+        return;
+    Gui::Selection().clearSelection();
+    openCommand("Sync frozen geometry");
+    if(!sketch->syncGeometry(sels))
+        tryAutoRecomputeIfNotSolve(sketch);
+    commitCommand();
+}
+
+bool CmdSketcherSync::isActive(void)
+{
+    return getExternalSelection(0)!=0;
+}
+
+
+DEF_STD_CMD_A(CmdSketcherFixExternal);
+
+CmdSketcherFixExternal::CmdSketcherFixExternal()
+  : Command("Sketcher_FixExternal")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Fix reference");
+    sToolTipText    = QT_TR_NOOP("Fix external geometry by guessing its geometry reference");
+    sWhatsThis      = "Sketcher_FixExternal";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_FixExternal";
+    sAccel          = "X, R";
+    eType           = ForEdit;
+}
+
+void CmdSketcherFixExternal::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> sels;
+    auto sketch = getExternalSelection(&sels,true);
+    if(!sketch)
+        return;
+
+    openCommand("Fix external geometry");
+    try {
+        sketch->fixExternalGeometry(sels);
+        tryAutoRecomputeIfNotSolve(sketch);
+    } catch(Base::Exception &e) {
+        e.ReportException();
+    }
+    commitCommand();
+}
+
+bool CmdSketcherFixExternal::isActive(void)
+{
+    return true;
+}
+
+
+class CmdSketcherExternalCmds : public Gui::Command
+{
+public:
+    CmdSketcherExternalCmds():Command("Sketcher_ExternalCmds") {
+        sGroup        = QT_TR_NOOP("Sketcher");
+        sMenuText     = QT_TR_NOOP("External geometry actions");
+        sToolTipText  = QT_TR_NOOP("Sketcher external geometry actions");
+        sWhatsThis    = "Sketcher_ExternalCmds";
+        sStatusTip    = QT_TR_NOOP("Sketcher external geometry actions");
+        eType         = 0;
+        bCanLog       = false;
+
+        Gui::CommandManager &mgr = Gui::Application::Instance->commandManager();
+        cmds.reserve(7);
+        cmds.emplace_back(new CmdSketcherExternal(),cmds.size());
+        mgr.addCommand(cmds.back().first);
+        cmds.emplace_back(new CmdSketcherDefining(),cmds.size());
+        mgr.addCommand(cmds.back().first);
+        cmds.emplace_back(new CmdSketcherDetach(),cmds.size());
+        mgr.addCommand(cmds.back().first);
+        cmds.emplace_back(new CmdSketcherAttach(),cmds.size());
+        mgr.addCommand(cmds.back().first);
+        cmds.emplace_back(new CmdSketcherToggleFreeze(),cmds.size());
+        mgr.addCommand(cmds.back().first);
+        cmds.emplace_back(new CmdSketcherSync(),cmds.size());
+        mgr.addCommand(cmds.back().first);
+        cmds.emplace_back(new CmdSketcherFixExternal(),cmds.size());
+        mgr.addCommand(cmds.back().first);
+    }
+
+    virtual const char* className() const {return "CmdSketcherExternalCmds";}
+protected:
+
+    virtual void activated(int iMsg) {
+        if(iMsg<0 || iMsg>=(int)cmds.size())
+            return;
+
+        auto &v = cmds[iMsg];
+        if(!v.first)
+            return;
+
+        if(triggerSource()!=TriggerChildAction)
+            v.first->invoke(0);
+
+        Gui::Action* cmdAction = v.first->getAction();
+        if(_pcAction && cmdAction) {
+            _pcAction->setIcon(cmdAction->icon());
+            _pcAction->setProperty("defaultAction", QVariant((int)v.second));
+        }
+    }
+
+    virtual Gui::Action * createAction(void) {
+        auto pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+        pcAction->setDropDownMenu(true);
+        applyCommandData(this->className(), pcAction);
+        for(auto &v : cmds) {
+            if(!v.first)
+                pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+            else
+                v.first->addToGroup(pcAction);
+        }
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(cmds[0].first->getPixmap()));
+        return pcAction;
+    }
+
+    bool isActive(void)
+    {
+        auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+        int idx = 0;
+        if(pcAction)
+            idx = pcAction->property("defaultAction").toInt();
+        if(idx >=0 && idx < (int)cmds.size() && cmds[idx].first) {
+            if(prevActive != cmds[idx].first->isActive()) {
+                prevActive = !prevActive;
+                QIcon icon(cmds[idx].first->getAction()->icon());
+                if(prevActive)
+                    pcAction->setIcon(icon);
+                else
+                    pcAction->setIcon(QIcon(icon.pixmap(64,QIcon::Disabled)));
+            }
+        }
+        return true;
+    }
+
+    std::vector<std::pair<Command*,size_t> > cmds;
+    bool prevActive = true;
+};
+
+
 // ======================================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCarbonCopy)
@@ -2009,6 +2344,6 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExtend());
     rcCmdMgr.addCommand(new CmdSketcherSplit());
-    rcCmdMgr.addCommand(new CmdSketcherExternal());
+    rcCmdMgr.addCommand(new CmdSketcherExternalCmds());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 }

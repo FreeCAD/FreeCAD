@@ -57,6 +57,7 @@
 #include <Gui/Inventor/SmSwitchboard.h>
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
@@ -370,7 +371,24 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
                 }
             }
             else if (GeoId <= Sketcher::GeoEnum::RefExt) {  // external Geometry
-                color[i] = drawingParameters.CurveExternalColor;
+                auto geo = geolistfacade.getGeometryFromGeoId(GeoId);
+                auto egf = ExternalGeometryFacade::getFacade(geo);
+                if(egf->getRef().empty())
+                    color[i] = drawingParameters.CurveDetachedColor;
+                else if(egf->testFlag(ExternalGeometryExtension::Missing))
+                    color[i] = drawingParameters.CurveMissingColor;
+                else if(egf->testFlag(ExternalGeometryExtension::Frozen))
+                    color[i] = drawingParameters.CurveFrozenColor;
+                else
+                    color[i] = drawingParameters.CurveExternalColor;
+                if(egf->testFlag(ExternalGeometryExtension::Defining)
+                        && !egf->testFlag(ExternalGeometryExtension::Missing)) {
+                    float hsv[3];
+                    color[i].getHSVValue(hsv);
+                    hsv[1] = 0.4;
+                    hsv[2] = 1.0;
+                    color[i].setHSVValue(hsv);
+                }
                 for (int k=j; j<k+indexes; j++) {
                     verts[j].getValue(x,y,z);
                     verts[j] = SbVec3f(x,y,zExtLine);

@@ -96,6 +96,11 @@ If there is no such constraint an exception is raised.
         <UserDocu>delete a external geometry link from the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="attachExternal">
+      <Documentation>
+        <UserDocu>attach a link to an external geometry</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="delConstraintOnPoint">
       <Documentation>
         <UserDocu>delete coincident constraints associated with a sketch point</UserDocu>
@@ -347,6 +352,11 @@ If there is no such constraint an exception is raised.
             </UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="getGeometry">
+        <Documentation>
+            <UserDocu>Get internal/external geometry by either its GeoId or text name</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="autoconstraint">
         <Documentation>
             <UserDocu>
@@ -491,6 +501,11 @@ If there is no such constraint an exception is raised.
     <Methode Name="getGeometryId">
       <Documentation>
         <UserDocu>gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="swapGeometryIds">
+      <Documentation>
+        <UserDocu>exchange the GeometryId of two geometries</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

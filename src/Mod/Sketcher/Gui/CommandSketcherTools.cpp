@@ -33,6 +33,7 @@
 # include <Inventor/SbString.h>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
@@ -100,8 +101,8 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
     std::string doc_name = Obj->getDocument()->getName();
@@ -523,7 +524,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     Sketcher::SketchObject* Obj= vp->getSketchObject();
 
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -546,7 +547,10 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     switch(vals[ConstrId]->FirstPos)
                     {
                         case Sketcher::PointPos::none:
-                            ss << "Edge" << vals[ConstrId]->First + 1;
+                            if (vals[ConstrId]->First < 0)
+                                ss << "ExternalEdge" << -vals[ConstrId]->First - 2;
+                            else
+                                ss << "Edge" << vals[ConstrId]->First + 1;
                             break;
                         case Sketcher::PointPos::start:
                         case Sketcher::PointPos::end:
@@ -565,7 +569,10 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     switch(vals[ConstrId]->SecondPos)
                     {
                         case Sketcher::PointPos::none:
-                            ss << "Edge" << vals[ConstrId]->Second + 1;
+                            if (vals[ConstrId]->Second < 0)
+                                ss << "ExternalEdge" << -vals[ConstrId]->Second - 2;
+                            else
+                                ss << "Edge" << vals[ConstrId]->Second + 1;
                             break;
                         case Sketcher::PointPos::start:
                         case Sketcher::PointPos::end:
@@ -585,7 +592,10 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     switch(vals[ConstrId]->ThirdPos)
                     {
                         case Sketcher::PointPos::none:
-                            ss << "Edge" << vals[ConstrId]->Third + 1;
+                            if (vals[ConstrId]->Third < 0)
+                                ss << "ExternalEdge" << -vals[ConstrId]->Third - 2;
+                            else
+                                ss << "Edge" << vals[ConstrId]->Third + 1;
                             break;
                         case Sketcher::PointPos::start:
                         case Sketcher::PointPos::end:
@@ -747,8 +757,8 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
 
     getSelection().clearSelection();
 
@@ -859,14 +869,14 @@ void CmdSketcherSymmetry::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select elements from a single sketch."));
         return;
     }
 
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     getSelection().clearSelection();
 
     int LastGeoId = 0;
@@ -1795,15 +1805,14 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Wrong selection"),
                              QObject::tr("Select elements from a single sketch."));
         return;
     }
-
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     getSelection().clearSelection();
 
@@ -2145,6 +2154,71 @@ bool CmdSketcherRemoveAxesAlignment::isActive(void)
     return isCommandActive(getActiveGuiDocument(), true);
 }
 
+// Swap geometry IDs
+DEF_STD_CMD_A(CmdSketcherSwapGeometryID);
+
+CmdSketcherSwapGeometryID::CmdSketcherSwapGeometryID()
+:Command("Sketcher_SwapGeometryID")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Swap Geometry ID");
+    sToolTipText    = QT_TR_NOOP("Swap the IDs of two selected geometies");
+    sWhatsThis      = "Sketcher_SwapGeometryID";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_SwapID";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherSwapGeometryID::activated(int iMsg) {
+    Q_UNUSED(iMsg);
+
+    auto sels = Gui::Selection().getSelectionEx();
+    if(sels.size() != 1)
+        return;
+    auto sketch = dynamic_cast<Sketcher::SketchObject*>(sels[0].getObject());
+    if(!sketch)
+        return;
+    const auto &subs = sels[0].getSubNames();
+    if(subs.size()!=2)
+        return;
+    std::vector<int> indices;
+    int count = sketch->Geometry.getSize();
+    for(auto &sub : subs) {
+        if(!boost::starts_with(sub,"Edge"))
+            return;
+        int index = std::atoi(sub.c_str()+4)-1;
+        if(index<0 || index>=count)
+            return;
+        indices.push_back(index);
+    }
+    Gui::Selection().clearSelection();
+    App::GetApplication().setActiveTransaction("Swap geometry ID"); 
+    doCommand(Doc,"%s.swapGeometryIds(%d, %d)",
+            getObjectCmd(sketch).c_str(), indices[0],indices[1]);
+    App::GetApplication().closeActiveTransaction(); 
+}
+
+bool CmdSketcherSwapGeometryID::isActive(void)
+{
+    auto sels = Gui::Selection().getSelectionEx();
+    if (sels.size() != 1)
+        return false;
+    auto sketch = dynamic_cast<Sketcher::SketchObject*>(sels[0].getObject());
+    if(!sketch)
+        return false;
+    const auto &subs = sels[0].getSubNames();
+    if(subs.size()!=2)
+        return false;
+    for(auto &sub : subs) {
+        if(!boost::starts_with(sub,"Edge"))
+            return false;
+    }
+    return true;
+}
+
+
 void CreateSketcherCommandsConstraintAccel(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2169,4 +2243,5 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllGeometry());
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllConstraints());
     rcCmdMgr.addCommand(new CmdSketcherRemoveAxesAlignment());
+    rcCmdMgr.addCommand(new CmdSketcherSwapGeometryID());
 }

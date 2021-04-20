@@ -26,6 +26,8 @@
 # include <QMessageBox>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -138,15 +140,14 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Toggle draft from/to draft"));
 
         // go through the selected subelements
-        for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+        for (auto &sub : SubNames){
             // only handle edges
-            if (it->size() > 4 && it->substr(0,4) == "Edge") {
-                int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
+            if (boost::starts_with(sub,"Edge") || boost::starts_with(sub, "ExternalEdge")) {
                 // issue the actual commands to toggle
-                Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction('%s')", sub);
             }
-            if (it->size() > 6 && it->substr(0,6) == "Vertex") {
-                int vertexId = std::atoi(it->substr(6,4000).c_str()) - 1;
+            if (boost::starts_with(sub, "Vertex")) {
+                int vertexId = std::atoi(sub.c_str()+6) - 1;
 
                 int geoId;
                 PointPos pos;
