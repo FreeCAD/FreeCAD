@@ -68,9 +68,18 @@ public:
 
     /** Get a number as string for a quantity of a given format.
      * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
+     * needed represented in scientific notation. The string also includes the unit of the quantity.
+     */
+    static QString toString(const Base::Quantity& q, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
+    /** Get a number as string for a quantity of a given format.
+     * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
      * needed represented in scientific notation. The string doesn't include the unit of the quantity.
      */
     static QString toNumber(const Base::Quantity& q, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
+    /** Get a number as string for a double of a given format.
+     * The string is a number in C locale (i.e. the decimal separator is always a dot) and if
+     * needed represented in scientific notation. The string doesn't include the unit of the quantity.
+     */
     static QString toNumber(double d, const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
 
     /// generate a value for a quantity with default user preferred system
