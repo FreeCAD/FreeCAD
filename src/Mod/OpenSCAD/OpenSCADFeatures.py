@@ -388,10 +388,11 @@ class Frustum:
 
 class Twist:
     def __init__(self, obj,child=None,h=1.0,angle=0.0,scale=[1.0,1.0]):
+        import FreeCAD
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that must be transformed")
         obj.addProperty("App::PropertyQuantity","Angle","Base","Twist Angle")
-        obj.Angle = App.Units.Angle # assign the Angle unit
+        obj.Angle = FreeCAD.Units.Angle # assign the Angle unit
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the Extrusion")
         obj.addProperty("App::PropertyFloatList","Scale","Base","Scale to apply during the Extrusion")
 
