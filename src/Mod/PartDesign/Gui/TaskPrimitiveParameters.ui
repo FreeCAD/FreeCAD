@@ -225,7 +225,7 @@
          </property>
         </spacer>
        </item>
-       </layout>
+      </layout>
      </widget>
      <widget class="QWidget" name="Page2_cylinder">
       <layout class="QGridLayout" name="_5">
@@ -755,7 +755,7 @@
          </property>
         </spacer>
        </item>
-       </layout>
+      </layout>
      </widget>
      <widget class="QWidget" name="Page5_ellipsoid">
       <layout class="QGridLayout" name="_14">
@@ -800,6 +800,9 @@
          </item>
          <item row="0" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
+           <property name="toolTip">
+            <string>Radius in local z-direction</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -820,6 +823,9 @@
          </item>
          <item row="1" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
+           <property name="toolTip">
+            <string>Radius in local x-direction</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -840,6 +846,10 @@
          </item>
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius3">
+           <property name="toolTip">
+            <string>Radius in local y-direction
+If zero, it is equal to Radius2</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -964,7 +974,7 @@
          </property>
         </spacer>
        </item>
-       </layout>
+      </layout>
      </widget>
      <widget class="QWidget" name="Page6_torus">
       <layout class="QGridLayout" name="_17">
@@ -1009,6 +1019,9 @@
          </item>
          <item row="0" column="2">
           <widget class="Gui::QuantitySpinBox" name="torusRadius1">
+           <property name="toolTip">
+            <string>Radius in local xy-plane</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -1029,6 +1042,9 @@
          </item>
          <item row="1" column="2">
           <widget class="Gui::QuantitySpinBox" name="torusRadius2">
+           <property name="toolTip">
+            <string>Radius in local xz-plane</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -1156,7 +1172,7 @@
          </property>
         </spacer>
        </item>
-       </layout>
+      </layout>
      </widget>
      <widget class="QWidget" name="page_prism">
       <layout class="QGridLayout" name="_20">
@@ -1651,7 +1667,7 @@
          </property>
         </spacer>
        </item>
-       </layout>
+      </layout>
      </widget>
      <widget class="QWidget" name="page9_spiral">
       <layout class="QGridLayout" name="_24">
@@ -1762,7 +1778,7 @@
          </property>
         </spacer>
        </item>
-       </layout>
+      </layout>
      </widget>
      <widget class="QWidget" name="page10_circle">
       <layout class="QGridLayout" name="gridLayout_3">

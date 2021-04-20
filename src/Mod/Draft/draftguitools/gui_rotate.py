@@ -75,7 +75,7 @@ class Rotate(gui_base_original.Modifier):
         """Get the object selection."""
         if Gui.Selection.getSelection():
             return self.proceed()
-        self.ui.selectUi()
+        self.ui.selectUi(on_close_call=self.finish)
         _msg(translate("draft", "Select an object to rotate"))
         self.call = \
             self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)

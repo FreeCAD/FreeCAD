@@ -273,11 +273,13 @@ class DraftToolBar:
         self.fillmode = Draft.getParam("fillmode",False)
         self.mask = None
         self.alock = False
-        self.angle = None
-        self.avalue = None
         self.x = 0
         self.y = 0
         self.z = 0
+        self.lvalue = 0
+        self.pvalue = 90
+        self.avalue = 0
+        self.angle = None
         self.radius = 0
         self.offset = 0
         self.uiloader = FreeCADGui.UiLoader()
@@ -835,11 +837,7 @@ class DraftToolBar:
 
     def taskUi(self,title="Draft",extra=None,icon="Draft_Draft"):
         # reset InputField values
-        self.x = 0
-        self.y = 0
-        self.z = 0
-        self.radius = 0
-        self.offset = 0
+        self.reset_ui_values()
         if self.taskmode:
             self.isTaskOn = True
             todo.delay(FreeCADGui.Control.closeDialog,None)
@@ -1179,12 +1177,12 @@ class DraftToolBar:
         else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.cmdlabel.setText(title)
 
-    def selectUi(self,extra=None,callback=None):
+    def selectUi(self,extra=None, on_close_call=None):
         if not self.taskmode:
              # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.labelx.setText(translate("draft", "Pick Object"))
             self.labelx.show()
-        self.makeDumbTask(extra,callback)
+        self.makeDumbTask(extra, on_close_call)
 
     def editUi(self, mode=None):
         self.lastMode=mode
@@ -1306,20 +1304,21 @@ class DraftToolBar:
         else:
             self.layout.setDirection(QtGui.QBoxLayout.LeftToRight)
 
-    def makeDumbTask(self,extra=None,callback=None):
+    def makeDumbTask(self, extra=None, on_close_call=None):
         """create a dumb taskdialog to prevent deleting the temp object"""
         class TaskPanel:
-            def __init__(self,extra=None,callback=None):
+            def __init__(self, extra=None, callback=None):
                 if extra:
                     self.form = [extra]
+                self.callback = callback
             def getStandardButtons(self):
                 return int(QtGui.QDialogButtonBox.Close)
             def reject(self):
-                if callback:
-                    callback()
+                if self.callback:
+                    self.callback()
                 return True
         FreeCADGui.Control.closeDialog()
-        panel = TaskPanel(extra,callback)
+        panel = TaskPanel(extra, on_close_call)
         FreeCADGui.Control.showDialog(panel)
 
 
@@ -1577,7 +1576,6 @@ class DraftToolBar:
 
     def wipeLine(self):
         """wipes existing segments of a line"""
-        FreeCAD.Console.PrintMessage("el de wipe\n")
         self.sourceCmd.wipe()
 
     def orientWP(self):
@@ -1791,16 +1789,18 @@ class DraftToolBar:
 
         # set length and angle
         if last and dp and plane:
-            self.lengthValue.setText(displayExternal(dp.Length,None,'Length'))
-            a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
-            if not self.angleLock.isChecked():
-                self.angleValue.setText(displayExternal(a,None,'Angle'))
+            length, theta, phi = DraftVecUtils.get_spherical_coords(*dp)
+            theta = math.degrees(theta)
+            phi = math.degrees(phi)
+            self.lengthValue.setText(displayExternal(length,None,'Length'))
+            #if not self.angleLock.isChecked():
+            self.angleValue.setText(displayExternal(phi,None,'Angle'))
             if not mask:
-                # automask, a is rounded to identify one of the below cases
-                a = round(a, Draft.getParam("precision"))
-                if a in [0,180,-180]:
+                # automask, phi is rounded to identify one of the below cases
+                phi = round(phi, Draft.getParam("precision"))
+                if phi in [0,180,-180]:
                     mask = "x"
-                elif a in [90,270,-90,-270]:
+                elif phi in [90,270,-90,-270]:
                     mask = "y"
 
         # set masks
@@ -2108,12 +2108,21 @@ class DraftToolBar:
 
     def changeXValue(self,d):
         self.x = d
+        if not self.xValue.hasFocus():
+            return None
+        self.update_spherical_coords()
 
     def changeYValue(self,d):
         self.y = d
+        if not self.yValue.hasFocus():
+            return None
+        self.update_spherical_coords()
 
     def changeZValue(self,d):
         self.z = d
+        if not self.zValue.hasFocus():
+            return None
+        self.update_spherical_coords()
 
     def changeRadiusValue(self,d):
         self.radius = d
@@ -2126,29 +2135,15 @@ class DraftToolBar:
 
     def changeLengthValue(self,d):
         self.lvalue = d
-        v = FreeCAD.Vector(self.x,self.y,self.z)
-        if not v.Length:
-            if self.angle:
-                v = FreeCAD.Vector(self.angle)
-            else:
-                v = FreeCAD.Vector(FreeCAD.DraftWorkingPlane.u)
-                if self.avalue:
-                    v = DraftVecUtils.rotate(v,math.radians(d),FreeCAD.DraftWorkingPlane.axis)
-        v = DraftVecUtils.scaleTo(v,d)
-        self.xValue.setText(displayExternal(v.x,None,'Length'))
-        self.yValue.setText(displayExternal(v.y,None,'Length'))
-        self.zValue.setText(displayExternal(v.z,None,'Length'))
+        if not self.lengthValue.hasFocus():
+            return None
+        self.update_cartesian_coords()
 
     def changeAngleValue(self,d):
         self.avalue = d
-        v = FreeCAD.Vector(self.x,self.y,self.z)
-        a = DraftVecUtils.angle(v,FreeCAD.DraftWorkingPlane.u,FreeCAD.DraftWorkingPlane.axis)
-        a = math.radians(d)+a
-        v = DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
-        self.angle = v
-        self.xValue.setText(displayExternal(v.x,None,'Length'))
-        self.yValue.setText(displayExternal(v.y,None,'Length'))
-        self.zValue.setText(displayExternal(v.z,None,'Length'))
+        if not self.angleValue.hasFocus():
+            return None
+        self.update_cartesian_coords()
         if self.angleLock.isChecked():
             FreeCADGui.Snapper.setAngle(self.angle)
 
@@ -2160,6 +2155,25 @@ class DraftToolBar:
             FreeCADGui.Snapper.setAngle()
             self.angle = None
 
+    def update_spherical_coords(self):
+        length, theta, phi = DraftVecUtils.get_spherical_coords(
+            self.x,self.y,self.z)
+        self.lvalue = length
+        self.pvalue = math.degrees(theta)
+        self.avalue = math.degrees(phi)
+        self.angle = FreeCAD.Vector(DraftVecUtils.get_cartesian_coords(
+            1, theta, phi))
+        self.lengthValue.setText(displayExternal(self.lvalue,None,'Length'))
+        self.angleValue.setText(displayExternal(self.avalue,None,'Angle'))
+
+    def update_cartesian_coords(self):
+        self.x, self.y, self.z = DraftVecUtils.get_cartesian_coords(
+            self.lvalue,math.radians(self.pvalue),math.radians(self.avalue))
+        self.angle = FreeCAD.Vector(DraftVecUtils.get_cartesian_coords(
+            1, math.radians(self.pvalue), math.radians(self.avalue)))
+        self.xValue.setText(displayExternal(self.x,None,'Length'))
+        self.yValue.setText(displayExternal(self.y,None,'Length'))
+        self.zValue.setText(displayExternal(self.z,None,'Length'))
 
 #---------------------------------------------------------------------------
 # TaskView operations
@@ -2234,6 +2248,18 @@ class DraftToolBar:
         else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.draftWidget.setVisible(False)
             self.draftWidget.toggleViewAction().setVisible(False)
+
+    def reset_ui_values(self):
+        """Method to reset task panel values"""
+        self.x = 0
+        self.y = 0
+        self.z = 0
+        self.lvalue = 0
+        self.pvalue = 90
+        self.avalue = 0
+        self.angle = None
+        self.radius = 0
+        self.offset = 0
 
 
 class FacebinderTaskPanel:
