@@ -305,7 +305,7 @@ unsigned long DrawSketchHandler::getCrosshairColor()
 void DrawSketchHandler::setCrosshairCursor(const QString & svgName) {
     const unsigned long defaultCrosshairColor = 0xFFFFFF;
     unsigned long color = getCrosshairColor();
-    auto colorMapping = std::map<unsigned long, unsigned long>();
+    auto colorMapping = getCursorColorMap();
     colorMapping[defaultCrosshairColor] = color;
     // hot spot of all SVG icons should be 8,8 for 32x32 size (16x16 for 64x64)
     int hotX = 8;

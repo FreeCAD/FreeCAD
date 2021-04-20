@@ -285,9 +285,10 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     geom    << "Sketcher_Trimming"
             << "Sketcher_Extend"
             << "Sketcher_Split"
-            << "Sketcher_External"
+            << "Sketcher_ExternalCmds"
             << "Sketcher_CarbonCopy"
             << "Sketcher_ToggleConstruction"
+            << "Sketcher_SwapGeometryID"
             /*<< "Sketcher_CreateText"*/
             /*<< "Sketcher_CreateDraftLine"*/;
 }

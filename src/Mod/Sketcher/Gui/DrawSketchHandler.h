@@ -180,6 +180,8 @@ protected:
     /// returns the color to be used for the crosshair (configurable as a parameter)
     unsigned long getCrosshairColor();
 
+    virtual std::map<unsigned long, unsigned long> getCursorColorMap() const {return {};}
+
     /// functions to set the cursor to a given svgName (to be migrated to NVI style)
 
     qreal devicePixelRatio();

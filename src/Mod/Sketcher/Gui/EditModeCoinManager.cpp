@@ -184,6 +184,12 @@ void EditModeCoinManager::ParameterObserver::initParameters()
             [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.DeactivatedConstrDimColor, param);}},
         {"ExternalColor",
             [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.CurveExternalColor, param);}},
+        {"DetachedColor",
+            [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.CurveDetachedColor, param);}},
+        {"FrozenColor",
+            [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.CurveFrozenColor, param);}},
+        {"MissingColor",
+            [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.CurveMissingColor, param);}},
         {"HighlightColor",
             [this, drawingParameters = Client.drawingParameters](const std::string & param){updateColor(drawingParameters.PreselectColor, param);}},
         {"SelectionColor",
@@ -510,7 +516,7 @@ void EditModeCoinManager::setAxisPickStyle(bool on)
         editModeScenegraphNodes.pickStyleAxes->style = SoPickStyle::UNPICKABLE;
 }
 
-EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(SoPickedPoint * Point, const SbVec2s &cursorPos)
+EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(const SoPickedPoint * Point, const SbVec2s &cursorPos)
 {
     EditModeCoinManager::PreselectionResult result;
 

@@ -48,6 +48,10 @@ namespace Base {
     class Placement;
 }
 
+namespace Gui {
+    class View3DInventorViewer;
+}
+
 namespace Part {
     class Geometry;
 }
@@ -200,7 +204,7 @@ public:
 
     /** @name handle preselection and selection of points */
     //@{
-    PreselectionResult detectPreselection(SoPickedPoint * Point, const SbVec2s &cursorPos);
+    PreselectionResult detectPreselection(const SoPickedPoint * Point, const SbVec2s &cursorPos);
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}
@@ -238,6 +242,9 @@ public:
     //@{
     void setConstraintSelectability(bool enabled = true);
     //@}
+
+    void setViewer(Gui::View3DInventorViewer *v) { viewer = v; }
+    Gui::View3DInventorViewer *getViewer() const { return viewer; }
 
 private:
     // This function populates the coin nodes with the information of the current geometry
@@ -289,6 +296,8 @@ private:
     // Coin Helpers
     std::unique_ptr<EditModeConstraintCoinManager> pEditModeConstraintCoinManager;
     std::unique_ptr<EditModeGeometryCoinManager> pEditModeGeometryCoinManager;
+
+    Gui::View3DInventorViewer *viewer;
 };
 
 

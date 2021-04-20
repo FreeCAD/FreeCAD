@@ -35,10 +35,12 @@
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
 #include <App/Part.h>
+#include <App/DocumentObserver.h>
 #include <boost_signals2.hpp>
 #include <QCoreApplication>
 #include <Gui/Document.h>
 #include "ShortcutListener.h"
+#include <Inventor/SbVec2s.h>
 
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -332,6 +334,8 @@ private:
         Axes PreselectCross;                    // 0 => rootPoint, 1 => HAxis, 2 => VAxis
         std::set<int> PreselectConstraintSet;   // ConstraintN, N = index + 1
         bool blockedPreselection;
+        std::string pickedElement;
+        SbVec2s curCursorPos;
     };
 
     /** @brief Class to store selected element ids.
@@ -416,6 +420,8 @@ public:
     void activateHandler(DrawSketchHandler *newHandler);
     /// removes the active handler
     void purgeHandler(void);
+    /// obtain the current active handler
+    DrawSketchHandler *currentHandler() const;
     //@}
 
 
@@ -441,9 +447,9 @@ public:
     };
 
     /// is called by GuiCommands to set the drawing mode
-    void setSketchMode(SketchMode mode) {Mode = mode;}
+    void setSketchMode(SketchMode mode);
     /// get the sketch mode
-    SketchMode getSketchMode(void) const {return Mode;}
+    SketchMode getSketchMode(void) const {return _Mode;}
     //@}
 
     /** @name Drawing functions */
@@ -538,12 +544,18 @@ public:
     boost::signals2::signal<void ()> signalElementsChanged;
     //@}
 
+    void selectElement(const char *element, bool preselect=false) const;
+    virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchShortcutListenerAttorney;
     //@}
+
+    const App::SubObjectT &getEditingContext() const;
+
 protected:
     /** @name enter/exit edit mode */
     //@{
@@ -576,6 +588,7 @@ protected:
     //@{
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
+    void slotSolverUpdate();
     void forceUpdateData();
     //@}
 
@@ -605,15 +618,12 @@ private:
     /** @name preselection functions */
     //@{
     /// helper to detect preselection
-    bool detectAndShowPreselection (SoPickedPoint * Point, const SbVec2s &cursorPos);
+    bool detectAndShowPreselection (const SoPickedPoint * Point, const SbVec2s &cursorPos, bool preselect=true);
     int getPreselectPoint(void) const;
     int getPreselectCurve(void) const;
     int getPreselectCross(void) const;
-    void setPreselectPoint(int PreselectPoint);
-    void setPreselectRootPoint();
-    void resetPreselectPoint(void);
+    bool resetPreselect(void);
 
-    bool setPreselect(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0);
     //@}
 
     /** @name Selection functions */
@@ -626,10 +636,12 @@ private:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints(void);
 
-    bool isSelected(const std::string & ss) const;
-    void rmvSelection(const std::string &subNameSuffix);
-    bool addSelection(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0);
-    bool addSelection2(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0);
+    bool isSelected(std::string & ss) const;
+    void rmvSelection(const std::string &subNameSuffix) const;
+    bool addSelection(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0) const;
+    bool addSelection2(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0) const;
+    bool addSelectionElement(const char *element, int index=0) const;
+    bool setPreselect(const std::string &subNameSuffix, float x = 0, float y = 0, float z = 0) const;
     //@}
 
     /** @name miscelanea utilities */
@@ -738,9 +750,10 @@ private:
 private:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
+    boost::signals2::connection connectSolverUpdate;
 
     // modes while sketching
-    SketchMode Mode;
+    SketchMode _Mode;
 
     // reference coordinates for relative operations
     Drag drag;
@@ -753,6 +766,7 @@ private:
     std::string editDocName;
     std::string editObjName;
     std::string editSubName;
+    App::SubObjectT editObjT;
 
     ShortcutListener* listener;
 

@@ -93,10 +93,30 @@ public:
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerExternal() = default;
+    std::vector<int> attaching;
+    bool defining;
+    bool restorePickedList = false;
+
+    DrawSketchHandlerExternal(bool defining=false)
+        :attaching(0),defining(defining)
+    {
+    }
+
+    DrawSketchHandlerExternal(std::vector<int> &&geoIds)
+        :attaching(std::move(geoIds)),defining(false)
+    {
+    }
+
     virtual ~DrawSketchHandlerExternal()
     {
         Gui::Selection().rmvSelectionGate();
+        if (restorePickedList)
+            Gui::Selection().enablePickedList(false);
+    }
+
+    virtual bool allowExternalPick() const
+    {
+        return true;
     }
 
     virtual void mouseMove(Base::Vector2d onSketchPos) override
@@ -125,33 +145,51 @@ public:
     virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
-            App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+            App::DocumentObject* obj = msg.Object.getObject();
             if (obj == nullptr)
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
-            std::string subName(msg.pSubName);
+
+            std::string subName = msg.Object.getOldElementName();
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
                 obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
                 (subName.size() > 4 && subName.substr(0,4) == "Edge") ||
                 (subName.size() > 6 && subName.substr(0,6) == "Vertex") ||
                 (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addExternal(\"%s\",\"%s\")",
-                              msg.pObjectName, msg.pSubName);
-                    Gui::Command::commitCommand();
+                    if(attaching.size()) {
+                        Gui::Command::openCommand(
+                                QT_TRANSLATE_NOOP("Command", "Attach external geometry"));
+                        std::ostringstream ss;
+                        ss << '[';
+                        for(int geoId : attaching)
+                            ss << geoId << ',';
+                        ss << ']';
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                "attachExternal(%s, %s)",
+                                ss.str(), msg.Object.getSubObjectPython());
+                    } else {
+                        Gui::Command::openCommand(
+                                QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                "addExternal(%s, %s)",
+                                msg.Object.getSubObjectPython(), defining?"True":"False");
+                    }
+
+                    Gui::Selection().clearSelection();
+                    if(attaching.size())
+                        sketchgui->purgeHandler();
 
                     // adding external geometry does not require a solve() per se (the DoF is the same),
                     // however a solve is required to update the amount of solver geometry, because we only
                     // redraw a changed Sketch if the solver geometry amount is the same as the SkethObject
                     // geometry amount (as this avoids other issues).
                     // This solver is a very low cost one anyway (there is actually nothing to solve).
-                    tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-
-                    Gui::Selection().clearSelection();
-                /* this is ok not to call to purgeHandler
-                * in continuous creation mode because the
-                * handler is destroyed by the quit() method on pressing the
-                * right button of the mouse */
+                    try {
+                        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                    } catch (Base::Exception &e) {
+                        e.ReportException();
+                    }
+                    Gui::Command::commitCommand();
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("Failed to add external geometry: %s\n", e.what());
@@ -167,6 +205,10 @@ public:
 private:
     virtual void activated() override
     {
+        if (!Gui::Selection().needPickedList()) {
+            restorePickedList = true;
+            Gui::Selection().enablePickedList(true);
+        }
         setAxisPickStyle(false);
         Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         Gui::View3DInventorViewer *viewer;
@@ -180,20 +222,34 @@ private:
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
     }
 
+    virtual std::map<unsigned long, unsigned long> getCursorColorMap() const override
+    {
+        unsigned long color = 0;
+        std::map<unsigned long, unsigned long> colorMapping;
+        if (defining)
+            color = 0xffccee;
+        else if (attaching.size())
+            color = 0x00ff00;
+        if (color)
+            colorMapping[0xd60000] = color;
+        return colorMapping;
+    }
+
     virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_External");
     }
 
     virtual void deactivated() override
     {
-        Q_UNUSED(sketchgui);
+        if (restorePickedList) {
+            restorePickedList = false;
+            Gui::Selection().enablePickedList(false);
+        }
         setAxisPickStyle(true);
     }
 };
 
-
 } // namespace SketcherGui
-
 
 #endif // SKETCHERGUI_DrawSketchHandlerExternal_H
 
