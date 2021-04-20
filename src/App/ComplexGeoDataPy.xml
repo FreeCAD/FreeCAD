@@ -40,6 +40,16 @@ to one element
           <UserDocu>getElementName(name,direction=0) - Return a mapped element name or reverse</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getElementIndexedName" Const="true">
+      <Documentation>
+          <UserDocu>getElementIndexedName(name) - Return the indexed element name</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getElementMappedName" Const="true">
+      <Documentation>
+          <UserDocu>getElementMappedName(name) - Return the mapped element name</UserDocu>
+      </Documentation>
+    </Methode>
       <Attribute Name="BoundBox" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Get the BoundBox of the object</UserDocu>

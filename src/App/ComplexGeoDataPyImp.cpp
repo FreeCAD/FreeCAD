@@ -96,8 +96,36 @@ PyObject* ComplexGeoDataPy::getElementName(PyObject *args)
     std::string s;
     if (direction == 1)
         return Py::new_reference_to(Py::String(res.name.toString(s)));
+    else if (direction == 0)
+        return Py::new_reference_to(Py::String(res.index.toString(s)));
+    else if (Data::IndexedName(input))
+        return Py::new_reference_to(Py::String(res.name.toString(s)));
     else
         return Py::new_reference_to(Py::String(res.index.toString(s)));
+}
+
+PyObject* ComplexGeoDataPy::getElementIndexedName(PyObject *args)
+{
+    char* input;
+    int direction = 0;
+    if (!PyArg_ParseTuple(args, "s|i", &input,&direction))
+        return NULL;
+
+    Data::MappedElement res = getComplexGeoDataPtr()->getElementName(input);
+    std::string s;
+    return Py::new_reference_to(Py::String(res.index.toString(s)));
+}
+
+PyObject* ComplexGeoDataPy::getElementMappedName(PyObject *args)
+{
+    char* input;
+    int direction = 0;
+    if (!PyArg_ParseTuple(args, "s|i", &input,&direction))
+        return NULL;
+
+    Data::MappedElement res = getComplexGeoDataPtr()->getElementName(input);
+    std::string s;
+    return Py::new_reference_to(Py::String(res.name.toString(s)));
 }
 
 PyObject *ComplexGeoDataPy::setElementName(PyObject *args, PyObject *kwds) {
