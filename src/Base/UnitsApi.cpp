@@ -154,6 +154,17 @@ void UnitsApi::setSchema(UnitSystem s)
     UserPrefSystem->setSchemaUnits(); // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
 }
 
+QString UnitsApi::toNumber(const Base::Quantity& q, const QuantityFormat& f)
+{
+    QString number = QString::fromLatin1("%1").arg(q.getValue(), 0, f.toFormat(), f.precision);
+    return number;
+}
+
+QString UnitsApi::toNumber(double d, const QuantityFormat& f)
+{
+    QString number = QString::fromLatin1("%1").arg(d, 0, f.toFormat(), f.precision);
+    return number;
+}
 
 //double UnitsApi::translateUnit(const char* str)
 //{
