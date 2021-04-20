@@ -70,6 +70,17 @@ enum ColumnIndex {
     ColMapped,
 };
 
+class MultIcon {
+    
+public:
+    MultIcon &operator=(const char *);
+    QIcon Normal;
+    QIcon Construction;
+    QIcon External;
+    
+    QIcon getIcon(bool construction, bool external) const;
+};
+
 // helper class to store additional information about the treeWidget entry.
 class ElementItem : public QTreeWidgetItem
 {
@@ -136,94 +147,94 @@ public:
     }
 
     void setElement(Sketcher::SketchObject *sketch, int element) {
-        static std::map<std::pair<Base::Type,int>, QIcon> iconMap;
+        static std::map<std::pair<Base::Type,int>, MultIcon> iconMap;
         static QIcon none;
         if(iconMap.empty()) {
             none = QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid"));
 
             iconMap[std::make_pair(Part::GeomPoint::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Point_StartingPoint"));
+                "Sketcher_Element_Point_StartingPoint";
 
             iconMap[std::make_pair(Part::GeomPoint::getClassTypeId(),1)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Point_StartingPoint"));
+                "Sketcher_Element_Point_StartingPoint";
 
             iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Line_Edge"));
+                "Sketcher_Element_Line_Edge";
 
             iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),1)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Line_StartingPoint"));
+                "Sketcher_Element_Line_StartingPoint";
 
             iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),2)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Line_EndPoint"));
+                "Sketcher_Element_Line_EndPoint";
 
             iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_Edge"));
+                "Sketcher_Element_Arc_Edge";
 
             iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),1)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_StartingPoint"));
+                "Sketcher_Element_Arc_StartingPoint";
 
             iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),2)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_EndPoint"));
+                "Sketcher_Element_Arc_EndPoint";
 
             iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),3)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Arc_MidPoint"));
+                "Sketcher_Element_Arc_MidPoint";
 
             iconMap[std::make_pair(Part::GeomCircle::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Circle_Edge"));
+                "Sketcher_Element_Circle_Edge";
 
             iconMap[std::make_pair(Part::GeomCircle::getClassTypeId(),3)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Circle_MidPoint"));
+                "Sketcher_Element_Circle_MidPoint";
 
             iconMap[std::make_pair(Part::GeomEllipse::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_Edge_2"));
+                "Sketcher_Element_Ellipse_Edge_2";
 
             iconMap[std::make_pair(Part::GeomEllipse::getClassTypeId(),3)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_CentrePoint"));
+                "Sketcher_Element_Ellipse_CentrePoint";
 
             iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Edge"));
+                "Sketcher_Element_Elliptical_Arc_Edge";
 
             iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),1)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Start_Point"));
+                "Sketcher_Element_Elliptical_Arc_Start_Point";
 
             iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),2)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_End_Point"));
+                "Sketcher_Element_Elliptical_Arc_End_Point";
 
             iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),3)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Centre_Point"));
+                "Sketcher_Element_Elliptical_Arc_Centre_Point";
 
             iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Edge"));
+                "Sketcher_Element_Hyperbolic_Arc_Edge";
 
             iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),1)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Start_Point"));
+                "Sketcher_Element_Hyperbolic_Arc_Start_Point";
 
             iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),2)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_End_Point"));
+                "Sketcher_Element_Hyperbolic_Arc_End_Point";
 
             iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),3)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Centre_Point"));
+                "Sketcher_Element_Hyperbolic_Arc_Centre_Point";
 
             iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Edge"));
+                "Sketcher_Element_Parabolic_Arc_Edge";
 
             iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),1)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Start_Point"));
+                "Sketcher_Element_Parabolic_Arc_Start_Point";
 
             iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),2)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_End_Point"));
+                "Sketcher_Element_Parabolic_Arc_End_Point";
 
             iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),3)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Centre_Point"));
+                "Sketcher_Element_Parabolic_Arc_Centre_Point";
 
             iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),0)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_Edge"));
+                "Sketcher_Element_BSpline_Edge";
 
             iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),1)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_StartPoint"));
+                "Sketcher_Element_BSpline_StartPoint";
 
             iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),2)] =
-                QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_BSpline_EndPoint"));
+                "Sketcher_Element_BSpline_EndPoint";
         }
         QIcon icon;
         if(isMissing)
@@ -237,7 +248,7 @@ public:
                 else
                     hidden = true;
             } else
-                icon = it->second;
+                icon = it->second.getIcon(isConstruction, isExternal);
             setHidden(hidden);
         }
         setIcon(0,icon);
@@ -930,7 +941,7 @@ void TaskSketcherElements::changeEvent(QEvent *e)
     }
 }
 
-TaskSketcherElements::MultIcon::MultIcon(const char* name)
+MultIcon & MultIcon::operator=(const char* name)
 {
     int hue, sat, val, alp;
     Normal = Gui::BitmapFactory().iconFromTheme(name);
@@ -960,11 +971,10 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     }
     Construction = QIcon(QPixmap::fromImage(imgConstr));
     External = QIcon(QPixmap::fromImage(imgExt));
-
+    return *this;
 }
 
-QIcon TaskSketcherElements::MultIcon::getIcon(bool construction, bool external) const
-{
+QIcon MultIcon::getIcon(bool construction, bool external) const {
     if (construction && external) return QIcon();
     if (construction) return Construction;
     if (external) return External;
