@@ -662,6 +662,11 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView)
         ui->listWidgetConstraints, SIGNAL(itemActivated(QListWidgetItem *)),
         this                     , SLOT  (on_listWidgetConstraints_itemActivated(QListWidgetItem *))
        );
+    ui->listWidgetConstraints->setMouseTracking(true);
+    QObject::connect(
+        ui->listWidgetConstraints, SIGNAL(itemEntered(QListWidgetItem *)),
+        this                     , SLOT  (on_listWidgetConstraints_itemEntered(QListWidgetItem *))
+       );
     QObject::connect(
         ui->listWidgetConstraints, SIGNAL(itemChanged(QListWidgetItem *)),
         this                     , SLOT  (on_listWidgetConstraints_itemChanged(QListWidgetItem *))
@@ -988,9 +993,12 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                             ConstraintItem* item = static_cast<ConstraintItem*>
                                 (ui->listWidgetConstraints->item(i));
                             if (item->ConstraintNbr == ConstrId) {
-                                ui->listWidgetConstraints->blockSignals(true);
-                                item->setSelected(select);
-                                ui->listWidgetConstraints->blockSignals(false);
+                                if(!item->isSelected()) {
+                                    ui->listWidgetConstraints->blockSignals(true);
+                                    item->setSelected(select);
+                                    ui->listWidgetConstraints->blockSignals(false);
+                                    ui->listWidgetConstraints->scrollToItem(item);
+                                }
                                 break;
                             }
                         }
@@ -1128,17 +1136,26 @@ void TaskSketcherConstraints::on_listWidgetConstraints_itemSelectionChanged(void
     bool block = this->blockSelection(true); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
-    std::vector<std::string> constraintSubNames;
     QList<QListWidgetItem *> items = ui->listWidgetConstraints->selectedItems();
     for (QList<QListWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
         std::string constraint_name(Sketcher::PropertyConstraintList::getConstraintName(static_cast<ConstraintItem*>(*it)->ConstraintNbr));
-        constraintSubNames.push_back(constraint_name);
+        sketchView->selectElement(constraint_name.c_str());
     }
-
-    if(!constraintSubNames.empty())
-        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
-
     this->blockSelection(block);
+}
+
+void TaskSketcherConstraints::on_listWidgetConstraints_itemEntered(QListWidgetItem *item)
+{
+    Gui::Selection().rmvPreselect();
+    std::string constraint_name(
+            Sketcher::PropertyConstraintList::getConstraintName(static_cast<ConstraintItem*>(item)->ConstraintNbr));
+    sketchView->selectElement(constraint_name.c_str(), true);
+}
+
+void TaskSketcherConstraints::leaveEvent (QEvent * event)
+{
+    Q_UNUSED(event);
+    Gui::Selection().rmvPreselect();
 }
 
 void TaskSketcherConstraints::on_listWidgetConstraints_itemActivated(QListWidgetItem *item)

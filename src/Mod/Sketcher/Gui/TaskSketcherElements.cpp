@@ -40,11 +40,13 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/MappedElement.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
@@ -54,69 +56,208 @@
 #include <Gui/BitmapFactory.h>
 
 #include <Gui/Command.h>
+#include <Gui/MenuManager.h>
 
+using namespace Sketcher;
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 
-/// Inserts a QAction into an existing menu
-/// ICONSTR is the string of the icon in the resource file
-/// NAMESTR is the text appearing in the contextual menuAction
-/// CMDSTR is the string registered in the commandManager
-/// FUNC is the name of the member function to be executed on selection of the menu item
-/// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
-#define CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION) \
-QIcon icon_ ## FUNC( Gui::BitmapFactory().pixmap(ICONSTR) ); \
-    QAction* constr_ ## FUNC = menu.addAction(icon_ ## FUNC,tr(NAMESTR), this, SLOT(FUNC()), \
-        QKeySequence(QString::fromUtf8(Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel()))); \
-    if(ACTSONSELECTION) constr_ ## FUNC->setEnabled(!items.isEmpty()); else constr_ ## FUNC->setEnabled(true);
+enum ColumnIndex {
+    ColType,
+    ColName,
+    ColReference,
+    ColFlags,
+    ColMapped,
+};
 
-/// Defines the member function corresponding to the CONTEXT_ITEM macro
-#define CONTEXT_MEMBER_DEF(CMDSTR,FUNC) \
-void ElementView::FUNC(){ \
-   Gui::Application::Instance->commandManager().runCommandByName(CMDSTR);}
+class MultIcon {
+    
+public:
+    MultIcon &operator=(const char *);
+    QIcon Normal;
+    QIcon Construction;
+    QIcon External;
+    
+    QIcon getIcon(bool construction, bool external) const;
+};
 
-// helper class to store additional information about the listWidget entry.
-class ElementItem : public QListWidgetItem
+// helper class to store additional information about the treeWidget entry.
+class ElementItem : public QTreeWidgetItem
 {
 public:
-    ElementItem(const QIcon & icon, const QString & text, int elementnr,
-                int startingVertex, int midVertex, int endVertex,
-                Base::Type geometryType, bool construction, bool external)
-        : QListWidgetItem(icon,text)
+    ElementItem(QTreeWidget *parent, Sketcher::SketchObject *sketch,
+            int elementnr, Part::Geometry *geo)
+        : QTreeWidgetItem(parent)
         , ElementNbr(elementnr)
-        , StartingVertex(startingVertex)
-        , MidVertex(midVertex)
-        , EndVertex(endVertex)
         , isLineSelected(false)
         , isStartingPointSelected(false)
         , isEndPointSelected(false)
         , isMidPointSelected(false)
-        , GeometryType(geometryType)
-        , isConstruction(construction)
-        , isExternal(external)
     {
+        StartingVertex = sketch->getVertexIndexGeoPos(elementnr,Sketcher::PointPos::start),
+        MidVertex = sketch->getVertexIndexGeoPos(elementnr,Sketcher::PointPos::mid),
+        EndVertex = sketch->getVertexIndexGeoPos(elementnr,Sketcher::PointPos::end),
+        GeometryType = geo->getTypeId();
+        isConstruction = GeometryFacade::getConstruction(geo);
 
-    }
-    ElementItem(const QString & text,int elementnr,
-                int startingVertex, int midVertex, int endVertex,
-                Base::Type geometryType, bool construction, bool external)
-        : QListWidgetItem(text)
-        , ElementNbr(elementnr)
-        , StartingVertex(startingVertex)
-        , MidVertex(midVertex)
-        , EndVertex(endVertex)
-        , isLineSelected(false)
-        , isStartingPointSelected(false)
-        , isEndPointSelected(false)
-        , isMidPointSelected(false)
-        , GeometryType(geometryType)
-        , isConstruction(construction)
-        , isExternal(external)
-    {
+        static std::map<Base::Type,QString> typeMap;
+        if(typeMap.empty()) {
+            typeMap[Part::GeomPoint::getClassTypeId()] = QObject::tr("Point");
+            typeMap[Part::GeomLineSegment::getClassTypeId()] = QObject::tr("Line");
+            typeMap[Part::GeomArcOfCircle::getClassTypeId()] = QObject::tr("Arc");
+            typeMap[Part::GeomCircle::getClassTypeId()] = QObject::tr("Circle");
+            typeMap[Part::GeomEllipse::getClassTypeId()] = QObject::tr("Ellipse");
+            typeMap[Part::GeomArcOfEllipse::getClassTypeId()] = QObject::tr("Elliptical Arc");
+            typeMap[Part::GeomArcOfHyperbola::getClassTypeId()] = QObject::tr("Hyperbolic Arc");
+            typeMap[Part::GeomArcOfParabola::getClassTypeId()] = QObject::tr("Parabolic Arc");
+            typeMap[Part::GeomBSplineCurve::getClassTypeId()] = QObject::tr("BSpline");
+        }
+        auto it = typeMap.find(GeometryType);
+        if(it == typeMap.end())
+            setText(ColType, QObject::tr("Other") +
+                    QLatin1Char('-') + QString::fromLatin1(GeometryType.getName()));
+        else
+            setText(ColType, it->second);
+        if(ElementNbr>=0) {
+            if(GeometryFacade::getConstruction(geo))
+                setText(ColFlags,QObject::tr("Construction"));
+            isMissing = false;
+            isExternal = false;
+        }else{
+            auto egf = ExternalGeometryFacade::getFacade(geo);
+            isMissing = egf->testFlag(ExternalGeometryExtension::Missing);
+            isExternal = !egf->getRef().empty();
 
+            QString text;
+            if(egf->testFlag(ExternalGeometryExtension::Defining))
+                text = QObject::tr("Defining");
+            if(egf->testFlag(ExternalGeometryExtension::Frozen)) {
+                if(text.size())
+                    text += QLatin1Char('-');
+                text += QObject::tr("Frozen");
+            }
+            setText(ColFlags,text);
+
+            setText(ColReference, QString::fromLatin1(sketch->getGeometryReference(ElementNbr).c_str()));
+        }
     }
+
     ~ElementItem()
     {
+    }
+
+    void setElement(Sketcher::SketchObject *sketch, int element) {
+        static std::map<std::pair<Base::Type,int>, MultIcon> iconMap;
+        static QIcon none;
+        if(iconMap.empty()) {
+            none = QIcon(Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid"));
+
+            iconMap[std::make_pair(Part::GeomPoint::getClassTypeId(),0)] =
+                "Sketcher_Element_Point_StartingPoint";
+
+            iconMap[std::make_pair(Part::GeomPoint::getClassTypeId(),1)] =
+                "Sketcher_Element_Point_StartingPoint";
+
+            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),0)] =
+                "Sketcher_Element_Line_Edge";
+
+            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),1)] =
+                "Sketcher_Element_Line_StartingPoint";
+
+            iconMap[std::make_pair(Part::GeomLineSegment::getClassTypeId(),2)] =
+                "Sketcher_Element_Line_EndPoint";
+
+            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),0)] =
+                "Sketcher_Element_Arc_Edge";
+
+            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),1)] =
+                "Sketcher_Element_Arc_StartingPoint";
+
+            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),2)] =
+                "Sketcher_Element_Arc_EndPoint";
+
+            iconMap[std::make_pair(Part::GeomArcOfCircle::getClassTypeId(),3)] =
+                "Sketcher_Element_Arc_MidPoint";
+
+            iconMap[std::make_pair(Part::GeomCircle::getClassTypeId(),0)] =
+                "Sketcher_Element_Circle_Edge";
+
+            iconMap[std::make_pair(Part::GeomCircle::getClassTypeId(),3)] =
+                "Sketcher_Element_Circle_MidPoint";
+
+            iconMap[std::make_pair(Part::GeomEllipse::getClassTypeId(),0)] =
+                "Sketcher_Element_Ellipse_Edge_2";
+
+            iconMap[std::make_pair(Part::GeomEllipse::getClassTypeId(),3)] =
+                "Sketcher_Element_Ellipse_CentrePoint";
+
+            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),0)] =
+                "Sketcher_Element_Elliptical_Arc_Edge";
+
+            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),1)] =
+                "Sketcher_Element_Elliptical_Arc_Start_Point";
+
+            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),2)] =
+                "Sketcher_Element_Elliptical_Arc_End_Point";
+
+            iconMap[std::make_pair(Part::GeomArcOfEllipse::getClassTypeId(),3)] =
+                "Sketcher_Element_Elliptical_Arc_Centre_Point";
+
+            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),0)] =
+                "Sketcher_Element_Hyperbolic_Arc_Edge";
+
+            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),1)] =
+                "Sketcher_Element_Hyperbolic_Arc_Start_Point";
+
+            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),2)] =
+                "Sketcher_Element_Hyperbolic_Arc_End_Point";
+
+            iconMap[std::make_pair(Part::GeomArcOfHyperbola::getClassTypeId(),3)] =
+                "Sketcher_Element_Hyperbolic_Arc_Centre_Point";
+
+            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),0)] =
+                "Sketcher_Element_Parabolic_Arc_Edge";
+
+            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),1)] =
+                "Sketcher_Element_Parabolic_Arc_Start_Point";
+
+            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),2)] =
+                "Sketcher_Element_Parabolic_Arc_End_Point";
+
+            iconMap[std::make_pair(Part::GeomArcOfParabola::getClassTypeId(),3)] =
+                "Sketcher_Element_Parabolic_Arc_Centre_Point";
+
+            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),0)] =
+                "Sketcher_Element_BSpline_Edge";
+
+            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),1)] =
+                "Sketcher_Element_BSpline_StartPoint";
+
+            iconMap[std::make_pair(Part::GeomBSplineCurve::getClassTypeId(),2)] =
+                "Sketcher_Element_BSpline_EndPoint";
+        }
+        QIcon icon;
+        if(isMissing)
+            icon = none;
+        else {
+            bool hidden = false;
+            auto it = iconMap.find(std::make_pair(GeometryType,element));
+            if(it == iconMap.end()) {
+                if(!element)
+                    icon = none;
+                else
+                    hidden = true;
+            } else
+                icon = it->second.getIcon(isConstruction, isExternal);
+            setHidden(hidden);
+        }
+        setIcon(0,icon);
+
+        Data::IndexedName name = sketch->shapeTypeFromGeoId(ElementNbr, (Sketcher::PointPos)(element));
+        std::string tmp;
+        setText(ColName, QString::fromLatin1(name.toString(tmp)));
+        std::string mapped = sketch->convertSubName(name,false);
+        setText(ColMapped, QString::fromLatin1(mapped.c_str()));
     }
 
     int ElementNbr;
@@ -127,13 +268,14 @@ public:
     bool isStartingPointSelected;
     bool isEndPointSelected;
     bool isMidPointSelected;
+    bool isMissing;
     Base::Type GeometryType;
     bool isConstruction;
     bool isExternal;
 };
 
 ElementView::ElementView(QWidget *parent)
-    : QListWidget(parent)
+    : QTreeWidget(parent)
 {
 }
 
@@ -144,43 +286,43 @@ ElementView::~ElementView()
 void ElementView::contextMenuEvent (QContextMenuEvent* event)
 {
     QMenu menu;
-    QList<QListWidgetItem *> items = selectedItems();
+    auto items = selectedItems();
+    Gui::MenuItem mitems;
+    mitems << "Sketcher_ConstrainCoincident"
+           << "Sketcher_ConstrainPointOnObject"
+           << "Sketcher_ConstrainVertical"
+           << "Sketcher_ConstrainHorizontal"
+           << "Sketcher_ConstrainParallel"
+           << "Sketcher_ConstrainPerpendicular"
+           << "Sketcher_ConstrainTangent"
+           << "Sketcher_ConstrainEqual"
+           << "Sketcher_ConstrainSymmetric"
+           << "Sketcher_ConstrainLock"
+           << "Sketcher_ConstrainBlock"
+           << "Sketcher_ConstrainDistanceX"
+           << "Sketcher_ConstrainDistanceY"
+           << "Sketcher_ConstrainDistance"
+           << "Sketcher_ConstrainRadius"
+           << "Sketcher_ConstrainDiameter"
+           << "Sketcher_ConstrainAngle"
 
-    // CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)
-    CONTEXT_ITEM("Constraint_PointOnPoint","Point Coincidence","Sketcher_ConstrainCoincident",doPointCoincidence,true)
-    CONTEXT_ITEM("Constraint_PointOnObject","Point on Object","Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint,true)
-    CONTEXT_ITEM("Constraint_Vertical","Vertical Constraint","Sketcher_ConstrainVertical", doVerticalConstraint,true)
-    CONTEXT_ITEM("Constraint_Horizontal","Horizontal Constraint","Sketcher_ConstrainHorizontal",doHorizontalConstraint,true)
-    CONTEXT_ITEM("Constraint_Parallel","Parallel Constraint","Sketcher_ConstrainParallel",doParallelConstraint,true)
-    CONTEXT_ITEM("Constraint_Perpendicular","Perpendicular Constraint","Sketcher_ConstrainPerpendicular",doPerpendicularConstraint,true)
-    CONTEXT_ITEM("Constraint_Tangent","Tangent Constraint","Sketcher_ConstrainTangent",doTangentConstraint,true)
-    CONTEXT_ITEM("Constraint_EqualLength","Equal Length","Sketcher_ConstrainEqual",doEqualConstraint,true)
-    CONTEXT_ITEM("Constraint_Symmetric","Symmetric","Sketcher_ConstrainSymmetric",doSymmetricConstraint,true)
-    CONTEXT_ITEM("Constraint_Block","Block Constraint","Sketcher_ConstrainBlock",doBlockConstraint,true)
+           << "Separator"
 
-    CONTEXT_ITEM("Constraint_Lock","Lock Constraint","Sketcher_ConstrainLock",doLockConstraint,true)
-    CONTEXT_ITEM("Constraint_HorizontalDistance","Horizontal Distance","Sketcher_ConstrainDistanceX",doHorizontalDistance,true)
-    CONTEXT_ITEM("Constraint_VerticalDistance","Vertical Distance","Sketcher_ConstrainDistanceY",doVerticalDistance,true)
-    CONTEXT_ITEM("Constraint_Length","Length Constraint","Sketcher_ConstrainDistance",doLengthConstraint,true)
-    CONTEXT_ITEM("Constraint_Radius","Radius Constraint","Sketcher_ConstrainRadius",doRadiusConstraint,true)
-    CONTEXT_ITEM("Constraint_Diameter","Diameter Constraint","Sketcher_ConstrainDiameter",doDiameterConstraint,true)
-    CONTEXT_ITEM("Constraint_Radiam","Radiam Constraint","Sketcher_ConstrainRadiam",doRadiamConstraint,true)
-    CONTEXT_ITEM("Constraint_InternalAngle","Angle Constraint","Sketcher_ConstrainAngle",doAngleConstraint,true)
+           << "Sketcher_ToggleConstruction"
+           << "Sketcher_ExternalCmds"
 
-    menu.addSeparator();
+           << "Separator"
 
-    CONTEXT_ITEM("Sketcher_ToggleConstruction","Toggle construction line","Sketcher_ToggleConstruction",doToggleConstruction,true)
+           << "Sketcher_CloseShape"
+           << "Sketcher_ConnectLines"
+           << "Sketcher_SelectConstraints"
+           << "Sketcher_SelectOrigin"
+           << "Sketcher_SelectHorizontalAxis"
+           << "Sketcher_SelectVerticalAxis"
 
-    menu.addSeparator();
+           << "Separator";
 
-    CONTEXT_ITEM("Sketcher_CloseShape","Close Shape","Sketcher_CloseShape",doCloseShape,true)
-    CONTEXT_ITEM("Sketcher_ConnectLines","Connect","Sketcher_ConnectLines",doConnect,true)
-    CONTEXT_ITEM("Sketcher_SelectConstraints","Select Constraints","Sketcher_SelectConstraints",doSelectConstraints,true)
-    CONTEXT_ITEM("Sketcher_SelectOrigin","Select Origin","Sketcher_SelectOrigin",doSelectOrigin,false)
-    CONTEXT_ITEM("Sketcher_SelectHorizontalAxis","Select Horizontal Axis","Sketcher_SelectHorizontalAxis",doSelectHAxis,false)
-    CONTEXT_ITEM("Sketcher_SelectVerticalAxis","Select Vertical Axis","Sketcher_SelectVerticalAxis",doSelectVAxis,false)
-
-    menu.addSeparator();
+    Gui::MenuManager::getInstance()->setupContextMenu(&mitems, menu);
 
     QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
         QKeySequence(QKeySequence::Delete));
@@ -190,35 +332,6 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
 
     menu.exec(event->globalPos());
 }
-
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainCoincident",doPointCoincidence)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainPointOnObject",doPointOnObjectConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainVertical",doVerticalConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainHorizontal",doHorizontalConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainParallel",doParallelConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainPerpendicular",doPerpendicularConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainTangent",doTangentConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainEqual",doEqualConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainSymmetric",doSymmetricConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainBlock",doBlockConstraint)
-
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainLock",doLockConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceX",doHorizontalDistance)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistanceY",doVerticalDistance)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainDistance",doLengthConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadius",doRadiusConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainDiameter",doDiameterConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainRadiam",doRadiamConstraint)
-CONTEXT_MEMBER_DEF("Sketcher_ConstrainAngle",doAngleConstraint)
-
-CONTEXT_MEMBER_DEF("Sketcher_ToggleConstruction",doToggleConstruction)
-
-CONTEXT_MEMBER_DEF("Sketcher_CloseShape",doCloseShape)
-CONTEXT_MEMBER_DEF("Sketcher_ConnectLines",doConnect)
-CONTEXT_MEMBER_DEF("Sketcher_SelectConstraints",doSelectConstraints)
-CONTEXT_MEMBER_DEF("Sketcher_SelectOrigin",doSelectOrigin)
-CONTEXT_MEMBER_DEF("Sketcher_SelectHorizontalAxis",doSelectHAxis)
-CONTEXT_MEMBER_DEF("Sketcher_SelectVerticalAxis",doSelectVAxis)
 
 void ElementView::deleteSelectedItems()
 {
@@ -237,7 +350,6 @@ void ElementView::deleteSelectedItems()
     doc->commitTransaction();
 }
 
-
 void ElementView::keyPressEvent(QKeyEvent * event)
 {
     switch (event->key())
@@ -247,7 +359,7 @@ void ElementView::keyPressEvent(QKeyEvent * event)
         onFilterShortcutPressed();
         break;
       default:
-        QListWidget::keyPressEvent( event );
+        inherited::keyPressEvent( event );
         break;
     }
 }
@@ -262,7 +374,6 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     , ui(new Ui_TaskSketcherElements())
     , focusItemIndex(-1)
     , previouslySelectedItemIndex(-1)
-    , isNamingBoxChecked(false)
     , isautoSwitchBoxChecked(false)
     , inhibitSelectionUpdate(false)
 {
@@ -281,35 +392,43 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     ui->Explanation->setText(tr("<html><head/><body><p>&quot;%1&quot;: multiple selection</p>"
                                 "<p>&quot;%2&quot;: switch to next valid type</p></body></html>")
                              .arg(cmdKey).arg(zKey));
-    ui->listWidgetElements->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    ui->listWidgetElements->setEditTriggers(QListWidget::NoEditTriggers);
-    ui->listWidgetElements->setMouseTracking(true);
+    ui->elementsWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui->elementsWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->elementsWidget->setMouseTracking(true);
+    ui->elementsWidget->setColumnCount(5);
+#if QT_VERSION >= 0x050000
+    ui->elementsWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+#else
+    ui->elementsWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+#endif
+    ui->elementsWidget->header()->setStretchLastSection(false);
+    ui->elementsWidget->headerItem()->setText(ColType, tr("Type"));
+    ui->elementsWidget->headerItem()->setText(ColName, tr("Name"));
+    ui->elementsWidget->headerItem()->setText(ColReference, tr("Reference"));
+    ui->elementsWidget->headerItem()->setText(ColFlags, tr("Flags"));
+    ui->elementsWidget->headerItem()->setText(ColMapped, tr("Mapped"));
 
     // connecting the needed signals
     QObject::connect(
-        ui->listWidgetElements, SIGNAL(itemSelectionChanged()),
-        this                     , SLOT  (on_listWidgetElements_itemSelectionChanged())
+        ui->elementsWidget, SIGNAL(itemSelectionChanged()),
+        this                     , SLOT  (on_elementsWidget_itemSelectionChanged())
        );
     QObject::connect(
-        ui->listWidgetElements, SIGNAL(itemEntered(QListWidgetItem *)),
-        this                     , SLOT  (on_listWidgetElements_itemEntered(QListWidgetItem *))
+        ui->elementsWidget, SIGNAL(itemEntered(QTreeWidgetItem *, int)),
+        this                     , SLOT  (on_elementsWidget_itemEntered(QTreeWidgetItem *))
        );
     QObject::connect(
-        ui->listWidgetElements, SIGNAL(onFilterShortcutPressed()),
-        this                     , SLOT  (on_listWidgetElements_filterShortcutPressed())
+        ui->elementsWidget, SIGNAL(onFilterShortcutPressed()),
+        this                     , SLOT  (on_elementsWidget_filterShortcutPressed())
        );
     QObject::connect(
         ui->comboBoxElementFilter, SIGNAL(currentIndexChanged(int)),
-        this                     , SLOT  (on_listWidgetElements_currentFilterChanged(int))
+        this                     , SLOT  (on_elementsWidget_currentFilterChanged(int))
        );
     QObject::connect(
         ui->comboBoxModeFilter, SIGNAL(currentIndexChanged(int)),
-        this                     , SLOT  (on_listWidgetElements_currentModeFilterChanged(int))
-    );
-    QObject::connect(
-        ui->namingBox, SIGNAL(stateChanged(int)),
-        this                     , SLOT  (on_namingBox_stateChanged(int))
-       );
+        this                  , SLOT  (on_elementsWidget_currentModeFilterChanged(int))
+        );
     QObject::connect(
         ui->autoSwitchBox, SIGNAL(stateChanged(int)),
         this                     , SLOT  (on_autoSwitchBox_stateChanged(int))
@@ -326,7 +445,6 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
 
     ui->autoSwitchBox->setChecked(hGrp->GetBool("Auto-switch to edge", true));
-    ui->namingBox->setChecked(hGrp->GetBool("Extended Naming", false));
 
     ui->comboBoxElementFilter->setEnabled(!isautoSwitchBoxChecked);
     ui->comboBoxModeFilter->setEnabled(true);
@@ -339,7 +457,6 @@ TaskSketcherElements::~TaskSketcherElements()
     try {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
         hGrp->SetBool("Auto-switch to edge", ui->autoSwitchBox->isChecked());
-        hGrp->SetBool("Extended Naming", ui->namingBox->isChecked());
     }
     catch (const Base::Exception&) {
     }
@@ -359,93 +476,55 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
         // is it this object??
         if (strcmp(msg.pDocName,sketchView->getSketchObject()->getDocument()->getName())==0 &&
             strcmp(msg.pObjectName,sketchView->getSketchObject()->getNameInDocument())== 0) {
-            if (msg.pSubName) {
-                QString expr = QString::fromLatin1(msg.pSubName);
-                std::string shapetype(msg.pSubName);
-                // if-else edge vertex
-                if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
-                    QRegExp rx(QString::fromLatin1("^Edge(\\d+)$"));
-                    int pos = expr.indexOf(rx);
-                    if (pos > -1) {
-                        bool ok;
-                        int ElementId = rx.cap(1).toInt(&ok) - 1;
-                        if (ok) {
-                            int countItems = ui->listWidgetElements->count();
-                            for (int i=0; i < countItems; i++) {
-                                ElementItem* item = static_cast<ElementItem*>
-                                  (ui->listWidgetElements->item(i));
-                                if (item->ElementNbr == ElementId) {
-                                    item->isLineSelected=select;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex"){
-                    QRegExp rx(QString::fromLatin1("^Vertex(\\d+)$"));
-                    int pos = expr.indexOf(rx);
-                    if (pos > -1) {
-                        bool ok;
-                        int ElementId = rx.cap(1).toInt(&ok) - 1;
-                        if (ok) {
-                            // Get the GeoID&Pos
-                            int GeoId;
-                            Sketcher::PointPos PosId;
-                            sketchView->getSketchObject()->getGeoVertexIndex(ElementId,GeoId, PosId);
+            if (!msg.pSubName)
+                return;
+            int GeoId;
+            Sketcher::PointPos PosId;
+            if(!sketchView->getSketchObject()->geoIdFromShapeType(msg.pSubName,GeoId,PosId))
+                return;
 
-                            int countItems = ui->listWidgetElements->count();
-                            for (int i=0; i < countItems; i++) {
-                                ElementItem* item = static_cast<ElementItem*>
-                                  (ui->listWidgetElements->item(i));
-                                if (item->ElementNbr == GeoId) {
-                                    switch(PosId)
-                                    {
-                                    case Sketcher::PointPos::start:
-                                        item->isStartingPointSelected=select;
-                                        break;
-                                    case Sketcher::PointPos::end:
-                                        item->isEndPointSelected=select;
-                                        break;
-                                    case Sketcher::PointPos::mid:
-                                        item->isMidPointSelected=select;
-                                        break;
-                                    default:
-                                        break;
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                // update the listwidget
-                int element=ui->comboBoxElementFilter->currentIndex();
-                ui->listWidgetElements->blockSignals(true);
+            auto it = itemMap.find(GeoId);
+            if(it == itemMap.end())
+                return;
 
+            ElementItem* ite = static_cast<ElementItem*>(it->second);
 
-                for (int i=0;i<ui->listWidgetElements->count(); i++) {
-                    ElementItem * ite=static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-
-                    switch(element){
-                      case 0:
-                          ite->setSelected(ite->isLineSelected);
-                          break;
-                      case 1:
-                          ite->setSelected(ite->isStartingPointSelected);
-                          break;
-                      case 2:
-                          ite->setSelected(ite->isEndPointSelected);
-                          break;
-                      case 3:
-                          ite->setSelected(ite->isMidPointSelected);
-                          break;
-                    }
-                }
-
-                ui->listWidgetElements->blockSignals(false);
-
+            switch(PosId) {
+            case Sketcher::PointPos::start:
+                ite->isStartingPointSelected=select;
+                break;
+            case Sketcher::PointPos::end:
+                ite->isEndPointSelected=select;
+                break;
+            case Sketcher::PointPos::mid:
+                ite->isMidPointSelected=select;
+                break;
+            default:
+                ite->isLineSelected=select;
+                break;
             }
+
+            // update the listwidget
+            ui->elementsWidget->blockSignals(true);
+
+            int element=ui->comboBoxElementFilter->currentIndex();
+            switch(element){
+            case 0:
+                ite->setSelected(ite->isLineSelected);
+                break;
+            case 1:
+                ite->setSelected(ite->isStartingPointSelected);
+                break;
+            case 2:
+                ite->setSelected(ite->isEndPointSelected);
+                break;
+            case 3:
+                ite->setSelected(ite->isMidPointSelected);
+                break;
+            }
+            if(select)
+                ui->elementsWidget->scrollToItem(ite);
+            ui->elementsWidget->blockSignals(false);
         }
     }
     else if (msg.Type == Gui::SelectionChanges::SetSelection) {
@@ -454,9 +533,9 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
 }
 
 
-void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
+void TaskSketcherElements::on_elementsWidget_itemSelectionChanged(void)
 {
-    ui->listWidgetElements->blockSignals(true);
+    ui->elementsWidget->blockSignals(true);
 
 
     // selection changed because we acted on the current entered item
@@ -465,8 +544,8 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
 
     ElementItem * itf;
 
-    if(focusItemIndex>-1 && focusItemIndex<ui->listWidgetElements->count())
-      itf=static_cast<ElementItem*>(ui->listWidgetElements->item(focusItemIndex));
+    if(focusItemIndex>-1 && focusItemIndex<ui->elementsWidget->topLevelItemCount())
+      itf=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(focusItemIndex));
     else
       itf=nullptr;
 
@@ -513,10 +592,8 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
     bool block = this->blockSelection(true); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
-    std::vector<std::string> elementSubNames;
-
-    for (int i=0;i<ui->listWidgetElements->count(); i++) {
-        ElementItem * ite=static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+    for (int i=0;i<ui->elementsWidget->topLevelItemCount(); i++) {
+        ElementItem * ite=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(i));
 
         if(!multipleselection && !multipleconsecutiveselection && ite != itf) {
             ite->isLineSelected=false;
@@ -568,8 +645,11 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
         int vertex;
 
         if (ite->isLineSelected) {
-            ss << "Edge" << ite->ElementNbr + 1;
-            elementSubNames.push_back(ss.str());
+            if(ite->ElementNbr>=0)
+                ss << "Edge" << ite->ElementNbr + 1;
+            else
+                ss << "ExternalEdge" << -ite->ElementNbr - 2;
+            sketchView->selectElement(ss.str().c_str());
         }
 
         if (ite->isStartingPointSelected) {
@@ -577,7 +657,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
             vertex= ite->StartingVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                elementSubNames.push_back(ss.str());
+                sketchView->selectElement(ss.str().c_str());
             }
         }
 
@@ -586,7 +666,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
             vertex= ite->EndVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                elementSubNames.push_back(ss.str());
+                sketchView->selectElement(ss.str().c_str());
             }
         }
 
@@ -595,23 +675,19 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
             vertex= ite->MidVertex;
             if (vertex!=-1) {
                 ss << "Vertex" << vertex + 1;
-                elementSubNames.push_back(ss.str());
+                sketchView->selectElement(ss.str().c_str());
             }
         }
     }
 
-    if (!elementSubNames.empty()) {
-        Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), elementSubNames);
-    }
-
     this->blockSelection(block);
-    ui->listWidgetElements->blockSignals(false);
+    ui->elementsWidget->blockSignals(false);
 
-    if (focusItemIndex>-1 && focusItemIndex<ui->listWidgetElements->count())
+    if (focusItemIndex>-1 && focusItemIndex<ui->elementsWidget->topLevelItemCount())
         previouslySelectedItemIndex=focusItemIndex;
 }
 
-void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *item)
+void TaskSketcherElements::on_elementsWidget_itemEntered(QTreeWidgetItem *item)
 {
     ElementItem *it = dynamic_cast<ElementItem*>(item);
     if (!it)
@@ -619,9 +695,9 @@ void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *it
 
     Gui::Selection().rmvPreselect();
 
-    ui->listWidgetElements->setFocus();
+    ui->elementsWidget->setFocus();
 
-    int tempitemindex=ui->listWidgetElements->row(item);
+    int tempitemindex=ui->elementsWidget->indexOfTopLevelItem(item);
 
     std::string doc_name = sketchView->getSketchObject()->getDocument()->getName();
     std::string obj_name = sketchView->getSketchObject()->getNameInDocument();
@@ -636,14 +712,14 @@ void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *it
 
     // Edge Auto-Switch functionality
     if (isautoSwitchBoxChecked && tempitemindex!=focusItemIndex){
-        ui->listWidgetElements->blockSignals(true);
+        ui->elementsWidget->blockSignals(true);
         if (it->GeometryType==Part::GeomPoint::getClassTypeId()) {
             ui->comboBoxElementFilter->setCurrentIndex(1);
         }
         else {
             ui->comboBoxElementFilter->setCurrentIndex(0);
         }
-        ui->listWidgetElements->blockSignals(false);
+        ui->elementsWidget->blockSignals(false);
     }
 
     int element=ui->comboBoxElementFilter->currentIndex();
@@ -656,7 +732,10 @@ void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *it
     {
     case 0:
         {
-            ss << "Edge" << it->ElementNbr + 1;
+            if(it->ElementNbr>=0)
+                ss << "Edge" << it->ElementNbr + 1;
+            else
+                ss << "ExternalEdge" << -it->ElementNbr - 2;
             Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
         break;
@@ -676,237 +755,41 @@ void TaskSketcherElements::leaveEvent (QEvent * event)
 {
     Q_UNUSED(event);
     Gui::Selection().rmvPreselect();
-    ui->listWidgetElements->clearFocus();
+    ui->elementsWidget->clearFocus();
 }
 
 void TaskSketcherElements::slotElementsChanged(void)
 {
-    MultIcon Sketcher_Element_Arc_Edge("Sketcher_Element_Arc_Edge");
-    MultIcon Sketcher_Element_Arc_EndPoint("Sketcher_Element_Arc_EndPoint");
-    MultIcon Sketcher_Element_Arc_MidPoint("Sketcher_Element_Arc_MidPoint");
-    MultIcon Sketcher_Element_Arc_StartingPoint("Sketcher_Element_Arc_StartingPoint");
-    MultIcon Sketcher_Element_Circle_Edge("Sketcher_Element_Circle_Edge");
-    MultIcon Sketcher_Element_Circle_MidPoint("Sketcher_Element_Circle_MidPoint");
-    MultIcon Sketcher_Element_Line_Edge("Sketcher_Element_Line_Edge");
-    MultIcon Sketcher_Element_Line_EndPoint("Sketcher_Element_Line_EndPoint");
-    MultIcon Sketcher_Element_Line_StartingPoint("Sketcher_Element_Line_StartingPoint");
-    MultIcon Sketcher_Element_Point_StartingPoint("Sketcher_Element_Point_StartingPoint");
-    MultIcon Sketcher_Element_Ellipse_Edge("Sketcher_Element_Ellipse_Edge_2");
-    MultIcon Sketcher_Element_Ellipse_MidPoint("Sketcher_Element_Ellipse_CentrePoint");
-    MultIcon Sketcher_Element_ArcOfEllipse_Edge("Sketcher_Element_Elliptical_Arc_Edge");
-    MultIcon Sketcher_Element_ArcOfEllipse_MidPoint("Sketcher_Element_Elliptical_Arc_Centre_Point");
-    MultIcon Sketcher_Element_ArcOfEllipse_StartingPoint("Sketcher_Element_Elliptical_Arc_Start_Point");
-    MultIcon Sketcher_Element_ArcOfEllipse_EndPoint("Sketcher_Element_Elliptical_Arc_End_Point");
-    MultIcon Sketcher_Element_ArcOfHyperbola_Edge("Sketcher_Element_Hyperbolic_Arc_Edge");
-    MultIcon Sketcher_Element_ArcOfHyperbola_MidPoint("Sketcher_Element_Hyperbolic_Arc_Centre_Point");
-    MultIcon Sketcher_Element_ArcOfHyperbola_StartingPoint("Sketcher_Element_Hyperbolic_Arc_Start_Point");
-    MultIcon Sketcher_Element_ArcOfHyperbola_EndPoint("Sketcher_Element_Hyperbolic_Arc_End_Point");
-    MultIcon Sketcher_Element_ArcOfParabola_Edge("Sketcher_Element_Parabolic_Arc_Edge");
-    MultIcon Sketcher_Element_ArcOfParabola_MidPoint("Sketcher_Element_Parabolic_Arc_Centre_Point");
-    MultIcon Sketcher_Element_ArcOfParabola_StartingPoint("Sketcher_Element_Parabolic_Arc_Start_Point");
-    MultIcon Sketcher_Element_ArcOfParabola_EndPoint("Sketcher_Element_Parabolic_Arc_End_Point");
-    MultIcon Sketcher_Element_BSpline_Edge("Sketcher_Element_BSpline_Edge");
-    MultIcon Sketcher_Element_BSpline_StartingPoint("Sketcher_Element_BSpline_StartPoint");
-    MultIcon Sketcher_Element_BSpline_EndPoint("Sketcher_Element_BSpline_EndPoint");
-    MultIcon none("Sketcher_Element_SelectionTypeInvalid");
-
     assert(sketchView);
     // Build up ListView with the elements
     Sketcher::SketchObject *sketch = sketchView->getSketchObject();
     const std::vector< Part::Geometry * > &vals = sketch->Geometry.getValues();
 
-    ui->listWidgetElements->clear();
+    ui->elementsWidget->blockSignals(true);
+    ui->elementsWidget->clear();
+    itemMap.clear();
 
     int element = ui->comboBoxElementFilter->currentIndex();
-    int mode = ui->comboBoxModeFilter->currentIndex();
-
-    int i=1;
-    for(std::vector< Part::Geometry * >::const_iterator it= vals.begin();it!=vals.end();++it,++i){
-      Base::Type type = (*it)->getTypeId();
-      bool construction = Sketcher::GeometryFacade::getConstruction(*it);
-
-      ui->listWidgetElements->addItem(new ElementItem(
-        (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, false) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? Sketcher_Element_Line_Edge.getIcon(construction, false) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==1) ? Sketcher_Element_Line_StartingPoint.getIcon(construction, false) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==2) ? Sketcher_Element_Line_EndPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==0) ? Sketcher_Element_Arc_Edge.getIcon(construction, false) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==1) ? Sketcher_Element_Arc_StartingPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==2) ? Sketcher_Element_Arc_EndPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==3) ? Sketcher_Element_Arc_MidPoint.getIcon(construction, false) :
-        (type == Part::GeomCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Circle_Edge.getIcon(construction, false) :
-        (type == Part::GeomCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Circle_MidPoint.getIcon(construction, false) :
-        (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? Sketcher_Element_Ellipse_Edge.getIcon(construction, false) :
-        (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? Sketcher_Element_Ellipse_MidPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfEllipse_Edge.getIcon(construction, false) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge.getIcon(construction, false) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfParabola_Edge.getIcon(construction, false) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfParabola_StartingPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfParabola_EndPoint.getIcon(construction, false) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfParabola_MidPoint.getIcon(construction, false) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==0) ? Sketcher_Element_BSpline_Edge.getIcon(construction, false) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==1) ? Sketcher_Element_BSpline_StartingPoint.getIcon(construction, false) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? Sketcher_Element_BSpline_EndPoint.getIcon(construction, false) :
-        none.getIcon(construction, false),
-        type == Part::GeomPoint::getClassTypeId()           ? ( isNamingBoxChecked ?
-                                                                (tr("Point") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
-        type == Part::GeomLineSegment::getClassTypeId()     ? ( isNamingBoxChecked ?
-                                                                (tr("Line") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Line")))         :
-        type == Part::GeomArcOfCircle::getClassTypeId()     ? ( isNamingBoxChecked ?
-                                                                (tr("Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Arc")))         :
-        type == Part::GeomCircle::getClassTypeId()          ? ( isNamingBoxChecked ?
-                                                                (tr("Circle") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Circle")))         :
-        type == Part::GeomEllipse::getClassTypeId()         ? ( isNamingBoxChecked ?
-                                                                (tr("Ellipse") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Ellipse")))   :
-        type == Part::GeomArcOfEllipse::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Elliptical Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Elliptical Arc")))   :
-        type == Part::GeomArcOfHyperbola::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Hyperbolic Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Hyperbolic Arc")))   :
-        type == Part::GeomArcOfParabola::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Parabolic Arc") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Parabolic Arc")))   :
-        type == Part::GeomBSplineCurve::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("BSpline") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-                                                                (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("BSpline")))   :
-        ( isNamingBoxChecked ?
-          (tr("Other") + QString::fromLatin1("(Edge%1#ID%2)").arg(i).arg(i-1)) +
-          (construction?(QString::fromLatin1("-")+tr("Construction")):QString::fromLatin1("")):
-          (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
-        i-1,
-        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::PointPos::start),
-        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::PointPos::mid),
-        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::PointPos::end),
-        type,
-        construction,
-        false));
-
-        setItemVisibility(i-1, mode);
+    for(int i=0;i<(int)vals.size();++i) {
+        auto item = new ElementItem(ui->elementsWidget,sketch, i, vals[i]);
+        item->setElement(sketch,element);
+        itemMap[item->ElementNbr] = item;
     }
 
     const std::vector< Part::Geometry * > &ext_vals = sketchView->getSketchObject()->getExternalGeometry();
-
-    const std::vector<App::DocumentObject*> linkobjs = sketchView->getSketchObject()->ExternalGeometry.getValues();
-    const std::vector<std::string> linksubs = sketchView->getSketchObject()->ExternalGeometry.getSubValues();
-
-    int j=1;
-    for(std::vector< Part::Geometry * >::const_iterator it= ext_vals.begin();it!=ext_vals.end();++it,++i,++j){
-      Base::Type type = (*it)->getTypeId();
-
-      if(j>2) { // we do not want the H and V axes
-
-        QString linkname;
-
-        if(isNamingBoxChecked) {
-            if(size_t(j-3) < linkobjs.size() && size_t(j-3) < linksubs.size()) {
-                linkname =  QString::fromLatin1("(ExternalEdge%1#ID%2, ").arg(j-2).arg(-j) +
-                            QString::fromUtf8(linkobjs[j-3]->getNameInDocument()) +
-                            QString::fromLatin1(".") +
-                            QString::fromUtf8(linksubs[j-3].c_str()) +
-                            QString::fromLatin1(")");
-            }
-            else {
-                linkname = QString::fromLatin1("(ExternalEdge%1)").arg(j-2);
-            }
-        }
-
-
-        ui->listWidgetElements->addItem(new ElementItem(
-            (type == Part::GeomPoint::getClassTypeId()         && element==1) ? Sketcher_Element_Point_StartingPoint.External :
-            (type == Part::GeomLineSegment::getClassTypeId()  && element==0) ? Sketcher_Element_Line_Edge.External :
-            (type == Part::GeomLineSegment::getClassTypeId()  && element==1) ? Sketcher_Element_Line_StartingPoint.External :
-            (type == Part::GeomLineSegment::getClassTypeId()  && element==2) ? Sketcher_Element_Line_EndPoint.External :
-            (type == Part::GeomArcOfCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Arc_Edge.External :
-            (type == Part::GeomArcOfCircle::getClassTypeId()         && element==1) ? Sketcher_Element_Arc_StartingPoint.External :
-            (type == Part::GeomArcOfCircle::getClassTypeId()         && element==2) ? Sketcher_Element_Arc_EndPoint.External :
-            (type == Part::GeomArcOfCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Arc_MidPoint.External :
-            (type == Part::GeomCircle::getClassTypeId()        && element==0) ? Sketcher_Element_Circle_Edge.External :
-            (type == Part::GeomCircle::getClassTypeId()        && element==3) ? Sketcher_Element_Circle_MidPoint.External :
-            (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? Sketcher_Element_Ellipse_Edge.External :
-            (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? Sketcher_Element_Ellipse_MidPoint.External :
-            (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfEllipse_Edge.External :
-            (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint.External :
-            (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint.External :
-            (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint.External :
-            (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge.External :
-            (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint.External :
-            (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint.External :
-            (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint.External :
-            (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfParabola_Edge.External :
-            (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfParabola_StartingPoint.External :
-            (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfParabola_EndPoint.External :
-            (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfParabola_MidPoint.External :
-            (type == Part::GeomBSplineCurve::getClassTypeId()    && element==0) ? Sketcher_Element_BSpline_Edge.External :
-            (type == Part::GeomBSplineCurve::getClassTypeId()    && element==1) ? Sketcher_Element_BSpline_StartingPoint.External :
-            (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? Sketcher_Element_BSpline_EndPoint.External :
-            none.External,
-            type == Part::GeomPoint::getClassTypeId()         ? ( isNamingBoxChecked ?
-                                                                (tr("Point") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Point")))         :
-            type == Part::GeomLineSegment::getClassTypeId()        ? ( isNamingBoxChecked ?
-                                                                (tr("Line") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Line")))         :
-            type == Part::GeomArcOfCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
-                                                                (tr("Arc") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Arc")))         :
-            type == Part::GeomCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
-                                                                (tr("Circle") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Circle")))         :
-            type == Part::GeomEllipse::getClassTypeId()         ? ( isNamingBoxChecked ?
-                                                                (tr("Ellipse") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Ellipse")))   :
-            type == Part::GeomArcOfEllipse::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Elliptical Arc") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Elliptical Arc")))   :
-            type == Part::GeomArcOfHyperbola::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Hyperbolic Arc") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Hyperbolic Arc")))   :
-            type == Part::GeomArcOfParabola::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("Parabolic Arc") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Parabolic Arc")))   :
-            type == Part::GeomBSplineCurve::getClassTypeId()    ? ( isNamingBoxChecked ?
-                                                                (tr("BSpline") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("BSpline")))   :
-            ( isNamingBoxChecked ?
-            (tr("Other") + linkname):
-            (QString::fromLatin1("%1-").arg(i-2)+tr("Other"))),
-            -j,
-            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::PointPos::start),
-            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::PointPos::mid),
-            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::PointPos::end),
-            type,
-            false, // externals are not construction geometry in the sense of the sketcher ui
-            true // yes, external geometry
-            ));
-
-        setItemVisibility(i-3, mode); // i is 1 based and H and V axes get ignored.
-      }
+    for(int i=2;i<(int)ext_vals.size();++i) {
+        auto item = new ElementItem(ui->elementsWidget,sketch, -i-1, ext_vals[i]);
+        item->setElement(sketch,element);
+        itemMap[item->ElementNbr] = item;
     }
+
+    for(int i = 0; i < ui->elementsWidget->columnCount(); i++)
+        ui->elementsWidget->resizeColumnToContents(i);
+    ui->elementsWidget->blockSignals(false);
 }
 
 
-void TaskSketcherElements::on_listWidgetElements_filterShortcutPressed()
+void TaskSketcherElements::on_elementsWidget_filterShortcutPressed()
 {
     int element;
 
@@ -914,9 +797,9 @@ void TaskSketcherElements::on_listWidgetElements_filterShortcutPressed()
 
     // calculate next element type on shift press according to entered/preselected element
     // This is the aka fast-forward functionality
-    if(focusItemIndex>-1 && focusItemIndex<ui->listWidgetElements->count()){
+    if(focusItemIndex>-1 && focusItemIndex<ui->elementsWidget->topLevelItemCount()){
 
-      ElementItem * itf=static_cast<ElementItem*>(ui->listWidgetElements->item(focusItemIndex));
+      ElementItem * itf=static_cast<ElementItem*>(ui->elementsWidget->topLevelItem(focusItemIndex));
 
       Base::Type type = itf->GeometryType;
 
@@ -947,7 +830,7 @@ void TaskSketcherElements::on_listWidgetElements_filterShortcutPressed()
 
       Gui::Selection().rmvPreselect();
 
-      on_listWidgetElements_itemEntered(itf);
+      on_elementsWidget_itemEntered(itf);
     }
     else{
       element = (ui->comboBoxElementFilter->currentIndex()+1) %
@@ -964,13 +847,6 @@ void TaskSketcherElements::on_listWidgetElements_filterShortcutPressed()
     updatePreselection();
 }
 
-
-void TaskSketcherElements::on_namingBox_stateChanged(int state)
-{
-      isNamingBoxChecked=(state==Qt::Checked);
-      slotElementsChanged();
-}
-
 void TaskSketcherElements::on_autoSwitchBox_stateChanged(int state)
 {
       isautoSwitchBoxChecked=(state==Qt::Checked);
@@ -978,7 +854,7 @@ void TaskSketcherElements::on_autoSwitchBox_stateChanged(int state)
       ui->comboBoxElementFilter->setEnabled(!isautoSwitchBoxChecked);
 }
 
-void TaskSketcherElements::on_listWidgetElements_currentFilterChanged ( int index )
+void TaskSketcherElements::on_elementsWidget_currentFilterChanged ( int index )
 {
     previouslySelectedItemIndex=-1; // Shift selection on list widget implementation
 
@@ -990,29 +866,28 @@ void TaskSketcherElements::on_listWidgetElements_currentFilterChanged ( int inde
 
 }
 
-void TaskSketcherElements::on_listWidgetElements_currentModeFilterChanged ( int index )
+void TaskSketcherElements::on_elementsWidget_currentModeFilterChanged ( int index )
 {
     updateVisibility(index);
 }
 
-
 void TaskSketcherElements::updatePreselection()
 {
     inhibitSelectionUpdate=true;
-    on_listWidgetElements_itemSelectionChanged();
+    on_elementsWidget_itemSelectionChanged();
     inhibitSelectionUpdate=false;
 }
 
 void TaskSketcherElements::clearWidget()
 {
-    ui->listWidgetElements->blockSignals(true);
-    ui->listWidgetElements->clearSelection ();
-    ui->listWidgetElements->blockSignals(false);
+    ui->elementsWidget->blockSignals(true);
+    ui->elementsWidget->clearSelection ();
+    ui->elementsWidget->blockSignals(false);
 
     // update widget
-    int countItems = ui->listWidgetElements->count();
+    int countItems = ui->elementsWidget->topLevelItemCount();
     for (int i=0; i < countItems; i++) {
-      ElementItem* item = static_cast<ElementItem*> (ui->listWidgetElements->item(i));
+      ElementItem* item = static_cast<ElementItem*> (ui->elementsWidget->topLevelItem(i));
       item->isLineSelected=false;
       item->isStartingPointSelected=false;
       item->isEndPointSelected=false;
@@ -1028,7 +903,7 @@ void TaskSketcherElements::setItemVisibility(int elementindex,int filterindex)
     // 2 => Construction
     // 3 => External
 
-    ElementItem* item = static_cast<ElementItem *>(ui->listWidgetElements->item(elementindex));
+    ElementItem* item = static_cast<ElementItem*> (ui->elementsWidget->topLevelItem(elementindex));
 
     if (filterindex == 0)
         item->setHidden(false);
@@ -1037,87 +912,25 @@ void TaskSketcherElements::setItemVisibility(int elementindex,int filterindex)
             (item->isConstruction  && filterindex == 2)  ||
             (item->isExternal && filterindex == 3) ) {
             item->setHidden(false);
-            }
-            else {
-                item->setHidden(true);
-            }
+        }
+        else {
+            item->setHidden(true);
+        }
     }
 }
 
 void TaskSketcherElements::updateVisibility(int filterindex)
 {
-    for (int i=0;i<ui->listWidgetElements->count(); i++) {
+    for (int i=0;i<ui->elementsWidget->topLevelItemCount(); i++) {
         setItemVisibility(i,filterindex);
     }
 }
 
 void TaskSketcherElements::updateIcons(int element)
 {
-    MultIcon Sketcher_Element_Arc_Edge("Sketcher_Element_Arc_Edge");
-    MultIcon Sketcher_Element_Arc_EndPoint("Sketcher_Element_Arc_EndPoint");
-    MultIcon Sketcher_Element_Arc_MidPoint("Sketcher_Element_Arc_MidPoint");
-    MultIcon Sketcher_Element_Arc_StartingPoint("Sketcher_Element_Arc_StartingPoint");
-    MultIcon Sketcher_Element_Circle_Edge("Sketcher_Element_Circle_Edge");
-    MultIcon Sketcher_Element_Circle_MidPoint("Sketcher_Element_Circle_MidPoint");
-    MultIcon Sketcher_Element_Line_Edge("Sketcher_Element_Line_Edge");
-    MultIcon Sketcher_Element_Line_EndPoint("Sketcher_Element_Line_EndPoint");
-    MultIcon Sketcher_Element_Line_StartingPoint("Sketcher_Element_Line_StartingPoint");
-    MultIcon Sketcher_Element_Point_StartingPoint("Sketcher_Element_Point_StartingPoint");
-    MultIcon Sketcher_Element_Ellipse_Edge("Sketcher_Element_Ellipse_Edge_2");
-    MultIcon Sketcher_Element_Ellipse_MidPoint("Sketcher_Element_Ellipse_CentrePoint");
-    MultIcon Sketcher_Element_ArcOfEllipse_Edge("Sketcher_Element_Elliptical_Arc_Edge");
-    MultIcon Sketcher_Element_ArcOfEllipse_MidPoint("Sketcher_Element_Elliptical_Arc_Centre_Point");
-    MultIcon Sketcher_Element_ArcOfEllipse_StartingPoint("Sketcher_Element_Elliptical_Arc_Start_Point");
-    MultIcon Sketcher_Element_ArcOfEllipse_EndPoint("Sketcher_Element_Elliptical_Arc_End_Point");
-    MultIcon Sketcher_Element_ArcOfHyperbola_Edge("Sketcher_Element_Hyperbolic_Arc_Edge");
-    MultIcon Sketcher_Element_ArcOfHyperbola_MidPoint("Sketcher_Element_Hyperbolic_Arc_Centre_Point");
-    MultIcon Sketcher_Element_ArcOfHyperbola_StartingPoint("Sketcher_Element_Hyperbolic_Arc_Start_Point");
-    MultIcon Sketcher_Element_ArcOfHyperbola_EndPoint("Sketcher_Element_Hyperbolic_Arc_End_Point");
-    MultIcon Sketcher_Element_ArcOfParabola_Edge("Sketcher_Element_Parabolic_Arc_Edge");
-    MultIcon Sketcher_Element_ArcOfParabola_MidPoint("Sketcher_Element_Parabolic_Arc_Centre_Point");
-    MultIcon Sketcher_Element_ArcOfParabola_StartingPoint("Sketcher_Element_Parabolic_Arc_Start_Point");
-    MultIcon Sketcher_Element_ArcOfParabola_EndPoint("Sketcher_Element_Parabolic_Arc_End_Point");
-    MultIcon Sketcher_Element_BSpline_Edge("Sketcher_Element_BSpline_Edge");
-    MultIcon Sketcher_Element_BSpline_StartingPoint("Sketcher_Element_BSpline_StartPoint");
-    MultIcon Sketcher_Element_BSpline_EndPoint("Sketcher_Element_BSpline_EndPoint");
-    MultIcon none("Sketcher_Element_SelectionTypeInvalid");
-
-
-    for (int i=0;i<ui->listWidgetElements->count(); i++) {
-      Base::Type type = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->GeometryType;
-      bool construction = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->isConstruction;
-      bool external = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->isExternal;
-
-      ui->listWidgetElements->item(i)->setIcon(
-        (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, external) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? Sketcher_Element_Line_Edge.getIcon(construction, external) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==1) ? Sketcher_Element_Line_StartingPoint.getIcon(construction, external) :
-        (type == Part::GeomLineSegment::getClassTypeId()    && element==2) ? Sketcher_Element_Line_EndPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==0) ? Sketcher_Element_Arc_Edge.getIcon(construction, external) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==1) ? Sketcher_Element_Arc_StartingPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==2) ? Sketcher_Element_Arc_EndPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==3) ? Sketcher_Element_Arc_MidPoint.getIcon(construction, external) :
-        (type == Part::GeomCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Circle_Edge.getIcon(construction, external) :
-        (type == Part::GeomCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Circle_MidPoint.getIcon(construction, external) :
-        (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? Sketcher_Element_Ellipse_Edge.getIcon(construction, external) :
-        (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? Sketcher_Element_Ellipse_MidPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfEllipse_Edge.getIcon(construction, external) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge.getIcon(construction, external) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfParabola_Edge.getIcon(construction, external) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfParabola_StartingPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfParabola_EndPoint.getIcon(construction, external) :
-        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfParabola_MidPoint.getIcon(construction, external) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==0) ? Sketcher_Element_BSpline_Edge.getIcon(construction, external) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==1) ? Sketcher_Element_BSpline_StartingPoint.getIcon(construction, external) :
-        (type == Part::GeomBSplineCurve::getClassTypeId()    && element==2) ? Sketcher_Element_BSpline_EndPoint.getIcon(construction, external) :
-        none.getIcon(construction, external));
-    }
+    auto sketch = sketchView->getSketchObject();
+    for (int i=0;i<ui->elementsWidget->topLevelItemCount(); i++)
+      static_cast<ElementItem *>(ui->elementsWidget->topLevelItem(i))->setElement(sketch,element);
 }
 
 void TaskSketcherElements::changeEvent(QEvent *e)
@@ -1128,7 +941,7 @@ void TaskSketcherElements::changeEvent(QEvent *e)
     }
 }
 
-TaskSketcherElements::MultIcon::MultIcon(const char* name)
+MultIcon & MultIcon::operator=(const char* name)
 {
     int hue, sat, val, alp;
     Normal = Gui::BitmapFactory().iconFromTheme(name);
@@ -1158,17 +971,13 @@ TaskSketcherElements::MultIcon::MultIcon(const char* name)
     }
     Construction = QIcon(QPixmap::fromImage(imgConstr));
     External = QIcon(QPixmap::fromImage(imgExt));
-
+    return *this;
 }
 
-QIcon TaskSketcherElements::MultIcon::getIcon(bool construction, bool external) const
-{
-    if (construction && external)
-        return QIcon();
-    if (construction)
-        return Construction;
-    if (external)
-        return External;
+QIcon MultIcon::getIcon(bool construction, bool external) const {
+    if (construction && external) return QIcon();
+    if (construction) return Construction;
+    if (external) return External;
     return Normal;
 }
 
