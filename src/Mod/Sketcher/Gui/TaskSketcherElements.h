@@ -27,7 +27,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <boost_signals2.hpp>
-#include <QListWidget>
+#include <QTreeWidget>
 #include <QIcon>
 
 namespace App {
@@ -39,9 +39,11 @@ namespace SketcherGui {
 class ViewProviderSketch;
 class Ui_TaskSketcherElements;
 
-class ElementView : public QListWidget
+class ElementView : public QTreeWidget
 {
     Q_OBJECT
+
+    typedef QTreeWidget inherited;
 
 public:
     explicit ElementView(QWidget *parent = nullptr);
@@ -57,37 +59,6 @@ protected:
     void keyPressEvent(QKeyEvent * event);
 
 protected Q_SLOTS:
-    // Constraints
-    void doPointCoincidence();
-    void doPointOnObjectConstraint();
-    void doVerticalDistance();
-    void doHorizontalDistance();
-    void doParallelConstraint();
-    void doPerpendicularConstraint();
-    void doTangentConstraint();
-    void doEqualConstraint();
-    void doSymmetricConstraint();
-    void doBlockConstraint();
-
-    void doLockConstraint();
-    void doHorizontalConstraint();
-    void doVerticalConstraint();
-    void doLengthConstraint();
-    void doRadiusConstraint();
-    void doDiameterConstraint();
-    void doRadiamConstraint();
-    void doAngleConstraint();
-
-    // Other Commands
-    void doToggleConstruction();
-
-    // Acelerators
-    void doCloseShape();
-    void doConnect();
-    void doSelectConstraints();
-    void doSelectOrigin();
-    void doSelectHAxis();
-    void doSelectVAxis();
     void deleteSelectedItems();
 };
 
@@ -95,18 +66,6 @@ class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::Selectio
 {
     Q_OBJECT
 
-    class MultIcon {
-        
-    public:
-        MultIcon(const char*);
-        
-        QIcon Normal;
-        QIcon Construction;
-        QIcon External;
-        
-        QIcon getIcon(bool construction, bool external) const;
-    };
-    
 public:
     TaskSketcherElements(ViewProviderSketch *sketchView);
     ~TaskSketcherElements();
@@ -123,12 +82,11 @@ private:
     void clearWidget();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemSelectionChanged(void);
-    void on_listWidgetElements_itemEntered(QListWidgetItem *item);
-    void on_listWidgetElements_filterShortcutPressed();
-    void on_listWidgetElements_currentFilterChanged ( int index );
-    void on_listWidgetElements_currentModeFilterChanged ( int index );
-    void on_namingBox_stateChanged(int state);
+    void on_elementsWidget_itemSelectionChanged(void); 
+    void on_elementsWidget_itemEntered(QTreeWidgetItem *item);
+    void on_elementsWidget_filterShortcutPressed();
+    void on_elementsWidget_currentFilterChanged ( int index );
+    void on_elementsWidget_currentModeFilterChanged ( int index );
     void on_autoSwitchBox_stateChanged(int state);
 
 protected:
@@ -144,7 +102,8 @@ private:
     int focusItemIndex;
     int previouslySelectedItemIndex;
 
-    bool isNamingBoxChecked;
+    std::map<int,QTreeWidgetItem*> itemMap;
+    
     bool isautoSwitchBoxChecked;
 
     bool inhibitSelectionUpdate;
