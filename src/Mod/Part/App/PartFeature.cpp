@@ -423,10 +423,10 @@ Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sam
     if(type == TopAbs_SHAPE)
         return ret;
 
-    auto source = getElementSource(owner,shape,mapped.name,element_type);
+    auto source = getElementSource(owner,shape,mapped.name,sameType?element_type:0);
     for(auto &src : source) {
         auto srcIndex = shape.getIndexedName(src.second);
-        if(srcIndex && (!sameType || shape.elementType(src.second) == element_type)) {
+        if(srcIndex) {
             ret.push_back(Data::MappedElement(src.second,srcIndex));
             shape.cacheRelatedElements(mapped.name,sameType,ret);
             return ret;
