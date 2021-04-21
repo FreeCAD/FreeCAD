@@ -1049,44 +1049,55 @@ public:
 
             ss.str("");
             MappedName tmp;
-            master.encodeElementName(child.indexedName[0],
-                    tmp, ss, nullptr, child.postfix.constData(), child.tag, true);
 
-            // Perform some disambiguation in case the same shape is mapped
-            // multiple times, e.g. draft array.
-            auto * entry = & childElements[tmp.toBytes()];
-            int mapIndex = entry->mapIndices[child.elementMap.get()]++;
-            ++entry->index;
-            if (entry->index != 1) {
-                if (child.elementMap && mapIndex == 0) {
+            ChildMapInfo *entry = nullptr;
+
+            // do child mapping only if the child element count >= 5
+            if (child.count >= 5 || !child.elementMap) {
+                master.encodeElementName(child.indexedName[0],
+                        tmp, ss, nullptr, child.postfix.constData(), child.tag, true);
+
+                // Perform some disambiguation in case the same shape is mapped
+                // multiple times, e.g. draft array.
+                entry = & childElements[tmp.toBytes()];
+                int mapIndex = entry->mapIndices[child.elementMap.get()]++;
+                ++entry->index;
+                if (entry->index != 1 && child.elementMap && mapIndex == 0) {
                     // This child has duplicated 'tag' and 'postfix', but it
                     // has its own element map. We'll expand this map now.
-
-                    IndexedName childIdx(child.indexedName);
-                    IndexedName idx(childIdx.getType(), childIdx.getIndex()+child.offset);
-                    for (int i=0; i<child.count; ++i, ++childIdx, ++idx) {
-                        ElementIDRefs sids;
-                        MappedName name = child.elementMap->find(childIdx, &sids);
-                        if (!name) {
-                            if (!child.tag || child.tag == master.Tag) {
-                                if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                                    FC_WARN("unmapped element");
-                                continue;
-                            }
-                            name = MappedName(childIdx);
-                        }
-                        ss.str("");
-                        master.encodeElementName(idx[0], name, ss, &sids,
-                                child.postfix.constData(), child.tag);
-                        master.setElementName(idx, name, &sids);
-                    }
-                    continue;
+                    entry = nullptr;
                 }
+            }
 
-                // NOTE: We are not using ComplexGeoData::indexPostfix() to not
-                // confuse other code that actually uses this postfix for indexing
-                // purposes. Here, we just need some postfix for disambiguation. We
-                // don't need to extract the index.
+            if (!entry) {
+                IndexedName childIdx(child.indexedName);
+                IndexedName idx(childIdx.getType(), childIdx.getIndex()+child.offset);
+                for (int i=0; i<child.count; ++i, ++childIdx, ++idx) {
+                    ElementIDRefs sids;
+                    MappedName name = child.elementMap->find(childIdx, &sids);
+                    if (!name) {
+                        if (!child.tag || child.tag == master.Tag) {
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                                FC_WARN("unmapped element");
+                            continue;
+                        }
+                        name = MappedName(childIdx);
+                    }
+                    ss.str("");
+                    master.encodeElementName(idx[0], name, ss, &sids,
+                            child.postfix.constData(), child.tag);
+                    master.setElementName(idx, name, &sids);
+                }
+                continue;
+            }
+
+            if (entry->index != 1) {
+                // There is some ambiguity in child mapping. We need some
+                // additional postfix for disambiguiation. NOTE: We are not
+                // using ComplexGeoData::indexPostfix() so as to not confuse
+                // other code that actually uses this postfix for indexing
+                // purposes. Here, we just need some postfix for
+                // disambiguation. We don't need to extract the index.
                 ss.str("");
                 ss << ComplexGeoData::elementMapPrefix() << ":C" << entry->index-1;
 
@@ -2145,7 +2156,11 @@ void ComplexGeoData::traceElement(const MappedName &name, TraceCallback cb) cons
 
 void ComplexGeoData::setMappedChildElements(const std::vector<MappedChildElements> & children)
 {
-    resetElementMap(std::make_shared<ElementMap>());
+    // DO NOT reset element map if there is one. Because we allow mixing child
+    // mapping and normal mapping
+    if (!_ElementMap)
+        resetElementMap(std::make_shared<ElementMap>());
+
     _ElementMap->addChildElements(*this, children);
 }
 

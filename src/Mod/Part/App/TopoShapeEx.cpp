@@ -553,7 +553,7 @@ void TopoShape::flushElementMap() const
             self._Cache = _Cache;
             self.mapSubElement(parent);
             const_cast<TopoShape*>(this)->resetElementMap(self.elementMap());
-    }
+        }
     }
 }
 
@@ -986,35 +986,6 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool force
         }else
             Hasher = other.Hasher;
     };
-
-    if (this->shapeType(true) == TopAbs_COMPOUND) {
-        auto & info = _Cache->getInfo(TopAbs_SHAPE);
-        if (info.find(_Shape, other.getShape()) > 0) {
-            std::vector<Data::MappedChildElements> children;
-            children.reserve(3);
-            for (auto type : types) {
-                int count = other.countSubShapes(type);
-                if (!count)
-                    continue;
-                if(!forceHasher && other.Hasher) {
-                    forceHasher = true;
-                    checkHasher(other);
-                }
-                children.emplace_back();
-                auto & child = children.back();
-                child.indexedName = Data::IndexedName::fromConst(shapeName(type).c_str(), 1);
-                child.offset = _Cache->getInfo(type).find(_Shape, other.getSubShape(type, 1)) - 1;
-                assert(child.offset >= 0);
-                child.count = count;
-                child.elementMap = other.elementMap();
-                child.tag = other.Tag;
-                if (op)
-                    child.postfix = op;
-            }
-            setMappedChildElements(children);
-            return;
-        }
-    }
 
     for(auto type : types) {
         auto &shapeMap = _Cache->getInfo(type);
