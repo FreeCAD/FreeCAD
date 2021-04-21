@@ -421,15 +421,15 @@ Action * StdCmdDownloadOnlineHelp::createAction(void)
     QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
     pcAction = new Action(this,getMainWindow());
     pcAction->setText(QCoreApplication::translate(
-        this->className(), sMenuText));
+        this->className(), getMenuText()));
     pcAction->setToolTip(QCoreApplication::translate(
-        this->className(), sToolTipText).arg(exe));
+        this->className(), getToolTipText()).arg(exe));
     pcAction->setStatusTip(QCoreApplication::translate(
-        this->className(), sStatusTip).arg(exe));
+        this->className(), getStatusTip()).arg(exe));
     pcAction->setWhatsThis(QCoreApplication::translate(
-        this->className(), sWhatsThis).arg(exe));
-    pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+        this->className(), getWhatsThis()).arg(exe));
+    pcAction->setIcon(Gui::BitmapFactory().pixmap(getPixmap()));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
 
     return pcAction;
 }
@@ -439,13 +439,13 @@ void StdCmdDownloadOnlineHelp::languageChange()
     if (_pcAction) {
         QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
         _pcAction->setText(QCoreApplication::translate(
-            this->className(), sMenuText));
+            this->className(), getMenuText()));
         _pcAction->setToolTip(QCoreApplication::translate(
-            this->className(), sToolTipText).arg(exe));
+            this->className(), getToolTipText()).arg(exe));
         _pcAction->setStatusTip(QCoreApplication::translate(
-            this->className(), sStatusTip).arg(exe));
+            this->className(), getStatusTip()).arg(exe));
         _pcAction->setWhatsThis(QCoreApplication::translate(
-            this->className(), sWhatsThis).arg(exe));
+            this->className(), getWhatsThis()).arg(exe));
     }
 }
 
@@ -550,7 +550,7 @@ void StdCmdDownloadOnlineHelp::wgetFinished()
 {
     if (_pcAction)
         _pcAction->setText(QCoreApplication::translate(
-            this->className(), sMenuText));
+            this->className(), getMenuText()));
 }
 
 #include "moc_NetworkRetriever.cpp"

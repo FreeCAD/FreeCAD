@@ -898,7 +898,7 @@ public:
         qreal fullIconWidth = 32 * pixelRatio;
         qreal iconWidth = 16 * pixelRatio;
         QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
-                icon = Gui::BitmapFactory().pixmapFromSvg(cmd->sPixmap, QSizeF(iconWidth, iconWidth));
+                icon = Gui::BitmapFactory().pixmapFromSvg(cmd->getPixmap(), QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
         cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
@@ -5902,7 +5902,7 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
         pcAction->setProperty("defaultAction", QVariant(defaultId));
     }
 
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
 
     return pcAction;
 }

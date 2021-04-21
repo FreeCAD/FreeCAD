@@ -122,10 +122,10 @@ Action * StdCmdWorkbench::createAction(void)
     Action *pcAction;
 
     pcAction = new WorkbenchGroup(this,getMainWindow());
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->className(), pcAction);
-    if (sPixmap)
-        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    if (getPixmap())
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getPixmap()));
 
     return pcAction;
 }
@@ -235,14 +235,14 @@ Action * StdCmdAbout::createAction(void)
     QString exe = qApp->applicationName();
     pcAction = new Action(this,getMainWindow());
     pcAction->setText(QCoreApplication::translate(
-        this->className(), sMenuText).arg(exe));
+        this->className(), getMenuText()).arg(exe));
     pcAction->setToolTip(QCoreApplication::translate(
-        this->className(), sToolTipText).arg(exe));
+        this->className(), getToolTipText()).arg(exe));
     pcAction->setStatusTip(QCoreApplication::translate(
-        this->className(), sStatusTip).arg(exe));
-    pcAction->setWhatsThis(QLatin1String(sWhatsThis));
+        this->className(), getStatusTip()).arg(exe));
+    pcAction->setWhatsThis(QLatin1String(getWhatsThis()));
     pcAction->setIcon(QApplication::windowIcon());
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     // Needs to have AboutRole set to avoid duplicates if adding the about action more than once on macOS
     pcAction->setMenuRole(QAction::AboutRole);
     return pcAction;
@@ -269,12 +269,12 @@ void StdCmdAbout::languageChange()
     if (_pcAction) {
         QString exe = qApp->applicationName();
         _pcAction->setText(QCoreApplication::translate(
-            this->className(), sMenuText).arg(exe));
+            this->className(), getMenuText()).arg(exe));
         _pcAction->setToolTip(QCoreApplication::translate(
-            this->className(), sToolTipText).arg(exe));
+            this->className(), getToolTipText()).arg(exe));
         _pcAction->setStatusTip(QCoreApplication::translate(
-            this->className(), sStatusTip).arg(exe));
-        _pcAction->setWhatsThis(QLatin1String(sWhatsThis));
+            this->className(), getStatusTip()).arg(exe));
+        _pcAction->setWhatsThis(QLatin1String(getWhatsThis()));
     }
 }
 
