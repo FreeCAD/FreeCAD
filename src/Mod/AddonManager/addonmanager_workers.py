@@ -600,8 +600,8 @@ class ShowWorker(QtCore.QThread):
                 name = path.split("/")[-1]
                 if name and path.startswith("http"):
                     storename = os.path.join(store, name)
-                    if len(storename) >= fscharlimit:
-                        remainChars = (fscharlimit - 1) - (len(store) + len(wbName) + 1)
+                    if len(storename) >= 260:
+                        remainChars = 259 - (len(store) + len(wbName) + 1)
                         storename = os.path.join(store, wbName+name[-remainChars:])
                     if not os.path.exists(storename):
                         try:
