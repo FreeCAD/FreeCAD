@@ -611,17 +611,17 @@ class ShowWorker(QtCore.QThread):
                         except Exception:
                             print("AddonManager: Debug: Error retrieving image from", path)
                         else:
-			    try:
-                        	f = open(storename, "wb")
-			    except OSError:
-				# ecryptfs (and probably not only ecryptfs) has lower length limit for path
-				storename = storename[-140:]
-				f = open(storename, "wb")
-                    	    f.write(imagedata)
-                	    f.close()
-                    	    # resize the image to 300x300px if needed
-                    	    img = QtGui.QImage(storename)
-                    	    if (img.width() > 300) or (img.height() > 300):
+                            try:
+                                f = open(storename, "wb")
+                            except OSError:
+                                # ecryptfs (and probably not only ecryptfs) has lower length limit for path
+                                storename = storename[-140:]
+                                f = open(storename, "wb")
+                            f.write(imagedata)
+                            f.close()
+                            # resize the image to 300x300px if needed
+                            img = QtGui.QImage(storename)
+                            if (img.width() > 300) or (img.height() > 300):
                                 pix = QtGui.QPixmap()
                                 pix = pix.fromImage(img.scaled(300, 300,
                                                                QtCore.Qt.KeepAspectRatio,
