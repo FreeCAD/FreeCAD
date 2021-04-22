@@ -609,7 +609,7 @@ void BrowserView::setWindowIcon(const QIcon &icon)
 
 void BrowserView::onLinkHovered(const QString& url)
 {
-    Gui::getMainWindow()->statusBar()->showMessage(url);
+    Gui::getMainWindow()->showMessage(url);
 }
 
 void BrowserView::onViewSource(const QUrl &url)
@@ -655,7 +655,7 @@ void BrowserView::onLinkHovered(const QString& link, const QString& title, const
     Q_UNUSED(textContent)
     QUrl url = QUrl::fromEncoded(link.toLatin1());
     QString str = url.isValid() ? url.toString() : link;
-    Gui::getMainWindow()->statusBar()->showMessage(str);
+    Gui::getMainWindow()->showMessage(str);
 }
 
 void BrowserView::onViewSource(const QUrl &url)

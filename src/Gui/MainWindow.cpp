@@ -470,7 +470,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
-    statusBar()->showMessage(tr("Ready"), 2001);
+    showMessage(tr("Ready"), 2001);
 }
 
 MainWindow::~MainWindow()
