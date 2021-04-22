@@ -645,18 +645,20 @@ class _ArchMaterialTaskPanel:
                 self.material["Father"] = text
 
     def getColor(self):
-        "opens a color picker dialog"
-        color = QtGui.QColorDialog.getColor()
-        colorPix = QtGui.QPixmap(16,16)
-        colorPix.fill(color)
-        self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
+        self.getColorForButton(self.form.ButtonColor)
 
     def getSectionColor(self):
+        self.getColorForButton(self.form.ButtonSectionColor)
+
+    def getColorForButton(self,button):
         "opens a color picker dialog"
-        color = QtGui.QColorDialog.getColor()
-        colorPix = QtGui.QPixmap(16,16)
-        colorPix.fill(color)
-        self.form.ButtonSectionColor.setIcon(QtGui.QIcon(colorPix))
+        icon = button.icon()
+        pixel = icon.pixmap(16,16).toImage().pixel(0,0)
+        color = QtGui.QColorDialog.getColor(QtGui.QColor(pixel))
+        if color.isValid():
+            colorPix = QtGui.QPixmap(16,16)
+            colorPix.fill(color)
+            button.setIcon(QtGui.QIcon(colorPix))
 
     def fillMaterialCombo(self):
         "fills the combo with the existing FCMat cards"
