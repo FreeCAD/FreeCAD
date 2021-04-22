@@ -3331,6 +3331,11 @@ public:
                 auto dock = qobject_cast<QDockWidget*>(w);
                 if(!dock)
                     continue;
+                auto view = getMainWindow()->activeWindow();
+                if (!view)
+                    view = Application::Instance->activeView();
+                if (view)
+                    view->setFocus();
                 if(action == &_actClose) {
                     dock->toggleViewAction()->activate(QAction::Trigger);
                 } else {
