@@ -1082,11 +1082,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Symbol");
         filename = Base::Tools::escapeEncodeFilename(filename);
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Symbol"));
-#if PY_MAJOR_VERSION < 3
-        doCommand(Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)filename.toUtf8());
-#else
         doCommand(Doc,"f = open(\"%s\",'r')",(const char*)filename.toUtf8());
-#endif
         doCommand(Doc,"svg = f.read()");
         doCommand(Doc,"f.close()");
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSymbol','%s')",FeatName.c_str());

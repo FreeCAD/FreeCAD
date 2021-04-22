@@ -321,17 +321,10 @@ void CenterLinePy::setEdges(Py::Object arg)
         int i = 0;
         for ( ; i < tSize; i++) {
             PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item)) {
                 std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
                 temp.push_back(s);
             }
-#else
-            if (PyString_Check(item)) {
-                std::string s = PyString_AsString(item);         //py2 only!!!
-                temp.push_back(s);
-            }
-#endif
         }
         cl->m_edges = temp;
     } else {
@@ -367,17 +360,10 @@ void CenterLinePy::setFaces(Py::Object arg)
         int i = 0;
         for ( ; i < tSize; i++) {
             PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item)) {
                 std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
                 temp.push_back(s);
             }
-#else
-            if (PyString_Check(item)) {
-                std::string s = PyString_AsString(item);         //py2 only!!!
-                temp.push_back(s);
-            }
-#endif
         }
         cl->m_faces = temp;
     } else {
@@ -414,17 +400,10 @@ void CenterLinePy::setPoints(Py::Object arg)
         int i = 0;
         for ( ; i < tSize; i++) {
              PyObject* item = PyList_GetItem(pList, (Py_ssize_t) i);
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item)) {
                 std::string s = PyUnicode_AsUTF8(item);       //py3 only!!!
                 temp.push_back(s);
             }
-#else
-            if (PyString_Check(item)) {
-                std::string s = PyString_AsString(item);         //py2 only!!!
-                temp.push_back(s);
-            }
-#endif
         }
         cl->m_verts = temp;
     } else {
