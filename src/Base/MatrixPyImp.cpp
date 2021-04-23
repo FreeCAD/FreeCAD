@@ -163,11 +163,7 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
 {
     if (!PyObject_TypeCheck(self, &(MatrixPy::Type)) ||
 
-#if PY_MAJOR_VERSION < 3
-            !PyInt_Check(other)
-#else
             !PyLong_Check(other)
-#endif
             || arg != Py_None
        )
     {
@@ -613,11 +609,7 @@ PyObject* MatrixPy::analyze(PyObject * args)
 
     PY_TRY {
         std::string type = getMatrixPtr()->analyse();
-#if PY_MAJOR_VERSION < 3
-        return PyString_FromString(type.c_str());
-#else
         return PyUnicode_FromString(type.c_str());
-#endif
     }
     PY_CATCH;
 }
@@ -909,43 +901,14 @@ PyObject * MatrixPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int MatrixPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
-{
-    return 1;
-}
-#endif
-
 PyObject * MatrixPy::number_int_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-PyObject * MatrixPy::number_long_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif
-
 PyObject * MatrixPy::number_float_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * MatrixPy::number_oct_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * MatrixPy::number_hex_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif
