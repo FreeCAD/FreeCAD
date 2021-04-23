@@ -328,43 +328,14 @@ PyObject * UnitPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int UnitPy::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
-{
-    return 1;
-}
-#endif
-
 PyObject * UnitPy::number_int_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-PyObject * UnitPy::number_long_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif
-
 PyObject * UnitPy::number_float_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * UnitPy::number_oct_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * UnitPy::number_hex_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif
