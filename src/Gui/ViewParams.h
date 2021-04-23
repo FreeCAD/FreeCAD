@@ -139,6 +139,9 @@ public:
         QT_TRANSLATE_NOOP("ViewParams", "Auto mouse click through transparent part of dock overlay."))\
     FC_VIEW_PARAM(DockOverlayWheelPassThrough,bool,Bool,true, \
         QT_TRANSLATE_NOOP("ViewParams", "Auto pass through mouse wheel event on transparent dock overlay."))\
+    FC_VIEW_PARAM(DockOverlayWheelDelay,int,Int,1000, \
+        QT_TRANSLATE_NOOP("ViewParams", "Delay capturing mouse wheel event for passing through if it is \n"\
+                                        "previously handled by other widget."))\
     FC_VIEW_PARAM(DockOverlayAlphaRadius,int,Int,2, \
         QT_TRANSLATE_NOOP("ViewParams", "If auto mouse click through is enabled, then this radius\n" \
                                         "defines a region of alpha test under the mouse cursor.\n" \

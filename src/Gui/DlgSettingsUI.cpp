@@ -83,6 +83,7 @@ public:
     FC_UI_CHECKBOX(ViewParams, DockOverlayAutoView, "Auto hide in non 3D view") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayAutoMouseThrough, "Auto mouse pass through") \
     FC_UI_CHECKBOX(ViewParams, DockOverlayWheelPassThrough, "Auto mouse wheel pass through") \
+    FC_UI_SPINBOX(ViewParams, DockOverlayWheelDelay, "Delay mouse wheel pass through (ms)", 0, 99999, 1) \
     FC_UI_SPINBOX(ViewParams, DockOverlayAlphaRadius, "Alpha test radius", 1, 100, 1) \
     FC_UI_CHECKBOX(ViewParams, DockOverlayCheckNaviCube, "Check Navigation Cube") \
     FC_UI_SPINBOX(ViewParams, DockOverlayHintTriggerSize, "Hint trigger size", 1, 100, 1) \

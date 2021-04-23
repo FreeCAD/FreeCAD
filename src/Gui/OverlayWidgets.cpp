@@ -2711,6 +2711,7 @@ public:
     OverlayTabWidget *_trackingOverlay = nullptr;
 
     bool updateStyle = false;
+    QTime wheelDelay;
 
     Private(OverlayManager *host, QWidget *parent)
         :_left(parent,"OverlayLeft", Qt::LeftDockWidgetArea,_overlayMap)
@@ -3937,7 +3938,14 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                     && pos == d->_lastPos)
         {
             hit = 1;
-        } else if (ViewParams::getDockOverlayWheelPassThrough()
+        }
+        else if (ev->type() == QEvent::Wheel
+                && !d->wheelDelay.isNull()
+                && d->wheelDelay > QTime::currentTime()) {
+            d->wheelDelay = QTime::currentTime().addMSecs(
+                    ViewParams::getDockOverlayWheelDelay());
+        }
+        else if (ViewParams::getDockOverlayWheelPassThrough()
                     || ev->type() != QEvent::Wheel) {
             for(auto widget=qApp->widgetAt(pos); widget ; widget=widget->parentWidget()) {
                 int type = widget->windowType();
@@ -3946,7 +3954,8 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                         hit = -1;
                     break;
                 }
-                if (qobject_cast<QAbstractButton*>(widget))
+                if (qobject_cast<QAbstractButton*>(widget)
+                        || (ev->type() == QEvent::Wheel && qobject_cast<QScrollBar*>(widget)))
                     break;
                 auto tabWidget = qobject_cast<OverlayTabWidget*>(widget);
                 if (tabWidget) {
@@ -3954,6 +3963,10 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                         activeTabWidget = tabWidget;
                         hit = ViewParams::getDockOverlayAutoMouseThrough();
                         d->_lastPos = pos;
+                    }
+                    if (ev->type() == QEvent::Wheel) {
+                        d->wheelDelay = hit ? QTime() :
+                            QTime::currentTime().addMSecs(ViewParams::getDockOverlayWheelDelay());
                     }
                     break;
                 }
