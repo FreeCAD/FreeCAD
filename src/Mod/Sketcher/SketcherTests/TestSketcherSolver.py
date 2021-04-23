@@ -178,8 +178,8 @@ class TestSketcherSolver(unittest.TestCase):
         self.Doc2.recompute()
         self.Doc2.Sketch.delGeometry(2)
         values = d = {key: value for (key, value) in self.Doc2.Sketch.ExpressionEngine}
-        self.failUnless(values['Constraints[4]'] == u'60')
-        self.failUnless(values['Constraints[5]'] == u'65')
+        self.failUnless(values['.Constraints[4]'] == u'60')
+        self.failUnless(values['.Constraints[5]'] == u'65')
         FreeCAD.closeDocument("Issue3245")
 
     def testIssue3245_2(self):
