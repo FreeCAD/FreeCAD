@@ -5231,9 +5231,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
     (void)v;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/TreeView");
-    unsigned long col = hGrp->GetUnsigned("TreeEditColor",4294902015);
+    unsigned long col = TreeParams::TreeEditColor();
     QColor color((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
 
     auto doc = Application::Instance->editDocument();

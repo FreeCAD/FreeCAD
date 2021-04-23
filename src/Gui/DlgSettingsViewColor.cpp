@@ -30,6 +30,7 @@
 #include "DlgSettingsViewColor.h"
 #include "ui_DlgSettingsViewColor.h"
 #include "ViewParams.h"
+#include "TreeParams.h"
 #include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
@@ -53,6 +54,11 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
 
     ui->HighlightColor->setColor(App::Color(
                 (uint32_t)ViewParams::instance()->getHighlightColor()).asValue<QColor>());
+
+    ui->TreeEditColor->setColor(App::Color(
+                (uint32_t)TreeParams::TreeEditColor()).asValue<QColor>());
+    ui->TreeActiveColor->setColor(App::Color(
+                (uint32_t)TreeParams::TreeActiveColor()).asValue<QColor>());
 }
 
 /**

@@ -88,7 +88,9 @@ public:
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(TreeActiveAutoExpand,bool,Bool,true, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
-    FC_TREE_PARAM(TreeActiveColor,unsigned long, Unsigned, 3873898495, \
+    FC_TREE_PARAM(TreeActiveColor,unsigned long, Unsigned, 0xe6e6ffff, \
+       QT_TRANSLATE_NOOP("TreeParams", ""))\
+    FC_TREE_PARAM(TreeEditColor,unsigned long, Unsigned, 0x929200ff, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
     FC_TREE_PARAM(TreeActiveBold,bool, Bool, true, \
        QT_TRANSLATE_NOOP("TreeParams", ""))\
