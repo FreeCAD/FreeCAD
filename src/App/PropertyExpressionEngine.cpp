@@ -444,6 +444,7 @@ size_t PropertyExpressionEngine::numExpressions() const
 
 void PropertyExpressionEngine::afterRestore()
 {
+    bool hasError = false;
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
     if(restoredExpressions && docObj) {
         Base::FlagToggler<bool> flag(restoring);
@@ -453,15 +454,26 @@ void PropertyExpressionEngine::afterRestore()
         ObjectIdentifier::DocumentMapper mapper(this->_DocMap);
 
         for(auto &info : *restoredExpressions) {
-            ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
-            boost::shared_ptr<Expression> expression(Expression::parse(docObj, info.expr.c_str()));
-            if(expression)
-                expression->comment = std::move(info.comment);
-            setValue(path, expression);
+            try {
+                ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
+                boost::shared_ptr<Expression> expression(Expression::parse(docObj, info.expr.c_str()));
+                if(expression)
+                    expression->comment = std::move(info.comment);
+                setValue(path, expression);
+            } catch (Base::Exception &e) {
+                hasError = true;
+                e.ReportException();
+                FC_ERR("Failed to restore expression: " << info.expr
+                        << "\n  for path " << info.path
+                        << "\n  in " << getFullName());
+            }
         }
         signaller.tryInvoke();
     }
     restoredExpressions.reset();
+
+    if (hasError)
+        throw Base::RuntimeError("Failed to restore some expression");
 }
 
 void PropertyExpressionEngine::onContainerRestored() {
