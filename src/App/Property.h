@@ -233,6 +233,16 @@ public:
     /// Called before a child property changing value
     virtual void aboutToSetChildValue(Property &) {}
 
+    /** Return a unique ID for the property
+     *
+     * The ID of a property is generated from an monotonically increasing
+     * internal counter. The intention of the ID is to be used as a key for
+     * mapping, instead of using the raw pointer. Because, it is possible for
+     * the runtime memory allocator to reuse just deleted memory, which will
+     * cause hard to debug problem if use pointer as key. 
+     */
+    long getID() const {return _id;}
+
     friend class PropertyContainer;
     friend struct PropertyData;
     friend class DynamicProperty;
@@ -269,6 +279,7 @@ private:
 private:
     PropertyContainer *father;
     const char *myName;
+    long _id;
 };
 
 
