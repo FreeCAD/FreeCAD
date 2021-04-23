@@ -39,9 +39,19 @@ using namespace Base;
 PyObject* Base::BaseExceptionFreeCADError = 0;
 PyObject* Base::BaseExceptionFreeCADAbort = 0;
 
+#ifdef ATTR_TRACKING
+typedef struct {
+    PyObject_HEAD
+    PyObject* baseobject;
+    PyObject* weakreflist;  /* List of weak references */
+} PyBaseProxy;
+#endif
+
 // Constructor
 PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
-  : _pcTwinPointer(p), attrDict(0)
+  : _pcTwinPointer(p)
+  , baseProxy(nullptr)
+  , attrDict(nullptr)
 {
     Py_TYPE(this) = T;
     _Py_NewReference(this);
@@ -59,6 +69,8 @@ PyObjectBase::~PyObjectBase()
 #ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO-: %s (%p)\n",Py_TYPE(this)->tp_name, this);
 #endif
+    if (baseProxy && reinterpret_cast<PyBaseProxy*>(baseProxy)->baseobject == this)
+        Py_DECREF(baseProxy);
     Py_XDECREF(attrDict);
 }
 
@@ -79,6 +91,73 @@ PyObjectBase::~PyObjectBase()
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #endif
+
+static void
+PyBaseProxy_dealloc(PyObject* self)
+{
+    /* Clear weakrefs first before calling any destructors */
+    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist != NULL)
+        PyObject_ClearWeakRefs(self);
+    Py_TYPE(self)->tp_free(self);
+}
+
+static PyTypeObject PyBaseProxyType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "PyBaseProxy",                                          /*tp_name*/
+    sizeof(PyBaseProxy),                                    /*tp_basicsize*/
+    0,                                                      /*tp_itemsize*/
+    PyBaseProxy_dealloc,                                    /*tp_dealloc*/
+    0,                                                      /*tp_print*/
+    0,                                                      /*tp_getattr*/
+    0,                                                      /*tp_setattr*/
+    0,                                                      /*tp_compare*/
+    0,                                                      /*tp_repr*/
+    0,                                                      /*tp_as_number*/
+    0,                                                      /*tp_as_sequence*/
+    0,                                                      /*tp_as_mapping*/
+    0,                                                      /*tp_hash*/
+    0,                                                      /*tp_call */
+    0,                                                      /*tp_str  */
+    0,                                                      /*tp_getattro*/
+    0,                                                      /*tp_setattro*/
+    0,                                                      /* tp_as_buffer */
+    Py_TPFLAGS_BASETYPE | Py_TPFLAGS_DEFAULT,               /*tp_flags */
+    "Proxy class",                                          /*tp_doc */
+    0,                                                      /*tp_traverse */
+    0,                                                      /*tp_clear */
+    0,                                                      /*tp_richcompare */
+    offsetof(PyBaseProxy, weakreflist),                     /*tp_weaklistoffset */
+    0,                                                      /*tp_iter */
+    0,                                                      /*tp_iternext */
+    0,                                                      /*tp_methods */
+    0,                                                      /*tp_members */
+    0,                                                      /*tp_getset */
+    0,                                                      /*tp_base */
+    0,                                                      /*tp_dict */
+    0,                                                      /*tp_descr_get */
+    0,                                                      /*tp_descr_set */
+    0,                                                      /*tp_dictoffset */
+    0,                                                      /*tp_init */
+    0,                                                      /*tp_alloc */
+    0,                                                      /*tp_new */
+    0,                                                      /*tp_free   Low-level free-memory routine */
+    0,                                                      /*tp_is_gc  For PyObject_IS_GC */
+    0,                                                      /*tp_bases */
+    0,                                                      /*tp_mro    method resolution order */
+    0,                                                      /*tp_cache */
+    0,                                                      /*tp_subclasses */
+    0,                                                      /*tp_weaklist */
+    0,                                                      /*tp_del */
+    0,                                                      /*tp_version_tag */
+    0                                                       /*tp_finalize */
+#if PY_VERSION_HEX >= 0x03090000
+    ,0                                                      /*tp_vectorcall */
+#elif PY_VERSION_HEX >= 0x03080000
+    ,0                                                      /*tp_vectorcall */
+    /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
+    ,0                                                      /*tp_print */
+#endif
+};
 
 PyTypeObject PyObjectBase::Type = {
     PyVarObject_HEAD_INIT(&PyType_Type,0)
@@ -143,6 +222,39 @@ PyTypeObject PyObjectBase::Type = {
 
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#endif
+
+#ifdef ATTR_TRACKING
+PyObject* createWeakRef(PyObjectBase* ptr)
+{
+    static bool init = false;
+    if (!init) {
+       init = true;
+       PyType_Ready(&PyBaseProxyType);
+    }
+
+    PyObject* proxy = ptr->baseProxy;
+    if (!proxy) {
+        proxy = PyType_GenericAlloc(&PyBaseProxyType, 0);
+        ptr->baseProxy = proxy;
+        reinterpret_cast<PyBaseProxy*>(proxy)->baseobject = ptr;
+    }
+
+    PyObject* ref = PyWeakref_NewRef(proxy, nullptr);
+    return ref;
+}
+
+PyObjectBase* getFromWeakRef(PyObject* ref)
+{
+    if (ref) {
+        PyObject* proxy = PyWeakref_GetObject(ref);
+        if (proxy && PyObject_TypeCheck(proxy, &PyBaseProxyType)) {
+            return static_cast<PyObjectBase*>(reinterpret_cast<PyBaseProxy*>(proxy)->baseobject);
+        }
+    }
+
+    return nullptr;
+}
 #endif
 
 /*------------------------------
@@ -329,6 +441,8 @@ PyObject *PyObjectBase::_repr(void)
     return Py_BuildValue("s", a.str().c_str());
 }
 
+// Tracking functions
+
 void PyObjectBase::resetAttribute()
 {
     if (attrDict) {
@@ -354,6 +468,7 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
     if (!attrDict) {
         attrDict = PyDict_New();
     }
+
     PyObject* key1 = PyBytes_FromString("__attribute_of_parent__");
     PyObject* key2 = PyBytes_FromString("__instance_of_parent__");
     PyObject* attro = PyUnicode_FromString(attr);
@@ -363,7 +478,6 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
     Py_DECREF(key1);
     Py_DECREF(key2);
 }
-
 void PyObjectBase::startNotify()
 {
     if (!shouldNotify())
@@ -398,12 +512,12 @@ void PyObjectBase::startNotify()
         Py_DECREF(key2);
     }
 }
-
 PyObject* PyObjectBase::getTrackedAttribute(const char* attr)
 {
-    PyObject* obj = 0;
+    PyObject* obj = nullptr;
     if (attrDict) {
         obj = PyDict_GetItemString(attrDict, attr);
+        obj = getFromWeakRef(obj);
     }
     return obj;
 }
@@ -414,7 +528,10 @@ void PyObjectBase::trackAttribute(const char* attr, PyObject* obj)
         attrDict = PyDict_New();
     }
 
-    PyDict_SetItemString(attrDict, attr, obj);
+    PyObject* obj_ref = createWeakRef(static_cast<PyObjectBase*>(obj));
+    if (obj_ref) {
+        PyDict_SetItemString(attrDict, attr, obj_ref);
+    }
 }
 
 void PyObjectBase::untrackAttribute(const char* attr)

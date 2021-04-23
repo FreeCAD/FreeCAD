@@ -345,6 +345,9 @@ protected:
     /// pointer to the handled class
     void * _pcTwinPointer;
 
+public:
+    PyObject* baseProxy;
+
 private:
     PyObject* attrDict;
 };
