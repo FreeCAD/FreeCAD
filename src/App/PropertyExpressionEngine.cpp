@@ -854,7 +854,7 @@ void PropertyExpressionEngine::renameExpressions(const std::map<ObjectIdentifier
 
         // Renamed now?
         if (j != canonicalPaths.end())
-            newExpressions[j->second] = i->second;
+            newExpressions[canonicalPath(j->second)] = i->second;
         else
             newExpressions[i->first] = i->second;
     }
