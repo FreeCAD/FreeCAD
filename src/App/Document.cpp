@@ -3105,6 +3105,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             } catch (const Base::Exception& e) {
                 FC_ERR("Failed to restore " << obj->getFullName()
                         << '.' << prop->getName() << ": " << e.what());
+                d->addRecomputeLog(e.what(), obj);
             }
         }
     }
