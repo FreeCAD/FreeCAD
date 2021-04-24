@@ -2023,13 +2023,8 @@ private:
         PyErr_Clear();
         PyObject* index_or_value;
         if (PyArg_ParseTuple(args.ptr(), "sO", &name, &index_or_value)) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check(index_or_value)) {
                 int ival = (int)PyLong_AsLong(index_or_value);
-#else
-            if (PyInt_Check(index_or_value)) {
-                int ival = (int)PyInt_AsLong(index_or_value);
-#endif
                 if (!Interface_Static::SetIVal(name, ival)) {
                     std::stringstream str;
                     str << "Failed to set '" << name << "'";

@@ -2150,15 +2150,9 @@ PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
         for (Py::Sequence::iterator it = facets.begin(); it != facets.end(); ++it) {
             Data::ComplexGeoData::Facet face;
             Py::Tuple f(*it);
-#if PY_MAJOR_VERSION >= 3
             face.I1 = (int)Py::Long(f[0]);
             face.I2 = (int)Py::Long(f[1]);
             face.I3 = (int)Py::Long(f[2]);
-#else
-            face.I1 = (int)Py::Int(f[0]);
-            face.I2 = (int)Py::Int(f[1]);
-            face.I3 = (int)Py::Int(f[2]);
-#endif
             Facets.push_back(face);
         }
 
@@ -2547,11 +2541,7 @@ PyObject* _getSupportIndex(const char* suppStr, TopoShape* ts, TopoDS_Shape supp
             break;
         }
     }
-#if PY_MAJOR_VERSION >= 3
     return PyLong_FromLong(supportIndex);
-#else
-    return PyInt_FromLong(supportIndex);
-#endif
 }
 
 PyObject* TopoShapePy::proximity(PyObject *args)
