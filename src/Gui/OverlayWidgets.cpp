@@ -3054,8 +3054,8 @@ public:
             auto docks = getMainWindow()->findChildren<QDockWidget*>();
             // put visible dock widget first
             std::sort(docks.begin(),docks.end(),
-                [](const QDockWidget *a, const QDockWidget *) {
-                    return !a->visibleRegion().isEmpty();
+                [](const QDockWidget *a, const QDockWidget *b) {
+                    return !a->visibleRegion().isEmpty() && b->visibleRegion().isEmpty();
                 });
             for(auto dock : docks) {
                 if(mode == OverlayManager::DisableAll)
