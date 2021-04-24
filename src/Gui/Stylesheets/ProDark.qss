@@ -1195,6 +1195,11 @@ QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
     margin: 0px;
 }
 
+Gui--TaskView--TaskEditControl QDialogButtonBox QPushButton {
+    padding: 4px; /* bigger padding crops text and icons... */
+    margin: 0px;
+}
+
 /* Fix for lists inside task panels */
 QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
