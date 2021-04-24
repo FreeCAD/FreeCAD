@@ -457,11 +457,14 @@ void ViewProvider::updateVisual()
         feature->getGeneratedIndices(faces,edges,vertices);
 
         lineset->highlightIndices.setNum(edges.size());
-        lineset->highlightIndices.setValues(0,edges.size(),&edges[0]);
+        if (edges.size())
+            lineset->highlightIndices.setValues(0,edges.size(),&edges[0]);
         nodeset->highlightIndices.setNum(vertices.size());
-        nodeset->highlightIndices.setValues(0,vertices.size(),&vertices[0]);
+        if (vertices.size())
+            nodeset->highlightIndices.setValues(0,vertices.size(),&vertices[0]);
         faceset->highlightIndices.setNum(faces.size());
-        faceset->highlightIndices.setValues(0,faces.size(),&faces[0]);
+        if (faces.size())
+            faceset->highlightIndices.setValues(0,faces.size(),&faces[0]);
     }
 }
 
