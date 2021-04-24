@@ -284,11 +284,7 @@ PyObject* BSplineSurfacePy::insertUKnots(PyObject *args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long val(*it);
-#else
-            Py::Int val(*it);
-#endif
             m(index++) = (int)val;
         }
 
@@ -349,11 +345,7 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long val(*it);
-#else
-            Py::Int val(*it);
-#endif
             m(index++) = (int)val;
         }
 
@@ -1423,11 +1415,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Py::Sequence umultssq(umults);
         Standard_Integer index = 1;
         for (Py::Sequence::iterator it = umultssq.begin(); it != umultssq.end() && index <= occumults.Length(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long mult(*it);
-#else
-            Py::Int mult(*it);
-#endif
             if (index < occumults.Length() || PyObject_Not(uperiodic)) {
                 sum_of_umults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
             }
@@ -1436,11 +1424,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Py::Sequence vmultssq(vmults);
         index = 1;
         for (Py::Sequence::iterator it = vmultssq.begin(); it != vmultssq.end() && index <= occvmults.Length(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long mult(*it);
-#else
-            Py::Int mult(*it);
-#endif
             if (index < occvmults.Length() || PyObject_Not(vperiodic)) {
                 sum_of_vmults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
             }
