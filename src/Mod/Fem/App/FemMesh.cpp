@@ -872,9 +872,16 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
@@ -890,7 +897,10 @@ std::set<int> FemMesh::getNodesBySolid(const TopoDS_Solid &solid) const
                 continue;
 
             if (measure.Value() < limit)
+#pragma omp critical
+            {
                 result.insert(aNode->GetID());
+            }
         }
     }
     return result;
@@ -909,9 +919,16 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
+    std::vector<const SMDS_MeshNode*> nodes;
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
+        nodes.push_back(aNode);
+    }
+
+#pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < nodes.size(); ++i) {
+        const SMDS_MeshNode* aNode = nodes[i];
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
         // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
@@ -927,7 +944,10 @@ std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
                 continue;
 
             if (measure.Value() < limit)
+#pragma omp critical
+            {
                 result.insert(aNode->GetID());
+            }
         }
     }
 
