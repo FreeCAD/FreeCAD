@@ -124,7 +124,7 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
 
     Q_ASSERT(prop != 0);
 
-    path = prop->canonicalPath(_path);
+    path = _path.canonicalPath();
 
     //connect to be informed about changes
     DocumentObject * docObj = path.getDocumentObject();
@@ -247,7 +247,6 @@ bool ExpressionBinding::apply()
 }
 
 void ExpressionBinding::expressionChange(const ObjectIdentifier& id) {
-
     if(id==path)
         onChange();
 }
