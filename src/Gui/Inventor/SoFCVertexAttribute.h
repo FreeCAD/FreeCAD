@@ -200,6 +200,8 @@ public:
 
 private:
   void registerAndAttach() {
+    if (!this->len)
+      return;
     this->setBufferData(this->getArrayPtr(), this->len * this->attachtypesize, this->dataid);
     this->table[this->dataid].emplace_back(this);
   }
