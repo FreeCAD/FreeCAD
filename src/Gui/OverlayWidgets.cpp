@@ -3840,6 +3840,9 @@ void OverlayManager::onTimer()
 
 bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
 {
+    if (!o->isWidgetType())
+        return false;
+
     switch(ev->type()) {
     case QEvent::Resize: {
         if(getMainWindow() && o == getMainWindow()->getMdiArea())
@@ -3885,16 +3888,25 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
         break;
     // case QEvent::MouseButtonDblClick:
     // case QEvent::NativeGesture:
+    case QEvent::Wheel:
+        if (!ViewParams::getDockOverlayWheelPassThrough())
+            return false;
+        // fall through
     case QEvent::MouseButtonRelease:
     case QEvent::MouseButtonPress:
     case QEvent::MouseMove:
-    case QEvent::Wheel:
     case QEvent::ContextMenu: {
         QWidget *grabber = QWidget::mouseGrabber();
         if (d->mouseTransparent || (grabber && grabber != d->_trackingOverlay))
             return false;
-        if (qobject_cast<OverlayTitleBar*>(o) || qobject_cast<OverlaySplitterHandle*>(o))
+        if (qobject_cast<QAbstractButton*>(o))
             return false;
+        if (ev->type() != QEvent::Wheel) {
+            if (qobject_cast<OverlayTitleBar*>(o) || qobject_cast<OverlaySplitterHandle*>(o))
+                return false;
+        } else if (qobject_cast<QScrollBar*>(o))
+            return false;
+
         if (d->_trackingView >= 0) {
             View3DInventorViewer *view = nullptr;
             if(!isTreeViewDragging() && d->_trackingView < d->_3dviews.size())
@@ -3938,15 +3950,13 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                     && pos == d->_lastPos)
         {
             hit = 1;
-        }
-        else if (ev->type() == QEvent::Wheel
+        } else if (ev->type() == QEvent::Wheel
                 && !d->wheelDelay.isNull()
-                && d->wheelDelay > QTime::currentTime()) {
+                && d->wheelDelay > QTime::currentTime())
+        {
             d->wheelDelay = QTime::currentTime().addMSecs(
                     ViewParams::getDockOverlayWheelDelay());
-        }
-        else if (ViewParams::getDockOverlayWheelPassThrough()
-                    || ev->type() != QEvent::Wheel) {
+        } else {
             for(auto widget=qApp->widgetAt(pos); widget ; widget=widget->parentWidget()) {
                 int type = widget->windowType();
                 if (type != Qt::Widget && type != Qt::Window) {
@@ -3954,21 +3964,29 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
                         hit = -1;
                     break;
                 }
-                if (qobject_cast<QAbstractButton*>(widget)
-                        || (ev->type() == QEvent::Wheel && qobject_cast<QScrollBar*>(widget)))
-                    break;
-                auto tabWidget = qobject_cast<OverlayTabWidget*>(widget);
-                if (tabWidget) {
-                    if (tabWidget->testAlpha(pos, ev->type() == QEvent::Wheel ? 5 : 1) == 0) {
+                if (ev->type() == QEvent::Wheel) {
+                    if (qobject_cast<OverlayTitleBar*>(widget))
+                        activeTabWidget = qobject_cast<OverlayTabWidget*>(widget->parentWidget());
+                    else if (qobject_cast<OverlaySplitterHandle*>(widget)) {
+                        auto parent = widget->parentWidget();
+                        if (parent)
+                            activeTabWidget = qobject_cast<OverlayTabWidget*>(parent->parentWidget());
+                    }
+                    if (activeTabWidget)
+                        break;
+                }
+                if (auto tabWidget = qobject_cast<OverlayTabWidget*>(widget)) {
+                    if (tabWidget->testAlpha(pos, ev->type() == QEvent::Wheel ? 4 : 1) == 0)
                         activeTabWidget = tabWidget;
-                        hit = ViewParams::getDockOverlayAutoMouseThrough();
-                        d->_lastPos = pos;
-                    }
-                    if (ev->type() == QEvent::Wheel) {
-                        d->wheelDelay = hit ? QTime() :
-                            QTime::currentTime().addMSecs(ViewParams::getDockOverlayWheelDelay());
-                    }
                     break;
+                }
+            }
+            if (activeTabWidget) {
+                hit = ViewParams::getDockOverlayAutoMouseThrough();
+                d->_lastPos = pos;
+                if (ev->type() == QEvent::Wheel) {
+                    d->wheelDelay = hit ? QTime() :
+                        QTime::currentTime().addMSecs(ViewParams::getDockOverlayWheelDelay());
                 }
             }
         }
