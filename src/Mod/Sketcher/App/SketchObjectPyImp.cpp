@@ -570,7 +570,7 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject *args)
     if (!PyArg_ParseTuple(args, "i|i", &Index, &pos))
         return 0;
 
-    if (pos>=0 && pos<=3) { // Sketcher::none Sketcher::mid
+    if (pos>=Sketcher::none && pos<=Sketcher::mid) { // This is the whole range of valid positions
         if (this->getSketchObjectPtr()->delConstraintOnPoint(Index,(Sketcher::PointPos)pos)) {
             std::stringstream str;
             str << "Not able to delete a constraint on point with the given index: " << Index

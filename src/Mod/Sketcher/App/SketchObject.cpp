@@ -1647,7 +1647,7 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     this->Constraints.setValues(std::move(newConstraints));
 }
 
-int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId, bool tangencyHolds)
+int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId, bool doNotTransformTangencies)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
@@ -1667,7 +1667,7 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             // point, as the transfer destination edge most likely won't be intended to be tangent. However, if it is
             // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
             if (vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
-                if (!tangencyHolds) {
+                if (!doNotTransformTangencies) {
                     constNew->Type = Sketcher::Coincident;
                 }
             }
@@ -1696,7 +1696,7 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             // point, as the transfer destination edge most likely won't be intended to be tangent. However, if it is
             // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
             if (vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
-                if (!tangencyHolds) {
+                if (!doNotTransformTangencies) {
                     constNew->Type = Sketcher::Coincident;
                 }
             }
@@ -1715,19 +1715,6 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
         this->Constraints.setValues(std::move(newVals));
     }
     return 0;
-}
-
-void SketchObject::swapInvolvedGeometry(Constraint *constraint, int fromGeoId, int toGeoId)
-{
-    if (constraint->First == fromGeoId) {
-        constraint->First = toGeoId;
-    }
-    if (constraint->Second == fromGeoId) {
-        constraint->Second = toGeoId;
-    }
-    if (constraint->Third == fromGeoId) {
-        constraint->Third = toGeoId;
-    }
 }
 
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner)
@@ -3148,7 +3135,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
 
     if (ok) {
         std::vector<int> oldConstraints;
-        getAppliedConstraints(GeoId, oldConstraints);
+        getConstraintIndices(GeoId, oldConstraints);
 
         for (unsigned int i = 0; i < oldConstraints.size(); ++i) {
 
@@ -3194,7 +3181,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
 
                     for (unsigned int i = initial; i < limit; ++i) {
                         Constraint *trans = con->copy();
-                        swapInvolvedGeometry(trans, GeoId, newIds[i]);
+                        trans->substituteIndex(GeoId, newIds[i]);
                         newConstraints.push_back(trans);
                     }
                     break;
@@ -3258,7 +3245,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
             if (transferToAll) {
                 for (unsigned int i = 0; i < newIds.size(); ++i) {
                     Constraint *trans = con->copy();
-                    swapInvolvedGeometry(trans, GeoId, newIds[i]);
+                    trans->substituteIndex(GeoId, newIds[i]);
                     newConstraints.push_back(trans);
                 }
             }
@@ -7149,7 +7136,7 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1,
     return false;
 }
 
-void SketchObject::getAppliedConstraints(int GeoId, std::vector<int> &constraintList)
+void SketchObject::getConstraintIndices (int GeoId, std::vector<int> &constraintList)
 {
     const std::vector<Constraint *> &constraints = this->Constraints.getValues();
     int i = 0;

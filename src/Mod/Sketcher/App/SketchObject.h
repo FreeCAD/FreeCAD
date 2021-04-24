@@ -158,10 +158,7 @@ public:
     int delConstraintsToExternal();
     /// transfers all constraints of a point to a new point
     int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId,
-                            bool tangencyHolds = false);
-
-    /// swaps original GeoId for a new one
-    void swapInvolvedGeometry(Constraint *constraint, int fromGeoId, int toGeoId);
+                            bool doNotTransformTangencies = false);
 
     /// Carbon copy another sketch geometry and constraints
     int carbonCopy(App::DocumentObject * pObj, bool construction = true);
@@ -365,8 +362,8 @@ public:
     void getDirectlyCoincidentPoints(int VertexId, std::vector<int> &GeoIdList, std::vector<PointPos> &PosIdList);
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
-    /// fetches all constraints involving given GeoId
-    void getAppliedConstraints(int GeoId, std::vector<int> &constraintList);
+    /// returns a list of indices of all constraints involving given GeoId
+    void getConstraintIndices(int GeoId, std::vector<int> &constraintList);
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int> &conflicting, std::string &msg);
