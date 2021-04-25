@@ -6,9 +6,11 @@ endif(MSVC)
 
 # In previous versions this target copied mtextedit.h to the binary directory that causes
 # automoc to generate linking errors.
-if (EXISTS ${CMAKE_CURRENT_BINARY_DIR}/mtextedit.h)
-    file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/mtextedit.h)
-    execute_process(COMMAND "${CMAKE_COMMAND}" -E touch_nocreate "${CMAKE_CURRENT_SOURCE_DIR}/mtextedit.h")
+if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+    if (EXISTS ${CMAKE_CURRENT_BINARY_DIR}/mtextedit.h)
+        file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/mtextedit.h)
+        execute_process(COMMAND "${CMAKE_COMMAND}" -E touch_nocreate "${CMAKE_CURRENT_SOURCE_DIR}/mtextedit.h")
+    endif()
 endif()
 
 include_directories(
