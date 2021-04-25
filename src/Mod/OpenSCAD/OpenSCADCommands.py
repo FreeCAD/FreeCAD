@@ -328,12 +328,17 @@ class AddSCADWidget(QtGui.QWidget):
     def __init__(self,*args):
         QtGui.QWidget.__init__(self,*args)
         self.textEdit=QtGui.QTextEdit()
-        self.textEdit.setAcceptRichText(False)
         self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Add'))
         self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear'))
+        self.buttonload = QtGui.QPushButton(translate('OpenSCAD','Load'))
+        self.buttonsave = QtGui.QPushButton(translate('OpenSCAD','Save'))
+        self.buttonrefresh = QtGui.QPushButton(translate('OpenSCAD','Refresh'))
         self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD','as Mesh'))
         layouth=QtGui.QHBoxLayout()
         layouth.addWidget(self.buttonadd)
+        layouth.addWidget(self.buttonload)
+        layouth.addWidget(self.buttonsave)
+        layouth.addWidget(self.buttonrefresh)
         layouth.addWidget(self.buttonclear)
         layout= QtGui.QVBoxLayout()
         layout.addLayout(layouth)
@@ -354,6 +359,9 @@ class AddSCADTask:
     def __init__(self):
         self.form = AddSCADWidget()
         self.form.buttonadd.clicked.connect(self.addelement)
+        self.form.buttonload.clicked.connect(self.loadelement)
+        self.form.buttonsave.clicked.connect(self.saveelement)
+        self.form.buttonrefresh.clicked.connect(self.refreshelement)
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
 
@@ -387,7 +395,42 @@ class AddSCADTask:
 
         except OpenSCADUtils.OpenSCADError as e:
             FreeCAD.Console.PrintError(e.value)
+     
+    def refreshelement(self):
+        print('Refresh Element')
+        doc=FreeCAD.activeDocument()
+        if doc :
+           for obj in doc.Objects :
+               doc.removeObject(obj.Name)
+        self.addelement()
 
+    def loadelement(self):
+        print('Load Element')
+        print('Load Element')
+        filename, filter = QtGui.QFileDialog.getOpenFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+
+        if filename:
+           print('filename :'+filename)
+           fp = open(filename,'r')
+           with fp:
+                data = fp.read()
+                self.form.textEdit.setText(data)
+    
+    def saveelement(self) :
+        print('Save Element')
+        filename, filter = QtGui.QFileDialog.getSaveFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+
+        if filename:
+           print('filename :'+filename)
+           Text = self.form.textEdit.toPlainText()
+           fp = open(filename,'w')
+           with fp:
+              fp.write(Text)
+    
+class OpenSCADMeshBooleanWidget(QtGui.QWidget):
+    def __init__(self,*args):
+        QtGui.QWidget.__init__(self,*args)
+        #self.textEdit=QtGui.QTextEdit()
 class OpenSCADMeshBooleanWidget(QtGui.QWidget):
     def __init__(self,*args):
         QtGui.QWidget.__init__(self,*args)
