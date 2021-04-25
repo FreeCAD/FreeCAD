@@ -73,8 +73,13 @@ public:
     virtual bool allowExternalPick() const {return false;}
     virtual bool allowExternalDocument() const {return false;}
 
-    // Called when the corresponding tool button is pressed again while the handler is active
-    virtual void toggle() {}
+    // Called when the corresponding tool button is pressed while this handler
+    // is active 'next' is the new handler of the pressed button. Return true to
+    // discard the 'next' handler and reuse the current handler.
+    virtual bool toggle(DrawSketchHandler *next) {
+        (void)next;
+        return false;
+    }
 
     virtual void quit(void);
 

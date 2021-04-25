@@ -132,10 +132,8 @@ void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler)
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
             if (auto cur = vp->currentHandler()) {
-                if (typeid(*cur) == typeid(*handler)) {
-                    cur->toggle();
+                if (cur->toggle(handler))
                     return;
-                }
             }
             vp->purgeHandler();
             vp->activateHandler(ptr.release());
@@ -671,10 +669,13 @@ public:
         SNAP_MODE_45Degree
     };
 
-    virtual void toggle()
+    virtual bool toggle(DrawSketchHandler *next)
     {
+        if (!dynamic_cast<DrawSketchHandlerLineSet*>(next))
+            return false;
+
         if (Mode != STATUS_SEEK_Second)
-            return; // SegmentMode can be changed only in STATUS_SEEK_Second mode
+            return true; // SegmentMode can be changed only in STATUS_SEEK_Second mode
 
         if (previousCurve != -1) {
             // loop through the following modes:
@@ -748,6 +749,7 @@ public:
                 EditCurve.resize(32);
             mouseMove(onSketchPos); // trigger an update of EditCurve
         }
+        return true;
     }
 
     virtual void activated(ViewProviderSketch *)
