@@ -5,14 +5,10 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   height="64"
-   width="64"
    id="svg8"
-   sodipodi:docname="Sketcher_Pointer_Split.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   width="64"
+   height="64"
+   version="1.1">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -21,78 +17,46 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
      id="defs12" />
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="2560"
-     inkscape:window-height="1411"
-     id="namedview10"
-     showgrid="false"
-     inkscape:snap-bbox="true"
-     inkscape:bbox-paths="true"
-     inkscape:bbox-nodes="true"
-     inkscape:snap-bbox-edge-midpoints="true"
-     inkscape:snap-bbox-midpoints="true"
-     inkscape:object-paths="true"
-     inkscape:snap-intersection-paths="true"
-     inkscape:snap-smooth-nodes="true"
-     inkscape:snap-midpoints="true"
-     inkscape:zoom="7.375"
-     inkscape:cx="57.65674"
-     inkscape:cy="2.4410269"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
   <g
-     id="symbol"
-     style="fill:#cc0000;stroke:none;">
+     style="fill:#cc0000;stroke:none;"
+     id="symbol">
     <circle
-       cx="32"
-       cy="32"
+       id="circle2"
        r="6"
-       id="circle2" />
+       cy="32"
+       cx="32" />
   </g>
   <g
-     id="crosshair"
-     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;">
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;"
+     id="crosshair">
     <path
-       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
-       id="path5" />
+       id="path5"
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9" />
   </g>
   <circle
-     style="fill:none;stroke:#cc0000;stroke-width:2"
-     id="circle4755"
-     r="5"
+     cx="26"
      cy="56"
-     cx="26" />
-  <circle
-     style="fill:none;stroke:#cc0000;stroke-width:2"
-     id="circle4757"
      r="5"
+     id="circle4755"
+     style="fill:none;stroke:#cc0000;stroke-width:2" />
+  <circle
+     cx="56"
      cy="27"
-     cx="56" />
-  <path
-     sodipodi:nodetypes="cc"
-     inkscape:connector-curvature="0"
-     id="path4792"
-     d="M 26,56 38.245154,44.163018"
-     style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+     r="5"
+     id="circle4757"
+     style="fill:none;stroke:#cc0000;stroke-width:2" />
   <path
      style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 43.754846,38.836982 56,27"
+     d="M 26,56 38.245154,44.163018"
+     id="path4792" />
+  <path
      id="path4794"
-     inkscape:connector-curvature="0"
-     sodipodi:nodetypes="cc" />
+     d="M 43.754846,38.836982 56,27"
+     style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
 </svg>
