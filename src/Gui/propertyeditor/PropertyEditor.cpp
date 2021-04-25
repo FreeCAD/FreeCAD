@@ -222,9 +222,6 @@ void PropertyEditor::editorDestroyed (QObject * editor)
 
 void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelIndex & previous )
 {
-    FC_LOG("current changed " << current.row()<<","<<current.column()
-            << "  " << previous.row()<<","<<previous.column());
-
     QTreeView::currentChanged(current, previous);
 
     // if (previous.isValid())
