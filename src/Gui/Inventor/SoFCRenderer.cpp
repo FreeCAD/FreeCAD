@@ -973,10 +973,12 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
         // this means override transparency (i.e. force opaque)
         draw_entry.ventry->cache->renderTriangles(state, SoFCVertexCache::NON_SORTED, draw_entry.ventry->partidx);
       }
-      else if (!this->material.twoside) {
-        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+      else {
+        if (!this->material.twoside)
+          glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
         draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
-        glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+        if (!this->material.twoside)
+          glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
       }
       break;
     case Material::Line:
