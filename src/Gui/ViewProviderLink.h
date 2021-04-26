@@ -249,6 +249,7 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
 
     std::vector<std::string> getDisplayModes(void) const override;
+    virtual void setDisplayMode(const char* ModeName) override;
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 

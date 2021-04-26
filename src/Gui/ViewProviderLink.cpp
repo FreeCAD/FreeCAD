@@ -1853,6 +1853,14 @@ void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     linkView->setOwner(this);
 }
 
+void ViewProviderLink::setDisplayMode(const char* ModeName)
+{
+    if (boost::equals(ModeName, "Link")
+            || boost::equals(ModeName, "ChildView")
+            || boost::equals(ModeName, "ComboView"))
+        setDisplayMaskMode(ModeName);
+}
+
 void ViewProviderLink::reattach(App::DocumentObject *obj) {
     linkView->setOwner(this);
     inherited::reattach(obj);
