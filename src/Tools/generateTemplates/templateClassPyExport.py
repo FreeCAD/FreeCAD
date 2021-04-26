@@ -285,7 +285,11 @@ PyTypeObject @self.export.Name@::Type = {
     0,                                                /*tp_itemsize*/
     /* methods */
     PyDestructor,                                     /*tp_dealloc*/
+#if PY_VERSION_HEX >= 0x03090000
+    0,                                                /*tp_vectorcall_offset*/
+#else
     nullptr,                                          /*tp_print*/
+#endif
     nullptr,                                          /*tp_getattr*/
     nullptr,                                          /*tp_setattr*/
     nullptr,                                          /*tp_compare*/
