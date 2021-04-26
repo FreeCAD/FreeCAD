@@ -204,11 +204,7 @@ PyObject* PathPy::toGCode(PyObject * args)
 {
     if (PyArg_ParseTuple(args, "")) {
         std::string result = getToolpathPtr()->toGCode();
-#if PY_MAJOR_VERSION >= 3
         return PyUnicode_FromString(result.c_str());
-#else
-        return PyString_FromString(result.c_str());
-#endif
     }
     throw Py::TypeError("This method accepts no argument");
 }
