@@ -517,6 +517,7 @@ PyObject*  DocumentPy::getObject(PyObject *args)
     long id = -1;
     char *sName = 0;
     if (!PyArg_ParseTuple(args, "s",&sName))  {   // convert args: Python->C
+        PyErr_Clear();
         if (!PyArg_ParseTuple(args, "l", &id))
             return NULL;                             // NULL triggers exception
     }
