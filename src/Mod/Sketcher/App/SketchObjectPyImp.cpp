@@ -1824,6 +1824,7 @@ Py::List SketchObjectPy::getGeometryFacadeList(void) const
 
         // we create a python copy and add it to the list
         std::unique_ptr<GeometryFacade> geofacade = GeometryFacade::getFacade(getSketchObjectPtr()->Geometry[i]->clone());
+        geofacade->setOwner(true);
 
         Py::Object gfp = Py::Object(new GeometryFacadePy(geofacade.release()),true);
 

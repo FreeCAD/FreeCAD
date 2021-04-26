@@ -118,7 +118,11 @@ public: // Utility methods
     static bool getBlocked(const Part::Geometry * geometry);
 
 public:
+    ~GeometryFacade();
     void setGeometry(Part::Geometry *geometry);
+    void setOwner(bool owner) {
+        OwnerGeo = owner;
+    }
 
     // Geometry Extension Interface
     inline virtual long getId() const override {return getGeoExt()->getId();}
@@ -198,6 +202,7 @@ private:
 
 private:
     const Part::Geometry * Geo;
+    bool OwnerGeo;
     std::shared_ptr<const SketchGeometryExtension> SketchGeoExtension;
 };
 
