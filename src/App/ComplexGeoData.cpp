@@ -1027,7 +1027,15 @@ public:
                 entry->offset += grandchild.offset;
                 entry->elementMap = grandchild.elementMap;
                 entry->sids += grandchild.sids;
-                entry->postfix = grandchild.postfix + entry->postfix;
+                if (grandchild.postfix.size()) {
+                    if (entry->postfix.size()
+                        && !entry->postfix.startsWith(ComplexGeoData::elementMapPrefix().c_str()))
+                    {
+                        entry->postfix = grandchild.postfix
+                            + ComplexGeoData::elementMapPrefix().c_str() + entry->postfix;
+                    } else
+                        entry->postfix = grandchild.postfix + entry->postfix;
+                }
 
                 start = iend;
                 if (start >= end)
@@ -1757,7 +1765,7 @@ int ComplexGeoData::findTagInElementName(const MappedName & name,
         //
         // For decTagPostfix(), this is the length of the string before the
         // entire postfix (A postfix may contain multiple segments usually
-        // separated by elementPrefix().
+        // separated by elementMapPrefix().
         //
         // For newer tagPostfix(), this counts the number of characters that proceeds
         // this tag postfix segment that forms the entire postfix.
