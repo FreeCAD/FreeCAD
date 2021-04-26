@@ -208,20 +208,9 @@ SET(FreeCADBase_UNITAPI_SRCS
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
-if(PYTHON_VERSION_MAJOR LESS 3)
-SET(SWIG_SRCS
-    swigpyrun_1.3.25.cpp
-    swigpyrun_1.3.33.cpp
-    swigpyrun_1.3.36.cpp
-    swigpyrun_1.3.38.cpp
-    swigpyrun_1.3.40.cpp
-    swigpyrun.cpp
-)
-else(PYTHON_VERSION_MAJOR LESS 3)
 SET(SWIG_SRCS
     swigpyrun.cpp
 )
-endif(PYTHON_VERSION_MAJOR LESS 3)
 
 SET(FreeCADBase_CPP_SRCS
     Axis.cpp
@@ -281,20 +270,9 @@ SET(FreeCADBase_CPP_SRCS
     XMLTools.cpp
 )
 
-if(PYTHON_VERSION_MAJOR LESS 3)
-SET(SWIG_HEADERS
-    swigpyrun_1.3.25.h
-    swigpyrun_1.3.33.h
-    swigpyrun_1.3.36.h
-    swigpyrun_1.3.38.h
-    swigpyrun_1.3.40.h
-    swigpyrun.inl
-)
-else(PYTHON_VERSION_MAJOR LESS 3)
 SET(SWIG_HEADERS
     swigpyrun.inl
 )
-endif(PYTHON_VERSION_MAJOR LESS 3)
 
 SET(FreeCADBase_HPP_SRCS
     Axis.h
