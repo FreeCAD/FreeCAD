@@ -188,6 +188,10 @@ protected:
     void unsetEdit(int ModNum) override;
     //@}
 
+    virtual Base::BoundBox3d _getBoundingBox(const char *subname=0,
+            const Base::Matrix4D *mat=0, bool transform=true,
+            const Gui::View3DInventorViewer *view=0, int depth=0) const override;
+
 protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop) override;

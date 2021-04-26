@@ -279,6 +279,11 @@ SoFCRenderCacheManagerP::SoFCRenderCacheManagerP()
   this->shapetypeid = 0;
 
   if (_shapetypeid < 0) {
+    // In case the shape node is defined in late loaded module, we need to
+    // re-init SoCallbackAction (by calling initAction()), because
+    // SoCallbackAction only works for existing type ID (i.e. all existing
+    // SoShape derived types in our case) at the time of calling
+    // addPre/PostCallback().
     SoCallbackAction::addMethod(SoShape::getClassTypeId(),
         [](SoAction *action, SoNode *node) {
             if (_shapetypeid < static_cast<int>(node->getTypeId().getData())) {

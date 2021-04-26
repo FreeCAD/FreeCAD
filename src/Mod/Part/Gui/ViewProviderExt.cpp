@@ -2154,3 +2154,15 @@ void ViewProviderPartExt::finishRestoring()
     if(VisualTouched && (isUpdateForced() || Visibility.getValue()))
         updateVisual();
 }
+
+Base::BoundBox3d
+ViewProviderPartExt::_getBoundingBox(const char *subname,
+                                     const Base::Matrix4D *mat,
+                                     bool transform,
+                                     const Gui::View3DInventorViewer *view,
+                                     int depth) const
+{
+    if (VisualTouched)
+        const_cast<ViewProviderPartExt*>(this)->updateVisual();
+    return inherited::_getBoundingBox(subname, mat, transform, view, depth);
+}

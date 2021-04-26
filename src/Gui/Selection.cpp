@@ -931,6 +931,13 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
 
     CurrentPreselection = Chng;
 
+    auto vp = Application::Instance->getViewProvider(Chng.Object.getObject());
+    if (vp) {
+        // Trigger populating bounding box cache. This also makes sure the
+        // invisible object gets their geometry visual populated.
+        vp->getBoundingBox(Chng.Object.getSubName().c_str());
+    }
+
     if (msg)
         format(0,0,0,x,y,z,true);
 
@@ -1210,6 +1217,13 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
     FC_LOG("Add Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName
             << " (" << x << ", " << y << ", " << z << ')');
+
+    auto vp = Application::Instance->getViewProvider(Chng.Object.getObject());
+    if (vp) {
+        // Trigger populating bounding box cache. This also makes sure the
+        // invisible object gets their geometry visual populated.
+        vp->getBoundingBox(Chng.Object.getSubName().c_str());
+    }
 
     notify(std::move(Chng));
 
