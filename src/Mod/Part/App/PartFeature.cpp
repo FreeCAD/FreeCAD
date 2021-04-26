@@ -260,7 +260,15 @@ Feature::getElementHistory(App::DocumentObject *feature,
 {
     std::list<Data::HistoryItem> ret;
     TopoShape shape = getTopoShape(feature);
-    Data::MappedName element = shape.getMappedName(name, true);
+    Data::IndexedName idx(name);
+    Data::MappedName element;
+    if (idx)
+        element = shape.getMappedName(idx, true);
+    else {
+        if (boost::starts_with(name, Data::ComplexGeoData::elementMapPrefix()))
+            name += Data::ComplexGeoData::elementMapPrefix().size();
+        element = Data::MappedName(name);
+    }
     char element_type=0;
     if(sameType)
         element_type = shape.elementType(element);

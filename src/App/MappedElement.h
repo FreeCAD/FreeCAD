@@ -42,7 +42,7 @@ namespace Data
 
 class AppExport IndexedName {
 public:
-    IndexedName(const char *name = nullptr, int _index = 0)
+    explicit IndexedName(const char *name = nullptr, int _index = 0)
         : index(0)
     {
         if (!name)

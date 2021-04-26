@@ -3408,7 +3408,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             int i = 1;
             auto it = newNames.end();
             if(delayed)
-                it = newNames.upper_bound(info.shapetype);
+                it = newNames.upper_bound(Data::IndexedName::fromConst(info.shapetype, 0));
             for(;;++i) {
                 Data::IndexedName element;
                 if(!delayed) {
