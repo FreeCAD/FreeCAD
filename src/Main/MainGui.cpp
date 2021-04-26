@@ -159,12 +159,10 @@ int main( int argc, char ** argv )
     }
 #endif
 
-#if PY_MAJOR_VERSION >= 3
 #if defined(_MSC_VER) && _MSC_VER <= 1800
     // See InterpreterSingleton::init
     Redirection out(stdout), err(stderr), inp(stdin);
 #endif
-#endif // PY_MAJOR_VERSION
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";
