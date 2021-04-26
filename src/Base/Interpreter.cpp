@@ -510,11 +510,7 @@ void InterpreterSingleton::addPythonPath(const char* Path)
 const char* InterpreterSingleton::init(int argc,char *argv[])
 {
     if (!Py_IsInitialized()) {
-#if PY_VERSION_HEX >= 0x03050000
         Py_SetProgramName(Py_DecodeLocale(argv[0],nullptr));
-#else
-        Py_SetProgramName(_Py_char2wchar(argv[0],nullptr));
-#endif
         // There is a serious bug in VS from 2010 until 2013 where the file descriptor for stdin, stdout or stderr
         // returns a valid value for GUI applications (i.e. subsystem = Windows) where it shouldn't.
         // This causes Python to fail during initialization.

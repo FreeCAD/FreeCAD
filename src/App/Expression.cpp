@@ -527,9 +527,6 @@ Py::Object pyFromQuantity(const Quantity &quantity) {
     int i;
     switch(essentiallyInteger(v,l,i)) {
     case 1:
-#if PY_MAJOR_VERSION < 3
-        return Py::Int(i);
-#endif
     case 2:
         return Py::Long(l);
     default:
