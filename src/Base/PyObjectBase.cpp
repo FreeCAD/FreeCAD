@@ -39,13 +39,11 @@ using namespace Base;
 PyObject* Base::BaseExceptionFreeCADError = nullptr;
 PyObject* Base::BaseExceptionFreeCADAbort = nullptr;
 
-#ifdef ATTR_TRACKING
 typedef struct {
     PyObject_HEAD
     PyObject* baseobject;
     PyObject* weakreflist;  /* List of weak references */
 } PyBaseProxy;
-#endif
 
 // Constructor
 PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
@@ -224,7 +222,6 @@ PyTypeObject PyObjectBase::Type = {
 # pragma clang diagnostic pop
 #endif
 
-#ifdef ATTR_TRACKING
 PyObject* createWeakRef(PyObjectBase* ptr)
 {
     static bool init = false;
@@ -255,7 +252,6 @@ PyObjectBase* getFromWeakRef(PyObject* ref)
 
     return nullptr;
 }
-#endif
 
 /*------------------------------
  * PyObjectBase Methods 	-- Every class, even the abstract one should have a Methods
