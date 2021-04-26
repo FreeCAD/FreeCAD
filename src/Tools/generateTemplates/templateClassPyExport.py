@@ -314,19 +314,7 @@ PyTypeObject @self.export.Name@::Type = {
     /* --- Functions to access object as input/output buffer ---------*/
     nullptr,                                          /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
-#if PY_MAJOR_VERSION >= 3
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,        /*tp_flags */
-#else
-+ if (self.export.RichCompare and self.export.NumberProtocol):
-    Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_RICHCOMPARE|Py_TPFLAGS_CHECKTYPES,        /*tp_flags */
-= elif (self.export.RichCompare):
-    Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_RICHCOMPARE,        /*tp_flags */
-= elif (self.export.NumberProtocol):
-    Py_TPFLAGS_DEFAULT|Py_TPFLAGS_CHECKTYPES,        /*tp_flags */
-= else:
-    Py_TPFLAGS_DEFAULT,        /*tp_flags */
--
-#endif
     "@self.export.Documentation.UserDocu.replace('\\n','\\\\n\\"\\n    \\"')@",           /*tp_doc */
     nullptr,                                          /*tp_traverse */
     nullptr,                                          /*tp_clear */
