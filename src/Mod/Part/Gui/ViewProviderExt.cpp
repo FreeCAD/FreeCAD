@@ -1238,8 +1238,9 @@ static App::Color getElementColor(App::Color color,
     Data::MappedName mapped(name);
     bool colorFound = false;
     std::vector<Data::MappedName> history;
+    std::vector<Data::MappedName> prevHistory;
     Data::MappedName original;
-    long tag = shape.getElementHistory(mapped,&original,&history);
+    long tag = shape.getElementHistory(mapped,&original,&prevHistory);
     while(1) {
         if(!tag)
             return color;
@@ -1262,7 +1263,8 @@ static App::Color getElementColor(App::Color color,
             // history until we find one.
             doc = obj->getDocument();
             mapped = original;
-            tag = shape.getElementHistory(mapped,&original,&history);
+            prevHistory.clear();
+            tag = shape.getElementHistory(mapped,&original,&prevHistory);
             continue;
         }
 
@@ -1278,7 +1280,6 @@ static App::Color getElementColor(App::Color color,
         if(prop->getSize()==0)
             return color;
 
-        history.clear();
         mapped = original;
         // Normally, TopoShape::getElementHistory() returns the mapped element
         // name of the previous step (in 'original'), and tag is the ID of the
@@ -1295,7 +1296,9 @@ static App::Color getElementColor(App::Color color,
         // model step. The 'original' returned by getElementHistory() here may
         // or may not contain a valid element name for the previous step. We can
         // only decide after another loop hits here.
-        tag = shape.getElementHistory(mapped,&original,&history);
+        std::swap(history, prevHistory);
+        prevHistory.clear();
+        tag = shape.getElementHistory(mapped,&original,&prevHistory);
         Data::IndexedName element = shape.getIndexedName(history.empty()?mapped:history.back());
         auto idx = Part::TopoShape::shapeTypeAndIndex(element);
         if(idx.second>0 && idx.second<=(int)shape.countSubShapes(idx.first)) {
