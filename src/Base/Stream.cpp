@@ -33,7 +33,7 @@
 # include <cstdio>
 # include <cstring>
 #ifdef __GNUC__
-# include <stdint.h>
+# include <cstdint>
 #endif
 #endif
 
@@ -582,6 +582,7 @@ PyStreambuf::int_type PyStreambuf::underflow()
             // wrong type
             return traits_type::eof();
         }
+
         n = c.size();
         if (n == 0) {
             return traits_type::eof();

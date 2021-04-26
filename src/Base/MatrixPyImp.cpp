@@ -38,7 +38,7 @@
 using namespace Base;
 
 // returns a string which represents the object e.g. when printed in python
-std::string MatrixPy::representation(void) const
+std::string MatrixPy::representation() const
 {
     const Base::Matrix4D& m = *(this->getMatrixPtr());
     std::stringstream str;
@@ -95,11 +95,11 @@ PyObject* MatrixPy::number_add_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
         PyErr_SetString(PyExc_NotImplementedError, "");
-        return 0;
+        return nullptr;
     }
     if (!PyObject_TypeCheck(other, &(MatrixPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Second arg must be Matrix");
-        return 0;
+        return nullptr;
     }
     Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
     Base::Matrix4D b = static_cast<MatrixPy*>(other)->value();
@@ -110,11 +110,11 @@ PyObject* MatrixPy::number_subtract_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
         PyErr_SetString(PyExc_NotImplementedError, "");
-        return 0;
+        return nullptr;
     }
     if (!PyObject_TypeCheck(other, &(MatrixPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Second arg must be Matrix");
-        return 0;
+        return nullptr;
     }
     Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
     Base::Matrix4D b = static_cast<MatrixPy*>(other)->value();
@@ -156,7 +156,7 @@ PyObject* MatrixPy::number_multiply_handler(PyObject *self, PyObject *other)
     }
 
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyObject* arg)
@@ -168,7 +168,7 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
        )
     {
         PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-        return 0;
+        return nullptr;
     }
 
     Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
@@ -182,7 +182,7 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
             a.inverseGauss();
         else {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
-            return 0;
+            return nullptr;
         }
         b = -b;
     }
@@ -200,11 +200,11 @@ PyObject* MatrixPy::richCompare(PyObject *v, PyObject *w, int op)
         Matrix4D m1 = static_cast<MatrixPy*>(v)->value();
         Matrix4D m2 = static_cast<MatrixPy*>(w)->value();
 
-        PyObject *res=0;
+        PyObject *res=nullptr;
         if (op != Py_EQ && op != Py_NE) {
             PyErr_SetString(PyExc_TypeError,
             "no ordering relation is defined for Matrix");
-            return 0;
+            return nullptr;
         }
         else if (op == Py_EQ) {
             res = (m1 == m2) ? Py_True : Py_False;
@@ -250,7 +250,7 @@ PyObject* MatrixPy::move(PyObject * args)
         PyErr_Clear();
     }
     else
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         getMatrixPtr()->move(vec);
@@ -286,7 +286,7 @@ PyObject* MatrixPy::scale(PyObject * args)
         PyErr_Clear();
     }
     else
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         getMatrixPtr()->scale(vec);
@@ -300,14 +300,14 @@ PyObject* MatrixPy::hasScale(PyObject * args)
 {
     double tol=0;
     if (!PyArg_ParseTuple(args, "|d", &tol))
-        return 0;
+        return nullptr;
     return Py::new_reference_to(Py::Int(getMatrixPtr()->hasScale(tol)));
 }
 
 PyObject* MatrixPy::unity(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-      return NULL;                             // NULL triggers exception
+      return nullptr;                             // NULL triggers exception
     PY_TRY {
         getMatrixPtr()->setToUnity();
     }
@@ -332,7 +332,7 @@ PyObject* MatrixPy::transform(PyObject * args)
         PyErr_Clear();
     }
     else
-        return NULL;                                 // NULL triggers exception
+        return nullptr;                                 // NULL triggers exception
 
     PY_TRY {
         getMatrixPtr()->transform(vec,mat);
@@ -361,7 +361,7 @@ PyObject* MatrixPy::rotateX(PyObject * args)
         }
 
         PyErr_SetString(PyExc_TypeError, "For angle either float or Quantity expected");
-        return 0;
+        return nullptr;
     }
     while (false);
 
@@ -392,7 +392,7 @@ PyObject* MatrixPy::rotateY(PyObject * args)
         }
 
         PyErr_SetString(PyExc_TypeError, "For angle either float or Quantity expected");
-        return 0;
+        return nullptr;
     }
     while (false);
 
@@ -423,7 +423,7 @@ PyObject* MatrixPy::rotateZ(PyObject * args)
         }
 
         PyErr_SetString(PyExc_TypeError, "For angle either float or Quantity expected");
-        return 0;
+        return nullptr;
     }
     while (false);
 
@@ -450,14 +450,14 @@ PyObject* MatrixPy::multiply(PyObject * args)
     }
 
     PyErr_SetString(Base::BaseExceptionFreeCADError, "either vector or matrix expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* MatrixPy::multVec(PyObject * args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &obj))
-        return NULL;
+        return nullptr;
     Base::Vector3d vec(static_cast<VectorPy*>(obj)->value());
     getMatrixPtr()->multVec(vec, vec);
     return new VectorPy(new Vector3d(vec));
@@ -466,14 +466,14 @@ PyObject* MatrixPy::multVec(PyObject * args)
 PyObject* MatrixPy::invert(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON)
             getMatrixPtr()->inverseGauss();
         else {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
-            return 0;
+            return nullptr;
         }
     }
     PY_CATCH;
@@ -484,7 +484,7 @@ PyObject* MatrixPy::invert(PyObject * args)
 PyObject* MatrixPy::inverse(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON) {
@@ -494,7 +494,7 @@ PyObject* MatrixPy::inverse(PyObject * args)
         }
         else {
             PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
-            return 0;
+            return nullptr;
         }
     }
     PY_CATCH;
@@ -505,7 +505,7 @@ PyObject* MatrixPy::inverse(PyObject * args)
 PyObject* MatrixPy::determinant(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     return PyFloat_FromDouble(getMatrixPtr()->determinant());
 }
 
@@ -513,10 +513,10 @@ PyObject* MatrixPy::submatrix(PyObject * args)
 {
     int dim;
     if (!PyArg_ParseTuple(args, "i", &dim))
-        return NULL;
+        return nullptr;
     if (dim < 1 || dim > 4) {
         PyErr_SetString(PyExc_IndexError, "Dimension out of range");
-        return NULL;
+        return nullptr;
     }
 
     const Base::Matrix4D& mat = *getMatrixPtr();
@@ -547,7 +547,7 @@ PyObject* MatrixPy::isOrthogonal(PyObject * args)
 {
     double eps=1.0e-06;
     if (!PyArg_ParseTuple(args, "|d",&eps))
-        return 0;
+        return nullptr;
     const Base::Matrix4D& mat = *getMatrixPtr();
     Base::Matrix4D trp = mat;
     trp.transpose();
@@ -578,7 +578,7 @@ PyObject* MatrixPy::isOrthogonal(PyObject * args)
 PyObject* MatrixPy::transposed(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         Base::Matrix4D m = *getMatrixPtr();
@@ -593,7 +593,7 @@ PyObject* MatrixPy::transposed(PyObject * args)
 PyObject* MatrixPy::transpose(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         getMatrixPtr()->transpose();
@@ -605,7 +605,7 @@ PyObject* MatrixPy::transpose(PyObject * args)
 PyObject* MatrixPy::analyze(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         std::string type = getMatrixPtr()->analyse();
@@ -614,7 +614,7 @@ PyObject* MatrixPy::analyze(PyObject * args)
     PY_CATCH;
 }
 
-Py::Float MatrixPy::getA11(void) const
+Py::Float MatrixPy::getA11() const
 {
     double val = (*this->getMatrixPtr())[0][0];
     return Py::Float(val);
@@ -625,7 +625,7 @@ void  MatrixPy::setA11(Py::Float arg)
     (*this->getMatrixPtr())[0][0] = (double)arg;
 }
 
-Py::Float MatrixPy::getA12(void) const
+Py::Float MatrixPy::getA12() const
 {
     double val = (*this->getMatrixPtr())[0][1];
     return Py::Float(val);
@@ -636,7 +636,7 @@ void  MatrixPy::setA12(Py::Float arg)
     (*this->getMatrixPtr())[0][1] = (double)arg;
 }
 
-Py::Float MatrixPy::getA13(void) const
+Py::Float MatrixPy::getA13() const
 {
     double val = (*this->getMatrixPtr())[0][2];
     return Py::Float(val);
@@ -647,7 +647,7 @@ void  MatrixPy::setA13(Py::Float arg)
     (*this->getMatrixPtr())[0][2] = (double)arg;
 }
 
-Py::Float MatrixPy::getA14(void) const
+Py::Float MatrixPy::getA14() const
 {
     double val = (*this->getMatrixPtr())[0][3];
     return Py::Float(val);
@@ -658,7 +658,7 @@ void  MatrixPy::setA14(Py::Float arg)
     (*this->getMatrixPtr())[0][3] = (double)arg;
 }
 
-Py::Float MatrixPy::getA21(void) const
+Py::Float MatrixPy::getA21() const
 {
     double val = (*this->getMatrixPtr())[1][0];
     return Py::Float(val);
@@ -669,7 +669,7 @@ void  MatrixPy::setA21(Py::Float arg)
     (*this->getMatrixPtr())[1][0] = (double)arg;
 }
 
-Py::Float MatrixPy::getA22(void) const
+Py::Float MatrixPy::getA22() const
 {
     double val = (*this->getMatrixPtr())[1][1];
     return Py::Float(val);
@@ -680,7 +680,7 @@ void  MatrixPy::setA22(Py::Float arg)
     (*this->getMatrixPtr())[1][1] = (double)arg;
 }
 
-Py::Float MatrixPy::getA23(void) const
+Py::Float MatrixPy::getA23() const
 {
     double val = (*this->getMatrixPtr())[1][2];
     return Py::Float(val);
@@ -691,7 +691,7 @@ void  MatrixPy::setA23(Py::Float arg)
     (*this->getMatrixPtr())[1][2] = (double)arg;
 }
 
-Py::Float MatrixPy::getA24(void) const
+Py::Float MatrixPy::getA24() const
 {
     double val = (*this->getMatrixPtr())[1][3];
     return Py::Float(val);
@@ -702,7 +702,7 @@ void  MatrixPy::setA24(Py::Float arg)
     (*this->getMatrixPtr())[1][3] = (double)arg;
 }
 
-Py::Float MatrixPy::getA31(void) const
+Py::Float MatrixPy::getA31() const
 {
     double val = (*this->getMatrixPtr())[2][0];
     return Py::Float(val);
@@ -713,7 +713,7 @@ void  MatrixPy::setA31(Py::Float arg)
     (*this->getMatrixPtr())[2][0] = (double)arg;
 }
 
-Py::Float MatrixPy::getA32(void) const
+Py::Float MatrixPy::getA32() const
 {
     double val = (*this->getMatrixPtr())[2][1];
     return Py::Float(val);
@@ -724,7 +724,7 @@ void  MatrixPy::setA32(Py::Float arg)
     (*this->getMatrixPtr())[2][1] = (double)arg;
 }
 
-Py::Float MatrixPy::getA33(void) const
+Py::Float MatrixPy::getA33() const
 {
     double val = (*this->getMatrixPtr())[2][2];
     return Py::Float(val);
@@ -735,7 +735,7 @@ void  MatrixPy::setA33(Py::Float arg)
     (*this->getMatrixPtr())[2][2] = (double)arg;
 }
 
-Py::Float MatrixPy::getA34(void) const
+Py::Float MatrixPy::getA34() const
 {
     double val = (*this->getMatrixPtr())[2][3];
     return Py::Float(val);
@@ -746,7 +746,7 @@ void  MatrixPy::setA34(Py::Float arg)
     (*this->getMatrixPtr())[2][3] = (double)arg;
 }
 
-Py::Float MatrixPy::getA41(void) const
+Py::Float MatrixPy::getA41() const
 {
     double val = (*this->getMatrixPtr())[3][0];
     return Py::Float(val);
@@ -757,7 +757,7 @@ void  MatrixPy::setA41(Py::Float arg)
     (*this->getMatrixPtr())[3][0] = (double)arg;
 }
 
-Py::Float MatrixPy::getA42(void) const
+Py::Float MatrixPy::getA42() const
 {
     double val = (*this->getMatrixPtr())[3][1];
     return Py::Float(val);
@@ -768,7 +768,7 @@ void  MatrixPy::setA42(Py::Float arg)
     (*this->getMatrixPtr())[3][1] = (double)arg;
 }
 
-Py::Float MatrixPy::getA43(void) const
+Py::Float MatrixPy::getA43() const
 {
     double val = (*this->getMatrixPtr())[3][2];
     return Py::Float(val);
@@ -779,7 +779,7 @@ void  MatrixPy::setA43(Py::Float arg)
     (*this->getMatrixPtr())[3][2] = (double)arg;
 }
 
-Py::Float MatrixPy::getA44(void) const
+Py::Float MatrixPy::getA44() const
 {
     double val = (*this->getMatrixPtr())[3][3];
     return Py::Float(val);
@@ -790,7 +790,7 @@ void  MatrixPy::setA44(Py::Float arg)
     (*this->getMatrixPtr())[3][3] = (double)arg;
 }
 
-Py::Sequence MatrixPy::getA(void) const
+Py::Sequence MatrixPy::getA() const
 {
     double mat[16];
     this->getMatrixPtr()->getMatrix(mat);
@@ -816,7 +816,7 @@ void MatrixPy::setA(Py::Sequence arg)
 
 PyObject *MatrixPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int MatrixPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
@@ -827,37 +827,37 @@ int MatrixPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 PyObject * MatrixPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_negative_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_positive_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_absolute_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 int MatrixPy::number_nonzero_handler (PyObject* /*self*/)
@@ -868,47 +868,47 @@ int MatrixPy::number_nonzero_handler (PyObject* /*self*/)
 PyObject * MatrixPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_int_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * MatrixPy::number_float_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }

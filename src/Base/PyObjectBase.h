@@ -50,10 +50,8 @@
 
 #include <typeinfo>
 #include "Exception.h"
-#if PY_MAJOR_VERSION > 2
-#  ifndef PYCXX_PYTHON_2TO3
-#  define PYCXX_PYTHON_2TO3
-#  endif
+#ifndef PYCXX_PYTHON_2TO3
+#define PYCXX_PYTHON_2TO3
 #endif
 #include <CXX/Objects.hxx>
 
@@ -91,8 +89,8 @@
 
 /** Macro for initialization function of Python modules.
  */
-# define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC PyInit_##name(void)
-# define PyMOD_Return(name) return name
+#define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC PyInit_##name(void)
+#define PyMOD_Return(name) return name
 
 /**
  * Union to convert from PyTypeObject to PyObject pointer.
@@ -218,9 +216,9 @@ public:
     static void PyDestructor(PyObject *P)   // python wrapper
     {  delete ((PyObjectBase *) P);  }
     /// incref method wrapper (see python extending manual)
-    PyObjectBase* IncRef(void) {Py_INCREF(this);return this;}
+    PyObjectBase* IncRef() {Py_INCREF(this);return this;}
     /// decref method wrapper (see python extending manual)
-    PyObjectBase* DecRef(void) {Py_DECREF(this);return this;}
+    PyObjectBase* DecRef() {Py_DECREF(this);return this;}
 
     /** GetAttribute implementation
      *  This method implements the retrieval of object attributes.
@@ -259,12 +257,12 @@ public:
     * }
     * \endcode
     */
-    virtual PyObject *_repr(void);
+    virtual PyObject *_repr();
     /// python wrapper for the _repr() function
     static  PyObject *__repr(PyObject *PyObj)	{
         if (!((PyObjectBase*) PyObj)->isValid()){
             PyErr_Format(PyExc_ReferenceError, "Cannot print representation of deleted object");
-            return NULL;
+            return nullptr;
         }
         return ((PyObjectBase*) PyObj)->_repr();
     }
@@ -287,7 +285,7 @@ public:
         // first bit is not set, i.e. invalid
         StatusBits.reset(Valid);
         clearAttributes();
-        _pcTwinPointer = 0;
+        _pcTwinPointer = nullptr;
     }
 
     bool isValid() {

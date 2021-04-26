@@ -25,7 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
+# include <cassert>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -33,7 +33,7 @@
 # include <io.h>
 # include <xercesc/sax/SAXParseException.hpp>
 # endif
-# include <stdio.h>
+# include <cstdio>
 # include <sstream>
 # include <list>
 #endif
@@ -99,7 +99,7 @@ typedef std::list<ParameterGrpObserver*> ParameterGrpObserverList;
 class ParameterGrpPy : public Py::PythonExtension<ParameterGrpPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp);
     ~ParameterGrpPy();
@@ -320,7 +320,7 @@ Py::Object ParameterGrpPy::getBool(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -355,7 +355,7 @@ Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -390,7 +390,7 @@ Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -426,7 +426,7 @@ Py::Object ParameterGrpPy::getFloat(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -462,7 +462,7 @@ Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 

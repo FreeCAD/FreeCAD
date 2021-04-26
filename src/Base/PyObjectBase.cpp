@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <stdlib.h>
+# include <cstdlib>
 #endif
 
 #include "PyObjectBase.h"
@@ -36,8 +36,8 @@
 
 using namespace Base;
 
-PyObject* Base::BaseExceptionFreeCADError = 0;
-PyObject* Base::BaseExceptionFreeCADAbort = 0;
+PyObject* Base::BaseExceptionFreeCADError = nullptr;
+PyObject* Base::BaseExceptionFreeCADAbort = nullptr;
 
 #ifdef ATTR_TRACKING
 typedef struct {
@@ -107,49 +107,49 @@ static PyTypeObject PyBaseProxyType = {
     sizeof(PyBaseProxy),                                    /*tp_basicsize*/
     0,                                                      /*tp_itemsize*/
     PyBaseProxy_dealloc,                                    /*tp_dealloc*/
-    0,                                                      /*tp_print*/
-    0,                                                      /*tp_getattr*/
-    0,                                                      /*tp_setattr*/
-    0,                                                      /*tp_compare*/
-    0,                                                      /*tp_repr*/
-    0,                                                      /*tp_as_number*/
-    0,                                                      /*tp_as_sequence*/
-    0,                                                      /*tp_as_mapping*/
-    0,                                                      /*tp_hash*/
-    0,                                                      /*tp_call */
-    0,                                                      /*tp_str  */
-    0,                                                      /*tp_getattro*/
-    0,                                                      /*tp_setattro*/
-    0,                                                      /* tp_as_buffer */
+    nullptr,                                                /*tp_print*/
+    nullptr,                                                /*tp_getattr*/
+    nullptr,                                                /*tp_setattr*/
+    nullptr,                                                /*tp_compare*/
+    nullptr,                                                /*tp_repr*/
+    nullptr,                                                /*tp_as_number*/
+    nullptr,                                                /*tp_as_sequence*/
+    nullptr,                                                /*tp_as_mapping*/
+    nullptr,                                                /*tp_hash*/
+    nullptr,                                                /*tp_call */
+    nullptr,                                                /*tp_str  */
+    nullptr,                                                /*tp_getattro*/
+    nullptr,                                                /*tp_setattro*/
+    nullptr,                                                /*tp_as_buffer*/
     Py_TPFLAGS_BASETYPE | Py_TPFLAGS_DEFAULT,               /*tp_flags */
     "Proxy class",                                          /*tp_doc */
-    0,                                                      /*tp_traverse */
-    0,                                                      /*tp_clear */
-    0,                                                      /*tp_richcompare */
+    nullptr,                                                /*tp_traverse */
+    nullptr,                                                /*tp_clear */
+    nullptr,                                                /*tp_richcompare */
     offsetof(PyBaseProxy, weakreflist),                     /*tp_weaklistoffset */
-    0,                                                      /*tp_iter */
-    0,                                                      /*tp_iternext */
-    0,                                                      /*tp_methods */
-    0,                                                      /*tp_members */
-    0,                                                      /*tp_getset */
-    0,                                                      /*tp_base */
-    0,                                                      /*tp_dict */
-    0,                                                      /*tp_descr_get */
-    0,                                                      /*tp_descr_set */
+    nullptr,                                                /*tp_iter */
+    nullptr,                                                /*tp_iternext */
+    nullptr,                                                /*tp_methods */
+    nullptr,                                                /*tp_members */
+    nullptr,                                                /*tp_getset */
+    nullptr,                                                /*tp_base */
+    nullptr,                                                /*tp_dict */
+    nullptr,                                                /*tp_descr_get */
+    nullptr,                                                /*tp_descr_set */
     0,                                                      /*tp_dictoffset */
-    0,                                                      /*tp_init */
-    0,                                                      /*tp_alloc */
-    0,                                                      /*tp_new */
-    0,                                                      /*tp_free   Low-level free-memory routine */
-    0,                                                      /*tp_is_gc  For PyObject_IS_GC */
-    0,                                                      /*tp_bases */
-    0,                                                      /*tp_mro    method resolution order */
-    0,                                                      /*tp_cache */
-    0,                                                      /*tp_subclasses */
-    0,                                                      /*tp_weaklist */
-    0,                                                      /*tp_del */
+    nullptr,                                                /*tp_init */
+    nullptr,                                                /*tp_alloc */
+    nullptr,                                                /*tp_new */
+    nullptr,                                                /*tp_free   Low-level free-memory routine */
+    nullptr,                                                /*tp_is_gc  For PyObject_IS_GC */
+    nullptr,                                                /*tp_bases */
+    nullptr,                                                /*tp_mro    method resolution order */
+    nullptr,                                                /*tp_cache */
+    nullptr,                                                /*tp_subclasses */
+    nullptr,                                                /*tp_weaklist */
+    nullptr,                                                /*tp_del */
     0,                                                      /*tp_version_tag */
-    0                                                       /*tp_finalize */
+    nullptr                                                 /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03090000
     ,0                                                      /*tp_vectorcall */
 #elif PY_VERSION_HEX >= 0x03080000
@@ -166,51 +166,51 @@ PyTypeObject PyObjectBase::Type = {
     0,                                                      /*tp_itemsize*/
     /* --- methods ---------------------------------------------- */
     PyDestructor,                                           /*tp_dealloc*/
-    0,                                                      /*tp_print*/
-    0,                                                      /*tp_getattr*/
-    0,                                                      /*tp_setattr*/
-    0,                                                      /*tp_compare*/
+    nullptr,                                                /*tp_print*/
+    nullptr,                                                /*tp_getattr*/
+    nullptr,                                                /*tp_setattr*/
+    nullptr,                                                /*tp_compare*/
     __repr,                                                 /*tp_repr*/
-    0,                                                      /*tp_as_number*/
-    0,                                                      /*tp_as_sequence*/
-    0,                                                      /*tp_as_mapping*/
-    0,                                                      /*tp_hash*/
-    0,                                                      /*tp_call */
-    0,                                                      /*tp_str  */
+    nullptr,                                                /*tp_as_number*/
+    nullptr,                                                /*tp_as_sequence*/
+    nullptr,                                                /*tp_as_mapping*/
+    nullptr,                                                /*tp_hash*/
+    nullptr,                                                /*tp_call */
+    nullptr,                                                /*tp_str  */
     __getattro,                                             /*tp_getattro*/
     __setattro,                                             /*tp_setattro*/
     /* --- Functions to access object as input/output buffer ---------*/
-    0,                                                      /* tp_as_buffer */
+    nullptr,                                                /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,                 /*tp_flags */
     "The most base class for Python binding",               /*tp_doc */
-    0,                                                      /*tp_traverse */
-    0,                                                      /*tp_clear */
-    0,                                                      /*tp_richcompare */
+    nullptr,                                                /*tp_traverse */
+    nullptr,                                                /*tp_clear */
+    nullptr,                                                /*tp_richcompare */
     0,                                                      /*tp_weaklistoffset */
-    0,                                                      /*tp_iter */
-    0,                                                      /*tp_iternext */
-    0,                                                      /*tp_methods */
-    0,                                                      /*tp_members */
-    0,                                                      /*tp_getset */
-    0,                                                      /*tp_base */
-    0,                                                      /*tp_dict */
-    0,                                                      /*tp_descr_get */
-    0,                                                      /*tp_descr_set */
+    nullptr,                                                /*tp_iter */
+    nullptr,                                                /*tp_iternext */
+    nullptr,                                                /*tp_methods */
+    nullptr,                                                /*tp_members */
+    nullptr,                                                /*tp_getset */
+    nullptr,                                                /*tp_base */
+    nullptr,                                                /*tp_dict */
+    nullptr,                                                /*tp_descr_get */
+    nullptr,                                                /*tp_descr_set */
     0,                                                      /*tp_dictoffset */
-    0,                                                      /*tp_init */
-    0,                                                      /*tp_alloc */
-    0,                                                      /*tp_new */
-    0,                                                      /*tp_free   Low-level free-memory routine */
-    0,                                                      /*tp_is_gc  For PyObject_IS_GC */
-    0,                                                      /*tp_bases */
-    0,                                                      /*tp_mro    method resolution order */
-    0,                                                      /*tp_cache */
-    0,                                                      /*tp_subclasses */
-    0,                                                      /*tp_weaklist */
-    0,                                                      /*tp_del */
-    0,                                                       /*tp_version_tag */
-    0                                                      /*tp_finalize */
+    nullptr,                                                /*tp_init */
+    nullptr,                                                /*tp_alloc */
+    nullptr,                                                /*tp_new */
+    nullptr,                                                /*tp_free   Low-level free-memory routine */
+    nullptr,                                                /*tp_is_gc  For PyObject_IS_GC */
+    nullptr,                                                /*tp_bases */
+    nullptr,                                                /*tp_mro    method resolution order */
+    nullptr,                                                /*tp_cache */
+    nullptr,                                                /*tp_subclasses */
+    nullptr,                                                /*tp_weaklist */
+    nullptr,                                                /*tp_del */
+    0,                                                      /*tp_version_tag */
+    nullptr                                                 /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03090000
     ,0                                                      /*tp_vectorcall */
 #elif PY_VERSION_HEX >= 0x03080000
@@ -261,7 +261,7 @@ PyObjectBase* getFromWeakRef(PyObject* ref)
  * PyObjectBase Methods 	-- Every class, even the abstract one should have a Methods
 ------------------------------*/
 PyMethodDef PyObjectBase::Methods[] = {
-    {NULL, NULL, 0, NULL}        /* Sentinel */
+    {nullptr, nullptr, 0, nullptr}        /* Sentinel */
 };
 
 PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
@@ -282,7 +282,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
     PyObjectBase* pyObj = static_cast<PyObjectBase*>(obj);
     if (!pyObj->isValid()){
         PyErr_Format(PyExc_ReferenceError, "Cannot access attribute '%s' of deleted object", attr);
-        return NULL;
+        return nullptr;
     }
 
 #ifdef ATTR_TRACKING
@@ -320,7 +320,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
         PyCFunctionObject* cfunc = reinterpret_cast<PyCFunctionObject*>(value);
         if (!cfunc->m_self) {
             Py_DECREF(cfunc);
-            value = 0;
+            value = nullptr;
             PyErr_Format(PyExc_AttributeError, "<no object bound to built-in method %s>", attr);
         }
     }
@@ -335,7 +335,7 @@ int PyObjectBase::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 
     //FIXME: In general we don't allow to delete attributes (i.e. value=0). However, if we want to allow
     //we must check then in _setattr() of all subclasses whether value is 0.
-    if ( value==0 ) {
+    if ( value==nullptr ) {
         PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);
         return -1;
     }
@@ -379,7 +379,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
     }
     else if (streq(attr, "__members__")) {
         // Use __dict__ instead as __members__ is deprecated
-        return NULL;
+        return nullptr;
     }
     else if (streq(attr,"__dict__")) {
         // Return the default dict
@@ -389,13 +389,13 @@ PyObject *PyObjectBase::_getattr(const char *attr)
     }
     else if (streq(attr,"softspace")) {
         // Internal Python stuff
-        return NULL;
+        return nullptr;
     }
     else {
         // As fallback solution use Python's default method to get generic attributes
         PyObject *w, *res;
         w = PyUnicode_InternFromString(attr);
-        if (w != NULL) {
+        if (w != nullptr) {
             res = PyObject_GenericGetAttr(this, w);
             Py_XDECREF(w);
             return res;
@@ -403,7 +403,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
             // Throw an exception for unknown attributes
             PyTypeObject *tp = Py_TYPE(this);
             PyErr_Format(PyExc_AttributeError, "%.50s instance has no attribute '%.400s'", tp->tp_name, attr);
-            return NULL;
+            return nullptr;
         }
     }
 }
@@ -415,7 +415,7 @@ int PyObjectBase::_setattr(const char *attr, PyObject *value)
     PyObject *w;
     // As fallback solution use Python's default method to get generic attributes
     w = PyUnicode_InternFromString(attr); // new reference
-    if (w != NULL) {
+    if (w != nullptr) {
         // call methods from tp_getset if defined
         int res = PyObject_GenericSetAttr(this, w, value);
         Py_DECREF(w);
@@ -431,7 +431,7 @@ int PyObjectBase::_setattr(const char *attr, PyObject *value)
 /*------------------------------
  * PyObjectBase repr    representations
 ------------------------------*/
-PyObject *PyObjectBase::_repr(void)
+PyObject *PyObjectBase::_repr()
 {
     std::stringstream a;
     a << "<base object at " << _pcTwinPointer << ">";
@@ -478,6 +478,7 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
     Py_DECREF(key1);
     Py_DECREF(key2);
 }
+
 void PyObjectBase::startNotify()
 {
     if (!shouldNotify())
@@ -512,6 +513,7 @@ void PyObjectBase::startNotify()
         Py_DECREF(key2);
     }
 }
+
 PyObject* PyObjectBase::getTrackedAttribute(const char* attr)
 {
     PyObject* obj = nullptr;
