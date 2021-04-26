@@ -235,7 +235,7 @@ App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject 
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     if(_Version.getValue()>2 && getDocument())
-        result = Part::TopoShape(getID(), getDocument()->getStringHasher());
+        result = Part::TopoShape(0, getDocument()->getStringHasher());
 
     std::vector<Part ::TopoShape> shapes;
     std::vector<std::pair<int,int> > shapeOwners;
@@ -462,7 +462,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 ss.str("");
                 ss << TOPOP_SHAPEBINDER << ':' << shapeOwners[idx].first
                    << ':' << shapeOwners[idx].second;
-                shape.reTagElementMap(getID(),
+                shape.reTagElementMap(-getID(),
                         getDocument()->getStringHasher(),ss.str().c_str());
             }
             if (!shape.hasSubShape(TopAbs_FACE) && shape.hasSubShape(TopAbs_EDGE))
@@ -532,7 +532,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 gp_Pln pln;
                 if (_Version.getValue() > 4 && !result.findPlane(pln)) {
                     try {
-                        Part::TopoShape filledFace(getID(), getDocument()->getStringHasher());
+                        Part::TopoShape filledFace(-getID(), getDocument()->getStringHasher());
                         filledFace.makEFilledFace({result}, Part::TopoShape());
                         if (filledFace.hasSubShape(TopAbs_FACE)) {
                             done = true;
