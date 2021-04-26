@@ -1913,14 +1913,9 @@ private:
             }
         }
 
-#if PY_MAJOR_VERSION >= 3
         //FIXME: Test this!
         if (PyBytes_Check(intext)) {
             PyObject *p = Base::PyAsUnicodeObject(PyBytes_AsString(intext));
-#else
-        if (PyString_Check(intext)) {
-            PyObject *p = Base::PyAsUnicodeObject(PyString_AsString(intext));
-#endif
             if (!p) {
                 throw Py::TypeError("** makeWireString can't convert PyString.");
             }
