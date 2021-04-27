@@ -114,7 +114,7 @@ bool PropertyLinkBase::isSame(const Property &other) const
     ret2.clear();
     subs2.clear();
     getLinks(ret,true,&subs,false);
-    static_cast<const PropertyLinkBase *>(&other)->getLinks(ret2,true,&subs2,false);
+    static_cast<const PropertyLinkBase *>(&other)->getLinks(ret2,true,&subs2,true);
 
     return ret==ret2 && subs==subs2;
 }
@@ -3432,17 +3432,17 @@ void PropertyXLink::restoreLink(App::DocumentObject *lValue) {
 void PropertyXLink::setValue(App::DocumentObject *lValue,
         std::vector<std::string> &&subs, std::vector<ShadowSub> &&shadows)
 {
-    if(_pcLink==lValue && _SubList==subs)
-        return;
-
     if(lValue && (!lValue->getNameInDocument() || !lValue->getDocument())) {
         throw Base::ValueError("Invalid object");
         return;
     }
 
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
-    if(!owner || !owner->getNameInDocument())
-        throw Base::RuntimeError("invalid container");
+    if(!owner || !owner->getNameInDocument()) {
+        if (lValue)
+            throw Base::RuntimeError("invalid container");
+        return;
+    }
 
     if(lValue == owner)
         throw Base::ValueError("self linking");
