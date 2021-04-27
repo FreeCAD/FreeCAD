@@ -105,7 +105,7 @@ static PyTypeObject PyBaseProxyType = {
     sizeof(PyBaseProxy),                                    /*tp_basicsize*/
     0,                                                      /*tp_itemsize*/
     PyBaseProxy_dealloc,                                    /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03090000
+#if PY_VERSION_HEX >= 0x03080000
     0,                                                      /*tp_vectorcall_offset*/
 #else
     nullptr,                                                /*tp_print*/
@@ -168,7 +168,7 @@ PyTypeObject PyObjectBase::Type = {
     0,                                                      /*tp_itemsize*/
     /* --- methods ---------------------------------------------- */
     PyDestructor,                                           /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03090000
+#if PY_VERSION_HEX >= 0x03080000
     0,                                                      /*tp_vectorcall_offset*/
 #else
     nullptr,                                                /*tp_print*/
