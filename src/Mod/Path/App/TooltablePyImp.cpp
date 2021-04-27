@@ -97,7 +97,7 @@ int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 Py::Dict TooltablePy::getTools(void) const
 {
     Py::Dict dict;
-    for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
+    for(std::map<int,Path::ToolPtr>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
         PyObject *tool = new Path::ToolPy(new Tool(*i->second));
         dict.setItem(Py::Long(i->first), Py::asObject(tool));
     }
@@ -267,7 +267,7 @@ PyObject* TooltablePy::templateAttrs(PyObject * args)
 {
     (void)args;
     PyObject *dict = PyDict_New();
-    for(std::map<int,Path::Tool*>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
+    for(std::map<int,Path::ToolPtr>::iterator i = getTooltablePtr()->Tools.begin(); i != getTooltablePtr()->Tools.end(); ++i) {
         // The 'tool' object must be created on the heap otherwise Python
         // will fail to properly track the reference counts and aborts
         // in debug mode.
