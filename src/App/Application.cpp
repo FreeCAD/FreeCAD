@@ -52,6 +52,8 @@
 #include <sys/sysctl.h>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include "Application.h"
 #include "Document.h"
 
@@ -591,8 +593,10 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
         return -1;
     assert(FileName && FileName[0]);
     assert(objName && objName[0]);
-    auto ret =  _pendingDocMap.emplace(FileName,std::set<std::string>());
-    ret.first->second.emplace(objName);
+    if(!_docReloadAttempts[FileName].emplace(objName).second)
+        return -1;
+    auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
+    ret.first->second.push_back(objName);
     if(ret.second) {
         _pendingDocs.push_back(ret.first->first.c_str());
         return 1;
@@ -700,6 +704,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
+    _docReloadAttempts.clear();
 
     signalStartOpenDocument();
 
@@ -724,7 +729,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
             try {
                 _objCount = -1;
-                std::set<std::string> objNames;
+                std::vector<std::string> objNames;
                 if (_allowPartial) {
                     auto it = _pendingDocMap.find(name);
                     if (it != _pendingDocMap.end()) {
@@ -732,6 +737,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                             it->second.clear();
                         else
                             objNames.swap(it->second);
+                        _pendingDocMap.erase(it);
                     }
                 }
 
@@ -888,7 +894,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 Document* Application::openDocumentPrivate(const char * FileName,
         const char *propFileName, const char *label,
         bool isMainDoc, bool createView, 
-        std::set<std::string> &&objNames)
+        std::vector<std::string> &&objNames)
 {
     FileInfo File(FileName);
 
@@ -925,7 +931,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // close and reopen the document immediately here, but
                         // add it to _pendingDocsReopen to delay reloading.
                         for(auto obj : doc->getObjects())
-                            objNames.insert(obj->getNameInDocument());
+                            objNames.push_back(obj->getNameInDocument());
                         _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
                         break;
                     }

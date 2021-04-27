@@ -472,7 +472,7 @@ protected:
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, bool createView, std::set<std::string> &&objNames);
+            const char *label, bool isMainDoc, bool createView, std::vector<std::string> &&objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {
@@ -600,7 +600,12 @@ private:
 
     std::deque<std::string> _pendingDocs;
     std::deque<std::string> _pendingDocsReopen;
-    std::map<std::string,std::set<std::string> > _pendingDocMap;
+    std::map<std::string,std::vector<std::string> > _pendingDocMap;
+
+    // To prevent infinite recursion of reloading a partial document due a true
+    // missing object
+    std::map<std::string,std::set<std::string> > _docReloadAttempts;
+
     bool _isRestoring;
     bool _allowPartial;
     bool _isClosingAll;

@@ -211,10 +211,10 @@ public:
     void save(Base::Writer &writer, bool archive) const;
     /// Restore the document from the file in Property Path
     void restore (const char *filename=0,
-            bool delaySignal=false, const std::set<std::string> &objNames={});
+            bool delaySignal=false, const std::vector<std::string> &objNames={});
     /// Restore the document from a pre-constructed xml reader
     void restore (Base::XMLReader &xmlReader,
-            bool delaySignal=false, const std::set<std::string> &objNames={});
+            bool delaySignal=false, const std::vector<std::string> &objNames={});
     enum ExportStatus {
         NotExporting,
         Exporting,

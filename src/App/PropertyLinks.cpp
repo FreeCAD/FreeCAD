@@ -3072,22 +3072,36 @@ public:
                 continue;
             }
             auto obj = doc->getObject(link->objectName.c_str());
-            if(!obj)
+            if(obj)
+                link->restoreLink(obj);
+            else if (doc->testStatus(App::Document::PartialDoc)) {
+                App::GetApplication().addPendingDocument(
+                        doc->FileName.getValue(),
+                        link->objectName.c_str(),
+                        false);
+                FC_WARN("reloading partial document '" << doc->FileName.getValue()
+                        << "' due to object " << link->objectName);
+            } else
                 FC_WARN("object '" << link->objectName << "' not found in document '"
                         << doc->getName() << "'");
-            else
-                link->restoreLink(obj);
         }
         for(auto &v : parentLinks) {
             v.first->setFlag(PropertyLinkBase::LinkRestoring);
             v.first->aboutToSetValue();
             for(auto link : v.second) {
                 auto obj = doc->getObject(link->objectName.c_str());
-                if(!obj)
+                if(obj)
+                    link->restoreLink(obj);
+                else if (doc->testStatus(App::Document::PartialDoc)) {
+                    App::GetApplication().addPendingDocument(
+                            doc->FileName.getValue(),
+                            link->objectName.c_str(),
+                            false);
+                    FC_WARN("reloading partial document '" << doc->FileName.getValue()
+                            << "' due to object " << link->objectName);
+                } else
                     FC_WARN("object '" << link->objectName << "' not found in document '"
                             << doc->getName() << "'");
-                else
-                    link->restoreLink(obj);
             }
             v.first->hasSetValue();
             v.first->setFlag(PropertyLinkBase::LinkRestoring,false);
