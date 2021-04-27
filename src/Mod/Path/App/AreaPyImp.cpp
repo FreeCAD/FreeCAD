@@ -206,8 +206,12 @@ PyObject *AreaPy::PyMake(struct _typeobject *, PyObject *args, PyObject *kwd)  /
     AreaPy* ret = new AreaPy(new Area);
     if(!ret->setParams(args,kwd)) {
         Py_DecRef(ret);
-        return 0;
+        return nullptr;
     }
+
+    // If setParams() was successful it increments the ref counter.
+    // So, it must be decremented again.
+    Py_DecRef(ret);
     return ret;
 }
 
@@ -402,7 +406,7 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-        return 0;
+        return nullptr;
 
     PY_TRY {
         //populate 'params' with the CONF variables
