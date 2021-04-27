@@ -1975,11 +1975,17 @@ void OverlayTitleBar::timerEvent(QTimerEvent *ev)
     }
 }
 
+static inline bool
+isNear(const QPoint &a, const QPoint &b, int tol = 16)
+{
+    QPoint d = a - b;
+    return d.x()*d.x() + d.y()*d.y() < tol;
+}
+
 void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
 {
     if (_Dragging != this && mouseMovePending && (me->buttons() & Qt::LeftButton)) {
-        auto d = dragOffset - me->pos();
-        if (d.x()*d.x() + d.y()*d.y() < 16)
+        if (isNear(dragOffset, me->pos()))
             return;
         mouseMovePending = false;
         _Dragging = this;
@@ -2712,6 +2718,7 @@ public:
 
     bool updateStyle = false;
     QTime wheelDelay;
+    QPoint wheelPos;
 
     Private(OverlayManager *host, QWidget *parent)
         :_left(parent,"OverlayLeft", Qt::LeftDockWidgetArea,_overlayMap)
@@ -3952,10 +3959,12 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
             hit = 1;
         } else if (ev->type() == QEvent::Wheel
                 && !d->wheelDelay.isNull()
-                && d->wheelDelay > QTime::currentTime())
+                && (isNear(pos, d->wheelPos) || d->wheelDelay > QTime::currentTime()))
         {
             d->wheelDelay = QTime::currentTime().addMSecs(
                     ViewParams::getDockOverlayWheelDelay());
+            d->wheelPos = pos;
+            return false;
         } else {
             for(auto widget=qApp->widgetAt(pos); widget ; widget=widget->parentWidget()) {
                 int type = widget->windowType();
@@ -3984,21 +3993,24 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
             if (activeTabWidget) {
                 hit = ViewParams::getDockOverlayAutoMouseThrough();
                 d->_lastPos = pos;
-                if (ev->type() == QEvent::Wheel) {
-                    d->wheelDelay = hit ? QTime() :
-                        QTime::currentTime().addMSecs(ViewParams::getDockOverlayWheelDelay());
-                }
             }
         }
         if (hit == 0) {
             for (OverlayTabWidget *tabWidget : _Overlays)
                 tabWidget->getProxyWidget()->hitTest(pos);
         }
+
         if (hit <= 0) {
             d->_lastPos.setX(INT_MAX);
             d->_3dviews.clear();
+
+            if (ev->type() == QEvent::Wheel) {
+                d->wheelDelay = QTime::currentTime().addMSecs(ViewParams::getDockOverlayWheelDelay());
+                d->wheelPos = pos;
+            }
             return false;
         }
+
         if(d->_3dviews.isEmpty()) {
             for(auto w : getMainWindow()->windows(QMdiArea::StackingOrder)) {
                 if(!w->isVisible())
