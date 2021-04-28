@@ -4054,6 +4054,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
             view->callEventFilter(ev);
 
             if (ev->type() == QEvent::MouseButtonPress) {
+                view->setFocus();
                 d->_trackingView = i;
                 d->_trackingOverlay = activeTabWidget;
                 d->_trackingOverlay->grabMouse();
