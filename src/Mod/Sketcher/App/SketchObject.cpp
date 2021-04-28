@@ -1029,7 +1029,7 @@ Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
         const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse*>(geo);
         auto pt = ellipse->getCenter();
         if(PosId != mid)
-            pt = ellipse->getMajorAxisDir()*ellipse->getMajorRadius();
+            pt += ellipse->getMajorAxisDir()*ellipse->getMajorRadius();
         return pt;
     } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle *aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
