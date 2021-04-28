@@ -818,12 +818,8 @@ std::string DrawViewDimension::formatValue(qreal value, QString qFormatSpec, int
         // we reformat the value
         // the user can overwrite the decimal settings, so we must in every case use the formatSpecifier
         // the default is: if useDecimals(), then formatSpecifier = global decimals, otherwise it is %.2f
-#if QT_VERSION >= 0x050000
         formattedValue = QString::asprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
-#else
-        QString qs2;
-        formattedValue = qs2.sprintf(Base::Tools::toStdString(formatSpecifier).c_str(), userVal);
-#endif
+
         // if abs(1 - userVal / formattedValue) > 0.1 we know that we make an error greater than 10%
         // then we need more digits
         if (abs(userVal - formattedValue.toDouble()) > 0.1 * abs(userVal)) {
@@ -975,12 +971,7 @@ QStringList DrawViewDimension::getPrefixSuffixSpec(QString fSpec)
     int pos = 0;
     if ((pos = rxFormat.indexIn(fSpec, 0)) != -1)  {
         match = rxFormat.cap(0);                                          //entire capture of rx
-//#if QT_VERSION >= 0x050000
 //        formatted = QString::asprintf(Base::Tools::toStdString(match).c_str(),value);
-//#else
-//        QString qs2;
-//        formatted = qs2.sprintf(Base::Tools::toStdString(match).c_str(),value);
-//#endif
         formatPrefix = fSpec.left(pos);
         result.append(formatPrefix);
         formatSuffix = fSpec.right(fSpec.size() - pos - match.size());

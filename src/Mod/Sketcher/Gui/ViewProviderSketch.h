@@ -114,6 +114,7 @@ public:
     App::PropertyBool ShowLinks;
     App::PropertyBool ShowSupport;
     App::PropertyBool RestoreCamera;
+    App::PropertyBool SectionView;
     App::PropertyString EditingWorkbench;
 
     /// Draw all constraint icons

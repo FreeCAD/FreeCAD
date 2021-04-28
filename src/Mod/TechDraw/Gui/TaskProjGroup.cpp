@@ -582,7 +582,7 @@ TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode)
 {
     //viewProvider = dynamic_cast<const ViewProviderProjGroup *>(featView);
     widget  = new TaskProjGroup(featView,mode);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-ProjectionGroup"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_ProjectionGroup"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

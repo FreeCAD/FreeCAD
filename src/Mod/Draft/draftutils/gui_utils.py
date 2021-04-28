@@ -381,7 +381,12 @@ def format_object(target, origin=None):
             if "PointColor" in obrep.PropertiesList:
                 obrep.PointColor = lcol
             if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = lcol
+                if hasattr(obrep,"FontName") and (not hasattr(obrep,"TextColor")):
+                    # dimensions and other objects with text but no specific
+                    # TextColor property. TODO: Add TextColor property to dimensions
+                    obrep.LineColor = tcol
+                else:
+                    obrep.LineColor = lcol
             if "ShapeColor" in obrep.PropertiesList:
                 obrep.ShapeColor = fcol
         else:

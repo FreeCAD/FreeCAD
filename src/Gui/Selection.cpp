@@ -2067,11 +2067,7 @@ PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject 
         return NULL;
 
     unsigned int count = Selection().countObjectsOfType(objecttype, document, resolve);
-#if PY_MAJOR_VERSION < 3
-    return PyInt_FromLong(count);
-#else
     return PyLong_FromLong(count);
-#endif
 }
 
 PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
@@ -2340,15 +2336,9 @@ PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args)
         if(visible == Py_None) {
             vis = -1;
         }
-#if PY_MAJOR_VERSION < 3
-        else if(PyInt_Check(visible)) {
-            vis = PyInt_AsLong(visible);
-        }
-#else
         else if(PyLong_Check(visible)) {
             vis = PyLong_AsLong(visible);
         }
-#endif
         else {
             vis = PyObject_IsTrue(visible)?1:0;
         }

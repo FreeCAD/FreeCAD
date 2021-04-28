@@ -1,5 +1,6 @@
 # SGEOM cmake build file
 #PROJECT(SMESH Fortran CXX)
+set(CMAKE_AUTOMOC FALSE)
 
 SET(SMESH_VERSION_MAJOR 7)  # see main CMakeLists.txt of FreeCAD
 SET(SMESH_VERSION_MINOR 7)

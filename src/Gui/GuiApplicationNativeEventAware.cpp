@@ -306,11 +306,4 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     }
 }
 
-#if defined(SPNAV_FOUND) && defined(SPNAV_USE_X11) && QT_VERSION < 0x050000
-bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
-{
-  return nativeEvent->x11EventFilter(event);
-}
-#endif
-
 #include "moc_GuiApplicationNativeEventAware.cpp"

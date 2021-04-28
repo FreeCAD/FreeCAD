@@ -388,14 +388,16 @@ class Frustum:
 
 class Twist:
     def __init__(self, obj,child=None,h=1.0,angle=0.0,scale=[1.0,1.0]):
+        import FreeCAD
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that must be transformed")
-        obj.addProperty("App::PropertyAngle","Angle","Base","Twist Angle in degrees") #degree or rad
+        obj.addProperty("App::PropertyQuantity","Angle","Base","Twist Angle")
+        obj.Angle = FreeCAD.Units.Angle # assign the Angle unit
         obj.addProperty("App::PropertyDistance","Height","Base","Height of the Extrusion")
         obj.addProperty("App::PropertyFloatList","Scale","Base","Scale to apply during the Extrusion")
 
         obj.Base = child
-        obj.Angle =  angle
+        obj.Angle = angle
         obj.Height = h
         obj.Scale = scale
         obj.Proxy = self
@@ -431,8 +433,9 @@ class Twist:
                         left_handed = True
                     else:
                         left_handed = False
+
                     auxiliary_spine = Part.makeHelix(pitch, height, radius, 0.0, left_handed)
-                    
+
                 faces = [lower_face,upper_face]
                 for wire1,wire2 in zip(lower_face.Wires,upper_face.Wires):
                     pipe_shell = Part.BRepOffsetAPI.MakePipeShell(spine)

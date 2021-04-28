@@ -53,9 +53,6 @@ DlgSettingsImageImp::DlgSettingsImageImp( QWidget* parent )
     ui->comboMethod->addItem(tr("Offscreen (Old)"), QByteArray("CoinOffscreenRenderer"));
     ui->comboMethod->addItem(tr("Framebuffer (custom)"), QByteArray("FramebufferObject"));
     ui->comboMethod->addItem(tr("Framebuffer (as is)"), QByteArray("GrabFramebuffer"));
-#if QT_VERSION < 0x050000
-    ui->comboMethod->addItem(tr("Pixel buffer"), QByteArray("PixelBuffer"));
-#endif
 }
 
 /**
@@ -240,12 +237,7 @@ void DlgSettingsImageImp::setMethod(const QByteArray& m)
 
 QByteArray DlgSettingsImageImp::method() const
 {
-#if QT_VERSION < 0x050000
-    int index = ui->comboMethod->currentIndex();
-    return ui->comboMethod->itemData(index).toByteArray();
-#else
     return ui->comboMethod->currentData().toByteArray();
-#endif
 }
 
 void DlgSettingsImageImp::on_comboMethod_activated(int index)

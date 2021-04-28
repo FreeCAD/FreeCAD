@@ -572,7 +572,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewPart* base) :
     TaskDialog()
 {
     widget  = new TaskSectionView(base);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-SectionView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SectionView"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -582,7 +582,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) :
     TaskDialog()
 {
     widget  = new TaskSectionView(section);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-SectionView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SectionView"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

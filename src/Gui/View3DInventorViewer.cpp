@@ -145,7 +145,6 @@
 #include <QGesture>
 
 #include "SoTouchEvents.h"
-#include "WinNativeGestureRecognizers.h"
 #include "Document.h"
 #include "ViewParams.h"
 
@@ -237,47 +236,13 @@ public:
     ~ViewerEventFilter() {}
 
     bool eventFilter(QObject* obj, QEvent* event) {
-
-#ifdef GESTURE_MESS
-        if (obj->isWidgetType()) {
-            View3DInventorViewer* v = dynamic_cast<View3DInventorViewer*>(obj);
-            if(v) {
-                /* Internally, Qt seems to set up the gestures upon showing the
-                 * widget (but after this event is processed), thus invalidating
-                 * our settings. This piece takes care to retune gestures on the
-                 * next event after the show event.
-                 */
-                if(v->winGestureTuneState == View3DInventorViewer::ewgtsNeedTuning) {
-                    try{
-                        WinNativeGestureRecognizerPinch::TuneWindowsGestures(v);
-                        v->winGestureTuneState = View3DInventorViewer::ewgtsTuned;
-                    } catch (Base::Exception &e) {
-                        Base::Console().Warning("Failed to TuneWindowsGestures. Error: %s\n",e.what());
-                        v->winGestureTuneState = View3DInventorViewer::ewgtsDisabled;
-                    } catch (...) {
-                        Base::Console().Warning("Failed to TuneWindowsGestures. Unknown error.\n");
-                        v->winGestureTuneState = View3DInventorViewer::ewgtsDisabled;
-                    }
-                }
-                if (event->type() == QEvent::Show && v->winGestureTuneState == View3DInventorViewer::ewgtsTuned)
-                    v->winGestureTuneState = View3DInventorViewer::ewgtsNeedTuning;
-
-            }
-        }
-#endif
-
         // Bug #0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
             QWheelEvent* we = static_cast<QWheelEvent*>(event);
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
             if (qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y()))
                 return true;
-#else
-            if (we->orientation() == Qt::Horizontal)
-                return true;
-#endif
         }
         else if (event->type() == QEvent::KeyPress) {
             QKeyEvent* ke = static_cast<QKeyEvent*>(event);
@@ -579,20 +544,9 @@ void View3DInventorViewer::init()
     getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
     getEventFilter()->registerInputDevice(new GesturesDevice(this));
 
-    this->winGestureTuneState = View3DInventorViewer::ewgtsDisabled;
     try{
         this->grabGesture(Qt::PanGesture);
         this->grabGesture(Qt::PinchGesture);
-    #ifdef GESTURE_MESS
-        {
-            static WinNativeGestureRecognizerPinch* recognizer;//static to avoid creating more than one recognizer, thus causing memory leak and gradual slowdown
-            if(recognizer == 0){
-                recognizer = new WinNativeGestureRecognizerPinch;
-                recognizer->registerRecognizer(recognizer); //From now on, Qt owns the pointer.
-            }
-        }
-        this->winGestureTuneState = View3DInventorViewer::ewgtsNeedTuning;
-    #endif
     } catch (Base::Exception &e) {
         Base::Console().Warning("Failed to set up gestures. Error: %s\n", e.what());
     } catch (...) {
@@ -601,10 +555,8 @@ void View3DInventorViewer::init()
 
     //create the cursors
     createStandardCursors(devicePixelRatio());
-#if (QT_VERSION >= 0x050000)
     connect(this, &View3DInventorViewer::devicePixelRatioChanged,
             this, &View3DInventorViewer::createStandardCursors);
-#endif
 
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
@@ -1510,8 +1462,6 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
 {
     if (t.isBad())
         return;
-
-    this->winGestureTuneState = View3DInventorViewer::ewgtsNeedTuning; //triggers enable/disable rotation gesture when preferences change
 
     if (this->navigation && this->navigation->getTypeId() == t)
         return; // nothing to do

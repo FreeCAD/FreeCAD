@@ -58,7 +58,7 @@
 "::"					return TNAMESPACE;
 
 [a-zA-Z_][a-zA-Z0-9_]*  {
-       yylval.string = new std::string(yytext);
+       yylval.string = StringFactory::New(yytext);
        return TIDENTIFIER;
       }
 [0-9]+                  {

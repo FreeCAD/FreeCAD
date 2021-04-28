@@ -102,7 +102,7 @@ Wire::Wire(const TopoDS_Wire &w)
         const auto edge( TopoDS::Edge(edges.Current()) );
         BaseGeom* bg = BaseGeom::baseFactory(edge);
         if (bg != nullptr) {
-            geoms.push_back( BaseGeom::baseFactory(edge) );
+            geoms.push_back(bg);
         } else {
             Base::Console().Log("G::Wire - baseFactory returned null geom ptr\n");
         }
@@ -433,17 +433,16 @@ bool BaseGeom::closed(void)
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
 {
-    BaseGeom* result = NULL;
+    std::unique_ptr<BaseGeom> result;
     if (edge.IsNull()) {
         Base::Console().Message("BG::baseFactory - input edge is NULL \n");
     }
     //weed out rubbish edges before making geometry
     if (!validateEdge(edge)) {
-        return result;
+        return nullptr;
     }
 
-    Generic *primitive = new Generic(edge);
-    result = primitive;
+    result = std::make_unique<Generic>(edge);
 
     BRepAdaptor_Curve adapt(edge);
     switch(adapt.GetType()) {
@@ -457,11 +456,9 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         //if first to last is > 1 radian? are circles parameterize by rotation angle?
         //if start and end points are close?
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              Circle *circle = new Circle(edge);
-              result = circle;
+              result = std::make_unique<Circle>(edge);
         } else {
-              AOC *aoc = new AOC(edge);
-              result = aoc;
+              result = std::make_unique<AOC>(edge);
         }
       } break;
       case GeomAbs_Ellipse: {
@@ -470,17 +467,15 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         gp_Pnt s = adapt.Value(f);
         gp_Pnt e = adapt.Value(l);
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              Ellipse *ellipse = new Ellipse(edge);
-              result = ellipse;
+              result = std::make_unique<Ellipse>(edge);
         } else {
-              AOE *aoe = new AOE(edge);
-              result = aoe;
+              result = std::make_unique<AOE>(edge);
         }
       } break;
       case GeomAbs_BezierCurve: {
           Handle(Geom_BezierCurve) bez = adapt.Bezier();
           //if (bez->Degree() < 4) {
-          result = new BezierSegment(edge);
+          result = std::make_unique<BezierSegment>(edge);
           if (edge.Orientation() == TopAbs_REVERSED) {
               result->reversed = true;
           }
@@ -488,37 +483,25 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
           //    OCC is quite happy with Degree > 3 but QtGui handles only 2,3
       } break;
       case GeomAbs_BSplineCurve: {
-        BSpline *bspline = 0;
-        Generic* gen = NULL;
-        Circle* circ = nullptr;
-        AOC*    aoc  = nullptr;
+        std::unique_ptr<BSpline> bspline;
         TopoDS_Edge circEdge;
 
         bool isArc = false;
         try {
-            bspline = new BSpline(edge);
+            bspline = std::make_unique<BSpline>(edge);
             if (bspline->isLine()) {
-                gen = new Generic(edge);
-                result = gen;
-                delete bspline;
-                bspline = nullptr;
+                result = std::make_unique<Generic>(edge);
             } else {
                 circEdge = bspline->asCircle(isArc);
                 if (!circEdge.IsNull()) {
                     if (isArc) {
-                        aoc = new AOC(circEdge);
-                        result = aoc;
-                        delete bspline;
-                        bspline = nullptr;
+                        result = std::make_unique<AOC>(circEdge);
                     } else {
-                        circ = new Circle(circEdge);
-                        result = circ;
-                        delete bspline;
-                        bspline = nullptr;
+                        result = std::make_unique<Circle>(circEdge);
                     }
                 } else {
 //                    Base::Console().Message("Geom::baseFactory - circEdge is Null\n");
-                    result = bspline;
+                    result = std::move(bspline);
                 }
             }
             break;
@@ -526,41 +509,19 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         catch (const Standard_Failure& e) {
             Base::Console().Error("Geom::baseFactory - OCC error - %s - while making spline\n",
                               e.GetMessageString());
-            if (bspline != nullptr) {
-                delete bspline;
-                bspline = nullptr;
-            }
-            if (gen != nullptr) {
-                delete gen;
-                gen = nullptr;
-            }
             break;
         }
         catch (...) {
             Base::Console().Error("Geom::baseFactory - unknown error occurred while making spline\n");
-            if (bspline != nullptr) {
-                delete bspline;
-                bspline = nullptr;
-            }
-            if (gen != nullptr) {
-                delete gen;
-                gen = nullptr;
-            }
             break;
         } break;
       } // end bspline case
       default: {
-        primitive = new Generic(edge);
-        result = primitive;
+        result = std::make_unique<Generic>(edge);
       }  break;
     }
-
-    if ( (primitive != nullptr) &&
-       (primitive != result) ) {
-        delete primitive;
-    }
     
-    return result;
+    return result.release();
 }
 
 bool BaseGeom::validateEdge(TopoDS_Edge edge)

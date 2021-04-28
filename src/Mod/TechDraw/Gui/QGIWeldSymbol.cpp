@@ -86,11 +86,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_qgLead(myParent),
     m_blockDraw(false)
 {
-#if PY_MAJOR_VERSION < 3
-    setHandlesChildEvents(true);    //qt4 deprecated in qt5
-#else
     setFiltersChildEvents(true);    //qt5
-#endif
     setFlag(QGraphicsItem::ItemIsMovable, false);
     
     setCacheMode(QGraphicsItem::NoCache);

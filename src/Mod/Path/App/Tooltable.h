@@ -53,12 +53,12 @@ namespace Path
 
         // auto
         unsigned int getSize(void) const {return Tools.size();}
-        const Tool &getTool(int pos) {return *Tools[pos];}
-        const std::map<int,Tool*> &getTools(void) const {return Tools;}
+        const Tool &getTool(int pos) {return *Tools.at(pos);}
+        const std::map<int,ToolPtr> &getTools(void) const {return Tools;}
         bool hasTool(int pos) const {return (Tools.count(pos) != 0);}
 
         // attributes
-        std::map<int,Tool*> Tools;
+        std::map<int,ToolPtr> Tools;
         int Version;
         std::string Name;
     };

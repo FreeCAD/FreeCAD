@@ -5904,6 +5904,125 @@ bool CmdSketcherExtend::isActive(void)
 }
 
 
+// ======================================================================================
+
+namespace SketcherGui {
+    class SplittingSelection : public Gui::SelectionFilterGate
+    {
+        App::DocumentObject* object;
+    public:
+        SplittingSelection(App::DocumentObject* obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        {}
+
+        bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
+        {
+            if (pObj != this->object)
+                return false;
+            if (!sSubName || sSubName[0] == '\0')
+                return false;
+            std::string element(sSubName);
+            if (element.substr(0,4) == "Edge") {
+                int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
+                Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
+                const Part::Geometry *geom = Sketch->getGeometry(GeoId);
+                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                    || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
+                    || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                    return true;
+                }
+            }
+            return  false;
+        }
+    };
+}
+
+class DrawSketchHandlerSplitting: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerSplitting() {}
+    virtual ~DrawSketchHandlerSplitting()
+    {
+        Gui::Selection().rmvSelectionGate();
+    }
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new SplittingSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_Splitting");
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        int GeoId = sketchgui->getPreselectCurve();
+        if (GeoId >= 0) {
+            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+                || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
+                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                try {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "split(%d,App.Vector(%f,%f,0))",
+                              GeoId, onSketchPos.x, onSketchPos.y);
+                    Gui::Command::commitCommand();
+                    tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("Failed to split edge: %s\n", e.what());
+                    Gui::Command::abortCommand();
+                }
+            }
+        }
+        else {
+            sketchgui->purgeHandler();
+        }
+
+        return true;
+    }
+};
+
+DEF_STD_CMD_A(CmdSketcherSplit)
+
+//TODO: fix the translations for this
+CmdSketcherSplit::CmdSketcherSplit()
+  : Command("Sketcher_Split")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Split edge");
+    sToolTipText    = QT_TR_NOOP("Splits an edge into two while preserving constraints");
+    sWhatsThis      = "Sketcher_Split";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Split";
+    sAccel          = "T,S";
+    eType           = ForEdit;
+}
+
+void CmdSketcherSplit::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSplitting());
+}
+
+bool CmdSketcherSplit::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
 namespace SketcherGui {
     class ExternalSelection : public Gui::SelectionFilterGate
     {
@@ -7061,6 +7180,7 @@ void CreateSketcherCommandsCreateGeo(void)
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExtend());
+    rcCmdMgr.addCommand(new CmdSketcherSplit());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 }

@@ -614,7 +614,7 @@ void DrawingView::print(QPrinter* printer)
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
-        QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
+        rect = printer->pageLayout().paintRectPixels(printer->resolution());
 #endif
     this->m_view->scene()->render(&p, rect);
     p.end();

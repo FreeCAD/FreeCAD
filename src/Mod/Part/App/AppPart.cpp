@@ -147,6 +147,7 @@
 #include "DatumFeature.h"
 #include "Attacher.h"
 #include "AttachExtension.h"
+#include "PrismExtension.h"
 #include "FaceMaker.h"
 #include "FaceMakerCheese.h"
 #include "FaceMakerBullseye.h"
@@ -345,6 +346,8 @@ PyMOD_INIT_FUNC(Part)
 
     Part::AttachExtension       ::init();
     Part::AttachExtensionPython ::init();
+
+    Part::PrismExtension        ::init();
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();

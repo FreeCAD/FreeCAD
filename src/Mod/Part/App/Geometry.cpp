@@ -684,7 +684,7 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
     return false;
 }
 
-bool GeomCurve::intersect(  GeomCurve * c,
+bool GeomCurve::intersect(  const GeomCurve *c,
                             std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
                             double tol) const
 {

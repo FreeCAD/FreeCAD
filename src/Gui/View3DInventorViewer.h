@@ -401,13 +401,6 @@ protected:
     void printDimension();
     void selectAll();
 
-    enum eWinGestureTuneState{
-        ewgtsDisabled, //suppress tuning/re-tuning after errors
-        ewgtsNeedTuning, //gestures are to be re-tuned upon next event
-        ewgtsTuned
-    };
-    eWinGestureTuneState winGestureTuneState;//See ViewerEventFilter::eventFilter function for explanation
-
 private:
     static void setViewportCB(void * userdata, SoAction * action);
     static void clearBufferCB(void * userdata, SoAction * action);

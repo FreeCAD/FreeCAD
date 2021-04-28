@@ -118,7 +118,11 @@ public: // Utility methods
     static bool getBlocked(const Part::Geometry * geometry);
 
 public:
+    ~GeometryFacade();
     void setGeometry(Part::Geometry *geometry);
+    void setOwner(bool owner) {
+        OwnerGeo = owner;
+    }
 
     // Geometry Extension Interface
     inline virtual long getId() const override {return getGeoExt()->getId();}
@@ -134,8 +138,8 @@ public:
     bool getBlocked() const { return this->testGeometryMode(GeometryMode::Blocked);}
     void setBlocked(bool status = true) {this->setGeometryMode(GeometryMode::Blocked, status);}
 
-    inline bool getConstruction(void) const {return this->testGeometryMode(GeometryMode::Construction);};
-    inline void setConstruction(bool construction) {this->setGeometryMode(GeometryMode::Construction, construction);};
+    inline bool getConstruction(void) const {return this->testGeometryMode(GeometryMode::Construction);}
+    inline void setConstruction(bool construction) {this->setGeometryMode(GeometryMode::Construction, construction);}
 
     bool isInternalAligned() const { return this->getInternalType() != InternalType::None; }
 
@@ -161,27 +165,27 @@ public:
     virtual PyObject *getPyObject(void) override;
 
     // Geometry Interface
-    TopoDS_Shape toShape() const {return getGeo()->toShape();};
-    const Handle(Geom_Geometry)& handle() const {return getGeo()->handle();};
-    Part::Geometry *copy(void) const {return getGeo()->copy();};
-    Part::Geometry *clone(void) const {return getGeo()->clone();};
-    boost::uuids::uuid getTag() const {return getGeo()->getTag();};
+    TopoDS_Shape toShape() const {return getGeo()->toShape();}
+    const Handle(Geom_Geometry)& handle() const {return getGeo()->handle();}
+    Part::Geometry *copy(void) const {return getGeo()->copy();}
+    Part::Geometry *clone(void) const {return getGeo()->clone();}
+    boost::uuids::uuid getTag() const {return getGeo()->getTag();}
 
-    std::vector<std::weak_ptr<const Part::GeometryExtension>> getExtensions() const {return getGeo()->getExtensions();};
-    bool hasExtension(Base::Type type) const {return getGeo()->hasExtension(type);};
-    bool hasExtension(std::string name) const {return getGeo()->hasExtension(name);};
-    std::weak_ptr<const Part::GeometryExtension> getExtension(Base::Type type) const {return getGeo()->getExtension(type);};
-    std::weak_ptr<const Part::GeometryExtension> getExtension(std::string name) const {return getGeo()->getExtension(name);};
-    void setExtension(std::unique_ptr<Part::GeometryExtension> &&geo) {return getGeo()->setExtension(std::move(geo));};
-    void deleteExtension(Base::Type type) {return getGeo()->deleteExtension(type);};
-    void deleteExtension(std::string name) {return getGeo()->deleteExtension(name);};
+    std::vector<std::weak_ptr<const Part::GeometryExtension>> getExtensions() const {return getGeo()->getExtensions();}
+    bool hasExtension(Base::Type type) const {return getGeo()->hasExtension(type);}
+    bool hasExtension(std::string name) const {return getGeo()->hasExtension(name);}
+    std::weak_ptr<const Part::GeometryExtension> getExtension(Base::Type type) const {return getGeo()->getExtension(type);}
+    std::weak_ptr<const Part::GeometryExtension> getExtension(std::string name) const {return getGeo()->getExtension(name);}
+    void setExtension(std::unique_ptr<Part::GeometryExtension> &&geo) {return getGeo()->setExtension(std::move(geo));}
+    void deleteExtension(Base::Type type) {return getGeo()->deleteExtension(type);}
+    void deleteExtension(std::string name) {return getGeo()->deleteExtension(name);}
 
-    void mirror(Base::Vector3d point) {return getGeo()->mirror(point);};
-    void mirror(Base::Vector3d point, Base::Vector3d dir) {return getGeo()->mirror(point, dir);};
-    void rotate(Base::Placement plm) {return getGeo()->rotate(plm);};
-    void scale(Base::Vector3d vec, double scale) {return getGeo()->scale(vec, scale);};
-    void transform(Base::Matrix4D mat) {return getGeo()->transform(mat);};
-    void translate(Base::Vector3d vec) {return getGeo()->translate(vec);};
+    void mirror(Base::Vector3d point) {return getGeo()->mirror(point);}
+    void mirror(Base::Vector3d point, Base::Vector3d dir) {return getGeo()->mirror(point, dir);}
+    void rotate(Base::Placement plm) {return getGeo()->rotate(plm);}
+    void scale(Base::Vector3d vec, double scale) {return getGeo()->scale(vec, scale);}
+    void transform(Base::Matrix4D mat) {return getGeo()->transform(mat);}
+    void translate(Base::Vector3d vec) {return getGeo()->translate(vec);}
 
     // convenience GeometryFunctions
     bool isGeoType(const Base::Type &type) const { return getGeo()->getTypeId() == type;}
@@ -198,6 +202,7 @@ private:
 
 private:
     const Part::Geometry * Geo;
+    bool OwnerGeo;
     std::shared_ptr<const SketchGeometryExtension> SketchGeoExtension;
 };
 
@@ -232,8 +237,8 @@ class SketcherExport GeometryTypedFacade : public GeometryFacade
     static_assert(  std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value &&
                     !std::is_same<Part::Geometry, typename std::decay<GeometryT>::type>::value, "Only for classes derived from Geometry!");
     private:
-    GeometryTypedFacade(const Part::Geometry * geometry):GeometryFacade(geometry) {};
-    GeometryTypedFacade():GeometryFacade() {};
+    GeometryTypedFacade(const Part::Geometry * geometry):GeometryFacade(geometry) {}
+    GeometryTypedFacade():GeometryFacade() {}
 
 public: // Factory methods
     static std::unique_ptr<GeometryTypedFacade<GeometryT>> getTypedFacade(GeometryT * geometry) {

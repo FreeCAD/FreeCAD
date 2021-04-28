@@ -157,11 +157,7 @@ private Q_SLOTS:
     void updateClearButton(const QString &text);
 
 private:
-#if QT_VERSION >= 0x050200
     QAction *clearAction;
-#else
-    QToolButton *clearButton;
-#endif
 };
 
 // ------------------------------------------------------------------------------

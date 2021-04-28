@@ -1710,6 +1710,25 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QWidget > QWidget > QF
 }
 
 /*==================================================================================================
+Tool button Icon fix in save dialogs
+==================================================================================================*/
+/* found under Tools -> Save Picture */ /* Draft -> ShapeString -> Font file */
+
+QFileDialog#QFileDialog QToolButton {
+    background-color: transparent;
+    padding: 1px;
+    border: 1px;
+    margin: 0px;
+}
+
+QFileDialog#QFileDialog QToolButton:hover,
+QFileDialog#QFileDialog QToolButton:focus {
+    color: #ffffff;
+    background-color: #557bb6;
+    border: 1px solid #f5f5f5;
+}
+
+/*==================================================================================================
 Tool button inside QDialogs that works as QPushButtons
 ==================================================================================================*/
 /* found under Tools -> Customize -> Macros -> Pixmap "..." button */
@@ -1753,8 +1772,8 @@ Tool button inside Task Panel content that works as QPushButtons
 QSint--ActionGroup QFrame[class="content"] QToolButton {
     color: #e0e0e0;
     text-align: center;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0.3, x2:0, y2:1, stop:0 #2a2a2a, stop:1 #1e1e1e);
-    border: 1px solid #1e1e1e;
+    background-color: #2a2a2a;
+    border: 1px solid #494949;
     border-bottom-color: black; /* simulates shadow under the button */
     padding: 2px 6px; /* different than regular QPushButton */
     margin: 2px; /* different than regular QPushButton */
@@ -1765,14 +1784,14 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
 QSint--ActionGroup QFrame[class="content"] QToolButton:hover,
 QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
     color: white;
-    border-color: #557BB6;
+    border-color: solid #f5f5f5;
     background-color: #557BB6;
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled,
 QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
     color: #f5f5f5;
-    border-color: #424242;
+    border-color: #494949;
     background-color: #424242;
 }
 

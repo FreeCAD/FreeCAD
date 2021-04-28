@@ -28,15 +28,6 @@ else()
     qt4_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc)
 endif()
 
-set(ReenGui_MOC_HDRS
-    FitBSplineSurface.h
-    Poisson.h
-    Segmentation.h
-    SegmentationManual.h
-)
-fc_wrap_cpp(ReenGui_MOC_SRCS ${ReenGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${ReenGui_MOC_SRCS})
-
 set(Dialogs_UIC_SRCS
     FitBSplineSurface.ui
     Poisson.ui

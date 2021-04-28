@@ -330,13 +330,8 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
 
     if (Py::Object(expr).isNone())
         getDocumentObjectPtr()->setExpression(p, std::shared_ptr<Expression>());
-#if PY_MAJOR_VERSION >= 3
     else if (PyUnicode_Check(expr)) {
         const char * exprStr = PyUnicode_AsUTF8(expr);
-#else
-    else if (PyString_Check(expr)) {
-        const char * exprStr = PyString_AsString(expr);
-#endif
         std::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
         if(shared_expr && comment)
             shared_expr->comment = comment;
@@ -344,24 +339,7 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
         getDocumentObjectPtr()->setExpression(p, shared_expr);
     }
     else if (PyUnicode_Check(expr)) {
-#if PY_MAJOR_VERSION >= 3
         std::string exprStr = PyUnicode_AsUTF8(expr);
-#else
-        PyObject* unicode = PyUnicode_AsEncodedString(expr, "utf-8", 0);
-        if (unicode) {
-            std::string exprStr = PyString_AsString(unicode);
-            Py_DECREF(unicode);
-            std::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
-
-            if(shared_expr && comment)
-                shared_expr->comment = comment;
-            getDocumentObjectPtr()->setExpression(p, shared_expr);
-        }
-        else {
-            // utf-8 encoding failed
-            return 0;
-        }
-#endif
     }
     else
         throw Py::TypeError("String or None expected.");
@@ -445,32 +423,14 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     std::vector<std::string> subs;
     bool single=true;
     if (PyUnicode_Check(obj)) {
-#if PY_MAJOR_VERSION >= 3
         subs.push_back(PyUnicode_AsUTF8(obj));
-#else
-        PyObject* unicode = PyUnicode_AsUTF8String(obj);
-        subs.push_back(PyString_AsString(unicode));
-        Py_DECREF(unicode);
-    }
-    else if (PyString_Check(obj)) {
-        subs.push_back(PyString_AsString(obj));
-#endif
     } else if (PySequence_Check(obj)) {
         single=false;
         Py::Sequence shapeSeq(obj);
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyUnicode_Check(item)) {
-#if PY_MAJOR_VERSION >= 3
                subs.push_back(PyUnicode_AsUTF8(item));
-#else
-                PyObject* unicode = PyUnicode_AsUTF8String(item);
-                subs.push_back(PyString_AsString(unicode));
-                Py_DECREF(unicode);
-            }
-            else if (PyString_Check(item)) {
-                subs.push_back(PyString_AsString(item));
-#endif
             }else{
                 PyErr_SetString(PyExc_TypeError, "non-string object in sequence");
                 return 0;

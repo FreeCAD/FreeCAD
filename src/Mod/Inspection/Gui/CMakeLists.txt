@@ -15,12 +15,6 @@ set(InspectionGui_LIBS
     FreeCADGui
 )
 
-set(InspectionGui_MOC_HDRS
-    VisualInspection.h
-)
-fc_wrap_cpp(InspectionGui_MOC_SRCS ${InspectionGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${InspectionGui_MOC_SRCS})
-
 set(Dialogs_UIC_SRCS
     VisualInspection.ui
 )

@@ -152,7 +152,15 @@ void SequencerDialog::nextStep(bool canAbort)
 
 void SequencerDialog::setProgress(size_t step)
 {
-    d->dlg->show();
+    QThread* currentThread = QThread::currentThread();
+    QThread* thr = d->dlg->thread(); // this is the main thread
+    if (thr != currentThread) {
+        QMetaObject::invokeMethod(d->dlg, "show", Qt::QueuedConnection);
+    }
+    else {
+        d->dlg->show();
+    }
+
     setValue((int)step);
 }
 

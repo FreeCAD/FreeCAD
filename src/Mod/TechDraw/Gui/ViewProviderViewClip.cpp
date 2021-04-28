@@ -46,7 +46,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderViewClip, TechDrawGui::ViewProviderDraw
 
 ViewProviderViewClip::ViewProviderViewClip()
 {
-    sPixmap = "actions/techdraw-ClipGroup";
+    sPixmap = "actions/TechDraw_ClipGroup";
 
     // Do not show in property editor
     //DisplayMode.StatusBits.set(3, true);

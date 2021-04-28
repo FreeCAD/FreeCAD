@@ -460,14 +460,14 @@ Action * StdCmdWindowsMenu::createAction(void)
     WindowAction *pcAction;
     pcAction = new WindowAction(this, getMainWindow());
     for ( int i=0; i<10; i++ ) {
-        QAction* window = pcAction->addAction(QObject::tr(sToolTipText));
+        QAction* window = pcAction->addAction(QObject::tr(getToolTipText()));
         window->setCheckable(true);
         window->setToolTip(QCoreApplication::translate(
-            this->className(), sToolTipText));
+            this->className(), getToolTipText()));
         window->setStatusTip(QCoreApplication::translate(
-            this->className(), sStatusTip));
+            this->className(), getStatusTip()));
         window->setWhatsThis(QCoreApplication::translate(
-            this->className(), sWhatsThis));
+            this->className(), getWhatsThis()));
     }
 
     QAction* sep = pcAction->addAction(QLatin1String(""));

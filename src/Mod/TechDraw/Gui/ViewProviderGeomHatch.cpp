@@ -69,7 +69,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderGeomHatch, Gui::ViewProviderDocumentObj
 
 ViewProviderGeomHatch::ViewProviderGeomHatch()
 {
-    sPixmap = "actions/techdraw-GeometricHatch";
+    sPixmap = "actions/TechDraw_GeometricHatch";
 
     static const char *vgroup = "GeomHatch";
 

@@ -109,19 +109,11 @@ PyMOD_INIT_FUNC(FreeCAD)
     putenv("LC_ALL=C");
     // get whole path of the library
     Dl_info info;
-#if PY_MAJOR_VERSION >= 3
     int ret = dladdr((void*)PyInit_FreeCAD, &info);
-#else
-    int ret = dladdr((void*)initFreeCAD, &info);
-#endif
     if ((ret == 0) || (!info.dli_fname)) {
         free(argv);
         PyErr_SetString(PyExc_ImportError, "Cannot get path of the FreeCAD module!");
-#if PY_MAJOR_VERSION >= 3
         return 0;
-#else
-        return;
-#endif
     }
 
     argv[0] = (char*)malloc(PATH_MAX);
@@ -145,31 +137,14 @@ PyMOD_INIT_FUNC(FreeCAD)
         // backwards since the FreeCAD path was likely appended just before
         // we were imported.
         for (i = PyList_Size(pySysPath) - 1; i >= 0 ; --i) {
-#if PY_MAJOR_VERSION >= 3
             const char *basePath;
-#else
-            char *basePath;
-#endif
             PyObject *pyPath = PyList_GetItem(pySysPath, i);
             long sz = 0;
 
-#if PY_MAJOR_VERSION >= 3
             if ( PyUnicode_Check(pyPath) ) {
                 // Python 3 string
                 basePath = PyUnicode_AsUTF8AndSize(pyPath, &sz);
             }
-#else
-            if ( PyString_Check(pyPath) ) {
-                // Python 2 string type
-                PyString_AsStringAndSize(pyPath, &basePath, &sz);
-            }
-            else if ( PyUnicode_Check(pyPath) ) {
-                // Python 2 unicode type - explicitly use UTF-8 codec
-                PyObject *fromUnicode = PyUnicode_AsUTF8String(pyPath);
-                PyString_AsStringAndSize(fromUnicode, &basePath, &sz);
-                Py_XDECREF(fromUnicode);
-            }
-#endif // #if/else PY_MAJOR_VERSION >= 3
             else {
                 continue;
             }
@@ -201,11 +176,7 @@ PyMOD_INIT_FUNC(FreeCAD)
 
     if (buf == NULL) {
         PyErr_SetString(PyExc_ImportError, "Cannot get path of the FreeCAD module!");
-#if PY_MAJOR_VERSION >= 3
         return 0;
-#else
-        return;
-#endif
     }
 
     argv[0] = buf;
@@ -239,7 +210,6 @@ PyMOD_INIT_FUNC(FreeCAD)
     std::clog.rdbuf(&stdclog);
     std::cerr.rdbuf(&stdcerr);
 
-#if PY_MAJOR_VERSION >= 3
     //PyObject* module = _PyImport_FindBuiltin("FreeCAD");
     PyObject* modules = PyImport_GetModuleDict();
     PyObject* module = PyDict_GetItemString(modules, "FreeCAD");
@@ -247,6 +217,5 @@ PyMOD_INIT_FUNC(FreeCAD)
         PyErr_SetString(PyExc_ImportError, "Failed to load FreeCAD module!");
     }
     return module;
-#endif
 }
 

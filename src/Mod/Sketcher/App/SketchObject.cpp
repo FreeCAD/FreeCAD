@@ -1647,7 +1647,7 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     this->Constraints.setValues(std::move(newConstraints));
 }
 
-int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId)
+int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId, bool doNotTransformTangencies)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
@@ -1659,15 +1659,17 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId) &&
             !(toGeoId < 0 && vals[i]->Second <0) ) {
 
-            // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
-            // the transfer destination edge most likely won't be intended to be tangent. However, if it is
-            // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
             std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
 
-            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular){
-                constNew->Type = Sketcher::Coincident;
+            // If not explicitly confirmed, nothing guarantees that a tangent can be freely transferred to another coincident
+            // point, as the transfer destination edge most likely won't be intended to be tangent. However, if it is
+            // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
+            if (vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
+                if (!doNotTransformTangencies) {
+                    constNew->Type = Sketcher::Coincident;
+                }
             }
             // With respect to angle constraints, if it is a DeepSOIC style angle constraint (segment+segment+point),
             // then no problem arises as the segments are PosId=none. In this case there is no call to this function.
@@ -1690,11 +1692,13 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
-            // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
-            // the transfer destination edge most likely won't be intended to be tangent. However, if it is
+            // If not explicitly confirmed, nothing guarantees that a tangent can be freely transferred to another coincident
+            // point, as the transfer destination edge most likely won't be intended to be tangent. However, if it is
             // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
-            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
-                constNew->Type = Sketcher::Coincident;
+            if (vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
+                if (!doNotTransformTangencies) {
+                    constNew->Type = Sketcher::Coincident;
+                }
             }
             else if(vals[i]->Type == Sketcher::Angle) {
                 continue;
@@ -1797,33 +1801,34 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
                 delConstraintOnPoint(GeoId2, PosId2, false);
             }
 
-            Sketcher::Constraint tangent1, tangent2;
+            auto tangent1 = std::make_unique<Sketcher::Constraint>();
+            auto tangent2 = std::make_unique<Sketcher::Constraint>();
 
-            tangent1.Type = Sketcher::Tangent;
-            tangent1.First = GeoId1;
-            tangent1.FirstPos = PosId1;
-            tangent1.Second = filletId;
+            tangent1->Type = Sketcher::Tangent;
+            tangent1->First = GeoId1;
+            tangent1->FirstPos = PosId1;
+            tangent1->Second = filletId;
 
-            tangent2.Type = Sketcher::Tangent;
-            tangent2.First = GeoId2;
-            tangent2.FirstPos = PosId2;
-            tangent2.Second = filletId;
+            tangent2->Type = Sketcher::Tangent;
+            tangent2->First = GeoId2;
+            tangent2->FirstPos = PosId2;
+            tangent2->Second = filletId;
 
             if (dist1.Length() < dist2.Length()) {
-                tangent1.SecondPos = start;
-                tangent2.SecondPos = end;
+                tangent1->SecondPos = start;
+                tangent2->SecondPos = end;
                 movePoint(GeoId1, PosId1, arc->getStartPoint(/*emulateCCW=*/true),false,true);
                 movePoint(GeoId2, PosId2, arc->getEndPoint(/*emulateCCW=*/true),false,true);
             }
             else {
-                tangent1.SecondPos = end;
-                tangent2.SecondPos = start;
+                tangent1->SecondPos = end;
+                tangent2->SecondPos = start;
                 movePoint(GeoId1, PosId1, arc->getEndPoint(/*emulateCCW=*/true),false,true);
                 movePoint(GeoId2, PosId2, arc->getStartPoint(/*emulateCCW=*/true),false,true);
             }
 
-            addConstraint(&tangent1);
-            addConstraint(&tangent2);
+            addConstraint(std::move(tangent1));
+            addConstraint(std::move(tangent2));
         }
 
         if (noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
@@ -2957,6 +2962,312 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
             solve();
 
+        return 0;
+    }
+
+    return -1;
+}
+
+int SketchObject::split(int GeoId, const Base::Vector3d &point)
+{
+    // No need to check input data validity as this is an sketchobject managed operation
+
+    Base::StateLocker lock(managedoperation, true);
+
+    if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
+        return -1;
+    }
+
+    const Part::Geometry *geo = getGeometry(GeoId);
+    std::vector<Part::Geometry *> newGeometries;
+    std::vector<int> newIds;
+    std::vector<Constraint *> newConstraints;
+    bool ok = false;
+
+    Base::Vector3d startPoint, endPoint, splitPoint;
+    double radius, startAngle, endAngle, splitAngle;
+    unsigned int longestPart = 0;
+
+    do {
+        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            const Part::GeomLineSegment *lineSegm = static_cast<const Part::GeomLineSegment *>(geo);
+
+            startPoint = lineSegm->getStartPoint();
+            endPoint = lineSegm->getEndPoint();
+            splitPoint = point.Perpendicular(startPoint, endPoint - startPoint);
+            if ((endPoint - splitPoint).Length() > (splitPoint - startPoint).Length()) {
+                longestPart = 1;
+            }
+
+            Part::GeomLineSegment *newLine = static_cast<Part::GeomLineSegment *>(lineSegm->copy());
+            newGeometries.push_back(newLine);
+
+            newLine->setPoints(startPoint, splitPoint);
+            int newId = addGeometry(newLine);
+            if (newId < 0) {
+                continue;
+            }
+            newIds.push_back(newId);
+            setConstruction(newId, GeometryFacade::getConstruction(geo));
+
+            newLine = static_cast<Part::GeomLineSegment *>(lineSegm->copy());
+            newGeometries.push_back(newLine);
+
+            newLine->setPoints(splitPoint, endPoint);
+            newId = addGeometry(newLine);
+            if (newId < 0) {
+                continue;
+            }
+            newIds.push_back(newId);
+            setConstruction(newId, GeometryFacade::getConstruction(geo));
+
+            Constraint *joint = new Constraint();
+            joint->Type = Coincident;
+            joint->First = newIds[0];
+            joint->FirstPos = end;
+            joint->Second = newIds[1];
+            joint->SecondPos = start;
+            newConstraints.push_back(joint);
+
+            transferConstraints(GeoId, start, newIds[0], start, true);
+            transferConstraints(GeoId, end, newIds[1], end, true);
+            ok = true;
+        }
+        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
+
+            Base::Vector3d center(circle->getLocation());
+            Base::Vector3d dir(point - center);
+            radius = circle->getRadius();
+
+            splitAngle = atan2(dir.y, dir.x);
+            startAngle = splitAngle;
+            endAngle = splitAngle + M_PI*2.0;
+
+            splitPoint = Base::Vector3d(center.x + radius*cos(splitAngle), center.y + radius*sin(splitAngle));
+            startPoint = splitPoint;
+            endPoint = splitPoint;
+
+            Part::GeomArcOfCircle *arc = new Part::GeomArcOfCircle();
+            newGeometries.push_back(arc);
+
+            arc->setLocation(center);
+            arc->setRadius(radius);
+            arc->setRange(startAngle, endAngle, false);
+            int arcId = addGeometry(arc);
+            if (arcId < 0) {
+                continue;
+            }
+            newIds.push_back(arcId);
+            setConstruction(arcId, GeometryFacade::getConstruction(geo));
+
+            transferConstraints(GeoId, mid, arcId, mid);
+            ok = true;
+        }
+        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geo);
+
+            startPoint = arc->getStartPoint();
+            endPoint = arc->getEndPoint();
+
+            Base::Vector3d center(arc->getLocation());
+            radius = arc->getRadius();
+            arc->getRange(startAngle, endAngle, false);
+
+            Base::Vector3d dir(point - center);
+            splitAngle = atan2(dir.y, dir.x);
+            if (splitAngle < startAngle) {
+              splitAngle += M_PI*2.0;
+            }
+            if (endAngle - splitAngle > splitAngle - startAngle) {
+                longestPart = 1;
+            }
+
+            splitPoint = Base::Vector3d(center.x + radius*cos(splitAngle), center.y + radius*sin(splitAngle));
+            startPoint = splitPoint;
+            endPoint = splitPoint;
+
+            Part::GeomArcOfCircle *newArc = static_cast<Part::GeomArcOfCircle *>(arc->copy());
+            newGeometries.push_back(newArc);
+
+            newArc->setRange(startAngle, splitAngle, false);
+            int newId = addGeometry(newArc);
+            if (newId < 0) {
+                continue;
+            }
+            newIds.push_back(newId);
+            setConstruction(newId, GeometryFacade::getConstruction(geo));
+
+            newArc = static_cast<Part::GeomArcOfCircle *>(arc->copy());
+            newGeometries.push_back(newArc);
+
+            newArc->setRange(splitAngle, endAngle, false);
+            newId = addGeometry(newArc);
+            if (newId < 0) {
+                continue;
+            }
+            newIds.push_back(newId);
+            setConstruction(newId, GeometryFacade::getConstruction(geo));
+
+            Constraint *joint = new Constraint();
+            joint->Type = Coincident;
+            joint->First = newIds[0];
+            joint->FirstPos = end;
+            joint->Second = newIds[1];
+            joint->SecondPos = start;
+            newConstraints.push_back(joint);
+
+            joint = new Constraint();
+            joint->Type = Coincident;
+            joint->First = newIds[0];
+            joint->FirstPos = mid;
+            joint->Second = newIds[1];
+            joint->SecondPos = mid;
+            newConstraints.push_back(joint);
+
+            transferConstraints(GeoId, start, newIds[0], start, true);
+            transferConstraints(GeoId, mid, newIds[0], mid);
+            transferConstraints(GeoId, end, newIds[1], end, true);
+            ok = true;
+        }
+    }
+    while (false);
+
+    if (ok) {
+        std::vector<int> oldConstraints;
+        getConstraintIndices(GeoId, oldConstraints);
+
+        for (unsigned int i = 0; i < oldConstraints.size(); ++i) {
+
+            Constraint *con = this->Constraints.getValues()[oldConstraints[i]];
+            int conId = con->First;
+            PointPos conPos = con->FirstPos;
+            if (conId == GeoId) {
+                conId = con->Second;
+                conPos = con->SecondPos;
+            }
+
+            bool transferToAll = false;
+            switch (con->Type) {
+                case Horizontal:
+                case Vertical:
+                case Parallel: {
+                    transferToAll = geo->getTypeId() == Part::GeomLineSegment::getClassTypeId();
+                    break;
+                }
+                case Tangent:
+                case Perpendicular: {
+                    unsigned int initial = 0;
+                    unsigned int limit = newIds.size();
+
+                    if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        const Part::Geometry *conGeo = getGeometry(conId);
+                        if (conGeo && conGeo->isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+                            std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
+                            bool intersects[2];
+
+                            intersects[0] = static_cast<const Part::GeomCurve *>(newGeometries[0])->
+                                                intersect(static_cast<const Part::GeomCurve *>(conGeo), intersections);
+                            intersects[1] = static_cast<const Part::GeomCurve *>(newGeometries[1])->
+                                                intersect(static_cast<const Part::GeomCurve *>(conGeo), intersections);
+
+                            initial = longestPart;
+                            if (intersects[0] != intersects[1]) {
+                                initial = intersects[1] ? 1 : 0;
+                            }
+                            limit = initial + 1;
+                        }
+                    }
+
+                    for (unsigned int i = initial; i < limit; ++i) {
+                        Constraint *trans = con->copy();
+                        trans->substituteIndex(GeoId, newIds[i]);
+                        newConstraints.push_back(trans);
+                    }
+                    break;
+                }
+                case Distance:
+                case DistanceX:
+                case DistanceY:
+                case PointOnObject: {
+                    if (con->FirstPos == none && con->SecondPos == none) {
+                        Constraint *dist = con->copy();
+                        dist->First = newIds[0];
+                        dist->FirstPos = start;
+                        dist->Second = newIds[1];
+                        dist->SecondPos = end;
+                        newConstraints.push_back(dist);
+                    }
+                    else {
+                        Constraint *trans = con->copy();
+                        trans->First = conId;
+                        trans->FirstPos = conPos;
+                        trans->SecondPos = none;
+
+                        Base::Vector3d conPoint(getPoint(conId, conPos));
+                        int targetId = newIds[0];
+
+                        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            Base::Vector3d projPoint(conPoint.Perpendicular(startPoint, endPoint - startPoint));
+                            Base::Vector3d splitDir = splitPoint - startPoint;
+                            if ((projPoint - startPoint)*splitDir > splitDir*splitDir) {
+                                targetId = newIds[1];
+                            }
+                        }
+                        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            Base::Vector3d conDir(conPoint - static_cast<const Part::GeomArcOfCircle *>(geo)->getLocation());
+                            double conAngle = atan2(conDir.y, conDir.x);
+                            if (conAngle < startAngle) {
+                                conAngle += M_PI*2.0;
+                            }
+                            if (conAngle > splitAngle) {
+                                targetId = newIds[1];
+                            }
+                        }
+                        trans->Second = targetId;
+
+                        newConstraints.push_back(trans);
+                    }
+                    break;
+                }
+                case Radius:
+                case Diameter:
+                case Equal: {
+                    transferToAll = geo->getTypeId() == Part::GeomCircle::getClassTypeId()
+                                    || geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId();
+                    break;
+                }
+                default:
+                    // Release other constraints
+                    break;
+            }
+
+            if (transferToAll) {
+                for (unsigned int i = 0; i < newIds.size(); ++i) {
+                    Constraint *trans = con->copy();
+                    trans->substituteIndex(GeoId, newIds[i]);
+                    newConstraints.push_back(trans);
+                }
+            }
+        }
+
+        if (noRecomputes) {
+            solve();
+        }
+
+        delConstraints(oldConstraints);
+        addConstraints(newConstraints);
+    }
+
+    for (std::vector<Part::Geometry *>::iterator it = newGeometries.begin(); it != newGeometries.end(); ++it) {
+         delete *it;
+    }
+    for (std::vector<Constraint *>::iterator it = newConstraints.begin(); it != newConstraints.end(); ++it) {
+         delete *it;
+    }
+
+    if (ok) {
+        delGeometry(GeoId);
         return 0;
     }
 
@@ -6823,6 +7134,19 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1,
     }
 
     return false;
+}
+
+void SketchObject::getConstraintIndices (int GeoId, std::vector<int> &constraintList)
+{
+    const std::vector<Constraint *> &constraints = this->Constraints.getValues();
+    int i = 0;
+
+    for (std::vector<Constraint *>::const_iterator it = constraints.begin(); it != constraints.end(); ++it) {
+         if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
+             constraintList.push_back(i);
+         }
+         ++i;
+    }
 }
 
 void SketchObject::appendConflictMsg(const std::vector<int> &conflicting, std::string &msg)

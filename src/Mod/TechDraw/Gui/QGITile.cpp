@@ -86,11 +86,7 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     m_fontName = prefTextFont();
     m_font = QFont(m_fontName);
 
-#if PY_MAJOR_VERSION < 3
-    setHandlesChildEvents(true);    //qt4 deprecated in qt5
-#else
     setFiltersChildEvents(true);    //qt5
-#endif
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);

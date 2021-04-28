@@ -75,6 +75,7 @@ struct BaseExport QuantityFormat {
         denominator = denom;
     }
     QuantityFormat();
+    QuantityFormat(NumberFormat format, int decimals=-1);
     inline char toFormat() const {
         switch (format) {
         case Fixed:

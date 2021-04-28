@@ -226,11 +226,7 @@ private:
                                  "exportAmfCompressed", NULL};
 
         if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
-#if PY_MAJOR_VERSION >= 3
                                           "Oet|dp",
-#else
-                                          "Oet|di",
-#endif // Python version switch
                                           kwList, &objects, "utf-8", &fileNamePy,
                                           &fTolerance, &exportAmfCompressed )) {
             throw Py::Exception();

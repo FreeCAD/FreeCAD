@@ -22,19 +22,6 @@ set(DrawingGui_LIBS
     FreeCADGui
 )
 
-
-set(DrawingGui_MOC_HDRS
-    DrawingView.h
-    TaskOrthoViews.h
-    TaskDialog.h
-)
-
-
-
-
-fc_wrap_cpp(DrawingGui_MOC_SRCS ${DrawingGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${DrawingGui_MOC_SRCS})
-
 set(DrawingGui_UIC_SRCS
     TaskOrthoViews.ui
 )

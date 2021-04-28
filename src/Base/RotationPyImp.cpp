@@ -491,11 +491,7 @@ PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, Py
 {
     if (!PyObject_TypeCheck(self, &(RotationPy::Type)) ||
 
-#if PY_MAJOR_VERSION < 3
-            !PyInt_Check(other)
-#else
             !PyLong_Check(other)
-#endif
             || arg != Py_None
        )
     {
@@ -605,26 +601,11 @@ PyObject * RotationPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int RotationPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
-{
-    return 1;
-}
-#endif
-
 PyObject * RotationPy::number_int_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * RotationPy::number_long_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif
 
 PyObject * RotationPy::number_float_handler (PyObject * /*self*/)
 {
@@ -632,16 +613,3 @@ PyObject * RotationPy::number_float_handler (PyObject * /*self*/)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-PyObject * RotationPy::number_oct_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * RotationPy::number_hex_handler (PyObject * /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif

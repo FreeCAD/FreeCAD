@@ -135,10 +135,25 @@ using namespace Gui::DockWnd;
 // list of modules already loaded by a command (not issue again for macro cleanness)
 std::set<std::string> alreadyLoadedModule;
 
-CommandBase::CommandBase( const char* sMenu, const char* sToolTip, const char* sWhat,
-                          const char* sStatus, const char* sPixmap, const char* sAcc)
-        : sMenuText(sMenu), sToolTipText(sToolTip), sWhatsThis(sWhat?sWhat:sToolTip),
-        sStatusTip(sStatus?sStatus:sToolTip), sPixmap(sPixmap), sAccel(sAcc), _pcAction(0)
+class StringCache {
+public:
+    static const char* New(const char* str) {
+        using StringList = std::list<std::string>;
+        static StringList strings;
+        strings.emplace_back(str);
+        return strings.back().c_str();
+    }
+};
+
+CommandBase::CommandBase(const char* sMenu, const char* sToolTip, const char* sWhat,
+                         const char* sStatus, const char* sPixmap, const char* sAcc)
+  : sMenuText(sMenu)
+  , sToolTipText(sToolTip)
+  , sWhatsThis(sWhat ? sWhat : sToolTip)
+  , sStatusTip(sStatus ? sStatus : sToolTip)
+  , sPixmap(sPixmap)
+  , sAccel(sAcc)
+  , _pcAction(nullptr)
 {
 }
 
@@ -162,56 +177,32 @@ Action * CommandBase::createAction()
 
 void CommandBase::setMenuText(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sMenuText = _strdup(s);
-#else
-    this->sMenuText = strdup(s);
-#endif
+    this->sMenuText = StringCache::New(s);
 }
 
 void CommandBase::setToolTipText(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sToolTipText = _strdup(s);
-#else
-    this->sToolTipText = strdup(s);
-#endif
+    this->sToolTipText = StringCache::New(s);
 }
 
 void CommandBase::setStatusTip(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sStatusTip = _strdup(s);
-#else
-    this->sStatusTip = strdup(s);
-#endif
+    this->sStatusTip = StringCache::New(s);
 }
 
 void CommandBase::setWhatsThis(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sWhatsThis = _strdup(s);
-#else
-    this->sWhatsThis = strdup(s);
-#endif
+    this->sWhatsThis = StringCache::New(s);
 }
 
 void CommandBase::setPixmap(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sPixmap = _strdup(s);
-#else
-    this->sPixmap = strdup(s);
-#endif
+    this->sPixmap = StringCache::New(s);
 }
 
 void CommandBase::setAccel(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sAccel = _strdup(s);
-#else
-    this->sAccel = strdup(s);
-#endif
+    this->sAccel = StringCache::New(s);
 }
 
 //===========================================================================
@@ -221,7 +212,9 @@ void CommandBase::setAccel(const char* s)
 /* TRANSLATOR Gui::Command */
 
 Command::Command(const char* name)
-        : CommandBase(0), sName(name), sHelpUrl(0)
+    : CommandBase(nullptr)
+    , sName(name)
+    , sHelpUrl(0)
 {
     sAppModule  = "FreeCAD";
     sGroup      = QT_TR_NOOP("Standard");
@@ -578,20 +571,12 @@ std::string Command::getObjectCmd(const App::DocumentObject *obj,
 
 void Command::setAppModuleName(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sAppModule = _strdup(s);
-#else
-    this->sAppModule = strdup(s);
-#endif
+    this->sAppModule = StringCache::New(s);
 }
 
 void Command::setGroupName(const char* s)
 {
-#if defined (_MSC_VER)
-    this->sGroup = _strdup(s);
-#else
-    this->sGroup = strdup(s);
-#endif
+    this->sGroup = StringCache::New(s);
 }
 
 //--------------------------------------------------------------------------
@@ -664,11 +649,7 @@ void Command::printPyCaller() {
     if(!frame)
         return;
     int line = PyFrame_GetLineNumber(frame);
-#if PY_MAJOR_VERSION >= 3
     const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
-#else
-    const char *file = PyString_AsString(frame->f_code->co_filename);
-#endif
     printCaller(file?file:"<no file>",line);
 }
 
@@ -1073,23 +1054,16 @@ void GroupCommand::setup(Action *pcAction) {
 /* TRANSLATOR Gui::MacroCommand */
 
 MacroCommand::MacroCommand(const char* name, bool system)
-#if defined (_MSC_VER)
-  : Command( _strdup(name) ), systemMacro(system)
-#else
-  : Command( strdup(name) ), systemMacro(system)
-#endif
+  : Command(StringCache::New(name))
+  , systemMacro(system)
 {
     sGroup = QT_TR_NOOP("Macros");
     eType  = 0;
-    sScriptName = 0;
+    sScriptName = nullptr;
 }
 
 MacroCommand::~MacroCommand()
 {
-    free(const_cast<char*>(sName));
-    sName = 0;
-    free(const_cast<char*>(sScriptName));
-    sScriptName = 0;
 }
 
 void MacroCommand::activated(int iMsg)
@@ -1157,11 +1131,7 @@ Action * MacroCommand::createAction(void)
 
 void MacroCommand::setScriptName( const char* s )
 {
-#if defined (_MSC_VER)
-    this->sScriptName = _strdup( s );
-#else
-    this->sScriptName = strdup( s );
-#endif
+    this->sScriptName = StringCache::New(s);
 }
 
 void MacroCommand::load()
@@ -1214,11 +1184,7 @@ void MacroCommand::save()
 //===========================================================================
 
 PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString)
-#if defined (_MSC_VER)
-  : Command( _strdup(name) )
-#else
-  : Command( strdup(name) )
-#endif
+  : Command(StringCache::New(name))
   ,_pcPyCommand(pcPyCommand)
 {
     if (pActivationString)
@@ -1258,8 +1224,6 @@ PythonCommand::~PythonCommand()
 {
     Base::PyGILStateLocker lock;
     Py_DECREF(_pcPyCommand);
-    free(const_cast<char*>(sName));
-    sName = 0;
 }
 
 const char* PythonCommand::getResource(const char* sName) const
@@ -1271,19 +1235,11 @@ const char* PythonCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResourceDict,sName);
     if (!pcTemp)
         return "";
-#if PY_MAJOR_VERSION >= 3
     if (!PyUnicode_Check(pcTemp)) {
-#else
-    if (!PyString_Check(pcTemp)) {
-#endif
         throw Base::TypeError("PythonCommand::getResource(): Method GetResources() of the Python "
                               "command object returns a dictionary which holds not only strings");
     }
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_AsUTF8(pcTemp);
-#else
-    return PyString_AsString(pcTemp);
-#endif
 }
 
 void PythonCommand::activated(int iMsg)
@@ -1346,17 +1302,9 @@ const char* PythonCommand::getHelpUrl(void) const
     pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");
     if (! pcTemp )
         return "";
-#if PY_MAJOR_VERSION >= 3
     if (! PyUnicode_Check(pcTemp) )
-#else
-    if (! PyString_Check(pcTemp) )
-#endif
         throw Base::TypeError("PythonCommand::CmdHelpURL(): Method CmdHelpURL() of the Python command object returns no string");
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_AsUTF8(pcTemp);
-#else
-    return PyString_AsString(pcTemp);
-#endif
 }
 
 Action * PythonCommand::createAction(void)
@@ -1449,11 +1397,7 @@ bool PythonCommand::isChecked() const
 //===========================================================================
 
 PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
-#if defined (_MSC_VER)
-  : Command( _strdup(name) )
-#else
-  : Command( strdup(name) )
-#endif
+  : Command(StringCache::New(name))
   ,_pcPyCommand(pcPyCommand)
 {
     sGroup = "Python";
@@ -1488,8 +1432,6 @@ PythonGroupCommand::~PythonGroupCommand()
 {
     Base::PyGILStateLocker lock;
     Py_DECREF(_pcPyCommand);
-    free(const_cast<char*>(sName));
-    sName = 0;
 }
 
 void PythonGroupCommand::activated(int iMsg)
@@ -1685,19 +1627,11 @@ const char* PythonGroupCommand::getResource(const char* sName) const
     pcTemp = PyDict_GetItemString(_pcPyResource, sName);
     if (!pcTemp)
         return "";
-#if PY_MAJOR_VERSION >= 3
     if (!PyUnicode_Check(pcTemp)) {
-#else
-    if (!PyString_Check(pcTemp)) {
-#endif
         throw Base::ValueError("PythonGroupCommand::getResource(): Method GetResources() of the Python "
                                "group command object returns a dictionary which holds not only strings");
     }
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_AsUTF8(pcTemp);
-#else
-    return PyString_AsString(pcTemp);
-#endif
 }
 
 const char* PythonGroupCommand::getWhatsThis() const

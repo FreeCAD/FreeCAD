@@ -1516,6 +1516,18 @@ QPushButton:checked {
     border-color: #3874f2;
 }
 
+/*==================================================================================================
+Tool button Icon fix in save dialogs
+==================================================================================================*/
+/* found under Tools -> Save Picture */ /* Draft -> ShapeString -> Font file */
+
+QFileDialog#QFileDialog QToolButton {
+    background-color: transparent;
+    padding: 1px;
+    border: 1px;
+    margin: 0px;
+}
+
 
 /*==================================================================================================
 Tool button inside QDialogs that works as QPushButtons

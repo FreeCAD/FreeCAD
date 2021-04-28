@@ -72,7 +72,7 @@ class Offset(gui_base_original.Modifier):
         self.arctrack = None
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to offset"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

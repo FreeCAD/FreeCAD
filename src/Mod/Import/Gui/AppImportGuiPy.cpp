@@ -693,7 +693,8 @@ private:
                 TColStd_IndexedDataMapOfStringString aMetadata;
                 RWGltf_CafWriter aWriter (name8bit.c_str(), file.hasExtension("glb"));
                 aWriter.SetTransformationFormat (RWGltf_WriterTrsfFormat_Compact);
-                //aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
+                // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#coordinate-system-and-units
+                aWriter.ChangeCoordinateSystemConverter().SetInputLengthUnit (0.001);
                 aWriter.ChangeCoordinateSystemConverter().SetInputCoordinateSystem (RWMesh_CoordinateSystem_Zup);
                 Standard_Boolean ret = aWriter.Perform (hDoc, aMetadata, Message_ProgressRange());
                 if (!ret) {

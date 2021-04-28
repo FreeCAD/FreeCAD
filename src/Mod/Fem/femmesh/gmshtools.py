@@ -125,6 +125,34 @@ class GmshTools():
         else:
             self.algorithm3D = "1"
 
+        # RecombinationAlgorithm
+        algoRecombo = self.mesh_obj.RecombinationAlgorithm
+        if algoRecombo == "Simple":
+            self.RecombinationAlgorithm = "0"
+        elif algoRecombo == "Blossom":
+            self.RecombinationAlgorithm = "1"
+        elif algoRecombo == "Simple full-quad":
+            self.RecombinationAlgorithm = "2"
+        elif algoRecombo == "Blossom full-quad":
+            self.RecombinationAlgorithm = "3"
+        else:
+            self.algoRecombo = "0"
+
+        # HighOrderOptimize
+        optimizers = self.mesh_obj.HighOrderOptimize
+        if optimizers == "None":
+            self.HighOrderOptimize = "0"
+        elif optimizers == "Optimization":
+            self.HighOrderOptimize = "1"
+        elif optimizers == "Elastic+Optimization":
+            self.HighOrderOptimize = "2"
+        elif optimizers == "Elastic":
+            self.HighOrderOptimize = "3"
+        elif optimizers == "Fast Curving":
+            self.HighOrderOptimize = "4"
+        else:
+            self.HighOrderOptimize = "0"
+
         # mesh groups
         if self.mesh_obj.GroupsOfNodes is True:
             self.group_nodes_export = True
@@ -751,8 +779,15 @@ class GmshTools():
             )
         geo.write("\n")
         if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
-            geo.write("// other mesh options\n")
+            geo.write("// recombination for surfaces\n")
             geo.write("Mesh.RecombineAll = 1;\n")
+        if hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True:
+            geo.write("// recombination for volumes\n")
+            geo.write("Mesh.Recombine3DAll = 1;\n")
+        if ( (hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True)
+             or (hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True)):
+            geo.write("// recombination algorithm\n")
+            geo.write("Mesh.RecombinationAlgorithm = " + self.RecombinationAlgorithm + ";\n")
             geo.write("\n")
 
         geo.write("// optimize the mesh\n")
@@ -767,16 +802,11 @@ class GmshTools():
         else:
             geo.write("Mesh.OptimizeNetgen = 0;\n")
         # higher order mesh optimizing
-        if hasattr(self.mesh_obj, "HighOrderOptimize") and self.mesh_obj.HighOrderOptimize is True:
-            geo.write(
-                "Mesh.HighOrderOptimize = 1; // for more HighOrderOptimize "
-                "parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
-            )
-        else:
-            geo.write(
-                "Mesh.HighOrderOptimize = 0; // for more HighOrderOptimize "
-                "parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
-            )
+        geo.write(
+            "// High-order meshes optimization (0=none, 1=optimization, 2=elastic+optimization, "
+            "3=elastic, 4=fast curving)\n"
+        )
+        geo.write("Mesh.HighOrderOptimize = " + self.HighOrderOptimize + ";\n")
         geo.write("\n")
 
         geo.write("// mesh order\n")
@@ -850,7 +880,7 @@ class GmshTools():
         # some useful information
         geo.write("// " + "*" * 70 + "\n")
         geo.write("// Gmsh documentation:\n")
-        geo.write("// http://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
+        geo.write("// https://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
         geo.write("//\n")
         geo.write(
             "// We do not check if something went wrong, like negative "

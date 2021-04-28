@@ -27,6 +27,7 @@
 #include <App/PropertyUnits.h>
 #include "PartFeature.h"
 #include "AttachExtension.h"
+#include "PrismExtension.h"
 
 namespace Part
 {
@@ -176,7 +177,8 @@ public:
     }
 };
 
-class PartExport Cylinder : public Primitive
+class PartExport Cylinder : public Primitive,
+                            public PrismExtension
 {
     PROPERTY_HEADER(Part::Cylinder);
 
@@ -199,7 +201,8 @@ public:
     //@}
 };
 
-class PartExport Prism : public Primitive
+class PartExport Prism : public Primitive,
+                         public PrismExtension
 {
     PROPERTY_HEADER(Part::Prism);
 
@@ -209,8 +212,6 @@ public:
     App::PropertyIntegerConstraint Polygon;
     App::PropertyLength Circumradius;
     App::PropertyLength Height;
-    App::PropertyAngle FirstAngle;
-    App::PropertyAngle SecondAngle;
 
     /** @name methods override feature */
     //@{

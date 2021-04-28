@@ -226,7 +226,9 @@ void ControlSingleton::closedDialog()
     // make sure that the combo view is shown
     QDockWidget* dw = qobject_cast<QDockWidget*>(pcComboView->parentWidget());
     if (dw)
-        dw->setFeatures(QDockWidget::AllDockWidgetFeatures);
+        dw->setFeatures(QDockWidget::DockWidgetClosable
+                        | QDockWidget::DockWidgetMovable
+                        | QDockWidget::DockWidgetFloatable);
 }
 
 bool ControlSingleton::isAllowedAlterDocument(void) const

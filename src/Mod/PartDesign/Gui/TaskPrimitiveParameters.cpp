@@ -43,6 +43,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -72,12 +73,12 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->boxHeight->bind(static_cast<PartDesign::Box*>(vp->getObject())->Height);
             ui->boxWidth->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Width.getValue());
             ui->boxWidth->bind(static_cast<PartDesign::Box*>(vp->getObject())->Width);
-            ui->boxLength->setMinimum(0.0);
-            ui->boxLength->setMaximum(INT_MAX);
-            ui->boxWidth->setMinimum(0.0);
-            ui->boxWidth->setMaximum(INT_MAX);
-            ui->boxHeight->setMinimum(0.0);
-            ui->boxHeight->setMaximum(INT_MAX);
+            ui->boxLength->setMinimum(static_cast<PartDesign::Box*>(vp->getObject())->Length.getMinimum());
+            ui->boxLength->setMaximum(static_cast<PartDesign::Box*>(vp->getObject())->Length.getMaximum());
+            ui->boxWidth->setMinimum(static_cast<PartDesign::Box*>(vp->getObject())->Width.getMinimum());
+            ui->boxWidth->setMaximum(static_cast<PartDesign::Box*>(vp->getObject())->Width.getMaximum());
+            ui->boxHeight->setMinimum(static_cast<PartDesign::Box*>(vp->getObject())->Height.getMinimum());
+            ui->boxHeight->setMaximum(static_cast<PartDesign::Box*>(vp->getObject())->Height.getMaximum());
             break;
         case PartDesign::FeaturePrimitive::Cylinder:
             index = 2;
@@ -87,12 +88,16 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->cylinderHeight->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height);
             ui->cylinderRadius->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getValue());
             ui->cylinderRadius->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius);
+            ui->cylinderXSkew->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->FirstAngle.getValue());
+            ui->cylinderXSkew->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->FirstAngle);
+            ui->cylinderYSkew->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->SecondAngle.getValue());
+            ui->cylinderYSkew->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->SecondAngle);
             ui->cylinderAngle->setMaximum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getMaximum());
             ui->cylinderAngle->setMinimum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getMinimum());
-            ui->cylinderHeight->setMaximum(INT_MAX);
-            ui->cylinderHeight->setMinimum(0.0);
-            ui->cylinderRadius->setMaximum(INT_MAX);
-            ui->cylinderRadius->setMinimum(0.0);
+            ui->cylinderHeight->setMaximum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height.getMaximum());
+            ui->cylinderHeight->setMinimum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height.getMinimum());
+            ui->cylinderRadius->setMaximum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getMaximum());
+            ui->cylinderRadius->setMinimum(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getMinimum());
             break;
         case PartDesign::FeaturePrimitive::Sphere:
             index = 4;
@@ -110,8 +115,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->sphereAngle2->setMinimum(ui->sphereAngle1->rawValue());
             ui->sphereAngle3->setMaximum(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getMaximum());
             ui->sphereAngle3->setMinimum(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getMinimum());
-            ui->sphereRadius->setMaximum(INT_MAX);
-            ui->sphereRadius->setMinimum(0.0);
+            ui->sphereRadius->setMaximum(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius.getMaximum());
+            ui->sphereRadius->setMinimum(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius.getMinimum());
             break;
         case PartDesign::FeaturePrimitive::Cone:
             index = 3;
@@ -125,12 +130,12 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->coneRadius2->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2);
             ui->coneAngle->setMaximum(static_cast<PartDesign::Cone*>(vp->getObject())->Angle.getMaximum());
             ui->coneAngle->setMinimum(static_cast<PartDesign::Cone*>(vp->getObject())->Angle.getMinimum());
-            ui->coneHeight->setMaximum(INT_MAX);
-            ui->coneHeight->setMinimum(0.0);
-            ui->coneRadius1->setMaximum(INT_MAX);
-            ui->coneRadius1->setMinimum(0.0);
-            ui->coneRadius2->setMaximum(INT_MAX);
-            ui->coneRadius2->setMinimum(0.0);
+            ui->coneHeight->setMaximum(static_cast<PartDesign::Cone*>(vp->getObject())->Height.getMaximum());
+            ui->coneHeight->setMinimum(static_cast<PartDesign::Cone*>(vp->getObject())->Height.getMinimum());
+            ui->coneRadius1->setMaximum(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1.getMaximum());
+            ui->coneRadius1->setMinimum(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1.getMinimum());
+            ui->coneRadius2->setMaximum(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2.getMaximum());
+            ui->coneRadius2->setMinimum(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2.getMinimum());
             break;
         case PartDesign::FeaturePrimitive::Ellipsoid:
             index = 5;
@@ -152,12 +157,12 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->ellipsoidAngle2->setMinimum(ui->ellipsoidAngle1->rawValue());
             ui->ellipsoidAngle3->setMaximum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3.getMaximum());
             ui->ellipsoidAngle3->setMinimum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3.getMinimum());
-            ui->ellipsoidRadius1->setMinimum(0.0);
-            ui->ellipsoidRadius1->setMaximum(INT_MAX);
-            ui->ellipsoidRadius2->setMinimum(0.0);
-            ui->ellipsoidRadius2->setMaximum(INT_MAX);
-            ui->ellipsoidRadius3->setMinimum(0.0);
-            ui->ellipsoidRadius3->setMaximum(INT_MAX);
+            ui->ellipsoidRadius1->setMinimum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius1.getMinimum());
+            ui->ellipsoidRadius1->setMaximum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius1.getMaximum());
+            ui->ellipsoidRadius2->setMinimum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius2.getMinimum());
+            ui->ellipsoidRadius2->setMaximum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius2.getMaximum());
+            ui->ellipsoidRadius3->setMinimum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3.getMinimum());
+            ui->ellipsoidRadius3->setMaximum(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3.getMaximum());
             break;
         case PartDesign::FeaturePrimitive::Torus:
             index = 6;
@@ -180,10 +185,10 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             // this is the outer radius that must not be smaller than the inner one
             // otherwise the geometry is impossible and we can even get a crash:
             // https://forum.freecadweb.org/viewtopic.php?f=3&t=44467
-            ui->torusRadius1->setMaximum(INT_MAX);
+            ui->torusRadius1->setMaximum(static_cast<PartDesign::Torus*>(vp->getObject())->Radius1.getMaximum());
             ui->torusRadius1->setMinimum(ui->torusRadius2->rawValue());
             ui->torusRadius2->setMaximum(ui->torusRadius1->rawValue());
-            ui->torusRadius2->setMinimum(0.0);
+            ui->torusRadius2->setMinimum(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2.getMinimum());
             break;
         case PartDesign::FeaturePrimitive::Prism:
             index = 7;
@@ -196,10 +201,10 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->prismXSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->FirstAngle);
             ui->prismYSkew->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->SecondAngle.getValue());
             ui->prismYSkew->bind(static_cast<PartDesign::Prism*>(vp->getObject())->SecondAngle);
-            ui->prismCircumradius->setMaximum(INT_MAX);
-            ui->prismCircumradius->setMinimum(0.0);
-            ui->prismHeight->setMaximum(INT_MAX);
-            ui->prismHeight->setMinimum(0.0);
+            ui->prismCircumradius->setMaximum(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius.getMaximum());
+            ui->prismCircumradius->setMinimum(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius.getMinimum());
+            ui->prismHeight->setMaximum(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getMaximum());
+            ui->prismHeight->setMinimum(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getMinimum());
             break;
         case PartDesign::FeaturePrimitive::Wedge:
             index = 8;
@@ -224,11 +229,11 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->wedgeZ2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min.getValue());
             ui->wedgeZ2min->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min);
             ui->wedgeXmin->setMinimum(INT_MIN);
-            ui->wedgeXmin->setMaximum(ui->wedgeXmax->rawValue()); // must be <= than wedgeXmax
+            ui->wedgeXmin->setMaximum(ui->wedgeXmax->rawValue()); // must be < than wedgeXmax
             ui->wedgeYmin->setMinimum(INT_MIN);
-            ui->wedgeYmin->setMaximum(ui->wedgeYmax->rawValue()); // must be <= than wedgeYmax
+            ui->wedgeYmin->setMaximum(ui->wedgeYmax->rawValue()); // must be < than wedgeYmax
             ui->wedgeZmin->setMinimum(INT_MIN);
-            ui->wedgeZmin->setMaximum(ui->wedgeZmax->rawValue()); // must be <= than wedgeZmax
+            ui->wedgeZmin->setMaximum(ui->wedgeZmax->rawValue()); // must be < than wedgeZmax
             ui->wedgeX2min->setMinimum(INT_MIN);
             ui->wedgeX2min->setMaximum(ui->wedgeX2max->rawValue()); // must be <= than wedgeXmax
             ui->wedgeZ2min->setMinimum(INT_MIN);
@@ -278,6 +283,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     // cylinder
     connect(ui->cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
     connect(ui->cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
+    connect(ui->cylinderXSkew, SIGNAL(valueChanged(double)), this, SLOT(onCylinderXSkewChanged(double)));
+    connect(ui->cylinderYSkew, SIGNAL(valueChanged(double)), this, SLOT(onCylinderYSkewChanged(double)));
     connect(ui->cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
 
     // cone
@@ -388,6 +395,40 @@ void TaskBoxPrimitives::onCylinderRadiusChanged(double v) {
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
+void TaskBoxPrimitives::onCylinderXSkewChanged(double v) {
+    PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
+    // we must assure that if the user incremented from e.g. 85 degree with the
+    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    if ((v < 90.0) && (v > -90.0)) {
+        cyl->FirstAngle.setValue(v);
+    }
+    else {
+        if (v == 90.0)
+            cyl->FirstAngle.setValue(cyl->FirstAngle.getMaximum());
+        else if (v == -90.0)
+            cyl->FirstAngle.setValue(cyl->FirstAngle.getMinimum());
+        ui->cylinderXSkew->setValue(cyl->FirstAngle.getQuantityValue());
+    }
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onCylinderYSkewChanged(double v) {
+    PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
+    // we must assure that if the user incremented from e.g. 85 degree with the
+    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    if ((v < 90.0) && (v > -90.0)) {
+        cyl->SecondAngle.setValue(v);
+    }
+    else {
+        if (v == 90.0)
+            cyl->SecondAngle.setValue(cyl->SecondAngle.getMaximum());
+        else if (v == -90.0)
+            cyl->SecondAngle.setValue(cyl->SecondAngle.getMinimum());
+        ui->cylinderYSkew->setValue(cyl->SecondAngle.getQuantityValue());
+    }
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
 void TaskBoxPrimitives::onSphereAngle1Changed(double v) {
     PartDesign::Sphere* sph = static_cast<PartDesign::Sphere*>(vp->getObject());
     ui->sphereAngle2->setMinimum(v); // Angle1 must geometrically be <= than Angle2
@@ -428,12 +469,14 @@ void TaskBoxPrimitives::onConeHeightChanged(double v) {
 }
 
 void TaskBoxPrimitives::onConeRadius1Changed(double v) {
+
     PartDesign::Cone* sph = static_cast<PartDesign::Cone*>(vp->getObject());
     sph->Radius1.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onConeRadius2Changed(double v) {
+
     PartDesign::Cone* sph = static_cast<PartDesign::Cone*>(vp->getObject());
     sph->Radius2.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
@@ -590,65 +633,65 @@ void TaskBoxPrimitives::onWedgeXminChanged(double v) {
 
 void TaskBoxPrimitives::onWedgeXmaxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
-    ui->wedgeXmin->setMaximum(v); // must be <= than wedgeXmax
+    ui->wedgeXmin->setMaximum(v); // must be < than wedgeXmax
     sph->Xmax.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeYminChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
-    ui->wedgeYmax->setMinimum(v);
+    ui->wedgeYmax->setMinimum(v); // must be > than wedgeYmin
     sph->Ymin.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeYmaxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
-    ui->wedgeYmin->setMaximum(v);
+    ui->wedgeYmin->setMaximum(v); // must be < than wedgeYmax
     sph->Ymax.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeZ2minChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
-    ui->wedgeZ2max->setMinimum(v);
+    ui->wedgeZ2max->setMinimum(v); // must be >= than wedgeZ2min
     sph->Z2min.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeZ2maxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
-    ui->wedgeZ2min->setMaximum(v); // must be <= than wedgeXmax
+    ui->wedgeZ2min->setMaximum(v); // must be <= than wedgeZ2max
     sph->Z2max.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeZminChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
-    ui->wedgeZmax->setMinimum(v);
+    ui->wedgeZmax->setMinimum(v); // must be > than wedgeZmin
     sph->Zmin.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 void TaskBoxPrimitives::onWedgeZmaxChanged(double v) {
     PartDesign::Wedge* sph = static_cast<PartDesign::Wedge*>(vp->getObject());
-    ui->wedgeZmin->setMaximum(v);
+    ui->wedgeZmin->setMaximum(v); // must be < than wedgeZmax
     sph->Zmax.setValue(v);
     vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
 }
 
 
-
-
-void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
+bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
 {
     try {
         QString name(QString::fromLatin1(Gui::Command::getObjectCmd(obj).c_str()));
         QString cmd;
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
-            return;
+            return false;
         }
+
+        Base::QuantityFormat format(Base::QuantityFormat::Default, Base::UnitsApi::getDecimals());
         switch(ui->widgetStack->currentIndex()) {
             case 1:         // box
                 cmd = QString::fromLatin1(
@@ -656,33 +699,43 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Width=%3\n"
                     "%1.Height=%4\n")
                     .arg(name)
-                    .arg(ui->boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(Base::UnitsApi::toNumber(ui->boxLength->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->boxWidth->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->boxHeight->value(), format));
                 break;
 
             case 2:  // cylinder
                 cmd = QString::fromLatin1(
                     "%1.Radius=%2\n"
                     "%1.Height=%3\n"
-                    "%1.Angle=%4\n")
+                    "%1.Angle=%4\n"
+                    "%1.FirstAngle=%5\n"
+                    "%1.SecondAngle=%6\n")
                     .arg(name)
-                    .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(Base::UnitsApi::toNumber(ui->cylinderRadius->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->cylinderHeight->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->cylinderAngle->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->cylinderXSkew->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->cylinderYSkew->value(), format));
                 break;
 
             case 3:  // cone
+                // the cone radii must not be equal
+                if (ui->coneRadius1->value().getValue() == ui->coneRadius2->value().getValue()) {
+                    QMessageBox::warning(Gui::getMainWindow(), tr("Cone radii are equal"),
+                        tr("The radii for cones must not be equal!"));
+                    return false;
+                }
                 cmd = QString::fromLatin1(
                     "%1.Radius1=%2\n"
                     "%1.Radius2=%3\n"
                     "%1.Height=%4\n"
                     "%1.Angle=%5\n")
                     .arg(name)
-                    .arg(ui->coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(Base::UnitsApi::toNumber(ui->coneRadius1->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->coneRadius2->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->coneHeight->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->coneAngle->value(), format));
                  break;
 
             case 4:  // sphere
@@ -692,10 +745,10 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2=%4\n"
                     "%1.Angle3=%5\n")
                     .arg(name)
-                    .arg(ui->sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(Base::UnitsApi::toNumber(ui->sphereRadius->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle1->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle2->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->sphereAngle3->value(), format));
                 break;
             case 5:  // ellipsoid
                 cmd = QString::fromLatin1(
@@ -706,12 +759,12 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2=%6\n"
                     "%1.Angle3=%7\n")
                     .arg(name)
-                    .arg(ui->ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius1->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius2->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidRadius3->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle1->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle2->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->ellipsoidAngle3->value(), format));
                 break;
 
             case 6:  // torus
@@ -722,11 +775,11 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2=%5\n"
                     "%1.Angle3=%6\n")
                     .arg(name)
-                    .arg(ui->torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(Base::UnitsApi::toNumber(ui->torusRadius1->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->torusRadius2->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->torusAngle1->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->torusAngle2->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->torusAngle3->value(), format));
                 break;
             case 7:  // prism
                 cmd = QString::fromLatin1(
@@ -737,12 +790,28 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.SecondAngle=%6\n")
                     .arg(name)
                     .arg(ui->prismPolygon->value())
-                    .arg(ui->prismCircumradius->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-                    .arg(ui->prismHeight->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-                    .arg(ui->prismXSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals())
-                    .arg(ui->prismYSkew->value().getValue(), 0, 'f', Base::UnitsApi::getDecimals());
+                    .arg(Base::UnitsApi::toNumber(ui->prismCircumradius->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->prismHeight->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->prismXSkew->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->prismYSkew->value(), format));
                 break;
             case 8:  // wedge
+                // Xmin/max, Ymin/max and Zmin/max must each not be equal
+                if (ui->wedgeXmin->value().getValue() == ui->wedgeXmax->value().getValue()) {
+                    QMessageBox::warning(Gui::getMainWindow(), tr("Invalid wedge parameters"),
+                        tr("X min must not be equal to X max!"));
+                    return false;
+                }
+                else if (ui->wedgeYmin->value().getValue() == ui->wedgeYmax->value().getValue()) {
+                    QMessageBox::warning(Gui::getMainWindow(), tr("Invalid wedge parameters"),
+                        tr("Y min must not be equal to Y max!"));
+                    return false;
+                }
+                else if (ui->wedgeZmin->value().getValue() == ui->wedgeZmax->value().getValue()) {
+                    QMessageBox::warning(Gui::getMainWindow(), tr("Invalid wedge parameters"),
+                        tr("Z min must not be equal to Z max!"));
+                    return false;
+                }
                 cmd = QString::fromLatin1(
                     "%1.Xmin=%2\n"
                     "%1.Ymin=%3\n"
@@ -755,16 +824,16 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.X2max=%10\n"
                     "%1.Z2max=%11\n")
                     .arg(name)
-                    .arg(ui->wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui->wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeXmin->value()))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeYmin->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeZmin->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2min->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeZ2min->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeXmax->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeYmax->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeZmax->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeX2max->value(), format))
+                    .arg(Base::UnitsApi::toNumber(ui->wedgeZ2max->value(), format));
                 break;
 
             default:
@@ -779,7 +848,9 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(this, tr("Create primitive"), QString::fromLatin1(e.what()));
+        return false;
     }
+    return true;
 }
 
 TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView) : vp_prm(PrimitiveView)
@@ -837,7 +908,9 @@ TaskPrimitiveParameters::~TaskPrimitiveParameters()
 
 bool TaskPrimitiveParameters::accept()
 {
-    primitive->setPrimitive(vp_prm->getObject());
+    bool primitiveOK = primitive->setPrimitive(vp_prm->getObject());
+    if (!primitiveOK)
+        return primitiveOK;
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 

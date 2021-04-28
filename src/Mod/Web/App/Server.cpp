@@ -114,11 +114,7 @@ AppServer::AppServer(QObject* parent)
 {
 }
 
-#if QT_VERSION >=0x050000
 void AppServer::incomingConnection(qintptr socket)
-#else
-void AppServer::incomingConnection(int socket)
-#endif
 {
     QTcpSocket* s = new QTcpSocket(this);
     connect(s, SIGNAL(readyRead()), this, SLOT(readClient()));

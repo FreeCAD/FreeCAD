@@ -171,17 +171,9 @@ void InteractiveInterpreter::setPrompt()
     Base::PyGILStateLocker lock;
     d->sysmodule = PyImport_ImportModule("sys");
     if (!PyObject_HasAttrString(d->sysmodule, "ps1"))
-#if PY_MAJOR_VERSION >= 3
         PyObject_SetAttrString(d->sysmodule, "ps1", PyUnicode_FromString(">>> "));
-#else
-        PyObject_SetAttrString(d->sysmodule, "ps1", PyString_FromString(">>> "));
-#endif
     if (!PyObject_HasAttrString(d->sysmodule, "ps2"))
-#if PY_MAJOR_VERSION >= 3
         PyObject_SetAttrString(d->sysmodule, "ps2", PyUnicode_FromString("... "));
-#else
-        PyObject_SetAttrString(d->sysmodule, "ps2", PyString_FromString("... "));
-#endif
 }
 
 /**
@@ -323,11 +315,7 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
         throw Base::PyException();                 /* not incref'd */
 
     // It seems that the return value is always 'None' or Null
-#if PY_MAJOR_VERSION >= 3
     presult = PyEval_EvalCode((PyObject*)code, dict, dict); /* run compiled bytecode */
-#else
-    presult = PyEval_EvalCode(code, dict, dict); /* run compiled bytecode */
-#endif
     Py_XDECREF(code);                            /* decref the code object */
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
@@ -359,11 +347,7 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
                     }
 
                     std::string err = str.str();
-#if PY_MAJOR_VERSION >= 3
                     errdata = PyUnicode_FromString(err.c_str());
-#else
-                    errdata = PyString_FromString(err.c_str());
-#endif
                 }
             }
             PyErr_Restore(errobj, errdata, errtraceback);
@@ -474,13 +458,8 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->_stdin  = PySys_GetObject("stdin");
     PySys_SetObject("stdin", d->_stdinPy);
 
-#if PY_MAJOR_VERSION >= 3
     const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
     const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
-#else
-    const char* version  = PyString_AsString(PySys_GetObject("version"));
-    const char* platform = PyString_AsString(PySys_GetObject("platform"));
-#endif
     d->info = QString::fromLatin1("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
     .arg(QString::fromLatin1(version), QString::fromLatin1(platform));
@@ -837,12 +816,11 @@ void PythonConsole::runSource(const QString& line)
         setFocus(); // if focus was lost
     }
     catch (const Base::SystemExitException&) {
-#if PY_MAJOR_VERSION >= 3
         // In Python the exception must be cleared because when the message box below appears
         // callable Python objects can be invoked and due to a failing assert the application
         // will be aborted.
         PyErr_Clear();
-#endif
+
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         bool check = hPrefGrp->GetBool("CheckSystemExit",true);
         int ret = QMessageBox::Yes;
@@ -963,7 +941,7 @@ void PythonConsole::changeEvent(QEvent *e)
 
 void PythonConsole::mouseReleaseEvent( QMouseEvent *e )
 {
-  if (e->button() == Qt::MidButton && e->spontaneous())
+  if (e->button() == Qt::MiddleButton && e->spontaneous())
   {
     // on Linux-like systems the middle mouse button is typically connected to a paste operation
     // which will insert some text at the mouse position

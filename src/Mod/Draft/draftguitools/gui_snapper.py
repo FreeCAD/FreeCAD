@@ -407,6 +407,12 @@ class Snapper:
                     # Special snapping for polygons: add the center
                     snaps.extend(self.snapToPolygon(obj))
 
+                elif (Draft.getType(obj) == "BuildingPart"
+                      and self.isEnabled("Center")):
+                    # snap to the base placement of empty BuildingParts
+                    snaps.append([obj.Placement.Base, 'center',
+                                  self.toWP(obj.Placement.Base)])
+
                 if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
                     if "Edge" in comp:
                         # we are snapping to an edge
@@ -458,9 +464,11 @@ class Snapper:
                 # for points we only snap to points
                 snaps.extend(self.snapToEndpoints(obj.Points))
 
-            elif Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart"):
-                # snap to the center of WPProxies and BuildingParts
-                snaps.append([obj.Placement.Base, 'endpoint',
+            elif (Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart")
+                  and self.isEnabled("Center")):
+                # snap to the center of WPProxies or to the base
+                # placement of no empty BuildingParts
+                snaps.append([obj.Placement.Base, 'center',
                               self.toWP(obj.Placement.Base)])
 
             elif Draft.getType(obj) == "SectionPlane":

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>326</width>
-    <height>370</height>
+    <height>241</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,6 +56,13 @@
          <property name="spacing">
           <number>6</number>
          </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="textLabel2_2">
+           <property name="text">
+            <string>Length:</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
           <widget class="Gui::QuantitySpinBox" name="planeLength">
            <property name="keyboardTracking">
@@ -73,13 +80,6 @@
           <widget class="QLabel" name="textLabel3_2">
            <property name="text">
             <string>Width:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="textLabel2_2">
-           <property name="text">
-            <string>Length:</string>
            </property>
           </widget>
          </item>
@@ -130,22 +130,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="1" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_4">
          <property name="leftMargin">
@@ -163,8 +147,15 @@
          <property name="spacing">
           <number>6</number>
          </property>
-         <item row="1" column="2">
-          <widget class="Gui::QuantitySpinBox" name="boxWidth">
+         <item row="0" column="0">
+          <widget class="QLabel" name="textLabel2">
+           <property name="text">
+            <string>Length:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="Gui::QuantitySpinBox" name="boxLength">
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -176,8 +167,15 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
-          <widget class="Gui::QuantitySpinBox" name="boxHeight">
+         <item row="1" column="0">
+          <widget class="QLabel" name="textLabel3">
+           <property name="text">
+            <string>Width:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="Gui::QuantitySpinBox" name="boxWidth">
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -196,22 +194,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="textLabel2">
-           <property name="text">
-            <string>Length:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="textLabel3">
-           <property name="text">
-            <string>Width:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="Gui::QuantitySpinBox" name="boxLength">
+         <item row="2" column="2">
+          <widget class="Gui::QuantitySpinBox" name="boxHeight">
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -224,6 +208,22 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="1" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -244,71 +244,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="2" column="0">
-        <layout class="QHBoxLayout" name="_6">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Angle:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::QuantitySpinBox" name="cylinderAngle">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">deg</string>
-           </property>
-           <property name="value">
-            <double>360.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0">
-        <widget class="Line" name="line_2">
-         <property name="frameShape">
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_7">
          <property name="leftMargin">
@@ -333,6 +268,19 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="1">
+          <widget class="Gui::QuantitySpinBox" name="cylinderRadius">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>2.000000000000000</double>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="textLabel6">
            <property name="text">
@@ -353,20 +301,127 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="Gui::QuantitySpinBox" name="cylinderRadius">
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelCylinderXSkew">
+           <property name="text">
+            <string>Angle in first direction:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="Gui::QuantitySpinBox" name="cylinderXSkew">
+           <property name="toolTip">
+            <string>Angle in first direction</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
            <property name="unit" stdset="0">
-            <string notr="true">mm</string>
+            <string notr="true">deg</string>
            </property>
-           <property name="value">
-            <double>2.000000000000000</double>
+           <property name="minimum">
+            <double>-90.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>90.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="labelCylinderYSkew">
+           <property name="text">
+            <string>Angle in second direction:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::QuantitySpinBox" name="cylinderYSkew">
+           <property name="toolTip">
+            <string>Angle in second direction</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
+           <property name="minimum">
+            <double>-90.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>90.000000000000000</double>
            </property>
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="Line" name="line_2">
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QGridLayout" name="gridLayout_1">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="minimumSize">
+            <size>
+             <width>123</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Rotation angle:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Gui::QuantitySpinBox" name="cylinderAngle">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
+           <property name="value">
+            <double>360.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -387,71 +442,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="2" column="0">
-        <layout class="QHBoxLayout" name="_9">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Angle:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Gui::QuantitySpinBox" name="coneAngle">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">deg</string>
-           </property>
-           <property name="value">
-            <double>360.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0">
-        <widget class="Line" name="line_3">
-         <property name="frameShape">
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_10">
          <property name="leftMargin">
@@ -469,16 +459,10 @@
          <property name="spacing">
           <number>6</number>
          </property>
-         <item row="3" column="2">
-          <widget class="Gui::QuantitySpinBox" name="coneHeight">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>10.000000000000000</double>
+         <item row="0" column="0">
+          <widget class="QLabel" name="textLabel9">
+           <property name="text">
+            <string>Radius 1:</string>
            </property>
           </widget>
          </item>
@@ -492,20 +476,6 @@
            </property>
            <property name="value">
             <double>2.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" rowspan="2">
-          <widget class="QLabel" name="textLabel11">
-           <property name="text">
-            <string>Height:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="textLabel9">
-           <property name="text">
-            <string>Radius 1:</string>
            </property>
           </widget>
          </item>
@@ -529,29 +499,30 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="0" rowspan="2">
+          <widget class="QLabel" name="textLabel11">
+           <property name="text">
+            <string>Height:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="Gui::QuantitySpinBox" name="coneHeight">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="Page4_sphere">
-      <layout class="QGridLayout" name="_11">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <property name="spacing">
-        <number>6</number>
-       </property>
        <item row="1" column="0">
-        <widget class="Line" name="line">
+        <widget class="Line" name="line_3">
          <property name="frameShape">
           <enum>QFrame::HLine</enum>
          </property>
@@ -561,7 +532,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <layout class="QGridLayout" name="_12">
+        <layout class="QGridLayout" name="gridLayout_7">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -574,67 +545,15 @@
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item row="2" column="0">
-          <spacer>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Preferred</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>81</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>U parameter:</string>
+            <string>Angle:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>V parameters:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="Gui::QuantitySpinBox" name="sphereAngle1">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">deg</string>
-           </property>
-           <property name="value">
-            <double>-90.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="Gui::QuantitySpinBox" name="sphereAngle2">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">deg</string>
-           </property>
-           <property name="value">
-            <double>90.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="Gui::QuantitySpinBox" name="sphereAngle3">
+         <item row="0" column="1">
+          <widget class="Gui::QuantitySpinBox" name="coneAngle">
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -664,6 +583,25 @@
          </property>
         </spacer>
        </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="Page4_sphere">
+      <layout class="QGridLayout" name="_11">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>6</number>
+       </property>
        <item row="0" column="0">
         <layout class="QHBoxLayout" name="_13">
          <property name="spacing">
@@ -703,6 +641,120 @@
          </item>
         </layout>
        </item>
+       <item row="1" column="0">
+        <widget class="Line" name="line">
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QGridLayout" name="_12">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>U parameter:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="Gui::QuantitySpinBox" name="sphereAngle3">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
+           <property name="value">
+            <double>360.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>V parameters:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="Gui::QuantitySpinBox" name="sphereAngle1">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
+           <property name="value">
+            <double>-90.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Preferred</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>81</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="2">
+          <widget class="Gui::QuantitySpinBox" name="sphereAngle2">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
+           </property>
+           <property name="value">
+            <double>90.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="Page5_ellipsoid">
@@ -722,29 +774,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="3" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <widget class="Line" name="line_5">
-         <property name="frameShape">
-          <enum>QFrame::HLine</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_15">
          <property name="leftMargin">
@@ -769,22 +798,11 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="textLabel22">
-           <property name="text">
-            <string>Radius 2:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="textLabel23">
-           <property name="text">
-            <string>Radius 3:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
+           <property name="toolTip">
+            <string>Radius in local z-direction</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -796,8 +814,18 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="textLabel22">
+           <property name="text">
+            <string>Radius 2:</string>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
+           <property name="toolTip">
+            <string>Radius in local x-direction</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -809,8 +837,19 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="textLabel23">
+           <property name="text">
+            <string>Radius 3:</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius3">
+           <property name="toolTip">
+            <string>Radius in local y-direction
+If zero, it is equal to Radius2</string>
+           </property>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
@@ -823,6 +862,16 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="Line" name="line_5">
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
        </item>
        <item row="2" column="0">
         <layout class="QGridLayout" name="_16">
@@ -848,29 +897,6 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <spacer>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Preferred</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>81</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label24">
-           <property name="text">
-            <string>V parameter:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle3">
            <property name="keyboardTracking">
@@ -881,6 +907,13 @@
            </property>
            <property name="value">
             <double>360.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label24">
+           <property name="text">
+            <string>V parameter:</string>
            </property>
           </widget>
          </item>
@@ -897,6 +930,22 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Preferred</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>81</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle2">
            <property name="keyboardTracking">
@@ -911,6 +960,19 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="3" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -931,6 +993,71 @@
        <property name="spacing">
         <number>6</number>
        </property>
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="_19">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="textLabel19">
+           <property name="text">
+            <string>Radius 1:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="Gui::QuantitySpinBox" name="torusRadius1">
+           <property name="toolTip">
+            <string>Radius in local xy-plane</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="textLabel20">
+           <property name="text">
+            <string>Radius 2:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="Gui::QuantitySpinBox" name="torusRadius2">
+           <property name="toolTip">
+            <string>Radius in local xz-plane</string>
+           </property>
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>2.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
        <item row="1" column="0">
         <widget class="Line" name="line_4">
          <property name="frameShape">
@@ -965,29 +1092,6 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <spacer>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Preferred</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>81</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>V parameter:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="Gui::QuantitySpinBox" name="torusAngle3">
            <property name="keyboardTracking">
@@ -998,6 +1102,13 @@
            </property>
            <property name="value">
             <double>360.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>V parameter:</string>
            </property>
           </widget>
          </item>
@@ -1013,6 +1124,22 @@
             <double>-180.000000000000000</double>
            </property>
           </widget>
+         </item>
+         <item row="2" column="0">
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Preferred</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>81</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="torusAngle2">
@@ -1044,65 +1171,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="0" column="0">
-        <layout class="QGridLayout" name="_19">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item row="0" column="2">
-          <widget class="Gui::QuantitySpinBox" name="torusRadius1">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>10.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="textLabel20">
-           <property name="text">
-            <string>Radius 2:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="textLabel19">
-           <property name="text">
-            <string>Radius 1:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="Gui::QuantitySpinBox" name="torusRadius2">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>2.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
@@ -1140,19 +1208,6 @@
          <property name="spacing">
           <number>6</number>
          </property>
-         <item row="1" column="2">
-          <widget class="Gui::QuantitySpinBox" name="prismCircumradius">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>2.000000000000000</double>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="labelPrismPolygon">
            <property name="text">
@@ -1180,6 +1235,19 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="2">
+          <widget class="Gui::QuantitySpinBox" name="prismCircumradius">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>2.000000000000000</double>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="labelPrismHeight">
            <property name="text">
@@ -1201,7 +1269,7 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="labelXSkew">
+          <widget class="QLabel" name="labelPrismXSkew">
            <property name="text">
             <string>Angle in first direction:</string>
            </property>
@@ -1227,7 +1295,7 @@
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="labelYSkew">
+          <widget class="QLabel" name="labelPrismYSkew">
            <property name="text">
             <string>Angle in second direction:</string>
            </property>
@@ -1286,34 +1354,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_11">
-           <property name="text">
-            <string>Y min/max:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_12">
-           <property name="text">
-            <string>Z min/max:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_13">
-           <property name="text">
-            <string>X2 min/max:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_14">
-           <property name="text">
-            <string>Z2 min/max:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="Gui::QuantitySpinBox" name="wedgeXmin">
            <property name="keyboardTracking">
@@ -1334,6 +1374,13 @@
            </property>
            <property name="value">
             <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>Y min/max:</string>
            </property>
           </widget>
          </item>
@@ -1360,6 +1407,13 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Z min/max:</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="wedgeZmin">
            <property name="keyboardTracking">
@@ -1380,6 +1434,13 @@
            </property>
            <property name="value">
             <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>X2 min/max:</string>
            </property>
           </widget>
          </item>
@@ -1406,6 +1467,13 @@
            </property>
            <property name="value">
             <double>8.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Z2 min/max:</string>
            </property>
           </widget>
          </item>
@@ -1469,19 +1537,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="1" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_23">
          <property name="leftMargin">
@@ -1499,17 +1554,23 @@
          <property name="spacing">
           <number>6</number>
          </property>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string>Radius:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>Pitch:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="Gui::QuantitySpinBox" name="helixPitch">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1520,10 +1581,53 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="1">
+          <widget class="Gui::QuantitySpinBox" name="helixHeight">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>2.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Radius:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="Gui::QuantitySpinBox" name="helixRadius">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
          <item row="3" column="0">
           <widget class="QLabel" name="label_20">
            <property name="text">
             <string>Angle:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::QuantitySpinBox" name="helixAngle">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">deg</string>
            </property>
           </widget>
          </item>
@@ -1548,56 +1652,20 @@
            </item>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="Gui::QuantitySpinBox" name="helixAngle">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">deg</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="Gui::QuantitySpinBox" name="helixPitch">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>1.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="Gui::QuantitySpinBox" name="helixHeight">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>2.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="Gui::QuantitySpinBox" name="helixRadius">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>1.000000000000000</double>
-           </property>
-          </widget>
-         </item>
         </layout>
+       </item>
+       <item row="1" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -1618,19 +1686,6 @@
        <property name="spacing">
         <number>6</number>
        </property>
-       <item row="1" column="0">
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="_25">
          <property name="leftMargin">
@@ -1648,24 +1703,10 @@
          <property name="spacing">
           <number>6</number>
          </property>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_spiral_radius">
-           <property name="text">
-            <string>Radius:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_spiral_growth">
            <property name="text">
             <string>Growth:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_spiral_rotation">
-           <property name="text">
-            <string>Number of rotations:</string>
            </property>
           </widget>
          </item>
@@ -1682,6 +1723,13 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_spiral_rotation">
+           <property name="text">
+            <string>Number of rotations:</string>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="1">
           <widget class="QDoubleSpinBox" name="spiralRotation">
            <property name="keyboardTracking">
@@ -1692,6 +1740,13 @@
            </property>
            <property name="value">
             <double>2.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_spiral_radius">
+           <property name="text">
+            <string>Radius:</string>
            </property>
           </widget>
          </item>
@@ -1709,6 +1764,19 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="1" column="0">
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -1738,17 +1806,23 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="1">
+          <widget class="Gui::QuantitySpinBox" name="circleRadius">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+           <property name="value">
+            <double>2.000000000000000</double>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="Angle0">
            <property name="text">
             <string>Angle 1:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="Angle1">
-           <property name="text">
-            <string>Angle 2:</string>
            </property>
           </widget>
          </item>
@@ -1762,6 +1836,13 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="Angle1">
+           <property name="text">
+            <string>Angle 2:</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="circleAngle1">
            <property name="keyboardTracking">
@@ -1772,19 +1853,6 @@
            </property>
            <property name="value">
             <double>360.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="Gui::QuantitySpinBox" name="circleRadius">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-           <property name="value">
-            <double>2.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1840,27 +1908,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="labelEllMinorRadius">
-           <property name="text">
-            <string>Minor radius:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="labelEllAngle1">
-           <property name="text">
-            <string>Angle 1:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="labelEllAngle2">
-           <property name="text">
-            <string>Angle 2:</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipseMajorRadius">
            <property name="keyboardTracking">
@@ -1871,6 +1918,13 @@
            </property>
            <property name="value">
             <double>4.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelEllMinorRadius">
+           <property name="text">
+            <string>Minor radius:</string>
            </property>
           </widget>
          </item>
@@ -1887,6 +1941,13 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labelEllAngle1">
+           <property name="text">
+            <string>Angle 1:</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipseAngle0">
            <property name="keyboardTracking">
@@ -1894,6 +1955,13 @@
            </property>
            <property name="unit" stdset="0">
             <string notr="true">deg</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="labelEllAngle2">
+           <property name="text">
+            <string>Angle 2:</string>
            </property>
           </widget>
          </item>
@@ -1941,26 +2009,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_Y_Axis">
-           <property name="text">
-            <string>Y:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_Z_Axis">
-           <property name="text">
-            <string>Z:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="Gui::QuantitySpinBox" name="vertexX">
            <property name="keyboardTracking">
@@ -1971,6 +2019,16 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_Y_Axis">
+           <property name="text">
+            <string>Y:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="1">
           <widget class="Gui::QuantitySpinBox" name="vertexY">
            <property name="keyboardTracking">
@@ -1978,6 +2036,16 @@
            </property>
            <property name="unit" stdset="0">
             <string notr="true">mm</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_Z_Axis">
+           <property name="text">
+            <string>Z:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -2012,6 +2080,13 @@
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="0">
+          <widget class="QLabel" name="Start_Vertex">
+           <property name="text">
+            <string>Start point</string>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="X1">
            <property name="text">
@@ -2019,6 +2094,16 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="Gui::QuantitySpinBox" name="edgeX1">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
            </property>
           </widget>
          </item>
@@ -2032,6 +2117,16 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="1">
+          <widget class="Gui::QuantitySpinBox" name="edgeY1">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
+           </property>
+          </widget>
+         </item>
          <item row="3" column="0">
           <widget class="QLabel" name="Z1">
            <property name="text">
@@ -2039,6 +2134,16 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="Gui::QuantitySpinBox" name="edgeZ1">
+           <property name="keyboardTracking">
+            <bool>false</bool>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">mm</string>
            </property>
           </widget>
          </item>
@@ -2059,13 +2164,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="Start_Vertex">
-           <property name="text">
-            <string>Start point</string>
-           </property>
-          </widget>
-         </item>
          <item row="6" column="0">
           <widget class="QLabel" name="X2">
            <property name="text">
@@ -2073,56 +2171,6 @@
            </property>
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="Y2">
-           <property name="text">
-            <string>Y:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="Z2">
-           <property name="text">
-            <string>Z:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="Gui::QuantitySpinBox" name="edgeX1">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="Gui::QuantitySpinBox" name="edgeY1">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="Gui::QuantitySpinBox" name="edgeZ1">
-           <property name="keyboardTracking">
-            <bool>false</bool>
-           </property>
-           <property name="unit" stdset="0">
-            <string notr="true">mm</string>
            </property>
           </widget>
          </item>
@@ -2139,6 +2187,16 @@
            </property>
           </widget>
          </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="Y2">
+           <property name="text">
+            <string>Y:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
          <item row="7" column="1">
           <widget class="Gui::QuantitySpinBox" name="edgeY2">
            <property name="keyboardTracking">
@@ -2149,6 +2207,16 @@
            </property>
            <property name="value">
             <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="Z2">
+           <property name="text">
+            <string>Z:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -2288,75 +2356,6 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>planeLength</tabstop>
-  <tabstop>planeWidth</tabstop>
-  <tabstop>boxLength</tabstop>
-  <tabstop>boxWidth</tabstop>
-  <tabstop>boxHeight</tabstop>
-  <tabstop>cylinderRadius</tabstop>
-  <tabstop>cylinderHeight</tabstop>
-  <tabstop>cylinderAngle</tabstop>
-  <tabstop>coneRadius1</tabstop>
-  <tabstop>coneRadius2</tabstop>
-  <tabstop>coneHeight</tabstop>
-  <tabstop>coneAngle</tabstop>
-  <tabstop>sphereRadius</tabstop>
-  <tabstop>sphereAngle3</tabstop>
-  <tabstop>sphereAngle1</tabstop>
-  <tabstop>sphereAngle2</tabstop>
-  <tabstop>ellipsoidRadius1</tabstop>
-  <tabstop>ellipsoidRadius2</tabstop>
-  <tabstop>ellipsoidRadius3</tabstop>
-  <tabstop>ellipsoidAngle3</tabstop>
-  <tabstop>ellipsoidAngle1</tabstop>
-  <tabstop>ellipsoidAngle2</tabstop>
-  <tabstop>torusRadius1</tabstop>
-  <tabstop>torusRadius2</tabstop>
-  <tabstop>torusAngle3</tabstop>
-  <tabstop>torusAngle1</tabstop>
-  <tabstop>torusAngle2</tabstop>
-  <tabstop>prismPolygon</tabstop>
-  <tabstop>prismCircumradius</tabstop>
-  <tabstop>prismHeight</tabstop>
-  <tabstop>wedgeXmin</tabstop>
-  <tabstop>wedgeXmax</tabstop>
-  <tabstop>wedgeYmin</tabstop>
-  <tabstop>wedgeYmax</tabstop>
-  <tabstop>wedgeZmin</tabstop>
-  <tabstop>wedgeZmax</tabstop>
-  <tabstop>wedgeX2min</tabstop>
-  <tabstop>wedgeX2max</tabstop>
-  <tabstop>wedgeZ2min</tabstop>
-  <tabstop>wedgeZ2max</tabstop>
-  <tabstop>helixPitch</tabstop>
-  <tabstop>helixHeight</tabstop>
-  <tabstop>helixRadius</tabstop>
-  <tabstop>helixAngle</tabstop>
-  <tabstop>helixLocalCS</tabstop>
-  <tabstop>spiralGrowth</tabstop>
-  <tabstop>spiralRotation</tabstop>
-  <tabstop>spiralRadius</tabstop>
-  <tabstop>circleRadius</tabstop>
-  <tabstop>circleAngle0</tabstop>
-  <tabstop>circleAngle1</tabstop>
-  <tabstop>buttonCircleFromThreePoints</tabstop>
-  <tabstop>ellipseMajorRadius</tabstop>
-  <tabstop>ellipseMinorRadius</tabstop>
-  <tabstop>ellipseAngle0</tabstop>
-  <tabstop>ellipseAngle1</tabstop>
-  <tabstop>vertexX</tabstop>
-  <tabstop>vertexY</tabstop>
-  <tabstop>vertexZ</tabstop>
-  <tabstop>edgeX1</tabstop>
-  <tabstop>edgeY1</tabstop>
-  <tabstop>edgeZ1</tabstop>
-  <tabstop>edgeX2</tabstop>
-  <tabstop>edgeY2</tabstop>
-  <tabstop>edgeZ2</tabstop>
-  <tabstop>regularPolygonPolygon</tabstop>
-  <tabstop>regularPolygonCircumradius</tabstop>
- </tabstops>
  <resources>
   <include location="../../Part/Gui/Resources/Part.qrc"/>
  </resources>

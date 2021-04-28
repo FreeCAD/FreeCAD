@@ -64,7 +64,7 @@ class Shape2DView(gui_base_original.Modifier):
         super(Shape2DView, self).Activated(name=translate("draft","Project 2D view"))
         if not Gui.Selection.getSelection():
             if self.ui:
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to project"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

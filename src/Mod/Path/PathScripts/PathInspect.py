@@ -89,9 +89,15 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class GCodeEditorDialog(QtGui.QDialog):
+    tool = None
 
     def __init__(self, PathObj, parent=FreeCADGui.getMainWindow()):
-        self.PathObj = PathObj
+        self.PathObj = PathObj.Path
+        if hasattr(PathObj, 'ToolController'):
+            self.tool = PathObj.ToolController.Tool
+        else:
+            self.tool = None
+
         QtGui.QDialog.__init__(self, parent)
         layout = QtGui.QVBoxLayout(self)
 
@@ -189,6 +195,11 @@ class GCodeEditorDialog(QtGui.QDialog):
         p.Commands = selectionpath
         self.selectionobj.Path = p
 
+        if self.tool is not None:
+            self.tool.Placement.Base.x = prevX
+            self.tool.Placement.Base.y = prevY
+            self.tool.Placement.Base.z = prevZ
+
 
 def show(obj):
     "show(obj): shows the G-code data of the given Path object in a dialog"
@@ -200,7 +211,7 @@ def show(obj):
 
     if hasattr(obj, "Path"):
         if obj.Path:
-            dia = GCodeEditorDialog(obj.Path)
+            dia = GCodeEditorDialog(obj)
             dia.editor.setText(obj.Path.toGCode())
             gcodeSize = len(dia.editor.toPlainText())
             if (gcodeSize <= mhs):

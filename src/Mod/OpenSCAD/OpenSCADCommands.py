@@ -327,18 +327,34 @@ class RemoveSubtree:
 class AddSCADWidget(QtGui.QWidget):
     def __init__(self,*args):
         QtGui.QWidget.__init__(self,*args)
+        # Main text area
         self.textEdit=QtGui.QTextEdit()
         self.textEdit.setAcceptRichText(False)
+        #print(self.textEdit.maximumHeight())
+        #print(self.textEdit.maximumViewportSize())
+        # Message Area
+        self.textMsg=QtGui.QPlainTextEdit()
+        self.textMsg.setReadOnly(True)
+        h = int(2.5 * self.textMsg.fontMetrics().height())
+        self.textMsg.setMaximumHeight(h)
+        self.textMsg.resize(self.textMsg.width(),h)
         self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Add'))
         self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear'))
+        self.buttonload = QtGui.QPushButton(translate('OpenSCAD','Load'))
+        self.buttonsave = QtGui.QPushButton(translate('OpenSCAD','Save'))
+        self.buttonrefresh = QtGui.QPushButton(translate('OpenSCAD','Refresh'))
         self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD','as Mesh'))
         layouth=QtGui.QHBoxLayout()
         layouth.addWidget(self.buttonadd)
+        layouth.addWidget(self.buttonload)
+        layouth.addWidget(self.buttonsave)
+        layouth.addWidget(self.buttonrefresh)
         layouth.addWidget(self.buttonclear)
         layout= QtGui.QVBoxLayout()
         layout.addLayout(layouth)
         layout.addWidget(self.checkboxmesh)
         layout.addWidget(self.textEdit)
+        layout.addWidget(self.textMsg)
         self.setLayout(layout)
         self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))
         self.textEdit.setText(u'cube();')
@@ -346,6 +362,9 @@ class AddSCADWidget(QtGui.QWidget):
 
     def retranslateUi(self, widget=None):
         self.buttonadd.setText(translate('OpenSCAD','Add'))
+        self.buttonload.setText(translate('OpenSCAD','Load'))
+        self.buttonsave.setText(translate('OpenSCAD','Save'))
+        self.buttonrefresh.setText(translate('OpenSCAD','Refesh'))
         self.buttonclear.setText(translate('OpenSCAD','Clear'))
         self.checkboxmesh.setText(translate('OpenSCAD','as Mesh'))
         self.setWindowTitle(translate('OpenSCAD','Add OpenSCAD Element'))
@@ -354,6 +373,10 @@ class AddSCADTask:
     def __init__(self):
         self.form = AddSCADWidget()
         self.form.buttonadd.clicked.connect(self.addelement)
+        self.form.buttonload.clicked.connect(self.loadelement)
+        self.form.buttonsave.clicked.connect(self.saveelement)
+        self.form.buttonrefresh.clicked.connect(self.refreshelement)
+
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
 
@@ -386,8 +409,34 @@ class AddSCADTask:
                 pass
 
         except OpenSCADUtils.OpenSCADError as e:
+            self.form.textMsg.setPlainText(e.value)
             FreeCAD.Console.PrintError(e.value)
+     
+    def refreshelement(self):
+        self.form.textMsg.setPlainText('')
+        doc=FreeCAD.activeDocument()
+        if doc :
+           for obj in doc.Objects :
+               doc.removeObject(obj.Name)
+        self.addelement()
 
+    def loadelement(self):
+        filename, filter = QtGui.QFileDialog.getOpenFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+
+        if filename:
+           print('filename :'+filename)
+           with open(filename,'r') as fp :
+              data = fp.read()
+              self.form.textEdit.setText(data)
+    
+    def saveelement(self) :
+        filename, filter = QtGui.QFileDialog.getSaveFileName(parent=self.form, caption='Open file', dir='.', filter='OpenSCAD Files (*.scad)',selectedFilter='',option=0)
+
+        if filename:
+           Text = self.form.textEdit.toPlainText()
+           with open(filename,'w') as fp :
+              fp.write(Text)
+    
 class OpenSCADMeshBooleanWidget(QtGui.QWidget):
     def __init__(self,*args):
         QtGui.QWidget.__init__(self,*args)
@@ -428,6 +477,7 @@ class OpenSCADMeshBooleanTask:
     def __init__(self):
         self.form = OpenSCADMeshBooleanWidget()
         self.form.buttonadd.clicked.connect(self.doboolean)
+
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
 
@@ -457,9 +507,11 @@ class OpenSCADMeshBooleanTask:
 class AddOpenSCADElement:
     def IsActive(self):
         return not FreeCADGui.Control.activeDialog()
+
     def Activated(self):
         panel = AddSCADTask()
         FreeCADGui.Control.showDialog(panel)
+
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_AddOpenSCADElement', 
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement', 'Add OpenSCAD Element...'), 
@@ -470,9 +522,11 @@ class OpenSCADMeshBoolean:
     def IsActive(self):
         return not FreeCADGui.Control.activeDialog() and \
             len(FreeCADGui.Selection.getSelection()) >= 1
+
     def Activated(self):
         panel = OpenSCADMeshBooleanTask()
         FreeCADGui.Control.showDialog(panel)
+
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_MeshBooleans', 
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean...'), 

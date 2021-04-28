@@ -99,11 +99,9 @@
 #include "QuarterWidgetP.h"
 #include "QuarterP.h"
 
-#if QT_VERSION >= 0x050000
 #include <QWindow>
 #include <QGuiApplication>
 #include <QMetaObject>
-#endif
 
 
 using namespace SIM::Coin3D::Quarter;
@@ -209,13 +207,11 @@ public:
     }
     void aboutToDestroyGLContext()
     {
-#if QT_VERSION >= 0x050900
         // With Qt 5.9 a signal is emitted while the QuarterWidget is being destroyed.
         // At this state its type is a QWidget, not a QuarterWidget any more.
         QuarterWidget* qw = qobject_cast<QuarterWidget*>(parent());
         if (!qw)
             return;
-#endif
         QMetaObject::invokeMethod(parent(), "aboutToDestroyGLContext",
             Qt::DirectConnection,
             QGenericReturnArgument());
@@ -835,7 +831,6 @@ QuarterWidget::seek(void)
 
 bool
 QuarterWidget::updateDevicePixelRatio(void) {
-#if QT_VERSION >= 0x050000
     qreal dev_pix_ratio = 1.0;
     QWidget* winwidg = window();
     QWindow* win = NULL;
@@ -853,7 +848,6 @@ QuarterWidget::updateDevicePixelRatio(void) {
         emit devicePixelRatioChanged(dev_pix_ratio);
         return true;
     }
-#endif
     return false;
 }
 
@@ -1049,19 +1043,7 @@ QuarterWidget::redraw(void)
   // Note that, the recursive repaint is not infinite due to setting
   // 'processdelayqueue = false' above. However, it does cause annoying
   // flickering, and actually crash on Windows.
-#if 1
   this->viewport()->update();
-#else
-
-// #if QT_VERSION >= 0x050500 && QT_VERSION < 0x050600
-#if 1
-  // With Qt 5.5.x there is a major performance problem
-  this->viewport()->update();
-#else
-  this->viewport()->repaint();
-#endif
-
-#endif
 }
 
 /*!
@@ -1355,9 +1337,7 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     //navigation systems? - BFG 20090117
     this->setStateCursor("interact", Qt::ArrowCursor);
     this->setStateCursor("idle", Qt::OpenHandCursor);
-#if QT_VERSION >= 0x040200
     this->setStateCursor("rotate", Qt::ClosedHandCursor);
-#endif
     this->setStateCursor("pan", Qt::SizeAllCursor);
     this->setStateCursor("zoom", Qt::SizeVerCursor);
     this->setStateCursor("dolly", Qt::SizeVerCursor);

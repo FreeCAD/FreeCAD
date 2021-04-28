@@ -461,7 +461,7 @@ TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
         builder.Add(compShape, xp.Current());
     }
 
-    return compShape;
+    return TopoDS_Shape(std::move(compShape));
 }
 
 }

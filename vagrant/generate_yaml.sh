@@ -117,5 +117,5 @@ echo "
 apps:
  FreeCAD:
   command: bin/launcher
-  plugs: [ locale-control,x11,opengl,network-bind,home,unity7 ]
+  plugs: [ locale-control,x11,opengl,network-bind,home,unity7,removable-media ]
 " >> snapcraft.yaml

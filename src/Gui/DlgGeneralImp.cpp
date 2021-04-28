@@ -193,7 +193,6 @@ void DlgGeneralImp::loadSettings()
         QByteArray lang = it->first.c_str();
         QString langname = QString::fromLatin1(lang.constData());
 
-#if QT_VERSION >= 0x040800
         QLocale locale(QString::fromLatin1(it->second.c_str()));
         QString native = locale.nativeLanguageName();
         if (!native.isEmpty()) {
@@ -201,7 +200,6 @@ void DlgGeneralImp::loadSettings()
                 native[0] = native[0].toUpper();
             langname = native;
         }
-#endif
 
         ui->Languages->addItem(langname, lang);
         if (language == lang) {

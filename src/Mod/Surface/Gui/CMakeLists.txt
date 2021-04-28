@@ -23,16 +23,6 @@ set(SurfaceGui_LIBS
     FreeCADGui
 )
 
-set(SurfaceGui_MOC_HDRS
-    TaskFilling.h
-    TaskFillingEdge.h
-    TaskFillingVertex.h
-    TaskGeomFillSurface.h
-    TaskSections.h
-)
-fc_wrap_cpp(SurfaceGui_MOC_SRCS ${SurfaceGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${SurfaceGui_MOC_SRCS})
-
 if (BUILD_QT5)
     qt5_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
 else()

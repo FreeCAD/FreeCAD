@@ -286,11 +286,7 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
         for(auto it=dict.begin();it!=dict.end();++it) {
             const auto &item = *it;
             PyObject *key = item.first.ptr();
-#if PY_MAJOR_VERSION < 3
-            if(!PyInt_Check(key))
-#else
             if(!PyLong_Check(key))
-#endif
                 throw Base::TypeError("expect key type to be integer");
             long idx = PyLong_AsLong(key);
             if(idx<-1 || idx>listSize)

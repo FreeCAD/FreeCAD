@@ -265,6 +265,7 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceFillets(geom);
     geom    << "Sketcher_Trimming"
             << "Sketcher_Extend"
+            << "Sketcher_Split"
             << "Sketcher_External"
             << "Sketcher_CarbonCopy"
             << "Sketcher_ToggleConstruction"

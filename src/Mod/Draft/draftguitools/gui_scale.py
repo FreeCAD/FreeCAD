@@ -84,7 +84,7 @@ class Scale(gui_base_original.Modifier):
         """Get object selection and proceed if successful."""
         if Gui.Selection.getSelection():
             return self.proceed()
-        self.ui.selectUi()
+        self.ui.selectUi(on_close_call=self.finish)
         _msg(translate("draft", "Select an object to scale"))
         self.call = self.view.addEventCallback("SoEvent",
                                                gui_tool_utils.selectObject)

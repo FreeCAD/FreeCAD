@@ -78,7 +78,7 @@ public:
     static PyObject * richCompare(PyObject *v, PyObject *w, int op);
 -
     static PyGetSetDef    GetterSetter[];
-    virtual PyTypeObject *GetType(void) {return &Type;}
+    virtual PyTypeObject *GetType() {return &Type;}
 
 public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
@@ -92,8 +92,8 @@ public:
 
     typedef @self.export.TwinPointer@* PointerType ;
 
-    virtual PyObject *_repr(void);        // the representation
-    std::string representation(void) const;
+    virtual PyObject *_repr();        // the representation
+    std::string representation() const;
 
     /** @name callbacks and implementers for the python object methods */
     //@{
@@ -165,24 +165,10 @@ public:
     static PyObject * number_xor_handler (PyObject *self, PyObject *other);
     /// callback for the number_or_handler
     static PyObject * number_or_handler (PyObject *self, PyObject *other);
-#if PY_MAJOR_VERSION < 3
-    /// callback for the number_coerce_handler
-    static int number_coerce_handler (PyObject **self, PyObject **other);
-#endif
     /// callback for the number_int_handler
     static PyObject * number_int_handler (PyObject *self);
-#if PY_MAJOR_VERSION < 3
-    /// callback for the number_long_handler
-    static PyObject * number_long_handler (PyObject *self);
-#endif
     /// callback for the number_float_handler
     static PyObject * number_float_handler (PyObject *self);
-#if PY_MAJOR_VERSION < 3
-    /// callback for the number_oct_handler
-    static PyObject * number_oct_handler (PyObject *self);
-    /// callback for the number_hex_handler
-    static PyObject * number_hex_handler (PyObject *self);
-#endif
     //@}
 -
 + if (self.export.Sequence):
@@ -227,7 +213,7 @@ public:
     ///getter callback for the @i.Name@ attribute
     static PyObject * staticCallback_get@i.Name@ (PyObject *self, void *closure);
     /// getter for the @i.Name@ attribute
-    Py::@i.Parameter.Type@ get@i.Name@(void) const;
+    Py::@i.Parameter.Type@ get@i.Name@() const;
     /// setter callback for the @i.Name@ attribute
     static int staticCallback_set@i.Name@ (PyObject *self, PyObject *value, void *closure);
 + if (i.ReadOnly):
@@ -250,7 +236,7 @@ public:
 -
 
     /// getter for the object handled by this class
-    @self.export.TwinPointer@ *get@self.export.Twin@Ptr(void) const;
+    @self.export.TwinPointer@ *get@self.export.Twin@Ptr() const;
 
 + if(self.export.ClassDeclarations != ""):
     /** @name additional declarations and methods for the wrapper class */
@@ -299,84 +285,74 @@ PyTypeObject @self.export.Name@::Type = {
     0,                                                /*tp_itemsize*/
     /* methods */
     PyDestructor,                                     /*tp_dealloc*/
-    0,                                                /*tp_print*/
-    0,                                                /*tp_getattr*/
-    0,                                                /*tp_setattr*/
-    0,                                                /*tp_compare*/
+#if PY_VERSION_HEX >= 0x03080000
+    0,                                                /*tp_vectorcall_offset*/
+#else
+    nullptr,                                          /*tp_print*/
+#endif
+    nullptr,                                          /*tp_getattr*/
+    nullptr,                                          /*tp_setattr*/
+    nullptr,                                          /*tp_compare*/
     __repr,                                           /*tp_repr*/
 + if (self.export.NumberProtocol):
     @self.export.Namespace@::@self.export.Name@::Number,      /*tp_as_number*/
 = else:
-    0,                                                /*tp_as_number*/
+    nullptr,                                          /*tp_as_number*/
 -
 + if (self.export.Sequence):
     @self.export.Namespace@::@self.export.Name@::Sequence,      /*tp_as_sequence*/
     @self.export.Namespace@::@self.export.Name@::Mapping,       /*tp_as_mapping*/
 = else:
-    0,                                                /*tp_as_sequence*/
-    0,                                                /*tp_as_mapping*/
+    nullptr,                                          /*tp_as_sequence*/
+    nullptr,                                          /*tp_as_mapping*/
 -
-    0,                                                /*tp_hash*/
-    0,                                                /*tp_call */
-    0,                                                /*tp_str  */
+    nullptr,                                          /*tp_hash*/
+    nullptr,                                          /*tp_call */
+    nullptr,                                          /*tp_str  */
     __getattro,                                       /*tp_getattro*/
     __setattro,                                       /*tp_setattro*/
     /* --- Functions to access object as input/output buffer ---------*/
-    0,                                                /* tp_as_buffer */
+    nullptr,                                          /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
-#if PY_MAJOR_VERSION >= 3
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,        /*tp_flags */
-#else
-+ if (self.export.RichCompare and self.export.NumberProtocol):
-    Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_RICHCOMPARE|Py_TPFLAGS_CHECKTYPES,        /*tp_flags */
-= elif (self.export.RichCompare):
-    Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_RICHCOMPARE,        /*tp_flags */
-= elif (self.export.NumberProtocol):
-    Py_TPFLAGS_DEFAULT|Py_TPFLAGS_CHECKTYPES,        /*tp_flags */
-= else:
-    Py_TPFLAGS_DEFAULT,        /*tp_flags */
--
-#endif
     "@self.export.Documentation.UserDocu.replace('\\n','\\\\n\\"\\n    \\"')@",           /*tp_doc */
-    0,                                                /*tp_traverse */
-    0,                                                /*tp_clear */
+    nullptr,                                          /*tp_traverse */
+    nullptr,                                          /*tp_clear */
 + if (self.export.RichCompare):
     @self.export.Namespace@::@self.export.Name@::richCompare,      /*tp_richcompare*/
 = else:
-    0,                                                /*tp_richcompare */
+    nullptr,                                          /*tp_richcompare */
 -
     0,                                                /*tp_weaklistoffset */
-    0,                                                /*tp_iter */
-    0,                                                /*tp_iternext */
+    nullptr,                                          /*tp_iter */
+    nullptr,                                          /*tp_iternext */
     @self.export.Namespace@::@self.export.Name@::Methods,                     /*tp_methods */
-    0,                                                /*tp_members */
+    nullptr,                                          /*tp_members */
     @self.export.Namespace@::@self.export.Name@::GetterSetter,                     /*tp_getset */
     &@self.export.FatherNamespace@::@self.export.Father@::Type,                        /*tp_base */
-    0,                                                /*tp_dict */
-    0,                                                /*tp_descr_get */
-    0,                                                /*tp_descr_set */
+    nullptr,                                          /*tp_dict */
+    nullptr,                                          /*tp_descr_get */
+    nullptr,                                          /*tp_descr_set */
     0,                                                /*tp_dictoffset */
     __PyInit,                                         /*tp_init */
-    0,                                                /*tp_alloc */
+    nullptr,                                          /*tp_alloc */
     @self.export.Namespace@::@self.export.Name@::PyMake,/*tp_new */
-    0,                                                /*tp_free   Low-level free-memory routine */
-    0,                                                /*tp_is_gc  For PyObject_IS_GC */
-    0,                                                /*tp_bases */
-    0,                                                /*tp_mro    method resolution order */
-    0,                                                /*tp_cache */
-    0,                                                /*tp_subclasses */
-    0,                                                /*tp_weaklist */
-    0,                                                /*tp_del */
-    0                                                 /*tp_version_tag */
-#if PY_MAJOR_VERSION >= 3
-    ,0                                                /*tp_finalize */
-#endif
+    nullptr,                                          /*tp_free   Low-level free-memory routine */
+    nullptr,                                          /*tp_is_gc  For PyObject_IS_GC */
+    nullptr,                                          /*tp_bases */
+    nullptr,                                          /*tp_mro    method resolution order */
+    nullptr,                                          /*tp_cache */
+    nullptr,                                          /*tp_subclasses */
+    nullptr,                                          /*tp_weaklist */
+    nullptr,                                          /*tp_del */
+    0,                                                /*tp_version_tag */
+    nullptr                                           /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03090000
-    ,0                                                /*tp_vectorcall */
+    ,nullptr                                          /*tp_vectorcall */
 #elif PY_VERSION_HEX >= 0x03080000
-    ,0                                                /*tp_vectorcall */
+    ,nullptr                                          /*tp_vectorcall */
     /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
-    ,0                                                /*tp_print */
+    ,nullptr                                          /*tp_print */
 #endif
 };
 
@@ -408,7 +384,7 @@ PyMethodDef @self.export.Name@::Methods[] = {
         "@i.Documentation.UserDocu.replace('\\n','\\\\n')@"
     },
 -
-    {NULL, NULL, 0, NULL}		/* Sentinel */
+    {nullptr, nullptr, 0, nullptr}		/* Sentinel */
 };
 
 + if (self.export.NumberProtocol):
@@ -416,9 +392,6 @@ PyNumberMethods @self.export.Name@::Number[] = { {
     number_add_handler,
     number_subtract_handler,
     number_multiply_handler,
-#if PY_MAJOR_VERSION < 3
-    number_divide_handler,
-#endif
     number_remainder_handler,
     number_divmod_handler,
     number_power_handler,
@@ -432,45 +405,27 @@ PyNumberMethods @self.export.Name@::Number[] = { {
     number_and_handler,
     number_xor_handler,
     number_or_handler,
-#if PY_MAJOR_VERSION < 3
-    number_coerce_handler,
-#endif
     number_int_handler,
-#if PY_MAJOR_VERSION < 3
-    number_long_handler,
-#else
-    0,
-#endif
+    nullptr,
     number_float_handler,
-#if PY_MAJOR_VERSION < 3
-    number_oct_handler,
-    number_hex_handler,
-#endif
-    NULL,    /*nb_inplace_add*/
-    NULL,    /*nb_inplace_subtract*/
-    NULL,    /*nb_inplace_multiply*/
-#if PY_MAJOR_VERSION < 3
-    NULL,    /*nb_inplace_divide*/
-#endif
-    NULL,    /*nb_inplace_remainder*/
-    NULL,    /*nb_inplace_power*/
-    NULL,    /*nb_inplace_lshift*/
-    NULL,    /*nb_inplace_rshift*/
-    NULL,    /*nb_inplace_and*/
-    NULL,    /*nb_inplace_xor*/
-    NULL,    /*nb_inplace_or*/
-    NULL,    /*nb_floor_divide*/
-#if PY_MAJOR_VERSION < 3
-    NULL,    /*nb_true_divide*/
-#else
+    nullptr,    /*nb_inplace_add*/
+    nullptr,    /*nb_inplace_subtract*/
+    nullptr,    /*nb_inplace_multiply*/
+    nullptr,    /*nb_inplace_remainder*/
+    nullptr,    /*nb_inplace_power*/
+    nullptr,    /*nb_inplace_lshift*/
+    nullptr,    /*nb_inplace_rshift*/
+    nullptr,    /*nb_inplace_and*/
+    nullptr,    /*nb_inplace_xor*/
+    nullptr,    /*nb_inplace_or*/
+    nullptr,    /*nb_floor_divide*/
     number_divide_handler,    /*nb_true_divide*/
-#endif
-    NULL,    /*nb_inplace_floor_divide*/
-    NULL,    /*nb_inplace_true_divide*/
-    NULL     /*nb_index*/
+    nullptr,    /*nb_inplace_floor_divide*/
+    nullptr,    /*nb_inplace_true_divide*/
+    nullptr     /*nb_index*/
 #if PY_VERSION_HEX >= 0x03050000
-   ,NULL     /*nb_matrix_multiply*/
-   ,NULL     /*nb_inplace_matrix_multiply*/
+   ,nullptr     /*nb_matrix_multiply*/
+   ,nullptr     /*nb_inplace_matrix_multiply*/
 #endif
 } };
 -
@@ -480,44 +435,44 @@ PySequenceMethods @self.export.Name@::Sequence[] = { {
 + if (self.export.Sequence.sq_length):
     sequence_length,
 = else:
-    0,
+    nullptr,
 -
 + if (self.export.Sequence.sq_concat):
     sequence_concat,
 = else:
-    0,
+    nullptr,
 -
 + if (self.export.Sequence.sq_repeat):
     sequence_repeat,
 = else:
-    0,
+    nullptr,
 -
 + if (self.export.Sequence.sq_item):
     sequence_item,
 = else:
-    0,
+    nullptr,
 -
-    0,
+    nullptr,
 + if (self.export.Sequence.sq_ass_item):
     sequence_ass_item,
 = else:
-    0,
+    nullptr,
 -
-    0,
+    nullptr,
 + if (self.export.Sequence.sq_contains):
     sequence_contains,
 = else:
-    0,
+    nullptr,
 -
 + if (self.export.Sequence.sq_inplace_concat):
     sequence_inplace_concat,
 = else:
-    0,
+    nullptr,
 -
 + if (self.export.Sequence.sq_inplace_repeat):
     sequence_inplace_repeat,
 = else:
-    0
+    nullptr
 -
 } };
 
@@ -525,17 +480,17 @@ PyMappingMethods @self.export.Name@::Mapping[] = { {
 + if (self.export.Sequence.sq_length):
     sequence_length,
 = else:
-    0,
+    nullptr,
 -
 + if (self.export.Sequence.mp_subscript):
     mapping_subscript,
 = else:
-    0,
+    nullptr,
 -
 + if (self.export.Sequence.mp_ass_subscript):
     mapping_ass_subscript,
 = else:
-    0,
+    nullptr,
 -
 } };
 -
@@ -547,10 +502,10 @@ PyGetSetDef @self.export.Name@::GetterSetter[] = {
         (getter) staticCallback_get@i.Name@,
         (setter) staticCallback_set@i.Name@, 
         "@i.Documentation.UserDocu.replace('\\n','\\\\n')@",
-        NULL
+        nullptr
     },
 -
-    {NULL, NULL, NULL, NULL, NULL}		/* Sentinel */
+    {nullptr, nullptr, nullptr, nullptr, nullptr}		/* Sentinel */
 };
 
 + for i in self.export.Methode:
@@ -567,20 +522,20 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
     // make sure that not a null pointer is passed
     if (!self) {
         PyErr_SetString(PyExc_TypeError, "descriptor '@i.Name@' of '@self.export.Namespace@.@self.export.Twin@' object needs an argument");
-        return NULL;
+        return nullptr;
     }
 
     // test if twin object isn't already deleted
     if (!static_cast<PyObjectBase*>(self)->isValid()) {
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
-        return NULL;
+        return nullptr;
     }
 
 +   if (not i.Const):
     // test if object is set Const
     if (static_cast<PyObjectBase*>(self)->isConst()) {
         PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a non const method");
-        return NULL;
+        return nullptr;
     }
 -
 
@@ -615,39 +570,37 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
     } // Please sync the following catch implementation with PY_CATCH
     catch(Base::AbortException &e)
     {
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
-        return NULL;
+        return nullptr;
     }
     catch(Base::Exception &e)
     {
-        e.ReportException();
         auto pye = e.getPyExceptionType();
         if(!pye)
             pye = Base::BaseExceptionFreeCADError;
         PyErr_SetObject(pye,e.getPyObject());
-        return NULL;
+        return nullptr;
     }
     catch(std::exception &e)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
-        return NULL;
+        return nullptr;
     }
     catch(const Py::Exception&)
     {
         // The exception text is already set
-        return NULL;
+        return nullptr;
     }
     catch(const char *e)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,e);
-        return NULL;
+        return nullptr;
     }
 #ifndef DONT_CATCH_CXX_EXCEPTIONS
     catch(...)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,"Unknown C++ exception");
-        return NULL;
+        return nullptr;
     }
 #endif
 }
@@ -661,17 +614,17 @@ PyObject * @self.export.Name@::staticCallback_get@i.Name@ (PyObject *self, void 
 {
     if (!static_cast<PyObjectBase*>(self)->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
-        return NULL;
+        return nullptr;
     }
 
     try {
         return Py::new_reference_to(static_cast<@self.export.Name@*>(self)->get@i.Name@());
     } catch (const Py::Exception&) {
         // The exception text is already set
-        return NULL;
+        return nullptr;
     } catch (...) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Unknown exception while reading attribute '@i.Name@' of object '@self.export.Twin@'");
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -742,7 +695,7 @@ PyObject *@self.export.Name@::PyMake(struct _typeobject *, PyObject *, PyObject 
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError, "You cannot create directly an instance of '@self.export.Name@'.");
  
-    return 0;
+    return nullptr;
 }
 
 int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
@@ -772,7 +725,7 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 //--------------------------------------------------------------------------
 // @self.export.Name@ representation
 //--------------------------------------------------------------------------
-PyObject *@self.export.Name@::_repr(void)
+PyObject *@self.export.Name@::_repr()
 {
     return Py_BuildValue("s", representation().c_str());
 }
@@ -790,44 +743,42 @@ PyObject *@self.export.Name@::_getattr(const char *attr)			// __getattr__ functi
     } // Please sync the following catch implementation with PY_CATCH
     catch(Base::AbortException &e)
     {
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
-        return NULL;
+        return nullptr;
     }
     catch(Base::Exception &e)
     {
-        e.ReportException();
         auto pye = e.getPyExceptionType();
         if(!pye)
             pye = Base::BaseExceptionFreeCADError;
         PyErr_SetObject(pye,e.getPyObject());
-        return NULL;
+        return nullptr;
     }
     catch(std::exception &e)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
-        return NULL;
+        return nullptr;
     }
     catch(const Py::Exception&)
     {
         // The exception text is already set
-        return NULL;
+        return nullptr;
     }
     catch(const char *e)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,e);
-        return NULL;
+        return nullptr;
     }
 #ifndef DONT_CATCH_CXX_EXCEPTIONS
     catch(...)
     {
         PyErr_SetString(Base::BaseExceptionFreeCADError,"Unknown C++ exception");
-        return NULL;
+        return nullptr;
     }
 #endif
 
     PyMethodDef *ml = Methods;
-    for (; ml->ml_name != NULL; ml++) {
+    for (; ml->ml_name != nullptr; ml++) {
         if (attr[0] == ml->ml_name[0] &&
             strcmp(attr+1, ml->ml_name+1) == 0)
             return PyCFunction_New(ml, this);
@@ -852,13 +803,11 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
     } // Please sync the following catch implementation with PY_CATCH
     catch(Base::AbortException &e)
     {
-        e.ReportException();
         PyErr_SetObject(Base::BaseExceptionFreeCADAbort,e.getPyObject());
         return -1;
     }
     catch(Base::Exception &e)
     {
-        e.ReportException();
         auto pye = e.getPyExceptionType();
         if(!pye)
             pye = Base::BaseExceptionFreeCADError;
@@ -892,7 +841,7 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
 }
 -
 
-@self.export.TwinPointer@ *@self.export.Name@::get@self.export.Twin@Ptr(void) const
+@self.export.TwinPointer@ *@self.export.Name@::get@self.export.Twin@Ptr() const
 {
     return static_cast<@self.export.TwinPointer@ *>(_pcTwinPointer);
 }
@@ -932,7 +881,7 @@ int @self.export.Name@::finalization()
 -
 
 // returns a string which represents the object e.g. when printed in python
-std::string @self.export.Name@::representation(void) const
+std::string @self.export.Name@::representation() const
 {
     return std::string("<@self.export.Twin@ object>");
 }
@@ -953,7 +902,7 @@ PyObject* @self.export.Name@::@i.Name@(PyObject *args)
 -
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 
@@ -961,61 +910,61 @@ PyObject* @self.export.Name@::@i.Name@(PyObject *args)
 PyObject* @self.export.Name@::number_add_handler(PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject* @self.export.Name@::number_subtract_handler(PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject* @self.export.Name@::number_multiply_handler(PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_power_handler (PyObject* /*self*/, PyObject* /*other*/, PyObject* /*modulo*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_negative_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_positive_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_absolute_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 int @self.export.Name@::number_nonzero_handler (PyObject* /*self*/)
@@ -1026,37 +975,37 @@ int @self.export.Name@::number_nonzero_handler (PyObject* /*self*/)
 PyObject * @self.export.Name@::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 int @self.export.Name@::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
@@ -1067,31 +1016,31 @@ int @self.export.Name@::number_coerce_handler (PyObject** /*self*/, PyObject** /
 PyObject * @self.export.Name@::number_int_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_long_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_float_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_oct_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_hex_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence):
@@ -1108,7 +1057,7 @@ Py_ssize_t @self.export.Name@::sequence_length(PyObject *)
 PyObject* @self.export.Name@::sequence_concat(PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.sq_repeat):
@@ -1116,7 +1065,7 @@ PyObject* @self.export.Name@::sequence_concat(PyObject *, PyObject *)
 PyObject * @self.export.Name@::sequence_repeat(PyObject *, Py_ssize_t)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.sq_item):
@@ -1124,7 +1073,7 @@ PyObject * @self.export.Name@::sequence_repeat(PyObject *, Py_ssize_t)
 PyObject * @self.export.Name@::sequence_item(PyObject *, Py_ssize_t)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.mp_subscript):
@@ -1132,7 +1081,7 @@ PyObject * @self.export.Name@::sequence_item(PyObject *, Py_ssize_t)
 PyObject * @self.export.Name@::mapping_subscript(PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.sq_ass_item):
@@ -1164,7 +1113,7 @@ int @self.export.Name@::sequence_contains(PyObject *, PyObject *)
 PyObject* @self.export.Name@::sequence_inplace_concat(PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.sq_inplace_repeat):
@@ -1172,7 +1121,7 @@ PyObject* @self.export.Name@::sequence_inplace_concat(PyObject *, PyObject *)
 PyObject * @self.export.Name@::sequence_inplace_repeat(PyObject *, Py_ssize_t)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 -
@@ -1181,12 +1130,12 @@ PyObject * @self.export.Name@::sequence_inplace_repeat(PyObject *, Py_ssize_t)
 PyObject* @self.export.Name@::richCompare(PyObject *v, PyObject *w, int op)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + for i in self.export.Attribute:
 
-Py::@i.Parameter.Type@ @self.export.Name@::get@i.Name@(void) const
+Py::@i.Parameter.Type@ @self.export.Name@::get@i.Name@() const
 {
     //return Py::@i.Parameter.Type@();
     throw Py::AttributeError("Not yet implemented");
@@ -1204,7 +1153,7 @@ void  @self.export.Name@::set@i.Name@(Py::@i.Parameter.Type@ arg)
 
 PyObject *@self.export.Name@::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int @self.export.Name@::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
@@ -1230,7 +1179,7 @@ int @self.export.Name@::setCustomAttributes(const char* /*attr*/, PyObject* /*ob
 using namespace @self.export.Namespace@;
 
 // returns a string which represents the object e.g. when printed in python
-std::string @self.export.Name@::representation(void) const
+std::string @self.export.Name@::representation() const
 {
     return std::string("<@self.export.Twin@ object>");
 }
@@ -1278,7 +1227,7 @@ PyObject* @self.export.Name@::@i.Name@(PyObject * /*args*/)
 -
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 
@@ -1286,61 +1235,61 @@ PyObject* @self.export.Name@::@i.Name@(PyObject * /*args*/)
 PyObject* @self.export.Name@::number_add_handler(PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject* @self.export.Name@::number_subtract_handler(PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject* @self.export.Name@::number_multiply_handler(PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_divide_handler (PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_remainder_handler (PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_divmod_handler (PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_power_handler (PyObject *self, PyObject *other, PyObject *modulo)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_negative_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_positive_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_absolute_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 int @self.export.Name@::number_nonzero_handler (PyObject *self)
@@ -1351,37 +1300,37 @@ int @self.export.Name@::number_nonzero_handler (PyObject *self)
 PyObject * @self.export.Name@::number_invert_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_lshift_handler (PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_rshift_handler (PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_and_handler (PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_xor_handler (PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_or_handler (PyObject *self, PyObject *other)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 int @self.export.Name@::number_coerce_handler (PyObject **self, PyObject **other)
@@ -1392,31 +1341,31 @@ int @self.export.Name@::number_coerce_handler (PyObject **self, PyObject **other
 PyObject * @self.export.Name@::number_int_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_long_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_float_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_oct_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * @self.export.Name@::number_hex_handler (PyObject *self)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 -
 
@@ -1434,7 +1383,7 @@ Py_ssize_t @self.export.Name@::sequence_length(PyObject *)
 PyObject* @self.export.Name@::sequence_concat(PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.sq_repeat):
@@ -1442,7 +1391,7 @@ PyObject* @self.export.Name@::sequence_concat(PyObject *, PyObject *)
 PyObject * @self.export.Name@::sequence_repeat(PyObject *, Py_ssize_t)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.sq_item):
@@ -1450,7 +1399,7 @@ PyObject * @self.export.Name@::sequence_repeat(PyObject *, Py_ssize_t)
 PyObject * @self.export.Name@::sequence_item(PyObject *, Py_ssize_t)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.mp_subscript):
@@ -1458,7 +1407,7 @@ PyObject * @self.export.Name@::sequence_item(PyObject *, Py_ssize_t)
 PyObject * @self.export.Name@::mapping_subscript(PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.sq_ass_item):
@@ -1490,7 +1439,7 @@ int @self.export.Name@::sequence_contains(PyObject *, PyObject *)
 PyObject* @self.export.Name@::sequence_inplace_concat(PyObject *, PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 + if (self.export.Sequence.sq_inplace_repeat):
@@ -1498,7 +1447,7 @@ PyObject* @self.export.Name@::sequence_inplace_concat(PyObject *, PyObject *)
 PyObject * @self.export.Name@::sequence_inplace_repeat(PyObject *, Py_ssize_t)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 -
@@ -1507,13 +1456,13 @@ PyObject * @self.export.Name@::sequence_inplace_repeat(PyObject *, Py_ssize_t)
 PyObject* @self.export.Name@::richCompare(PyObject *v, PyObject *w, int op)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 -
 
 + for i in self.export.Attribute:
 
-Py::@i.Parameter.Type@ @self.export.Name@::get@i.Name@(void) const
+Py::@i.Parameter.Type@ @self.export.Name@::get@i.Name@() const
 {
     //return Py::@i.Parameter.Type@();
     throw Py::AttributeError("Not yet implemented");
@@ -1531,7 +1480,7 @@ void @self.export.Name@::set@i.Name@(Py::@i.Parameter.Type@ /*arg*/)
 
 PyObject *@self.export.Name@::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int @self.export.Name@::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

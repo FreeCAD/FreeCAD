@@ -151,11 +151,7 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
                                         ui->qsbWeight->rawValue(),
                                         ui->qsbBorder->rawValue(),
                                         ui->cbMode->currentIndex());
-#if PY_MAJOR_VERSION < 3
-    Command::doCommand(Command::Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)fileSpec.c_str());
-#else
     Command::doCommand(Command::Doc,"f = open(\"%s\",'r')",(const char*)fileSpec.c_str());
-#endif
     Command::doCommand(Command::Doc,"svg = f.read()");
 //    Command::doCommand(Command::Doc,"print('length of svg: {}'.format(len(svg)))");
 
@@ -219,7 +215,7 @@ TaskDlgActiveView::TaskDlgActiveView(TechDraw::DrawPage* page)
     : TaskDialog()
 {
     widget  = new TaskActiveView(page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-ActiveView"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_ActiveView"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

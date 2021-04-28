@@ -72,7 +72,7 @@ class Join(gui_base_original.Modifier):
         if not self.ui:
             return
         if not Gui.Selection.getSelection():
-            self.ui.selectUi()
+            self.ui.selectUi(on_close_call=self.finish)
             _msg(translate("draft", "Select an object to join"))
             self.call = self.view.addEventCallback(
                 "SoEvent",

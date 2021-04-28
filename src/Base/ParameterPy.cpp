@@ -25,7 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
+# include <cassert>
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -33,7 +33,7 @@
 # include <io.h>
 # include <xercesc/sax/SAXParseException.hpp>
 # endif
-# include <stdio.h>
+# include <cstdio>
 # include <sstream>
 # include <list>
 #endif
@@ -99,7 +99,7 @@ typedef std::list<ParameterGrpObserver*> ParameterGrpObserverList;
 class ParameterGrpPy : public Py::PythonExtension<ParameterGrpPy>
 {
 public:
-    static void init_type(void);    // announce properties and methods
+    static void init_type();    // announce properties and methods
 
     ParameterGrpPy(const Base::Reference<ParameterGrp> &rcParamGrp);
     ~ParameterGrpPy();
@@ -320,7 +320,7 @@ Py::Object ParameterGrpPy::getBool(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -350,16 +350,12 @@ Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
     int  Int=0;
     if (!PyArg_ParseTuple(args.ptr(), "s|i", &pstr,&Int))
         throw Py::Exception();
-#if PY_MAJOR_VERSION < 3
-    return Py::Int(_cParamGrp->GetInt(pstr,Int));
-#else
     return Py::Long(_cParamGrp->GetInt(pstr,Int));
-#endif
 }
 
 Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -389,17 +385,12 @@ Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
     unsigned int  UInt=0;
     if (!PyArg_ParseTuple(args.ptr(), "s|I", &pstr,&UInt))
         throw Py::Exception();
-#if PY_MAJOR_VERSION < 3
-    PyObject* val = Py_BuildValue("I",_cParamGrp->GetUnsigned(pstr,UInt));
-    return Py::asObject(val);
-#else
     return Py::Long(_cParamGrp->GetUnsigned(pstr,UInt));
-#endif
 }
 
 Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -435,7 +426,7 @@ Py::Object ParameterGrpPy::getFloat(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -471,7 +462,7 @@ Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
 
 Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
 {
-    char *filter=0;
+    char *filter=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
         throw Py::Exception();
 
@@ -660,11 +651,7 @@ Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
         Py::Tuple t3(3);
         t3.setItem(0,Py::String("Integer"));
         t3.setItem(1,Py::String(It3->first.c_str()));
-#if PY_MAJOR_VERSION < 3
-        t3.setItem(2,Py::Int(It3->second));
-#else
         t3.setItem(2,Py::Long(It3->second));
-#endif
         list.append(t3);
     }
 
@@ -694,11 +681,7 @@ Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
         Py::Tuple t6(3);
         t6.setItem(0,Py::String("Unsigned Long"));
         t6.setItem(1,Py::String(It6->first.c_str()));
-#if PY_MAJOR_VERSION < 3
-        t6.setItem(2,Py::asObject(Py_BuildValue("I",It6->second)));
-#else
         t6.setItem(2,Py::Long(It6->second));
-#endif
         list.append(t6);
     }
 

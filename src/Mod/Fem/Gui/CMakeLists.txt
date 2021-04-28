@@ -55,51 +55,6 @@ SET(Python_SRCS
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
-set(FemGui_MOC_HDRS
-    DlgSettingsFemCcxImp.h
-    DlgSettingsFemElmerImp.h
-    DlgSettingsFemExportAbaqusImp.h
-    DlgSettingsFemGeneralImp.h
-    DlgSettingsFemGmshImp.h
-    DlgSettingsFemInOutVtkImp.h
-    DlgSettingsFemMaterialImp.h
-    DlgSettingsFemZ88Imp.h
-    PropertyFemMeshItem.h
-    TaskObjectName.h
-    TaskCreateNodeSet.h
-    TaskDlgCreateNodeSet.h
-    TaskFemConstraint.h
-    TaskFemConstraintBearing.h
-    TaskFemConstraintFixed.h
-    TaskFemConstraintForce.h
-    TaskFemConstraintFluidBoundary.h
-    TaskFemConstraintPressure.h
-    TaskFemConstraintGear.h
-    TaskFemConstraintPulley.h
-    TaskFemConstraintDisplacement.h
-    TaskFemConstraintTemperature.h
-    TaskFemConstraintHeatflux.h
-    TaskFemConstraintInitialTemperature.h
-    TaskFemConstraintPlaneRotation.h
-    TaskFemConstraintContact.h
-    TaskFemConstraintTransform.h
-    TaskTetParameter.h
-    TaskAnalysisInfo.h
-    TaskDriver.h
-    TaskDlgAnalysis.h
-    TaskDlgMeshShapeNetgen.h
-)
-if(BUILD_FEM_VTK)
-    set(FemGui_MOC_HDRS
-        ${FemGui_MOC_HDRS}
-        TaskPostBoxes.h
-        ViewProviderFemPostFunction.h
-    )
-endif(BUILD_FEM_VTK)
-fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
-
-
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemElmer.ui
@@ -393,6 +348,12 @@ SET(FemGuiIcon_SVG
 
 add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+
+# external SMESH doesn't support C++17 yet
+if(FREECAD_USE_EXTERNAL_SMESH)
+    set_target_properties(FemGui PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(FemGui PROPERTIES CXX_STANDARD 14)
+endif()
 
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})

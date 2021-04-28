@@ -673,10 +673,21 @@ makePerspectiveProjection(shape, pnt) -> Shape
     </Methode>
     <Methode Name="reflectLines" Const="true" Keyword="true">
       <Documentation>
-        <UserDocu>Build reflect lines on a shape according to the axes of view.
-reflectLines(ViewDir, ViewPos, UpDir) -> Shape
+        <UserDocu>Build projection or reflect lines of a shape according to a view direction.
+reflectLines(ViewDir, [ViewPos, UpDir, EdgeType, Visible, OnShape]) -> Shape (Compound of edges)
 --
-Reflect lines are represented by edges in 3d.
+This algorithm computes the projection of the shape in the ViewDir direction.
+If OnShape is False(default), the returned edges are flat on the XY plane defined by
+ViewPos(origin) and UpDir(up direction).
+If OnShape is True, the returned edges are the corresponding 3D reflect lines located on the shape.
+EdgeType is a string defining the type of result edges :
+- IsoLine : isoparametric line
+- OutLine : outline (silhouette) edge
+- Rg1Line : smooth edge of G1-continuity between two surfaces
+- RgNLine : sewn edge of CN-continuity on one surface
+- Sharp : sharp edge (of C0-continuity)
+If Visible is True (default), only visible edges are returned.
+If Visible is False, only invisible edges are returned.
         </UserDocu>
       </Documentation>
     </Methode>

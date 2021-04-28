@@ -55,25 +55,25 @@
 
 
 
-type  : TSELECT TIDENTIFIER							{ $$ = $2 }
-       | TSELECT TIDENTIFIER TNAMESPACE TIDENTIFIER { $$ = new std::string(*$2 + "::" + *$4) }
+type  : TSELECT TIDENTIFIER							{ $$ = $2; }
+       | TSELECT TIDENTIFIER TNAMESPACE TIDENTIFIER { $$ = StringFactory::New(*$2 + "::" + *$4); }
 
-subname :								 { $$ = 0  }
-		 | TSUB TIDENTIFIER				 { $$ = $2 }
+subname :								 { $$ = 0;  }
+         | TSUB TIDENTIFIER				 { $$ = $2; }
 
-count :									 { $$ = 0                     }
-      | TCOUNT TNUMBER TSLICE TNUMBER    { $$ = new Node_Slice($2,$4) }
-      | TCOUNT TNUMBER TSLICE            { $$ = new Node_Slice($2)    }
-      | TCOUNT TNUMBER                   { $$ = new Node_Slice($2,$2) }
+count :									 { $$ = 0;                     }
+      | TCOUNT TNUMBER TSLICE TNUMBER    { $$ = new Node_Slice($2,$4); }
+      | TCOUNT TNUMBER TSLICE            { $$ = new Node_Slice($2);    }
+      | TCOUNT TNUMBER                   { $$ = new Node_Slice($2,$2); }
 
-matchline  : type subname count                { $$ = new Node_Object($1,$2,$3) }
+matchline  : type subname count                { $$ = new Node_Object($1,$2,$3); }
 
 matchlines : matchline            { $$ = new Node_Block($1);  }
            | matchlines matchline { $$ = $1 ; $$->Objects.emplace_back($2); }
 
-block : matchlines                { $$ = $1 }
+block : matchlines                { $$ = $1; }
 
-filter:   block					  { TopBlock = $1 }
+filter:   block					  { TopBlock = $1; }
 ;
 
 

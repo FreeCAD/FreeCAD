@@ -614,7 +614,6 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
 
     viewport.setWindowSize(width, height);
 
-#if QT_VERSION >= 0x040600
     QtGLFramebufferObjectFormat fmt;
     fmt.setSamples(samples);
     fmt.setAttachment(QtGLFramebufferObject::Depth);
@@ -624,10 +623,6 @@ SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
     // format and in the output image search for the above color and
     // replaces it with the color requested by the user.
     fmt.setInternalTextureFormat(this->texFormat);
-#else
-    QtGLFramebufferObject::Attachment fmt;
-    fmt = QtGLFramebufferObject::Depth;
-#endif
 
     framebuffer = new QtGLFramebufferObject(width, height, fmt);
     cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure

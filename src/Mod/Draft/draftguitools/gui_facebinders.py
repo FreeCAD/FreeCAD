@@ -67,7 +67,7 @@ class Facebinder(gui_base_original.Creator):
 
         if not Gui.Selection.getSelection():
             if self.ui:
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select faces from existing objects"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

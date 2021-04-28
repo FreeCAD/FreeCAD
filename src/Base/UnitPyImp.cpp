@@ -32,7 +32,7 @@
 using namespace Base;
 
 // returns a string which represents the object e.g. when printed in python
-std::string UnitPy::representation(void) const
+std::string UnitPy::representation() const
 {
     const UnitSignature &  Sig = getUnitPtr()->getSignature();
     std::stringstream ret;
@@ -125,18 +125,18 @@ PyObject* UnitPy::number_add_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(UnitPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "First arg must be Unit");
-        return 0;
+        return nullptr;
     }
     if (!PyObject_TypeCheck(other, &(UnitPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Second arg must be Unit");
-        return 0;
+        return nullptr;
     }
     Base::Unit *a = static_cast<UnitPy*>(self)->getUnitPtr();
     Base::Unit *b = static_cast<UnitPy*>(other)->getUnitPtr();
 
     if (*a != *b) {
         PyErr_SetString(PyExc_TypeError, "Units not matching!");
-        return 0;
+        return nullptr;
     }
 
     return new UnitPy(new Unit(*a));
@@ -146,18 +146,18 @@ PyObject* UnitPy::number_subtract_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(UnitPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "First arg must be Unit");
-        return 0;
+        return nullptr;
     }
     if (!PyObject_TypeCheck(other, &(UnitPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Second arg must be Unit");
-        return 0;
+        return nullptr;
     }
     Base::Unit *a = static_cast<UnitPy*>(self)->getUnitPtr();
     Base::Unit *b = static_cast<UnitPy*>(other)->getUnitPtr();
 
     if (*a != *b) {
         PyErr_SetString(PyExc_TypeError, "Units not matching!");
-        return 0;
+        return nullptr;
     }
 
     return new UnitPy(new Unit(*a));
@@ -167,7 +167,7 @@ PyObject* UnitPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(UnitPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "First arg must be Unit");
-        return 0;
+        return nullptr;
     }
 
     if (PyObject_TypeCheck(other, &(UnitPy::Type))) {
@@ -178,7 +178,7 @@ PyObject* UnitPy::number_multiply_handler(PyObject *self, PyObject *other)
     }
     else {
         PyErr_SetString(PyExc_TypeError, "A Unit can only be multiplied by a Unit");
-        return 0;
+        return nullptr;
     }
 }
 
@@ -189,11 +189,11 @@ PyObject* UnitPy::richCompare(PyObject *v, PyObject *w, int op)
         const Unit * u1 = static_cast<UnitPy*>(v)->getUnitPtr();
         const Unit * u2 = static_cast<UnitPy*>(w)->getUnitPtr();
 
-        PyObject *res=0;
+        PyObject *res=nullptr;
         if (op != Py_EQ && op != Py_NE) {
             PyErr_SetString(PyExc_TypeError,
             "no ordering relation is defined for Units");
-            return 0;
+            return nullptr;
         }
         else if (op == Py_EQ) {
             res = (*u1 == *u2) ? Py_True : Py_False;
@@ -213,12 +213,12 @@ PyObject* UnitPy::richCompare(PyObject *v, PyObject *w, int op)
     }
 }
 
-Py::String UnitPy::getType(void) const
+Py::String UnitPy::getType() const
 {
     return Py::String(getUnitPtr()->getTypeString().toUtf8(),"utf-8");
 }
 
-Py::Tuple UnitPy::getSignature(void) const
+Py::Tuple UnitPy::getSignature() const
 {
     const UnitSignature &  Sig = getUnitPtr()->getSignature();
     Py::Tuple tuple(8);
@@ -237,7 +237,7 @@ Py::Tuple UnitPy::getSignature(void) const
 
 PyObject *UnitPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int UnitPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
@@ -248,43 +248,43 @@ int UnitPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 PyObject * UnitPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_power_handler (PyObject* /*self*/, PyObject* /*other*/, PyObject* /*modulo*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_negative_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_positive_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_absolute_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 int UnitPy::number_nonzero_handler (PyObject* /*self*/)
@@ -295,76 +295,47 @@ int UnitPy::number_nonzero_handler (PyObject* /*self*/)
 PyObject * UnitPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject * UnitPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
-
-#if PY_MAJOR_VERSION < 3
-int UnitPy::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
-{
-    return 1;
-}
-#endif
 
 PyObject * UnitPy::number_int_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * UnitPy::number_long_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif
 
 PyObject * UnitPy::number_float_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
+    return nullptr;
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * UnitPy::number_oct_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * UnitPy::number_hex_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-#endif

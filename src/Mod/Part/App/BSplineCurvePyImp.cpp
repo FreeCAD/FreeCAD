@@ -250,11 +250,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
         TColStd_Array1OfInteger m(1,mults.size());
         index=1;
         for (Py::Sequence::iterator it = mults.begin(); it != mults.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             Py::Long val(*it);
-#else
-            Py::Int val(*it);
-#endif
             m(index++) = (int)val;
         }
 
@@ -1253,11 +1249,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
             Py::Sequence multssq(mults);
             Standard_Integer index = 1;
             for (Py::Sequence::iterator it = multssq.begin(); it != multssq.end() && index <= occmults.Length(); ++it) {
-#if PY_MAJOR_VERSION >= 3
                 Py::Long mult(*it);
-#else
-                Py::Int mult(*it);
-#endif
                 if (index < occmults.Length() || PyObject_Not(periodic)) {
                     sum_of_mults += static_cast<int>(mult); //sum up the mults to compare them against the number of poles later
                 }

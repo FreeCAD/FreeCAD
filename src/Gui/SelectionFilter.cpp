@@ -363,6 +363,31 @@ int fileno(FILE *stream) {return _fileno(stream);}
 
 namespace SelectionParser {
 
+/*!
+ * \brief The StringFactory class
+ * Helper class to record the created strings used by the parser.
+ */
+class StringFactory {
+    std::list<std::unique_ptr<std::string>> data;
+    std::size_t max_elements = 20;
+public:
+    static StringFactory* instance() {
+        static StringFactory* inst = new StringFactory();
+        return inst;
+    }
+    std::string* make(const std::string& str) {
+        data.push_back(std::make_unique<std::string>(str));
+        return data.back().get();
+    }
+    static std::string* New(const std::string& str) {
+        return StringFactory::instance()->make(str);
+    }
+    void clear() {
+        if (data.size() > max_elements)
+            data.clear();
+    }
+};
+
 // show the parser the lexer method
 #define yylex SelectionFilterlex
 int SelectionFilterlex(void);
@@ -401,6 +426,7 @@ bool SelectionFilter::parse(void)
     Ast.reset(TopBlock);
     TopBlock = 0;
     SelectionParser::SelectionFilter_delete_buffer (my_string_buffer);
+    SelectionParser::StringFactory::instance()->clear();
 
     if (Errors.empty()) {
         return true;

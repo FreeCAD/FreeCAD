@@ -159,13 +159,7 @@ void SyntaxHighlighter::colorChanged(const QString& type, const QColor& col)
 {
     Q_UNUSED(type);
     Q_UNUSED(col);
-  // rehighlight
-#if QT_VERSION >= 0x040200
     rehighlight();
-#else
-    document()->setPlainText(document()->toPlainText());
-    document()->setModified(false);
-#endif
 }
 
 int SyntaxHighlighter::maximumUserState() const

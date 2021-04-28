@@ -80,11 +80,7 @@ void CmdImageOpen::activated(int iMsg)
             s = Base::Tools::escapeEncodeFilename(s);
             // load the file with the module
             Command::doCommand(Command::Gui, "import Image, ImageGui");
-#if PY_MAJOR_VERSION < 3
-            Command::doCommand(Command::Gui, "ImageGui.open(unicode(\"%s\",\"utf-8\"))", (const char*)s.toUtf8());
-#else
             Command::doCommand(Command::Gui, "ImageGui.open(\"%s\",\"utf-8\")", (const char*)s.toUtf8());
-#endif
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow

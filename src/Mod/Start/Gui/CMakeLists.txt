@@ -12,12 +12,6 @@ set(StartGui_LIBS
     FreeCADGui
 )
 
-set(StartGui_MOC_HDRS
-    DlgStartPreferencesImp.h
-)
-fc_wrap_cpp(StartGui_MOC_SRCS ${StartGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${StartGui_MOC_SRCS})
-
 set(StartGui_UIC_SRCS
     DlgStartPreferences.ui
 )

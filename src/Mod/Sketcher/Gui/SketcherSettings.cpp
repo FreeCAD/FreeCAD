@@ -156,6 +156,7 @@ void SketcherSettingsDisplay::saveSettings()
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
+    ui->checkBoxTVSectionView->onSave();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
@@ -177,6 +178,7 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
     ui->checkBoxTVRestoreCamera->onRestore();
+    ui->checkBoxTVSectionView->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
@@ -208,11 +210,13 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
             "        sketch.ViewObject.HideDependent = %s\n"
             "        sketch.ViewObject.ShowLinks = %s\n"
             "        sketch.ViewObject.ShowSupport = %s\n"
-            "        sketch.ViewObject.RestoreCamera = %s\n",
+            "        sketch.ViewObject.RestoreCamera = %s\n"
+            "        sketch.ViewObject.SectionView = %s\n",
             this->ui->checkBoxTVHideDependent->isChecked() ? "True": "False",
             this->ui->checkBoxTVShowLinks->isChecked()     ? "True": "False",
             this->ui->checkBoxTVShowSupport->isChecked()   ? "True": "False",
-            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False");
+            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False",
+            this->ui->checkBoxTVSectionView->isChecked() ? "True": "False");
     } catch (Base::PyException &e){
         Base::Console().Error("SketcherSettings::onBtnTVApplyClicked:\n");
         e.ReportException();

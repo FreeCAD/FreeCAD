@@ -829,4 +829,76 @@ def removeDoubles(vlist):
     nlist.append(vlist[-1])
     return nlist
 
+def get_spherical_coords(x, y, z):
+    """Get the Spherical coordinates of the vector represented
+    by Cartesian coordinates (x, y, z).
+
+    Parameters
+    ----------
+    vector : Base::Vector3
+        The input vector.
+
+    Returns
+    -------
+    tuple of float
+        Tuple (radius, theta, phi) with the Spherical coordinates.
+        Radius is the radial coordinate, theta the polar angle and
+        phi the azimuthal angle in radians.
+
+    Notes
+    -----
+    The vector (0, 0, 0) has undefined values for theta and phi, while
+    points on the z axis has undefined value for phi. The following
+    conventions are used (useful in DraftToolBar methods):
+    (0, 0, 0) -> (0, pi/2, 0)
+    (0, 0, z) -> (radius, theta, 0)
+    """
+
+    v = Vector(x,y,z)
+    x_axis = Vector(1,0,0)
+    z_axis = Vector(0,0,1)
+    y_axis = Vector(0,1,0)
+    rad = v.Length
+
+    if not bool(round(rad, precision())):
+        return (0, math.pi/2, 0)
+
+    theta = v.getAngle(z_axis)
+    v.projectToPlane(Vector(0,0,0), z_axis)
+    phi = v.getAngle(x_axis)
+    if math.isnan(phi):
+        return (rad, theta, 0)
+    # projected vector is on 3rd or 4th quadrant
+    if v.dot(Vector(y_axis)) < 0:
+        phi = -1*phi
+
+    return (rad, theta, phi)
+
+
+def get_cartesian_coords(radius, theta, phi):
+    """Get the three-dimensional Cartesian coordinates of the vector
+    represented by Spherical coordinates (radius, theta, phi).
+
+    Parameters
+    ----------
+    radius : float, int
+        Radial coordinate of the vector.
+    theta : float, int
+        Polar coordinate of the vector in radians.
+    phi : float, int
+        Azimuthal coordinate of the vector in radians.
+
+    Returns
+    -------
+    tuple of float :
+        Tuple (x, y, z) with the Cartesian coordinates.
+    """
+
+    x = radius*math.sin(theta)*math.cos(phi)
+    y = radius*math.sin(theta)*math.sin(phi)
+    z = radius*math.cos(theta)
+
+    return (x, y, z)
+
+
 ##  @}

@@ -161,6 +161,7 @@
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>
         <file>icons/geometry/Sketcher_External.svg</file>
+        <file>icons/geometry/Sketcher_Split.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
         <file>icons/geometry/Sketcher_Trimming.svg</file>
     </qresource>
@@ -195,6 +196,7 @@
         <file>icons/pointers/Sketcher_Pointer_External.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Regular_Polygon.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Slot.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Splitting.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Trimming.svg</file>
     </qresource>
     <qresource>

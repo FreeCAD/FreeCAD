@@ -898,21 +898,19 @@ public:
         qreal fullIconWidth = 32 * pixelRatio;
         qreal iconWidth = 16 * pixelRatio;
         QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
-                icon = Gui::BitmapFactory().pixmapFromSvg(cmd->sPixmap, QSizeF(iconWidth, iconWidth));
+                icon = Gui::BitmapFactory().pixmapFromSvg(cmd->getPixmap(), QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
         cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
-#if QT_VERSION >= 0x050000
         cursorPixmap.setDevicePixelRatio(pixelRatio);
         // only X11 needs hot point coordinates to be scaled
         if (qGuiApp->platformName() == QLatin1String("xcb")) {
             hotX *= pixelRatio;
             hotY *= pixelRatio;
         }
-#endif
         setCursor(cursorPixmap, hotX, hotY, false);
     }
 
@@ -5904,7 +5902,7 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
         pcAction->setProperty("defaultAction", QVariant(defaultId));
     }
 
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
 
     return pcAction;
 }
