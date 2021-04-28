@@ -9368,6 +9368,12 @@ Data::IndexedName SketchObject::shapeTypeFromGeoId(int geoId, PointPos posId) co
         return Data::IndexedName::fromConst("H_Axis", 0);
     }else if(geoId == GeoEnum::VAxis)
         return Data::IndexedName::fromConst("V_Axis", 0);
+
+    if (posId == none) {
+        auto geo = getGeometry(geoId);
+        if (geo && geo->isDerivedFrom(Part::GeomPoint::getClassTypeId()))
+            posId = start;
+    }
     if(posId != none) {
         int idx = getVertexIndexGeoPos(geoId, posId);
         if(idx < 0)
