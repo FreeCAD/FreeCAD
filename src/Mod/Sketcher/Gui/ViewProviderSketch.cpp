@@ -229,6 +229,15 @@ struct EditData {
     InformationDrawStyle(0)
     {}
 
+    void removeSelectEdge(int GeoId)
+    {
+        auto it = this->SelCurveMap.find(GeoId);
+        if (it != this->SelCurveMap.end()) {
+            if (--it->second <= 0)
+                this->SelCurveMap.erase(it);
+        }
+    }
+
     // pointer to the active handler for new sketch objects
     DrawSketchHandler *sketchHandler;
     bool buttonPress;
@@ -254,8 +263,10 @@ struct EditData {
     bool FullyConstrained;
 
     // container to track our own selected parts
-    std::set<int> SelPointSet;
-    std::set<int> SelCurvSet; // also holds cross axes at -1 and -2
+    std::map<int,int> SelPointMap;
+    std::map<int,int> SelCurveMap; // also holds cross axes at -1 and -2
+    std::vector<int> SelConstraintPoints;
+    std::vector<int> SelConstraintCurves;
     std::set<int> SelConstraintSet;
     std::vector<int> CurvIdToGeoId; // conversion of SoLineSet index to GeoId
     std::vector<int> PointIdToVertexId; // conversion of SoCoordinate3 index to vertex Id
@@ -1749,10 +1760,10 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::string temp;
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
             // if something selected in this object?
-            if (edit->SelPointSet.size() > 0 || edit->SelCurvSet.size() > 0 || edit->SelConstraintSet.size() > 0) {
+            if (edit->SelPointMap.size() > 0 || edit->SelCurveMap.size() > 0 || edit->SelConstraintSet.size() > 0) {
                 // clear our selection and update the color of the viewed edges and points
                 clearSelectPoints();
-                edit->SelCurvSet.clear();
+                edit->SelCurveMap.clear();
                 edit->SelConstraintSet.clear();
                 this->drawConstraintIcons();
                 this->updateColor();
@@ -1766,13 +1777,13 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                     std::string shapetype(msg.pSubName);
                     if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
                         int GeoId = std::atoi(&shapetype[4]) - 1;
-                        edit->SelCurvSet.insert(GeoId);
+                        ++edit->SelCurveMap[GeoId];
                         this->updateColor();
                     }
                     else if (shapetype.size() > 12 && shapetype.substr(0,12) == "ExternalEdge") {
                         int GeoId = std::atoi(&shapetype[12]) - 1;
                         GeoId = -GeoId - 3;
-                        edit->SelCurvSet.insert(GeoId);
+                        ++edit->SelCurveMap[GeoId];
                         this->updateColor();
                     }
                     else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
@@ -1785,11 +1796,11 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         this->updateColor();
                     }
                     else if (shapetype == "H_Axis") {
-                        edit->SelCurvSet.insert(Sketcher::GeoEnum::HAxis);
+                        ++edit->SelCurveMap[Sketcher::GeoEnum::HAxis];
                         this->updateColor();
                     }
                     else if (shapetype == "V_Axis") {
-                        edit->SelCurvSet.insert(Sketcher::GeoEnum::VAxis);
+                        ++edit->SelCurveMap[Sketcher::GeoEnum::VAxis];
                         this->updateColor();
                     }
                     else if (shapetype.size() > 10 && shapetype.substr(0,10) == "Constraint") {
@@ -1803,7 +1814,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
         else if (msg.Type == Gui::SelectionChanges::RmvSelection) {
             // Are there any objects selected
-            if (edit->SelPointSet.size() > 0 || edit->SelCurvSet.size() > 0 || edit->SelConstraintSet.size() > 0) {
+            if (edit->SelPointMap.size() > 0 || edit->SelCurveMap.size() > 0 || edit->SelConstraintSet.size() > 0) {
                 // is it this object??
                 if (strcmp(msg.pDocName,getSketchObject()->getDocument()->getName())==0
                     && strcmp(msg.pObjectName,getSketchObject()->getNameInDocument())== 0) {
@@ -1811,13 +1822,13 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         std::string shapetype(msg.pSubName);
                         if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
                             int GeoId = std::atoi(&shapetype[4]) - 1;
-                            edit->SelCurvSet.erase(GeoId);
+                            edit->removeSelectEdge(GeoId);
                             this->updateColor();
                         }
                         else if (shapetype.size() > 12 && shapetype.substr(0,12) == "ExternalEdge") {
                             int GeoId = std::atoi(&shapetype[12]) - 1;
                             GeoId = -GeoId - 3;
-                            edit->SelCurvSet.erase(GeoId);
+                            edit->removeSelectEdge(GeoId);
                             this->updateColor();
                         }
                         else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
@@ -1830,11 +1841,11 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             this->updateColor();
                         }
                         else if (shapetype == "H_Axis") {
-                            edit->SelCurvSet.erase(Sketcher::GeoEnum::HAxis);
+                            edit->removeSelectEdge(Sketcher::GeoEnum::HAxis);
                             this->updateColor();
                         }
                         else if (shapetype == "V_Axis") {
-                            edit->SelCurvSet.erase(Sketcher::GeoEnum::VAxis);
+                            edit->removeSelectEdge(Sketcher::GeoEnum::VAxis);
                             this->updateColor();
                         }
                         else if (shapetype.size() > 10 && shapetype.substr(0,10) == "Constraint") {
@@ -1867,9 +1878,8 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
             if (strcmp(msg.pDocName,getSketchObject()->getDocument()->getName())==0
                && strcmp(msg.pObjectName,getSketchObject()->getNameInDocument())== 0) {
                 if (msg.pSubName) {
-                    std::string shapetype(msg.pSubName);
-                    if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
-                        int GeoId = std::atoi(&shapetype[4]) - 1;
+                    if (boost::starts_with(msg.pSubName, "Edge")) {
+                        int GeoId = std::atoi(&msg.pSubName[4]) - 1;
                         resetPreselectPoint();
                         edit->PreselectCurve = GeoId;
                         edit->PreselectCross = -1;
@@ -1879,8 +1889,19 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             edit->sketchHandler->applyCursor();
                         this->updateColor();
                     } 
-                    else if (shapetype.size() > 12 && shapetype.substr(0,12) == "ExternalEdge") {
-                        int GeoId = std::atoi(&shapetype[12]) - 1;
+                    else if (boost::starts_with(msg.pSubName, "Edge")) {
+                        int GeoId = std::atoi(&msg.pSubName[4]) - 1;
+                        resetPreselectPoint();
+                        edit->PreselectCurve = GeoId;
+                        edit->PreselectCross = -1;
+                        edit->PreselectConstraintSet.clear();
+
+                        if (edit->sketchHandler)
+                            edit->sketchHandler->applyCursor();
+                        this->updateColor();
+                    } 
+                    else if (boost::starts_with(msg.pSubName, "ExternalEdge")) {
+                        int GeoId = std::atoi(&msg.pSubName[12]) - 1;
                         GeoId = -GeoId - 3;
                         resetPreselectPoint();
                         edit->PreselectCurve = GeoId;
@@ -1891,8 +1912,8 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             edit->sketchHandler->applyCursor();
                         this->updateColor();
                     }
-                    else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
-                        int PtIndex = std::atoi(&shapetype[6]) - 1;
+                    else if (boost::starts_with(msg.pSubName, "Vertex")) {
+                        int PtIndex = std::atoi(&msg.pSubName[6]) - 1;
                         setPreselectPoint(PtIndex);
                         edit->PreselectCurve = -1;
                         edit->PreselectCross = -1;
@@ -1902,8 +1923,8 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             edit->sketchHandler->applyCursor();
                         this->updateColor();
                     }
-                    else if (boost::starts_with(shapetype, "Constraint")) {
-                        int index = std::atoi(&shapetype[10]) - 1;
+                    else if (boost::starts_with(msg.pSubName, "Constraint")) {
+                        int index = std::atoi(&msg.pSubName[10]) - 1;
                         if (!edit->PreselectConstraintSet.count(index)) {
                             resetPreselectPoint();
                             edit->PreselectCurve = -1;
@@ -3019,6 +3040,17 @@ void ViewProviderSketch::updateColor(void)
         }
     }
 
+    for (int i : edit->SelConstraintPoints) {
+        auto it = edit->SelPointMap.find(i);
+        if (it != edit->SelPointMap.end() && --it->second <= 0)
+            edit->SelPointMap.erase(it);
+    }
+    edit->SelConstraintPoints.clear();
+
+    for (int i : edit->SelConstraintCurves)
+        edit->removeSelectEdge(i);
+    edit->SelConstraintCurves.clear();
+
     auto sketch = getSketchObject();
     for (int  i=0; i < PtNum; i++) { // 0 is the origin
         pverts[i].getValue(x,y,z);
@@ -3029,7 +3061,7 @@ void ViewProviderSketch::updateColor(void)
         else
             sketch->getGeoVertexIndex(edit->PointIdToVertexId[i], GeoId, PosId);
         const Part::Geometry * tmp = sketch->getGeometry(GeoId);
-        if(tmp && z < zHighlight) {
+        if(tmp) {
             if(Sketcher::GeometryFacade::getConstruction(tmp))
                 pverts[i].setValue(x,y,zConstrPoint);
             else
@@ -3037,54 +3069,9 @@ void ViewProviderSketch::updateColor(void)
         }
     }
 
-
-    if (edit->PreselectCross == 0) {
-        pcolor[0] = PreselectColor;
-        edit->PreSelectedPointSet->coordIndex.setValue(0);
-    }
-    else if (edit->PreselectPoint != -1) {
-        int PtId = edit->PreselectPoint + 1;
-        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
-            PtId = edit->VertexIdToPointId[PtId-1];
-        if (PtId < PtNum) {
-            pcolor[PtId] = PreselectColor;
-            edit->PreSelectedPointSet->coordIndex.setValue(PtId);
-        }
-    }
-
-    int selcount = 0;
-    for (int SelId : edit->SelPointSet) {
-        int PtId = SelId;
-        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
-            PtId = edit->VertexIdToPointId[PtId-1];
-        if (PtId < PtNum) {
-            ++selcount;
-            pcolor[PtId] = (SelId == (edit->PreselectPoint + 1) && (edit->PreselectPoint != -1))
-                ? PreselectSelectedColor : SelectColor;
-        }
-    }
-    edit->SelectedPointSet->coordIndex.setNum(selcount);
-    edit->SelectedPointSet->markerIndex.setNum(selcount);
-    if (selcount) {
-        auto mindices = edit->SelectedPointSet->markerIndex.startEditing();
-        auto indices = edit->SelectedPointSet->coordIndex.startEditing();
-        int i=0;
-        for (int SelId : edit->SelPointSet) {
-            int PtId = SelId;
-            if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
-                PtId = edit->VertexIdToPointId[PtId-1];
-            if (PtId < PtNum) {
-                indices[i] = PtId;
-                mindices[i++] = edit->PointSet->markerIndex[0];
-            }
-        }
-    }
-
     // colors of the curves
   //int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
   //int extGeoCount = getSketchObject()->getExternalGeometryCount();
-
-
 
     float zNormLine = (topid==1?zHighLines:midid==1?zMidLines:zLowLines);
     float zConstrLine = (topid==2?zHighLines:midid==2?zMidLines:zLowLines);
@@ -3098,7 +3085,7 @@ void ViewProviderSketch::updateColor(void)
         //edit->CurveSet->numVertices => [i] indicates number of vertex for line i.
         int indexes = (edit->CurveSet->numVertices[i]);
 
-        bool selected = (edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end());
+        bool selected = (edit->SelCurveMap.find(GeoId) != edit->SelCurveMap.end());
         bool preselected = (edit->PreselectCurve == GeoId);
 
         bool constrainedElement = isFullyConstraintElement(getSketchObject(), GeoId);
@@ -3198,14 +3185,14 @@ void ViewProviderSketch::updateColor(void)
     }
 
     // colors of the cross
-    if (edit->SelCurvSet.find(-1) != edit->SelCurvSet.end())
+    if (edit->SelCurveMap.find(-1) != edit->SelCurveMap.end())
         crosscolor[0] = SelectColor;
     else if (edit->PreselectCross == 1)
         crosscolor[0] = PreselectColor;
     else
         crosscolor[0] = CrossColorH;
 
-    if (edit->SelCurvSet.find(Sketcher::GeoEnum::VAxis) != edit->SelCurvSet.end())
+    if (edit->SelCurveMap.find(Sketcher::GeoEnum::VAxis) != edit->SelCurveMap.end())
         crosscolor[1] = SelectColor;
     else if (edit->PreselectCross == 2)
         crosscolor[1] = PreselectColor;
@@ -3215,6 +3202,19 @@ void ViewProviderSketch::updateColor(void)
     int count = std::min(edit->constrGroup->getNumChildren(), getSketchObject()->Constraints.getSize());
     if(getSketchObject()->Constraints.hasInvalidGeometry())
         count = 0;
+
+    for (auto &v : edit->SelPointMap) {
+        int SelId = v.first;
+        int PtId = SelId;
+        if (PtId && PtId <= (int)edit->VertexIdToPointId.size()) {
+            PtId = edit->VertexIdToPointId[PtId-1];
+            if (PtId < PtNum) {
+                pcolor[PtId] = SelectColor;
+                pverts[PtId].getValue(x,y,z);
+                pverts[PtId].setValue(x,y,zHighlight);
+            }
+        }
+    }
 
     // colors of the constraints
 
@@ -3253,9 +3253,19 @@ void ViewProviderSketch::updateColor(void)
                     int geoid = i ? constraint->Second : constraint->First;
                     const Sketcher::PointPos &pos = i ? constraint->SecondPos : constraint->FirstPos;
                     if(geoid >= 0) {
-                        int index = getSolvedSketch().getPointId(geoid, pos) + 1;
-                        if (index >= 0 && index < PtNum)
-                            pcolor[index] = *highlightColor;
+                        int index = getSolvedSketch().getPointId(geoid, pos);
+                        if (index >= 0 && index < (int)edit->VertexIdToPointId.size()) {
+                            int PtId = edit->VertexIdToPointId[index];
+                            if (PtId < PtNum) { 
+                                edit->SelConstraintPoints.push_back(index+1);
+                                pcolor[PtId] = *highlightColor;
+                                if (++edit->SelPointMap[index+1] == 1) {
+                                    float x,y,z;
+                                    pverts[PtId].getValue(x,y,z);
+                                    pverts[PtId].setValue(x,y,zHighlight);
+                                }
+                            }
+                        }
                     }
                 };
             } else if (type == Sketcher::InternalAlignment) {
@@ -3270,6 +3280,8 @@ void ViewProviderSketch::updateColor(void)
 
                             if(cGeoId == constraint->First) {
                                 color[i] = *highlightColor;
+                                ++edit->SelCurveMap[cGeoId];
+                                edit->SelConstraintCurves.push_back(cGeoId);
                                 break;
                             }
                         }
@@ -3278,8 +3290,19 @@ void ViewProviderSketch::updateColor(void)
                     case EllipseFocus1:
                     case EllipseFocus2:
                     {
-                        int index = getSolvedSketch().getPointId(constraint->First, constraint->FirstPos) + 1;
-                        if (index >= 0 && index < PtNum) pcolor[index] = *highlightColor;
+                        int index = getSolvedSketch().getPointId(constraint->First, constraint->FirstPos);
+                        if (index >= 0 && index < (int)edit->VertexIdToPointId.size()) {
+                            int PtId = edit->VertexIdToPointId[index];
+                            if (PtId < PtNum) {
+                                edit->SelConstraintPoints.push_back(index+1);
+                                pcolor[PtId] = *highlightColor;
+                                if (++edit->SelPointMap[index+1] == 1) {
+                                    float x,y,z;
+                                    pverts[PtId].getValue(x,y,z);
+                                    pverts[PtId].setValue(x,y,zHighlight);
+                                }
+                            }
+                        }
                     }
                     break;
                     default:
@@ -3316,6 +3339,44 @@ void ViewProviderSketch::updateColor(void)
 
     for (int i : edit->PreselectConstraintSet)
         setConstraintColors(i, &PreselectColor);
+
+    if (edit->PreselectCross == 0) {
+        pcolor[0] = PreselectColor;
+        edit->PreSelectedPointSet->coordIndex.setValue(0);
+    }
+    else if (edit->PreselectPoint != -1) {
+        int PtId = edit->PreselectPoint + 1;
+        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
+            PtId = edit->VertexIdToPointId[PtId-1];
+        if (PtId < PtNum) {
+            pcolor[PtId] = PreselectColor;
+            edit->PreSelectedPointSet->coordIndex.setValue(PtId);
+        }
+    }
+
+    edit->SelectedPointSet->coordIndex.setNum(edit->SelPointMap.size());
+    edit->SelectedPointSet->markerIndex.setNum(edit->SelPointMap.size());
+    if (edit->SelPointMap.size()) {
+        auto mindices = edit->SelectedPointSet->markerIndex.startEditing();
+        auto indices = edit->SelectedPointSet->coordIndex.startEditing();
+        int i=0;
+        for (auto &v : edit->SelPointMap) {
+            int PtId = v.first;
+            if (PtId && PtId <= (int)edit->VertexIdToPointId.size()) {
+                PtId = edit->VertexIdToPointId[PtId-1];
+                if (PtId < PtNum) {
+                    indices[i] = PtId;
+                    mindices[i++] = edit->PointSet->markerIndex[0];
+                }
+            }
+        }
+        if (i != (int)edit->SelPointMap.size()) {
+            edit->SelectedPointSet->markerIndex.setNum(i);
+            edit->SelectedPointSet->coordIndex.setNum(i);
+        }
+        edit->SelectedPointSet->markerIndex.finishEditing();
+        edit->SelectedPointSet->coordIndex.finishEditing();
+    }
 
     // end editing
     edit->CurvesMaterials->diffuseColor.finishEditing();
@@ -7247,7 +7308,7 @@ void ViewProviderSketch::resetPreselectPoint(void)
         else if (edit->PreselectCross == 0)
             oldPtId = 0;
         if (oldPtId != -1 &&
-            edit->SelPointSet.find(oldPtId) == edit->SelPointSet.end()) {
+            edit->SelPointMap.find(oldPtId) == edit->SelPointMap.end()) {
             if (oldPtId && oldPtId <= (int)edit->VertexIdToPointId.size())
                 oldPtId = edit->VertexIdToPointId[oldPtId-1];
             if (oldPtId >= 0 && oldPtId < edit->PointsCoordinate->point.getNum()) {
@@ -7268,7 +7329,7 @@ void ViewProviderSketch::addSelectPoint(int SelectPoint)
 {
     if (edit) {
         int PtId = SelectPoint + 1;
-        edit->SelPointSet.insert(SelectPoint+1);
+        ++edit->SelPointMap[PtId];
         if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
             PtId = edit->VertexIdToPointId[PtId-1];
         if (PtId >= 0 && PtId < edit->PointsCoordinate->point.getNum()) {
@@ -7285,7 +7346,13 @@ void ViewProviderSketch::addSelectPoint(int SelectPoint)
 void ViewProviderSketch::removeSelectPoint(int SelectPoint)
 {
     int PtId = SelectPoint + 1;
-    if (edit && edit->SelPointSet.erase(PtId)) {
+    if (!edit)
+        return;
+    auto it = edit->SelPointMap.find(PtId);
+    if (it == edit->SelPointMap.end())
+        return;
+    if (--it->second == 0) {
+        edit->SelPointMap.erase(it);
         if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
             PtId = edit->VertexIdToPointId[PtId-1];
         if (PtId >= 0 && PtId < edit->PointsCoordinate->point.getNum()) {
@@ -7305,7 +7372,8 @@ void ViewProviderSketch::clearSelectPoints(void)
         SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
         // send to background
         float x,y,z;
-        for (int PtId : edit->SelPointSet) {
+        for (auto &v : edit->SelPointMap) {
+            int PtId = v.first;
             if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
                 PtId = edit->VertexIdToPointId[PtId-1];
             pverts[PtId].getValue(x,y,z);
@@ -7313,7 +7381,8 @@ void ViewProviderSketch::clearSelectPoints(void)
         }
         edit->PointsCoordinate->point.finishEditing();
         edit->SelectedPointSet->coordIndex.setNum(0);
-        edit->SelPointSet.clear();
+        edit->SelPointMap.clear();
+        edit->SelConstraintPoints.clear();
     }
 }
 
@@ -7537,7 +7606,7 @@ void ViewProviderSketch::selectElement(const char *element, bool preselect) cons
     std::ostringstream ss;
     ss << getSketchObject()->checkSubName(element);
     if (preselect)
-        Gui::Selection().setPreselect(SEL_PARAMS);
+        Gui::Selection().setPreselect(SEL_PARAMS, 0, 0 ,0, 1, true);
     else
         Gui::Selection().addSelection2(SEL_PARAMS);
 }
