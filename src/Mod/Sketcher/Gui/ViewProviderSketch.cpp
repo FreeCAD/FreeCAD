@@ -211,6 +211,8 @@ struct EditData {
     RootCrossCoordinate(0),
     EditCurvesCoordinate(0),
     CurveSet(0),
+    SelectedCurveSet(0),
+    PreSelectedCurveSet(0),
     RootCrossSet(0),
     EditCurveSet(0),
     PointSet(0),
@@ -298,6 +300,8 @@ struct EditData {
     SoCoordinate3 *RootCrossCoordinate;
     SoCoordinate3 *EditCurvesCoordinate;
     SoLineSet     *CurveSet;
+    SoIndexedLineSet     *SelectedCurveSet;
+    SoIndexedLineSet     *PreSelectedCurveSet;
     SoLineSet     *RootCrossSet;
     SoLineSet     *EditCurveSet;
     SoMarkerSet   *PointSet;
@@ -3078,38 +3082,54 @@ void ViewProviderSketch::updateColor(void)
     float zExtLine = (topid==3?zHighLines:midid==3?zMidLines:zLowLines);
 
     int j=0; // vertexindex
+    int vcount = 0;
 
-    for (int  i=0; i < CurvNum; i++) {
+
+    edit->SelectedCurveSet->enableNotify(false);
+    edit->SelectedCurveSet->enableNotify(false);
+    edit->SelectedCurveSet->coordIndex.setNum(0);
+    edit->SelectedCurveSet->materialIndex.setNum(0);
+    edit->PreSelectedCurveSet->coordIndex.setNum(0);
+    edit->PreSelectedCurveSet->materialIndex.setNum(0);
+
+    for (int  i=0; i < CurvNum; i++, j+=vcount) {
         int GeoId = edit->CurvIdToGeoId[i];
         // CurvId has several vertices associated to 1 material
         //edit->CurveSet->numVertices => [i] indicates number of vertex for line i.
-        int indexes = (edit->CurveSet->numVertices[i]);
+        vcount = (edit->CurveSet->numVertices[i]);
 
         bool selected = (edit->SelCurveMap.find(GeoId) != edit->SelCurveMap.end());
         bool preselected = (edit->PreselectCurve == GeoId);
 
         bool constrainedElement = isFullyConstraintElement(getSketchObject(), GeoId);
 
-        if (selected && preselected) {
-            color[i] = PreselectSelectedColor;
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zHighLine);
+        if (preselected) {
+            color[i] = selected ? PreselectSelectedColor : PreselectColor;
+            int offset = edit->PreSelectedCurveSet->coordIndex.getNum();
+            edit->PreSelectedCurveSet->coordIndex.setNum(offset + vcount + 1);
+            auto indices = edit->PreSelectedCurveSet->coordIndex.startEditing() + offset;
+            edit->PreSelectedCurveSet->materialIndex.set1Value(
+                    edit->PreSelectedCurveSet->materialIndex.getNum(), i);
+            for (int k=j; k<j+vcount; k++) {
+                verts[k].getValue(x,y,z);
+                verts[k] = SbVec3f(x,y,zHighLine);
+                *indices++ = k;
             }
+            *indices = -1;
         }
         else if (selected){
             color[i] = SelectColor;
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zHighLine);
+            int offset = edit->SelectedCurveSet->coordIndex.getNum();
+            edit->SelectedCurveSet->coordIndex.setNum(offset + vcount + 1);
+            auto indices = edit->SelectedCurveSet->coordIndex.startEditing() + offset;
+            edit->SelectedCurveSet->materialIndex.set1Value(
+                    edit->SelectedCurveSet->materialIndex.getNum(), i);
+            for (int k=j; k<j+vcount; k++) {
+                verts[k].getValue(x,y,z);
+                verts[k] = SbVec3f(x,y,zHighLine);
+                *indices++ = k;
             }
-        }
-        else if (preselected){
-            color[i] = PreselectColor;
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zHighLine);
-            }
+            *indices = -1;
         }
         else if (GeoId <= Sketcher::GeoEnum::RefExt) {  // external Geometry
             auto geo = getSketchObject()->getGeometry(GeoId);
@@ -3130,16 +3150,16 @@ void ViewProviderSketch::updateColor(void)
                 hsv[2] = 1.0;
                 color[i].setHSVValue(hsv);
             }
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zExtLine);
+            for (int k=j; k<j+vcount; k++) {
+                verts[k].getValue(x,y,z);
+                verts[k] = SbVec3f(x,y,zExtLine);
             }
         }
         else if ( invalidSketch ) {
             color[i] = InvalidSketchColor;
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zNormLine);
+            for (int k=j; k<j+vcount; k++) {
+                verts[k].getValue(x,y,z);
+                verts[k] = SbVec3f(x,y,zNormLine);
             }
         }
         else if (isConstructionGeom(getSketchObject(), GeoId)) {
@@ -3156,44 +3176,44 @@ void ViewProviderSketch::updateColor(void)
                     color[i] = CurveDraftColor;
             }
 
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zConstrLine);
+            for (int k=j; k<j+vcount; k++) {
+                verts[k].getValue(x,y,z);
+                verts[k] = SbVec3f(x,y,zConstrLine);
             }
         }
         else if (edit->FullyConstrained) {
             color[i] = FullyConstrainedColor;
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zNormLine);
+            for (int k=j; k<j+vcount; k++) {
+                verts[k].getValue(x,y,z);
+                verts[k] = SbVec3f(x,y,zNormLine);
             }
         }
         else if (isFullyConstraintElement(getSketchObject(), GeoId)) {
             color[i] = FullyConstraintElementColor;
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zNormLine);
+            for (int k=j; k<j+vcount; k++) {
+                verts[k].getValue(x,y,z);
+                verts[k] = SbVec3f(x,y,zNormLine);
             }
         }
         else {
             color[i] = CurveColor;
-            for (int k=j; j<k+indexes; j++) {
-                verts[j].getValue(x,y,z);
-                verts[j] = SbVec3f(x,y,zNormLine);
+            for (int k=j; k<j+vcount; k++) {
+                verts[k].getValue(x,y,z);
+                verts[k] = SbVec3f(x,y,zNormLine);
             }
         }
     }
 
     // colors of the cross
     if (edit->SelCurveMap.find(-1) != edit->SelCurveMap.end())
-        crosscolor[0] = SelectColor;
+        crosscolor[0] = edit->PreselectCross == 1 ? PreselectSelectedColor : SelectColor;
     else if (edit->PreselectCross == 1)
         crosscolor[0] = PreselectColor;
     else
         crosscolor[0] = CrossColorH;
 
     if (edit->SelCurveMap.find(Sketcher::GeoEnum::VAxis) != edit->SelCurveMap.end())
-        crosscolor[1] = SelectColor;
+        crosscolor[1] = edit->PreselectCross == 2 ? PreselectSelectedColor : SelectColor;
     else if (edit->PreselectCross == 2)
         crosscolor[1] = PreselectColor;
     else
@@ -3272,16 +3292,28 @@ void ViewProviderSketch::updateColor(void)
                 switch(constraint->AlignmentType) {
                     case EllipseMajorDiameter:
                     case EllipseMinorDiameter:
+                    case BSplineControlPoint:
                     {
                         // color line
                         int CurvNum = edit->CurvesMaterials->diffuseColor.getNum();
-                        for (int  i=0; i < CurvNum; i++) {
+                        int j = 0;
+                        int count = 0;
+                        for (int  i=0; i < CurvNum; i++,j+=count) {
                             int cGeoId = edit->CurvIdToGeoId[i];
-
+                            count = edit->CurveSet->numVertices[i];
                             if(cGeoId == constraint->First) {
                                 color[i] = *highlightColor;
-                                ++edit->SelCurveMap[cGeoId];
                                 edit->SelConstraintCurves.push_back(cGeoId);
+                                ++edit->SelCurveMap[cGeoId];
+                                auto lineset = highlightColor == &PreselectColor ?
+                                    edit->PreSelectedCurveSet : edit->SelectedCurveSet;
+                                int offset = lineset->coordIndex.getNum();
+                                lineset->coordIndex.setNum(offset + count + 1);
+                                auto indices = lineset->coordIndex.startEditing() + offset;
+                                lineset->materialIndex.set1Value(lineset->materialIndex.getNum(), i);
+                                for (int k=j;k<j+count;++k)
+                                    *indices++ = k;
+                                *indices = -1;
                                 break;
                             }
                         }
@@ -3289,6 +3321,7 @@ void ViewProviderSketch::updateColor(void)
                     break;
                     case EllipseFocus1:
                     case EllipseFocus2:
+                    case BSplineKnotPoint:
                     {
                         int index = getSolvedSketch().getPointId(constraint->First, constraint->FirstPos);
                         if (index >= 0 && index < (int)edit->VertexIdToPointId.size()) {
@@ -3340,8 +3373,8 @@ void ViewProviderSketch::updateColor(void)
     for (int i : edit->PreselectConstraintSet)
         setConstraintColors(i, &PreselectColor);
 
-    if (edit->PreselectCross == 0) {
-        pcolor[0] = PreselectColor;
+    if (edit->PreselectPoint == 0) {
+        pcolor[0] = pcolor[0] == SelectColor ? PreselectSelectedColor : PreselectColor;
         edit->PreSelectedPointSet->coordIndex.setValue(0);
     }
     else if (edit->PreselectPoint != -1) {
@@ -3349,7 +3382,7 @@ void ViewProviderSketch::updateColor(void)
         if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
             PtId = edit->VertexIdToPointId[PtId-1];
         if (PtId < PtNum) {
-            pcolor[PtId] = PreselectColor;
+            pcolor[PtId] = pcolor[PtId] == SelectColor ? PreselectSelectedColor : PreselectColor;
             edit->PreSelectedPointSet->coordIndex.setValue(PtId);
         }
     }
@@ -3377,6 +3410,11 @@ void ViewProviderSketch::updateColor(void)
         edit->SelectedPointSet->markerIndex.finishEditing();
         edit->SelectedPointSet->coordIndex.finishEditing();
     }
+
+    if (int count = edit->SelectedCurveSet->coordIndex.getNum())
+        edit->SelectedCurveSet->coordIndex.setNum(count - 1); // trim the last -1 index
+    if (int count = edit->PreSelectedCurveSet->coordIndex.getNum())
+        edit->PreSelectedCurveSet->coordIndex.setNum(count - 1); // trim the last -1 index
 
     // end editing
     edit->CurvesMaterials->diffuseColor.finishEditing();
@@ -6956,6 +6994,16 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->CurveSet = new SoLineSet;
     edit->CurveSet->setName("CurvesLineSet");
     curvesRoot->addChild(edit->CurveSet);
+
+    MtlBind = new SoMaterialBinding;
+    MtlBind->value = SoMaterialBinding::PER_FACE_INDEXED;
+    curvesRoot->addChild(MtlBind);
+
+    edit->SelectedCurveSet = new SoIndexedLineSet;
+    curvesRoot->addChild(edit->SelectedCurveSet);
+
+    edit->PreSelectedCurveSet = new SoIndexedLineSet;
+    curvesRoot->addChild(edit->PreSelectedCurveSet);
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
     SoGroup* crossRoot = new Gui::SoSkipBoundingGroup;
