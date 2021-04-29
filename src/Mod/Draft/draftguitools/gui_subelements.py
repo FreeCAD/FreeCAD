@@ -66,7 +66,7 @@ class SubelementHighlight(gui_base_original.Modifier):
         if self.is_running:
             return self.finish()
         self.is_running = True
-        super(SubelementHighlight, self).Activated(name=translate("draft","Subelement highlight"))
+        super(SubelementHighlight, self).Activated(name="Subelement highlight")
         self.get_selection()
 
     def proceed(self):

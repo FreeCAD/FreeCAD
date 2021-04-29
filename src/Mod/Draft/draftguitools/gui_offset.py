@@ -66,7 +66,7 @@ class Offset(gui_base_original.Modifier):
     def Activated(self):
         """Execute when the command is called."""
         self.running = False
-        super(Offset, self).Activated(name=translate("draft","Offset"))
+        super(Offset, self).Activated(name="Offset")
         self.ghost = None
         self.linetrack = None
         self.arctrack = None

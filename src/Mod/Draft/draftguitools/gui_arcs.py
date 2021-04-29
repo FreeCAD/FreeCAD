@@ -69,7 +69,7 @@ class Arc(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Arc, self).Activated(name=translate("draft","Arc"))
+        super(Arc, self).Activated(name=self.featureName)
         if self.ui:
             self.step = 0
             self.center = None
@@ -479,7 +479,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
     """GuiCommand for the Draft_Arc_3Points tool."""
 
     def __init__(self):
-        super(Arc_3Points, self).__init__(name=translate("draft","Arc by 3 points"))
+        super(Arc_3Points, self).__init__(name="Arc by 3 points")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -510,7 +510,8 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             App.DraftWorkingPlane.setup()
 
         Gui.Snapper.getPoint(callback=self.getPoint,
-                             movecallback=self.drawArc)
+                             movecallback=self.drawArc,
+                             title=translate("draft","Arc by 3 points"))
 
     def getPoint(self, point, info):
         """Get the point by clicking on the 3D view.

@@ -61,11 +61,10 @@ class Ellipse(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Ellipse")
-        super(Ellipse, self).Activated(name)
+        super(Ellipse, self).Activated(name="Ellipse")
         if self.ui:
             self.refpoint = None
-            self.ui.pointUi(title=name, icon="Draft_Ellipse")
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Ellipse")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rect = trackers.rectangleTracker()

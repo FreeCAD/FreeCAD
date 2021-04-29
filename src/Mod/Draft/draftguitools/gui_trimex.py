@@ -78,7 +78,7 @@ class Trimex(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Trimex, self).Activated(name=translate("draft","Trimex"))
+        super(Trimex, self).Activated(name="Trimex")
         self.edges = []
         self.placement = None
         self.ghost = []
@@ -105,7 +105,7 @@ class Trimex(gui_base_original.Modifier):
             self.finish()
             return
         self.obj = sel[0]
-        self.ui.trimUi()
+        self.ui.trimUi(title=translate("draft",self.featureName))
         self.linetrack = trackers.lineTracker()
 
         import DraftGeomUtils
