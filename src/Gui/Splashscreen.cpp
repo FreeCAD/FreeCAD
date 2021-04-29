@@ -228,7 +228,14 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     ui->setupUi(this);
     layout()->setSizeConstraint(QLayout::SetFixedSize);
     QRect rect = QApplication::primaryScreen()->availableGeometry();
-    QPixmap image = getMainWindow()->splashImage();
+
+    // See if we have a custom About screen image set
+    QPixmap image = getMainWindow()->aboutImage();
+
+    // Fallback to the splashscreen image
+    if (image.isNull()) {
+        image = getMainWindow()->splashImage();
+    }
 
     // Make sure the image is not too big
     int denom = 2;
@@ -403,6 +410,7 @@ void AboutDialog::showCredits()
     creditsHTML += QString::fromLatin1("</h2><ul>");
 
     QTextStream stream(&creditsFile);
+    stream.setCodec("UTF-8");
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {
@@ -652,7 +660,6 @@ void AboutDialog::showCollectionInformation()
 
 void AboutDialog::linkActivated(const QUrl& link)
 {
-//#if defined(Q_OS_WIN) && QT_VERSION < 0x050602
     LicenseView* licenseView = new LicenseView();
     licenseView->setAttribute(Qt::WA_DeleteOnClose);
     licenseView->show();
@@ -665,9 +672,6 @@ void AboutDialog::linkActivated(const QUrl& link)
     licenseView->setWindowTitle(title);
     getMainWindow()->addWindow(licenseView);
     licenseView->setSource(link);
-//#else
-//    QDesktopServices::openUrl(link);
-//#endif
 }
 
 void AboutDialog::on_copyButton_clicked()

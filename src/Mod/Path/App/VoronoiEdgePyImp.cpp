@@ -412,9 +412,9 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
         auto v0 = e->ptr->vertex0();
         auto v1 = e->ptr->vertex1();
         if (v0 && v1) {
-          auto p = new Part::GeomLineSegment;
-          p->setPoints(e->dia->scaledVector(*v0, z0), e->dia->scaledVector(*v1, z1));
-          Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p->handle());
+          Part::GeomLineSegment p;
+          p.setPoints(e->dia->scaledVector(*v0, z0), e->dia->scaledVector(*v1, z1));
+          Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p.handle());
           BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
           return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
         }
@@ -461,9 +461,9 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
           end.x(origin.x() + direction.x() * k);
           end.y(origin.y() + direction.y() * k);
         }
-        auto p = new Part::GeomLineSegment;
-        p->setPoints(e->dia->scaledVector(begin, z0), e->dia->scaledVector(end, z1));
-        Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p->handle());
+        Part::GeomLineSegment p;
+        p.setPoints(e->dia->scaledVector(begin, z0), e->dia->scaledVector(end, z1));
+        Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(p.handle());
         BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
         return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
       }
@@ -574,12 +574,12 @@ PyObject* VoronoiEdgePy::toShape(PyObject *args)
       gp_Ax2  pb(pbLocn, pbNorm, pbXdir);
       Handle(Geom_Parabola) parabola = new Geom_Parabola(pb, focal);
 
-      auto arc = new Part::GeomArcOfParabola;
-      arc->setHandle(parabola);
-      arc->setRange(dist0, dist1, false);
+      Part::GeomArcOfParabola arc;
+      arc.setHandle(parabola);
+      arc.setRange(dist0, dist1, false);
 
       // get a shape for the parabola arc
-      Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(arc->handle());
+      Handle(Geom_Curve) h = Handle(Geom_Curve)::DownCast(arc.handle());
       BRepBuilderAPI_MakeEdge mkBuilder(h, h->FirstParameter(), h->LastParameter());
       return new Part::TopoShapeEdgePy(new Part::TopoShape(mkBuilder.Shape()));
     }

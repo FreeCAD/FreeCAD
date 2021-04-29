@@ -759,14 +759,10 @@ void ColorButton::onChooseColor()
 {
     if (!d->allowChange)
         return;
-#if QT_VERSION >= 0x040500
     if (d->modal) {
-#endif
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
-#if QT_VERSION >= 0x050000
         cd.setOptions(QColorDialog::DontUseNativeDialog);
-#endif
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -786,15 +782,12 @@ void ColorButton::onChooseColor()
             setColor(currentColor);
             changed();
         }
-#if QT_VERSION >= 0x040500
     }
     else {
         if (d->cd.isNull()) {
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
-#if QT_VERSION >= 0x050000
             d->cd->setOptions(QColorDialog::DontUseNativeDialog);
-#endif
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),
                     this, SLOT(onRejected()));
@@ -803,7 +796,6 @@ void ColorButton::onChooseColor()
         }
         d->cd->show();
     }
-#endif
 }
 
 void ColorButton::onColorChosen(const QColor& c)
@@ -1362,22 +1354,10 @@ void LabelEditor::setInputType(InputType t)
 ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
     : QLineEdit(parent), autoClose(expressionOnly)
 {
-    defaultPalette = palette();
-
-    /* Icon for f(x) */
-    QFontMetrics fm(font());
-    int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    iconHeight = fm.height() - frameWidth;
-    iconLabel = new ExpressionLabel(this);
-    iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
-    iconLabel->setPixmap(pixmap);
-    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
-    iconLabel->hide();
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
+    makeLabel(this);
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
-    if(expressionOnly)
+    if (expressionOnly)
         QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
 
@@ -1390,8 +1370,8 @@ bool ExpLineEdit::apply(const std::string& propName) {
         }
         return true;
     }
-    else
-        return false;
+
+    return false;
 }
 
 void ExpLineEdit::bind(const ObjectIdentifier& _path) {
@@ -1435,7 +1415,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Text, Qt::lightGray);
         setPalette(p);
-        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -1443,7 +1423,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         setPalette(p);
-        iconLabel->setToolTip(QString());
+        iconLabel->setExpressionText(QString());
     }
 }
 
@@ -1465,7 +1445,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             setPalette(p);
-            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setExpressionText(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -1475,7 +1455,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             setPalette(p);
-            iconLabel->setToolTip(QString());
+            iconLabel->setExpressionText(QString());
         }
     }
     catch (const Base::Exception & e) {

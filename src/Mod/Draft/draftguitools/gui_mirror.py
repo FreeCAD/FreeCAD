@@ -69,7 +69,7 @@ class Mirror(gui_base_original.Modifier):
         self.ghost = None
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to mirror"))
                 self.call = \
                     self.view.addEventCallback("SoEvent",

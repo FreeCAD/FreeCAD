@@ -90,13 +90,8 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
         Py_ssize_t pos = 0;
         while (parameters && PyDict_Next(parameters, &pos, &key, &value)) {
             std::string ckey;
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(key)) {
                 ckey = PyUnicode_AsUTF8(key);
-#else
-            if (PyString_Check(key)) {
-                ckey = PyString_AsString(key);
-#endif
             }
             else {
                 PyErr_SetString(PyExc_TypeError, "The dictionary can only contain string keys");
@@ -105,13 +100,8 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 
             boost::to_upper(ckey);
             double cvalue;
-#if PY_MAJOR_VERSION >= 3
             if (PyObject_TypeCheck(value,&(PyLong_Type))) {
                 cvalue = (double)PyLong_AsLong(value);
-#else
-            if (PyObject_TypeCheck(value,&(PyInt_Type))) {
-                cvalue = (double)PyInt_AsLong(value);
-#endif
             }
             else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
                 cvalue = PyFloat_AsDouble(value);
@@ -179,13 +169,8 @@ void CommandPy::setParameters(Py::Dict arg)
     Py_ssize_t pos = 0;
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
         std::string ckey;
-#if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(key)) {
             ckey = PyUnicode_AsUTF8(key);
-#else
-        if (PyString_Check(key)) {
-            ckey = PyString_AsString(key);
-#endif
         }
         else {
             throw Py::TypeError("The dictionary can only contain string keys");
@@ -193,13 +178,8 @@ void CommandPy::setParameters(Py::Dict arg)
 
         boost::to_upper(ckey);
         double cvalue;
-#if PY_MAJOR_VERSION >= 3
         if (PyObject_TypeCheck(value,&(PyLong_Type))) {
             cvalue = (double)PyLong_AsLong(value);
-#else
-        if (PyObject_TypeCheck(value,&(PyInt_Type))) {
-            cvalue = (double)PyInt_AsLong(value);
-#endif
         }
         else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
             cvalue = PyFloat_AsDouble(value);
@@ -217,11 +197,7 @@ void CommandPy::setParameters(Py::Dict arg)
 PyObject* CommandPy::toGCode(PyObject *args)
 {
     if (PyArg_ParseTuple(args, "")) {
-#if PY_MAJOR_VERSION >= 3
         return PyUnicode_FromString(getCommandPtr()->toGCode().c_str());
-#else
-        return PyString_FromString(getCommandPtr()->toGCode().c_str());
-#endif
     }
     throw Py::TypeError("This method accepts no argument");
 }
@@ -301,13 +277,8 @@ int CommandPy::setCustomAttributes(const char* attr, PyObject* obj)
         if (isalpha(satt[0])) {
             boost::to_upper(satt);
             double cvalue;
-#if PY_MAJOR_VERSION >= 3
             if (PyObject_TypeCheck(obj,&(PyLong_Type))) {
                 cvalue = (double)PyLong_AsLong(obj);
-#else
-            if (PyObject_TypeCheck(obj,&(PyInt_Type))) {
-                cvalue = (double)PyInt_AsLong(obj);
-#endif
             } else if (PyObject_TypeCheck(obj,&(PyFloat_Type))) {
                 cvalue = PyFloat_AsDouble(obj);
             } else {

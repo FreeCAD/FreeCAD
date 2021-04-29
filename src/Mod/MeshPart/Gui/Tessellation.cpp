@@ -514,7 +514,7 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
                 << "// optimize the mesh\n"
                 << "Mesh.Optimize = 1;\n"
                 << "Mesh.OptimizeNetgen = 0;\n"
-                << "// for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
+                << "// High-order meshes optimization (0=none, 1=optimization, 2=elastic+optimization, 3=elastic, 4=fast curving)\n"
                 << "Mesh.HighOrderOptimize = 0;\n\n"
                 << "// mesh order\n"
                 << "Mesh.ElementOrder = 2;\n"

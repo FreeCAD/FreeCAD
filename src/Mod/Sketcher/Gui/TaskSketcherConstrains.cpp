@@ -394,11 +394,7 @@ protected:
     }
 
     void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const {
-#if QT_VERSION >= 0x050000
         QStyleOptionViewItem options = option;
-#else
-        QStyleOptionViewItemV4 options = option;
-#endif
         initStyleOption(&options, index);
 
         options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);

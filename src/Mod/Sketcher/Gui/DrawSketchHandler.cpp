@@ -29,9 +29,7 @@
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoFont.h>
 # include <QPainter>
-# if QT_VERSION >= 0x050000
 # include <QGuiApplication>
-# endif
 # include <cmath>
 #endif  // #ifndef _PreComp_
 
@@ -119,23 +117,18 @@ void DrawSketchHandler::setSvgCursor(const QString & cursorName, int x, int y, c
     qreal defaultCursorSize = isRatioOne ? 64 : 32;
     qreal hotX = x;
     qreal hotY = y;
-#if QT_VERSION >= 0x050000
 #if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
         hotX *= pRatio;
         hotY *= pRatio;
     }
 #endif
-#endif
     qreal cursorSize = defaultCursorSize * pRatio;
 
     QPixmap pointer = Gui::BitmapFactory().pixmapFromSvg(cursorName.toStdString().c_str(), QSizeF(cursorSize, cursorSize), colorMapping);
     if (isRatioOne)
         pointer = pointer.scaled(32, 32);
-#if QT_VERSION >= 0x050000
     pointer.setDevicePixelRatio(pRatio);
-#endif
-
     setCursor(pointer, hotX, hotY, false);
 }
 
@@ -151,26 +144,18 @@ void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
         QPixmap p1(p);
         // TODO remove autoScale after all cursors are SVG-based
         if (autoScale) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
             qreal pRatio = viewer->devicePixelRatio();
-#else
-            qreal pRatio = 1;
-#endif
             int newWidth = p.width()*pRatio;
             int newHeight = p.height()*pRatio;
             p1 = p1.scaled(newWidth, newHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
             p1.setDevicePixelRatio(pRatio);
-#endif
             qreal hotX = x;
             qreal hotY = y;
-#if QT_VERSION >= 0x050000
 #if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
             if (qGuiApp->platformName() == QLatin1String("xcb")) {
                 hotX *= pRatio;
                 hotY *= pRatio;
             }
-#endif
 #endif
             cursor = QCursor(p1, hotX, hotY);
         } else {
@@ -190,12 +175,8 @@ void DrawSketchHandler::addCursorTail( std::vector<QPixmap> &pixmaps ) {
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         QPixmap baseIcon = QPixmap(actCursorPixmap);
-#if QT_VERSION >= 0x050000
         baseIcon.setDevicePixelRatio(actCursorPixmap.devicePixelRatio());
         qreal pixelRatio = baseIcon.devicePixelRatio();
-#else
-        qreal pixelRatio = 1;
-#endif
         // cursor size in device independent pixels
         qreal baseCursorWidth = baseIcon.width();
         qreal baseCursorHeight = baseIcon.height();
@@ -238,11 +219,7 @@ void DrawSketchHandler::addCursorTail( std::vector<QPixmap> &pixmaps ) {
 
         // Create the new cursor with the icon.
         QPoint p=actCursor.hotSpot();
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
         newIcon.setDevicePixelRatio(pixelRatio);
-#endif
-
         QCursor newCursor(newIcon, p.x(), p.y());
         applyCursor(newCursor);
     }
@@ -273,13 +250,11 @@ void DrawSketchHandler::unsetCursor(void)
 
 qreal DrawSketchHandler::devicePixelRatio() {
     qreal pixelRatio = 1;
-# if QT_VERSION >= 0x050000
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         pixelRatio = viewer->devicePixelRatio();
     }
-# endif
     return pixelRatio;
 }
 
@@ -313,13 +288,11 @@ std::vector<QPixmap> DrawSketchHandler::suggestedConstraintsPixmaps(
         }
         if (!iconType.isEmpty()) {
             qreal pixelRatio = 1;
-# if QT_VERSION >= 0x050000
             Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
             if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
                 Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
                 pixelRatio = viewer->devicePixelRatio();
             }
-# endif
             int iconWidth = 16 * pixelRatio;
             QPixmap icon = Gui::BitmapFactory()
                 .pixmapFromSvg(iconType.toStdString().c_str(), QSize(iconWidth, iconWidth));

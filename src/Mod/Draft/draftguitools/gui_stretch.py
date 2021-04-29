@@ -67,9 +67,11 @@ class Stretch(gui_base_original.Modifier):
     def Activated(self):
         """Execute when the command is called."""
         super(Stretch, self).Activated(name="Stretch")
+        self.rectracker = None
+        self.nodetracker = None
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to stretch"))
                 self.call = \
                     self.view.addEventCallback("SoEvent",
@@ -251,9 +253,9 @@ class Stretch(gui_base_original.Modifier):
 
     def finish(self, closed=False):
         """Terminate the operation of the command. and clean up."""
-        if hasattr(self, "rectracker") and self.rectracker:
+        if self.rectracker:
             self.rectracker.finalize()
-        if hasattr(self, "nodetracker") and self.nodetracker:
+        if self.nodetracker:
             for n in self.nodetracker:
                 n.finalize()
         super(Stretch, self).finish()

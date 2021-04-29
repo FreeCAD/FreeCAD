@@ -77,11 +77,7 @@ void iisTaskBox::showHide()
 	if (m_foldStep)
 		return;
 
-#if QT_VERSION >= 0x050000
 	m_foldPixmap = myGroup->grab(myGroup->rect());
-#else
-	m_foldPixmap = QPixmap::grabWidget(myGroup, myGroup->rect());
-#endif
 
 	if (myGroup->isVisible()) {
 		m_tempHeight = m_fullHeight = myGroup->height();
@@ -158,12 +154,10 @@ void iisTaskBox::paintEvent ( QPaintEvent * event )
 	QPainter p(this);
 
 	if (myDummy->isVisible()) {
-#if QT_VERSION >= 0x040202
 		if (m_foldDirection < 0)
 			p.setOpacity((double)m_foldStep / myScheme->groupFoldSteps);
 		else
 			p.setOpacity((double)(myScheme->groupFoldSteps-m_foldStep) / myScheme->groupFoldSteps);
-#endif
 
 		p.drawPixmap(myDummy->x(),myDummy->y(),m_foldPixmap);
 

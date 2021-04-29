@@ -10,7 +10,8 @@
       Namespace="Sketcher"
       FatherInclude="Base/BaseClassPy.h"
       FatherNamespace="Base"
-      Constructor="true">
+      Constructor="true"
+      Delete="true">
     <Documentation>
       <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo@gmail.com" />
       <UserDocu>Describes a GeometryFacade</UserDocu>

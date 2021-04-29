@@ -463,13 +463,14 @@ def p_minkowski_action(p):
 def p_resize_action(p):
     '''
     resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
-    import Draft
     print(p[3])
     new_size = p[3]['newsize']
     auto    = p[3]['auto'] 
     print(new_size)
     print(auto)
     p[6][0].recompute()
+    if p[6][0].Shape.isNull():
+        doc.recompute()
     old_bbox = p[6][0].Shape.BoundBox
     print ("Old bounding box: " + str(old_bbox))
     old_size = [old_bbox.XLength, old_bbox.YLength, old_bbox.ZLength]
@@ -482,7 +483,6 @@ def p_resize_action(p):
 
     # Calculate a transform matrix from the current bounding box to the new one:
     transform_matrix = FreeCAD.Matrix()
-    #new_part.Shape = part.Shape.transformGeometry(transform_matrix) 
 
     scale = FreeCAD.Vector(float(new_size[0])/old_size[0], 
                            float(new_size[1])/old_size[1], 
@@ -978,10 +978,10 @@ def p_multmatrix_action(p):
             part.ViewObject.hide()
     else :
         if printverbose: print("Transform Geometry")
-#       Need to recompute to stop transformGeometry causing a crash        
-        doc.recompute()
+        part.recompute()
+        if part.Shape.isNull():
+            doc.recompute()
         new_part = doc.addObject("Part::Feature","Matrix Deformation")
-      #  new_part.Shape = part.Base.Shape.transformGeometry(transform_matrix)
         new_part.Shape = part.Shape.transformGeometry(transform_matrix) 
         if gui:
             part.ViewObject.hide()
@@ -1322,25 +1322,27 @@ def p_polyhedron_action(p) :
 def p_projection_action(p) :
     'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print('Projection')
-    if p[3]['cut']=='true' :
-        planedim=1e9 # large but finite
-        #infinite planes look bad in the GUI
-        planename='xy_plane_used_for_project_cut'
-        obj=doc.addObject('Part::MultiCommon','projection_cut')
-        plane = doc.getObject(planename)
-        if not plane:
-            plane=doc.addObject("Part::Plane",planename)
-            plane.Length=planedim*2
-            plane.Width=planedim*2
-            plane.Placement = FreeCAD.Placement(FreeCAD.Vector(\
-                     -planedim,-planedim,0),FreeCAD.Rotation())
-            if gui:
-                plane.ViewObject.hide()
+
+    doc.recompute()
+    bbox = p[6][0].Shape.BoundBox
+    for shape in p[6]:
+        bbox.add(shape.Shape.BoundBox)
+    print (bbox)
+    plane = doc.addObject("Part::Plane","xy_plane_used_for_projection")
+    plane.Length = bbox.XLength
+    plane.Width = bbox.YLength
+    plane.Placement = FreeCAD.Placement(FreeCAD.Vector(\
+                     bbox.XMin,bbox.YMin,0),FreeCAD.Rotation())
+    if gui:
+        plane.ViewObject.hide()
+
+    if p[3]['cut'] == 'true' :
+        obj = doc.addObject('Part::MultiCommon','projection_cut')
         if (len(p[6]) > 1):
             subobj = [fuse(p[6],"projection_cut_implicit_group")]
         else:
             subobj = p[6]
-        obj.Shapes = [plane]+subobj
+        obj.Shapes = [plane] + subobj
         if gui:
             subobj[0].ViewObject.hide()
         p[0] = [obj]
@@ -1348,6 +1350,6 @@ def p_projection_action(p) :
         if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
                 GetBool('usePlaceholderForUnsupported'):
             from PySide import QtGui
-            QtGui.QMessageBox.critical(None, translate('OpenSCAD',"Unsupported Function")+" : "+p[1],translate('OpenSCAD',"Press OK"))
+            QtGui.QMessageBox.critical(None, translate('OpenSCAD',"Unsupported Function") + " : " + p[1],translate('OpenSCAD',"Press OK"))
         else:
             p[0] = [placeholder(p[1],p[6],p[3])]

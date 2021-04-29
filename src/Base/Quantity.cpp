@@ -63,6 +63,14 @@ QuantityFormat::QuantityFormat()
 {
 }
 
+QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals)
+  : option(OmitGroupSeparator | RejectGroupSeparator)
+  , format(format)
+  , precision(decimals < 0 ? UnitsApi::getDecimals() : decimals)
+  , denominator(defaultDenominator)
+{
+}
+
 // ----------------------------------------------------------------------------
 
 Quantity::Quantity()

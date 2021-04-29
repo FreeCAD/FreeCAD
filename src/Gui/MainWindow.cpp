@@ -47,15 +47,11 @@
 # include <QStatusBar>
 # include <QTimer>
 # include <QToolBar>
-#if QT_VERSION >= 0x050000
 # include <QUrlQuery>
-#endif
 # include <QWhatsThis>
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-# include <QScreen>
-#endif
+#include <QScreen>
 
 // FreeCAD Base header
 #include <Base/Parameter.h>
@@ -176,7 +172,6 @@ struct MainWindowP
     QTimer* actionTimer;
     QTimer* statusTimer;
     QTimer* activityTimer;
-    QTimer* visibleTimer;
     QMdiArea* mdiArea;
     QPointer<MDIView> activeView;
     QSignalMapper* windowMapper;
@@ -196,11 +191,8 @@ public:
     MDITabbar( QWidget * parent = 0 ) : QTabBar(parent)
     {
         menu = new QMenu(this);
-        // For Qt 4.2.x the tabs might be very wide
-#if QT_VERSION >= 0x040200
         setDrawBase(false);
         setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
-#endif
     }
 
     ~MDITabbar()
@@ -293,31 +285,20 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // support for grouped dragging of dockwidgets
     // https://woboq.com/blog/qdockwidget-changes-in-56.html
-#if QT_VERSION >= 0x050600
     setDockOptions(dockOptions() | QMainWindow::GroupedDragging);
-#endif
 
     // Create the layout containing the workspace and a tab bar
     d->mdiArea = new QMdiArea();
     // Movable tabs
-#if QT_VERSION >= 0x040800
     d->mdiArea->setTabsMovable(true);
-#endif
-#if QT_VERSION >= 0x040500
     d->mdiArea->setTabPosition(QTabWidget::South);
     d->mdiArea->setViewMode(QMdiArea::TabbedView);
     QTabBar* tab = d->mdiArea->findChild<QTabBar*>();
     if (tab) {
-        // 0000636: Two documents close
-#if QT_VERSION < 0x040800
-        connect(tab, SIGNAL(tabCloseRequested(int)),
-                this, SLOT(tabCloseRequested(int)));
-#endif
         tab->setTabsClosable(true);
         // The tabs might be very wide
         tab->setExpanding(false);
     }
-#endif
     d->mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     d->mdiArea->setOption(QMdiArea::DontMaximizeSubWindowOnActivation, false);
@@ -359,12 +340,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // update view-sensitive commands when clipboard has changed
     QClipboard *clipbd = QApplication::clipboard();
     connect(clipbd, SIGNAL(dataChanged()), this, SLOT(updateEditorActions()));
-
-    // show main window timer
-    d->visibleTimer = new QTimer(this);
-    d->visibleTimer->setObjectName(QString::fromLatin1("visibleTimer"));
-    connect(d->visibleTimer, SIGNAL(timeout()),this, SLOT(showMainWindow()));
-    d->visibleTimer->setSingleShot(true);
 
     d->windowMapper = new QSignalMapper(this);
 
@@ -460,15 +435,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         pDockMgr->registerDockWindow("Std_ComboView", pcComboView);
     }
 
-#if QT_VERSION < 0x040500
-    // Report view
-    if (hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
-        Gui::DockWnd::ReportView* pcReport = new Gui::DockWnd::ReportView(this);
-        pcReport->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
-        pDockMgr->registerDockWindow("Std_ReportView", pcReport);
-    }
-#else
     // Report view (must be created before PythonConsole!)
     if (hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
         ReportOutput* pcReport = new ReportOutput(this);
@@ -541,7 +507,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         connect(result, SIGNAL(currentChanged(int)), l, SLOT(tabChanged()));
         l->unusedTabBars << result;
     }
-#endif
 #endif
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
@@ -1218,32 +1183,16 @@ void MainWindow::closeEvent (QCloseEvent * e)
     }
 }
 
-void MainWindow::showEvent(QShowEvent  * /*e*/)
+void MainWindow::showEvent(QShowEvent* e)
 {
-    // needed for logging
     std::clog << "Show main window" << std::endl;
-    d->visibleTimer->start(15000);
+    QMainWindow::showEvent(e);
 }
 
-void MainWindow::hideEvent(QHideEvent  * /*e*/)
+void MainWindow::hideEvent(QHideEvent* e)
 {
-    // needed for logging
     std::clog << "Hide main window" << std::endl;
-    d->visibleTimer->stop();
-}
-
-void MainWindow::showMainWindow()
-{
-    // Under certain circumstances it can happen that at startup the main window
-    // appears for a short moment and disappears immediately. The workaround
-    // starts a timer to check for the visibility of the main window and call
-    // ShowWindow() if needed.
-    // So far, this phenomena only appeared with Qt4.1.4
-#if defined(Q_OS_WIN) && (QT_VERSION == 0x040104)
-    WId id = this->winId();
-    ShowWindow(id, SW_SHOW);
-    std::cout << "Force to show main window" << std::endl;
-#endif
+    QMainWindow::hideEvent(e);
 }
 
 void MainWindow::processMessages(const QList<QByteArray> & msg)
@@ -1426,11 +1375,7 @@ void MainWindow::loadWindowSettings()
     QString qtver = QString::fromLatin1("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QRect rect = QApplication::primaryScreen()->availableGeometry();
-#else
-    QRect rect = QApplication::desktop()->availableGeometry();
-#endif
     int maxHeight = rect.height();
     int maxWidth = rect.width();
 
@@ -1509,6 +1454,32 @@ void MainWindow::stopSplasher(void)
         delete d->splashscreen;
         d->splashscreen = 0;
     }
+}
+
+QPixmap MainWindow::aboutImage() const
+{
+    // See if we have a custom About screen image set
+    QPixmap about_image;
+    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
+    if (fi.isFile() && fi.exists())
+        about_image.load(fi.filePath(), "PNG");
+
+    std::string about_path = App::Application::Config()["AboutImage"];
+    if (!about_path.empty() && about_image.isNull()) {
+        QString path = QString::fromUtf8(about_path.c_str());
+        if (QDir(path).isRelative()) {
+            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        about_image.load(path);
+
+        // Now try the icon paths
+        if (about_image.isNull()) {
+            about_image = Gui::BitmapFactory().pixmap(about_path.c_str());
+        }
+    }
+
+    return about_image;
 }
 
 QPixmap MainWindow::splashImage() const
@@ -1853,15 +1824,10 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
 //#ifndef QT_NO_OPENSSL
         else if (it->scheme().toLower() == QLatin1String("https")) {
             QUrl url = *it;
-#if QT_VERSION >= 0x050000
             QUrlQuery urlq(url);
             if (urlq.hasQueryItem(QLatin1String("sid"))) {
                 urlq.removeAllQueryItems(QLatin1String("sid"));
                 url.setQuery(urlq);
-#else
-            if (it->hasEncodedQueryItem(QByteArray("sid"))) {
-                url.removeEncodedQueryItem(QByteArray("sid"));
-#endif
                 url.setScheme(QLatin1String("http"));
             }
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();

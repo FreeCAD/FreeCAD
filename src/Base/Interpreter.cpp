@@ -46,10 +46,6 @@ unsigned int format2_len = 1024;
 
 using namespace Base;
 
-#if PY_VERSION_HEX <= 0x02050000
-#error "Use Python2.5.x or higher"
-#endif
-
 PyException::PyException(const Py::Object &obj) {
     _sErrMsg = obj.as_string();
     // WARNING: we are assuming that python type object will never be
@@ -59,7 +55,7 @@ PyException::PyException(const Py::Object &obj) {
     _errorType = obj.ptr()->ob_type->tp_name;
 }
 
-PyException::PyException(void)
+PyException::PyException()
 {
     PP_Fetch_Error_Text();    /* fetch (and clear) exception */
 
@@ -104,7 +100,7 @@ PyException::~PyException() throw()
 {
 }
 
-void PyException::ThrowException(void)
+void PyException::ThrowException()
 {
     PyException myexcp;
     myexcp.ReportException();
@@ -113,11 +109,10 @@ void PyException::ThrowException(void)
 
 void PyException::raiseException() {
     PyGILStateLocker locker;
-
-    if (PP_PyDict_Object!=NULL) {
+    if (PP_PyDict_Object!=nullptr) {
         // delete the Python dict upon destruction of edict
         Py::Dict edict(PP_PyDict_Object, true);
-        PP_PyDict_Object = 0;
+        PP_PyDict_Object = nullptr;
 
         std::string exceptionname;
         if (_exceptionType == Base::BaseExceptionFreeCADAbort)
@@ -137,7 +132,7 @@ void PyException::raiseException() {
     throw *this;
 }
 
-void PyException::ReportException (void) const
+void PyException::ReportException () const
 {
     if (!_isReported) {
         _isReported = true;
@@ -178,12 +173,11 @@ SystemExitException::SystemExitException()
 
     if (value) {
         code = PyObject_GetAttrString(value, "code");
-        if (code != NULL && value != Py_None) {
+        if (code != nullptr && value != Py_None) {
            Py_DECREF(value);
            value = code;
         }
 
-#if PY_MAJOR_VERSION >= 3
         if (PyLong_Check(value)) {
             errCode = PyLong_AsLong(value);
         }
@@ -192,16 +186,6 @@ SystemExitException::SystemExitException()
             if (str)
                 errMsg = errMsg + ": " + str;
         }
-#else
-        if (PyInt_Check(value)) {
-            errCode = PyInt_AsLong(value);
-        }
-        else {
-            const char *str = PyString_AsString(value);
-            if (str)
-                errMsg = errMsg + ": " + str;
-        }
-#endif
     }
 
     _sErrMsg  = errMsg;
@@ -214,7 +198,7 @@ SystemExitException::SystemExitException()
 class PythonStdOutput : public Py::PythonExtension<PythonStdOutput>
 {
 public:
-    static void init_type(void)
+    static void init_type()
     {
         behaviors().name("PythonStdOutput");
         behaviors().doc("Python standard output");
@@ -243,7 +227,7 @@ public:
 
 InterpreterSingleton::InterpreterSingleton()
 {
-    this->_global = 0;
+    this->_global = nullptr;
 }
 
 InterpreterSingleton::~InterpreterSingleton()
@@ -258,10 +242,10 @@ std::string InterpreterSingleton::runString(const char *sCmd)
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__");         /* get module, init python */
-    if (module == NULL)
+    if (module == nullptr)
         throw PyException();                         /* not incref'd */
     dict = PyModule_GetDict(module);            /* get dict namespace */
-    if (dict == NULL)
+    if (dict == nullptr)
         throw PyException();                           /* not incref'd */
 
 
@@ -279,11 +263,7 @@ std::string InterpreterSingleton::runString(const char *sCmd)
     PyObject* repr = PyObject_Repr(presult);
     Py_DECREF(presult);
     if (repr) {
-#if PY_MAJOR_VERSION >= 3
         std::string ret(PyUnicode_AsUTF8(repr));
-#else
-        std::string ret(PyString_AsString(repr));
-#endif
         Py_DECREF(repr);
         return ret;
     }
@@ -328,12 +308,8 @@ std::string InterpreterSingleton::runStringWithKey(const char *psCmd, const char
     if (!key_return_value.isString())
         key_return_value = key_return_value.str();
 
-#if PY_MAJOR_VERSION >= 3
     Py::Bytes str = Py::String(key_return_value).encode("utf-8", "~E~");
     std::string result = static_cast<std::string>(str);
-#else
-    std::string result = static_cast<std::string>(Py::String(key_return_value));
-#endif
     return result;
 }
 
@@ -343,10 +319,10 @@ Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__");         /* get module, init python */
-    if (module == NULL)
+    if (module == nullptr)
         throw PyException();                         /* not incref'd */
     dict = PyModule_GetDict(module);            /* get dict namespace */
-    if (dict == NULL)
+    if (dict == nullptr)
         throw PyException();                           /* not incref'd */
 
 
@@ -361,19 +337,15 @@ Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
     return Py::asObject(presult);
 }
 
-void InterpreterSingleton::systemExit(void)
+void InterpreterSingleton::systemExit()
 {
     /* This code is taken from the original Python code */
     PyObject *exception, *value, *tb;
     int exitcode = 0;
 
     PyErr_Fetch(&exception, &value, &tb);
-#if PY_MAJOR_VERSION < 3
-    if (Py_FlushLine())
-        PyErr_Clear();
-#endif
     fflush(stdout);
-    if (value == NULL || value == Py_None)
+    if (value == nullptr || value == Py_None)
         goto done;
     if (PyExceptionInstance_Check(value)) {
         /* The error code should be in the `code' attribute. */
@@ -387,13 +359,9 @@ void InterpreterSingleton::systemExit(void)
         /* If we failed to dig out the 'code' attribute,
            just let the else clause below print the error. */
     }
-#if PY_MAJOR_VERSION < 3
-    if (PyInt_Check(value))
-        exitcode = (int)PyInt_AsLong(value);
-#else
-    if (PyLong_Check(value))
+    if (PyLong_Check(value)) {
         exitcode = (int)PyLong_AsLong(value);
-#endif
+    }
     else {
         PyObject_Print(value, stderr, Py_PRINT_RAW);
         PySys_WriteStderr("\n");
@@ -417,10 +385,10 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__");         /* get module, init python */
-    if (module == NULL)
+    if (module == nullptr)
         throw PyException();                         /* not incref'd */
     dict = PyModule_GetDict(module);            /* get dict namespace */
-    if (dict == NULL)
+    if (dict == nullptr)
         throw PyException();                           /* not incref'd */
 
     presult = PyRun_String(sCmd, Py_single_input, dict, dict); /* eval direct */
@@ -435,13 +403,8 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
 
         RuntimeError exc(""); // do not use PyException since this clears the error indicator
         if (errdata) {
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(errdata))
                 exc.setMessage(PyUnicode_AsUTF8(errdata));
-#else
-            if (PyString_Check(errdata))
-                exc.setMessage(PyString_AsString(errdata));
-#endif
         }
         PyErr_Restore(errobj, errdata, errtraceback);
         if (PyErr_Occurred())
@@ -475,13 +438,9 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
             Py_INCREF(dict); // avoid to further distinguish between local and global dict
         }
 
-        if (PyDict_GetItemString(dict, "__file__") == NULL) {
-#if PY_MAJOR_VERSION >= 3
+        if (PyDict_GetItemString(dict, "__file__") == nullptr) {
             PyObject *f = PyUnicode_FromString(pxFileName);
-#else
-            PyObject *f = PyString_FromString(pxFileName);
-#endif
-            if (f == NULL) {
+            if (f == nullptr) {
                 fclose(fp);
                 Py_DECREF(dict);
                 return;
@@ -551,15 +510,7 @@ void InterpreterSingleton::addPythonPath(const char* Path)
 const char* InterpreterSingleton::init(int argc,char *argv[])
 {
     if (!Py_IsInitialized()) {
-#if PY_MAJOR_VERSION >= 3
-#if PY_MINOR_VERSION >= 5
-        Py_SetProgramName(Py_DecodeLocale(argv[0],NULL));
-#else
-        Py_SetProgramName(_Py_char2wchar(argv[0],NULL));
-#endif
-#else
-        Py_SetProgramName(argv[0]);
-#endif
+        Py_SetProgramName(Py_DecodeLocale(argv[0],nullptr));
         // There is a serious bug in VS from 2010 until 2013 where the file descriptor for stdin, stdout or stderr
         // returns a valid value for GUI applications (i.e. subsystem = Windows) where it shouldn't.
         // This causes Python to fail during initialization.
@@ -585,33 +536,18 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         PyEval_InitThreads();
 #endif
 
-#if PY_MAJOR_VERSION >= 3
         size_t size = argc;
         static std::vector<wchar_t *> _argv(size);
         for (int i = 0; i < argc; i++) {
-#if PY_MINOR_VERSION >= 5
-            _argv[i] = Py_DecodeLocale(argv[i],NULL);
-#else
-            _argv[i] = _Py_char2wchar(argv[i],NULL);
-#endif
+            _argv[i] = Py_DecodeLocale(argv[i],nullptr);
         }
         PySys_SetArgv(argc, _argv.data());
-#else
-        PySys_SetArgv(argc, argv);
-#endif
         PythonStdOutput::init_type();
         this->_global = PyEval_SaveThread();
     }
-#if PY_MAJOR_VERSION >= 3
+
     PyGILStateLocker lock;
-#if PY_MINOR_VERSION >= 5
-    return Py_EncodeLocale(Py_GetPath(),NULL);
-#else
-    return _Py_wchar2char(Py_GetPath(),NULL);
-#endif
-#else
-    return Py_GetPath();
-#endif
+    return Py_EncodeLocale(Py_GetPath(),nullptr);
 }
 
 void InterpreterSingleton::replaceStdOutput()
@@ -622,7 +558,7 @@ void InterpreterSingleton::replaceStdOutput()
     PySys_SetObject("stderr", out);
 }
 
-int InterpreterSingleton::cleanup(void (*func)(void))
+int InterpreterSingleton::cleanup(void (*func)())
 {
     return Py_AtExit( func );
 }
@@ -655,9 +591,9 @@ void InterpreterSingleton::runStringArg(const char * psCom,...)
 
 // Singelton:
 
-InterpreterSingleton * InterpreterSingleton::_pcSingelton = 0;
+InterpreterSingleton * InterpreterSingleton::_pcSingelton = nullptr;
 
-InterpreterSingleton & InterpreterSingleton::Instance(void)
+InterpreterSingleton & InterpreterSingleton::Instance()
 {
     // not initialized!
     if (!_pcSingelton)
@@ -665,12 +601,12 @@ InterpreterSingleton & InterpreterSingleton::Instance(void)
     return *_pcSingelton;
 }
 
-void InterpreterSingleton::Destruct(void)
+void InterpreterSingleton::Destruct()
 {
     // not initialized or double destruct!
     assert(_pcSingelton);
     delete _pcSingelton;
-    _pcSingelton = 0;
+    _pcSingelton = nullptr;
 }
 
 int InterpreterSingleton::runCommandLine(const char *prompt)
@@ -688,8 +624,8 @@ void InterpreterSingleton::runMethodVoid(PyObject *pobject, const char *method)
     PyGILStateLocker locker;
     if (PP_Run_Method(pobject ,    // object
                       method,  // run method
-                      0,			   // no return type
-                      0,		       // so no return object
+                      nullptr,			   // no return type
+                      nullptr,		       // so no return object
                       "()")		   // no arguments
             != 0)
         throw PyException(/*"Error running InterpreterSingleton::RunMethodVoid()"*/);
@@ -722,7 +658,7 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
 
     PyGILStateLocker locker;
     pmeth = PyObject_GetAttrString(pobject, method);
-    if (pmeth == NULL) {                            /* get callable object */
+    if (pmeth == nullptr) {                            /* get callable object */
         va_end(argslist);
         throw AttributeError("Error running InterpreterSingleton::RunMethod() method not defined");                                 /* bound method? has self */
     }
@@ -730,7 +666,7 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
     pargs = Py_VaBuildValue(argfmt, argslist);     /* args: c->python */
     va_end(argslist);
 
-    if (pargs == NULL) {
+    if (pargs == nullptr) {
         Py_DECREF(pmeth);
         throw TypeError("InterpreterSingleton::RunMethod() wrong arguments");
     }
@@ -756,10 +692,10 @@ PyObject * InterpreterSingleton::getValue(const char * key, const char * result_
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__");         /* get module, init python */
-    if (module == NULL)
+    if (module == nullptr)
         throw PyException();                         /* not incref'd */
     dict = PyModule_GetDict(module);            /* get dict namespace */
-    if (dict == NULL)
+    if (dict == nullptr)
         throw PyException();                           /* not incref'd */
 
 
@@ -790,7 +726,7 @@ void InterpreterSingleton::dbgUnsetBreakPoint(unsigned int /*uiLineNumber*/)
 
 }
 
-void InterpreterSingleton::dbgStep(void)
+void InterpreterSingleton::dbgStep()
 {
 
 }
@@ -873,42 +809,13 @@ int getSWIGVersionFromModule(const std::string& module)
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
 #endif
-#if PY_MAJOR_VERSION < 3
-namespace Swig_1_3_25 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
-namespace Swig_1_3_33 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
-namespace Swig_1_3_36 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
-namespace Swig_1_3_38 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
-namespace Swig_1_3_40 { extern int createSWIGPointerObj_T(const char* TypeName, void* obj, PyObject** ptr, int own); }
-#endif
 
 PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const char* TypeName, void* Pointer, int own)
 {
     int result = 0;
-    PyObject* proxy=0;
+    PyObject* proxy=nullptr;
     PyGILStateLocker locker;
-#if PY_MAJOR_VERSION < 3
-    int version = getSWIGVersionFromModule(Module);
-    switch (version)
-    {
-    case 66329:
-        result = Swig_1_3_25::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
-        break;
-    case 66337:
-        result = Swig_1_3_33::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
-        break;
-    case 66340:
-        result = Swig_1_3_36::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
-        break;
-    case 66342:
-        result = Swig_1_3_38::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
-        break;
-    case 66344:
-        result = Swig_1_3_40::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
-        break;
-    default:
-#else
     (void)Module;
-#endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::createSWIGPointerObj_T(TypeName, Pointer, &proxy, own);
 #else
@@ -916,9 +823,6 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
     (void)Pointer;
     (void)own;
     result = -1; // indicates error
-#endif
-#if PY_MAJOR_VERSION < 3
-    }
 #endif
 
     if (result == 0)
@@ -931,41 +835,12 @@ PyObject* InterpreterSingleton::createSWIGPointerObj(const char* Module, const c
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
 #endif
-#if PY_MAJOR_VERSION < 3
-namespace Swig_1_3_25 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
-namespace Swig_1_3_33 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
-namespace Swig_1_3_36 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
-namespace Swig_1_3_38 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
-namespace Swig_1_3_40 { extern int convertSWIGPointerObj_T(const char* TypeName, PyObject* obj, void** ptr, int flags); }
-#endif
 
 bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char* TypeName, PyObject* obj, void** ptr, int flags)
 {
     int result = 0;
     PyGILStateLocker locker;
-#if PY_MAJOR_VERSION < 3
-    int version = getSWIGVersionFromModule(Module);
-    switch (version)
-    {
-    case 66329:
-        result = Swig_1_3_25::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
-        break;
-    case 66337:
-        result = Swig_1_3_33::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
-        break;
-    case 66340:
-        result = Swig_1_3_36::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
-        break;
-    case 66342:
-        result = Swig_1_3_38::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
-        break;
-    case 66344:
-        result = Swig_1_3_40::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
-        break;
-    default:
-#else
     (void)Module;
-#endif
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
     result = Swig_python::convertSWIGPointerObj_T(TypeName, obj, ptr, flags);
 #else
@@ -974,9 +849,6 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
     (void)ptr;
     (void)flags;
     result = -1; // indicates error
-#endif
-#if PY_MAJOR_VERSION < 3
-    }
 #endif
 
     if (result == 0)
@@ -989,13 +861,6 @@ bool InterpreterSingleton::convertSWIGPointerObj(const char* Module, const char*
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 namespace Swig_python { extern void cleanupSWIG_T(const char* TypeName); }
 #endif
-#if PY_MAJOR_VERSION < 3
-namespace Swig_1_3_25 { extern void cleanupSWIG_T(const char* TypeName); }
-namespace Swig_1_3_33 { extern void cleanupSWIG_T(const char* TypeName); }
-namespace Swig_1_3_36 { extern void cleanupSWIG_T(const char* TypeName); }
-namespace Swig_1_3_38 { extern void cleanupSWIG_T(const char* TypeName); }
-namespace Swig_1_3_40 { extern void cleanupSWIG_T(const char* TypeName); }
-#endif
 
 void InterpreterSingleton::cleanupSWIG(const char* TypeName)
 {
@@ -1004,12 +869,5 @@ void InterpreterSingleton::cleanupSWIG(const char* TypeName)
     Swig_python::cleanupSWIG_T(TypeName);
 #else
     (void)TypeName;
-#endif
-#if PY_MAJOR_VERSION < 3
-    Swig_1_3_25::cleanupSWIG_T(TypeName);
-    Swig_1_3_33::cleanupSWIG_T(TypeName);
-    Swig_1_3_36::cleanupSWIG_T(TypeName);
-    Swig_1_3_38::cleanupSWIG_T(TypeName);
-    Swig_1_3_40::cleanupSWIG_T(TypeName);
 #endif
 }

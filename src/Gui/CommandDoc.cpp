@@ -677,9 +677,7 @@ StdCmdSaveAs::StdCmdSaveAs()
   sToolTipText  = QT_TR_NOOP("Save the active document under a new file name");
   sWhatsThis    = "Std_SaveAs";
   sStatusTip    = QT_TR_NOOP("Save the active document under a new file name");
-#if QT_VERSION >= 0x040200
   sPixmap       = "document-save-as";
-#endif
   sAccel        = keySequenceToAccel(QKeySequence::SaveAs);
   eType         = 0;
 }
@@ -819,9 +817,7 @@ StdCmdProjectInfo::StdCmdProjectInfo()
   sToolTipText  = QT_TR_NOOP("Show details of the currently active project");
   sWhatsThis    = "Std_ProjectInfo";
   sStatusTip    = QT_TR_NOOP("Show details of the currently active project");
-#if QT_VERSION >= 0x040200
   sPixmap       = "document-properties";
-#endif
 }
 
 void StdCmdProjectInfo::activated(int iMsg)
@@ -973,9 +969,7 @@ StdCmdQuit::StdCmdQuit()
   sToolTipText  = QT_TR_NOOP("Quits the application");
   sWhatsThis    = "Std_Quit";
   sStatusTip    = QT_TR_NOOP("Quits the application");
-#if QT_VERSION >= 0x040200
   sPixmap       = "application-exit";
-#endif
   sAccel        = "Alt+F4";
   eType         = NoTransaction;
 }
@@ -1023,10 +1017,10 @@ Action * StdCmdUndo::createAction(void)
     Action *pcAction;
 
     pcAction = new UndoAction(this,getMainWindow());
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->className(), pcAction);
-    if (sPixmap)
-        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    if (getPixmap())
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getPixmap()));
 
     return pcAction;
 }
@@ -1067,10 +1061,10 @@ Action * StdCmdRedo::createAction(void)
     Action *pcAction;
 
     pcAction = new RedoAction(this,getMainWindow());
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->className(), pcAction);
-    if (sPixmap)
-        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    if (getPixmap())
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getPixmap()));
 
     return pcAction;
 }
@@ -1278,9 +1272,7 @@ StdCmdSelectAll::StdCmdSelectAll()
     sToolTipText  = QT_TR_NOOP("Select all");
     sWhatsThis    = "Std_SelectAll";
     sStatusTip    = QT_TR_NOOP("Select all");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-select-all";
-#endif
     //sAccel        = "Ctrl+A"; // superseeds shortcuts for text edits
 }
 
@@ -1311,9 +1303,7 @@ StdCmdDelete::StdCmdDelete()
   sToolTipText  = QT_TR_NOOP("Deletes the selected objects");
   sWhatsThis    = "Std_Delete";
   sStatusTip    = QT_TR_NOOP("Deletes the selected objects");
-#if QT_VERSION >= 0x040200
   sPixmap       = "edit-delete";
-#endif
   sAccel        = keySequenceToAccel(QKeySequence::Delete);
   eType         = ForEdit;
 }
@@ -1600,6 +1590,7 @@ StdCmdTransformManip::StdCmdTransformManip()
     sToolTipText  = QT_TR_NOOP("Transform the selected object in the 3d view");
     sStatusTip    = QT_TR_NOOP("Transform the selected object in the 3d view");
     sWhatsThis    = "Std_TransformManip";
+    sPixmap       = "Std_TransformManip";
 }
 
 void StdCmdTransformManip::activated(int iMsg)
@@ -1704,9 +1695,7 @@ StdCmdEdit::StdCmdEdit()
     sWhatsThis    = "Std_Edit";
     sStatusTip    = QT_TR_NOOP("Activates or Deactivates the selected object's edit mode");
     sAccel        = "";
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-edit";
-#endif
     eType         = ForEdit;
 }
 

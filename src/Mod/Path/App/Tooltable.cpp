@@ -47,10 +47,10 @@ Tooltable::~Tooltable()
 
 void Tooltable::addTool(const Tool &tool)
 {
-    Tool *tmp = new Tool(tool);
+    ToolPtr tmp = std::make_shared<Tool>(tool);
     if (!Tools.empty()) {
         int max = 0;
-        for(std::map<int,Tool*>::const_iterator i = Tools.begin(); i != Tools.end(); ++i) {
+        for(std::map<int,ToolPtr>::const_iterator i = Tools.begin(); i != Tools.end(); ++i) {
             int k = i->first;
             if (k > max)
                 max = k;
@@ -65,7 +65,7 @@ void Tooltable::setTool(const Tool &tool, int pos)
     if (pos == -1) {
         addTool(tool);
     } else {
-        Tool *tmp = new Tool(tool);
+        ToolPtr tmp = std::make_shared<Tool>(tool);
         Tools[pos] = tmp;
     }
 }
@@ -88,9 +88,9 @@ void Tooltable::Save (Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Tooltable count=\"" <<  getSize() <<"\">" << std::endl;
     writer.incInd();
-    for(std::map<int,Tool*>::const_iterator i = Tools.begin(); i != Tools.end(); ++i) {
+    for(std::map<int,ToolPtr>::const_iterator i = Tools.begin(); i != Tools.end(); ++i) {
         int k = i->first;
-        Tool *v = i->second;
+        ToolPtr v = i->second;
         writer.Stream() << writer.ind() << "<Toolslot number=\"" << k << "\">" << std::endl;
         writer.incInd();
         v->Save(writer);
@@ -110,7 +110,7 @@ void Tooltable::Restore (XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("Toolslot");
         int id = reader.getAttributeAsInteger("number");
-        Tool *tmp = new Tool();
+        ToolPtr tmp = std::make_shared<Tool>();
         tmp->Restore(reader);
         Tools[id] = tmp;
     }

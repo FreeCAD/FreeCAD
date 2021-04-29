@@ -977,13 +977,14 @@ Py::Object TopoShapeFacePy::getWire(void) const
 
 Py::Object TopoShapeFacePy::getOuterWire(void) const
 {
-    const TopoDS_Shape& clSh = getTopoShapePtr()->getShape();
-    if (clSh.IsNull())
+    const TopoDS_Shape& shape = getTopoShapePtr()->getShape();
+    if (shape.IsNull())
         throw Py::RuntimeError("Null shape");
-    if (clSh.ShapeType() == TopAbs_FACE) {
-        TopoDS_Face clFace = (TopoDS_Face&)clSh;
-        TopoDS_Wire clWire = ShapeAnalysis::OuterWire(clFace);
-        return Py::Object(new TopoShapeWirePy(new TopoShape(clWire)),true);
+    if (shape.ShapeType() == TopAbs_FACE) {
+        TopoDS_Wire wire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+        Base::PyObjectBase* wirepy = new TopoShapeWirePy(new TopoShape(wire));
+        wirepy->setNotTracking();
+        return Py::asObject(wirepy);
     }
     else {
         throw Py::TypeError("Internal error, TopoDS_Shape is not a face!");

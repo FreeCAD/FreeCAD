@@ -47,7 +47,7 @@ else:
 #  \brief The Roof object and tools
 #
 #  This module provides tools to build Roof objects.
-#  Roofs are build from a closed contour and a series of
+#  Roofs are built from a closed contour and a series of
 #  slopes.
 
 __title__  = "FreeCAD Roof"
@@ -56,13 +56,12 @@ __url__    = "https://www.freecadweb.org"
 
 
 def adjust_list_len (lst, newLn, val):
+    '''Returns a clone of lst with length newLn, val is appended if required'''
     ln = len(lst)
     if ln > newLn:
         return lst[0:newLn]
     else:
-        for i in range(newLn - ln):
-            lst.append(val)
-        return lst
+        return lst[:] + ([val] * (newLn - ln))
 
 
 def find_inters (edge1, edge2, infinite1=True, infinite2=True):

@@ -447,7 +447,7 @@ Qt::PenStyle TaskCenterLine::getCenterStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CosmoCLStyle", 2));
+    Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CenterLine", 2));
     return centerStyle;
 }
 
@@ -515,7 +515,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
     : TaskDialog()
 {
     widget  = new TaskCenterLine(partFeat,page,subNames, editMode);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-facecenterline"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -528,7 +528,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
     : TaskDialog()
 {
     widget  = new TaskCenterLine(partFeat,page, edgeName, editMode);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-facecenterline"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

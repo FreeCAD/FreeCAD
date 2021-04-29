@@ -91,12 +91,14 @@ class DraftWireGuiTools(GuiTools):
             App.Console.PrintMessage(_err + "\n")
             return
 
-        if obj.Closed:
-            # DNC: project the new point to the plane of the face if present
-            if hasattr(obj.Shape, "normalAt"):
-                normal = obj.Shape.normalAt(0,0)
-                point_on_plane = obj.Shape.Vertexes[0].Point
-                v.projectToPlane(point_on_plane, normal)
+        # TODO: Make consistent operation with trackers and open wires
+        # See: https://forum.freecadweb.org/viewtopic.php?f=23&t=56661
+        #if obj.Closed:
+        #    # DNC: project the new point to the plane of the face if present
+        #    if hasattr(obj.Shape, "normalAt"):
+        #        normal = obj.Shape.normalAt(0,0)
+        #        point_on_plane = obj.Shape.Vertexes[0].Point
+        #        v.projectToPlane(point_on_plane, normal)
 
         pts[node_idx] = v
         obj.Points = pts

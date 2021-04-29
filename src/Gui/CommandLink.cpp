@@ -98,11 +98,11 @@ Action * StdCmdLinkMakeGroup::createAction(void)
     // add the action items
     QAction* action = nullptr;
     action = pcAction->addAction(QObject::tr("Simple group"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    action->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     action = pcAction->addAction(QObject::tr("Group with links"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    action->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     action = pcAction->addAction(QObject::tr("Group with transform links"));
-    action->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    action->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     return pcAction;
 }
 

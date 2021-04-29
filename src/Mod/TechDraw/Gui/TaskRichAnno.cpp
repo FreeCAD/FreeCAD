@@ -239,9 +239,7 @@ void TaskRichAnno::setUiPrimary()
     ui->teAnnoText->setFontPointSize(mre.getDefFontSizeNum());
     // set a placeholder text to inform the user
     // (QTextEdit has no placeholderText property in Qt4)
-#if QT_VERSION >= 0x050200
     ui->teAnnoText->setPlaceholderText(tr("Input the annotation text directly or start the rich text editor"));
-#endif
 }
 
 void TaskRichAnno::enableTextUi(bool b)
@@ -590,7 +588,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
     : TaskDialog()
 {
     widget  = new TaskRichAnno(baseFeat,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-RichTextAnnotation"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
                                               widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -600,7 +598,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP)
     : TaskDialog()
 {
     widget  = new TaskRichAnno(leadVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-RichTextAnnotation"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

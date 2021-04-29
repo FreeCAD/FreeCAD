@@ -22,9 +22,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QLineEdit>
 # include <QPixmapCache>
+# include <QStyle>
 #endif
 #include "ExpressionBinding.h"
+#include "QuantitySpinBox_p.h"
 #include "BitmapFactory.h"
 #include "Command.h"
 #include <App/Expression.h>
@@ -265,4 +268,22 @@ void ExpressionBinding::objectDeleted(const App::DocumentObject& obj)
     if (docObj == &obj) {
         unbind();
     }
+}
+
+void ExpressionBinding::makeLabel(QLineEdit* le)
+{
+    defaultPalette = le->palette();
+
+    /* Icon for f(x) */
+    QFontMetrics fm(le->font());
+    int frameWidth = le->style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
+    iconHeight = fm.height() - frameWidth;
+    iconLabel = new ExpressionLabel(le);
+    iconLabel->setCursor(Qt::ArrowCursor);
+    QPixmap pixmap = getIcon(":/icons/bound-expression-unset.svg", QSize(iconHeight, iconHeight));
+    iconLabel->setPixmap(pixmap);
+    iconLabel->setStyleSheet(QString::fromLatin1("QLabel { border: none; padding: 0px; padding-top: %2px; width: %1px; height: %1px }").arg(iconHeight).arg(frameWidth/2));
+    iconLabel->hide();
+    iconLabel->setExpressionText(QString());
+    le->setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 }

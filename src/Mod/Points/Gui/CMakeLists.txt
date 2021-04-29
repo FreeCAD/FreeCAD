@@ -13,12 +13,6 @@ set(PointsGui_LIBS
     FreeCADGui
 )
 
-set(PointsGui_MOC_HDRS
-    DlgPointsReadImp.h
-)
-fc_wrap_cpp(PointsGui_MOC_SRCS ${PointsGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${PointsGui_MOC_SRCS})
-
 set(Dialog_UIC_SRCS
     DlgPointsRead.ui
 )

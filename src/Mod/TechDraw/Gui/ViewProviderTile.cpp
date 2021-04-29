@@ -48,7 +48,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderTile, Gui::ViewProviderDocumentObject)
 
 ViewProviderTile::ViewProviderTile()
 {
-    sPixmap = "actions/techdraw-tile";
+    sPixmap = "actions/TechDraw_Tile";
 }
 
 ViewProviderTile::~ViewProviderTile()
