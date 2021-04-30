@@ -1099,7 +1099,7 @@ SoFCRenderCache::buildHighlightCache(int order,
       if (color) {
         if (material.type != Material::Triangle)
           material.lightmodel = SoLazyElement::BASE_COLOR;
-        if (material.lightmodel != SoLazyElement::BASE_COLOR)
+        if (material.lightmodel != SoLazyElement::BASE_COLOR && detail)
           material.emissive = color | 0xff;
         else {
           material.pervertexcolor = false;

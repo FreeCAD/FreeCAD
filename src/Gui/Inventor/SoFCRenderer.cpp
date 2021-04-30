@@ -181,6 +181,7 @@ public:
   std::vector<std::size_t> opaqueontop;
   std::vector<std::size_t> opaqueselections;
   std::vector<std::size_t> opaquehighlight;
+  std::vector<std::size_t> opaquelineshighlight; // has both lines and points
   std::vector<std::size_t> linesontop; // has both lines and points
   std::vector<std::size_t> trianglesontop;
 
@@ -369,16 +370,24 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     depthtest = true;
     depthfunc = SoDepthBuffer::LEQUAL;
     depthwrite = false;
-
-    float scale = ViewParams::getSelectionLineThicken();
-    pointsize = std::max(pointsize, pointsize * scale);
-    linewidth = std::max(linewidth, linewidth * scale);
   }
 
   if (pass & RenderPassHighlight) {
     float scale = ViewParams::getSelectionLineThicken();
-    pointsize = std::max(std::max(pointsize, pointsize * scale), 3.0f);
-    linewidth = std::max(std::max(linewidth, linewidth * scale), 2.0f);
+    if (scale < 1.0)
+      scale = 1.0;
+    float w = linewidth * scale;
+    if (ViewParams::getSelectionLineMaxWidth() > 1.0)
+      w = std::min<float>(w, std::max<float>(linewidth, ViewParams::getSelectionLineMaxWidth()));
+    linewidth = w;
+
+    float pscale = ViewParams::getSelectionPointScale();
+    if (pscale < 1.0)
+      pscale = scale;
+    w = pointsize * pscale;
+    if (ViewParams::getSelectionPointMaxSize() > 1.0)
+      w = std::min<float>(w, std::max<float>(pointsize, ViewParams::getSelectionPointMaxSize()));
+    pointsize = w;
   }
 
   if (first || this->material.depthtest != depthtest) {
@@ -583,6 +592,7 @@ SoFCRenderer::clear()
 
   PRIVATE(this)->highlightcaches.clear();
   PRIVATE(this)->opaquehighlight.clear();
+  PRIVATE(this)->opaquelineshighlight.clear();
   PRIVATE(this)->transphighlight.clear();
   PRIVATE(this)->highlightkeys.clear();
 
@@ -611,6 +621,7 @@ SoFCRenderer::clearHighlight()
 {
   PRIVATE(this)->highlightcaches.clear();
   PRIVATE(this)->opaquehighlight.clear();
+  PRIVATE(this)->opaquelineshighlight.clear();
   PRIVATE(this)->transphighlight.clear();
   PRIVATE(this)->hlentries.clear();
   PRIVATE(this)->applyKeys(PRIVATE(this)->highlightkeys, -1);
@@ -735,13 +746,20 @@ SoFCRenderer::setHighlight(VertexCacheMap && caches)
       if (material.overrideflags.test(Material::FLAG_TRANSPARENCY)) {
         if ((material.diffuse & 0xff) != 0xff)
           PRIVATE(this)->transphighlight.emplace_back(idx);
-        else
+        else if (material.type == Material::Triangle)
           PRIVATE(this)->opaquehighlight.emplace_back(idx);
+        else
+          PRIVATE(this)->opaquelineshighlight.emplace_back(idx);
       }
       else {
         if (!fulltransp && (!material.pervertexcolor
                             || ventry.cache->hasOpaqueParts()))
-          PRIVATE(this)->opaquehighlight.emplace_back(idx);
+        {
+          if (material.type == Material::Triangle)
+            PRIVATE(this)->opaquehighlight.emplace_back(idx);
+          else
+            PRIVATE(this)->opaquelineshighlight.emplace_back(idx);
+        }
 
         if (fulltransp || (material.pervertexcolor
                             && ventry.cache->hasTransparency()))
@@ -1222,19 +1240,23 @@ SoFCRenderer::render(SoGLRenderAction * action)
   glDisable(GL_BLEND);
 
   PRIVATE(this)->renderOpaque(action,
-                              PRIVATE(this)->slentries,
-                              PRIVATE(this)->selspointontop,
-                              RenderPassHighlight);
-
-  PRIVATE(this)->renderOpaque(action,
                               PRIVATE(this)->hlentries,
-                              PRIVATE(this)->opaquehighlight,
-                              RenderPassHighlight);
+                              PRIVATE(this)->opaquehighlight);
 
   PRIVATE(this)->renderTransparency(action,
                                     PRIVATE(this)->hlentries,
                                     PRIVATE(this)->transphighlight,
                                     false);
+
+  PRIVATE(this)->renderOpaque(action,
+                              PRIVATE(this)->hlentries,
+                              PRIVATE(this)->opaquelineshighlight,
+                              RenderPassHighlight);
+
+  PRIVATE(this)->renderOpaque(action,
+                              PRIVATE(this)->slentries,
+                              PRIVATE(this)->selspointontop,
+                              RenderPassHighlight);
 
   state->pop();
   glPopAttrib();
