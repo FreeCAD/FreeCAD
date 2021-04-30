@@ -674,31 +674,37 @@ public:
         if (!dynamic_cast<DrawSketchHandlerLineSet*>(next))
             return false;
 
-        if (Mode != STATUS_SEEK_Second)
-            return true; // SegmentMode can be changed only in STATUS_SEEK_Second mode
+        if (EditCurve.size() <= 1)
+            return true;
 
-        if (previousCurve != -1) {
-            // loop through the following modes:
-            // SEGMENT_MODE_Line, TRANSITION_MODE_Free / TRANSITION_MODE_Tangent
-            // SEGMENT_MODE_Line, TRANSITION_MODE_Perpendicular_L
-            // SEGMENT_MODE_Line, TRANSITION_MODE_Tangent / TRANSITION_MODE_Free
-            // SEGMENT_MODE_Arc, TRANSITION_MODE_Tangent
-            // SEGMENT_MODE_Arc, TRANSITION_MODE_Perpendicular_L
-            // SEGMENT_MODE_Arc, TRANSITION_MODE_Perpendicular_R
+        // loop through the following modes:
+        // SEGMENT_MODE_Line, TRANSITION_MODE_Free / TRANSITION_MODE_Tangent
+        // SEGMENT_MODE_Line, TRANSITION_MODE_Perpendicular_L
+        // SEGMENT_MODE_Line, TRANSITION_MODE_Tangent / TRANSITION_MODE_Free
+        // SEGMENT_MODE_Arc, TRANSITION_MODE_Tangent
+        // SEGMENT_MODE_Arc, TRANSITION_MODE_Perpendicular_L
+        // SEGMENT_MODE_Arc, TRANSITION_MODE_Perpendicular_R
 
-            SnapMode = SNAP_MODE_Free;
+        SnapMode = SNAP_MODE_Free;
 
-            Base::Vector2d onSketchPos;
-            if (SegmentMode == SEGMENT_MODE_Line)
-                onSketchPos = EditCurve[EditCurve.size()-1];
-            else
-                onSketchPos = EditCurve[29];
+        Base::Vector2d onSketchPos;
+        if (SegmentMode == SEGMENT_MODE_Line)
+            onSketchPos = EditCurve[EditCurve.size()-1];
+        else
+            onSketchPos = EditCurve[29];
 
-            const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(previousCurve);
+        const Part::Geometry *geom = nullptr;
+        if (previousCurve != -1)
+            geom = sketchgui->getSketchObject()->getGeometry(previousCurve);
+        else {
+            dirVec.Set(EditCurve[1].y - EditCurve[0].y, EditCurve[1].x - EditCurve[0].x, 0.f);
+            dirVec.Normalize();
+        }
 
-            if (SegmentMode == SEGMENT_MODE_Line) {
-                switch (TransitionMode) {
-                    case TRANSITION_MODE_Free:
+        if (SegmentMode == SEGMENT_MODE_Line) {
+            switch (TransitionMode) {
+                case TRANSITION_MODE_Free:
+                    if (geom) {
                         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) { // 3rd mode
                             SegmentMode = SEGMENT_MODE_Arc;
                             TransitionMode = TRANSITION_MODE_Tangent;
@@ -706,49 +712,53 @@ public:
                         else // 1st mode
                             TransitionMode = TRANSITION_MODE_Perpendicular_L;
                         break;
-                    case TRANSITION_MODE_Perpendicular_L: // 2nd mode
+                    }
+                    // fall through
+                case TRANSITION_MODE_Perpendicular_L: // 2nd mode
+                    if (geom) {
                         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
                             TransitionMode = TRANSITION_MODE_Free;
                         else
                             TransitionMode = TRANSITION_MODE_Tangent;
                         break;
-                    case TRANSITION_MODE_Tangent:
-                        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) // 1st mode
-                            TransitionMode = TRANSITION_MODE_Perpendicular_L;
-                        else { // 3rd mode
-                            SegmentMode = SEGMENT_MODE_Arc;
-                            TransitionMode = TRANSITION_MODE_Tangent;
-                        }
-                        break;
-                    default: // unexpected mode
-                        TransitionMode = TRANSITION_MODE_Free;
-                        break;
-                }
-            }
-            else {
-                switch (TransitionMode) {
-                    case TRANSITION_MODE_Tangent: // 4th mode
+                    }
+                    // fall through
+                case TRANSITION_MODE_Tangent:
+                    if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) // 1st mode
                         TransitionMode = TRANSITION_MODE_Perpendicular_L;
-                        break;
-                    case TRANSITION_MODE_Perpendicular_L: // 5th mode
-                        TransitionMode = TRANSITION_MODE_Perpendicular_R;
-                        break;
-                    default: // 6th mode (Perpendicular_R) + unexpected mode
-                        SegmentMode = SEGMENT_MODE_Line;
-                        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
-                            TransitionMode = TRANSITION_MODE_Tangent;
-                        else
-                            TransitionMode = TRANSITION_MODE_Free;
-                        break;
-                }
+                    else { // 3rd mode
+                        SegmentMode = SEGMENT_MODE_Arc;
+                        TransitionMode = TRANSITION_MODE_Tangent;
+                    }
+                    break;
+                default: // unexpected mode
+                    TransitionMode = TRANSITION_MODE_Free;
+                    break;
             }
-
-            if (SegmentMode == SEGMENT_MODE_Line)
-                EditCurve.resize(TransitionMode == TRANSITION_MODE_Free ? 2 : 3);
-            else
-                EditCurve.resize(32);
-            mouseMove(onSketchPos); // trigger an update of EditCurve
         }
+        else {
+            switch (TransitionMode) {
+                case TRANSITION_MODE_Tangent: // 4th mode
+                    TransitionMode = TRANSITION_MODE_Perpendicular_L;
+                    break;
+                case TRANSITION_MODE_Perpendicular_L: // 5th mode
+                    TransitionMode = TRANSITION_MODE_Perpendicular_R;
+                    break;
+                default: // 6th mode (Perpendicular_R) + unexpected mode
+                    SegmentMode = SEGMENT_MODE_Line;
+                    if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
+                        TransitionMode = TRANSITION_MODE_Tangent;
+                    else
+                        TransitionMode = TRANSITION_MODE_Free;
+                    break;
+            }
+        }
+
+        if (SegmentMode == SEGMENT_MODE_Line) 
+            EditCurve.resize(TransitionMode == TRANSITION_MODE_Free ? 2 : 3);
+        else
+            EditCurve.resize(32);
+        mouseMove(onSketchPos); // trigger an update of EditCurve
         return true;
     }
 
