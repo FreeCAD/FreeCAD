@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>601</width>
-    <height>1222</height>
+    <height>1256</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,31 +21,33 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0,0" columnstretch="0,0" rowminimumheight="0,0,0,0,0,0,0,0,0">
+       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0" rowminimumheight="0,0,0,0,0,0,0,0,0,0,0">
         <property name="horizontalSpacing">
          <number>6</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="ShowSelectionOnTop">
-          <property name="minimumSize">
-           <size>
-            <width>240</width>
-            <height>0</height>
-           </size>
+        <item row="4" column="1">
+         <widget class="QDoubleSpinBox" name="SelectionLineThicken">
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
           </property>
-          <property name="text">
-           <string>Show selection on top</string>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="labelTransparencyOnTop">
-          <property name="text">
-           <string>Transparency</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Selected hidden line pattern</string>
@@ -59,14 +61,17 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="8" column="1">
+         <widget class="QComboBox" name="comboLinePattern"/>
+        </item>
+        <item row="10" column="0">
          <widget class="QLabel" name="labelSelectionHiddenLineWidth">
           <property name="text">
            <string>Selected hidden line width</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="10" column="1">
          <widget class="QDoubleSpinBox" name="SelectionHiddenLineWidth">
           <property name="inputMethodHints">
            <set>Qt::ImhPreferNumbers</set>
@@ -88,8 +93,81 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="ShowSelectionOnTop">
+          <property name="minimumSize">
+           <size>
+            <width>240</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Show selection on top</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="SelectElementOnTop">
+          <property name="text">
+           <string>Element select on top</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="HiddenLineSelectionOnTop">
+          <property name="text">
+           <string>Hidden line selection on top</string>
+          </property>
+         </widget>
+        </item>
         <item row="6" column="1">
-         <widget class="QComboBox" name="comboLinePattern"/>
+         <widget class="QDoubleSpinBox" name="SelectionPointScale">
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>10.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="labelTransparencyOnTop">
+          <property name="text">
+           <string>Transparency</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="labelSelectionLineMaxWidth">
+          <property name="text">
+           <string>Maximum line width</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QSpinBox" name="SelectionLinePatternScale">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+         </widget>
         </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="TransparencyOnTop">
@@ -113,71 +191,42 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="HiddenLineSelectionOnTop">
-          <property name="text">
-           <string>Hidden line selection on top</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QDoubleSpinBox" name="SelectionLineThicken">
-          <property name="inputMethodHints">
-           <set>Qt::ImhPreferNumbers</set>
-          </property>
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="minimum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>10.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="SelectElementOnTop">
-          <property name="text">
-           <string>Element select on top</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="labelSelectionLinePatternScale">
           <property name="text">
            <string>Selected line pattern scale</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
-         <widget class="QSpinBox" name="SelectionLinePatternScale">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="labelSelectionLineMaxWidth">
-          <property name="text">
-           <string>Maximum line width</string>
-          </property>
-         </widget>
-        </item>
         <item row="5" column="1">
          <widget class="QDoubleSpinBox" name="SelectionLineMaxWidth">
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>4.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="labelSelectionPointScale">
+          <property name="text">
+           <string>Point size multiplier</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="labelSelectionPointMaxSize">
+          <property name="text">
+           <string>Maximum point size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QDoubleSpinBox" name="SelectionPointMaxSize">
           <property name="decimals">
            <number>1</number>
           </property>
@@ -213,7 +262,16 @@
       <string>Hidden Lines</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -221,7 +279,16 @@
       </property>
       <item row="0" column="0">
        <layout class="QGridLayout" name="_3" columnstretch="0,0">
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">
@@ -383,7 +450,16 @@
       <string>Shadow</string>
      </property>
      <layout class="QGridLayout" name="_2">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -394,7 +470,16 @@
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <property name="spacing">

@@ -745,7 +745,7 @@ void SoBrepFaceSet::glRender(SoGLRenderAction *action, bool inpath)
             c.setHSVValue(h,s,v);
         }
         uint32_t color = c.getPackedValue(0.0f);
-        Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,&color);
+        Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,&color,false);
         SoPolygonOffsetElement::set(state, this, 0.0f, 0.0f,
                                     SoPolygonOffsetElement::FILLED, FALSE);
         SoDrawStyleElement::set(state, this, SoDrawStyleElement::LINES);

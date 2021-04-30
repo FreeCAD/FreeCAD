@@ -257,14 +257,6 @@ void SoBrepEdgeSet::glRender(SoGLRenderAction *action, bool inpath)
                 width = 1.0;
             if (SoFCDisplayModeElement::showHiddenLines(state))
                 width = std::max(width, (float)Gui::ViewParams::getSelectionHiddenLineWidth());
-            else if(Gui::ViewParams::getSelectionLineThicken()>1.0) {
-                float w = width * Gui::ViewParams::getSelectionLineThicken();
-                if (Gui::ViewParams::getSelectionLineMaxWidth() > 1.0) {
-                    w = std::min<float>(w, 
-                            std::max<float>(width, Gui::ViewParams::getSelectionLineMaxWidth()));
-                }
-                width = w;
-            }
             pass = 2;
         }
 
@@ -502,7 +494,8 @@ void SoBrepEdgeSet::_renderSelection(SoGLRenderAction *action,
                 SoBrepFaceSet::makeDistinctColor(_color, _color, SoLazyElement::getDiffuse(state, idx));
         }
         color = _color.getPackedValue(0.0);
-        Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,&color);
+        Gui::SoFCSelectionRoot::setupSelectionLineRendering(
+                state,this,&color,!RenderIndices.empty());
         if(pattern) {
             SoLinePatternElement::set(state, this, pattern);
             if (Gui::ViewParams::getSelectionLinePatternScale() > 1)

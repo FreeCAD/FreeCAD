@@ -298,7 +298,14 @@ static inline void setupRendering(
         SoState *state, SoNode *node, const uint32_t *color) 
 {
     float ps = SoPointSizeElement::get(state);
-    if (ps < 4.0f) SoPointSizeElement::set(state, node, 4.0f);
+    float pscale = Gui::ViewParams::getSelectionPointScale();
+    if (pscale < 1.0)
+      pscale = Gui::ViewParams::getSelectionLineThicken();
+    float w = ps * pscale;
+    if (Gui::ViewParams::getSelectionPointMaxSize() > 1.0)
+      w = std::min<float>(w, std::max<float>(ps, Gui::ViewParams::getSelectionPointMaxSize()));
+    if (ps != w)
+        SoPointSizeElement::set(state, node, w);
 
     SoShadowStyleElement::set(state, SoShadowStyleElement::NO_SHADOWING);
     SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);

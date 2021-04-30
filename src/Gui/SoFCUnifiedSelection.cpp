@@ -1909,24 +1909,24 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
 }
 
 void SoFCSelectionRoot::setupSelectionLineRendering(
-        SoState *state, SoNode *node, const uint32_t *color)
+        SoState *state, SoNode *node, const uint32_t *color, bool changeWidth)
 {
-    float width = SoLineWidthElement::get(state);
-    if(width < 1.0)
-        width = 1.0;
-
-    if(Gui::ViewParams::getSelectionLineThicken()>1.0) {
-        float w = width * Gui::ViewParams::getSelectionLineThicken();
-        if (Gui::ViewParams::getSelectionLineMaxWidth() > 1.0) {
-            w = std::min<float>(w,
-                    std::max<float>(width, Gui::ViewParams::getSelectionLineMaxWidth()));
+    if (changeWidth) {
+        float width = SoLineWidthElement::get(state);
+        if(width < 1.0)
+            width = 1.0;
+        if(Gui::ViewParams::getSelectionLineThicken()>1.0) {
+            float w = width * Gui::ViewParams::getSelectionLineThicken();
+            if (Gui::ViewParams::getSelectionLineMaxWidth() > 1.0) {
+                w = std::min<float>(w,
+                        std::max<float>(width, Gui::ViewParams::getSelectionLineMaxWidth()));
+            }
+            width = w;
         }
-        width = w;
+        SoLineWidthElement::set(state,width);
     }
 
     SoShadowStyleElement::set(state, SoShadowStyleElement::NO_SHADOWING);
-
-    SoLineWidthElement::set(state,width);
 
     SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
     SoOverrideElement::setLightModelOverride(state, node, TRUE);
@@ -2026,7 +2026,7 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node,
     }
 
     uint32_t packed = color.getPackedValue(0.0);
-    setupSelectionLineRendering(state,node,&packed);
+    setupSelectionLineRendering(state,node,&packed,false);
 
     SoDrawStyleElement::set(state,SoDrawStyleElement::LINES);
     SoLineWidthElement::set(state,ViewParams::instance()->getSelectionBBoxLineWidth());
