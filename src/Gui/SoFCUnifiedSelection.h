@@ -518,7 +518,7 @@ class GuiExport SoSelectionElementAction : public SoAction
 public:
     enum Type {None, Append, Remove, All, Color, Hide, Show};
 
-    SoSelectionElementAction (Type=None, bool secondary = false);
+    SoSelectionElementAction (Type=None, bool secondary = false, bool noTouch = false);
     ~SoSelectionElementAction();
 
     Type getType() const;
@@ -534,6 +534,11 @@ public:
     bool isSecondary() const {return _secondary;}
     void setSecondary(bool enable) {
         _secondary = enable;
+    }
+
+    bool noTouch() const {return _noTouch;}
+    void setNoTouch(bool enable) {
+        _noTouch = enable;
     }
 
     const std::map<std::string,App::Color> &getColors() const {
@@ -560,6 +565,7 @@ private:
     const SoDetail* _det;
     std::map<std::string,App::Color> _colors;
     bool _secondary;
+    bool _noTouch;
 };
 
 /**

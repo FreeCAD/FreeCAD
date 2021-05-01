@@ -1074,7 +1074,7 @@ Base::BoundBox3d ViewProvider::_getBoundingBox(
 
     SoTempPath path(3);
     path.ref();
-    SoSelectionElementAction selAction(SoSelectionElementAction::Append,true);
+    SoSelectionElementAction selAction(SoSelectionElementAction::Append,true,true);
     SoDetail *det=0;
     if(subname && subname[0]) {
         if(!getDetailPath(subname,&path,true,det)) {
