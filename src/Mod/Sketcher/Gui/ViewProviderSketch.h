@@ -470,6 +470,7 @@ protected:
     float zCross;
     //float zLines;
     //float zPoints;
+    float zRootPoint;
     float zLowPoints;
     float zHighPoints;
     float zConstr;

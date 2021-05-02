@@ -402,6 +402,7 @@ ViewProviderSketch::ViewProviderSketch()
     zConstr=0.003f; // constraint not construction
 
     //zPoints=0.010f;
+    zRootPoint = 0.005f;
     zLowPoints = 0.010f;
     zHighPoints = 0.011f;
     zHighlight=0.012f;
@@ -3226,13 +3227,12 @@ void ViewProviderSketch::updateColor(void)
     for (auto &v : edit->SelPointMap) {
         int SelId = v.first;
         int PtId = SelId;
-        if (PtId && PtId <= (int)edit->VertexIdToPointId.size()) {
+        if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
             PtId = edit->VertexIdToPointId[PtId-1];
-            if (PtId < PtNum) {
-                pcolor[PtId] = SelectColor;
-                pverts[PtId].getValue(x,y,z);
-                pverts[PtId].setValue(x,y,zHighlight);
-            }
+        if (PtId < PtNum) {
+            pcolor[PtId] = SelectColor;
+            pverts[PtId].getValue(x,y,z);
+            pverts[PtId].setValue(x,y,zHighlight);
         }
     }
 
@@ -3373,11 +3373,13 @@ void ViewProviderSketch::updateColor(void)
     for (int i : edit->PreselectConstraintSet)
         setConstraintColors(i, &PreselectColor);
 
-    if (edit->PreselectPoint == 0) {
+    if (edit->PreselectCross == 0) {
         pcolor[0] = pcolor[0] == SelectColor ? PreselectSelectedColor : PreselectColor;
         edit->PreSelectedPointSet->coordIndex.setValue(0);
-    }
-    else if (edit->PreselectPoint != -1) {
+        pverts[0][2] = zHighlight;
+    } else
+        pverts[0][2] = zRootPoint;
+    if (edit->PreselectPoint != -1) {
         int PtId = edit->PreselectPoint + 1;
         if (PtId && PtId <= (int)edit->VertexIdToPointId.size())
             PtId = edit->VertexIdToPointId[PtId-1];
