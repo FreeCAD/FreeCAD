@@ -353,7 +353,7 @@ public:
             return;
         auto color = item->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, parent);
-        cd.setOption(QColorDialog::ShowAlphaChannel);
+        cd.setOptions(QColorDialog::ShowAlphaChannel|QColorDialog::DontUseNativeDialog);
         if (cd.exec()!=QDialog::Accepted || color==cd.selectedColor())
             return;
         color = cd.selectedColor();
@@ -536,7 +536,7 @@ void ElementColors::on_addSelection_clicked()
     if(d->items.size()) {
         auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, this);
-        cd.setOption(QColorDialog::ShowAlphaChannel);
+        cd.setOptions(QColorDialog::ShowAlphaChannel|QColorDialog::DontUseNativeDialog);
         if (cd.exec()!=QDialog::Accepted)
             return;
         color = cd.selectedColor();
