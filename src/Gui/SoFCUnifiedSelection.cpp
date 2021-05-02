@@ -1068,8 +1068,11 @@ SoFCUnifiedSelection::Private::setHighlight(SoFullPath *path,
                 float a = 1.f - ViewParams::getTransparencyOnTop();
                 t = 1.f - a*a;
             }
-            manager.setHighlight(currentHighlight, det,
-                    master->colorHighlight.getValue().getPackedValue(t), ontop);
+            manager.setHighlight(currentHighlight,
+                                 det,
+                                 master->colorHighlight.getValue().getPackedValue(t),
+                                 ontop,
+                                 !obj.hasSubElement());
             touch();
         }
         else {

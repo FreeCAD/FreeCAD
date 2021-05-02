@@ -42,7 +42,11 @@ public:
   void render(SoGLRenderAction *action);
   void clear();
 
-  void setHighlight(SoPath * path, const SoDetail * detail, uint32_t color, bool ontop = false);
+  void setHighlight(SoPath * path,
+                    const SoDetail * detail,
+                    uint32_t color,
+                    bool ontop = false,
+                    bool wholeontop = false);
 
   void clearHighlight();
 

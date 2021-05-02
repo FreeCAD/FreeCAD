@@ -380,7 +380,8 @@ void
 SoFCRenderCacheManager::setHighlight(SoPath * path,
                                      const SoDetail * detail,
                                      uint32_t color,
-                                     bool ontop)
+                                     bool ontop,
+                                     bool wholeontop)
 {
   PRIVATE(this)->caches.clear();
   SoState * state = PRIVATE(this)->action->getState();
@@ -393,7 +394,8 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
     int order = ontop ? 1 : 0;
     PRIVATE(this)->renderer->setHighlight(
           PRIVATE(this)->caches[0]->buildHighlightCache(
-            order, detail, color, true, false));
+            order, detail, color, true, wholeontop),
+          wholeontop);
     PRIVATE(this)->caches.clear();
   }
 }

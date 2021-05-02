@@ -45,7 +45,7 @@ public:
 
   typedef SoFCRenderCache::VertexCacheMap VertexCacheMap;
 
-  void setHighlight(VertexCacheMap && caches);
+  void setHighlight(VertexCacheMap && caches, bool wholeontop);
   void clearHighlight();
 
   enum SelIdBits {

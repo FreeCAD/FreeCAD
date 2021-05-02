@@ -225,6 +225,7 @@ public:
   uint32_t highlightcolor;
   bool notexture;
   bool depthwriteonly;
+  bool hlwholeontop = false;
 };
 
 SoFCRenderer::SoFCRenderer()
@@ -619,6 +620,7 @@ SoFCRendererP::applyKeys(const CacheKeySet & keys, int skip)
 void
 SoFCRenderer::clearHighlight()
 {
+  PRIVATE(this)->hlwholeontop = false;
   PRIVATE(this)->highlightcaches.clear();
   PRIVATE(this)->opaquehighlight.clear();
   PRIVATE(this)->opaquelineshighlight.clear();
@@ -712,10 +714,11 @@ SoFCRenderer::setScene(const std::vector<RenderCachePtr> & caches)
 }
 
 void
-SoFCRenderer::setHighlight(VertexCacheMap && caches)
+SoFCRenderer::setHighlight(VertexCacheMap && caches, bool wholeontop)
 {
   clearHighlight();
   PRIVATE(this)->highlightcaches = std::move(caches);
+  PRIVATE(this)->hlwholeontop = wholeontop;
 
   for (auto & v : PRIVATE(this)->highlightcaches) {
     auto & material = v.first;
@@ -1164,13 +1167,23 @@ SoFCRenderer::render(SoGLRenderAction * action)
                                     PRIVATE(this)->transpselectionsontop,
                                     false);
 
+  if (PRIVATE(this)->hlwholeontop) {
+      PRIVATE(this)->renderOpaque(action,
+                                  PRIVATE(this)->hlentries,
+                                  PRIVATE(this)->opaquehighlight);
+      PRIVATE(this)->renderTransparency(action,
+                                        PRIVATE(this)->hlentries,
+                                        PRIVATE(this)->transphighlight,
+                                        false);
+  }
+
   bool hassel = PRIVATE(this)->selsontop.size()
                         || PRIVATE(this)->selslineontop.size();
   bool hasontop = PRIVATE(this)->trianglesontop.size()
                       && PRIVATE(this)->linesontop.size();
   int pass = RenderPassNormal;
 
-  if (hassel || hasontop) {
+  if (hassel || hasontop || PRIVATE(this)->hlwholeontop) {
     // If there is lines/points on top perform a depth write only rendering
     // pass for all the triangles on top, so that we can distinguish line style
     // for hidden (by depth test) and non-hidden lines/points.
@@ -1186,6 +1199,17 @@ SoFCRenderer::render(SoGLRenderAction * action)
       PRIVATE(this)->renderOpaque(action,
                                   PRIVATE(this)->slentries,
                                   PRIVATE(this)->selstriangleontop);
+
+    if (PRIVATE(this)->hlwholeontop) {
+        PRIVATE(this)->renderOpaque(action,
+                                    PRIVATE(this)->hlentries,
+                                    PRIVATE(this)->opaquehighlight);
+        PRIVATE(this)->renderTransparency(action,
+                                          PRIVATE(this)->hlentries,
+                                          PRIVATE(this)->transphighlight,
+                                          false);
+    }
+
     PRIVATE(this)->depthwriteonly = false;
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
@@ -1214,7 +1238,13 @@ SoFCRenderer::render(SoGLRenderAction * action)
                               PRIVATE(this)->selslineontop,
                               pass | RenderPassHighlight);
 
-  if (hassel || hasontop) {
+  if (PRIVATE(this)->hlwholeontop)
+    PRIVATE(this)->renderOpaque(action,
+                                PRIVATE(this)->hlentries,
+                                PRIVATE(this)->opaquelineshighlight,
+                                pass);
+
+  if (hassel || hasontop || PRIVATE(this)->hlwholeontop) {
     // Second pass for rendering non-hidden lines/points. The depth test will
     // be enabled by applyMaterial() up on seeing this RenderPassLineSolid
     pass = RenderPassLineSolid;
@@ -1235,23 +1265,32 @@ SoFCRenderer::render(SoGLRenderAction * action)
                                   PRIVATE(this)->selslineontop,
                                   pass | RenderPassHighlight);
     }
+
+    if (PRIVATE(this)->hlwholeontop) {
+      PRIVATE(this)->renderOpaque(action,
+                                  PRIVATE(this)->hlentries,
+                                  PRIVATE(this)->opaquelineshighlight,
+                                  pass | RenderPassHighlight);
+    }
   }
 
   glDisable(GL_BLEND);
 
-  PRIVATE(this)->renderOpaque(action,
-                              PRIVATE(this)->hlentries,
-                              PRIVATE(this)->opaquehighlight);
+  if (!PRIVATE(this)->hlwholeontop) {
+    PRIVATE(this)->renderOpaque(action,
+                                PRIVATE(this)->hlentries,
+                                PRIVATE(this)->opaquehighlight);
 
-  PRIVATE(this)->renderTransparency(action,
-                                    PRIVATE(this)->hlentries,
-                                    PRIVATE(this)->transphighlight,
-                                    false);
+    PRIVATE(this)->renderTransparency(action,
+                                      PRIVATE(this)->hlentries,
+                                      PRIVATE(this)->transphighlight,
+                                      false);
 
-  PRIVATE(this)->renderOpaque(action,
-                              PRIVATE(this)->hlentries,
-                              PRIVATE(this)->opaquelineshighlight,
-                              RenderPassHighlight);
+    PRIVATE(this)->renderOpaque(action,
+                                PRIVATE(this)->hlentries,
+                                PRIVATE(this)->opaquelineshighlight,
+                                RenderPassHighlight);
+  }
 
   PRIVATE(this)->renderOpaque(action,
                               PRIVATE(this)->slentries,
