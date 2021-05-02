@@ -58,33 +58,10 @@ void DlgSettingsSelection::saveSettings()
 void DlgSettingsSelection::loadSettings()
 {
     auto handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-
-    // Stop new users loosing a number of default settings when changing an unrelated Preference Setting
-    bool treePreSelectionFalse = handle->GetBool("PreSelection", false);
-    bool treePreSelectionTrue = handle->GetBool("PreSelection", true);
-    bool treeRecordSelectionFalse = handle->GetBool("RecordSelection", false);
-    bool treeRecordSelectionTrue = handle->GetBool("RecordSelection", true);
-    bool treeSyncSelectionFalse = handle->GetBool("SyncSelection", false);
-    bool treeSyncSelectionTrue = handle->GetBool("SyncSelection", true);
-    bool treeSyncViewFalse = handle->GetBool("SyncView", false);
-    bool treeSyncViewTrue = handle->GetBool("SyncView", true);
-    if (treePreSelectionFalse != treePreSelectionTrue) {
-         handle->SetBool("PreSelection", true);
-    }
-    if (treeRecordSelectionFalse != treeRecordSelectionTrue) {
-         handle->SetBool("RecordSelection", true);
-    }
-    if (treeSyncSelectionFalse != treeSyncSelectionTrue) {
-         handle->SetBool("SyncSelection", true);
-    }
-    if (treeSyncViewFalse != treeSyncViewTrue) {
-         handle->SetBool("SyncView", true);
-    }
-
-    ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView"));
-    ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection"));
-    ui->checkBoxPreselect->setChecked(handle->GetBool("PreSelection"));
-    ui->checkBoxRecord->setChecked(handle->GetBool("RecordSelection"));
+    ui->checkBoxAutoSwitch->setChecked(handle->GetBool("SyncView", true));
+    ui->checkBoxAutoExpand->setChecked(handle->GetBool("SyncSelection", true));
+    ui->checkBoxPreselect->setChecked(handle->GetBool("PreSelection", true));
+    ui->checkBoxRecord->setChecked(handle->GetBool("RecordSelection", true));
     ui->checkBoxSelectionCheckBoxes->setChecked(handle->GetBool("CheckBoxesSelection"));
 }
 
