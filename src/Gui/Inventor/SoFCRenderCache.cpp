@@ -897,8 +897,8 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
     material.diffuse = this->nonfacecolor;
   }
 
-  if (material.pervertexcolor && material.maskflags.test(Material::FLAG_TRANSPARENCY))
-    material.overrideflags.set(Material::FLAG_TRANSPARENCY);
+  // if (material.pervertexcolor && material.maskflags.test(Material::FLAG_TRANSPARENCY))
+  //   material.overrideflags.set(Material::FLAG_TRANSPARENCY);
 }
 
 const SoFCRenderCache::VertexCacheMap &

@@ -1080,7 +1080,8 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
       break;
     case Material::Triangle:
       {
-        if (!draw_entry.ventry->cache->hasTransparency())
+        if (!draw_entry.ventry->cache->hasTransparency()
+            || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
           array |= SoFCVertexCache::FULL_SORTED_ARRAY;
         else
           array |= SoFCVertexCache::SORTED_ARRAY;
@@ -1220,6 +1221,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
   // render), we shall still respect the transparency setting, e.g. we'll use
   // transparency to dim the hidden lines. So we enable blending here.
   glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   // Rendering lines/points on top (i.e. without depth test), with user
   // configurable line pattern.
