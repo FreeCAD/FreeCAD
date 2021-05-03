@@ -267,8 +267,8 @@ struct EditData {
     // container to track our own selected parts
     std::map<int,int> SelPointMap;
     std::map<int,int> SelCurveMap; // also holds cross axes at -1 and -2
-    std::vector<int> SelConstraintPoints;
-    std::vector<int> SelConstraintCurves;
+    std::vector<int> ImplicitSelPoints;
+    std::vector<int> ImplicitSelCurves;
     std::set<int> SelConstraintSet;
     std::vector<int> CurvIdToGeoId; // conversion of SoLineSet index to GeoId
     std::vector<int> PointIdToVertexId; // conversion of SoCoordinate3 index to vertex Id
@@ -3045,16 +3045,16 @@ void ViewProviderSketch::updateColor(void)
         }
     }
 
-    for (int i : edit->SelConstraintPoints) {
+    for (int i : edit->ImplicitSelPoints) {
         auto it = edit->SelPointMap.find(i);
         if (it != edit->SelPointMap.end() && --it->second <= 0)
             edit->SelPointMap.erase(it);
     }
-    edit->SelConstraintPoints.clear();
+    edit->ImplicitSelPoints.clear();
 
-    for (int i : edit->SelConstraintCurves)
+    for (int i : edit->ImplicitSelCurves)
         edit->removeSelectEdge(i);
-    edit->SelConstraintCurves.clear();
+    edit->ImplicitSelCurves.clear();
 
     auto sketch = getSketchObject();
     for (int  i=0; i < PtNum; i++) { // 0 is the origin
@@ -3102,7 +3102,7 @@ void ViewProviderSketch::updateColor(void)
         bool selected = (edit->SelCurveMap.find(GeoId) != edit->SelCurveMap.end());
         bool preselected = (edit->PreselectCurve == GeoId);
 
-        bool constrainedElement = isFullyConstraintElement(getSketchObject(), GeoId);
+        bool constrainedElement = isFullyConstraintElement(sketch, GeoId);
 
         if (preselected) {
             color[i] = selected ? PreselectSelectedColor : PreselectColor;
@@ -3277,7 +3277,7 @@ void ViewProviderSketch::updateColor(void)
                         if (index >= 0 && index < (int)edit->VertexIdToPointId.size()) {
                             int PtId = edit->VertexIdToPointId[index];
                             if (PtId < PtNum) { 
-                                edit->SelConstraintPoints.push_back(index+1);
+                                edit->ImplicitSelPoints.push_back(index+1);
                                 pcolor[PtId] = *highlightColor;
                                 if (++edit->SelPointMap[index+1] == 1) {
                                     float x,y,z;
@@ -3303,7 +3303,7 @@ void ViewProviderSketch::updateColor(void)
                             count = edit->CurveSet->numVertices[i];
                             if(cGeoId == constraint->First) {
                                 color[i] = *highlightColor;
-                                edit->SelConstraintCurves.push_back(cGeoId);
+                                edit->ImplicitSelCurves.push_back(cGeoId);
                                 ++edit->SelCurveMap[cGeoId];
                                 auto lineset = highlightColor == &PreselectColor ?
                                     edit->PreSelectedCurveSet : edit->SelectedCurveSet;
@@ -3327,7 +3327,7 @@ void ViewProviderSketch::updateColor(void)
                         if (index >= 0 && index < (int)edit->VertexIdToPointId.size()) {
                             int PtId = edit->VertexIdToPointId[index];
                             if (PtId < PtNum) {
-                                edit->SelConstraintPoints.push_back(index+1);
+                                edit->ImplicitSelPoints.push_back(index+1);
                                 pcolor[PtId] = *highlightColor;
                                 if (++edit->SelPointMap[index+1] == 1) {
                                     float x,y,z;
@@ -6953,20 +6953,26 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->PointSet->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", edit->MarkerSize);
     pointsRoot->addChild(edit->PointSet);
 
+    // stuff for the (pre)selected points ++++++++++++++++++++++++++++++++++++++
+    auto selPointsRoot = new SoSeparator;
+    selPointsRoot->addChild(edit->PointsMaterials);
+    selPointsRoot->addChild(edit->PointsCoordinate);
+    selPointsRoot->addChild(edit->PointsDrawStyle);
+
     MtlBind = new SoMaterialBinding;
     MtlBind->setName("IndexPointsMaterialBinding");
     MtlBind->value = SoMaterialBinding::PER_VERTEX_INDEXED;
-    pointsRoot->addChild(MtlBind);
+    selPointsRoot->addChild(MtlBind);
 
     edit->SelectedPointSet = new SoIndexedMarkerSet;
     edit->SelectedPointSet->setName("SelectedPointSet");
-    pointsRoot->addChild(edit->SelectedPointSet);
+    selPointsRoot->addChild(edit->SelectedPointSet);
     edit->SelectedPointSet->markerIndex = edit->PointSet->markerIndex;
     edit->SelectedPointSet->materialIndex.setNum(0);
 
     edit->PreSelectedPointSet = new SoIndexedMarkerSet;
     edit->PreSelectedPointSet->setName("PreSelectedPointSet");
-    pointsRoot->addChild(edit->PreSelectedPointSet);
+    selPointsRoot->addChild(edit->PreSelectedPointSet);
     edit->PreSelectedPointSet->markerIndex = edit->PointSet->markerIndex;
     edit->PreSelectedPointSet->materialIndex.setNum(0);
 
@@ -6997,15 +7003,21 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->CurveSet->setName("CurvesLineSet");
     curvesRoot->addChild(edit->CurveSet);
 
+    // stuff for the selected Curves +++++++++++++++++++++++++++++++++++++++
+    auto selCurvesRoot = new SoSeparator;
+    selCurvesRoot->addChild(edit->CurvesMaterials);
+    selCurvesRoot->addChild(edit->CurvesCoordinate);
+    selCurvesRoot->addChild(edit->CurvesDrawStyle);
+
     MtlBind = new SoMaterialBinding;
     MtlBind->value = SoMaterialBinding::PER_FACE_INDEXED;
-    curvesRoot->addChild(MtlBind);
+    selCurvesRoot->addChild(MtlBind);
 
     edit->SelectedCurveSet = new SoIndexedLineSet;
-    curvesRoot->addChild(edit->SelectedCurveSet);
+    selCurvesRoot->addChild(edit->SelectedCurveSet);
 
     edit->PreSelectedCurveSet = new SoIndexedLineSet;
-    curvesRoot->addChild(edit->PreSelectedCurveSet);
+    selCurvesRoot->addChild(edit->PreSelectedCurveSet);
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
     SoGroup* crossRoot = new Gui::SoSkipBoundingGroup;
@@ -7128,6 +7140,8 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->addChild(edit->ConstraintDrawStyle);
     edit->EditRoot->addChild(edit->constrGroup);
     edit->EditRoot->addChild(edit->PointSwitch);
+    edit->EditRoot->addChild(selCurvesRoot);
+    edit->EditRoot->addChild(selPointsRoot);
 
 }
 
@@ -7432,7 +7446,7 @@ void ViewProviderSketch::clearSelectPoints(void)
         edit->PointsCoordinate->point.finishEditing();
         edit->SelectedPointSet->coordIndex.setNum(0);
         edit->SelPointMap.clear();
-        edit->SelConstraintPoints.clear();
+        edit->ImplicitSelPoints.clear();
     }
 }
 
