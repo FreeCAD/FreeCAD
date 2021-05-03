@@ -107,6 +107,15 @@ static QWidget *createTitleButton(QAction *action, int size)
     return button;
 }
 
+static inline void setFocusView()
+{
+    auto view = getMainWindow()->activeWindow();
+    if (!view)
+        view = Application::Instance->activeView();
+    if (view)
+        view->setFocus();
+}
+
 // -----------------------------------------------------------
 
 OverlayProxyWidget::OverlayProxyWidget(OverlayTabWidget *tabOverlay)
@@ -1616,6 +1625,7 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
     if (!getMainWindow() || !getMainWindow()->getMdiArea())
         return;
 
+    setFocusView();
     getMainWindow()->removeDockWidget(dock);
 
     auto titleWidget = dock->titleBarWidget();
@@ -1668,6 +1678,7 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
     if(index < 0)
         return;
 
+    setFocusView();
     dock->show();
     if(lastDock)
         getMainWindow()->tabifyDockWidget(lastDock, dock);
@@ -3339,11 +3350,7 @@ public:
                 auto dock = qobject_cast<QDockWidget*>(w);
                 if(!dock)
                     continue;
-                auto view = getMainWindow()->activeWindow();
-                if (!view)
-                    view = Application::Instance->activeView();
-                if (view)
-                    view->setFocus();
+                setFocusView();
                 if(action == &_actClose) {
                     dock->toggleViewAction()->activate(QAction::Trigger);
                 } else {
@@ -3376,6 +3383,7 @@ public:
 
     void floatDockWidget(QDockWidget *dock)
     {
+        setFocusView();
         auto it = _overlayMap.find(dock);
         if (it != _overlayMap.end()) {
             it->second->tabWidget->removeWidget(dock);
@@ -3628,6 +3636,7 @@ public:
             src->removeWidget(dock);
         }
 
+        setFocusView();
         if (!dst) {
             if (dstDock) {
                 dock->setFloating(false);
