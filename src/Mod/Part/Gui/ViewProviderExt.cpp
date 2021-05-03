@@ -431,6 +431,25 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         }
         return;
     }
+    
+    if (isRestoring()) {
+        if (prop == &LineColor
+                || prop == &LineMaterial
+                || prop == &PointColor
+                || prop == &PointMaterial
+                || prop == &ShapeColor
+                || prop == &ShapeMaterial)
+        {
+            // When restoring, rely on
+            // DiffuseColor/LineColorArray/PointColorArray to setup the colors.
+            // Because the order of restoring say DiffuseColor and ShapeColor
+            // may be different depending on whether the PropertyColorList is
+            // saved into a separate file or embeded inside xml.
+            ViewProviderDocumentObject::onChanged(prop);
+            return;
+        }
+    }
+
     // The lower limit of the deviation has been increased to avoid
     // to freeze the GUI
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
