@@ -106,6 +106,7 @@ private Q_SLOTS:
     void onTimer();
     void onFocusChanged(QWidget *, QWidget *);
     void onAction();
+    void raiseAll();
 
 private:
     friend class Private;

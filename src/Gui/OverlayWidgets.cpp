@@ -2731,6 +2731,8 @@ public:
     QTime wheelDelay;
     QPoint wheelPos;
 
+    bool raising = false;
+
     Private(OverlayManager *host, QWidget *parent)
         :_left(parent,"OverlayLeft", Qt::LeftDockWidgetArea,_overlayMap)
         ,_right(parent,"OverlayRight", Qt::RightDockWidgetArea,_overlayMap)
@@ -3692,6 +3694,17 @@ public:
         refresh();
     }
 
+    void raiseAll()
+    {
+        if (raising)
+            return;
+        Base::StateLocker guard(raising);
+        for (OverlayTabWidget *tabWidget : _Overlays) {
+            if (tabWidget->isVisible())
+                tabWidget->raise();
+        }
+    }
+
 #else // FC_HAS_DOCK_OVERLAY
 
     Private(OverlayManager *, QWidget *) {}
@@ -3709,6 +3722,7 @@ public:
     void retranslate() {}
     void dragDockWidget(const QPoint &, QWidget *, const QPoint &, const QSize &, bool) {}
     void floatDockWidget(QDockWidget *) {}
+    void raiseAll() {}
 
     bool toggleOverlay(QDockWidget *,
                        OverlayToggleMode,
@@ -3854,12 +3868,34 @@ void OverlayManager::onTimer()
     d->onTimer();
 }
 
+void OverlayManager::raiseAll()
+{
+    d->raiseAll();
+}
+
 bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
 {
     if (!o->isWidgetType())
         return false;
 
     switch(ev->type()) {
+    case QEvent::ZOrderChange: {
+        if(!d->raising && getMainWindow() && o == getMainWindow()->getMdiArea()) {
+            auto mdi = getMainWindow()->getMdiArea();
+            // On Windows, for some reason, it will raise mdi window on tab
+            // change in any docked widget, which will then obscure any overlay
+            // docked widget here.
+            for (auto child : getMainWindow()->children()) {
+                if (child == mdi || qobject_cast<QDockWidget*>(child)) {
+                    QMetaObject::invokeMethod(this, "raiseAll", Qt::QueuedConnection);
+                    break;
+                }
+                if (qobject_cast<OverlayTabWidget*>(child))
+                    break;
+            }
+        }
+        break;
+    }
     case QEvent::Resize: {
         if(getMainWindow() && o == getMainWindow()->getMdiArea())
             refresh();
