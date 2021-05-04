@@ -146,12 +146,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
                 # Prepare for drilling cycle
                 self.commandlist.append(Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
-                self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
-                self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
 
                 # Update retract height due to rotation
                 self.opSetDefaultRetractHeight(obj)
                 cmdParams['R'] = obj.RetractHeight.Value
+
+            self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
+            self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
 
             # Update changes to parameters
             params.update(cmdParams)
