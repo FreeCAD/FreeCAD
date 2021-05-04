@@ -446,8 +446,11 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
             sub = shadow.second;
         return true;
     }
-    if (missing)
+    if (missing) {
+        if (sub != shadow.first)
+            sub = shadow.second;
         return true;
+    }
     auto pos2 = shadow.first.rfind('.');
     if(pos2 == std::string::npos)
         return true;
