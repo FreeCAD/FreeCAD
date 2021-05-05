@@ -581,6 +581,8 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDoc
 
     if (autoexpand)
         expandAll();
+
+    this->header()->setVisible(!propList.empty());
 }
 
 void PropertyEditor::updateProperty(const App::Property& prop)
