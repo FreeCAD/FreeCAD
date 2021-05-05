@@ -53,7 +53,6 @@ MacroManager::MacroManager()
     guiAsComment(true),
     scriptToPyConsole(true),
     localEnv(true),
-    pyConsole(0),
     pyDebugger(new PythonDebugger()),
     totalLines(0)
 {
@@ -216,7 +215,7 @@ void MacroManager::addLine(LineType Type, const char* sLine, bool pending)
 
     if (this->scriptToPyConsole) {
         // search for the Python console
-        if (!this->pyConsole)
+        if (!this->pyConsole && Gui::getMainWindow())
             this->pyConsole = Gui::getMainWindow()->findChild<Gui::PythonConsole*>();
         // Python console found?
         if (this->pyConsole) {
