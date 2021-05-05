@@ -155,7 +155,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             # move to hole location
             self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
             startHeight = obj.StartDepth.Value + parentJob.SetupSheet.SafeHeightOffset.Value
-            self.commandlist.append(Path.Command('G0', {'Z': startHeight, 'F': self.vertFeed}))
+            self.commandlist.append(Path.Command('G0', {'Z': startHeight, 'F': self.vertRapid}))
             self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
 
             # Update changes to parameters
