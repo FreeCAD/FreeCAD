@@ -301,6 +301,7 @@ class Arc(gui_base_original.Creator):
             try:
                 # The command to run is built as a series of text strings
                 # to be committed through the `draftutils.todo.ToDo` class.
+                Gui.addModule("Draft")
                 if utils.getParam("UsePartPrimitives", False):
                     # Insert a Part::Primitive object
                     _base = DraftVecUtils.toString(self.center)
@@ -318,7 +319,6 @@ class Arc(gui_base_original.Creator):
                                 _cmd_list)
                 else:
                     # Insert a Draft circle
-                    Gui.addModule("Draft")
                     _base = DraftVecUtils.toString(self.center)
                     _cmd = 'Draft.makeCircle'
                     _cmd += '('

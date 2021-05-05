@@ -119,6 +119,7 @@ class Point(gui_base_original.Creator):
                 # The command to run is built as a series of text strings
                 # to be committed through the `draftutils.todo.ToDo` class.
                 commitlist = []
+                Gui.addModule("Draft")
                 if utils.getParam("UsePartPrimitives", False):
                     # Insert a Part::Primitive object
                     _cmd = 'FreeCAD.ActiveDocument.'
@@ -133,7 +134,6 @@ class Point(gui_base_original.Creator):
                                        _cmd_list))
                 else:
                     # Insert a Draft point
-                    Gui.addModule("Draft")
                     _cmd = 'Draft.makePoint'
                     _cmd += '('
                     _cmd += str(self.stack[0][0]) + ', '
