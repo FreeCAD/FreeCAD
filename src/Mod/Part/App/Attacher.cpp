@@ -1364,7 +1364,7 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
         gp_Pnt p_in;
         if (shapes.size() >= 2) {
             TopoDS_Vertex vertex;
-            try { TopoDS::Vertex(*(shapes[1])); } catch(...) {}
+            try { vertex = TopoDS::Vertex(*(shapes[1])); } catch(...) {}
             if (vertex.IsNull())
                 throw Base::ValueError("Null vertex in AttachEngine3D::calculateAttachedPlacement()!");
             p_in = BRep_Tool::Pnt(vertex);
