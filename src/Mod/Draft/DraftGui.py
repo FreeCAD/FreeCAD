@@ -2047,7 +2047,7 @@ class DraftToolBar:
                 self.autogroup = value
                 self.autoGroupButton.setText(obj.Label)
                 self.autoGroupButton.setIcon(obj.ViewObject.Icon)
-                self.autoGroupButton.setToolTip(translate("draft", "Autogroup: ")+obj.Label)
+                self.autoGroupButton.setToolTip(translate("draft", "Autogroup:") + " " + obj.Label)
                 self.autoGroupButton.setDown(False)
             else:
                 self.autogroup = None

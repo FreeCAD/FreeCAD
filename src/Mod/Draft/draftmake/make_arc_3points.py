@@ -122,12 +122,12 @@ def make_arc_3points(points, placement=None, face=False,
     try:
         utils.type_check([(points, (list, tuple))], name=_name)
     except TypeError:
-        _err(translate("draft","Points: ") + "{}".format(points))
+        _err(translate("draft","Points:") + " {}".format(points))
         _err(translate("draft","Wrong input: must be list or tuple of three points exactly."))
         return None
 
     if len(points) != 3:
-        _err(translate("draft","Points: ") + "{}".format(points))
+        _err(translate("draft","Points:") + " {}".format(points))
         _err(translate("draft","Wrong input: must be list or tuple of three points exactly."))
         return None
 
@@ -135,7 +135,7 @@ def make_arc_3points(points, placement=None, face=False,
         try:
             utils.type_check([(placement, App.Placement)], name=_name)
         except TypeError:
-            _err(translate("draft","Placement: ") + "{}".format(placement))
+            _err(translate("draft","Placement:") + " {}".format(placement))
             _err(translate("draft","Wrong input: incorrect type of placement."))
             return None
 

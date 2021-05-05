@@ -344,11 +344,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DlgStartPreferences.ui" line="289"/>
-        <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../DlgStartPreferences.ui" line="308"/>
         <source>Page background color</source>
         <translation type="unfinished"></translation>

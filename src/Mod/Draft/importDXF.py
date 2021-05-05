@@ -3862,7 +3862,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     filename = filename.encode("utf8")
             dxf.saveas(filename)
 
-        FCC.PrintMessage("successfully exported " + filename + "\n")
+        FCC.PrintMessage("successfully exported" + " " + filename + "\n")
 
     else:
         errorDXFLib(gui)

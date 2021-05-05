@@ -329,10 +329,12 @@ class Scale(gui_base_original.Modifier):
                 bads.append(obj)
         if bads:
             if len(bads) == 1:
-                m = translate("draft", "Unable to scale object: ")
+                m = translate("draft", "Unable to scale object:")
+                m += " "
                 m += bads[0].Label
             else:
-                m = translate("draft", "Unable to scale objects: ")
+                m = translate("draft", "Unable to scale objects:")
+                m += " "
                 m += ", ".join([o.Label for o in bads])
             m += " - " + translate("draft","This object type cannot be scaled directly. Please use the clone method.")
             _err(m)
