@@ -377,8 +377,12 @@ public:
     QDockWidget * dockWidget();
 
     void showTitle(bool enable);
+    bool isShowing() const { return _showTitle; }
 
 protected:
+    virtual void showEvent(QShowEvent *);
+    virtual void enterEvent(QEvent *);
+    virtual void leaveEvent(QEvent *);
     virtual void paintEvent(QPaintEvent*);
     virtual void changeEvent(QEvent*);
     virtual void mouseMoveEvent(QMouseEvent *);
@@ -391,6 +395,7 @@ protected:
 
 protected Q_SLOTS:
     void onAction();
+    void onTimer();
 
 private:
     QLayoutItem * titleItem = nullptr;
@@ -400,6 +405,7 @@ private:
     int dragging = 0;
     QPoint dragOffset;
     QSize dragSize;
+    QTimer timer;
 };
 
 class OverlayToolButton: public QToolButton

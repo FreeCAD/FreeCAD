@@ -90,6 +90,7 @@ public:
     FC_UI_SPINBOX(ViewParams, DockOverlayHintSize, "Hint width", 1, 100, 1) \
     FC_UI_CHECKBOX(ViewParams, DockOverlayHintTabBar, "Hint show tab bar") \
     FC_UI_SPINBOX(ViewParams, DockOverlayHintDelay, "Hint delay (ms)", 0, 1000, 100) \
+    FC_UI_SPINBOX(ViewParams, DockOverlaySplitterHandleTimeout, "Splitter auto hide delay (ms)", 0, 99999, 100) \
     FC_UI_CHECKBOX(ViewParams, DockOverlayActivateOnHover,"Activate on hover") \
     FC_UI_SPINBOX(ViewParams, DockOverlayDelay, "Layout delay (ms)", 0, 5000, 100) \
     FC_UI_SPINBOX(ViewParams, DockOverlayAnimationDuration, "Animation duration (ms)", 0, 5000, 100) \

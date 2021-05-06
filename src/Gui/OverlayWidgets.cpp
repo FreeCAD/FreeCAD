@@ -2214,6 +2214,35 @@ OverlaySplitterHandle::OverlaySplitterHandle(Qt::Orientation orientation, QSplit
     actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/float.svg"));
     retranslate();
     QObject::connect(&actFloat, SIGNAL(triggered(bool)), this, SLOT(onAction()));
+    timer.setSingleShot(true);
+    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+}
+
+void OverlaySplitterHandle::onTimer()
+{
+    if (isVisible() && qApp->widgetAt(QCursor::pos()) != this)
+        showTitle(false);
+}
+
+void OverlaySplitterHandle::showEvent(QShowEvent *ev)
+{
+    if (ViewParams::getDockOverlaySplitterHandleTimeout() > 0
+            && qApp->widgetAt(QCursor::pos()) != this)
+        timer.start(ViewParams::getDockOverlaySplitterHandleTimeout());
+    QSplitterHandle::showEvent(ev);
+}
+
+void OverlaySplitterHandle::enterEvent(QEvent *ev)
+{
+    timer.stop();
+    QSplitterHandle::enterEvent(ev);
+}
+
+void OverlaySplitterHandle::leaveEvent(QEvent *ev)
+{
+    if (ViewParams::getDockOverlaySplitterHandleTimeout() > 0)
+        timer.start(ViewParams::getDockOverlaySplitterHandleTimeout());
+    QSplitterHandle::leaveEvent(ev);
 }
 
 QSize OverlaySplitterHandle::sizeHint() const
@@ -2276,6 +2305,15 @@ void OverlaySplitterHandle::showTitle(bool enable)
 {
     if (_showTitle == enable)
         return;
+    if (!enable)
+        unsetCursor();
+    else {
+        setCursor(this->orientation() == Qt::Horizontal
+                ?  Qt::SizeHorCursor : Qt::SizeVerCursor);
+        if (ViewParams::getDockOverlaySplitterHandleTimeout() > 0
+                && qApp->widgetAt(QCursor::pos()) != this)
+            timer.start(ViewParams::getDockOverlaySplitterHandleTimeout());
+    }
     _showTitle = enable;
     for (auto child : findChildren<QWidget*>(QString(), Qt::FindDirectChildrenOnly))
         child->setVisible(enable);
@@ -2934,12 +2972,19 @@ public:
         }
         updateStyle = false;
 
-        if(focus && (focus->isOverlayed(1) || updateFocus)) {
-            focus->setOverlayMode(false);
-            focus->raise();
-            if(reveal == focus)
-                reveal = nullptr;
-        }
+        if(focus) {
+            bool proceed = focus->isOverlayed(1) || updateFocus;
+            if (!proceed) {
+                QRect rect(focus->mapToGlobal(QPoint(0,0)), focus->size());
+                proceed = rect.contains(QCursor::pos());
+            }
+            if (proceed) {
+                focus->setOverlayMode(false);
+                focus->raise();
+                if(reveal == focus)
+                    reveal = nullptr;
+            }
+        } 
 
         if(active) {
             if(active != focus && (active->isOverlayed(1) || updateActive)) 
@@ -3954,7 +3999,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
         if (qobject_cast<QAbstractButton*>(o))
             return false;
         if (ev->type() != QEvent::Wheel) {
-            if (qobject_cast<OverlayTitleBar*>(o) || qobject_cast<OverlaySplitterHandle*>(o))
+            if (qobject_cast<OverlayTitleBar*>(o))
                 return false;
         } else if (qobject_cast<QScrollBar*>(o))
             return false;

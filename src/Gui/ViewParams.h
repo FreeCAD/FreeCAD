@@ -137,6 +137,9 @@ public:
     FC_VIEW_PARAM(DockOverlayDelay,int,Int,200, \
         QT_TRANSLATE_NOOP("ViewParams", "Overlay dock (re)layout delay."))\
     FC_VIEW_PARAM(DockOverlayRevealDelay,int,Int,2000, "")\
+    FC_VIEW_PARAM(DockOverlaySplitterHandleTimeout,int,Int,1000, \
+        QT_TRANSLATE_NOOP("ViewParams", "Overlay splitter handle auto hide delay.\n"\
+                                        "Set zero to disable auto hiding."))\
     FC_VIEW_PARAM(DockOverlayActivateOnHover,bool,Bool,true, \
         QT_TRANSLATE_NOOP("ViewParams", "Show auto hidden dock overlay on mouse over.\n"\
                                         "If disabled, then show on mouse click."))\
