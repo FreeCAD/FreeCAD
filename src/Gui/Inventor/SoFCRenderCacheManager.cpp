@@ -443,26 +443,28 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
 void
 SoFCRenderCacheManager::addSelection(const std::string & key,
                                      const std::string & element,
-                                     SoPath * path,
+                                     SoPath * nodepath,
+                                     SoPath * detailpath,
                                      const SoDetail * detail,
                                      uint32_t color,
                                      bool ontop,
-                                     bool alt)
+                                     bool alt,
+                                     bool implicit)
 {
-  if (!path || !path->getLength())
+  if (!detailpath || !detailpath->getLength())
     return;
 
   bool update = false;
   PathPtr selpath;
   auto & paths = PRIVATE(this)->selcaches[key];
   SelectionSensor * sensor;
-  auto it = paths.find(path);
+  auto it = paths.find(detailpath);
   if (it != paths.end()) {
     sensor = &it->second;
     selpath = it->first;
   }
   else {
-    selpath = path->copy();
+    selpath = detailpath->copy();
     sensor = &paths[selpath];
     sensor->attach(selpath);
     sensor->setFunction(&SoFCRenderCacheManagerP::updateSelection);
@@ -486,12 +488,17 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
     sensor->ontop = true;
     update = true;
     if (element.size()) {
-      // When any element is selected on top, we shall bring the whole object on
-      // top. So make sure a nil element entry exist.
-      auto & elentry = sensor->elements[std::string()];
-      if (!elentry.id) {
-        elentry.id = id++;
-        ++PRIVATE(this)->selid;
+      if (nodepath != detailpath) {
+        addSelection(key, "", nodepath, nodepath, nullptr, color & 0xff, true, false, true);
+      } else {
+        // When any element is selected on top, we shall bring the whole object on
+        // top. So make sure a nil element entry exist.
+        auto & elentry = sensor->elements[std::string()];
+        if (!elentry.id) {
+          elentry.id = id++;
+          elentry.id |= SoFCRenderer::SelIdImplicit;
+          ++PRIVATE(this)->selid;
+        }
       }
     }
     for (auto & v : sensor->elements) {
@@ -500,10 +507,12 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
         PRIVATE(this)->renderer->removeSelection(elentry.id);
         elentry.id = id++;
         ++PRIVATE(this)->selid;
-        if (element.empty())
-          elentry.id |= SoFCRenderer::SelIdFull;
-        else
+        if (!element.empty())
           elentry.id |= SoFCRenderer::SelIdPartial;
+        else if (implicit)
+          elentry.id |= SoFCRenderer::SelIdImplicit;
+        else
+          elentry.id |= SoFCRenderer::SelIdFull;
       }
 
       elentry.color &= 0xffffff00;
@@ -561,7 +570,7 @@ SoFCRenderCacheManager::addSelection(const std::string & key,
   path.ref();
   path.truncate(0);
   path.append(node);
-  addSelection(key, element, &path, nullptr, color, ontop, alt);
+  addSelection(key, element, &path, &path, nullptr, color, ontop, alt);
   path.truncate(0);
   path.unrefNoDelete();
 }

@@ -908,18 +908,24 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
 
                     if (useRenderer()) {
                         if(detailPath->getLength()) {
-                            if (detail) {
+                            CoinPtr<SoPath> nodePath = detailPath;
+                            if (detail && ViewParams::getShowSelectionOnTop()) {
                                 // The render manager requires a path without
-                                // sub-element detail (but do require
-                                // sub-object nodes in the path).
-                                detailPath->truncate(0);
+                                // sub-element detail to bring the whole object
+                                // on top if any of its sub element is
+                                // selected.
+                                nodePath = new SoPath(detailPath->getLength());
                                 SoDetail *tmp = nullptr;
                                 std::string sub = selaction->SelChange->Object.getSubNameNoElement();
-                                vp->getDetailPath(sub.c_str(),detailPath,true,tmp);
+                                vp->getDetailPath(sub.c_str(),
+                                                  static_cast<SoFullPath*>(nodePath.get()),
+                                                  true,
+                                                  tmp);
                                 delete tmp;
                             }
                             manager.addSelection(selaction->SelChange->Object.getSubNameNoElement(true),
                                                  selaction->SelChange->Object.getOldElementName(),
+                                                 nodePath,
                                                  detailPath,
                                                  detail,
                                                  getSelectionColor(),

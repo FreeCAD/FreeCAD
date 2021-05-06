@@ -52,11 +52,13 @@ public:
 
   void addSelection(const std::string & key,
                     const std::string & element,
-                    SoPath * path,
+                    SoPath * nodepath,
+                    SoPath * detailpath,
                     const SoDetail * detail,
                     uint32_t color,
                     bool ontop = false,
-                    bool alt = false);
+                    bool alt = false,
+                    bool implicit = false);
 
   void addSelection(const std::string & key,
                     const std::string & element,

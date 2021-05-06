@@ -49,9 +49,10 @@ public:
   void clearHighlight();
 
   enum SelIdBits {
-    SelIdAlt        = 0x10000000,
-    SelIdFull       = 0x20000000,
-    SelIdPartial    = 0x40000000,
+    SelIdImplicit   = 0x01000000,
+    SelIdAlt        = 0x02000000,
+    SelIdFull       = 0x04000000,
+    SelIdPartial    = 0x08000000,
     SelIdSelected = (SelIdPartial|SelIdFull),
   };
   void addSelection(int id, const VertexCacheMap & caches);

@@ -1139,16 +1139,28 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
             ViewProvider *vp = Application::Instance->getViewProvider(Reason.Object.getObject());
             if (vp) {
                 SoDetail *detail = nullptr;
-                SoFullPath * detailPath = _pimpl->tmpPath.get();
-                detailPath->truncate(0);
-                vp->getDetailPath(Reason.pSubName, detailPath, true, detail);
+                SoFullPath * nodePath = _pimpl->tmpPath.get();
+                nodePath->truncate(0);
+                vp->getDetailPath(Reason.Object.getSubNameNoElement().c_str(), nodePath, true, detail);
+                delete detail;
+                detail = nullptr;
+
+                SoFullPath * detailPath = nodePath;
+                if (Reason.Object.hasSubElement()) {
+                    detailPath = _pimpl->tmpPath2.get();
+                    detailPath->truncate(0);
+                    vp->getDetailPath(Reason.pSubName, detailPath, true, detail);
+                }
+
                 manager->addSelection(Reason.Object.getSubNameNoElement(true),
                                       Reason.Object.getOldElementName(),
+                                      nodePath,
                                       detailPath,
                                       detail,
                                       (uint32_t)(ViewParams::getTransparencyOnTop() * 255),
                                       true,
                                       true);
+                nodePath->truncate(0);
                 detailPath->truncate(0);
                 delete detail;
             }
