@@ -187,7 +187,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         if hasattr(job.SetupSheet, 'RetractHeight'):
             obj.RetractHeight = job.SetupSheet.RetractHeight
-        elif self.applyExpression(obj, 'RetractHeight', 'OpStartDepth+1mm'):
+        elif self.applyExpression(obj, 'RetractHeight', 'StartDepth+SetupSheet.SafeHeightOffset'):
             if has_job:
                 obj.RetractHeight = 10
             else:
