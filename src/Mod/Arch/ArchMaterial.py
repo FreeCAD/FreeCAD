@@ -50,7 +50,7 @@ def makeMaterial(name="Material",color=None,transparency=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython","Material")
     obj.Label = name
     _ArchMaterial(obj)
     if FreeCAD.GuiUp:
@@ -82,7 +82,7 @@ def getMaterialContainer():
 def makeMultiMaterial(name="MultiMaterial"):
 
     '''makeMultiMaterial(name): makes an Material object'''
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","MultiMaterial")
     obj.Label = name
     _ArchMultiMaterial(obj)
     if FreeCAD.GuiUp:
