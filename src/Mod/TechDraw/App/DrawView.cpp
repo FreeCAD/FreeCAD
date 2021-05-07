@@ -32,6 +32,7 @@
 
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Exception.h>
@@ -116,8 +117,15 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
     requestPaint();
     //documentobject::execute doesn't do anything useful for us.
     //documentObject::recompute causes an infinite loop.
-    //should not be necessary to purgeTouched here, but it prevents a superfluous feature recompute
-    purgeTouched();                           //this should not be necessary!
+
+    if (getDocument() && !getDocument()->testStatus(App::Document::Restoring)) {
+        // The new recomputation logic will mark depending object for recomputing
+        // if and only if there is actual property content changes. Because TechDraw
+        // do not store geometry as property, we need the following call to make
+        // sure to mark any objects that depends on this object for recomputing.
+        enforceRecompute();
+    }
+
     return App::DocumentObject::StdReturn;
 }
 
