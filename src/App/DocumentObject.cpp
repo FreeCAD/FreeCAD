@@ -166,8 +166,13 @@ bool DocumentObject::recomputeFeature(bool recursive)
  */
 void DocumentObject::touch(bool noRecompute)
 {
-    if(!noRecompute)
+    if(!noRecompute) {
         StatusBits.set(ObjectStatus::Enforce);
+        if(++_revision == 0)
+            ++_revision;
+        FC_LOG("enforce recompute " << _revision << " " << getFullName());
+        _enforceRecompute = true;
+    }
     StatusBits.set(ObjectStatus::Touch);
     if (_pDoc)
         _pDoc->signalTouchedObject(*this);
@@ -201,11 +206,7 @@ void DocumentObject::purgeTouched()
  */
 void DocumentObject::enforceRecompute()
 {
-    if(++_revision == 0)
-        ++_revision;
-    FC_LOG("enforce recompute " << _revision << " " << getFullName());
     touch(false);
-    _enforceRecompute = true;
 }
 
 /**
