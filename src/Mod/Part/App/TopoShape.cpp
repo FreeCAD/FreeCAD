@@ -761,7 +761,7 @@ void TopoShape::importBrep(const char *FileName)
 #else
         BRepTools::Read(aShape,(Standard_CString)FileName,aBuilder);
 #endif
-        setShape(this->_Shape);
+        setShape(aShape);
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
