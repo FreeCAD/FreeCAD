@@ -414,9 +414,11 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
         }
     }
 
-    aboutToSetValue();
-    _Shape.setShape(sh,false);
-    hasSetValue();
+    if (!sh.IsNull() || !_Shape.isNull()) {
+        aboutToSetValue();
+        _Shape.setShape(sh,false);
+        hasSetValue();
+    }
 }
 
 // The following two functions are copied from OCCT BRepTools.cxx and modified
