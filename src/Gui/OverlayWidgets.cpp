@@ -1415,6 +1415,17 @@ QDockWidget *OverlayTabWidget::dockWidget(int index) const
     return qobject_cast<QDockWidget*>(splitter->widget(index));
 }
 
+void OverlayTabWidget::updateSplitterHandles()
+{
+    if (overlayed || _state > State_Normal)
+        return;
+    for (int i=0, c=splitter->count(); i<c; ++i) {
+        auto handle = qobject_cast<OverlaySplitterHandle*>(splitter->handle(i));
+        if (handle)
+            handle->showTitle(true);
+    }
+}
+
 void OverlayTabWidget::setOverlayMode(bool enable)
 {
     overlayed = enable;
@@ -2972,19 +2983,15 @@ public:
         }
         updateStyle = false;
 
-        if(focus) {
-            bool proceed = focus->isOverlayed(1) || updateFocus;
-            if (!proceed) {
-                QRect rect(focus->mapToGlobal(QPoint(0,0)), focus->size());
-                proceed = rect.contains(QCursor::pos());
-            }
-            if (proceed) {
+        if (focus) {
+            if (focus->isOverlayed(1) || updateFocus) {
                 focus->setOverlayMode(false);
                 focus->raise();
                 if(reveal == focus)
                     reveal = nullptr;
-            }
-        } 
+            } else 
+                focus->updateSplitterHandles();
+        }
 
         if(active) {
             if(active != focus && (active->isOverlayed(1) || updateActive)) 

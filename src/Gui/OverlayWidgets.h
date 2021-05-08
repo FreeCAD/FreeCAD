@@ -141,6 +141,7 @@ public:
 
     void setOverlayMode(QWidget *widget, int enable);
     void setOverlayMode(bool enable);
+    void updateSplitterHandles();
     void addWidget(QDockWidget *widget, const QString &title);
     void removeWidget(QDockWidget *widget, QDockWidget *last=nullptr);
     void setCurrent(QDockWidget *widget);
