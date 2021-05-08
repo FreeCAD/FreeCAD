@@ -868,17 +868,50 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
         auto objCmd = Gui::Command::getObjectCmd(feature);
-        if (subs.empty()
-                || (!needSubElement
-                    && feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())))
+        bool profileSet = false;
+        if (subs.size() && !needSubElement
+                        && feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         {
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"Profile = " << objCmd);
+            auto shape = Part::Feature::getTopoShape(feature);
+            if (subs.size() < shape.countSubShapes(TopAbs_EDGE)) {
+                std::vector<Part::TopoShape> shapes;
+                for (auto &sub : subs) {
+                    auto subshape = shape.getSubShape(sub.c_str(), true);
+                    if (subshape.IsNull() || subshape.ShapeType() != TopAbs_EDGE)
+                        break;
+                    shapes.push_back(subshape);
+                }
+                if (subs.size() == shapes.size()) {
+                    std::string BinderName = cmd->getUniqueObjectName(
+                            "Binder", pcActiveBody);
+                    Gui::cmdAppObject(pcActiveBody, std::ostringstream()
+                            << "newObject('PartDesign::SubShapeBinder', '" << BinderName << "')");
+                    auto binder = pcActiveBody->getDocument()->getObject(BinderName.c_str());
+                    std::ostringstream ss;
+                    for (auto &s : subs)
+                        ss << "'" << s << "',";
+                    Gui::cmdAppObject(binder, std::ostringstream() << "Support = (" << objCmd
+                            << ", [" << ss.str() << "])");
+                    Gui::cmdAppObject(Feat, std::ostringstream() << "Profile = "
+                            << Gui::Command::getObjectCmd(binder));
+                    profileSet = true;
+                }
+            }
         }
-        else {
-            std::ostringstream ss;
-            for (auto &s : subs)
-                ss << "'" << s << "',";
-            Gui::cmdAppObject(Feat, std::ostringstream() <<"Profile = (" << objCmd << ", [" << ss.str() << "])");
+
+        if (!profileSet) {
+            if (subs.empty()
+                    || (!needSubElement
+                        && feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())))
+            {
+                Gui::cmdAppObject(Feat, std::ostringstream() <<"Profile = " << objCmd);
+            } else {
+                std::ostringstream ss;
+                for (auto &s : subs)
+                    ss << "'" << s << "',";
+                Gui::cmdAppObject(Feat, std::ostringstream() <<"Profile = (" << objCmd
+                        << ", [" << ss.str() << "])");
+            }
         }
 
         //for additive and subtractive lofts allow the user to preselect the sections
