@@ -127,7 +127,7 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
 
-    float defaultSz = ViewProviderOrigin::defaultSize();
+    float defaultSz = ViewProviderOrigin::baseSize();
     float sz = Size.getValue () / defaultSz;
 
     // Create an external separator
@@ -141,6 +141,11 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     SoMaterialBinding* matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::OVERALL;
     sep->addChild(matBinding);
+
+    // Bind same material to all part
+    SoLightModel * lightmodel = new SoLightModel;
+    lightmodel->model = SoLightModel::BASE_COLOR;
+    sep->addChild(lightmodel);
 
     // Scale feature to the given size
     pScale->scaleFactor = SbVec3f (sz, sz, sz);
@@ -158,11 +163,6 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     //
     // sep->addChild ( font );
     pOriginFeatureRoot->addChild (font);
-
-    SoShapeHints * hints = new SoShapeHints;
-    hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;
-    hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-    sep->addChild(hints);
 
     // Create the selection node
     SoFCSelection *highlight = new SoFCSelection ();
@@ -215,7 +215,7 @@ void ViewProviderOriginFeature::updateData ( const App::Property* prop ) {
 
 void ViewProviderOriginFeature::onChanged ( const App::Property* prop ) {
     if (prop == &Size) {
-        float sz = Size.getValue () / ViewProviderOrigin::defaultSize();
+        float sz = Size.getValue () / ViewProviderOrigin::baseSize();
         pScale->scaleFactor = SbVec3f (sz, sz, sz);
     }
     ViewProviderGeometryObject::onChanged(prop);

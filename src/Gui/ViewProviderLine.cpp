@@ -53,7 +53,7 @@ ViewProviderLine::~ViewProviderLine()
 void ViewProviderLine::attach ( App::DocumentObject *obj ) {
     ViewProviderOriginFeature::attach ( obj );
 
-    static const float size = ViewProviderOrigin::defaultSize ();
+    static const float size = ViewProviderOrigin::baseSize ();
 
     static const SbVec3f verts[2] = { SbVec3f(size, 0, 0),   SbVec3f ( -size, 0, 0 ) };
 

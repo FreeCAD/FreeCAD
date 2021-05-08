@@ -82,6 +82,10 @@ public:
 
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize();
+
+    /// Base size of scaling
+    static double baseSize();
+
 protected:
     virtual void onChanged(const App::Property* prop);
     virtual bool onDelete(const std::vector<std::string> &);
