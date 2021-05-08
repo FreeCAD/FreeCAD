@@ -6130,8 +6130,6 @@ public:
                     }
 
                     Gui::Selection().clearSelection();
-                    if(attaching.size())
-                        sketchgui->purgeHandler();
 
                     // adding external geometry does not require a solve() per se (the DoF is the same),
                     // however a solve is required to update the amount of solver geometry, because we only
@@ -6150,6 +6148,9 @@ public:
                     Gui::Selection().clearSelection();
                     Gui::Command::abortCommand();
                 }
+
+                if(attaching.size())
+                    sketchgui->purgeHandler();
                 return true;
             }
         }
