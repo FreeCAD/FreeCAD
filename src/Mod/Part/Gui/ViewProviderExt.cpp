@@ -1713,7 +1713,7 @@ void ViewProviderPartExt::updateVisual()
 {
     if (!getObject()
             || !getObject()->getDocument()
-            || getObject()->getDocument()->testStatus(App::Document::Restoring))
+            || isRestoring())
     {
         VisualTouched = true;
         return;
