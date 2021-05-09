@@ -111,14 +111,14 @@ public:
                      SoFCVertexCache *vcache,
                      bool opencache);
 
-  const SoElement * shapehintselement;
-  const SoElement * shadowstyleelement;
-  const SoElement * linepatternelement;
-  const SoElement * linewidthelement;
-  const SoElement * pointsizeelement;
-  const SoElement * polygonoffsetelement;
-  const SoElement * drawstyleelement;
-  const SoElement * materialbindingelement;
+  const SoShapeHintsElement * shapehintselement;
+  const SoShadowStyleElement * shadowstyleelement;
+  const SoLinePatternElement * linepatternelement;
+  const SoLineWidthElement * linewidthelement;
+  const SoPointSizeElement * pointsizeelement;
+  const SoPolygonOffsetElement * polygonoffsetelement;
+  const SoDrawStyleElement * drawstyleelement;
+  const SoMaterialBindingElement * materialbindingelement;
 
   SoFCRenderCache::VertexCacheMap vcachemap;
 
@@ -185,20 +185,34 @@ getOverrideFlags(SoState * state)
 {
   std::bitset<32> res;
   uint32_t flags = SoOverrideElement::getFlags(state);
-  if (flags & SoOverrideElement::AMBIENT_COLOR) res.set(Material::FLAG_AMBIENT);
-  if (flags & SoOverrideElement::DIFFUSE_COLOR) res.set(Material::FLAG_DIFFUSE);
-  if (flags & SoOverrideElement::DRAW_STYLE) res.set(Material::FLAG_DRAW_STYLE);
-  if (flags & SoOverrideElement::EMISSIVE_COLOR) res.set(Material::FLAG_EMISSIVE);
-  if (flags & SoOverrideElement::LIGHT_MODEL) res.set(Material::FLAG_LIGHT_MODEL);
-  if (flags & SoOverrideElement::LINE_PATTERN) res.set(Material::FLAG_LINE_PATTERN);
-  if (flags & SoOverrideElement::LINE_WIDTH) res.set(Material::FLAG_LINE_WIDTH);
-  if (flags & SoOverrideElement::MATERIAL_BINDING) res.set(Material::FLAG_MATERIAL_BINDING);
-  if (flags & SoOverrideElement::POINT_SIZE) res.set(Material::FLAG_POINT_SIZE);
-  if (flags & SoOverrideElement::SHAPE_HINTS) res.set(Material::FLAG_SHAPE_HINTS);
-  if (flags & SoOverrideElement::SHININESS) res.set(Material::FLAG_SHININESS);
-  if (flags & SoOverrideElement::SPECULAR_COLOR) res.set(Material::FLAG_SPECULAR);
-  if (flags & SoOverrideElement::POLYGON_OFFSET) res.set(Material::FLAG_POLYGON_OFFSET);
-  if (flags & SoOverrideElement::TRANSPARENCY) res.set(Material::FLAG_TRANSPARENCY);
+  if (flags & SoOverrideElement::AMBIENT_COLOR)
+    res.set(Material::FLAG_AMBIENT);
+  if (flags & SoOverrideElement::DIFFUSE_COLOR)
+    res.set(Material::FLAG_DIFFUSE);
+  if (flags & SoOverrideElement::DRAW_STYLE)
+    res.set(Material::FLAG_DRAW_STYLE);
+  if (flags & SoOverrideElement::EMISSIVE_COLOR)
+    res.set(Material::FLAG_EMISSIVE);
+  if (flags & SoOverrideElement::LIGHT_MODEL)
+    res.set(Material::FLAG_LIGHT_MODEL);
+  if (flags & SoOverrideElement::LINE_PATTERN)
+    res.set(Material::FLAG_LINE_PATTERN);
+  if (flags & SoOverrideElement::LINE_WIDTH)
+    res.set(Material::FLAG_LINE_WIDTH);
+  if (flags & SoOverrideElement::MATERIAL_BINDING)
+    res.set(Material::FLAG_MATERIAL_BINDING);
+  if (flags & SoOverrideElement::POINT_SIZE)
+    res.set(Material::FLAG_POINT_SIZE);
+  if (flags & SoOverrideElement::SHAPE_HINTS)
+    res.set(Material::FLAG_SHAPE_HINTS);
+  if (flags & SoOverrideElement::SHININESS)
+    res.set(Material::FLAG_SHININESS);
+  if (flags & SoOverrideElement::SPECULAR_COLOR)
+    res.set(Material::FLAG_SPECULAR);
+  if (flags & SoOverrideElement::POLYGON_OFFSET)
+    res.set(Material::FLAG_POLYGON_OFFSET);
+  if (flags & SoOverrideElement::TRANSPARENCY)
+    res.set(Material::FLAG_TRANSPARENCY);
   return res;
 }
 
@@ -274,8 +288,12 @@ SoFCRenderCache::Material::init(SoState * state)
   this->linepattern = SoLinePatternElement::get(state);
 
   this->linewidth = SoLineWidthElement::get(state);
+  if (this->linewidth < 1.0f)
+    this->linewidth = 1.0f;
 
   this->pointsize = SoPointSizeElement::get(state);
+  if (this->pointsize < 1.0f)
+    this->pointsize = 1.0f;
 
   SbBool on;
   SoPolygonOffsetElement::Style style;
@@ -292,31 +310,49 @@ SoFCRenderCache::Material::init(SoState * state)
   this->drawstyle = SoDrawStyleElement::get(state);
 }
 
+template<class T>
+static inline const T *
+_checkMaterial(SoState *state, Material &m, Material::FlagBits flag, const T *element)
+{
+  if (!m.overrideflags.test(flag)) {
+    auto curelement = constElement<T>(state);
+    if (element != curelement) {
+      // Must not preserve the changed element, as the data inside element may
+      // change without changing the element pointer
+      //
+      // element = curelement;
+
+      m.maskflags.set(flag);
+      return curelement;
+    }
+  }
+  return nullptr;
+}
+
 void
 SoFCRenderCacheP::captureMaterial(SoState * state)
 {
   Material & m = this->material;
-  m.overrideflags = getOverrideFlags(state);
 
-  if (this->materialbindingelement != constElement<SoMaterialBindingElement>(state)) {
-    m.maskflags.set(Material::FLAG_MATERIAL_BINDING);
+  if (_checkMaterial(state, m, Material::FLAG_MATERIAL_BINDING, this->materialbindingelement))
     m.materialbinding = SoMaterialBindingElement::get(state);
+
+  if (_checkMaterial(state, m, Material::FLAG_LINE_PATTERN, this->linepatternelement))
+    m.linepattern = SoLinePatternElement::get(state);
+
+  if (_checkMaterial(state, m, Material::FLAG_LINE_WIDTH, this->linewidthelement)) {
+    m.linewidth = SoLineWidthElement::get(state);
+    if (m.linewidth < 1.0f)
+      m.linewidth = 1.0f;
   }
 
-  if (this->linepatternelement != constElement<SoLinePatternElement>(state)) {
-    m.maskflags.set(Material::FLAG_LINE_PATTERN);
-    m.linepattern = SoLinePatternElement::get(state);
-  }
-  if (this->linewidthelement != constElement<SoLineWidthElement>(state)) {
-    m.maskflags.set(Material::FLAG_LINE_WIDTH);
-    m.linewidth = SoLineWidthElement::get(state);
-  }
-  if (this->pointsizeelement != constElement<SoPointSizeElement>(state)) {
-    m.maskflags.set(Material::FLAG_POINT_SIZE);
+  if (_checkMaterial(state, m, Material::FLAG_POINT_SIZE, this->pointsizeelement)) {
     m.pointsize = SoPointSizeElement::get(state);
+    if (m.pointsize < 1.0f)
+      m.pointsize = 1.0f;
   }
-  if (this->polygonoffsetelement != constElement<SoPolygonOffsetElement>(state)) {
-    m.maskflags.set(Material::FLAG_POLYGON_OFFSET);
+
+  if (_checkMaterial(state, m, Material::FLAG_POLYGON_OFFSET, this->polygonoffsetelement)) {
     SbBool on;
     SoPolygonOffsetElement::Style style;
     SoPolygonOffsetElement::get(state,
@@ -329,16 +365,14 @@ SoFCRenderCacheP::captureMaterial(SoState * state)
     else
       m.polygonoffsetstyle = style;
   }
-  if (this->drawstyleelement != constElement<SoDrawStyleElement>(state)) {
-    m.maskflags.set(Material::FLAG_DRAW_STYLE);
+
+  if (_checkMaterial(state, m, Material::FLAG_DRAW_STYLE, this->drawstyleelement))
     m.drawstyle = SoDrawStyleElement::get(state);
-  }
-  if (this->shadowstyleelement != constElement<SoShadowStyleElement>(state)) {
-    m.maskflags.set(Material::FLAG_SHADOW_STYLE);
+
+  if (_checkMaterial(state, m, Material::FLAG_SHADOW_STYLE, this->shadowstyleelement))
     m.shadowstyle = SoShadowStyleElement::get(state);
-  }
-  if (this->shapehintselement != constElement<SoShapeHintsElement>(state)) {
-    m.maskflags.set(Material::FLAG_SHAPE_HINTS);
+
+  if (_checkMaterial(state, m, Material::FLAG_SHAPE_HINTS, this->shapehintselement)) {
     m.maskflags.set(Material::FLAG_CULLING);
     m.maskflags.set(Material::FLAG_VERTEXORDERING);
     m.maskflags.set(Material::FLAG_TWOSIDE);
@@ -353,6 +387,7 @@ SoFCRenderCacheP::captureMaterial(SoState * state)
     m.culling = ordering != SoShapeHintsElement::UNKNOWN_ORDERING
                        && shapetype == SoShapeHintsElement::SOLID;
   }
+  m.overrideflags |= getOverrideFlags(state);
 }
 
 void
@@ -636,12 +671,14 @@ SoFCRenderCache::open(SoState *state, bool selectable, bool initmaterial)
   // current stack level to prevent it being captured in cache, because we want
   // to decouple override settings from child caches.
   state->getElement(SoOverrideElement::getClassStackIndex());
+
   // Remember the current override flags. If it weren't for the above call to
   // getElement(), this element will be added to our cache dependency.
+  //
+  // Convert override flags to our own mask, and then reset the flags
   auto flags = getOverrideFlags(state);
   PRIVATE(this)->material.overrideflags = flags;
 
-  // convert override flags to our own mask, and then reset the flags
   if (flags.test(Material::FLAG_AMBIENT))
     SoOverrideElement::setAmbientColorOverride(state, NULL, FALSE);
   if (flags.test(Material::FLAG_DIFFUSE))
