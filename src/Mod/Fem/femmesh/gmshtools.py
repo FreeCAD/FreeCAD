@@ -27,10 +27,9 @@ __url__ = "https://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import os
 import subprocess
 import sys
-import os
-import re
 
 import FreeCAD
 from FreeCAD import Console
@@ -294,9 +293,12 @@ class GmshTools():
         # file paths
         _geometry_name = self.part_obj.Name + "_Geometry"
         self.mesh_name = self.part_obj.Name + "_Mesh"
-        self.temp_file_geometry = os.path.join(self.working_dir, _geometry_name + ".brep")  # geometry file
-        self.temp_file_mesh = os.path.join(self.working_dir, self.mesh_name + ".unv")  # mesh file
-        self.temp_file_geo = os.path.join(self.working_dir, "shape2mesh.geo")  # Gmsh input file
+        # geometry file
+        self.temp_file_geometry = os.path.join(self.working_dir, _geometry_name + ".brep")
+        # mesh file
+        self.temp_file_mesh = os.path.join(self.working_dir, self.mesh_name + ".unv")
+        # Gmsh input file
+        self.temp_file_geo = os.path.join(self.working_dir, "shape2mesh.geo")
         Console.PrintMessage("  " + self.temp_file_geometry + "\n")
         Console.PrintMessage("  " + self.temp_file_mesh + "\n")
         Console.PrintMessage("  " + self.temp_file_geo + "\n")
@@ -421,11 +423,17 @@ class GmshTools():
         if gmsh_stderr:
             Console.PrintError("Gmsh: StdErr:\n" + gmsh_stderr + "\n")
 
-        match = re.search("^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
+        from re import search
+        # TODO fix pep8
+        # https://stackoverflow.com/q/61497292
+        match = search("^Version\s*:\s*(\d+)\.(\d+)\.(\d+)", gmsh_stdout)
+        # return (major, minor, patch), fullmessage
         if match:
-            return match.group(1, 2, 3), found_message + "\n\n" + gmsh_stdout         # (major, minor, patch), fullmessage
+            mess = found_message + "\n\n" + gmsh_stdout
+            return match.group(1, 2, 3), mess
         else:
-            return (None, None, None), found_message + "\n\n" + "Warning: Output not recognized\n\n" + gmsh_stdout
+            mess = found_message + "\n\n" + "Warning: Output not recognized\n\n" + gmsh_stdout
+            return (None, None, None), mess
 
     def get_region_data(self):
         # mesh regions
@@ -433,7 +441,7 @@ class GmshTools():
             # print("  No mesh regions.")
             pass
         else:
-            Console.PrintMessage('  Mesh regions, we need to get the elements.\n')
+            Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
@@ -782,8 +790,10 @@ class GmshTools():
         if hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True:
             geo.write("// recombination for volumes\n")
             geo.write("Mesh.Recombine3DAll = 1;\n")
-        if ( (hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True)
-             or (hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True)):
+        if (
+            (hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True)
+            or (hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True)
+        ):
             geo.write("// recombination algorithm\n")
             geo.write("Mesh.RecombinationAlgorithm = " + self.RecombinationAlgorithm + ";\n")
             geo.write("\n")
