@@ -197,8 +197,8 @@ def get_group_contents(objectslist,
 
     spaces: bool, optional
         It defaults to `False`.
-        If it is `True`, Arch Spaces are treated as groups,
-        and are added to the output list.
+        If it is `True`, Arch Spaces are added to the output list even
+        when addgroups is False (their contents are always added).
 
     noarchchild: bool, optional
         It defaults to `False`.
