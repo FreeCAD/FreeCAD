@@ -2337,6 +2337,9 @@ MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type type
  */
 void Document::setActiveWindow(Gui::MDIView* view)
 {
+    if (!view || view->getGuiDocument() != this)
+        return;
+
     // get the main window's active view
     MDIView* active = getMainWindow()->activeWindow();
 
@@ -2344,15 +2347,8 @@ void Document::setActiveWindow(Gui::MDIView* view)
     if (active == view)
         return;
 
-    // get all MDI views of the document
-    std::list<MDIView*> mdis = getMDIViews();
-
     // this document is not active
-    if (std::find(mdis.begin(), mdis.end(), active) == mdis.end())
-        return;
-
-    // the view is not part of the document
-    if (std::find(mdis.begin(), mdis.end(), view) == mdis.end())
+    if (Application::Instance->activeDocument() != this)
         return;
 
     getMainWindow()->setActiveWindow(view);
