@@ -781,8 +781,10 @@ void SoFCUnifiedSelection::Private::applyOverrideMode(SoState * state) const
         if (mode == DisplayModeTessellation) {
             shading = false;
             mode = DisplayModeShaded;
-            SoOverrideElement::setDrawStyleOverride(state, master, TRUE);
-            SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
+            if (state->isElementEnabled(SoDrawStyleElement::getClassStackIndex())) {
+                SoOverrideElement::setDrawStyleOverride(state, master, TRUE);
+                SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
+            }
         }
         else if (mode == DisplayModeHiddenLine) {
             hiddenline = true;
