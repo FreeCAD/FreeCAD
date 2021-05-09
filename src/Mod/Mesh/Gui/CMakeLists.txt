@@ -28,24 +28,6 @@ SET(MeshGui_XML_SRCS
 )
 SOURCE_GROUP("XML" FILES ${MeshGui_XML_SRCS})
 
-set(Mesh_MOC_HDRS
-    DlgEvaluateMeshImp.h
-    DlgEvaluateSettings.h
-    DlgRegularSolidImp.h
-    DlgSettingsMeshView.h
-    DlgSettingsImportExportImp.h
-    DlgDecimating.h
-    DlgSmoothing.h
-    MeshEditor.h
-    PropertyEditorMesh.h
-    RemoveComponents.h
-    RemeshGmsh.h
-    SegmentationBestFit.h
-    Selection.h
-)
-fc_wrap_cpp(Mesh_MOC_SRCS ${Mesh_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${Mesh_MOC_SRCS})
-
 set(Dialogs_UIC_SRCS
     DlgEvaluateMesh.ui
     DlgEvaluateSettings.ui

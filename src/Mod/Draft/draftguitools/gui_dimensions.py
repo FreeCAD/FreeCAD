@@ -86,19 +86,18 @@ class Dimension(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Dimension")
         if self.cont:
             self.finish()
         elif self.selected_app_measure():
-            super(Dimension, self).Activated(name)
+            super(Dimension, self).Activated(name="Dimension")
             self.dimtrack = trackers.dimTracker()
             self.arctrack = trackers.arcTracker()
             self.create_with_app_measure()
             self.finish()
         else:
-            super(Dimension, self).Activated(name)
+            super(Dimension, self).Activated(name="Dimension")
             if self.ui:
-                self.ui.pointUi(title=name, icon="Draft_Dimension")
+                self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Dimension")
                 self.ui.continueCmd.show()
                 self.ui.selectButton.show()
                 self.altdown = False

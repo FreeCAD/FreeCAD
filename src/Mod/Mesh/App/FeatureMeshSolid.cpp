@@ -35,8 +35,8 @@
 
 
 namespace Mesh {
-    const App::PropertyIntegerConstraint::Constraints intSampling = {0,1000,1};
-    const App::PropertyFloatConstraint::Constraints floatRange = {0.0,1000.0,1.0};
+    const App::PropertyIntegerConstraint::Constraints intSampling = {0,INT_MAX,1};
+    const App::PropertyLength::Constraints floatRange = {0.0,FLT_MAX,1.0};
 }
 
 using namespace Mesh;
@@ -69,6 +69,18 @@ App::DocumentObjectExecReturn *Sphere::execute(void)
     }
     else {
         return new App::DocumentObjectExecReturn("Cannot create sphere", this);
+    }
+}
+
+void Sphere::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    if (prop == &Radius && strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
+        App::PropertyFloatConstraint r;
+        r.Restore(reader);
+        Radius.setValue(r.getValue());
+    }
+    else {
+        Mesh::Feature::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 
@@ -105,6 +117,19 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
     }
     else {
         return new App::DocumentObjectExecReturn("Cannot create ellipsoid", this);
+    }
+}
+
+void Ellipsoid::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    if ((prop == &Radius1 || prop == &Radius2) &&
+        strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
+        App::PropertyFloatConstraint r;
+        r.Restore(reader);
+        static_cast<App::PropertyLength*>(prop)->setValue(r.getValue());
+    }
+    else {
+        Mesh::Feature::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 
@@ -147,6 +172,19 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
     }
     else {
         return new App::DocumentObjectExecReturn("Cannot create cylinder", this);
+    }
+}
+
+void Cylinder::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    if ((prop == &Radius || prop == &Length || prop == &EdgeLength) &&
+        strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
+        App::PropertyFloatConstraint r;
+        r.Restore(reader);
+        static_cast<App::PropertyLength*>(prop)->setValue(r.getValue());
+    }
+    else {
+        Mesh::Feature::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 
@@ -195,6 +233,19 @@ App::DocumentObjectExecReturn *Cone::execute(void)
     }
 }
 
+void Cone::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    if ((prop == &Radius1 || prop == &Radius2 || prop == &Length || prop == &EdgeLength) &&
+        strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
+        App::PropertyFloatConstraint r;
+        r.Restore(reader);
+        static_cast<App::PropertyLength*>(prop)->setValue(r.getValue());
+    }
+    else {
+        Mesh::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
 // -------------------------------------------------------------
 
 PROPERTY_SOURCE(Mesh::Torus, Mesh::Feature)
@@ -231,6 +282,19 @@ App::DocumentObjectExecReturn *Torus::execute(void)
     }
 }
 
+void Torus::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    if ((prop == &Radius1 || prop == &Radius2) &&
+        strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
+        App::PropertyFloatConstraint r;
+        r.Restore(reader);
+        static_cast<App::PropertyLength*>(prop)->setValue(r.getValue());
+    }
+    else {
+        Mesh::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
 // -------------------------------------------------------------
 
 PROPERTY_SOURCE(Mesh::Cube, Mesh::Feature)
@@ -264,5 +328,18 @@ App::DocumentObjectExecReturn *Cube::execute(void)
     }
     else {
         return new App::DocumentObjectExecReturn("Cannot create cube", this);
+    }
+}
+
+void Cube::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+{
+    if ((prop == &Length || prop == &Width || prop == &Height) &&
+        strcmp(TypeName, "App::PropertyFloatConstraint") == 0) {
+        App::PropertyFloatConstraint r;
+        r.Restore(reader);
+        static_cast<App::PropertyLength*>(prop)->setValue(r.getValue());
+    }
+    else {
+        Mesh::Feature::handleChangedPropertyType(reader, TypeName, prop);
     }
 }

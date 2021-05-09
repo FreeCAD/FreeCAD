@@ -794,11 +794,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathEngrave.py" line="65"/>
-        <source>The description of the tool </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="PathEngrave.py" line="70"/>
         <source>Rapid Safety Height between locations.</source>
         <translation type="unfinished"></translation>

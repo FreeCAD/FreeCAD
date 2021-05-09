@@ -118,39 +118,24 @@ void PropertyVector::setPyObject(PyObject *value)
         item = PyTuple_GetItem(value,0);
         if (PyFloat_Check(item))
             cVec.x = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.x = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.x = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         // y
         item = PyTuple_GetItem(value,1);
         if (PyFloat_Check(item))
             cVec.y = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.y = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.y = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         // z
         item = PyTuple_GetItem(value,2);
         if (PyFloat_Check(item))
             cVec.z = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.z = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.z = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         setValue( cVec );
@@ -474,13 +459,8 @@ void PropertyMatrix::setPyObject(PyObject *value)
                 item = PyTuple_GetItem(value,x+y*4);
                 if (PyFloat_Check(item))
                     cMatrix[x][y] = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-                else if (PyInt_Check(item))
-                    cMatrix[x][y] = (double)PyInt_AsLong(item);
-#else
                 else if (PyLong_Check(item))
                     cMatrix[x][y] = (double)PyLong_AsLong(item);
-#endif
                 else
                     throw Base::TypeError("Not allowed type used in matrix tuple (a number expected)...");
             }

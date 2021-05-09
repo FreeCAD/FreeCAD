@@ -2069,35 +2069,63 @@ pos=Gui.ActiveDocument.ActiveView.getCameraNode().position.getValue().getValue()
 pos=App.Vector(*pos)
 
 shape=App.ActiveDocument.ActiveObject.Shape
-reflect=shape.reflectLines(ViewDir=vdir, ViewPos=pos, UpDir=udir)
+reflect=shape.reflectLines(ViewDir=vdir, ViewPos=pos, UpDir=udir, EdgeType="Sharp", Visible=True, OnShape=False)
 Part.show(reflect)
  */
 PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
 {
-    static char *kwlist[] = {"ViewDir", "ViewPos", "UpDir", NULL};
+    static char *kwlist[] = {"ViewDir", "ViewPos", "UpDir", "EdgeType", "Visible", "OnShape", nullptr};
 
-    PyObject *pView, *pPos, *pUp;
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", kwlist,
+    char* type="OutLine";
+    PyObject* vis = Py_True;
+    PyObject* in3d = Py_False;
+    PyObject* pPos = nullptr;
+    PyObject* pUp = nullptr;
+    PyObject *pView;
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|O!O!sO!O!", kwlist,
                                      &Base::VectorPy::Type, &pView,
                                      &Base::VectorPy::Type, &pPos,
-                                     &Base::VectorPy::Type, &pUp))
-        return 0;
+                                     &Base::VectorPy::Type, &pUp,
+                                     &type,
+                                     &PyBool_Type, &vis,
+                                     &PyBool_Type, &in3d))
+        return nullptr;
 
     try {
+        HLRBRep_TypeOfResultingEdge t;
+        std::string str = type;
+        if (str == "IsoLine")
+            t = HLRBRep_IsoLine;
+        else if (str == "Rg1Line")
+            t = HLRBRep_Rg1Line;
+        else if (str == "RgNLine")
+            t = HLRBRep_RgNLine;
+        else if (str == "Sharp")
+            t = HLRBRep_Sharp;
+        else
+            t = HLRBRep_OutLine;
+
+        Base::Vector3d p(0.0, 0.0, 0.0);
+        if (pPos) {
+            p = Py::Vector(pPos,false).toVector();
+        }
+        Base::Vector3d u(0.0, 1.0, 0.0);
+        if (pUp) {
+            u = Py::Vector(pUp,false).toVector();
+        }
         Base::Vector3d v = Py::Vector(pView,false).toVector();
-        Base::Vector3d p = Py::Vector(pPos,false).toVector();
-        Base::Vector3d u = Py::Vector(pUp,false).toVector();
 
         const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
         HLRAppli_ReflectLines reflect(shape);
         reflect.SetAxes(v.x, v.y, v.z, p.x, p.y, p.z, u.x, u.y, u.z);
         reflect.Perform();
-        TopoDS_Shape lines = reflect.GetResult();
+        TopoDS_Shape lines = reflect.GetCompoundOf3dEdges(t, PyObject_IsTrue(vis) ? Standard_True : Standard_False,
+                                                          PyObject_IsTrue(in3d) ? Standard_True : Standard_False);
         return new TopoShapePy(new TopoShape(lines));
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -2122,15 +2150,9 @@ PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
         for (Py::Sequence::iterator it = facets.begin(); it != facets.end(); ++it) {
             Data::ComplexGeoData::Facet face;
             Py::Tuple f(*it);
-#if PY_MAJOR_VERSION >= 3
             face.I1 = (int)Py::Long(f[0]);
             face.I2 = (int)Py::Long(f[1]);
             face.I3 = (int)Py::Long(f[2]);
-#else
-            face.I1 = (int)Py::Int(f[0]);
-            face.I2 = (int)Py::Int(f[1]);
-            face.I3 = (int)Py::Int(f[2]);
-#endif
             Facets.push_back(face);
         }
 
@@ -2519,11 +2541,7 @@ PyObject* _getSupportIndex(const char* suppStr, TopoShape* ts, TopoDS_Shape supp
             break;
         }
     }
-#if PY_MAJOR_VERSION >= 3
     return PyLong_FromLong(supportIndex);
-#else
-    return PyInt_FromLong(supportIndex);
-#endif
 }
 
 PyObject* TopoShapePy::proximity(PyObject *args)

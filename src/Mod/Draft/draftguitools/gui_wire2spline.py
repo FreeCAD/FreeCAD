@@ -77,7 +77,7 @@ class WireToBSpline(gui_base_original.Modifier):
         selection = Gui.Selection.getSelection()
         if selection:
             if utils.getType(selection[0]) in ['Wire', 'BSpline']:
-                super(WireToBSpline, self).Activated(name=translate("draft","Convert polyline/B-spline"))
+                super(WireToBSpline, self).Activated(name="Convert polyline/B-spline")
                 if self.doc:
                     self.obj = Gui.Selection.getSelection()
                     if self.obj:

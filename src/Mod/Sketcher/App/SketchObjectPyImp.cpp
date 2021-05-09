@@ -227,13 +227,8 @@ PyObject* SketchObjectPy::delGeometries(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check((*it).ptr()))
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-#else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-#endif
         }
 
         if(this->getSketchObjectPtr()->delGeometries(geoIdList)) {
@@ -575,7 +570,7 @@ PyObject* SketchObjectPy::delConstraintOnPoint(PyObject *args)
     if (!PyArg_ParseTuple(args, "i|i", &Index, &pos))
         return 0;
 
-    if (pos>=0 && pos<3) { // Sketcher::none Sketcher::mid
+    if (pos>=Sketcher::none && pos<=Sketcher::mid) { // This is the whole range of valid positions
         if (this->getSketchObjectPtr()->delConstraintOnPoint(Index,(Sketcher::PointPos)pos)) {
             std::stringstream str;
             str << "Not able to delete a constraint on point with the given index: " << Index
@@ -1125,6 +1120,25 @@ PyObject* SketchObjectPy::extend(PyObject *args)
     return 0;
 }
 
+PyObject* SketchObjectPy::split(PyObject *args)
+{
+    PyObject *pcObj;
+    int GeoId;
+
+    if (!PyArg_ParseTuple(args, "iO!", &GeoId, &(Base::VectorPy::Type), &pcObj))
+        return 0;
+
+    Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
+    if (this->getSketchObjectPtr()->split(GeoId,v1)) {
+        std::stringstream str;
+        str << "Not able to split curve with the given index: " << GeoId;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::addSymmetric(PyObject *args)
 {
     PyObject *pcObj;
@@ -1139,13 +1153,8 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check((*it).ptr()))
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-#else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-#endif
         }
 
         int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,(Sketcher::PointPos) refPosId) + 1;
@@ -1183,13 +1192,8 @@ PyObject* SketchObjectPy::addCopy(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
             if (PyLong_Check((*it).ptr()))
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-#else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-#endif
         }
 
         try {
@@ -1232,13 +1236,8 @@ PyObject* SketchObjectPy::addMove(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            #if PY_MAJOR_VERSION >= 3
             if (PyLong_Check((*it).ptr()))
                 geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-            #else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-            #endif
         }
 
     this->getSketchObjectPtr()->addCopy(geoIdList, vect, true);
@@ -1270,13 +1269,8 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-#if PY_MAJOR_VERSION >= 3
 	    if (PyLong_Check((*it).ptr()))
 		geoIdList.push_back(PyLong_AsLong((*it).ptr()));
-#else
-            if (PyInt_Check((*it).ptr()))
-                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
-#endif
         }
 
         try {
@@ -1830,6 +1824,7 @@ Py::List SketchObjectPy::getGeometryFacadeList(void) const
 
         // we create a python copy and add it to the list
         std::unique_ptr<GeometryFacade> geofacade = GeometryFacade::getFacade(getSketchObjectPtr()->Geometry[i]->clone());
+        geofacade->setOwner(true);
 
         Py::Object gfp = Py::Object(new GeometryFacadePy(geofacade.release()),true);
 

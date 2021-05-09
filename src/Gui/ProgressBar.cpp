@@ -226,7 +226,15 @@ void SequencerBar::nextStep(bool canAbort)
 
 void SequencerBar::setProgress(size_t step)
 {
-    d->bar->show();
+    QThread* currentThread = QThread::currentThread();
+    QThread* thr = d->bar->thread(); // this is the main thread
+    if (thr != currentThread) {
+        QMetaObject::invokeMethod(d->bar, "show", Qt::QueuedConnection);
+    }
+    else {
+        d->bar->show();
+    }
+
     setValue((int)step);
 }
 

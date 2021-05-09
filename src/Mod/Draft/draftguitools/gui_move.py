@@ -65,8 +65,7 @@ class Move(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        self.name = translate("draft", "Move")
-        super(Move, self).Activated(self.name,
+        super(Move, self).Activated(name="Move",
                                     is_subtool=isinstance(App.activeDraftCommand,
                                                           SubelementHighlight))
         if not self.ui:
@@ -78,7 +77,7 @@ class Move(gui_base_original.Modifier):
         """Get the object selection."""
         if Gui.Selection.getSelectionEx():
             return self.proceed()
-        self.ui.selectUi()
+        self.ui.selectUi(on_close_call=self.finish)
         _msg(translate("draft", "Select an object to move"))
         self.call = \
             self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
@@ -94,7 +93,7 @@ class Move(gui_base_original.Modifier):
                                       spaces=True,
                                       noarchchild=True)
         self.selected_subelements = Gui.Selection.getSelectionEx()
-        self.ui.lineUi(self.name, icon="Draft_Move")
+        self.ui.lineUi(title=translate("draft", self.featureName), icon="Draft_Move")
         self.ui.modUi()
         if self.copymode:
             self.ui.isCopy.setChecked(True)

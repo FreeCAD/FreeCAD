@@ -78,7 +78,7 @@ class Trimex(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Trimex, self).Activated(name=translate("draft","Trimex"))
+        super(Trimex, self).Activated(name="Trimex")
         self.edges = []
         self.placement = None
         self.ghost = []
@@ -87,7 +87,7 @@ class Trimex(gui_base_original.Modifier):
         self.width = None
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select objects to trim or extend"))
                 self.call = \
                     self.view.addEventCallback("SoEvent",
@@ -105,7 +105,7 @@ class Trimex(gui_base_original.Modifier):
             self.finish()
             return
         self.obj = sel[0]
-        self.ui.trimUi()
+        self.ui.trimUi(title=translate("draft",self.featureName))
         self.linetrack = trackers.lineTracker()
 
         import DraftGeomUtils
@@ -120,7 +120,7 @@ class Trimex(gui_base_original.Modifier):
             self.extrudeMode = True
             self.ghost = [trackers.ghostTracker([self.obj])]
             self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-            self.ghost += [trackers.lineTracker()] * len(self.obj.Shape.Vertexes)
+            self.ghost += [trackers.lineTracker() for _v in self.obj.Shape.Vertexes]
         elif len(self.obj.Shape.Faces) > 1:
             # face extrude mode, a new object is created
             ss = Gui.Selection.getSelectionEx()[0]
@@ -131,7 +131,7 @@ class Trimex(gui_base_original.Modifier):
                     self.extrudeMode = True
                     self.ghost = [trackers.ghostTracker([self.obj])]
                     self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-                    self.ghost += [trackers.lineTracker()] * len(self.obj.Shape.Vertexes)
+                    self.ghost += [trackers.lineTracker() for _v in self.obj.Shape.Vertexes]
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor

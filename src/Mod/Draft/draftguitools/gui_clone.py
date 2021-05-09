@@ -72,10 +72,10 @@ class Clone(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Clone, self).Activated(name=translate("draft","Clone"))
+        super(Clone, self).Activated(name="Clone")
         if not Gui.Selection.getSelection():
             if self.ui:
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to clone"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

@@ -59,10 +59,10 @@ class Draft2Sketch(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Draft2Sketch, self).Activated(name=translate("draft","Convert Draft/Sketch"))
+        super(Draft2Sketch, self).Activated(name="Convert Draft/Sketch")
         if not Gui.Selection.getSelection():
             if self.ui:
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to convert."))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

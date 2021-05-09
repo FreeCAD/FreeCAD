@@ -632,7 +632,10 @@ class _Window(ArchComponent.Component):
                 elif "Edge" in s:
                     hinge = int(s[4:])-1
                 elif "Mode" in s:
-                    omode = int(s[-1])
+                    omode = int(s[4:])
+                    if omode >= len(WindowOpeningModes):
+                        # Ignore modes not listed in WindowOpeningModes
+                        omode = None
             if wires:
                 max_length = 0
                 for w in wires:
@@ -1510,7 +1513,11 @@ class _ArchWindowTaskPanel:
                                 elif "Edge" in l:
                                     self.field6.setText(l)
                                 elif "Mode" in l:
-                                    self.field7.setCurrentIndex(int(l[-1]))
+                                    if int(l[4:]) < len(WindowOpeningModes):
+                                        self.field7.setCurrentIndex(int(l[4:]))
+                                    else:
+                                        # Ignore modes not listed in WindowOpeningModes
+                                        self.field7.setCurrentIndex(0)
                             if wires:
                                 f.setText(",".join(wires))
 

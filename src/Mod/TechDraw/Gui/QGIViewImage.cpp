@@ -135,7 +135,7 @@ void QGIViewImage::draw()
     }
     m_cliparea->centerAt(0.0,0.0);
 
-    QGIView::draw();
+    drawImage();
 }
 
 void QGIViewImage::drawImage()

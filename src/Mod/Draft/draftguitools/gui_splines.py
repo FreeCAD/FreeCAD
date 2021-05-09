@@ -65,7 +65,7 @@ class BSpline(gui_lines.Line):
 
         Activate the specific BSpline tracker.
         """
-        super(BSpline, self).Activated(name=translate("draft", "B-spline"), icon="Draft_BSpline")
+        super(BSpline, self).Activated(name="Bspline", icon="Draft_BSpline")
         if self.doc:
             self.bsplinetrack = trackers.bsplineTracker()
 

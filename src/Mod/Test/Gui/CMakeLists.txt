@@ -10,12 +10,6 @@ set(TestGui_LIBS
     FreeCADGui
 )
 
-set(Test_MOC_HDRS
-    UnitTestImp.h
-)
-fc_wrap_cpp(Test_MOC_SRCS ${Test_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${Test_MOC_SRCS})
-
 set(Dialogs_UIC_SRCS
     UnitTest.ui
 )

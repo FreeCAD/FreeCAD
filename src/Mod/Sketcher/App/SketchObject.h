@@ -157,7 +157,9 @@ public:
     /// Deletes all constraints referencing an external geometry
     int delConstraintsToExternal();
     /// transfers all constraints of a point to a new point
-    int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId);
+    int transferConstraints(int fromGeoId, PointPos fromPosId, int toGeoId, PointPos toPosId,
+                            bool doNotTransformTangencies = false);
+
     /// Carbon copy another sketch geometry and constraints
     int carbonCopy(App::DocumentObject * pObj, bool construction = true);
     /// add an external geometry reference
@@ -282,6 +284,8 @@ public:
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
     int extend(int geoId, double increment, int endPoint);
+    /// split a curve
+    int split(int geoId, const Base::Vector3d &point);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
     int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::none);
@@ -357,6 +361,9 @@ public:
                              std::vector<PointPos> &PosIdList);
     void getDirectlyCoincidentPoints(int VertexId, std::vector<int> &GeoIdList, std::vector<PointPos> &PosIdList);
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+
+    /// returns a list of indices of all constraints involving given GeoId
+    void getConstraintIndices(int GeoId, std::vector<int> &constraintList);
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int> &conflicting, std::string &msg);

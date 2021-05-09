@@ -285,7 +285,6 @@ def getBoundBoxOfAllDocumentShapes(doc):
             FreeCAD.Console.PrintMessage("{}\n".format(bb))  # debug only
         except Exception:
             FreeCAD.Console.PrintMessage("exception \n")  # debug only
-            pass
 
         if bb is None:
             try:
@@ -294,7 +293,6 @@ def getBoundBoxOfAllDocumentShapes(doc):
                 FreeCAD.Console.PrintMessage("{}\n".format(bb))  # debug only
             except Exception:
                 FreeCAD.Console.PrintMessage("exception \n")  # debug only
-                pass
 
         if bb:
             if bb.isValid():

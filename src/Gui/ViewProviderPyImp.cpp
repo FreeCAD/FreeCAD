@@ -320,11 +320,7 @@ PyObject*  ViewProviderPy::listDisplayModes(PyObject *args)
         int i=0;
 
         for ( std::vector<std::string>::iterator it = modes.begin(); it != modes.end(); ++it ) {
-#if PY_MAJOR_VERSION >= 3
             PyObject* str = PyUnicode_FromString(it->c_str());
-#else
-            PyObject* str = PyString_FromString(it->c_str());
-#endif
             PyList_SetItem(pyList, i++, str);
         }
 
@@ -400,19 +396,8 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
         for (Py_ssize_t i = 0; i < nSize; ++i) {
             if(value) item = PySequence_GetItem(value, i);
             if (PyUnicode_Check(item)) {
-#if PY_MAJOR_VERSION >= 3
                 values[i] = PyUnicode_AsUTF8(item);
-#else
-                PyObject* unicode = PyUnicode_AsUTF8String(item);
-                values[i] = PyString_AsString(unicode);
-                Py_DECREF(unicode);
-#endif
             }
-#if PY_MAJOR_VERSION < 3
-            else if (PyString_Check(item)) {
-                values[i] = PyString_AsString(item);
-            }
-#endif
             else {
                 std::string error = std::string("type must be str or unicode");
                 error += " not, ";

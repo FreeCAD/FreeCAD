@@ -1345,7 +1345,7 @@ yyreduce:
 
 /* Line 1464 of yacc.c  */
 #line 40 "SelectionFilter.y"
-    { (yyval.string) = new std::string(*(yyvsp[(2) - (4)].string) + "::" + *(yyvsp[(4) - (4)].string)) ;}
+    { (yyval.string) = StringFactory::New(*(yyvsp[(2) - (4)].string) + "::" + *(yyvsp[(4) - (4)].string)) ;}
     break;
 
   case 4:

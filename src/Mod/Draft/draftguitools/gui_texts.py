@@ -62,13 +62,12 @@ class Text(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Text")
-        super(Text, self).Activated(name)
+        super(Text, self).Activated(name="Text")
         if self.ui:
             self.dialog = None
             self.text = ''
             self.ui.sourceCmd = self
-            self.ui.pointUi(name)
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Text")
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.active = True
             self.ui.xValue.setFocus()

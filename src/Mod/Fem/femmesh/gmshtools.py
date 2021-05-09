@@ -264,8 +264,7 @@ class GmshTools():
                         "but parameter to create it is set to True. "
                         "Dir will be created.\n".format(self.working_dir)
                     )
-                    from os import mkdir
-                    mkdir(param_working_dir)
+                    os.mkdir(param_working_dir)
                 else:
                     Console.PrintError(
                         "Dir given as parameter \'{}\' doesn't exist "
@@ -295,10 +294,9 @@ class GmshTools():
         # file paths
         _geometry_name = self.part_obj.Name + "_Geometry"
         self.mesh_name = self.part_obj.Name + "_Mesh"
-        from os.path import join
-        self.temp_file_geometry = join(self.working_dir, _geometry_name + ".brep")  # geometry file
-        self.temp_file_mesh = join(self.working_dir, self.mesh_name + ".unv")  # mesh file
-        self.temp_file_geo = join(self.working_dir, "shape2mesh.geo")  # Gmsh input file
+        self.temp_file_geometry = os.path.join(self.working_dir, _geometry_name + ".brep")  # geometry file
+        self.temp_file_mesh = os.path.join(self.working_dir, self.mesh_name + ".unv")  # mesh file
+        self.temp_file_geo = os.path.join(self.working_dir, "shape2mesh.geo")  # Gmsh input file
         Console.PrintMessage("  " + self.temp_file_geometry + "\n")
         Console.PrintMessage("  " + self.temp_file_mesh + "\n")
         Console.PrintMessage("  " + self.temp_file_geo + "\n")

@@ -91,6 +91,7 @@ class Draft_SelectPlane:
         # Create task panel
         FreeCADGui.Control.closeDialog()
         self.taskd = task_selectplane.SelectPlaneTaskPanel()
+        self.taskd.reject = self.reject
 
         # Fill values
         self.taskd.form.checkCenter.setChecked(self.param.GetBool("CenterPlaneOnView", False))

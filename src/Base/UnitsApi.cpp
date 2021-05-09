@@ -154,6 +154,23 @@ void UnitsApi::setSchema(UnitSystem s)
     UserPrefSystem->setSchemaUnits(); // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
 }
 
+QString UnitsApi::toString(const Base::Quantity& q, const QuantityFormat& f)
+{
+    QString value = QString::fromLatin1("'%1 %2'").arg(q.getValue(), 0, f.toFormat(), f.precision+1)
+                                                  .arg(q.getUnit().getString());
+    return value;
+}
+
+QString UnitsApi::toNumber(const Base::Quantity& q, const QuantityFormat& f)
+{
+    return toNumber(q.getValue(), f);
+}
+
+QString UnitsApi::toNumber(double d, const QuantityFormat& f)
+{
+    QString number = QString::fromLatin1("%1").arg(d, 0, f.toFormat(), f.precision+1);
+    return number;
+}
 
 //double UnitsApi::translateUnit(const char* str)
 //{
@@ -196,13 +213,8 @@ QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, Q
 
 double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
 {
-#if PY_MAJOR_VERSION >= 3
     if (PyUnicode_Check(ArgObj)) {
         QString str = QString::fromUtf8(PyUnicode_AsUTF8(ArgObj));
-#else
-    if (PyString_Check(ArgObj)) {
-        QString str = QString::fromLatin1(PyString_AsString(ArgObj));
-#endif
         // Parse the string
         Quantity q = Quantity::parse(str);
         if (q.getUnit() == u)
@@ -212,13 +224,8 @@ double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
     else if (PyFloat_Check(ArgObj)) {
         return PyFloat_AsDouble(ArgObj);
     }
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(ArgObj)) {
-        return static_cast<double>(PyInt_AsLong(ArgObj));
-#else
     else if (PyLong_Check(ArgObj)) {
         return static_cast<double>(PyLong_AsLong(ArgObj));
-#endif
     }
     else {
         throw Base::UnitsMismatchError("Wrong parameter type!");
@@ -228,13 +235,8 @@ double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
 Quantity UnitsApi::toQuantity(PyObject *ArgObj, const Base::Unit &u)
 {
     double d;
-#if PY_MAJOR_VERSION >= 3
     if (PyUnicode_Check(ArgObj)) {
         QString str = QString::fromUtf8(PyUnicode_AsUTF8(ArgObj));
-#else
-    if (PyString_Check(ArgObj)) {
-        QString str = QString::fromLatin1(PyString_AsString(ArgObj));
-#endif
         // Parse the string
         Quantity q = Quantity::parse(str);
         d = q.getValue();
@@ -242,13 +244,8 @@ Quantity UnitsApi::toQuantity(PyObject *ArgObj, const Base::Unit &u)
     else if (PyFloat_Check(ArgObj)) {
         d = PyFloat_AsDouble(ArgObj);
     }
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(ArgObj)) {
-        d = static_cast<double>(PyInt_AsLong(ArgObj));
-#else
     else if (PyLong_Check(ArgObj)) {
         d = static_cast<double>(PyLong_AsLong(ArgObj));
-#endif
     }
     else {
         throw Base::UnitsMismatchError("Wrong parameter type!");
