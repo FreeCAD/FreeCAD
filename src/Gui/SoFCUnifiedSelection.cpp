@@ -526,6 +526,7 @@ SoFCUnifiedSelection::Private::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
     if (useRenderer()) {
         const auto & paths = this->manager.getSelectionPaths();
         tmpPath.append(pcViewer->getRootPath());
+        tmpPath.append(master);
         int pathLength = tmpPath.getLength();
         SoState * state = this->rayPickAction.getState();
         SoFCSwitch::setOverrideSwitch(state, true);
@@ -1437,7 +1438,8 @@ void SoFCUnifiedSelection::GLRenderInPath(SoGLRenderAction * action)
     SoState * state = action->getState();
     state->push();
     pimpl->applyOverrideMode(action->getState());
-    inherited::GLRenderInPath(action);
+    if (!pimpl->render(action))
+        inherited::GLRenderBelowPath(action);
     state->pop();
 }
 

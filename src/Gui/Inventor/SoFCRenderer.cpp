@@ -49,6 +49,7 @@
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
@@ -77,10 +78,13 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbBox3f.h>
 
+#include <Base/Console.h>
 #include "SoFCRenderer.h"
 #include "SoFCRenderCache.h"
 #include "SoFCVertexCache.h"
 #include "../ViewParams.h"
+
+FC_LOG_LEVEL_INIT("Renderer", true, true)
 
 using namespace Gui;
 
@@ -93,6 +97,17 @@ typedef Gui::CoinPtr<SoFCRenderCache> RenderCachePtr;
 typedef Gui::CoinPtr<SoFCVertexCache> VertexCachePtr;
 
 #define PRIVATE(obj) ((obj)->pimpl)
+
+#define FC_GLERROR_CHECK _check_glerror(__LINE__)
+  
+static inline void
+_check_glerror(int line) {
+  if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR)
+      _FC_ERR(__FILE__, line, "GL error: " << err);
+  }
+}
 
 struct CacheKeyCompare {
   bool operator()(const CacheKeyPtr &a, const CacheKeyPtr &b) const {
@@ -226,6 +241,10 @@ public:
   bool notexture;
   bool depthwriteonly;
   bool hlwholeontop = false;
+
+  bool shadowrendering = false;
+  bool shadowmapping = false;
+  bool transpshadowmapping = false;
 };
 
 SoFCRenderer::SoFCRenderer()
@@ -247,6 +266,7 @@ setGLColor(int name, uint32_t col)
   c[2] = ((col >> 8)&0xff)/255.0f;
   c[3] = 1.0f;
   glMaterialfv(GL_FRONT_AND_BACK, name, c);
+  FC_GLERROR_CHECK;
 }
 
 static inline void
@@ -256,6 +276,7 @@ setGLFeature(int name, int current, int next, int mask)
     glDisable(name);
   else if (!(current & mask) && (next & mask))
     glEnable(name);
+  FC_GLERROR_CHECK;
 }
 
 static const SbMatrix matrixidentity(SbMatrix::identity());
@@ -269,6 +290,12 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   bool first = this->prevmaterial == nullptr;
   SoState * state = action->getState();
 
+  if (this->shadowmapping
+      && (next.isOnTop() || !(next.shadowstyle & SoShadowStyleElement::CASTS_SHADOW)))
+  {
+    return false;
+  }
+
   // depth buffer write without color
   if (this->depthwriteonly) {
     // disable any texture
@@ -281,6 +308,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     if (this->material.lightmodel != SoLazyElement::BASE_COLOR) {
       this->material.lightmodel = SoLazyElement::BASE_COLOR;
       glDisable(GL_LIGHTING);
+      FC_GLERROR_CHECK;
     }
     // disable per vertex color
     this->material.pervertexcolor = false;
@@ -288,16 +316,19 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     if (!this->material.depthwrite) {
       this->material.depthwrite = true;
       glDepthMask(GL_TRUE);
+      FC_GLERROR_CHECK;
     }
     // force GL_LESS depth function
     if (this->material.depthfunc != SoDepthBuffer::LESS) {
       this->material.depthfunc = SoDepthBuffer::LESS;
       glDepthFunc(GL_LESS);
+      FC_GLERROR_CHECK;
     }
     // enable depth test
     if (!this->material.depthtest) {
       this->material.depthtest = true;
       glEnable(GL_DEPTH_TEST);
+      FC_GLERROR_CHECK;
     }
     return true;
   }
@@ -343,10 +374,11 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   }
 
   bool depthtest = next.isOnTop() ? false : next.depthtest;
-  bool depthwrite = transp ? false : next.depthwrite;
+  bool depthwrite = !next.isOnTop() && transp ? false : next.depthwrite;
   int8_t depthfunc = next.depthfunc;
   uint32_t linepattern = next.linepattern;
   uint32_t col = next.diffuse;
+  uint32_t emissive = next.emissive;
   auto overrideflags = next.overrideflags;
   float linewidth = next.linewidth;
   float pointsize = next.pointsize;
@@ -396,11 +428,13 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
       glEnable(GL_DEPTH_TEST);
     else
       glDisable(GL_DEPTH_TEST);
+    FC_GLERROR_CHECK;
     this->material.depthtest = depthtest;
   }
 
   if (first || this->material.depthwrite != depthwrite) {
     glDepthMask(depthwrite ? GL_TRUE : GL_FALSE);
+    FC_GLERROR_CHECK;
     this->material.depthwrite = depthwrite;
   }
 
@@ -415,6 +449,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     case SoDepthBuffer::GREATER:   glDepthFunc(GL_GREATER);   break;
     case SoDepthBuffer::NOTEQUAL:  glDepthFunc(GL_NOTEQUAL);  break;
     }
+    FC_GLERROR_CHECK;
     this->material.depthfunc = depthfunc;
   }
 
@@ -423,14 +458,19 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
       glEnable(GL_LIGHTING);
     else
       glDisable(GL_LIGHTING);
+    FC_GLERROR_CHECK;
     this->material.lightmodel = next.lightmodel;
   }
+
+  if (this->material.lightmodel == SoLazyElement::BASE_COLOR)
+    emissive = 0;
 
   // Always set color because the current color may be changed by opengl draw call
   glColor4ub((unsigned char)((col>>24)&0xff),
               (unsigned char)((col>>16)&0xff),
               (unsigned char)((col>>8)&0xff),
               (unsigned char)(col&0xff));
+  FC_GLERROR_CHECK;
 
   if (overrideflags != this->material.overrideflags
       || (overrideflags.test(Material::FLAG_TRANSPARENCY)
@@ -451,17 +491,29 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
         glBlendColor(0.f, 0.f, 0.f,  (col & 0xff)/255.f);
         sfactor = GL_CONSTANT_ALPHA_EXT;
         dfactor = GL_ONE_MINUS_CONSTANT_ALPHA_EXT;
+        FC_GLERROR_CHECK;
       }
     }
     glBlendFunc(sfactor, dfactor);
+    FC_GLERROR_CHECK;
   }
 
   this->material.overrideflags = overrideflags;
   this->material.diffuse = col;
 
+  // Must clear emission color for lines and points if they are to be rendered
+  // with lighting as BASE_COLOR. For some reason, if shadow is enabled
+  // (possibly due to extra light source), emission color is taking effect
+  // even if lighting is BASE_COLOR.
+  if (first || this->material.emissive != emissive) {
+    setGLColor(GL_EMISSION, emissive);
+    this->material.emissive = emissive;
+  }
+
   if (next.type == Material::Line) {
     if (first || this->material.linewidth != linewidth) {
       glLineWidth(linewidth);
+      FC_GLERROR_CHECK;
       this->material.linewidth = linewidth;
     }
 
@@ -472,6 +524,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
         glEnable(GL_LINE_STIPPLE);
         glLineStipple((GLint) (linepattern >> 16), (GLshort) (linepattern & 0xffff));
       }
+      FC_GLERROR_CHECK;
       this->material.linepattern = linepattern;
     }
     if (!first)
@@ -482,6 +535,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     if (first || this->material.pointsize != pointsize) {
       glPointSize(pointsize);
       this->material.pointsize = pointsize;
+      FC_GLERROR_CHECK;
     }
     if (!first)
       return true;
@@ -492,11 +546,6 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     this->material.ambient = next.ambient;
   }
 
-  if (first || this->material.emissive != next.emissive) {
-    setGLColor(GL_EMISSION, next.emissive);
-    this->material.emissive = next.emissive;
-  }
-
   if (first || this->material.specular != next.specular) {
     setGLColor(GL_SPECULAR, next.specular);
     this->material.specular = next.specular;
@@ -504,11 +553,13 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
 
   if (first || this->material.shininess != next.shininess) {
     glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, next.shininess*128.0f);
+    FC_GLERROR_CHECK;
     this->material.shininess = next.shininess;
   }
 
   if (first || this->material.vertexordering != next.vertexordering) {
     glFrontFace(next.vertexordering == SoLazyElement::CW ? GL_CW : GL_CCW);
+    FC_GLERROR_CHECK;
     this->material.vertexordering = next.vertexordering;
   }
 
@@ -517,6 +568,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     twoside = 1;
   if (first || this->material.twoside != twoside) {
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, twoside ? GL_TRUE : GL_FALSE);
+    FC_GLERROR_CHECK;
     this->material.twoside = twoside;
   }
 
@@ -526,6 +578,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   if (first || this->material.culling != culling) {
     if (culling) glEnable(GL_CULL_FACE);
     else glDisable(GL_CULL_FACE);
+    FC_GLERROR_CHECK;
     this->material.culling = culling;
   }
 
@@ -540,6 +593,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
     default:
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+    FC_GLERROR_CHECK;
     this->material.drawstyle = next.drawstyle;
   }
 
@@ -562,6 +616,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
   if (first || this->material.polygonoffsetfactor != next.polygonoffsetfactor
             || this->material.polygonoffsetunits != next.polygonoffsetunits) {
     glPolygonOffset(next.polygonoffsetfactor, next.polygonoffsetunits);
+    FC_GLERROR_CHECK;
     this->material.polygonoffsetfactor = next.polygonoffsetfactor;
     this->material.polygonoffsetunits = next.polygonoffsetunits;
   }
@@ -955,10 +1010,13 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
                             std::vector<std::size_t> & indices,
                             int pass)
 {
+  if (this->transpshadowmapping)
+    return;
+
   SoState * state = action->getState();
   for (std::size_t idx : indices) {
     auto & draw_entry = draw_entries[idx];
-    if (draw_entry.skip)
+    if (draw_entry.skip && !this->shadowmapping)
       continue;
     if (this->recheckmaterial 
         || this->prevpass != pass
@@ -984,6 +1042,7 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
       array ^= SoFCVertexCache::NORMAL;
       overridelightmodel = true;
       glDisable(GL_LIGHTING);
+      FC_GLERROR_CHECK;
     }
 
     switch (draw_entry.material->type) {
@@ -1000,6 +1059,7 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
         draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
         if (!this->material.twoside)
           glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+        FC_GLERROR_CHECK;
       }
       break;
     case Material::Line:
@@ -1011,6 +1071,7 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
     }
     if (overridelightmodel)
       glEnable(GL_LIGHTING);
+    FC_GLERROR_CHECK;
   }
 }
 
@@ -1024,6 +1085,9 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
     return;
 
   SoState * state = action->getState();
+
+  if (this->shadowmapping && !this->transpshadowmapping)
+    return;
 
   if (sort) {
     SbPlane plane = SoViewVolumeElement::get(state).getPlane(0.0);
@@ -1043,10 +1107,11 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  FC_GLERROR_CHECK;
 
   for (auto & v : indices) {
     auto & draw_entry = draw_entries[v.idx];
-    if (draw_entry.skip)
+    if (draw_entry.skip && !this->shadowmapping)
       continue;
     if (this->recheckmaterial || this->prevmaterial != draw_entry.material) {
       if (!applyMaterial(action, *draw_entry.material, true))
@@ -1069,6 +1134,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
       array ^= SoFCVertexCache::NORMAL;
       overridelightmodel = true;
       glDisable(GL_LIGHTING);
+      FC_GLERROR_CHECK;
     }
 
     switch (draw_entry.material->type) {
@@ -1092,15 +1158,24 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
 
     if (overridelightmodel)
       glEnable(GL_LIGHTING);
+    FC_GLERROR_CHECK;
   }
 
   glDisable(GL_BLEND);
+  FC_GLERROR_CHECK;
 }
 
 void
 SoFCRenderer::render(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+
+  const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+  unsigned int shapestyleflags = shapestyle->getFlags();
+
+  PRIVATE(this)->shadowrendering = (shapestyleflags & SoShapeStyleElement::SHADOWS) ? true : false;
+  PRIVATE(this)->shadowmapping = (shapestyleflags & SoShapeStyleElement::SHADOWMAP) ? true : false;
+  PRIVATE(this)->transpshadowmapping = PRIVATE(this)->shadowmapping && (shapestyleflags & 0x01000000);
 
   PRIVATE(this)->updateSelection();
 
@@ -1123,43 +1198,58 @@ SoFCRenderer::render(SoGLRenderAction * action)
   PRIVATE(this)->matrix = SoModelMatrixElement::get(state);
   PRIVATE(this)->identity = (PRIVATE(this)->matrix == SbMatrix::identity());
 
-  PRIVATE(this)->renderOpaque(action,
-                              PRIVATE(this)->drawentries,
-                              PRIVATE(this)->opaquevcache);
+  if (!action->isRenderingDelayedPaths()) {
+    PRIVATE(this)->renderOpaque(action,
+                                PRIVATE(this)->drawentries,
+                                PRIVATE(this)->opaquevcache);
 
-  PRIVATE(this)->recheckmaterial = true;
-  PRIVATE(this)->notexture = true;
+    PRIVATE(this)->recheckmaterial = true;
+    PRIVATE(this)->notexture = true;
 
-  PRIVATE(this)->renderOpaque(action,
-                              PRIVATE(this)->slentries,
-                              PRIVATE(this)->opaqueselections);
+    PRIVATE(this)->renderOpaque(action,
+                                PRIVATE(this)->slentries,
+                                PRIVATE(this)->opaqueselections);
 
-  PRIVATE(this)->recheckmaterial = true;
-  PRIVATE(this)->notexture = false;
+    PRIVATE(this)->recheckmaterial = true;
+    PRIVATE(this)->notexture = false;
 
-  PRIVATE(this)->renderTransparency(action,
-                                    PRIVATE(this)->drawentries,
-                                    PRIVATE(this)->transpvcache);
+    PRIVATE(this)->renderTransparency(action,
+                                      PRIVATE(this)->drawentries,
+                                      PRIVATE(this)->transpvcache);
 
-  PRIVATE(this)->recheckmaterial = true;
-  PRIVATE(this)->notexture = true;
+    PRIVATE(this)->recheckmaterial = true;
+    PRIVATE(this)->notexture = true;
 
-  PRIVATE(this)->renderTransparency(action,
-                                    PRIVATE(this)->slentries,
-                                    PRIVATE(this)->transpselections);
+    PRIVATE(this)->renderTransparency(action,
+                                      PRIVATE(this)->slentries,
+                                      PRIVATE(this)->transpselections);
 
-  PRIVATE(this)->recheckmaterial = true;
-  PRIVATE(this)->notexture = false;
+    PRIVATE(this)->recheckmaterial = true;
+    PRIVATE(this)->notexture = false;
 
-  PRIVATE(this)->renderOpaque(action,
-                              PRIVATE(this)->drawentries,
-                              PRIVATE(this)->opaqueontop);
+    PRIVATE(this)->renderOpaque(action,
+                                PRIVATE(this)->drawentries,
+                                PRIVATE(this)->opaqueontop);
 
-  PRIVATE(this)->renderTransparency(action,
-                                    PRIVATE(this)->drawentries,
-                                    PRIVATE(this)->transpontop,
-                                    false);
+    PRIVATE(this)->renderTransparency(action,
+                                      PRIVATE(this)->drawentries,
+                                      PRIVATE(this)->transpontop,
+                                      false);
 
+    if (PRIVATE(this)->shadowrendering) {
+      action->addDelayedPath(action->getCurPath()->copy());
+      state->pop();
+      glPopAttrib();
+      return;
+    }
+  }
+
+  if (PRIVATE(this)->shadowmapping) {
+    state->pop();
+    glPopAttrib();
+    return;
+  }
+  
   PRIVATE(this)->recheckmaterial = true;
   PRIVATE(this)->notexture = true;
 
@@ -1222,6 +1312,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
   // transparency to dim the hidden lines. So we enable blending here.
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  FC_GLERROR_CHECK;
 
   // Rendering lines/points on top (i.e. without depth test), with user
   // configurable line pattern.
@@ -1277,6 +1368,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
   }
 
   glDisable(GL_BLEND);
+  FC_GLERROR_CHECK;
 
   if (!PRIVATE(this)->hlwholeontop) {
     PRIVATE(this)->renderOpaque(action,
@@ -1301,6 +1393,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
 
   state->pop();
   glPopAttrib();
+  FC_GLERROR_CHECK;
 }
 
 // vim: noai:ts=2:sw=2

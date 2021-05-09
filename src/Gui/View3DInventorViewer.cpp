@@ -706,6 +706,7 @@ void View3DInventorViewer::init()
     assert(path && path->getLength()>1);
     pcRootPath = path->copy();
     pcRootPath->ref();
+    pcRootPath->truncate(path->getLength()-1);
 
     auto sceneNode = path->getNodeFromTail(1);
     assert(sceneNode->isOfType(SoGroup::getClassTypeId()));
@@ -1943,6 +1944,7 @@ void View3DInventorViewer::Private::deactivate()
             superScene->replaceChild(index, owner->pcViewProviderRoot);
         pcShadowGroup.reset();
         pcShadowGroundSwitch->whichChild = -1;
+        owner->pcRootPath->truncate(1);
     }
 }
 
@@ -2275,8 +2277,10 @@ void View3DInventorViewer::Private::activate()
 
     auto superScene = static_cast<SoGroup*>(owner->getSoRenderManager()->getSceneGraph());
     int index = superScene->findChild(owner->pcViewProviderRoot);
-    if(index >= 0)
+    if(index >= 0) {
         superScene->replaceChild(index, pcShadowGroup);
+        owner->pcRootPath->append(pcShadowGroup);
+    }
 }
 
 void View3DInventorViewer::setViewportCB(void*, SoAction* action)
