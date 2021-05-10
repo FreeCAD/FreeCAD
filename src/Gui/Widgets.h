@@ -35,7 +35,10 @@
 #include <QElapsedTimer>
 #include <QToolButton>
 #include <QModelIndex>
+#include <QProxyStyle>
 #include "ExpressionBinding.h"
+
+class QTextEdit;
 
 namespace Gui {
 class PrefCheckBox;
@@ -143,6 +146,50 @@ protected:
 private:
     QString noneStr;
     int keyPressedCount;
+};
+
+// ------------------------------------------------------------------------------
+// Style for controlling text cursor width of a QLineEdit
+//
+// Modified from https://stackoverflow.com/a/54933105
+
+class LineEditStyle: public QProxyStyle
+{
+    Q_OBJECT
+    Q_PROPERTY(int cursorWidth READ cursorWidth WRITE setCursorWidth)
+
+public:
+    LineEditStyle(QStyle *style);
+
+    int cursorWidth() const{
+        if(cursor_width < 0)
+            return baseStyle()->pixelMetric(PM_TextCursorWidth);
+        return pixelMetric(PM_TextCursorWidth);
+    }
+
+    void setCursorWidth(int cursorWidth){
+        cursor_width = cursorWidth;
+    }
+
+    int pixelMetric(QStyle::PixelMetric metric,
+                    const QStyleOption *option = nullptr,
+                    const QWidget *widget = nullptr) const override
+    {
+        if(metric == PM_TextCursorWidth)
+            if(cursor_width > 0)
+                return  cursor_width;
+        return  QProxyStyle::pixelMetric(metric, option, widget);
+    }
+
+    static void setup(QLineEdit *);
+    static void setup(QTextEdit *);
+    static void setup(QPlainTextEdit *);
+    static void setupWidget(QWidget *w);
+    static void setupObject(QObject *o);
+    static void setupChildren(QObject *o);
+
+private:
+    int cursor_width;
 };
 
 // ------------------------------------------------------------------------------

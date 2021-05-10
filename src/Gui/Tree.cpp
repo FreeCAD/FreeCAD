@@ -898,6 +898,7 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     } else
         editor = new QLineEdit(parent);
     editor->setReadOnly(prop.isReadOnly());
+    LineEditStyle::setup(editor);
     return editor;
 }
 

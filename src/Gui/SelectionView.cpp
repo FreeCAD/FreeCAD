@@ -83,6 +83,7 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     vLayout->setMargin (0);
 
     QLineEdit* searchBox = new QLineEdit(this);
+    LineEditStyle::setup(searchBox);
 #if QT_VERSION >= 0x040700
     searchBox->setPlaceholderText(tr("Search"));
 #endif
@@ -534,6 +535,8 @@ static QString _DefaultStyle = QLatin1String("QMenu {menu-scrollable:1}");
 namespace Gui {
 void setupMenuStyle(QWidget *menu)
 {
+    LineEditStyle::setupChildren(menu);
+
 #if QT_VERSION  >= 0x050000
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/MainWindow");

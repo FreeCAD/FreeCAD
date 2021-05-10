@@ -55,6 +55,7 @@
 #include <App/PropertyGeo.h>
 #include <sstream>
 #include <boost/math/special_functions/round.hpp>
+#include "Widgets.h"
 
 FC_LOG_LEVEL_INIT("Gui", true, true);
 
@@ -322,6 +323,8 @@ QuantitySpinBox::QuantitySpinBox(QWidget *parent)
     defaultPalette = lineEdit()->palette();
 
     iconLabel = new ExpressionLabel(lineEdit());
+
+    LineEditStyle::setup(lineEdit());
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
 }

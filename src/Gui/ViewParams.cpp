@@ -26,6 +26,8 @@
 #include "ViewParams.h"
 #include "Selection.h"
 #include "OverlayWidgets.h"
+#include "Widgets.h"
+#include "MainWindow.h"
 
 using namespace Gui;
 
@@ -98,5 +100,9 @@ void ViewParams::onDockOverlayCheckNaviCubeChanged() {
 
 void ViewParams::onDockOverlayHideTabBarChanged() {
     OverlayManager::instance()->refresh(nullptr, true);
+}
+
+void ViewParams::onTextCursorWidthChanged() {
+    LineEditStyle::setupChildren(getMainWindow());
 }
 

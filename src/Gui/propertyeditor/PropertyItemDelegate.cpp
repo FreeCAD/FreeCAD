@@ -226,7 +226,8 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
                     || qobject_cast<QLabel*>(w))
             {
                 w->installEventFilter(const_cast<PropertyItemDelegate*>(this));
-            }
+            } else
+                LineEditStyle::setupWidget(w);
         }
         parentEditor->activeEditor = editor;
         parentEditor->editingIndex = index;

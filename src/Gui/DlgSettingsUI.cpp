@@ -50,6 +50,9 @@ using namespace Gui::Dialog;
 class DlgSettingsUI::Private
 {
 public:
+#define FC_GENERAL_PARAMS \
+    FC_UI_SPINBOX(ViewParams, TextCursorWidth, "Text cursor width", 1, 100, 1) \
+
 #define FC_TREEVIEW_PARAMS \
     FC_UI_BRUSH(TreeParams, ItemBackground, "Item background color") \
     FC_UI_SPINBOX(TreeParams, ItemBackgroundPadding, "Item background padding", 0, 100, 1) \
@@ -97,6 +100,7 @@ public:
     FC_UI_COMBOBOX(ViewParams, DockOverlayAnimationCurve, "Animation curve type") \
 
 #define FC_UI_PARAMS \
+    FC_GENERAL_PARAMS \
     FC_TREEVIEW_PARAMS \
     FC_EXPRESSION_PARAMS \
     FC_PIEMENU_PARAMS \
@@ -186,6 +190,14 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
     int row;
     QGroupBox *group;
     QGridLayout *layout;
+
+    group = new QGroupBox(tr("General"), this);
+    vlayout->addWidget(group);
+    layout = new QGridLayout();
+    group->setLayout(layout);
+    row = 0;
+    FC_GENERAL_PARAMS;
+    layout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Fixed), row-1, 2);
 
     group = new QGroupBox(tr("Tree view"), this);
     vlayout->addWidget(group);

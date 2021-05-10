@@ -47,6 +47,7 @@
 #include <Gui/ActionFunction.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewParams.h>
+#include <Gui/Widgets.h>
 
 #if defined (QSINT_ACTIONPANEL)
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
@@ -702,6 +703,8 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveDialog->open();
 
     getMainWindow()->updateActions();
+
+    Gui::LineEditStyle::setupChildren(this);
 
     Q_EMIT taskUpdate();
 }

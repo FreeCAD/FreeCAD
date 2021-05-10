@@ -53,6 +53,8 @@
 #include "BitmapFactory.h"
 #include "ExprParams.h"
 #include "CallTips.h"
+#include "ViewParams.h"
+#include "Widgets.h"
 
 FC_LOG_LEVEL_INIT("Completer",true,true,true)
 
@@ -2509,6 +2511,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, char le
 {
     exactMatch = ExprParams::CompleterMatchExact();
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
+    LineEditStyle::setup(this);
 }
 
 void ExpressionLineEdit::setLeadChar(char lead) {
@@ -2635,6 +2638,7 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent, char lead)
 {
     exactMatch = ExprParams::CompleterMatchExact();
     connect(this, SIGNAL(textChanged()), this, SLOT(slotTextChanged()));
+    LineEditStyle::setup(this);
 }
 
 void ExpressionTextEdit::setExactMatch(bool enabled) {

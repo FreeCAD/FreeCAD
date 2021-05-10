@@ -50,6 +50,7 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "Tools.h"
+#include "Widgets.h"
 
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
@@ -432,6 +433,8 @@ PythonConsole::PythonConsole(QWidget *parent)
 {
     d = new PythonConsoleP();
     d->interactive = false;
+
+    LineEditStyle::setup(this);
 
     // create an instance of InteractiveInterpreter
     try {

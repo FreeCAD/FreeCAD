@@ -48,6 +48,7 @@
 #include "WidgetFactory.h"
 #include "BitmapFactory.h"
 #include "MainWindow.h"
+#include "Widgets.h"
 #include "ViewParams.h"
 
 using namespace Gui::Dialog;
@@ -160,6 +161,7 @@ void DlgPreferencesImp::createPageInGroup(QTabWidget *tabWidget, const std::stri
 {
     PreferencePage* page = WidgetFactory().createPreferencePage(pageName.c_str());
     if (page) {
+        LineEditStyle::setupChildren(this);
         QScrollArea* scrollArea = new QScrollArea(this);
         scrollArea->setFrameShape(QFrame::NoFrame);
         scrollArea->setWidgetResizable(true);

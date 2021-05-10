@@ -36,6 +36,7 @@
 #include <Gui/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/PythonEditor.h>
+#include <Gui/Widgets.h>
 
 #include "ViewProviderTextDocument.h"
 
@@ -84,6 +85,7 @@ bool ViewProviderTextDocument::doubleClicked()
 {
     if (!activateView()) {
         editorWidget = new QPlainTextEdit {};
+        LineEditStyle::setup(editorWidget);
         editorWidget->setReadOnly(ReadOnly.getValue());
         FontName.touch();
         SyntaxHighlighter.touch();

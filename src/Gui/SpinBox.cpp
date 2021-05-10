@@ -42,6 +42,7 @@
 #include <boost/math/special_functions/round.hpp>
 #include "QuantitySpinBox_p.h"
 #include <App/PropertyUnits.h>
+#include "Widgets.h"
 
 using namespace Gui;
 using namespace App;
@@ -154,6 +155,8 @@ UIntSpinBox::UIntSpinBox (QWidget* parent)
     defaultPalette = lineEdit()->palette();
     iconLabel = new ExpressionLabel(lineEdit());
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
+
+    LineEditStyle::setup(lineEdit());
 }
 
 UIntSpinBox::~UIntSpinBox()

@@ -28,13 +28,14 @@
 # include <QMessageBox>
 #endif
 
+#include <cstring>
+
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <App/Application.h>
 
 #include "PrefWidgets.h"
 #include "FileDialog.h"
-#include <cstring>
 
 using Base::Console;
 using namespace Gui;
@@ -157,6 +158,7 @@ void PrefWidget::failedToRestore(const QString& name) const
 PrefSpinBox::PrefSpinBox ( QWidget * parent )
   : QSpinBox(parent), PrefWidget()
 {
+    LineEditStyle::setup(lineEdit());
 }
 
 PrefSpinBox::~PrefSpinBox()
@@ -191,6 +193,7 @@ void PrefSpinBox::savePreferences()
 PrefDoubleSpinBox::PrefDoubleSpinBox ( QWidget * parent )
   : QDoubleSpinBox(parent), PrefWidget()
 {
+    LineEditStyle::setup(lineEdit());
 }
 
 PrefDoubleSpinBox::~PrefDoubleSpinBox()
@@ -225,6 +228,7 @@ void PrefDoubleSpinBox::savePreferences()
 PrefLineEdit::PrefLineEdit ( QWidget * parent )
   : QLineEdit(parent), PrefWidget()
 {
+    LineEditStyle::setup(this);
 }
 
 PrefLineEdit::~PrefLineEdit()

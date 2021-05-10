@@ -60,6 +60,7 @@
 #include <Gui/MenuManager.h>
 #include <Gui/MainWindow.h>
 
+#include "Widgets.h"
 #include "DAGModel.h"
 
 using namespace Gui;
@@ -68,7 +69,7 @@ namespace bp = boost::placeholders;
 
 LineEdit::LineEdit(QWidget* parentIn): QLineEdit(parentIn)
 {
-
+    LineEditStyle::setup(this);
 }
 
 void LineEdit::keyPressEvent(QKeyEvent *eventIn)

@@ -39,6 +39,7 @@
 # include <QTimer>
 # include <QToolTip>
 # include <QDebug>
+# include <QTextEdit>
 #endif
 
 #include <Base/Tools.h>
@@ -56,6 +57,7 @@
 #include "DlgExpressionInput.h"
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
+#include "ViewParams.h"
 
 using namespace Gui;
 using namespace App;
@@ -378,6 +380,8 @@ AccelLineEdit::AccelLineEdit ( QWidget * parent )
     noneStr = tr("none");
     setText(noneStr);
     keyPressedCount = 0;
+
+    LineEditStyle::setup(this);
 }
 
 bool AccelLineEdit::isNone() const
@@ -466,6 +470,8 @@ ClearLineEdit::ClearLineEdit (QWidget * parent)
     connect(clearAction, SIGNAL(triggered()), this, SLOT(clear()));
     connect(this, SIGNAL(textChanged(const QString&)),
             this, SLOT(updateClearButton(const QString&)));
+
+    LineEditStyle::setup(this);
 }
 
 void ClearLineEdit::resizeEvent(QResizeEvent *e)
@@ -497,6 +503,7 @@ ClearLineEdit::ClearLineEdit (QWidget * parent)
     QSize msz = minimumSizeHint();
     setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
                    msz.height());
+    LineEditStyle::setup(this);
 }
 
 void ClearLineEdit::resizeEvent(QResizeEvent *)
@@ -1170,6 +1177,7 @@ private:
 
 PropertyListEditor::PropertyListEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
+    LineEditStyle::setup(this);
     lineNumberArea = new LineNumberArea(this);
 
     connect(this, SIGNAL(blockCountChanged(int)),
@@ -1322,6 +1330,7 @@ LabelEditor::LabelEditor (QWidget * parent)
 
     lineEdit = new QLineEdit(this);
     layout->addWidget(lineEdit);
+    LineEditStyle::setup(lineEdit);
 
     connect(lineEdit, SIGNAL(textChanged(const QString &)),
             this, SLOT(validateText(const QString &)));
@@ -1423,6 +1432,8 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
     : QLineEdit(parent), autoClose(expressionOnly)
 {
     defaultPalette = palette();
+
+    LineEditStyle::setup(this);
 
     iconLabel = new ExpressionLabel(this);
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
@@ -1550,6 +1561,63 @@ void ExpLineEdit::keyPressEvent(QKeyEvent *event)
 {
     if (!hasExpression())
         QLineEdit::keyPressEvent(event);
+}
+
+
+// --------------------------------------------------------------------
+LineEditStyle::LineEditStyle(QStyle *style)
+    :QProxyStyle(style)
+{
+    cursor_width = ViewParams::getTextCursorWidth();
+}
+
+void LineEditStyle::setup(QLineEdit *le)
+{
+    if (!le) return;
+    if (auto style = qobject_cast<LineEditStyle*>(le->style())) {
+        if (style->cursorWidth() != ViewParams::getTextCursorWidth()) {
+            style->setCursorWidth(ViewParams::getTextCursorWidth());
+            if (le->hasFocus())
+                le->update();
+        }
+    } else
+        le->setStyle(new LineEditStyle(le->style()));
+}
+
+void LineEditStyle::setup(QTextEdit *editor)
+{
+    if (editor)
+        editor->setCursorWidth(ViewParams::getTextCursorWidth());
+}
+
+void LineEditStyle::setup(QPlainTextEdit *editor)
+{
+    if (editor)
+        editor->setCursorWidth(ViewParams::getTextCursorWidth());
+}
+
+void LineEditStyle::setupWidget(QWidget *w)
+{
+    if (!w) return;
+    if (auto editor = qobject_cast<QLineEdit*>(w))
+        setup(editor);
+    else if (auto editor = qobject_cast<QTextEdit*>(w))
+        setup(editor);
+    else if (auto editor = qobject_cast<QPlainTextEdit*>(w))
+        setup(editor);
+}
+
+void LineEditStyle::setupChildren(QObject *o)
+{
+    if (!o) return;
+    for (auto w : o->findChildren<QWidget*>())
+        setupWidget(w);
+}
+
+void LineEditStyle::setupObject(QObject *o)
+{
+    if (o && o->isWidgetType())
+        setupWidget(static_cast<QWidget*>(o));
 }
 
 #include "moc_Widgets.cpp"

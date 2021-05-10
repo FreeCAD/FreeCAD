@@ -295,6 +295,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Set rotation center on press in gesture navigation mode."))\
     FC_VIEW_PARAM(CheckWidgetPlacementOnRestore, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Check widget position and size on restore to make sure it is within the current screen."))\
+    FC_VIEW_PARAM2(TextCursorWidth, int, Int, 5, \
+        QT_TRANSLATE_NOOP("ViewParams","Text cursor width in pixel."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
