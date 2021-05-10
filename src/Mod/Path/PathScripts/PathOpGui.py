@@ -104,6 +104,11 @@ class ViewProvider(object):
             self.setupTaskPanel(TaskPanel(vobj.Object, self.deleteObjectsOnReject(), page, selection))
             self.deleteOnReject = False
             return True
+        elif 5 == mode:
+            if vobj is None:
+                vobj = self.vobj
+            self.deleteOnReject = False
+            return True
         # no other editing possible
         return False
 
@@ -1280,13 +1285,13 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation.'''
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
-    obj = res.objFactory(res.name)
+    obj = res.objFactory(res.name, obj=None, parentJob=res.job)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Visibility = False
-
         FreeCAD.ActiveDocument.commitTransaction()
-        obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
+
+        obj.ViewObject.Document.setEdit(obj.ViewObject, res.editMode)
         return obj
     FreeCAD.ActiveDocument.abortTransaction()
     return None
@@ -1329,6 +1334,8 @@ class CommandResources:
         self.menuText = menuText
         self.accelKey = accelKey
         self.toolTip = toolTip
+        self.job = None
+        self.editMode = 0
 
 
 def SetupOperation(name,

@@ -1767,9 +1767,9 @@ def SetupProperties():
     return [tup[1] for tup in ObjectSlot.opPropertyDefinitions(False)]
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Slot operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectSlot(obj, name)
+    obj.Proxy = ObjectSlot(obj, name, parentJob)
     return obj

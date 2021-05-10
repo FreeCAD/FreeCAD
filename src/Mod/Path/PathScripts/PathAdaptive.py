@@ -647,9 +647,9 @@ class PathAdaptive(PathOp.ObjectOp):
                             "Uses the outline of the base geometry.")
 
 
-def Create(name, obj=None):
+def Create(name, obj=None, parentJob=None):
     '''Create(name) ... Creates and returns a Adaptive operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = PathAdaptive(obj, name)
+    obj.Proxy = PathAdaptive(obj, name, parentJob)
     return obj
