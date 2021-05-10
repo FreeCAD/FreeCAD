@@ -872,9 +872,9 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action,
                 // Calling handleTransparency() here will setup blending for us
                 if (!action->handleTransparency(true)) {
                     SbBool twoside = SoLazyElement::getTwoSidedLighting(state);
-                    // force two side rendering to avoid darkening transparent faces
-                    if (!twoside)
-                        SoLazyElement::setTwosideLighting(state, TRUE);
+                    // force single side rendering to avoid darkening transparent faces
+                    if (twoside)
+                        SoLazyElement::setTwosideLighting(state, FALSE);
 
                     renderShape(action);
 
