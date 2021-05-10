@@ -1439,7 +1439,7 @@ void SoFCUnifiedSelection::GLRenderInPath(SoGLRenderAction * action)
     state->push();
     pimpl->applyOverrideMode(action->getState());
     if (!pimpl->render(action))
-        inherited::GLRenderBelowPath(action);
+        inherited::GLRenderInPath(action);
     state->pop();
 }
 
