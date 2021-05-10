@@ -95,7 +95,7 @@ def selectionEx():
 
 class ViewProvider:
 
-    def __init__(self, vobj):
+    def __init__(self, vobj, useGui=True):
         mode = 2
         vobj.setEditorMode('BoundingBox', mode)
         vobj.setEditorMode('DisplayMode', mode)
@@ -117,6 +117,7 @@ class ViewProvider:
         self.vobj = None
         self.baseVisibility = {}
         self.stockVisibility = False
+        self.useGui = useGui
 
     def attach(self, vobj):
         self.vobj = vobj
@@ -171,12 +172,21 @@ class ViewProvider:
         return True
 
     def openTaskPanel(self, activate=None):
-        self.taskPanel = TaskPanel(self.vobj, self.deleteObjectsOnReject())
-        FreeCADGui.Control.closeDialog()
-        FreeCADGui.Control.showDialog(self.taskPanel)
-        self.taskPanel.setupUi(activate)
+        useGui = True
+
+        if hasattr(self, "useGui"):
+            useGui = self.useGui
+
+        if useGui:
+            self.taskPanel = TaskPanel(self.vobj, self.deleteObjectsOnReject())
+            FreeCADGui.Control.closeDialog()
+            FreeCADGui.Control.showDialog(self.taskPanel)
+            self.taskPanel.setupUi(activate)
+            self.showOriginAxis(True)
+        else:
+            if hasattr(self, "useGui"):
+                self.useGui = True
         self.deleteOnReject = False
-        self.showOriginAxis(True)
 
     def resetTaskPanel(self):
         self.showOriginAxis(False)
@@ -1376,14 +1386,14 @@ class TaskPanel:
         self.updateSelection()
 
 
-def Create(base, template=None):
+def Create(base, template=None, useGui=True):
     '''Create(base, template) ... creates a job instance for the given base object
     using template to configure it.'''
     FreeCADGui.addModule('PathScripts.PathJob')
     FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
     try:
         obj = PathJob.Create('Job', base, template)
-        obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
+        obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, useGui)
         FreeCAD.ActiveDocument.commitTransaction()
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
