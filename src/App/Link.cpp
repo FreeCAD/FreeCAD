@@ -1007,12 +1007,7 @@ void LinkBaseExtension::checkGeoElementMap(const App::DocumentObject *obj,
     if(!pyObj || !*pyObj || !PyObject_TypeCheck(*pyObj, &Data::ComplexGeoDataPy::Type))
         return;
 
-    if ((!getColoredElementsProperty()
-                || getColoredElementsProperty()->getSubValues().empty())
-            && !getRetagElementsValue()
-            && (!postfix && obj->getDocument()==linked->getDocument()))
-        return;
-       
+    (void)linked;
     auto geoData = static_cast<Data::ComplexGeoDataPy*>(*pyObj)->getComplexGeoDataPtr();
     geoData->reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher(),postfix);
 }

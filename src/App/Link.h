@@ -163,10 +163,6 @@ public:
     (ColoredElements, App::DocumentObject*, App::PropertyLinkSubHidden, \
      0, "Link colored elements", ##__VA_ARGS__)
 
-#define LINK_PARAM_RETAG_ELEMENTS(...) \
-    (RetagElements, bool, App::PropertyBool, (false), \
-     "Force retagging linked shape elements.", ##__VA_ARGS__)
-
 #define LINK_PARAM(_param) (LINK_PARAM_##_param())
 
 #define LINK_PNAME(_param) BOOST_PP_TUPLE_ELEM(0,_param)
@@ -196,7 +192,6 @@ public:
     LINK_PARAM(AUTO_LABEL)\
     LINK_PARAM(MODE)\
     LINK_PARAM(COLORED_ELEMENTS)\
-    LINK_PARAM(RETAG_ELEMENTS)\
     LINK_PARAM(COPY_ON_CHANGE)\
     LINK_PARAM(GROUP_VISIBILITY)\
     LINK_PARAM(LINK_EXECUTE)\
@@ -524,7 +519,6 @@ public:
     LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
     LINK_PARAM_EXT(LINK_EXECUTE)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
-    LINK_PARAM_EXT_ATYPE(RETAG_ELEMENTS,App::Prop_Hidden)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\
     LINK_PARAM_EXT_ATYPE(AUTO_LABEL,App::Prop_Hidden)\
 
@@ -608,7 +602,6 @@ public:
     LINK_PARAM_EXT(VISIBILITIES)\
     LINK_PARAM_EXT(MODE)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
-    LINK_PARAM_EXT_ATYPE(RETAG_ELEMENTS,App::Prop_Hidden)\
 
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_GROUP)

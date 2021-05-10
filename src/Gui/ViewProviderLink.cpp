@@ -1946,10 +1946,6 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
         if (prop == &OverrideMaterial || prop == &ShapeMaterial ||
             prop == &MaterialList || prop == &OverrideMaterialList)
         {
-            bool retag = OverrideMaterial.getValue() || OverrideMaterialList.getValues().any();
-            auto ext = getLinkExtension();
-            if (ext && ext->getRetagElementsProperty() && ext->getRetagElementsValue() != retag)
-                ext->getRetagElementsProperty()->setValue(retag);
             applyMaterial();
         }else if(prop == &OverrideColorList) {
             applyColors();
