@@ -35,6 +35,11 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 
+# Qt translation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
+
+
 def _vstr(v):
     if v:
         return "(%.2f, %.2f, %.2f)" % (v.x, v.y, v.z)
