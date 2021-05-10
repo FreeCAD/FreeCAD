@@ -565,7 +565,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
 
   int8_t twoside = next.twoside;
   if (transp)
-    twoside = 1;
+    twoside = 0;
   if (first || this->material.twoside != twoside) {
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, twoside ? GL_TRUE : GL_FALSE);
     FC_GLERROR_CHECK;
