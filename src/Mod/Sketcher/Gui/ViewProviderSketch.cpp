@@ -97,6 +97,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
+#include <Gui/ActionFunction.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MenuManager.h>
 #include <Gui/View3DInventor.h>
@@ -6553,7 +6554,10 @@ void ViewProviderSketch::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const char *member)
 {
-    menu->addAction(tr("Edit sketch"), receiver, member);
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction *act = menu->addAction(tr("Edit sketch"), receiver, member);
+    func->trigger(act, boost::bind(&ViewProviderSketch::doubleClicked, this));
+
     PartGui::ViewProviderAttachExtension::extensionSetupContextMenu(menu, receiver, member);
 }
 
