@@ -100,10 +100,12 @@ public:
   typedef typename MapT::key_type KeyT;
   typedef typename MapT::mapped_type ValueT;
 
-  const ValueT * get(int unit) const {
-    auto it = this->data->find(unit);
+  const ValueT * get(const KeyT &key) const {
+    if (!this->data)
+        return nullptr;
+    auto it = this->data->find(key);
     if (it == this->data->end())
-      return NULL;
+      return nullptr;
     return &it->second;
   }
 
@@ -183,6 +185,7 @@ public:
   typedef typename VectorT::value_type ValueT;
 
   const ValueT & get(int idx) const {
+    assert(this->data);
     return this->data[idx];
   }
 
