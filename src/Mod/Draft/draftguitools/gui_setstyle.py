@@ -73,6 +73,7 @@ class Draft_SetStyle_TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/TaskPanel_SetStyle.ui")
         self.form.setWindowIcon(QtGui.QIcon.fromTheme("gtk-apply", QtGui.QIcon(":/icons/Draft_Apply.svg")))
         self.form.applyButton.setIcon(QtGui.QIcon.fromTheme("gtk-apply", QtGui.QIcon(":/icons/Draft_Apply.svg")))
+        self.form.dimButton.setIcon(QtGui.QIcon(":/icons/Draft_Text.svg"))
         self.form.LineColor.setProperty("color",self.getPrefColor("View","DefaultShapeLineColor",255))
         self.form.LineWidth.setValue(FreeCAD.ParamGet(self.p+"View").GetInt("DefaultShapeLineWidth",2))
         self.form.DrawStyle.setCurrentIndex(FreeCAD.ParamGet(self.p+"Mod/Draft").GetInt("DefaultDrawStyle",0))
@@ -89,6 +90,7 @@ class Draft_SetStyle_TaskPanel:
         self.form.saveButton.setIcon(QtGui.QIcon.fromTheme("gtk-save", QtGui.QIcon(":/icons/document-save.svg")))
         self.form.saveButton.clicked.connect(self.onSaveStyle)
         self.form.applyButton.clicked.connect(self.onApplyStyle)
+        self.form.dimButton.clicked.connect(self.onApplyDim)
         self.form.comboPresets.currentIndexChanged.connect(self.onLoadStyle)
         self.loadDefaults()
 
@@ -217,6 +219,30 @@ class Draft_SetStyle_TaskPanel:
                     vobj.ShowUnit = self.form.ShowUnit.isChecked()
                 if "UnitOverride" in vobj.PropertiesList:
                     vobj.UnitOverride = self.form.UnitOverride.text()
+
+    def onApplyDim(self,index):
+        
+        import Draft
+        objs = FreeCAD.ActiveDocument.Objects
+        dims = Draft.getObjectsOfType(objs,"LinearDimension")
+        dims += Draft.getObjectsOfType(objs,"Dimension")
+        dims += Draft.getObjectsOfType(objs,"AngularDimension")
+        for obj in dims:
+            vobj = obj.ViewObject
+            vobj.FontName = self.form.TextFont.currentFont().family()
+            vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
+            vobj.LineColor = self.form.TextColor.property("color").rgb()<<8
+            vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
+            vobj.ArrowSize = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
+            vobj.ShowUnit = self.form.ShowUnit.isChecked()
+            vobj.UnitOverride = self.form.UnitOverride.text()
+        texts = Draft.getObjectsOfType(objs,"Text")
+        texts += Draft.getObjectsOfType(objs,"DraftText")
+        for obj in texts:
+            vobj = obj.ViewObject
+            vobj.FontName = self.form.TextFont.currentFont().family()
+            vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
+            vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
 
     def onLoadStyle(self,index):
 

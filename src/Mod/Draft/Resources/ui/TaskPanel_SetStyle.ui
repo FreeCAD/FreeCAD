@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>255</width>
-    <height>571</height>
+    <width>246</width>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -344,16 +344,30 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="applyButton">
-     <property name="text">
-      <string>Apply to selected objects</string>
-     </property>
-     <property name="icon">
-      <iconset theme="gtk-apply">
-       <normaloff/>
-      </iconset>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="applyButton">
+       <property name="toolTip">
+        <string>Apply above style to selected object(s)</string>
+       </property>
+       <property name="text">
+        <string>Selected</string>
+       </property>
+       <property name="icon">
+        <iconset theme="gtk-apply">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="dimButton">
+       <property name="text">
+        <string>Texts/dims</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
