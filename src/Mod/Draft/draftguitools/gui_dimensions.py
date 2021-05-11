@@ -411,7 +411,7 @@ class Dimension(gui_base_original.Creator):
                     self.ui.switchUi(False)
                     if hasattr(Gui, "Snapper"):
                         Gui.Snapper.setSelectMode(False)
-                if self.dir:
+                if self.dir and ( (len(self.node) < 2) or self.ui.continueMode):
                     _p = DraftVecUtils.project(self.point.sub(self.node[0]),
                                                self.dir)
                     self.point = self.node[0].add(_p)

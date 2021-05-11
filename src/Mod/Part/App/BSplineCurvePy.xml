@@ -380,6 +380,23 @@ from the knots table of this B-Spline curve.</UserDocu>
 			<Documentation>
 				<UserDocu>
 					Builds a B-Spline by a list of poles.
+					arguments: poles (sequence of Base.Vector), [periodic (default is False), degree (default is 3), interpolate (default is False)]
+
+					Examples:
+					from FreeCAD import Base
+					import Part
+					V = Base.Vector
+					poles = [V(-2, 2, 0),V(0, 2, 1),V(2, 2, 0),V(2, -2, 0),V(0, -2, 1),V(-2, -2, 0)]
+
+					# non-periodic spline
+					n=Part.BSplineCurve()
+					n.buildFromPoles(poles)
+					Part.show(n.toShape())
+
+					# periodic spline
+					n=Part.BSplineCurve()
+					n.buildFromPoles(poles, True)
+					Part.show(n.toShape())
 				</UserDocu>
 			</Documentation>
 		</Methode>
