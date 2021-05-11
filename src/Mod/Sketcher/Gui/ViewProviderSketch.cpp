@@ -665,13 +665,12 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
     vol.projectPointToLine(SbVec2f(pX,pY), line);
 }
 
-Base::Placement ViewProviderSketch::getEditingPlacement() const {
+Base::Matrix4D ViewProviderSketch::getEditingPlacement() const {
     auto doc = Gui::Application::Instance->editDocument();
     if(!doc || doc->getInEdit()!=this)
-        return getSketchObject()->globalPlacement();
+        return getSketchObject()->globalPlacement().toMatrix();
 
-    // TODO: won't work if there is scale. Hmm... what to do...
-    return Base::Placement(doc->getEditingTransform());
+    return doc->getEditingTransform();
 }
 
 void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec3f &point, const SbVec3f &normal)
@@ -679,17 +678,16 @@ void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec
     // Plane form
     Base::Vector3d R0(0,0,0),RN(0,0,1),RX(1,0,0),RY(0,1,0);
 
-    // move to position of Sketch
-    Base::Placement Plz = getEditingPlacement();
-    R0 = Plz.getPosition() ;
-    Base::Rotation tmp(Plz.getRotation());
-    tmp.multVec(RN,RN);
-    tmp.multVec(RX,RX);
-    tmp.multVec(RY,RY);
-    Plz.setRotation(tmp);
+    Base::Vector3d v1(point[0], point[1], point[2]), v2(normal[0], normal[1], normal[2]);
+    auto transform = getEditingPlacement();
+    transform.inverseGauss();
+    transform.multVec(v1+v2, v2);
+    transform.multVec(v1, v1);
+
+    Base::Vector3d dir = (v2 - v1).Normalize();
 
     // line
-    Base::Vector3d R1(point[0],point[1],point[2]),RA(normal[0],normal[1],normal[2]);
+    Base::Vector3d R1(v1),RA(dir);
     if (fabs(RN*RA) < FLT_EPSILON)
         throw Base::DivisionByZeroError("View direction is parallel to sketch plane");
     // intersection point on plane
@@ -2373,7 +2371,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
     Sketcher::SketchObject *sketchObject = getSketchObject();
 
-    Base::Placement Plm = getEditingPlacement();
+    auto Plm = getEditingPlacement();
 
     int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
     int extGeoCount = sketchObject->getExternalGeometryCount();
@@ -2923,7 +2921,9 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
         }
     }
 
-    pnt0 = proj(Plm.getPosition());
+    Base::Vector3d v0;
+    Plm.multVec(Base::Vector3d(0,0,0), v0);
+    pnt0 = proj(v0);
     if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
         std::stringstream ss;
         ss << "RootPoint";
@@ -6257,13 +6257,14 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                                     :NonDrivingConstrDimColor)
                                 :DeactivatedConstrDimColor;
         // Get sketch normal
-        Base::Vector3d RN(0,0,1);
+        Base::Vector3d R0, RN;
 
         // move to position of Sketch
-        Base::Placement Plz = getEditingPlacement();
-        Base::Rotation tmp(Plz.getRotation());
-        tmp.multVec(RN,RN);
-        Plz.setRotation(tmp);
+        auto transform = getEditingPlacement();
+        transform.multVec(Base::Vector3d(0,0,0),R0);
+        transform.multVec(Base::Vector3d(0,0,1),RN);
+        RN = RN - R0;
+        RN.Normalize();
 
         SbVec3f norm(RN.x, RN.y, RN.z);
 
@@ -7275,10 +7276,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     else
         editSubName.resize(dot-editSubName.c_str()+1);
 
-    Base::Placement plm = getEditingPlacement();
-    Base::Rotation tmp(plm.getRotation());
-
-    SbRotation rot((float)tmp[0],(float)tmp[1],(float)tmp[2],(float)tmp[3]);
+    auto transform = getEditingPlacement();
 
     // Will the sketch be visible from the new position (#0000957)?
     //
@@ -7288,18 +7286,25 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     SbVec3f focal = camera->position.getValue() +
                     camera->focalDistance.getValue() * curdir;
 
-    SbVec3f newdir; // future view direction
-    rot.multVec(SbVec3f(0, 0, -1), newdir);
+    Base::Vector3d v0, v1; // future view direction
+    transform.multVec(Base::Vector3d(0, 0, -1), v1);
+    transform.multVec(Base::Vector3d(0, 0, 0), v0);
+    Base::Vector3d dir = (v1 - v0).Normalize();
+    SbVec3f newdir(dir.x, dir.y, dir.z);
     SbVec3f newpos = focal - camera->focalDistance.getValue() * newdir;
 
-    SbVec3f plnpos = Base::convertTo<SbVec3f>(plm.getPosition());
-    double dist = (plnpos - newpos).dot(newdir);
+    double dist = (SbVec3f(v0.x, v0.y, v0.z) - newpos).dot(newdir);
     if (dist < 0) {
         float focalLength = camera->focalDistance.getValue() - dist + 5;
         camera->position = focal - focalLength * curdir;
         camera->focalDistance.setValue(focalLength);
     }
 
+
+    Base::Vector3d t,s;
+    Base::Rotation r, so;
+    transform.getTransform(t, r, s, so);
+    SbRotation rot((float)r[0],(float)r[1],(float)r[2],(float)r[3]);
     viewer->setCameraOrientation(rot);
 
     viewer->setEditing(true);

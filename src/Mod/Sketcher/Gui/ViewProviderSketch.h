@@ -289,7 +289,7 @@ public:
     const App::SubObjectT &getEditingContext() const;
 
 protected:
-    Base::Placement getEditingPlacement() const;
+    Base::Matrix4D getEditingPlacement() const;
 
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
