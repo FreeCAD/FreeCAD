@@ -9,6 +9,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../PathScripts/PathSurface.py" line="124"/>
+        <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathSurface.py" line="126"/>
+        <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathSurface.py" line="135"/>
+        <source>Stop index(angle) for rotational scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathSurface.py" line="131"/>
+        <source>Dropcutter lines are created parallel to this axis.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../PathScripts/PathSurface.py" line="73"/>
         <source>The direction along which dropcutter lines are created</source>
         <translation type="unfinished"></translation>
@@ -16,6 +36,11 @@
     <message>
         <location filename="../../../PathScripts/PathSurface.py" line="74"/>
         <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathSurface.py" line="75"/>
+        <source>Additional offset to the selected bounding box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -39,16 +64,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathSurface.py" line="124"/>
-        <source>Smaller values yield a finer, more accurate mesh. Smaller values increase processing time a lot.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathSurface.py" line="126"/>
-        <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathSurface.py" line="129"/>
         <source>The completion mode for the operation: single or multi-pass</source>
         <translation type="unfinished"></translation>
@@ -59,8 +74,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathSurface.py" line="135"/>
-        <source>Stop index(angle) for rotational scan</source>
+        <location filename="../../../PathScripts/PathSurface.py" line="132"/>
+        <source>The model will be rotated around this axis.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathSurface.py" line="133"/>
+        <source>Start index(angle) for rotational scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -76,26 +96,6 @@
     <message>
         <location filename="../../../PathScripts/PathSurface.py" line="143"/>
         <source>Cut through waste to depth at model edge, releasing the model.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathSurface.py" line="131"/>
-        <source>Dropcutter lines are created parallel to this axis.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathSurface.py" line="75"/>
-        <source>Additional offset to the selected bounding box</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathSurface.py" line="132"/>
-        <source>The model will be rotated around this axis.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathSurface.py" line="133"/>
-        <source>Start index(angle) for rotational scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1032,21 +1032,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
-        <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
-        <source>Verify final depth of pocket shaped by vertical faces.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
-        <source>Depth Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
         <source>Processing model as a whole ...</source>
         <translation type="unfinished"></translation>
@@ -1078,6 +1063,21 @@
     <message>
         <location filename="../../../PathScripts/PathPocketShape.py" line="413"/>
         <source>Processing subs individually ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
+        <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
+        <source>Verify final depth of pocket shaped by vertical faces.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
+        <source>Depth Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1313,12 +1313,6 @@ Increased to stock top.</source>
 <context>
     <name>PathDeburr</name>
     <message>
-        <location filename="../../../PathScripts/PathDeburr.py" line="73"/>
-        <source>The selected tool has no FlatRadius and no TipDiameter property. Assuming {}
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathDeburr.py" line="79"/>
         <source>The selected tool has no CuttingEdgeAngle property. Assuming Endmill
 </source>
@@ -1332,6 +1326,12 @@ Increased to stock top.</source>
     <message>
         <location filename="../../../PathScripts/PathDeburr.py" line="71"/>
         <source>The additional depth of the tool path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathDeburr.py" line="73"/>
+        <source>The selected tool has no FlatRadius and no TipDiameter property. Assuming {}
+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1467,6 +1467,11 @@ Increased to stock top.</source>
     <message>
         <location filename="../../../PathScripts/PathGeom.py" line="548"/>
         <source>%s not support for flipping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathGeom.py" line="542"/>
+        <source>%s not supported for flipping</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1968,6 +1973,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PathPocketShape.py" line="454"/>
+        <source>Start Depth is lower than face depth. Setting to:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../PathScripts/PathPocketShape.py" line="474"/>
         <source>Face appears to NOT be horizontal AFTER rotation applied.</source>
         <translation type="unfinished"></translation>
@@ -2031,6 +2041,21 @@ If it is necessary to set the FinalDepth manually please select a different oper
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="PathProfile.py" line="54"/>
+        <source>The tool number in use</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathProfile.py" line="429"/>
+        <source>Face Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathProfile.py" line="670"/>
+        <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../PathScripts/PathProfile.py" line="860"/>
         <source>For open edges, verify Final Depth for this operation.</source>
         <translation type="unfinished"></translation>
@@ -2058,16 +2083,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="PathProfileEdgesGui.py" line="45"/>
         <source>Profile based on edges</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathProfile.py" line="54"/>
-        <source>The tool number in use</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="PathProfile.py" line="429"/>
-        <source>Face Profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2209,6 +2224,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="../../../PathScripts/PathPropertyBagGui.py" line="401"/>
         <source>Property Bag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathPropertyBagGui.py" line="406"/>
+        <source>PropertyBag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2764,6 +2784,16 @@ If it is necessary to set the FinalDepth manually please select a different oper
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../PathScripts/PathThreadMilling.py" line="190"/>
+        <source>Set thread&apos;s tpi - used for imperial threads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="PathThreadMilling.py" line="186"/>
+        <source>Defines which standard thread was chosen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../PathScripts/PathThreadMilling.py" line="187"/>
         <source>Set thread&apos;s major diameter</source>
         <translation type="unfinished"></translation>
@@ -2779,8 +2809,8 @@ If it is necessary to set the FinalDepth manually please select a different oper
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PathScripts/PathThreadMilling.py" line="190"/>
-        <source>Set thread&apos;s tpi - used for imperial threads</source>
+        <location filename="PathThreadMilling.py" line="190"/>
+        <source>Set thread&apos;s TPI (turns per inch) - used for imperial threads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4050,11 +4080,6 @@ If it is necessary to set the FinalDepth manually please select a different oper
 <context>
     <name>Path_Sanity</name>
     <message>
-        <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-        <source>The Job has no selected Base object.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../../PathScripts/PathSanity.py" line="71"/>
         <source>Check the path job for common errors</source>
         <translation type="unfinished"></translation>
@@ -4132,6 +4157,11 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
         <location filename="../../../PathScripts/PathSanity.py" line="223"/>
         <source>Minimum Z Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+        <source>The Job has no selected Base object.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -302,6 +302,20 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+        <source>Bad selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+        <source>Computing the result failed with an error:
+
+{err}
+
+Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
         <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
         <translation type="unfinished"></translation>
@@ -309,16 +323,6 @@ Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to
     <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
         <source>Slice to compound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-        <source>Boolean Fragments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-        <source>Split objects where they intersect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -353,17 +357,13 @@ A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</sour
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-        <source>Bad selection</source>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+        <source>Boolean Fragments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-        <source>Computing the result failed with an error:
-
-{err}
-
-Click &apos;Continue&apos; to create the feature anyway, or &apos;Abort&apos; to cancel.</source>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+        <source>Split objects where they intersect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
