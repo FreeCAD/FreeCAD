@@ -2939,9 +2939,11 @@ void ViewProviderSketch::updateColor(void)
 
     SbVec3f pnt, dir;
     edit->viewer->getNearPlane(pnt, dir);
-    auto pla = getEditingPlacement();
-    Base::Vector3d norm(0, 0, 1);
-    pla.multVec(norm, norm);
+    auto transform = getEditingPlacement();
+    Base::Vector3d v0, v1;
+    transform.multVec(Base::Vector3d(0,0,0), v0);
+    transform.multVec(Base::Vector3d(0,0,1), v1);
+    Base::Vector3d norm = v1 - v0;
     norm.Normalize();
     float zdir = norm.Dot(Base::Vector3d(dir[0], dir[1], dir[2])) < 0.0f ? -1.0 : 1.0;
 
