@@ -897,11 +897,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     if (hasText) {
         const unsigned char * dataptr = this->image.getValue(imgsize, nc);
 
-        //Get the camera z-direction
-        SbVec3f z = vv.zVector();
-
-        bool flip = norm.getValue().dot(z) > FLT_EPSILON;
-
         static bool init = false;
         static bool npot = false;
         if (!init) {
@@ -975,10 +970,37 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         glColor3f(1.f, 1.f, 1.f);
 
-        glTexCoord2f(flip ? 0.f : 1.f, 1.f); glVertex2f( -this->imgWidth / 2,  this->imgHeight / 2);
-        glTexCoord2f(flip ? 0.f : 1.f, 0.f); glVertex2f( -this->imgWidth / 2, -this->imgHeight / 2);
-        glTexCoord2f(flip ? 1.f : 0.f, 0.f); glVertex2f( this->imgWidth / 2, -this->imgHeight / 2);
-        glTexCoord2f(flip ? 1.f : 0.f, 1.f); glVertex2f( this->imgWidth / 2,  this->imgHeight / 2);
+        SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+        SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
+        SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.f);
+
+        // Rotate through an angle
+        float s = sin(angle);
+        float c = cos(angle);
+
+        img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.f);
+        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.f);
+        img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
+
+        SbBool identity;
+        const SbMatrix & mm = SoModelMatrixElement::get(state, identity);
+        if (!identity) {
+            mm.multVecMatrix(img1, img1);
+            mm.multVecMatrix(img2, img2);
+            mm.multVecMatrix(img3, img3);
+        }
+        const SbMatrix & vm = SoViewingMatrixElement::get(state);
+        vm.multVecMatrix(img1, img1);
+        vm.multVecMatrix(img2, img2);
+        vm.multVecMatrix(img3, img3);
+
+        float xfactor = (img1[0] - img3[0]) < 1e-7 ? 0.5f : -0.5f;
+        float yfactor = (img1[1] - img2[1]) < 1e-7 ? 0.5f : -0.5f;
+
+        glTexCoord2f(0.f, 1.f); glVertex2f( -this->imgWidth * xfactor,  this->imgHeight * yfactor);
+        glTexCoord2f(0.f, 0.f); glVertex2f( -this->imgWidth * xfactor, -this->imgHeight * yfactor);
+        glTexCoord2f(1.f, 0.f); glVertex2f( this->imgWidth * xfactor, -this->imgHeight * yfactor);
+        glTexCoord2f(1.f, 1.f); glVertex2f( this->imgWidth * xfactor,  this->imgHeight * yfactor);
 
         glEnd();
 
