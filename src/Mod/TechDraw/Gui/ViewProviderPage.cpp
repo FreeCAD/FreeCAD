@@ -90,7 +90,7 @@ ViewProviderPage::ViewProviderPage()
     m_pageName(""),
     m_graphicsView(nullptr)
 {
-    sPixmap = "TechDraw_Tree_Page";
+    sPixmap = "TechDraw_TreePage";
     static const char *group = "Base";
 
     ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"NonGui! Show or hide View frames and Labels on this Page");
@@ -172,9 +172,9 @@ void ViewProviderPage::updateData(const App::Property* prop)
     }
     if (prop == &(page->KeepUpdated)) {
        if (getDrawPage()->KeepUpdated.getValue()) {
-           sPixmap = "TechDraw_Tree_Page";
+           sPixmap = "TechDraw_TreePage";
        } else {
-           sPixmap = "TechDraw_Tree_Page_Unsync";
+           sPixmap = "TechDraw_TreePageUnsync";
        }
        signalChangeIcon();
     //if the template is changed, rebuild the visual
@@ -298,7 +298,7 @@ bool ViewProviderPage::showMDIViewPage()
         m_mdiView->setDocumentName(pcObject->getDocument()->getName());
 
         m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
-        m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
+        m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_TreePage"));
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();
         m_mdiView->showMaximized();
