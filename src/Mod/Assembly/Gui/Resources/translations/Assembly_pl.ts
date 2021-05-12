@@ -45,12 +45,12 @@
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>Add new Assembly</source>
-      <translation>Dodaj nowe Złożenie</translation>
+      <translation>Dodaj nowe złożenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Add a new Subassembly into the active Assembly</source>
-      <translation type="unfinished">Add a new Subassembly into the active Assembly</translation>
+      <translation>Dodaj nowy podzespół do aktywnego złożenia</translation>
     </message>
   </context>
   <context>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="120"/>
       <source>Add arbitrary constraints to the assembly</source>
-      <translation type="unfinished">Add arbitrary constraints to the assembly</translation>
+      <translation>Dodaj dowolne wiązania do złożenia</translation>
     </message>
   </context>
   <context>
@@ -99,12 +99,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="540"/>
       <source>Constraint alignment...</source>
-      <translation type="unfinished">Constraint alignment...</translation>
+      <translation>Dostosowanie wiązań...</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="541"/>
       <source>Align the selected entities</source>
-      <translation type="unfinished">Align the selected entities</translation>
+      <translation>Wyrównaj wybrane obiekty</translation>
     </message>
   </context>
   <context>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="336"/>
       <source>Set the angle between two selected entities</source>
-      <translation type="unfinished">Set the angle between two selected entities</translation>
+      <translation>Ustaw kąt pomiędzy dwoma wybranymi obiektami</translation>
     </message>
   </context>
   <context>
@@ -135,7 +135,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="472"/>
       <source>Constraint coincidence...</source>
-      <translation type="unfinished">Constraint coincidence...</translation>
+      <translation>Wiązanie zbieżności...</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="473"/>
@@ -238,7 +238,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="70"/>
       <source>No active Assembly</source>
-      <translation>Brak aktywnego Złożenia</translation>
+      <translation>Brak aktywnego złożenia</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="71"/>
@@ -305,17 +305,17 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fixes the first geometry in its rotation and translation. Note that fix only works its the direct parent assembly. If you stack assemblies, the parent assembly will not be fixed inside the other ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mocuje pierwszą geometrię w obracaniu i tłumaczeniu. Zauważ, że to mocowanie działa tylko z bezpośrednim zespołem nadrzędnym. Jeśli zbierzesz zespoły, zespół nadrzędny nie będzie umocowany wewnątrz pozostałych zespołów.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Poprawia pierwszą geometrię pod względem obrotu i przesunięcia. Zauważ, że poprawka działa tylko dla bezpośredniego zespołu nadrzędnego. Jeśli układasz geometrię na stosie, geometria nadrzędna nie zostanie poprawiona względem pozostałych zespołów.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="198"/>
       <source>Fix</source>
-      <translation>Napraw</translation>
+      <translation>Popraw</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="236"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the distance between first and second geometry. Note that in many cases the shortest distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the distance between first and second geometry. Note that in many cases the shortest distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ustaw odległość między pierwszą a drugą geometrią. Zauważ, że w wielu przypadkach używa się najkrótszej odległości (np. linia - linia)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="239"/>
@@ -380,7 +380,7 @@
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="607"/>
       <source>Equal</source>
-      <translation type="unfinished">Equal</translation>
+      <translation>Równe</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyConstraints.ui" line="645"/>

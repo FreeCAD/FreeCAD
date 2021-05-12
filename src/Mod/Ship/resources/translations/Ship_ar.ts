@@ -285,7 +285,7 @@
     <message>
       <location filename="TankInstance.py" line="133"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>فشلت عملية حجم الخزان. الأداة تعيد محاولة تحريك موضع السطح الحر قليلا</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="138"/>
@@ -300,12 +300,12 @@
     <message>
       <location filename="Tools.py" line="209"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>تسمية السفينة غامضة! (تم العثور على {} مثيلات مسماة "{}")</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="187"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>تم تحديد أكثر من شرط تحميل واحد (سيتم تجاهل شروط التحميل الإضافية)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="198"/>
@@ -315,47 +315,47 @@
     <message>
       <location filename="Tools.py" line="121"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>الكثير من الوزن! لن تقوم السفينة بتحريك الماء بما فيه الكفاية</translation>
     </message>
     <message>
       <location filename="Tools.py" line="234"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
+      <translation>تسمية الوزن خاطئة! (لم يتم العثور على مثيلات مسماة "{}")</translation>
     </message>
     <message>
       <location filename="Tools.py" line="242"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
+      <translation>تسمية الوزن غامضة! (تم العثور على {} مثيلات مسماة "{}")</translation>
     </message>
     <message>
       <location filename="Tools.py" line="254"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
+      <translation>الوزن غير صالح! (الكائن المسمى "{}" ليس وزنًا)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="279"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
+      <translation>تسمية خزان خاطئة! (لم يتم العثور على مثيلات مسماة "{}")</translation>
     </message>
     <message>
       <location filename="Tools.py" line="287"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
+      <translation>تسمية خزان غامضة! (تم العثور على {} مثيلات مسماة "{}")</translation>
     </message>
     <message>
       <location filename="Tools.py" line="299"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>خزان غير صالح! (الكائن المسمى "{}" ليس خزانًا)</translation>
     </message>
     <message>
       <location filename="Tools.py" line="53"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>منحنيات القدرة الحاسوبية</translation>
     </message>
     <message>
       <location filename="Tools.py" line="128"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>فشلت العملية المنطقية عند محاولة الحصول على الجانب تحت الماء. الأداة تحاول إعادة هذه العملية بتحريك موضع السطح الحر قليلاً</translation>
     </message>
     <message>
       <location filename="Tools.py" line="201"/>
@@ -583,12 +583,12 @@
     <message>
       <location filename="TaskPanel.py" line="257"/>
       <source>Transversal</source>
-      <translation type="unfinished">Transversal</translation>
+      <translation>عرضي</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="263"/>
       <source>Longitudinal</source>
-      <translation type="unfinished">Longitudinal</translation>
+      <translation>طولي</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="269"/>
@@ -598,12 +598,12 @@
     <message>
       <location filename="TaskPanel.py" line="482"/>
       <source>Transversal section positions [m]</source>
-      <translation type="unfinished">Transversal section positions [m]</translation>
+      <translation>مواقع المقطع العرضي [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="490"/>
       <source>Longitudinal section positions [m]</source>
-      <translation type="unfinished">Longitudinal section positions [m]</translation>
+      <translation>مواقع المقطع الطولي [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="498"/>
@@ -626,7 +626,7 @@
     <message>
       <location filename="TaskPanel.py" line="114"/>
       <source>Tanks objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Tanks objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>يمكن إنشاء كائنات الخَزانات فقط فوق شكلها الهندسي (لم يتم تحديد كائنات)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="126"/>

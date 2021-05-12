@@ -6,7 +6,7 @@
     <message>
       <location filename="InitGui.py" line="46"/>
       <source>Plot edition tools</source>
-      <translation>Narzędzia do modyfikacji wykresu</translation>
+      <translation>Narzędzia do edycji wykresu</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="49"/>
@@ -19,7 +19,7 @@
     <message>
       <location filename="PlotGui.py" line="65"/>
       <source>Configure axes</source>
-      <translation>Konfiguruj osie</translation>
+      <translation>Konfiguracja osi</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="68"/>
@@ -32,12 +32,12 @@
     <message>
       <location filename="PlotGui.py" line="112"/>
       <source>Show/Hide grid</source>
-      <translation>Pokaż/Ukryj siatkę</translation>
+      <translation>Pokaż / ukryj siatkę</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="115"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation>Pokaż/Ukryj siatkę na wybranym wykresie</translation>
+      <translation>Pokaż / ukryj siatkę na wybranym wykresie</translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="PlotGui.py" line="138"/>
       <source>Show/Hide legend</source>
-      <translation>Pokaż/Ukryj legendę</translation>
+      <translation>Pokaż / ukryj legendę</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="141"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation>Pokaż/Ukryj legendę na wybranym wykresie</translation>
+      <translation>Pokaż / ukryj legendę na wybranym wykresie</translation>
     </message>
   </context>
   <context>
@@ -71,12 +71,12 @@
     <message>
       <location filename="PlotGui.py" line="172"/>
       <source>Set positions and sizes</source>
-      <translation>Ustaw położenia i rozmiary</translation>
+      <translation>Ustaw pozycje i rozmiary</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="175"/>
       <source>Set labels and legend positions and sizes</source>
-      <translation>Ustaw położenia oraz rozmiary etykiet i legendy</translation>
+      <translation>Ustaw etykiety oraz pozycje i rozmiary legendy</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="PlotGui.py" line="51"/>
       <source>Save the plot as an image file</source>
-      <translation>Zapisz wydruk jako plik graficzny</translation>
+      <translation>Zapisz wykres jako plik graficzny</translation>
     </message>
   </context>
   <context>
@@ -102,7 +102,7 @@
     <message>
       <location filename="PlotGui.py" line="87"/>
       <source>Configure series drawing style and label</source>
-      <translation>Konfiguruj styl serii rysunku i etykietę</translation>
+      <translation>Skonfiguruj styl rysunku serii i etykietę</translation>
     </message>
   </context>
   <context>
@@ -110,7 +110,7 @@
     <message>
       <location filename="TaskPanel.py" line="180"/>
       <source>Configure axes</source>
-      <translation>Konfiguruj osie</translation>
+      <translation>Konfiguracja osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="184"/>
@@ -140,7 +140,7 @@
     <message>
       <location filename="TaskPanel.py" line="204"/>
       <source>Scales</source>
-      <translation>Skale</translation>
+      <translation>Skala</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="208"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="TaskPanel.py" line="237"/>
       <source>Add new axes to the plot</source>
-      <translation>Dodaj nową oś do wykresu</translation>
+      <translation>Dodaj nowe osie do wykresu</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="242"/>
@@ -170,7 +170,7 @@
     <message>
       <location filename="TaskPanel.py" line="247"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation>Sprawdź, aby ustawić transformacje do wszystkich osi</translation>
+      <translation>Zaznacz, aby zastosować przekształcenia na wszystkich osiach</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="252"/>
@@ -190,17 +190,17 @@
     <message>
       <location filename="TaskPanel.py" line="267"/>
       <source>Top bound of axes</source>
-      <translation>Górny pęczek osi</translation>
+      <translation>Górna granica osi</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="272"/>
       <source>Outward offset of X axis</source>
-      <translation>Zewnętrzne przesunięcie osi X</translation>
+      <translation>Przesunięcie osi X na zewnątrz</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="277"/>
       <source>Outward offset of Y axis</source>
-      <translation>Zewnętrzne przesunięcie osi Y</translation>
+      <translation>Przesunięcie osi Y na zewnątrz</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="282"/>
@@ -218,7 +218,7 @@
     <message>
       <location filename="Plot.py" line="47"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation>nie odnaleziono biblioteki matplotlib, więc moduł wydruku nie może zostać załadowany</translation>
+      <translation>nie znaleziono biblioteki matplotlib, więc moduł wykresu nie może być załadowany</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="58"/>
@@ -228,7 +228,7 @@
     <message>
       <location filename="TaskPanel.py" line="48"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation>Drukowanie dokumentu musi być zaznaczone aby go zapisać</translation>
+      <translation>Dokument wykresu musi być wybrany, aby można było go zapisać</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="346"/>
@@ -238,12 +238,12 @@
     <message>
       <location filename="PlotGui.py" line="101"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation>Siatka musi być aktywowana na górze dokumentu wydruku</translation>
+      <translation>Siatka musi być aktywowana na górnej części dokumentu wykresu</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="129"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation>Legenda musi być aktywowana na górze dokumentu wydruku</translation>
+      <translation>Legenda musi być aktywowana w górnej części dokumentu wykresu</translation>
     </message>
   </context>
   <context>
@@ -314,7 +314,7 @@
     <message>
       <location filename="TaskPanel.py" line="124"/>
       <source>Set positions and sizes</source>
-      <translation>Ustaw położenia i rozmiary</translation>
+      <translation>Ustaw pozycje i rozmiary</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="129"/>
@@ -352,7 +352,7 @@
     <message>
       <location filename="TaskPanel.py" line="132"/>
       <source>Save figure</source>
-      <translation>Zapisz rusunek</translation>
+      <translation>Zapisz rysunek</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="137"/>
@@ -387,7 +387,7 @@
     <message>
       <location filename="TaskPanel.py" line="168"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation>Kropek na punkt, razem z rozmiarem będzie określał rozdzielczość obrazu</translation>
+      <translation>Ilość kropek na punkt, których wielkość określa rozdzielczość obrazu wyjściowego</translation>
     </message>
   </context>
   <context>
@@ -420,7 +420,7 @@
     <message>
       <location filename="TaskPanel.py" line="182"/>
       <source>Line title</source>
-      <translation>Tytuł linii</translation>
+      <translation>Tytuł wiersza</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="197"/>
@@ -450,12 +450,12 @@
     <message>
       <location filename="TaskPanel.py" line="187"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation>Jeśli zaznaczone, serie nie będą uwzględnione w legendzie</translation>
+      <translation>Jeśli opcja jest zaznaczona, serie nie będą uwzględniane w legendzie</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="217"/>
       <source>Removes this series</source>
-      <translation>Usuń te serie</translation>
+      <translation>Usuwa tę serię</translation>
     </message>
   </context>
 </TS>

@@ -320,6 +320,24 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <translation>Előbb jelöljön ki legalább két tárgyat, vagy egy vagy több összetevőt! Ha csak egyetlen összetevő van megjelölve, az összetett alakzatok egymást keresztezni fogják (ellenkező esetben az önálló kereszteződéssel rendelkező összetett alakzatok érvénytelenek).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Rossz kiválasztás</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Az eredmény kiszámítása hiba miatt meghiúsult:
+
+{err}
+
+Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakítás' gombra a megszakításhoz.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Jelöljön ki legalább két objektumot, vagy egy vagy több összetevőt. Ha csak egy összetevő van kijelölve, az összetett alakzatok metszik egymást (ellenkező esetben az önmetszéssel rendelkező összetevők érvénytelenek).</translation>
@@ -328,16 +346,6 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Szeletelje összetevőkre</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Logikai töredékek</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -377,22 +385,14 @@ Ez azt jelenti, hogy az alakzatok egymást átfedő formái törlődnek.
 A fennmaradó darabok kivonására az 'összetevő szűrő' használható.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Rossz kiválasztás</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Logikai töredékek</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Az eredmény kiszámítása hiba miatt meghiúsult:
-
-{err}
-
-Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakítás' gombra a megszakításhoz.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Metszőpontnál szétválasztja a tárgyakat</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -2800,12 +2800,12 @@ Kattintson a 'Folytatás' gombra a funkció létrehozásához, vagy a 'Megszakí
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Create primitives...</source>
-      <translation>Primitívek létrehozása...</translation>
+      <translation>Alaptestek létrehozása...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Paraméteres geometriai primitívek létrehozása</translation>
+      <translation>Paraméteres geometriai alaptestek létrehozása</translation>
     </message>
   </context>
   <context>
@@ -3984,7 +3984,7 @@ Kérem, válasszon ki legalább egyet.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation>Geometriai primitívek</translation>
+      <translation>Geometriai alaptest</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
@@ -5425,7 +5425,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Primitives</source>
-      <translation>Alaptest</translation>
+      <translation>Alaptestek</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>

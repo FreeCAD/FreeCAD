@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Sanakoko</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Krediitit</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD ei olisi missään ilman heidän ponnistelujaan:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Lisenssi</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Kokoelma</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Krediitit</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
       <translation> </translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Koodirivit numeroidaan </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Painamalla &lt;Tab&gt; lisätään määritetyn sisennyksen kokoa</translation>
     </message>
@@ -1401,6 +1419,10 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     <message>
       <source>Color:</source>
       <translation>Väri:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2541,10 +2563,6 @@ mutta hitaamman vasteen kaikkiin näkymien muutoksiin.</translation>
       <translation>Keskitetty</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Millaista multisample reunan pehmennystä käytetään </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Läpinäkyvät objektit:</translation>
     </message>
@@ -2567,13 +2585,6 @@ mutta hitaamman vasteen kaikkiin näkymien muutoksiin.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Silmien välinen etäisyys stereotiloja varten</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Silmien välinen etäisyys, jota käytetään stereoprojektioihin.
-Määritetty arvo on tekijä, joka kerrotaan koolla, mikä on nyt näytettävää 3D-objektia rajaavan laatikon koko. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2632,6 +2643,18 @@ Tämän vaihtoehdon muuttaminen vaatii sovelluksen uudelleenkäynnistyksen.</tra
     <message>
       <source>Use software OpenGL</source>
       <translation>Käytä OpenGL- ohjelmistoa</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3246,10 +3269,6 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation>Kehyspuskuri (kuten on)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Pikselipuskuri</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3488,12 +3507,6 @@ Arvo on pallon halkaisija, joka mahtuu ruudulle.</translation>
       <translation>Suurennuksen askelkoko</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Kuinka paljon zoomataan.
-Zoomausaskel '1' tarkoittaa kerrointa 7,5 jokaista zoomausaskelta kohden. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Suurennuksen suunta käännetään ylösalaisin</translation>
     </message>
@@ -3580,6 +3593,28 @@ Hiiren kallistaminen ei ole pois käytöstä tällä asetuksella.</translation>
     <message>
       <source>Object center</source>
       <translation>Objektin keskipiste</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
   </context>
   <context>
@@ -3892,12 +3927,12 @@ Oletussjärjestelmä on määritetty yleisissä asetuksissa.</translation>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>tuntematon yksikkö: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>yksikkö ei täsmää</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -4606,7 +4641,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selected</source>
-      <translation type="unfinished">Selected</translation>
+      <translation>Valitut</translation>
     </message>
     <message>
       <source>Partial</source>
@@ -5840,7 +5875,7 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
       <source>Japanese</source>
-      <translation type="unfinished">Japanese</translation>
+      <translation>Japani</translation>
     </message>
     <message>
       <source>Chinese Simplified</source>
@@ -5856,7 +5891,7 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
       <source>Russian</source>
-      <translation type="unfinished">Russian</translation>
+      <translation>Venäjä</translation>
     </message>
     <message>
       <source>Swedish</source>
@@ -5864,11 +5899,11 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
       <source>Afrikaans</source>
-      <translation type="unfinished">Afrikaans</translation>
+      <translation>Afrikaans</translation>
     </message>
     <message>
       <source>Norwegian</source>
-      <translation type="unfinished">Norwegian</translation>
+      <translation>Norja</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
@@ -5876,15 +5911,15 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
       <source>Portuguese</source>
-      <translation type="unfinished">Portuguese</translation>
+      <translation>Portugali</translation>
     </message>
     <message>
       <source>Dutch</source>
-      <translation type="unfinished">Dutch</translation>
+      <translation>Hollanti</translation>
     </message>
     <message>
       <source>Ukrainian</source>
-      <translation type="unfinished">Ukrainian</translation>
+      <translation>Ukraina</translation>
     </message>
     <message>
       <source>Finnish</source>
@@ -5892,27 +5927,27 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
       <source>Croatian</source>
-      <translation type="unfinished">Croatian</translation>
+      <translation>Kroaatti</translation>
     </message>
     <message>
       <source>Polish</source>
-      <translation type="unfinished">Polish</translation>
+      <translation>Puola</translation>
     </message>
     <message>
       <source>Czech</source>
-      <translation type="unfinished">Czech</translation>
+      <translation>Tšekki</translation>
     </message>
     <message>
       <source>Hungarian</source>
-      <translation type="unfinished">Hungarian</translation>
+      <translation>Unkari</translation>
     </message>
     <message>
       <source>Romanian</source>
-      <translation type="unfinished">Romanian</translation>
+      <translation>Romania</translation>
     </message>
     <message>
       <source>Slovak</source>
-      <translation type="unfinished">Slovak</translation>
+      <translation>Slovakki</translation>
     </message>
     <message>
       <source>Turkish</source>
@@ -5920,7 +5955,7 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
       <source>Slovenian</source>
-      <translation type="unfinished">Slovenian</translation>
+      <translation>Slovenia</translation>
     </message>
     <message>
       <source>Basque</source>
@@ -6674,7 +6709,7 @@ Huomaa, että piste johon klikkaat vaikuttaa.</translation>
     </message>
     <message>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Origo</translation>
     </message>
     <message>
       <source>Delete group content?</source>
@@ -6886,14 +6921,6 @@ Ole hyvä ja tarkista raportti nähdäksesi lisää...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Fyysinen polku: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Asiakirja: </translation>
@@ -6923,6 +6950,14 @@ Asiakirja: </translation>
     <message>
       <source>Workbenches</source>
       <translation>Työpöydät</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>

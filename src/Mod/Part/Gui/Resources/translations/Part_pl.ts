@@ -322,6 +322,24 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwi
       <translation>Najpierw wybierz co najmniej dwa obiekty lub jedno lub więcej złożeń! Jeśli wybrano tylko jedno złożenie, złożone kształty zostaną przecięte między sobą (w przeciwnym razie złożenia z przecięciami własnymi są nieprawidłowe).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Błędne zaznaczenie</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Obliczanie wyniku zakończyło się błędem:
+
+{err}
+
+Kliknij "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwij", aby anulować.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Wybierz co najmniej dwa obiekty bądź jedno lub więcej założeń. Jeśli wybrane zostanie tylko jeden kształt złożony, jego kształty zostaną przecięte między sobą (w przeciwnym razie złożenie z własnymi przecięciami jest nieważne).</translation>
@@ -330,16 +348,6 @@ Kliknij przycisk "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwi
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Krojenie na kształty złożone</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -379,22 +387,14 @@ Oznacza to, że nakładające się objętości kształtów zostaną usunięte.
 Do wyodrębnienia pozostałych elementów można użyć 'Filtra złożeń'.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Błędne zaznaczenie</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Obliczanie wyniku zakończyło się błędem:
-
-{err}
-
-Kliknij "Kontynuuj", aby mimo to utworzyć właściwość, lub "Przerwij", aby anulować.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -503,7 +503,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2075"/>
       <source>You have to select either two edges or two wires.</source>
-      <translation>Należy wybrać dwie krawędzie lub dwie linie szkieletu.</translation>
+      <translation>Należy wybrać dwie krawędzie lub dwie polilinie.</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="120"/>
@@ -525,7 +525,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="80"/>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation>Ściana</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="83"/>
@@ -562,7 +562,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Wire</source>
-      <translation>Linia</translation>
+      <translation>Polilinia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="86"/>
@@ -652,7 +652,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Empty Wire</source>
-      <translation>Pusta Linia</translation>
+      <translation>Pusta polilinia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
@@ -662,7 +662,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Self Intersecting Wire</source>
-      <translation>Samo przecinające się Linie</translation>
+      <translation>Samoprzecinająca się polilinia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
@@ -672,22 +672,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Invalid Wire</source>
-      <translation>Nieprawidłowa Linia</translation>
+      <translation>Nieprawidłowa polilinia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Redundant Wire</source>
-      <translation>Zbędna Linia</translation>
+      <translation>Nadmiarowa polilinia</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Intersecting Wires</source>
-      <translation>Przecinające się linie</translation>
+      <translation>Przecinające się polilinie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Invalid Imbrication Of Wires</source>
-      <translation>Nieprawidłowe nakładanie się linii</translation>
+      <translation>Nieprawidłowe nakładanie się polilinii</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
@@ -697,7 +697,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Redundant Face</source>
-      <translation>Nadmierna ściana</translation>
+      <translation>Nadmiarowa ściana</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
@@ -787,7 +787,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>Niekompatybilność Płaszczyzn BOPAlgo</translation>
+      <translation>Niekompatybilność ścian BOPAlgo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
@@ -989,7 +989,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="315"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
-      <translation>Powierzchnia</translation>
+      <translation>Ściana</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="317"/>
@@ -1055,7 +1055,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="329"/>
@@ -1085,7 +1085,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="334"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
-      <translation>Linia</translation>
+      <translation>Polilinia</translation>
     </message>
   </context>
   <context>
@@ -2054,7 +2054,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../DlgBlock.ui" line="85"/>
       <location filename="../../DlgBlock.ui" line="249"/>
       <source>Up to face</source>
-      <translation>Do powierzchni</translation>
+      <translation>Do ściany</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="93"/>
@@ -2154,12 +2154,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="2139"/>
       <source>Color per face</source>
-      <translation>Kolor dla płaszczyzny</translation>
+      <translation>Kolor dla ściany</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2140"/>
       <source>Set color per face</source>
-      <translation>Ustaw kolor powierzchni</translation>
+      <translation>Ustaw kolor ściany</translation>
     </message>
   </context>
   <context>
@@ -2281,7 +2281,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CommandParametric.cpp" line="89"/>
       <source>Create a cube solid</source>
-      <translation>Utwórz sześcian</translation>
+      <translation>Utwórz prostopadłościan</translation>
     </message>
   </context>
   <context>
@@ -2299,7 +2299,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="137"/>
       <source>Create a box solid without dialog</source>
-      <translation>Utwórz bryłę prostokątną bez użycia okna dialogowego</translation>
+      <translation>Tworzenie pola bryły bez okna dialogowego</translation>
     </message>
   </context>
   <context>
@@ -2317,7 +2317,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Create a box solid without dialog</source>
-      <translation>Utwórz bryłę prostokątną bez użycia okna dialogowego</translation>
+      <translation>Tworzenie pola bryły bez okna dialogowego</translation>
     </message>
   </context>
   <context>
@@ -2425,7 +2425,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>Narzędzia do odsunięcia form ( Konstruuj równoległe formy)</translation>
+      <translation>Narzędzia do przesuwania kształtów (konstrukcja równoległych kształtów)</translation>
     </message>
   </context>
   <context>
@@ -2532,7 +2532,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../CommandParametric.cpp" line="58"/>
       <location filename="../../CommandParametric.cpp" line="63"/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="48"/>
@@ -2550,7 +2550,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation>Pogorszenie</translation>
+      <translation>Usuwanie cech</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
@@ -2694,12 +2694,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Make face from wires</source>
-      <translation>Stwórz ścianę ze szkieletu</translation>
+      <translation>Stwórz ścianę z polilinii</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Stwórz ścianę z zestawu szkieletów (np. ze szkicu)</translation>
+      <translation>Stwórz ścianę z zestawu polilinii (np. ze szkicu)</translation>
     </message>
   </context>
   <context>
@@ -2802,12 +2802,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="218"/>
       <source>Create primitives...</source>
-      <translation>Utwórz bryły...</translation>
+      <translation>Utwórz bryły pierwotne...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Creation of parametrized geometric primitives</source>
-      <translation>Tworzenie brył parametrycznych</translation>
+      <translation>Tworzenie pierwotnych brył parametrycznych</translation>
     </message>
   </context>
   <context>
@@ -2825,7 +2825,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CommandSimple.cpp" line="220"/>
       <source>Refine the copy of a shape</source>
-      <translation>Popraw kopię kształtu</translation>
+      <translation>Udoskonal kopię kształtu</translation>
     </message>
   </context>
   <context>
@@ -2879,7 +2879,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Utwórz powierzchnię prostokreślną z krawędzi lub linii</translation>
+      <translation>Utwórz powierzchnię prostokreślną z krawędzi lub polilinii</translation>
     </message>
   </context>
   <context>
@@ -2946,7 +2946,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CommandSimple.cpp" line="58"/>
       <source>Create Cylinder...</source>
-      <translation>Utwórz walec...</translation>
+      <translation>Utwórz walec  ...</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="59"/>
@@ -2971,7 +2971,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CommandParametric.cpp" line="130"/>
       <source>Create a sphere solid</source>
-      <translation>Utwórz kulę</translation>
+      <translation>Utwórz sferę</translation>
     </message>
   </context>
   <context>
@@ -3229,7 +3229,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
       <location filename="../../DlgBooleanOperation.ui" line="124"/>
       <source>Shells</source>
-      <translation>Skorupy</translation>
+      <translation>Powłoki</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
@@ -3425,12 +3425,12 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation>Wprowadź nachylenie (wersja robocza) do przetwarzania stron ścian.</translation>
+      <translation>Wprowadź nachylenie (zbieżność) do bocznych stron ścian wyciągnięcia.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Jeśli zaznaczone, przetwarzanie zamykający szkielet da bryły, nie skorupy.</translation>
+      <translation>Jeśli zaznaczone, wyciągnięcie zamkniętych polilinii da bryły, a nie powłoki.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="338"/>
@@ -3544,7 +3544,7 @@ Wskazówka: aby uwzględnić również długość krawędzi, ustaw obie wartośc
     <message>
       <location filename="../../DlgFilletEdges.ui" line="73"/>
       <source>Select faces</source>
-      <translation>Wybierz płaszczyzny</translation>
+      <translation>Wybierz ściany</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
@@ -3825,7 +3825,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="14"/>
       <source>Box definition</source>
-      <translation>Definicja kostki</translation>
+      <translation>Definicja prostopadłościanu</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
@@ -3878,7 +3878,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="14"/>
       <source>Cylinder definition</source>
-      <translation>Definicja cylindra</translation>
+      <translation>Definicja walca</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
@@ -3988,7 +3988,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="14"/>
       <source>Geometric Primitives</source>
-      <translation>Bryły geometryczne</translation>
+      <translation>Pierwotne bryły geometryczne</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
@@ -4006,7 +4006,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../DlgPrimitives.ui" line="51"/>
       <location filename="../../DlgPrimitives.cpp" line="417"/>
       <source>Cylinder</source>
-      <translation>Cylinder</translation>
+      <translation>Walec</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
@@ -4183,27 +4183,27 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1126"/>
       <source>X min/max:</source>
-      <translation>X min/max:</translation>
+      <translation>X min / max:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1133"/>
       <source>Y min/max:</source>
-      <translation>Y min/max:</translation>
+      <translation>Y min / max:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1140"/>
       <source>Z min/max:</source>
-      <translation>Z min/max:</translation>
+      <translation>Z min / max:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1147"/>
       <source>X2 min/max:</source>
-      <translation>X2 min/max:</translation>
+      <translation>X2 min / max:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1154"/>
       <source>Z2 min/max:</source>
-      <translation>Z2 min/max:</translation>
+      <translation>Z2 min / max:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1314"/>
@@ -4326,7 +4326,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="32"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation>Jeśli zaznaczone, obracanie szkieletów będzie tworzyć bryły. Jeśli nie, obracanie szkielet zyska skorupę.</translation>
+      <translation>Jeśli opcja jest zaznaczona, obracanie polilinii będzie tworzyć bryły. Jeśli nie, obracanie polilinii utworzy powłokę.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="35"/>
@@ -4472,7 +4472,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tesselacja&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Określa maksymalne odchylenie mozaikowych oczek od powierzchni. Im mniejsza wartość, tym wolniejsza jest prędkość renderowania, co skutkuje zwiększeniem szczegółowości/rozdzielczości.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselacja&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Określa maksymalne odchylenie teselowanej siatki od powierzchni. Im mniejsza wartość, tym wolniejsza jest prędkość renderowania, co skutkuje zwiększeniem szczegółowości/rozdzielczości.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -4553,7 +4553,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Default vertex color</source>
-      <translation>Domyślny kolor wierzchołków</translation>
+      <translation>Domyślna barwa dla wierzchołków</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
@@ -4675,7 +4675,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Wymagane są co najmniej dwa wierzchołki, krawędzie, linie lub powierzchnie.</translation>
+      <translation>Wymagane są co najmniej dwa wierzchołki, krawędzie, polilinie lub ściany.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4685,7 +4685,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Wierzchołek/Krawędź/Linia/Powierzchnia</translation>
+      <translation>Wierzchołek/Krawędź/Polilinia/Powierzchnia</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
@@ -4799,7 +4799,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="208"/>
       <location filename="../../TaskShapeBuilder.cpp" line="227"/>
       <source>Select two vertices</source>
-      <translation>Zaznacz 2 wierzchołki</translation>
+      <translation>Wybierz dwa wierzchołki</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="255"/>
@@ -4815,7 +4815,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="400"/>
       <source>Select two or more faces</source>
-      <translation>Zaznacz 2 lub więcej płaszczyzn</translation>
+      <translation>Zaznacz dwie lub więcej ścian</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="463"/>
@@ -4845,7 +4845,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="543"/>
       <source>Select adjacent faces</source>
-      <translation>Zaznacz przyległe powierzchnie</translation>
+      <translation>Zaznacz przyległe ściany</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="550"/>
@@ -4885,7 +4885,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
       <source>At least one edge or wire is required.</source>
-      <translation>Wymagana jest co najmniej jedna krawędź lub linia.</translation>
+      <translation>Wymagana jest co najmniej jedna krawędź lub polilinia.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
@@ -5045,7 +5045,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation>Ściana</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="623"/>
@@ -5122,17 +5122,17 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskFaceColors.ui" line="14"/>
       <source>Set color per face</source>
-      <translation>Ustaw kolor powierzchni</translation>
+      <translation>Ustaw kolor ściany</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Aby wybrać powierzchnie zaznacz je w Widoku 3D.</translation>
+      <translation>Aby wybrać ściany zaznacz je w widoku 3D.</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
       <source>Faces:</source>
-      <translation>Powierzchnie:</translation>
+      <translation>Ściany:</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="59"/>
@@ -5160,7 +5160,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
       <source>Ruled surface</source>
-      <translation>Wykluczona powierzchnia</translation>
+      <translation>Powierzchnia prostokreślna</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="50"/>
@@ -5249,12 +5249,12 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
       <source>Face from vertices</source>
-      <translation>Płaszczyzna z wierzchołków</translation>
+      <translation>Ściana z wierzchołków</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Shell from faces</source>
-      <translation>Powłoka z fasetek</translation>
+      <translation>Powłoka ze ścian</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
@@ -5264,7 +5264,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
       <source>Face from edges</source>
-      <translation>Powierzchnia z wierzchołków</translation>
+      <translation>Ściana z krawędzi</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
@@ -5284,7 +5284,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="85"/>
       <source>All faces</source>
-      <translation>Wszystkie powierzchnie</translation>
+      <translation>Wszystkie ściany</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="107"/>
@@ -5294,7 +5294,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation>Linia łamana z krawędzi</translation>
+      <translation>Polilinia z krawędzi</translation>
     </message>
   </context>
   <context>
@@ -5323,7 +5323,7 @@ Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
       <location filename="../../TaskSweep.cpp" line="464"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Wybierz jeden lub więcej profili i zaznacz krawędź lub linię w widoku 3D dla utworzenia ścieżki.</translation>
+      <translation>Wybierz jeden lub więcej profili i zaznacz krawędź lub polilinię w widoku 3D dla utworzenia ścieżki.</translation>
     </message>
   </context>
   <context>
@@ -5361,37 +5361,37 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Tworzy osobną płaszczyznę ściany z każdego szkieletu oddzielnie. Bez wsparcia dla dziur; szkielety mogą być na różnych płaszczyznach.</translation>
+      <translation>Tworzy osobną płaszczyznę ściany z każdej polilinii oddzielnie. Bez wsparcia dla otworów; polilinie mogą znajdować się na różnych płaszczyznach.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="69"/>
       <source>Bull's-eye facemaker</source>
-      <translation>Facemaker strzałem w dziesiątke</translation>
+      <translation>Kreator ścian dookólnych</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation>Umożliwia dokonywanie płaskiej ściany z otworami z wyspami.</translation>
+      <translation>Umożliwia tworzenie ścian planarnych z wyspami w otworach.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="248"/>
       <source>Cheese facemaker</source>
-      <translation>Rzecz stosowna facemaker</translation>
+      <translation>Kreator ścian perforowanych</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="253"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Umożliwia tworzenie płaskiej ściany z otworami z wyspami.</translation>
+      <translation>Umożliwia tworzenie planarnych ścian z otworami, ale bez wysp w otworach.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
       <source>Part Extrude facemaker</source>
-      <translation>Wyciągnąć części facemaker</translation>
+      <translation>Wyciągnięcie Części z twórcy ścian</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation>Umożliwia stworzenie ścian z otworami, nie umożliwia grupowania.</translation>
+      <translation>Umożliwia stworzenie ścian z otworami, nie umożliwia zagnieżdżania.</translation>
     </message>
   </context>
   <context>

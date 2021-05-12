@@ -134,7 +134,7 @@
     <message>
       <location filename="TaskPanel.py" line="347"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation>Calat [m] para calcular la curva de áreas</translation>
+      <translation>S'ha seleccionat l'eina de corbes d'àrea de calat [m]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="223"/>

@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Размер слова</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Благодарности</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD не увидел бы свет без их участия:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Лицензия</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Коллекция</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Благодарности</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1364,10 +1386,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>О программе</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Строки кода будут пронумерованы </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Нажатие &lt;Tab&gt; для вставки  определенного размера отступа</translation>
     </message>
@@ -1402,6 +1420,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Color:</source>
       <translation>Цвет:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2535,10 +2557,6 @@ but slower response to any scene changes.</source>
       <translation>Централизованный</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Какой тип мультиобразного сглаживания используется </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Прозрачные объекты:</translation>
     </message>
@@ -2561,14 +2579,6 @@ but slower response to any scene changes.</source>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Расстояние между глаз для стерео режима</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Межцентровое расстояние глаз используется для стерео проекций.
-Указанное значение — это множитель, который будет умножаться на размер ограничительной рамки 
-отображаемого в трехмерного объекта. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2627,6 +2637,18 @@ Changing this option requires a restart of the application.</source>
     <message>
       <source>Use software OpenGL</source>
       <translation>Использовать программное обеспечение OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3246,10 +3268,6 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (как есть)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Пиксель буфер</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3488,12 +3506,6 @@ The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Шаг масштабирования</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Насколько всё будет масштабировано.
-Шаг масштаба '1' означает коэффициент 7.5 для каждого шага масштаба.</translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Направление масштабирования будет инвертировано</translation>
     </message>
@@ -3580,6 +3592,28 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Object center</source>
       <translation>Центр объекта</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
   </context>
   <context>
@@ -3893,12 +3927,12 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>неизвестная единица:</translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>несоответствие единиц измерения</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -5378,7 +5412,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <translation>Разворачивать автоматически</translation>
     </message>
   </context>
   <context>
@@ -6884,14 +6918,6 @@ Please check report view for more...</source>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Физический путь: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Документ: </translation>
@@ -6921,6 +6947,14 @@ Document: </source>
     <message>
       <source>Workbenches</source>
       <translation>Рабочие окружения</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>
@@ -7588,7 +7622,7 @@ Document: </source>
     </message>
     <message>
       <source>Link actions</source>
-      <translation>Действия ссылки</translation>
+      <translation>Ссылка</translation>
     </message>
   </context>
   <context>

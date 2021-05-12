@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>縮放圖像平面</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
+      <translation>縮放圖像平面經由定義兩點間的距離</translation>
     </message>
   </context>
   <context>
@@ -19,37 +19,37 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>縮放圖像平面</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>距離[mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>選擇第一個點</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;輸入距離&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;撰擇圖型平面&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>選擇第二個點</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>選擇圖像平面並輸入距離</translation>
     </message>
   </context>
   <context>
@@ -57,12 +57,12 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Image</source>
-      <translation>影像</translation>
+      <translation>圖像</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Create image plane...</source>
-      <translation>建立影像平面</translation>
+      <translation>建立影像平面...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -75,12 +75,12 @@
     <message>
       <location filename="../../Command.cpp" line="53"/>
       <source>Image</source>
-      <translation>影像</translation>
+      <translation>圖像</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Open...</source>
-      <translation>開啟</translation>
+      <translation>開啟...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -93,7 +93,7 @@
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <source>Image</source>
-      <translation>影像</translation>
+      <translation>圖像</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation type="unfinished">Image Scaling</translation>
+      <translation>圖像縮放</translation>
     </message>
   </context>
   <context>
@@ -243,12 +243,12 @@
     <message>
       <location filename="../../Command.cpp" line="128"/>
       <source>Error opening image</source>
-      <translation type="unfinished">Error opening image</translation>
+      <translation>開啟圖像發生錯誤</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation type="unfinished">Could not load the chosen image</translation>
+      <translation>無法載入選擇的圖像</translation>
     </message>
   </context>
   <context>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>Image</source>
-      <translation>影像</translation>
+      <translation>圖像</translation>
     </message>
   </context>
 </TS>

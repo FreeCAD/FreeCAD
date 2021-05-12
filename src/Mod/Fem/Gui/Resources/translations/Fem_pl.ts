@@ -70,9 +70,14 @@
   <context>
     <name>GeometryElementsSelection</name>
     <message>
+      <location filename="selection_widgets.py" line="274"/>
+      <source>Geometry reference selector for a</source>
+      <translation type="unfinished">Geometry reference selector for a</translation>
+    </message>
+    <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
       <source>Geometry reference selector for a </source>
-      <translation>Geometria odniesienia selektor </translation>
+      <translation>Selektor odniesienia geometrii dla </translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -83,6 +88,26 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
       <translation>Kliknij na przycisk "Dodaj" i wybierz elementy geometryczne, aby dodać je do listy. Jeśli żadna geometria nie zostanie dodana do listy, wszystkie pozostałe zostaną użyte. Można wybrać następujące elementy geometryczne: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>Click on "Add" and select geometric elements to add them to the list.</source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="285"/>
+      <source>Click on 'Add' and select geometric elements to add them to the list.</source>
+      <translation type="unfinished">Click on 'Add' and select geometric elements to add them to the list.</translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="281"/>
+      <source>The following geometry elements are allowed to select: </source>
+      <translation type="unfinished">The following geometry elements are allowed to select: </translation>
+    </message>
+    <message>
+      <location filename="selection_widgets.py" line="283"/>
+      <source>If no geometry is added to the list, all remaining ones are used.</source>
+      <translation type="unfinished">If no geometry is added to the list, all remaining ones are used.</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -144,7 +169,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="60"/>
       <source>Clipping plane on face</source>
-      <translation>Płaszczyzna cięcia na powierzchni</translation>
+      <translation>Dodaj płaszczyznę cięcia na powierzchni</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
@@ -321,7 +346,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Fluxsolver equation</source>
-      <translation>Równanie Fluxsolver</translation>
+      <translation>Równanie fluxsolvera</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="349"/>
@@ -334,7 +359,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
-      <translation>Grzanie topnika</translation>
+      <translation>Fluxsolver ciepła</translation>
     </message>
   </context>
   <context>
@@ -511,12 +536,12 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="41"/>
       <source>Purge results</source>
-      <translation>Oczyść wyniki</translation>
+      <translation>Usuń wyniki</translation>
     </message>
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation>Oczyść wyniki z analizy</translation>
+      <translation>Usuń wyniki z aktywnej analizy</translation>
     </message>
   </context>
   <context>
@@ -620,7 +645,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Material editor</source>
-      <translation>Edytor materiałów</translation>
+      <translation>Edytor materiału</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>
@@ -874,17 +899,17 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="40"/>
       <source>Purge results</source>
-      <translation>Oczyść wyniki</translation>
+      <translation>Usuń wyniki</translation>
     </message>
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
       <source>Purge results from an analysis</source>
-      <translation>Oczyść wyniki z analizy</translation>
+      <translation>Usuń wyniki z analizy</translation>
     </message>
     <message>
       <location filename="_CommandPurgeResults.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation>Oczyść wyniki z analizy</translation>
+      <translation>Usuń wyniki z aktywnej analizy</translation>
     </message>
   </context>
   <context>
@@ -1345,12 +1370,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation>Limit wysokiej częstotliwości</translation>
+      <translation>Górna granica częstotliwości</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation>Limit niskiej częstotliwości</translation>
+      <translation>Dolna granica częstotliwości</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
@@ -1877,7 +1902,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="33"/>
       <source>choose...</source>
-      <translation>Wybierz...</translation>
+      <translation>wybierz ...</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
@@ -1912,7 +1937,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="107"/>
       <source>Young's Modulus:</source>
-      <translation>Moduł Younga:</translation>
+      <translation>Modulacja Younga:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="148"/>
@@ -1961,7 +1986,7 @@
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation>Twój FreeCAD jest zainstalowany bez wsparcia dla NETGEN. Siatka nie będzie działać...</translation>
+      <translation>Twój FreeCAD został skompilowany bez obsługi NETGEN. Tworzenie siatki nie będzie działać....</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -2554,7 +2579,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation>Liczba węzłów:</translation>
+      <translation>Liczba węzłów: </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>

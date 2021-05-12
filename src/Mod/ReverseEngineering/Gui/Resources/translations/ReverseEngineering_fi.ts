@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="212"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="213"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="279"/>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="207"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="208"/>
@@ -386,7 +386,7 @@
       <location filename="../../Command.cpp" line="89"/>
       <location filename="../../Command.cpp" line="569"/>
       <source>Wrong selection</source>
-      <translation>Väärä valinta</translation>
+      <translation>Virheellinen valinta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="90"/>
@@ -526,12 +526,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="228"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>

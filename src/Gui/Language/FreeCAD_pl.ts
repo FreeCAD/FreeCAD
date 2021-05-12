@@ -184,7 +184,7 @@
     </message>
     <message>
       <source>Transform</source>
-      <translation>Przekształć</translation>
+      <translation>Przemieszczenie</translation>
     </message>
     <message>
       <source>Link Transform</source>
@@ -199,7 +199,7 @@
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation>Ruch Spaceball'a</translation>
+      <translation>Ruch SpaceMouse</translation>
     </message>
     <message>
       <source>Dominant Mode</source>
@@ -274,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>Nazwa pliku</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
     </message>
   </context>
   <context>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Rozmiar słowa</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Zasłużeni</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD nie istniałby bez ich wysiłków:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licencja</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Kolekcja</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Zasłużeni</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -550,7 +572,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::Clipping</name>
     <message>
       <source>Clipping</source>
-      <translation>Wycinek</translation>
+      <translation>Cięcie</translation>
     </message>
     <message>
       <source>Clipping X</source>
@@ -608,11 +630,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Maximum</source>
-      <translation>Maksymalny</translation>
+      <translation>Maksymalna</translation>
     </message>
     <message>
       <source>Minimum</source>
-      <translation>Minimalny</translation>
+      <translation>Minimalna</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -1124,7 +1146,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation>Ruch Spaceball'a</translation>
+      <translation>Ruch SpaceMouse</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
@@ -1147,7 +1169,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     </message>
     <message>
       <source>Spaceball Buttons</source>
-      <translation>Przyciski Spaceball</translation>
+      <translation>Przyciski SpaceMouse</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -1210,7 +1232,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>Kolor wykresu:</translation>
+      <translation>Kolor kreślenia:</translation>
     </message>
     <message>
       <source>Document window:</source>
@@ -1344,7 +1366,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     </message>
     <message>
       <source>Keep tabs</source>
-      <translation>Zachowaj tabulacje</translation>
+      <translation>Kontroluj tabulacje</translation>
     </message>
     <message>
       <source>Family:</source>
@@ -1363,16 +1385,12 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
       <translation> </translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Wiersze kodu będą ponumerowane </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
-      <translation>Naciśnięcie klawisza &lt;Tab&gt; spowoduje wstawienie odstępu o określonym rozmiarze</translation>
+      <translation>Naciśnięcie &lt;Tab&gt; spowoduje wstawienie odstępu o określonym rozmiarze</translation>
     </message>
     <message>
       <source>Tabulator raster (how many spaces)</source>
-      <translation>Tabulator (ilość spacji)</translation>
+      <translation>Ilość znaków spacji dla tabulacji</translation>
     </message>
     <message>
       <source>How many spaces will be inserted when pressing &lt;Tab&gt;</source>
@@ -1401,6 +1419,10 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     <message>
       <source>Color:</source>
       <translation>Kolor:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -1495,7 +1517,7 @@ w zależności od wielkości ekranu lub swoich upodobań</translation>
 
 „Widok połączony”: połącz widok drzewa i widok właściwości w jednym panelu.
 „Widok drzewa i Widok właściwości”: rozdziel widok drzewa i widok właściwości na oddzielny panel.
-„Obydwa”: zachowaj wszystkie trzy panele, możesz mieć dwa zestawy widoku drzewa i widoku właściwości.</translation>
+„Obydwa”: zachowaj wszystkie panele, możesz mieć dwa zestawy widoku drzewa i widoku właściwości.</translation>
     </message>
     <message>
       <source>A Splash screen is a small loading window that is shown
@@ -1832,8 +1854,7 @@ Uwaga: Twoje zmiany zostaną zastosowane przy następnym przełączeniu środowi
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>Color przenikania:
-</translation>
+      <translation>Kolor rozproszenia:</translation>
     </message>
     <message>
       <source>Specular color:</source>
@@ -1841,7 +1862,7 @@ Uwaga: Twoje zmiany zostaną zastosowane przy następnym przełączeniu środowi
     </message>
     <message>
       <source>Shininess:</source>
-      <translation>Połysk:</translation>
+      <translation>Stopień połysku:</translation>
     </message>
     <message>
       <source>%</source>
@@ -2541,10 +2562,6 @@ ale wolniej reaguje na każdą zmianę ujęcia.</translation>
       <translation>Scentralizowane</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Jaki zostanie użyty rodzaj antyaliasingu wielopróbkowego </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Przezroczystość obiektów:</translation>
     </message>
@@ -2567,14 +2584,6 @@ ale wolniej reaguje na każdą zmianę ujęcia.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Odległość między oczami dla trybu stereo</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Odległość między oczami używana w projekcji stereo.
-Podana wartość jest współczynnikiem, który zostanie pomnożony przez
-rozmiar pola ograniczającego obiekt 3D, który jest obecnie wyświetlany. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2631,6 +2640,18 @@ Zmiana tej opcji wymaga ponownego uruchomienia aplikacji.</translation>
     <message>
       <source>Use software OpenGL</source>
       <translation>Wyłącz sprzętowe wspomaganie renderowania</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3244,10 +3265,6 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
       <source>Framebuffer (as is)</source>
       <translation>Bufor ramki (jak jest)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Bufor pikseli</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3486,12 +3503,6 @@ Wartością jest średnica kuli, która ma zmieścić się na ekranie.</translat
       <translation>Krok powiększenia</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>O ile nastąpi powiększenie
-Krok powiększenia "1" oznacza współczynnik 7,5 dla każdego kroku powiększenia. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Kierunek wykonania operacji przybliż / oddal zostanie odwrócony</translation>
     </message>
@@ -3578,6 +3589,28 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     <message>
       <source>Object center</source>
       <translation>Centrum obiektu</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
   </context>
   <context>
@@ -3703,7 +3736,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cft)</source>
-      <translation>System US (ft-in/sqft/cuft)</translation>
+      <translation>Budowlany USA (ft-in/sqft/cft)</translation>
     </message>
     <message>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
@@ -3754,7 +3787,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Active container</source>
-      <translation>Aktywny kontener</translation>
+      <translation>Aktywna zawartość</translation>
     </message>
     <message>
       <source>Enable preselection and highlight by specified color</source>
@@ -3798,7 +3831,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Background color for active containers in tree view</source>
-      <translation>Kolor tła dla aktywnego kontenera w widoku drzewa</translation>
+      <translation>Kolor tła dla aktywnej zawartości w widoku drzewa</translation>
     </message>
   </context>
   <context>
@@ -3876,7 +3909,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
     </message>
     <message>
       <source>Unit category:</source>
-      <translation>Kategoria jednostki:</translation>
+      <translation>Kategoria jednostek:</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
@@ -3890,19 +3923,20 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>nieznana jednostka: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>niezgodność jednostek</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgWorkbenches</name>
     <message>
       <source>Workbenches</source>
-      <translation>Środowiska pracy</translation>
+      <translation>Środowiska
+      pracy</translation>
     </message>
     <message>
       <source>Enabled workbenches</source>
@@ -4395,11 +4429,11 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation>Użyć środka ciężkości</translation>
+      <translation>Użyj środka ciężkości</translation>
     </message>
     <message>
       <source>Axial:</source>
-      <translation>Osiowe:</translation>
+      <translation>Osi:</translation>
     </message>
     <message>
       <source>Apply axial</source>
@@ -4465,11 +4499,11 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     <name>Gui::Dialog::RemoteDebugger</name>
     <message>
       <source>Attach to remote debugger</source>
-      <translation>Przełącz na debuger zdalny</translation>
+      <translation>Przełącz na debuger zewnętrzny</translation>
     </message>
     <message>
       <source>winpdb</source>
-      <translation>winpdb</translation>
+      <translation>Winpdb</translation>
     </message>
     <message>
       <source>Password:</source>
@@ -4569,7 +4603,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Przekształć</translation>
+      <translation>Przemieszczenie</translation>
     </message>
   </context>
   <context>
@@ -4645,7 +4679,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
       <source>Property View</source>
-      <translation>Drzewo właściwości</translation>
+      <translation>Widok właściwości</translation>
     </message>
   </context>
   <context>
@@ -4942,15 +4976,15 @@ Do you want to save your changes?</source>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation>Dotknij lub kliknij lewym przyciskiem myszy.</translation>
+      <translation>Dotknij lub kliknij lewym przyciskiem myszki.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation>Przeciągnij po ekranie dwoma palcami lub kliknij prawym przyciskiem myszy.</translation>
+      <translation>Przeciągnij po ekranie dwoma palcami lub kliknij prawym przyciskiem myszki.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
-      <translation>Przeciągnij po ekranie jednym palcem lub naciśnij lewy przycisk myszy. W innych trybach edycji jak np. Sketcher dodatkowo przytrzymaj naciśnięty klawisz Alt.</translation>
+      <translation>Przeciągnij po ekranie jednym palcem lub naciśnij lewy przycisk myszki. W innych trybach edycji jak np. Szkicownik dodatkowo przytrzymaj naciśnięty klawisz Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
@@ -5057,7 +5091,7 @@ Do you want to save your changes?</source>
     <name>Gui::LocationDialog</name>
     <message>
       <source>Wrong direction</source>
-      <translation>Zły kierunek</translation>
+      <translation>Nieprawidłowy kierunek</translation>
     </message>
     <message>
       <source>Direction must not be the null vector</source>
@@ -5155,7 +5189,7 @@ Czy chcesz zapisać dokument teraz?</translation>
     <name>Gui::ManualAlignment</name>
     <message>
       <source>Manual alignment</source>
-      <translation>Ręczne wyrównanie</translation>
+      <translation>Wyrównanie ręczne</translation>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
@@ -5244,15 +5278,15 @@ Jak chcesz kontynuować?</translation>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation>Dotknij lub kliknij lewym przyciskiem myszy.</translation>
+      <translation>Dotknij lub kliknij lewym przyciskiem myszki.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
-      <translation>Przeciągnij po ekranie dwoma palcami lub wciśnij Alt + kliknij prawym przyciskiem myszy.</translation>
+      <translation>Przeciągnij po ekranie dwoma palcami lub wciśnij Alt + kliknij prawym przyciskiem myszki.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Przeciągnij po ekranie jednym palcem lub naciśnij ALT + lewy przycisk myszy. W innych trybach jak np. Sketcher dodatkowo przytrzymaj wciśnięty klawisz Alt.</translation>
+      <translation>Przeciągnij po ekranie jednym palcem lub naciśnij ALT + lewy przycisk myszki. W innych trybach jak np. Szkicownik dodatkowo przytrzymaj wciśnięty klawisz Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
@@ -6591,7 +6625,8 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Nie można załadować dokumentacji. Wymagany Qt 4.4 lub nowszy.</translation>
+      <translation>Nie można załadować dokumentacji.
+Wymagana jest biblioteka Qt 4.4 lub nowsza.</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
@@ -6626,7 +6661,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Przekształć</translation>
+      <translation>Przemieszczenie</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
@@ -6674,7 +6709,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation>%1 nie jest pusty, czy też usunąć jego zawartość?</translation>
+      <translation>%1 nie jest pusty, czy usunąć również jego zawartość?</translation>
     </message>
     <message>
       <source>Export failed</source>
@@ -6772,7 +6807,7 @@ Sprawdź widok raportu, aby uzyskać więcej informacji.</translation>
     </message>
     <message>
       <source>Replace link failed</source>
-      <translation>Zastąpienie linku nie powiodło się</translation>
+      <translation>Zastąpienie łącza nie powiodło się</translation>
     </message>
     <message>
       <source>Failed to import links</source>
@@ -6878,14 +6913,6 @@ Sprawdź widok raportu, aby uzyskać więcej informacji...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Ścieżka fizyczna: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Dokument: </translation>
@@ -6914,7 +6941,16 @@ Dokument: </translation>
     </message>
     <message>
       <source>Workbenches</source>
-      <translation>Środowiska pracy</translation>
+      <translation>Środowiska
+      pracy</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>
@@ -7299,7 +7335,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Styl rysowania</translation>
+      <translation>Styl kreślenia</translation>
     </message>
     <message>
       <source>Change the draw style of the objects</source>
@@ -7386,7 +7422,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Ponowne obliczenie funkcji lub dokumentu</translation>
+      <translation>Ponowne obliczenie obiektu lub dokumentu</translation>
     </message>
   </context>
   <context>
@@ -8576,7 +8612,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Transform...</source>
-      <translation>Przekształcanie...</translation>
+      <translation>Przemieszczenie ...</translation>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
@@ -8591,7 +8627,7 @@ Dokument: </translation>
     </message>
     <message>
       <source>Transform</source>
-      <translation>Przekształć</translation>
+      <translation>Przemieszczenie</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -9499,7 +9535,7 @@ Czy na pewno kontynuować?
     <name>Std_DrawStyle</name>
     <message>
       <source>As is</source>
-      <translation>Tak jak jest</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <source>Normal mode</source>
@@ -9547,7 +9583,7 @@ Czy na pewno kontynuować?
     </message>
     <message>
       <source>No shading</source>
-      <translation>Bez cieniowania</translation>
+      <translation>Jednolity z krawędziami</translation>
     </message>
     <message>
       <source>No shading mode</source>
@@ -9694,7 +9730,7 @@ Czy nadal chcesz kontynuować?</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Pomoc</translation>
+      <translation>Po&amp;moc</translation>
     </message>
     <message>
       <source>File</source>
