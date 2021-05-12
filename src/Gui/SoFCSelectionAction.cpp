@@ -48,6 +48,7 @@
 #  include <Inventor/nodes/SoComplexity.h>
 #  include <Inventor/nodes/SoLightModel.h>
 #  include <Inventor/nodes/SoBaseColor.h>
+#  include <Inventor/nodes/SoImage.h>
 #  include <Inventor/SoPickedPoint.h>
 #  include <Inventor/details/SoFaceDetail.h>
 #  include <Inventor/details/SoLineDetail.h>
@@ -1552,15 +1553,15 @@ SO_ACTION_SOURCE(SoFCRayPickAction)
 void SoFCRayPickAction::initClass() {
     SO_ACTION_INIT_CLASS(SoFCRayPickAction,SoRayPickAction);
 
-    SoRayPickAction::addMethod(SoShape::getClassTypeId(),
-        [](SoAction *action, SoNode *node) {
-            assert(action && node);
-            assert(action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId()));
-            node->rayPick(static_cast<SoRayPickAction*>(action));
-            if(action->getTypeId().isDerivedFrom(SoFCRayPickAction::getClassTypeId()))
-                static_cast<SoFCRayPickAction*>(action)->afterPick();
-        }
-    );
+    auto handler = [](SoAction *action, SoNode *node) {
+        assert(action && node);
+        assert(action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId()));
+        node->rayPick(static_cast<SoRayPickAction*>(action));
+        if(action->getTypeId().isDerivedFrom(SoFCRayPickAction::getClassTypeId()))
+            static_cast<SoFCRayPickAction*>(action)->afterPick();
+    };
+    SoRayPickAction::addMethod(SoShape::getClassTypeId(), handler);
+    SoRayPickAction::addMethod(SoImage::getClassTypeId(), handler);
 }
 
 void SoFCRayPickAction::finish() {
