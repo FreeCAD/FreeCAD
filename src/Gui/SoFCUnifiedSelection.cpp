@@ -494,21 +494,48 @@ SoFCUnifiedSelection::Private::getPickedInfo(std::vector<PickedInfo> &ret,
         if(!info.vpd->getElementPicked(info.pp,info.subname))
             continue;
 
-        if(singlePick)
+        if(singlePick) {
             last_vp = vp;
-        else {
-            if(!filter.emplace(info.vpd,info.subname).second)
+            if(copy) info.copy();
+            ret.push_back(std::move(info));
+            continue;
+        }
+
+        std::string subname;
+        const std::string *sub = &subname;
+        std::size_t cur;
+        for (std::size_t pos = 0, len=info.subname.size() ;pos < len; pos = cur+1) {
+            cur = info.subname.find('\n', pos);
+            if (cur == std::string::npos)
+                cur = len;
+            if (pos==0 && cur==len)
+                sub = &info.subname;
+            else
+                subname = info.subname.substr(pos, cur-pos);
+            if (sub->empty() || !filter.emplace(info.vpd, *sub).second)
                 continue;
             App::GeoFeature *geo = nullptr;
             std::pair<std::string, std::string> elementName;
             App::GeoFeature::resolveElement(info.vpd->getObject(),
-                    info.subname.c_str(), elementName, false,
+                    sub->c_str(), elementName, false,
                     App::GeoFeature::Normal, nullptr, nullptr, &geo);
             if(geo && !elementName.second.empty())
                 info.elements = geo->getHigherElements(elementName.second.c_str(), true);
+            if(copy) info.copy();
+            if (sub == &info.subname) {
+                ret.push_back(std::move(info));
+                break;
+            }
+            ret.emplace_back();
+            ret.back().ppCopy = std::move(info.ppCopy);
+            info.ppCopy.reset();
+            ret.back().pp = info.pp;
+            ret.back().vpd = info.vpd;
+            ret.back().subname = std::move(subname);
+            subname.clear();
+            ret.back().elements = std::move(info.elements);
+            info.elements.clear();
         }
-        if(copy) info.copy();
-        ret.push_back(std::move(info));
     }
 }
 

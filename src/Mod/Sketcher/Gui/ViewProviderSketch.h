@@ -193,7 +193,8 @@ public:
     /// Helper for detectPreselection(), for constraints only.
     std::set<int> detectPreselectionConstr(const SoPickedPoint *Point,
                                            const Gui::View3DInventorViewer *viewer,
-                                           const SbVec2s &cursorPos);
+                                           const SbVec2s &cursorPos,
+                                           bool preselect=true);
 
     /*! Look at the center of the bounding of all selected items */
     void centerSelection();

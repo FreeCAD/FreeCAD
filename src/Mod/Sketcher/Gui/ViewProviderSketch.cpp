@@ -103,6 +103,7 @@
 #include <Gui/MenuManager.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewParams.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
@@ -320,6 +321,7 @@ struct EditData {
 
     SbVec2s       curCursorPos;
     std::string   lastPreselection;
+    std::vector<int> lastCstrPreselections;
     Gui::View3DInventorViewer * viewer = nullptr;
 
     bool enableExternalPick = false;
@@ -1173,7 +1175,20 @@ bool ViewProviderSketch::getElementPicked(const SoPickedPoint *pp, std::string &
                 pp, edit->viewer, edit->curCursorPos, false);
         if (edit->lastPreselection.empty())
             return false;
-        getSketchObject()->checkSubName(edit->lastPreselection.c_str()).toString(subname);
+        if (edit->lastCstrPreselections.empty())
+            getSketchObject()->checkSubName(edit->lastPreselection.c_str()).toString(subname);
+        else {
+            std::ostringstream ss;
+            bool first = true;
+            for (int id : edit->lastCstrPreselections) {
+                if (first)
+                    first = false;
+                else
+                    ss << "\n";
+                ss << Sketcher::PropertyConstraintList::getConstraintName(id);
+            }
+            subname = ss.str();
+        }
         return true;
     }
     return PartGui::ViewProvider2DObjectGrid::getElementPicked(pp, subname);
@@ -2129,6 +2144,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
 {
     assert(edit);
     edit->lastPreselection.clear();
+    edit->lastCstrPreselections.clear();
 
     int PtIndex = -1;
     int GeoIndex = -1; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
@@ -2168,7 +2184,9 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
                 }
             } else {
                 // checking if a constraint is hit
-                constrIndices = detectPreselectionConstr(Point, viewer, cursorPos);
+                constrIndices = detectPreselectionConstr(Point, viewer, cursorPos, preselect);
+                edit->lastCstrPreselections.insert(
+                        edit->lastCstrPreselections.end(), constrIndices.begin(), constrIndices.end());
             }
         }
 
