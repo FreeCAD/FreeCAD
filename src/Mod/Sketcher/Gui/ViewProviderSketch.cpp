@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cfloat>
 # include <Standard_math.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Geom_BSplineCurve.hxx>
@@ -1965,15 +1966,18 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *Point,
                                                            const Gui::View3DInventorViewer *viewer,
-                                                           const SbVec2s &cursorPos)
+                                                           const SbVec2s &cursorPos,
+                                                           bool preselect)
 {
     std::set<int> constrIndices;
+    double distance = DBL_MAX;
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
     if (!pCam)
         return constrIndices;
 
     SoPath *path = Point->getPath();
     SoNode *tail = path->getTail();
+    int r = static_cast<int>(Gui::ViewParams::getPickRadius());
 
     for (int i=1; i<path->getLength(); ++i) {
         SoNode * tailFather = path->getNodeFromTail(i);
@@ -2083,10 +2087,19 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             /*Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());*/
 #endif
 
-                            if (b->first.contains(iconX, iconY)) {
+                            if (b->first.adjusted(-r, -r, r, r).contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
-                                for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k)
+                                if (preselect) {
+                                    QPointF v = QPoint(iconX, iconY) - b->first.center();
+                                    double d = v.manhattanLength();
+                                    if (d >= distance)
+                                        continue;
+                                    distance = d;
+                                    constrIndices.clear();
+                                }
+                                for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k) {
                                     constrIndices.insert(*k);
+                                }
                             }
                         }
                     }
