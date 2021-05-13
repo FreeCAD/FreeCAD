@@ -543,7 +543,7 @@ static inline Py::Object __pyObjectFromAny(const App::any &value) {
 
 static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     Timing(_pyObjectFromAny2);
-    if(value.empty())
+    if(!value.has_value())
         return Py::Object();
     else if (isAnyPyObject(value))
         return __pyObjectFromAny(value);
@@ -764,9 +764,9 @@ static inline bool anyToDouble(double &res, const App::any &value) {
 }
 
 bool isAnyEqual(const App::any &v1, const App::any &v2) {
-    if(v1.empty()) 
-        return v2.empty();
-    else if(v2.empty())
+    if(!v1.has_value()) 
+        return !v2.has_value();
+    else if(!v2.has_value())
         return false;
 
     if(!is_type(v1,v2.type())) {
