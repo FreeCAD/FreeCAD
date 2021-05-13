@@ -234,6 +234,9 @@ public:
     /** @name User edit mode */
     //@{
 protected:
+    // the below std::map is a translation of 'EditMode' enum in ViewProvider.h
+    // to add a new edit mode, it should first be added there
+    // this is only used for GUI user interaction (menu, toolbar, Python API)
     const std::map <int, std::string> userEditModes {
         {0, QT_TRANSLATE_NOOP("EditMode", "Default")},
         {1, QT_TRANSLATE_NOOP("EditMode", "Transform")},
