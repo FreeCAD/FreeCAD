@@ -1185,14 +1185,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
   PRIVATE(this)->recheckmaterial = false;
   PRIVATE(this)->material.init();
 
-  glPushAttrib(GL_LIGHTING_BIT|
-               GL_DEPTH_BUFFER_BIT|
-               GL_COLOR_BUFFER_BIT|
-               GL_TEXTURE_BIT|
-               GL_LINE_BIT|
-               GL_POINT_BIT|
-               GL_ENABLE_BIT|
-               GL_POLYGON_BIT);
+  glPushAttrib(GL_ALL_ATTRIB_BITS);
   state->push();
 
   PRIVATE(this)->matrix = SoModelMatrixElement::get(state);
