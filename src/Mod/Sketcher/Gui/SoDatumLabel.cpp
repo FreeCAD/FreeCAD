@@ -43,6 +43,7 @@
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/misc/SoState.h>
 # include <cmath>
+# include <Inventor/SbVec3d.h>
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/elements/SoFontNameElement.h>
 # include <Inventor/elements/SoFontSizeElement.h>
@@ -895,6 +896,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     }
 
     if (hasText) {
+        //Get the camera z-direction
+        SbVec3f z = vv.zVector();
+        bool backfacing = norm.getValue().dot(z) < 0.f;
+
         const unsigned char * dataptr = this->image.getValue(imgsize, nc);
 
         static bool init = false;
@@ -994,9 +999,15 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         vm.multVecMatrix(img2, img2);
         vm.multVecMatrix(img3, img3);
 
-        float xfactor = (img1[0] - img3[0]) < 1e-7 ? 0.5f : -0.5f;
-        float yfactor = (img1[1] - img2[1]) < 1e-7 ? 0.5f : -0.5f;
+        float xfactor = img1[0] < img3[0] ? 0.5f : -0.5f;
+        float yfactor = img1[1] < img2[1] ? 0.5f : -0.5f;
 
+        bool flip = backfacing ? xfactor*yfactor > 0.f : xfactor*yfactor < 0.f;
+        if (mm.det3() < 0.f) // To check if there's any reflection. Is it reliable?
+            flip = !flip;
+        if (flip)
+            xfactor = -xfactor;
+            
         glTexCoord2f(0.f, 1.f); glVertex2f( -this->imgWidth * xfactor,  this->imgHeight * yfactor);
         glTexCoord2f(0.f, 0.f); glVertex2f( -this->imgWidth * xfactor, -this->imgHeight * yfactor);
         glTexCoord2f(1.f, 0.f); glVertex2f( this->imgWidth * xfactor, -this->imgHeight * yfactor);
