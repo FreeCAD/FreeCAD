@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>463</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -233,7 +233,8 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxTVForceOrtho">
            <property name="toolTip">
-            <string>When entering edit mode, force orthographic view of camera. Operates only with camera restoration enabled.</string>
+            <string>When entering edit mode, force orthographic view of camera.
+Works only when &quot;Restore camera position after editing&quot; is enabled.</string>
            </property>
            <property name="text">
             <string>Force orthographic camera when entering edit</string>
@@ -252,7 +253,8 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxTVSectionView">
            <property name="toolTip">
-            <string>By default, open a sketch in Section View mode -- objects are only visible behind sketch plane</string>
+            <string>Open a by default sketch in Section View mode.
+Then objects are only visible behind the sketch plane.</string>
            </property>
            <property name="text">
             <string>Open sketch in Section View mode</string>
@@ -470,11 +472,21 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
  </tabstops>
  <resources/>
  <connections>
-   <connection>
-    <sender>checkBoxTVRestoreCamera</sender>
-    <signal>toggled(bool)</signal>
-    <receiver>checkBoxTVForceOrtho</receiver>
-    <slot>setEnabled(bool)</slot>
+  <connection>
+   <sender>checkBoxTVRestoreCamera</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBoxTVForceOrtho</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
  </connections>
 </ui>
