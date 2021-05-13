@@ -235,10 +235,10 @@ public:
     //@{
 protected:
     const std::map <int, std::string> userEditModes {
-        {0, "Default"},
-        {1, "Transform"},
-        {2, "Cutting"},
-        {3, "Color"}
+        {0, QT_TRANSLATE_NOOP("EditMode", "Default")},
+        {1, QT_TRANSLATE_NOOP("EditMode", "Transform")},
+        {2, QT_TRANSLATE_NOOP("EditMode", "Cutting")},
+        {3, QT_TRANSLATE_NOOP("EditMode", "Color")}
     };
     int userEditMode = userEditModes.begin()->first;
 
