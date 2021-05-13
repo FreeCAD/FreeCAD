@@ -291,6 +291,8 @@ void ViewProviderDocumentObject::hide(void)
 void ViewProviderDocumentObject::setModeSwitch() {
     if(isShowable())
         ViewProvider::setModeSwitch();
+    else
+        callExtension(&ViewProviderExtension::extensionModeSwitchChange);
 }
 
 void ViewProviderDocumentObject::show(void)
