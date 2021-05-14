@@ -39,6 +39,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Matrix.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -977,6 +978,20 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     return result;
 }
 
+bool CenterLine::Circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C)
+{
+    Base::Matrix4D CircMatrix(
+        A.x, A.y, 1, 0,
+        B.x, B.y, 1, 0,
+        C.x, C.y, 1, 0,
+        0, 0, 0, 1);
+
+    if (CircMatrix.determinant() > 0)
+        return true;
+    else
+        return false;
+}
+
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawViewPart* partFeat,
                                                       std::vector<std::string> edgeNames, 
                                                       int mode, double ext,
@@ -1018,17 +1033,21 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     Base::Vector3d l2p1 = edges.back()->getStartPoint();
     Base::Vector3d l2p2 = edges.back()->getEndPoint();
 
-    if (flip) {             //reverse line 2
-        Base::Vector3d temp;
-        temp = l2p1;
-        l2p1 = l2p2;
-        l2p2 = temp;
+    // The centerline is drawn using the midpoints of the two lines that connect l1p1-l2p1 and l1p2-l2p2.
+    // However, we don't know which point should be l1p1 to get a geometrically correct result.
+    // Thus we test this by a circulation test.
+    if (Circulation(l1p1, l1p2, l2p1) != Circulation(l1p2, l2p2, l2p1)) {
+        Base::Vector3d temp; // reverse line 1
+        temp = l1p1;
+        l1p1 = l1p2;
+        l1p2 = temp;
     }
 
     Base::Vector3d p1 = (l1p1 + l2p1) / 2.0;
     Base::Vector3d p2   = (l1p2 + l2p2) / 2.0;
     Base::Vector3d mid = (p1 + p2) / 2.0;
 
+    //orientation
     if (mode == 0) {           //Vertical
             p1.x = mid.x;
             p2.x = mid.x;
