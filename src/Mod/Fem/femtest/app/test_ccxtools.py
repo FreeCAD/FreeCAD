@@ -106,6 +106,46 @@ class TestCcxTools(unittest.TestCase):
             fea=fea,
             res_obj_name=res_obj_name,
         )
+    
+    # ********************************************************************************************
+    def test_ccx_buckling_flexuralbuckling(
+        self
+    ):
+        # set up
+        from femexamples.ccx_buckling_flexuralbuckling import setup
+        setup(self.document, "ccxtools")
+        base_name = get_namefromdef("test_")
+        res_obj_name = "CCX_Results"
+        analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
+
+        # test input file writing
+        fea = self.input_file_writing_test(
+            None,
+            base_name,
+            analysis_dir=analysis_dir,
+            test_end=True,
+        )
+
+    # ********************************************************************************************
+    def test_ccx_buckling_lateraltorsionalbuckling(
+        self
+    ):
+        # set up
+        from femexamples.ccx_buckling_lateraltorsionalbuckling import setup
+        setup(self.document, "ccxtools")
+        base_name = get_namefromdef("test_")
+        res_obj_name = "CCX_Results"
+        analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
+
+        # test input file writing
+        fea = self.input_file_writing_test(
+            None,
+            base_name,
+            analysis_dir=analysis_dir,
+            test_end=True,
+        )
+
+
 
     # ********************************************************************************************
     def test_box_static(

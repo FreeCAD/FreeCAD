@@ -69,6 +69,8 @@ SET(FemExamples_SRCS
     femexamples/thermomech_bimetall.py
     femexamples/thermomech_flow1d.py
     femexamples/thermomech_spine.py
+    femexamples/ccx_buckling_flexuralbuckling.py
+    femexamples/ccx_buckling_lateraltorsionalbuckling.py
 )
 
 SET(FemExampleMeshes_SRCS
@@ -94,6 +96,8 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_thermomech_flow1d_seg3.py
     femexamples/meshes/mesh_thermomech_spine_tetra10.py
     femexamples/meshes/mesh_transform_beam_hinged_tetra10.py
+    femexamples/meshes/mesh_flexural_buckling.py
+    femexamples/meshes/mesh_ltb_buckling.py
 )
 
 SET(FemInOut_SRCS
@@ -276,6 +280,9 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/thermomech_spine.frd
     femtest/data/calculix/thermomech_spine_expected_values
     femtest/data/calculix/thermomech_spine.FCStd
+    femtest/data/calculix/ccx_buckling_flexuralbuckling.inp
+    femtest/data/calculix/ccx_buckling_flexuralbuckling.dat
+    femtest/data/calculix/ccx_buckling_lateraltorsionalbuckling.inp
 )
 
 SET(FemTestsElmer_SRCS

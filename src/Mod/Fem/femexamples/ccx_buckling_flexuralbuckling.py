@@ -25,7 +25,7 @@
 
 # to run the example use:
 """
-from femexamples.ccx_buckling_lateraltorsionalbuckling import setup
+from femexamples.ccx_buckling_flexuralbuckling import setup
 setup()
 
 """
@@ -33,9 +33,8 @@ setup()
 # Forum discussion
 # https://forum.freecadweb.org/viewtopic.php?f=18&t=20217&start=90
 
-# Lateral torsional buckling of an I section
-# This example is built after this verification example http://download.strusoft.com/FEM-Design/inst190x/documents/verification_examples.pdf
-
+# This example is based on Calculix own verification example.
+# http://www.feacluster.com/CalculiX/ccx_2.13/doc/ccx/input_deck_viewer.php?input_deck=beam8b.inp
 
 import FreeCAD
 import Fem
@@ -44,39 +43,36 @@ import ObjectsFem
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
-# Geometry input
-# Example is a welded I-beam, in millimeter.
+# Example geometry input
 
-b = 150         # Width of flanges
-t = 10.7        # Thickness of flanges
-h = 300         # Total height of beam
-d = 7.1         # Thickness of web
-l = 10000       # Length of beam
-
-force_load = 2000   # Force acting on bottom and top flanges (Newton).
+b = 1.5             # Width
+h = 8               # Height
+l = 1               # Length
 
 
 def addbox(
         docxx, height, width, length, 
         x, y, z, box_name):
+
     box_obj = docxx.addObject('Part::Box', box_name)
     box_obj.Height = height
     box_obj.Width = width
     box_obj.Length = length
     box_obj.Placement = FreeCAD.Placement(
             FreeCAD.Vector(x, y, z), 
-            FreeCAD.Rotation(0, 0, 0)
-            )
+            FreeCAD.Rotation(0, 0, 0))
+
 
 def init_doc(doc=None):
     if doc is None:
         doc = FreeCAD.newDocument()
     return doc
 
+
 def get_information():
-    info = {"name": "Lateral Torsional Buckling Analysis",
+    info = {"name": "Flexural Buckling Analysis",
             "meshtype": "solid",
-            "meshelement": "Hex8",
+            "meshelement": "Hexa8",
             "constraints": ["force", "displacement"],
             "solvers": ["calculix"],
             "material": "solid",
@@ -84,32 +80,14 @@ def get_information():
             }
     return info
 
+
 def setup_base(doc=None, solvertype="ccxtools"):
 
     # setup box base model
     if doc is None:
         doc = init_doc()
 
-    addbox(
-            doc, t, b, l, 
-            0, -b / 2, 0, 'Bottom flange')
-    addbox(
-            doc, (h - 2 * t)/2, d, l, 
-            0, -d / 2, t, 'Web')
-    addbox(
-            doc, (h - 2 * t)/2, d, l, 
-            0, -d / 2, t+(h - 2 * t)/2, 'Web2')
-    addbox(
-            doc, t, b, l, 
-            0, -b / 2, h - t, 'Top flange')
-
-    shape = []
-    for i in doc.Objects:
-
-        if i.isDerivedFrom("Part::Feature"):
-            shape.append(i)
-
-    doc.addObject("Part::MultiFuse", "beam").Shapes = shape
+    addbox(doc, h, b, l, 0, 0, 0, 'beam')
 
     doc.recompute()
 
@@ -132,7 +110,7 @@ def setup_base(doc=None, solvertype="ccxtools"):
     material_object.Material = mat
 
     # mesh
-    from .meshes.mesh_ltb_buckling import create_nodes, create_elements
+    from .meshes.mesh_flexural_buckling import create_nodes, create_elements
 
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
@@ -145,6 +123,7 @@ def setup_base(doc=None, solvertype="ccxtools"):
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Part = doc.beam
 
+
     return doc
 
 
@@ -155,7 +134,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     analysis = doc.Analysis
 
-    # solver
+    # solver,
     if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
@@ -174,41 +153,25 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "buckling"
-        solver_object.BucklingFactors = 1
+        solver_object.BucklingFactors = 10
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = "default"
         solver_object.IterationsControlParameterTimeUse = False
 
     ## displacement constraint
-    displacement_constraint = ObjectsFem.makeConstraintDisplacement(doc, "FemConstraintDisplacement")
-    displacement_constraint.References = [(doc.beam, ("Face12", "Face16", "Face10", "Face4"))]
-    displacement_constraint.zFix = True
-    displacement_constraint.zFree = False
-    displacement_constraint.yFix = True
-    displacement_constraint.yFree = False
+    displacement_constraint = ObjectsFem.makeConstraintFixed(doc, "FemConstraintDisplacement")
+    displacement_constraint.References = [(doc.beam, "Face5")]
     analysis.addObject(displacement_constraint)
-
-    displacement_constraint2 = ObjectsFem.makeConstraintDisplacement(doc, "FemConstraintDisplacement2")
-    displacement_constraint2.References = [(doc.beam, ("Vertex10"))]
-    displacement_constraint2.xFix = True
-    displacement_constraint2.xFree = False
-    analysis.addObject(displacement_constraint2)
 
     ## force_constraint
     force_constraint = ObjectsFem.makeConstraintForce(doc, "FemConstraintForce")
-    force_constraint.References = [(doc.beam, ("Face14", "Face8"))]
-    force_constraint.Force = force_load
+    force_constraint.References = [(doc.beam, "Face6")]
+    force_constraint.Force = 21
     force_constraint.Reversed = True
     analysis.addObject(force_constraint)
-
-    ## force_constraint 2
-    force_constraint2 = ObjectsFem.makeConstraintForce(doc, "FemConstraintForce")
-    force_constraint2.References = [(doc.beam, ("Face22", "Face1"))]
-    force_constraint2.Force = force_load
-    force_constraint2.Reversed = True
-    analysis.addObject(force_constraint2)
 
     doc.recompute()
 
     return doc
+

@@ -85,6 +85,22 @@ class TestSolverCalculix(unittest.TestCase):
         from femexamples.boxanalysis_frequency import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
+    # ********************************************************************************************
+    def test_ccx_buckling_flexuralbuckling(
+            self
+    ):
+        from femexamples.ccx_buckling_flexuralbuckling import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_buckling_lateraltorsionalbuckling(
+            self
+    ):
+        from femexamples.ccx_buckling_lateraltorsionalbuckling import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
 
     # ********************************************************************************************
     def test_box_static(
