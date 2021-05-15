@@ -1365,8 +1365,24 @@ SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort)
 
     this->prevsortplane = sortplane;
     const int *parts = this->triangleindexer->getPartOffsets();
+#ifdef FC_RENDER_SORT_NEAREST
+    const GLint *indices = this->triangleindexer->getIndices();
+    const SbVec3f *vertices = this->vertexarray->getArrayPtr();
+    for(auto & entry : this->deptharray) {
+      int prev = entry.index == 0 ? 0 : parts[entry.index-1];
+      int n = parts[entry.index]-prev;
+      entry.depth = -FLT_MAX;
+      for (int k=0; k<n; ++k) {
+        const SbVec3f & vertex = vertices[indices[k+prev]];
+        float d = sortplane.getDistance(vertex);
+        if (d > entry.depth)
+          entry.depth = d;
+      }
+    }
+#else
     for(auto & entry : this->deptharray)
       entry.depth = sortplane.getDistance(this->partcenters[entry.index]);
+#endif
 
     std::sort(this->deptharray.begin(), this->deptharray.end(),
         [] (const SortEntry &a, const SortEntry &b) {

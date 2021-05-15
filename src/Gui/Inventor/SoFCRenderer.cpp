@@ -1188,6 +1188,9 @@ SoFCRenderer::render(SoGLRenderAction * action)
   glPushAttrib(GL_ALL_ATTRIB_BITS);
   state->push();
 
+  glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+  glEnable(GL_COLOR_MATERIAL);
+
   PRIVATE(this)->matrix = SoModelMatrixElement::get(state);
   PRIVATE(this)->identity = (PRIVATE(this)->matrix == SbMatrix::identity());
 

@@ -1032,6 +1032,12 @@ void View3DInventorViewer::OnTopInfo::clearElements() {
 }
 
 void View3DInventorViewer::clearGroupOnTop(bool alt) {
+    auto manager = selectionRoot->getRenderManager();
+    if (manager) {
+        if (alt)
+            manager->clearSelection(true);
+    }
+
     if(objectsOnTopSel.empty() && objectsOnTopPreSel.empty())
         return;
 
@@ -1125,6 +1131,9 @@ bool View3DInventorViewer::isInGroupOnTop(const char *objname,
 }
 
 bool View3DInventorViewer::isInGroupOnTop(const std::string &key, bool altOnly) const {
+    auto manager = selectionRoot->getRenderManager();
+    if (manager)
+        return manager->isOnTop(key);
     auto it = objectsOnTopSel.find(key);
     return it!=objectsOnTopSel.end() && (!altOnly || it->second.alt);
 }

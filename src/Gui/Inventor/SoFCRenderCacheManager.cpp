@@ -364,14 +364,20 @@ SoFCRenderCacheManager::clear()
 }
 
 bool
-SoFCRenderCacheManager::isOnTop(const std::string & key)
+SoFCRenderCacheManager::isOnTop(const std::string & key, bool altonly)
 {
   auto it = PRIVATE(this)->selcaches.find(key);
   if (it == PRIVATE(this)->selcaches.end())
     return false;
   for (auto & v : it->second) {
-    if (v.second.ontop)
-      return true;
+    if (v.second.ontop) {
+      if (!altonly)
+        return true;
+      auto iter = v.second.elements.find(std::string());
+      if (iter != v.second.elements.end()
+          && (iter->second.id & SoFCRenderer::SelIdAlt))
+        return true;
+    }
   }
   return false;
 }

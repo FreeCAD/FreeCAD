@@ -73,7 +73,7 @@ public:
 
   void clearSelection(bool alt = false);
 
-  bool isOnTop(const std::string & key);
+  bool isOnTop(const std::string & key, bool altonly = true);
 
   const std::map<int, SoPath*> & getSelectionPaths() const;
 
