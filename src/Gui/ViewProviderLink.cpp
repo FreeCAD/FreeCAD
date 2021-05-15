@@ -1094,7 +1094,7 @@ void LinkView::renderDoubleSide(bool enable) {
     if(enable) {
         if(!pcShapeHints) {
             pcShapeHints = new SoShapeHints;
-            pcShapeHints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
+            pcShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
             pcShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
             pcLinkRoot->insertChild(pcShapeHints,0);
         }
@@ -2081,10 +2081,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop==ext->getScaleProperty() || prop==ext->getScaleVectorProperty()) {
         if(!prop->testStatus(App::Property::User3)) {
             const auto &v = ext->getScaleVector();
-            if(canScale(v)) {
+            if(canScale(v))
                 pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
-                linkView->renderDoubleSide(v.x*v.y*v.z < 0);
-            }
+            SbMatrix matrix = convert(ext->getTransform(false));
+            linkView->renderDoubleSide(matrix.det3() < 0);
         }
     }else if(prop == ext->getMatrixProperty()) {
         if(!prop->testStatus(App::Property::User3)) {
@@ -2094,6 +2094,8 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 pcRoot->insertChild(pcMatrixTransform, idx+1);
             }
             pcMatrixTransform->matrix = convert(ext->getMatrixValue());
+            SbMatrix matrix = convert(ext->getTransform(false));
+            linkView->renderDoubleSide(matrix.det3() < 0);
         }
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
@@ -2101,10 +2103,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             const auto &pla = static_cast<const App::PropertyPlacement*>(prop)->getValue();
             ViewProviderGeometryObject::updateTransform(pla, pcTransform);
             const auto &v = ext->getScaleVector();
-            if(canScale(v)) {
+            if(canScale(v))
                 pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
-                linkView->renderDoubleSide(v.x*v.y*v.z < 0);
-            }
+            SbMatrix matrix = convert(ext->getTransform(false));
+            linkView->renderDoubleSide(matrix.det3() < 0);
         }
     }else if(prop == ext->getLinkedObjectProperty()) {
 
