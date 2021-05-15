@@ -850,6 +850,7 @@ Gui::Action * StdCmdUserEditMode::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
+    pcAction->setIsMode(true);
     applyCommandData(this->className(), pcAction);
     
     for (auto const &uem : Gui::Application::Instance->listUserEditModes()) {
