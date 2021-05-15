@@ -854,9 +854,10 @@ Gui::Action * StdCmdUserEditMode::createAction(void)
     
     for (auto const &uem : Gui::Application::Instance->listUserEditModes()) {
         QAction* act = pcAction->addAction(QString());
+        auto modeName = QString::fromStdString(uem.second);
         act->setCheckable(true);
-        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("EditMode")+QString::fromStdString(uem.second))));
-        act->setObjectName(QString::fromLatin1("Std_EditMode")+QString::fromStdString(uem.second));
+        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("EditMode")+modeName)));
+        act->setObjectName(QString::fromLatin1("Std_EditMode")+modeName);
         act->setWhatsThis(QString::fromLatin1(getWhatsThis()));
         
         if (uem.first == 0) {
@@ -880,11 +881,11 @@ void StdCmdUserEditMode::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     for (int i = 0 ; i < a.count() ; i++) {
-        auto modeName = Gui::Application::Instance->getUserEditModeName(i);
+        auto modeName = QString::fromStdString(Gui::Application::Instance->getUserEditModeName(i));
         a[i]->setText(QCoreApplication::translate(
-        "EditMode", qPrintable(QString::fromStdString(modeName))));
+        "EditMode", qPrintable(modeName)));
         a[i]->setToolTip(QCoreApplication::translate(
-        "EditMode", qPrintable(QString::fromStdString(modeName)+QString::fromLatin1(" mode"))));
+        "EditMode", qPrintable(modeName+QString::fromLatin1(" mode"))));
     }
 }
 
