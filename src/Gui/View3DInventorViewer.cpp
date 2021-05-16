@@ -4554,6 +4554,53 @@ void View3DInventorViewer::viewObjects(const std::vector<App::SubObjectT> &objs,
     }
 }
 
+void View3DInventorViewer::setRotationCenterSelection()
+{
+    if (!guiDocument)
+        return;
+    auto sels = Gui::Selection().getSelectionT(guiDocument->getDocument()->getName(),0);
+    if (sels.empty()) {
+        const auto &presel = Gui::Selection().getPreselection().Object;
+        sels.emplace_back(presel.getDocumentName().c_str(),
+                          presel.getObjectName().c_str(),
+                          presel.getSubNameNoElement().c_str());
+    }
+
+    Base::BoundBox3d bound;
+    for(auto &objT : sels) {
+        auto obj = objT.getObject();
+        auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                guiDocument->getViewProvider(obj));
+        if(!vp)
+            continue;
+        auto bbox = vp->getBoundingBox(objT.getSubName().c_str());
+        if (!bbox.IsValid())
+            continue;
+
+        Base::PyGILStateLocker lock;
+        PyObject *pyobj = 0;
+        Base::Matrix4D mat;
+        obj->getSubObject(objT.getSubName().c_str(),&pyobj,&mat,true);
+        if(pyobj) {
+            Py::Object pyobject(pyobj,true);
+            if (PyObject_TypeCheck(pyobj,&Data::ComplexGeoDataPy::Type)) {
+                auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
+                Base::Vector3d center;
+                if (data->getCenterOfGravity(center)) {
+                    bound.Add(center);
+                    continue;
+                }
+            }
+        }
+        bound.Add(bbox.GetCenter());
+    }
+
+    if (bound.IsValid()) {
+        auto center = bound.GetCenter();
+        navigation->setRotationCenter(SbVec3f(center.x, center.y, center.z));
+    }
+}
+
 void View3DInventorViewer::viewBoundBox(const SbBox3f &box) {
     if (isAnimationEnabled())
         animatedViewAll(box, 10, 20);

@@ -1622,6 +1622,35 @@ bool StdCmdViewSelectionExtend::isActive(void)
 
 
 //===========================================================================
+// Std_RotationCenterSelection
+//===========================================================================
+DEF_STD_CMD_A(StdCmdRotationCenterSelection)
+
+StdCmdRotationCenterSelection::StdCmdRotationCenterSelection()
+  : Command("Std_RotationCenterSelection")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Rotation center at selection");
+    sToolTipText  = QT_TR_NOOP("Set rotation center at the center of current selection");
+    sWhatsThis    = "Std_ViewSelectionExtend";
+    sStatusTip    = sToolTipText;
+    sAccel        = "V, R";
+    eType         = Alter3DView | NoDefaultAction;
+}
+
+void StdCmdRotationCenterSelection::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"RotationCenterSelection\")");
+}
+
+bool StdCmdRotationCenterSelection::isActive(void)
+{
+  return getGuiApplication()->sendHasMsgToActiveView("RotationCenterSelection");
+}
+
+
+//===========================================================================
 // Std_ViewSelection
 //===========================================================================
 
@@ -1641,6 +1670,7 @@ public:
 
         addCommand(new StdCmdViewFitSelection());
         addCommand(new StdCmdViewSelectionExtend());
+        addCommand(new StdCmdRotationCenterSelection());
 
         addCommand();
     };

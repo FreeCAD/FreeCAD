@@ -637,7 +637,10 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         syncBoundViews(pMsg);
         return true;
     }
-    else if(strcmp("SetStereoRedGreen",pMsg) == 0 ) {
+    else if (strcmp("RotationCenterSelection",pMsg) == 0) {
+        _viewer->setRotationCenterSelection();
+        return true;
+    } else if(strcmp("SetStereoRedGreen",pMsg) == 0 ) {
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::ANAGLYPH);
         return true;
     }
@@ -778,6 +781,8 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if(strcmp("ViewSelection",pMsg) == 0)
         return true;
     else if (strcmp("ViewSelectionExtend", pMsg) == 0)
+        return true;
+    else if (strcmp("RotationCenterSelection", pMsg) == 0)
         return true;
     else if(strcmp("ViewBottom",pMsg) == 0)
         return true;

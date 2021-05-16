@@ -140,7 +140,7 @@ public:
     void zoomOut();
     void setRotationCenterMode(RotationCenterModes);
     RotationCenterModes getRotationCenterMode() const;
-    void setRotationCenter(const SbVec3f& cnt);
+    virtual void setRotationCenter(const SbVec3f& cnt);
     SbVec3f getFocalPoint() const;
 
     void updateAnimation();

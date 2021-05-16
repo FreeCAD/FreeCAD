@@ -41,6 +41,7 @@ public:
     GestureNavigationStyle();
     virtual ~GestureNavigationStyle() override;
     const char* mouseButtons(ViewerMode) override;
+    virtual void setRotationCenter(const SbVec3f& cnt) override;
 
 protected:
     SbBool processSoEvent(const SoEvent* const ev) override;

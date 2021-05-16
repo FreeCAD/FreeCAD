@@ -1021,6 +1021,10 @@ void GestureNavigationStyle::onRollGesture(int direction)
 
 }
 
+void GestureNavigationStyle::setRotationCenter(const SbVec3f& cnt) {
+    NavigationStyle::lookAtPoint(cnt);
+}
+
 void GestureNavigationStyle::onSetRotationCenter(SbVec2s cursor){
     SbBool ret = NavigationStyle::lookAtPoint(cursor);
     if(!ret){

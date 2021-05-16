@@ -414,6 +414,8 @@ public:
      */
     void viewObjects(const std::vector<App::SubObjectT> &objs, bool extend = false);
 
+    void setRotationCenterSelection();
+
     void setGradientBackground(bool b);
     bool hasGradientBackground() const;
     void setGradientBackgroundColor(const SbColor& fromColor,
