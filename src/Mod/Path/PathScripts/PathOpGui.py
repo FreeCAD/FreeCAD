@@ -1285,7 +1285,7 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation.'''
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
-    obj = res.objFactory(res.name, obj=None, parentJob=res.job)
+    obj = res.objFactory(res.name, obj=None, parentJob=res.parentJob)
     if obj.Proxy:
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
         obj.ViewObject.Visibility = False
@@ -1326,7 +1326,15 @@ class CommandPathOp:
 
 class CommandResources:
     '''POD class to hold command specific resources.'''
-    def __init__(self, name, objFactory, opPageClass, pixmap, menuText, accelKey, toolTip):
+    def __init__(self,
+                 name,
+                 objFactory,
+                 opPageClass,
+                 pixmap,
+                 menuText,
+                 accelKey,
+                 toolTip,
+                 setupProperties=None):  
         self.name = name
         self.objFactory = objFactory
         self.opPageClass = opPageClass
@@ -1334,18 +1342,13 @@ class CommandResources:
         self.menuText = menuText
         self.accelKey = accelKey
         self.toolTip = toolTip
-        self.job = None
-        self.editMode = 0
+        self.setupProperties = setupProperties
+        self.parentJob = None
+        self.editMode = 0  # Set to 5 for no initial Task Panel support
 
 
-def SetupOperation(name,
-                   objFactory,
-                   opPageClass,
-                   pixmap,
-                   menuText,
-                   toolTip,
-                   setupProperties=None):
-    '''SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None)
+def SetupOperation(cmdRes):
+    '''SetupOperation(cmdRes)
     Creates an instance of CommandPathOp with the given parameters and registers the command with FreeCAD.
     When activated it creates a model with proxy (by invoking objFactory), assigns a view provider to it
     (see ViewProvider in this module) and starts the editor specifically for this operation (driven by opPageClass).
@@ -1353,13 +1356,11 @@ def SetupOperation(name,
     It is not expected to be called manually.
     '''
 
-    res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, None, toolTip)
+    command = CommandPathOp(cmdRes)
+    FreeCADGui.addCommand("Path_%s" % cmdRes.name.replace(' ', '_'), command)
 
-    command = CommandPathOp(res)
-    FreeCADGui.addCommand("Path_%s" % name.replace(' ', '_'), command)
-
-    if setupProperties is not None:
-        PathSetupSheet.RegisterOperation(name, objFactory, setupProperties)
+    if cmdRes.setupProperties is not None:
+        PathSetupSheet.RegisterOperation(cmdRes.name, cmdRes.objFactory, cmdRes.setupProperties)
 
     return command
 

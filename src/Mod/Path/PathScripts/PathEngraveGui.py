@@ -142,12 +142,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         '''taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries.'''
         return TaskPanelBaseGeometryPage(obj, features)
 
-Command = PathOpGui.SetupOperation('Engrave',
+cmdRes = PathOpGui.CommandResources('Engrave',
         PathEngrave.Create,
         TaskPanelOpPage,
         'Path_Engrave',
         QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Engrave"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Creates an Engraving Path around a Draft ShapeString"),
         PathEngrave.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathEngraveGui... done\n")

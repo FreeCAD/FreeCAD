@@ -236,12 +236,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         cBox.addItems(enums)
         cBox.blockSignals(False)
 
-Command = PathOpGui.SetupOperation('Slot',
+cmdRes = PathOpGui.CommandResources('Slot',
         PathSlot.Create,
         TaskPanelOpPage,
         'Path_Slot',
         QtCore.QT_TRANSLATE_NOOP("Path_Slot", "Slot"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("Path_Slot", "Create a Slot operation from selected geometry or custom points."),
         PathSlot.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathSlotGui... done\n")

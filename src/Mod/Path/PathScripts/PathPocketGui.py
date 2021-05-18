@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocket as PathPocket
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui
@@ -39,12 +38,14 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         '''pocketFeatures() ... return FeaturePocket (see PathPocketBaseGui)'''
         return PathPocketBaseGui.FeaturePocket
 
-Command = PathOpGui.SetupOperation('Pocket 3D',
+cmdRes = PathOpGui.CommandResources('Pocket 3D',
         PathPocket.Create,
         TaskPanelOpPage,
         'Path_3DPocket',
         QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "3D Pocket"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Creates a Path 3D Pocket object from a face or faces"),
         PathPocket.SetupProperties)
 
-FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")
+Command = PathOpGui.SetupOperation(cmdRes)
+PathOpGui.FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")

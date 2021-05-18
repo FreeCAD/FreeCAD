@@ -76,10 +76,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.obj.Gcode = self.form.txtGCode.toPlainText().splitlines()
 
 
-Command = PathOpGui.SetupOperation('Custom', PathCustom.Create, TaskPanelOpPage,
-                'Path_Custom',
-                QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
-                QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
-                PathCustom.SetupProperties)
+cmdRes = PathOpGui.CommandResources('Custom',
+                                    PathCustom.Create,
+                                    TaskPanelOpPage,
+                                    'Path_Custom',
+                                    QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
+                                    None,  # accelKey
+                                    QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
+                                    PathCustom.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathCustomGui... done\n")

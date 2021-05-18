@@ -242,10 +242,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.setEditorMode('Stopped', 2)  # hide this property
 
 
-Command = PathOpGui.SetupOperation('Adaptive',
-        PathAdaptive.Create,
-        TaskPanelOpPage,
-        'Path_Adaptive',
-        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling")
-        )
+cmdRes = PathOpGui.CommandResources('Adaptive',
+            PathAdaptive.Create,
+            TaskPanelOpPage,
+            'Path_Adaptive',
+            QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
+            None,
+            QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling"))
+
+Command = PathOpGui.SetupOperation(cmdRes)
+PathOpGui.FreeCAD.Console.PrintLog("Loading PathAdaptiveGui... done\n")

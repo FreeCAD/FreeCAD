@@ -32,13 +32,9 @@ from PySide import QtCore
 
 __doc__ = "Helix operation page controller and command implementation."
 
-LOGLEVEL = False
 
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.NOTICE, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
@@ -84,12 +80,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         return signals
 
-Command = PathOpGui.SetupOperation('Helix',
+cmdRes = PathOpGui.CommandResources('Helix',
         PathHelix.Create,
         TaskPanelOpPage,
         'Path_Helix',
         QtCore.QT_TRANSLATE_NOOP("Path_Helix", "Helix"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("Path_Helix", "Creates a Path Helix object from a features of a base object"),
         PathHelix.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")

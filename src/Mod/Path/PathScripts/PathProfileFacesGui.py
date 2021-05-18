@@ -21,7 +21,6 @@
 # ***************************************************************************
 # *   Major modifications: 2020 Russell Johnson <russ4262@gmail.com>        *
 
-import FreeCAD
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfile as PathProfile
 import PathScripts.PathProfileGui as PathProfileGui
@@ -41,12 +40,14 @@ class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
 # Eclass
 
 
-Command = PathOpGui.SetupOperation('Profile',
+cmdRes = PathOpGui.CommandResources('Profile',
         PathProfile.Create,
         TaskPanelOpPage,
         'Path_Contour',
         QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"),
         PathProfile.SetupProperties)
 
-FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")
+Command = PathOpGui.SetupOperation(cmdRes)
+PathOpGui.FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")

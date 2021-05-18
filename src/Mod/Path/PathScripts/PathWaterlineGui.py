@@ -143,12 +143,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.cutPattern.currentIndexChanged.connect(self.updateVisibility)
 
 
-Command = PathOpGui.SetupOperation('Waterline',
+cmdRes = PathOpGui.CommandResources('Waterline',
         PathWaterline.Create,
         TaskPanelOpPage,
         'Path_Waterline',
         QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Waterline"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("Path_Waterline", "Create a Waterline Operation from a model"),
         PathWaterline.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathWaterlineGui... done\n")
