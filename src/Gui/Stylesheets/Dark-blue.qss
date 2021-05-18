@@ -1576,8 +1576,15 @@ QDialog QToolButton:disabled:checked {
     background-color: #5a5a5a;
 }
 
-Gui--PieButton QToolButton:pressed,
+Gui--PieButton:pressed,
+Gui--PieButton:pressed:checked,
+QDialog QToolButton:pressed:checked,
 QDialog QToolButton:pressed {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #2864e2, stop:1 #4e80ea);
+}
+
+Gui--PieButton:checked,
+QDialog QToolButton:checked {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3874f2, stop:1 #5e90fa);
 }
 

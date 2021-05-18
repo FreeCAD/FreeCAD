@@ -1573,10 +1573,18 @@ QDialog QToolButton:disabled:checked {
 }
 
 Gui--PieButton:pressed,
+Gui--PieButton:pressed:checked,
+QDialog QToolButton:pressed:checked,
 QDialog QToolButton:pressed {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3874f2, stop:1 #5e90fa);
+    color: white;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #2864e2, stop:1 #4e80ea);
 }
 
+Gui--PieButton:checked,
+QDialog QToolButton:checked {
+    color: white;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #3874f2, stop:1 #5e90fa);
+}
 
 /*==================================================================================================
 Tool button inside Task Panel content that works as QPushButtons

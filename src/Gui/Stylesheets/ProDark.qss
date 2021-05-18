@@ -1581,6 +1581,7 @@ QPushButton:checked {
 Tool button inside QDialogs that works as QPushButtons
 ==================================================================================================*/
 /* found under Tools -> Customize -> Macros -> Pixmap "..." button */
+Gui--PieButton,
 QDialog QToolButton {
     color: #e0e0e0;
     text-align: center;
@@ -1593,6 +1594,7 @@ QDialog QToolButton {
     border-radius: 2px;
 }
 
+Gui--PieButton:focus,
 QDialog QToolButton:hover,
 QDialog QToolButton:focus {
     color: #cbd8e6;
@@ -1600,6 +1602,8 @@ QDialog QToolButton:focus {
     background-color: #557BB6;
 }
 
+Gui--PieButton:disabled,
+Gui--PieButton:disabled:checked,
 QDialog QToolButton:disabled,
 QDialog QToolButton:disabled:checked {
     color: #333333;
@@ -1607,10 +1611,19 @@ QDialog QToolButton:disabled:checked {
     background-color: #424242;
 }
 
+Gui--PieButton:pressed,
+Gui--PieButton:pressed:checked,
+QDialog QToolButton:pressed:checked,
 QDialog QToolButton:pressed {
-    background-color: #557BB6;
+    color: #cbd8e6;
+    background-color: #456BA6;
 }
 
+Gui--PieButton:checked,
+QDialog QToolButton:checked {
+    color: #cbd8e6;
+    background-color: #557BB6;
+}
 
 /*==================================================================================================
 Tool button inside Task Panel content that works as QPushButtons

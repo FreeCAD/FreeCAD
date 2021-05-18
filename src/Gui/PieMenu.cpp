@@ -136,6 +136,11 @@ public:
                 button->setMenu(action->menu());
             else
                 button->setDefaultAction(action);
+            if (action->isCheckable()) {
+                button->setCheckable(true);
+                button->setChecked(action->isChecked());
+                connect(button, SIGNAL(triggered(QAction*)), &master, SLOT(onTriggered(QAction*)));
+            }
             connect(button, SIGNAL(triggered(QAction*)), &master, SLOT(onTriggered(QAction*)));
         }
 
