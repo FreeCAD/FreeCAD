@@ -247,11 +247,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features) # pylint: disable=attribute-defined-outside-init
         return self.extensionsPanel
 
+cmdRes = PathOpGui.CommandResources('Adaptive',
+            PathAdaptive.Create,
+            TaskPanelOpPage,
+            'Path_Adaptive',
+            QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
+            None,
+            QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling"))
 
-Command = PathOpGui.SetupOperation('Adaptive',
-        PathAdaptive.Create,
-        TaskPanelOpPage,
-        'Path_Adaptive',
-        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling"),
-        PathAdaptive.SetupProperties)
+Command = PathOpGui.SetupOperation(cmdRes)
+PathOpGui.FreeCAD.Console.PrintLog("Loading PathAdaptiveGui... done\n")

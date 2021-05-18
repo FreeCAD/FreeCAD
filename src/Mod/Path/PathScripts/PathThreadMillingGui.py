@@ -201,12 +201,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.threadFit.valueChanged.connect(self._updateFromThreadName)
 
 
-Command = PathOpGui.SetupOperation('Thread Milling',
+cmdRes = PathOpGui.CommandResources('Thread Milling',
         PathThreadMilling.Create,
         TaskPanelOpPage,
         'Path_ThreadMilling',
         QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Thread Milling"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Creates a Path Thread Milling operation from features of a base object"),
         PathThreadMilling.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathThreadMillingGui ... done\n")

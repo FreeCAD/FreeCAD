@@ -133,12 +133,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return TaskPanelBaseGeometryPage(obj, features)
 
 
-Command = PathOpGui.SetupOperation('Deburr',
+cmdRes = PathOpGui.CommandResources('Deburr',
         PathDeburr.Create,
         TaskPanelOpPage,
         'Path_Deburr',
         QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Deburr"),
+        None,
         QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Creates a Deburr Path along Edges or around Faces"),
         PathDeburr.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathDeburrGui... done\n")

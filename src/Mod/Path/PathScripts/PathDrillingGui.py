@@ -142,12 +142,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         if prop in ['PeckDepth', 'RetractHeight'] and not prop in ['Base', 'Disabled']:
             self.updateQuantitySpinBoxes()
 
-Command = PathOpGui.SetupOperation('Drilling',
+cmdRes = PathOpGui.CommandResources('Drilling',
         PathDrilling.Create,
         TaskPanelOpPage,
         'Path_Drilling',
         QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Drilling"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("Path_Drilling", "Creates a Path Drilling object from a features of a base object"),
         PathDrilling.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathDrillingGui... done\n")

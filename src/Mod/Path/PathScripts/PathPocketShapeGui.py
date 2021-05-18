@@ -62,12 +62,14 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
             self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features) # pylint: disable=attribute-defined-outside-init
         return self.extensionsPanel
 
-Command = PathOpGui.SetupOperation('Pocket Shape',
+cmdRes = PathOpGui.CommandResources('Pocket Shape',
         PathPocketShape.Create,
         TaskPanelOpPage,
         'Path_Pocket',
         QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Pocket Shape"),
+        None,  # accelKey
         QtCore.QT_TRANSLATE_NOOP("Path_Pocket", "Creates a Path Pocket object from a face or faces"),
         PathPocketShape.SetupProperties)
 
+Command = PathOpGui.SetupOperation(cmdRes)
 FreeCAD.Console.PrintLog("Loading PathPocketShapeGui... done\n")
