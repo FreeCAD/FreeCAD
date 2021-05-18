@@ -820,12 +820,12 @@ static bool setPreselect(QMenu *menu,
         sel.setSubName(sel.getSubNameNoElement().c_str());
 
     Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
-            sel.getObjectName().c_str(), sel.getSubName().c_str(),0,0,0,2,true);
+            sel.getObjectName().c_str(), sel.getSubName().c_str(),0,0,0,2);
 
     if(!needTooltip
             ||!(QApplication::queryKeyboardModifiers() 
                 & (Qt::ShiftModifier | Qt::AltModifier | Qt::ControlModifier))) {
-        ToolTip::hideText();
+        Gui::Selection().format(0,0,0,0,0,0,true);
         return true;
     }
 

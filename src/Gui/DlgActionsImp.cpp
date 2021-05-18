@@ -215,6 +215,7 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
         ui->actionToolTip   -> setText(QString::fromUtf8(pScript->getToolTipText()));
         ui->actionStatus    -> setText(QString::fromUtf8(pScript->getStatusTip()));
         ui->actionAccel     -> setText(QString::fromLatin1(pScript->getAccel()));
+        ui->checkBoxPreselect->setChecked(pScript->isPreselectionMacro());
         ui->pixmapLabel->clear();
         m_sPixmap.clear();
         const char* name = pScript->getPixmap();
@@ -244,8 +245,9 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     // search for the command in the manager
     QByteArray actionName = newActionName().toLatin1();
     CommandManager& rclMan = Application::Instance->commandManager();
-    MacroCommand* macro = new MacroCommand(actionName, ui->actionMacros->itemData(ui->actionMacros->currentIndex()).toBool());
-    rclMan.addCommand( macro );
+    MacroCommand* macro = new MacroCommand(actionName,
+                ui->actionMacros->itemData(ui->actionMacros->currentIndex()).toBool(),
+                ui->checkBoxPreselect->isChecked());
 
     // add new action
     QTreeWidgetItem* item = new QTreeWidgetItem(ui->actionListWidget);
@@ -288,6 +290,10 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
         macro->setAccel(ui->actionAccel->text().toLatin1());
     }
     ui->actionAccel->clear();
+
+    ui->checkBoxPreselect->setChecked(false);
+
+    rclMan.addCommand( macro );
 
     // emit signal to notify the container widget
     addMacroAction(actionName);
@@ -527,7 +533,8 @@ QString DlgCustomActionsImp::newActionName()
     do
     {
         bUsed = false;
-        sName = QString::fromLatin1("Std_Macro_%1").arg( id++ );
+        sName = QString::fromLatin1(ui->checkBoxPreselect->isChecked() ?
+                "Std_Macro_Presel_%1" : "Std_Macro_%1").arg( id++ );
 
         std::vector<Command*>::iterator it;
         for ( it = aclCurMacros.begin(); it!= aclCurMacros.end(); ++it )

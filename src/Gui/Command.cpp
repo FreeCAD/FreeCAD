@@ -34,6 +34,7 @@
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
 #include <Python.h>
@@ -67,6 +68,7 @@
 #include <App/DocumentObject.h>
 #include <App/AutoTransaction.h>
 #include <Gui/ViewProviderLink.h>
+#include "PieMenu.h"
 
 FC_LOG_LEVEL_INIT("Command", true, true)
 
@@ -1137,16 +1139,21 @@ Gui::Action * CheckableCommand::createAction(void)
 
 /* TRANSLATOR Gui::MacroCommand */
 
-MacroCommand::MacroCommand(const char* name, bool system)
+MacroCommand::MacroCommand(const char* name, bool system, bool preselect)
 #if defined (_MSC_VER)
-  : Command( _strdup(name) ), systemMacro(system)
+  : Command( _strdup(name) )
 #else
-  : Command( strdup(name) ), systemMacro(system)
+  : Command( strdup(name) )
 #endif
+  , systemMacro(system), preselect(preselect)
 {
-    sGroup = QT_TR_NOOP("Macros");
+    sGroup = preselect ? QT_TR_NOOP("Macros Preselection") : QT_TR_NOOP("Macros");
     eType  = 0;
     sScriptName = 0;
+    if (preselect) {
+        bCanLog = false;
+        eType |= NoHistory | NoTransaction;
+    }
 }
 
 MacroCommand::~MacroCommand()
@@ -1159,7 +1166,16 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
-    Q_UNUSED(iMsg);
+    if (preselect) {
+        if (iMsg == 0 || iMsg == 1) {
+            auto checked = !!iMsg;
+            setOption(checked);
+            if(_pcAction) _pcAction->setChecked(checked,true);
+            return;
+        }
+        if (iMsg != 2)
+            return;
+    }
 
     QDir d;
     if (!systemMacro) {
@@ -1194,6 +1210,7 @@ Action * MacroCommand::createAction(void)
 {
     Action *pcAction;
     pcAction = new Action(this,getMainWindow());
+    pcAction->setMenuRole(QAction::NoRole);
     pcAction->setText(QString::fromUtf8(sMenuText));
     pcAction->setToolTip(QString::fromUtf8(sToolTipText));
     pcAction->setStatusTip(QString::fromUtf8(sStatusTip));
@@ -1217,8 +1234,24 @@ Action * MacroCommand::createAction(void)
         pcAction->setStatusTip(stip);
     }
 
+    if (preselect) {
+        pcAction->setCheckable(true);
+        isActive();
+    }
+
     return pcAction;
 }
+
+bool MacroCommand::isActive(void)
+{
+    if (preselect) {
+        bool checked = getOption();
+        if(_pcAction && _pcAction->isChecked()!=checked)
+            _pcAction->setChecked(checked,true);
+    }
+    return true;
+}
+
 
 void MacroCommand::setScriptName( const char* s )
 {
@@ -1237,7 +1270,9 @@ void MacroCommand::load()
         hGrp = hGrp->GetGroup("Macros");
         std::vector<Base::Reference<ParameterGrp> > macros = hGrp->GetGroups();
         for (std::vector<Base::Reference<ParameterGrp> >::iterator it = macros.begin(); it!=macros.end(); ++it ) {
-            MacroCommand* macro = new MacroCommand((*it)->GetGroupName());
+            bool preselect = (*it)->GetBool("Preselect", false);
+            bool system = (*it)->GetBool("System", false);
+            MacroCommand* macro = new MacroCommand((*it)->GetGroupName(), system, preselect);
             macro->setScriptName  ( (*it)->GetASCII( "Script"     ).c_str() );
             macro->setMenuText    ( (*it)->GetASCII( "Menu"       ).c_str() );
             macro->setToolTipText ( (*it)->GetASCII( "Tooltip"    ).c_str() );
@@ -1246,7 +1281,6 @@ void MacroCommand::load()
             if ((*it)->GetASCII("Pixmap", "nix") != "nix")
                 macro->setPixmap    ( (*it)->GetASCII( "Pixmap"     ).c_str() );
             macro->setAccel       ( (*it)->GetASCII( "Accel",0    ).c_str() );
-            macro->systemMacro = (*it)->GetBool("System", false);
             Application::Instance->commandManager().addCommand( macro );
         }
     }
@@ -1270,8 +1304,23 @@ void MacroCommand::save()
             hMacro->SetASCII( "Pixmap",    macro->getPixmap     () );
             hMacro->SetASCII( "Accel",     macro->getAccel      () );
             hMacro->SetBool( "System",     macro->systemMacro );
+            hMacro->SetBool( "Preselect",  macro->preselect );
         }
     }
+}
+
+void MacroCommand::setOption(bool checked)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+              "User parameter:BaseApp/Preferences/Commands");
+    hGrp->SetBool(getName(), checked);
+}
+
+bool MacroCommand::getOption() const
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+              "User parameter:BaseApp/Preferences/Commands");
+    return hGrp->GetBool(getName(), false);
 }
 
 //===========================================================================
@@ -1836,11 +1885,76 @@ bool PythonGroupCommand::hasDropDownMenu() const
 }
 
 //===========================================================================
+// Std_MacroPreselectCommands
+//===========================================================================
+
+class CmdMacroPreselectCommands: public Command
+{
+public:
+    CmdMacroPreselectCommands()
+        : Command("Std_MacroPreselectionCommands")
+    {
+        sGroup      = QT_TR_NOOP("Macro Preselection");
+        eType       = NoHistory;
+        bCanLog     = false;
+        sMenuText     = QT_TR_NOOP("Preselection Macros");
+        sToolTipText  = QT_TR_NOOP("List of macros that are invoked on 3D view pre-selection");
+        sWhatsThis    = "Std_MacroPreselectionCommands";
+        sStatusTip    = sToolTipText;
+        sAccel        = "M, P";
+    }
+
+    virtual const char* className() const {return "CmdMacroPreselectCommands";}
+
+    void add(Command *cmd) {
+        if (!boost::starts_with(cmd->getName(), "Std_Macro_Presel"))
+            return;
+        auto cmdpresel = dynamic_cast<MacroCommand*>(cmd);
+        if (cmdpresel && cmdpresel->isPreselectionMacro()
+                      && cmdset.insert(cmd).second)
+        {
+            cmd->addTo(&_menu);
+        }
+    }
+
+    void remove(Command *cmd) {
+        if (cmdset.erase(cmd))
+            _menu.removeAction(cmd->getAction()->action());
+    }
+
+    Action * createAction(void) {
+        Action * action = Command::createAction();
+        action->action()->setMenu(&_menu);
+        return action;
+    }
+
+    static CmdMacroPreselectCommands *instance()
+    {
+        static CmdMacroPreselectCommands *_instance;
+        if (!_instance)
+            _instance = new CmdMacroPreselectCommands;
+        return _instance;
+    }
+
+    virtual void activated(int iMsg)
+    {
+        (void)iMsg;
+        PieMenu::exec(&_menu, QCursor::pos(), getName());
+    }
+
+private:
+    std::set<Command *> cmdset;
+    QMenu _menu;
+};
+
+//===========================================================================
 // CommandManager
 //===========================================================================
 
 CommandManager::CommandManager()
 {
+    auto cmd = CmdMacroPreselectCommands::instance();
+    _sCommands[cmd->getName()] = cmd;
 }
 
 CommandManager::~CommandManager()
@@ -1927,12 +2041,16 @@ void CommandManager::addCommand(Command* pCom)
         hGrp->SetASCII(pCom->getName(), workbench);
     else
         hGrp->RemoveASCII(pCom->getName());
+    CmdMacroPreselectCommands::instance()->add(pCom);
 }
 
 void CommandManager::removeCommand(Command* pCom)
 {
+    if (pCom == CmdMacroPreselectCommands::instance())
+        return;
     std::map <std::string,Command*>::iterator It = _sCommands.find(pCom->getName());
     if (It != _sCommands.end()) {
+        CmdMacroPreselectCommands::instance()->remove(pCom);
         ++_revision;
         delete It->second;
         _sCommands.erase(It);
@@ -1941,6 +2059,7 @@ void CommandManager::removeCommand(Command* pCom)
 
 void CommandManager::clearCommands()
 {
+    _sCommands.erase(CmdMacroPreselectCommands::instance()->getName());
     for ( std::map<std::string,Command*>::iterator it = _sCommands.begin(); it != _sCommands.end(); ++it )
         delete it->second;
     _sCommands.clear();

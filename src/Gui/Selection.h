@@ -681,6 +681,9 @@ public:
             const char* pDocName=0, Base::Type typeId=App::DocumentObject::getClassTypeId()) const;
     //@}
 
+    const std::string &getPreselectionText() const;
+    void setPreselectionText(const std::string &msg);
+
     // Check if obj can be considered as a top level object
     static void checkTopParent(App::DocumentObject *&obj, std::string &subname);
 
@@ -720,6 +723,8 @@ protected:
     static PyObject *sCheckTopParent      (PyObject *self,PyObject *args);
     static PyObject *sGetContext          (PyObject *self,PyObject *args);
     static PyObject *sSetContext          (PyObject *self,PyObject *args);
+    static PyObject *sSetPreselectionText (PyObject *self,PyObject *args);
+    static PyObject *sGetPreselectionText (PyObject *self,PyObject *args);
 
 protected:
     /// Construction
@@ -736,6 +741,7 @@ protected:
     void slotSelectionChanged(const SelectionChanges& msg);
 
     SelectionChanges CurrentPreselection;
+    std::string PreselectionText;
 
     std::deque<SelectionChanges> NotificationQueue;
     bool Notifying = false;

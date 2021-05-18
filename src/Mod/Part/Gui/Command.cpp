@@ -2727,6 +2727,63 @@ bool CmdPartGeometryDerived::isActive(void)
         || Gui::Selection().hasPreselection();
 }
 
+//===========================================================================
+// Std_Macro_Presel_Part
+//===========================================================================
+
+class CmdPartPreselInfo: public Gui::MacroCommand
+{
+public:
+    CmdPartPreselInfo();
+    void activated(int iMsg);
+};
+
+CmdPartPreselInfo::CmdPartPreselInfo()
+  :MacroCommand("Std_Macro_Presel_Part", true, true)
+{
+    sMenuText     = QT_TR_NOOP("Show preselect geometry info");
+    sToolTipText  = QT_TR_NOOP("Show information of pre-selected geometry element");
+    sWhatsThis    = "Std_Macro_Presel_Part";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartPreselInfo::activated(int iMsg)
+{
+    if (iMsg == 2) {
+        Base::Interpreter().runString("from BasicShapes import Shapes\nShapes.showPreselectInfo()");
+        return;
+    }
+    MacroCommand::activated(iMsg);
+}
+
+//===========================================================================
+// Std_Macro_Presel_PartMeasure
+//===========================================================================
+
+class CmdPartPreselMeasure: public Gui::MacroCommand
+{
+public:
+    CmdPartPreselMeasure();
+    void activated(int iMsg);
+};
+
+CmdPartPreselMeasure::CmdPartPreselMeasure()
+  :MacroCommand("Std_Macro_Presel_PartMeasure", true, true)
+{
+    sMenuText     = QT_TR_NOOP("Measure (pre)selected geometry");
+    sToolTipText  = QT_TR_NOOP("Show various measurement of (pre)selected geometry");
+    sWhatsThis    = "Std_Macro_Presel_Part";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdPartPreselMeasure::activated(int iMsg)
+{
+    if (iMsg == 2) {
+        Base::Interpreter().runString("from BasicShapes import Shapes\nShapes.showPreselectMeasure()");
+        return;
+    }
+    MacroCommand::activated(iMsg);
+}
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -2783,4 +2840,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
     rcCmdMgr.addCommand(new CmdPartGeometryHistory());
     rcCmdMgr.addCommand(new CmdPartGeometryDerived());
+
+    rcCmdMgr.addCommand(new CmdPartPreselInfo());
+    rcCmdMgr.addCommand(new CmdPartPreselMeasure());
 }

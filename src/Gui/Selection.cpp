@@ -59,6 +59,8 @@
 #include "ViewParams.h"
 #include "ViewProviderDocumentObject.h"
 #include "Macro.h"
+#include "Command.h"
+#include "Widgets.h"
 
 FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
@@ -751,6 +753,8 @@ unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, co
 
 unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const char* pDocName, int resolve) const
 {
+    if (!typeName)
+        return size();
     Base::Type typeId = Base::Type::fromName(typeName);
     if (typeId == Base::Type::badType())
         return 0;
@@ -858,6 +862,9 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
             hx = x;
             hy = y;
             hz = z;
+            CurrentPreselection.x = x;
+            CurrentPreselection.y = y;
+            CurrentPreselection.z = z;
 
             if (msg)
                 format(0,0,0,x,y,z,true);
@@ -1018,10 +1025,50 @@ QString SelectionSingleton::format(const char *docname,
        << objT.getObjectName().c_str() << "."
        << objT.getSubName().c_str();
 
-    if (show && getMainWindow())
+    PreselectionText.clear();
+    if (show && getMainWindow()) {
         getMainWindow()->showMessage(text);
 
+        std::vector<std::string> cmds;
+        const auto &cmdmap = Gui::Application::Instance->commandManager().getCommands();
+        for (auto it = cmdmap.upper_bound("Std_Macro_Presel"); it != cmdmap.end(); ++it) {
+            if (!boost::starts_with(it->first, "Std_Macro_Presel"))
+                break;
+            auto cmd = dynamic_cast<MacroCommand*>(it->second);
+            if (cmd && cmd->isPreselectionMacro() && cmd->getOption())
+                cmds.push_back(it->first);
+        }
+
+        for (auto &name : cmds) {
+            auto cmd = dynamic_cast<MacroCommand*>(
+                    Gui::Application::Instance->commandManager().getCommandByName(name.c_str()));
+            if (cmd)
+                cmd->invoke(2);
+        }
+        if (cmds.empty()) 
+            ToolTip::hideText();
+        else {
+            QPoint pt(ViewParams::getPreselectionToolTipOffsetX(),
+                      ViewParams::getPreselectionToolTipOffsetY());
+            ToolTip::showText(pt,
+                              QString::fromUtf8(PreselectionText.c_str()),
+                              Application::Instance->activeView(),
+                              true,
+                              (ToolTip::Corner)ViewParams::getPreselectionToolTipCorner());
+        }
+    }
+
     return text;
+}
+
+const std::string &SelectionSingleton::getPreselectionText() const
+{
+    return PreselectionText;
+}
+
+void SelectionSingleton::setPreselectionText(const std::string &txt) 
+{
+    PreselectionText = txt;
 }
 
 void SelectionSingleton::setFormatDecimal(int d)
@@ -1976,11 +2023,15 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "getPreselection() -- Get preselected object"},
     {"clearPreselection",   (PyCFunction) SelectionSingleton::sRemPreselection, METH_VARARGS,
      "clearPreselection() -- Clear the preselection"},
+    {"setPreselectionText", (PyCFunction) SelectionSingleton::sSetPreselectionText, METH_VARARGS,
+     "setPreselectionText() -- Set preselection message text"},
+    {"getPreselectionText", (PyCFunction) SelectionSingleton::sGetPreselectionText, METH_VARARGS,
+     "getPreselectionText() -- Get preselected message text"},
     {"countObjectsOfType",   (PyCFunction) SelectionSingleton::sCountObjectsOfType, METH_VARARGS,
-     "countObjectsOfType(string, [string],[resolve=1]) -- Get the number of selected objects\n"
-     "The first argument defines the object type e.g. \"Part::Feature\" and the\n"
-     "second argumeht defines the document name. If no document name is given the\n"
-     "currently active document is used"},
+     "countObjectsOfType([string], [string], [resolve=1]) -- Get the number of selected objects\n"
+     "The first argument defines the object type e.g. \"Part::Feature\". If not given, then\n"
+     "return the total number of selections. The second argumeht defines the document name.\n"
+     "If no document name is given the currently active document is used"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, METH_VARARGS,
      "getSelection(docName='',resolve=1,single=False) -- Return a list of selected objects\n"
      "\ndocName - document name. Empty string means the active document, and '*' means all document"
@@ -2211,10 +2262,10 @@ PyObject *SelectionSingleton::sIsSelected(PyObject * /*self*/, PyObject *args)
 
 PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject *args)
 {
-    char* objecttype;
+    char* objecttype=0;
     char* document=0;
     int resolve = 1;
-    if (!PyArg_ParseTuple(args, "s|si", &objecttype, &document,&resolve))
+    if (!PyArg_ParseTuple(args, "|ssi", &objecttype, &document,&resolve))
         return NULL;
 
     unsigned int count = Selection().countObjectsOfType(objecttype, document, resolve);
@@ -2609,5 +2660,21 @@ PyObject *SelectionSingleton::sSetContext(PyObject *, PyObject *args)
         return 0;
     Selection().ContextObject = App::SubObjectT(
             static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr(), subname);
+    Py_Return;
+}
+
+PyObject *SelectionSingleton::sGetPreselectionText(PyObject *, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    return Py::new_reference_to(Py::String(Selection().getPreselectionText()));
+}
+
+PyObject *SelectionSingleton::sSetPreselectionText(PyObject *, PyObject *args)
+{
+    const char *subname;
+    if (!PyArg_ParseTuple(args, "s", &subname))
+        return 0;
+    Selection().setPreselectionText(subname);
     Py_Return;
 }

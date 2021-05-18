@@ -796,7 +796,7 @@ protected:
 class MacroCommand: public Command
 {
 public:
-    MacroCommand(const char* name, bool system = false);
+    MacroCommand(const char* name, bool system = false, bool preselect = false);
     virtual ~MacroCommand();
 
 protected:
@@ -816,6 +816,8 @@ public:
     const char* className() const
     { return "Gui::MacroCommand"; }
 
+    virtual bool isActive(void);
+
     /** @name Methods to set the properties of the Script Command */
     //@{
     /// Sets the script name
@@ -830,10 +832,19 @@ public:
     static void save();
     //@}
 
+    /// Called to determine if this command/option is checked
+    bool getOption() const;
+    /// Called to set checked state of this command/option
+    void setOption(bool checked);
+
+    bool isPreselectionMacro() const {return preselect;}
+
 protected:
     const char* sScriptName;
     bool systemMacro;
+    bool preselect;
 };
+
 
 /** The CommandManager class
  *  This class manage all available commands in FreeCAD. All

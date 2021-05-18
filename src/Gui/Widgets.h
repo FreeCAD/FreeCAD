@@ -386,6 +386,21 @@ private:
     QVariant _val;
 };
 
+/** Implements a transparent tool tip label that is a child widget of the main
+ * window
+ */
+class GuiExport TipLabel: public QLabel
+{
+    Q_OBJECT
+public:
+    TipLabel();
+    static TipLabel * instance();
+    void set(const QString &);
+protected:
+    void paintEvent(QPaintEvent *e);
+    void resizeEvent(QResizeEvent *e);
+};
+
 // ----------------------------------------------------------------------
 
 /**
@@ -398,7 +413,18 @@ private:
 class GuiExport ToolTip : public QObject
 {
 public:
-    static void showText(const QPoint & pos, const QString & text, QWidget * w = 0);
+    enum Corner {
+        NoCorner = -1, // pos is treat as global coordinate
+        TopLeft = 0,
+        TopRight = 1,
+        BottomLeft = 2,
+        BottomRight = 3,
+    };
+    static void showText(const QPoint & pos,
+                         const QString & text,
+                         QWidget * w = 0,
+                         bool overlay = false,
+                         Corner corner = NoCorner);
     static void hideText();
 
 protected:
@@ -416,8 +442,10 @@ protected:
 private:
     bool installed, hidden;
     static ToolTip* inst;
+    bool overlay = false;
     QString text;
     QPoint pos;
+    Corner corner;
     QPointer<QWidget> w; // need guard in case widget gets destroyed
     QBasicTimer tooltipTimer;
     QElapsedTimer displayTime;

@@ -297,6 +297,12 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Check widget position and size on restore to make sure it is within the current screen."))\
     FC_VIEW_PARAM2(TextCursorWidth, int, Int, 5, \
         QT_TRANSLATE_NOOP("ViewParams","Text cursor width in pixel."))\
+    FC_VIEW_PARAM(PreselectionToolTipCorner, int, Int, 3, \
+        QT_TRANSLATE_NOOP("ViewParams","Preselection tool tip docking corner."))\
+    FC_VIEW_PARAM(PreselectionToolTipOffsetX, int, Int, 0, \
+        QT_TRANSLATE_NOOP("ViewParams","Preselection tool tip x offset relative to its docking corner."))\
+    FC_VIEW_PARAM(PreselectionToolTipOffsetY, int, Int, 0, \
+        QT_TRANSLATE_NOOP("ViewParams","Preselection tool tip y offset relative to its docking corner."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

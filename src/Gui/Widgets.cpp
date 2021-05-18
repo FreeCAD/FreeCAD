@@ -57,6 +57,7 @@
 #include "DlgExpressionInput.h"
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
+#include "MainWindow.h"
 #include "ViewParams.h"
 
 using namespace Gui;
@@ -1012,6 +1013,67 @@ void LabelButton::browse()
 
 // ----------------------------------------------------------------------
 
+TipLabel::TipLabel()
+    : QLabel(getMainWindow())
+{
+    // setAttribute(Qt::WA_NoSystemBackground, true);
+    // setAttribute(Qt::WA_TranslucentBackground, true);
+    setAttribute(Qt::WA_TransparentForMouseEvents, true);
+    setForegroundRole(QPalette::ToolTipText);
+    setBackgroundRole(QPalette::ToolTipBase);
+    setPalette(QToolTip::palette());
+    ensurePolished();
+    setMargin(1 + style()->pixelMetric(QStyle::PM_ToolTipLabelFrameWidth, 0, this));
+    setFrameStyle(QFrame::NoFrame);
+    setAlignment(Qt::AlignLeft);
+    setIndent(1);
+}
+
+TipLabel *TipLabel::instance()
+{
+    static TipLabel *_instance;
+    if (!_instance)
+        _instance = new TipLabel();
+    return _instance;
+}
+
+void TipLabel::set(const QString &text)
+{
+    setWordWrap(Qt::mightBeRichText(text));
+    setText(text);
+    QFontMetrics fm(font());
+    QSize extra(1, 0);
+    // Make it look good with the default ToolTip font on Mac, which has a small descent.
+    if (fm.descent() == 2 && fm.ascent() >= 11)
+        ++extra.rheight();
+    resize(sizeHint() + extra);
+}
+
+void TipLabel::paintEvent(QPaintEvent *ev)
+{
+    QStylePainter p(this);
+    QStyleOptionFrame opt;
+    opt.init(this);
+    p.setOpacity(0.7); // This seems only effecitve when no stylesheet is set.
+    p.drawPrimitive(QStyle::PE_PanelTipLabel, opt);
+    p.end();
+
+    QLabel::paintEvent(ev);
+}
+
+void TipLabel::resizeEvent(QResizeEvent *e)
+{
+    QStyleHintReturnMask frameMask;
+    QStyleOption option;
+    option.init(this);
+    if (style()->styleHint(QStyle::SH_ToolTip_Mask, &option, this, &frameMask))
+        setMask(frameMask.region);
+
+    QLabel::resizeEvent(e);
+}
+
+// ----------------------------------------------------------------------
+
 ToolTip* ToolTip::inst = 0;
 
 ToolTip* ToolTip::instance()
@@ -1045,7 +1107,11 @@ void ToolTip::removeEventFilter()
     this->installed = false;
 }
 
-void ToolTip::showText(const QPoint & pos, const QString & text, QWidget * w)
+void ToolTip::showText(const QPoint & pos,
+                       const QString & text,
+                       QWidget * w,
+                       bool overlay,
+                       Corner corner)
 {
     ToolTip* tip = instance();
     if (!text.isEmpty()) {
@@ -1054,6 +1120,8 @@ void ToolTip::showText(const QPoint & pos, const QString & text, QWidget * w)
         tip->pos = pos;
         tip->text = text;
         tip->w = w;
+        tip->corner = corner;
+        tip->overlay = overlay;
         // show text with a short delay
         tip->tooltipTimer.start(80, tip);
         tip->displayTime.start();
@@ -1067,13 +1135,51 @@ void ToolTip::hideText()
 {
     instance()->removeEventFilter();
     instance()->tooltipTimer.stop();
+    TipLabel::instance()->hide();
     QToolTip::hideText();
 }
 
 void ToolTip::timerEvent(QTimerEvent *e)
 {
     if (e->timerId() == tooltipTimer.timerId()) {
-        QToolTip::showText(pos, text, w);
+        auto tipLabel = TipLabel::instance();
+        if (overlay) {
+            QToolTip::hideText();
+            tipLabel->move(getMainWindow()->mapFromGlobal(pos));
+            tipLabel->set(text);
+            QPoint pos;
+            if (!this->w)
+                pos = getMainWindow()->mapFromGlobal(this->pos);
+            else {
+                pos = getMainWindow()->mapFromGlobal(this->w->mapToGlobal(QPoint()));
+                auto size = this->w->size();
+                switch(this->corner) {
+                case TopLeft:
+                    pos += this->pos;
+                    break;
+                case TopRight:
+                    pos.setX(pos.x() + size.width() - tipLabel->width() - this->pos.x());
+                    pos.setY(pos.y() + this->pos.y());
+                    break;
+                case BottomLeft:
+                    pos.setX(pos.x() + this->pos.x());
+                    pos.setY(pos.y() + size.height() - tipLabel->height() - this->pos.y());
+                    break;
+                case BottomRight:
+                    pos.setX(pos.x() + size.width() - tipLabel->width() - this->pos.x());
+                    pos.setY(pos.y() + size.height() - tipLabel->height() - this->pos.y());
+                    break;
+                default:
+                    pos = getMainWindow()->mapFromGlobal(this->pos);
+                }
+                tipLabel->move(pos);
+            }
+            tipLabel->show();
+            tipLabel->raise();
+        } else {
+            tipLabel->hide();
+            QToolTip::showText(pos, text, w);
+        }
         tooltipTimer.stop();
         displayTime.restart();
     }
@@ -1081,25 +1187,43 @@ void ToolTip::timerEvent(QTimerEvent *e)
 
 bool ToolTip::eventFilter(QObject* o, QEvent*e)
 {
-    // This is a trick to circumvent that the tooltip gets hidden immediately
-    // after it gets visible. We just filter out all timer events to keep the
-    // label visible.
-    if (o->inherits("QLabel")) {
-        QLabel* label = qobject_cast<QLabel*>(o);
-        // Ignore the timer events to prevent from being closed
-        if (label->windowFlags() & Qt::ToolTip) {
-            if (e->type() == QEvent::Show) {
-                this->hidden = false;
-            }
-            else if (e->type() == QEvent::Hide) {
-                removeEventFilter();
-                this->hidden = true;
-            }
-            else if (e->type() == QEvent::Timer &&
-                !this->hidden && displayTime.elapsed() < 5000) {
-                return true;
+    if (!o->isWidgetType())
+        return false;
+
+    switch(e->type()) {
+    case QEvent::MouseButtonPress:
+        hideText();
+        break;
+    case QEvent::KeyPress:
+        if (static_cast<QKeyEvent*>(e)->key() == Qt::Key_Escape)
+            hideText();
+        break;
+    case QEvent::Show:
+    case QEvent::Hide:
+    case QEvent::Timer:
+        if (auto label = qobject_cast<QLabel*>(o)) {
+            // This is a trick to circumvent that the tooltip gets hidden immediately
+            // after it gets visible. We just filter out all timer events to keep the
+            // label visible.
+
+            // Ignore the timer events to prevent from being closed
+            if ((label->windowFlags() & Qt::ToolTip) || o == TipLabel::instance()) {
+                if (e->type() == QEvent::Show) {
+                    this->hidden = false;
+                }
+                else if (e->type() == QEvent::Hide) {
+                    removeEventFilter();
+                    this->hidden = true;
+                }
+                else if (e->type() == QEvent::Timer &&
+                    !this->hidden && displayTime.elapsed() < 5000) {
+                    return true;
+                }
             }
         }
+        break;
+    default:
+        break;
     }
     return false;
 }
