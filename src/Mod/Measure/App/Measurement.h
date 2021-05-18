@@ -54,6 +54,9 @@ public:
     Measurement();
     ~Measurement();
 
+    void setSilent(bool enable) {silent = enable;}
+    bool isSilent() const {return silent;}
+
     void clear();
     bool has3DReferences();
 
@@ -85,6 +88,7 @@ protected:
   TopoDS_Shape getShape(App::DocumentObject *obj , const char *subName) const;
   MeasureType measureType;
   Py::Object PythonObject;
+  bool silent = true;
 };
 
 
