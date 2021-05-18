@@ -87,6 +87,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         lastAxis = None
         lastAngle = 0.0
+        parentJob = PathUtils.findParentJob(obj)
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
@@ -146,12 +147,16 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
                 # Prepare for drilling cycle
                 self.commandlist.append(Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
-                self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
-                self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
 
                 # Update retract height due to rotation
                 self.opSetDefaultRetractHeight(obj)
                 cmdParams['R'] = obj.RetractHeight.Value
+
+            # move to hole location
+            self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
+            startHeight = obj.StartDepth.Value + parentJob.SetupSheet.SafeHeightOffset.Value
+            self.commandlist.append(Path.Command('G0', {'Z': startHeight, 'F': self.vertRapid}))
+            self.commandlist.append(Path.Command('G1', {'Z': obj.StartDepth.Value, 'F': self.vertFeed}))
 
             # Update changes to parameters
             params.update(cmdParams)
@@ -182,7 +187,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         if hasattr(job.SetupSheet, 'RetractHeight'):
             obj.RetractHeight = job.SetupSheet.RetractHeight
-        elif self.applyExpression(obj, 'RetractHeight', 'OpStartDepth+1mm'):
+        elif self.applyExpression(obj, 'RetractHeight', 'StartDepth+SetupSheet.SafeHeightOffset'):
             if has_job:
                 obj.RetractHeight = 10
             else:
