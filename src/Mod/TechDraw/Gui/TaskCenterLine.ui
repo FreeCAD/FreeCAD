@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>385</height>
+    <width>250</width>
+    <height>352</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -370,20 +370,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="cbFlip">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki '2LineCenterLine' for a description</string>
-     </property>
-     <property name="text">
-      <string>Flip Ends</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

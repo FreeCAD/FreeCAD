@@ -220,6 +220,7 @@ public:
                                           int mode, double ext,
                                           double m_hShift, double m_vShift,
                                           double rotate);
+    static bool Circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Lines(
                                           TechDraw::DrawViewPart* partFeat,
                                           std::vector<std::string> faceNames,
