@@ -253,7 +253,8 @@ cmdRes = PathOpGui.CommandResources('Adaptive',
             'Path_Adaptive',
             QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive"),
             None,
-            QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling"))
+            QtCore.QT_TRANSLATE_NOOP("Path_Adaptive", "Adaptive clearing and profiling"),
+            PathAdaptive.SetupProperties)
 
 Command = PathOpGui.SetupOperation(cmdRes)
 PathOpGui.FreeCAD.Console.PrintLog("Loading PathAdaptiveGui... done\n")
