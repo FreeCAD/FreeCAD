@@ -684,8 +684,9 @@ GeomLine* GeomCurve::toLine(bool clone) const
     if (!isLinear())
         return nullptr;
 
-    auto res = new GeomLine(pointAtParameter(getFirstParameter()),
-                          pointAtParameter(getLastParameter()));
+    auto p1 = pointAtParameter(getFirstParameter());
+    auto p2 = pointAtParameter(getLastParameter());
+    auto res = new GeomLine(p1, p2-p1);
     res->copyNonTag(this);
     if (clone)
         res->tag = this->tag;
