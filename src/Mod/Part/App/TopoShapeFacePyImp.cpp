@@ -96,6 +96,8 @@
 #include "OCCError.h"
 #include "Tools.h"
 #include "FaceMaker.h"
+#include "FaceMakerCheese.h"
+
 
 using namespace Part;
 
@@ -658,42 +660,8 @@ PyObject* TopoShapeFacePy::validate(PyObject *args)
 
     try {
         const TopoDS_Face& face = TopoDS::Face(getTopoShapePtr()->getShape());
-        BRepCheck_Analyzer aChecker(face);
-        if (!aChecker.IsValid()) {
-            TopoDS_Wire outerwire = ShapeAnalysis::OuterWire(face);
-            TopTools_IndexedMapOfShape myMap;
-            myMap.Add(outerwire);
-
-            TopExp_Explorer xp(face,TopAbs_WIRE);
-            ShapeFix_Wire fix;
-            fix.SetFace(face);
-            fix.Load(outerwire);
-            fix.Perform();
-            BRepBuilderAPI_MakeFace mkFace(fix.WireAPIMake());
-            while (xp.More()) {
-                if (!myMap.Contains(xp.Current())) {
-                    fix.Load(TopoDS::Wire(xp.Current()));
-                    fix.Perform();
-                    mkFace.Add(fix.WireAPIMake());
-                }
-                xp.Next();
-            }
-
-            aChecker.Init(mkFace.Face());
-            if (!aChecker.IsValid()) {
-                ShapeFix_Shape fix(mkFace.Face());
-                fix.SetPrecision(Precision::Confusion());
-                fix.SetMaxTolerance(Precision::Confusion());
-                fix.Perform();
-                fix.FixWireTool()->Perform();
-                fix.FixFaceTool()->Perform();
-                getTopoShapePtr()->setShape(fix.Shape());
-            }
-            else {
-                getTopoShapePtr()->setShape(mkFace.Face());
-            }
-        }
-
+        TopoDS_Face valid_face=FaceMakerCheese::validateFace(face);
+        getTopoShapePtr()->setShape(valid_face);
         Py_Return;
     }
     catch (Standard_Failure& e) {
@@ -785,8 +753,8 @@ PyObject* TopoShapeFacePy::cutHoles(PyObject *args)
                         break;
                     }
                 }
-
-                getTopoShapePtr()->setShape(mkFace.Face());
+                TopoDS_Face valid_face=FaceMakerCheese::validateFace(mkFace.Face());
+                getTopoShapePtr()->setShape(valid_face);
                 Py_Return;
             }
             else {
