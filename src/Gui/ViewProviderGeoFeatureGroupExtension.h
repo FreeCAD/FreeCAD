@@ -72,6 +72,8 @@ public:
 
     virtual void extensionModeSwitchChange(void) override;
 
+    static bool needUpdateChildren(App::DocumentObject *obj);
+
 protected:
     void buildExport() const;
     virtual void buildChildren3D();

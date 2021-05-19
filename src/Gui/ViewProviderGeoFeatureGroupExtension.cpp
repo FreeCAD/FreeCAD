@@ -350,6 +350,26 @@ void ViewProviderGeoFeatureGroupExtension::extensionModeSwitchChange(void)
     }
 }
 
+bool ViewProviderGeoFeatureGroupExtension::needUpdateChildren(App::DocumentObject *obj)
+{
+    bool found = false;
+    for (auto o : obj->getInList()) {
+        auto geogroup = o->getExtensionByType<App::GeoFeatureGroupExtension>(true);
+        if (geogroup) {
+            auto vp = Application::Instance->getViewProvider(o);
+            if (vp) {
+                auto ext = vp->getExtensionByType<ViewProviderGeoFeatureGroupExtension>(true);
+                if (ext)
+                    ext->buildExport();
+            }
+            return true;
+        }
+        if (!found && o->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
+            found = true;
+    }
+    return found;
+}
+
 namespace Gui {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGeoFeatureGroupExtensionPython, Gui::ViewProviderGeoFeatureGroupExtension)
 

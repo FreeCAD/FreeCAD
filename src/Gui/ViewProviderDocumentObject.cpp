@@ -64,6 +64,7 @@
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
+#include "ViewProviderGeoFeatureGroupExtension.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoFCSelection.h"
 #include "ViewParams.h"
@@ -928,10 +929,9 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
 
     //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children
     //of the geofeaturegroup depends on what the childs claim
-    auto grp = App::GeoFeatureGroupExtension::getAnyGroupOfObject(obj);
-    if(grp) {
+    if (ViewProviderGeoFeatureGroupExtension::needUpdateChildren(obj)) {
         auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
-                Application::Instance->getViewProvider(grp));
+                Application::Instance->getViewProvider(obj));
         if(vpd)
             vpd->updateChildren(true);
     }
