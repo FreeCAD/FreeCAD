@@ -276,11 +276,11 @@ void TaskTransformedParameters::setupUI() {
 
     PartDesignGui::addTaskCheckBox(proxy);
 
-    auto splitter = new QSplitter(Qt::Vertical, this);
+    splitter = new QSplitter(Qt::Vertical, this);
     splitter->addWidget(labelMessage);
     splitter->addWidget(linkEditor);
     splitter->addWidget(proxy);
-    proxy->setMinimumHeight(300);
+    proxy->setMinimumHeight(defaultMinimumHeight);
 
     this->groupLayout()->addWidget(splitter);
 

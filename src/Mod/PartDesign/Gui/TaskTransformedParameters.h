@@ -38,6 +38,7 @@
 #include "TaskTransformedMessages.h"
 #include "ViewProviderTransformed.h"
 
+class QSplitter;
 class QListWidget;
 class QTimer;
 
@@ -169,6 +170,8 @@ public:
      */
     PartDesign::Transformed *getTopTransformedObject (bool silent=true) const;
 
+    QWidget *getProxyWidget() { return proxy; }
+
 public Q_SLOTS:
     void onToggledExpansion();
 
@@ -238,6 +241,9 @@ protected:
     QCheckBox *checkBoxSubTransform = nullptr;
     QCheckBox *checkBoxParallel = nullptr;
     QCheckBox *checkBoxNewSolid = nullptr;
+
+    QSplitter *splitter = nullptr;
+    int defaultMinimumHeight = 300;
 
     QLabel *labelMessage = nullptr;
     boost::signals2::scoped_connection connMessage;

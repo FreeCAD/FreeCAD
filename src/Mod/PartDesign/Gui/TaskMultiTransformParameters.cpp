@@ -158,6 +158,7 @@ void TaskMultiTransformParameters::closeSubTask()
         disconnect(ui->checkBoxUpdateView, 0, subTask, 0);
         delete subTask;
         subTask = NULL;
+        this->proxy->setMinimumHeight(this->defaultMinimumHeight);
     }
 }
 
@@ -208,6 +209,9 @@ void TaskMultiTransformParameters::onTransformEdit()
         subTask = new TaskScaledParameters(this, ui->verticalLayout);
     else
         return; // TODO: Show an error?
+    
+    this->proxy->setMinimumHeight(this->defaultMinimumHeight
+            + subTask->getProxyWidget()->minimumHeight());
 
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             subTask, SLOT(onUpdateView(bool)));
