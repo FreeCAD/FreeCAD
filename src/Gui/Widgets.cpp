@@ -1013,8 +1013,8 @@ void LabelButton::browse()
 
 // ----------------------------------------------------------------------
 
-TipLabel::TipLabel()
-    : QLabel(getMainWindow())
+TipLabel::TipLabel(QWidget *parent)
+    : QLabel(parent)
 {
     // setAttribute(Qt::WA_NoSystemBackground, true);
     // setAttribute(Qt::WA_TranslucentBackground, true);
@@ -1029,12 +1029,35 @@ TipLabel::TipLabel()
     setIndent(1);
 }
 
-TipLabel *TipLabel::instance()
+static QPointer<TipLabel> _TipLabel;
+TipLabel *TipLabel::instance(QWidget *parent)
 {
-    static TipLabel *_instance;
-    if (!_instance)
-        _instance = new TipLabel();
-    return _instance;
+    static QPointer<QWidget> _parent;
+
+    auto findParent = [&](QWidget *widget) -> QWidget* {
+        if (!widget)
+            return getMainWindow();
+        for (auto w=widget; w; w=w->parentWidget()) {
+            if (w == getMainWindow())
+                return w;
+        }
+        return widget;
+    };
+
+    if (!_TipLabel) {
+        _TipLabel = new TipLabel(findParent(parent));
+        _parent = parent;
+    } else if (_parent != parent) {
+        _TipLabel->setParent(findParent(parent));
+        _parent = parent;
+    }
+    return _TipLabel;
+}
+
+void TipLabel::hideLabel()
+{
+    if (_TipLabel)
+        _TipLabel->hide();
 }
 
 void TipLabel::set(const QString &text)
@@ -1135,23 +1158,26 @@ void ToolTip::hideText()
 {
     instance()->removeEventFilter();
     instance()->tooltipTimer.stop();
-    TipLabel::instance()->hide();
+    TipLabel::hideLabel();
     QToolTip::hideText();
 }
 
 void ToolTip::timerEvent(QTimerEvent *e)
 {
     if (e->timerId() == tooltipTimer.timerId()) {
-        auto tipLabel = TipLabel::instance();
         if (overlay) {
             QToolTip::hideText();
-            tipLabel->move(getMainWindow()->mapFromGlobal(pos));
+            auto tipLabel = TipLabel::instance(this->w);
+            QWidget *parent = tipLabel->parentWidget();
+            if (!parent)
+                return;
+            tipLabel->move(parent->mapFromGlobal(pos));
             tipLabel->set(text);
             QPoint pos;
             if (!this->w)
-                pos = getMainWindow()->mapFromGlobal(this->pos);
+                pos = parent->mapFromGlobal(this->pos);
             else {
-                pos = getMainWindow()->mapFromGlobal(this->w->mapToGlobal(QPoint()));
+                pos = parent->mapFromGlobal(this->w->mapToGlobal(QPoint()));
                 auto size = this->w->size();
                 switch(this->corner) {
                 case TopLeft:
@@ -1170,14 +1196,14 @@ void ToolTip::timerEvent(QTimerEvent *e)
                     pos.setY(pos.y() + size.height() - tipLabel->height() - this->pos.y());
                     break;
                 default:
-                    pos = getMainWindow()->mapFromGlobal(this->pos);
+                    pos = parent->mapFromGlobal(this->pos);
                 }
                 tipLabel->move(pos);
             }
             tipLabel->show();
             tipLabel->raise();
         } else {
-            tipLabel->hide();
+            TipLabel::hideLabel();
             QToolTip::showText(pos, text, w);
         }
         tooltipTimer.stop();
@@ -1207,7 +1233,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
             // label visible.
 
             // Ignore the timer events to prevent from being closed
-            if ((label->windowFlags() & Qt::ToolTip) || o == TipLabel::instance()) {
+            if ((label->windowFlags() & Qt::ToolTip) || o == _TipLabel) {
                 if (e->type() == QEvent::Show) {
                     this->hidden = false;
                 }

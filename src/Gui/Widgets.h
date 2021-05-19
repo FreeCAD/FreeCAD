@@ -393,8 +393,9 @@ class GuiExport TipLabel: public QLabel
 {
     Q_OBJECT
 public:
-    TipLabel();
-    static TipLabel * instance();
+    TipLabel(QWidget *parent);
+    static TipLabel * instance(QWidget *parent);
+    static void hideLabel();
     void set(const QString &);
 protected:
     void paintEvent(QPaintEvent *e);
