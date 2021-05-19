@@ -427,6 +427,14 @@ void Body::setBaseProperty(App::DocumentObject* feature)
     if (!feature || !this->Group.find(feature->getNameInDocument(), &index))
         throw Base::RuntimeError("Feature not found in body");
 
+    if (feature->isDerivedFrom(Transformed::getClassTypeId())) {
+        for (auto obj : Group.getValues()) {
+            if (obj->testStatus(App::ObjectStatus::ObjEditing)
+                    && obj->isDerivedFrom(MultiTransform::getClassTypeId()))
+                return;
+        }
+    }
+
     if (feature->isDerivedFrom(PartDesign::Feature::getClassTypeId())
         && !static_cast<PartDesign::Feature*>(feature)->NewSolid.getValue()
         && Body::isSolidFeature(feature))
