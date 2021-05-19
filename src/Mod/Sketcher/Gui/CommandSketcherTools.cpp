@@ -74,7 +74,11 @@ bool isSketcherAcceleratorActive(Gui::Document *doc, bool actsOnSelection)
                 mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
                 if (!actsOnSelection)
                     return true;
-                else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
+
+                // Calling countObjectOfType() with resolve == 3 will check of
+                // linked object, so as to enable editing through an App::Link
+                if (Gui::Selection().countObjectsOfType(
+                            Sketcher::SketchObject::getClassTypeId(), nullptr, 3) > 0)
                     return true;
             }
         }
@@ -311,23 +315,12 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    // get the selection
-    std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    Gui::Document * doc= getActiveGuiDocument();
+    ReleaseHandler(doc);
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    Sketcher::SketchObject* Obj= vp->getSketchObject();
 
-    // Cancel any in-progress operation
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    SketcherGui::ReleaseHandler(doc);
-
-    // only one sketch with its subelements are allowed to be selected
-    if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select elements from a single sketch."));
-        return;
-    }
-
-    // get the needed lists and objects
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector<std::string> &SubNames = Obj->checkSubNames(selection[0].getSubNames());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 

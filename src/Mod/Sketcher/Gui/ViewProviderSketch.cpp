@@ -1761,20 +1761,22 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     // are we in edit?
     if (edit) {
+        App::DocumentObject *selObj = msg.Object.getObject();
+        if (selObj)
+            selObj = selObj->getLinkedObject();
+
+        bool isExternalObject = selObj != getObject()
+                                && msg.Object.getObjectName().size()
+                                && msg.Object.getDocument() != getObject()->getDocument();
+
         bool handled=false;
         if (_Mode == STATUS_SKETCH_UseHandler) {
-            if (!edit->sketchHandler->allowExternalDocument()
-                    && msg.Object.getObjectName().size()
-                    && msg.Object.getDocument()!=getObject()->getDocument())
+            if (isExternalObject && !edit->sketchHandler->allowExternalDocument())
                 return;
             App::AutoTransaction committer;
             handled = edit->sketchHandler->onSelectionChanged(msg);
         }
-        if (handled)
-            return;
-
-        // ignore external object
-        if(msg.Object.getObjectName().size() && msg.Object.getDocument()!=getObject()->getDocument())
+        if (handled || isExternalObject)
             return;
 
         std::string temp;
@@ -1791,8 +1793,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
         else if (msg.Type == Gui::SelectionChanges::AddSelection) {
             // is it this object??
-            if (strcmp(msg.pDocName,getSketchObject()->getDocument()->getName())==0
-                && strcmp(msg.pObjectName,getSketchObject()->getNameInDocument())== 0) {
+            if (selObj == getObject()) {
                 if (msg.pSubName) {
                     std::string shapetype(msg.pSubName);
                     if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
@@ -1836,8 +1837,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
             // Are there any objects selected
             if (edit->SelPointMap.size() > 0 || edit->SelCurveMap.size() > 0 || edit->SelConstraintSet.size() > 0) {
                 // is it this object??
-                if (strcmp(msg.pDocName,getSketchObject()->getDocument()->getName())==0
-                    && strcmp(msg.pObjectName,getSketchObject()->getNameInDocument())== 0) {
+                if (selObj == getObject()) {
                     if (msg.pSubName) {
                         std::string shapetype(msg.pSubName);
                         if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
@@ -1895,8 +1895,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
             //}
         }
         else if (msg.Type == Gui::SelectionChanges::SetPreselect) {
-            if (strcmp(msg.pDocName,getSketchObject()->getDocument()->getName())==0
-               && strcmp(msg.pObjectName,getSketchObject()->getNameInDocument())== 0) {
+            if (selObj == getObject()) {
                 if (msg.pSubName) {
                     if (boost::starts_with(msg.pSubName, "Edge")) {
                         int GeoId = std::atoi(&msg.pSubName[4]) - 1;
