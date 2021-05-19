@@ -289,6 +289,7 @@ struct EditData {
     // rendering tree) to a vector of those bounding boxes paired with relevant
     // constraint IDs.
     std::map<QString, ViewProviderSketch::ConstrIconBBVec> combinedConstrBoxes;
+    std::map<int, int> combinedConstrMap;
 
     // nodes for the visuals
     SoSeparator   *EditRoot;
@@ -2966,6 +2967,8 @@ void ViewProviderSketch::updateColor(void)
     assert(edit);
     //Base::Console().Log("Draw preseletion\n");
 
+    // update the virtual space
+    updateVirtualSpace();
 
     SbVec3f pnt, dir;
     edit->viewer->getNearPlane(pnt, dir);
@@ -3800,16 +3803,18 @@ void ViewProviderSketch::drawConstraintIcons()
         iconQueue.push_back(thisIcon);
     }
 
-    combineConstraintIcons(iconQueue);
+    combineConstraintIcons(std::move(iconQueue));
 }
 
-void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
+void ViewProviderSketch::combineConstraintIcons(IconQueue &&iconQueue)
 {
     // getScaleFactor gives us a ratio of pixels per some kind of real units
     float maxDistSquared = pow(getScaleFactor(), 2);
 
     // There's room for optimisation here; we could reuse the combined icons...
     edit->combinedConstrBoxes.clear();
+
+    edit->combinedConstrMap.clear();
 
     while(!iconQueue.empty()) {
         // A group starts with an item popped off the back of our initial queue
@@ -3855,12 +3860,14 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
             drawTypicalConstraintIcon(thisGroup[0]);
         }
         else {
-            drawMergedConstraintIcons(thisGroup);
+            for (std::size_t i=1; i<thisGroup.size(); ++i)
+                edit->combinedConstrMap[thisGroup[i].constraintId] = thisGroup[0].constraintId;
+            drawMergedConstraintIcons(std::move(thisGroup));
         }
     }
 }
 
-void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
+void ViewProviderSketch::drawMergedConstraintIcons(IconQueue &&iconQueue)
 {
     for(IconQueue::iterator i = iconQueue.begin(); i != iconQueue.end(); ++i) {
         clearCoinImage(i->destination);
@@ -5239,8 +5246,6 @@ Restart:
         rebuildConstraintsVisual();
     assert(int(constrlist.size()) == edit->constrGroup->getNumChildren());
     assert(int(edit->vConstrType.size()) == edit->constrGroup->getNumChildren());
-    // update the virtual space
-    updateVirtualSpace();
     // go through the constraints and update the position
     i = 0;
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin();
@@ -6462,9 +6467,22 @@ void ViewProviderSketch::updateVirtualSpace(void)
 
         SbBool *sws = edit->constrGroup->enable.startEditing();
 
-        for (size_t i = 0; i < constrlist.size(); i++)
-            sws[i] = !(constrlist[i]->isInVirtualSpace != isShownVirtualSpace); // XOR of constraint mode and VP mode
+        for (size_t i = 0; i < constrlist.size(); i++) {
+            // XOR of constraint mode and VP mode, OR if the constraint is (pre)selected
+            sws[i] = !(constrlist[i]->isInVirtualSpace != isShownVirtualSpace);
+        }
 
+        auto showSelectedConstraint = [this, sws](const std::set<int> &idset) {
+            for (int id : idset) {
+                auto it = edit->combinedConstrMap.find(id);
+                if (it == edit->combinedConstrMap.end())
+                    sws[id] = TRUE;
+                else
+                    sws[it->second] = TRUE;
+            }
+        };
+        showSelectedConstraint(edit->SelConstraintSet);
+        showSelectedConstraint(edit->PreselectConstraintSet);
 
         edit->constrGroup->enable.finishEditing();
     }

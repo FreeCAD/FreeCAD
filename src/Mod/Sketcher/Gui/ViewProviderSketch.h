@@ -388,13 +388,13 @@ protected:
     /// For constraint icon bounding boxes
     typedef std::vector<ConstrIconBB> ConstrIconBBVec;
 
-    void combineConstraintIcons(IconQueue iconQueue);
+    void combineConstraintIcons(IconQueue &&iconQueue);
 
     /// Renders an icon for a single constraint and sends it to Coin
     void drawTypicalConstraintIcon(const constrIconQueueItem &i);
 
     /// Combines multiple constraint icons and sends them to Coin
-    void drawMergedConstraintIcons(IconQueue iconQueue);
+    void drawMergedConstraintIcons(IconQueue &&iconQueue);
 
     /// Helper for drawMergedConstraintIcons and drawTypicalConstraintIcon
     QImage renderConstrIcon(const QString &type,
