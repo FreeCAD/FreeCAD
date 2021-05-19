@@ -793,7 +793,7 @@ protected:
  * @see CommandManager
  * @author Werner Mayer
  */
-class MacroCommand: public Command
+class GuiExport MacroCommand: public Command
 {
 public:
     MacroCommand(const char* name, bool system = false, bool preselect = false);
