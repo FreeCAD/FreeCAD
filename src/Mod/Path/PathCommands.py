@@ -160,6 +160,39 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_OpActiveToggle', _ToggleOperation())
 
 
+class _TileJob:
+    "command definition to tile a Job"
+    def GetResources(self):
+        return {'Pixmap': 'Path_TileJob',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_TileJob", "Tile Job Utility"),
+                # 'Accel': "P, X",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_TileJob", "Initiate the Tile Job Utility to perform job tiling."),
+                'CmdType': "ForEdit"}
+
+    def IsActive(self):
+        return True
+
+    def IsActive_selection_based(self):
+        if bool(FreeCADGui.Selection.getSelection()) is False:
+            return False
+        try:
+            for sel in FreeCADGui.Selection.getSelectionEx():
+                if not isinstance(sel.Object.Proxy, PathScripts.PathJob.ObjectJob):
+                    return False
+            return True
+        except(IndexError, AttributeError):
+            return False
+
+    def Activated(self):
+        import PathScripts.PathTileJob as PathTileJob
+        PathTileJob.TileJobUtility.execute()
+        # FreeCAD.ActiveDocument.recompute()
+
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Path_TileJob', _TileJob())
+
+
 class _CopyOperation:
     "the Path Copy Operation command definition"
     def GetResources(self):
