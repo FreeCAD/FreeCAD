@@ -407,7 +407,7 @@ ViewProviderSketch::ViewProviderSketch()
     zConstr=0.003f; // constraint not construction
 
     //zPoints=0.010f;
-    zRootPoint = 0.005f;
+    zRootPoint = 0.009f;
     zLowPoints = 0.010f;
     zHighPoints = 0.011f;
     zHighlight=0.012f;
