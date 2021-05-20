@@ -83,7 +83,6 @@ TopoDS_Face FaceMakerCheese::validateFace(const TopoDS_Face& face)
             ShapeFix_Shape fix(mkFace.Face());
             fix.SetPrecision(Precision::Confusion());
             fix.SetMaxTolerance(Precision::Confusion());
-            fix.SetMaxTolerance(Precision::Confusion());
             fix.Perform();
             fix.FixWireTool()->Perform();
             fix.FixFaceTool()->Perform();
