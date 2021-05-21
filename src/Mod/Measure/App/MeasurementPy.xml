@@ -36,7 +36,22 @@
     </Methode>
     <Methode Name="length">
       <Documentation>
-        <UserDocu>measure the length of the references</UserDocu>
+        <UserDocu>measure the total length of all edges in the references</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perimeter">
+      <Documentation>
+        <UserDocu>measure the total perimeter length of all faces in the references</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="area">
+      <Documentation>
+        <UserDocu>measure the total area of all faces in the references</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="volume">
+      <Documentation>
+        <UserDocu>measure the total volume of all shells in the references</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="angle">

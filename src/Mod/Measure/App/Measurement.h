@@ -23,13 +23,16 @@
 #ifndef MEASURE_MEASUREMENT_H
 #define MEASURE_MEASUREMENT_H
 
+#include <unordered_set>
+#include <vector>
+
 #include <Base/BaseClass.h>
 #include <Base/Vector3D.h>
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <Mod/Part/App/TopoShape.h>
 
-class TopoDS_Shape;
 namespace Measure
 {
  enum MeasureType {
@@ -73,6 +76,10 @@ public:
 public:
   // Methods for distances (edge length, two points, edge and a point
   double length() const;
+  double length(const TopoDS_Shape &s) const;
+  double perimeter(bool checkInner = true) const;
+  double area() const;
+  double volume() const;
   Base::Vector3d delta() const;                                                 //when would client use delta??
 
   // Calculates the radius for an arc or circular edge

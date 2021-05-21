@@ -138,6 +138,45 @@ PyObject* MeasurementPy::length(PyObject *args)
     } PY_CATCH_OCC
 }
 
+PyObject* MeasurementPy::perimeter(PyObject *args)
+{
+    PyObject *checkInner = Py_True;
+    if (!PyArg_ParseTuple(args, "|O", &checkInner))
+        return 0;
+
+    PY_TRY {
+        Py::Float length;
+        length = this->getMeasurementPtr()->perimeter(PyObject_IsTrue(checkInner));
+        return Py::new_reference_to(length);
+    } PY_CATCH_OCC
+}
+
+PyObject* MeasurementPy::area(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    PY_TRY {
+        Py::Float length;
+        length = this->getMeasurementPtr()->area();
+
+        return Py::new_reference_to(length);
+    } PY_CATCH_OCC
+}
+
+PyObject* MeasurementPy::volume(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    PY_TRY {
+        Py::Float length;
+        length = this->getMeasurementPtr()->volume();
+
+        return Py::new_reference_to(length);
+    } PY_CATCH_OCC
+}
+
 PyObject* MeasurementPy::radius(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

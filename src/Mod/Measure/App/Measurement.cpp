@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
+  # include <BRep_Builder.hxx>
+  # include <TopoDS_Compound.hxx>
   # include <TopoDS_Shape.hxx>
   # include <TopoDS_Face.hxx>
   # include <TopoDS.hxx>
@@ -48,6 +48,7 @@
 #include <Base/Console.h>
 #include <Base/VectorPy.h>
 
+#include <App/DocumentObserver.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -61,6 +62,9 @@
 using namespace Measure;
 using namespace Base;
 using namespace Part;
+
+typedef std::unordered_set<TopoDS_Shape,Part::ShapeHasher,Part::ShapeHasher> ShapeSet;
+typedef std::unordered_map<TopoDS_Shape,int,Part::ShapeHasher,Part::ShapeHasher> ShapeMap;
 
 FC_LOG_LEVEL_INIT("Measure");
 
@@ -187,7 +191,7 @@ MeasureType Measurement::getType()
         }
     } else if(faces > 0) {
         if(verts > 0 || edges > 0) {
-            if(faces > 1 && verts > 1 && edges > 0) {
+            if((faces > 1 && verts > 1) || edges > 0) {
                 mode = Invalid;
             } else {
                 // One Surface and One Point
@@ -234,6 +238,42 @@ TopoDS_Shape Measurement::getShape(App::DocumentObject *obj , const char *subNam
     }
 }
 
+double Measurement::length(const TopoDS_Shape &shape) const
+{
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
+        MEASURE_ERROR("Measurement::length - not an edge");
+        return -1.0;
+    }
+    const TopoDS_Edge& edge = TopoDS::Edge(shape);
+    BRepAdaptor_Curve curve(edge);
+    switch(curve.GetType()) {
+    case GeomAbs_Line : {
+        gp_Pnt P1 = curve.Value(curve.FirstParameter());
+        gp_Pnt P2 = curve.Value(curve.LastParameter());
+        gp_XYZ diff = P2.XYZ() - P1.XYZ();
+        return diff.Modulus();
+    }
+    case GeomAbs_Circle : {
+        double u = curve.FirstParameter();
+        double v = curve.LastParameter();
+        double radius = curve.Circle().Radius();
+        if (u > v) // if arc is reversed
+            std::swap(u, v);
+
+        double range = v-u;
+        return radius * range;
+    }
+    default:
+        try {
+            return GCPnts_AbscissaPoint::Length(curve);
+        } catch (Standard_Failure &e) {
+            MEASURE_ERROR("Measurement::length - failed - " << e.GetMessageString());
+            return -1.0;
+        }
+    }
+    return -1.0;
+}
+
 //TODO:: add lengthX, lengthY (and lengthZ??) support
 // Methods for distances (edge length, two points, edge and a point
 double Measurement::length() const
@@ -244,9 +284,6 @@ double Measurement::length() const
         return 0.0;
     }
 
-    const std::vector<App::DocumentObject*> &objects = References3D.getValues();
-    const std::vector<std::string> &subElements = References3D.getSubValues();
-
     if(measureType == Points ||
         measureType == PointToEdge ||
         measureType == PointToSurface)  {
@@ -255,48 +292,158 @@ double Measurement::length() const
         return diff.Length();
     }
 
-
-    // Iterate through edges and calculate each length
-    std::vector<App::DocumentObject*>::const_iterator obj = objects.begin();
-    std::vector<std::string>::const_iterator subEl = subElements.begin();
-
+    std::map<App::SubObjectT, TopoShape> shapemap;
+    ShapeSet shapeset;
     double result = 0.0;
-    for (;obj != objects.end(); ++obj, ++subEl) {
-        auto shape = Part::Feature::getTopoShape(*obj, (*subEl).c_str(), true);
-        for (auto & subshape : shape.getSubShapes(TopAbs_EDGE)) {
-            const TopoDS_Edge& edge = TopoDS::Edge(subshape);
-            BRepAdaptor_Curve curve(edge);
-
-            switch(curve.GetType()) {
-            case GeomAbs_Line : {
-                gp_Pnt P1 = curve.Value(curve.FirstParameter());
-                gp_Pnt P2 = curve.Value(curve.LastParameter());
-                gp_XYZ diff = P2.XYZ() - P1.XYZ();
-                result += diff.Modulus();
-                break;
-            }
-            case GeomAbs_Circle : {
-                double u = curve.FirstParameter();
-                double v = curve.LastParameter();
-                double radius = curve.Circle().Radius();
-                if (u > v) // if arc is reversed
-                    std::swap(u, v);
-
-                double range = v-u;
-                result += radius * range;
-                break;
-            }
-            default:
-                try {
-                    result += GCPnts_AbscissaPoint::Length(curve);
-                    break;
-                } catch (Standard_Failure &e) {
-                    MEASURE_ERROR("Measurement::length - failed - " << e.GetMessageString());
-                    return 0.0;
-                }
-            }
-        }  //end switch
+    const auto &objs = References3D.getValues();
+    const auto &subs = References3D.getSubValues();
+    for (int i=0; i<numRefs; ++i) {
+        App::SubObjectT key(objs[i], subs[i].c_str());
+        std::string element = key.getElementName();
+        // Strip off any sub-element name, so that we can key on the same
+        // sub-object and cache its whole shape. This is necessary for filtering
+        // out same sub-element in the references, because
+        // Part::Feature::getTopoShape() will calculate the accumulated
+        // transformation along the way and return a shape that is not suitable
+        // for shape search using OCC shape hash (which hashes on pointers to
+        // TShape and TopLoc_Location).
+        key.setSubName(key.getSubNameNoElement());
+        auto &shape = shapemap[key];
+        if (shape.isNull())
+            shape = Part::Feature::getTopoShape(objs[i], key.getSubName().c_str());
+        auto subshape = shape.getSubTopoShape(element.c_str());
+        // Skip duplicated sub shape references, but DO NOT skip duplicated
+        // edges. Use 'perimeter' for that.
+        if (!shapeset.insert(subshape.getShape()).second)
+            continue;
+        for (auto & edge : subshape.getSubShapes(TopAbs_EDGE)) {
+            double l = length(edge);
+            if (l < 0.0)
+                return 0.0;
+            result += l;
+        }
     }  //end for
+    return result;
+}
+
+double Measurement::perimeter(bool checkInner) const
+{
+    std::map<App::SubObjectT, TopoShape> shapemap;
+    ShapeMap shapecounter;
+    ShapeSet shapeset;
+    const auto &objs = References3D.getValues();
+    const auto &subs = References3D.getSubValues();
+    int count = 0;
+    std::size_t inner = 0;
+    double result = 0.0;
+    std::vector<Part::TopoShape> innerWires;
+    for (std::size_t i=0; i<objs.size(); ++i) {
+        App::SubObjectT key(objs[i], subs[i].c_str());
+        std::string element = key.getElementName();
+        key.setSubName(key.getSubNameNoElement());
+        auto &shape = shapemap[key];
+        if (shape.isNull())
+            shape = Part::Feature::getTopoShape(objs[i], key.getSubName().c_str());
+        auto subshape = shape.getSubTopoShape(element.c_str());
+        for (auto & face : subshape.getSubTopoShapes(TopAbs_FACE)) {
+            if (!shapeset.insert(face.getShape()).second)
+                continue; // skip duplicated face reference
+            innerWires.clear();
+            auto wire = face.splitWires(&innerWires, Part::TopoShape::NoReorient);
+            inner += innerWires.size();
+            count += wire.countSubShapes(TopAbs_EDGE);
+            for (auto & edge : wire.getSubShapes(TopAbs_EDGE)) {
+                auto &counter  = shapecounter[edge];
+                if (counter > 1)
+                    continue;
+                double l = length(edge);
+                if (l < 0.0)
+                    return 0.0;
+                if (++counter == 2) {
+                    // if edge is included more than once, it means that it is
+                    // shared by more than one face, and hence is considered as
+                    // an internal edge.
+                    ++inner;
+                    result -= l;
+                } else
+                    result += l;
+            }
+        }
+    }
+    if (checkInner && !inner)
+        MEASURE_ERROR("Measurement::perimeter -- no inner wires");
+    if (!count)
+        MEASURE_ERROR("Measurement::perimeter -- no edge found");
+    return result;
+}
+
+double Measurement::area() const
+{
+    std::map<App::SubObjectT, TopoShape> shapemap;
+    ShapeSet shapeset;
+    const auto &objs = References3D.getValues();
+    const auto &subs = References3D.getSubValues();
+    double result = 0.0;
+    int count = 0;
+    try {
+        for (std::size_t i=0; i<objs.size(); ++i) {
+            App::SubObjectT key(objs[i], subs[i].c_str());
+            std::string element = key.getElementName();
+            key.setSubName(key.getSubNameNoElement());
+            auto &shape = shapemap[key];
+            if (shape.isNull())
+                shape = Part::Feature::getTopoShape(objs[i], key.getSubName().c_str());
+            auto subshape = shape.getSubTopoShape(element.c_str());
+            for (auto & face : subshape.getSubShapes(TopAbs_FACE)) {
+                if (!shapeset.insert(face).second)
+                    continue;
+                ++count;
+                GProp_GProps props;
+                BRepGProp::SurfaceProperties(face, props);
+                result += props.Mass();
+            }
+        }
+    } catch (Standard_Failure &e) {
+        MEASURE_ERROR("Measurement::area -- " << e.GetMessageString());
+        return 0.0;
+    }
+    if (!count)
+        MEASURE_ERROR("Measurement::area -- no face found");
+    return result;
+}
+
+double Measurement::volume() const
+{
+    std::map<App::SubObjectT, TopoShape> shapemap;
+    ShapeSet shapeset;
+    const auto &objs = References3D.getValues();
+    const auto &subs = References3D.getSubValues();
+    double result = 0.0;
+    int count = 0;
+    try {
+        for (std::size_t i=0; i<objs.size(); ++i) {
+            App::SubObjectT key(objs[i], subs[i].c_str());
+            std::string element = key.getElementName();
+            key.setSubName(key.getSubNameNoElement());
+            auto &shape = shapemap[key];
+            if (shape.isNull())
+                shape = Part::Feature::getTopoShape(objs[i], key.getSubName().c_str());
+            auto subshape = shape.getSubTopoShape(element.c_str());
+            for (auto & shell : subshape.getSubShapes(TopAbs_SHELL)) {
+                if (!shapeset.insert(shell).second)
+                    continue;
+                ++count;
+                GProp_GProps props;
+                BRepGProp::VolumeProperties(shell, props);
+                result += props.Mass();
+            }
+        }
+    } catch (Standard_Failure &e) {
+        MEASURE_ERROR("Measurement::volume -- " << e.GetMessageString());
+        return 0.0;
+    }
+    if (!count)
+        MEASURE_ERROR("Measurement::volume -- no shell found");
     return result;
 }
 
