@@ -151,27 +151,23 @@ void TaskFeatureParameters::saveHistory()
         checkBoxUpdateView->onSave();
 }
 
-void TaskFeatureParameters::addUpdateViewCheckBox(QWidget *widget)
+const char *TaskFeatureParameters::updateViewParameter() const
 {
-    QBoxLayout * boxLayout = qobject_cast<QBoxLayout*>(widget->layout());
-    if (!boxLayout)
-        return;
+    return "User parameter:BaseApp/History/UpdateView";
+}
 
+void TaskFeatureParameters::addUpdateViewCheckBox(QBoxLayout *boxLayout)
+{
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
     connect(updateViewTimer, SIGNAL(timeout()), this, SLOT(onUpdateViewTimer()));
-
-    auto line = new QFrame(this);
-    line->setFrameShape(QFrame::HLine);
-    line->setFrameShadow(QFrame::Sunken);
-    boxLayout->addWidget(line);
 
     checkBoxUpdateView = new Gui::PrefCheckBox(this);
     checkBoxUpdateView->setText(tr("Update view"));
     checkBoxUpdateView->setChecked(true);
     connect(checkBoxUpdateView, SIGNAL(toggled(bool)), this, SLOT(onUpdateView(bool)));
     boxLayout->addWidget(checkBoxUpdateView);
-    checkBoxUpdateView->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UpdateView"));
+    checkBoxUpdateView->setParamGrpPath(QByteArray(updateViewParameter()));
     checkBoxUpdateView->onRestore();
 }
 
@@ -203,14 +199,13 @@ void TaskFeatureParameters::setupTransaction()
         transactionID = tid;
 }
 
-void TaskFeatureParameters::addNewSolidCheckBox(QWidget *widget)
+void TaskFeatureParameters::addNewSolidCheckBox(QBoxLayout *layout)
 {
     if (!vp || !vp->getObject())
         return;
 
-    QBoxLayout * layout = qobject_cast<QBoxLayout*>(widget->layout());
     if (layout) {
-        checkBoxNewSolid = new QCheckBox(widget);
+        checkBoxNewSolid = new QCheckBox(this);
         checkBoxNewSolid->setText(tr("New solid"));
         checkBoxNewSolid->setToolTip(tr("Make a new separate solid using this feature"));
         layout->insertWidget(0, checkBoxNewSolid);

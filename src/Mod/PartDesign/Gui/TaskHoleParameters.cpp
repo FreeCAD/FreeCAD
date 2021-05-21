@@ -127,6 +127,11 @@ TaskHoleParameters::~TaskHoleParameters()
 {
 }
 
+const char *TaskHoleParameters::updateViewParameter() const
+{
+    return "User parameter:BaseApp/History/HoleUpdateView";
+}
+
 void TaskHoleParameters::refresh()
 {
     if (!vp || !vp->getObject())

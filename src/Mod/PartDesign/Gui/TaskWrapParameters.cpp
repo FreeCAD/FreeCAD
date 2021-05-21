@@ -65,7 +65,7 @@ void TaskWrapParameters::setupUI()
     ui = new Ui_TaskWrapParameters();
     ui->setupUi(proxy);
 
-    this->addNewSolidCheckBox(proxy);
+    this->addNewSolidCheckBox(qobject_cast<QBoxLayout*>(proxy->layout()));
     PartDesignGui::addTaskCheckBox(proxy);
 
     this->groupLayout()->addWidget(proxy);

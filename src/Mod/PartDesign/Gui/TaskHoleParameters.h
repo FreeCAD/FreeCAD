@@ -62,6 +62,8 @@ public:
     void apply() override;
     void refresh() override;
 
+    const char *updateViewParameter() const override;
+
     bool   getThreaded() const;
     long   getThreadType() const;
     long   getThreadSize() const;

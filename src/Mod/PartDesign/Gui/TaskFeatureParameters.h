@@ -31,6 +31,7 @@
 
 class QCheckBox;
 class QTimer;
+class QBoxLayout;
 
 namespace Gui {
 class PrefCheckBox;
@@ -59,8 +60,9 @@ public:
 
     void recomputeFeature(bool delay=true);
 
-    void addNewSolidCheckBox(QWidget *widget);
-    void addUpdateViewCheckBox(QWidget *widget);
+    void addNewSolidCheckBox(QBoxLayout *layout);
+    void addUpdateViewCheckBox(QBoxLayout *layout);
+    virtual const char *updateViewParameter() const;
 
     virtual void refresh() {}
 
