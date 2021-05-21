@@ -53,6 +53,44 @@ class TubeFeature:
         # execute() for extensions
         return False
 
+_ParamUnits = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units");
+_Decimals = None
+
+class _ParamUnitsObserver:
+    def __init__(self):
+        _ParamUnits.Attach(self)
+        self.update();
+
+    def onChange(self, _grp, param):
+        if param == 'Decimals':
+            self.update()
+
+    def update(self):
+        global _Decimals
+        _Decimals = _ParamUnits.GetInt('Decimals', 2)
+
+_Observer = _ParamUnitsObserver()
+
+def _ftostr(v):
+    return '%.*f' % (_Decimals, v[0])
+
+def _vec_tostr(v):
+    return '(%.*f, %.*f, %.*f)' % (_Decimals, v[0], _Decimals, v[1], _Decimals, v[2])
+
+def _bbox_tostr(v):
+    return '(%.*f, %.*f, %.*f), (%.*f, %.*f, %.*f)' % \
+            (_Decimals, v.XMin, _Decimals, v.YMin, _Decimals, v.ZMin,
+             _Decimals, v.XMax, _Decimals, v.YMax, _Decimals, v.ZMax)
+
+def _tostr(v):
+    if isinstance(v, float):
+        return '%.*f' % (_Decimals, v)
+    if isinstance(v, FreeCAD.Vector):
+        return _vec_tostr(v)
+    if isinstance(v, tuple):
+        return '(' + ', '.join([_tostr(vv) for vv in v]) + ')'
+    return str(v)
+
 def showPreselectInfo():
     sel = FreeCADGui.Selection.getPreselection()
     if not sel.Object or len(sel.SubElementNames) != 1:
@@ -69,7 +107,7 @@ def showPreselectInfo():
     txt += '\n%s' % shape.Placement
 
     if shape.ShapeType == 'Vertex':
-        txt += '\nPosition: %s' % shape.Point
+        txt += '\nPosition: %s' % _vec_tostr(shape.Point)
         FreeCADGui.Selection.setPreselectionText(txt)
         return
 
@@ -92,8 +130,8 @@ def showPreselectInfo():
 
     try:
         bbox = shape.BoundBox
-        txt += '\n%s' % bbox
-        txt += '\nBound center: %s' % bbox.Center
+        txt += '\nBoundBox: %s' % _bbox_tostr(bbox)
+        txt += '\nBound center: %s' % _vec_tostr(bbox.Center)
     except Exception:
         pass
 
@@ -106,10 +144,10 @@ def showPreselectInfo():
         if point != FreeCAD.Vector():
             try:
                 u = geo.parameter(point)
-                txt += '\nParameter: %s' % u
-                txt += '\nNormal: %s' % geo.normal(u);
-                txt += '\nTangent: %s' % geo.tangent(u);
-                txt += '\nCurvature: %s' % geo.curvature(u);
+                txt += '\nParameter: %s' % _ftostr(u)
+                txt += '\nNormal: %s' % _vec_tostr(geo.normal(u))
+                txt += '\nTangent: %s' % _vec_tostr(geo.tangent(u))
+                txt += '\nCurvature: %s' % _ftostr(geo.curvature(u))
             except Exception:
                 pass
     else:
@@ -119,9 +157,9 @@ def showPreselectInfo():
             if point != FreeCAD.Vector():
                 try:
                     u = geo.parameter(point)
-                    txt += '\nParameter: %s' % str(u)
-                    txt += '\nNormal: %s' % geo.normal(*u);
-                    txt += '\nTangent: %s' % geo.tangent(*u);
+                    txt += '\nParameter: %s' % _tostr(u)
+                    txt += '\nNormal: %s' % _vec_tostr(geo.normal(*u))
+                    txt += '\nTangent: %s' % _vec_tostr(geo.tangent(*u))
                 except Exception:
                     pass
     txt = _getGeoAttributes(txt, geo,
@@ -149,7 +187,7 @@ def _getGeoAttributes(txt, geo, attrs):
             if value is not None:
                 if txt:
                     txt += '\n'
-                txt += '%s: %s' % (attr, value)
+                txt += '%s: %s' % (attr, _tostr(value))
         except Exception:
             pass
     return txt
@@ -169,7 +207,7 @@ def showPreselectMeasure():
         return
     txt = ''
     if shape.ShapeType == 'Vertex':
-        txt = 'Position: %s' % shape.Point
+        txt = 'Position: %s' % _vec_tostr(shape.Point)
     try:
         geo = getattr(shape, 'Curve', None)
         if not geo:
@@ -177,8 +215,7 @@ def showPreselectMeasure():
         txt = _getGeoAttributes(txt, geo, ('Radius',
                                            'MajorRadius',
                                            'MinorRadius',
-                                           'Center',
-                                           'Axis'))
+                                           'Center'))
         import Measure
         m = Measure.Measurement(False)
         m.addReference3D(presel.Object.Name, presel.SubElementNames[0])
@@ -186,13 +223,12 @@ def showPreselectMeasure():
             for sub in sel.SubElementNames:
                 m.addReference3D(sel.Object.Name, sub)
         txt = _getGeoAttributes(txt, m, (('Length', 'length'),
-                                        ('Center of mass', 'com'),
-                                        ('Angle', 'angle'),
-                                        ('Delta', 'delta')))
-        if shape.ShapeType == 'Face':
-            txt = _getGeoAttributes(txt, shape, ('Area',))
-        elif shape.ShapeType in ('Compound', 'CompSolid', 'Solid', 'Shell'):
-            txt = _getGeoAttributes(txt, shape, ('Area', 'Volume'))
+                                         ('Perimeter', 'perimeter'),
+                                         ('Area', 'area'),
+                                         ('Volume', 'volume'),
+                                         ('Center of mass', 'com'),
+                                         ('Angle', 'angle'),
+                                         ('Delta', 'delta')))
         if txt:
             msg = FreeCADGui.Selection.getPreselectionText()
             if msg:
