@@ -669,14 +669,14 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
 
 void SoFCSelection::GLRender(SoGLRenderAction * action)
 {
-    glRender(action, action->isRenderingDelayedPaths());
+    glRender(action, false);
 }
 
 // doc from parent
 void
 SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
 {
-    glRender(action, action->isRenderingDelayedPaths());
+    glRender(action, true);
 }
 
 
@@ -856,25 +856,31 @@ void SoFCSelection::glRender(SoGLRenderAction *action, bool inpath)
             ctx->removeHighlight();
     }
 
-    if (ctx && (ctx->isHighlighted() || ctx->isSelected()))
-        SoCacheElement::invalidate(state);
-
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
     bool preselected = ctx && ctx->isHighlighted() && (useNewSelection.getValue()||mymode == AUTO);
-    if (!preselected && mymode!=ON && (!ctx || !ctx->isSelected() || !ctx->hasSelectionColor())) {
-        inherited::GLRender(action);
+    if (mymode == OFF || !ctx || (!preselected && !ctx->isSelected() && !ctx->hasSelectionColor())) {
+        if (inpath)
+            inherited::GLRenderInPath(action);
+        else
+            inherited::GLRender(action);
         return;
     }
 
+    if (ctx && (ctx->isHighlighted() || ctx->isSelected()))
+        SoCacheElement::invalidate(state);
+
     Styles mystyle = (Styles) this->style.getValue();
 
-    if (!inpath && (mystyle == SoFCSelection::BOX
-                    || ViewParams::instance()->getShowSelectionBoundingBox()))
-    {
-        inherited::GLRender(action);
-    }
-
     if (!action->isRenderingDelayedPaths()) {
+        if (mystyle == SoFCSelection::BOX
+                    || ViewParams::instance()->getShowSelectionBoundingBox())
+        {
+            if (inpath)
+                inherited::GLRenderInPath(action);
+            else
+                inherited::GLRender(action);
+        }
+
         if (preselected || !ViewParams::getShowSelectionOnTop())
             action->addDelayedPath(action->getCurPath()->copy());
         return;
@@ -922,7 +928,10 @@ void SoFCSelection::glRender(SoGLRenderAction *action, bool inpath)
     }
 
     this->uniqueId = oldId;
-    inherited::GLRender(action);
+    if (inpath)
+        inherited::GLRenderInPath(action);
+    else
+        inherited::GLRender(action);
     state->pop();
 }
 
