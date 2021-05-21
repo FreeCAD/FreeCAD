@@ -45,14 +45,6 @@
             using std::bad_any_cast;
         }
 #       define STX_HAVE_STD_ANY 1
-#   elif __has_include(<experimental/any>)
-#       include <experimental/any>
-        namespace STX_NAMESPACE_NAME {
-            using std::experimental::any;
-            using std::experimental::any_cast;
-            using std::experimental::bad_any_cast;
-        }
-#       define STX_HAVE_STD_ANY 1
 #    endif // __hasinclude(any)
 #endif // defined(__hasinclude)
 
