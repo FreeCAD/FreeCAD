@@ -98,6 +98,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     connect(ui->Tapered, SIGNAL(clicked(bool)), this, SLOT(taperedChanged()));
     connect(ui->Reversed, SIGNAL(clicked(bool)), this, SLOT(reversedChanged()));
     connect(ui->TaperedAngle, SIGNAL(valueChanged(double)), this, SLOT(taperedAngleChanged(double)));
+    connect(ui->ModelThread, SIGNAL(clicked(bool)), this, SLOT(modelThreadChanged()));
     connect(ui->UseCustomThreadClearance, SIGNAL(toggled(bool)), this, SLOT(useCustomThreadClearanceChanged()));
     connect(ui->CustomThreadClearance, SIGNAL(valueChanged(double)), this, SLOT(customThreadClearanceChanged(double)));
     connect(ui->ThreadDepthType, SIGNAL(currentIndexChanged(int)), this, SLOT(threadDepthTypeChanged(int)));
