@@ -387,10 +387,10 @@ def boxlimits(data_stats, cmd, param, value, checkbounds):
 def emuldrill(c, state): #G81
     
     cmdlist =  [["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5, 'F' : G0Z_DOWN_FEEDRATE}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0, 'F' : G0Z_UP_FEEDRATE}],
-                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z'], 'F' : G0Z_DOWN_FEEDRATE}],
-                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5,  'F' : G0Z_UP_FEEDRATE}]
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : -5, 'F' : G0Z_DOWN_FEEDRATE / 60.0}],
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 0, 'F' : G0Z_UP_FEEDRATE / 60.0}],
+                ["G1", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'Z' : c.Parameters['Z'], 'F' : G0Z_DOWN_FEEDRATE / 60.0}],
+                ["G0", {'X' : c.Parameters['X'], 'Y' : c.Parameters['Y'], 'z' : 5,  'F' : G0Z_UP_FEEDRATE / 60.0}]
     ]
     
     return iter(cmdlist)
