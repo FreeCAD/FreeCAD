@@ -64,6 +64,7 @@ void DlgSettingsSelection::saveSettings()
     ViewParams::setPreselectionToolTipCorner(ui->comboBoxToolTipCorner->currentIndex());
     ViewParams::setPreselectionToolTipOffsetX(ui->spinBoxToolTipOffsetX->value());
     ViewParams::setPreselectionToolTipOffsetY(ui->spinBoxToolTipOffsetY->value());
+    ViewParams::setPreselectionToolTipFontSize(ui->spinBoxToolTipFontSize->value());
 }
 
 void DlgSettingsSelection::loadSettings()
@@ -82,6 +83,7 @@ void DlgSettingsSelection::loadSettings()
     ui->comboBoxToolTipCorner->setCurrentIndex(ViewParams::getPreselectionToolTipCorner());
     ui->spinBoxToolTipOffsetX->setValue(ViewParams::getPreselectionToolTipOffsetX());
     ui->spinBoxToolTipOffsetY->setValue(ViewParams::getPreselectionToolTipOffsetY());
+    ui->spinBoxToolTipFontSize->setValue(ViewParams::getPreselectionToolTipFontSize());
 }
 
 void DlgSettingsSelection::changeEvent(QEvent *e)

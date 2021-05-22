@@ -400,6 +400,8 @@ public:
 protected:
     void paintEvent(QPaintEvent *e);
     void resizeEvent(QResizeEvent *e);
+private:
+    int fontSize = 0;
 };
 
 // ----------------------------------------------------------------------

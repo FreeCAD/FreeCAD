@@ -303,6 +303,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Preselection tool tip x offset relative to its docking corner."))\
     FC_VIEW_PARAM(PreselectionToolTipOffsetY, int, Int, 0, \
         QT_TRANSLATE_NOOP("ViewParams","Preselection tool tip y offset relative to its docking corner."))\
+    FC_VIEW_PARAM(PreselectionToolTipFontSize, int, Int, 0, \
+        QT_TRANSLATE_NOOP("ViewParams","Preselection tool tip font size. Set to 0 to use system default."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

@@ -1064,6 +1064,17 @@ void TipLabel::set(const QString &text)
 {
     setWordWrap(Qt::mightBeRichText(text));
     setText(text);
+    if (fontSize != ViewParams::PreselectionToolTipFontSize()) {
+        fontSize = ViewParams::PreselectionToolTipFontSize();
+        if (!fontSize)
+            setFont(QFont());
+        else {
+            QFont font = this->font();
+            font.setPointSize(fontSize);
+            setFont(font);
+        }
+    }
+            
     QFontMetrics fm(font());
     QSize extra(1, 0);
     // Make it look good with the default ToolTip font on Mac, which has a small descent.
