@@ -291,9 +291,6 @@ def make_label(target_point=App.Vector(0, 0, 0),
         _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
-    if isinstance(custom_text, str):
-        custom_text = [custom_text]
-
     _msg("direction: {}".format(direction))
     if not direction:
         direction = "Horizontal"
