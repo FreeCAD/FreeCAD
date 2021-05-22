@@ -999,11 +999,14 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         vm.multVecMatrix(img2, img2);
         vm.multVecMatrix(img3, img3);
 
-        float xfactor = img1[0] < img3[0] ? 0.5f : -0.5f;
-        float yfactor = img1[1] < img2[1] ? 0.5f : -0.5f;
+        float det = mm.det3();
+        float margin = det < 0.f ? -1e-3f : 1e-3f;
+
+        float xfactor = img1[0] - img3[0] < margin ? 0.5f : -0.5f;
+        float yfactor = img1[1] - img2[1] < margin ? 0.5f : -0.5f;
 
         bool flip = backfacing ? xfactor*yfactor > 0.f : xfactor*yfactor < 0.f;
-        if (mm.det3() < 0.f) // To check if there's any reflection. Is it reliable?
+        if (det < 0.f) // To check if there's any reflection. Is it reliable?
             flip = !flip;
         if (flip)
             xfactor = -xfactor;
