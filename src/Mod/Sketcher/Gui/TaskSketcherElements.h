@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <QListWidget>
 #include <QIcon>
 
@@ -139,7 +139,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskSketcherElements* ui;
+    std::unique_ptr<Ui_TaskSketcherElements> ui;
     int focusItemIndex;
     int previouslySelectedItemIndex;
 

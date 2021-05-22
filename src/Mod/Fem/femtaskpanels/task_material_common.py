@@ -24,7 +24,7 @@
 
 __title__ = "FreeCAD FEM material task panel for the document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach, Qingfeng Xia"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package task_material_common
 #  \ingroup FEM
@@ -192,7 +192,8 @@ class _TaskPanel:
         self.selectionWidget = selection_widgets.GeometryElementsSelection(
             obj.References,
             ["Solid", "Face", "Edge"],
-            False
+            False,
+            True
         )  # start with Solid in list!
 
         # form made from param and selection widget
@@ -204,6 +205,10 @@ class _TaskPanel:
     # leave task panel ***************************************************************************
     def accept(self):
         # print(self.material)
+        if self.material == {}:  # happens if material editor was canceled
+                FreeCAD.Console.PrintError("Empty material dictionary, nothing was changed.\n")
+                self.recompute_and_set_back_all()
+                return True
         if self.selectionWidget.has_equal_references_shape_types():
             self.do_not_set_thermal_zeros()
             from materialtools.cardutils import check_mat_units as checkunits
@@ -273,7 +278,7 @@ class _TaskPanel:
             return
         self.card_path = self.parameterWidget.cb_materials.itemData(index)  # returns whole path
         FreeCAD.Console.PrintMessage(
-            "choose_material in FEM material task panel:\n"
+            "Material card chosen:\n"
             "    {}\n".format(self.card_path)
         )
         self.material = self.materials[self.card_path]
@@ -389,7 +394,7 @@ class _TaskPanel:
         # FreeCAD units definition is at file end of src/Base/Unit.cpp
         if not self.material:
             FreeCAD.Console.PrintMessage("For some reason all material data is empty!\n")
-            self.material["Name"] = "Empty"
+            self.material["Name"] = "NoName"
         if "Density" in self.material:
             if "Density" not in str(Units.Unit(self.material["Density"])):
                 FreeCAD.Console.PrintMessage(
@@ -400,7 +405,7 @@ class _TaskPanel:
                 self.material["Density"] = "0 kg/m^3"
         else:
             FreeCAD.Console.PrintMessage(
-                "Density not found in material data of: {}\n"
+                "Density not found in {}\n"
                 .format(self.material["Name"])
             )
             self.material["Density"] = "0 kg/m^3"
@@ -417,7 +422,7 @@ class _TaskPanel:
                     self.material["YoungsModulus"] = "0 MPa"
             else:
                 FreeCAD.Console.PrintMessage(
-                    "YoungsModulus not found in material data of: {}\n"
+                    "YoungsModulus not found in {}\n"
                     .format(self.material["Name"])
                 )
                 self.material["YoungsModulus"] = "0 MPa"
@@ -433,7 +438,7 @@ class _TaskPanel:
                     self.material["PoissonRatio"] = "0"
             else:
                 FreeCAD.Console.PrintMessage(
-                    "PoissonRatio not found in material data of: {}\n"
+                    "PoissonRatio not found in {}\n"
                     .format(self.material["Name"])
                 )
                 self.material["PoissonRatio"] = "0"
@@ -450,7 +455,7 @@ class _TaskPanel:
                     self.material["KinematicViscosity"] = "0 m^2/s"
             else:
                 FreeCAD.Console.PrintMessage(
-                    "KinematicViscosity not found in material data of: {}\n"
+                    "KinematicViscosity not found in {}\n"
                     .format(self.material["Name"])
                 )
                 self.material["KinematicViscosity"] = "0 m^2/s"
@@ -466,7 +471,7 @@ class _TaskPanel:
                     self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
             else:
                 FreeCAD.Console.PrintMessage(
-                    "VolumetricThermalExpansionCoefficient not found in material data of: {}\n"
+                    "VolumetricThermalExpansionCoefficient not found in {}\n"
                     .format(self.material["Name"])
                 )
                 self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
@@ -481,7 +486,7 @@ class _TaskPanel:
                 self.material["ThermalConductivity"] = "0 W/m/K"
         else:
             FreeCAD.Console.PrintMessage(
-                "ThermalConductivity not found in material data of: {}\n"
+                "ThermalConductivity not found in {}\n"
                 .format(self.material["Name"])
             )
             self.material["ThermalConductivity"] = "0 W/m/K"
@@ -496,7 +501,7 @@ class _TaskPanel:
                 self.material["ThermalExpansionCoefficient"] = "0 um/m/K"
         else:
             FreeCAD.Console.PrintMessage(
-                "ThermalExpansionCoefficient not found in material data of: {}\n"
+                "ThermalExpansionCoefficient not found in {}\n"
                 .format(self.material["Name"])
             )
             self.material["ThermalExpansionCoefficient"] = "0 um/m/K"
@@ -510,21 +515,30 @@ class _TaskPanel:
                 self.material["SpecificHeat"] = "0 J/kg/K"
         else:
             FreeCAD.Console.PrintMessage(
-                "SpecificHeat not found in material data of: {}\n"
+                "SpecificHeat not found in {}\n"
                 .format(self.material["Name"])
             )
             self.material["SpecificHeat"] = "0 J/kg/K"
         FreeCAD.Console.PrintMessage("\n")
 
-    def update_material_property(self, input_field, matProperty, qUnit, variation=0.001):
+    def update_material_property(self, inputfield_text, matProperty, qUnit, variation=0.001):
+        # print(inputfield_text)
         # this update property works for all Gui::InputField widgets
-        value = Units.Quantity(input_field.text()).getValueAs(qUnit)
-        old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
+        if qUnit != "":
+            value = Units.Quantity(inputfield_text).getValueAs(qUnit)
+            old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
+        else:
+            # for example PoissonRatio
+            value = float(inputfield_text)
+            old_value = float(self.material[matProperty])
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
                 material = self.material
                 # unicode() is an alias to str for py3
-                material[matProperty] = unicode(value) + " " + qUnit
+                if qUnit != "":
+                    material[matProperty] = unicode(value) + " " + qUnit
+                else:
+                    material[matProperty] = unicode(value)
                 self.material = material
                 if self.has_transient_mat is False:
                     self.add_transient_material()
@@ -532,40 +546,36 @@ class _TaskPanel:
                     self.set_transient_material()
         else:
             pass  # some check or default value set can be done here
+        # print(inputfield_text)
 
     # mechanical input fields
     def ym_changed(self):
         # FreeCADs standard unit for stress is kPa for UnitsSchemeInternal, but MPa can be used
-        input_field = self.parameterWidget.input_fd_young_modulus
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_young_modulus.text(),
             "YoungsModulus",
             "kPa",
-            variation
         )
 
     def density_changed(self):
+        print(
+            "String read from density input field: {}"
+            .format(self.parameterWidget.input_fd_density.text())
+        )
         # FreeCADs standard unit for density is kg/mm^3 for UnitsSchemeInternal
-        input_field = self.parameterWidget.input_fd_density
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_density.text(),
             "Density",
             "kg/m^3",
-            variation
         )
 
     def pr_changed(self):
         value = self.parameterWidget.spinBox_poisson_ratio.value()
-        input_field = self.parameterWidget.spinBox_poisson_ratio
         if value:
-            variation = 0.001
             self.update_material_property(
-                input_field,
+                self.parameterWidget.spinBox_poisson_ratio.text(),
                 "PoissonRatio",
                 "",
-                variation
             )
         elif value == 0:
             # PoissonRatio was set to 0.0 what is possible
@@ -579,50 +589,39 @@ class _TaskPanel:
 
     # thermal input fields
     def tc_changed(self):
-        input_field = self.parameterWidget.input_fd_thermal_conductivity
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_thermal_conductivity.text(),
             "ThermalConductivity",
             "W/m/K",
-            variation
         )
 
     def tec_changed(self):
-        input_field = self.parameterWidget.input_fd_expansion_coefficient
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_expansion_coefficient.text(),
             "ThermalExpansionCoefficient",
             "um/m/K",
-            variation
         )
 
     def sh_changed(self):
-        input_field = self.parameterWidget.input_fd_specific_heat
-        variation = 0.001
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_specific_heat.text(),
             "SpecificHeat",
             "J/kg/K",
-            variation
         )
 
     # fluidic input fields
     def vtec_changed(self):
-        input_field = self.parameterWidget.input_fd_vol_expansion_coefficient
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_vol_expansion_coefficient.text(),
             "VolumetricThermalExpansionCoefficient",
-            "m^3/m^3/K"
+            "m^3/m^3/K",
         )
 
     def kinematic_viscosity_changed(self):
-        input_field = self.parameterWidget.input_fd_kinematic_viscosity
         self.update_material_property(
-            input_field,
+            self.parameterWidget.input_fd_kinematic_viscosity.text(),
             "KinematicViscosity",
-            "m^2/s"
+            "m^2/s",
         )
 
     def set_mat_params_in_input_fields(self, matmap):

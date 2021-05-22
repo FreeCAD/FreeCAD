@@ -111,7 +111,7 @@ class ProjectImporter:
             # this method; otherwise a simple function (not tied to a class)
             # should be used.
             ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
-        except:
+        except Exception:
             # This scenario occurs validly in IFC2X3,
             # as the mapConversion does not exist
             return
@@ -241,15 +241,18 @@ def buildRelMattable(ifcfile):
     mattable = {}  # { objid:matid }
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
-        for o in r.RelatedObjects:
-            if r.RelatingMaterial.is_a("IfcMaterial"):
-                mattable[o.id()] = r.RelatingMaterial.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
-                mattable[o.id()] = r.RelatingMaterial.Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
-                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
-                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
+        # the related object might not exist
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=58607
+        if r.RelatedObjects:
+            for o in r.RelatedObjects:
+                if r.RelatingMaterial.is_a("IfcMaterial"):
+                    mattable[o.id()] = r.RelatingMaterial.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
+                    mattable[o.id()] = r.RelatingMaterial.Material.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
+                    mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
+                elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
+                    mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
 
     return mattable
 

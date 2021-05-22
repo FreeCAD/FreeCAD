@@ -126,6 +126,7 @@ Quantity Constraint::getPresentationValue() const
         quantity.setUnit(Unit::Angle);
         break;
     case SnellsLaw:
+    case Weight:
         quantity.setValue(Value);
         break;
     default:
@@ -215,4 +216,17 @@ void Constraint::Restore(XMLReader &reader)
 
     if (reader.hasAttribute("IsActive"))
         isActive = reader.getAttributeAsInteger("IsActive") ? true : false;
+}
+
+void Constraint::substituteIndex(int fromGeoId, int toGeoId)
+{
+    if (this->First == fromGeoId) {
+        this->First = toGeoId;
+    }
+    if (this->Second == fromGeoId) {
+        this->Second = toGeoId;
+    }
+    if (this->Third == fromGeoId) {
+        this->Third = toGeoId;
+    }
 }

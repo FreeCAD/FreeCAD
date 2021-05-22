@@ -95,6 +95,19 @@ This command only works with a 'mesh' object.</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation type="unfinished">Trim with plane</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation type="unfinished">Section with plane</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
@@ -219,7 +232,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation type="unfinished">Snap tolerance to vertices</translation>
+      <translation>Snäpptolerans till hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -478,13 +491,13 @@ A value in the range of 0.2-10.</translation>
       <translation type="unfinished">gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Inget aktivt dokument</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Markera en form för nät, först.</translation>
     </message>

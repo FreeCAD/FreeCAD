@@ -101,7 +101,8 @@ public:
     bool ignoreOverlayIcon() const {
         return m_ignoreOverlayIcon;
     }
-    virtual QIcon extensionMergeOverlayIcons(const QIcon & orig) const {return orig;}
+    virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const {return orig;}
+    virtual QIcon extensionMergeColorfullOverlayIcons(const QIcon & orig) const {return orig;}
 
     virtual void extensionStartRestoring() {}
     virtual void extensionFinishRestoring() {}
@@ -129,13 +130,9 @@ public:
     ViewProviderExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
         ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
-
-        EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }
     virtual ~ViewProviderExtensionPythonT() {
     }
-
-    App::PropertyPythonObject ExtensionProxy;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderExtension> ViewProviderExtensionPython;

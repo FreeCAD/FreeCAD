@@ -27,10 +27,8 @@
 # include <QMessageBox>
 # include <QSharedPointer>
 # include <QWhatsThis>
-#if QT_VERSION >= 0x040200
 # include <QDesktopServices>
 # include <QUrl>
-#endif
 #endif
 
 #include <boost/scoped_ptr.hpp>
@@ -124,10 +122,10 @@ Action * StdCmdWorkbench::createAction(void)
     Action *pcAction;
 
     pcAction = new WorkbenchGroup(this,getMainWindow());
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->className(), pcAction);
-    if (sPixmap)
-        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    if (getPixmap())
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getPixmap()));
 
     return pcAction;
 }
@@ -146,6 +144,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
     sToolTipText  = QT_TR_NOOP("Recent file list");
     sWhatsThis    = "Std_RecentFiles";
     sStatusTip    = QT_TR_NOOP("Recent file list");
+    sPixmap       = "Std_RecentFiles";
     eType         = NoTransaction;
 }
 
@@ -236,21 +235,16 @@ Action * StdCmdAbout::createAction(void)
     QString exe = qApp->applicationName();
     pcAction = new Action(this,getMainWindow());
     pcAction->setText(QCoreApplication::translate(
-        this->className(), sMenuText).arg(exe));
+        this->className(), getMenuText()).arg(exe));
     pcAction->setToolTip(QCoreApplication::translate(
-        this->className(), sToolTipText).arg(exe));
+        this->className(), getToolTipText()).arg(exe));
     pcAction->setStatusTip(QCoreApplication::translate(
-        this->className(), sStatusTip).arg(exe));
-    pcAction->setWhatsThis(QLatin1String(sWhatsThis));
+        this->className(), getStatusTip()).arg(exe));
+    pcAction->setWhatsThis(QLatin1String(getWhatsThis()));
     pcAction->setIcon(QApplication::windowIcon());
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
-#if QT_VERSION > 0x050000
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     // Needs to have AboutRole set to avoid duplicates if adding the about action more than once on macOS
     pcAction->setMenuRole(QAction::AboutRole);
-#else
-    // With Qt 4.8, having AboutRole set causes it to disappear when readding it: issue #0001485
-    pcAction->setMenuRole(QAction::ApplicationSpecificRole);
-#endif
     return pcAction;
 }
 
@@ -275,12 +269,12 @@ void StdCmdAbout::languageChange()
     if (_pcAction) {
         QString exe = qApp->applicationName();
         _pcAction->setText(QCoreApplication::translate(
-            this->className(), sMenuText).arg(exe));
+            this->className(), getMenuText()).arg(exe));
         _pcAction->setToolTip(QCoreApplication::translate(
-            this->className(), sToolTipText).arg(exe));
+            this->className(), getToolTipText()).arg(exe));
         _pcAction->setStatusTip(QCoreApplication::translate(
-            this->className(), sStatusTip).arg(exe));
-        _pcAction->setWhatsThis(QLatin1String(sWhatsThis));
+            this->className(), getStatusTip()).arg(exe));
+        _pcAction->setWhatsThis(QLatin1String(getWhatsThis()));
     }
 }
 
@@ -376,6 +370,7 @@ Action * StdCmdDlgPreferences::createAction(void)
 {
     Action *pcAction = Command::createAction();
     pcAction->setMenuRole(QAction::PreferencesRole);
+
     return pcAction;
 }
 
@@ -509,6 +504,33 @@ void StdCmdOnlineHelpWebsite::activated(int iMsg)
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
     std::string url = hURLGrp->GetASCII("OnlineHelp", defaulturl.c_str());
     hURLGrp->SetASCII("OnlineHelp", url.c_str());
+    OpenURLInBrowser(url.c_str());
+}
+
+//===========================================================================
+// Std_FreeCADDonation
+//===========================================================================
+
+DEF_STD_CMD(StdCmdFreeCADDonation)
+
+StdCmdFreeCADDonation::StdCmdFreeCADDonation()
+  :Command("Std_FreeCADDonation")
+{
+    sGroup        = QT_TR_NOOP("Help");
+    sMenuText     = QT_TR_NOOP("Donate");
+    sToolTipText  = QT_TR_NOOP("Donate to FreeCAD development");
+    sWhatsThis    = "Std_FreeCADDonation";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "internet-web-browser";
+    eType         = 0;
+}
+
+void StdCmdFreeCADDonation::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("DonatePage", "https://wiki.freecadweb.org/Donate");
+    hURLGrp->SetASCII("DonatePage", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
 
@@ -812,6 +834,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdOnlineHelp());
     rcCmdMgr.addCommand(new StdCmdOnlineHelpWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
+    rcCmdMgr.addCommand(new StdCmdFreeCADDonation());
     rcCmdMgr.addCommand(new StdCmdFreeCADUserHub());
     rcCmdMgr.addCommand(new StdCmdFreeCADPowerUserHub());
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());

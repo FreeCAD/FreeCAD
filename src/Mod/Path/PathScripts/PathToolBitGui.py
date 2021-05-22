@@ -170,27 +170,42 @@ class TaskPanel:
 
 class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
 
-    def Create(self, name='ToolBit', shapeFile=None):
+    def Create(self, name='ToolBit', shapeFile=None, path=None):
         '''Create(name = 'ToolBit') ... creates a new tool bit.
         It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
 
-        FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit',
-                                                         'Create ToolBit'))
-        tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile)
+        PathLog.track(name, shapeFile, path)
+        FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit'))
+        tool = PathToolBit.ToolBitFactory.Create(self, name, shapeFile, path)
         PathIconViewProvider.Attach(tool.ViewObject, name)
         FreeCAD.ActiveDocument.commitTransaction()
         return tool
+
+def isValidFileName(filename):
+    print(filename)
+    try:
+        with open(filename, "w") as tempfile:
+            return True
+    except Exception:
+        return False
 
 
 def GetNewToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
+
     foo = QtGui.QFileDialog.getSaveFileName(parent, 'Tool',
                                             PathPreferences.lastPathToolBit(),
                                             '*.fctb')
     if foo and foo[0]:
-        PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
-        return foo[0]
+        if not isValidFileName(foo[0]):
+            msgBox = QtGui.QMessageBox()
+            msg = translate("Path", "Invalid Filename", None)
+            msgBox.setText(msg)
+            msgBox.exec_()
+        else:
+            PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
+            return foo[0]
     return None
 
 
@@ -232,7 +247,8 @@ def GetToolShapeFile(parent=None):
                                               location, '*.fcstd')
     if fname and fname[0]:
         if fname != location:
-            PathPreferences.setLastPathToolShape(location)
+            newloc = os.path.dirname(fname[0])
+            PathPreferences.setLastPathToolShape(newloc)
         return fname[0]
     else:
         return None

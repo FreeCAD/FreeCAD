@@ -42,6 +42,7 @@
 #include "SoZoomTranslation.h"
 #include "SketcherSettings.h"
 #include "PropertyConstraintListItem.h"
+#include "ViewProviderSketchGeometryExtension.h"
 
 
 // create the commands
@@ -122,13 +123,14 @@ PyMOD_INIT_FUNC(SketcherGui)
     SketcherGui::Workbench::init();
 
     // init objects
-    SketcherGui::ViewProviderSketch         ::init();
-    SketcherGui::ViewProviderPython         ::init();
-    SketcherGui::ViewProviderCustom         ::init();
-    SketcherGui::ViewProviderCustomPython   ::init();
-    SketcherGui::SoDatumLabel               ::initClass();
-    SketcherGui::SoZoomTranslation          ::initClass();
-    SketcherGui::PropertyConstraintListItem ::init();
+    SketcherGui::ViewProviderSketch         		  ::init();
+    SketcherGui::ViewProviderPython         		  ::init();
+    SketcherGui::ViewProviderCustom         		  ::init();
+    SketcherGui::ViewProviderCustomPython   		  ::init();
+    SketcherGui::SoDatumLabel               		  ::initClass();
+    SketcherGui::SoZoomTranslation          		  ::initClass();
+    SketcherGui::PropertyConstraintListItem 		  ::init();
+    SketcherGui::ViewProviderSketchGeometryExtension  ::init();
 
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>        ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsDisplay> ( QT_TRANSLATE_NOOP("QObject","Sketcher") );

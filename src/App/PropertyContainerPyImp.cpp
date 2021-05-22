@@ -358,6 +358,33 @@ PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
         return Py::new_reference_to(Py::String(""));
 }
 
+PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
+{
+    char *pstr;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+        return 0;
+    }
+
+    PropertyEnumeration *enumProp = dynamic_cast<PropertyEnumeration*>(prop);
+    if (!enumProp) {
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+
+    std::vector<std::string> enumerations = enumProp->getEnumVector();
+
+    Py::List ret;
+    for (std::vector<std::string>::const_iterator it = enumerations.begin(); it != enumerations.end(); ++it) {
+        ret.append(Py::String(*it));
+    }
+    return Py::new_reference_to(ret);
+}
+
 Py::List PropertyContainerPy::getPropertiesList(void) const
 {
     Py::List ret;
@@ -492,23 +519,15 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         // get the properties to the C++ PropertyContainer class
         std::map<std::string,App::Property*> Map;
         getPropertyContainerPtr()->getPropertyMap(Map);
-        PyObject *dict = PyDict_New();
-        if (dict) {
-            for ( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it )
-#if PY_MAJOR_VERSION >= 3
-                PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
-#else
-                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
-#endif
-            if (PyErr_Occurred()) {
-                Py_DECREF(dict);
-                dict = NULL;
-            }
+
+        Py::Dict dict;
+        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it) {
+            dict.setItem(it->first, Py::String(""));
         }
-        return dict;
-    } else if(Base::streq(attr,"Shape")
-            && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-    {
+        return Py::new_reference_to(dict);
+    }
+    ///FIXME: For v0.20: Do not use stuff from Part module here!
+    else if(Base::streq(attr,"Shape") && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         // Special treatment of Shape property
         static PyObject *_getShape = 0;
         if(!_getShape) {

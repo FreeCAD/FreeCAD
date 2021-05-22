@@ -201,6 +201,54 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Fit plane</source>
+      <translation>Axustar plano</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="221"/>
+      <source>Fit cylinder</source>
+      <translation>Axustar cilindro</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="287"/>
+      <source>Fit sphere</source>
+      <translation>Axustar esfera</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="335"/>
+      <source>Fit polynomial surface</source>
+      <translation>Axustar superficie polinomial</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="601"/>
+      <source>View triangulation</source>
+      <translation>Ver triangulación</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <source>Placement</source>
+      <translation>Emprazamento</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <source>Fit B-Spline</source>
+      <translation>Axustar B-Spline</translation>
+    </message>
+    <message>
+      <location filename="../../Poisson.cpp" line="101"/>
+      <source>Poisson reconstruction</source>
+      <translation>Reconstrución de Poisson</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <source>Segmentation</source>
+      <translation>Segmentación</translation>
+    </message>
+  </context>
+  <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>

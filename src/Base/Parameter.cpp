@@ -1213,8 +1213,7 @@ void ParameterManager::Init(void)
 
 void ParameterManager::Terminate(void)
 {
-    StrXUTF8::terminate();
-    XUTF8Str::terminate();
+    XMLTools::terminate();
     XMLPlatformUtils::Terminate();
 }
 

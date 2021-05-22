@@ -36,7 +36,7 @@
       <location filename="../../Command.cpp" line="114"/>
       <location filename="../../Command.cpp" line="116"/>
       <source>Exports a point cloud</source>
-      <translation>Извози облак тачака</translation>
+      <translation>Извезите групу тачака</translation>
     </message>
   </context>
   <context>
@@ -55,64 +55,64 @@
       <location filename="../../Command.cpp" line="69"/>
       <location filename="../../Command.cpp" line="71"/>
       <source>Imports a point cloud</source>
-      <translation>Увози облак тачака</translation>
+      <translation>Увезите групу тачака</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="321"/>
       <source>Merge point clouds</source>
-      <translation>Споји облак тачака</translation>
+      <translation>Споји групе тачака</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
-      <location filename="../../Command.cpp" line="323"/>
+      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Merge several point clouds into one</source>
-      <translation>Споји више облака тачака у један</translation>
+      <translation>Спојите неколико група тачака у једну</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>Cut point cloud</source>
       <translation>Исеци облак тачака</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="276"/>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="279"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation>Сече облак тачака са изабраним многоуглом</translation>
+      <translation>Исеците групу тачака са изабраним многоуглом</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="363"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Structured point cloud</source>
-      <translation>Структурни облак тачака</translation>
+      <translation>Структурна група тачака</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="363"/>
       <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="367"/>
       <source>Convert points to structured point cloud</source>
-      <translation>Претвори тачке у структурни облак тачака</translation>
+      <translation>Претворите тачке у структурну групу тачака</translation>
     </message>
   </context>
   <context>
@@ -125,13 +125,37 @@
     <message>
       <location filename="../../Command.cpp" line="153"/>
       <source>Transform Points</source>
-      <translation>Трансформисати Тачке</translation>
+      <translation>Претвори тачке</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="154"/>
       <location filename="../../Command.cpp" line="156"/>
       <source>Test to transform a point cloud</source>
-      <translation>Теcт да cе транcформише облак тачака</translation>
+      <translation>Теcт за претварање групе тачака</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="88"/>
+      <source>Import points</source>
+      <translation>Увези тачке</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="168"/>
+      <source>Transform points</source>
+      <translation>Претвори тачке</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="208"/>
+      <source>Convert to points</source>
+      <translation>Претвори у тачке</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="468"/>
+      <location filename="../../ViewProvider.cpp" line="627"/>
+      <source>Cut points</source>
+      <translation>Исеци тачке</translation>
     </message>
   </context>
   <context>
@@ -139,7 +163,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII points import</source>
-      <translation>ASCII увоз тачака</translation>
+      <translation>Увоз АСКРИ тачака</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -149,7 +173,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special lines</source>
-      <translation>Специјалне линије</translation>
+      <translation>Посебне линије</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="72"/>
@@ -159,7 +183,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="79"/>
       <source>Cluster by lines starting with:</source>
-      <translation>Клаcтер линијама које почињу cа:</translation>
+      <translation>Групиши линијама почевши од:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="88"/>
@@ -179,7 +203,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>
       <source>Point format</source>
-      <translation>Формат тачака</translation>
+      <translation>Формат тачке</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="147"/>
@@ -193,14 +217,14 @@
       <location filename="../../DlgPointsRead.ui" line="181"/>
       <location filename="../../DlgPointsRead.ui" line="238"/>
       <source>I,J,K (normal vector)</source>
-      <translation>I,J,K (вектор нормале)</translation>
+      <translation>I,J,K (обичан вектор)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="157"/>
       <location filename="../../DlgPointsRead.ui" line="186"/>
       <location filename="../../DlgPointsRead.ui" line="243"/>
       <source>I,K (normal vector 2D)</source>
-      <translation>I,K (вектор нормале 2D)</translation>
+      <translation>I,K (обичан вектор 2D)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="162"/>
@@ -214,12 +238,12 @@
       <location filename="../../DlgPointsRead.ui" line="196"/>
       <location filename="../../DlgPointsRead.ui" line="253"/>
       <source>I (Gray value)</source>
-      <translation>I (Вредност Сиве)</translation>
+      <translation>I (вредност сиве)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="204"/>
       <source>Number separator:</source>
-      <translation>Бројни cепаратор:</translation>
+      <translation>Раздвајач бројева:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="211"/>
@@ -294,14 +318,14 @@
       <translation>Све датотеке</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Enter maximum distance:</source>
-      <translation>Унеcите макcималну удаљеноcт:</translation>
+      <translation>Унеcите највеће растојање:</translation>
     </message>
   </context>
   <context>

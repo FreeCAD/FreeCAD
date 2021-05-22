@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Editatu</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Inportatu</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Ezabatu</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Itsatsi adierazpenak</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Sortu esteka taldea</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Sortu esteka</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Sortu azpiesteka</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Inportatu estekak</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Inportatu esteka guztiak</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Txertatu neurketa</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Txertatu testu-dokumentua</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Gehitu zati bat</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Gehitu talde bat</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Lerrokatu</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Kokapena</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformatu</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Estekaren transformazioa</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Neurtu distantzia</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -206,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>Fitxategi-izena</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
     </message>
   </context>
   <context>
@@ -397,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Hitz-tamaina</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Kredituak</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD ez litzakete ezer izango haien ahaleginengatik ez balitz:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Lizentzia</translation>
     </message>
@@ -426,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Bilduma</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Kredituak</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1295,10 +1385,6 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
       <translation type="unfinished"/>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Kode-lerroak zenbakitu egingo dira </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>&lt;Tab&gt; sakatzen bada, definitutako tamaina duen koskatze bat txertatuko da</translation>
     </message>
@@ -1333,6 +1419,10 @@ Hau markatuta ez badago, propietateak izen bakarra izan behar du eta 'obj.Izena'
     <message>
       <source>Color:</source>
       <translation>Kolorea:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2473,10 +2563,6 @@ azkarrena eskaintzen du, baina erantzun motelagoa eszena-aldaketetan.</translati
       <translation>Zentralizatua</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Zein motatako lagin anitzeko antialiasinga ari den erabiltzen </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Objektu gardenak:</translation>
     </message>
@@ -2499,14 +2585,6 @@ azkarrena eskaintzen du, baina erantzun motelagoa eszena-aldaketetan.</translati
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Begien arteko distantzia modu estereoetarako</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Begien arteko distantzia proiekzio estereoetarako.
-Zehaztutako balioa unean bistaratzen ari den 3D objektuaren
-muga-koadroaren tamainarekin biderkatuko den faktore bat da. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2553,6 +2631,30 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation>3D bistako elementuak aukeratzeko area.
 Balio handiagoak elementuak aukeratzea errazten du, baina elementu txikiak hautatzea oztopatu dezake.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Aukera hau erabilgarria da txartel grafikoen eta kontrolagailuen arazoak konpontzeko.
+
+Aukera hau aldatzeko, aplikazioa berrabiarazi behar da.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Erabili softwareko OpenGLa</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3169,9 +3271,28 @@ Honako forma ere erabili dezakezu: Jon Inor &lt;jon@inor.com&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation>Marko-bufferra (bere horretan)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation>Pixel-bufferra</translation>
+      <source>Unloaded Workbenches</source>
+      <translation>Deskargatutako lan-mahaiak</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kargatu hautatutako lan-mahaiak eta gehitu haien hobespen-leihoak hobespenen elkarrizketa-koadroari.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Kargatu hautatua</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deskargatutako lan-mahai erabilgarriak&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Baliabideak aurrezteko, FreeCADek ez ditu laneko mahaiak kargatzen haiek erabili nahi diren arte. Kargatzen direnean, haien funtzionaltasunari lotutako hobespen gehigarriak agertuko dira.&lt;/p&gt;&lt;p&gt;Honako laneko mahaiak daude erabilgarri zure instalazioan (oraindik kargatu gabe daude):&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3388,12 +3509,6 @@ Balioa da pantailari doituko zaion esferaren diametroa.</translation>
       <translation>Zoom-urratsa</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Zenbateko zooma egingo den.
-'1' mailako zoomak 7.5eko faktorea da zoom-maila bakoitzerako. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Zoom-eragiketen norabidea alderantzikatu egingo da.</translation>
     </message>
@@ -3416,10 +3531,6 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>3D moduko biraketek kurtsorearen uneko posizioa erabiliko dute biraketarako erdigune gisa</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation>Biratu kurtsorean</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3468,6 +3579,71 @@ Ezarpen honek ez du desgaitzen sagu bidezko inklinazioa.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Kameraren orientazio lehenetsia dokumentu bat sortzean edo bista nagusia hautatzean</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Biraketa modua</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Leihoaren zentroa</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Arrastatu kurtsorera</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Objektuaren zentroa</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Hautapena</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Automatikoki aldatu hautatutako elementua duen 3D bistara</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Automatikoki hedatu zuhaitz-elementua hari dagokion objektua 3D bistan hautatuta dagoenean</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Aurretik hautatu objektua 3D bistan sagua zuhaitz-elementuaren gainean dagoenean</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Grabatu zuhaitz-bistako hautapena aurrera/atzera egin ahal izateko nabigazio-botoia erabilita</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Gehitu hautapenerako kontrol-laukiak dokumentu-zuhaitzean</translation>
     </message>
   </context>
   <context>
@@ -3753,12 +3929,12 @@ Hobespen-sistema hobespen orokorretan ezarritakoa da.</translation>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>Unitate ezezaguna: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>unitateak ez datoz bat</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -5237,6 +5413,10 @@ Nola jarraitu nahi duzu?</translation>
     <message>
       <source>Expression...</source>
       <translation>Adierazpena...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Hedatu automatikoki</translation>
     </message>
   </context>
   <context>
@@ -6748,14 +6928,6 @@ Begiratu txosten-bista gehiagorako...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Bide-izen fisikoa: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Dokumentua: </translation>
@@ -6769,6 +6941,30 @@ Bide-izena: </translation>
     <message>
       <source>Identical physical path</source>
       <translation>Bide-izen fisiko berdina</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Errorea</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Erroreak izan dira fitxategia kargatzean. Beharbada zenbait datu aldatu egin dira edo ez dira erabat berreskuratu. Begiratu txostenean arazoak izan dituzten objektuei buruzko informazio gehiago jasotzeko.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>Errore larriak gertatu dira fitxategia kargatzean. Zenbait datu aldatuta agertu daitezke edo ez dira berreskuratu. Proiektua gordetzen bada, ziur aski datuak galduko dira.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Lan-mahaiak</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>
@@ -7213,8 +7409,8 @@ Bide-izena: </translation>
       <translation>Hautapenik ez</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Lehenengo, hautatu esportatu nahi dituzun objektuak.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Hautatu esportatuko diren objektuak 'Esportatu' aukeratu baino lehen.</translation>
     </message>
   </context>
   <context>
@@ -7241,6 +7437,21 @@ Bide-izena: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>Birkalkulatu elementua edo dokumentua</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Laguntza</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Lagundu diruarekin</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Lagundu diruz FreeCADen garapenean</translation>
     </message>
   </context>
   <context>
@@ -8828,6 +9039,21 @@ Bide-izena: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Leheneratu gordetako kamera</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Leheneratu gordetako kamera-ezarpenak</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8870,6 +9096,21 @@ Bide-izena: </translation>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Biratu bista 90° erlojuaren noranzkoan</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Bista estandarra</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Gorde uneko kamera</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Gorde uneko kamera-ezarpenak</translation>
     </message>
   </context>
   <context>

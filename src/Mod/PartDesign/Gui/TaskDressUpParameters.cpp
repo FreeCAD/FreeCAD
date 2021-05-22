@@ -291,6 +291,15 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
     }
 }
 
+void TaskDressUpParameters::hideOnError()
+{
+    App::DocumentObject* dressup = DressUpView->getObject();
+    if (dressup->isError())
+        hideObject();
+    else
+        showObject();
+}
+
 void TaskDressUpParameters::hideObject()
 {
     App::DocumentObject* base = getBase();

@@ -99,7 +99,7 @@ class Shape2DView(DraftObject):
         
         obj.Projection = App.Vector(0,0,1)
         obj.ProjectionMode = ["Solid", "Individual Faces",
-                              "Cutlines", "Cutfaces"]
+                              "Cutlines", "Cutfaces","Solid faces"]
         obj.HiddenLines = False
         obj.Tessellation = False
         obj.VisibleOnly = False
@@ -200,8 +200,13 @@ class Shape2DView(DraftObject):
                     cuts = []
                     opl = App.Placement(obj.Base.Placement)
                     proj = opl.Rotation.multVec(App.Vector(0, 0, 1))
-                    if obj.ProjectionMode == "Solid":
-                        for sh in shapes:
+                    if obj.ProjectionMode in ["Solid","Solid faces"]:
+                        shapes_to_cut = shapes
+                        if obj.ProjectionMode == "Solid faces":
+                            shapes_to_cut = []
+                            for s in shapes:
+                                shapes_to_cut.extend(s.Faces)
+                        for sh in shapes_to_cut:
                             if cutv:
                                 if sh.Volume < 0:
                                     sh.reverse()

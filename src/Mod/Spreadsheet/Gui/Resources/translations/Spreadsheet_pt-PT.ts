@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation>Conteúdo das células selecionadas alinhadas ao Centro na verticalmente</translation>
+      <translation>Alinhar ao centro o conteúdo das células selecionadas</translation>
     </message>
   </context>
   <context>
@@ -231,6 +231,89 @@
     <message>
       <source>Custom Color</source>
       <translation>Cor personalizada</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Unir células</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Dividir célula</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Alinhamento à esquerda da célula</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Centrar célula</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Alinhamento à direita da célula</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Alinhamento superior da célula</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Alinhamento inferior da célula</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Centrar verticalmente as células</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Aplicar texto em negrito</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Aplicar texto em itálico</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Aplicar texto sublinhado</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Criar folha de cálculo</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Definir propriedades da célula</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Editar célula</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Inserir linhas</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Remover linhas</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Inserir colunas</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Limpar célula(s)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Definir cor do primeiro plano</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Definir cor de fundo</translation>
     </message>
   </context>
   <context>
@@ -481,24 +564,64 @@ Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Inserir linhas</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Remover linhas</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Inserir colunas</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Remover colunas</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Propriedades...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

@@ -211,8 +211,8 @@ QRectF QGCustomText::tightBoundingRect() const
     qreal y_adj = (result.height() - tight.height())/4.0;
 
     // Adjust the bounding box 50% towards the Qt tightBoundingRect(),
-    // except chomp some extra empty space above the font (2*y_adj)
-    result.adjust(x_adj, 2*y_adj, -x_adj, -y_adj);
+    // except chomp some extra empty space above the font (1.75*y_adj)
+    result.adjust(x_adj, 1.75*y_adj, -x_adj, -y_adj);
 
     return result;
 }

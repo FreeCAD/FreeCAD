@@ -118,39 +118,24 @@ void PropertyVector::setPyObject(PyObject *value)
         item = PyTuple_GetItem(value,0);
         if (PyFloat_Check(item))
             cVec.x = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.x = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.x = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         // y
         item = PyTuple_GetItem(value,1);
         if (PyFloat_Check(item))
             cVec.y = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.y = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.y = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         // z
         item = PyTuple_GetItem(value,2);
         if (PyFloat_Check(item))
             cVec.z = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(item))
-            cVec.z = (double)PyInt_AsLong(item);
-#else
         else if (PyLong_Check(item))
             cVec.z = (double)PyLong_AsLong(item);
-#endif
         else
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         setValue( cVec );
@@ -225,11 +210,11 @@ bool PropertyVector::getPyPathValue(const ObjectIdentifier &path, Py::Object &re
 
     std::string p = path.getSubPathStr();
     if (p == ".x") {
-        res = new QuantityPy(new Quantity(getValue().x,unit));
+        res = Py::asObject(new QuantityPy(new Quantity(getValue().x,unit)));
     } else if(p == ".y") {
-        res = new QuantityPy(new Quantity(getValue().y,unit));
+        res = Py::asObject(new QuantityPy(new Quantity(getValue().y,unit)));
     } else if(p == ".z") {
-        res = new QuantityPy(new Quantity(getValue().z,unit));
+        res = Py::asObject(new QuantityPy(new Quantity(getValue().z,unit)));
     } else
         return false;
     return true;
@@ -474,13 +459,8 @@ void PropertyMatrix::setPyObject(PyObject *value)
                 item = PyTuple_GetItem(value,x+y*4);
                 if (PyFloat_Check(item))
                     cMatrix[x][y] = PyFloat_AsDouble(item);
-#if PY_MAJOR_VERSION < 3
-                else if (PyInt_Check(item))
-                    cMatrix[x][y] = (double)PyInt_AsLong(item);
-#else
                 else if (PyLong_Check(item))
                     cMatrix[x][y] = (double)PyLong_AsLong(item);
-#endif
                 else
                     throw Base::TypeError("Not allowed type used in matrix tuple (a number expected)...");
             }
@@ -678,13 +658,13 @@ bool PropertyPlacement::getPyPathValue(const ObjectIdentifier &path, Py::Object 
     if (p == ".Rotation.Angle") {
         Base::Vector3d axis; double angle;
         _cPos.getRotation().getValue(axis,angle);
-        res = new QuantityPy(new Quantity(Base::toDegrees(angle),Unit::Angle));
+        res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle),Unit::Angle)));
     } else if (p == ".Base.x") {
-        res = new QuantityPy(new Quantity(_cPos.getPosition().x,Unit::Length));
+        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().x,Unit::Length)));
     } else if (p == ".Base.y") {
-        res = new QuantityPy(new Quantity(_cPos.getPosition().y,Unit::Length));
+        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().y,Unit::Length)));
     } else if (p == ".Base.z") {
-        res = new QuantityPy(new Quantity(_cPos.getPosition().z,Unit::Length));
+        res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().z,Unit::Length)));
     } else
         return false;
     return true;

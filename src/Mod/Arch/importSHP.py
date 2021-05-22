@@ -128,7 +128,7 @@ def checkShapeFileLibrary():
 
     try:
         import shapefile
-    except:
+    except Exception:
         url = "https://raw.githubusercontent.com/GeospatialPython/pyshp/master/shapefile.py"
         if FreeCAD.GuiUp:
             import addonmanager_utilities
@@ -153,7 +153,7 @@ def checkShapeFileLibrary():
                 f.close()
                 try:
                     import shapefile
-                except:
+                except Exception:
                     FreeCAD.Console.PrintError(translate("Arch","Could not download shapefile module. Aborting.")+"\n")
                     return False
             else:

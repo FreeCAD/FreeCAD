@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
+# *   Copyright (c) 2019-2021 Schildkroet                                   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,12 +21,6 @@
 # *   Suite 330, Boston, MA  02111-1307, USA                                *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   by Schildkroet.       (https://github.com/Schildkroet)                *
-# *                                                                         *
-# ***************************************************************************
-
 
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
@@ -39,7 +34,13 @@ import math
 import area
 from pivy import coin
 
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+Part = LazyLoader('Part', globals(), 'Part')
+TechDraw = LazyLoader('TechDraw', globals(), 'TechDraw')
+
 __doc__ = "Class and implementation of the Adaptive path operation."
+
 
 def convertTo2d(pathArray):
     output = []
@@ -47,14 +48,15 @@ def convertTo2d(pathArray):
         pth2 = []
         for edge in path:
             for pt in edge:
-                pth2.append([pt[0],pt[1]])
+                pth2.append([pt[0], pt[1]])
         output.append(pth2)
     return output
 
 
 sceneGraph = None
-scenePathNodes = [] #for scene cleanup aftewards
+scenePathNodes = []  # for scene cleanup aftewards
 topZ = 10
+
 
 def sceneDrawPath(path, color=(0, 0, 1)):
     coPoint = coin.SoCoordinate3()
@@ -73,7 +75,8 @@ def sceneDrawPath(path, color=(0, 0, 1)):
     pathNode.addChild(ma)
     pathNode.addChild(li)
     sceneGraph.addChild(pathNode)
-    scenePathNodes.append(pathNode) #for scene cleanup afterwards
+    scenePathNodes.append(pathNode)  # for scene cleanup afterwards
+
 
 def sceneClean():
     for n in scenePathNodes:
@@ -81,14 +84,24 @@ def sceneClean():
 
     del scenePathNodes[:]
 
-def discretize(edge, flipDirection = False):
-    pts = edge.discretize(Deflection = 0.0001)
+
+def discretize(edge, flipDirection=False):
+    pts = edge.discretize(Deflection=0.0001)
     if flipDirection:
         pts.reverse()
 
     return pts
 
-def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
+
+def CalcHelixConePoint(height, cur_z, radius, angle):
+    x = ((height - cur_z) / height) * radius * math.cos(math.radians(angle)*cur_z)
+    y = ((height - cur_z) / height) * radius * math.sin(math.radians(angle)*cur_z)
+    z = cur_z
+
+    return {'X': x, 'Y': y, 'Z': z}
+
+
+def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
     # pylint: disable=unused-argument
     if len(adaptiveResults) == 0 or len(adaptiveResults[0]["AdaptivePaths"]) == 0:
         return
@@ -96,31 +109,35 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     # minLiftDistance = op.tool.Diameter
     helixRadius = 0
     for region in adaptiveResults:
-        p1 =  region["HelixCenterPoint"]
-        p2 =  region["StartPoint"]
-        r =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
+        p1 = region["HelixCenterPoint"]
+        p2 = region["StartPoint"]
+        r = math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]))
         if r > helixRadius:
             helixRadius = r
 
     stepDown = obj.StepDown.Value
-    passStartDepth=obj.StartDepth.Value
+    passStartDepth = obj.StartDepth.Value
 
-    if stepDown < 0.1 :
+    if stepDown < 0.1:
         stepDown = 0.1
 
     length = 2*math.pi * helixRadius
 
     if float(obj.HelixAngle) < 1:
         obj.HelixAngle = 1
+    if float(obj.HelixAngle) > 89:
+        obj.HelixAngle = 89
+
+    if float(obj.HelixConeAngle) < 0:
+        obj.HelixConeAngle = 0
 
     helixAngleRad = math.pi * float(obj.HelixAngle) / 180.0
     depthPerOneCircle = length * math.tan(helixAngleRad)
-    #print("Helix circle depth: {}".format(depthPerOneCircle))
+    # print("Helix circle depth: {}".format(depthPerOneCircle))
 
     stepUp = obj.LiftDistance.Value
     if stepUp < 0:
         stepUp = 0
-
 
     finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
     if finish_step > stepDown:
@@ -135,13 +152,11 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
             final_depth=obj.FinalDepth.Value,
             user_depths=None)
 
-
-
     # ml: this is dangerous because it'll hide all unused variables hence forward
     #     however, I don't know what lx and ly signify so I'll leave them for now
     # pylint: disable=unused-variable
-    lx = adaptiveResults[0]["HelixCenterPoint"][0]
-    ly = adaptiveResults[0]["HelixCenterPoint"][1]
+    # lx = adaptiveResults[0]["HelixCenterPoint"][0]
+    # ly = adaptiveResults[0]["HelixCenterPoint"][1]
     lz = passStartDepth
     step = 0
 
@@ -151,29 +166,30 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
         for region in adaptiveResults:
             startAngle = math.atan2(region["StartPoint"][1] - region["HelixCenterPoint"][1], region["StartPoint"][0] - region["HelixCenterPoint"][0])
 
-            lx = region["HelixCenterPoint"][0]
-            ly = region["HelixCenterPoint"][1]
+            # lx = region["HelixCenterPoint"][0]
+            # ly = region["HelixCenterPoint"][1]
 
             passDepth = (passStartDepth - passEndDepth)
 
             p1 = region["HelixCenterPoint"]
             p2 = region["StartPoint"]
-            helixRadius = math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
+            helixRadius = math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) + (p1[1]-p2[1]) * (p1[1]-p2[1]))
 
-            # helix ramp
-            if helixRadius > 0.001:
+            # Helix ramp
+            if helixRadius > 0.01:
                 r = helixRadius - 0.01
 
-                maxfi =  passDepth / depthPerOneCircle * 2 * math.pi
+                maxfi = passDepth / depthPerOneCircle * 2 * math.pi
                 fi = 0
                 offsetFi = -maxfi + startAngle-math.pi/16
 
                 helixStart = [region["HelixCenterPoint"][0] + r * math.cos(offsetFi), region["HelixCenterPoint"][1] + r * math.sin(offsetFi)]
 
-                op.commandlist.append(Path.Command("(Helix to depth: %f)"%passEndDepth))
+                op.commandlist.append(Path.Command("(Helix to depth: %f)" % passEndDepth))
 
-                if obj.UseHelixArcs == False:
+                if obj.UseHelixArcs is False:
                     # rapid move to start point
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
                     # rapid move to safe height
@@ -182,29 +198,84 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     # move to start depth
                     op.commandlist.append(Path.Command("G1", {"X": helixStart[0], "Y": helixStart[1], "Z": passStartDepth, "F": op.vertFeed}))
 
-                    while fi < maxfi:
-                        x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
-                        y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
-                        z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
-                        op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.vertFeed}))
-                        lx = x
-                        ly = y
-                        fi=fi+math.pi/16
+                    if obj.HelixConeAngle == 0:
+                        while fi < maxfi:
+                            x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
+                            y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
+                            z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
+                            op.commandlist.append(Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.vertFeed}))
+                            # lx = x
+                            # ly = y
+                            fi = fi + math.pi / 16
 
-                    # one more circle at target depth to make sure center is cleared
-                    maxfi = maxfi + 2*math.pi
-                    while fi < maxfi:
-                        x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
-                        y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
-                        z = passEndDepth
-                        op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.horizFeed}))
-                        lx = x
-                        ly = y
-                        fi = fi + math.pi/16
+                        # one more circle at target depth to make sure center is cleared
+                        maxfi = maxfi + 2*math.pi
+                        while fi < maxfi:
+                            x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
+                            y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
+                            z = passEndDepth
+                            op.commandlist.append(Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.horizFeed}))
+                            # lx = x
+                            # ly = y
+                            fi = fi + math.pi/16
+
+                    else:
+                        # Cone
+                        _HelixAngle = 360 - (float(obj.HelixAngle) * 4)
+
+                        if obj.HelixConeAngle > 6:
+                            obj.HelixConeAngle = 6
+
+                        helixRadius *= 0.9
+
+                        # Calculate everything
+                        helix_height = passStartDepth - passEndDepth
+                        r_extra = helix_height * math.tan(math.radians(obj.HelixConeAngle))
+                        HelixTopRadius = helixRadius + r_extra
+                        helix_full_height = HelixTopRadius * (math.cos(math.radians(obj.HelixConeAngle)) / math.sin(math.radians(obj.HelixConeAngle)))
+
+                        # Start height
+                        z = passStartDepth
+                        i = 0
+
+                        # Default step down
+                        z_step = 0.05
+
+                        # Bigger angle, smaller step down
+                        if _HelixAngle > 120:
+                            z_step = 0.025
+                        if _HelixAngle > 240:
+                            z_step = 0.015
+
+                        p = None
+                        # Calculate conical helix
+                        while(z >= passEndDepth):
+                            if z < passEndDepth:
+                                z = passEndDepth
+
+                            p = CalcHelixConePoint(helix_full_height, i, HelixTopRadius, _HelixAngle)
+                            op.commandlist.append(Path.Command("G1", {"X": p['X'] + region["HelixCenterPoint"][0], "Y": p['Y'] + region["HelixCenterPoint"][1], "Z": z, "F": op.vertFeed}))
+                            z = z - z_step
+                            i = i + z_step
+
+                        # Calculate some stuff for arcs at bottom
+                        p['X'] = p['X'] + region["HelixCenterPoint"][0]
+                        p['Y'] = p['Y'] + region["HelixCenterPoint"][1]
+                        x_m = region["HelixCenterPoint"][0] - p['X'] + region["HelixCenterPoint"][0]
+                        y_m = region["HelixCenterPoint"][1] - p['Y'] + region["HelixCenterPoint"][1]
+                        i_off = (x_m - p['X']) / 2
+                        j_off = (y_m - p['Y']) / 2
+
+                        # One more circle at target depth to make sure center is cleared
+                        op.commandlist.append(Path.Command("G3", {"X": x_m, "Y": y_m, "Z": passEndDepth, "I": i_off, "J": j_off, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G3", {"X": p['X'], "Y": p['Y'], "Z": passEndDepth, "I": -i_off, "J": -j_off, "F": op.horizFeed}))
+
                 else:
+                    # Use arcs for helix - no conical shape support
                     helixStart = [region["HelixCenterPoint"][0] + r, region["HelixCenterPoint"][1]]
 
                     # rapid move to start point
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(Path.Command("G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
 
                     # rapid move to safe height
@@ -218,39 +289,40 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
                     curDep = passStartDepth
                     while curDep > (passEndDepth + depthPerOneCircle):
-                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (depthPerOneCircle/2), "I": -r, "F": op.horizFeed}))
-                        op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": curDep - depthPerOneCircle, "I": r, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G2", {"X": x - (2*r), "Y": y, "Z": curDep - (depthPerOneCircle/2), "I": -r, "F": op.vertFeed}))
+                        op.commandlist.append(Path.Command("G2", {"X": x, "Y": y, "Z": curDep - depthPerOneCircle, "I": r, "F": op.vertFeed}))
                         curDep = curDep - depthPerOneCircle
 
                     lastStep = curDep - passEndDepth
                     if lastStep > (depthPerOneCircle/2):
-                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (lastStep/2), "I": -r, "F": op.horizFeed}))
-                        op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": passEndDepth, "I": r, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G2", {"X": x - (2*r), "Y": y, "Z": curDep - (lastStep/2), "I": -r, "F": op.vertFeed}))
+                        op.commandlist.append(Path.Command("G2", {"X": x, "Y": y, "Z": passEndDepth, "I": r, "F": op.vertFeed}))
                     else:
-                        op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": passEndDepth, "I": -r, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G2", {"X": x - (2*r), "Y": y, "Z": passEndDepth, "I": -r, "F": op.vertFeed}))
                         op.commandlist.append(Path.Command("G1", {"X": x, "Y": y, "Z": passEndDepth, "F": op.vertFeed}))
 
                     # one more circle at target depth to make sure center is cleared
-                    op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": passEndDepth, "I": -r, "F": op.horizFeed}))
-                    op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": passEndDepth, "I": r, "F": op.horizFeed}))
-                    lx = x
-                    ly = y
+                    op.commandlist.append(Path.Command("G2", {"X": x - (2*r), "Y": y, "Z": passEndDepth, "I": -r, "F": op.horizFeed}))
+                    op.commandlist.append(Path.Command("G2", {"X": x, "Y": y, "Z": passEndDepth, "I": r, "F": op.horizFeed}))
+                    # lx = x
+                    # ly = y
 
-            else: # no helix entry
+            else:  # no helix entry
                 # rapid move to clearance height
+                op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                 op.commandlist.append(Path.Command("G0", {"X": region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": obj.ClearanceHeight.Value}))
                 # straight plunge to target depth
-                op.commandlist.append(Path.Command("G1", {"X":region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": passEndDepth,"F": op.vertFeed}))
+                op.commandlist.append(Path.Command("G1", {"X": region["StartPoint"][0], "Y": region["StartPoint"][1], "Z": passEndDepth, "F": op.vertFeed}))
 
             lz = passEndDepth
             z = obj.ClearanceHeight.Value
-            op.commandlist.append(Path.Command("(Adaptive - depth: %f)"%passEndDepth))
+            op.commandlist.append(Path.Command("(Adaptive - depth: %f)" % passEndDepth))
 
             # add adaptive paths
             for pth in region["AdaptivePaths"]:
-                motionType = pth[0]  #[0] contains motion type
+                motionType = pth[0]  # [0] contains motion type
 
-                for pt in pth[1]:    #[1] contains list of points
+                for pt in pth[1]:  # [1] contains list of points
                     x = pt[0]
                     y = pt[1]
 
@@ -259,37 +331,37 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     if motionType == area.AdaptiveMotionType.Cutting:
                         z = passEndDepth
                         if z != lz:
-                            op.commandlist.append(Path.Command("G1", { "Z":z,"F": op.vertFeed}))
+                            op.commandlist.append(Path.Command("G1", {"Z": z, "F": op.vertFeed}))
 
-                        op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "F": op.horizFeed}))
+                        op.commandlist.append(Path.Command("G1", {"X": x, "Y": y, "F": op.horizFeed}))
 
                     elif motionType == area.AdaptiveMotionType.LinkClear:
                         z = passEndDepth + stepUp
                         if z != lz:
-                            op.commandlist.append(Path.Command("G0", { "Z":z}))
+                            op.commandlist.append(Path.Command("G0", {"Z": z}))
 
-                        op.commandlist.append(Path.Command("G0", { "X": x, "Y":y}))
+                        op.commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
 
                     elif motionType == area.AdaptiveMotionType.LinkNotClear:
                         z = obj.ClearanceHeight.Value
                         if z != lz:
-                            op.commandlist.append(Path.Command("G0", { "Z":z}))
+                            op.commandlist.append(Path.Command("G0", {"Z": z}))
 
-                        op.commandlist.append(Path.Command("G0", { "X": x, "Y":y}))
+                        op.commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
 
                     # elif motionType == area.AdaptiveMotionType.LinkClearAtPrevPass:
                     #     if lx!=x or ly!=y:
                     #         op.commandlist.append(Path.Command("G0", { "X": lx, "Y":ly, "Z":passStartDepth+stepUp}))
                     #     op.commandlist.append(Path.Command("G0", { "X": x, "Y":y, "Z":passStartDepth+stepUp}))
 
-                    lx = x
-                    ly = y
+                    # lx = x
+                    # ly = y
                     lz = z
 
             # return to safe height in this Z pass
             z = obj.ClearanceHeight.Value
             if z != lz:
-                op.commandlist.append(Path.Command("G0", { "Z":z}))
+                op.commandlist.append(Path.Command("G0", {"Z": z}))
 
             lz = z
 
@@ -298,17 +370,18 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
         # return to safe height in this Z pass
         z = obj.ClearanceHeight.Value
         if z != lz:
-            op.commandlist.append(Path.Command("G0", { "Z":z}))
+            op.commandlist.append(Path.Command("G0", {"Z": z}))
 
         lz = z
 
     z = obj.ClearanceHeight.Value
     if z != lz:
-        op.commandlist.append(Path.Command("G0", { "Z":z}))
+        op.commandlist.append(Path.Command("G0", {"Z": z}))
 
     lz = z
 
-def Execute(op,obj):
+
+def Execute(op, obj):
     # pylint: disable=global-statement
     global sceneGraph
     global topZ
@@ -317,10 +390,10 @@ def Execute(op,obj):
 
     Console.PrintMessage("*** Adaptive toolpath processing started...\n")
 
-    #hide old toolpaths during recalculation
+    # hide old toolpaths during recalculation
     obj.Path = Path.Path("(Calculating...)")
 
-    #store old visibility state
+    # store old visibility state
     job = op.getJob(obj)
     oldObjVisibility = obj.ViewObject.Visibility
     oldJobVisibility = job.ViewObject.Visibility
@@ -337,14 +410,9 @@ def Execute(op,obj):
         if obj.Tolerance < 0.001:
             obj.Tolerance = 0.001
 
-        pathArray = []
-        for base, subs in obj.Base:
-            for sub in subs:
-                shape = base.Shape.getElement(sub)
-                for edge in shape.Edges:
-                    pathArray.append([discretize(edge)])
+        # Get list of working edges for adaptive algorithm
+        pathArray = _get_working_edges(op, obj)
 
-        #pathArray=connectEdges(edges)
         path2d = convertTo2d(pathArray)
 
         stockPaths = []
@@ -353,12 +421,12 @@ def Execute(op,obj):
 
         else:
             stockBB = op.stock.Shape.BoundBox
-            v=[]
-            v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
-            v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMin,0))
-            v.append(FreeCAD.Vector(stockBB.XMax,stockBB.YMax,0))
-            v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMax,0))
-            v.append(FreeCAD.Vector(stockBB.XMin,stockBB.YMin,0))
+            v = []
+            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMin, 0))
+            v.append(FreeCAD.Vector(stockBB.XMax, stockBB.YMin, 0))
+            v.append(FreeCAD.Vector(stockBB.XMax, stockBB.YMax, 0))
+            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMax, 0))
+            v.append(FreeCAD.Vector(stockBB.XMin, stockBB.YMin, 0))
             stockPaths.append([v])
 
         stockPath2d = convertTo2d(stockPaths)
@@ -371,13 +439,12 @@ def Execute(op,obj):
             else:
                 opType = area.AdaptiveOperationType.ClearingInside
 
-        else: # profiling
+        else:  # profiling
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ProfilingOutside
 
             else:
                 opType = area.AdaptiveOperationType.ProfilingInside
-
 
         keepToolDownRatio = 3.0
         if hasattr(obj, 'KeepToolDownRatio'):
@@ -388,13 +455,14 @@ def Execute(op,obj):
         inputStateObject = {
             "tool": float(op.tool.Diameter),
             "tolerance": float(obj.Tolerance),
-            "geometry" : path2d,
+            "geometry": path2d,
             "stockGeometry": stockPath2d,
-            "stepover" : float(obj.StepOver),
+            "stepover": float(obj.StepOver),
             "effectiveHelixDiameter": float(helixDiameter),
             "operationType": obj.OperationType,
             "side": obj.Side,
-            "forceInsideOut" : obj.ForceInsideOut,
+            "forceInsideOut": obj.ForceInsideOut,
+            "finishingProfile": obj.FinishingProfile,
             "keepToolDownRatio": keepToolDownRatio,
             "stockToLeave": float(obj.StockToLeave)
         }
@@ -402,7 +470,7 @@ def Execute(op,obj):
         inputStateChanged = False
         adaptiveResults = None
 
-        if obj.AdaptiveOutputState != None and obj.AdaptiveOutputState != "":
+        if obj.AdaptiveOutputState is not None and obj.AdaptiveOutputState != "":
             adaptiveResults = obj.AdaptiveOutputState
 
         if json.dumps(obj.AdaptiveInputState) != json.dumps(inputStateObject):
@@ -411,32 +479,33 @@ def Execute(op,obj):
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
-            for path in tpaths: #path[0] contains the MotionType, #path[1] contains list of points
+            for path in tpaths:  # path[0] contains the MotionType, #path[1] contains list of points
                 if path[0] == area.AdaptiveMotionType.Cutting:
-                    sceneDrawPath(path[1],(0,0,1))
+                    sceneDrawPath(path[1], (0, 0, 1))
 
                 else:
-                    sceneDrawPath(path[1],(1,0,1))
+                    sceneDrawPath(path[1], (1, 0, 1))
 
             FreeCADGui.updateGui()
 
-            return  obj.StopProcessing
+            return obj.StopProcessing
 
         start = time.time()
 
         if inputStateChanged or adaptiveResults is None:
             a2d = area.Adaptive2d()
-            a2d.stepOverFactor = 0.01*obj.StepOver
+            a2d.stepOverFactor = 0.01 * obj.StepOver
             a2d.toolDiameter = float(op.tool.Diameter)
-            a2d.helixRampDiameter =  helixDiameter
+            a2d.helixRampDiameter = helixDiameter
             a2d.keepToolDownDistRatio = keepToolDownRatio
-            a2d.stockToLeave =float(obj.StockToLeave)
+            a2d.stockToLeave = float(obj.StockToLeave)
             a2d.tolerance = float(obj.Tolerance)
             a2d.forceInsideOut = obj.ForceInsideOut
+            a2d.finishingProfile = obj.FinishingProfile
             a2d.opType = opType
 
             # EXECUTE
-            results = a2d.Execute(stockPath2d,path2d,progressFn)
+            results = a2d.Execute(stockPath2d, path2d, progressFn)
 
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
@@ -445,24 +514,52 @@ def Execute(op,obj):
                     "HelixCenterPoint": result.HelixCenterPoint,
                     "StartPoint": result.StartPoint,
                     "AdaptivePaths": result.AdaptivePaths,
-                    "ReturnMotionType": result.ReturnMotionType })
-
+                    "ReturnMotionType": result.ReturnMotionType})
 
         # GENERATE
-        GenerateGCode(op,obj,adaptiveResults,helixDiameter)
+        GenerateGCode(op, obj, adaptiveResults, helixDiameter)
 
         if not obj.StopProcessing:
-            Console.PrintMessage("*** Done. Elapsed time: %f sec\n\n" %(time.time()-start))
+            Console.PrintMessage("*** Done. Elapsed time: %f sec\n\n" % (time.time()-start))
             obj.AdaptiveOutputState = adaptiveResults
-            obj.AdaptiveInputState=inputStateObject
+            obj.AdaptiveInputState = inputStateObject
 
         else:
-            Console.PrintMessage("*** Processing cancelled (after: %f sec).\n\n" %(time.time()-start))
+            Console.PrintMessage("*** Processing cancelled (after: %f sec).\n\n" % (time.time()-start))
 
     finally:
         obj.ViewObject.Visibility = oldObjVisibility
         job.ViewObject.Visibility = oldJobVisibility
         sceneClean()
+
+
+def _get_working_edges(op, obj):
+    """_get_working_edges(op, obj)...
+    Compile all working edges from the Base Geometry selection (obj.Base)
+    for the current operation.
+    Additional modifications to selected region(face), such as extensions,
+    should be placed within this function.
+    """
+    pathArray = list()
+
+    for base, subs in obj.Base:
+        for sub in subs:
+            if obj.UseOutline:
+                face = base.Shape.getElement(sub)
+                zmin = face.BoundBox.ZMin
+                # get face outline with same method in PocketShape
+                wire = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
+                shape = Part.Face(wire)
+                # translate to face height if necessary
+                if shape.BoundBox.ZMin != zmin:
+                    shape.translate(FreeCAD.Vector(0.0, 0.0, zmin - shape.BoundBox.ZMin))
+            else:
+                shape = base.Shape.getElement(sub)
+
+            for edge in shape.Edges:
+                pathArray.append([discretize(edge)])
+
+    return pathArray
 
 
 class PathAdaptive(PathOp.ObjectOp):
@@ -481,63 +578,78 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty("App::PropertyEnumeration", "OperationType", "Adaptive", "Type of adaptive operation")
         obj.OperationType = ['Clearing', 'Profiling']  # side of profile that cutter is on in relation to direction of profile
 
-        obj.addProperty("App::PropertyFloat", "Tolerance", "Adaptive",  "Influences accuracy and performance")
+        obj.addProperty("App::PropertyFloat", "Tolerance", "Adaptive", "Influences accuracy and performance")
         obj.addProperty("App::PropertyPercent", "StepOver", "Adaptive", "Percent of cutter diameter to step over on each pass")
         obj.addProperty("App::PropertyDistance", "LiftDistance", "Adaptive", "Lift distance for rapid moves")
         obj.addProperty("App::PropertyDistance", "KeepToolDownRatio", "Adaptive", "Max length of keep tool down path compared to direct distance between points")
         obj.addProperty("App::PropertyDistance", "StockToLeave", "Adaptive", "How much stock to leave (i.e. for finishing operation)")
         # obj.addProperty("App::PropertyBool", "ProcessHoles", "Adaptive","Process holes as well as the face outline")
 
-        obj.addProperty("App::PropertyBool", "ForceInsideOut", "Adaptive","Force plunging into material inside and clearing towards the edges")
+        obj.addProperty("App::PropertyBool", "ForceInsideOut", "Adaptive", "Force plunging into material inside and clearing towards the edges")
+        obj.addProperty("App::PropertyBool", "FinishingProfile", "Adaptive", "To take a finishing profile path at the end")
         obj.addProperty("App::PropertyBool", "Stopped",
                         "Adaptive", "Stop processing")
-        obj.setEditorMode('Stopped', 2) #hide this property
+        obj.setEditorMode('Stopped', 2)  # hide this property
 
         obj.addProperty("App::PropertyBool", "StopProcessing",
                                   "Adaptive", "Stop processing")
         obj.setEditorMode('StopProcessing', 2)  # hide this property
 
-        obj.addProperty("App::PropertyBool", "UseHelixArcs", "Adaptive","Use Arcs (G2) for helix ramp")
+        obj.addProperty("App::PropertyBool", "UseHelixArcs", "Adaptive", "Use Arcs (G2) for helix ramp")
 
         obj.addProperty("App::PropertyPythonObject", "AdaptiveInputState",
                         "Adaptive", "Internal input state")
         obj.addProperty("App::PropertyPythonObject", "AdaptiveOutputState",
                         "Adaptive", "Internal output state")
-        obj.setEditorMode('AdaptiveInputState', 2) #hide this property
-        obj.setEditorMode('AdaptiveOutputState', 2) #hide this property
-        obj.addProperty("App::PropertyAngle", "HelixAngle", "Adaptive",  "Helix ramp entry angle (degrees)")
+        obj.setEditorMode('AdaptiveInputState', 2)  # hide this property
+        obj.setEditorMode('AdaptiveOutputState', 2)  # hide this property
+        obj.addProperty("App::PropertyAngle", "HelixAngle", "Adaptive", "Helix ramp entry angle (degrees)")
+        obj.addProperty("App::PropertyAngle", "HelixConeAngle", "Adaptive", "Helix cone angle (degrees)")
         obj.addProperty("App::PropertyLength", "HelixDiameterLimit", "Adaptive", "Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used")
 
+        obj.addProperty("App::PropertyBool", "UseOutline", "Adaptive", "Uses the outline of the base geometry.")
 
     def opSetDefaultValues(self, obj, job):
-        obj.Side="Inside"
+        obj.Side = "Inside"
         obj.OperationType = "Clearing"
         obj.Tolerance = 0.1
         obj.StepOver = 20
-        obj.LiftDistance=0
+        obj.LiftDistance = 0
         # obj.ProcessHoles = True
         obj.ForceInsideOut = False
+        obj.FinishingProfile = True
         obj.Stopped = False
         obj.StopProcessing = False
         obj.HelixAngle = 5
+        obj.HelixConeAngle = 0
         obj.HelixDiameterLimit = 0.0
-        obj.AdaptiveInputState =""
+        obj.AdaptiveInputState = ""
         obj.AdaptiveOutputState = ""
         obj.StockToLeave = 0
         obj.KeepToolDownRatio = 3.0
         obj.UseHelixArcs = False
+        obj.UseOutline = False
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses.'''
-        Execute(self,obj)
+        Execute(self, obj)
+
+    def opOnDocumentRestored(self, obj):
+        if not hasattr(obj, 'HelixConeAngle'):
+            obj.addProperty("App::PropertyAngle", "HelixConeAngle", "Adaptive", "Helix cone angle (degrees)")
+
+        if not hasattr(obj, "UseOutline"):
+            obj.addProperty("App::PropertyBool",
+                            "UseOutline",
+                            "Adaptive",
+                            "Uses the outline of the base geometry.")
 
 
-
-def Create(name, obj = None):
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Adaptive operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = PathAdaptive(obj,name)
+    obj.Proxy = PathAdaptive(obj, name)
     return obj

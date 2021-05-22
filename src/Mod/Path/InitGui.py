@@ -87,8 +87,7 @@ class PathWorkbench (Workbench):
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop",
                        "Path_Custom", "Path_Probe"]
         twodopcmdlist = ["Path_Profile", "Path_Pocket_Shape", "Path_Drilling",
-                         "Path_MillFace", "Path_Helix", "Path_Adaptive",
-                         "Path_Slot"]
+                         "Path_MillFace", "Path_Helix", "Path_Adaptive"]
         threedopcmdlist = ["Path_Pocket_3D"]
         engravecmdlist = ["Path_Engrave", "Path_Deburr", "Path_Vcarve"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy"]
@@ -99,9 +98,10 @@ class PathWorkbench (Workbench):
         extracmdlist = []
         # modcmdmore = ["Path_Hop",]
         # remotecmdlist = ["Path_Remote"]
+        specialcmdlist = []
 
 
-        if PathPreferences.toolsReallyUseLegacyTools():
+        if PathPreferences.toolsUseLegacyTools():
             toolcmdlist.append("Path_ToolLibraryEdit")
             toolbitcmdlist = []
         else:
@@ -118,7 +118,10 @@ class PathWorkbench (Workbench):
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
+            specialcmdlist.append('Path_Thread_Milling')
+            twodopcmdlist.append("Path_Slot")
 
+        if PathPreferences.advancedOCLFeaturesEnabled():
             try:
                 import ocl  # pylint: disable=unused-variable
                 from PathScripts import PathSurfaceGui
@@ -127,7 +130,8 @@ class PathWorkbench (Workbench):
                 threedcmdgroup = ['Path_3dTools']
                 FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path", '3D Operations')))
             except ImportError:
-                FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
+                if not PathPreferences.suppressOpenCamLibWarning():
+                    FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
@@ -145,8 +149,15 @@ class PathWorkbench (Workbench):
             "Path", "Supplemental Commands")], prepcmdlist)
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
             "Path", "Path Modification")], modcmdlist)
+        if specialcmdlist:
+            self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
+            "Path", "Specialty Operations")], specialcmdlist)
         if extracmdlist:
             self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
+
+        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], ["Separator"])
+        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP("Path", "Utils")],
+            ["Path_PropertyBag"])
 
         self.dressupcmds = dressupcmdlist
 
@@ -154,6 +165,9 @@ class PathWorkbench (Workbench):
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
 
+        # keep this one the last entry in the preferences
+        import PathScripts.PathPreferencesAdvanced as PathPreferencesAdvanced
+        FreeCADGui.addPreferencePage(PathPreferencesAdvanced.AdvancedPreferencesPage, "Path")
         Log('Loading Path workbench... done\n')
 
     def GetClassName(self):
@@ -162,10 +176,11 @@ class PathWorkbench (Workbench):
     def Activated(self):
         # update the translation engine
         FreeCADGui.updateLocale()
-        Msg("Path workbench activated\n")
+        # Msg("Path workbench activated\n")
 
     def Deactivated(self):
-        Msg("Path workbench deactivated\n")
+        # Msg("Path workbench deactivated\n")
+        pass
 
     def ContextMenu(self, recipient):
         import PathScripts

@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Approximate a cylinder</source>
-      <translation>Annähernd ein Zylinder</translation>
+      <translation>Einen Zylinder annähern</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Polynomial surface</source>
-      <translation>Polynomale Oberfläche</translation>
+      <translation>Polynomfläche</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Approximate a polynomial surface</source>
-      <translation>Approximiere eine polynomiale Oberfläche</translation>
+      <translation>Eine Polynomfläche annähern</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>Approximate a sphere</source>
-      <translation>Annähernd eine Kugel</translation>
+      <translation>Eine Kugel annähern</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>Create wire from mesh boundaries</source>
-      <translation>Erstelle Draht aus Netzgrenzen</translation>
+      <translation>Erstelle Kantenzug aus Netzbegrenzungen</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>Mesh segmentation...</source>
-      <translation>Netz Segmentierung...</translation>
+      <translation>Netz-Segmentierung...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="381"/>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Manual segmentation...</source>
-      <translation>Manuelle Segmentation...</translation>
+      <translation>Manuelle Segmentierung...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="413"/>
@@ -198,6 +198,54 @@
       <location filename="../../Command.cpp" line="593"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Triangulation von geordneten Punktwolken</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Fit plane</source>
+      <translation>Ebene einpassen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="221"/>
+      <source>Fit cylinder</source>
+      <translation>Zylinder einpassen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="287"/>
+      <source>Fit sphere</source>
+      <translation>Kugel einpassen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="335"/>
+      <source>Fit polynomial surface</source>
+      <translation>Polynomfläche einpassen</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="601"/>
+      <source>View triangulation</source>
+      <translation>Triangulation anzeigen</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <source>Placement</source>
+      <translation>Placement</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <source>Fit B-Spline</source>
+      <translation>B-Spline einpassen</translation>
+    </message>
+    <message>
+      <location filename="../../Poisson.cpp" line="101"/>
+      <source>Poisson reconstruction</source>
+      <translation>Poisson-Rekonstruktion</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <source>Segmentation</source>
+      <translation>Segmentierung</translation>
     </message>
   </context>
   <context>
@@ -272,12 +320,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="346"/>
       <source>User-defined u/v directions</source>
-      <translation>Nutzer-definierte u/v Richtungen</translation>
+      <translation>Nutzer-definierte u/v-Richtungen</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="359"/>
       <source>Create placement</source>
-      <translation>Platzierung erstellen</translation>
+      <translation>Placement erstellen</translation>
     </message>
   </context>
   <context>
@@ -314,7 +362,7 @@
     <message>
       <location filename="../../Poisson.ui" line="26"/>
       <source>Octree depth</source>
-      <translation>Octree Tiefe</translation>
+      <translation>Octree-Tiefe</translation>
     </message>
     <message>
       <location filename="../../Poisson.ui" line="46"/>

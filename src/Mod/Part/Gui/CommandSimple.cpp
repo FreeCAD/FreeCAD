@@ -126,7 +126,7 @@ void CmdPartShapeFromMesh::activated(int iMsg)
 
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
-        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok);
+        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
@@ -181,7 +181,7 @@ CmdPartPointsFromMesh::CmdPartPointsFromMesh()
     sToolTipText  = QT_TR_NOOP("Create selectable points object from selected mesh object");
     sWhatsThis    = "Part_PointsFromMesh";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Part_Points_from_Mesh";
+    sPixmap       = "Part_PointsFromMesh";
 }
 
 void CmdPartPointsFromMesh::activated(int iMsg)

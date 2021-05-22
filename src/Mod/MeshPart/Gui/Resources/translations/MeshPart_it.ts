@@ -95,6 +95,19 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation>Taglio con un piano</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation>Seziona con un piano</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
@@ -207,9 +220,9 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Premi 'Inizio', poi scegli punti sulla mesh; quando sono stati impostati abbastanza punti, fai clic con il tasto destro del mouse e scegli 'Crea'. Ripeti questo processo per creare più spline. Chiudi questo pannello per completare l'operazione.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</translation>
+Questo comando funziona solo con un oggetto 'mesh', non con una faccia o una superficie regolari. Per convertire un oggetto in una mesh utilizzare gli strumenti dell'ambiente di lavoro Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -219,7 +232,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation type="unfinished">Snap tolerance to vertices</translation>
+      <translation>Tolleranza di aggancio ai vertici</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -478,13 +491,13 @@ Un valore nell'intervallo tra 0.2-10.</translation>
       <translation>gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Nessun documento attivo</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Selezionare prima una forma per il meshing.</translation>
     </message>

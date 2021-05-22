@@ -95,6 +95,19 @@ Komando honek 'amarauna' objektuetan soilik funtzionatzen du.</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation>Ebaki planoarekin</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation>Sekzioa planoarekin</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
@@ -479,13 +492,13 @@ A value in the range of 0.2-10.</source>
       <translation>gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Ez dago dokumentu aktiborik</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Hasteko, hautatu forma bat amarauna sortzeko.</translation>
     </message>

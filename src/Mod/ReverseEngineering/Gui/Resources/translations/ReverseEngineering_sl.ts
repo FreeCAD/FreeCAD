@@ -191,13 +191,61 @@
     <message>
       <location filename="../../Command.cpp" line="591"/>
       <source>Structured point clouds</source>
-      <translation>Konstrukcijski točkovni oblaki</translation>
+      <translation>Ustrojeni oblaki točk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="592"/>
       <location filename="../../Command.cpp" line="593"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Triangulacija konstrukcijskih točkovnih oblakov</translation>
+      <translation>Trikotenje ustrojevanih točkovnih oblakov</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Fit plane</source>
+      <translation>Prilegaj ravnino</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="221"/>
+      <source>Fit cylinder</source>
+      <translation>Prilegaj valj</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="287"/>
+      <source>Fit sphere</source>
+      <translation>Prilegaj kroglo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="335"/>
+      <source>Fit polynomial surface</source>
+      <translation>Prilegaj mnogočlensko površje</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="601"/>
+      <source>View triangulation</source>
+      <translation>Trikotenje pogleda</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="156"/>
+      <source>Placement</source>
+      <translation>Postavitev</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.cpp" line="228"/>
+      <source>Fit B-Spline</source>
+      <translation>Prilegaj B-zlepek</translation>
+    </message>
+    <message>
+      <location filename="../../Poisson.cpp" line="101"/>
+      <source>Poisson reconstruction</source>
+      <translation>Ponovna zgraditev po Poissonu</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.cpp" line="234"/>
+      <source>Segmentation</source>
+      <translation>Členitev</translation>
     </message>
   </context>
   <context>
@@ -356,7 +404,7 @@
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>View triangulation failed</source>
-      <translation>Prikaz triangulacije ni uspel</translation>
+      <translation>Trikotenje pogleda spodletelo</translation>
     </message>
   </context>
   <context>

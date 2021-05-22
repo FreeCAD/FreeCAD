@@ -90,11 +90,6 @@
       <translation>Zanemarite područja koja se odvijaju ispod određene dubine.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="128"/>
-      <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
-      <translation>Ravan: U ravnini, 3D skeniranje površine. Rotacijsko: rotacijsko skeniranje 1/4 osi.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathSurface.py" line="142"/>
       <source>Depth used to identify waste areas to ignore.</source>
       <translation>Dubina koja se koristi za prepoznavanje područja odpadaka koje treba zanemariti.</translation>
@@ -103,6 +98,11 @@
       <location filename="../../../PathScripts/PathSurface.py" line="143"/>
       <source>Cut through waste to depth at model edge, releasing the model.</source>
       <translation>Prerežite otpadak do dubine na rubu modela, oslobađajući model.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="128"/>
+      <source>Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan.</source>
+      <translation>Ravan: U ravnini, 3D skeniranje površine. Rotacijsko: rotacijsko skeniranje 1/4 osi.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="129"/>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="150"/>
       <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
-      <translation type="unfinished">Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</translation>
+      <translation>Postavite smjer alata  rezanja da zahvaća materijal: Penjanje (U smjeru kazaljke na satu) ili Konvencionalno (Suprotno smjeru kazaljke na satu)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="152"/>
@@ -228,32 +228,38 @@
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="173"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.</source>
-      <translation type="unfinished">Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-Code output.</translation>
+      <translation>Omogućiti optimizaciju linearnih putova (kolinearne točke). Uklanja nepotrebne kolinearne točke s izvoza G-koda.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="175"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
-      <translation type="unfinished">Enable separate optimization of transitions between, and breaks within, each step over path.</translation>
+      <translation>Omogućite zasebnu optimizaciju prijelaza između i prijeloma unutar svakog koraka puta.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="189"/>
       <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation type="unfinished">Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</translation>
+      <translation>Pretvorite koplanarne lukove u gcode naredbe G2 / G3  za uzorke rezanja `Circular` i` CircularZigZag`.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="177"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
-      <translation type="unfinished">Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</translation>
+      <translation>Putanje su zatvorene kolinearnim i ko-radijalnim artefaktima koji su manji od ovog praga.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="179"/>
       <source>Feedback: three smallest gaps identified in the path geometry.</source>
-      <translation type="unfinished">Feedback: three smallest gaps identified in the path geometry.</translation>
+      <translation>Povratne informacije: tri najmanja razmaka identificirana u geometriji puta.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="182"/>
       <source>The custom start point for the path of this operation</source>
-      <translation type="unfinished">The custom start point for the path of this operation</translation>
+      <translation>Prilagođena početna točka za put ove operacije
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="184"/>
@@ -264,6 +270,11 @@
       <location filename="PathCopy.py" line="45"/>
       <source>The path to be copied</source>
       <translation>Put koji treba kopirati</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="56"/>
+      <source>The base geometry of this toolpath</source>
+      <translation>Osnovna geometrija ove obrade staze</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="70"/>
@@ -353,22 +364,22 @@
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="73"/>
       <source>Extends LeadIn distance</source>
-      <translation type="unfinished">Extends LeadIn distance</translation>
+      <translation>Produljuje udaljenost do konture (LeadIn)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="74"/>
       <source>Extends LeadOut distance</source>
-      <translation type="unfinished">Extends LeadOut distance</translation>
+      <translation>Produljuje udaljenost od konture (LeadOut)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="75"/>
       <source>Perform plunges with G0</source>
-      <translation type="unfinished">Perform plunges with G0</translation>
+      <translation>Brzo upuštanje sa GO</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="76"/>
       <source>Apply LeadInOut to layers within an operation</source>
-      <translation type="unfinished">Apply LeadInOut to layers within an operation</translation>
+      <translation>Primijenite LeadInOut na slojeve unutar operacije</translation>
     </message>
     <message>
       <location filename="PathFixture.py" line="43"/>
@@ -443,14 +454,14 @@
       <translation>Kontrolira kako jako se alat povlači=G98</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDrilling.py" line="73"/>
-      <source>Controls how tool retracts Default=G99</source>
-      <translation>Kontrolira kako se alat povlači nazad = G99</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="72"/>
       <source>The height where feed starts and height during retract tool when path is finished</source>
       <translation>Visina gdje započinje pomak i visina tijekom povlačenja alata kada je staza gotova</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDrilling.py" line="73"/>
+      <source>Controls how tool retracts Default=G99</source>
+      <translation>Kontrolira kako se alat povlači nazad = G99</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="75"/>
@@ -501,12 +512,16 @@
     <message>
       <location filename="../../../PathScripts/PathMillFace.py" line="65"/>
       <source>Clear edges of surface (Only applicable to BoundBox)</source>
-      <translation type="unfinished">Clear edges of surface (Only applicable to BoundBox)</translation>
+      <translation>Čisti rubovi površine (odnosi se samo na okvir boks)
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathMillFace.py" line="68"/>
       <source>Exclude milling raised areas inside the face.</source>
-      <translation type="unfinished">Exclude milling raised areas inside the face.</translation>
+      <translation>Isključite glodanje povišenih područja unutar lica.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="124"/>
@@ -522,12 +537,16 @@
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="144"/>
       <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation type="unfinished">Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</translation>
+      <translation>Odaberite algoritam koji ćete koristiti: OCL Dropcutter * ili eksperimentalni (ne temelji se na OCL).
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="148"/>
       <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation type="unfinished">Set to clear last layer in a `Multi-pass` operation.</translation>
+      <translation>Postavite za brisanje posljednjeg sloja u operaciji `Višestruki-prolaz`.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="160"/>
@@ -573,12 +592,16 @@
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="130"/>
       <source>Choose the path orientation with regard to the feature(s) selected.</source>
-      <translation type="unfinished">Choose the path orientation with regard to the feature(s) selected.</translation>
+      <translation>Odaberite orijentaciju puta obrade s obzirom na odabrane značajke.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="132"/>
       <source>Choose what point to use on the first selected feature.</source>
-      <translation type="unfinished">Choose what point to use on the first selected feature.</translation>
+      <translation>Odaberite točku koju ćete koristiti na prvoj odabranoj značajci.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="134"/>
@@ -588,27 +611,33 @@
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="136"/>
       <source>For arcs/circlular edges, offset the radius for the path.</source>
-      <translation type="unfinished">For arcs/circlular edges, offset the radius for the path.</translation>
+      <translation>Za lukove / kružne rubove pomaknite radijus staze obrade.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="138"/>
       <source>Enable to reverse the cut direction of the slot path.</source>
-      <translation type="unfinished">Enable to reverse the cut direction of the slot path.</translation>
+      <translation>Omogućite okretanje smjera reza putanje utora.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocket.py" line="67"/>
       <source>Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</source>
-      <translation type="unfinished">Use adaptive algorithm to eliminate excessive air milling above planar pocket top.</translation>
+      <translation>Upotrijebite prilagodljivi algoritam za uklanjanje pretjeranog glodanja po zraku iznad ravnog džepnog vrha.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocket.py" line="69"/>
       <source>Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.</source>
-      <translation type="unfinished">Use adaptive algorithm to eliminate excessive air milling below planar pocket bottom.</translation>
+      <translation>Upotrijebite prilagodljivi algoritam za uklanjanje pretjeranog glodanja po zraku ispod ravnog džepnog dna.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocket.py" line="71"/>
       <source>Process the model and stock in an operation with no Base Geometry selected.</source>
-      <translation type="unfinished">Process the model and stock in an operation with no Base Geometry selected.</translation>
+      <translation>Obradite model i osnovu u operaciji bez odabrane osnovne geometrije.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="73"/>
@@ -619,11 +648,6 @@
       <location filename="PathPocketBase.py" line="61"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Dodatni pomak koji se primjenjuje na operaciju. Smjer ovisi o operaciji.</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="55"/>
-      <source>The library to use to generate the path</source>
-      <translation>Biblioteka koja se koristiti za generiranje staze</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="78"/>
@@ -675,11 +699,6 @@
       <translation>Materijal za ovaj objekt</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="104"/>
-      <source>Extend the profile clearing beyond the Extra Offset.</source>
-      <translation>Proširite čišćenje profila izvan dodatnog pomaka.</translation>
-    </message>
-    <message>
       <location filename="PathProfileBase.py" line="62"/>
       <source>Controls how tool moves around corners. Default=Round</source>
       <translation>Kontrolira kako se alat kreće po uglovima. Zadano=krug</translation>
@@ -720,9 +739,14 @@
       <translation>Postavi na istinito, ako koristite kompenzaciju radijusa glodala</translation>
     </message>
     <message>
-      <location filename="PathProfileEdges.py" line="56"/>
-      <source>The base geometry of this toolpath</source>
-      <translation>Osnovna geometrija ove obrade staze</translation>
+      <location filename="PathPocket.py" line="55"/>
+      <source>The library to use to generate the path</source>
+      <translation>Biblioteka koja se koristiti za generiranje staze</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="104"/>
+      <source>Extend the profile clearing beyond the Extra Offset.</source>
+      <translation>Proširite čišćenje profila izvan dodatnog pomaka.</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -835,11 +859,6 @@
       <translation>Kontroler alata koji se koristi</translation>
     </message>
     <message>
-      <location filename="PathEngrave.py" line="65"/>
-      <source>The description of the tool </source>
-      <translation>Opis alata </translation>
-    </message>
-    <message>
       <location filename="PathEngrave.py" line="70"/>
       <source>Rapid Safety Height between locations.</source>
       <translation>Sigurna visina brzog hoda između lokacija.</translation>
@@ -931,19 +950,6 @@
     </message>
   </context>
   <context>
-    <name>Custom</name>
-    <message>
-      <location filename="../../../PathScripts/PathCustomGui.py" line="80"/>
-      <source>Custom</source>
-      <translation>Prilagođeno</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCustomGui.py" line="80"/>
-      <source>Create custom gcode snippet</source>
-      <translation type="unfinished">Create custom gcode snippet</translation>
-    </message>
-  </context>
-  <context>
     <name>Path</name>
     <message>
       <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
@@ -971,14 +977,21 @@
       <translation>Nisam našao zadatak %s</translation>
     </message>
     <message>
-      <location filename="PathUtils.py" line="762"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
-      <translation>Pogrešan rub rezanja kut %.2f, mora biti &lt; 90 ° i &gt; = 0 °</translation>
+      <location filename="../../../PathScripts/PathUtils.py" line="541"/>
+      <source>Illegal arc: Start and end radii not equal</source>
+      <translation>Ilegalni luk: polumjer početka i kraja nije jednak</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="708"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
-      <translation type="unfinished">Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</translation>
+      <translation>Nevažeći kut ruba rezanja %.2f, mora biti &gt;0 ° i &lt;=180 °
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
+      <translation>Pogrešan kut rezanja ruba %.2f, mora biti &gt; = 0 ° i &lt;= 180 °</translation>
     </message>
     <message>
       <location filename="PathUtils.py" line="767"/>
@@ -986,9 +999,16 @@
       <translation>Kut rezanja ruba (%.2f) rezultira negativnom duljinom vrha alata</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="808"/>
-      <source>Invalid Cutting Edge Angle %.2f, must be &gt;0Â° and &lt;=180Â°</source>
-      <translation>Pogrešan kut rezanja ruba %.2f, mora biti &gt; = 0 ° i &lt;= 180 °</translation>
+      <location filename="PathUtils.py" line="762"/>
+      <source>Invalid Cutting Edge Angle %.2f, must be &lt;90Â° and &gt;=0Â°</source>
+      <translation>Pogrešan rub rezanja kut %.2f, mora biti &lt; 90 ° i &gt; = 0 °</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="397"/>
+      <source>Choose a writable location for your toolbits</source>
+      <translation>Odaberite mjesto za spremanje za vaše alatne nastavke
+
+</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="232"/>
@@ -1003,22 +1023,28 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="485"/>
       <source>No coolant property found. Please recreate operation.</source>
-      <translation type="unfinished">No coolant property found. Please recreate operation.</translation>
+      <translation>Nije pronađeno svojstvo rashladne tekućine. Molimo ponovno napravite operaciju.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="490"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
-      <translation type="unfinished">No Tool Controller is selected. We need a tool to build a Path.</translation>
+      <translation>Nije odabran nijedan kontroler alata. Trebamo alat za izgradnju Puta.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="499"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
-      <translation type="unfinished">No Tool found or diameter is zero. We need a tool to build a Path.</translation>
+      <translation>Nije pronađen nijedan alat ili promjer nije nula. Trebamo alat za izgradnju Puta.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="532"/>
       <source>No Tool Controller selected.</source>
-      <translation type="unfinished">No Tool Controller selected.</translation>
+      <translation>Nije odabran nijedan kontroler alata.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="533"/>
@@ -1028,7 +1054,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="541"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
-      <translation type="unfinished">Tool Controller feedrates required to calculate the cycle time.</translation>
+      <translation>Potrebna brzina pomaka kontrolera alata za izračunavanje vremena ciklusa.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="542"/>
@@ -1038,7 +1064,9 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="545"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
-      <translation type="unfinished">Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</translation>
+      <translation>Dodajte brze brzine kontrolera alata na tablu za podešavanje za preciznija vremena ciklusa.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="551"/>
@@ -1048,12 +1076,14 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="581"/>
       <source>Base object %s.%s already in the list</source>
-      <translation type="unfinished">Base object %s.%s already in the list</translation>
+      <translation>Osnovni objekt %s.%s već je na popisu
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="588"/>
       <source>Base object %s.%s rejected by operation</source>
-      <translation type="unfinished">Base object %s.%s rejected by operation</translation>
+      <translation>Osnovni objekt %s.%s odbačen operacijom</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="514"/>
@@ -1081,6 +1111,16 @@
       <translation>Odaberite početnu točku</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
+      <source>Processing model as a whole ...</source>
+      <translation>Obrada modela u cjelini ...</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="781"/>
+      <source>Can not identify loop.</source>
+      <translation>Ne može se identificirati petlja.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="343"/>
       <source>
 &lt;br&gt;Pocket is based on extruded surface.</source>
@@ -1102,6 +1142,31 @@
       <translation>
 &lt;br&gt;
 &lt;br&gt;&lt;i&gt;3D dno utora NIJE dostupno u ovoj operaciji&lt;/i&gt;.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="413"/>
+      <source>Processing subs individually ...</source>
+      <translation>Obrađuje prijelaze pojedinačno ...</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
+      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
+      <translation>Razmislite o izmjeni svojstva "Obrnuti Kut" i ponovnom izračunavanju operacije.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
+      <source>Verify final depth of pocket shaped by vertical faces.</source>
+      <translation>Provjerite konačnu dubinu utora u obliku vertikalnih površina.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
+      <source>Depth Warning</source>
+      <translation>Upozorenje o nepodobnoj dubini</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="835"/>
+      <source>Selected faces form loop. Processing looped faces.</source>
+      <translation>Odabrana lica čine petlju. Obrada petljastih lica.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileFaces.py" line="135"/>
@@ -1129,102 +1194,6 @@
       <translation>Svojstvo Omogući Rotaciju je 'isključeno'.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="452"/>
-      <source>Consider toggling the InverseAngle property and recomputing the operation.</source>
-      <translation>Razmislite o izmjeni svojstva "Obrnuti Kut" i ponovnom izračunavanju operacije.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="413"/>
-      <source>Processing subs individually ...</source>
-      <translation>Obrađuje prijelaze pojedinačno ...</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="529"/>
-      <source>Depth Warning</source>
-      <translation>Upozorenje o nepodobnoj dubini</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="527"/>
-      <source>Verify final depth of pocket shaped by vertical faces.</source>
-      <translation>Provjerite konačnu dubinu utora u obliku vertikalnih površina.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="574"/>
-      <source>Processing model as a whole ...</source>
-      <translation>Obrada modela u cjelini ...</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="781"/>
-      <source>Can not identify loop.</source>
-      <translation>Ne može se identificirati petlja.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocket.py" line="267"/>
-      <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
-      <translation type="unfinished">A planar adaptive start is unavailable. The non-planar will be attempted.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocket.py" line="294"/>
-      <source>The non-planar adaptive start is also unavailable.</source>
-      <translation type="unfinished">The non-planar adaptive start is also unavailable.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathAreaOp.py" line="934"/>
-      <source>Rotated to inverse angle.</source>
-      <translation>Rotirano u obrnutom kutu.
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
-      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
-      <translation type="unfinished">Selected feature(s) require 'Enable Rotation: A(x)' for access.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
-      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
-      <translation type="unfinished">Selected feature(s) require 'Enable Rotation: B(y)' for access.</translation>
-    </message>
-    <message>
-      <location filename="PathCircularHoleBase.py" line="60"/>
-      <source>List of disabled features</source>
-      <translation>Popis onemogućenih funkcija</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="151"/>
-      <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
-      <translation type="unfinished">Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</translation>
-    </message>
-    <message>
-      <location filename="PathCircularHoleBase.py" line="120"/>
-      <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
-      <translation>Svojstvo %s.%s ne može se obraditi kao kružna rupa - uklonite je s popisa geometrija baze.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
-      <source>Rotated to 'InverseAngle' to attempt access.</source>
-      <translation>Rotirano u "obrnuti kut" za pokušaj pristupa.
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
-      <source>Always select the bottom edge of the hole when using an edge.</source>
-      <translation>Pri uporabi ruba uvijek odaberite donji rub rupe.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
-      <source>Ignoring non-horizontal Face</source>
-      <translation>Zanemaruje ne-vodoravno Lice
-
-</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
-      <source>Unable to create path for face(s).</source>
-      <translation>Nije moguće stvoriti stazu za lice(a).</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfile.py" line="575"/>
       <source>Applying inverse angle automatically.</source>
       <translation>Automatsko nanošenje obrnutog kuta.
@@ -1237,6 +1206,94 @@
       <translation>Ručno nanošenje obrnutog kuta.
 
 </translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocket.py" line="267"/>
+      <source>A planar adaptive start is unavailable. The non-planar will be attempted.</source>
+      <translation>Planarni prilagodljivi početak nije dostupan. Pokušat će se neplanarno.
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocket.py" line="294"/>
+      <source>The non-planar adaptive start is also unavailable.</source>
+      <translation>Neplanarni prilagodljivi početak također nije dostupan.
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBitGui.py" line="203"/>
+      <source>Invalid Filename</source>
+      <translation>Nevažeći naziv datoteke</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathAreaOp.py" line="934"/>
+      <source>Rotated to inverse angle.</source>
+      <translation>Rotirano u obrnutom kutu.
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="277"/>
+      <source>Rotated to 'InverseAngle' to attempt access.</source>
+      <translation>Rotirano u "obrnuti kut" za pokušaj pristupa.
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="847"/>
+      <source>Selected feature(s) require 'Enable Rotation: A(x)' for access.</source>
+      <translation>Odabrane značajke zahtijevaju 'Omogući rotaciju: A(x)' za pristup.
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="852"/>
+      <source>Selected feature(s) require 'Enable Rotation: B(y)' for access.</source>
+      <translation>Odabrane značajke zahtijevaju 'Omogući rotaciju: B(y)' za pristup.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathCircularHoleBase.py" line="60"/>
+      <source>List of disabled features</source>
+      <translation>Popis onemogućenih funkcija</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="151"/>
+      <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
+      <translation>Promjer rupe može biti netočan zbog teselacije na licu. Razmislite o odabiru ruba rupe.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathCircularHoleBase.py" line="120"/>
+      <source>Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.</source>
+      <translation>Svojstvo %s.%s ne može se obraditi kao kružna rupa - uklonite je s popisa geometrija baze.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="331"/>
+      <source>Always select the bottom edge of the hole when using an edge.</source>
+      <translation>Pri uporabi ruba uvijek odaberite donji rub rupe.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="781"/>
+      <source>Start depth &lt;= face depth.
+Increased to stock top.</source>
+      <translation>Dubina početka &lt;= dubina lica.
+Povećana na vrh osnove.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDeburrGui.py" line="65"/>
+      <source>Ignoring non-horizontal Face</source>
+      <translation>Zanemaruje ne-vodoravno Lice
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFaces.py" line="250"/>
+      <source>Unable to create path for face(s).</source>
+      <translation>Nije moguće stvoriti stazu za lice(a).</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="91"/>
@@ -1291,6 +1348,16 @@
 </translation>
     </message>
     <message>
+      <location filename="../../../InitGui.py" line="152"/>
+      <source>Specialty Operations</source>
+      <translation>Posebne operacije</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="158"/>
+      <source>Utils</source>
+      <translation type="unfinished">Utils</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="153"/>
       <source>this object already in the list
 </source>
@@ -1326,14 +1393,6 @@
     </message>
   </context>
   <context>
-    <name>PathAdaptive</name>
-    <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive</source>
-      <translation>Prilagodljiv</translation>
-    </message>
-  </context>
-  <context>
     <name>PathAreaOp</name>
     <message>
       <location filename="PathAreaOp.py" line="86"/>
@@ -1362,6 +1421,12 @@
   <context>
     <name>PathDeburr</name>
     <message>
+      <location filename="../../../PathScripts/PathDeburr.py" line="79"/>
+      <source>The selected tool has no CuttingEdgeAngle property. Assuming Endmill
+</source>
+      <translation>Odabrani alat nema Kut Rezanja Ruba osobinu. Pretpostavlja se  čelni rezač</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathDeburr.py" line="70"/>
       <source>The desired width of the chamfer</source>
       <translation>Željena širina žlijeba</translation>
@@ -1370,6 +1435,14 @@
       <location filename="../../../PathScripts/PathDeburr.py" line="71"/>
       <source>The additional depth of the tool path</source>
       <translation>Dodatna dubina putanje alata staze</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDeburr.py" line="73"/>
+      <source>The selected tool has no FlatRadius and no TipDiameter property. Assuming {}
+</source>
+      <translation>Odabrani alat nema Ravan Polumjer i  Promjer Vrha svojstvo. Predviđa se {}
+ 
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDeburr.py" line="79"/>
@@ -1403,7 +1476,9 @@
     <message>
       <location filename="../../../PathScripts/PathDeburrGui.py" line="113"/>
       <source>Creates a Deburr Path along Edges or around Faces</source>
-      <translation type="unfinished">Creates a Deburr Path along Edges or around Faces</translation>
+      <translation>Stvara Deburrov put duž rubova ili oko lica
+
+</translation>
     </message>
   </context>
   <context>
@@ -1462,19 +1537,6 @@
     </message>
   </context>
   <context>
-    <name>PathDrilling</name>
-    <message>
-      <location filename="PathDrillingGui.py" line="108"/>
-      <source>Drilling</source>
-      <translation>Bušenje</translation>
-    </message>
-    <message>
-      <location filename="PathDrillingGui.py" line="108"/>
-      <source>Creates a Path Drilling object from a features of a base object</source>
-      <translation>Stvara objekt Staza Bušenja od svojstva osnovnog objekta</translation>
-    </message>
-  </context>
-  <context>
     <name>PathEngrave</name>
     <message>
       <location filename="PathEngraveGui.py" line="67"/>
@@ -1498,36 +1560,11 @@
     </message>
   </context>
   <context>
-    <name>PathFace</name>
-    <message>
-      <location filename="PathMillFace.py" line="350"/>
-      <source>Face</source>
-      <translation>Površina</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
-      <source>Create a Facing Operation from a model or face</source>
-      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
-    </message>
-    <message>
-      <location filename="PathMillFace.py" line="171"/>
-      <source>Generating toolpath with libarea offsets.
-</source>
-      <translation>Stvaranje staze obrade s liberia pomacima.
-</translation>
-    </message>
-    <message>
-      <location filename="PathMillFace.py" line="305"/>
-      <source>Pick Start Point</source>
-      <translation>Odaberite početnu točku</translation>
-    </message>
-  </context>
-  <context>
     <name>PathGeom</name>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="152"/>
       <source>face %s not handled, assuming not vertical</source>
-      <translation type="unfinished">face %s not handled, assuming not vertical</translation>
+      <translation>lice %s nije obrađeno, pod pretpostavkom da nije okomito</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGeom.py" line="162"/>
@@ -1548,6 +1585,11 @@
       <location filename="../../../PathScripts/PathGeom.py" line="548"/>
       <source>%s not support for flipping</source>
       <translation>%s ne podržava okretanje za 180°</translation>
+    </message>
+    <message>
+      <location filename="PathGeom.py" line="542"/>
+      <source>%s not supported for flipping</source>
+      <translation type="unfinished">%s not supported for flipping</translation>
     </message>
   </context>
   <context>
@@ -1581,16 +1623,6 @@
   <context>
     <name>PathHelix</name>
     <message>
-      <location filename="PathHelixGui.py" line="83"/>
-      <source>Helix</source>
-      <translation>Spirala</translation>
-    </message>
-    <message>
-      <location filename="PathHelixGui.py" line="83"/>
-      <source>Creates a Path Helix object from a features of a base object</source>
-      <translation>Stvara objekt Staza Helix od svojstva osnovnog objekta</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathHelix.py" line="51"/>
       <source>The direction of the circular cuts, ClockWise (CW), or CounterClockWise (CCW)</source>
       <translation>Smjer kružnih rezova, (U smjeru kazaljke) ClockWise (CW) ili CounterClockWise (CCW)</translation>
@@ -1614,6 +1646,16 @@
       <location filename="../../../PathScripts/PathHelix.py" line="76"/>
       <source>Starting Radius</source>
       <translation>Početni polumjer</translation>
+    </message>
+    <message>
+      <location filename="PathHelixGui.py" line="83"/>
+      <source>Helix</source>
+      <translation>Spirala</translation>
+    </message>
+    <message>
+      <location filename="PathHelixGui.py" line="83"/>
+      <source>Creates a Path Helix object from a features of a base object</source>
+      <translation>Stvara objekt Staza Helix od svojstva osnovnog objekta</translation>
     </message>
   </context>
   <context>
@@ -1659,6 +1701,11 @@
       <translation>Argumenti za Post Processor (specifično za skriptu)</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathJob.py" line="105"/>
+      <source>Collection of tool controllers available for this job.</source>
+      <translation>Kolekcija kontrolera alata dostupna za ovaj zadatak.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathJob.py" line="108"/>
       <source>Last Time the Job was post-processed</source>
       <translation>Posljednji put posao je naknadno obrađen
@@ -1688,11 +1735,6 @@
       <translation>Složena staza svih operacija u redoslijedu u kojem se obrađuju.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="105"/>
-      <source>Collection of tool controllers available for this job.</source>
-      <translation>Kolekcija kontrolera alata dostupna za ovaj zadatak.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathJob.py" line="110"/>
       <source>Split output into multiple gcode files</source>
       <translation>Razdjelite izlaz na više gcode datoteka
@@ -1702,12 +1744,12 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="111"/>
       <source>If multiple WCS, order the output this way</source>
-      <translation type="unfinished">If multiple WCS, order the output this way</translation>
+      <translation>Ako je više WCS-a, naručite izlaz na ovaj način</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="112"/>
       <source>The Work Coordinate Systems for the Job</source>
-      <translation type="unfinished">The Work Coordinate Systems for the Job</translation>
+      <translation>Sustavi Radnih koordinata za ovaj posao</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="141"/>
@@ -1717,7 +1759,12 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="166"/>
       <source>The base objects for all operations</source>
-      <translation type="unfinished">The base objects for all operations</translation>
+      <translation>Osnovni objekti za sve operacije</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="200"/>
+      <source>Collection of all tool controllers for the job</source>
+      <translation type="unfinished">Collection of all tool controllers for the job</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="244"/>
@@ -1785,7 +1832,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="112"/>
       <source>Holds the diameter of the tool</source>
-      <translation type="unfinished">Holds the diameter of the tool</translation>
+      <translation>Drži promjer alata</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="112"/>
@@ -1815,7 +1862,7 @@
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="258"/>
       <source>Operations Cycle Time Estimation</source>
-      <translation type="unfinished">Operations Cycle Time Estimation</translation>
+      <translation>Procjena vremena ciklusa operacije</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="123"/>
@@ -1928,7 +1975,7 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="108"/>
       <source>Job Cycle Time Estimation</source>
-      <translation type="unfinished">Job Cycle Time Estimation</translation>
+      <translation>Procjena vremena radnog ciklusa</translation>
     </message>
   </context>
   <context>
@@ -1941,16 +1988,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   </context>
   <context>
     <name>PathPocket</name>
-    <message>
-      <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
-      <source>3D Pocket</source>
-      <translation>3D Utor</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
-      <source>Creates a Path 3D Pocket object from a face or faces</source>
-      <translation>Stvara objekt staze 3D utora iz površine ili površina lica</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="100"/>
       <source>Pocket does not support shape %s.%s</source>
@@ -1965,11 +2002,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathPocketShape.py" line="109"/>
       <source>Vertical faces do not form a loop - ignoring</source>
       <translation>Okomite površine lica ne tvore petlju - ignoriranje</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
-      <source>Adaptive clearing and profiling</source>
-      <translation>Prilagodljivo čišćenje i profiliranje</translation>
     </message>
     <message>
       <location filename="PathPocketBaseGui.py" line="64"/>
@@ -1991,7 +2023,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathPocket.py" line="110"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
-      <translation type="unfinished">Final depth set below ZMin of face(s) selected.</translation>
+      <translation>Konačna dubina postavljena ispod ZMin odabranih lica.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="144"/>
@@ -2017,6 +2051,21 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathPocketShapeGui.py" line="44"/>
       <source>Creates a Path Pocket object from a face or faces</source>
       <translation>Stvara objekt staze utora iz površine ili površina lica</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
+      <source>3D Pocket</source>
+      <translation>3D Utor</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketGui.py" line="44"/>
+      <source>Creates a Path 3D Pocket object from a face or faces</source>
+      <translation>Stvara objekt staze 3D utora iz površine ili površina lica</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
+      <source>Adaptive clearing and profiling</source>
+      <translation>Prilagodljivo čišćenje i profiliranje</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="177"/>
@@ -2054,35 +2103,25 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation>Kad je omogućeno, povezani produžni rubovi kombiniraju se s žicama.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="474"/>
-      <source>Face appears to NOT be horizontal AFTER rotation applied.</source>
-      <translation type="unfinished">Face appears to NOT be horizontal AFTER rotation applied.</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathPocketShape.py" line="670"/>
       <source>Start Depth is lower than face depth. Setting to </source>
       <translation>Početna Dubina  manja je od dubine lica. Postavljanje na
 
 </translation>
     </message>
+    <message>
+      <location filename="PathPocketShape.py" line="454"/>
+      <source>Start Depth is lower than face depth. Setting to:</source>
+      <translation type="unfinished">Start Depth is lower than face depth. Setting to:</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="474"/>
+      <source>Face appears to NOT be horizontal AFTER rotation applied.</source>
+      <translation>Čini se da lice NIJE vodoravno NAKON primjene rotacije.</translation>
+    </message>
   </context>
   <context>
     <name>PathProfile</name>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
-      <source>Profile</source>
-      <translation>Profil</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
-      <source>Profile entire model, selected face(s) or selected edge(s)</source>
-      <translation type="unfinished">Profile entire model, selected face(s) or selected edge(s)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>Put baziran na licu ili licima</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="90"/>
       <source>New property added to</source>
@@ -2098,7 +2137,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="334"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
-      <translation type="unfinished">The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
+      <translation>Odabrani rubovi su nedostupni. Ako je višestruko, ponovno redanje odabira moglo bi funkcionirati.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="378"/>
@@ -2113,22 +2154,26 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="418"/>
       <source>Found a selected object which is not a face. Ignoring:</source>
-      <translation type="unfinished">Found a selected object which is not a face. Ignoring:</translation>
+      <translation>Pronašli smo odabrani objekt koji nije lice. Zanemarivanje:</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="512"/>
       <source>No ExpandProfile support for ArchPanel models.</source>
-      <translation type="unfinished">No ExpandProfile support for ArchPanel models.</translation>
+      <translation>Nema podrške za Proširi profile za modele ArchPanel.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="630"/>
       <source>failed to return opening type.</source>
-      <translation type="unfinished">failed to return opening type.</translation>
+      <translation>nije uspio vratiti tip otvaranja.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="683"/>
       <source>Failed to extract offset(s) for expanded profile.</source>
-      <translation type="unfinished">Failed to extract offset(s) for expanded profile.</translation>
+      <translation>Izdvajanje pomaka za prošireni profil nije uspjelo.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="685"/>
@@ -2138,24 +2183,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathProfile.py" line="767"/>
       <source>Please set to an acceptable value greater than zero.</source>
-      <translation type="unfinished">Please set to an acceptable value greater than zero.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfile.py" line="860"/>
-      <source>For open edges, verify Final Depth for this operation.</source>
-      <translation>Za otvorene rubove provjerite Konačnu Dubinu za ovu operaciju.
+      <translation>Postavite na prihvatljivu vrijednost veću od nule.
 
 </translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="415"/>
-      <source>Edge Profile</source>
-      <translation>Profil ruba</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdgesGui.py" line="45"/>
-      <source>Profile based on edges</source>
-      <translation>Put baziran na rubovima</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
@@ -2166,6 +2196,43 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathProfile.py" line="429"/>
       <source>Face Profile</source>
       <translation>Profil naličjanaličja</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="670"/>
+      <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
+      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfile.py" line="860"/>
+      <source>For open edges, verify Final Depth for this operation.</source>
+      <translation>Za otvorene rubove provjerite Konačnu Dubinu za ovu operaciju.
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation>Put baziran na licu ili licima</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
+      <source>Profile</source>
+      <translation>Profil</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="46"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation>Profilirajte cijeli model, odabrana lica ili odabrane rubove</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="415"/>
+      <source>Edge Profile</source>
+      <translation>Profil ruba</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdgesGui.py" line="45"/>
+      <source>Profile based on edges</source>
+      <translation>Put baziran na rubovima</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="289"/>
@@ -2297,6 +2364,39 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
+    <name>PathPropertyBag</name>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBagGui.py" line="230"/>
+      <source>Edit PropertyBag</source>
+      <translation type="unfinished">Edit PropertyBag</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBagGui.py" line="387"/>
+      <source>Create PropertyBag</source>
+      <translation type="unfinished">Create PropertyBag</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBagGui.py" line="401"/>
+      <source>Property Bag</source>
+      <translation type="unfinished">Property Bag</translation>
+    </message>
+    <message>
+      <location filename="PathPropertyBagGui.py" line="406"/>
+      <source>PropertyBag</source>
+      <translation type="unfinished">PropertyBag</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBagGui.py" line="402"/>
+      <source>Creates an object which can be used to store reference properties.</source>
+      <translation type="unfinished">Creates an object which can be used to store reference properties.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPropertyBag.py" line="61"/>
+      <source>List of custom property groups</source>
+      <translation type="unfinished">List of custom property groups</translation>
+    </message>
+  </context>
+  <context>
     <name>PathSetupSheet</name>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="97"/>
@@ -2343,17 +2443,23 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="108"/>
       <source>Expression used for StartDepth of new operations.</source>
-      <translation type="unfinished">Expression used for StartDepth of new operations.</translation>
+      <translation>Izraz korišten za Početna dubina novih operacija.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="109"/>
       <source>Expression used for FinalDepth of new operations.</source>
-      <translation type="unfinished">Expression used for FinalDepth of new operations.</translation>
+      <translation>Izraz korišten za Konačna dubina novih operacija.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSetupSheet.py" line="110"/>
       <source>Expression used for StepDown of new operations.</source>
-      <translation type="unfinished">Expression used for StepDown of new operations.</translation>
+      <translation>Izraz korišten za Korak dolje novih operacija.
+
+</translation>
     </message>
   </context>
   <context>
@@ -2378,12 +2484,19 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="448"/>
       <source>Custom points not at same Z height.</source>
-      <translation type="unfinished">Custom points not at same Z height.</translation>
+      <translation>Prilagođene točke nisu u istoj Z visini.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1638"/>
       <source>Current offset value is not possible.</source>
-      <translation type="unfinished">Current offset value is not possible.</translation>
+      <translation>Trenutna vrijednost pomaka nije moguća.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="493"/>
+      <source>Current Extend Radius value produces negative arc radius.</source>
+      <translation type="unfinished">Current Extend Radius value produces negative arc radius.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="520"/>
@@ -2398,6 +2511,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
 </translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathSlot.py" line="905"/>
+      <source>Verify slot path start and end points.</source>
+      <translation>Potvrdi točke puta početka i kraja utora.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathSlot.py" line="720"/>
       <source>The selected face is not oriented horizontally or vertically.</source>
       <translation>Odabrano lice nije orijentirano vodoravno ili okomito.
@@ -2406,7 +2524,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="737"/>
       <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation type="unfinished">Only a vertex selected. Add another feature to the Base Geometry.</translation>
+      <translation>Odabran je samo vrh. Dodajte još jednu značajku u osnovnu geometriju.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="762"/>
@@ -2430,7 +2550,14 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="882"/>
       <source>Current tool larger than arc diameter.</source>
-      <translation type="unfinished">Current tool larger than arc diameter.</translation>
+      <translation>Trenutni alat veći od promjera luka.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathSlot.py" line="1005"/>
+      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
+      <translation type="unfinished">Failed, slot from edge only accepts lines, arcs and circles.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="994"/>
@@ -2456,18 +2583,27 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
 
 </translation>
     </message>
+    <message>
+      <location filename="PathSlot.py" line="1688"/>
+      <source>Current offset value produces negative radius.</source>
+      <translation type="unfinished">Current offset value produces negative radius.</translation>
+    </message>
   </context>
   <context>
     <name>PathStock</name>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="87"/>
       <source>Invalid base object %s - no shape found</source>
-      <translation type="unfinished">Invalid base object %s - no shape found</translation>
+      <translation>Nevažeći osnovni objekt %s - nije pronađen oblik
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="99"/>
       <source>The base object this stock is derived from</source>
-      <translation type="unfinished">The base object this stock is derived from</translation>
+      <translation>Osnovni objekt iz kojeg je izvedena ova osnova
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="100"/>
@@ -2597,52 +2733,59 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="269"/>
       <source>The GeometryTolerance for this Job is 0.0.</source>
-      <translation type="unfinished">The GeometryTolerance for this Job is 0.0.</translation>
+      <translation>Tolerancija geometrije za ovaj posao je 0,0.
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="271"/>
       <source>Initializing LinearDeflection to 0.001 mm.</source>
-      <translation type="unfinished">Initializing LinearDeflection to 0.001 mm.</translation>
+      <translation>Inicijalizacija linearnog odstupanja na 0,001 mm.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="315"/>
       <source>The GeometryTolerance for this Job is 0.0.  Initializing LinearDeflection to 0.0001 mm.</source>
-      <translation type="unfinished">The GeometryTolerance for this Job is 0.0.  Initializing LinearDeflection to 0.0001 mm.</translation>
+      <translation> Tolerancija geometrije za ovaj posao je 0,0. Inicijalizacija linearnog odstupanja na 0,0001 mm.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="365"/>
       <source>Sample interval limits are 0.001 to 25.4 millimeters.</source>
-      <translation type="unfinished">Sample interval limits are 0.001 to 25.4 millimeters.</translation>
+      <translation>Ograničenja uzorkovanja intervala  su od 0,001 do 25,4 milimetara.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="370"/>
       <source>Cut pattern angle limits are +-360 degrees.</source>
-      <translation type="unfinished">Cut pattern angle limits are +-360 degrees.</translation>
+      <translation>Ograničenja kuta rezanja su +-360 stupnjeva.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="373"/>
       <source>Cut pattern angle limits are +- 360 degrees.</source>
-      <translation type="unfinished">Cut pattern angle limits are +- 360 degrees.</translation>
+      <translation>Ograničenja kuta rezanja su +- 360 stupnjeva.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="384"/>
       <source>AvoidLastX_Faces: Only zero or positive values permitted.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Only zero or positive values permitted.</translation>
+      <translation>IzbjegavaZadnjaX_Lica: Dopuštene su samo nula ili pozitivne vrijednosti.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="387"/>
       <source>AvoidLastX_Faces: Avoid last X faces count limited to 100.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Avoid last X faces count limited to 100.</translation>
+      <translation>IzbjegavaZadnjaX_Lica: Izbjegava brojenja zadnjih X lica ograničeno na 100.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="433"/>
       <source>No JOB</source>
-      <translation type="unfinished">No JOB</translation>
+      <translation>Bez POSLA</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="487"/>
       <source>Canceling 3D Surface operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling 3D Surface operation. Error creating OCL cutter.</translation>
+      <translation>Otkazivanje rada 3D površine. Pogreška pri stvaranju OCL rezača.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="698"/>
@@ -2652,52 +2795,70 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="702"/>
       <source>Canceled 3D Surface operation.</source>
-      <translation type="unfinished">Canceled 3D Surface operation.</translation>
+      <translation>Otkazivanje rada 3D površine.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="791"/>
       <source>No profile geometry shape returned.</source>
-      <translation type="unfinished">No profile geometry shape returned.</translation>
+      <translation>Nije vraćen oblik geometrije profila.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="798"/>
       <source>No profile path geometry returned.</source>
-      <translation type="unfinished">No profile path geometry returned.</translation>
+      <translation>Nije vraćen put geometrije profila.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="813"/>
       <source>No clearing shape returned.</source>
-      <translation type="unfinished">No clearing shape returned.</translation>
+      <translation>Nije vraćen oblik čišćenja.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="819"/>
       <source>No clearing path geometry returned.</source>
-      <translation type="unfinished">No clearing path geometry returned.</translation>
+      <translation>Nije vraćena nijedna geometrija prolazne staze.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="839"/>
       <source>No scan data to convert to Gcode.</source>
-      <translation type="unfinished">No scan data to convert to Gcode.</translation>
+      <translation>Nema podataka skeniranja za pretvaranje u Gcode.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2625"/>
       <source>Failed to identify tool for operation.</source>
-      <translation type="unfinished">Failed to identify tool for operation.</translation>
+      <translation>Nije uspjelo prepoznavanje alata za rad.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2636"/>
       <source>Failed to map selected tool to an OCL tool type.</source>
-      <translation type="unfinished">Failed to map selected tool to an OCL tool type.</translation>
+      <translation>Mapiranje odabranog alata u tip OCL alata nije uspjelo.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2649"/>
       <source>Failed to translate active tool to OCL tool type.</source>
-      <translation type="unfinished">Failed to translate active tool to OCL tool type.</translation>
+      <translation>Prevođenje aktivnog alata u OCL vrstu alata nije uspjelo.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2659"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
-      <translation type="unfinished">OCL tool not available. Cannot determine is cutter has tilt available.</translation>
+      <translation>OCL alat nije dostupan. Ne može se utvrditi ima li rezač dostupan nagib.
+
+</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="257"/>
@@ -2733,82 +2894,176 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="95"/>
       <source>Shape appears to not be horizontal planar.</source>
-      <translation type="unfinished">Shape appears to not be horizontal planar.</translation>
+      <translation>Čini se da oblik nije vodoravno ravninski.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="117"/>
       <source>Cannot calculate the Center Of Mass.</source>
-      <translation type="unfinished">Cannot calculate the Center Of Mass.</translation>
+      <translation>Nije moguće izračunati središte mase.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="119"/>
       <source>Using Center of Boundbox instead.</source>
-      <translation type="unfinished">Using Center of Boundbox instead.</translation>
+      <translation>Umjesto toga upotrijebite centar okvira.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="458"/>
       <source>Face selection is unavailable for Rotational scans.</source>
-      <translation type="unfinished">Face selection is unavailable for Rotational scans.</translation>
+      <translation>Odabir lica nije dostupan za rotacijsko skeniranje.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="460"/>
       <source>Ignoring selected faces.</source>
-      <translation type="unfinished">Ignoring selected faces.</translation>
+      <translation>Zanemarena odabrana lica.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="554"/>
       <source>Failed to pre-process base as a whole.</source>
-      <translation type="unfinished">Failed to pre-process base as a whole.</translation>
+      <translation>Nije uspjela prethodna obrada baze u cjelini.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="673"/>
       <source>Cannot process selected faces. Check horizontal surface exposure.</source>
-      <translation type="unfinished">Cannot process selected faces. Check horizontal surface exposure.</translation>
+      <translation>Odabrana lica nije moguće obraditi. Provjerite vodoravnu izloženost površine.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="703"/>
       <source>Failed to create offset face.</source>
-      <translation type="unfinished">Failed to create offset face.</translation>
+      <translation>Nije uspjelo stvaranje pomaka lica.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="843"/>
       <source>Failed to create collective offset avoid face.</source>
-      <translation type="unfinished">Failed to create collective offset avoid face.</translation>
+      <translation>Nije uspjelo stvaranje skupnog pomaka izbjegavanja lica.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="859"/>
       <source>Failed to create collective offset avoid internal features.</source>
-      <translation type="unfinished">Failed to create collective offset avoid internal features.</translation>
+      <translation>Nije uspjelo stvaranje skupnog pomaka izbjegavanja unutarnje značajke.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="1203"/>
       <source>Path transitions might not avoid the model. Verify paths.</source>
-      <translation type="unfinished">Path transitions might not avoid the model. Verify paths.</translation>
+      <translation>Prijelazi puta možda neće izbjeći model. Potvrdite staze.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="1851"/>
       <source>Faild to extract processing region for Face</source>
-      <translation type="unfinished">Faild to extract processing region for Face</translation>
+      <translation>Nije uspjelo izdvajanje područja obrade za Lice</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2251"/>
       <source>No FACE data tuples received at instantiation of class.</source>
-      <translation type="unfinished">No FACE data tuples received at instantiation of class.</translation>
+      <translation>Nijedan skup podataka LICA nije primljen pri instanciranju klase.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2280"/>
       <source>Failed to identify a horizontal cross-section for Face</source>
-      <translation type="unfinished">Failed to identify a horizontal cross-section for Face</translation>
+      <translation>Nije moguće prepoznati vodoravni presjek za Lice
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2333"/>
       <source>getUnifiedRegions() must be called before getInternalFeatures().</source>
-      <translation type="unfinished">getUnifiedRegions() must be called before getInternalFeatures().</translation>
+      <translation>getUnifiedRegions () mora se pozvati prije getInternalFeatures ().
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurfaceSupport.py" line="2514"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation type="unfinished">Diameter dimension missing from ToolBit shape.</translation>
+      <translation>Dimenzija promjera nedostaje u formi nastavka alata
+
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathThreadMilling</name>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMillingGui.py" line="203"/>
+      <source>Thread Milling</source>
+      <translation>Rezanje navoja</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMillingGui.py" line="203"/>
+      <source>Creates a Path Thread Milling operation from features of a base object</source>
+      <translation>Stvara objekt operacije Staza Rezanja Navoja od svojstva osnovnog objekta</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="182"/>
+      <source>Set thread orientation</source>
+      <translation>Postavite orijentaciju navoja</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="184"/>
+      <source>Currently only internal</source>
+      <translation>Trenutno samo unutrašnji navoj</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="186"/>
+      <source>Devfines which standard thread was chosen</source>
+      <translation>Definira koji je standardni navoj odabran
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="190"/>
+      <source>Set thread's tpi - used for imperial threads</source>
+      <translation>Postavi visinu navoja (tpi) - koristi se za inč navoje</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="186"/>
+      <source>Defines which standard thread was chosen</source>
+      <translation type="unfinished">Defines which standard thread was chosen</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="187"/>
+      <source>Set thread's major diameter</source>
+      <translation>Postavite glavni promjer navoja
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="188"/>
+      <source>Set thread's minor diameter</source>
+      <translation>Postavite promjer jezgre navoja</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="189"/>
+      <source>Set thread's pitch - used for metric threads</source>
+      <translation>Postavi visinu navoja - koristi se za metričke navoje</translation>
+    </message>
+    <message>
+      <location filename="PathThreadMilling.py" line="190"/>
+      <source>Set thread's TPI (turns per inch) - used for imperial threads</source>
+      <translation type="unfinished">Set thread's TPI (turns per inch) - used for imperial threads</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="192"/>
+      <source>Set how many passes are used to cut the thread</source>
+      <translation>Postavite koliko prolaza se koristi za rezanje navoja</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="193"/>
+      <source>Direction of thread cutting operation</source>
+      <translation>Smjer operacije rezanja navoja</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="194"/>
+      <source>Set to True to get lead in and lead out arcs at the start and end of the thread cut</source>
+      <translation>Postavite na Istina da biste dobili uvodne i izvodne lukove na početku i na kraju reza navoja</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathThreadMilling.py" line="195"/>
+      <source>Operation to clear the inside of the thread</source>
+      <translation>Operacija za čišćenje unutrašnje strane navoja</translation>
     </message>
   </context>
   <context>
@@ -2816,12 +3071,16 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="151"/>
       <source>Shape for bit shape</source>
-      <translation type="unfinished">Shape for bit shape</translation>
+      <translation>Oblik za oblik nastavka
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="152"/>
       <source>The parametrized body representing the tool bit</source>
-      <translation type="unfinished">The parametrized body representing the tool bit</translation>
+      <translation>Parametarsko tijelo predstavlja nastavak alata
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="153"/>
@@ -2834,9 +3093,19 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation>Ime datoteke oblika</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolBit.py" line="175"/>
+      <source>List of all properties inherited from the bit</source>
+      <translation type="unfinished">List of all properties inherited from the bit</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBit.py" line="327"/>
+      <source>Did not find a PropertyBag in {} - not a ToolBit shape?</source>
+      <translation type="unfinished">Did not find a PropertyBag in {} - not a ToolBit shape?</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="352"/>
       <source>Tool bit material</source>
-      <translation type="unfinished">Tool bit material</translation>
+      <translation>Materijal nastavka alata</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="354"/>
@@ -2851,22 +3120,37 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolBit.py" line="356"/>
       <source>Chipload as per manufacturer</source>
-      <translation type="unfinished">Chipload as per manufacturer</translation>
+      <translation>Hranjenje po zubu kao navod proizvođača</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBit.py" line="401"/>
+      <source>User Defined Values</source>
+      <translation>Korisnički definirane vrijednosti</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBit.py" line="404"/>
+      <source>Whether Spindle Power should be allowed</source>
+      <translation>Koja snaga vretena treba biti dozvoljena</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBitGui.py" line="120"/>
+      <source>Toolbit cannot be edited: Shapefile not found</source>
+      <translation>Alatni nastavak ne može se urediti: Datoteka oblika nije pronađena</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitGui.py" line="128"/>
       <source>Edit ToolBit</source>
-      <translation type="unfinished">Edit ToolBit</translation>
+      <translation>Uredi Nastavak alata</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitGui.py" line="224"/>
       <source>Uncreate ToolBit</source>
-      <translation type="unfinished">Uncreate ToolBit</translation>
+      <translation>Poništi Nastavak alata</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitGui.py" line="261"/>
       <source>Create ToolBit</source>
-      <translation type="unfinished">Create ToolBit</translation>
+      <translation>Stvori Nastavak alata</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="42"/>
@@ -2876,7 +3160,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="43"/>
       <source>Creates a new ToolBit object</source>
-      <translation type="unfinished">Creates a new ToolBit object</translation>
+      <translation>Stvara novi objekt Nastavak alata
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="62"/>
@@ -2891,7 +3177,7 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="67"/>
       <source>Save an existing ToolBit object to a file</source>
-      <translation type="unfinished">Save an existing ToolBit object to a file</translation>
+      <translation>Spremi postojeći Nastavak alata u datoteku</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="115"/>
@@ -2901,30 +3187,47 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolBitCmd.py" line="116"/>
       <source>Load an existing ToolBit object from a file</source>
-      <translation type="unfinished">Load an existing ToolBit object from a file</translation>
+      <translation>Učitaj postojeći Nastavak alata iz datoteke</translation>
     </message>
   </context>
   <context>
     <name>PathToolBitLibrary</name>
     <message>
-      <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="40"/>
-      <source>Open ToolBit Library editor</source>
-      <translation type="unfinished">Open ToolBit Library editor</translation>
+      <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="39"/>
+      <source>ToolBit Dock</source>
+      <translation>Skladište alatnih nastavaka</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="41"/>
-      <source>Open an editor to manage ToolBit libraries</source>
-      <translation type="unfinished">Open an editor to manage ToolBit libraries</translation>
+      <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="40"/>
+      <source>Toggle the Toolbit Dock</source>
+      <translation>Prebaci skladište alatnih nastavaka</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="40"/>
+      <source>Open ToolBit Library editor</source>
+      <translation>Otvori uređivač biblioteka Nastavka alata </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="67"/>
       <source>Load ToolBit Library</source>
-      <translation type="unfinished">Load ToolBit Library</translation>
+      <translation>Učitaj biblioteku Nastavaka alata</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="68"/>
       <source>Load an entire ToolBit library or part of it into a job</source>
-      <translation type="unfinished">Load an entire ToolBit library or part of it into a job</translation>
+      <translation>Učitajte cijelu knjižnicu ToolBit-a (nastavaka alata) ili dio nje u posao</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="69"/>
+      <source>ToolBit Library editor</source>
+      <translation>Uređivač Biblioteke alatnih nastavaka</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolBitLibraryCmd.py" line="41"/>
+      <source>Open an editor to manage ToolBit libraries</source>
+      <translation>Otvorite uređivač za upravljanje bibliotekama Nastavaka alata
+
+</translation>
     </message>
   </context>
   <context>
@@ -2977,7 +3280,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="128"/>
       <source>PathToolController template has no version - corrupted template file?</source>
-      <translation type="unfinished">PathToolController template has no version - corrupted template file?</translation>
+      <translation>Predložak PathToolController nema verziju - oštećena datoteka predloška?
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="197"/>
@@ -2990,7 +3295,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="453"/>
       <source>Tooltable JSON (*.fctl)</source>
-      <translation type="unfinished">Tooltable JSON (*.fctl)</translation>
+      <translation>Tabela Alata JSON  (* .fctl)
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
@@ -3015,12 +3322,12 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="212"/>
       <source>Tool Table Same Name</source>
-      <translation type="unfinished">Tool Table Same Name</translation>
+      <translation>Jednako imeTabele Alata </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="215"/>
       <source>Tool Table Name Exists</source>
-      <translation type="unfinished">Tool Table Name Exists</translation>
+      <translation>Ime Tabele Alata već postoji</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="172"/>
@@ -3030,15 +3337,7 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="283"/>
       <source>Unsupported Path tooltable</source>
-      <translation type="unfinished">Unsupported Path tooltable</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathTooolBit</name>
-    <message>
-      <location filename="../../../PathScripts/PathToolBit.py" line="357"/>
-      <source>User Defined Values</source>
-      <translation type="unfinished">User Defined Values</translation>
+      <translation>Nije podržan Put tabele alata</translation>
     </message>
   </context>
   <context>
@@ -3052,16 +3351,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>PathVcarve</name>
     <message>
-      <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
-      <source>Vcarve</source>
-      <translation type="unfinished">Vcarve</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
-      <source>Creates a medial line engraving path</source>
-      <translation type="unfinished">Creates a medial line engraving path</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="173"/>
       <source>Additional base objects to be engraved</source>
       <translation>Dodatni osnovni objekti koji trebaju biti gravirani</translation>
@@ -3069,17 +3358,51 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="180"/>
       <source>The deflection value for discretizing arcs</source>
-      <translation type="unfinished">The deflection value for discretizing arcs</translation>
+      <translation>Vrijednost otklona za diskretiziranje lukova</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="183"/>
       <source>cutoff for removing colinear segments (degrees).                         default=10.0.</source>
-      <translation type="unfinished">cutoff for removing colinear segments (degrees).                         default=10.0.</translation>
+      <translation>gornja granica za uklanjanje kolinearnih segmenata (stupnjeva). 
+zadana vrijednost = 10,0.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="224"/>
+      <source>Cutoff for removing colinear segments (degrees).                         default=10.0.</source>
+      <translation>Presjek za uklanjanje kolinearnih segmenata (stupnjeva).     zadana vrijednost = 10,0.
+
+</translation>
+    </message>
+    <message>
+      <location filename="PathVcarve.py" line="222"/>
+      <source>Cutoff for removing colinear segments (degrees). 
+                        default=10.0.</source>
+      <translation type="unfinished">Cutoff for removing colinear segments (degrees). 
+                        default=10.0.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="322"/>
       <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
-      <translation type="unfinished">The Job Base Object has no engraveable element. Engraving operation will produce no output.</translation>
+      <translation>Objekt baze poslova nema element za graviranje. Operacija graviranja neće proizvesti nikakve rezultate.
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="340"/>
+      <source>Error processing Base object. Engraving operation will produce no output.</source>
+      <translation type="unfinished">Error processing Base object. Engraving operation will produce no output.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
+      <source>Vcarve</source>
+      <translation>Vcarve</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarveGui.py" line="150"/>
+      <source>Creates a medial line engraving path</source>
+      <translation>Stvara put gravure po medijalnoj crti
+
+</translation>
     </message>
   </context>
   <context>
@@ -3109,52 +3432,74 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="243"/>
       <source>The GeometryTolerance for this Job is 0.0.</source>
-      <translation type="unfinished">The GeometryTolerance for this Job is 0.0.</translation>
+      <translation>Tolerancija geometrije za ovaj posao je 0,0.
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="245"/>
       <source>Initializing LinearDeflection to 0.0001 mm.</source>
-      <translation type="unfinished">Initializing LinearDeflection to 0.0001 mm.</translation>
+      <translation>Inicijalizacija linearnog odstupanja na 0,0001 mm.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="345"/>
       <source>Sample interval limits are 0.0001 to 25.4 millimeters.</source>
-      <translation type="unfinished">Sample interval limits are 0.0001 to 25.4 millimeters.</translation>
+      <translation>Ograničenja uzorkovanja intervala  su od 0,0001 do 25,4 milimetara.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="350"/>
       <source>Cut pattern angle limits are +-360 degrees.</source>
-      <translation type="unfinished">Cut pattern angle limits are +-360 degrees.</translation>
+      <translation>Ograničenja kuta rezanja su +-360 stupnjeva.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="353"/>
       <source>Cut pattern angle limits are +- 360 degrees.</source>
-      <translation type="unfinished">Cut pattern angle limits are +- 360 degrees.</translation>
+      <translation>Ograničenja kuta rezanja su +- 360 stupnjeva.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="364"/>
       <source>AvoidLastX_Faces: Only zero or positive values permitted.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Only zero or positive values permitted.</translation>
+      <translation>IzbjegavaZadnjaX_Lica: Dopuštene su samo nula ili pozitivne vrijednosti.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="367"/>
       <source>AvoidLastX_Faces: Avoid last X faces count limited to 100.</source>
-      <translation type="unfinished">AvoidLastX_Faces: Avoid last X faces count limited to 100.</translation>
+      <translation>IzbjegavaZadnjaX_Lica: Izbjegava brojenja zadnjih X lica ograničeno na 100.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="416"/>
       <source>No JOB</source>
-      <translation type="unfinished">No JOB</translation>
+      <translation>Bez POSLA</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="471"/>
       <source>Canceling Waterline operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling Waterline operation. Error creating OCL cutter.</translation>
+      <translation>Otkazivanje operacije Vodne linije. Pogreška pri stvaranju OCL rezača.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="689"/>
       <source>operation time is</source>
       <translation>vrijeme rada je</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Adaptive</name>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="217"/>
+      <source>Adaptive</source>
+      <translation>Prilagodljiv</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="217"/>
+      <source>Adaptive clearing and profiling</source>
+      <translation>Prilagodljivo čišćenje i profiliranje</translation>
     </message>
   </context>
   <context>
@@ -3212,7 +3557,37 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
+    <name>Path_Custom</name>
+    <message>
+      <location filename="PathCustom.py" line="69"/>
+      <source>Custom</source>
+      <translation>Prilagođeno</translation>
+    </message>
+    <message>
+      <location filename="PathCustom.py" line="70"/>
+      <source>Creates a path object based on custom G-code</source>
+      <translation>Stvara objekt staze na temelju prilagođenog G-koda</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCustomGui.py" line="78"/>
+      <source>Create custom gcode snippet</source>
+      <translation>Izradite prilagođeni gcode isječak
+
+</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Dressup</name>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Dress-up (Odjenuti)</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Stvara staza objekt Dress-up od odabrane staze</translation>
+    </message>
     <message>
       <location filename="PathDressup.py" line="110"/>
       <source>Please select one path object
@@ -3231,16 +3606,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="325"/>
       <source>Please select a Path object</source>
       <translation>Odaberite objekt staze</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Dress-up (Odjenuti)</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Stvara staza objekt Dress-up od odabrane staze</translation>
     </message>
   </context>
   <context>
@@ -3344,7 +3709,7 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathDressupAxisMap.py" line="150"/>
       <source>Edit Dragknife Dress-up</source>
-      <translation type="unfinished">Edit Dragknife Dress-up</translation>
+      <translation>Uredi  Dress-up poteznog noža</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
@@ -3395,6 +3760,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation>Način Točke, radijus pomaka ili središte</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="475"/>
+      <source>Edit LeadInOut Dress-up</source>
+      <translation type="unfinished">Edit LeadInOut Dress-up</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="338"/>
       <source>LeadInOut Dressup</source>
       <translation>LeadInOut (Vođenje u/ iz) Dressup</translation>
@@ -3410,17 +3780,17 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="229"/>
       <source>Create a Boundary dressup</source>
-      <translation type="unfinished">Create a Boundary dressup</translation>
+      <translation>Stvara granice dorade</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="243"/>
       <source>Boundary Dress-up</source>
-      <translation type="unfinished">Boundary Dress-up</translation>
+      <translation>Ograničeni reljef</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="244"/>
       <source>Creates a Path Boundary Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Path Boundary Dress-up object from a selected path</translation>
+      <translation>Stvara iz odabranog puta put objekta ograničenog reljefa </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="257"/>
@@ -3430,7 +3800,7 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="262"/>
       <source>Create Path Boundary Dress-up</source>
-      <translation type="unfinished">Create Path Boundary Dress-up</translation>
+      <translation>Stvara put ograničenja reljefa</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="47"/>
@@ -3440,12 +3810,14 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="49"/>
       <source>Solid object to be used to limit the generated Path.</source>
-      <translation type="unfinished">Solid object to be used to limit the generated Path.</translation>
+      <translation>Čvrsti objekt koji će se koristiti za ograničavanje generiranog puta.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="51"/>
       <source>Determines if Boundary describes an inclusion or exclusion mask.</source>
-      <translation type="unfinished">Determines if Boundary describes an inclusion or exclusion mask.</translation>
+      <translation>Određuje opisuju li granice masku za uključivanje ili isključivanje.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="196"/>
@@ -3541,7 +3913,7 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathDressupTagGui.py" line="204"/>
       <source>Cannot copy tags - internal error</source>
-      <translation type="unfinished">Cannot copy tags - internal error</translation>
+      <translation>Oznake se ne mogu kopirati - interna pogreška</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupTagGui.py" line="527"/>
@@ -3594,27 +3966,31 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="67"/>
       <source>The point file from the surface probing.</source>
-      <translation type="unfinished">The point file from the surface probing.</translation>
+      <translation>Datoteka točke s površinskog sondiranja.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="71"/>
       <source>Deflection distance for arc interpolation</source>
-      <translation type="unfinished">Deflection distance for arc interpolation</translation>
+      <translation>Udaljenost otklona za interpolaciju luka</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="190"/>
       <source>Edit Z Correction Dress-up</source>
-      <translation type="unfinished">Edit Z Correction Dress-up</translation>
+      <translation>Uredi ispravljanje reljefa Z
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="303"/>
       <source>Z Depth Correction Dress-up</source>
-      <translation type="unfinished">Z Depth Correction Dress-up</translation>
+      <translation>Dubina Z ispravljanje reljefa</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="305"/>
       <source>Use Probe Map to correct Z depth</source>
-      <translation type="unfinished">Use Probe Map to correct Z depth</translation>
+      <translation>Koristite kartu sonde za ispravljanje dubine Z
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="329"/>
@@ -3628,6 +4004,42 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="72"/>
       <source>break segments into smaller segments of this length.</source>
       <translation>razbiti segmente na manje segmente ove duljine.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Drilling</name>
+    <message>
+      <location filename="PathDrilling.py" line="150"/>
+      <source>Drilling</source>
+      <translation>Bušenje</translation>
+    </message>
+    <message>
+      <location filename="PathDrilling.py" line="152"/>
+      <source>Creates a Path Drilling object</source>
+      <translation>Stvori objekt Staza Bušenja</translation>
+    </message>
+    <message>
+      <location filename="PathDrilling.py" line="168"/>
+      <source>Create Drilling</source>
+      <translation>Napravi bušenje</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDrillingGui.py" line="148"/>
+      <source>Creates a Path Drilling object from a features of a base object</source>
+      <translation>Stvara objekt Staza Bušenja od svojstva osnovnog objekta</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Face</name>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="42"/>
+      <source>Face</source>
+      <translation>Površina</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="42"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation>Stvorite operaciju obrade prema modelu ili licu</translation>
     </message>
   </context>
   <context>
@@ -3649,6 +4061,19 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
+    <name>Path_Helix</name>
+    <message>
+      <location filename="../../../PathScripts/PathHelixGui.py" line="86"/>
+      <source>Helix</source>
+      <translation>Spirala</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelixGui.py" line="86"/>
+      <source>Creates a Path Helix object from a features of a base object</source>
+      <translation>Stvara objekt Staza Helix od svojstva osnovnog objekta</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Hop</name>
     <message>
       <location filename="PathHop.py" line="104"/>
@@ -3659,13 +4084,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathHop.py" line="106"/>
       <source>Creates a Path Hop object</source>
       <translation>Stvori objekt prijelaza staze</translation>
-    </message>
-    <message>
-      <location filename="PathHop.py" line="119"/>
-      <source>The selected object is not a path
-</source>
-      <translation>Odabrani objekt nije putanja staze
-</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHop.py" line="111"/>
@@ -3681,6 +4099,13 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathHop.py" line="122"/>
       <source>Create Hop</source>
       <translation>Stvori prijelaz</translation>
+    </message>
+    <message>
+      <location filename="PathHop.py" line="119"/>
+      <source>The selected object is not a path
+</source>
+      <translation>Odabrani objekt nije putanja staze
+</translation>
     </message>
   </context>
   <context>
@@ -3764,7 +4189,7 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathCommands.py" line="137"/>
       <source>Toggle the Active State of the Operation</source>
-      <translation type="unfinished">Toggle the Active State of the Operation</translation>
+      <translation>Uključivanje / isključivanje aktivnog stanja operacije</translation>
     </message>
   </context>
   <context>
@@ -3786,6 +4211,65 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathPlane.py" line="122"/>
       <source>Create a Selection Plane object</source>
       <translation>Stvara objekt Ravnina odabira</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Pocket</name>
+    <message>
+      <location filename="../../../PathScripts/PathPocketGui.py" line="42"/>
+      <source>3D Pocket</source>
+      <translation>3D Utor</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketGui.py" line="42"/>
+      <source>Creates a Path 3D Pocket object from a face or faces</source>
+      <translation>Stvara objekt staze 3D utora iz površine ili površina lica</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="479"/>
+      <source>Pocket Shape</source>
+      <translation>Oblik Utora</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketShapeGui.py" line="479"/>
+      <source>Creates a Path Pocket object from a face or faces</source>
+      <translation>Stvara objekt staze utora iz površine ili površina lica</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="265"/>
+      <source>Pocket</source>
+      <translation>Utor</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="267"/>
+      <source>Creates a Path Pocket object from a loop of edges or a face</source>
+      <translation>Stvara objekt stazu utora iz zatvorene petlje rubova ili površine lica</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="280"/>
+      <source>Please select an edges loop from one object, or a single face
+</source>
+      <translation>Odaberite zatvorenu rubnu petlju iz jednog objekta ili jedne površine lica
+</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="285"/>
+      <source>Please select only edges or a single face
+</source>
+      <translation>Odaberite samo rubove ili jednu površinu lica
+</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="292"/>
+      <source>The selected edges don't form a loop
+</source>
+      <translation>Odabrani rubovi ne tvore zatvorenu petlju
+</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="296"/>
+      <source>Create Pocket</source>
+      <translation>Stvori utor</translation>
     </message>
   </context>
   <context>
@@ -3819,7 +4303,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathDressupZCorrect.py" line="251"/>
       <source>Select Probe Point File</source>
-      <translation type="unfinished">Select Probe Point File</translation>
+      <translation>Odaberite datoteku točke sonde
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProbeGui.py" line="82"/>
@@ -3833,66 +4319,51 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
+    <name>Path_Profile</name>
+    <message>
+      <location filename="PathProfile.py" line="203"/>
+      <source>Profile</source>
+      <translation>Profil</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="205"/>
+      <source>Creates a Path Profile object from selected faces</source>
+      <translation>Stvara Profil objekt Staze kretanja od odabranih lica</translation>
+    </message>
+    <message>
+      <location filename="PathProfile.py" line="220"/>
+      <source>Create Profile</source>
+      <translation>Izradi profil</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="44"/>
+      <source>Profile entire model, selected face(s) or selected edge(s)</source>
+      <translation>Profilirajte cijeli model, odabrana lica ili odabrane rubove</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="342"/>
+      <source>Add Holding Tag</source>
+      <translation>Dodavanje držeće trake</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="378"/>
+      <source>Pick Start Point</source>
+      <translation>Odaberite početnu točku</translation>
+    </message>
+    <message>
+      <location filename="PathProfileEdges.py" line="397"/>
+      <source>Pick End Point</source>
+      <translation>Odaberite krajnju točku</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Sanity</name>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="71"/>
       <source>Check the path job for common errors</source>
-      <translation type="unfinished">Check the path job for common errors</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="189"/>
-      <source>Base Object(s)</source>
-      <translation type="unfinished">Base Object(s)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="190"/>
-      <source>Job Sequence</source>
-      <translation type="unfinished">Job Sequence</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="191"/>
-      <source>Job Description</source>
-      <translation type="unfinished">Job Description</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="192"/>
-      <source>Job Type</source>
-      <translation type="unfinished">Job Type</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="193"/>
-      <source>CAD File Name</source>
-      <translation type="unfinished">CAD File Name</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="194"/>
-      <source>Last Save Date</source>
-      <translation type="unfinished">Last Save Date</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="195"/>
-      <source>Customer</source>
-      <translation type="unfinished">Customer</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="196"/>
-      <source>Designer</source>
-      <translation type="unfinished">Designer</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="255"/>
-      <source>Operation</source>
-      <translation>Operacija</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="223"/>
-      <source>Minimum Z Height</source>
-      <translation>Minimalna Z visina</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
-      <source>The Job has no selected Base object.</source>
-      <translation>Zadatak nema odabran osnovni objekt.</translation>
+      <translation>Provjerite ima li u putanji uobičajenih pogrešaka
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="76"/>
@@ -3917,7 +4388,62 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
       <source>No issues detected, {} has passed basic sanity check.</source>
-      <translation type="unfinished">No issues detected, {} has passed basic sanity check.</translation>
+      <translation>Nisu otkriveni problemi, {} je prošao osnovnu provjeru ispravnosti.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="189"/>
+      <source>Base Object(s)</source>
+      <translation>Osnovni objekt(i)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="190"/>
+      <source>Job Sequence</source>
+      <translation>Redoslijed posla</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="191"/>
+      <source>Job Description</source>
+      <translation>Opis posla</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="192"/>
+      <source>Job Type</source>
+      <translation>Vrsta posla</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="193"/>
+      <source>CAD File Name</source>
+      <translation>Ime CAD datoteke</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="194"/>
+      <source>Last Save Date</source>
+      <translation>Zadnje spremljeni datum</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="195"/>
+      <source>Customer</source>
+      <translation>Klijent</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="196"/>
+      <source>Designer</source>
+      <translation>Dizajner</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="255"/>
+      <source>Operation</source>
+      <translation>Operacija</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="223"/>
+      <source>Minimum Z Height</source>
+      <translation>Minimalna Z visina</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSanity.py" line="64"/>
+      <source>The Job has no selected Base object.</source>
+      <translation>Zadatak nema odabran osnovni objekt.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="224"/>
@@ -3937,7 +4463,7 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="227"/>
       <source>TOTAL JOB</source>
-      <translation type="unfinished">TOTAL JOB</translation>
+      <translation>CIJELI POSAO</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="249"/>
@@ -4037,7 +4563,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="322"/>
       <source>Last Post Process Date</source>
-      <translation type="unfinished">Last Post Process Date</translation>
+      <translation>Datum zadnjeg postupka  objave
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="323"/>
@@ -4057,12 +4585,12 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="326"/>
       <source>Postprocessor</source>
-      <translation type="unfinished">Postprocessor</translation>
+      <translation>Postprocessor</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="327"/>
       <source>Post Processor Flags</source>
-      <translation type="unfinished">Post Processor Flags</translation>
+      <translation>Post Processor Flags</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="328"/>
@@ -4072,7 +4600,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="329"/>
       <source>Line Count</source>
-      <translation type="unfinished">Line Count</translation>
+      <translation>Kroatisch
+
+Broj linija</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="343"/>
@@ -4122,7 +4652,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathCommands.py" line="108"/>
       <source>Feature Completion</source>
-      <translation type="unfinished">Feature Completion</translation>
+      <translation>Dovršenje značajke
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="108"/>
@@ -4143,13 +4675,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>Path_SimpleCopy</name>
     <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Odaberite samo jedan objekt staze
-</translation>
-    </message>
-    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>Jednostavno kopiranje</translation>
@@ -4158,6 +4683,13 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathSimpleCopy.py" line="47"/>
       <source>Creates a non-parametric copy of another path</source>
       <translation>Stvara ne-parametriziranu kopiju od drugog puta</translation>
+    </message>
+    <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Odaberite samo jedan objekt staze
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
@@ -4179,6 +4711,21 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
+    <name>Path_Slot</name>
+    <message>
+      <location filename="../../../PathScripts/PathSlotGui.py" line="238"/>
+      <source>Slot</source>
+      <translation>Utor</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSlotGui.py" line="238"/>
+      <source>Create a Slot operation from selected geometry or custom points.</source>
+      <translation>Stvorite Utor operaciju od odabrane geometrije ili prilagođenih točaka.
+
+</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Stop</name>
     <message>
       <location filename="PathStop.py" line="114"/>
@@ -4192,12 +4739,53 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
-    <name>Path_ToolController</name>
+    <name>Path_Surface</name>
     <message>
-      <location filename="PathToolController.py" line="132"/>
-      <source>Tool Number to Load</source>
-      <translation>Broj alata koji se koristi</translation>
+      <location filename="../../../PathScripts/PathSurfaceGui.py" line="226"/>
+      <source>3D Surface</source>
+      <translation>3D Površina</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurfaceGui.py" line="226"/>
+      <source>Create a 3D Surface Operation from a model</source>
+      <translation>Napravite operaciju staze glodanja 3D površine iz modela</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="111"/>
+      <source>This operation requires OpenCamLib to be installed.</source>
+      <translation>Ova operacija zahtijeva instaliranje OpenCamLib-a.</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="272"/>
+      <source>Hold on.  This might take a minute.
+</source>
+      <translation>Sačekaj. Ovo može potrajati minutu.
+</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="312"/>
+      <source>This operation requires OpenCamLib to be installed.
+</source>
+      <translation>Ova operacija zahtijeva instaliranje OpenCamLib-a.
+</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="545"/>
+      <source>Please select a single solid object from the project tree
+</source>
+      <translation>Odaberite jedan čvrsti objekt iz stabla projekta
+</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="562"/>
+      <source>Cannot work with this object
+</source>
+      <translation>Ne mogu raditi s ovim objektom
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_ToolController</name>
     <message>
       <location filename="PathToolController.py" line="156"/>
       <source>Add Tool Controller to the Job</source>
@@ -4207,6 +4795,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="../../../PathScripts/PathToolControllerGui.py" line="123"/>
       <source>Add Tool Controller</source>
       <translation>Dodajte kontroler alata</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="132"/>
+      <source>Tool Number to Load</source>
+      <translation>Broj alata koji se koristi</translation>
     </message>
   </context>
   <context>
@@ -4225,14 +4818,49 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
   <context>
     <name>Path_Vcarve</name>
     <message>
-      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
-      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
-      <translation type="unfinished">VCarve requires an engraving                            cutter with CuttingEdgeAngle</translation>
+      <location filename="../../../PathScripts/PathVcarveGui.py" line="149"/>
+      <source>Vcarve</source>
+      <translation>Vcarve</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarveGui.py" line="149"/>
+      <source>Creates a medial line engraving path</source>
+      <translation>Stvara put gravure po medijalnoj crti
+
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="309"/>
+      <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
+      <translation type="unfinished">VCarve requires an engraving cutter with CuttingEdgeAngle</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="296"/>
       <source>Engraver Cutting Edge Angle must be &lt; 180 degrees.</source>
-      <translation type="unfinished">Engraver Cutting Edge Angle must be &lt; 180 degrees.</translation>
+      <translation>Rezni kut ruba graviranja mora biti &lt; 180 stupnjeva.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathVcarve.py" line="291"/>
+      <source>VCarve requires an engraving                            cutter with CuttingEdgeAngle</source>
+      <translation>VCarve zahtijeva gravura                                    rezač s
+Kutom rezanja ruba
+
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Waterline</name>
+    <message>
+      <location filename="../../../PathScripts/PathWaterlineGui.py" line="145"/>
+      <source>Waterline</source>
+      <translation>Vodna linija</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathWaterlineGui.py" line="145"/>
+      <source>Create a Waterline Operation from a model</source>
+      <translation>Stvorite operaciju vodne linije iz modela
+
+</translation>
     </message>
   </context>
   <context>
@@ -4245,91 +4873,20 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathProbeGui.py" line="88"/>
       <source>Create a Probing Grid from a job stock</source>
-      <translation type="unfinished">Create a Probing Grid from a job stock</translation>
-    </message>
-  </context>
-  <context>
-    <name>Slot</name>
-    <message>
-      <location filename="../../../PathScripts/PathSlotGui.py" line="240"/>
-      <source>Slot</source>
-      <translation>Utor</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSlotGui.py" line="240"/>
-      <source>Create a Slot operation from selected geometry or custom points.</source>
-      <translation type="unfinished">Create a Slot operation from selected geometry or custom points.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Surface</name>
-    <message>
-      <location filename="../../../PathScripts/PathSurfaceGui.py" line="63"/>
-      <source>3D Surface</source>
-      <translation>3D Površina</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurfaceGui.py" line="63"/>
-      <source>Create a 3D Surface Operation from a model</source>
-      <translation>Napravite operaciju staze glodanja 3D površine iz modela</translation>
+      <translation>Napravite sondu za mrežu iz radne zalihe</translation>
     </message>
   </context>
   <context>
     <name>TooltableEditor</name>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Rename Tooltable</source>
-      <translation type="unfinished">Rename Tooltable</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
-      <source>Enter Name:</source>
-      <translation>Unesite ime:</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathToolBitLibraryGui.py" line="456"/>
       <source>Save toolbit library</source>
-      <translation type="unfinished">Save toolbit library</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
-      <source>Tooltable JSON (*.json)</source>
-      <translation>Tabela alata JSON (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
-      <source>HeeksCAD tooltable (*.tooltable)</source>
-      <translation>HeeksCAD Tabela alata (*.tooltable)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
-      <source>LinuxCNC tooltable (*.tbl)</source>
-      <translation>LinuxCNC Tabela alata (*.tbl)</translation>
+      <translation>Spremi biblioteku nastavaka alata</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Otvori tabelu alata</translation>
-    </message>
-    <message>
-      <location filename="TooltableEditor.py" line="610"/>
-      <source>Save tooltable</source>
-      <translation>Spremi tabelu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
-      <source>Add New Tool Table</source>
-      <translation>Dodajte novu tablicu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
-      <source>Delete Selected Tool Table</source>
-      <translation>Izbriši odabranu tablicu alata</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
-      <source>Rename Selected Tool Table</source>
-      <translation>Preimenuj odabranu tablicu alata</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="388"/>
@@ -4543,6 +5100,11 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
     <message>
       <location filename="TooltableEditor.py" line="610"/>
+      <source>Save tooltable</source>
+      <translation>Spremi tabelu alata</translation>
+    </message>
+    <message>
+      <location filename="TooltableEditor.py" line="610"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Tabela alata XML (*.xml)</translation>
     </message>
@@ -4557,9 +5119,146 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <translation>Objekt nema svojstvo alata stola</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Rename Tooltable</source>
+      <translation>Preimenuj Tabelu Alata </translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="354"/>
+      <source>Enter Name:</source>
+      <translation>Unesite ime:</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="385"/>
+      <source>Add New Tool Table</source>
+      <translation>Dodajte novu tablicu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="387"/>
+      <source>Delete Selected Tool Table</source>
+      <translation>Izbriši odabranu tablicu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryEditor.py" line="389"/>
+      <source>Rename Selected Tool Table</source>
+      <translation>Preimenuj odabranu tablicu alata</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <source>Tooltable JSON (*.json)</source>
+      <translation>Tabela alata JSON (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <source>HeeksCAD tooltable (*.tooltable)</source>
+      <translation>HeeksCAD Tabela alata (*.tooltable)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <source>LinuxCNC tooltable (*.tbl)</source>
+      <translation>LinuxCNC Tabela alata (*.tbl)</translation>
+    </message>
+    <message>
       <location filename="PathToolLibraryManager.py" line="514"/>
       <source>Tooltable XML (*.xml);;LinuxCNC tooltable (*.tbl)</source>
       <translation>Tabela alata XML (*.xml);;LinuxCNC tabela alata (*.tbl)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Custom</name>
+    <message>
+      <location filename="../../../PathScripts/PathCustomGui.py" line="80"/>
+      <source>Custom</source>
+      <translation>Prilagođeno</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCustomGui.py" line="80"/>
+      <source>Create custom gcode snippet</source>
+      <translation>Izradite prilagođeni gcode isječak
+
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathAdaptive</name>
+    <message>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
+      <source>Adaptive</source>
+      <translation>Prilagodljiv</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathDrilling</name>
+    <message>
+      <location filename="PathDrillingGui.py" line="108"/>
+      <source>Drilling</source>
+      <translation>Bušenje</translation>
+    </message>
+    <message>
+      <location filename="PathDrillingGui.py" line="108"/>
+      <source>Creates a Path Drilling object from a features of a base object</source>
+      <translation>Stvara objekt Staza Bušenja od svojstva osnovnog objekta</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathFace</name>
+    <message>
+      <location filename="PathMillFace.py" line="171"/>
+      <source>Generating toolpath with libarea offsets.
+</source>
+      <translation>Stvaranje staze obrade s liberia pomacima.
+</translation>
+    </message>
+    <message>
+      <location filename="PathMillFace.py" line="305"/>
+      <source>Pick Start Point</source>
+      <translation>Odaberite početnu točku</translation>
+    </message>
+    <message>
+      <location filename="PathMillFace.py" line="350"/>
+      <source>Face</source>
+      <translation>Površina</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="44"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation>Stvorite operaciju obrade prema modelu ili licu</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathTooolBit</name>
+    <message>
+      <location filename="../../../PathScripts/PathToolBit.py" line="357"/>
+      <source>User Defined Values</source>
+      <translation>Korisnički definirane vrijednosti</translation>
+    </message>
+  </context>
+  <context>
+    <name>Slot</name>
+    <message>
+      <location filename="../../../PathScripts/PathSlotGui.py" line="240"/>
+      <source>Slot</source>
+      <translation>Utor</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSlotGui.py" line="240"/>
+      <source>Create a Slot operation from selected geometry or custom points.</source>
+      <translation>Stvorite Utor operaciju od odabrane geometrije ili prilagođenih točaka.
+
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Surface</name>
+    <message>
+      <location filename="../../../PathScripts/PathSurfaceGui.py" line="63"/>
+      <source>3D Surface</source>
+      <translation>3D Površina</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurfaceGui.py" line="63"/>
+      <source>Create a 3D Surface Operation from a model</source>
+      <translation>Napravite operaciju staze glodanja 3D površine iz modela</translation>
     </message>
   </context>
   <context>
@@ -4567,12 +5266,14 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathWaterlineGui.py" line="143"/>
       <source>Waterline</source>
-      <translation type="unfinished">Waterline</translation>
+      <translation>Vodna linija</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterlineGui.py" line="143"/>
       <source>Create a Waterline Operation from a model</source>
-      <translation type="unfinished">Create a Waterline Operation from a model</translation>
+      <translation>Stvorite operaciju vodne linije iz modela
+
+</translation>
     </message>
   </context>
   <context>
@@ -4580,7 +5281,9 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="839"/>
       <source>No scan data to convert to Gcode.</source>
-      <translation type="unfinished">No scan data to convert to Gcode.</translation>
+      <translation>Nema podataka skeniranja za pretvaranje u Gcode.
+
+</translation>
     </message>
   </context>
   <context>
@@ -4601,60 +5304,15 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     <message>
       <location filename="../../../PathScripts/PathProfileEdges.py" line="72"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
-      <translation type="unfinished">The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</translation>
+      <translation>Odabrani rubovi su nedostupni. Ako je višestruko, ponovno redanje odabira moglo bi funkcionirati.
+
+</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileEdges.py" line="122"/>
       <source>Please set to an acceptable value greater than zero.</source>
-      <translation type="unfinished">Please set to an acceptable value greater than zero.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Custom</name>
-    <message>
-      <location filename="PathCustom.py" line="69"/>
-      <source>Custom</source>
-      <translation>Prilagođeno</translation>
-    </message>
-    <message>
-      <location filename="PathCustom.py" line="70"/>
-      <source>Creates a path object based on custom G-code</source>
-      <translation>Stvara objekt staze na temelju prilagođenog G-koda</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Surface</name>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="111"/>
-      <source>This operation requires OpenCamLib to be installed.</source>
-      <translation>Ova operacija zahtijeva instaliranje OpenCamLib-a.</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="272"/>
-      <source>Hold on.  This might take a minute.
-</source>
-      <translation>Sačekaj. Ovo može potrajati minutu.
-</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="312"/>
-      <source>This operation requires OpenCamLib to be installed.
-</source>
-      <translation>Ova operacija zahtijeva instaliranje OpenCamLib-a.
-</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="545"/>
-      <source>Please select a single solid object from the project tree
-</source>
-      <translation>Odaberite jedan čvrsti objekt iz stabla projekta
-</translation>
-    </message>
-    <message>
-      <location filename="PathSurface.py" line="562"/>
-      <source>Cannot work with this object
-</source>
-      <translation>Ne mogu raditi s ovim objektom
+      <translation>Postavite na prihvatljivu vrijednost veću od nule.
+
 </translation>
     </message>
   </context>
@@ -5113,24 +5771,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
     </message>
   </context>
   <context>
-    <name>Path_Drilling</name>
-    <message>
-      <location filename="PathDrilling.py" line="150"/>
-      <source>Drilling</source>
-      <translation>Bušenje</translation>
-    </message>
-    <message>
-      <location filename="PathDrilling.py" line="152"/>
-      <source>Creates a Path Drilling object</source>
-      <translation>Stvori objekt Staza Bušenja</translation>
-    </message>
-    <message>
-      <location filename="PathDrilling.py" line="168"/>
-      <source>Create Drilling</source>
-      <translation>Napravi bušenje</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_Engrave</name>
     <message>
       <location filename="PathEngrave.py" line="272"/>
@@ -5248,39 +5888,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathFromShape.py" line="97"/>
       <source>Create path from shape</source>
       <translation>Stvori stazu kretanja od oblika</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Profile</name>
-    <message>
-      <location filename="PathProfileEdges.py" line="342"/>
-      <source>Add Holding Tag</source>
-      <translation>Dodavanje držeće trake</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="378"/>
-      <source>Pick Start Point</source>
-      <translation>Odaberite početnu točku</translation>
-    </message>
-    <message>
-      <location filename="PathProfileEdges.py" line="397"/>
-      <source>Pick End Point</source>
-      <translation>Odaberite krajnju točku</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="203"/>
-      <source>Profile</source>
-      <translation>Profil</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="205"/>
-      <source>Creates a Path Profile object from selected faces</source>
-      <translation>Stvara Profil objekt Staze kretanja od odabranih lica</translation>
-    </message>
-    <message>
-      <location filename="PathProfile.py" line="220"/>
-      <source>Create Profile</source>
-      <translation>Izradi profil</translation>
     </message>
   </context>
   <context>
@@ -5644,45 +6251,6 @@ Ako je potrebno ručno postaviti Krajnju Dubinu (FinalDepth), molim odaberite dr
       <location filename="PathMachine.py" line="210"/>
       <source>Create a Machine object</source>
       <translation>Stvori objekt stroja</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Pocket</name>
-    <message>
-      <location filename="PathPocket.py" line="265"/>
-      <source>Pocket</source>
-      <translation>Utor</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="267"/>
-      <source>Creates a Path Pocket object from a loop of edges or a face</source>
-      <translation>Stvara objekt stazu utora iz zatvorene petlje rubova ili površine lica</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="280"/>
-      <source>Please select an edges loop from one object, or a single face
-</source>
-      <translation>Odaberite zatvorenu rubnu petlju iz jednog objekta ili jedne površine lica
-</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="285"/>
-      <source>Please select only edges or a single face
-</source>
-      <translation>Odaberite samo rubove ili jednu površinu lica
-</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="292"/>
-      <source>The selected edges don't form a loop
-</source>
-      <translation>Odabrani rubovi ne tvore zatvorenu petlju
-</translation>
-    </message>
-    <message>
-      <location filename="PathPocket.py" line="296"/>
-      <source>Create Pocket</source>
-      <translation>Stvori utor</translation>
     </message>
   </context>
   <context>

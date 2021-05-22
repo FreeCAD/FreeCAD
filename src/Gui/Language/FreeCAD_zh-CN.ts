@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>导入</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>删除</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>粘贴表达式</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>创建链接组</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>创建链接</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>创建子链接</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>导入链接</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>导入所有链接</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>插入测量</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation type="unfinished">Insert text document</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation type="unfinished">Add a part</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation type="unfinished">Add a group</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>对齐</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>定位</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>变换</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation type="unfinished">Link Transform</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>测量距离</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -206,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>文件名</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
     </message>
   </context>
   <context>
@@ -397,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>字号</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>鸣谢</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD能够在此皆因这些人的贡献：</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>授权许可</translation>
     </message>
@@ -426,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>集合</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>鸣谢</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1295,10 +1385,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>关于</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>代码行将被编号 </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>按下 &lt;Tab&gt; 将插入定义大小的缩进</translation>
     </message>
@@ -1333,6 +1419,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Color:</source>
       <translation>颜色:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2175,15 +2265,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Python的错误重定向到报告浏览器</translation>
+      <translation>将 Python 内部错误重定向到报告视图</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>内部Python输出重定向至报表浏览器</translation>
+      <translation>将 Python 内部输出重定向到报告视图</translation>
     </message>
     <message>
       <source>Python interpreter</source>
-      <translation>Python 编译器</translation>
+      <translation>Python 解释器</translation>
     </message>
     <message>
       <source>Log messages will be recorded</source>
@@ -2463,10 +2553,6 @@ but slower response to any scene changes.</translation>
       <translation>居中</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>透明对象：</translation>
     </message>
@@ -2489,14 +2575,6 @@ but slower response to any scene changes.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>立体模式的双眼距离</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2543,6 +2621,30 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation type="unfinished">Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation type="unfinished">Use software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3157,9 +3259,28 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation>帧缓存(当前)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation>像素缓存</translation>
+      <source>Unloaded Workbenches</source>
+      <translation type="unfinished">Unloaded Workbenches</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation type="unfinished">Load Selected</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3376,12 +3497,6 @@ The value is the diameter of the sphere to fit on the screen.</translation>
       <translation>缩放步长</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation type="unfinished">Direction of zoom operations will be inverted</translation>
     </message>
@@ -3404,10 +3519,6 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation type="unfinished">Rotations in 3D will use current cursor position as center for rotation</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation>在光标处旋转</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3456,6 +3567,71 @@ Mouse tilting is not disabled by this setting.</translation>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation type="unfinished">Default camera orientation when creating a new document or selecting the home view</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation type="unfinished">Rotation mode</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation type="unfinished">Window center</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation type="unfinished">Object center</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>选择</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation type="unfinished">Auto switch to the 3D view containing the selected item</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation type="unfinished">Auto expand tree item when the corresponding object is selected in 3D view</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation type="unfinished">Preselect the object in 3D view when mouse over the tree item</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation type="unfinished">Record selection in tree view in order to go back/forward using navigation button</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
     </message>
   </context>
   <context>
@@ -3741,12 +3917,12 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>未知单位： </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>单位不匹配</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -4297,7 +4473,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Euler angles (xy'z'')</source>
-      <translation type="unfinished">Euler angles (xy'z'')</translation>
+      <translation>欧拉角（xy'z''）</translation>
     </message>
   </context>
   <context>
@@ -5220,6 +5396,10 @@ How do you want to proceed?</source>
     <message>
       <source>Expression...</source>
       <translation>表达式...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation type="unfinished">Auto expand</translation>
     </message>
   </context>
   <context>
@@ -6726,14 +6906,6 @@ Please check report view for more...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation type="unfinished">
-
-Pyhsical path: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation type="unfinished">
 Document: </translation>
@@ -6747,6 +6919,30 @@ Document: </translation>
     <message>
       <source>Identical physical path</source>
       <translation type="unfinished">Identical physical path</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>错误</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>加载文件时出错。有些数据可能已经修改或未全部恢复。在报告视图中查看有关对象的更具体信息。</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>工作台</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>
@@ -7191,8 +7387,8 @@ Document: </translation>
       <translation>未选择任何内容</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>请先选择要导出的对象.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
     </message>
   </context>
   <context>
@@ -7219,6 +7415,21 @@ Document: </translation>
     <message>
       <source>Recompute feature or document</source>
       <translation>重新计算"特征"或"文档"</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>帮助</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>赞助</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation type="unfinished">Donate to FreeCAD development</translation>
     </message>
   </context>
   <context>
@@ -7410,7 +7621,7 @@ Document: </translation>
     </message>
     <message>
       <source>Import links</source>
-      <translation type="unfinished">Import links</translation>
+      <translation>导入链接</translation>
     </message>
     <message>
       <source>Import selected external link(s)</source>
@@ -7425,7 +7636,7 @@ Document: </translation>
     </message>
     <message>
       <source>Import all links</source>
-      <translation type="unfinished">Import all links</translation>
+      <translation>导入所有链接</translation>
     </message>
     <message>
       <source>Import all links of the active document</source>
@@ -7440,7 +7651,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make link</source>
-      <translation type="unfinished">Make link</translation>
+      <translation>创建链接</translation>
     </message>
     <message>
       <source>Create a link to the selected object(s)</source>
@@ -7455,7 +7666,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make link group</source>
-      <translation type="unfinished">Make link group</translation>
+      <translation>创建链接组</translation>
     </message>
     <message>
       <source>Create a group of links</source>
@@ -7470,7 +7681,7 @@ Document: </translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation type="unfinished">Make sub-link</translation>
+      <translation>创建子链接</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>
@@ -7560,11 +7771,11 @@ Document: </translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>取消链接</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
-      <translation type="unfinished">Strip on level of link</translation>
+      <translation>在链接级别上剥离</translation>
     </message>
   </context>
   <context>
@@ -7575,11 +7786,11 @@ Document: </translation>
     </message>
     <message>
       <source>Attach to remote debugger...</source>
-      <translation type="unfinished">Attach to remote debugger...</translation>
+      <translation>附加到远程调试器...</translation>
     </message>
     <message>
       <source>Attach to a remotely running debugger</source>
-      <translation type="unfinished">Attach to a remotely running debugger</translation>
+      <translation>附加到远程运行的调试器</translation>
     </message>
   </context>
   <context>
@@ -7962,11 +8173,11 @@ Document: </translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>最近的宏</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>最近的宏列表</translation>
     </message>
   </context>
   <context>
@@ -8041,7 +8252,7 @@ Document: </translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation type="unfinished">Save all opened document</translation>
+      <translation>保存所有打开的文档</translation>
     </message>
   </context>
   <context>
@@ -8097,11 +8308,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>返回(&amp;B)</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
-      <translation type="unfinished">Go back to previous selection</translation>
+      <translation>返回上一个选择</translation>
     </message>
   </context>
   <context>
@@ -8112,11 +8323,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>边框(&amp;B)</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation type="unfinished">Show selection bounding box</translation>
+      <translation>显示选择边框</translation>
     </message>
   </context>
   <context>
@@ -8127,11 +8338,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Forward</source>
-      <translation type="unfinished">&amp;Forward</translation>
+      <translation>向前(&amp;F)</translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
-      <translation type="unfinished">Repeat the backed selection</translation>
+      <translation>重复支持的选择</translation>
     </message>
   </context>
   <context>
@@ -8172,11 +8383,11 @@ Document: </translation>
     </message>
     <message>
       <source>&amp;Send to Python Console</source>
-      <translation type="unfinished">&amp;Send to Python Console</translation>
+      <translation>发送到 Python 控制台(&amp;S)</translation>
     </message>
     <message>
       <source>Sends the selected object to the Python console</source>
-      <translation type="unfinished">Sends the selected object to the Python console</translation>
+      <translation>所选择的对象发送到 Python 控制台</translation>
     </message>
   </context>
   <context>
@@ -8251,7 +8462,7 @@ Document: </translation>
     </message>
     <message>
       <source>Add text document to active document</source>
-      <translation type="unfinished">Add text document to active document</translation>
+      <translation>添加文本文档到活动文档</translation>
     </message>
   </context>
   <context>
@@ -8427,7 +8638,7 @@ Document: </translation>
     </message>
     <message>
       <source>Collapse currently selected tree items</source>
-      <translation type="unfinished">Collapse currently selected tree items</translation>
+      <translation>折叠当前所选树项</translation>
     </message>
   </context>
   <context>
@@ -8442,7 +8653,7 @@ Document: </translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
-      <translation type="unfinished">Expand currently selected tree items</translation>
+      <translation>展开当前所选树项</translation>
     </message>
   </context>
   <context>
@@ -8453,11 +8664,11 @@ Document: </translation>
     </message>
     <message>
       <source>Select all instances</source>
-      <translation type="unfinished">Select all instances</translation>
+      <translation>选择所有实例</translation>
     </message>
     <message>
       <source>Select all instances of the current selected object</source>
-      <translation type="unfinished">Select all instances of the current selected object</translation>
+      <translation>选择当前所选对象的所有实例</translation>
     </message>
   </context>
   <context>
@@ -8468,11 +8679,11 @@ Document: </translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation type="unfinished">TreeView actions</translation>
+      <translation>树视图操作</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
-      <translation type="unfinished">TreeView behavior options and actions</translation>
+      <translation>树状视图行为选项和操作</translation>
     </message>
   </context>
   <context>
@@ -8806,6 +9017,21 @@ Document: </translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>恢复保存的相机</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>恢复保存的相机设置</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8832,7 +9058,7 @@ Document: </translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° counter-clockwise</translation>
+      <translation>逆时针旋转 90° 视图</translation>
     </message>
   </context>
   <context>
@@ -8847,7 +9073,22 @@ Document: </translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+      <translation>顺时针旋转 90° 视图</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>保存当前相机</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>保存当前相机设置</translation>
     </message>
   </context>
   <context>
@@ -9008,22 +9249,22 @@ Document: </translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Initiate dragging</source>
-      <translation type="unfinished">Initiate dragging</translation>
+      <translation>启动拖动</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation type="unfinished">Initiate dragging of current selected tree items</translation>
+      <translation>开始拖动当前所选树项</translation>
     </message>
   </context>
   <context>
@@ -9034,22 +9275,22 @@ Document: </translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Multi document</source>
-      <translation type="unfinished">Multi document</translation>
+      <translation>多文档</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Pre-selection</source>
-      <translation type="unfinished">Pre-selection</translation>
+      <translation>预选</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
@@ -9060,11 +9301,11 @@ Document: </translation>
     <name>StdTreeRecordSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Record selection</source>
-      <translation type="unfinished">Record selection</translation>
+      <translation>录制选择</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
@@ -9075,7 +9316,7 @@ Document: </translation>
     <name>StdTreeSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -9094,37 +9335,37 @@ Document: </translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>单个文档</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation type="unfinished">Sync placement</translation>
+      <translation>同步位置</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
-      <translation type="unfinished">Auto adjust placement on drag and drop objects across coordinate systems</translation>
+      <translation>自动调整跨坐标系拖放对象的位置</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Sync selection</source>
-      <translation type="unfinished">Sync selection</translation>
+      <translation>同步选择</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
@@ -9135,11 +9376,11 @@ Document: </translation>
     <name>StdTreeSyncView</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>树视图</translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation type="unfinished">Sync view</translation>
+      <translation>同步视图</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
@@ -9261,9 +9502,9 @@ Document: </translation>
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The following referencing objects might break.
+      <translation>以下引用对象可能会中断。
 
-Are you sure you want to continue?
+你确定你要继续吗？
 </translation>
     </message>
     <message>
@@ -9272,7 +9513,7 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>这些项目被选择删除，但不在活动文档中。</translation>
     </message>
   </context>
   <context>
@@ -9368,10 +9609,10 @@ Do you want to save the document now?</translation>
 Please check the Report View for more details.
 
 Do you still want to proceed?</source>
-      <translation type="unfinished">The document contains dependency cycles.
-Please check the Report View for more details.
+      <translation>该文档包含依赖性循环。
+请检查报告视图以获取更多详细信息。
 
-Do you still want to proceed?</translation>
+您仍然要继续吗？</translation>
     </message>
   </context>
   <context>

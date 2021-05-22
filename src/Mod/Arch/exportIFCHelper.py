@@ -125,7 +125,7 @@ class ContextCreator:
                 self.project_data["map_zone"],
                 SIUnit.SIUnit
             )
-        except:
+        except Exception:
             return None
 
     def createMapConversion(self):
@@ -139,7 +139,7 @@ class ContextCreator:
                 self.calculateXAxisOrdinate(),
                 float(self.project_data["scale"])
             )
-        except:
+        except Exception:
             return None
 
     def createTrueNorth(self):
@@ -187,7 +187,7 @@ class ContextCreator:
     def getProjectObject(self):
         try:
             return getObjectsOfIfcType(self.objects, "Project")[0]
-        except:
+        except Exception:
             return None
 
     def getProjectObjectData(self):

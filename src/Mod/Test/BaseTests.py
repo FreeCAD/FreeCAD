@@ -37,7 +37,7 @@ class ConsoleTestCase(unittest.TestCase):
         # http://python-kurs.eu/threads.php
         try:
             import _thread as thread, time
-        except:
+        except Exception:
             import thread, time
         def adder():
             lock.acquire()
@@ -58,7 +58,7 @@ class ConsoleTestCase(unittest.TestCase):
         # http://python-kurs.eu/threads.php
         try:
             import _thread as thread, time
-        except:
+        except Exception:
             import thread, time
         def adder():
             self.count=self.count+1
@@ -155,6 +155,18 @@ class ParameterTestCase(unittest.TestCase):
         # check on Deletion
         self.TestPar.RemString("44")
         self.failUnless(self.TestPar.GetString("44","hallo") == "hallo","Deletion error at String")
+
+    def testAngle(self):
+        v1 = FreeCAD.Vector(0,0,0.000001)
+        v2 = FreeCAD.Vector(0,0.000001,0)
+        self.assertAlmostEqual(v1.getAngle(v2), math.pi/2)
+        self.assertAlmostEqual(v2.getAngle(v1), math.pi/2)
+
+    def testAngleWithNullVector(self):
+        v1 = FreeCAD.Vector(0,0,0)
+        v2 = FreeCAD.Vector(0,1,0)
+        self.assertTrue(math.isnan(v1.getAngle(v2)))
+        self.assertTrue(math.isnan(v2.getAngle(v1)))
 
     def testMatrix(self):
         m=FreeCAD.Matrix(4,2,1,0,1,1,1,0,0,0,1,0,0,0,0,1)

@@ -222,7 +222,7 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
         pitch = pitch + 1
     while pitch > 1:
         pitch = pitch - 1
-    print("  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f" % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length))
+    PathLog.debug("  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f" % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length))
     speed = vSpeed + pitch * (hSpeed - vSpeed)
     if speed > hSpeed and speed > vSpeed:
         return max(hSpeed, vSpeed)
@@ -284,29 +284,21 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50, hSpeed
         else:
             # We're dealing with a helix or a more complex shape and it has to get approximated
             # by a number of straight segments
-            eStraight = Part.Edge(Part.LineSegment(p1, p3))
-            esP2 = eStraight.valueAt((eStraight.FirstParameter + eStraight.LastParameter)/2)
-            deviation = (p2 - esP2).Length
-            if isRoughly(deviation, 0):
-                return [ Path.Command('G1', {'X': p3.x, 'Y': p3.y, 'Z': p3.z}) ]
-            # at this point pixellation is all we can do
+            points = edge.discretize(Deflection=0.01)
+            if flip:
+                points = points[::-1]
+
             commands = []
-            segments = int(math.ceil((deviation / eStraight.Length) * segm))
-            #print("**** pixellation with %d segments" % segments)
-            dParameter = (edge.LastParameter - edge.FirstParameter) / segments
-            # starting point
-            p0 = edge.valueAt(edge.LastParameter) if flip else edge.valueAt(edge.FirstParameter)
-            for i in range(0, segments):
-                if flip:
-                    p = edge.valueAt(edge.LastParameter - (i + 1) * dParameter)
-                else:
-                    p = edge.valueAt(edge.FirstParameter + (i + 1) * dParameter)
-                if hSpeed > 0 and vSpeed > 0:
-                    params.update({'F': speedBetweenPoints(p0, p, hSpeed, vSpeed)})
-                cmd = Path.Command('G1', {'X': p.x, 'Y': p.y, 'Z': p.z})
-                #print("***** %s" % cmd)
-                commands.append(cmd)
-                p0 = p
+            if points:
+                p0 =  points[0]
+                for p in points[1:]:
+                    params = {'X': p.x, 'Y': p.y, 'Z': p.z}
+                    if hSpeed > 0 and vSpeed > 0:
+                        params['F'] = speedBetweenPoints(p0, p, hSpeed, vSpeed)
+                    cmd = Path.Command('G1', params)
+                    # print("***** {}".format(cmd))
+                    commands.append(cmd)
+                    p0 = p
     #print commands
     return commands
 
@@ -400,8 +392,9 @@ def wiresForPath(path, startPoint = Vector(0, 0, 0)):
                 edges.append(edgeForCmd(cmd, startPoint))
                 startPoint = commandEndPoint(cmd, startPoint)
             elif cmd.Name in CmdMoveRapid:
-                wires.append(Part.Wire(edges))
-                edges = []
+                if len(edges) > 0:
+                    wires.append(Part.Wire(edges))
+                    edges = []
                 startPoint = commandEndPoint(cmd, startPoint)
         if edges:
             wires.append(Part.Wire(edges))
@@ -541,13 +534,18 @@ def flipEdge(edge):
         flipped.buildFromPolesMultsKnots(poles, mults , knots, perio, degree, weights, ratio)
 
         return Part.Edge(flipped)
+    elif type(edge.Curve) == Part.OffsetCurve:
+        return edge.reversed()
 
     global OddsAndEnds # pylint: disable=global-statement
     OddsAndEnds.append(edge)
-    PathLog.warning(translate('PathGeom', "%s not support for flipping") % type(edge.Curve))
+    PathLog.warning(translate('PathGeom', "%s not supported for flipping") % type(edge.Curve))
+
+Wire = []
 
 def flipWire(wire):
     '''Flip the entire wire and all its edges so it is being processed the other way around.'''
+    Wire.append(wire)
     edges = [flipEdge(e) for e in wire.Edges]
     edges.reverse()
     PathLog.debug(edges)

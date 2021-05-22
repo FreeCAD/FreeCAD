@@ -234,6 +234,89 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <source>Merge cells</source>
+      <translation>Cellen samenvoegen</translation>
+    </message>
+    <message>
+      <source>Split cell</source>
+      <translation>Cel splitsen</translation>
+    </message>
+    <message>
+      <source>Left-align cell</source>
+      <translation>Links uitlijnen cel</translation>
+    </message>
+    <message>
+      <source>Center cell</source>
+      <translation>Centreer cel</translation>
+    </message>
+    <message>
+      <source>Right-align cell</source>
+      <translation>Rechts uitlijnen cel</translation>
+    </message>
+    <message>
+      <source>Top-align cell</source>
+      <translation>Boven uitlijnen cel</translation>
+    </message>
+    <message>
+      <source>Bottom-align cell</source>
+      <translation>Onder uitlijnen cel</translation>
+    </message>
+    <message>
+      <source>Vertically center cells</source>
+      <translation>Cellen verticaal centreren</translation>
+    </message>
+    <message>
+      <source>Set bold text</source>
+      <translation>Tekst vet</translation>
+    </message>
+    <message>
+      <source>Set italic text</source>
+      <translation>Cursieve tekst instellen</translation>
+    </message>
+    <message>
+      <source>Set underline text</source>
+      <translation>Tekst onderstrepen</translation>
+    </message>
+    <message>
+      <source>Create Spreadsheet</source>
+      <translation>Rekenblad aanmaken</translation>
+    </message>
+    <message>
+      <source>Set cell properties</source>
+      <translation>Celeigenschappen instellen</translation>
+    </message>
+    <message>
+      <source>Edit cell</source>
+      <translation>Cel bewerken</translation>
+    </message>
+    <message>
+      <source>Insert rows</source>
+      <translation>Rijen invoegen</translation>
+    </message>
+    <message>
+      <source>Remove rows</source>
+      <translation>Rijen verwijderen</translation>
+    </message>
+    <message>
+      <source>Insert columns</source>
+      <translation>Kolommen invoegen</translation>
+    </message>
+    <message>
+      <source>Clear cell(s)</source>
+      <translation>Wis cel(len)</translation>
+    </message>
+    <message>
+      <source>Set foreground color</source>
+      <translation>Voorgrondkleur instellen</translation>
+    </message>
+    <message>
+      <source>Set background color</source>
+      <translation>Achtergrondkleur instellen</translation>
+    </message>
+  </context>
+  <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
@@ -481,24 +564,64 @@ Spreadsheet.mijn_alias_naam in plaats van Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Rijen invoegen</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Rijen verwijderen</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Kolommen invoegen</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Kolommen verwijderen</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Eigenschappen...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

@@ -66,6 +66,7 @@ def Startup():
         # from PathScripts import PathProfileEdgesGui
         # from PathScripts import PathProfileFacesGui
         from PathScripts import PathProfileGui
+        from PathScripts import PathPropertyBagGui
         from PathScripts import PathSanity
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
@@ -73,6 +74,7 @@ def Startup():
         from PathScripts import PathSlotGui
         from PathScripts import PathStop
         # from PathScripts import PathSurfaceGui  # Added in initGui.py due to OCL dependency
+        from PathScripts import PathThreadMillingGui
         from PathScripts import PathToolController
         from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryManager

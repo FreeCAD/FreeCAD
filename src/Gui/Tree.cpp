@@ -139,6 +139,11 @@ void TreeParams::onSyncSelectionChanged() {
     TreeWidget::scrollItemToTop();
 }
 
+void TreeParams::onCheckBoxesSelectionChanged()
+{
+    TreeWidget::instance()->synchronizeSelectionCheckBoxes();
+}
+
 void TreeParams::onDocumentModeChanged() {
     App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
 }
@@ -513,11 +518,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             boost::bind(&TreeWidget::slotChangedViewObject, this, bp::_1, bp::_2));
 
     // make sure to show a horizontal scrollbar if needed
-#if QT_VERSION >= 0x050000
     this->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    this->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
     this->header()->setStretchLastSection(false);
 
     // Add the first main label
@@ -525,10 +526,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->rootItem->setFlags(Qt::ItemIsEnabled);
     this->expandItem(this->rootItem);
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-#if QT_VERSION >= 0x040200
     // causes unexpected drop events (possibly only with Qt4.1.x)
     this->setMouseTracking(true); // needed for itemEntered() to work
-#endif
+
 
     this->preselectTimer = new QTimer(this);
     this->preselectTimer->setSingleShot(true);
@@ -549,6 +549,8 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             this, SLOT(onItemExpanded(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemSelectionChanged()),
             this, SLOT(onItemSelectionChanged()));
+    connect(this, SIGNAL(itemChanged(QTreeWidgetItem*, int)),
+            this, SLOT(onItemChanged(QTreeWidgetItem*, int)));
     connect(this->preselectTimer, SIGNAL(timeout()),
             this, SLOT(onPreSelectTimer()));
     connect(this->selectTimer, SIGNAL(timeout()),
@@ -865,8 +867,10 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
             contextMenu.addAction(this->createGroupAction);
 
+        contextMenu.addSeparator();
         contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->recomputeObjectAction);
+        contextMenu.addSeparator();
         contextMenu.addAction(this->relabelObjectAction);
 
         auto selItems = this->selectedItems();
@@ -1412,7 +1416,6 @@ void TreeWidget::dragLeaveEvent(QDragLeaveEvent * event)
 
 void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 {
-#if QT_VERSION >= 0x050000
     // Qt5 does not change drag cursor in response to modifier key press,
     // because QDrag installs a event filter that eats up key event. We install
     // a filter after Qt and generate fake mouse move event in response to key
@@ -1421,7 +1424,6 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
         _DragEventFilter = true;
         qApp->installEventFilter(this);
     }
-#endif
 
     QTreeWidget::dragMoveEvent(event);
     if (!event->isAccepted())
@@ -2679,9 +2681,11 @@ void TreeWidget::setupText()
 
     this->markRecomputeAction->setText(tr("Mark to recompute"));
     this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+    this->markRecomputeAction->setIcon(BitmapFactory().iconFromTheme("Std_MarkToRecompute"));
 
     this->recomputeObjectAction->setText(tr("Recompute object"));
     this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
+    this->recomputeObjectAction->setIcon(BitmapFactory().iconFromTheme("view-refresh"));
 }
 
 void TreeWidget::syncView(ViewProviderDocumentObject *vp)
@@ -2800,6 +2804,33 @@ void TreeWidget::onItemSelectionChanged ()
     this->blockConnection(lock);
 }
 
+static bool isSelectionCheckBoxesEnabled() {
+    return TreeParams::Instance()->CheckBoxesSelection();
+}
+
+void TreeWidget::synchronizeSelectionCheckBoxes() {
+    const bool useCheckBoxes = isSelectionCheckBoxesEnabled();
+    for (QTreeWidgetItemIterator it(this); *it; ++it) {
+        if (const auto item = dynamic_cast<DocumentObjectItem*>(*it)) {
+            if (useCheckBoxes)
+                item->QTreeWidgetItem::setCheckState(0, item->isSelected() ? Qt::Checked : Qt::Unchecked);
+            else
+                item->setData(0, Qt::CheckStateRole, QVariant());
+        }
+    }
+    resizeColumnToContents(0);
+}
+
+void TreeWidget::onItemChanged(QTreeWidgetItem *item, int column) {
+    if (column == 0 && isSelectionCheckBoxesEnabled()) {
+        bool selected = item->isSelected();
+        bool checked = item->checkState(0) == Qt::Checked;
+        if (checked != selected) {
+            item->setSelected(checked);
+        }
+    }
+}
+
 void TreeWidget::onSelectTimer() {
 
     _updateStatus(false);
@@ -2865,9 +2896,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
     pLayout->addWidget(this->searchBox);
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
-#if QT_VERSION >= 0x040700
     this->searchBox->setPlaceholderText(tr("Search"));
-#endif
     connect(this->searchBox, SIGNAL(returnPressed()),
             this, SLOT(accept()));
     connect(this->searchBox, SIGNAL(textChanged(QString)),
@@ -3099,11 +3128,11 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
     FOREACH_ITEM_ALL(item)
         if(tree->editingItem) {
             if(item == tree->editingItem) {
-                item->setData(0, Qt::BackgroundColorRole,QVariant());
+                item->setData(0, Qt::BackgroundRole,QVariant());
                 break;
             }
         }else if(item->object() == &v)
-            item->setData(0, Qt::BackgroundColorRole,QVariant());
+            item->setData(0, Qt::BackgroundRole,QVariant());
     END_FOREACH_ITEM
     tree->editingItem = 0;
 }
@@ -3670,8 +3699,7 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
             if(!topParent) {
                 if(parent!=obj.getObject())
                     continue;
-            }else if(topParent!=parent)
-                continue;
+            }
         }
         item->setHighlight(set,high);
         if(parent)
@@ -3923,6 +3951,7 @@ void DocumentItem::clearSelection(DocumentObjectItem *exclude)
             item->selected = 0;
             item->mySubs.clear();
             item->setSelected(false);
+            item->setCheckState(false);
         }
     END_FOREACH_ITEM;
     treeWidget()->blockSignals(ok);
@@ -3933,8 +3962,10 @@ void DocumentItem::updateSelection(QTreeWidgetItem *ti, bool unselect) {
         auto child = ti->child(i);
         if(child && child->type()==TreeWidget::ObjectType) {
             auto childItem = static_cast<DocumentObjectItem*>(child);
-            if(unselect)
+            if (unselect) {
                 childItem->setSelected(false);
+                childItem->setCheckState(false);
+            }
             updateItemSelection(childItem);
             if(unselect && childItem->isGroup()) {
                 // If the child item being force unselected by its group parent
@@ -3952,8 +3983,17 @@ void DocumentItem::updateSelection(QTreeWidgetItem *ti, bool unselect) {
 
 void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     bool selected = item->isSelected();
-    if((selected && item->selected>0) || (!selected && !item->selected))
+    bool checked = item->checkState(0) == Qt::Checked;
+
+    if(selected && !checked)
+        item->setCheckState(true);
+
+    if(!selected && checked)
+        item->setCheckState(false);
+
+    if((selected && item->selected>0) || (!selected && !item->selected)) {
         return;
+    }
     if(item->selected != -1)
         item->mySubs.clear();
     item->selected = selected;
@@ -4026,6 +4066,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         if(!Gui::Selection().addSelection(docname,objname,subname.c_str())) {
             item->selected = 0;
             item->setSelected(false);
+            item->setCheckState(false);
             return;
         }
     }
@@ -4221,6 +4262,7 @@ void DocumentItem::selectItems(SelectionReason reason) {
             item->selected = 0;
             item->mySubs.clear();
             item->setSelected(false);
+            item->setCheckState(false);
         }else if(item->selected) {
             if(sync) {
                 if(item->selected==2 && showItem(item,false,reason==SR_FORCE_EXPAND)) {
@@ -4242,6 +4284,7 @@ void DocumentItem::selectItems(SelectionReason reason) {
             }
             item->selected = 1;
             item->setSelected(true);
+            item->setCheckState(true);
         }
     END_FOREACH_ITEM;
 
@@ -4338,8 +4381,10 @@ bool DocumentItem::showItem(DocumentObjectItem *item, bool select, bool force) {
     }else
         parent->setExpanded(true);
 
-    if(select)
+    if(select) {
         item->setSelected(true);
+        item->setCheckState(true);
+    }
     return true;
 }
 
@@ -4366,7 +4411,9 @@ DocumentObjectItem::DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjec
     : QTreeWidgetItem(TreeWidget::ObjectType)
     , myOwner(ownerDocItem), myData(data), previousStatus(-1),selected(0),populated(false)
 {
-    setFlags(flags()|Qt::ItemIsEditable);
+    setFlags(flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
+    setCheckState(false);
+
     myData->items.insert(this);
     ++countItems;
     TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullName());
@@ -4537,22 +4584,14 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         // to black which will lead to unreadable text if the system background
         // hss already a dark color.
         // However, it works if we set the appropriate role to an empty QVariant().
-#if QT_VERSION >= 0x040200
         this->setData(0, Qt::ForegroundRole,QVariant());
-#else
-        this->setData(0, Qt::TextColorRole,QVariant());
-#endif
     }
     else { // invisible
         QStyleOptionViewItem opt;
         // it can happen that a tree item is not attached to the tree widget (#0003025)
         if (this->treeWidget())
             opt.initFrom(this->treeWidget());
-#if QT_VERSION >= 0x040200
         this->setForeground(0, opt.palette.color(QPalette::Disabled,QPalette::Text));
-#else
-        this->setTextColor(0, opt.palette.color(QPalette::Disabled,QPalette::Text);
-#endif
         mode = QIcon::Disabled;
     }
 
@@ -4670,6 +4709,8 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
 
         icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
         icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
+
+        icon = object()->mergeColorfulOverlayIcons(icon);
     }
 
 
@@ -4681,11 +4722,7 @@ void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();
 
-#if (QT_VERSION >= 0x050000)
     QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString());
-#else
-    QString info = QApplication::translate(Obj->getTypeId().getName(), Obj->getStatusString(), 0, QApplication::UnicodeUTF8);
-#endif
 
     if (Obj->mustExecute() == 1 && !Obj->isError())
         info += TreeWidget::tr(" (but must be executed)");
@@ -4944,6 +4981,13 @@ App::DocumentObject *DocumentObjectItem::getRelativeParent(
     }
     str.str("");
     return 0;
+}
+
+void DocumentObjectItem::setCheckState(bool checked) {
+    if (isSelectionCheckBoxesEnabled())
+        QTreeWidgetItem::setCheckState(0, checked ? Qt::Checked : Qt::Unchecked);
+    else
+        setData(0, Qt::CheckStateRole, QVariant());
 }
 
 DocumentItem *DocumentObjectItem::getParentDocument() const {

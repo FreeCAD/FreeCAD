@@ -95,6 +95,19 @@ Cette commande ne fonctionne qu'avec un objet 'mesh'.</translation>
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation>Ajuster avec un plan</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation>Section avec un plan</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshPartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
@@ -422,7 +435,7 @@ Une valeur dans la plage de 0.1-1.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge:</source>
-      <translation>Eléments par arête:</translation>
+      <translation>Éléments par arête :</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
@@ -478,13 +491,13 @@ Une valeur dans la plage de 0.2-10.</translation>
       <translation>gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Sélectionner d'abord une forme pour le maillage.</translation>
     </message>

@@ -96,13 +96,9 @@ static PyObject * areaGetParamsDesc(PyObject *, PyObject *args, PyObject *kwd) {
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "|O",kwlist,&pcObj))
         return 0;
 
-#if PY_MAJOR_VERSION < 3
-    if(PyObject_IsTrue(pcObj)) 
-        return PyString_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
-#else
     if(PyObject_IsTrue(pcObj)) 
         return PyUnicode_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_STATIC_CONF));
-#endif
+
     PyObject *dict = PyDict_New();
     PARAM_PY_DICT_SET_DOC(dict,NAME,AREA_PARAMS_STATIC_CONF)
     return dict;
@@ -210,8 +206,12 @@ PyObject *AreaPy::PyMake(struct _typeobject *, PyObject *args, PyObject *kwd)  /
     AreaPy* ret = new AreaPy(new Area);
     if(!ret->setParams(args,kwd)) {
         Py_DecRef(ret);
-        return 0;
+        return nullptr;
     }
+
+    // If setParams() was successful it increments the ref counter.
+    // So, it must be decremented again.
+    Py_DecRef(ret);
     return ret;
 }
 
@@ -406,7 +406,7 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-        return 0;
+        return nullptr;
 
     PY_TRY {
         //populate 'params' with the CONF variables

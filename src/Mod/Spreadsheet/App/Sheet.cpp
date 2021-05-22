@@ -241,7 +241,7 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
         if (prevRow != -1 && prevRow != i->row()) {
             for (int j = prevRow; j < i->row(); ++j)
                 file << std::endl;
-            prevCol = 0;
+            prevCol = usedCells.begin()->col();
         }
         if (prevCol != -1 && i->col() != prevCol) {
             for (int j = prevCol; j < i->col(); ++j)
@@ -1135,6 +1135,14 @@ void Sheet::insertColumns(int col, int count)
 
 void Sheet::removeColumns(int col, int count)
 {
+    // Remove aliases, if defined
+    for (auto address : cells.getColumns(col, count)) {
+        auto cell = getCell(address);
+        std::string aliasStr;
+        if (cell && cell->getAlias(aliasStr))
+            removeDynamicProperty(aliasStr.c_str());
+    }
+
     cells.removeColumns(col, count);
     updateColumnsOrRows(true,col,-count);
 }
@@ -1163,6 +1171,14 @@ void Sheet::insertRows(int row, int count)
 
 void Sheet::removeRows(int row, int count)
 {
+    // Remove aliases, if defined
+    for (auto address : cells.getRows(row, count)) {
+        auto cell = getCell(address);
+        std::string aliasStr;
+        if (cell && cell->getAlias(aliasStr))
+            removeDynamicProperty(aliasStr.c_str());
+    }
+
     cells.removeRows(row, count);
     updateColumnsOrRows(false,row,-count);
 }

@@ -302,10 +302,10 @@ void ViewProvider::update(const App::Property* prop)
 
 QIcon ViewProvider::getIcon(void) const
 {
-    return mergeOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
+    return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
 }
 
-QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
+QIcon ViewProvider::mergeGreyableOverlayIcons (const QIcon & orig) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 
@@ -313,7 +313,21 @@ QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
 
     for (Gui::ViewProviderExtension* ext : vector) {
         if (!ext->ignoreOverlayIcon())
-            overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
+            overlayedIcon = ext->extensionMergeGreyableOverlayIcons(overlayedIcon);
+    }
+
+    return overlayedIcon;
+}
+
+QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+
+    QIcon overlayedIcon = orig;
+
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (!ext->ignoreOverlayIcon())
+            overlayedIcon = ext->extensionMergeColorfullOverlayIcons(overlayedIcon);
     }
 
     return overlayedIcon;
@@ -525,6 +539,7 @@ void ViewProvider::onBeforeChange(const App::Property* prop)
 void ViewProvider::onChanged(const App::Property* prop)
 {
     Application::Instance->signalChangedObject(*this, *prop);
+    Application::Instance->updateActions();
 
     App::TransactionalObject::onChanged(prop);
 }

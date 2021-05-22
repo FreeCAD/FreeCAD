@@ -1,7 +1,6 @@
 <RCC>
     <qresource>
         <file>icons/Path_Adaptive.svg</file>
-        <file>icons/Path_ToolDuplicate.svg</file>
         <file>icons/Path_3DPocket.svg</file>
         <file>icons/Path_3DSurface.svg</file>
         <file>icons/Path_Area_View.svg</file>
@@ -61,9 +60,11 @@
         <file>icons/Path_Speed.svg</file>
         <file>icons/Path_Stock.svg</file>
         <file>icons/Path_Stop.svg</file>
+        <file>icons/Path_ThreadMilling.svg</file>
         <file>icons/Path_ToolBit.svg</file>
         <file>icons/Path_ToolChange.svg</file>
         <file>icons/Path_ToolController.svg</file>
+        <file>icons/Path_ToolDuplicate.svg</file>
         <file>icons/Path_Toolpath.svg</file>
         <file>icons/Path_ToolTable.svg</file>
         <file>icons/Path_Vcarve.svg</file>
@@ -96,6 +97,7 @@
         <file>panels/DogboneEdit.ui</file>
         <file>panels/DressupPathBoundary.ui</file>
         <file>panels/DragKnifeEdit.ui</file>
+        <file>panels/DressUpLeadInOutEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
@@ -114,10 +116,13 @@
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
+        <file>panels/PageOpThreadMillingEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
         <file>panels/PageOpVcarveEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
+        <file>panels/PropertyBag.ui</file>
+        <file>panels/PropertyCreate.ui</file>
         <file>panels/SetupGlobal.ui</file>
         <file>panels/SetupOp.ui</file>
         <file>panels/ToolBitEditor.ui</file>
@@ -127,6 +132,7 @@
         <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/ZCorrectEdit.ui</file>
+        <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
         <file>translations/Path_af.qm</file>

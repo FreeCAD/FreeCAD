@@ -28,7 +28,7 @@
 
 #include "GeometryFacade.h"
 
-#include <Base/Console.h> // Only for Debug - To be removed
+//#include <Base/Console.h> // Only for Debug, when/if necessary
 #include <Base/Exception.h>
 #include <boost/uuid/uuid_io.hpp>
 
@@ -36,31 +36,44 @@
 
 using namespace Sketcher;
 
-TYPESYSTEM_SOURCE(Sketcher::GeometryFacade,Part::GeometryExtension)
+TYPESYSTEM_SOURCE(Sketcher::GeometryFacade,Base::BaseClass)
 
-GeometryFacade::GeometryFacade(): Geo(nullptr), SketchGeoExtension(nullptr)
+GeometryFacade::GeometryFacade(): Geo(nullptr), OwnerGeo(false), SketchGeoExtension(nullptr)
 {
 
 }
 
 GeometryFacade::GeometryFacade(const Part::Geometry * geometry)
-: Geo(geometry)
+: Geo(geometry), OwnerGeo(false)
 {
     if(geometry != nullptr)
         initExtension();
     else
         THROWM(Base::ValueError, "GeometryFacade initialized with Geometry null pointer");
+
+}
+
+GeometryFacade::~GeometryFacade()
+{
+    if (OwnerGeo)
+        delete Geo;
 }
 
 std::unique_ptr<GeometryFacade> GeometryFacade::getFacade(Part::Geometry * geometry)
 {
-    return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry));
+    if(geometry != nullptr)
+        return std::unique_ptr<GeometryFacade>(new GeometryFacade(geometry));
+    else
+        return std::unique_ptr<GeometryFacade>(nullptr);
     //return std::make_unique<GeometryFacade>(geometry); // make_unique has no access to private constructor
 }
 
 std::unique_ptr<const GeometryFacade> GeometryFacade::getFacade(const Part::Geometry * geometry)
 {
-    return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
+    if(geometry != nullptr)
+        return std::unique_ptr<const GeometryFacade>(new GeometryFacade(geometry));
+     else
+        return std::unique_ptr<const GeometryFacade>(nullptr);
     //return std::make_unique<const GeometryFacade>(geometry); // make_unique has no access to private constructor
 }
 
@@ -80,7 +93,7 @@ void GeometryFacade::initExtension()
 
         getGeo()->setExtension(std::make_unique<SketchGeometryExtension>()); // Create getExtension
 
-        Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
+        //Base::Console().Warning("%s\nSketcher Geometry without Extension: %s \n", boost::uuids::to_string(Geo->getTag()).c_str());
     }
 
     SketchGeoExtension =
@@ -111,6 +124,30 @@ void GeometryFacade::copyId(const Part::Geometry * src, Part::Geometry * dst)
     auto gfsrc = GeometryFacade::getFacade(src);
     auto gfdst = GeometryFacade::getFacade(dst);
     gfdst->setId(gfsrc->getId());
+}
+
+bool GeometryFacade::getConstruction(const Part::Geometry * geometry)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getConstruction();
+}
+
+void GeometryFacade::setConstruction(Part::Geometry * geometry, bool construction)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->setConstruction(construction);
+}
+
+bool GeometryFacade::isInternalType(const Part::Geometry * geometry, InternalType::InternalType type)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getInternalType() == type;
+}
+
+bool GeometryFacade::getBlocked(const Part::Geometry * geometry)
+{
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getBlocked();
 }
 
 PyObject * GeometryFacade::getPyObject(void)

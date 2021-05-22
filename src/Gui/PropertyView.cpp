@@ -89,17 +89,16 @@ PropertyView::PropertyView(QWidget *parent)
     tabs = new QTabWidget (this);
     tabs->setObjectName(QString::fromUtf8("propertyTab"));
     tabs->setTabPosition(QTabWidget::South);
-#if defined(Q_OS_WIN32)
-    tabs->setTabShape(QTabWidget::Triangular);
-#endif
     pLayout->addWidget(tabs, 0, 0);
 
     propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
-    propertyEditorView->setAutomaticDocumentUpdate(false);
+    propertyEditorView->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionView", false));
+    propertyEditorView->setAutomaticExpand(_GetParam()->GetBool("AutoExpandView", false));
     tabs->addTab(propertyEditorView, tr("View"));
 
     propertyEditorData = new Gui::PropertyEditor::PropertyEditor();
-    propertyEditorData->setAutomaticDocumentUpdate(true);
+    propertyEditorData->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionData", true));
+    propertyEditorData->setAutomaticExpand(_GetParam()->GetBool("AutoExpandData", false));
     tabs->addTab(propertyEditorData, tr("Data"));
 
     int preferredTab = _GetParam()->GetInt("LastTabIndex", 1);

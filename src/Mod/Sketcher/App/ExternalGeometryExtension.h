@@ -46,7 +46,7 @@ public:
     virtual void setRef(const std::string & ref) = 0;
 };
 
-class SketcherExport ExternalGeometryExtension : public Part::GeometryExtension, private ISketchExternalGeometryExtension
+class SketcherExport ExternalGeometryExtension : public Part::GeometryPersistenceExtension, private ISketchExternalGeometryExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
@@ -67,11 +67,6 @@ public:
     ExternalGeometryExtension() = default;
     virtual ~ExternalGeometryExtension() override = default;
 
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const override;
-    virtual void Save(Base::Writer &/*writer*/) const override;
-    virtual void Restore(Base::XMLReader &/*reader*/) override;
-
     virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
     virtual PyObject *getPyObject(void) override;
@@ -86,6 +81,13 @@ public:
 
     virtual const std::string& getRef() const override {return Ref;}
     virtual void setRef(const std::string & ref) override {Ref = ref;}
+
+    static bool getFlagsFromName(std::string str, ExternalGeometryExtension::Flag &flag);
+
+protected:
+    virtual void copyAttributes(Part::GeometryExtension * cpy) const override;
+    virtual void restoreAttributes(Base::XMLReader &reader) override;
+    virtual void saveAttributes(Base::Writer &writer) const override;
 
 private:
     ExternalGeometryExtension(const ExternalGeometryExtension&) = default;

@@ -31,7 +31,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 
 class SbVec3f;
 class SoPickedPoint;

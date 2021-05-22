@@ -40,6 +40,7 @@
 #include "ViewProviderSketch.h"
 
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -341,7 +342,6 @@ TaskSketcherElements::~TaskSketcherElements()
     }
 
     connectionElementsChanged.disconnect();
-    delete ui;
 }
 
 void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -712,7 +712,7 @@ void TaskSketcherElements::slotElementsChanged(void)
     int i=1;
     for(std::vector< Part::Geometry * >::const_iterator it= vals.begin();it!=vals.end();++it,++i){
       Base::Type type = (*it)->getTypeId();
-      bool construction = (*it)->getConstruction();
+      bool construction = Sketcher::GeometryFacade::getConstruction(*it);
 
       ui->listWidgetElements->addItem(new ElementItem(
         (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint.getIcon(construction, false) :

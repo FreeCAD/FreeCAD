@@ -101,6 +101,19 @@ void SMDS_VtkFace::initQuadPoly(const std::vector<vtkIdType>& nodeIds, SMDS_Mesh
 bool SMDS_VtkFace::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
+#ifdef VTK_CELL_ARRAY_V2
+  vtkNew<vtkIdList> cellPoints;
+  grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
+  if (nbNodes != cellPoints->GetNumberOfIds())
+    {
+      MESSAGE("ChangeNodes problem: not the same number of nodes " << cellPoints->GetNumberOfIds() << " -> " << nbNodes);
+      return false;
+    }
+  for (int i = 0; i < nbNodes; i++)
+    {
+      cellPoints->SetId(i, nodes[i]->getVtkId());
+    }
+#else
   vtkIdType npts = 0;
   vtkIdType* pts = 0;
   grid->GetCellPoints(myVtkID, npts, pts);
@@ -113,6 +126,7 @@ bool SMDS_VtkFace::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
     {
       pts[i] = nodes[i]->getVtkId();
     }
+#endif
   SMDS_Mesh::_meshList[myMeshId]->setMyModified();
   return true;
 }
@@ -173,7 +187,8 @@ const SMDS_MeshNode*
 SMDS_VtkFace::GetNode(const int ind) const
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-  vtkIdType npts, *pts;
+  vtkIdType npts;
+  vtkIdTypePtr pts;
   grid->GetCellPoints( this->myVtkID, npts, pts );
   return SMDS_Mesh::_meshList[myMeshId]->FindNodeVtk( pts[ ind ]);
 }
@@ -186,7 +201,8 @@ SMDS_VtkFace::GetNode(const int ind) const
 int SMDS_VtkFace::GetNodeIndex( const SMDS_MeshNode* node ) const
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-  vtkIdType npts, *pts;
+  vtkIdType npts;
+  vtkIdTypePtr pts;
   grid->GetCellPoints( this->myVtkID, npts, pts );
   for ( vtkIdType i = 0; i < npts; ++i )
     if ( pts[i] == node->getVtkId() )
@@ -251,7 +267,7 @@ bool SMDS_VtkFace::IsMediumNode(const SMDS_MeshNode* node) const
     return false;
   }
   vtkIdType npts = 0;
-  vtkIdType* pts = 0;
+  vtkIdTypePtr pts = 0;
   grid->GetCellPoints(myVtkID, npts, pts);
   vtkIdType nodeId = node->getVtkId();
   for (int rank = 0; rank < npts; rank++)
@@ -356,11 +372,18 @@ SMDS_NodeIteratorPtr SMDS_VtkFace::interlacedNodesIterator() const
 void SMDS_VtkFace::ChangeApex(SMDS_MeshNode* node)
 {
   vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
+#ifdef VTK_CELL_ARRAY_V2
+  vtkNew<vtkIdList> cellPoints;
+  grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
+  grid->RemoveReferenceToCell(cellPoints->GetId(0), myVtkID);
+  cellPoints->SetId(0, node->getVtkId());
+#else
   vtkIdType npts = 0;
   vtkIdType* pts = 0;
   grid->GetCellPoints(myVtkID, npts, pts);
   grid->RemoveReferenceToCell(pts[0], myVtkID);
   pts[0] = node->getVtkId();
+#endif
   node->AddInverseElement(this),
   SMDS_Mesh::_meshList[myMeshId]->setMyModified();
 }

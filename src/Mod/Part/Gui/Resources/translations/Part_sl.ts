@@ -4,6 +4,16 @@
   <context>
     <name>AttachmentEditor</name>
     <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
+      <source>Attachment...</source>
+      <translation>Pripetek ...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Uredi pripetek izbranega predmeta.</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
       <translation>Ni predmeta z imenom {name}</translation>
@@ -24,14 +34,14 @@
       <translation>Predmeta {obj} ni mogoče pripeti. Še vedno lahko uporabite pogovorno okno pripetka za poravnavo predmeta, vendar pripetek ne bo parametričen.</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
-      <source>Attachment</source>
-      <translation>Pripetek</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
       <translation>Nadaljuj</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
+      <source>Attachment</source>
+      <translation>Pripetek</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -99,24 +109,14 @@
       <translation>Odmik pripetka:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odmik pripetka (v lokalnih koordinatah):</translation>
-    </message>
-    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Odmik pripetka (nedejvno - ni pripeto):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
-      <source>Attachment...</source>
-      <translation>Pripetek ...</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
-      <source>Edit attachment of selected object.</source>
-      <translation>Uredi pripetek izbranega predmeta.</translation>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Odmik pripetka (v lokalnih koordinatah):</translation>
     </message>
   </context>
   <context>
@@ -259,7 +259,645 @@ Za vsako obliko bo ustvarjeno "Sito sestava".</translation>
     </message>
   </context>
   <context>
+    <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
+      <source>Boolean fragments</source>
+      <translation>Logična vrednost drobcev</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Ustvari predmet "Logična vrednost drobcev" iz enega ali več izbranih predmetov,
+ali iz oblik znotraj sestava.
+To je seštevek logičnih vrednosti, ki je nato zarezan na presekih izvirnih oblik.
+S "Sitom sestava" lahko izvlečete posamezne rezine.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Razcepi predmet na presečišču z drugimi predmeti in združi koščke v sestav.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Razcepi predmet pri presečiščih z drugimi predmeti.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Najprej izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Pri izračunavanju razultata je prišlo do napake: 
+
+{err}
+
+Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Odstrani presečne drobce</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Najprej izberitev vsaj dva predmeta ali enega oz. več sestavov! Če je izbran le en sestav, bo med sestavljenimi oblikami izveden presek (sicer so sestavi, ki sekajo sami sebe, neveljavni).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Neveljaven izbor</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Pri izračunavanju razultata je prišlo do napake: 
+
+{err}
+
+Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Izberitev vsaj dva predmeta ali enega oz. več sestavov! Če je izbran le en sestav, bo med sestavljenimi oblikami izveden presek (sicer so sestavi, ki sekajo sami sebe, neveljavni).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Razcepki v sestav</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation>Razreži izbrani predmet z drugimi predmeti, ki služijo kot rezilo.
+Dobljeni kosi bodo shranjeni v sestav.
+Posamezne rezine lahko izločite s pomočje "Sita sestavov".</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Razcepi</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Razreži izbrani predmet z drugimi predmeti in ga razcepi.
+Za vsako rezino bo ustvarjeno "sito sestava".</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>Logična vrednost XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>Izvêdi logično dejanje "izključno ALI" z dvema ali več predmeti,
+oz. z oblikami znotraj sestava.
+To pomeni, da bodo prekrivajoči deli oblik odstranjeni.
+Ostale dele lahko izvelečet s "sitom sestava".</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Drobci logične operacije</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Razcepi predmete, kjer se sekajo</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Nadaljuj</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
+      <source>Create tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
+      <source>Creates a tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="51"/>
+      <source>Create tube</source>
+      <translation>Ustvari cev</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
+      <source>Edit %1</source>
+      <translation>Uredi %1</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="210"/>
+      <location filename="../../AppPartGui.cpp" line="211"/>
+      <source>Part design</source>
+      <translation>Oblikovanje delov</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="212"/>
+      <location filename="../../AppPartGui.cpp" line="213"/>
+      <source>Import-Export</source>
+      <translation>Uvozi-Izvozi</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="214"/>
+      <source>Display</source>
+      <translation>Prikaz</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="284"/>
+      <location filename="../../Command.cpp" line="381"/>
+      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="902"/>
+      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="2074"/>
+      <source>Wrong selection</source>
+      <translation>Napačna izbira</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="285"/>
+      <location filename="../../Command.cpp" line="954"/>
+      <source>Select two shapes please.</source>
+      <translation>Izberite dve obliki.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="499"/>
+      <source>Non-solids selected</source>
+      <translation>Izbrani netelesni predmeti</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="500"/>
+      <source>The use of non-solids for boolean operations may lead to unexpected results.
+Do you want to continue?</source>
+      <translation>Uporaba netelesnih predmetov za logične operacije lahko privede do nepričakovanih rezultatov. 
+Ali želite nadaljevati?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="382"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
+      <translation>Izberite dve ali več oblik, oz. izberite en sestav, ki vsebuje dve ali več oblik za izračun preseka.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="484"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation>Izberite dve ali več oblik, oz. izberite en sestav, ki vsebuje dve ali več oblik za zlitje.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="903"/>
+      <source>Select one shape or more, please.</source>
+      <translation>Izberite eno ali več oblik.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1107"/>
+      <source>All CAD Files</source>
+      <translation>Vse datoteke CAD</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1112"/>
+      <source>All Files</source>
+      <translation>Vse datoteke</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2075"/>
+      <source>You have to select either two edges or two wires.</source>
+      <translation>Izbrati morate ali dva robova ali dve črtovji.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="120"/>
+      <source>Sewing Tolerance</source>
+      <translation>Dopustna odstopanja šivanja</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="121"/>
+      <source>Enter tolerance for sewing shape:</source>
+      <translation>Vnesite dopustna odstopanja šivanja oblike:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="71"/>
+      <location filename="../../TaskAttacher.cpp" line="104"/>
+      <source>No reference selected</source>
+      <translation>Noben sklic ni izbran</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <source>Face</source>
+      <translation>Ploskev</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <source>Edge</source>
+      <translation>Rob</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="86"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <source>Vertex</source>
+      <translation type="unfinished">Vertex</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <source>Compound</source>
+      <translation>Sestav</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <source>Compound Solid</source>
+      <translation>Sestav teles</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <source>Solid</source>
+      <translation>Telo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <source>Shell</source>
+      <translation>Lupina</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <source>Wire</source>
+      <translation>Črtovje</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+      <source>Shape</source>
+      <translation>Oblika(e)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <source>No Error</source>
+      <translation>Ni napak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <source>Invalid Point On Curve</source>
+      <translation>Neveljavna točka na krivulji</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Neveljavna točka na krivulji površju</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <source>Invalid Point On Surface</source>
+      <translation>Neveljavna točka na površju</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <source>No 3D Curve</source>
+      <translation>Ni krivulje 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <source>Multiple 3D Curve</source>
+      <translation>Večkratna krivulja 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <source>Invalid 3D Curve</source>
+      <translation>Neveljavna krivulja 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <source>No Curve On Surface</source>
+      <translation>Ni krivulje na površju</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <source>Invalid Curve On Surface</source>
+      <translation>Neveljavna krivulja na površju</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Neveljavna krivulja na zaprtem površju</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <source>Invalid Same Range Flag</source>
+      <translation>Neveljavna zastavica enakega obsega</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Neveljavna zastavica enake določilke</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Neveljavna zastavica izrojenosti</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <source>Free Edge</source>
+      <translation>Prost rob</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <source>Invalid MultiConnexity</source>
+      <translation>Neveljavna večkratna povezanost</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <source>Invalid Range</source>
+      <translation>Neveljaven obseg</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <source>Empty Wire</source>
+      <translation>Prazno črtovje</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <source>Redundant Edge</source>
+      <translation>Odvečen rob</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <source>Self Intersecting Wire</source>
+      <translation>Samosečno črtovje</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <source>No Surface</source>
+      <translation>Ni površja</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <source>Invalid Wire</source>
+      <translation>Neveljavno črtovje</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <source>Redundant Wire</source>
+      <translation>Odvečno črtovje</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <source>Intersecting Wires</source>
+      <translation>Sekajoča se črtovja</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Neveljavno prekrivanje črtovij</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <source>Empty Shell</source>
+      <translation>Prazna lupina</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <source>Redundant Face</source>
+      <translation>Odvečna ploskev</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <source>Unorientable Shape</source>
+      <translation>Neusmerljiva oblika</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <source>Not Closed</source>
+      <translation>Ni zaprto</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <source>Not Connected</source>
+      <translation>Ni povezano</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <source>Sub Shape Not In Shape</source>
+      <translation>Podoblike ni v obliki</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <source>Bad Orientation</source>
+      <translation>Slaba usmerjenost</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Slaba usmerjenost podoblike</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <source>Invalid Tolerance Value</source>
+      <translation>Neveljavna vrednost dopustnega odstopanja</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <source>Check Failed</source>
+      <translation>Preverjanje spodletelo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
+      <source>No Result</source>
+      <translation>Ni rezultata</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
+      <source>Out Of Enum Range: </source>
+      <translation>Izven naštevnega območja: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
+      <source>BOPAlgo CheckUnknown</source>
+      <translation>Neznano preverjanje BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
+      <source>BOPAlgo BadType</source>
+      <translation>Slaba vrsta BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <source>BOPAlgo SelfIntersect</source>
+      <translation>Samosečišče BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <source>BOPAlgo TooSmallEdge</source>
+      <translation>Premajhen rob BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <source>BOPAlgo NonRecoverableFace</source>
+      <translation>Neobnovljiva ploskev BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <source>BOPAlgo IncompatibilityOfVertex</source>
+      <translation>Nezdružljivost temena BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <source>BOPAlgo IncompatibilityOfEdge</source>
+      <translation>Nezdružljivost roba BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <source>BOPAlgo IncompatibilityOfFace</source>
+      <translation>Nezdružljivost ploskve BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <source>BOPAlgo OperationAborted</source>
+      <translation>Opravilo prekinjeno BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
+      <source>BOPAlgo GeomAbs_C0</source>
+      <translation>BOPAlgo GeomAbs_C0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
+      <source>BOPAlgo_InvalidCurveOnSurface</source>
+      <translation>BOPAlgo_NeveljavnaKrivuljaNaPovršju</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <source>BOPAlgo NotValid</source>
+      <translation>Ni veljavno BOPAlgo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
+      <source>Invalid</source>
+      <translation>Neveljavno</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="556"/>
+      <location filename="../../TaskDimension.cpp" line="1602"/>
+      <source>Selections</source>
+      <translation>Izbori</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="563"/>
+      <location filename="../../TaskDimension.cpp" line="1609"/>
+      <source>Control</source>
+      <translation type="unfinished">Control</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1340"/>
+      <source>Reset Dialog</source>
+      <translation>Ponastavi pogovorno okno</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1344"/>
+      <source>Toggle 3d</source>
+      <translation>Preklopi 3D</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1349"/>
+      <source>Toggle Delta</source>
+      <translation>Preklopi delto</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1354"/>
+      <source>Clear All</source>
+      <translation>Počisti vse</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="847"/>
+      <source>Set colors...</source>
+      <translation>Nastavi barve …</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="79"/>
+      <source>Edit mirror plane</source>
+      <translation>Uredi zrcalno ravnino</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="276"/>
+      <source>Edit fillet edges</source>
+      <translation>Uredi zaokrožene robove</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="379"/>
+      <source>Edit chamfer edges</source>
+      <translation>Uredi prisekane robove</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="520"/>
+      <source>Edit offset</source>
+      <translation>Uredi odmik</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="606"/>
+      <source>Edit thickness</source>
+      <translation>Uredi debelino</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="81"/>
+      <source>Show control points</source>
+      <translation>Prikaži krmilne točke</translation>
+    </message>
+  </context>
+  <context>
     <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Pri izračunavanju razultata je prišlo do napake: 
+
+{err}
+
+ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
+    </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="86"/>
       <source>Computing the result failed with an error:
@@ -274,27 +912,9 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
-      <source>Bad selection</source>
-      <translation>Neveljaven izbor</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
       <source>Continue</source>
       <translation>Nadaljuj</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="85"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Pri izračunavanju razultata je prišlo do napake: 
-
-{err}
-
- Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
@@ -322,165 +942,14 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
       <translation>Izberite predmet, v katerem želite narediti izrez, nato izberite predmet, kateremu se naj izrez prilega, in prikličite to orodje.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
-      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
-      <translation>Izberite predmet, v katerem želite narediti izrez, nato izberite predmet, kateremu se naj izrez prilega, in za tem prikličite to orodje.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_SplitFeatures</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Pri izračunavanju razultata je prišlo do napake: 
-
-{err}
-
-Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
       <source>Bad selection</source>
       <translation>Neveljaven izbor</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
-      <source>Continue</source>
-      <translation>Nadaljuj</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="188"/>
-      <source>Boolean fragments</source>
-      <translation>Logična vrednost drobcev</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Ustvari predmet "Logična vrednost drobcev" iz enega ali več izbranih predmetov,
-ali iz oblik znotraj sestava.
-To je seštevek logičnih vrednosti, ki je nato zarezan na presekih izvirnih oblik.
-S "Sitom sestava" lahko izvlečete posamezne rezine.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
-      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Izberitev vsaj dva predmeta ali enega oz. več sestavov! Če je izbran le en sestav, bo med sestavljenimi oblikami izveden presek (sicer so sestavi, ki sekajo sami sebe, neveljavni).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
-      <source>Slice to compound</source>
-      <translation>Razcepki v sestav</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Razreži izbrani predmet z drugimi predmeti, ki služijo kot rezilo.
-Dobljeni kosi bodo shranjeni v sestav.
-Posamezne rezine lahko izločite s pomočje "Sita sestavov".</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="391"/>
-      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
-      <source>Slice apart</source>
-      <translation>Razcepi</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Drobci logične operacije</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Razcepi predmete, kjer se sekajo</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
-      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation>Razcepi predmet na presečišču z drugimi predmeti in združi koščke v sestav.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
-      <source>Split object by intersections with other objects.</source>
-      <translation>Razcepi predmet pri presečiščih z drugimi predmeti.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Najprej izberite vsaj dva predmeta! Prvi predmet bo razrezan z ostalimi predmeti.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Razreži izbrani predmet z drugimi predmeti in ga razcepi.
-Za vsako rezino bo ustvarjeno "sito sestava".</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
-      <source>Computing the result failed with an error: 
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Pri izračunavanju razultata je prišlo do napake: 
-
-{err}
-
-Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
-      <source>Remove intersection fragments</source>
-      <translation>Odstrani presečne drobce</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
-      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Najprej izberitev vsaj dva predmeta ali enega oz. več sestavov! Če je izbran le en sestav, bo med sestavljenimi oblikami izveden presek (sicer so sestavi, ki sekajo sami sebe, neveljavni).</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
-      <source>Boolean XOR</source>
-      <translation>Logična vrednost XOR</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="531"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation>Izvêdi logično dejanje "izključno ALI" z dvema ali več predmeti,
-oz. z oblikami znotraj sestava.
-To pomeni, da bodo prekrivajoči deli oblik odstranjeni.
-Ostale dele lahko izvelečet s "sitom sestava".</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Tube</name>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="85"/>
-      <source>Create tube</source>
-      <translation>Ustvari cev</translation>
-    </message>
-    <message>
-      <location filename="../../../BasicShapes/Shapes.py" line="89"/>
-      <source>Creates a tube</source>
-      <translation>Ustvari cev</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="399"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation>Izberite predmet, v katerem želite narediti izrez, nato izberite predmet, kateremu se naj izrez prilega, in za tem prikličite to orodje.</translation>
     </message>
   </context>
   <context>
@@ -4925,465 +5394,6 @@ v 3D pogledu za pot vlečenja.</translation>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Podpira ustvarjanje ploskev z luknjami, vendar brez vdevanja.</translation>
-    </message>
-  </context>
-  <context>
-    <name>QObject</name>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="210"/>
-      <location filename="../../AppPartGui.cpp" line="211"/>
-      <source>Part design</source>
-      <translation>Oblikovanje delov</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <source>Import-Export</source>
-      <translation>Uvozi-Izvozi</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <source>Display</source>
-      <translation>Prikaz</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="284"/>
-      <location filename="../../Command.cpp" line="381"/>
-      <location filename="../../Command.cpp" line="483"/>
-      <location filename="../../Command.cpp" line="902"/>
-      <location filename="../../Command.cpp" line="953"/>
-      <location filename="../../Command.cpp" line="2074"/>
-      <source>Wrong selection</source>
-      <translation>Napačna izbira</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="285"/>
-      <location filename="../../Command.cpp" line="954"/>
-      <source>Select two shapes please.</source>
-      <translation>Izberite dve obliki.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="295"/>
-      <location filename="../../Command.cpp" line="397"/>
-      <location filename="../../Command.cpp" line="499"/>
-      <source>Non-solids selected</source>
-      <translation>Izbrani netelesni predmeti</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="296"/>
-      <location filename="../../Command.cpp" line="398"/>
-      <location filename="../../Command.cpp" line="500"/>
-      <source>The use of non-solids for boolean operations may lead to unexpected results.
-Do you want to continue?</source>
-      <translation>Uporaba netelesnih predmetov za logične operacije lahko privede do nepričakovanih rezultatov. 
-Ali želite nadaljevati?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="382"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Izberite dve ali več oblik, oz. izberite en sestav, ki vsebuje dve ali več oblik za izračun preseka.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="484"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Izberite dve ali več oblik, oz. izberite en sestav, ki vsebuje dve ali več oblik za zlitje.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="903"/>
-      <source>Select one shape or more, please.</source>
-      <translation>Izberite eno ali več oblik.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1107"/>
-      <source>All CAD Files</source>
-      <translation>Vse datoteke CAD</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1112"/>
-      <source>All Files</source>
-      <translation>Vse datoteke</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2075"/>
-      <source>You have to select either two edges or two wires.</source>
-      <translation>Izbrati morate ali dva robova ali dve črtovji.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="120"/>
-      <source>Sewing Tolerance</source>
-      <translation>Dopustna odstopanja šivanja</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="121"/>
-      <source>Enter tolerance for sewing shape:</source>
-      <translation>Vnesite dopustna odstopanja šivanja oblike:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="71"/>
-      <location filename="../../TaskAttacher.cpp" line="104"/>
-      <source>No reference selected</source>
-      <translation>Noben sklic ni izbran</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="80"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
-      <source>Face</source>
-      <translation>Ploskev</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="83"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
-      <source>Edge</source>
-      <translation>Rob</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="86"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
-      <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
-      <source>Compound</source>
-      <translation>Sestav</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
-      <source>Compound Solid</source>
-      <translation>Sestav teles</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
-      <source>Solid</source>
-      <translation>Telo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
-      <source>Shell</source>
-      <translation>Lupina</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
-      <source>Wire</source>
-      <translation>Črtovje</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
-      <source>Shape</source>
-      <translation>Oblika(e)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
-      <source>No Error</source>
-      <translation>Ni napak</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
-      <source>Invalid Point On Curve</source>
-      <translation>Neveljavna točka na krivulji</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>Neveljavna točka na krivulji površju</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
-      <source>Invalid Point On Surface</source>
-      <translation>Neveljavna točka na površju</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>No 3D Curve</source>
-      <translation>Ni krivulje 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Multiple 3D Curve</source>
-      <translation>Večkratna krivulja 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>Invalid 3D Curve</source>
-      <translation>Neveljavna krivulja 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>No Curve On Surface</source>
-      <translation>Ni krivulje na površju</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>Neveljavna krivulja na površju</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>Neveljavna krivulja na zaprtem površju</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid Same Range Flag</source>
-      <translation>Neveljavna zastavica enakega obsega</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation>Neveljavna zastavica enake določilke</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation>Neveljavna zastavica izrojenosti</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Free Edge</source>
-      <translation>Prost rob</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid MultiConnexity</source>
-      <translation>Neveljavna večkratna povezanost</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Invalid Range</source>
-      <translation>Neveljaven obseg</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Empty Wire</source>
-      <translation>Prazno črtovje</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Redundant Edge</source>
-      <translation>Odvečen rob</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>Self Intersecting Wire</source>
-      <translation>Samosečno črtovje</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>No Surface</source>
-      <translation>Ni površja</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Invalid Wire</source>
-      <translation>Neveljavno črtovje</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Redundant Wire</source>
-      <translation>Odvečno črtovje</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Intersecting Wires</source>
-      <translation>Sekajoča se črtovja</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation>Neveljavno prekrivanje črtovij</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Empty Shell</source>
-      <translation>Prazna lupina</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Redundant Face</source>
-      <translation>Odvečna ploskev</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Unorientable Shape</source>
-      <translation>Neusmerljiva oblika</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Not Closed</source>
-      <translation>Ni zaprto</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Not Connected</source>
-      <translation>Ni povezano</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>Podoblike ni v obliki</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Bad Orientation</source>
-      <translation>Slaba usmerjenost</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>Slaba usmerjenost podoblike</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>Neveljavna vrednost dopustnega odstopanja</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
-      <source>Check Failed</source>
-      <translation>Preverjanje spodletelo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
-      <source>No Result</source>
-      <translation>Ni rezultata</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
-      <source>Out Of Enum Range: </source>
-      <translation>Izven naštevnega območja: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>Neznano preverjanje BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>BOPAlgo BadType</source>
-      <translation>Slaba vrsta BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>Samosečišče BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>Premajhen rob BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>Neobnovljiva ploskev BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>Nezdružljivost temena BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>Nezdružljivost roba BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>Nezdružljivost ploskve BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>Opravilo prekinjeno BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo GeomAbs_C0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_NeveljavnaKrivuljaNaPovršju</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>Ni veljavno BOPAlgo</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="463"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="659"/>
-      <source>Invalid</source>
-      <translation>Neveljavno</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="556"/>
-      <location filename="../../TaskDimension.cpp" line="1602"/>
-      <source>Selections</source>
-      <translation>Izbori</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="563"/>
-      <location filename="../../TaskDimension.cpp" line="1609"/>
-      <source>Control</source>
-      <translation type="unfinished">Control</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1340"/>
-      <source>Reset Dialog</source>
-      <translation>Ponastavi pogovorno okno</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1344"/>
-      <source>Toggle 3d</source>
-      <translation>Preklopi 3D</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1349"/>
-      <source>Toggle Delta</source>
-      <translation>Preklopi delto</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1354"/>
-      <source>Clear All</source>
-      <translation>Počisti vse</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderExt.cpp" line="847"/>
-      <source>Set colors...</source>
-      <translation>Nastavi barve …</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="79"/>
-      <source>Edit mirror plane</source>
-      <translation>Uredi zrcalno ravnino</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="276"/>
-      <source>Edit fillet edges</source>
-      <translation>Uredi zaokrožene robove</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="379"/>
-      <source>Edit chamfer edges</source>
-      <translation>Uredi prisekane robove</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="520"/>
-      <source>Edit offset</source>
-      <translation>Uredi odmik</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="606"/>
-      <source>Edit thickness</source>
-      <translation>Uredi debelino</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpline.cpp" line="81"/>
-      <source>Show control points</source>
-      <translation>Prikaži krmilne točke</translation>
     </message>
   </context>
   <context>

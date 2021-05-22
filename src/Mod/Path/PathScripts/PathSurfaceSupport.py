@@ -2555,6 +2555,7 @@ class OCL_Tool():
         if (self.diameter == -1.0 or self.cutEdgeHeight == -1.0):
             return
         self.tiltCutter = True
+        if self.cutEdgeHeight==0 : self.cutEdgeHeight = self.diameter/2
         self.oclTool = self.ocl.BallCutter(
                             self.diameter,
                             self.cutEdgeHeight + self.lengthOffset
@@ -2578,12 +2579,12 @@ class OCL_Tool():
         # Engraver or V-bit cutter
         # OCL -> ConeCutter::ConeCutter(diameter, angle, length)
         if (self.diameter == -1.0 or
-            self.cuttingEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
+            self.cutEdgeAngle == -1.0 or self.cutEdgeHeight == -1.0):
             return
         self.oclTool = self.ocl.ConeCutter(
                             self.diameter,
-                            self.cuttingEdgeAngle,
-                            self.cutEdgeHeight + self.lengthOffset
+                            self.cutEdgeAngle/2,
+                            self.lengthOffset
                         )
 
     def _setToolMethod(self):

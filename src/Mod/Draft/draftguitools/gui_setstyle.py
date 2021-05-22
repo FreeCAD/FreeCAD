@@ -20,6 +20,7 @@
 # ***************************************************************************
 
 """Provides GUI tools to set up default styles."""
+
 ## @package gui_setstyle
 # \ingroup draftguitools
 # \brief Provides GUI tools to set Draft styles such as color or line width
@@ -28,18 +29,23 @@
 # @{
 
 import FreeCAD
+import os
 if FreeCAD.GuiUp:
     import FreeCADGui
     import Draft_rc
 def QT_TRANSLATE_NOOP(ctx,txt):
     return txt
+translate = FreeCAD.Qt.translate
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Styling tools"
 __author__ = ("Yorik van Havre")
 __url__ = "https://www.freecadweb.org"
 
+PRESETPATH = os.path.join(FreeCAD.getUserAppDataDir(),"Draft","StylePresets.json")
+
 
 class Draft_SetStyle:
+
     """The Draft_SetStyle FreeCAD command definition."""
 
     def GetResources(self):
@@ -57,6 +63,7 @@ class Draft_SetStyle:
 
 
 class Draft_SetStyle_TaskPanel:
+
     """The task panel for the Draft_SetStyle command"""
 
     def __init__(self):
@@ -64,8 +71,9 @@ class Draft_SetStyle_TaskPanel:
         from PySide import QtCore,QtGui
         self.p = "User parameter:BaseApp/Preferences/"
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/TaskPanel_SetStyle.ui")
-        self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_Apply.svg"))
-        self.form.applyButton.setIcon(QtGui.QIcon(":/icons/Draft_Apply.svg"))
+        self.form.setWindowIcon(QtGui.QIcon.fromTheme("gtk-apply", QtGui.QIcon(":/icons/Draft_Apply.svg")))
+        self.form.applyButton.setIcon(QtGui.QIcon.fromTheme("gtk-apply", QtGui.QIcon(":/icons/Draft_Apply.svg")))
+        self.form.dimButton.setIcon(QtGui.QIcon(":/icons/Draft_Text.svg"))
         self.form.LineColor.setProperty("color",self.getPrefColor("View","DefaultShapeLineColor",255))
         self.form.LineWidth.setValue(FreeCAD.ParamGet(self.p+"View").GetInt("DefaultShapeLineWidth",2))
         self.form.DrawStyle.setCurrentIndex(FreeCAD.ParamGet(self.p+"Mod/Draft").GetInt("DefaultDrawStyle",0))
@@ -79,16 +87,73 @@ class Draft_SetStyle_TaskPanel:
         self.form.ArrowSize.setText(FreeCAD.Units.Quantity(FreeCAD.ParamGet(self.p+"/Mod/Draft").GetFloat("arrowsize",5),FreeCAD.Units.Length).UserString)
         self.form.ShowUnit.setChecked(FreeCAD.ParamGet(self.p+"Mod/Draft").GetBool("showUnit",True))
         self.form.UnitOverride.setText(FreeCAD.ParamGet(self.p+"Mod/Draft").GetString("overrideUnit",""))
+        self.form.saveButton.setIcon(QtGui.QIcon.fromTheme("gtk-save", QtGui.QIcon(":/icons/document-save.svg")))
+        self.form.saveButton.clicked.connect(self.onSaveStyle)
         self.form.applyButton.clicked.connect(self.onApplyStyle)
+        self.form.dimButton.clicked.connect(self.onApplyDim)
+        self.form.comboPresets.currentIndexChanged.connect(self.onLoadStyle)
+        self.loadDefaults()
+
+    def loadDefaults(self):
+
+        presets = [self.form.comboPresets.itemText(0)]
+        self.form.comboPresets.clear()
+        pdict = self.load()
+        presets.extend(pdict.keys())
+        self.form.comboPresets.addItems(presets)
+        current = self.getValues()
+        for name,preset in pdict.items():
+            if preset == current:
+                self.form.comboPresets.setCurrentIndex(1+(list(pdict.keys()).index(name)))
+                break
 
     def getPrefColor(self,group,prop,default):
 
         c = FreeCAD.ParamGet(self.p+group).GetUnsigned(prop,default)
+        return self.getColor(c)
+
+    def getColor(self,c):
+
+        from PySide import QtGui
         r = ((c>>24)&0xFF)/255.0
         g = ((c>>16)&0xFF)/255.0
         b = ((c>>8)&0xFF)/255.0
-        from PySide import QtGui
         return QtGui.QColor.fromRgbF(r,g,b)
+
+    def getValues(self):
+        
+        preset = {}
+        preset["LineColor"] = self.form.LineColor.property("color").rgb()<<8
+        preset["LineWidth"] = self.form.LineWidth.value()
+        preset["DrawStyle"] = self.form.DrawStyle.currentIndex()
+        preset["DisplayMode"] = self.form.DisplayMode.currentIndex()
+        preset["ShapeColor"] = self.form.ShapeColor.property("color").rgb()<<8
+        preset["Transparency"] = self.form.Transparency.value()
+        preset["TextFont"] = self.form.TextFont.currentFont().family()
+        preset["TextSize"] = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
+        preset["TextColor"] = self.form.TextColor.property("color").rgb()<<8
+        preset["ArrowStyle"] = self.form.ArrowStyle.currentIndex()
+        preset["ArrowSize"] = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
+        preset["ShowUnit"] = self.form.ShowUnit.isChecked()
+        preset["UnitOverride"] = self.form.UnitOverride.text()
+        return preset
+
+    def setValues(self,preset):
+        
+        from PySide import QtCore,QtGui
+        self.form.LineColor.setProperty("color",self.getColor(preset["LineColor"]))
+        self.form.LineWidth.setValue(preset["LineWidth"])
+        self.form.DrawStyle.setCurrentIndex(preset["DrawStyle"])
+        self.form.DisplayMode.setCurrentIndex(preset["DisplayMode"])
+        self.form.ShapeColor.setProperty("color",self.getColor(preset["ShapeColor"]))
+        self.form.Transparency.setValue(preset["Transparency"])
+        self.form.TextFont.setCurrentFont(QtGui.QFont(preset["TextFont"]))
+        self.form.TextColor.setProperty("color",self.getColor(preset["TextColor"]))
+        self.form.ArrowStyle.setCurrentIndex(preset["ArrowStyle"])
+        self.form.ShowUnit.setChecked(preset["ShowUnit"])
+        self.form.UnitOverride.setText(preset["UnitOverride"])
+        self.form.TextSize.setText(FreeCAD.Units.Quantity(preset["TextSize"],FreeCAD.Units.Length).UserString)
+        self.form.ArrowSize.setText(FreeCAD.Units.Quantity(preset["ArrowSize"],FreeCAD.Units.Length).UserString)
 
     def reject(self):
 
@@ -125,18 +190,25 @@ class Draft_SetStyle_TaskPanel:
                 if "DrawStyle" in vobj.PropertiesList:
                     vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][self.form.DrawStyle.currentIndex()]
                 if "DisplayMode" in vobj.PropertiesList:
-                    try:
-                        vobj.DisplayMode = ["Flat Lines","Wireframe","Shaded","points"][self.form.DisplayMode.currentIndex()]
-                    except:
-                        pass
+                    dmodes = ["Flat Lines","Wireframe","Shaded","Points"]
+                    dm = dmodes[self.form.DisplayMode.currentIndex()]
+                    if hasattr(vobj,"Proxy") and hasattr(vobj.Proxy,"getDisplayModes"):
+                        dmodes = vobj.Proxy.getDisplayModes(vobj)
+                    if dm in dmodes:
+                        try:
+                            vobj.DisplayMode = dm
+                        except Exception:
+                            pass
                 if "ShapeColor" in vobj.PropertiesList:
                     vobj.ShapeColor = self.form.ShapeColor.property("color").rgb()<<8
                 if "Transparency" in vobj.PropertiesList:
                     vobj.Transparency = self.form.Transparency.value()
                 if "FontName" in vobj.PropertiesList:
-                    vobj.TextFont = self.form.TextFont.currentFont().family()
+                    vobj.FontName = self.form.TextFont.currentFont().family()
                 if "TextSize" in vobj.PropertiesList:
                     vobj.TextSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
+                if "FontSize" in vobj.PropertiesList:
+                    vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
                 if "TextColor" in vobj.PropertiesList:
                     vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
                 if "ArrowType" in vobj.PropertiesList:
@@ -147,6 +219,94 @@ class Draft_SetStyle_TaskPanel:
                     vobj.ShowUnit = self.form.ShowUnit.isChecked()
                 if "UnitOverride" in vobj.PropertiesList:
                     vobj.UnitOverride = self.form.UnitOverride.text()
+
+    def onApplyDim(self,index):
+        
+        import Draft
+        objs = FreeCAD.ActiveDocument.Objects
+        dims = Draft.getObjectsOfType(objs,"LinearDimension")
+        dims += Draft.getObjectsOfType(objs,"Dimension")
+        dims += Draft.getObjectsOfType(objs,"AngularDimension")
+        for obj in dims:
+            vobj = obj.ViewObject
+            vobj.FontName = self.form.TextFont.currentFont().family()
+            vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
+            vobj.LineColor = self.form.TextColor.property("color").rgb()<<8
+            vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
+            vobj.ArrowSize = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
+            vobj.ShowUnit = self.form.ShowUnit.isChecked()
+            vobj.UnitOverride = self.form.UnitOverride.text()
+        texts = Draft.getObjectsOfType(objs,"Text")
+        texts += Draft.getObjectsOfType(objs,"DraftText")
+        for obj in texts:
+            vobj = obj.ViewObject
+            vobj.FontName = self.form.TextFont.currentFont().family()
+            vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
+            vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
+
+    def onLoadStyle(self,index):
+
+        if index > 0:
+            pdict = self.load()
+            if self.form.comboPresets.itemText(index) in pdict.keys():
+                preset = pdict[self.form.comboPresets.itemText(index)]
+                self.setValues(preset)
+
+    def onSaveStyle(self):
+
+        from PySide import QtCore,QtGui
+        reply = QtGui.QInputDialog.getText(None,
+                                           translate("Draft","Save style"),
+                                           translate("Draft","Name of this new style:"))
+        if reply[1]:
+            name = reply[0]
+            pdict = self.load()
+            if pdict:
+                if name in pdict.keys():
+                    reply = QtGui.QMessageBox.question(None,
+                                                       tranlate("Draft","Warning"),
+                                                       translate("Draft","Name exists. Overwrite?"),
+                                                       QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+                                                       QtGui.QMessageBox.No)
+                    if reply == QtGui.QMessageBox.No:
+                        return
+            preset = self.getValues()
+            pdict[name] = preset
+            self.save(pdict)
+            self.loadDefaults()
+
+    def load(self):
+
+        """loads the presets json file, returns a dict"""
+
+        pdict = {}
+        try:
+            import json
+            from json.decoder import JSONDecodeError
+        except:
+            return
+        if os.path.exists(PRESETPATH):
+            with open(PRESETPATH,"r") as f:
+                try:
+                    pdict = json.load(f)
+                except JSONDecodeError:
+                    return {}
+        return pdict
+
+    def save(self,d):
+
+        """saves the given dict to the presets json file"""
+
+        try:
+            import json
+        except:
+            FreeCAD.Console.PrintError(translate("Draft","Error: json module not found. Unable to save style")+"\n")
+            return
+        folder = os.path.dirname(PRESETPATH)
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        with open(PRESETPATH,"w") as f:
+            json.dump(d,f,indent=4)
 
 
 FreeCADGui.addCommand('Draft_SetStyle', Draft_SetStyle())

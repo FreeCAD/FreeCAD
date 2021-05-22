@@ -130,7 +130,7 @@ protected:
 
 private:
     QWidget* proxy;
-    Ui_TaskAttacher* ui;
+    std::unique_ptr<Ui_TaskAttacher> ui;
     VisibilityFunction visibilityFunc;
 
     // TODO fix documentation here (2015-11-10, Fat-Zer)

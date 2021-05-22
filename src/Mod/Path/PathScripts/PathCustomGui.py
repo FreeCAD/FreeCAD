@@ -22,6 +22,7 @@
 
 import FreeCAD
 import FreeCADGui
+import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathCustom as PathCustom
 import PathScripts.PathOpGui as PathOpGui
 
@@ -76,9 +77,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
 
 Command = PathOpGui.SetupOperation('Custom', PathCustom.Create, TaskPanelOpPage,
-                'Path-Custom',
-                QtCore.QT_TRANSLATE_NOOP("Custom", "Custom"),
-                QtCore.QT_TRANSLATE_NOOP("Custom", "Create custom gcode snippet"),
+                'Path_Custom',
+                QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
+                QtCore.QT_TRANSLATE_NOOP("Path_Custom", "Create custom gcode snippet"),
                 PathCustom.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathCustomGui... done\n")

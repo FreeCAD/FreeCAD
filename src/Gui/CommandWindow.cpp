@@ -143,6 +143,7 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
     // collide with this shortcut. Thus the shortcut of QMdiSubWindow will be
     // reset in MainWindow::addWindow() (#0002631)
     sAccel        = keySequenceToAccel(QKeySequence::Close);
+    sPixmap       = "Std_CloseActiveWindow";
     eType         = NoTransaction;
 }
 
@@ -170,6 +171,7 @@ StdCmdCloseAllWindows::StdCmdCloseAllWindows()
     sToolTipText  = QT_TR_NOOP("Close all windows");
     sWhatsThis    = "Std_CloseAllWindows";
     sStatusTip    = QT_TR_NOOP("Close all windows");
+    sPixmap       = "Std_CloseAllWindows";
     eType         = NoTransaction;
 }
 
@@ -255,7 +257,7 @@ StdCmdWindows::StdCmdWindows()
     sToolTipText  = QT_TR_NOOP("Windows list");
     sWhatsThis    = "Std_Windows";
     sStatusTip    = QT_TR_NOOP("Windows list");
-    //sPixmap     = "";
+    sPixmap       = "Std_Windows";
     eType         = 0;
 }
 
@@ -368,7 +370,7 @@ class FilterStatusBar : public QObject
 //    Q_OBJECT
 
 public:
-    FilterStatusBar(Action * action):QObject() {this->action = action;}
+    FilterStatusBar(Action * action):QObject(action) {this->action = action;}
 //    virtual ~FilterStatusBar() {}
 protected:
     Action * action;
@@ -458,14 +460,14 @@ Action * StdCmdWindowsMenu::createAction(void)
     WindowAction *pcAction;
     pcAction = new WindowAction(this, getMainWindow());
     for ( int i=0; i<10; i++ ) {
-        QAction* window = pcAction->addAction(QObject::tr(sToolTipText));
+        QAction* window = pcAction->addAction(QObject::tr(getToolTipText()));
         window->setCheckable(true);
         window->setToolTip(QCoreApplication::translate(
-            this->className(), sToolTipText));
+            this->className(), getToolTipText()));
         window->setStatusTip(QCoreApplication::translate(
-            this->className(), sStatusTip));
+            this->className(), getStatusTip()));
         window->setWhatsThis(QCoreApplication::translate(
-            this->className(), sWhatsThis));
+            this->className(), getWhatsThis()));
     }
 
     QAction* sep = pcAction->addAction(QLatin1String(""));

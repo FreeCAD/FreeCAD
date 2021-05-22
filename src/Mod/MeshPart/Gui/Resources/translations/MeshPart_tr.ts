@@ -54,7 +54,7 @@ Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Tessellate shape</source>
-      <translation>Şekili mozaik döşe</translation>
+      <translation>Şekilden Örgü oluştur</translation>
     </message>
   </context>
   <context>
@@ -72,7 +72,7 @@ Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
-      <translation>Bölüm</translation>
+      <translation>Kesişim</translation>
     </message>
   </context>
   <context>
@@ -92,6 +92,19 @@ Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
       <location filename="../../Command.cpp" line="87"/>
       <source>Trims a mesh with a plane</source>
       <translation>Bir düzlemle örgü kesme</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="129"/>
+      <source>Trim with plane</source>
+      <translation>Düzlemden Kırp</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation>Düzlemli bölüm</translation>
     </message>
   </context>
   <context>
@@ -129,7 +142,7 @@ Bu komut yalnızca bir 'ağ' nesnesiyle çalışır.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Bölümler</translation>
+      <translation>Kesişimler</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -475,13 +488,13 @@ A value in the range of 0.2-10.</source>
       <translation>gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="226"/>
-      <location filename="../../Tessellation.cpp" line="232"/>
+      <location filename="../../Tessellation.cpp" line="213"/>
+      <location filename="../../Tessellation.cpp" line="219"/>
       <source>No active document</source>
       <translation>Etkin belge yok</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="247"/>
+      <location filename="../../Tessellation.cpp" line="234"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Önce parçacık haline getirmek için bir şekil seçiniz.</translation>
     </message>

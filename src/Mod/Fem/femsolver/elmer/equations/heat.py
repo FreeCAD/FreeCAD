@@ -23,7 +23,7 @@
 
 __title__ = "FreeCAD FEM solver Elmer equation object Heat"
 __author__ = "Markus Hovorka"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{

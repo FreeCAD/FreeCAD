@@ -140,9 +140,9 @@ QIcon ViewProviderPrimitive::getIcon(void) const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::FeaturePrimitive*>(getObject());
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive_");
+        str += QString::fromLatin1("Additive");
     else
-        str += QString::fromLatin1("Subtractive_");
+        str += QString::fromLatin1("Subtractive");
 
     switch(prim->getPrimitiveType()) {
     case PartDesign::FeaturePrimitive::Box:
@@ -172,5 +172,5 @@ QIcon ViewProviderPrimitive::getIcon(void) const {
     }
 
     str += QString::fromLatin1(".svg");
-    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }

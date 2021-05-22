@@ -111,11 +111,7 @@ PyObject * Exception::getPyObject(void)
     edict.setItem("sclassname", Py::String(typeid(*this).name()));
     edict.setItem("sErrMsg", Py::String(this->getMessage()));
     edict.setItem("sfile", Py::String(this->getFile()));
-#if PY_MAJOR_VERSION >= 3
     edict.setItem("iline", Py::Long(this->getLine()));
-#else
-    edict.setItem("iline", Py::Int(this->getLine()));
-#endif
     edict.setItem("sfunction", Py::String(this->getFunction()));
     edict.setItem("swhat", Py::String(this->what()));
     edict.setItem("btranslatable", Py::Boolean(this->getTranslatable()));
@@ -138,11 +134,7 @@ void Exception::setPyObject( PyObject * pydict)
                 _sErrMsg = static_cast<std::string>(Py::String(edict.getItem("sErrMsg")));
 
             if (edict.hasKey("iline"))
-#if PY_MAJOR_VERSION >= 3
                 _line = static_cast<long>(Py::Long(edict.getItem("iline")));
-#else
-                _line = static_cast<int>(Py::Int(edict.getItem("iline")));
-#endif
             if (edict.hasKey("btranslatable"))
                 _isTranslatable = static_cast<bool>(Py::Boolean(edict.getItem("btranslatable")));
             if (edict.hasKey("breported"))

@@ -872,7 +872,7 @@ TaskDlgFemConstraintFluidBoundary::TaskDlgFemConstraintFluidBoundary(ViewProvide
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintFluidBoundary(ConstraintView);;
+    this->parameter = new TaskFemConstraintFluidBoundary(ConstraintView);
 
     Content.push_back(parameter);
 }

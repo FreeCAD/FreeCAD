@@ -127,9 +127,7 @@ void CmdPartDesignBody::activated(int iMsg)
                 baseFeature = nullptr;
             }
             else if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
-                // Prevent creating bodies based on bodies
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body can't be based on another body."));
+                // Prevent creating bodies based on bodies (but don't pop-up a dialog)
                 baseFeature = nullptr;
             }
             else {
@@ -286,7 +284,7 @@ void CmdPartDesignBody::activated(int iMsg)
                     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
                     if (!dlg) {
                         Gui::Selection().clearSelection();
-                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
+                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
                     }
                 }
             }
@@ -316,6 +314,7 @@ CmdPartDesignMigrate::CmdPartDesignMigrate()
     sToolTipText  = QT_TR_NOOP("Migrate document to the modern PartDesign workflow");
     sWhatsThis    = "PartDesign_Migrate";
     sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Migrate";
 }
 
 void CmdPartDesignMigrate::activated(int iMsg)
@@ -665,7 +664,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
     sToolTipText    = QT_TR_NOOP("Moves the selected object to another body");
     sWhatsThis      = "PartDesign_MoveFeature";
     sStatusTip      = sToolTipText;
-    sPixmap         = "";
+    sPixmap         = "PartDesign_MoveFeature";
 }
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
@@ -729,7 +728,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeature", "Select body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
-        items, 0, false, &ok);
+        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     int index = items.indexOf(text);
     if (index < 0) return;
@@ -827,7 +826,7 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
     sToolTipText    = QT_TR_NOOP("Moves the selected object and insert it after another object");
     sWhatsThis      = "PartDesign_MoveFeatureInTree";
     sStatusTip      = sToolTipText;
-    sPixmap         = "";
+    sPixmap         = "PartDesign_MoveFeatureInTree";
 }
 
 void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
@@ -879,7 +878,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
-        items, 0, false, &ok);
+        items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok) return;
     int index = items.indexOf(text);
     // first object is the beginning of the body

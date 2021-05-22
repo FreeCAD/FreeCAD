@@ -29,7 +29,7 @@
 #include <string>
 #include <bitset>
 #include <QIcon>
-#include <boost/signals2.hpp>
+#include <boost_signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/TransactionalObject.h>
@@ -237,11 +237,19 @@ public:
     /** @name Methods used by the Tree
       * If you want to take control over the
       * appearance of your object in the tree you
-      * can reimplemnt these methods.
+      * can reimplement these methods.
      */
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon(void) const;
+
+     /** @name Methods used by the Tree
+     * If you want to take control over the
+     * viewprovider specific overlay icons that will be drawn with color
+     * regardless of whether the icon is greyed out or not, such as status, you
+     * can reimplement this method.
+     */
+    virtual QIcon mergeColorfulOverlayIcons (const QIcon & orig) const;
 
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
@@ -276,7 +284,7 @@ public:
     virtual bool canDragAndDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
-    /** Query object dropping with full quanlified name
+    /** Query object dropping with full qualified name
      *
      * Tree view now calls this function instead of canDropObject(), and may
      * query for objects from other document. The default implementation
@@ -304,7 +312,7 @@ public:
     /// return a subname referencing the sub-object holding the dropped objects
     virtual std::string getDropPrefix() const { return std::string(); }
 
-    /** Add an object with full quanlified name to the view provider by drag and drop
+    /** Add an object with full qualified name to the view provider by drag and drop
      *
      * @param obj: the object being dropped
      *
@@ -530,13 +538,12 @@ protected:
     /// Reimplemented from subclass
     void onChanged(const App::Property* prop);
 
-
     /** @name Methods used by the Tree
      * If you want to take control over the
-     * viewprovider specific overlay icons, such as status, you
-     * can reimplement this method.
+     * viewprovider specific overlay icons, that will be grayed out together
+     * with the base icon, you can reimplement this method.
      */
-    virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
+    virtual QIcon mergeGreyableOverlayIcons (const QIcon & orig) const;
 
     /// Turn on mode switch
     virtual void setModeSwitch();

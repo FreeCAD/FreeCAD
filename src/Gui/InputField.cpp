@@ -40,6 +40,7 @@
 #include "Command.h"
 #include "InputField.h"
 #include "BitmapFactory.h"
+#include "QuantitySpinBox_p.h"
 #include "propertyeditor/PropertyItem.h"
 
 using namespace Gui;
@@ -78,7 +79,7 @@ InputField::InputField(QWidget * parent)
 {
     setValidator(new InputValidator(this));
     setFocusPolicy(Qt::WheelFocus);
-    iconLabel = new QLabel(this);
+    iconLabel = new ExpressionLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
@@ -113,7 +114,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
     DocumentObject * docObj = getPath().getDocumentObject();
 
     if (docObj) {
-        boost::shared_ptr<const Expression> expr(docObj->getExpression(getPath()).expression);
+        std::shared_ptr<const Expression> expr(docObj->getExpression(getPath()).expression);
 
         if (expr)
             newInput(Tools::fromStdString(expr->toString()));
@@ -157,7 +158,7 @@ QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
 void InputField::updateText(const Base::Quantity& quant)
 {
     if (isBound()) {
-        boost::shared_ptr<const Expression> e(getPath().getDocumentObject()->getExpression(getPath()).expression);
+        std::shared_ptr<const Expression> e(getPath().getDocumentObject()->getExpression(getPath()).expression);
 
         if (e) {
             setText(Tools::fromStdString(e->toString()));
@@ -240,7 +241,7 @@ void InputField::newInput(const QString & text)
         fixup(input);
 
         if (isBound()) {
-            boost::shared_ptr<Expression> e(ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8()));
+            std::shared_ptr<Expression> e(ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8()));
 
             setExpression(e);
 
@@ -692,11 +693,7 @@ void InputField::wheelEvent (QWheelEvent * event)
     }
 
     double factor = event->modifiers() & Qt::ControlModifier ? 10 : 1;
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
     double step = event->angleDelta().y() > 0 ? StepSize : -StepSize;
-#else
-    double step = event->delta() > 0 ? StepSize : -StepSize;
-#endif
     double val = actUnitValue + factor * step;
     if (val > Maximum)
         val = Maximum;

@@ -4,6 +4,15 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+# In previous versions this target copied mtextedit.h to the binary directory that causes
+# automoc to generate linking errors.
+if(NOT ${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+    if (EXISTS ${CMAKE_CURRENT_BINARY_DIR}/mtextedit.h)
+        file(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/mtextedit.h)
+        execute_process(COMMAND "${CMAKE_COMMAND}" -E touch_nocreate "${CMAKE_CURRENT_SOURCE_DIR}/mtextedit.h")
+    endif()
+endif()
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -34,53 +43,6 @@ set(TechDrawGui_LIBS
     FreeCADGui
 )
 
-set(TechDrawGui_MOC_HDRS
-    MDIViewPage.h
-    QGVPage.h
-    QGITemplate.h
-    QGISVGTemplate.h
-    QGIDrawingTemplate.h
-    QGIView.h
-    QGIViewDimension.h
-    QGIViewBalloon.h
-    TaskProjGroup.h
-    DlgPrefsTechDrawGeneralImp.h
-    DlgPrefsTechDrawScaleImp.h
-    DlgPrefsTechDrawAnnotationImp.h
-    DlgPrefsTechDrawDimensionsImp.h
-    DlgPrefsTechDrawColorsImp.h
-    DlgPrefsTechDrawAdvancedImp.h
-    DlgPrefsTechDrawHLRImp.h
-    TaskLinkDim.h
-    DlgTemplateField.h
-    TaskSectionView.h
-    TaskGeomHatch.h
-    TaskHatch.h
-    TaskLeaderLine.h
-    TaskRichAnno.h
-    TaskCosVertex.h
-    TaskCenterLine.h
-    TaskLineDecor.h
-    TaskWeldingSymbol.h
-    QGEPath.h
-    QGTracker.h
-    QGILeaderLine.h
-    QGIRichAnno.h
-    QGMText.h
-    mrichtextedit.h
-    mtextedit.h
-    TaskBalloon.h
-    QGIWeldSymbol.h
-    SymbolChooser.h
-    TaskActiveView.h
-    TaskDetail.h
-    QGIGhostHighlight.h
-    TaskCosmeticLine.h
-)
-
-fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
-SOURCE_GROUP("Moc" FILES ${TechDrawGui_MOC_SRCS})
-
 if(BUILD_QT5)
     qt5_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 else()
@@ -88,32 +50,33 @@ else()
 endif()
 
 set(TechDrawGui_UIC_SRCS
-    DlgPrefsTechDrawGeneral.ui
-    DlgPrefsTechDrawScale.ui
-    DlgPrefsTechDrawAnnotation.ui
-    DlgPrefsTechDrawDimensions.ui
-    DlgPrefsTechDrawColors.ui
     DlgPrefsTechDrawAdvanced.ui
+    DlgPrefsTechDrawAnnotation.ui
+    DlgPrefsTechDrawColors.ui
+    DlgPrefsTechDrawDimensions.ui
+    DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDrawHLR.ui
-    TaskProjGroup.ui
-    TaskLinkDim.ui
+    DlgPrefsTechDrawScale.ui
     DlgTemplateField.ui
-    TaskSectionView.ui
+    mrichtextedit.ui
+    TaskActiveView.ui
+    TaskBalloon.ui
+    TaskCosmeticLine.ui
+    TaskCosVertex.ui
+    TaskCenterLine.ui
+    TaskDetail.ui
+    TaskDimension.ui
     TaskGeomHatch.ui
     TaskHatch.ui
     TaskLeaderLine.ui
-    TaskRichAnno.ui
-    mrichtextedit.ui
-    TaskBalloon.ui
-    TaskCosVertex.ui
-    TaskCenterLine.ui
     TaskLineDecor.ui
+    TaskLinkDim.ui
+    TaskProjGroup.ui
     TaskRestoreLines.ui
+    TaskRichAnno.ui
+    TaskSectionView.ui
     TaskWeldingSymbol.ui
     SymbolChooser.ui
-    TaskActiveView.ui
-    TaskDetail.ui
-    TaskCosmeticLine.ui
 )
 
 if(BUILD_QT5)
@@ -129,11 +92,6 @@ SET(MRTE_SRCS
     mtextedit.cpp
     mtextedit.h
 )
-
-SET(MRTE_HDRS 
-    mtextedit.h
-)
-
 
 SET(TechDrawGui_SRCS
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/InitGui.py
@@ -186,6 +144,9 @@ SET(TechDrawGui_SRCS
     TaskBalloon.ui
     TaskBalloon.cpp
     TaskBalloon.h
+    TaskDimension.ui
+    TaskDimension.cpp
+    TaskDimension.h
     TaskGeomHatch.ui
     TaskGeomHatch.cpp
     TaskGeomHatch.h
@@ -392,6 +353,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     mrichtextedit.ui
     TaskBalloon.ui
     TaskCenterLine.ui
+    TaskDimension.ui
     TaskLineDecor.ui
     TaskRestoreLines.ui
     TaskWeldingSymbol.ui
@@ -421,8 +383,6 @@ INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/T
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiFonts})
 INSTALL(FILES ${TechDrawGuiFonts} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/fonts")
-
-fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/src/Mod/TechDraw/Gui" ${MRTE_HDRS})
 
 SET_BIN_DIR(TechDrawGui TechDrawGui /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDrawGui)

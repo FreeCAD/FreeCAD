@@ -503,7 +503,7 @@ void ViewProviderMesh::updateData(const App::Property* prop)
 QIcon ViewProviderMesh::getIcon() const
 {
 #if 1
-    static QIcon icon = Gui::BitmapFactory().pixmap("Tree_Mesh");
+    static QIcon icon = Gui::BitmapFactory().pixmap("Mesh_Tree");
     return icon;
 #else
     static const char * const Mesh_Feature_xpm[] = {
@@ -2205,7 +2205,7 @@ void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
 {
     const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
     unsigned long numSegm = rMesh.countSegments();
-    if (numSegm == colors.size()) {
+    if (numSegm > 0 && numSegm == colors.size()) {
         // Colorize the components
         pcMatBinding->value = SoMaterialBinding::PER_FACE;
         int uCtFacets = (int)rMesh.countFacets();

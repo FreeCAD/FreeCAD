@@ -22,9 +22,9 @@
 
 from __future__ import print_function
 import sys
-import FreeCAD, time
+import FreeCAD
 if FreeCAD.GuiUp:
-    import FreeCADGui, Arch_rc, os
+    import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -220,7 +220,7 @@ class _ArchSchedule:
                                 prop = args[0].upper()
                             fval = args[1].upper()
                             if prop == "TYPE":
-                                prop == "IFCTYPE"
+                                prop = "IFCTYPE"
                             if inv:
                                 if prop in props:
                                     csprop = o.PropertiesList[props.index(prop)]
@@ -289,7 +289,7 @@ class _ArchSchedule:
                                 d = getattr(d,v)
                             if hasattr(d,"Value"):
                                 d = d.Value
-                        except:
+                        except Exception:
                             FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
                         else:
                             if verbose:

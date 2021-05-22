@@ -38,6 +38,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");
     qApp->translate("Workbench", "Sketcher tools");
+    qApp->translate("Workbench", "Sketcher B-spline tools");
     qApp->translate("Workbench", "Sketcher virtual space");
 #endif
 
@@ -232,6 +233,23 @@ inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarIte
     geom    << "Sketcher_CompCreateRegularPolygon";
 }
 
+
+template <typename T>
+void SketcherAddWorkspaceFillets(T& geom);
+
+template <>
+inline void SketcherAddWorkspaceFillets<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom    << "Sketcher_CreateFillet"
+            << "Sketcher_CreatePointFillet";
+}
+
+template <>
+inline void SketcherAddWorkspaceFillets<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom    << "Sketcher_CompCreateFillets";
+}
+
 template <typename T>
 inline void SketcherAddWorkbenchGeometries(T& geom)
 {
@@ -243,10 +261,11 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
             << "Sketcher_CreateRectangle";
     SketcherAddWorkspaceRegularPolygon(geom);
     geom    << "Sketcher_CreateSlot"
-            << "Separator"
-            << "Sketcher_CreateFillet"
-            << "Sketcher_Trimming"
+            << "Separator";
+    SketcherAddWorkspaceFillets(geom);
+    geom    << "Sketcher_Trimming"
             << "Sketcher_Extend"
+            << "Sketcher_Split"
             << "Sketcher_External"
             << "Sketcher_CarbonCopy"
             << "Sketcher_ToggleConstruction"
@@ -309,7 +328,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_CompConstrainRadDia"
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
-            << "Sketcher_ConstrainInternalAlignment"
+            // << "Sketcher_ConstrainInternalAlignment" // This constrain is never used by the user - Do not use precious toolbar space
             << "Separator"
             << "Sketcher_ToggleDrivingConstraint"
             << "Sketcher_ToggleActiveConstraint";
@@ -368,25 +387,25 @@ template <>
 inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
 {
     bspline << "Sketcher_BSplineDegree"
-        << "Sketcher_BSplinePolygon"
-        << "Sketcher_BSplineComb"
-        << "Sketcher_BSplineKnotMultiplicity"
-        << "Sketcher_BSplinePoleWeight"
-        << "Sketcher_BSplineConvertToNURB"
-        << "Sketcher_BSplineIncreaseDegree"
-        << "Sketcher_BSplineDecreaseDegree"
-        << "Sketcher_BSplineIncreaseKnotMultiplicity"
-        << "Sketcher_BSplineDecreaseKnotMultiplicity";
+            << "Sketcher_BSplinePolygon"
+            << "Sketcher_BSplineComb"
+            << "Sketcher_BSplineKnotMultiplicity"
+            << "Sketcher_BSplinePoleWeight"
+            << "Sketcher_BSplineConvertToNURB"
+            << "Sketcher_BSplineIncreaseDegree"
+            << "Sketcher_BSplineDecreaseDegree"
+            << "Sketcher_BSplineIncreaseKnotMultiplicity"
+            << "Sketcher_BSplineDecreaseKnotMultiplicity";
 }
 
 template <>
 inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline)
 {
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
-    << "Sketcher_BSplineConvertToNURB"
-    << "Sketcher_BSplineIncreaseDegree"
-    << "Sketcher_BSplineDecreaseDegree"
-    << "Sketcher_CompModifyKnotMultiplicity";
+            << "Sketcher_BSplineConvertToNURB"
+            << "Sketcher_BSplineIncreaseDegree"
+            << "Sketcher_BSplineDecreaseDegree"
+            << "Sketcher_CompModifyKnotMultiplicity";
 }
 
 template <typename T>

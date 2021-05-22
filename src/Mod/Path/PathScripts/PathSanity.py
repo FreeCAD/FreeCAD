@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -516,7 +517,7 @@ class CommandPathSanity:
         data = {}
 
         try:
-            for TC in obj.ToolController:
+            for TC in obj.Tools.Group:
                 if not hasattr(TC.Tool, 'BitBody'):
                     self.squawk("PathSanity",
                     "Tool number {} is a legacy tool. Legacy tools not \

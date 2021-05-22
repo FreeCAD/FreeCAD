@@ -465,7 +465,7 @@ def calculatePlacement(shape):
     pos = shape.BoundBox.Center
     norm = get_normal(shape)
     # for backward compatibility with previous getNormal implementation
-    if norm == None:
+    if norm is None:
         norm = App.Vector(0, 0, 1)
     pla = App.Placement()
     pla.Base = pos

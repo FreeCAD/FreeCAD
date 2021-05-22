@@ -27,7 +27,7 @@ import FreeCAD, FreeCADGui
 class Diagram:
     def create(self, title, function, xlength, xname, xunit, xscale, yname, yunit, yscale, numxpoints):
         # Initialize
-        import Plot
+        from freecad.plot import Plot
         self.title = title
         self.function = function # This is assumed to be always a SegmentFunction
         self.xlength = xlength

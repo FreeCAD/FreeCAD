@@ -126,6 +126,74 @@
       <source>Edit</source>
       <translation>Редактировать</translation>
     </message>
+    <message>
+      <source>Import</source>
+      <translation>Импорт</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Удалить</translation>
+    </message>
+    <message>
+      <source>Paste expressions</source>
+      <translation>Вставить выражения</translation>
+    </message>
+    <message>
+      <source>Make link group</source>
+      <translation>Создать группу ссылок</translation>
+    </message>
+    <message>
+      <source>Make link</source>
+      <translation>Создать ссылку</translation>
+    </message>
+    <message>
+      <source>Make sub-link</source>
+      <translation>Сделать доп. ссылку</translation>
+    </message>
+    <message>
+      <source>Import links</source>
+      <translation>Импорт ссылок</translation>
+    </message>
+    <message>
+      <source>Import all links</source>
+      <translation>Импорт всех ссылок</translation>
+    </message>
+    <message>
+      <source>Insert measurement</source>
+      <translation>Вставить измерение</translation>
+    </message>
+    <message>
+      <source>Insert text document</source>
+      <translation>Вставить текстовый документ</translation>
+    </message>
+    <message>
+      <source>Add a part</source>
+      <translation>Добавить деталь</translation>
+    </message>
+    <message>
+      <source>Add a group</source>
+      <translation>Добавить группу</translation>
+    </message>
+    <message>
+      <source>Align</source>
+      <translation>Выравнивание</translation>
+    </message>
+    <message>
+      <source>Placement</source>
+      <translation>Расположение</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Преобразовать</translation>
+    </message>
+    <message>
+      <source>Link Transform</source>
+      <translation>Преобразование ссылок</translation>
+    </message>
+    <message>
+      <source>Measure distance</source>
+      <translation>Измерить расстояние</translation>
+    </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
@@ -206,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>Имя файла</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
     </message>
   </context>
   <context>
@@ -397,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Размер слова</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Благодарности</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD не увидел бы свет без их участия:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Лицензия</translation>
     </message>
@@ -426,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Коллекция</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Благодарности</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1296,10 +1386,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>О программе</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Строки кода будут пронумерованы </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Нажатие &lt;Tab&gt; для вставки  определенного размера отступа</translation>
     </message>
@@ -1334,6 +1420,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Color:</source>
       <translation>Цвет:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2467,10 +2557,6 @@ but slower response to any scene changes.</source>
       <translation>Централизованный</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Какой тип мультиобразного сглаживания используется </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Прозрачные объекты:</translation>
     </message>
@@ -2493,14 +2579,6 @@ but slower response to any scene changes.</source>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Расстояние между глаз для стерео режима</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Межцентровое расстояние глаз используется для стерео проекций.
-Указанное значение — это множитель, который будет умножаться на размер ограничительной рамки 
-отображаемого в трехмерного объекта. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2547,6 +2625,30 @@ Larger value eases to pick things, but can make small features impossible to sel
       <translation>Область выбора элементов в 3D виде.
 Большее значение облегчает выбор элемента, но может сделать невозможным выбор небольших элементов.
                </translation>
+    </message>
+    <message>
+      <source>This option is useful for troubleshooting graphics card and driver problems.
+
+Changing this option requires a restart of the application.</source>
+      <translation>Эта опция полезна для диагностики графических карт и проблем с драйвером.
+
+Изменение этой опции требует перезапуска приложения.</translation>
+    </message>
+    <message>
+      <source>Use software OpenGL</source>
+      <translation>Использовать программное обеспечение OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3166,9 +3268,28 @@ Opening mode: If you defined a hinge in this component or any other earlier in t
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (как есть)</translation>
     </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Pixel buffer</source>
-      <translation>Пиксель буфер</translation>
+      <source>Unloaded Workbenches</source>
+      <translation>Выгруженные верстаки</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Загрузить выбранные верстаки, добавляя их окна настроек в диалог настроек.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Load Selected</source>
+      <translation>Загрузить выбранный</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Доступные выгруженные верстаки&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Чтобы сохранить ресурсы, FreeCAD не загружает верстаки до тех пор, пока они не будут использованы. Загрузка их может обеспечить доступ к дополнительным настройкам, связанным с их функциональностью.&lt;/p&gt;&lt;p&gt;В вашей установке доступны следующие верстаки, но еще не загружены:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3385,12 +3506,6 @@ The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Шаг масштабирования</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Насколько всё будет масштабировано.
-Шаг масштаба '1' означает коэффициент 7.5 для каждого шага масштаба.</translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Направление масштабирования будет инвертировано</translation>
     </message>
@@ -3413,10 +3528,6 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Rotations in 3D will use current cursor position as center for rotation</source>
       <translation>Вращение в 3D будет использовать текущую позицию курсора как центр вращения</translation>
-    </message>
-    <message>
-      <source>Rotate at cursor</source>
-      <translation>Повернуть под курсором</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -3465,6 +3576,71 @@ Mouse tilting is not disabled by this setting.</source>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
       <translation>Ориентация камеры по умолчанию при создании нового документа или выборе вида "Домой"</translation>
+    </message>
+    <message>
+      <source>Rotation mode</source>
+      <translation>Режим вращения</translation>
+    </message>
+    <message>
+      <source>Window center</source>
+      <translation>Центр окна</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Перенести к курсору</translation>
+    </message>
+    <message>
+      <source>Object center</source>
+      <translation>Центр объекта</translation>
+    </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsSelection</name>
+    <message>
+      <source>Selection</source>
+      <translation>Выделение</translation>
+    </message>
+    <message>
+      <source>Auto switch to the 3D view containing the selected item</source>
+      <translation>Автопереключение в 3D вид, содержащий выбранный элемент</translation>
+    </message>
+    <message>
+      <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
+      <translation>Автоматически разворачивать элемент дерева при выделении соответствующего объекта в 3D виде</translation>
+    </message>
+    <message>
+      <source>Preselect the object in 3D view when mouse over the tree item</source>
+      <translation>Выделить объект в режиме 3D при наведении курсора на элемент дерева</translation>
+    </message>
+    <message>
+      <source>Record selection in tree view in order to go back/forward using navigation button</source>
+      <translation>Записывать выделение в дереве для перехода назад / вперед с помощью кнопки навигации</translation>
+    </message>
+    <message>
+      <source>Add checkboxes for selection in document tree</source>
+      <translation>Добавить флажки для выделения в дереве документов</translation>
     </message>
   </context>
   <context>
@@ -3751,12 +3927,12 @@ The preference system is the one set in the general preferences.</source>
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>неизвестная единица:</translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>несоответствие единиц измерения</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -5233,6 +5409,10 @@ How do you want to proceed?</source>
     <message>
       <source>Expression...</source>
       <translation>Выражение...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Разворачивать автоматически</translation>
     </message>
   </context>
   <context>
@@ -6738,14 +6918,6 @@ Please check report view for more...</source>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Физический путь: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Документ: </translation>
@@ -6759,6 +6931,30 @@ Document: </source>
     <message>
       <source>Identical physical path</source>
       <translation>Идентичная физическая траектория</translation>
+    </message>
+    <message>
+      <source>Error</source>
+      <translation>Ошибки</translation>
+    </message>
+    <message>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Произошли ошибки при загрузке файла. Возможно, некоторые данные были изменены или не восстановлены. Посмотрите в окно отчета для более конкретной информации о затронутых объектах.</translation>
+    </message>
+    <message>
+      <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
+      <translation>При загрузке файла возникли серьезные ошибки. Некоторые данные могли быть изменены или не восстановлены вообще. Сохранение проекта скорее всего приведет к потере данных.</translation>
+    </message>
+    <message>
+      <source>Workbenches</source>
+      <translation>Рабочие окружения</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>
@@ -7203,8 +7399,8 @@ Document: </source>
       <translation>Ничего не выбрано</translation>
     </message>
     <message>
-      <source>Please select first the objects you want to export.</source>
-      <translation>Пожалуйста, сначала выберите объекты, которые вы хотите экспортировать.</translation>
+      <source>Select the objects to export before choosing Export.</source>
+      <translation>Выберите объекты для экспорта перед выбором Экспорта.</translation>
     </message>
   </context>
   <context>
@@ -7231,6 +7427,21 @@ Document: </source>
     <message>
       <source>Recompute feature or document</source>
       <translation>Пересчитать объект или документ</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdFreeCADDonation</name>
+    <message>
+      <source>Help</source>
+      <translation>Справка</translation>
+    </message>
+    <message>
+      <source>Donate</source>
+      <translation>Поддержать</translation>
+    </message>
+    <message>
+      <source>Donate to FreeCAD development</source>
+      <translation>Пожертвовать на разработку FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -7411,7 +7622,7 @@ Document: </source>
     </message>
     <message>
       <source>Link actions</source>
-      <translation>Действия ссылки</translation>
+      <translation>Ссылка</translation>
     </message>
   </context>
   <context>
@@ -8818,6 +9029,21 @@ Document: </source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewRestoreCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Restore saved camera</source>
+      <translation>Восстановить сохраненную камеру</translation>
+    </message>
+    <message>
+      <source>Restore saved camera settings</source>
+      <translation>Восстановить сохранённые настройки камеры</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
@@ -8860,6 +9086,21 @@ Document: </source>
     <message>
       <source>Rotate the view by 90° clockwise</source>
       <translation>Повернуть вид на 90° по часовой стрелке</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewSaveCamera</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартный вид</translation>
+    </message>
+    <message>
+      <source>Save current camera</source>
+      <translation>Сохранить текущую камеру</translation>
+    </message>
+    <message>
+      <source>Save current camera settings</source>
+      <translation>Сохранить настройки текущей камеры</translation>
     </message>
   </context>
   <context>

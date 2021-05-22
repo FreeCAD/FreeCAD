@@ -223,7 +223,7 @@
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
@@ -247,13 +247,13 @@
     <message>
       <location filename="../../Command.cpp" line="1529"/>
       <source>Flip normals</source>
-      <translation>Normák tükrözés</translation>
+      <translation>Aktuálisok tükrözése</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
       <location filename="../../Command.cpp" line="1532"/>
       <source>Flips the normals of the mesh</source>
-      <translation>A háló normák tükrözése</translation>
+      <translation>Az aktuális hálók tükrözése</translation>
     </message>
   </context>
   <context>
@@ -303,13 +303,13 @@
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Harmonize normals</source>
-      <translation>Normák összehangolása</translation>
+      <translation>Aktuálisok összehangolása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1496"/>
       <location filename="../../Command.cpp" line="1498"/>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>A hálón lévő normák összehangolása</translation>
+      <translation>A hálón lévő aktuálisok összehangolása</translation>
     </message>
   </context>
   <context>
@@ -517,17 +517,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="1877"/>
       <source>Scale...</source>
       <translation>Lépték...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1832"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Scale selected meshes</source>
       <translation>Kiválasztott hálók skálázása</translation>
     </message>
@@ -606,6 +606,24 @@
       <location filename="../../Command.cpp" line="1404"/>
       <source>Smooth the selected meshes</source>
       <translation>Kiválasztott háló simítása</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSplitComponents</name>
+    <message>
+      <location filename="../../Command.cpp" line="1830"/>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1831"/>
+      <source>Split by components</source>
+      <translation>Felosztás összetevők szerint</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1832"/>
+      <source>Split selected mesh into its components</source>
+      <translation>Kijelölt háló felosztása összetevőire</translation>
     </message>
   </context>
   <context>
@@ -714,6 +732,168 @@
       <location filename="../../Command.cpp" line="696"/>
       <source>Information about curvature</source>
       <translation>Görbület információk</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="188"/>
+      <source>Segment by tool mesh</source>
+      <translation>Metszet a háló eszközből</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="243"/>
+      <source>Mesh union</source>
+      <translation>Háló egyesítés</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="312"/>
+      <source>Mesh difference</source>
+      <translation>Háló különbségek</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="383"/>
+      <source>Mesh intersection</source>
+      <translation>Háló metszéspont</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="469"/>
+      <source>Import Mesh</source>
+      <translation>Háló importálás</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="665"/>
+      <source>Mesh VertexCurvature</source>
+      <translation>Hálócsúcsgörbület</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../DlgSmoothing.cpp" line="178"/>
+      <source>Mesh Smoothing</source>
+      <translation>Háló simítás</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1505"/>
+      <source>Harmonize mesh normals</source>
+      <translation>Aktuális hálók összehangolása</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1539"/>
+      <source>Flip mesh normals</source>
+      <translation>Aktuális háló átfordítás</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1650"/>
+      <source>Fill up holes</source>
+      <translation>Furatokat tölt ki</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1801"/>
+      <source>Mesh merge</source>
+      <translation>Háló egyesítés</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1844"/>
+      <source>Mesh split</source>
+      <translation>Háló felosztás</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1896"/>
+      <source>Mesh scale</source>
+      <translation>Háló méretezés</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.cpp" line="147"/>
+      <source>Mesh Decimating</source>
+      <translation>Háló tizedelése</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
+      <source>Harmonize normals</source>
+      <translation>Aktuálisok összehangolása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
+      <source>Remove non-manifolds</source>
+      <translation>Nem-szétágazók eltávolítása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
+      <source>Fix indices</source>
+      <translation>Jelzőszámok javítása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
+      <source>Remove degenerated faces</source>
+      <translation>Korcs felületek eltávolítása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
+      <source>Remove duplicated faces</source>
+      <translation>Kettőzött felületek eltávolítása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
+      <source>Remove duplicated points</source>
+      <translation>Kettőzött pontok eltávolítása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
+      <source>Fix self-intersections</source>
+      <translation>Belső-csomópontok javítása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
+      <source>Remove folds</source>
+      <translation>Redők eltávolítása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
+      <source>Repair mesh</source>
+      <translation>Háló javítás</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.cpp" line="130"/>
+      <source>Delete selection</source>
+      <translation>Kijelölt törlése</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="874"/>
+      <location filename="../../ViewProvider.cpp" line="929"/>
+      <source>Cut</source>
+      <translation>Kivágás</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="883"/>
+      <location filename="../../ViewProvider.cpp" line="990"/>
+      <source>Trim</source>
+      <translation>Vágás</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1067"/>
+      <source>Split</source>
+      <translation>Feloszt</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1131"/>
+      <source>Segment</source>
+      <translation>Szegmens</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1726"/>
+      <source>Delete</source>
+      <translation>Töröl</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1833"/>
+      <source>Fill hole</source>
+      <translation>Furatokat kitölt</translation>
     </message>
   </context>
   <context>
@@ -910,7 +1090,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="446"/>
       <source>Flipped normals found</source>
-      <translation>Tükrözött normákat talált</translation>
+      <translation>Tükrözött aktuálisokat talált</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
@@ -928,12 +1108,12 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <source>No flipped normals</source>
-      <translation>Nincsenek tükrözött normák</translation>
+      <translation>Nincsenek tükrözött aktuálisok</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="465"/>
       <source>%1 flipped normals</source>
-      <translation>%1 tükrözött normák</translation>
+      <translation>%1 tükrözött aktuálisok</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="545"/>
@@ -1370,7 +1550,7 @@ vagy fekete lesz.</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="292"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Ha a két felület között bezárt szög kisebb mint a gyűrődési szög, akkor a közös élen található felületek simák maradnak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Ez a legkisebb szög két felület között, ahol az aktuálisokat lapos árnyékolásra számolják ki.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Ha a két felület között bezárt szög kisebb mint a gyűrődési szög, akkor a közös élen található felületek simák maradnak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="295"/>
@@ -1386,7 +1566,7 @@ With flat shading the surface normals are not defined per vertex that leads
 to a unreal appearance for curved surfaces while using Phong shading leads
 to a smoother appearance.
 </source>
-      <translation>Ha ez a beállítás be van állítva Phong árnyékolás van használva, egyébként lapos árnyékolás.
+      <translation>Ha ez a beállítás be van állítva Phong árnyékolást használ, egyébként lapos árnyékolás.
 Az árnyékolás határozza meg a felületek megjelenését.
 
 Lapos árnyékolással az aktuális felületek nem csúcspontokkal határozottak meg, amely
@@ -1417,7 +1597,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="362"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;A végpontonkénti normál meghatározás más néven&lt;span style=" font-style:italic;"&gt;Phong árnyékolás&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;amíg a felülenténki normák más néven &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;A végpontonkénti aktuális meghatározás más néven&lt;span style=" font-style:italic;"&gt;Phong árnyékolás&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;amíg a felületenkénti aktuálisok meghatározása más néven &lt;/span&gt;lapos árnyékolás&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -1471,48 +1651,48 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation>Automatikus</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation>Adaptív</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation>Elülső</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation>Elülső négyoldalú</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation>Parallelogramma</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>Idő:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation>Futó gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation>Nem sikerült elindítani</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
@@ -1728,7 +1908,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normák felülettel kijelzett háromszögeket részesíti előnyben</translation>
+      <translation>Csak az aktuális felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
   </context>
   <context>
@@ -1858,7 +2038,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="338"/>
       <source>Normal</source>
-      <translation>Normál</translation>
+      <translation>Alapértelmezett</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="364"/>
@@ -1903,7 +2083,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>Csak a normák felülettel kijelzett háromszögeket részesíti előnyben</translation>
+      <translation>Csak az aktuális felülettel kijelzett háromszögeket részesíti előnyben</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="72"/>
@@ -1922,7 +2102,7 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
       <location filename="../../RemoveComponents.cpp" line="174"/>
       <location filename="../../RemoveComponents.cpp" line="231"/>
       <source>Delete</source>
-      <translation>Töröl</translation>
+      <translation>Törlés</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="175"/>
@@ -2132,12 +2312,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Töltse ki a furatokat maximális számú élekkel:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="1891"/>
       <source>Scaling</source>
       <translation>Méretezés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1846"/>
+      <location filename="../../Command.cpp" line="1892"/>
       <source>Enter scaling factor:</source>
       <translation>Adja meg a skálafaktort:</translation>
     </message>

@@ -27,6 +27,7 @@
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 # include <App/PropertyLinks.h>
+# include <Base/UnitsApi.h>
 
 #include "DrawView.h"
 
@@ -93,17 +94,21 @@ public:
     DrawViewDimension();
     virtual ~DrawViewDimension();
 
-    App::PropertyEnumeration       MeasureType;                        //True/Projected
-    App::PropertyLinkSubList       References2D;                       //Points to Projection SubFeatures
-    App::PropertyLinkSubList       References3D;                       //Points to 3D Geometry SubFeatures
-    App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
+    App::PropertyEnumeration        MeasureType;           //True/Projected
+    App::PropertyLinkSubList        References2D;          //Points to Projection SubFeatures
+    App::PropertyLinkSubList        References3D;          //Points to 3D Geometry SubFeatures
+    App::PropertyEnumeration        Type;                  //DistanceX, DistanceY, Diameter, etc.
 
-    App::PropertyBool              TheoreticalExact;
-    App::PropertyBool              Inverted;
-    App::PropertyString            FormatSpec;
-    App::PropertyBool              Arbitrary;
-    App::PropertyFloat             OverTolerance;
-    App::PropertyFloat             UnderTolerance;
+    App::PropertyBool               TheoreticalExact;
+    App::PropertyBool               Inverted;
+    App::PropertyString             FormatSpec;
+    App::PropertyString             FormatSpecOverTolerance;
+    App::PropertyString             FormatSpecUnderTolerance;
+    App::PropertyBool               Arbitrary;
+    App::PropertyBool               ArbitraryTolerances;
+    App::PropertyBool               EqualTolerance;
+    App::PropertyQuantityConstraint OverTolerance;
+    App::PropertyQuantityConstraint UnderTolerance;
 
     enum RefType{
             invalidRef,
@@ -118,7 +123,7 @@ public:
     short mustExecute() const override;
     virtual bool has2DReferences(void) const;
     virtual bool has3DReferences(void) const;
-    bool hasTolerance(void) const;
+    bool hasOverUnderTolerance(void) const;
 
     /** @name methods override Feature */
     //@{
@@ -133,7 +138,11 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void) override;
 
-    virtual std::string getFormatedValue(int partial = 0);
+    virtual std::string getFormattedToleranceValue(int partial);
+    virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
+    virtual std::string getFormattedDimensionValue(int partial = 0);
+    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
+
     virtual double getDimValue();
     QStringList getPrefixSuffixSpec(QString fSpec);
 
@@ -151,6 +160,8 @@ public:
 
     bool isMultiValueSchema(void) const;
 
+    std::string getBaseLengthUnit(Base::UnitSystem system);
+
     pointPair getArrowPositions(void);
     void saveArrowPositions(const Base::Vector2d positions[]);
 
@@ -158,10 +169,12 @@ public:
     bool useDecimals() const;
 
 protected:
+    virtual void handleChangedPropertyType(Base::XMLReader &, const char * , App::Property * ) override;
+    virtual void Restore(Base::XMLReader& reader) override;
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
     std::string getPrefix() const;
-    std::string getDefaultFormatSpec() const;
+    std::string getDefaultFormatSpec(bool isToleranceFormat = false) const;
     virtual pointPair getPointsOneEdge();
     virtual pointPair getPointsTwoEdges();
     virtual pointPair getPointsTwoVerts();

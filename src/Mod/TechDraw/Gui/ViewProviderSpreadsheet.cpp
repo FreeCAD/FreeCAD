@@ -43,7 +43,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderSpreadsheet, TechDrawGui::ViewProviderS
 
 ViewProviderSpreadsheet::ViewProviderSpreadsheet()
 {
-    sPixmap = "TechDraw_Tree_Spreadsheet";
+    sPixmap = "TechDraw_TreeSpreadsheet";
 }
 
 ViewProviderSpreadsheet::~ViewProviderSpreadsheet()

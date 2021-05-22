@@ -485,7 +485,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         prepr = None
         try:
             prepr = product.Representation
-        except:
+        except Exception:
             if preferences['DEBUG']: print(" ERROR unable to get object representation",end="")
         if prepr and (preferences['MERGE_MODE_ARCH'] == 0) and archobj and preferences['CREATE_CLONES']:
             for r in prepr.Representations:
@@ -507,7 +507,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         try:
             cr = geom.create_shape(settings, product)
             brep = cr.geometry.brep_data
-        except:
+        except Exception:
             pass  # IfcOpenShell will yield an error if a given product has no shape, but we don't care, we're brave enough
 
         # from now on we have a brep string
@@ -530,7 +530,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     try:
                         bb = shape.BoundBox
                         # if preferences['DEBUG']: print(' ' + str(bb),end="")
-                    except:
+                    except Exception:
                         bb = None
                         if preferences['DEBUG']: print(' BB could not be computed',end="")
                     if bb and bb.isValid():
@@ -740,7 +740,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             try:
                 if hasattr(obj,"IfcType"):
                     obj.IfcType = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
-            except:
+            except Exception:
                 print("Unable to give IFC type ",ptype," to object ",obj.Label)
 
             # setting uid
@@ -794,7 +794,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                 try:
                     if hasattr(obj,"IfcType"):
                         obj.IfcType = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
-                except:
+                except Exception:
                     print("Unable to give IFC type ",ptype," to object ",obj.Label)
                 if hasattr(obj,"IfcData"):
                     a = obj.IfcData

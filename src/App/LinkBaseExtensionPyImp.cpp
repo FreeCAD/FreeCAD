@@ -48,19 +48,11 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
 {
     std::ostringstream str;
 
-    #if PY_MAJOR_VERSION < 3
-    if(!PyString_Check(key)) {
-        PyErr_SetString(PyExc_TypeError, "key must be string");
-        return false;
-    }
-    const char *keyStr = PyString_AsString(key);
-#else
     if(!PyUnicode_Check(key)) {
         PyErr_SetString(PyExc_TypeError, "key must be a unicode string");
         return false;
     }
     const char *keyStr = PyUnicode_AsUTF8(key);
-#endif
     auto it = infoMap.find(keyStr);
     if(it == infoMap.end()){
         str << "unknown key '" << keyStr << "'";
@@ -72,19 +64,11 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
     if(key == value)
         valStr = keyStr;
     else if (value!=Py_None) {
-#if PY_MAJOR_VERSION < 3
-        if(!PyString_Check(value)) {
-            PyErr_SetString(PyExc_TypeError, "value must be string");
-            return false;
-        }
-        valStr = PyString_AsString(value);
-#else
         if(!PyUnicode_Check(value)) {
             PyErr_SetString(PyExc_TypeError, "value must be unicode string");
             return false;
         }
         valStr = PyUnicode_AsUTF8(value);
-#endif
     }
 
     App::Property *prop = 0;

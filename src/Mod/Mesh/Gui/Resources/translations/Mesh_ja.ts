@@ -517,17 +517,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="1877"/>
       <source>Scale...</source>
       <translation>拡大縮小...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1832"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Scale selected meshes</source>
       <translation>選択したメッシュを拡大縮小</translation>
     </message>
@@ -606,6 +606,24 @@
       <location filename="../../Command.cpp" line="1404"/>
       <source>Smooth the selected meshes</source>
       <translation>選択したメッシュを滑らかにします</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSplitComponents</name>
+    <message>
+      <location filename="../../Command.cpp" line="1830"/>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1831"/>
+      <source>Split by components</source>
+      <translation>コンポーネントで分割</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1832"/>
+      <source>Split selected mesh into its components</source>
+      <translation>選択したメッシュをコンポーネントに分割</translation>
     </message>
   </context>
   <context>
@@ -717,6 +735,168 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="188"/>
+      <source>Segment by tool mesh</source>
+      <translation>ツールメッシュによるセグメント</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="243"/>
+      <source>Mesh union</source>
+      <translation>メッシュ和演算</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="312"/>
+      <source>Mesh difference</source>
+      <translation>メッシュ差演算</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="383"/>
+      <source>Mesh intersection</source>
+      <translation>メッシュ積演算</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="469"/>
+      <source>Import Mesh</source>
+      <translation>メッシュをインポート</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="665"/>
+      <source>Mesh VertexCurvature</source>
+      <translation>メッシュ頂点曲率</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../DlgSmoothing.cpp" line="178"/>
+      <source>Mesh Smoothing</source>
+      <translation>メッシュ平滑化</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1505"/>
+      <source>Harmonize mesh normals</source>
+      <translation>メッシュ法線を統一</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1539"/>
+      <source>Flip mesh normals</source>
+      <translation>メッシュ法線を反転</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1650"/>
+      <source>Fill up holes</source>
+      <translation>穴を埋め</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1801"/>
+      <source>Mesh merge</source>
+      <translation>メッシュ結合</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1844"/>
+      <source>Mesh split</source>
+      <translation>メッシュ分割</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1896"/>
+      <source>Mesh scale</source>
+      <translation>メッシュ拡大縮小</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.cpp" line="147"/>
+      <source>Mesh Decimating</source>
+      <translation>メッシュ削減</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
+      <source>Harmonize normals</source>
+      <translation>法線を一致</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
+      <source>Remove non-manifolds</source>
+      <translation>ノンマニホールドを削除</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
+      <source>Fix indices</source>
+      <translation>インデックスを修正</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
+      <source>Remove degenerated faces</source>
+      <translation>縮退した面を削除</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
+      <source>Remove duplicated faces</source>
+      <translation>重複した面を削除</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
+      <source>Remove duplicated points</source>
+      <translation>重複した点を削除</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
+      <source>Fix self-intersections</source>
+      <translation>自己交差を修正</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
+      <source>Remove folds</source>
+      <translation>折り目を削除</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
+      <source>Repair mesh</source>
+      <translation>メッシュを修復</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.cpp" line="130"/>
+      <source>Delete selection</source>
+      <translation>選択範囲を削除</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="874"/>
+      <location filename="../../ViewProvider.cpp" line="929"/>
+      <source>Cut</source>
+      <translation>切り取り</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="883"/>
+      <location filename="../../ViewProvider.cpp" line="990"/>
+      <source>Trim</source>
+      <translation>トリム</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1067"/>
+      <source>Split</source>
+      <translation>スプリット</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1131"/>
+      <source>Segment</source>
+      <translation>セグメント</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1726"/>
+      <source>Delete</source>
+      <translation>削除</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1833"/>
+      <source>Fill hole</source>
+      <translation>穴埋め</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::DlgDecimating</name>
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
@@ -736,13 +916,13 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation type="unfinished">Full</translation>
+      <translation>最大</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="91"/>
       <source>Absolute number</source>
-      <translation type="unfinished">Absolute number</translation>
+      <translation>絶対番号</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -752,7 +932,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+      <translation>絶対番号 (最大: %1)</translation>
     </message>
   </context>
   <context>
@@ -1467,48 +1647,48 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation>自動</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation>自動</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>フロンタル法</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
-      <translation type="unfinished">Frontal Quad</translation>
+      <translation>フロンタル・クアッド法</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation>平行四辺形</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>時間：</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation>Gmshを実行中...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation>開始に失敗しました</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
@@ -1612,7 +1792,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation>要素の最大サイズ (0.0 = 自動):</translation>
+      <translation>最大要素サイズ (0.0 = 自動):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
@@ -2051,12 +2231,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>圧縮済み X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -2081,7 +2261,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>漸近線フォーマット</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
@@ -2129,12 +2309,12 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>最大数以下のエッジを持つ穴を埋める:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="1891"/>
       <source>Scaling</source>
       <translation>拡大縮小</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1846"/>
+      <location filename="../../Command.cpp" line="1892"/>
       <source>Enter scaling factor:</source>
       <translation>倍率を入力:</translation>
     </message>
@@ -2205,7 +2385,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Meshes</source>
-      <translation>メッシュ (&amp;M)</translation>
+      <translation>メッシュ(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>

@@ -61,11 +61,13 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskMultiTransformParameters */
 
 TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent)
-    : TaskTransformedParameters(TransformedView, parent), subTask(nullptr), subFeature(nullptr)
+    : TaskTransformedParameters(TransformedView, parent)
+    , ui(new Ui_TaskMultiTransformParameters)
+    , subTask(nullptr)
+    , subFeature(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskMultiTransformParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
@@ -227,7 +229,8 @@ void TaskMultiTransformParameters::closeSubTask()
 
 void TaskMultiTransformParameters::onTransformDelete()
 {
-    if (editHint) return; // Can't delete the hint...
+    if (editHint)
+        return; // Can't delete the hint...
     int row = ui->listTransformFeatures->currentIndex().row();
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
@@ -252,7 +255,8 @@ void TaskMultiTransformParameters::onTransformDelete()
 
 void TaskMultiTransformParameters::onTransformEdit()
 {
-    if (editHint) return; // Can't edit the hint...
+    if (editHint)
+        return; // Can't edit the hint...
     closeSubTask(); // For example if user is editing one subTask and then double-clicks on another without OK'ing first
     ui->listTransformFeatures->currentItem()->setSelected(true);
     int row = ui->listTransformFeatures->currentIndex().row();
@@ -286,17 +290,23 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Mirrored");
     auto pcActiveBody = PartDesignGui::getBody(false);
-    if(!pcActiveBody) return;
+    if (!pcActiveBody)
+        return;
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
-    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
+    FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
+    if (!Feat)
+        return;
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
-        FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<Gui::Command::getObjectCmd(sketch)<<",['V_Axis'])");
+        FCMD_OBJ_CMD(Feat, "MirrorPlane = ("<<Gui::Command::getObjectCmd(sketch)<<",['V_Axis'])");
 
     finishAdd(newFeatName);
+    // show the new view when no error
+    if (!Feat->isError())
+        TransformedView->getObject()->Visibility.setValue(true);
 }
 
 void TaskMultiTransformParameters::onTransformAddLinearPattern()
@@ -306,29 +316,35 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("LinearPattern");
     auto pcActiveBody = PartDesignGui::getBody(false);
-    if(!pcActiveBody) return;
+    if (!pcActiveBody)
+        return;
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
-    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
+    FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
+    if (!Feat)
+        return;
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch) {
-        FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(sketch)<<",['H_Axis'])");
+        FCMD_OBJ_CMD(Feat, "Direction = ("<<Gui::Command::getObjectCmd(sketch)<<",['H_Axis'])");
     }
     else {
         // set Direction value before filling up the combo box to avoid creating an empty item
         // inside updateUI()
         PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getObject()));
         if (body) {
-            FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getX())<<",[''])");
+            FCMD_OBJ_CMD(Feat, "Direction = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getX())<<",[''])");
         }
     }
 
-    FCMD_OBJ_CMD(Feat,"Length = 100");
-    FCMD_OBJ_CMD(Feat,"Occurrences = 2");
+    FCMD_OBJ_CMD(Feat, "Length = 100");
+    FCMD_OBJ_CMD(Feat, "Occurrences = 2");
 
     finishAdd(newFeatName);
+    // show the new view when no error
+    if (!Feat->isError())
+        TransformedView->getObject()->Visibility.setValue(true);
 }
 
 void TaskMultiTransformParameters::onTransformAddPolarPattern()
@@ -336,19 +352,25 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("PolarPattern");
     auto pcActiveBody = PartDesignGui::getBody(false);
-    if(!pcActiveBody) return;
+    if (!pcActiveBody)
+        return;
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
-    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
+    FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
+    if (!Feat)
+        return;
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
         FCMD_OBJ_CMD(Feat, "Axis = ("<<Gui::Command::getObjectCmd(sketch)<<",['N_Axis'])");
-    FCMD_OBJ_CMD(Feat,"Angle = 360");
-    FCMD_OBJ_CMD(Feat,"Occurrences = 2");
+    FCMD_OBJ_CMD(Feat, "Angle = 360");
+    FCMD_OBJ_CMD(Feat, "Occurrences = 2");
 
     finishAdd(newFeatName);
+    // show the new view when no error
+    if (!Feat->isError())
+        TransformedView->getObject()->Visibility.setValue(true);
 }
 
 void TaskMultiTransformParameters::onTransformAddScaled()
@@ -356,16 +378,22 @@ void TaskMultiTransformParameters::onTransformAddScaled()
     closeSubTask();
     std::string newFeatName = TransformedView->getObject()->getDocument()->getUniqueObjectName("Scaled");
     auto pcActiveBody = PartDesignGui::getBody(false);
-    if(!pcActiveBody) return;
+    if (!pcActiveBody)
+        return;
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
-    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Scaled','"<<newFeatName<<"')");
+    FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Scaled','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
+    if (!Feat)
+        return;
     //Gui::Command::updateActive();
-    FCMD_OBJ_CMD(Feat,"Factor = 2");
-    FCMD_OBJ_CMD(Feat,"Occurrences = 2");
+    FCMD_OBJ_CMD(Feat, "Factor = 2");
+    FCMD_OBJ_CMD(Feat, "Occurrences = 2");
 
     finishAdd(newFeatName);
+    // show the new view when no error
+    if (!Feat->isError())
+        TransformedView->getObject()->Visibility.setValue(true);
 }
 
 void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
@@ -483,8 +511,13 @@ void TaskMultiTransformParameters::apply()
 
 TaskMultiTransformParameters::~TaskMultiTransformParameters()
 {
-    closeSubTask();
-    delete ui;
+    try {
+        closeSubTask();
+    }
+    catch (const Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
     if (proxy)
         delete proxy;
 }

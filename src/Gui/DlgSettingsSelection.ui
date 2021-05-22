@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsSelection</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsSelection">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>670</width>
+    <height>411</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Selection</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QCheckBox" name="checkBoxAutoSwitch">
+     <property name="text">
+      <string>Auto switch to the 3D view containing the selected item</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QCheckBox" name="checkBoxAutoExpand">
+     <property name="text">
+      <string>Auto expand tree item when the corresponding object is selected in 3D view</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QCheckBox" name="checkBoxPreselect">
+     <property name="text">
+      <string>Preselect the object in 3D view when mouse over the tree item</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QCheckBox" name="checkBoxRecord">
+     <property name="text">
+      <string>Record selection in tree view in order to go back/forward using navigation button</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="checkBoxSelectionCheckBoxes">
+     <property name="text">
+      <string>Add checkboxes for selection in document tree</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>245</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

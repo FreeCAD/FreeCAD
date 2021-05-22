@@ -105,17 +105,28 @@ def createStructuralMember(ifcfile,ifcbin,obj):
     uid = ifcopenshell.guid.new
     owh = ifcfile.by_type("IfcOwnerHistory")[0]
     ctx = getStructuralContext(ifcfile)
+    
+    # find edges to convert into structural members
     edges = None
     if Draft.getType(obj) not in ["Structure"]:
+        # for non structural elements 
         if ALLOW_LINEAR_OBJECTS and obj.isDerivedFrom("Part::Feature"):
+            # for objects created with Part workbench
             if obj.Shape.Faces:
+                # for objects with faces
                 return None
             elif not obj.Shape.Edges:
+                # for objects without edges
                 return None
             else:
                 edges = obj.Shape.Edges
     else:
-        wire = Part.makePolygon([obj.Placement.multVec(n) for n in obj.Nodes])
+        # for structural elements with nodes
+        nodes = [obj.Placement.multVec(n) for n in obj.Nodes]
+        if len(nodes) > 2:
+            # when there are more then 2 nodes (i.e. for slabs) append closing node to produce closing edge
+            nodes.append(nodes[0])
+        wire = Part.makePolygon(nodes)
         edges = wire.Edges
     if not edges:
         return None

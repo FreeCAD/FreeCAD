@@ -517,17 +517,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1876"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1831"/>
+      <location filename="../../Command.cpp" line="1877"/>
       <source>Scale...</source>
       <translation>Měřítko...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1832"/>
+      <location filename="../../Command.cpp" line="1878"/>
       <source>Scale selected meshes</source>
       <translation>Škálovat vybrané sítě</translation>
     </message>
@@ -606,6 +606,24 @@
       <location filename="../../Command.cpp" line="1404"/>
       <source>Smooth the selected meshes</source>
       <translation>Vyhladit vybrané sítě</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSplitComponents</name>
+    <message>
+      <location filename="../../Command.cpp" line="1830"/>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1831"/>
+      <source>Split by components</source>
+      <translation type="unfinished">Split by components</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1832"/>
+      <source>Split selected mesh into its components</source>
+      <translation type="unfinished">Split selected mesh into its components</translation>
     </message>
   </context>
   <context>
@@ -717,6 +735,168 @@
     </message>
   </context>
   <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="188"/>
+      <source>Segment by tool mesh</source>
+      <translation>Segmentovat pomocí sítě</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="243"/>
+      <source>Mesh union</source>
+      <translation type="unfinished">Mesh union</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="312"/>
+      <source>Mesh difference</source>
+      <translation type="unfinished">Mesh difference</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="383"/>
+      <source>Mesh intersection</source>
+      <translation type="unfinished">Mesh intersection</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="469"/>
+      <source>Import Mesh</source>
+      <translation type="unfinished">Import Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="665"/>
+      <source>Mesh VertexCurvature</source>
+      <translation type="unfinished">Mesh VertexCurvature</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../DlgSmoothing.cpp" line="178"/>
+      <source>Mesh Smoothing</source>
+      <translation type="unfinished">Mesh Smoothing</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1505"/>
+      <source>Harmonize mesh normals</source>
+      <translation type="unfinished">Harmonize mesh normals</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1539"/>
+      <source>Flip mesh normals</source>
+      <translation type="unfinished">Flip mesh normals</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1650"/>
+      <source>Fill up holes</source>
+      <translation>Vyplnit otvory</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1801"/>
+      <source>Mesh merge</source>
+      <translation type="unfinished">Mesh merge</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1844"/>
+      <source>Mesh split</source>
+      <translation type="unfinished">Mesh split</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1896"/>
+      <source>Mesh scale</source>
+      <translation type="unfinished">Mesh scale</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDecimating.cpp" line="147"/>
+      <source>Mesh Decimating</source>
+      <translation type="unfinished">Mesh Decimating</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
+      <source>Harmonize normals</source>
+      <translation>Uspořádat normály</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
+      <source>Remove non-manifolds</source>
+      <translation type="unfinished">Remove non-manifolds</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
+      <source>Fix indices</source>
+      <translation type="unfinished">Fix indices</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
+      <source>Remove degenerated faces</source>
+      <translation type="unfinished">Remove degenerated faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
+      <source>Remove duplicated faces</source>
+      <translation type="unfinished">Remove duplicated faces</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
+      <source>Remove duplicated points</source>
+      <translation>Odstranit duplikované body</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
+      <source>Fix self-intersections</source>
+      <translation>Opravit vlastní průsečíky</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
+      <source>Remove folds</source>
+      <translation>Odstranit přehyby</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
+      <source>Repair mesh</source>
+      <translation>Opravit síť</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.cpp" line="130"/>
+      <source>Delete selection</source>
+      <translation>Smazat výběr</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="874"/>
+      <location filename="../../ViewProvider.cpp" line="929"/>
+      <source>Cut</source>
+      <translation>Řezat</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="883"/>
+      <location filename="../../ViewProvider.cpp" line="990"/>
+      <source>Trim</source>
+      <translation>Oříznout</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1067"/>
+      <source>Split</source>
+      <translation>Rozdělit</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1131"/>
+      <source>Segment</source>
+      <translation>Segment</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1726"/>
+      <source>Delete</source>
+      <translation>Odstranit</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1833"/>
+      <source>Fill hole</source>
+      <translation>Vyplnit otvor</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::DlgDecimating</name>
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
@@ -736,13 +916,13 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation type="unfinished">Full</translation>
+      <translation>Plný</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="91"/>
       <source>Absolute number</source>
-      <translation type="unfinished">Absolute number</translation>
+      <translation>Absolutní číslo</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -752,7 +932,7 @@
     <message>
       <location filename="../../DlgDecimating.cpp" line="85"/>
       <source>Absolute number (Maximum: %1)</source>
-      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+      <translation>Absolutní číslo (maximum: %1)</translation>
     </message>
   </context>
   <context>
@@ -1259,7 +1439,7 @@ Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
-      <translation type="unfinished">ZIP compression is used when writing a mesh file in AMF format</translation>
+      <translation>Komprese ZIP se používá při zápisu souboru sítě v AMF formátu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="66"/>
@@ -1324,7 +1504,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="148"/>
       <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
+      <translation>Bude zobrazen ohraničující kvádr</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="151"/>
@@ -1334,7 +1514,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="187"/>
       <source>Default line color for new meshes</source>
-      <translation type="unfinished">Default line color for new meshes</translation>
+      <translation>Výchozí barva čáry pro nové sítě</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="207"/>
@@ -1342,10 +1522,10 @@ is used when writing a file in AMF format</source>
 If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of surface will be rendered the same way than top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</translation>
+      <translation>Spodní strana povrchu bude vykreslena stejným způsobem jako horní strana.
+Pokud není zaškrtnuto, záleží na možnosti "Povolit barvu podsvícení"
+(sekce Nastavení Zobrazení -&gt; 3D zobrazení). Buď bude použita barva podsvícení,
+nebo černá.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="213"/>
@@ -1472,48 +1652,48 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation>Automaticky</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation type="unfinished">Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation type="unfinished">Frontal Quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation type="unfinished">Parallelograms</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>Čas:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Spuštění gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
-      <translation type="unfinished">Failed to start</translation>
+      <translation>Nepodařilo se spustit</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -1612,17 +1792,17 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing:</source>
-      <translation type="unfinished">Meshing:</translation>
+      <translation>Síťování:</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto):</source>
-      <translation type="unfinished">Max element size (0.0 = Auto):</translation>
+      <translation>Maximální velikost prvku (0.0 = Auto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto):</source>
-      <translation type="unfinished">Min element size (0.0 = Auto):</translation>
+      <translation>Minimální velikost prvku (0.0 = Auto):</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1632,7 +1812,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="134"/>
@@ -1642,7 +1822,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="154"/>
       <source>Kill</source>
-      <translation type="unfinished">Kill</translation>
+      <translation>Vynuceně ukončit</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
@@ -2056,12 +2236,12 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
     <message>
       <location filename="../../Command.cpp" line="519"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>Komprimované X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="520"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="522"/>
@@ -2086,7 +2266,7 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Asymptotický formát</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
@@ -2134,12 +2314,12 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
       <translation>Výplně otvorů s největším počtem hran:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1845"/>
+      <location filename="../../Command.cpp" line="1891"/>
       <source>Scaling</source>
       <translation>Škálování</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1846"/>
+      <location filename="../../Command.cpp" line="1892"/>
       <source>Enter scaling factor:</source>
       <translation>Vložte měřítko:</translation>
     </message>
@@ -2156,7 +2336,7 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
     <message>
       <location filename="../../ViewProvider.cpp" line="746"/>
       <source>Display segments</source>
-      <translation type="unfinished">Display segments</translation>
+      <translation>Zobrazit segmenty</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1577"/>

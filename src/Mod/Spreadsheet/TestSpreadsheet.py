@@ -668,6 +668,23 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A17, 0.5)
         self.assertEqual(sheet.A18, 0.5)
 
+    def testQuantitiesAndFractionsAsNumbers(self):
+        """ Test quantities and simple fractions as numbers """
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '1mm')
+        sheet.set('A2', '1/2')
+        sheet.set('A3', '4mm/2')
+        sheet.set('A4', '2/mm')
+        sheet.set('A5', '4/2mm')
+        sheet.set('A6', '6mm/3s')
+        self.doc.recompute()
+        self.assertEqual(sheet.A1, Units.Quantity('1 mm'))
+        self.assertEqual(sheet.A2, 0.5)
+        self.assertEqual(sheet.A3, Units.Quantity('2 mm'))
+        self.assertEqual(sheet.A4, Units.Quantity('2 1/mm'))
+        self.assertEqual(sheet.A5, Units.Quantity('2 1/mm'))
+        self.assertEqual(sheet.A6, Units.Quantity('2 mm/s'))
+
     def testRemoveRows(self):
         """ Removing rows -- check renaming of internal cells """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -751,7 +768,7 @@ class SpreadsheetCases(unittest.TestCase):
         try:
             sheet.setAlias("A2","Test")
             self.fail("An ambiguous alias was set which shouldn't be allowed")
-        except:
+        except Exception:
             self.assertEqual(sheet.getAlias("A2"),None)
 
     def testClearAlias(self):
@@ -766,7 +783,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject("Spreadsheet::Sheet","Calc")
         try:
             sheet.setAlias("A1","B1")
-        except:
+        except Exception:
             self.assertEqual(sheet.getAlias("A1"),None)
         else:
             self.fail("A cell address was used as alias which shouldn't be allowed")
@@ -776,7 +793,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject("Spreadsheet::Sheet","Calc")
         try:
             sheet.setAlias("A1","mA")
-        except:
+        except Exception:
             self.assertEqual(sheet.getAlias("A1"), None)
         else:
             self.fail("A unit (reserved word) was used as alias which shouldn't be allowed")
@@ -1034,6 +1051,16 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(sheet.get('C1'), Units.Quantity('3 mm'))
 
+    def testIssue4156(self):
+        """ Regression test for issue 4156; necessarily use of leading '=' to enter an expression, creates inconsistent behavior depending on the spreadsheet state"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A3', 'A1')
+        sheet.set('A1', '1000')
+        self.doc.recompute()
+        sheet.set('A3', '')
+        sheet.set('A3', 'A1')
+        self.assertEqual(sheet.getContents('A3'), 'A1')
+
     def testInsertRowsAlias(self):
         """ Regression test for issue 4429; insert rows to sheet with aliases"""
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -1073,6 +1100,14 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(sheet.A3, 3)
 
+    def testRemoveRowsAliasReuseName(self):
+        """ Regression test for issue 4492; deleted aliases remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('B2', 'test')
+        self.doc.recompute()
+        sheet.removeRows('2', 1)
+        sheet.setAlias('B3','test')
+
     def testRemoveColumnsAlias(self):
         """ Regression test for issue 4429; remove columns from sheet with aliases"""
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
@@ -1085,6 +1120,28 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.removeColumns('A', 1)
         self.doc.recompute()
         self.assertEqual(sheet.C1, 3)
+
+    def testRemoveColumnsAliasReuseName(self):
+        """ Regression test for issue 4492; deleted aliases remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('B2', 'test')
+        self.doc.recompute()
+        sheet.removeColumns('B', 1)
+        sheet.setAlias('C3','test')
+
+    def testUndoAliasCreationReuseName(self):
+        """ Test deleted aliases by undo remains in database"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        self.doc.UndoMode = 1
+        self.doc.openTransaction("create alias")
+        sheet.setAlias('B2', 'test')
+        self.doc.commitTransaction()
+        self.doc.recompute()
+
+        self.doc.undo()
+        self.doc.recompute()
+        sheet.setAlias('C3','test')
 
     def tearDown(self):
         #closing doc

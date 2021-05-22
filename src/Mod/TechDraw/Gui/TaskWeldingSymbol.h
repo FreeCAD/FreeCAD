@@ -146,7 +146,7 @@ protected:
     QString m_currDir;
 
 private:
-    Ui_TaskWeldingSymbol* ui;
+    std::unique_ptr<Ui_TaskWeldingSymbol> ui;
 
     TechDraw::DrawLeaderLine* m_leadFeat;
     TechDraw::DrawWeldSymbol* m_weldFeat;

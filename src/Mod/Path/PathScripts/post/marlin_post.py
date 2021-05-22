@@ -763,7 +763,7 @@ def drill_translate(outlist, cmd, params):
     return Drill.gcode
 
 
-print(__name__ + ': GCode postprocessor loaded.')
+# print(__name__ + ': GCode postprocessor loaded.')
 
 # PEP8 format passed using: http://pep8online.com/, which primarily covers
 # indentation and line length. Some other aspects of PEP8 which have not

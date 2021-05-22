@@ -152,7 +152,9 @@ G0 Z0.500000
         table.addTools(t2)
 
         self.assertEqual(len(table.Tools), 2)
-        self.assertEqual(str(table.Tools), '{1: Tool 12.7mm Drill Bit, 2: Tool my other tool}' )
+        # gcc7 build needs some special treatment (makes 1L out of a 1) ...
+        if str(table.Tools) != '{1L: Tool 12.7mm Drill Bit, 2L: Tool my other tool}':
+            self.assertEqual(str(table.Tools), '{1: Tool 12.7mm Drill Bit, 2: Tool my other tool}')
 
     def test50(self):
         """Test Path.Length calculation"""
