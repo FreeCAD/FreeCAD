@@ -24,6 +24,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import PathScripts
+from PathScripts import PathLog
 from PySide import QtCore
 import math
 
@@ -36,8 +37,8 @@ def translate(context, text, disambig=None):
 class ObjectArray:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base",
-                        "Path", "The path to array")
+        obj.addProperty("App::PropertyLinkList", "Base",
+                        "Path", "The path(s) to array")
         obj.addProperty("App::PropertyEnumeration", "Type",
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Pattern method"))
         obj.addProperty("App::PropertyVectorDistance", "Offset",
@@ -156,53 +157,66 @@ class ObjectArray:
         return newPath
 
     def execute(self, obj):
-        if obj.Base:
-            if not obj.Base.isDerivedFrom("Path::Feature"):
-                return
-            if not obj.Base.Path:
-                return
-            if not obj.Base.ToolController:
-                return
 
-            obj.ToolController = obj.Base.ToolController
+        if isinstance(obj.Base, list):
+            base = obj.Base
+        else:
+            base = [obj.Base]
+
+
+        if len(base)>0:
+
+            obj.ToolController = base[0].ToolController
+
+            for b in base:
+                if not b.isDerivedFrom("Path::Feature"):
+                    return
+                if not b.Path:
+                    return
+                if not b.ToolController:
+                    return
+                if b.ToolController != obj.ToolController:
+                    # this may be important if Job output is split by tool controller
+                    PathLog.warning('Arrays of paths having different tool controllers are handled according to the tool controller of the first path.')
 
             # build copies
-            basepath = obj.Base.Path
             output = ""
             if obj.Type == 'Linear1D':
                 for i in range(obj.Copies):
-                    pl = FreeCAD.Placement()
-                    pos = FreeCAD.Vector(obj.Offset.x * (i + 1), obj.Offset.y * (i + 1), 0)
-                    pl.move(pos)
-                    np = Path.Path([cm.transform(pl)
-                                    for cm in basepath.Commands])
-                    output += np.toGCode()
+                    for b in base:
+                        pl = FreeCAD.Placement()
+                        pos = FreeCAD.Vector(obj.Offset.x * (i + 1), obj.Offset.y * (i + 1), 0)
+                        pl.move(pos)
+                        np = Path.Path([cm.transform(pl)
+                                        for cm in b.Path.Commands])
+                        output += np.toGCode()
 
             elif obj.Type == 'Linear2D':
                 for i in range(obj.CopiesX + 1):
                     for j in range(obj.CopiesY + 1):
-                        pl = FreeCAD.Placement()
-                        # do not process the index 0,0. It will be processed at basepath
-                        if not (i == 0 and j == 0):
-                            if (i % 2) == 0:
-                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * j, 0)
-                            else:
-                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * (obj.CopiesY - j), 0)
-
-                            pl.move(pos)
-                            np = Path.Path([cm.transform(pl)
-                                            for cm in basepath.Commands])
-                            output += np.toGCode()
+                        for b in base:
+                            pl = FreeCAD.Placement()
+                            # do not process the index 0,0. It will be processed at basepath
+                            if not (i == 0 and j == 0):
+                                if (i % 2) == 0:
+                                    pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * j, 0)
+                                else:
+                                    pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * (obj.CopiesY - j), 0)
+    
+                                pl.move(pos)
+                                np = Path.Path([cm.transform(pl)
+                                                for cm in b.Path.Commands])
+                                output += np.toGCode()
 
             else:
                 for i in range(obj.Copies):
+                    for b in base:
+                        ang = 360
+                        if obj.Copies > 0:
+                            ang = obj.Angle / obj.Copies * (1 + i)
+                        np = self.rotatePath(b.Path.Commands, ang, obj.Centre)
+                        output += np.toGCode()
 
-                    ang = 360
-                    if obj.Copies > 0:
-                        ang = obj.Angle / obj.Copies * (1 + i)
-
-                    np = self.rotatePath(basepath, ang, obj.Centre)
-                    output += np.toGCode()
             # print output
             path = Path.Path(output)
             obj.Path = path
@@ -237,7 +251,7 @@ class CommandPathArray:
     def GetResources(self):
         return {'Pixmap': 'Path_Array',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Array", "Array"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Array", "Creates an array from a selected path")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Array", "Creates an array from selected path(s)")}
 
     def IsActive(self):
         if bool(FreeCADGui.Selection.getSelection()) is False:
@@ -252,26 +266,26 @@ class CommandPathArray:
 
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(
-                translate("Path_Array", "Please select exactly one path object")+"\n")
-            return
-        if not(selection[0].isDerivedFrom("Path::Feature")):
-            FreeCAD.Console.PrintError(
-                translate("Path_Array", "Please select exactly one path object")+"\n")
-            return
+
+        for sel in selection:
+            if not(sel.isDerivedFrom("Path::Feature")):
+                FreeCAD.Console.PrintError(
+                    translate("Path_Array", "Arrays can be created only from Path operations.")+"\n")
+                return
 
         # if everything is ok, execute and register the transaction in the
         # undo/redo stack
         FreeCAD.ActiveDocument.openTransaction("Create Array")
         FreeCADGui.addModule("PathScripts.PathArray")
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand(
-            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Array")')
+
+        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Array")')
+
         FreeCADGui.doCommand('PathScripts.PathArray.ObjectArray(obj)')
-        FreeCADGui.doCommand(
-            'obj.Base = (FreeCAD.ActiveDocument.' + selection[0].Name + ')')
-        # FreeCADGui.doCommand('PathScripts.PathArray.ViewProviderArray(obj.ViewObject)')
+
+        baseString = "[%s]" % ','.join(["FreeCAD.ActiveDocument.%s" % sel.Name for sel in selection])
+        FreeCADGui.doCommand('obj.Base = %s' % baseString)
+
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
