@@ -115,7 +115,7 @@ def showPreselectInfo():
         elements = ''
         elementTypes = ['Solid', 'Shell', 'Face', 'Wire', 'Edge', 'Vertex']
         if shape.ShapeType == 'Compound':
-            elementTypes.prepend('SubShape')
+            elementTypes.insert(0, 'SubShape')
         for element in elementTypes:
             try:
                 n = shape.countElement(element)
