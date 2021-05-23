@@ -72,6 +72,7 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowDirectionalLight.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowSpotLight.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -222,7 +223,7 @@ public:
   CacheKeySet selectionkeys;
   CacheKeyPtr selkey;
 
-  std::vector<RenderCachePtr> scene;
+  RenderCachePtr scene;
   RenderCachePtr highlight;
 
   SbBox3f scenebbox;
@@ -335,11 +336,33 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
 
   this->material.pervertexcolor = next.pervertexcolor;
 
-  if (next.type == Material::Triangle) {
-    bool texturechanged = first || this->material.textures != next.textures;
-    bool lightchanged = first || this->material.lights != next.lights;
+  bool poped = first;
+  if (first || this->material.clippers != next.clippers) {
+    if (!poped) {
+      poped = true;
+      state->pop();
+      state->push();
+    }
+    if (next.clippers.getNum()) {
+      for(auto & info : next.clippers.getData()) {
+        if (!info.identity)
+          SoModelMatrixElement::set(state, NULL, info.matrix);
+        info.node->GLRender(action);
+        if (!info.identity)
+          SoModelMatrixElement::makeIdentity(state, NULL);
+      }
+    }
+    this->material.clippers = next.clippers;
+  }
 
-    if (!first && (texturechanged || lightchanged)) {
+  if (next.type == Material::Triangle) {
+    bool texturechanged = poped || this->material.textures != next.textures;
+    bool lightchanged = poped || this->material.lights != next.lights;
+
+    if (!poped && (texturechanged || lightchanged)) {
+      poped = true;
+      texturechanged = true;
+      lightchanged = true;
       state->pop();
       state->push();
     }
@@ -364,7 +387,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
         for(auto & info : next.lights.getData()) {
           if (!info.identity)
             SoModelMatrixElement::set(state, NULL, info.matrix);
-          info.light->GLRender(action);
+          info.node->GLRender(action);
           if (!info.identity)
             SoModelMatrixElement::makeIdentity(state, NULL);
         }
@@ -700,11 +723,8 @@ SoFCRendererP::pushDrawEntry(std::vector<DrawEntry> & draw_entries,
 }
 
 void
-SoFCRenderer::setScene(const std::vector<RenderCachePtr> & caches)
+SoFCRenderer::setScene(const RenderCachePtr &cache)
 {
-  if (PRIVATE(this)->scene == caches)
-    return;
-
   PRIVATE(this)->scenebbox = SbBox3f();
   PRIVATE(this)->prevplane = SbPlane();
   PRIVATE(this)->opaquevcache.clear();
@@ -716,50 +736,47 @@ SoFCRenderer::setScene(const std::vector<RenderCachePtr> & caches)
   PRIVATE(this)->linesontop.clear();
   PRIVATE(this)->trianglesontop.clear();
 
-  PRIVATE(this)->scene = caches;
+  PRIVATE(this)->scene = cache;
   PRIVATE(this)->scenebbox = SbBox3f();
 
-  for (auto & cache : PRIVATE(this)->scene) {
-    const auto & vcaches = cache->getVertexCaches(true);
-    for (const auto & v : vcaches) {
-      auto & material = v.first;
-      auto & ventries = v.second;
-      if (ventries.empty()) continue;
-      if (material.drawstyle == SoDrawStyleElement::INVISIBLE) continue;
+  for (const auto & v : cache->getVertexCaches(true)) {
+    auto & material = v.first;
+    auto & ventries = v.second;
+    if (ventries.empty()) continue;
+    if (material.drawstyle == SoDrawStyleElement::INVISIBLE) continue;
 
-      bool fulltransp = material.transptexture;
-      if (!fulltransp && !material.pervertexcolor)
-        fulltransp = (material.diffuse & 0xff) == 0xff ? false : true;
+    bool fulltransp = material.transptexture;
+    if (!fulltransp && !material.pervertexcolor)
+      fulltransp = (material.diffuse & 0xff) == 0xff ? false : true;
 
-      for (auto & ventry : ventries) {
-        std::size_t idx = SoFCRendererP::pushDrawEntry(PRIVATE(this)->drawentries, material, ventry);
-        if (!idx)
-          continue;
-        --idx;
-        PRIVATE(this)->scenebbox.extendBy(PRIVATE(this)->drawentries.back().bbox);
-        PRIVATE(this)->cachetable[ventry.key].push_back(idx);
+    for (auto & ventry : ventries) {
+      std::size_t idx = SoFCRendererP::pushDrawEntry(PRIVATE(this)->drawentries, material, ventry);
+      if (!idx)
+        continue;
+      --idx;
+      PRIVATE(this)->scenebbox.extendBy(PRIVATE(this)->drawentries.back().bbox);
+      PRIVATE(this)->cachetable[ventry.key].push_back(idx);
 
-        if (material.isOnTop() && material.type == Material::Triangle)
-          PRIVATE(this)->trianglesontop.emplace_back(idx);
+      if (material.isOnTop() && material.type == Material::Triangle)
+        PRIVATE(this)->trianglesontop.emplace_back(idx);
 
-        if (!fulltransp && (!material.pervertexcolor
-                            || ventry.cache->hasOpaqueParts())) {
-          if (material.isOnTop()) {
-            if (material.type != Material::Triangle)
-              PRIVATE(this)->linesontop.emplace_back(idx);
-            else 
-              PRIVATE(this)->opaqueontop.emplace_back(idx);
-          } else
-            PRIVATE(this)->opaquevcache.emplace_back(idx);
-        }
+      if (!fulltransp && (!material.pervertexcolor
+                          || ventry.cache->hasOpaqueParts())) {
+        if (material.isOnTop()) {
+          if (material.type != Material::Triangle)
+            PRIVATE(this)->linesontop.emplace_back(idx);
+          else 
+            PRIVATE(this)->opaqueontop.emplace_back(idx);
+        } else
+          PRIVATE(this)->opaquevcache.emplace_back(idx);
+      }
 
-        if (fulltransp || (material.pervertexcolor
-                            && ventry.cache->hasTransparency())) {
-          if (material.isOnTop())
-            PRIVATE(this)->transpontop.emplace_back(idx);
-          else
-            PRIVATE(this)->transpvcache.emplace_back(idx);
-        }
+      if (fulltransp || (material.pervertexcolor
+                          && ventry.cache->hasTransparency())) {
+        if (material.isOnTop())
+          PRIVATE(this)->transpontop.emplace_back(idx);
+        else
+          PRIVATE(this)->transpvcache.emplace_back(idx);
       }
     }
   }

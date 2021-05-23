@@ -37,6 +37,7 @@
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoLight.h>
+#include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/sensors/SoDataSensor.h>
 #include <Inventor/sensors/SoPathSensor.h>
@@ -156,6 +157,7 @@ public:
   static SoCallbackAction::Response postPathAnnotation(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response preShape(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postShape(void *, SoCallbackAction *action, const SoNode * node);
+  static SoCallbackAction::Response postClipPlane(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postLightModel(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postLight(void *, SoCallbackAction *action, const SoNode * node);
   static SoCallbackAction::Response postMaterial(void *, SoCallbackAction *action, const SoNode * node);
@@ -240,14 +242,12 @@ public:
   int selid;
   
   std::vector<RenderCachePtr> stack;
-  std::vector<RenderCachePtr> caches;
   SbFCUniqueId sceneid;
   std::unordered_set<const SoNode *> nodeset;
   const SoNode * prunenode;
   int traversedepth;
   SoFCRenderer *renderer;
   int annotation;
-  bool initmaterial;
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
@@ -270,7 +270,6 @@ getMaxShapeTypeId()
 
 SoFCRenderCacheManagerP::SoFCRenderCacheManagerP()
 {
-  this->initmaterial = false;
   this->prunenode = nullptr;
   this->selid = 0;
   this->sceneid = 0;
@@ -322,6 +321,7 @@ void SoFCRenderCacheManagerP::initAction()
   this->action->addPostCallback(SoMaterial::getClassTypeId(), &postMaterial, this);
   this->action->addPostCallback(SoDepthBuffer::getClassTypeId(), &postDepthBuffer, this);
   this->action->addPostCallback(SoLight::getClassTypeId(), &postLight, this);
+  this->action->addPostCallback(SoClipPlane::getClassTypeId(), &postClipPlane, this);
 
   this->action->addTriangleCallback(SoShape::getClassTypeId(), &addTriangle, this);
   this->action->addLineSegmentCallback(SoShape::getClassTypeId(), &addLine, this);
@@ -354,7 +354,6 @@ void
 SoFCRenderCacheManager::clear()
 {
   PRIVATE(this)->stack.clear();
-  PRIVATE(this)->caches.clear();
   PRIVATE(this)->nodeset.clear();
   PRIVATE(this)->cachetable.clear();
   PRIVATE(this)->vcachetable.clear();
@@ -389,20 +388,24 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
                                      bool ontop,
                                      bool wholeontop)
 {
-  PRIVATE(this)->caches.clear();
+  if (!path || path->getLength() == 0)
+    return;
   SoState * state = PRIVATE(this)->action->getState();
+  RenderCachePtr cache = new SoFCRenderCache(state, path->getHead());
+  cache->open(state, true, true);
+  PRIVATE(this)->stack.resize(1, cache);
   if (ontop)
     SoFCSwitch::setOverrideSwitch(state, true);
   PRIVATE(this)->action->apply(path);
   if (ontop)
     SoFCSwitch::setOverrideSwitch(state, false);
-  if (PRIVATE(this)->caches.size()) {
+  PRIVATE(this)->stack.clear();
+  if (!cache->isEmpty()) {
     int order = ontop ? 1 : 0;
     PRIVATE(this)->renderer->setHighlight(
-          PRIVATE(this)->caches[0]->buildHighlightCache(
+          cache->buildHighlightCache(
             order, detail, color, true, wholeontop),
           wholeontop);
-    PRIVATE(this)->caches.clear();
   }
 }
 
@@ -423,20 +426,21 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
   if (!path->getLength())
     return;
 
-  self->caches.clear();
   SoState * state = self->action->getState();
+  RenderCachePtr cache = new SoFCRenderCache(state, path->getHead());
+  cache->open(state, true, true);
+  self->stack.resize(1, cache);
   if (sensor->ontop)
     SoFCSwitch::setOverrideSwitch(state, true);
   self->action->apply(path);
   if (sensor->ontop)
     SoFCSwitch::setOverrideSwitch(state, false);
+  self->stack.clear();
 
-  if (self->caches.empty())
+  if (cache->isEmpty())
     return;
 
-  sensor->cache = self->caches[0];
-  self->caches.clear();
-
+  sensor->cache = cache;
   for (auto & v : sensor->elements) {
     auto & elentry = v.second;
     elentry.vcachemap = sensor->cache->buildHighlightCache(
@@ -733,15 +737,15 @@ SoFCRenderCacheManager::render(SoGLRenderAction * action)
 
   const SoPath * path = action->getCurPath();
   if (!PRIVATE(this)->sceneid || PRIVATE(this)->sceneid != path->getTail()->getNodeId()) {
-    PRIVATE(this)->initmaterial = true;
     PRIVATE(this)->sceneid = path->getTail()->getNodeId();
-    PRIVATE(this)->caches.clear();
+    RenderCachePtr cache = new SoFCRenderCache(state, path->getTail());
+    cache->open(state, true, true);
+    PRIVATE(this)->stack.resize(1, cache);
     CoinPtr<SoPath> pathCopy(path->copy());
     PRIVATE(this)->initAction();
     PRIVATE(this)->action->apply(pathCopy);
-    PRIVATE(this)->renderer->setScene(PRIVATE(this)->caches);
-    PRIVATE(this)->caches.clear();
-    PRIVATE(this)->initmaterial = false;
+    PRIVATE(this)->renderer->setScene(cache);
+    PRIVATE(this)->stack.clear();
   }
 
   PRIVATE(this)->renderer->render(action);
@@ -776,8 +780,6 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
       if (cache->isValid(state)) {
         if (currentcache)
           currentcache->addChildCache(state, cache);
-        else
-          self->caches.push_back(cache);
         self->stack.push_back(cache);
         return SoCallbackAction::PRUNE;
       }
@@ -798,10 +800,8 @@ SoFCRenderCacheManagerP::preSeparator(void *userdata,
     sensor->caches.push_back(cache);
   if (currentcache)
     currentcache->beginChildCaching(state, cache);
-  else
-    self->caches.push_back(cache);
   self->stack.push_back(cache);
-  cache->open(state, selectable, self->initmaterial && self->stack.size()==1);
+  cache->open(state, selectable);
   return SoCallbackAction::CONTINUE;
 }
 
@@ -830,8 +830,6 @@ SoFCRenderCacheManagerP::postSeparator(void *userdata,
     cache->close(state);
     if (self->stack.size())
       self->stack.back()->endChildCaching(state, cache);
-    else if (cache->isEmpty() && self->caches.size() && self->caches.back() == cache)
-      self->caches.pop_back();
   }
   return SoCallbackAction::CONTINUE;
 }
@@ -1007,6 +1005,20 @@ SoFCRenderCacheManagerP::postLight(void *userdata,
   assert(node && node->isOfType(SoLight::getClassTypeId()));
   const SoLight *light = static_cast<const SoLight*>(node);
   self->stack.back()->addLight(action->getState(), light);
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response
+SoFCRenderCacheManagerP::postClipPlane(void *userdata,
+                                       SoCallbackAction *action,
+                                       const SoNode * node)
+{
+  SoFCRenderCacheManagerP *self = reinterpret_cast<SoFCRenderCacheManagerP*>(userdata);
+  if (self->stack.empty())
+      return SoCallbackAction::CONTINUE;
+
+  assert(node && node->isOfType(SoClipPlane::getClassTypeId()));
+  self->stack.back()->addClipPlane(action->getState(), static_cast<const SoClipPlane*>(node));
   return SoCallbackAction::CONTINUE;
 }
 

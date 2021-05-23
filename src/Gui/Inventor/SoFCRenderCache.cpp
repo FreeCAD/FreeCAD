@@ -48,6 +48,7 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoLight.h>
+#include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
@@ -521,6 +522,30 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
 
   if (!parent.selectable)
     res.selectable = false;
+
+  auto mergeNodeInfo = [&](SoFCRenderCache::NodeInfoArray &thisarray,
+                           const SoFCRenderCache::NodeInfoArray &other)
+  {
+    if (identity)
+      thisarray.append(other);
+    else if (other.getNum()) {
+      for (const auto & info : other.getData()) {
+        if (info.resetmatrix)
+          thisarray.append(info);
+        else {
+          SoFCRenderCache::NodeInfo copy = info;
+          if (copy.identity)
+            copy.matrix = matrix;
+          else
+            copy.matrix.multLeft(matrix);
+          copy.identity = false;
+          thisarray.append(copy);
+        }
+      }
+    }
+  };
+  res.clippers = parent.clippers;
+  mergeNodeInfo(res.clippers, child.clippers);
   
   copyMaterial(res, parent, &Material::depthtest, 0, Material::FLAG_DEPTH_TEST);
   copyMaterial(res, parent, &Material::depthfunc, 0, Material::FLAG_DEPTH_FUNC);
@@ -599,23 +624,7 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
   res.textures.add(parent.textures, false);
 
   res.lights = parent.lights;
-  if (identity)
-    res.lights.append(child.lights);
-  else if (child.lights.getNum()) {
-    for (const auto & info : child.lights.getData()) {
-      if (info.resetmatrix)
-        res.lights.append(info);
-      else {
-        SoFCRenderCache::LightInfo copy = info;
-        if (copy.identity)
-          copy.matrix = matrix;
-        else
-          copy.matrix.multLeft(matrix);
-        copy.identity = false;
-        res.lights.append(copy);
-      }
-    }
-  }
+  mergeNodeInfo(res.lights, child.lights);
 
   if (!res.transptexture && res.textures.getNum()) {
     for (auto & info : res.textures.getData()) {
@@ -896,8 +905,8 @@ SoFCRenderCache::addLight(SoState * state, const SoLight * light)
   (void)state;
   if (!light->on.getValue()) return;
 
-  LightInfo info;
-  info.light = const_cast<SoLight*>(light);
+  NodeInfo info;
+  info.node = const_cast<SoLight*>(light);
   info.resetmatrix = PRIVATE(this)->resetmatrix;
 
   auto elem = constElement<SoModelMatrixElement>(state);
@@ -909,6 +918,27 @@ SoFCRenderCache::addLight(SoState * state, const SoLight * light)
   }
 
   PRIVATE(this)->material.lights.append(info);
+}
+
+void
+SoFCRenderCache::addClipPlane(SoState * state, const SoClipPlane * node)
+{
+  (void)state;
+  if (!node->on.getValue()) return;
+
+  NodeInfo info;
+  info.node = const_cast<SoClipPlane*>(node);
+  info.resetmatrix = PRIVATE(this)->resetmatrix;
+
+  auto elem = constElement<SoModelMatrixElement>(state);
+  if (elem->getModelMatrix() == matrixidentity)
+    info.identity = true;
+  else {
+    info.identity = false;
+    info.matrix = elem->getModelMatrix();
+  }
+
+  PRIVATE(this)->material.clippers.append(info);
 }
 
 void

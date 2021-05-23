@@ -41,7 +41,7 @@ public:
 
   void render(SoGLRenderAction * action);
 
-  void setScene(const std::vector<Gui::CoinPtr<SoFCRenderCache> > & caches);
+  void setScene(const Gui::CoinPtr<SoFCRenderCache> & cache);
 
   typedef SoFCRenderCache::VertexCacheMap VertexCacheMap;
 

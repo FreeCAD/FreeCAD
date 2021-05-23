@@ -42,6 +42,7 @@ class SoLightModel;
 class SoMaterial;
 class SoDepthBuffer;
 class SbBox3f;
+class SoClipPlane;
 
 // -------------------------------------------------------------
 
@@ -124,15 +125,15 @@ public:
 
   typedef COWMap<std::map<int, TextureInfo> > TextureMap;
 
-  struct LightInfo {
-    Gui::CoinPtr<SoLight> light;
+  struct NodeInfo {
+    Gui::CoinPtr<SoNode> node;
     SbMatrix matrix;
     bool identity;
     bool resetmatrix;
 
-    int compare(const LightInfo & other) const {
-      if (this->light < other.light) return -1;
-      if (this->light > other.light) return 1;
+    int compare(const NodeInfo & other) const {
+      if (this->node < other.node) return -1;
+      if (this->node > other.node) return 1;
       if (this->identity < other.identity) return -1;
       if (this->identity > other.identity) return 1;
       if (!this->identity) {
@@ -144,23 +145,36 @@ public:
       return 0;
     }
 
-    bool operator==(const LightInfo &other) const {
+    bool operator==(const NodeInfo &other) const {
       return compare(other) == 0;
     }
 
-    bool operator!=(const LightInfo &other) const {
+    bool operator!=(const NodeInfo &other) const {
       return compare(other) != 0;
     }
 
-    bool operator<(const LightInfo &other) const {
+    bool operator<(const NodeInfo &other) const {
       return compare(other) < 0;
     }
 
-    bool operator>(const LightInfo &other) const {
+    bool operator>(const NodeInfo &other) const {
       return compare(other) > 0;
     }
+
+    template <class T>
+    T *cast() {
+      assert(node && node->isOfType(T::getClassTypeId()));
+      return static_cast<T*>(node.get());
+    }
+
+    template <class T>
+    const T *cast() const {
+      assert(node && node->isOfType(T::getClassTypeId()));
+      return static_cast<T*>(node.get());
+    }
   };
-  typedef COWVector<std::vector<LightInfo> > LightArray;
+
+  typedef COWVector<std::vector<NodeInfo> > NodeInfoArray;
 
   struct Material {
     enum Type {
@@ -226,7 +240,8 @@ public:
 
     TextureMatrixMap texturematrices;
     TextureMap textures;
-    LightArray lights;
+    NodeInfoArray lights;
+    NodeInfoArray clippers;
 
     void init(SoState * state = nullptr);
 
@@ -243,6 +258,8 @@ public:
       if (order > other.order) return false;
       if (annotation < other.annotation) return true;
       if (annotation > other.annotation) return false;
+      if (clippers < other.clippers) return true;
+      if (clippers > other.clippers) return false;
       if (type < other.type) return true;
       if (type > other.type) return false;
       if (depthtest < other.depthtest) return true;
@@ -308,7 +325,6 @@ public:
       }
       return false;
     }
-
   };
 
   typedef std::vector<intptr_t> CacheKey;
@@ -353,6 +369,8 @@ public:
 
   void addTexture(SoState * state, const SoTexture * texture);
   void addTextureTransform(SoState * state, const SoNode *);
+
+  void addClipPlane(SoState * state, const SoClipPlane * light);
 
   void addLight(SoState * state, const SoLight * light);
 
