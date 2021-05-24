@@ -462,6 +462,11 @@ class ObjectJob:
             self.obj.Operations.Group = group
             op.Path.Center = self.obj.Operations.Path.Center
 
+    def nextToolNumber(self):
+        # returns the next available toolnumber in the job
+        group = self.obj.Tools.Group
+        return sorted([t.ToolNumber for t in group])[-1] + 1
+
     def addToolController(self, tc):
         group = self.obj.Tools.Group
         PathLog.debug("addToolController(%s): %s" % (tc.Label, [t.Label for t in group]))
