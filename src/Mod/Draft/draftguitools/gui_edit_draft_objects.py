@@ -112,6 +112,7 @@ class DraftWireGuiTools(GuiTools):
     def get_edit_obj_context_menu(self, edit_command, obj, position):
         return [
             ("add point", lambda: self.handle_add_point(edit_command, obj, position)),
+            ("reverse wire", lambda: self.handle_reverse_wire(edit_command, obj, position)),
         ]
 
     def handle_delete_point(self, edit_command, obj, node_idx):
@@ -120,6 +121,10 @@ class DraftWireGuiTools(GuiTools):
 
     def handle_add_point(self, edit_command, obj, pos):
         self.add_point(edit_command, obj, pos)
+        edit_command.resetTrackers(obj)
+
+    def handle_reverse_wire(self, edit_command, obj, pos):
+        self.reverse_wire(obj)
         edit_command.resetTrackers(obj)
 
     def init_preview_object(self, obj):
@@ -183,6 +188,9 @@ class DraftWireGuiTools(GuiTools):
 
         obj.recompute()
 
+    def reverse_wire(self, obj):
+        obj.Points = reversed(obj.Points)
+        obj.recompute()
 
 class DraftBSplineGuiTools(DraftWireGuiTools):
 
