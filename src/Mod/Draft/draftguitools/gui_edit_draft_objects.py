@@ -176,12 +176,6 @@ class DraftRectangleGuiTools(GuiTools):
         elif node_idx == 2:
             obj.Height = DraftVecUtils.project(v, App.Vector(0,1,0)).Length
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class DraftCircleGuiTools(GuiTools):
 
@@ -414,12 +408,6 @@ class DraftEllipseGuiTools(GuiTools):
             else:
                 obj.MinorRadius = obj.MajorRadius
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
-
 
 class DraftPolygonGuiTools(GuiTools):
 
@@ -443,12 +431,6 @@ class DraftPolygonGuiTools(GuiTools):
         elif node_idx == 1:
             obj.Radius = v.Length
         obj.recompute()
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
 
 class DraftDimensionGuiTools(GuiTools):
@@ -474,12 +456,6 @@ class DraftDimensionGuiTools(GuiTools):
             obj.Dimline = v
         elif node_idx == 3:
             obj.ViewObject.TextPosition = v
-
-    def get_edit_point_context_menu(self, obj, node_idx):
-        pass
-
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        pass
 
 
 class DraftBezCurveGuiTools(GuiTools):
