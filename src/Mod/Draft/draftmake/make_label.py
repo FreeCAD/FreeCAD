@@ -282,12 +282,13 @@ def make_label(target_point=App.Vector(0, 0, 0),
     if not custom_text:
         custom_text = "Label"
     try:
-        utils.type_check([(custom_text, (str, list))])
+        utils.type_check([(custom_text, (str, list))], name=_name)
     except TypeError:
         _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
-    if not all(isinstance(element, str) for element in custom_text):
+    if (type(custom_text) is list
+            and not all(isinstance(element, str) for element in custom_text)):
         _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
