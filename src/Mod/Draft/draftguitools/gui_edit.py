@@ -672,109 +672,6 @@ class Edit(gui_base_original.Modifier):
         except Exception:
             return
 
-    # -------------------------------------------------------------------------
-    # EDIT OBJECT TOOLS : Add/Delete Vertexes
-    # -------------------------------------------------------------------------
-
-    def addPoint(self, event):
-        """Add point to obj and reset trackers.
-        """
-        pos = event.getPosition()
-        # self.setSelectState(obj, True)
-        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
-        if not selobjs:
-            return
-        for info in selobjs:
-            if not info:
-                return
-            for o in self.edited_objects:
-                if o.Name != info["Object"]:
-                    continue
-                obj = o
-                break
-            if utils.get_type(obj) == "Wire" and 'Edge' in info["Component"]:
-                pt = App.Vector(info["x"], info["y"], info["z"])
-                self.addPointToWire(obj, pt, int(info["Component"][4:]))
-            elif utils.get_type(obj) in ["BSpline", "BezCurve"]: #to fix double vertex created
-                # pt = self.point
-                if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
-                    pt = App.Vector(info["x"], info["y"], info["z"])
-                else:
-                    continue
-                self.addPointToCurve(pt, obj, info)
-        obj.recompute()
-        self.resetTrackers(obj)
-        return
-
-    def addPointToWire(self, obj, newPoint, edgeIndex):
-        newPoints = []
-        if hasattr(obj, "ChamferSize") and hasattr(obj, "FilletRadius"):
-            if obj.ChamferSize > 0 and obj.FilletRadius > 0:
-                edgeIndex = (edgeIndex + 3) / 4
-            elif obj.ChamferSize > 0 or obj.FilletRadius > 0:
-                edgeIndex = (edgeIndex + 1) / 2
-
-        for index, point in enumerate(obj.Points):
-            if index == edgeIndex:
-                newPoints.append(self.localize_vector(obj, newPoint))
-            newPoints.append(point)
-        if obj.Closed and edgeIndex == len(obj.Points):
-            # last segment when object is closed
-            newPoints.append(self.localize_vector(obj, newPoint))
-        obj.Points = newPoints
-
-    def addPointToCurve(self, point, obj, info=None):
-        import Part
-        if  utils.get_type(obj) not in ["BSpline", "BezCurve"]:
-            return
-        pts = obj.Points
-        if utils.get_type(obj) == "BezCurve":
-            if not info['Component'].startswith('Edge'):
-                return  # clicked control point
-            edgeindex = int(info['Component'].lstrip('Edge')) - 1
-            wire = obj.Shape.Wires[0]
-            bz = wire.Edges[edgeindex].Curve
-            param = bz.parameter(point)
-            seg1 = wire.Edges[edgeindex].copy().Curve
-            seg2 = wire.Edges[edgeindex].copy().Curve
-            seg1.segment(seg1.FirstParameter, param)
-            seg2.segment(param, seg2.LastParameter)
-            if edgeindex == len(wire.Edges):
-                # we hit the last segment, we need to fix the degree
-                degree=wire.Edges[0].Curve.Degree
-                seg1.increase(degree)
-                seg2.increase(degree)
-            edges = wire.Edges[0:edgeindex] + [Part.Edge(seg1),Part.Edge(seg2)] \
-                + wire.Edges[edgeindex + 1:]
-            pts = edges[0].Curve.getPoles()[0:1]
-            for edge in edges:
-                pts.extend(edge.Curve.getPoles()[1:])
-            if obj.Closed:
-                pts.pop()
-            c = obj.Continuity
-            # assume we have a tangent continuity for an arbitrarily split
-            # segment, unless it's linear
-            cont = 1 if (obj.Degree >= 2) else 0
-            obj.Continuity = c[0:edgeindex] + [cont] + c[edgeindex:]
-        else:
-            if (utils.get_type(obj) in ["BSpline"]):
-                if (obj.Closed == True):
-                    curve = obj.Shape.Edges[0].Curve
-                else:
-                    curve = obj.Shape.Curve
-            uNewPoint = curve.parameter(point)
-            uPoints = []
-            for p in obj.Points:
-                uPoints.append(curve.parameter(p))
-            for i in range(len(uPoints) - 1):
-                if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
-                    pts.insert(i + 1, self.localize_vector(obj, point))
-                    break
-            # DNC: fix: add points to last segment if curve is closed
-            if obj.Closed and (uNewPoint > uPoints[-1]):
-                pts.append(self.localize_vector(obj, point))
-        obj.Points = pts
-
     # ------------------------------------------------------------------------
     # DRAFT EDIT Context menu
     # ------------------------------------------------------------------------
@@ -833,7 +730,8 @@ class Edit(gui_base_original.Modifier):
             actions = obj_gui_tools.evaluate_context_menu_action(self, obj, idx, action_label)
 
         elif action_label == "add point":
-            self.addPoint(self.event)
+            if obj and obj_gui_tools:
+                obj_gui_tools.add_point(self.event)
 
         elif action_label == "invert arc":
             pos = self.event.getPosition()

@@ -46,6 +46,7 @@ __url__ = "https://www.freecadweb.org"
 # @{
 import math
 import FreeCAD as App
+import FreeCADGui as Gui
 import DraftVecUtils
 
 from draftutils.translate import translate
@@ -123,7 +124,45 @@ class DraftWireGuiTools(GuiTools):
             if obj.Closed:
                 pointList.append(pointList[0])
             edit_command.ghost.updateFromPointlist(pointList)
-        
+
+    def add_point(self, edit_command, obj, pos):
+        """Add point to obj.
+        """
+        # self.setSelectState(obj, True)
+        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        if not selobjs:
+            return
+        for info in selobjs:
+            if not info:
+                return
+            if obj.Name != info["Object"]:
+                return
+            if not 'Edge' in info["Component"]: 
+                return
+            newPoint = App.Vector(info["x"], info["y"], info["z"])
+            edgeIndex = int(info["Component"][4:])
+
+            newPoints = []
+            if hasattr(obj, "ChamferSize") and hasattr(obj, "FilletRadius"):
+                # TODO: If Draft_Wire fails to calculate one of the fillets or chamfers
+                #       this algo fails to identify the correct edge
+                if obj.ChamferSize > 0 and obj.FilletRadius > 0:
+                    edgeIndex = (edgeIndex + 3) / 4
+                elif obj.ChamferSize > 0 or obj.FilletRadius > 0:
+                    edgeIndex = (edgeIndex + 1) / 2
+
+            for index, point in enumerate(obj.Points):
+                if index == edgeIndex:
+                    newPoints.append(edit_command.localize_vector(obj, newPoint))
+                newPoints.append(point)
+            if obj.Closed and edgeIndex == len(obj.Points):
+                # last segment when object is closed
+                newPoints.append(edit_command.localize_vector(obj, newPoint))
+            obj.Points = newPoints
+
+            obj.recompute()
+            return
+
     def delete_point(self, obj, node_idx):
         if len(obj.Points) <= 2:
             _msg = translate("draft", "Active object must have more than two points/nodes") 
@@ -148,6 +187,44 @@ class DraftBSplineGuiTools(DraftWireGuiTools):
         if obj.Closed:
             pointList.append(pointList[0])
         edit_command.ghost.update(pointList)
+
+    def add_point(self, edit_command, obj, pos):
+        """Add point to obj.
+        """
+        # self.setSelectState(obj, True)
+        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        if not selobjs:
+            return
+        for info in selobjs:
+            if not info:
+                return
+            if obj.Name != info["Object"]:
+                return
+            if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
+                point = App.Vector(info["x"], info["y"], info["z"])
+            else:
+                continue
+
+            pts = obj.Points
+            if (obj.Closed == True):
+                curve = obj.Shape.Edges[0].Curve
+            else:
+                curve = obj.Shape.Curve
+            uNewPoint = curve.parameter(point)
+            uPoints = []
+            for p in obj.Points:
+                uPoints.append(curve.parameter(p))
+            for i in range(len(uPoints) - 1):
+                if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
+                    pts.insert(i + 1, edit_command.localize_vector(obj, point))
+                    break
+            # DNC: fix: add points to last segment if curve is closed
+            if obj.Closed and (uNewPoint > uPoints[-1]):
+                pts.append(edit_command.localize_vector(obj, point))
+            obj.Points = pts
+
+        obj.recompute()
+        return
 
 
 class DraftRectangleGuiTools(GuiTools):
@@ -689,5 +766,64 @@ class DraftBezCurveGuiTools(GuiTools):
                                             len(obj.Continuity)))
         obj.Points = pts
         obj.Continuity = newcont
+
+    def add_point(self, edit_command, obj, pos):
+        """Add point to obj and reset trackers.
+        """
+        # self.setSelectState(obj, True)
+        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        if not selobjs:
+            return
+        for info in selobjs:
+            if not info:
+                return
+            for o in edit_command.edited_objects:
+                if o.Name != info["Object"]:
+                    continue
+                obj = o
+                break
+            if utils.get_type(obj) == "BezCurve": #to fix double vertex created
+                # pt = self.point
+                if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
+                    pt = App.Vector(info["x"], info["y"], info["z"])
+                else:
+                    continue
+                self.addPointToCurve(pt, obj, info)
+        obj.recompute()
+        return
+
+    def addPointToCurve(self, point, obj, info=None):
+        import Part
+
+        pts = obj.Points
+        if not info['Component'].startswith('Edge'):
+            return  # clicked control point
+        edgeindex = int(info['Component'].lstrip('Edge')) - 1
+        wire = obj.Shape.Wires[0]
+        bz = wire.Edges[edgeindex].Curve
+        param = bz.parameter(point)
+        seg1 = wire.Edges[edgeindex].copy().Curve
+        seg2 = wire.Edges[edgeindex].copy().Curve
+        seg1.segment(seg1.FirstParameter, param)
+        seg2.segment(param, seg2.LastParameter)
+        if edgeindex == len(wire.Edges):
+            # we hit the last segment, we need to fix the degree
+            degree=wire.Edges[0].Curve.Degree
+            seg1.increase(degree)
+            seg2.increase(degree)
+        edges = wire.Edges[0:edgeindex] + [Part.Edge(seg1),Part.Edge(seg2)] \
+            + wire.Edges[edgeindex + 1:]
+        pts = edges[0].Curve.getPoles()[0:1]
+        for edge in edges:
+            pts.extend(edge.Curve.getPoles()[1:])
+        if obj.Closed:
+            pts.pop()
+        c = obj.Continuity
+        # assume we have a tangent continuity for an arbitrarily split
+        # segment, unless it's linear
+        cont = 1 if (obj.Degree >= 2) else 0
+        obj.Continuity = c[0:edgeindex] + [cont] + c[edgeindex:]
+
+        obj.Points = pts
 
 ## @}
