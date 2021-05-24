@@ -843,6 +843,20 @@ class Edit(gui_base_original.Modifier):
                 obj_gui_tools.restore_object_style(obj, self.objs_formats[obj.Name])
 
 
+    def get_specific_object_info(self, obj, pos):
+        """Return info of a specific object at a given position.
+        """
+        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        if not selobjs:
+            return
+        for info in selobjs:
+            if not info:
+                continue
+            if obj.Name == info["Object"] and "x" in info:
+                # prefer "real" 3D location over working-plane-driven one if possible
+                pt = App.Vector(info["x"], info["y"], info["z"])
+                return info, pt
+
     def get_selected_obj_at_position(self, pos):
         """Return object at given position.
 
