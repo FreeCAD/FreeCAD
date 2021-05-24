@@ -222,7 +222,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         if obj.ExtensionCorners != self.form.extendCorners.isChecked():
             self.form.extendCorners.toggle()
-        self.defaultLength.updateSpinBox()
+        self.updateQuantitySpinBoxes()
         self.extensions = obj.Proxy.getExtensions(obj) # pylint: disable=attribute-defined-outside-init
         self.setExtensions(self.extensions)
 
@@ -341,11 +341,15 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.form.extensionTree.blockSignals(False)
 
+    def updateQuantitySpinBoxes(self, index = None):
+        self.defaultLength.updateSpinBox()
+
     def updateData(self, obj, prop):
         PathLog.track(obj.Label, prop, self.blockUpdateData)
         if not self.blockUpdateData:
             if prop in ['Base', 'ExtensionLengthDefault']:
                 self.setExtensions(obj.Proxy.getExtensions(obj))
+                self.updateQuantitySpinBoxes()
 
     def restoreSelection(self, selection):
         PathLog.track()
@@ -458,6 +462,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonDisable.clicked.connect(self.extensionsDisable)
         self.form.buttonEnable.clicked.connect(self.extensionsEnable)
+        self.form.defaultLength.editingFinished.connect(self.updateQuantitySpinBoxes)
 
         self.model.itemChanged.connect(self.updateItemEnabled)
 
