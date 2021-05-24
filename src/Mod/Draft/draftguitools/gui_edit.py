@@ -678,7 +678,6 @@ class Edit(gui_base_original.Modifier):
 
     def display_tracker_menu(self, event):
         self.tracker_menu = QtGui.QMenu()
-        self.event = event
         actions = None
 
         if self.overNode:
@@ -689,22 +688,23 @@ class Edit(gui_base_original.Modifier):
 
             obj_gui_tools = self.get_obj_gui_tools(obj)
             if obj_gui_tools:
-                actions = obj_gui_tools.get_edit_point_context_menu(obj, ep)
+                actions = obj_gui_tools.get_edit_point_context_menu(self, obj, ep)
 
         else:
             # try if user is over an edited object
-            pos = self.event.getPosition()
+            pos = event.getPosition()
             obj = self.get_selected_obj_at_position(pos)
-            if utils.get_type(obj) in ["Line", "Wire", "BSpline", "BezCurve"]:
-                actions = ["add point"]
-            elif utils.get_type(obj) in ["Circle"] and obj.FirstAngle != obj.LastAngle:
-                actions = ["invert arc"]
+
+            obj_gui_tools = self.get_obj_gui_tools(obj)
+            if obj_gui_tools:
+                actions = obj_gui_tools.get_edit_obj_context_menu(self, obj, pos)
 
         if actions is None:
             return
 
-        for a in actions:
-            self.tracker_menu.addAction(a)
+        for (label, callback) in actions:
+            action = self.tracker_menu.addAction(label)
+            action.setData(callback)
 
         self.tracker_menu.popup(Gui.getMainWindow().cursor().pos())
 
@@ -713,32 +713,9 @@ class Edit(gui_base_original.Modifier):
                                self.evaluate_menu_action)
 
 
-    def evaluate_menu_action(self, labelname):
-        action_label = str(labelname.text())
-
-        doc = None
-        obj = None
-        idx = None
-
-        if self.overNode:
-            doc = self.overNode.get_doc_name()
-            obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
-            idx = self.overNode.get_subelement_index()
-
-        obj_gui_tools = self.get_obj_gui_tools(obj)
-        if obj and obj_gui_tools:
-            actions = obj_gui_tools.evaluate_context_menu_action(self, obj, idx, action_label)
-
-        elif action_label == "add point":
-            if obj and obj_gui_tools:
-                obj_gui_tools.add_point(self.event)
-
-        elif action_label == "invert arc":
-            pos = self.event.getPosition()
-            obj = self.get_selected_obj_at_position(pos)
-            obj_gui_tools.arcInvert(obj)
-
-        del self.event
+    def evaluate_menu_action(self, action):
+        callback = action.data()
+        callback()
 
 
     # -------------------------------------------------------------------------

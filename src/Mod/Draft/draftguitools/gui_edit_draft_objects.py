@@ -104,15 +104,23 @@ class DraftWireGuiTools(GuiTools):
         pts[node_idx] = v
         obj.Points = pts
 
+    def get_edit_point_context_menu(self, edit_command, obj, node_idx):
+        return [
+            ("delete point", lambda: self.handle_delete_point(edit_command, obj, node_idx)),
+        ]
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        actions = ["delete point"]
-        return actions
-    
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        if action == "delete point":
-            self.delete_point(obj, node_idx)
-            edit_command.resetTrackers(obj)
+    def get_edit_obj_context_menu(self, edit_command, obj, position):
+        return [
+            ("add point", lambda: self.handle_add_point(edit_command, obj, position)),
+        ]
+
+    def handle_delete_point(self, edit_command, obj, node_idx):
+        self.delete_point(obj, node_idx)
+        edit_command.resetTrackers(obj)
+
+    def handle_add_point(self, edit_command, obj, pos):
+        self.add_point(edit_command, obj, pos)
+        edit_command.resetTrackers(obj)
 
     def init_preview_object(self, obj):
         return trackers.wireTracker(obj.Shape)
@@ -348,26 +356,50 @@ class DraftCircleGuiTools(GuiTools):
                         obj.Radius = v.Length
 
 
-    def get_edit_point_context_menu(self, obj, node_idx):
+    def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         actions = None
         if obj.FirstAngle != obj.LastAngle:
             if node_idx == 0:  # user is over arc start point
-                actions = ["move arc"]
+                return [
+                    ("move arc", lambda: self.handle_move_arc(edit_command, obj, node_idx)),
+                ]
             elif node_idx == 1:  # user is over arc start point
-                actions = ["set first angle"]
+                return [
+                    ("mset first angle", lambda: self.handle_set_first_angle(edit_command, obj, node_idx)),
+                ]
             elif node_idx == 2:  # user is over arc end point
-                actions = ["set last angle"]
+                return [
+                    ("set last angle", lambda: self.handle_set_last_angle(edit_command, obj, node_idx)),
+                ]
             elif node_idx == 3:  # user is over arc mid point
-                actions = ["set radius"]
-        if actions:
-            return actions
+                return [
+                    ("set radius", lambda: self.handle_set_radius(edit_command, obj, node_idx)),
+                ]
 
+    def handle_move_arc(self, edit_command, obj, node_idx):
+        edit_command.alt_edit_mode = 1
+        edit_command.startEditing(obj, node_idx)
 
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        if action in ("move arc", "set radius",
-                "set first angle", "set last angle"):
-            edit_command.alt_edit_mode = 1
-            edit_command.startEditing(obj, node_idx)
+    def handle_set_first_angle(self, edit_command, obj, node_idx):
+        edit_command.alt_edit_mode = 1
+        edit_command.startEditing(obj, node_idx)
+
+    def handle_set_last_angle(self, edit_command, obj, node_idx):
+        edit_command.alt_edit_mode = 1
+        edit_command.startEditing(obj, node_idx)
+
+    def handle_set_radius(self, edit_command, obj, node_idx):
+        edit_command.alt_edit_mode = 1
+        edit_command.startEditing(obj, node_idx)
+
+    def get_edit_obj_context_menu(self, edit_command, obj, position):
+        return [
+            ("invert arc", lambda: self.handle_invert_arc(edit_command, obj, position)),
+        ]
+
+    def handle_invert_arc(self, edit_command, obj, position):
+        self.arcInvert(obj)
+        edit_command.resetTrackers(obj)
 
     def init_preview_object(self, obj):
         return trackers.arcTracker()
@@ -574,28 +606,38 @@ class DraftBezCurveGuiTools(GuiTools):
         obj.Points = pts
 
 
-    def get_edit_point_context_menu(self, obj, node_idx):
-        if utils.get_type(obj) in ["Line", "Wire", "BSpline"]:
-            actions = ["delete point"]
-        elif utils.get_type(obj) in ["BezCurve"]:
-            actions = ["make sharp", "make tangent",
-                        "make symmetric", "delete point"]
-        return actions
+    def get_edit_point_context_menu(self, edit_command, obj, node_idx):
+        return [
+            ("make sharp", lambda: self.handle_make_sharp(edit_command, obj, node_idx)),
+            ("make tangent", lambda: self.handle_make_tangent(edit_command, obj, node_idx)),
+            ("make symmetric", lambda: self.handle_make_symmetric(edit_command, obj, node_idx)),
+            ("delete point", lambda: self.handle_delete_point(edit_command, obj, node_idx)),
+        ]
     
+    def get_edit_obj_context_menu(self, edit_command, obj, position):
+        return [
+            ("add point", lambda: self.handle_add_point(edit_command, obj, position)),
+        ]
 
-    def evaluate_context_menu_action(self, edit_command, obj, node_idx, action):
-        if action == "delete point":
-            self.delete_point(obj, node_idx)
-            edit_command.resetTrackers(obj)
-        # Bezier curve menu
-        elif action in ["make sharp", "make tangent", "make symmetric"]:
-            if action == "make sharp":
-                self.smoothBezPoint(obj, node_idx, 'Sharp')
-            elif action == "make tangent":
-                self.smoothBezPoint(obj, node_idx, 'Tangent')
-            elif action == "make symmetric":
-                self.smoothBezPoint(obj, node_idx, 'Symmetric')
-            edit_command.resetTrackers(obj)
+    def handle_make_sharp(self, edit_command, obj, node_idx):
+        self.smoothBezPoint(obj, node_idx, 'Sharp')
+        edit_command.resetTrackers(obj)
+
+    def handle_make_tangent(self, edit_command, obj, node_idx):
+        self.smoothBezPoint(obj, node_idx, 'Tangent')
+        edit_command.resetTrackers(obj)
+
+    def handle_make_symmetric(self, edit_command, obj, node_idx):
+        self.smoothBezPoint(obj, node_idx, 'Symmetric')
+        edit_command.resetTrackers(obj)
+
+    def handle_delete_point(self, edit_command, obj, node_idx):
+        self.delete_point(obj, node_idx)
+        edit_command.resetTrackers(obj)
+
+    def handle_add_point(self, edit_command, obj, pos):
+        self.add_point(edit_command, obj, pos)
+        edit_command.resetTrackers(obj)
 
 
     def init_preview_object(self, obj):
