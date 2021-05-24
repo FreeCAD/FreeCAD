@@ -290,7 +290,7 @@ class DraftCircleGuiTools(GuiTools):
         if action in ("move arc", "set radius",
                 "set first angle", "set last angle"):
             edit_command.alt_edit_mode = 1
-            edit_command.startEditing(edit_command.event)
+            edit_command.startEditing(obj, node_idx)
 
     def init_preview_object(self, obj):
         return trackers.arcTracker()

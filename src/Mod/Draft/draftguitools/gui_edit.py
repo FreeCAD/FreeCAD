@@ -457,7 +457,16 @@ class Edit(gui_base_original.Modifier):
             ):#left click
             if not event.wasAltDown():
                 if self.editing is None:
-                    self.startEditing(event)
+
+                    pos = event.getPosition()
+                    node = self.getEditNode(pos)
+                    node_idx = self.getEditNodeIndex(node)
+                    if node_idx is None:
+                        return
+                    doc = App.getDocument(str(node.documentName.getValue()))
+                    obj = doc.getObject(str(node.objectName.getValue()))
+
+                    self.startEditing(obj, node_idx)
                 else:
                     self.endEditing(self.obj, self.editing)
             elif event.wasAltDown():  # left click with ctrl down
@@ -486,32 +495,25 @@ class Edit(gui_base_original.Modifier):
                     self.overNode.setColor(COLORS["default"])
                     self.overNode = None
 
-    def startEditing(self, event):
+    def startEditing(self, obj, node_idx):
         """Start editing selected EditNode."""
-        pos = event.getPosition()
-        node = self.getEditNode(pos)
-        ep = self.getEditNodeIndex(node)
-        if ep is None:
+        self.obj = obj # this is still needed to handle preview
+        if obj is None:
             return
 
-        doc = App.getDocument(str(node.documentName.getValue()))
-        self.obj = doc.getObject(str(node.objectName.getValue()))
-        if self.obj is None:
-            return
-
-        App.Console.PrintMessage(self.obj.Name
+        App.Console.PrintMessage(obj.Name
                                  + ": editing node number "
-                                 + str(ep) + "\n")
+                                 + str(node_idx) + "\n")
 
         self.ui.lineUi()
         self.ui.isRelative.show()
-        self.editing = ep
-        self.trackers[self.obj.Name][self.editing].off()
+        self.editing = node_idx
+        self.trackers[obj.Name][node_idx].off()
 
         self.finalizeGhost()
-        self.initGhost(self.obj)
+        self.initGhost(obj)
 
-        self.node.append(self.trackers[self.obj.Name][self.editing].get())
+        self.node.append(self.trackers[obj.Name][node_idx].get())
         Gui.Snapper.setSelectMode(False)
         self.hideTrackers()
 
