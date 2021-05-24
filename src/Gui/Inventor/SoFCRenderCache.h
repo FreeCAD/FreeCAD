@@ -128,8 +128,8 @@ public:
   struct NodeInfo {
     Gui::CoinPtr<SoNode> node;
     SbMatrix matrix;
-    bool identity;
-    bool resetmatrix;
+    bool identity = true;
+    bool resetmatrix = false;;
 
     int compare(const NodeInfo & other) const {
       if (this->node < other.node) return -1;

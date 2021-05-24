@@ -305,6 +305,14 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Preselection tool tip y offset relative to its docking corner."))\
     FC_VIEW_PARAM(PreselectionToolTipFontSize, int, Int, 0, \
         QT_TRANSLATE_NOOP("ViewParams","Preselection tool tip font size. Set to 0 to use system default."))\
+    FC_VIEW_PARAM(SectionFill, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Fill cross section plane."))\
+    FC_VIEW_PARAM(SectionFillInvert, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Invert cross section plane fill color."))\
+    FC_VIEW_PARAM(SectionConcave, bool, Bool, false, \
+        QT_TRANSLATE_NOOP("ViewParams","Cross section in concave."))\
+    FC_VIEW_PARAM(NoSectionOnTop, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Ignore section clip planes when rendering on top."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \

@@ -408,11 +408,15 @@ public:
     int pickBackFace() const {return backFace;}
     void setPickBackFace(int enable);
 
+    bool resetClipPlane() const {return resetclipplane;}
+    void setResetClipPlane(bool enable);
+
     int getBackFaceCount() const {
         return (int)faceDistances.size();
     }
 
-    void afterPick();
+    void afterPick(const SoPickedPointList &);
+    void doPick(SoNode *node);
 
     void cleanup();
 
@@ -421,12 +425,14 @@ protected:
 
 private:
     std::unique_ptr<SoPickedPointList> ppList;
+    std::unique_ptr<SoPickedPointList> tempList;
     std::map<float, std::unique_ptr<SoPickedPoint> > faceDistances;
     int lastPriority;
     float lastDist;
     float lastBackDist;
     int backFace = 0;
     bool skipFace;
+    bool resetclipplane = false;
 };
 
 } // namespace Gui

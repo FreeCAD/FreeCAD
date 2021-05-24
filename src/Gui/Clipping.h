@@ -59,6 +59,10 @@ protected Q_SLOTS:
     void on_dirX_valueChanged(double);
     void on_dirY_valueChanged(double);
     void on_dirZ_valueChanged(double);
+    void on_checkBoxFill_toggled(bool);
+    void on_checkBoxInvert_toggled(bool);
+    void on_checkBoxConcave_toggled(bool);
+    void on_checkBoxOnTop_toggled(bool);
 
 public:
     void reject();

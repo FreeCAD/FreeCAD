@@ -68,6 +68,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoMaterial.h>
@@ -78,6 +79,8 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbBox3f.h>
+#include <Inventor/SbSphere.h>
+#include <Inventor/SbRotation.h>
 
 #include <Base/Console.h>
 #include "SoFCRenderer.h"
@@ -127,12 +130,16 @@ struct DrawEntry {
   const Material * material;
   const VertexCacheEntry * ventry;
   SbBox3f bbox;
+  float radius;
   int skip;
 
   DrawEntry(const Material * m, const VertexCacheEntry * v)
     :material(m), ventry(v), skip(0)
   {
     v->cache->getBoundingBox(v->identity ? nullptr : &v->matrix, this->bbox);
+    SbSphere sphere;
+    sphere.circumscribe(this->bbox);
+    this->radius = sphere.getRadius();
   }
 };
 
@@ -175,6 +182,10 @@ public:
   static std::size_t pushDrawEntry(std::vector<DrawEntry> & draw_entries,
                                    const Material & material,
                                    const VertexCacheEntry & ventry);
+
+  bool renderSection(SoGLRenderAction *action, DrawEntry &draw_entry, int &pass, bool &pushed);
+
+  void renderTriangles(SoGLRenderAction *action, DrawEntry &draw_entry);
 
   void renderOpaque(SoGLRenderAction * action,
                     std::vector<DrawEntry> & draw_entries,
@@ -336,36 +347,38 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
 
   this->material.pervertexcolor = next.pervertexcolor;
 
-  bool poped = first;
-  if (first || this->material.clippers != next.clippers) {
-    if (!poped) {
-      poped = true;
-      state->pop();
-      state->push();
-    }
-    if (next.clippers.getNum()) {
-      for(auto & info : next.clippers.getData()) {
+  auto clippers = next.clippers;
+  if (this->shadowmapping
+      || ((ViewParams::getNoSectionOnTop() || ViewParams::getSectionConcave())
+          && next.isOnTop()))
+    clippers.clear();
+
+  bool clipperchanged = first || this->material.clippers != clippers;
+  bool texturechanged = clipperchanged
+            || (next.type == Material::Triangle && this->material.textures != next.textures);
+  bool lightchanged = texturechanged
+            || (next.type == Material::Triangle && this->material.lights != next.lights);
+
+  if (clipperchanged || texturechanged || lightchanged) {
+    state->pop();
+    state->push();
+
+    if (clippers.getNum()) {
+      for(auto & info : clippers.getData()) {
         if (!info.identity)
           SoModelMatrixElement::set(state, NULL, info.matrix);
-        info.node->GLRender(action);
+        auto clipper = static_cast<SoClipPlane*>(info.node.get());
+        if (ViewParams::getSectionConcave()) {
+          SbPlane plane(-clipper->plane.getValue().getNormal(),
+                        clipper->plane.getValue().getDistance(SbVec3f(0,0,0)));
+          SoClipPlaneElement::add(state, clipper, plane);
+        } else
+          SoClipPlaneElement::add(state, clipper, clipper->plane.getValue());
         if (!info.identity)
           SoModelMatrixElement::makeIdentity(state, NULL);
       }
     }
-    this->material.clippers = next.clippers;
-  }
-
-  if (next.type == Material::Triangle) {
-    bool texturechanged = poped || this->material.textures != next.textures;
-    bool lightchanged = poped || this->material.lights != next.lights;
-
-    if (!poped && (texturechanged || lightchanged)) {
-      poped = true;
-      texturechanged = true;
-      lightchanged = true;
-      state->pop();
-      state->push();
-    }
+    this->material.clippers = clippers;
 
     if (!this->notexture && texturechanged) {
       if (next.textures.getNum()) {
@@ -500,7 +513,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
           && (col&0xff) != (this->material.diffuse&0xff)))
   {
     static bool hasBlendColor = true;
-	  GLenum sfactor = GL_SRC_ALPHA, dfactor = GL_ONE_MINUS_SRC_ALPHA;
+    GLenum sfactor = GL_SRC_ALPHA, dfactor = GL_ONE_MINUS_SRC_ALPHA;
     if (hasBlendColor && overrideflags.test(Material::FLAG_TRANSPARENCY)) {
 #ifdef FC_OS_WIN32
       static PFNGLBLENDCOLORPROC glBlendColor;
@@ -1021,6 +1034,173 @@ SoFCRendererP::setupMatrix(SoState * state, const VertexCacheEntry * ventry)
   }
 }
 
+bool SoFCRendererP::renderSection(SoGLRenderAction *action,
+                                  DrawEntry &draw_entry,
+                                  int &pass,
+                                  bool &pushed)
+{
+  int curpass = pass++;
+
+  int numclip = this->material.clippers.getNum();
+  bool concave = ViewParams::getSectionConcave() && numclip > 1;
+
+  if (this->depthwriteonly
+      || curpass >= numclip
+      || (!ViewParams::getSectionFill() && !concave))
+    return curpass == 0;
+
+  if (!pushed) {
+    pushed = true;
+    glPushAttrib(GL_ENABLE_BIT);
+  }
+
+  if (draw_entry.material->type != Material::Triangle) {
+    if (!concave)
+      return curpass == 0;
+    if (curpass == 0) {
+      for (int i=1; i<numclip; ++i)
+        glDisable(GL_CLIP_PLANE0 + i);
+    } else
+      glDisable(GL_CLIP_PLANE0 + curpass - 1);
+    glEnable(GL_CLIP_PLANE0 + curpass);
+    return true;
+  }
+
+  if (curpass == 0 && concave) {
+    if (this->material.depthfunc != SoDepthBuffer::LESS) {
+      this->material.depthfunc = SoDepthBuffer::LESS;
+      glDepthFunc(GL_LESS);
+    }
+    if (this->material.polygonoffsetstyle & SoPolygonOffsetElement::FILLED) {
+      this->material.polygonoffsetstyle &= ~SoPolygonOffsetElement::FILLED;
+      glDisable(GL_POLYGON_OFFSET_FILL);
+    }
+  }
+
+  FC_GLERROR_CHECK;
+  glEnable(GL_STENCIL_TEST);
+  glClear(GL_STENCIL_BUFFER_BIT);
+
+  for (int i=0; i<numclip; ++i) {
+    if (i == curpass)
+      glEnable(GL_CLIP_PLANE0 + i);
+    else
+      glDisable(GL_CLIP_PLANE0 + i);
+    FC_GLERROR_CHECK;
+  }
+
+  glPushAttrib(GL_ENABLE_BIT);
+  FC_GLERROR_CHECK;
+  glDisable(GL_DEPTH_TEST);
+  glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+  FC_GLERROR_CHECK;
+
+  glStencilFunc (GL_ALWAYS, 1, 0x01);
+  FC_GLERROR_CHECK;
+  // Assuming OpenGL 2.0 support with two side stencil operation. So disable
+  // face culling, and use GL_INVERT for stencil op.
+  glDisable(GL_CULL_FACE);
+  glDisable(GL_LIGHTING);
+  glStencilOp (GL_KEEP, GL_KEEP, GL_INVERT);
+  FC_GLERROR_CHECK;
+  draw_entry.ventry->cache->renderTriangles(action->getState(),
+                                            SoFCVertexCache::NON_SORTED_ARRAY,
+                                            draw_entry.ventry->partidx);
+
+  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+  FC_GLERROR_CHECK;
+
+  glPopAttrib();
+
+  if (!concave) {
+    for (int i=0; i<numclip; ++i) {
+      if (i != curpass)
+        glEnable(GL_CLIP_PLANE0 + i);
+      FC_GLERROR_CHECK;
+    }
+  }
+  glDisable(GL_CLIP_PLANE0 + curpass);
+
+  glStencilFunc (GL_EQUAL, 1, 0x01);
+  glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
+  FC_GLERROR_CHECK;
+
+  const auto &info = this->material.clippers.get(curpass);
+  const SoClipPlane *clipper = info.cast<SoClipPlane>();
+
+  SbPlane plane = clipper->plane.getValue();
+  if (!info.identity)
+    plane.transform(info.matrix);
+
+  SbVec3f dir = plane.getNormal();
+  SbRotation rotation(SbVec3f(0,0,1), dir);
+  SbVec3f u,v;
+  rotation.multVec(SbVec3f(1,0,0), u);
+  u *= draw_entry.radius;
+  rotation.multVec(SbVec3f(0,1,0), v);
+  v *= draw_entry.radius;
+  SbVec3f center = draw_entry.bbox.getCenter();
+  dir *= -1;
+  center += dir * plane.getDistance(center);
+  SbVec3f v1,v2,v3,v4;
+  v1 = v2 = center + v;
+  v1 -= u;
+  v2 += u;
+  v3 = v4 = center - v;
+  v3 += u;
+  v4 -= u;
+
+  if (ViewParams::getSectionFillInvert()) {
+    auto col = this->material.diffuse;
+    unsigned char r = (col >> 24) & 0xff;
+    unsigned char g = (col >> 16) & 0xff;
+    unsigned char b = (col >> 8) & 0xff;
+    if (r < 120 && r > 140) r = 160; else r = 255 - r;
+    if (g < 120 && g > 140) g = 160; else g = 255 - g;
+    if (b < 120 && b > 140) b = 160; else b = 255 - b;
+    glColor3ub(r, g, b);
+  }
+
+  glBegin(GL_QUADS);
+  glNormal3fv(dir.getValue());
+  glVertex3fv(v1.getValue());
+  glVertex3fv(v2.getValue());
+  glVertex3fv(v3.getValue());
+  glVertex3fv(v4.getValue());
+  glEnd();
+  FC_GLERROR_CHECK;
+
+  if (ViewParams::getSectionFillInvert()) {
+    auto col = this->material.diffuse;
+    unsigned char r = (col >> 24) & 0xff;
+    unsigned char g = (col >> 16) & 0xff;
+    unsigned char b = (col >> 8) & 0xff;
+    glColor3ub(r, g, b);
+  }
+
+  glDisable(GL_STENCIL_TEST);
+  FC_GLERROR_CHECK;
+
+  if (!concave) {
+    renderSection(action, draw_entry, pass, pushed);
+    if (curpass == 0) {
+      for (int i=0; i<numclip; ++i) {
+        glEnable(GL_CLIP_PLANE0 + i);
+        FC_GLERROR_CHECK;
+      }
+    }
+  } else {
+    for (int i=0; i<numclip; ++i) {
+      if (i == curpass)
+        glEnable(GL_CLIP_PLANE0 + i);
+      else
+        glDisable(GL_CLIP_PLANE0 + i);
+      FC_GLERROR_CHECK;
+    }
+  }
+  return true;
+}
+
 void
 SoFCRendererP::renderOpaque(SoGLRenderAction * action,
                             std::vector<DrawEntry> & draw_entries,
@@ -1033,7 +1213,10 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
   SoState * state = action->getState();
   for (std::size_t idx : indices) {
     auto & draw_entry = draw_entries[idx];
-    if (draw_entry.skip && !this->shadowmapping)
+    if (draw_entry.skip
+        && !this->shadowmapping
+        && ((!ViewParams::getSectionConcave() && !ViewParams::getNoSectionOnTop())
+            || !draw_entry.material->clippers.getNum()))
       continue;
     if (this->recheckmaterial 
         || this->prevpass != pass
@@ -1052,43 +1235,45 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
     if (this->notexture)
       array ^= SoFCVertexCache::TEXCOORD;
 
-    bool overridelightmodel = false;
     if (this->material.lightmodel == SoLazyElement::BASE_COLOR)
       array ^= SoFCVertexCache::NORMAL;
     else if (!draw_entry.ventry->cache->getNormalArray()) {
       array ^= SoFCVertexCache::NORMAL;
-      overridelightmodel = true;
+      this->material.lightmodel = SoLazyElement::BASE_COLOR;
       glDisable(GL_LIGHTING);
       FC_GLERROR_CHECK;
     }
 
-    switch (draw_entry.material->type) {
-    case Material::Triangle:
-      if (!draw_entry.ventry->cache->hasTransparency())
-        draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
-      else if (!this->material.pervertexcolor) {
-        // this means override transparency (i.e. force opaque)
-        draw_entry.ventry->cache->renderTriangles(state, SoFCVertexCache::NON_SORTED, draw_entry.ventry->partidx);
+    int n = 0;
+    bool pushed = false;
+    while (renderSection(action, draw_entry, n, pushed)) {
+      switch (draw_entry.material->type) {
+      case Material::Triangle:
+        if (!draw_entry.ventry->cache->hasTransparency())
+          draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
+        else if (!this->material.pervertexcolor) {
+          // this means override transparency (i.e. force opaque)
+          draw_entry.ventry->cache->renderTriangles(state, SoFCVertexCache::NON_SORTED, draw_entry.ventry->partidx);
+        }
+        else {
+          if (!this->material.twoside)
+            glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+          draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
+          if (!this->material.twoside)
+            glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+          FC_GLERROR_CHECK;
+        }
+        break;
+      case Material::Line:
+        draw_entry.ventry->cache->renderLines(state, array, draw_entry.ventry->partidx);
+        break;
+      case Material::Point:
+        draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
+        break;
       }
-      else {
-        if (!this->material.twoside)
-          glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-        draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
-        if (!this->material.twoside)
-          glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
-        FC_GLERROR_CHECK;
-      }
-      break;
-    case Material::Line:
-      draw_entry.ventry->cache->renderLines(state, array, draw_entry.ventry->partidx);
-      break;
-    case Material::Point:
-      draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
-      break;
     }
-    if (overridelightmodel)
-      glEnable(GL_LIGHTING);
-    FC_GLERROR_CHECK;
+    if (pushed)
+      glPopAttrib();
   }
 }
 
@@ -1253,6 +1438,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
       action->addDelayedPath(action->getCurPath()->copy());
       state->pop();
       glPopAttrib();
+      FC_GLERROR_CHECK;
       return;
     }
   }
@@ -1260,6 +1446,7 @@ SoFCRenderer::render(SoGLRenderAction * action)
   if (PRIVATE(this)->shadowmapping) {
     state->pop();
     glPopAttrib();
+    FC_GLERROR_CHECK;
     return;
   }
   

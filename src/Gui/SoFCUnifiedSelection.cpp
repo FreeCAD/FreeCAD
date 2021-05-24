@@ -622,8 +622,12 @@ SoFCUnifiedSelection::Private::getPickedList(const SbVec2s &pos,
     else
         this->rayPickAction.setPickBackFace(singlePick ? pickBackFace : 0);
 
+    this->rayPickAction.setResetClipPlane(ViewParams::getNoSectionOnTop());
+
     this->rayPickAction.cleanup();
     getPickedInfoOnTop(ret, singlePick, filter);
+
+    this->rayPickAction.setResetClipPlane(false);
 
     this->rayPickAction.setPickBackFace(singlePick ? pickBackFace : 0);
     if (singlePick && pickBackFace && ret.size()) {
@@ -914,6 +918,7 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
                 SoDetail *detail = nullptr;
                 detailPath->truncate(0);
                 if (useRenderer()) {
+                    detailPath->append(master);
                     if (selaction->SelChange->Type != SelectionChanges::AddSelection) {
                         manager.removeSelection(selaction->SelChange->Object.getSubNameNoElement(true),
                                                 selaction->SelChange->Object.getOldElementName());
@@ -945,6 +950,7 @@ bool SoFCUnifiedSelection::Private::doAction(SoAction * action)
                                 // on top if any of its sub element is
                                 // selected.
                                 nodePath = new SoPath(detailPath->getLength());
+                                nodePath->append(master);
                                 SoDetail *tmp = nullptr;
                                 std::string sub = selaction->SelChange->Object.getSubNameNoElement();
                                 vp->getDetailPath(sub.c_str(),

@@ -903,7 +903,7 @@ void
 SoFCRenderCache::addLight(SoState * state, const SoLight * light)
 {
   (void)state;
-  if (!light->on.getValue()) return;
+  if (!light->on.getValue() || light->on.isIgnored()) return;
 
   NodeInfo info;
   info.node = const_cast<SoLight*>(light);
@@ -924,7 +924,7 @@ void
 SoFCRenderCache::addClipPlane(SoState * state, const SoClipPlane * node)
 {
   (void)state;
-  if (!node->on.getValue()) return;
+  if (!node->on.getValue() || node->on.isIgnored()) return;
 
   NodeInfo info;
   info.node = const_cast<SoClipPlane*>(node);

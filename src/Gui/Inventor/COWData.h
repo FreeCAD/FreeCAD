@@ -186,7 +186,7 @@ public:
 
   const ValueT & get(int idx) const {
     assert(this->data);
-    return this->data[idx];
+    return (*this->data)[idx];
   }
 
   void erase(int idx) const {

@@ -399,6 +399,7 @@ SoFCRenderCacheManager::setHighlight(SoPath * path,
   PRIVATE(this)->action->apply(path);
   if (ontop)
     SoFCSwitch::setOverrideSwitch(state, false);
+  cache->close(state);
   PRIVATE(this)->stack.clear();
   if (!cache->isEmpty()) {
     int order = ontop ? 1 : 0;
@@ -435,6 +436,7 @@ SoFCRenderCacheManagerP::updateSelection(void * userdata, SoSensor * _sensor)
   self->action->apply(path);
   if (sensor->ontop)
     SoFCSwitch::setOverrideSwitch(state, false);
+  cache->close(state);
   self->stack.clear();
 
   if (cache->isEmpty())
@@ -741,9 +743,9 @@ SoFCRenderCacheManager::render(SoGLRenderAction * action)
     RenderCachePtr cache = new SoFCRenderCache(state, path->getTail());
     cache->open(state, true, true);
     PRIVATE(this)->stack.resize(1, cache);
-    CoinPtr<SoPath> pathCopy(path->copy());
     PRIVATE(this)->initAction();
-    PRIVATE(this)->action->apply(pathCopy);
+    PRIVATE(this)->action->apply(path->getTail());
+    cache->close(state);
     PRIVATE(this)->renderer->setScene(cache);
     PRIVATE(this)->stack.clear();
   }

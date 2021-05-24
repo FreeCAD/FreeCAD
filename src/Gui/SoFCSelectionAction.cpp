@@ -1555,10 +1555,12 @@ void SoFCRayPickAction::initClass() {
 
     auto handler = [](SoAction *action, SoNode *node) {
         assert(action && node);
-        assert(action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId()));
-        node->rayPick(static_cast<SoRayPickAction*>(action));
-        if(action->getTypeId().isDerivedFrom(SoFCRayPickAction::getClassTypeId()))
-            static_cast<SoFCRayPickAction*>(action)->afterPick();
+        if (action->isOfType(SoFCRayPickAction::getClassTypeId()))
+            static_cast<SoFCRayPickAction*>(action)->doPick(node);
+        else {
+            assert(action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId()));
+            node->rayPick(static_cast<SoRayPickAction*>(action));
+        }
     };
     SoRayPickAction::addMethod(SoShape::getClassTypeId(), handler);
     SoRayPickAction::addMethod(SoImage::getClassTypeId(), handler);
@@ -1607,7 +1609,77 @@ void SoFCRayPickAction::setPickBackFace(int enable)
         setPickAll(true);
 }
 
-void SoFCRayPickAction::afterPick() {
+void SoFCRayPickAction::setResetClipPlane(bool enable)
+{
+    resetclipplane = enable;
+}
+
+void SoFCRayPickAction::doPick(SoNode *node)
+{
+    SoState *state = getState();
+    bool pushed = false;
+    bool pickall = isPickAll();
+    if (resetclipplane || ViewParams::getSectionConcave()) {
+        auto element = static_cast<SoClipPlaneElement*>(
+                state->getElementNoPush(SoClipPlaneElement::getClassStackIndex()));
+        if (element && element->getNum()) {
+            if (!resetclipplane) {
+                setPickAll(TRUE);
+                pushed = true;
+                state->push();
+                element = static_cast<SoClipPlaneElement*>(
+                        state->getElement(SoClipPlaneElement::getClassStackIndex()));
+            }
+            element->init(state);
+        }
+    }
+    node->rayPick(this);
+
+    if (!pushed) {
+        this->afterPick(getPickedPointList());
+        return;
+    }
+
+    state->pop();
+    auto element = static_cast<const SoClipPlaneElement*>(
+            state->getConstElement(SoClipPlaneElement::getClassStackIndex()));
+    if (!tempList)
+        tempList.reset(new SoPickedPointList);
+    else
+        tempList->truncate(0);
+    const auto &pps = getPickedPointList();
+    for (int i=0,c=pps.getLength();i<c;++i) {
+        int j = 0;
+        SbVec3f pt = pps[i]->getPoint();
+        for (int c=element->getNum(); j<c; ++j) {
+            float d = element->get(j).getDistance(pt);
+            if (d < 0.0)
+                break;
+        }
+        if (j != element->getNum())
+            tempList->append(pps[i]->copy());
+    }
+    reset();
+    if (pickall && !backFace) {
+        if (tempList->getLength()) {
+            int n = 0;
+            if (ppList->getLength()
+                    && getDistance(this, (*ppList)[0]->getPoint()) > getDistance(this, (*tempList)[0]->getPoint()))
+            {
+                n = 1;
+                ppList->insert((*tempList)[0]->copy(), 0);
+            }
+            for (int c=tempList->getLength(); n<c; ++n)
+                ppList->append((*tempList)[n]->copy());
+        }
+    } else {
+        setPickAll(pickall);
+        this->afterPick(*tempList);
+    }
+    tempList->truncate(0);
+}
+
+void SoFCRayPickAction::afterPick(const SoPickedPointList &pps) {
     SoPickedPoint *pp = nullptr;
     SoPickedPoint *ppFace = nullptr;
     std::unique_ptr<SoPickedPoint> _ppFace;
@@ -1615,7 +1687,6 @@ void SoFCRayPickAction::afterPick() {
     if(isPickAll()) {
         if(!backFace)
             return;
-        const auto &pps = getPickedPointList();
         for(int i=0,c=pps.getLength();i<c;++i) {
             auto detail = pps[i]->getDetail();
             if(!detail)

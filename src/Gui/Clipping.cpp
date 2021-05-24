@@ -38,6 +38,7 @@
 #include "DockWindowManager.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "ViewParams.h"
 
 using namespace Gui::Dialog;
 
@@ -108,6 +109,13 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
 {
     // create widgets
     d->ui.setupUi(this);
+
+    d->ui.checkBoxFill->setChecked(ViewParams::getSectionFill());
+    d->ui.checkBoxInvert->setChecked(ViewParams::getSectionFillInvert());
+    d->ui.checkBoxConcave->setChecked(ViewParams::getSectionConcave());
+    d->ui.checkBoxOnTop->setChecked(ViewParams::getNoSectionOnTop());
+    d->ui.checkBoxOnTop->setDisabled(ViewParams::getSectionConcave());
+
     d->ui.clipView->setRange(-INT_MAX,INT_MAX);
     d->ui.clipView->setSingleStep(0.1f);
     d->ui.clipX->setRange(-INT_MAX,INT_MAX);
@@ -243,6 +251,35 @@ void Clipping::on_groupBoxZ_toggled(bool on)
     }
 
     d->clipZ->on.setValue(on);
+}
+
+void Clipping::on_checkBoxFill_toggled(bool on)
+{
+    ViewParams::setSectionFill(on);
+    if (d->view)
+        d->view->getViewer()->redraw();
+}
+
+void Clipping::on_checkBoxInvert_toggled(bool on)
+{
+    ViewParams::setSectionFillInvert(on);
+    if (d->view)
+        d->view->getViewer()->redraw();
+}
+
+void Clipping::on_checkBoxConcave_toggled(bool on)
+{
+    ViewParams::setSectionConcave(on);
+    d->ui.checkBoxOnTop->setDisabled(on);
+    if (d->view)
+        d->view->getViewer()->redraw();
+}
+
+void Clipping::on_checkBoxOnTop_toggled(bool on)
+{
+    ViewParams::setNoSectionOnTop(on);
+    if (d->view)
+        d->view->getViewer()->redraw();
 }
 
 void Clipping::on_clipX_valueChanged(double val)
