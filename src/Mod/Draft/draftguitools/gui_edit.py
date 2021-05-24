@@ -703,8 +703,12 @@ class Edit(gui_base_original.Modifier):
             return
 
         for (label, callback) in actions:
+            def wrapper(callback=callback):
+                callback()
+                self.resetTrackers(obj)
+
             action = self.tracker_menu.addAction(label)
-            action.setData(callback)
+            action.setData(wrapper)
 
         self.tracker_menu.popup(Gui.getMainWindow().cursor().pos())
 

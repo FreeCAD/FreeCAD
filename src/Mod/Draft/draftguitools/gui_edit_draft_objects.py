@@ -106,26 +106,14 @@ class DraftWireGuiTools(GuiTools):
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         return [
-            ("delete point", lambda: self.handle_delete_point(edit_command, obj, node_idx)),
+            ("delete point", lambda: self.delete_point(obj, node_idx)),
         ]
 
     def get_edit_obj_context_menu(self, edit_command, obj, position):
         return [
-            ("add point", lambda: self.handle_add_point(edit_command, obj, position)),
-            ("reverse wire", lambda: self.handle_reverse_wire(edit_command, obj, position)),
+            ("add point", lambda: self.add_point(edit_command, obj, position)),
+            ("reverse wire", lambda: self.reverse_wire(obj)),
         ]
-
-    def handle_delete_point(self, edit_command, obj, node_idx):
-        self.delete_point(obj, node_idx)
-        edit_command.resetTrackers(obj)
-
-    def handle_add_point(self, edit_command, obj, pos):
-        self.add_point(edit_command, obj, pos)
-        edit_command.resetTrackers(obj)
-
-    def handle_reverse_wire(self, edit_command, obj, pos):
-        self.reverse_wire(obj)
-        edit_command.resetTrackers(obj)
 
     def init_preview_object(self, obj):
         return trackers.wireTracker(obj.Shape)
@@ -402,12 +390,8 @@ class DraftCircleGuiTools(GuiTools):
 
     def get_edit_obj_context_menu(self, edit_command, obj, position):
         return [
-            ("invert arc", lambda: self.handle_invert_arc(edit_command, obj, position)),
+            ("invert arc", lambda: self.arcInvert(obj)),
         ]
-
-    def handle_invert_arc(self, edit_command, obj, position):
-        self.arcInvert(obj)
-        edit_command.resetTrackers(obj)
 
     def init_preview_object(self, obj):
         return trackers.arcTracker()
@@ -616,37 +600,16 @@ class DraftBezCurveGuiTools(GuiTools):
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
         return [
-            ("make sharp", lambda: self.handle_make_sharp(edit_command, obj, node_idx)),
-            ("make tangent", lambda: self.handle_make_tangent(edit_command, obj, node_idx)),
-            ("make symmetric", lambda: self.handle_make_symmetric(edit_command, obj, node_idx)),
-            ("delete point", lambda: self.handle_delete_point(edit_command, obj, node_idx)),
+            ("make sharp", lambda: self.smoothBezPoint(obj, node_idx, 'Sharp')),
+            ("make tangent", lambda: self.smoothBezPoint(obj, node_idx, 'Tangent')),
+            ("make symmetric", lambda: self.smoothBezPoint(obj, node_idx, 'Symmetric')),
+            ("delete point", lambda: self.delete_point(obj, node_idx)),
         ]
     
     def get_edit_obj_context_menu(self, edit_command, obj, position):
         return [
-            ("add point", lambda: self.handle_add_point(edit_command, obj, position)),
+            ("add point", lambda: self.add_point(edit_command, obj, position)),
         ]
-
-    def handle_make_sharp(self, edit_command, obj, node_idx):
-        self.smoothBezPoint(obj, node_idx, 'Sharp')
-        edit_command.resetTrackers(obj)
-
-    def handle_make_tangent(self, edit_command, obj, node_idx):
-        self.smoothBezPoint(obj, node_idx, 'Tangent')
-        edit_command.resetTrackers(obj)
-
-    def handle_make_symmetric(self, edit_command, obj, node_idx):
-        self.smoothBezPoint(obj, node_idx, 'Symmetric')
-        edit_command.resetTrackers(obj)
-
-    def handle_delete_point(self, edit_command, obj, node_idx):
-        self.delete_point(obj, node_idx)
-        edit_command.resetTrackers(obj)
-
-    def handle_add_point(self, edit_command, obj, pos):
-        self.add_point(edit_command, obj, pos)
-        edit_command.resetTrackers(obj)
-
 
     def init_preview_object(self, obj):
         return trackers.bezcurveTracker()
