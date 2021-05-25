@@ -1110,7 +1110,11 @@ SoFCUnifiedSelection::Private::setHighlight(SoFullPath *path,
                 float a = 1.f - ViewParams::getTransparencyOnTop();
                 t = 1.f - a*a;
             }
-            manager.setHighlight(currentHighlight,
+            CoinPtr<SoPath> path(currentHighlight);
+            int offset = path->findNode(master);
+            if (offset > 0) 
+                path.reset(currentHighlight->copy(offset));
+            manager.setHighlight(path,
                                  det,
                                  master->colorHighlight.getValue().getPackedValue(t),
                                  ontop,
