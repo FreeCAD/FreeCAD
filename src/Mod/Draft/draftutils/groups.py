@@ -297,7 +297,7 @@ def get_movable_children(objectslist, recursive=True):
     for obj in objectslist:
         # Skips some objects that should never move their children
         if utils.get_type(obj) not in ("Clone", "SectionPlane",
-                                       "Facebinder", "BuildingPart"):
+                                       "Facebinder", "BuildingPart", "App::Link"):
             children = obj.OutList
             if (hasattr(obj, "Proxy") and obj.Proxy
                     and hasattr(obj.Proxy, "getSiblings")
