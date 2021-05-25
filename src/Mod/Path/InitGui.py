@@ -81,7 +81,7 @@ class PathWorkbench (Workbench):
         PathGuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["Path_Job", "Path_Post", "Path_TileJob"]
+        projcmdlist = ["Path_Job", "Path_Post"]
         toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_SelectLoop",
                        "Path_OpActiveToggle"]
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop",
@@ -115,7 +115,7 @@ class PathWorkbench (Workbench):
 
         threedcmdgroup = threedopcmdlist
         if PathPreferences.experimentalFeaturesEnabled():
-            projcmdlist.append("Path_Sanity")
+            projcmdlist.extend(["Path_Sanity", "Path_TileJob"])
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append('Path_Thread_Milling')
@@ -198,9 +198,6 @@ class PathWorkbench (Workbench):
                 menuAppended = True
             if isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp):
                 self.appendContextMenu("", ["Path_OperationCopy", "Path_OpActiveToggle"])
-                menuAppended = True
-            if isinstance(obj.Proxy, PathScripts.PathJob.ObjectJob):
-                self.appendContextMenu("", ["Path_TileJob"])
                 menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
                 if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
