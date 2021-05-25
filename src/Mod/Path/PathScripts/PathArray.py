@@ -27,6 +27,7 @@ import PathScripts
 from PathScripts import PathLog
 from PySide import QtCore
 import math
+import random
 
 __doc__ = """Path Array object and FreeCAD command"""
 
@@ -55,6 +56,10 @@ class ObjectArray:
                         "Path", "The centre of rotation in Polar pattern")
         obj.addProperty("App::PropertyBool", "SwapDirection",
                         "Path", "Make copies in X direction before Y in Linear 2D pattern")
+        obj.addProperty("App::PropertyInteger", "JitterPercent",
+                        "Path", "Percent of copies to randomly offset")
+        obj.addProperty("App::PropertyVectorDistance", "JitterMagnitude",
+                        "Path", "Maximum random offset of copies")
         obj.addProperty("App::PropertyLink", "ToolController",
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
@@ -70,6 +75,8 @@ class ObjectArray:
         return None
 
     def setEditorProperties(self, obj):
+        obj.setEditorMode('JitterPercent', 0)
+        obj.setEditorMode('JitterMagnitude', 0)
         if obj.Type == 'Linear2D':
             obj.setEditorMode('Angle', 2)
             obj.setEditorMode('Copies', 2)
@@ -159,18 +166,22 @@ class ObjectArray:
 
         return newPath
 
-    def execute(self, obj):
+    def calculateJitter(self, obj, pos):
+        if random.randint(0,100) < obj.JitterPercent:
+            pos.x = pos.x + random.uniform(-obj.JitterMagnitude.x, obj.JitterMagnitude.y)
+            pos.y = pos.y + random.uniform(-obj.JitterMagnitude.y, obj.JitterMagnitude.y)
+            pos.z = pos.z + random.uniform(-obj.JitterMagnitude.z, obj.JitterMagnitude.z)
+        return pos
 
+
+    def execute(self, obj):
         if isinstance(obj.Base, list):
             base = obj.Base
         else:
             base = [obj.Base]
 
-
         if len(base)>0:
-
             obj.ToolController = base[0].ToolController
-
             for b in base:
                 if not b.isDerivedFrom("Path::Feature"):
                     return
@@ -184,11 +195,14 @@ class ObjectArray:
 
             # build copies
             output = ""
+            random.seed(obj.Name)
             if obj.Type == 'Linear1D':
                 for i in range(obj.Copies):
+                    pos = FreeCAD.Vector(obj.Offset.x * (i + 1), obj.Offset.y * (i + 1), 0)
+                    pos = self.calculateJitter(obj, pos)
+
                     for b in base:
                         pl = FreeCAD.Placement()
-                        pos = FreeCAD.Vector(obj.Offset.x * (i + 1), obj.Offset.y * (i + 1), 0)
                         pl.move(pos)
                         np = Path.Path([cm.transform(pl)
                                         for cm in b.Path.Commands])
@@ -198,28 +212,32 @@ class ObjectArray:
                 if obj.SwapDirection:
                     for i in range(obj.CopiesY + 1):
                         for j in range(obj.CopiesX + 1):
+                            if (i % 2) == 0:
+                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * j, 0)
+                            else:
+                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * (obj.CopiesY - j), 0)
+                            pos = self.calculateJitter(obj, pos)
+
                             for b in base:
                                 pl = FreeCAD.Placement()
                                 # do not process the index 0,0. It will be processed by the base Paths themselves
                                 if not (i == 0 and j == 0):
-                                    if (i % 2) == 0:
-                                        pos = FreeCAD.Vector(obj.Offset.x * j, obj.Offset.y * i, 0)
-                                    else:
-                                        pos = FreeCAD.Vector(obj.Offset.x * (obj.CopiesX - j), obj.Offset.y * i, 0)
                                     pl.move(pos)
                                     np = Path.Path([cm.transform(pl) for cm in b.Path.Commands])
                                     output += np.toGCode()
                 else:
                     for i in range(obj.CopiesX + 1):
                         for j in range(obj.CopiesY + 1):
+                            if (i % 2) == 0:
+                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * j, 0)
+                            else:
+                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * (obj.CopiesY - j), 0)
+                            pos = self.calculateJitter(obj, pos)
+
                             for b in base:
                                 pl = FreeCAD.Placement()
                                 # do not process the index 0,0. It will be processed by the base Paths themselves
                                 if not (i == 0 and j == 0):
-                                    if (i % 2) == 0:
-                                        pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * j, 0)
-                                    else:
-                                        pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * (obj.CopiesY - j), 0)
                                     pl.move(pos)
                                     np = Path.Path([cm.transform(pl) for cm in b.Path.Commands])
                                     output += np.toGCode()
