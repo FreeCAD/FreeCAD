@@ -213,9 +213,9 @@ class ObjectArray:
                     for i in range(obj.CopiesY + 1):
                         for j in range(obj.CopiesX + 1):
                             if (i % 2) == 0:
-                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * j, 0)
+                                pos = FreeCAD.Vector(obj.Offset.x * j, obj.Offset.y * i, 0)
                             else:
-                                pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * (obj.CopiesY - j), 0)
+                                pos = FreeCAD.Vector(obj.Offset.x * (obj.CopiesX - j), obj.Offset.y * i, 0)
                             pos = self.calculateJitter(obj, pos)
 
                             for b in base:
