@@ -822,6 +822,14 @@ void SoFCUnifiedSelection::Private::applyOverrideMode(SoState * state) const
             hiddenline = true;
             mode = DisplayModeFlatLines;
             shading = ViewParams::getHiddenLineShaded();
+            if (ViewParams::getHiddenLineWidth() >= 1.0) {
+                SoLineWidthElement::set(state, master, ViewParams::getHiddenLineWidth());
+                SoOverrideElement::setLineWidthOverride(state, master, TRUE);
+            }
+            if (ViewParams::getHiddenLinePointSize() >= 1.0) {
+                SoPointSizeElement::set(state, master, ViewParams::getHiddenLinePointSize());
+                SoOverrideElement::setPointSizeOverride(state, master, TRUE);
+            }
         }
         else if (mode == DisplayModeNoShading) {
             shading = false;
@@ -830,7 +838,7 @@ void SoFCUnifiedSelection::Private::applyOverrideMode(SoState * state) const
         else if (mode == DisplayModeAsIs)
             mode = SbName::empty();
 
-        SoFCDisplayModeElement::set(state, master, mode, hiddenline);
+        SoFCDisplayModeElement::set(state, master, mode, hiddenline, ViewParams::getHiddenLineShowOutline());
     }
 
     if (!shading && state->isElementEnabled(SoLightModelElement::getClassStackIndex())) {

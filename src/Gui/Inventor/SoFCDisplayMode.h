@@ -42,6 +42,7 @@ protected:
 public:
   SoSFName displayMode;
   SoSFBool showHiddenLines;
+  SoSFBool showOutline;
   SoSFColor faceColor;
   SoSFColor lineColor;
   SoSFFloat transparency;

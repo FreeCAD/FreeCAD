@@ -40,6 +40,7 @@ SoFCDisplayMode::SoFCDisplayMode()
   SO_NODE_ADD_FIELD(lineColor, (SbColor()));
   SO_NODE_ADD_FIELD(transparency, (0.0f));
   SO_NODE_ADD_FIELD(showHiddenLines,  (FALSE));
+  SO_NODE_ADD_FIELD(showOutline,  (FALSE));
   SO_NODE_ADD_FIELD(displayMode,  (""));
 }
 
@@ -52,7 +53,9 @@ void SoFCDisplayMode::doAction(SoAction * action)
   SoState * state = action->getState();
   if (!this->displayMode.isIgnored()) {
     SoFCDisplayModeElement::set(state, this,
-        this->displayMode.getValue(), this->showHiddenLines.getValue());
+        this->displayMode.getValue(),
+        this->showHiddenLines.getValue(),
+        this->showOutline.getValue());
   }
   if (!this->faceColor.isIgnored() 
       || !this->lineColor.isIgnored()

@@ -185,6 +185,8 @@ public:
 
   bool renderSection(SoGLRenderAction *action, DrawEntry &draw_entry, int &pass, bool &pushed);
 
+  void renderOutline(SoGLRenderAction *action, DrawEntry &draw_entry);
+
   void renderTriangles(SoGLRenderAction *action, DrawEntry &draw_entry);
 
   void renderOpaque(SoGLRenderAction * action,
@@ -1034,10 +1036,56 @@ SoFCRendererP::setupMatrix(SoState * state, const VertexCacheEntry * ventry)
   }
 }
 
-bool SoFCRendererP::renderSection(SoGLRenderAction *action,
-                                  DrawEntry &draw_entry,
-                                  int &pass,
-                                  bool &pushed)
+void
+SoFCRendererP::renderOutline(SoGLRenderAction *action,
+                             DrawEntry &draw_entry)
+{
+  if (this->shadowmapping
+      || !draw_entry.material->outline
+      || draw_entry.material->type != Material::Triangle)
+    return;
+
+  glPushAttrib(GL_ENABLE_BIT
+      | GL_DEPTH_BUFFER_BIT
+      | GL_STENCIL_BUFFER_BIT
+      | GL_CURRENT_BIT
+      | GL_POLYGON_BIT);
+
+  glDisable(GL_BLEND);
+  glEnable(GL_STENCIL_TEST);
+  glClear(GL_STENCIL_BUFFER_BIT);
+  glDisable(GL_LIGHTING);
+  glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+  glStencilFunc (GL_ALWAYS, 1, -1);
+  glStencilOp (GL_KEEP, GL_KEEP, GL_REPLACE);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  draw_entry.ventry->cache->renderTriangles(action->getState(),
+                                            SoFCVertexCache::NON_SORTED_ARRAY,
+                                            draw_entry.ventry->partidx);
+  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+  glStencilFunc(GL_NOTEQUAL, 1, -1);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+  auto col = draw_entry.material->hiddenlinecolor;
+  glColor3ub((unsigned char)((col>>24)&0xff),
+              (unsigned char)((col>>16)&0xff),
+              (unsigned char)((col>>8)&0xff));
+  float linewidth = draw_entry.material->linewidth;
+  if (linewidth < 1.0f)
+    linewidth = 1.0f;
+  glLineWidth(linewidth*1.5f);
+  draw_entry.ventry->cache->renderTriangles(action->getState(),
+                                            SoFCVertexCache::NON_SORTED_ARRAY,
+                                            draw_entry.ventry->partidx);
+  glPopAttrib();
+}
+
+bool
+SoFCRendererP::renderSection(SoGLRenderAction *action,
+                             DrawEntry &draw_entry,
+                             int &pass,
+                             bool &pushed)
 {
   int curpass = pass++;
 
@@ -1049,14 +1097,13 @@ bool SoFCRendererP::renderSection(SoGLRenderAction *action,
       || (!ViewParams::getSectionFill() && !concave))
     return curpass == 0;
 
-  if (!pushed) {
-    pushed = true;
-    glPushAttrib(GL_ENABLE_BIT);
-  }
-
   if (draw_entry.material->type != Material::Triangle) {
     if (!concave)
       return curpass == 0;
+    if (!pushed) {
+      pushed = true;
+      glPushAttrib(GL_ENABLE_BIT);
+    }
     if (curpass == 0) {
       for (int i=1; i<numclip; ++i)
         glDisable(GL_CLIP_PLANE0 + i);
@@ -1066,18 +1113,21 @@ bool SoFCRendererP::renderSection(SoGLRenderAction *action,
     return true;
   }
 
-  if (curpass == 0 && concave) {
-    if (this->material.depthfunc != SoDepthBuffer::LESS) {
-      this->material.depthfunc = SoDepthBuffer::LESS;
-      glDepthFunc(GL_LESS);
-    }
-    if (this->material.polygonoffsetstyle & SoPolygonOffsetElement::FILLED) {
-      this->material.polygonoffsetstyle &= ~SoPolygonOffsetElement::FILLED;
-      glDisable(GL_POLYGON_OFFSET_FILL);
-    }
+  if (!pushed) {
+    pushed = true;
+    glPushAttrib(GL_ENABLE_BIT
+        | GL_DEPTH_BUFFER_BIT
+        | GL_STENCIL_BUFFER_BIT
+        | GL_CURRENT_BIT);
   }
 
-  FC_GLERROR_CHECK;
+  if (curpass == 0 && concave) {
+    if (this->material.depthfunc != SoDepthBuffer::LESS)
+      glDepthFunc(GL_LESS);
+    if (this->material.polygonoffsetstyle & SoPolygonOffsetElement::FILLED)
+      glDisable(GL_POLYGON_OFFSET_FILL);
+  }
+
   glEnable(GL_STENCIL_TEST);
   glClear(GL_STENCIL_BUFFER_BIT);
 
@@ -1274,6 +1324,7 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
     }
     if (pushed)
       glPopAttrib();
+    renderOutline(action, draw_entry);
   }
 }
 
@@ -1354,6 +1405,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
         else
           array |= SoFCVertexCache::SORTED_ARRAY;
         draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
+        renderOutline(action, draw_entry);
       }
       break;
     }

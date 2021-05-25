@@ -130,7 +130,6 @@ public:
 
   Material material;
   uint32_t facecolor;
-  uint32_t nonfacecolor;
   bool resetmatrix;
 };
 
@@ -226,6 +225,7 @@ SoFCRenderCache::Material::init(SoState * state)
   this->order = 0;
   this->annotation = 0;
   this->diffuse = 0xff;
+  this->hiddenlinecolor = 0;
   this->ambient = 0xff;
   this->emissive = 0xff;
   this->specular = 0xff;
@@ -251,6 +251,7 @@ SoFCRenderCache::Material::init(SoState * state)
   this->lights.clear();
   this->partialhighlight = 0;
   this->selectable = true;
+  this->outline = false;
 
   if (!state)
     return;
@@ -523,6 +524,11 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
   if (!parent.selectable)
     res.selectable = false;
 
+  if (parent.hiddenlinecolor)
+    res.hiddenlinecolor = parent.hiddenlinecolor;
+
+  res.outline |= parent.outline;
+
   auto mergeNodeInfo = [&](SoFCRenderCache::NodeInfoArray &thisarray,
                            const SoFCRenderCache::NodeInfoArray &other)
   {
@@ -563,10 +569,11 @@ SoFCRenderCacheP::mergeMaterial(const SbMatrix &matrix,
     res.maskflags.set(Material::FLAG_TRANSPARENCY);
   }
 
-  if (res.type == Material::Line) {
+  if (res.type == Material::Line || res.outline) {
     copyMaterial(res, parent, &Material::linewidth, Material::FLAG_LINE_WIDTH, Material::FLAG_LINE_WIDTH);
     copyMaterial(res, parent, &Material::linepattern, Material::FLAG_LINE_PATTERN, Material::FLAG_LINE_PATTERN);
-    return res;
+    if (res.type == Material::Line)
+      return res;
   }
 
   if (res.type == Material::Point) {
@@ -656,15 +663,17 @@ SoFCRenderCache::open(SoState *state, bool selectable, bool initmaterial)
   SoCacheElement::set(state, this);
 
   PRIVATE(this)->facecolor = 0;
-  PRIVATE(this)->nonfacecolor = 0;
   PRIVATE(this)->material.init(initmaterial ? state : nullptr);
   PRIVATE(this)->material.selectable = selectable;
 
-  if (initmaterial && SoFCDisplayModeElement::showHiddenLines(state)) {
+  SbBool outline = FALSE;
+  if (initmaterial && SoFCDisplayModeElement::showHiddenLines(state, &outline)) {
     float t = SoFCDisplayModeElement::getTransparency(state);
     uint8_t alpha = static_cast<uint8_t>(std::min(std::max(1.f-t, 1.f), 0.f) * 255.f);
     PRIVATE(this)->material.diffuse = (PRIVATE(this)->material.diffuse & 0xffffff00) | alpha;
     PRIVATE(this)->material.overrideflags.set(Material::FLAG_TRANSPARENCY);
+    PRIVATE(this)->material.outline = outline;
+    PRIVATE(this)->material.linewidth = SoLineWidthElement::get(state);
 
     const SbColor * color = SoFCDisplayModeElement::getFaceColor(state);
     if (color)
@@ -672,7 +681,7 @@ SoFCRenderCache::open(SoState *state, bool selectable, bool initmaterial)
     color = SoFCDisplayModeElement::getLineColor(state);
     if (color) {
       t = 1.0f;
-      PRIVATE(this)->nonfacecolor = color->getPackedValue(t);
+      PRIVATE(this)->material.hiddenlinecolor = color->getPackedValue(t);
     }
   }
 
@@ -959,9 +968,9 @@ SoFCRenderCacheP::finalizeMaterial(Material & material)
       material.diffuse = this->facecolor;
     }
   }
-  else if (this->nonfacecolor) {
+  else if (this->material.hiddenlinecolor) {
     material.pervertexcolor = false;
-    material.diffuse = this->nonfacecolor;
+    material.diffuse = this->material.hiddenlinecolor;
   }
 
   // if (material.pervertexcolor && material.maskflags.test(Material::FLAG_TRANSPARENCY))

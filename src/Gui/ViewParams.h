@@ -186,6 +186,10 @@ public:
     FC_VIEW_PARAM(HiddenLineBackground,unsigned long,Unsigned,0xffffffff, "") \
     FC_VIEW_PARAM(HiddenLineOverrideBackground,bool,Bool,false, "") \
     FC_VIEW_PARAM(HiddenLineShaded, bool, Bool, false, "") \
+    FC_VIEW_PARAM(HiddenLineShowOutline, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Show outline in hidden line draw style (only works in experiemental renderer)."))\
+    FC_VIEW_PARAM(HiddenLineWidth, double, Float, 1.5, "") \
+    FC_VIEW_PARAM(HiddenLinePointSize, double, Float, 1.5, "") \
     FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000, "") \
     FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, true, \
        QT_TRANSLATE_NOOP("ViewParams","Draw object with 'Flat lines' style when shadow is enabled.")) \

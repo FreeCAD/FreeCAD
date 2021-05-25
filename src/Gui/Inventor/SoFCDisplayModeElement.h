@@ -39,13 +39,13 @@ public:
     virtual void init(SoState *state);
 
     static void set(SoState * const state, SoNode * const node,
-            const SbName &mode, SbBool hiddenLine);
+            const SbName &mode, SbBool hiddenLine, SbBool outline = FALSE);
 
     static void setColors(SoState * const state, SoNode * const node,
             const SbColor *faceColor, const SbColor *lineColor, float transp);
 
     static const SbName &get(SoState * const state);
-    static SbBool showHiddenLines(SoState * const state);
+    static SbBool showHiddenLines(SoState * const state, SbBool *outline = nullptr);
     static const SbColor *getFaceColor(SoState * const state);
     static const SbColor *getLineColor(SoState * const state);
     static float getTransparency(SoState * const state);
@@ -54,6 +54,7 @@ public:
 
     const SbName &get() const;
     SbBool showHiddenLines() const;
+    SbBool showOutline() const;
     const SbColor *getFaceColor() const;
     const SbColor *getLineColor() const;
     float getTransparency() const;
@@ -66,6 +67,7 @@ protected:
     SbBool hiddenLines;
     SbBool hasFaceColor;
     SbBool hasLineColor;
+    SbBool outline;
     SbColor faceColor;
     SbColor lineColor;
     float transp;

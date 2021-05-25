@@ -215,6 +215,7 @@ public:
     uint32_t emissive;
     uint32_t specular;
     uint32_t linepattern;
+    uint32_t hiddenlinecolor;
     float linewidth;
     float pointsize;
     float shininess;
@@ -237,6 +238,7 @@ public:
     bool culling;
     bool twoside;
     bool selectable;
+    bool outline;
 
     TextureMatrixMap texturematrices;
     TextureMap textures;
@@ -279,6 +281,8 @@ public:
         if (shadowstyle > other.shadowstyle) return false;
         if (diffuse < other.diffuse) return true;
         if (diffuse > other.diffuse) return false;
+        if (hiddenlinecolor < other.hiddenlinecolor) return true;
+        if (hiddenlinecolor > other.hiddenlinecolor) return false;
         if (pervertexcolor < other.pervertexcolor) return true;
         if (pervertexcolor > other.pervertexcolor) return false;
         if (ambient < other.ambient) return true;
@@ -293,6 +297,8 @@ public:
         if (lightmodel > other.lightmodel) return false;
         if (vertexordering < other.vertexordering) return true;
         if (vertexordering > other.vertexordering) return false;
+        if (outline < other.outline) return true;
+        if (outline > other.outline) return false;
         if (culling < other.culling) return true;
         if (culling > other.culling) return false;
         if (twoside < other.twoside) return true;
@@ -305,7 +311,12 @@ public:
         if (polygonoffsetfactor > other.polygonoffsetfactor) return false;
         if (polygonoffsetunits < other.polygonoffsetunits) return true;
         if (polygonoffsetunits > other.polygonoffsetunits) return false;
-
+        if (outline) {
+          if (linewidth < other.linewidth) return true;
+          if (linewidth > other.linewidth) return false;
+          if (pointsize < other.pointsize) return true;
+          if (pointsize > other.pointsize) return false;
+        }
         // no need to differentiate texture matrices. Its only used for merging to
         // upper hierarchy
         // if (texturematrices < other.texturematrices) return true;

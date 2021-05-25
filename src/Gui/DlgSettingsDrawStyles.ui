@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>601</width>
-    <height>1256</height>
+    <height>1413</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -294,6 +294,89 @@
         <property name="spacing">
          <number>6</number>
         </property>
+        <item row="1" column="1">
+         <widget class="Gui::ColorButton" name="HiddenLineColor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QDoubleSpinBox" name="HiddenLineTransparency">
+          <property name="inputMethodHints">
+           <set>Qt::ImhPreferNumbers</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::ColorButton" name="HiddenLineBackground">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Line width</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="HiddenLineOverrideBackground">
+          <property name="text">
+           <string>Override background color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="HiddenLineShaded">
+          <property name="text">
+           <string>Shaded</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QCheckBox" name="HiddenLineOverrideFaceColor">
           <property name="minimumSize">
@@ -310,7 +393,17 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="HiddenLineOverrideColor">
+          <property name="text">
+           <string>Override line color</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Transparency</string>
@@ -340,89 +433,37 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="HiddenLineOverrideColor">
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="HiddenLineShowOutline">
           <property name="text">
-           <string>Override line color</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
+           <string>Draw outline</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
-         <widget class="QDoubleSpinBox" name="HiddenLineTransparency">
-          <property name="inputMethodHints">
-           <set>Qt::ImhPreferNumbers</set>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Point size</string>
           </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QDoubleSpinBox" name="HiddenLineWidth">
           <property name="decimals">
            <number>1</number>
           </property>
-          <property name="minimum">
-           <double>0.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
           <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
            <double>0.500000000000000</double>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="Gui::ColorButton" name="HiddenLineColor">
-          <property name="enabled">
-           <bool>false</bool>
+        <item row="7" column="1">
+         <widget class="QDoubleSpinBox" name="HiddenLinePointSize">
+          <property name="decimals">
+           <number>1</number>
           </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QCheckBox" name="HiddenLineShaded">
-          <property name="text">
-           <string>Shaded</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="HiddenLineOverrideBackground">
-          <property name="text">
-           <string>Override background color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::ColorButton" name="HiddenLineBackground">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
+          <property name="singleStep">
+           <double>0.500000000000000</double>
           </property>
          </widget>
         </item>
