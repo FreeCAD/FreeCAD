@@ -25,8 +25,8 @@
 
 __Title__   = "Tile Job Utility"
 __Author__  = "Russell Johnson (russ4262); Markus Lampert (mlampert)"
-__Version__ = "6.1"
-__Date__    = "2021-05-17"
+__Version__ = "6.2"
+__Date__    = "2021-05-25"
 __Comment__ = "This macro takes the operations within a selected Path job and \
                creates a set of gcode tile objects, placing the code for each \
                operation within each tile into a Custom gcode object in a new job."
@@ -336,6 +336,12 @@ class TileJobGui():
         if not FreeCAD.GuiUp:
             msg = translate('PathTileJob',
                             'FreeCAD GUI not active. Use command line access with TileJob class.')
+            PathLog.error(msg)
+            return
+
+        if not FreeCADGui.ActiveDocument:
+            msg = translate('PathTileJob',
+                            'No active document.')
             PathLog.error(msg)
             return
 
