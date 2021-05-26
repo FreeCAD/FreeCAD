@@ -95,19 +95,35 @@ def showPreselectInfo():
     sel = FreeCADGui.Selection.getPreselection()
     if not sel.Object or len(sel.SubElementNames) != 1:
         return
-    shape = Part.getShape(sel.Object, sel.SubElementNames[0], needSubElement=True)
+    shape, _, obj = Part.getShape(sel.Object, sel.SubElementNames[0], retType=1)
     if shape.isNull():
         return
-    point = sel.PickedPoints[0]
     txt = FreeCADGui.Selection.getPreselectionText()
     if txt:
         txt += '\n\n'
-    txt += 'Shape type: %s' % shape.ShapeType
+    point = sel.PickedPoints[0]
+    txt += 'Picked point: %s' % _vec_tostr(point)
+    try:
+        path, mappedName, elementName = Part.splitSubname(sel.SubElementNames[0])
+        txt += '\nObject: %s' % obj.Label
+        if obj.Document != sel.Object.Document or obj.Name != obj.Label:
+            txt += ' (%s)' % obj.FullName
+        txt += '\nPath: %s.%s' % (sel.Object.Name, path)
+        if elementName:
+            txt += '\nElement name: %s' % elementName
+            if not mappedName:
+                mappedName = shape.getElementMappedName(elementName)
+            if mappedName:
+                txt += '\nMapped name: %s' % mappedName
+            shape = Part.getShape(obj, elementName, needSubElement=True)
+    except Exception:
+        shape = Part.getShape(sel.Object, sel.SubElementNames[0], needSubElement=True)
+
+    if shape.isNull():
+        return
 
     txt += '\n%s' % shape.Placement
-
     if shape.ShapeType == 'Vertex':
-        txt += '\nPosition: %s' % _vec_tostr(shape.Point)
         FreeCADGui.Selection.setPreselectionText(txt)
         return
 
@@ -169,7 +185,8 @@ def showPreselectInfo():
              'Center',
              'Axis',
              'Continuity',
-             ('Planar', 'isPlanar')))
+             ('Planar', 'isPlanar'),
+             ('Linear', 'isLinear')))
     FreeCADGui.Selection.setPreselectionText(txt)
 
 def _getGeoAttributes(txt, geo, attrs):
