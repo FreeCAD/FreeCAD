@@ -39,27 +39,27 @@ class ObjectArray:
 
     def __init__(self, obj):
         obj.addProperty("App::PropertyLinkList", "Base",
-                        "Path", "The path(s) to array")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The path(s) to array"))
         obj.addProperty("App::PropertyEnumeration", "Type",
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Pattern method"))
         obj.addProperty("App::PropertyVectorDistance", "Offset",
-                        "Path", "The spacing between the array copies in Linear pattern")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The spacing between the array copies in Linear pattern"))
         obj.addProperty("App::PropertyInteger", "CopiesX",
-                        "Path", "The number of copies in X direction in Linear pattern")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The number of copies in X direction in Linear pattern"))
         obj.addProperty("App::PropertyInteger", "CopiesY",
-                        "Path", "The number of copies in Y direction in Linear pattern")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The number of copies in Y direction in Linear pattern"))
         obj.addProperty("App::PropertyAngle", "Angle",
-                        "Path", "Total angle in Polar pattern")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Total angle in Polar pattern"))
         obj.addProperty("App::PropertyInteger", "Copies",
-                        "Path", "The number of copies in Linear 1D and Polar pattern")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The number of copies in Linear 1D and Polar pattern"))
         obj.addProperty("App::PropertyVector", "Centre",
-                        "Path", "The centre of rotation in Polar pattern")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The centre of rotation in Polar pattern"))
         obj.addProperty("App::PropertyBool", "SwapDirection",
-                        "Path", "Make copies in X direction before Y in Linear 2D pattern")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Make copies in X direction before Y in Linear 2D pattern"))
         obj.addProperty("App::PropertyInteger", "JitterPercent",
-                        "Path", "Percent of copies to randomly offset")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Percent of copies to randomly offset"))
         obj.addProperty("App::PropertyVectorDistance", "JitterMagnitude",
-                        "Path", "Maximum random offset of copies")
+                        "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Maximum random offset of copies"))
         obj.addProperty("App::PropertyLink", "ToolController",
                         "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool controller that will be used to calculate the path"))
 
@@ -191,7 +191,7 @@ class ObjectArray:
                     return
                 if b.ToolController != obj.ToolController:
                     # this may be important if Job output is split by tool controller
-                    PathLog.warning('Arrays of paths having different tool controllers are handled according to the tool controller of the first path.')
+                    PathLog.warning(QtCore.QT_TRANSLATE_NOOP("App::Property",'Arrays of paths having different tool controllers are handled according to the tool controller of the first path.'))
 
             # build copies
             output = ""
