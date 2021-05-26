@@ -558,6 +558,8 @@ SoFCUnifiedSelection::Private::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
         SoState * state = this->rayPickAction.getState();
         SoFCSwitch::setOverrideSwitch(state, true);
         for (auto it=paths.lower_bound(1); it!=paths.end(); ++it) {
+            if (!it->second || !it->second->getLength())
+                continue;
             tmpPath.append(it->second);
             SoFCSwitch::pushSwitchPath(&tmpPath);
             this->rayPickAction.apply(&tmpPath);

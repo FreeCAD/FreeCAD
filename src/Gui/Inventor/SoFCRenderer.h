@@ -53,6 +53,7 @@ public:
     SelIdAlt        = 0x02000000,
     SelIdFull       = 0x04000000,
     SelIdPartial    = 0x08000000,
+    SelIdMask       = 0x0fffffff,
     SelIdSelected = (SelIdPartial|SelIdFull),
   };
   void addSelection(int id, const VertexCacheMap & caches);

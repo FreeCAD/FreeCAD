@@ -397,7 +397,7 @@ public:
                                      const SoDetail * detail,
                                      uint32_t color,
                                      bool checkindices,
-                                     bool wholeontop = true);
+                                     bool wholeontop);
 
   void open(SoState * state, bool selectable, bool initmaterial = false);
   void close(SoState * state);
