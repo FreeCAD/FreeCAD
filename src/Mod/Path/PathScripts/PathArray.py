@@ -77,6 +77,7 @@ class ObjectArray:
     def setEditorProperties(self, obj):
         obj.setEditorMode('JitterPercent', 0)
         obj.setEditorMode('JitterMagnitude', 0)
+        obj.setEditorMode('ToolController', 2)
         if obj.Type == 'Linear2D':
             obj.setEditorMode('Angle', 2)
             obj.setEditorMode('Copies', 2)
