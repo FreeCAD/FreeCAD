@@ -668,6 +668,12 @@ public:
         return TopoShape(0,Hasher).makECut({*this,shape},op,tol);
     }
 
+    /** Try to simplify geometry of any linear/planar subshape to line/plane
+     *
+     * @return Return true if the shape is modified
+     */
+    bool linearize(bool face, bool edge);
+
     static const std::string &modPostfix();
     static const std::string &genPostfix();
     static const std::string &modgenPostfix();

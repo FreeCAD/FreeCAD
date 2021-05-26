@@ -4579,3 +4579,48 @@ bool TopoShape::isPlanarFace(double tol) const
     return GeomSurface::isPlanar(
             BRepAdaptor_Surface(TopoDS::Face(getShape())).Surface().Surface(), nullptr, tol);
 }
+
+bool TopoShape::linearize(bool face, bool edge)
+{
+    bool touched = false;
+    BRep_Builder builder;
+    // Note: changing edge geometry seems to mess up with face (or shell, or solid)
+    // Probably need to do some fix afterwards.
+    if (edge) {
+        for (auto & edge : getSubTopoShapes(TopAbs_EDGE)) {
+            TopoDS_Edge e = TopoDS::Edge(edge.getShape());
+            BRepAdaptor_Curve curve(e);
+            if (curve.GetType() == GeomAbs_Line || !edge.isLinearEdge())
+                continue;
+            std::unique_ptr<Geometry> geo(
+                    Geometry::fromShape(e.Located(TopLoc_Location()).Oriented(TopAbs_FORWARD)));
+            std::unique_ptr<Geometry> gline(static_cast<GeomCurve*>(geo.get())->toLine());
+            if (gline) {
+                touched = true;
+                builder.UpdateEdge(e,
+                                   Handle(Geom_Curve)::DownCast(gline->handle()),
+                                   e.Location(),
+                                   BRep_Tool::Tolerance(e));
+            }
+        }
+    }
+    if (face) {
+        for (auto & face : getSubTopoShapes(TopAbs_FACE)) {
+            TopoDS_Face f = TopoDS::Face(face.getShape());
+            BRepAdaptor_Surface surf(f);
+            if (surf.GetType() == GeomAbs_Plane || !face.isPlanarFace())
+                continue;
+            std::unique_ptr<Geometry> geo(
+                    Geometry::fromShape(f.Located(TopLoc_Location()).Oriented(TopAbs_FORWARD)));
+            std::unique_ptr<Geometry> gplane(static_cast<GeomSurface*>(geo.get())->toPlane());
+            if (gplane) {
+                touched = true;
+                builder.UpdateFace(f, 
+                                Handle(Geom_Surface)::DownCast(gplane->handle()),
+                                f.Location(),
+                                BRep_Tool::Tolerance(f));
+            }
+        }
+    }
+    return touched;
+}

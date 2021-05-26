@@ -46,6 +46,7 @@ public:
     App::PropertyAngle          InnerTaperAngle;
     App::PropertyAngle          InnerTaperAngleRev;
     App::PropertyBool           UsePipeForDraft;
+    App::PropertyBool           Linearize;
 
     /** @name methods override feature */
     //@{

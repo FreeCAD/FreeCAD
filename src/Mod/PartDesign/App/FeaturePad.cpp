@@ -91,6 +91,8 @@ Pad::Pad()
     ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Pad", App::Prop_None, "Taper angle of the reverse part for inner holes.");
 
     ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Pad", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
+    ADD_PROPERTY_TYPE(Linearize,(false), "Pad", App::Prop_None,
+            "Linearize the resut shape by simplify linear edge and planar face into line and plane");
 }
 
 short Pad::mustExecute() const
@@ -117,6 +119,7 @@ void Pad::setupObject()
 {
     ProfileBased::setupObject();
     UsePipeForDraft.setValue(Part::PartParams::UsePipeForExtrusionDraft());
+    Linearize.setValue(Part::PartParams::LinearizeExtrusionDraft());
 }
 
 App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
@@ -367,6 +370,7 @@ App::DocumentObjectExecReturn *Pad::_execute(bool makeface, bool fuse)
             params.taperAngleRev = this->TaperAngleRev.getValue() * M_PI / 180.0;
             params.innerTaperAngleFwd = this->InnerTaperAngle.getValue() * M_PI / 180.0;
             params.innerTaperAngleRev = this->InnerTaperAngleRev.getValue() * M_PI / 180.0;
+            params.linearize = this->Linearize.getValue();
             if (L2 == 0.0 && Midplane.getValue()) {
                 params.lengthFwd = L/2;
                 params.lengthRev = L/2;

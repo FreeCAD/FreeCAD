@@ -68,6 +68,7 @@ public:
     FC_APP_PART_PARAM(AutoGroupSolids,bool,Bool,false) \
     FC_APP_PART_PARAM(SingleSolid,bool,Bool,false) \
     FC_APP_PART_PARAM(UsePipeForExtrusionDraft,bool,Bool,false) \
+    FC_APP_PART_PARAM(LinearizeExtrusionDraft,bool,Bool,true) \
     FC_APP_PART_PARAM(AutoCorrectLink,bool,Bool,false) \
 
 #undef FC_APP_PART_PARAM

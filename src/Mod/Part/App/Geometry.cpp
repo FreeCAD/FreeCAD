@@ -1809,8 +1809,14 @@ PyObject *GeomBSplineCurve::getPyObject(void)
 
 bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(_other.getTypeId() != getTypeId())
+    if(_other.getTypeId() != getTypeId()) {
+        if (isLinear() && _other.isDerivedFrom(GeomCurve::getClassTypeId())) {
+            std::unique_ptr<Geometry> geo(toLineSegment());
+            if (geo)
+                return geo->isSame(_other, tol, atol);
+        }
         return false;
+    }
 
     auto &other = static_cast<const GeomBSplineCurve &>(_other);
     (void)atol;
@@ -4167,8 +4173,14 @@ PyObject *GeomLine::getPyObject(void)
 
 bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(_other.getTypeId() != getTypeId())
+    if(_other.getTypeId() != getTypeId()) {
+        if (_other.isDerivedFrom(GeomCurve::getClassTypeId())) {
+            std::unique_ptr<Geometry> geo(static_cast<const GeomCurve&>(_other).toLine());
+            if (geo)
+                return isSame(*geo, tol, atol);
+        }
         return false;
+    }
 
     auto &other = static_cast<const GeomLine &>(_other);
 
@@ -4766,8 +4778,14 @@ PyObject *GeomBSplineSurface::getPyObject(void)
 
 bool GeomBSplineSurface::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(_other.getTypeId() != getTypeId())
+    if(_other.getTypeId() != getTypeId()) {
+        if (_other.isDerivedFrom(GeomSurface::getClassTypeId()) && isPlanar()) {
+            std::unique_ptr<Geometry> geo(toPlane());
+            if (geo)
+                return geo->isSame(_other, tol, atol);
+        }
         return false;
+    }
 
     auto &other = static_cast<const GeomBSplineSurface &>(_other);
     Standard_Integer uc = mySurface->NbUPoles();
@@ -5194,8 +5212,14 @@ PyObject *GeomPlane::getPyObject(void)
 
 bool GeomPlane::isSame(const Geometry &_other, double tol, double atol) const
 {
-    if(_other.getTypeId() != getTypeId())
+    if(_other.getTypeId() != getTypeId()) {
+        if (_other.isDerivedFrom(GeomSurface::getClassTypeId())) {
+            std::unique_ptr<Geometry> geo(static_cast<const GeomSurface&>(_other).toPlane());
+            if (geo)
+                return isSame(*geo, tol, atol);
+        }
         return false;
+    }
 
     auto &other = static_cast<const GeomPlane &>(_other);
     return GeomElementarySurface::isSame(other,tol,atol);

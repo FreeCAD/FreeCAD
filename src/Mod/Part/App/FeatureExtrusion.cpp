@@ -88,6 +88,8 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(InnerTaperAngle,(0.0), "Extrude", App::Prop_None, "Taper angle of inner holes.");
     ADD_PROPERTY_TYPE(InnerTaperAngleRev,(0.0), "Extrude", App::Prop_None, "Taper angle of the reverse part for inner holes.");
     ADD_PROPERTY_TYPE(UsePipeForDraft,(false), "Extrude", App::Prop_None, "Use pipe (i.e. sweep) operation to create draft angles.");
+    ADD_PROPERTY_TYPE(Linearize,(false), "Extrude", App::Prop_None,
+            "Linearize the resut shape by simplify linear edge and planar face into line and plane");
     ADD_PROPERTY_TYPE(FaceMakerClass,("Part::FaceMakerExtrusion"), "Extrude", App::Prop_None, "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored."); //default for old documents. See setupObject for default for new extrusions.
 }
 
@@ -147,6 +149,7 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 {
     Extrusion::ExtrusionParameters result;
     result.usepipe = this->UsePipeForDraft.getValue();
+    result.linearize = this->Linearize.getValue();
     Base::Vector3d dir;
     switch(this->DirMode.getValue()){
         case dmCustom:
@@ -533,6 +536,8 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
 #endif
             if (params.usepipe) {
                 drafts.push_back(makeDraftUsingPipe(list_of_sections, hasher));
+                if (params.linearize)
+                    drafts.back().linearize(true, false);
                 return;
             }
 
@@ -544,6 +549,8 @@ void Extrusion::makeDraft(const ExtrusionParameters& params, const TopoShape& _s
 
             mkGenerator.Build();
             drafts.push_back(TopoShape(0,hasher).makEShape(mkGenerator,list_of_sections));
+            if (params.linearize)
+                drafts.back().linearize(true, false);
         }
         catch (Standard_Failure &){
             throw;
@@ -629,5 +636,19 @@ void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
     UsePipeForDraft.setValue(PartParams::UsePipeForExtrusionDraft());
+    Linearize.setValue(Part::PartParams::LinearizeExtrusionDraft());
     this->FaceMakerClass.setValue("Part::FaceMakerBullseye"); //default for newly created features
 }
+
+Part::Extrusion::ExtrusionParameters::ExtrusionParameters()
+    : lengthFwd(0)
+    , lengthRev(0)
+    , solid(false)
+    , innertaper(false)
+    , usepipe(false)
+    , linearize(PartParams::LinearizeExtrusionDraft())
+    , taperAngleFwd(0)
+    , taperAngleRev(0)
+    , innerTaperAngleFwd(0)
+      , innerTaperAngleRev(0)
+{}// constructor to keep garbage out

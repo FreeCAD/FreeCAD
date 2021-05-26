@@ -56,35 +56,27 @@ public:
     App::PropertyAngle InnerTaperAngleRev;
     App::PropertyString FaceMakerClass;
     App::PropertyBool UsePipeForDraft;
+    App::PropertyBool Linearize;
 
     /**
      * @brief The ExtrusionParameters struct is supposed to be filled with final
      * extrusion parameters, after resolving links, applying mode logic,
      * reversing, etc., and be passed to extrudeShape.
      */
-    struct ExtrusionParameters {
+    struct PartExport ExtrusionParameters {
         gp_Dir dir;
         double lengthFwd;
         double lengthRev;
         bool solid;
         bool innertaper;
         bool usepipe;
+        bool linearize;
         double taperAngleFwd; //in radians
         double taperAngleRev;
         double innerTaperAngleFwd; //in radians
         double innerTaperAngleRev;
         std::string faceMakerClass;
-        ExtrusionParameters()
-            : lengthFwd(0)
-            , lengthRev(0)
-            , solid(false)
-            , innertaper(false)
-            , usepipe(false)
-            , taperAngleFwd(0)
-            , taperAngleRev(0)
-            , innerTaperAngleFwd(0)
-            , innerTaperAngleRev(0)
-        {}// constructor to keep garbage out
+        ExtrusionParameters();
     };
 
     /** @name methods override feature */
