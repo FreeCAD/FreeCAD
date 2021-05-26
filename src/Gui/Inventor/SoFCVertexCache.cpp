@@ -352,6 +352,7 @@ public:
   std::vector<int> transppartindices;
 
   std::vector<SbVec3f> partcenters;
+  std::vector<int32_t> nonflatparts;
 
   SoFCVertexArrayIndexer * triangleindexer;
   SoFCVertexArrayIndexer * lineindexer;
@@ -659,17 +660,15 @@ SoFCVertexCacheP::checkTransparency()
   int prev = 0;
   std::vector<int> transpparts;
   for (int i=0; i<numparts; ++i) {
-    SbVec3d v(0,0,0);
+    SbBox3f bbox;
     int n = parts[i]-prev;
-    for (int k=0; k<n; ++k) {
-      const SbVec3f & vertex = vertices[indices[k+prev]];
-      v[0] += vertex[0];
-      v[1] += vertex[1];
-      v[2] += vertex[2];
-    }
-    this->partcenters.emplace_back((float)(v[0]/n),
-                                   (float)(v[1]/n),
-                                   (float)(v[2]/n));
+    for (int k=0; k<n; ++k)
+      bbox.extendBy(vertices[indices[k+prev]]);
+    float dx,dy,dz;
+    bbox.getSize(dx, dy, dz);
+    if (dx > 1e-6f && dy > 1e-6f && dz > 1e-6)
+      this->nonflatparts.push_back(i);
+    this->partcenters.emplace_back(bbox.getCenter());
     if (this->hastransp && this->colorpervertex> 0) {
       bool transp = false;
       for (int k=0; k<n; ++k) {
@@ -707,6 +706,18 @@ SoFCVertexCacheP::checkTransparency()
       this->opaquepartcounts.push_back(parts[numparts-1] - (prev ? parts[prev-1] : 0));
     }
   }
+}
+
+int
+SoFCVertexCache::getNumNonFlatParts() const
+{
+  return (int)PRIVATE(this)->nonflatparts.size();
+}
+
+const int *
+SoFCVertexCache::getNonFlatParts() const
+{
+  return getNumNonFlatParts() ? &PRIVATE(this)->nonflatparts[0] : nullptr;
 }
 
 void

@@ -125,6 +125,9 @@ public:
 
   SoFCVertexCache * getWholeCache() const;
 
+  int getNumNonFlatParts(void) const; 
+  const int *getNonFlatParts() const;
+
   bool isElementSelectable() const;
   bool allowOnTopPattern() const;
 

@@ -1045,40 +1045,61 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
       || draw_entry.material->type != Material::Triangle)
     return;
 
-  glPushAttrib(GL_ENABLE_BIT
-      | GL_DEPTH_BUFFER_BIT
-      | GL_STENCIL_BUFFER_BIT
-      | GL_CURRENT_BIT
-      | GL_POLYGON_BIT);
+  int drawidx = draw_entry.ventry->partidx;
+  int numparts = draw_entry.ventry->cache->getNumNonFlatParts();
+  int dummyparts[1];
+  const int *partindices;
+  if (numparts)
+    partindices = draw_entry.ventry->cache->getNonFlatParts();
+  else {
+    numparts = 1;
+    dummyparts[1] = drawidx;
+    partindices = dummyparts;
+  }
 
-  glDisable(GL_BLEND);
-  glEnable(GL_STENCIL_TEST);
-  glClear(GL_STENCIL_BUFFER_BIT);
-  glDisable(GL_LIGHTING);
-  glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+  bool pushed = false;
+  for (int i=0; i<numparts; ++i) {
+    if (drawidx >= 0 && drawidx != partindices[i])
+      continue;
 
-  glStencilFunc (GL_ALWAYS, 1, -1);
-  glStencilOp (GL_KEEP, GL_KEEP, GL_REPLACE);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  draw_entry.ventry->cache->renderTriangles(action->getState(),
-                                            SoFCVertexCache::NON_SORTED_ARRAY,
-                                            draw_entry.ventry->partidx);
-  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-  glStencilFunc(GL_NOTEQUAL, 1, -1);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    if (!pushed) {
+      pushed = true;
+      glPushAttrib(GL_ENABLE_BIT
+          | GL_DEPTH_BUFFER_BIT
+          | GL_STENCIL_BUFFER_BIT
+          | GL_CURRENT_BIT
+          | GL_POLYGON_BIT);
 
-  auto col = draw_entry.material->hiddenlinecolor;
-  glColor3ub((unsigned char)((col>>24)&0xff),
-              (unsigned char)((col>>16)&0xff),
-              (unsigned char)((col>>8)&0xff));
-  float linewidth = draw_entry.material->linewidth;
-  if (linewidth < 1.0f)
-    linewidth = 1.0f;
-  glLineWidth(linewidth*1.5f);
-  draw_entry.ventry->cache->renderTriangles(action->getState(),
-                                            SoFCVertexCache::NON_SORTED_ARRAY,
-                                            draw_entry.ventry->partidx);
-  glPopAttrib();
+      glEnable(GL_STENCIL_TEST);
+      glDisable(GL_LIGHTING);
+      auto col = draw_entry.material->hiddenlinecolor;
+      glColor3ub((unsigned char)((col>>24)&0xff),
+          (unsigned char)((col>>16)&0xff),
+          (unsigned char)((col>>8)&0xff));
+      float linewidth = draw_entry.material->linewidth;
+      if (linewidth < 1.0f)
+        linewidth = 1.0f;
+      glLineWidth(linewidth*1.5f);
+    }
+
+    glClear(GL_STENCIL_BUFFER_BIT);
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+    glStencilFunc (GL_ALWAYS, 1, -1);
+    glStencilOp (GL_KEEP, GL_KEEP, GL_REPLACE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    draw_entry.ventry->cache->renderTriangles(action->getState(),
+                                              SoFCVertexCache::NON_SORTED_ARRAY,
+                                              partindices[i]);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glStencilFunc(GL_NOTEQUAL, 1, -1);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    draw_entry.ventry->cache->renderTriangles(action->getState(),
+                                              SoFCVertexCache::NON_SORTED_ARRAY,
+                                              partindices[i]);
+  }
+  if (pushed)
+    glPopAttrib();
 }
 
 bool
@@ -1399,13 +1420,13 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
       break;
     case Material::Triangle:
       {
+        renderOutline(action, draw_entry);
         if (!draw_entry.ventry->cache->hasTransparency()
             || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
           array |= SoFCVertexCache::FULL_SORTED_ARRAY;
         else
           array |= SoFCVertexCache::SORTED_ARRAY;
         draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
-        renderOutline(action, draw_entry);
       }
       break;
     }
