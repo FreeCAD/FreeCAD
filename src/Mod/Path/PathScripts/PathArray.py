@@ -177,14 +177,14 @@ class ObjectArray:
 
     def execute(self, obj):
 
-		# backwards compatibility for PathArrays created before support for multiple bases
+        # backwards compatibility for PathArrays created before support for multiple bases
         if isinstance(obj.Base, list):
             base = obj.Base
         else:
             base = [obj.Base]
 
         if len(base)==0:
-			return
+            return
 
         obj.ToolController = base[0].ToolController
         for b in base:
