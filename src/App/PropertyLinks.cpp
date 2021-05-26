@@ -433,7 +433,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
                 << (elementName.first.size()?elementName.first:elementName.second));
         shadow.second.swap(elementName.second);
     } else {
-        FC_LOG(propertyName(this) 
+        FC_TRACE(propertyName(this) 
                 << " element reference shadow update " << ret->getFullName() << " "
                 << shadow.first << " -> " << elementName.first);
         shadow.swap(elementName);
