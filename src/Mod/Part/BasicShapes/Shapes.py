@@ -106,15 +106,28 @@ def showPreselectInfo():
     try:
         path, mappedName, elementName = Part.splitSubname(sel.SubElementNames[0])
         txt += '\nObject: %s' % obj.Label
-        if obj.Document != sel.Object.Document or obj.Name != obj.Label:
-            txt += ' (%s)' % obj.FullName
-        txt += '\nPath: %s.%s' % (sel.Object.Name, path)
+        if obj.Document == sel.Object.Document:
+            if obj.Name != obj.Label:
+                txt += ' (%s)' % obj.Name
+        else:
+            txt += ' (@%s' % obj.Document.Label
+            if obj.Name != obj.Label:
+                txt += '#' + obj.Name
+            txt += ')'
+        if path:
+            path = '\nPath: %s.%s' % (sel.Object.Name, path)
+            if len(path) > 75:
+                path = path[:70] + '..';
+            txt += path
         if elementName:
             txt += '\nElement name: %s' % elementName
             if not mappedName:
                 mappedName = shape.getElementMappedName(elementName)
             if mappedName:
-                txt += '\nMapped name: %s' % mappedName
+                mappedName = '\nMapped name: %s' % mappedName
+                if len(mappedName) > 75:
+                    mappedName = mappedName[:70] + '...'
+                txt += mappedName
             shape = Part.getShape(obj, elementName, needSubElement=True)
     except Exception:
         shape = Part.getShape(sel.Object, sel.SubElementNames[0], needSubElement=True)
