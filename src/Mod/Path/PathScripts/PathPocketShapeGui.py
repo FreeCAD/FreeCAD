@@ -75,6 +75,7 @@ class _Extension(object):
         hnt = coin.SoShapeHints()
 
         if not ext is None:
+            numVert = list()  # track number of verticies in each polygon face
             try:
                 wire =  ext.getWire()
             except FreeCAD.Base.FreeCADError:
@@ -86,8 +87,22 @@ class _Extension(object):
                     p2 = list(reversed(p1))
                     polygon = [(p.x, p.y, p.z) for p in (p0 + p2)]
                 else:
-                    poly = [p for p in wire.discretize(Deflection=0.02)][:-1]
-                    polygon = [(p.x, p.y, p.z) for p in poly]
+                    if ext.extFaces:
+                        # Create polygon for each extension face in compound extensions
+                        allPolys = list()
+                        extFaces = ext.getExtensionFaces(wire)
+                        for f in extFaces:
+                            pCnt = 0
+                            for w in f.Wires:
+                                poly = [p for p in w.discretize(Deflection=0.01)]
+                                pCnt += len(poly)
+                                allPolys.extend(poly)
+                            numVert.append(pCnt)
+                        polygon = [(p.x, p.y, p.z) for p in allPolys]
+                    else:
+                        # poly = [p for p in wire.discretize(Deflection=0.02)][:-1]
+                        poly = [p for p in wire.discretize(Deflection=0.02)]
+                        polygon = [(p.x, p.y, p.z) for p in poly]
                 crd.point.setValues(polygon)
             else:
                 return None
@@ -97,6 +112,10 @@ class _Extension(object):
 
             hnt.faceType = coin.SoShapeHints.UNKNOWN_FACE_TYPE
             hnt.vertexOrdering = coin.SoShapeHints.CLOCKWISE
+
+            if numVert:
+                # Transfer vertex counts for polygon faces
+                fce.numVertices.setValues(tuple(numVert))
 
             sep.addChild(pos)
             sep.addChild(mat)
@@ -222,7 +241,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         if obj.ExtensionCorners != self.form.extendCorners.isChecked():
             self.form.extendCorners.toggle()
-        self.defaultLength.updateSpinBox()
+        self.updateQuantitySpinBoxes()
         self.extensions = obj.Proxy.getExtensions(obj) # pylint: disable=attribute-defined-outside-init
         self.setExtensions(self.extensions)
 
@@ -341,11 +360,15 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.form.extensionTree.blockSignals(False)
 
+    def updateQuantitySpinBoxes(self, index = None):
+        self.defaultLength.updateSpinBox()
+
     def updateData(self, obj, prop):
         PathLog.track(obj.Label, prop, self.blockUpdateData)
         if not self.blockUpdateData:
             if prop in ['Base', 'ExtensionLengthDefault']:
                 self.setExtensions(obj.Proxy.getExtensions(obj))
+                self.updateQuantitySpinBoxes()
 
     def restoreSelection(self, selection):
         PathLog.track()
@@ -458,6 +481,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonDisable.clicked.connect(self.extensionsDisable)
         self.form.buttonEnable.clicked.connect(self.extensionsEnable)
+        self.form.defaultLength.editingFinished.connect(self.updateQuantitySpinBoxes)
 
         self.model.itemChanged.connect(self.updateItemEnabled)
 

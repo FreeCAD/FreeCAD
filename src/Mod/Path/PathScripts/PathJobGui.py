@@ -27,11 +27,11 @@ import math
 import traceback
 from pivy import coin
 from PySide import QtCore, QtGui
+import json
 
 import FreeCAD
 import FreeCADGui
 
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
 import PathScripts.PathJob as PathJob
 import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
@@ -520,7 +520,7 @@ class StockFromExistingEdit(StockEdit):
         stock = self.form.stockExisting.itemData(self.form.stockExisting.currentIndex())
         if not (hasattr(obj.Stock, 'Objects') and len(obj.Stock.Objects) == 1 and obj.Stock.Objects[0] == stock):
             if stock:
-                stock = PathJob.createResourceClone(obj, stock, self.StockLabelPrefix , 'Stock')
+                stock = PathJob.createResourceClone(obj, stock, self.StockLabelPrefix, 'Stock')
                 stock.ViewObject.Visibility = True
                 PathStock.SetupStockObject(stock, PathStock.StockType.Unknown)
                 stock.Proxy.execute(stock)
@@ -546,7 +546,7 @@ class StockFromExistingEdit(StockEdit):
         index = -1
         for i, solid in enumerate(self.candidates(obj)):
             self.form.stockExisting.addItem(solid.Label, solid)
-            label="{}-{}".format(self.StockLabelPrefix, solid.Label)
+            label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
 
             if label == stockName:
                 index = i
@@ -864,13 +864,33 @@ class TaskPanel:
         self.toolControllerSelect()
 
     def toolControllerAdd(self):
+        # adding a TC from a toolbit directly.
+        # Try to find a tool number from the currently selected lib. Otherwise
+        # use next available number
+
         if PathPreferences.toolsUseLegacyTools():
             PathToolLibraryEditor.CommandToolLibraryEdit().edit(self.obj, self.updateToolController)
         else:
             tools = PathToolBitGui.LoadTools()
+
+            curLib = PathPreferences.lastFileToolLibrary()
+
+            library = None
+            if curLib is not None:
+                with open(curLib) as fp:
+                    library = json.load(fp)
+
             for tool in tools:
-                tc = PathToolControllerGui.Create(name=tool.Label, tool=tool)
+                toolNum = self.obj.Proxy.nextToolNumber()
+                if library is not None:
+                    for toolBit in library['tools']:
+
+                        if toolBit['path'] == tool.File:
+                            toolNum = toolBit['nr']
+
+                tc = PathToolControllerGui.Create(name=tool.Label, tool=tool, toolNumber=toolNum)
                 self.obj.Proxy.addToolController(tc)
+
             FreeCAD.ActiveDocument.recompute()
             self.updateToolController()
 

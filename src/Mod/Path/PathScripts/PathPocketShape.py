@@ -139,6 +139,7 @@ class Extension(object):
         self.sub = sub
         self.length = length
         self.direction = direction
+        self.extFaces = list()
 
         self.wire = None
 
@@ -197,7 +198,22 @@ class Extension(object):
 
         return self._getDirectedNormal(e0.valueAt(midparam), normal.normalize())
 
+    def getExtensionFaces(self, extensionWire):
+        '''getExtensionFace(extensionWire)...
+        A public helper method to retrieve the requested extension as a face,
+        rather than a wire becuase some extensions require a face shape
+        for definition that allows for two wires for boundary definition.
+        '''
+
+        if self.extFaces:
+            return self.extFaces
+        
+        return [Part.Face(extensionWire)]
+
     def getWire(self):
+        '''getWire()... Public method to retrieve the extension area, pertaining to the feature
+        and sub element provided at class instantiation, as a closed wire.  If no closed wire
+        is possible, a `None` value is returned.'''
         PathLog.track()
         if PathGeom.isRoughly(0, self.length.Value) or not self.sub:
             PathLog.debug("no extension, length=%.2f, sub=%s" % (self.length.Value, self.sub))
@@ -233,7 +249,9 @@ class Extension(object):
                         e2 = Part.makeLine(edge.valueAt(edge.LastParameter), e3.valueAt(e3.LastParameter))
                         return Part.Wire([e0, edge, e2, e3])
 
-                    return Part.Wire([e3])
+                    extWire = Part.Wire([e3])
+                    self.extFaces = [self._makeCircularExtFace(edge, extWire)]
+                    return extWire
 
                 # the extension is bigger than the hole - so let's just cover the whole hole
                 if endPoints(edge):
@@ -257,6 +275,25 @@ class Extension(object):
             return self._extendEdge(feature, edges[0], direction)
 
         return extendWire(feature, sub, self.length.Value)
+
+    def _makeCircularExtFace(self, edge, extWire):
+        '''_makeCircularExtensionFace(edge, extWire)...
+        Create proper circular extension face shape. Incoming edge is expected to be a circle.
+        '''
+        # Add original outer wire to cut faces if necessary
+        edgeFace = Part.Face(Part.Wire([edge]))
+        edgeFace.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - edgeFace.BoundBox.ZMin))
+        extWireFace = Part.Face(extWire)
+        extWireFace.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - extWireFace.BoundBox.ZMin))
+
+        if extWireFace.Area >= edgeFace.Area:
+            extensionFace = extWireFace.cut(edgeFace)
+        else:
+            extensionFace = edgeFace.cut(extWireFace)
+        extensionFace.translate(FreeCAD.Vector(0.0, 0.0, edge.BoundBox.ZMin))
+
+        return extensionFace
+# Eclass
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
@@ -385,9 +422,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 for ext in self.getExtensions(obj):
                     wire = ext.getWire()
                     if wire:
-                        face = Part.Face(wire)
-                        self.horiz.append(face)
-                        self.exts.append(face)
+                        for face in ext.getExtensionFaces(wire):
+                            self.horiz.append(face)
+                            self.exts.append(face)
 
                 # Place all self.horiz faces into same working plane
                 for h in self.horiz:
