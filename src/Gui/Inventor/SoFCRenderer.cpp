@@ -1049,11 +1049,12 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
   int numparts = draw_entry.ventry->cache->getNumNonFlatParts();
   int dummyparts[1];
   const int *partindices;
-  if (numparts)
+  if (numparts && drawidx < 0) {
+    numparts = draw_entry.ventry->cache->getNumNonFlatParts();
     partindices = draw_entry.ventry->cache->getNonFlatParts();
-  else {
+  } else {
     numparts = 1;
-    dummyparts[1] = drawidx;
+    dummyparts[0] = drawidx;
     partindices = dummyparts;
   }
 
