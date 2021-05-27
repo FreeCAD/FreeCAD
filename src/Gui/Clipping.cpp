@@ -29,6 +29,8 @@
 # include <Inventor/sensors/SoTimerSensor.h>
 # include <QDockWidget>
 # include <QPointer>
+# include <QScrollArea>
+# include <QStackedWidget>
 # include <cmath>
 #endif
 
@@ -107,6 +109,8 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
   : QDialog(parent)
   , d(new Private)
 {
+    connect(view, SIGNAL(destroyed(QObject*)), this, SLOT(onViewDestroyed(QObject*)));
+
     // create widgets
     d->ui.setupUi(this);
 
@@ -194,36 +198,91 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     }
 }
 
-Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view)
-{
-    // embed this dialog into a QDockWidget
-    Clipping* clipping = new Clipping(view);
-    Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
-    QDockWidget* dw = pDockMgr->addDockWindow("Clipping", clipping, Qt::LeftDockWidgetArea);
-    dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
-    dw->show();
+static QPointer<QDockWidget> _DockWidget;
+static QPointer<QStackedWidget> _StackedWidget;
+static std::map<QObject*, QPointer<QScrollArea> > _Clippings;
+static bool _Inited = false;
 
-    return clipping;
+void Clipping::onViewDestroyed(QObject *o)
+{
+    _Clippings.erase(o);
+    auto parent = parentWidget();
+    if (parent)
+        parent->deleteLater();
+}
+
+static QWidget *bindView(Gui::View3DInventor *view)
+{
+    if (!_StackedWidget)
+        return nullptr;
+    auto &scrollArea = _Clippings[view];
+    if (!scrollArea) {
+        scrollArea = new QScrollArea(nullptr);
+        scrollArea->setFrameShape(QFrame::NoFrame);
+        scrollArea->setWidgetResizable(true);
+        scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        auto clipping = new Clipping(view, scrollArea);
+        scrollArea->setWidget(clipping);
+        _StackedWidget->addWidget(scrollArea);
+    }
+    _StackedWidget->setCurrentWidget(scrollArea);
+    return scrollArea;
+}
+
+void Clipping::toggle()
+{
+    auto view = qobject_cast<Gui::View3DInventor*>(Application::Instance->activeView());
+    if (!view)
+        return;
+
+    if (!_Inited) {
+        _Inited = true;
+        Application::Instance->signalActivateView.connect(
+            [](const Gui::MDIView *view) {
+                auto view3d = qobject_cast<const Gui::View3DInventor*>(view);
+                if (!view3d || !_DockWidget)
+                    return;
+                bindView(const_cast<Gui::View3DInventor*>(view3d));
+            });
+    }
+
+    bool doToggle = true;
+    if (!_DockWidget || !_StackedWidget) {
+        if (_DockWidget)
+            _DockWidget->deleteLater();
+        doToggle = false;
+        _StackedWidget = new QStackedWidget(nullptr);
+        Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+        _DockWidget = pDockMgr->addDockWindow("Clipping", _StackedWidget, Qt::LeftDockWidgetArea);
+        _DockWidget->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
+        _DockWidget->show();
+    }
+
+    auto widget = bindView(view);
+    if (widget && doToggle)
+        _DockWidget->toggleViewAction()->activate(QAction::Trigger);
 }
 
 /** Destroys the object and frees any allocated resources */
 Clipping::~Clipping()
 {
-    d->node->removeChild(d->clipX);
-    d->node->removeChild(d->clipY);
-    d->node->removeChild(d->clipZ);
-    d->node->removeChild(d->clipView);
-    d->node->unref();
+    if (d->view) {
+        d->node->removeChild(d->clipX);
+        d->node->removeChild(d->clipY);
+        d->node->removeChild(d->clipZ);
+        d->node->removeChild(d->clipView);
+        d->node->unref();
+    }
     delete d;
 }
 
-void Clipping::reject()
+void Clipping::done(int r)
 {
-    QDialog::reject();
-    QDockWidget* dw = qobject_cast<QDockWidget*>(parent());
-    if (dw) {
-        dw->deleteLater();
-    }
+    if (_DockWidget)
+        _DockWidget->deleteLater();
+    _Clippings.clear();
+    QDialog::done(r);
 }
 
 void Clipping::on_groupBoxX_toggled(bool on)

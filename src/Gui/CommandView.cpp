@@ -570,6 +570,7 @@ StdCmdToggleClipPlane::StdCmdToggleClipPlane()
     sWhatsThis    = "Std_ToggleClipPlane";
     sStatusTip    = QT_TR_NOOP("Toggles clipping plane for active view");
     sPixmap       = "Std_ToggleClipPlane";
+    sAccel        = "V, C";
     eType         = Alter3DView;
 }
 
@@ -585,23 +586,7 @@ Action * StdCmdToggleClipPlane::createAction(void)
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-#if 0
-    View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        if (iMsg > 0 && !view->hasClippingPlane())
-            view->toggleClippingPlane();
-        else if (iMsg == 0 && view->hasClippingPlane())
-            view->toggleClippingPlane();
-    }
-#else
-    static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
-    if (!clipping) {
-        View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        if (view) {
-            clipping = Gui::Dialog::Clipping::makeDockWidget(view);
-        }
-    }
-#endif
+    Dialog::Clipping::toggle();
 }
 
 bool StdCmdToggleClipPlane::isActive(void)

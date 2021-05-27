@@ -26,6 +26,8 @@
 
 #include <QDialog>
 
+class QDockWidget;
+
 namespace Gui {
 class View3DInventor;
 namespace Dialog {
@@ -38,11 +40,13 @@ class GuiExport Clipping : public QDialog
     Q_OBJECT
 
 public:
-    static Clipping* makeDockWidget(Gui::View3DInventor*);
     Clipping(Gui::View3DInventor* view, QWidget* parent = nullptr);
     ~Clipping();
 
+    static void toggle();
+
 protected Q_SLOTS:
+    void onViewDestroyed(QObject *);
     void on_groupBoxX_toggled(bool);
     void on_groupBoxY_toggled(bool);
     void on_groupBoxZ_toggled(bool);
@@ -65,7 +69,7 @@ protected Q_SLOTS:
     void on_checkBoxOnTop_toggled(bool);
 
 public:
-    void reject();
+    void done(int);
 
 private:
     class Private;
