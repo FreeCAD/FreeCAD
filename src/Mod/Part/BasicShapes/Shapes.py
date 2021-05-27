@@ -82,13 +82,33 @@ def _bbox_tostr(v):
             (_Decimals, v.XMin, _Decimals, v.YMin, _Decimals, v.ZMin,
              _Decimals, v.XMax, _Decimals, v.YMax, _Decimals, v.ZMax)
 
+def _pla_tostr(pla):
+    angles = pla.Rotation.toEuler()
+    return 'Pos(%s), Yaw-Pitch-Roll(%.*f, %.*f, %.*f)' \
+            % (_vec_tostr(pla.Base),
+               _Decimals, angles[0],
+               _Decimals, angles[1],
+               _Decimals, angles[2])
+
+_presel_maxlen = 75
+
 def _tostr(v):
     if isinstance(v, float):
         return '%.*f' % (_Decimals, v)
     if isinstance(v, FreeCAD.Vector):
         return _vec_tostr(v)
+    if isinstance(v, FreeCAD.Placement):
+        return _pla_tostr(v)
     if isinstance(v, tuple):
-        return '(' + ', '.join([_tostr(vv) for vv in v]) + ')'
+        res = ''
+        for vv in v:
+            if res:
+                res += ', ';
+            res += _tostr(vv)
+            if len(res) > _presel_maxlen:
+                res = res[:_presel_maxlen-5] + '...'
+                break
+        return '(' + res + ')'
     return str(v)
 
 def showPreselectInfo():
@@ -102,8 +122,8 @@ def showPreselectInfo():
     if txt:
         txt += '\n\n'
     point = sel.PickedPoints[0]
-    maxlen = 75
     txt += 'Picked point: %s' % _vec_tostr(point)
+    maxlen = _presel_maxlen
     try:
         path, mappedName, elementName = Part.splitSubname(sel.SubElementNames[0])
         name = '\nObject: %s' % obj.Label
@@ -143,7 +163,7 @@ def showPreselectInfo():
     if shape.isNull():
         return
 
-    txt += '\n%s' % shape.Placement
+    txt += '\nPlacement: %s' % _pla_tostr(shape.Placement)
     if shape.ShapeType == 'Vertex':
         FreeCADGui.Selection.setPreselectionText(txt)
         return
