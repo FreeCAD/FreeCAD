@@ -30,9 +30,11 @@
 # include <QDockWidget>
 # include <QPointer>
 # include <QScrollArea>
-# include <QStackedWidget>
+# include <QAction>
 # include <cmath>
 #endif
+
+#include <QStackedWidget>
 
 #include "Clipping.h"
 #include "ui_Clipping.h"
