@@ -1207,7 +1207,18 @@ class TaskPanel(object):
                     page.clearBase()
                     page.addBaseGeometry(sel)
 
+        # Update properties based upon expressions in case expression value has changed
+        for (prp, expr) in self.obj.ExpressionEngine:
+            val = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
+            value = val.Value if hasattr(val, 'Value') else val
+            prop = getattr(self.obj, prp)
+            if hasattr(prop, "Value"):
+                prop.Value = value
+            else:
+                prop = value
+
         self.panelSetFields()
+
         for page in self.featurePages:
             page.pageRegisterSignalHandlers()
 
