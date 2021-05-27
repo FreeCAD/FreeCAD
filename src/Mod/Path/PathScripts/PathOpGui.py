@@ -214,11 +214,6 @@ class TaskPanelPage(object):
     def _installTCUpdate(self):
         return hasattr(self.form, 'toolController')
 
-    def setParent(self, parent):
-        '''setParent() ... used to transfer parent object link to child class.
-        Do not overwrite.'''
-        self.parent = parent
-
     def onDirtyChanged(self, callback):
         '''onDirtyChanged(callback) ... set callback when dirty state changes.'''
         self.signalDirtyChanged = callback
@@ -1000,8 +995,10 @@ class TaskPanel(object):
     def __init__(self, obj, deleteOnReject, opPage, selectionFactory):
         PathLog.track(obj.Label, deleteOnReject, opPage, selectionFactory)
         FreeCAD.ActiveDocument.openTransaction(translate("Path", "AreaOp Operation"))
+        self.obj = obj
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
+        self.parent = None
 
         # members initialized later
         self.clearanceHeight = None
@@ -1050,9 +1047,9 @@ class TaskPanel(object):
         self.featurePages.append(opPage)
 
         for page in self.featurePages:
+            page.parent = self  # save pointer to this current class as "parent"
             page.initPage(obj)
             page.onDirtyChanged(self.pageDirtyChanged)
-            page.setParent(self)
 
         taskPanelLayout = PathPreferences.defaultTaskPanelLayout()
 
@@ -1092,7 +1089,6 @@ class TaskPanel(object):
             self.form = forms
 
         self.selectionFactory = selectionFactory
-        self.obj = obj
         self.isdirty = deleteOnReject
         self.visibility = obj.ViewObject.Visibility
         obj.ViewObject.Visibility = True
