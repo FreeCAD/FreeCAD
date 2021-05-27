@@ -98,6 +98,9 @@ public:
 protected:
     bool eventFilter(QObject *, QEvent *ev);
 
+    void registerDockWidget(const QString &name, OverlayTabWidget *);
+    void unregisterDockWidget(const QString &name, OverlayTabWidget *);
+
 private Q_SLOTS:
     void onToggleDockWidget(bool checked);
     void onDockVisibleChange(bool visible);
@@ -110,6 +113,7 @@ private Q_SLOTS:
 
 private:
     friend class Private;
+    friend class OverlayTabWidget;
     Private * d;
 };
 
@@ -298,6 +302,8 @@ private:
     QPropertyAnimation *_animator = nullptr;
 
     State _state = State_Normal;
+
+    std::map<QDockWidget *, int> _sizemap;
 };
 
 class OverlayDragFrame: public QWidget

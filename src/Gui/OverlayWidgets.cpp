@@ -64,6 +64,7 @@
 #include "Application.h"
 #include "Control.h"
 #include "TaskView/TaskView.h"
+#include "Clipping.h"
 #include "ComboView.h"
 #include "Tree.h"
 #include "TreeParams.h"
@@ -754,6 +755,7 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
     for(auto &name : QString::fromLatin1(widgets.c_str()).split(QLatin1Char(','))) {
         if(name.isEmpty())
             continue;
+        OverlayManager::instance()->registerDockWidget(name, this);
         auto dock = getMainWindow()->findChild<QDockWidget*>(name);
         if(dock)
             addWidget(dock, dock->windowTitle());
@@ -791,10 +793,14 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
 
     setTransparent(handle->GetBool("Transparent", false));
 
+    _sizemap.clear();
     std::string savedSizes = handle->GetASCII("Sizes","");
     QList<int> sizes;
-    for(auto &size : QString::fromLatin1(savedSizes.c_str()).split(QLatin1Char(',')))
+    int idx = 0;
+    for(auto &size : QString::fromLatin1(savedSizes.c_str()).split(QLatin1Char(','))) {
         sizes.append(size.toInt());
+        _sizemap[dockWidget(idx++)] = sizes.back();
+    }
 
     getSplitter()->setSizes(sizes);
     hGrp = handle;
@@ -805,24 +811,26 @@ void OverlayTabWidget::saveTabs()
     if(!hGrp)
         return;
 
-    std::ostringstream os;
-    for(int i=0,c=count(); i<c; ++i) {
+    std::ostringstream os, os2;
+    _sizemap.clear();
+    auto sizes = splitter->sizes();
+    bool first = true;
+    for(int i=0,c=splitter->count(); i<c; ++i) {
         auto dock = dockWidget(i);
-        if(dock && dock->objectName().size())
+        if (!dock)
+            continue;
+        if(dock->objectName().size()) {
             os << dock->objectName().toLatin1().constData() << ",";
+            if (first)
+                first = false;
+            else
+                os2 << ",";
+            os2 << sizes[i];
+        }
+        _sizemap[dock] = sizes[i];
     }
     hGrp->SetASCII("Widgets", os.str().c_str());
-
-    os.str("");
-    bool first = true;
-    for(int size : splitter->sizes()) {
-        if (first)
-            first = false;
-        else
-            os << ",";
-        os << size;
-    }
-    hGrp->SetASCII("Sizes", os.str().c_str());
+    hGrp->SetASCII("Sizes", os2.str().c_str());
 }
 
 void OverlayTabWidget::onTabMoved(int from, int to)
@@ -1314,7 +1322,8 @@ void OverlayTabWidget::_setOverlayMode(QWidget *widget, int enable)
 
 void OverlayTabWidget::setOverlayMode(QWidget *widget, int enable)
 {
-    if(!widget || qobject_cast<QDialog*>(widget)
+    if(!widget || (qobject_cast<QDialog*>(widget)
+                        && !qobject_cast<Dialog::Clipping*>(widget))
                || qobject_cast<TaskView::TaskBox*>(widget))
         return;
 
@@ -1636,6 +1645,8 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
     if (!getMainWindow() || !getMainWindow()->getMdiArea())
         return;
 
+    OverlayManager::instance()->registerDockWidget(dock->objectName(), this);
+
     setFocusView();
     getMainWindow()->removeDockWidget(dock);
 
@@ -1652,7 +1663,9 @@ void OverlayTabWidget::addWidget(QDockWidget *dock, const QString &title)
 
     dock->show();
     splitter->addWidget(dock);
-    addTab(new QWidget(this), title);
+    auto dummyWidget = new QWidget(this);
+    addTab(dummyWidget, title);
+    connect(dock, SIGNAL(destroyed(QObject*)), dummyWidget, SLOT(deleteLater()));
 
     dock->setFeatures(dock->features() & ~QDockWidget::DockWidgetFloatable);
     if(count() == 1) {
@@ -1688,6 +1701,8 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
     int index = dockWidgetIndex(dock);
     if(index < 0)
         return;
+
+    OverlayManager::instance()->unregisterDockWidget(dock->objectName(), this);
 
     setFocusView();
     dock->show();
@@ -2780,6 +2795,8 @@ public:
     QTime wheelDelay;
     QPoint wheelPos;
 
+    std::map<QString, OverlayTabWidget*> _dockWidgetNameMap;
+
     bool raising = false;
 
     Private(OverlayManager *host, QWidget *parent)
@@ -3220,105 +3237,95 @@ public:
             return;
 
         auto it = _overlayMap.find(dock);
-        if(it == _overlayMap.end()) {
-            if(!checked)
-                return;
-            toggleOverlay(dock, OverlayCheck);
-            it = _overlayMap.find(dock);
-            if(it == _overlayMap.end())
-                return;
-        }
+        if(it == _overlayMap.end())
+            return;
+
         OverlayTabWidget *tabWidget = it->second->tabWidget;
-        if(checked) {
-            int index = tabWidget->dockWidgetIndex(dock);
-            if(index >= 0) {
-                auto sizes = tabWidget->getSplitter()->sizes();
-                if(index >= sizes.size() || sizes[index]==0) {
-                    if (checked > 0) {
-                        bool restored = false;
-                        if (checked > 1 && tabWidget->hGrp) {
-                            QList<int> savedSizes;
-                            std::string s = tabWidget->hGrp->GetASCII("AutoSizes","");
-                            for(auto &size : QString::fromLatin1(s.c_str()).split(QLatin1Char(',')))
-                                savedSizes.append(size.toInt());
-                            if (savedSizes.size() == sizes.size() && savedSizes[index] > 0) {
-                                sizes = savedSizes;
-                                restored = true;
-                            }
+        int index = tabWidget->dockWidgetIndex(dock);
+        if(index < 0)
+            return;
+        auto sizes = tabWidget->getSplitter()->sizes();
+        while(index >= sizes.size())
+            sizes.append(0);
+
+        if (checked < -1)
+            checked = 0;
+        else if (checked == 3) {
+            checked = 1;
+            sizes[index] = 0; // force expand the tab in full
+        } else if (checked <= 1) {
+            if (sizes[index] != 0 && tabWidget->isHidden())
+                checked = 1;
+            else {
+                // child widget inside splitter by right shouldn't been hidden, so
+                // we ignore the given toggle bit, but rely on its splitter size to
+                // decide.
+                checked = sizes[index] == 0 ? 1 : 0;
+            }
+        }
+        if(sizes[index]==0) {
+            if (!checked)
+                return;
+            tabWidget->setCurrent(dock);
+            tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
+        } else if (!checked) {
+            if (sizes[index] > 0 && sizes.size() > 1) {
+                int newtotal = 0;
+                int total = 0;
+                auto newsizes = sizes;
+                newsizes[index] = 0;
+                for (int i=0; i<sizes.size(); ++i) {
+                    total += sizes[i];
+                    if (i != index) {
+                        auto d = tabWidget->dockWidget(i);
+                        auto it = tabWidget->_sizemap.find(d);
+                        if (it == tabWidget->_sizemap.end())
+                            newsizes[i] = 0;
+                        else {
+                            if (newtotal == 0)
+                                tabWidget->setCurrent(d);
+                            newsizes[i] = it->second;
+                            newtotal += it->second;
                         }
-                        if (!restored) {
-                            int total = 0;
-                            for (int & size : sizes) {
-                                if (size) {
-                                    total += size;
-                                    size /= 2;
-                                }
-                            }
-                            sizes[index] = total/2;
-                        }
-                        tabWidget->splitter->setSizes(sizes);
-                        tabWidget->saveTabs();
                     }
-                    else
-                        return;
-                } else if (checked < 0) {
-                    if (sizes[index] > 0 && sizes.size() > 1) {
-                        int expand = 0;
+                }
+                if (!newtotal) {
+                    int expand = 0;
+                    for (int i=0; i<sizes.size(); ++i) {
+                        if (i != index && sizes[i] > 0) {
+                            ++expand;
+                            break;
+                        }
+                    }
+                    if (expand) {
+                        int expansion = sizes[index];
+                        int step = expansion / expand;
                         for (int i=0; i<sizes.size(); ++i) {
-                            if (i != index && sizes[i] > 0) {
-                                ++expand;
+                            if (i == index)
+                                newsizes[i] = 0;
+                            else if (--expand) {
+                                expansion -= step;
+                                newsizes[i] += step;
+                            } else {
+                                newsizes[i] += expansion;
                                 break;
                             }
                         }
-                        if (expand) {
-                            if (tabWidget->hGrp) {
-                                std::ostringstream os;
-                                bool first = true;
-                                for(int size : sizes) {
-                                    if (first)
-                                        first = false;
-                                    else
-                                        os << ",";
-                                    os << size;
-                                }
-                                tabWidget->hGrp->SetASCII("AutoSizes", os.str().c_str());
-                            }
-                            
-                            int expansion = sizes[index];
-                            int step = expansion / expand;
-                            for (int i=0; i<sizes.size(); ++i) {
-                                if (i == index)
-                                    sizes[i] = 0;
-                                else if (--expand) {
-                                    expansion -= step;
-                                    sizes[i] += step;
-                                } else {
-                                    sizes[i] += expansion;
-                                    break;
-                                }
-                            }
-                            sizes[index] = 0;
-                            tabWidget->splitter->setSizes(sizes);
-                            tabWidget->saveTabs();
-                        }
                     }
-                    return;
-                } else if (sizes[index] == 0) {
-                    tabWidget->setCurrent(dock);
-                    tabWidget->onCurrentChanged(tabWidget->dockWidgetIndex(dock));
+                    newsizes[index] = 0;
                 }
+                tabWidget->splitter->setSizes(newsizes);
+                tabWidget->saveTabs();
             }
-            if (checked > 0)
-                tabWidget->setRevealTime(QTime::currentTime().addMSecs(
-                        ViewParams::getDockOverlayRevealDelay()));
-            refresh();
-        } else if (checked < 0) {
-            refresh();
-        } else {
-            tabWidget->removeWidget(dock);
-            getMainWindow()->addDockWidget(it->second->dockArea, dock);
-            _overlayMap.erase(it);
         }
+        for (int i=0; i<sizes.size(); ++i) {
+            if (sizes[i])
+                tabWidget->_sizemap[tabWidget->dockWidget(i)] = sizes[i];
+        }
+        if (checked)
+            tabWidget->setRevealTime(QTime::currentTime().addMSecs(
+                    ViewParams::getDockOverlayRevealDelay()));
+        refresh();
     }
 
     void changeOverlaySize(int changes)
@@ -3757,6 +3764,17 @@ public:
         }
     }
 
+    void registerDockWidget(const QString &name, OverlayTabWidget *widget) {
+        if (name.size())
+            _dockWidgetNameMap[name] = widget;
+    }
+
+    void unregisterDockWidget(const QString &name, OverlayTabWidget *widget) {
+        auto it = _dockWidgetNameMap.find(name);
+        if (it != _dockWidgetNameMap.end() && it->second == widget) 
+            _dockWidgetNameMap.erase(it);
+    }
+
 #else // FC_HAS_DOCK_OVERLAY
 
     Private(OverlayManager *, QWidget *) {}
@@ -3775,6 +3793,8 @@ public:
     void dragDockWidget(const QPoint &, QWidget *, const QPoint &, const QSize &, bool) {}
     void floatDockWidget(QDockWidget *) {}
     void raiseAll() {}
+    void registerDockWidget(const QString &, OverlayTabWidget *) {}
+    void unregisterDockWidget(const QString &, OverlayTabWidget *) {}
 
     bool toggleOverlay(QDockWidget *,
                        OverlayToggleMode,
@@ -3828,6 +3848,21 @@ void OverlayManager::initDockWidget(QDockWidget *dw, QWidget *widget)
     connect(dw->toggleViewAction(), SIGNAL(triggered(bool)), this, SLOT(onToggleDockWidget(bool)));
     connect(dw, SIGNAL(visibilityChanged(bool)), this, SLOT(onDockVisibleChange(bool)));
     connect(widget, SIGNAL(windowTitleChanged(QString)), this, SLOT(onDockWidgetTitleChange(QString)));
+
+    QString name = dw->objectName();
+    if (name.size()) {
+        auto it = d->_dockWidgetNameMap.find(dw->objectName());
+        if (it != d->_dockWidgetNameMap.end()) {
+            for (auto o : d->_overlayInfos) {
+                if (o->tabWidget == it->second) {
+                    o->addWidget(dw, true);
+                    d->onToggleDockWidget(dw, 3);
+                    break;
+                }
+            }
+            d->refresh();
+        }
+    }
 #endif
 }
 
@@ -3847,7 +3882,7 @@ void OverlayManager::onToggleDockWidget(bool checked)
     auto action = qobject_cast<QAction*>(sender());
     if(!action)
         return;
-    d->onToggleDockWidget(qobject_cast<QDockWidget*>(action->parent()), checked?1:0);
+    d->onToggleDockWidget(qobject_cast<QDockWidget*>(action->parent()), checked);
 }
 
 void OverlayManager::onDockVisibleChange(bool visible)
@@ -4245,4 +4280,13 @@ void OverlayManager::floatDockWidget(QDockWidget *dock)
     d->floatDockWidget(dock);
 }
 
+void OverlayManager::registerDockWidget(const QString &name, OverlayTabWidget *widget)
+{
+    d->registerDockWidget(name, widget);
+}
+
+void OverlayManager::unregisterDockWidget(const QString &name, OverlayTabWidget *widget)
+{
+    d->unregisterDockWidget(name, widget);
+}
 #include "moc_OverlayWidgets.cpp"
