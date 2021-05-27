@@ -1067,11 +1067,10 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
           && (!ViewParams::getShowPreSelectedFaceOutline() || !highlight)))
     return;
 
-  int numparts;
+  int numparts = draw_entry.ventry->cache->getNumNonFlatParts();
   int dummyparts[1];
   const int *partindices;
   if (numparts && drawidx < 0) {
-    numparts = draw_entry.ventry->cache->getNumNonFlatParts();
     partindices = draw_entry.ventry->cache->getNonFlatParts();
   } else {
     numparts = 1;
