@@ -102,22 +102,30 @@ def showPreselectInfo():
     if txt:
         txt += '\n\n'
     point = sel.PickedPoints[0]
+    maxlen = 75
     txt += 'Picked point: %s' % _vec_tostr(point)
     try:
         path, mappedName, elementName = Part.splitSubname(sel.SubElementNames[0])
-        txt += '\nObject: %s' % obj.Label
+        name = '\nObject: %s' % obj.Label
         if obj.Document == sel.Object.Document:
             if obj.Name != obj.Label:
-                txt += ' (%s)' % obj.Name
+                name += ' (%s)' % obj.Name
         else:
-            txt += ' (@%s' % obj.Document.Label
+            name += ' (@%s' % obj.Document.Label
             if obj.Name != obj.Label:
                 txt += '#' + obj.Name
-            txt += ')'
+            name += ')'
+        if len(name) > maxlen:
+            if name[-1] == ')':
+                name = name[:maxlen-5] + ')'
+            else:
+                name = name[:maxlen-5]
+        txt += name
+
         if path:
             path = '\nPath: %s.%s' % (sel.Object.Name, path)
-            if len(path) > 75:
-                path = path[:70] + '..';
+            if len(path) > maxlen:
+                path = path[:maxlen-5] + '..';
             txt += path
         if elementName:
             txt += '\nElement name: %s' % elementName
@@ -125,8 +133,8 @@ def showPreselectInfo():
                 mappedName = shape.getElementMappedName(elementName)
             if mappedName:
                 mappedName = '\nMapped name: %s' % mappedName
-                if len(mappedName) > 75:
-                    mappedName = mappedName[:70] + '...'
+                if len(mappedName) > maxlen:
+                    mappedName = mappedName[:maxlen-5] + '...'
                 txt += mappedName
             shape = Part.getShape(obj, elementName, needSubElement=True)
     except Exception:
