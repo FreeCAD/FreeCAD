@@ -68,10 +68,10 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
                         isDiff = True
                     break
             if noExpr:
-                widget.setProperty('readonly', False)
+                widget.setReadOnly(False)
                 widget.setStyleSheet("color: black")
             else:
-                widget.setProperty('readonly', True)
+                widget.setReadOnly(True)
                 widget.setStyleSheet("color: gray")
             widget.update()
 
