@@ -68,7 +68,7 @@ public:
   void close(SoState * state);
 
   void renderTriangles(SoState * state, const int arrays = ALL, int part = -1);
-  void renderLines(SoState * state, const int arrays = ALL, int part = -1);
+  void renderLines(SoState * state, const int arrays = ALL, int part = -1, bool noseam = false);
   void renderPoints(SoState * state, const int array = ALL, int part = -1);
 
   void addTriangles(const std::set<int> & faces);

@@ -90,6 +90,7 @@ typedef SoFCVertexAttribute<uint8_t> ByteArray;
 #define PUBLIC(obj) ((obj)->master)
 
 static SbName * PartIndexField;
+static SbName * SeamIndicesField;
 static SbName * HighlightIndicesField;
 static SbName * ElementSelectableField;
 static SbName * OnTopPatternField;
@@ -109,6 +110,7 @@ public:
   static void initClass()
   {
     PartIndexField = new SbName("partIndex");
+    SeamIndicesField = new SbName("seamIndices");
     HighlightIndicesField = new SbName("highlightIndices");
     ElementSelectableField = new SbName("elementSelectable");
     OnTopPatternField = new SbName("onTopPattern");
@@ -118,6 +120,8 @@ public:
   {
     delete PartIndexField;
     PartIndexField = nullptr;
+    delete SeamIndicesField;
+    SeamIndicesField = nullptr;
     delete HighlightIndicesField;
     HighlightIndicesField = nullptr;
     delete ElementSelectableField;
@@ -137,6 +141,7 @@ public:
       transpid(0),
       triangleindexer(nullptr),
       lineindexer(nullptr),
+      noseamindexer(nullptr),
       pointindexer(nullptr),
       partindices(nullptr),
       partcount(0)
@@ -156,6 +161,7 @@ public:
     delete triangleindexer;
     delete lineindexer;
     delete pointindexer;
+    delete noseamindexer;
   }
 
   uint32_t getColor(const SoFCVertexArrayIndexer * indexer, int part) const;
@@ -353,9 +359,11 @@ public:
 
   std::vector<SbVec3f> partcenters;
   std::vector<int32_t> nonflatparts;
+  std::vector<int32_t> seamindices;
 
   SoFCVertexArrayIndexer * triangleindexer;
   SoFCVertexArrayIndexer * lineindexer;
+  SoFCVertexArrayIndexer * noseamindexer;
   SoFCVertexArrayIndexer * pointindexer;
 
   CoinPtr<SoFCVertexArrayIndexer::IndexArray> prevtriangleindices;
@@ -444,6 +452,16 @@ SoFCVertexCache::SoFCVertexCache(SoState * state, const SoNode * node, SoFCVerte
     const SoMFInt32 * indices = static_cast<const SoMFInt32*>(field);
     PRIVATE(this)->partindices = indices->getValues(0);
     PRIVATE(this)->partcount = indices->getNum();
+  }
+
+  field = node->getField(*SeamIndicesField);
+  if (field && field->isOfType(SoMFInt32::getClassTypeId())) {
+    const SoMFInt32 * indices = static_cast<const SoMFInt32*>(field);
+    if (indices->getNum()) {
+      PRIVATE(this)->seamindices.resize(indices->getNum());
+      memcpy(&PRIVATE(this)->seamindices[0], indices->getValues(0), indices->getNum()*4);
+      std::sort(PRIVATE(this)->seamindices.begin(), PRIVATE(this)->seamindices.end());
+    }
   }
 
   field = node->getField(*HighlightIndicesField);
@@ -867,13 +885,20 @@ SoFCVertexCache::renderTriangles(SoState * state, const int arrays, int part)
 }
 
 void
-SoFCVertexCache::renderLines(SoState * state, const int arrays, int part)
+SoFCVertexCache::renderLines(SoState * state, const int arrays, int part, bool noseam)
 {
   if (part >= 0) {
     PRIVATE(this)->render(state, PRIVATE(this)->lineindexer, arrays, part, 2);
     return;
   }
-  PRIVATE(this)->render(state, PRIVATE(this)->lineindexer, arrays);
+  if (noseam && PRIVATE(this)->seamindices.size() && PRIVATE(this)->lineindexer) {
+    if (!PRIVATE(this)->noseamindexer) {
+      PRIVATE(this)->noseamindexer = new SoFCVertexArrayIndexer(
+          *PRIVATE(this)->lineindexer, PRIVATE(this)->seamindices, -1, true); 
+    }
+    PRIVATE(this)->render(state, PRIVATE(this)->noseamindexer, arrays);
+  } else
+    PRIVATE(this)->render(state, PRIVATE(this)->lineindexer, arrays);
 }
 
 void

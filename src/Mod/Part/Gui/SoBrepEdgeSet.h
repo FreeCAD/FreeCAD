@@ -52,6 +52,7 @@ class PartGuiExport SoBrepEdgeSet : public SoIndexedLineSet {
 
 public:
     SoMFInt32 highlightIndices;
+    SoMFInt32 seamIndices;
     SoSFColor highlightColor;
     SoSFBool  elementSelectable;
     SoSFBool  onTopPattern;

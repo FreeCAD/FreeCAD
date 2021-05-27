@@ -3826,6 +3826,19 @@ VIEW_CMD_DEF(PreSelFaceOnTop, ShowPreSelectedFaceOnTop)
 }
 
 //======================================================================
+// Std_PreSelFaceOutline
+//======================================================================
+VIEW_CMD_DEF(PreSelFaceOutline, ShowPreSelectedFaceOutline)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Draw pre-selection outline");
+  sToolTipText  = ViewParams::docShowPreSelectedFaceOutline();
+  sWhatsThis    = "Std_PreSelFaceOutline";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
+}
+
+//======================================================================
 // Std_SelHierarchyAscend
 //======================================================================
 VIEW_CMD_DEF(SelHierarchyAscend, HierarchyAscend)
@@ -3901,6 +3914,7 @@ public:
         addCommand();
         addCommand(new StdCmdSelOnTop());
         addCommand(new StdCmdPreSelFaceOnTop());
+        addCommand(new StdCmdPreSelFaceOutline());
         addCommand(new StdCmdPartialHighlightOnFullSelect());
         addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());

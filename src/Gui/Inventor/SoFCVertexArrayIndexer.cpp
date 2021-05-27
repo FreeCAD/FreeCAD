@@ -62,7 +62,8 @@ SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(SbFCUniqueId _dataid,
 template<class IndicesT> inline void
 SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
                              const IndicesT & partindices,
-                             int maxindex)
+                             int maxindex,
+                             bool exclude)
 {
   assert(other.indexarray);
   this->dataid = other.dataid;
@@ -74,11 +75,28 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
     this->use_shorts = other.use_shorts;
     this->indexarray = other.indexarray;
     this->indexarraylength = other.indexarraylength;
-    this->partialindices.reserve(partindices.size());
     maxindex = static_cast<int>(this->partarray.size());
-    for (int i : partindices) {
-      if (i >=0 && i < maxindex)
+    if (exclude) {
+      if (partindices.size() < this->partarray.size())
+        this->partialindices.reserve(this->partarray.size() - partindices.size());
+      auto it = partindices.begin();
+      for (int i=0; i<maxindex; ++i) {
+        for (; it != partindices.end(); ++it) {
+          if (*it >= i)
+            break;
+        }
+        if (it != partindices.end() && *it == i) {
+          ++it;
+          continue;
+        }
         this->partialindices.push_back(i);
+      }
+    } else {
+      this->partialindices.reserve(partindices.size());
+      for (int i : partindices) {
+        if (i >=0 && i < maxindex)
+          this->partialindices.push_back(i);
+      }
     }
   } else {
     this->use_shorts = TRUE;
@@ -90,16 +108,18 @@ SoFCVertexArrayIndexer::init(const SoFCVertexArrayIndexer & other,
 
 SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
                                                const std::set<int> & partindices,
-                                               int maxindex)
+                                               int maxindex,
+                                               bool exclude)
 {
-  init(other, partindices, maxindex);
+  init(other, partindices, maxindex, exclude);
 }
 
 SoFCVertexArrayIndexer::SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
                                                const std::vector<int> & partindices,
-                                               int maxindex)
+                                               int maxindex,
+                                               bool exclude)
 {
-  init(other, partindices, maxindex);
+  init(other, partindices, maxindex, exclude);
 }
 
 SoFCVertexArrayIndexer::~SoFCVertexArrayIndexer()
@@ -272,7 +292,7 @@ SoFCVertexArrayIndexer::render(SoState * state,
     if (this->partialoffsets.empty()) {
       this->partialoffsets.reserve(this->partialindices.size());
       this->partialcounts.reserve(this->partialindices.size());
-      // if (!this->linestripoffsets.empty() && glIsEnabled(GL_LINE_STIPPLE)) {
+      // if (!this->linestripoffsets.empty() && glIsEnabled(GL_LINE_STIPPLE))
       if (!this->linestripoffsets.empty()) {
         drawtarget = GL_LINE_STRIP;
         if (renderasvbo) {

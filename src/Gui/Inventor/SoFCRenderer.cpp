@@ -185,9 +185,10 @@ public:
 
   bool renderSection(SoGLRenderAction *action, DrawEntry &draw_entry, int &pass, bool &pushed);
 
-  void renderOutline(SoGLRenderAction *action, DrawEntry &draw_entry);
+  void renderOutline(SoGLRenderAction *action, DrawEntry &draw_entry, bool highlight);
 
-  void renderTriangles(SoGLRenderAction *action, DrawEntry &draw_entry);
+  void renderLines(SoState *state, int array, DrawEntry &draw_entry);
+  void renderPoints(SoState *state, int array, DrawEntry &draw_entry);
 
   void renderOpaque(SoGLRenderAction * action,
                     std::vector<DrawEntry> & draw_entries,
@@ -1037,16 +1038,36 @@ SoFCRendererP::setupMatrix(SoState * state, const VertexCacheEntry * ventry)
 }
 
 void
-SoFCRendererP::renderOutline(SoGLRenderAction *action,
-                             DrawEntry &draw_entry)
+SoFCRendererP::renderLines(SoState *state, int array, DrawEntry &draw_entry)
 {
+  bool noseam = ViewParams::getHiddenLineHideSeam()
+    && draw_entry.ventry->partidx < 0
+    && draw_entry.material->outline;
+  draw_entry.ventry->cache->renderLines(state, array, draw_entry.ventry->partidx, noseam);
+}
+
+void
+SoFCRendererP::renderPoints(SoState *state, int array, DrawEntry &draw_entry)
+{
+  if (!ViewParams::getHiddenLineHideVertex()
+      || draw_entry.ventry->partidx >= 0
+      || !draw_entry.material->outline)
+    draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
+}
+
+void
+SoFCRendererP::renderOutline(SoGLRenderAction *action,
+                             DrawEntry &draw_entry,
+                             bool highlight)
+{
+  int drawidx = draw_entry.ventry->partidx;
   if (this->shadowmapping
-      || !draw_entry.material->outline
-      || draw_entry.material->type != Material::Triangle)
+      || draw_entry.material->type != Material::Triangle
+      || (!draw_entry.material->outline
+          && (!ViewParams::getShowPreSelectedFaceOutline() || !highlight)))
     return;
 
-  int drawidx = draw_entry.ventry->partidx;
-  int numparts = draw_entry.ventry->cache->getNumNonFlatParts();
+  int numparts;
   int dummyparts[1];
   const int *partindices;
   if (numparts && drawidx < 0) {
@@ -1073,13 +1094,21 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
 
       glEnable(GL_STENCIL_TEST);
       glDisable(GL_LIGHTING);
-      auto col = draw_entry.material->hiddenlinecolor;
+      auto col = drawidx >= 0 ? this->material.emissive
+                              : draw_entry.material->hiddenlinecolor;
       glColor3ub((unsigned char)((col>>24)&0xff),
           (unsigned char)((col>>16)&0xff),
           (unsigned char)((col>>8)&0xff));
       float linewidth = draw_entry.material->linewidth;
-      if (linewidth < 1.0f)
-        linewidth = 1.0f;
+
+      if (highlight) {
+        glDisable(GL_BLEND);
+        glDisable(GL_DEPTH_TEST);
+        float w = linewidth * std::max(1.0, ViewParams::getSelectionLineThicken());
+        if (ViewParams::getSelectionLineMaxWidth() > 1.0)
+          w = std::min<float>(w, std::max<float>(linewidth, ViewParams::getSelectionLineMaxWidth()));
+        linewidth = w;
+      }
       glLineWidth(linewidth*1.5f);
     }
 
@@ -1233,6 +1262,9 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     glColor3ub(r, g, b);
   }
 
+  if (concave)
+    dir = -dir;
+
   glBegin(GL_QUADS);
   glNormal3fv(dir.getValue());
   glVertex3fv(v1.getValue());
@@ -1337,16 +1369,16 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
         }
         break;
       case Material::Line:
-        draw_entry.ventry->cache->renderLines(state, array, draw_entry.ventry->partidx);
+        renderLines(state, array, draw_entry);
         break;
       case Material::Point:
-        draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
+        renderPoints(state, array, draw_entry);
         break;
       }
     }
     if (pushed)
       glPopAttrib();
-    renderOutline(action, draw_entry);
+    renderOutline(action, draw_entry, &draw_entries == &this->hlentries);
   }
 }
 
@@ -1414,20 +1446,23 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
 
     switch (draw_entry.material->type) {
     case Material::Line:
-      draw_entry.ventry->cache->renderLines(state, array, draw_entry.ventry->partidx);
+      renderLines(state, array, draw_entry);
       break;
     case Material::Point:
-      draw_entry.ventry->cache->renderPoints(state, array, draw_entry.ventry->partidx);
+      renderPoints(state, array, draw_entry);
       break;
     case Material::Triangle:
       {
-        renderOutline(action, draw_entry);
+        if (&draw_entries != &this->hlentries)
+          renderOutline(action, draw_entry, false);
         if (!draw_entry.ventry->cache->hasTransparency()
             || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
           array |= SoFCVertexCache::FULL_SORTED_ARRAY;
         else
           array |= SoFCVertexCache::SORTED_ARRAY;
         draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
+        if (&draw_entries == &this->hlentries)
+          renderOutline(action, draw_entry, true);
       }
       break;
     }

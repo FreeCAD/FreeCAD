@@ -84,6 +84,8 @@ public:
        QT_TRANSLATE_NOOP("ViewParams","Show selection always on top")) \
     FC_VIEW_PARAM(ShowPreSelectedFaceOnTop,bool,Bool,true, \
        QT_TRANSLATE_NOOP("ViewParams","Show pre-selected face always on top")) \
+    FC_VIEW_PARAM(ShowPreSelectedFaceOutline,bool,Bool,true, \
+       QT_TRANSLATE_NOOP("ViewParams","Show pre-selected face outline")) \
     FC_VIEW_PARAM(SelectElementOnTop,bool,Bool,false, \
        QT_TRANSLATE_NOOP("ViewParams","Do box/lasso element selection on already selected object(s)," \
                                       "if SelectionOnTop is enabled.")) \
@@ -189,7 +191,11 @@ public:
     FC_VIEW_PARAM(HiddenLineShowOutline, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Show outline in hidden line draw style (only works in experiemental renderer)."))\
     FC_VIEW_PARAM(HiddenLineWidth, double, Float, 1.5, "") \
-    FC_VIEW_PARAM(HiddenLinePointSize, double, Float, 1.5, "") \
+    FC_VIEW_PARAM(HiddenLinePointSize, double, Float, 2, "") \
+    FC_VIEW_PARAM(HiddenLineHideSeam, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Hide seam edges in hidden line draw style."))\
+    FC_VIEW_PARAM(HiddenLineHideVertex, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Hide vertex in hidden line draw style."))\
     FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000, "") \
     FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, true, \
        QT_TRANSLATE_NOOP("ViewParams","Draw object with 'Flat lines' style when shadow is enabled.")) \

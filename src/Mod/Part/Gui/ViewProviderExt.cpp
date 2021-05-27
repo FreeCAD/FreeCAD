@@ -1737,6 +1737,7 @@ void ViewProviderPartExt::updateVisual()
     const Part::TopoShape & toposhape = getShape();
     TopoDS_Shape cShape = toposhape.getShape();
     cachedShape = cShape;
+    lineset ->seamIndices.setNum(0);
     if (cShape.IsNull()) {
         coords  ->point      .setNum(0);
         pcoords ->point      .setNum(0);
@@ -1760,7 +1761,7 @@ void ViewProviderPartExt::updateVisual()
     // time measurement and book keeping
     Base::TimeInfo start_time;
     int numTriangles=0,numNodes=0,numPoints=0,numNorms=0,numFaces=0,numEdges=0,numLines=0;
-    std::set<int> faceEdges;
+    std::unordered_map<TopoDS_Shape, TopoDS_Face, Part::ShapeHasher, Part::ShapeHasher> faceEdges;
 
     try {
         // calculating the deflection value
@@ -1793,7 +1794,8 @@ void ViewProviderPartExt::updateVisual()
         TopTools_IndexedMapOfShape faceMap;
         TopExp::MapShapes(cShape, TopAbs_FACE, faceMap);
         for (int i=1; i <= faceMap.Extent(); i++) {
-            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(faceMap(i)), aLoc);
+            TopoDS_Face face = TopoDS::Face(faceMap(i));
+            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(face, aLoc);
             // Note: we must also count empty faces
             if (!mesh.IsNull()) {
                 numTriangles += mesh->NbTriangles();
@@ -1802,8 +1804,8 @@ void ViewProviderPartExt::updateVisual()
             }
 
             TopExp_Explorer xp;
-            for (xp.Init(faceMap(i),TopAbs_EDGE);xp.More();xp.Next())
-                faceEdges.insert(xp.Current().HashCode(INT_MAX));
+            for (xp.Init(face,TopAbs_EDGE);xp.More();xp.Next())
+                faceEdges.emplace(xp.Current(), face);
             numFaces++;
         }
 
@@ -1815,6 +1817,7 @@ void ViewProviderPartExt::updateVisual()
         std::map<int, std::vector<int32_t> > lineSetMap;
         std::set<int>          edgeIdxSet;
         std::vector<int32_t>   edgeVector;
+        std::vector<int32_t>   seamEdges;
 
         // count and index the edges
         for (int i=1; i <= edgeMap.Extent(); i++) {
@@ -1831,8 +1834,11 @@ void ViewProviderPartExt::updateVisual()
             // So, we have to store the hashes of the edges associated to a face.
             // If the hash of a given edge is not in this list we know it's really
             // a free edge.
-            int hash = aEdge.HashCode(INT_MAX);
-            if (faceEdges.find(hash) == faceEdges.end()) {
+            auto it = faceEdges.find(aEdge);
+            if (it != faceEdges.end()) {
+                if (BRep_Tool::IsClosed(aEdge, it->second))
+                    seamEdges.push_back(i-1);
+            } else {
                 Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
                 if (!aPoly.IsNull()) {
                     int nbNodesInEdge = aPoly->NbNodes();
@@ -2033,8 +2039,7 @@ void ViewProviderPartExt::updateVisual()
             TopLoc_Location aLoc;
 
             // handling of the free edge that are not associated to a face
-            int hash = aEdge.HashCode(INT_MAX);
-            if (faceEdges.find(hash) == faceEdges.end()) {
+            if (!faceEdges.count(aEdge)) {
                 Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
                 if (!aPoly.IsNull()) {
                     if (!aLoc.IsIdentity()) {
@@ -2100,6 +2105,8 @@ void ViewProviderPartExt::updateVisual()
         faceset ->coordIndex  .finishEditing();
         faceset ->partIndex   .finishEditing();
         lineset ->coordIndex  .finishEditing();
+        if (seamEdges.size())
+            lineset->seamIndices.setValues(0, seamEdges.size(), &seamEdges[0]);
     }
     catch (...) {
         FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());

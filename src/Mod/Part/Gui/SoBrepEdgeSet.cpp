@@ -90,6 +90,8 @@ SoBrepEdgeSet::SoBrepEdgeSet()
     SO_NODE_ADD_FIELD(highlightIndices, (-1));
     SO_NODE_ADD_FIELD(highlightColor, (0,0,0));
     highlightIndices.setNum(0);
+    SO_NODE_ADD_FIELD(seamIndices, (-1));
+    seamIndices.setNum(0);
     SO_NODE_ADD_FIELD(elementSelectable, (TRUE));
     SO_NODE_ADD_FIELD(onTopPattern, (TRUE));
 }

@@ -54,11 +54,13 @@ public:
 
   SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
                          const std::set<int> & partindices,
-                         int maxindex);
+                         int maxindex,
+                         bool exclude = false);
 
   SoFCVertexArrayIndexer(const SoFCVertexArrayIndexer & other,
                          const std::vector<int> & partindices,
-                         int maxindex);
+                         int maxindex,
+                         bool exclude = false);
 
   ~SoFCVertexArrayIndexer();
 
@@ -105,7 +107,10 @@ public:
 
 private:
   template<class IndicesT>
-  void init(const SoFCVertexArrayIndexer & other, const IndicesT & partindices, int maxindex);
+  void init(const SoFCVertexArrayIndexer & other,
+            const IndicesT & partindices,
+            int maxindex,
+            bool exclude);
 
 private:
   void addIndex(int32_t i);
