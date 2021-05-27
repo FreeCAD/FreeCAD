@@ -1261,15 +1261,21 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     glColor3ub(r, g, b);
   }
 
-  if (concave)
-    dir = -dir;
-
   glBegin(GL_QUADS);
-  glNormal3fv(dir.getValue());
-  glVertex3fv(v1.getValue());
-  glVertex3fv(v2.getValue());
-  glVertex3fv(v3.getValue());
-  glVertex3fv(v4.getValue());
+  if (concave) {
+    dir = -dir;
+    glNormal3fv(dir.getValue());
+    glVertex3fv(v4.getValue());
+    glVertex3fv(v3.getValue());
+    glVertex3fv(v2.getValue());
+    glVertex3fv(v1.getValue());
+  } else {
+    glNormal3fv(dir.getValue());
+    glVertex3fv(v1.getValue());
+    glVertex3fv(v2.getValue());
+    glVertex3fv(v3.getValue());
+    glVertex3fv(v4.getValue());
+  }
   glEnd();
   FC_GLERROR_CHECK;
 
