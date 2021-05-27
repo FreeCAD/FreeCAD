@@ -141,12 +141,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importCSG.py" line="1353"/>
+        <location filename="importCSG.py" line="1355"/>
         <source>Unsupported Function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importCSG.py" line="1353"/>
+        <location filename="importCSG.py" line="1355"/>
         <source>Press OK</source>
         <translation type="unfinished"></translation>
     </message>

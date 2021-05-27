@@ -901,13 +901,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="346"/>
+        <location filename="../../TaskCenterLine.cpp" line="331"/>
         <source>Create CenterLine</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCenterLine.cpp" line="391"/>
-        <source>Edit CenterLine</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1821,12 +1816,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="177"/>
+        <location filename="../../TaskCenterLine.cpp" line="200"/>
         <source>Create Center Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskCenterLine.cpp" line="217"/>
+        <location filename="../../TaskCenterLine.cpp" line="230"/>
         <source>Edit Center Line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3731,17 +3726,6 @@ Do you want to continue?</source>
     <message>
         <location filename="../../TaskCenterLine.ui" line="327"/>
         <source>Continuous</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCenterLine.ui" line="380"/>
-        <source>Flips endpoints of selected lines for centerline creation,
-see the FreeCAD Wiki &apos;2LineCenterLine&apos; for a description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskCenterLine.ui" line="384"/>
-        <source>Flip Ends</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

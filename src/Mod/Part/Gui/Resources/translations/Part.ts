@@ -338,6 +338,16 @@ A &apos;Compound Filter&apos; can be used to extract the individual slices.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+        <source>Boolean Fragments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+        <source>Split objects where they intersect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
         <source>Slice a selected object by other objects, and split it apart.
 It will create a &apos;Compound Filter&apos; for each slice.</source>
@@ -354,16 +364,6 @@ It will create a &apos;Compound Filter&apos; for each slice.</source>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A &apos;Compound Filter&apos; can be used to extract the remaining pieces.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-        <source>Boolean Fragments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-        <source>Split objects where they intersect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
