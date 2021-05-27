@@ -39,7 +39,7 @@
     </message>
     <message>
       <source>Align center</source>
-      <translation>Wyrównaj do środka</translation>
+      <translation>Wyśrodkuj w poziomie</translation>
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
@@ -462,11 +462,11 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     <name>QtColorPicker</name>
     <message>
       <source>Black</source>
-      <translation>Czarne</translation>
+      <translation>Czarny</translation>
     </message>
     <message>
       <source>White</source>
-      <translation>Białe</translation>
+      <translation>Biały</translation>
     </message>
     <message>
       <source>Red</source>
@@ -569,74 +569,74 @@ Arkusz.mój_alias zamiast Arkusz.B1</translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Wstaw %n wiersz powyżej</numerusform>
+        <numerusform>Wstaw %n wiersze powyżej</numerusform>
+        <numerusform>Wstaw %n wierszy powyżej</numerusform>
+        <numerusform>Wstaw %n wiersz(y) powyżej</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Wstaw %n wiersz poniżej</numerusform>
+        <numerusform>Wstaw %n wiersze poniżej</numerusform>
+        <numerusform>Wstaw %n wierszy poniżej</numerusform>
+        <numerusform>Wstaw %n wiersz(y) poniżej</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+      <translation>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wiersze, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>Usuń wiersz</numerusform>
+        <numerusform>Usuń wiersze</numerusform>
+        <numerusform>Usuń wierszy</numerusform>
+        <numerusform>Usuń wiersz(e)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Wstaw %n kolumnę z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumn z lewej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Wstaw %n kolumnę z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumn z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumn(y) z prawej strony</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumny, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Usuń kolumnę</numerusform>
+        <numerusform>Usuń kolumny</numerusform>
+        <numerusform>Usuń kolumn</numerusform>
+        <numerusform>Usuń kolumn(y)</numerusform>
       </translation>
     </message>
   </context>

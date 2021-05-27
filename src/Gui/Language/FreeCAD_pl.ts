@@ -280,11 +280,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Wprowadź wyrażenie ...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Wyrażenie: </translation>
     </message>
   </context>
   <context>
@@ -505,17 +505,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD nie istniałby bez udziału</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Osoby</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organizacje</translation>
     </message>
   </context>
   <context>
@@ -541,7 +541,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
       <source>Camera settings</source>
-      <translation>Ustawienia kamery</translation>
+      <translation>Ustawienia ujęcia widoku</translation>
     </message>
     <message>
       <source>Orientation</source>
@@ -1422,7 +1422,7 @@ Jeśli ta opcja nie jest zaznaczona, własność musi być jednoznacznie nazwana
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Wiersze kodu będą ponumerowane</translation>
     </message>
   </context>
   <context>
@@ -1823,7 +1823,7 @@ Uwaga: Twoje zmiany zostaną zastosowane przy następnym przełączeniu środowi
     </message>
     <message>
       <source>Existing macro</source>
-      <translation>Istniejące makro</translation>
+      <translation>Makrodefinicja już istnieje</translation>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
@@ -2090,7 +2090,7 @@ Proszę podać inny katalog.</translation>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>Ostatnio zmodyfikowany przez:</translation>
+      <translation>&amp;Ostatnio zmodyfikowany przez:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
@@ -2643,15 +2643,15 @@ Zmiana tej opcji wymaga ponownego uruchomienia aplikacji.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Jaki zostanie użyty rodzaj antyaliasingu wielopróbkowego</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Odległość od oka do oka, używana w projekcjach obrazu stereoskopowego.
+Podana wartość jest współczynnikiem, który zostanie pomnożony przez
+rozmiar ramki otaczającej obiekt 3D, który jest aktualnie wyświetlany.</translation>
     </message>
   </context>
   <context>
@@ -3475,7 +3475,7 @@ Turntable: część będzie obracana wokół osi z.</translation>
     <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
-      <translation>Ustawia przybliżenie widoku z kamery dla nowych dokumentów.
+      <translation>Ustawia przybliżenie ujęcia widoku z kamery dla nowych dokumentów.
 Wartością jest średnica kuli, która ma zmieścić się na ekranie.</translation>
     </message>
     <message>
@@ -3568,11 +3568,11 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Default camera orientation</source>
-      <translation>Domyślna orientacja widoku</translation>
+      <translation>Domyślna orientacja ujęcia widoku</translation>
     </message>
     <message>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation>Domyślna orientacja widoku podczas tworzenia nowego dokumentu lub wybierania widoku głównego</translation>
+      <translation>Domyślna orientacja ujęcia widoku podczas tworzenia nowego dokumentu lub wybierania widoku głównego</translation>
     </message>
     <message>
       <source>Rotation mode</source>
@@ -3588,29 +3588,29 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation>Centrum obiektu</translation>
+      <translation>Środek obiektu</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Obróć do najbliższego stanu po kliknięciu w ścianę kostki nawigacyjnej</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Obróć do najbliższego</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Rozmiar kostki nawigacyjnej</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Rozmiar kostki nawigacyjnej</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Określa krok powiększenia
+Stopień powiększenia "1" oznacza współczynnik 7,5 dla każdego kolejnego kroku powiększenia.</translation>
     </message>
   </context>
   <context>
@@ -3928,7 +3928,7 @@ System preferencji to ten, który jest ustawiony w preferencjach ogólnych.</tra
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>nieznana jednostka:</translation>
     </message>
   </context>
   <context>
@@ -4405,7 +4405,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Oś obrotu z kątem</translation>
+      <translation>Oś obrotu z zadanym kątem</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -4828,7 +4828,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
-      <translation>Tworzy autonomiczną kopię tego podsymbolu w dokumencie</translation>
+      <translation>Tworzy samodzielną kopię tego kształtu podrzędnego w dokumencie</translation>
     </message>
     <message>
       <source>Picked object list</source>
@@ -4839,7 +4839,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     <name>Gui::DocumentModel</name>
     <message>
       <source>Application</source>
-      <translation>Program</translation>
+      <translation>Aplikacja</translation>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
@@ -5035,7 +5035,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation>Czy chcesz określić ścieżkę instalacji, jeśli już jest zainstalowany?</translation>
+      <translation>Czy chcesz określić ścieżkę dla instalacji, jeśli już jest zainstalowany?</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
@@ -5205,7 +5205,7 @@ Czy chcesz zapisać dokument teraz?</translation>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
-      <translation>Proszę, wybierz co najmniej %1 punktów w lewym i prawym widoku</translation>
+      <translation>Proszę, wybierz co najmniej %1 punkty/ów w lewym i prawym widoku</translation>
     </message>
     <message>
       <source>Please pick points in the left and right view</source>
@@ -5290,7 +5290,7 @@ Jak chcesz kontynuować?</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Uszczypnięcie (umieść dwa palce na ekranie i przeciągnij je od lub do siebie na wzajem) lub przewijanie środkowym przyciskiem myszy, bądź przyciskami PgUp/PgDown na klawiaturze.</translation>
+      <translation>Uszczypnięcie (umieść dwa palce na ekranie i przeciągnij je od lub do siebie na wzajem) lub przewijanie środkowym przyciskiem myszy, bądź klawiszami PgUp/PgDown.</translation>
     </message>
   </context>
   <context>
@@ -5368,7 +5368,7 @@ Jak chcesz kontynuować?</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
       <source>Change the linked object</source>
-      <translation>Zmiana połączonego obiektu</translation>
+      <translation>Zmień połączony obiekt</translation>
     </message>
   </context>
   <context>
@@ -5697,7 +5697,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Rotation Increment:</source>
-      <translation>Przyrost Obrotu:</translation>
+      <translation>Przyrost obrotu:</translation>
     </message>
   </context>
   <context>
@@ -6034,7 +6034,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Application</source>
-      <translation>Program</translation>
+      <translation>Aplikacja</translation>
     </message>
     <message>
       <source>Finish editing</source>
@@ -6697,7 +6697,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Not allowed to delete system-wide macros</source>
-      <translation>Nie wolno usuwać makr systemowych</translation>
+      <translation>Nie wolno usuwać makrodefinicji systemowych</translation>
     </message>
     <message>
       <source>Origin</source>
@@ -6948,9 +6948,9 @@ Dokument: </translation>
       <source>
 
 Physical path: </source>
-      <translation type="unfinished">
+      <translation>
 
-Physical path: </translation>
+Ścieżka fizyczna: </translation>
     </message>
   </context>
   <context>
@@ -7013,7 +7013,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>About Qt</source>
-      <translation>O Qt</translation>
+      <translation>Informacje o Qt</translation>
     </message>
   </context>
   <context>
@@ -7084,7 +7084,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>Przełącz oś przekroju</translation>
+      <translation>Przełącz krzyż osi</translation>
     </message>
   </context>
   <context>
@@ -7099,7 +7099,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Płytka pragmatyczne</translation>
+      <translation>Okna kaskadowo</translation>
     </message>
   </context>
   <context>
@@ -7174,7 +7174,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Cut out</source>
-      <translation>Odetnij</translation>
+      <translation>Wytnij</translation>
     </message>
   </context>
   <context>
@@ -7396,7 +7396,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation>Wybierz obiekty do eksportowania przed wyborem eksportu.</translation>
+      <translation>Wybierz obiekty do eksportowania przed wyborem funkcji eksportu.</translation>
     </message>
   </context>
   <context>
@@ -7471,7 +7471,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>The FreeCAD forum, where you can find help from other users</source>
-      <translation>FreeCAD forum, gdzie można znaleźć pomoc od innych użytkowników</translation>
+      <translation>Forum FreeCAD, gdzie można uzyskać pomoc od innych użytkowników</translation>
     </message>
     <message>
       <source>The FreeCAD Forum</source>
@@ -7535,7 +7535,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Freeze display</source>
-      <translation>Zamroź obraz</translation>
+      <translation>Zamroź widok</translation>
     </message>
     <message>
       <source>Freezes the current view position</source>
@@ -7595,7 +7595,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>&amp;Import...</source>
-      <translation>&amp;Importuj...</translation>
+      <translation>&amp;Importuj ...</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
@@ -7910,7 +7910,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
-      <translation>Nie można scalić projektu z samym sobą.</translation>
+      <translation>Nie można połączyć projektu z samym sobą.</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
@@ -8099,7 +8099,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Pokaż szczegóły aktualnie aktywnego projektu</translation>
+      <translation>Pokaż szczegóły obecnie aktywnego projektu</translation>
     </message>
   </context>
   <context>
@@ -8331,11 +8331,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation>&amp;Ramka zaznaczania</translation>
+      <translation>&amp;Ramka otaczająca</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation>Pokaż ramkę zaznaczenia</translation>
+      <translation>Pokaż ramkę otaczającą</translation>
     </message>
   </context>
   <context>
@@ -8792,7 +8792,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation>Inventor Przykład #1</translation>
+      <translation>Przykład Inventor #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
@@ -8807,7 +8807,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation>Inventor Przykład #2</translation>
+      <translation>Przykład Inventor #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
@@ -8822,7 +8822,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation>Inventor Przykład #3</translation>
+      <translation>Przykład Inventor #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
@@ -8886,7 +8886,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation>Ustaw domyślny widok domu</translation>
+      <translation>Ustaw na widok domyślny</translation>
     </message>
   </context>
   <context>
@@ -8912,11 +8912,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Issue camera position</source>
-      <translation>Problem z położeniem kamery</translation>
+      <translation>Problem z pozycją ujęcia widoku</translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Położenie kamery w stosunku do konsoli i makra, powoduje trudności z późniejszym przywróceniem jej pozycji</translation>
+      <translation>Wysyłanie danych pozycji ujęcia widoku do konsoli i do makra, aby łatwo przywołać tę pozycję</translation>
     </message>
   </context>
   <context>
@@ -8976,7 +8976,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Przełączyć wyświetlanie widoku do buforu czterordzeniowego</translation>
+      <translation>Przełączanie wyświetlania podglądu stereoskopowego na bufor poczwórny</translation>
     </message>
   </context>
   <context>
@@ -9032,11 +9032,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation>Przywróć zapisaną kamerę</translation>
+      <translation>Przywróć zapisane ujęcie widoku</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation>Przywróć zapisane ustawienia kamery</translation>
+      <translation>Przywróć zapisane ustawienia ujęcia widoku</translation>
     </message>
   </context>
   <context>
@@ -9092,11 +9092,11 @@ Physical path: </translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation>Zapisz aktualną kamerę</translation>
+      <translation>Zapisz aktualne ujęcie widoku</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation>Zapisz bieżące ustawienia kamery</translation>
+      <translation>Zapisz bieżące ustawienia ujęcia widoku</translation>
     </message>
   </context>
   <context>
@@ -9111,7 +9111,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>Ustaw widok z góry</translation>
+      <translation>Ustaw na widok z góry</translation>
     </message>
   </context>
   <context>
@@ -9141,7 +9141,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-      <translation>Rozszerzenie funkcji 3D FreeCAD z urządzeniem do projekcji wirtualnej rzeczywistości Oculus Rift</translation>
+      <translation>Rozszerzenie funkcji 3D, programu FreeCAD z urządzeniem Oculus Rift, do projekcji wirtualnej rzeczywistości</translation>
     </message>
   </context>
   <context>
@@ -9227,7 +9227,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Przełącza do Widoku ortogonalnego</translation>
+      <translation>Przełącza do widoku ortogonalnego</translation>
     </message>
   </context>
   <context>
@@ -9253,7 +9253,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation>Rozwiń aktywny dokument i zwiń pozostałe</translation>
+      <translation>Wyświetl aktywny dokument i schowaj pozostałe</translation>
     </message>
     <message>
       <source>TreeView</source>
@@ -9313,7 +9313,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Record selection</source>
-      <translation>Nagraj zaznaczenie</translation>
+      <translation>Zapisz zaznaczenie</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
@@ -9418,7 +9418,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -9575,7 +9575,7 @@ Czy na pewno kontynuować?
     </message>
     <message>
       <source>Hidden line</source>
-      <translation>Ukryta linia</translation>
+      <translation>Cieniowany z ukrytymi krawędziami</translation>
     </message>
     <message>
       <source>Hidden line mode</source>
@@ -9657,7 +9657,7 @@ Czy nadal chcesz kontynuować?</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Ustaw widok w trybie ortogonalnym</translation>
+      <translation>Ustaw widok na tryb ortogonalny</translation>
     </message>
   </context>
   <context>
@@ -9690,7 +9690,7 @@ Czy nadal chcesz kontynuować?</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
-      <translation>&amp;Edytuj</translation>
+      <translation>&amp;Edycja</translation>
     </message>
     <message>
       <source>Standard views</source>
@@ -9714,7 +9714,7 @@ Czy nadal chcesz kontynuować?</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp;Narzędzia</translation>
+      <translation>&amp;Przybory</translation>
     </message>
     <message>
       <source>&amp;Macro</source>

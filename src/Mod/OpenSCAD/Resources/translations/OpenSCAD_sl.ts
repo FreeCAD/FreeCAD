@@ -142,12 +142,12 @@
       <translation>Izberite najprej 3 predmete</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Nepodprta zmožnost</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Pritisnite V redu</translation>
     </message>
@@ -194,12 +194,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Naloži</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Shrani</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="345"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
       <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
+      <translation>Osveži</translation>
     </message>
   </context>
   <context>

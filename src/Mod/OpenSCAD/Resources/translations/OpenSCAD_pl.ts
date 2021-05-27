@@ -142,12 +142,12 @@
       <translation>Najpierw proszę wybrać 3 obiekty</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Funkcja nieobsługiwana</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Naciśnij przycisk OK</translation>
     </message>
@@ -194,12 +194,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Wczytaj</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Zapisz</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="345"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
       <source>Refesh</source>
-      <translation type="unfinished">Refesh</translation>
+      <translation>Odśwież</translation>
     </message>
   </context>
   <context>

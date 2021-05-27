@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="1693"/>
       <source>Additive helix</source>
-      <translation type="unfinished">Additive helix</translation>
+      <translation>Dodajna vijačnica</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1694"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix</translation>
+      <translation>Vzdolži izbani očrt po vijačnici</translation>
     </message>
   </context>
   <context>
@@ -552,7 +552,7 @@
       <location filename="../../Command.cpp" line="347"/>
       <location filename="../../Command.cpp" line="348"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation type="unfinished">Create a sub-object(s) shape binder</translation>
+      <translation>Ustvari povezovalnik oblik podpredmeta(ov)</translation>
     </message>
   </context>
   <context>
@@ -565,12 +565,12 @@
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Subtractive helix</source>
-      <translation type="unfinished">Subtractive helix</translation>
+      <translation>Odvzemna vijačnica</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1764"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a helix and remove it from the body</translation>
+      <translation>Vzdolži izbrani očrt vijačnici in dobljeno odštej od telesa</translation>
     </message>
   </context>
   <context>
@@ -740,78 +740,78 @@
     <message>
       <location filename="../../Command.cpp" line="302"/>
       <source>Edit ShapeBinder</source>
-      <translation type="unfinished">Edit ShapeBinder</translation>
+      <translation>Uredi povezovalnik oblik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Create ShapeBinder</source>
-      <translation type="unfinished">Create ShapeBinder</translation>
+      <translation>Ustvari povezovalnik oblik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="393"/>
       <source>Create SubShapeBinder</source>
-      <translation type="unfinished">Create SubShapeBinder</translation>
+      <translation>Ustvari povezovalnik podoblik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create Clone</source>
-      <translation type="unfinished">Create Clone</translation>
+      <translation>Ustvari dvojnika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="641"/>
       <location filename="../../Command.cpp" line="1155"/>
       <source>Make copy</source>
-      <translation type="unfinished">Make copy</translation>
+      <translation>Naredi kopijo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="665"/>
       <source>Create a Sketch on Face</source>
-      <translation type="unfinished">Create a Sketch on Face</translation>
+      <translation>Ustvari na ploskev očrt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="686"/>
       <source>Create a new Sketch</source>
-      <translation type="unfinished">Create a new Sketch</translation>
+      <translation>Ustvari nov očrt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2477"/>
       <source>Convert to MultiTransform feature</source>
-      <translation type="unfinished">Convert to MultiTransform feature</translation>
+      <translation>Pretvori v zmožnost večkratnega preoblikovanja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2568"/>
       <source>Create Boolean</source>
-      <translation type="unfinished">Create Boolean</translation>
+      <translation>Ustvari logično vrednost</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="193"/>
       <source>Add a Body</source>
-      <translation type="unfinished">Add a Body</translation>
+      <translation>Dodaj telo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="430"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation type="unfinished">Migrate legacy part design features to Bodies</translation>
+      <translation>Preseli podedovane zmožnosti oblikovanja delov v Telesa</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
       <source>Move tip to selected feature</source>
-      <translation type="unfinished">Move tip to selected feature</translation>
+      <translation>Premakni konico k izbrani značilnost</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
       <source>Duplicate a PartDesign object</source>
-      <translation type="unfinished">Duplicate a PartDesign object</translation>
+      <translation>Podvoji predmet NačrtovanjeDela (PartDesign)</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="738"/>
       <source>Move an object</source>
-      <translation type="unfinished">Move an object</translation>
+      <translation>Premakni predmet</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="887"/>
       <source>Move an object inside tree</source>
-      <translation type="unfinished">Move an object inside tree</translation>
+      <translation>Premikaj predmet po drevesu</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="296"/>
@@ -821,7 +821,7 @@
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="322"/>
       <source>Make LinearPattern</source>
-      <translation type="unfinished">Make LinearPattern</translation>
+      <translation>Naredi Premočrtni vzorec</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="358"/>
@@ -905,7 +905,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="40"/>
       <source>Module:</source>
-      <translation type="unfinished">Module:</translation>
+      <translation>Modul:</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>
@@ -943,10 +943,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Željene značilnosti ni bilo mogoče ustvariti. Razlog za to je lahko, da:
+  - dejavno telo ne vsebuje izhodiščne oblike, zato ni kaj odstraniti;
+  - izbrani očrt ne pripada dejavnemu telesu.</translation>
     </message>
   </context>
   <context>
@@ -957,10 +956,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Željene značilnosti ni bilo mogoče ustvariti. Razlog za to je lahko, da:
+  - dejavno telo ne vsebuje izhodiščne oblike, zato ni kaj odstraniti;
+  - izbrani očrt ne pripada dejavnemu telesu.</translation>
     </message>
   </context>
   <context>
@@ -971,10 +969,9 @@
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
-  - the active Body does not contain a base shape, so there is no
-  material to be removed;
-  - the selected sketch does not belong to the active Body.</translation>
+      <translation>Željene značilnosti ni bilo mogoče ustvariti. Razlog za to je lahko, da:
+  - dejavno telo ne vsebuje izhodiščne oblike, zato ni kaj odstraniti;
+  - izbrani očrt ne pripada dejavnemu telesu.</translation>
     </message>
   </context>
   <context>
@@ -1024,30 +1021,30 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="307"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1274"/>
       <source>Angle in first direction:</source>
-      <translation type="unfinished">Angle in first direction:</translation>
+      <translation>Kót v prvi smeri:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="314"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1281"/>
       <source>Angle in first direction</source>
-      <translation type="unfinished">Angle in first direction</translation>
+      <translation>Kót v prvi smeri</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="333"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1300"/>
       <source>Angle in second direction:</source>
-      <translation type="unfinished">Angle in second direction:</translation>
+      <translation>Kót v drugi smeri:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="340"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1307"/>
       <source>Angle in second direction</source>
-      <translation type="unfinished">Angle in second direction</translation>
+      <translation>Kót v drugi smeri</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="391"/>
       <source>Rotation angle:</source>
-      <translation type="unfinished">Rotation angle:</translation>
+      <translation>Kot sukanja:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="465"/>
@@ -1077,12 +1074,12 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
       <source>Radius in local z-direction</source>
-      <translation type="unfinished">Radius in local z-direction</translation>
+      <translation>Polmer v krajevni smer Z</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="827"/>
       <source>Radius in local x-direction</source>
-      <translation type="unfinished">Radius in local x-direction</translation>
+      <translation>Polmer v krajevni smeri X</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
@@ -1093,8 +1090,8 @@
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local y-direction
 If zero, it is equal to Radius2</source>
-      <translation type="unfinished">Radius in local y-direction
-If zero, it is equal to Radius2</translation>
+      <translation>Polmer v krajevni smeri Y
+Če je nič, je enaka Pomeru2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -1105,12 +1102,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation type="unfinished">Radius in local xy-plane</translation>
+      <translation>Polmer v krajevni xy-ravnini</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation type="unfinished">Radius in local xz-plane</translation>
+      <translation>Polmer v krajevni xz-ravnini</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -1253,7 +1250,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</translation>
+      <translation>Izbrali ste geometrije, ki niso deli dejavnega telesa. Določite, kako naj se ta izbor obravnava. Če teh sklicev nočete, prekličite ukaz.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1332,34 +1329,34 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="725"/>
       <source>Cone radii are equal</source>
-      <translation type="unfinished">Cone radii are equal</translation>
+      <translation>Polmeri stožcev so enaki</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="726"/>
       <source>The radii for cones must not be equal!</source>
-      <translation type="unfinished">The radii for cones must not be equal!</translation>
+      <translation>Polmera stožcev ne moreta biti enaka!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="801"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="806"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="811"/>
       <source>Invalid wedge parameters</source>
-      <translation type="unfinished">Invalid wedge parameters</translation>
+      <translation>Neveljavne določilke klina</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="802"/>
       <source>X min must not be equal to X max!</source>
-      <translation type="unfinished">X min must not be equal to X max!</translation>
+      <translation>Najmanjši X ne sme biti enak največjemu X!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="807"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation type="unfinished">Y min must not be equal to Y max!</translation>
+      <translation>Najmanjši Y ne sme biti enak največjemu Y!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="812"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation type="unfinished">Z min must not be equal to Z max!</translation>
+      <translation>Najmanjši Z ne sme biti enak največjemu Z!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="850"/>
@@ -1380,8 +1377,8 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskChamferParameters.cpp" line="166"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Kliknite spodaj, če želite izbirni način,
+s ponovnim klikom pa zaključite izbiranje</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="26"/>
@@ -1392,8 +1389,8 @@ click again to end selection</translation>
       <location filename="../../TaskChamferParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the chamfers</translation>
+      <translation>- izberite predmet, ki ga želite poudariti
+- dvoklinite na predmet, če želite videti priseke</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="67"/>
@@ -1403,22 +1400,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="75"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>Enaka razdalja</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="80"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>Dve razdalji</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="85"/>
       <source>Distance and angle</source>
-      <translation type="unfinished">Distance and angle</translation>
+      <translation>Razdalja in kót</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="98"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>Obrni smer</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="119"/>
@@ -1428,7 +1425,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="158"/>
       <source>Size 2</source>
-      <translation type="unfinished">Size 2</translation>
+      <translation>Velikost 2</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="191"/>
@@ -1446,7 +1443,7 @@ click again to end selection</translation>
       <location filename="../../TaskChamferParameters.cpp" line="243"/>
       <location filename="../../TaskChamferParameters.cpp" line="245"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Biti mora vsaj en predmet</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="211"/>
@@ -1456,7 +1453,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="211"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Ostati mora najmanj en predmet.</translation>
     </message>
   </context>
   <context>
@@ -1527,8 +1524,8 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="143"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Kliknite spodaj, če želite izbirni način,
+s ponovnim klikom pa zaključite izbiranje</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="26"/>
@@ -1544,8 +1541,8 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the drafts</translation>
+      <translation>- izberite predmet, ki ga želite poudariti
+- dvoklinite na predmet, če želite videti osnutke</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="65"/>
@@ -1573,7 +1570,7 @@ click again to end selection</translation>
       <location filename="../../TaskDraftParameters.cpp" line="276"/>
       <location filename="../../TaskDraftParameters.cpp" line="278"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Biti mora vsaj en predmet</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="244"/>
@@ -1583,7 +1580,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="244"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Ostati mora najmanj en predmet.</translation>
     </message>
   </context>
   <context>
@@ -1597,7 +1594,7 @@ click again to end selection</translation>
       <location filename="../../TaskDressUpParameters.cpp" line="243"/>
       <location filename="../../TaskDressUpParameters.cpp" line="245"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Biti mora vsaj en predmet</translation>
     </message>
   </context>
   <context>
@@ -1706,8 +1703,8 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.cpp" line="121"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Kliknite spodaj, če želite izbirni način,
+s ponovnim klikom pa zaključite izbiranje</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="26"/>
@@ -1718,8 +1715,8 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the fillets</translation>
+      <translation>- izberite predmet, ki ga želite poudariti
+- dvoklinite na predmet, če želite videti zaokrožitve</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="65"/>
@@ -1737,7 +1734,7 @@ click again to end selection</translation>
       <location filename="../../TaskFilletParameters.cpp" line="198"/>
       <location filename="../../TaskFilletParameters.cpp" line="200"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Biti mora vsaj en predmet</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="166"/>
@@ -1747,7 +1744,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="166"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Ostati mora najmanj en predmet.</translation>
     </message>
   </context>
   <context>
@@ -1760,7 +1757,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="23"/>
       <source>Status:</source>
-      <translation type="unfinished">Status:</translation>
+      <translation>Stanje:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="30"/>
@@ -1814,22 +1811,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="96"/>
       <source>Pitch-Height-Angle</source>
-      <translation type="unfinished">Pitch-Height-Angle</translation>
+      <translation>Korak-Višina-Kot</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="101"/>
       <source>Pitch-Turns-Angle</source>
-      <translation type="unfinished">Pitch-Turns-Angle</translation>
+      <translation>Korak - Število navojev - Kot</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="106"/>
       <source>Height-Turns-Angle</source>
-      <translation type="unfinished">Height-Turns-Angle</translation>
+      <translation>Višina - Število navojev - Kot</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="111"/>
       <source>Height-Turns-Growth</source>
-      <translation type="unfinished">Height-Turns-Growth</translation>
+      <translation>Višina - Število navojev - Rast</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="124"/>
@@ -1844,12 +1841,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="186"/>
       <source>Turns:</source>
-      <translation type="unfinished">Turns:</translation>
+      <translation>Število navojev:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="214"/>
       <source>Cone angle:</source>
-      <translation type="unfinished">Cone angle:</translation>
+      <translation>Kót stožca:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="248"/>
@@ -1859,7 +1856,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="277"/>
       <source>Left handed</source>
-      <translation type="unfinished">Left handed</translation>
+      <translation>Levosučno</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="288"/>
@@ -1869,7 +1866,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="296"/>
       <source>Remove outside of profile</source>
-      <translation type="unfinished">Remove outside of profile</translation>
+      <translation>Odstrani zunanjost preseka</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="315"/>
@@ -1879,7 +1876,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="65"/>
       <source>Helix parameters</source>
-      <translation type="unfinished">Helix parameters</translation>
+      <translation>Določilke vijačnice</translation>
     </message>
   </context>
   <context>
@@ -1907,22 +1904,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="54"/>
       <source>Cheesehead (deprecated)</source>
-      <translation type="unfinished">Cheesehead (deprecated)</translation>
+      <translation>Valjasti z zarezo (zastarelo)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Countersink socket screw (deprecated)</source>
-      <translation type="unfinished">Countersink socket screw (deprecated)</translation>
+      <translation>Kotno grezenje (zastarelo)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="56"/>
       <source>Cap screw (deprecated)</source>
-      <translation type="unfinished">Cap screw (deprecated)</translation>
+      <translation>Valjni vijak (zastarelo)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular profile</source>
-      <translation type="unfinished">ISO metric regular profile</translation>
+      <translation>Običajni metrični ISO profil</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
@@ -1965,7 +1962,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Zaporedje v seznamu lahko spreminjate z vlečenjem</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
@@ -2048,7 +2045,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Zaporedje v seznamu lahko spreminjate z vlečenjem</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2086,7 +2083,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Zaporedje v seznamu lahko spreminjate z vlečenjem</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
@@ -2134,7 +2131,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Zaporedje v seznamu lahko spreminjate z vlečenjem</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2225,13 +2222,13 @@ click again to end selection</translation>
       <location filename="../../TaskPadParameters.ui" line="60"/>
       <source>Use custom vector for pad direction otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>Za izboklino uporabi vektor po meri,
+sicer bo uporabljena normala očrtne ravnine</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="64"/>
       <source>Use custom direction</source>
-      <translation type="unfinished">Use custom direction</translation>
+      <translation>Uporabi smer po meri</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="73"/>
@@ -2241,7 +2238,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="80"/>
       <source>x-component of direction vector</source>
-      <translation type="unfinished">x-component of direction vector</translation>
+      <translation>komponenta x smernega vektorja</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="102"/>
@@ -2251,7 +2248,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="109"/>
       <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
+      <translation>komponenta y smernega vektorja</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="131"/>
@@ -2261,34 +2258,34 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="138"/>
       <source>z-component of direction vector</source>
-      <translation type="unfinished">z-component of direction vector</translation>
+      <translation>komponenta z smernega vektorja</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="166"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation type="unfinished">If unchecked, the length will be
-measured along the specified direction</translation>
+      <translation>Če je odznačeno, bo dolžina
+merjena vzdolž določene smeri</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="170"/>
       <source>Length along sketch normal</source>
-      <translation type="unfinished">Length along sketch normal</translation>
+      <translation>Dolžina vzdolž normale očrta</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="185"/>
       <source>Offset to face</source>
-      <translation type="unfinished">Offset to face</translation>
+      <translation>Odmik od ploskve</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="192"/>
       <source>Offset from face in which pad will end</source>
-      <translation type="unfinished">Offset from face in which pad will end</translation>
+      <translation>Odmik od ploskve, pri katerem se izboklina konča</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="207"/>
       <source>Applies length symmetrically to sketch plane</source>
-      <translation type="unfinished">Applies length symmetrically to sketch plane</translation>
+      <translation>Uporabi dolžino, somerno na očrtno ravnino</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="210"/>
@@ -2298,7 +2295,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="217"/>
       <source>Reverses pad direction</source>
-      <translation type="unfinished">Reverses pad direction</translation>
+      <translation>Obrne smer izbokline</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="220"/>
@@ -2523,7 +2520,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="447"/>
       <source>No active body</source>
-      <translation type="unfinished">No active body</translation>
+      <translation>Nobenega dejavnega telesa</translation>
     </message>
   </context>
   <context>
@@ -2681,7 +2678,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>Zaporedje v seznamu lahko spreminjate z vlečenjem</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -2896,8 +2893,8 @@ measured along the specified direction</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="143"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation type="unfinished">Click button to enter selection mode,
-click again to end selection</translation>
+      <translation>Kliknite spodaj, če želite izbirni način,
+s ponovnim klikom pa zaključite izbiranje</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="26"/>
@@ -2913,8 +2910,8 @@ click again to end selection</translation>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the features</translation>
+      <translation>- izberite predmet, ki ga želite poudariti
+- dvoklinite na predmet, če želite videti značilnosti</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -2968,7 +2965,7 @@ click again to end selection</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="220"/>
       <location filename="../../TaskThicknessParameters.cpp" line="222"/>
       <source>There must be at least one item</source>
-      <translation type="unfinished">There must be at least one item</translation>
+      <translation>Biti mora vsaj en predmet</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="188"/>
@@ -2978,7 +2975,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="188"/>
       <source>At least one item must be kept.</source>
-      <translation type="unfinished">At least one item must be kept.</translation>
+      <translation>Ostati mora najmanj en predmet.</translation>
     </message>
   </context>
   <context>
@@ -3062,12 +3059,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="196"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation type="unfinished">Create an additive box by its width, height, and length</translation>
+      <translation>Ustvari dodajni kvader s podano širino, višino in dolžino</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height, and angle</translation>
+      <translation>Ustvari dodajni valj z njegovim polmerom, višino in kotom</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
@@ -3171,17 +3168,17 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="950"/>
       <source>Move tip</source>
-      <translation type="unfinished">Move tip</translation>
+      <translation>Premakni izvajajočo nalogo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation type="unfinished">The moved feature appears after the currently set tip.</translation>
+      <translation>Premaknjena značilnost pride za trenutno izvajajočo nalogo.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="952"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
+      <translation>Ali želite, da zadnja značilnost postane nova izvajajoča naloga?</translation>
     </message>
   </context>
   <context>
@@ -3211,7 +3208,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Sub-Shape Binder</source>
-      <translation type="unfinished">Sub-Shape Binder</translation>
+      <translation>Povezovalnik podoblik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="589"/>
@@ -3251,7 +3248,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="797"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation>Ustvarite najprej ravnino ali izberite ploskev, na katero želite očtavati</translation>
+      <translation>Ustvarite najprej ravnino ali izberite ploskev, na katero želite očrtavati</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="810"/>
@@ -3282,22 +3279,22 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1056"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
+      <translation>Tega ukaza ni mogoče izvesti, ker ni telesa, od katerega bi odštevali.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1057"/>
       <source>Ensure that the body contains a feature  before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature  before attempting a subtractive command.</translation>
+      <translation>Preden poskusite z odjemnim ukazom se prepričajte, da telo vsebuje značilnost.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1078"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
+      <translation>Izbranega predmeta ni mogoče uporabiti. Izbrani predmet mora biti del dejavnega telesa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1079"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
+      <translation>Premislite, ali bi bilo mogoče dobro za navezovanje zunanje geometrije na telo uporabiti  Povezovalnik oblik (ShapeBinder) ali Značilnosti osnove (BaseFeature).</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
@@ -3320,27 +3317,27 @@ click again to end selection</translation>
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Select an edge, face, or body.</source>
-      <translation type="unfinished">Select an edge, face, or body.</translation>
+      <translation>Izberi rob, ploskev ali telo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
       <source>Select an edge, face, or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
+      <translation>Izberi rob, ploskev ali telo enega samega telesa.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1839"/>
       <source>Select an edge, face, or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
+      <translation>Izberi rob, ploskev ali telo iz dejavnega telesa.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2158"/>
       <source>Please create a feature first.</source>
-      <translation type="unfinished">Please create a feature first.</translation>
+      <translation>Najprej ustvari značilnost.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2167"/>
       <source>Please select only one feature in an active body.</source>
-      <translation type="unfinished">Please select only one feature in an active body.</translation>
+      <translation>Izberite le eno značilnost dejavnega telesa.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1838"/>
@@ -3462,7 +3459,7 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="493"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Uredite '%1' in ga ponovno definirajte za uporabo Osnovne ali Sklicne ravnine kot očrtovalno ravnino.</translation>
+      <translation>Uredite '%1' in ga ponovno določite za Osnovo ali Sklicno ravnine kot očrtno ravnino.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="555"/>

@@ -116,7 +116,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="608"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>Odsunięcie mocowania (według lokalnych współrzędnych):</translation>
+      <translation>Odsunięcie załącznika (według lokalnych współrzędnych):</translation>
     </message>
   </context>
   <context>
@@ -242,7 +242,7 @@ Stworzy to „Filtr kompozytowy” dla każdego kształtu.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Tworzy wycięcie w jednym obiekcie, aby pasowało na inny obiekt.</translation>
+      <translation>Tworzy wycięcie w jednym obiekcie, pasujące do innego obiektu.</translation>
     </message>
   </context>
   <context>
@@ -364,6 +364,16 @@ Do wyodrębnienia poszczególnych wycinków można użyć "filtra złożeń".</t
       <translation>Pokrój</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmenty funkcji logicznej</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Podziel obiekty, które się przecinają</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
@@ -385,16 +395,6 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
 lub z kształtami wewnątrz bryły złożonej.
 Oznacza to, że nakładające się objętości kształtów zostaną usunięte.
 Do wyodrębnienia pozostałych elementów można użyć 'Filtra złożeń'.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmenty funkcji logicznej</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Podziel obiekty, które się przecinają</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -742,22 +742,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="144"/>
       <source>No Result</source>
-      <translation>Brak rezultatu</translation>
+      <translation>Bez rezultatu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>Out Of Enum Range: </source>
-      <translation>Poza wyliczonym zasięgiem: </translation>
+      <translation>Poza zakresem wyliczenia: </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation>Suma kontrolna Nieznana BOPAlgo</translation>
+      <translation>Suma kontrolna Operacji Logicznej komponentu Open Cascade, nieznana</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>BOPAlgo BadType</source>
-      <translation>Zły Typ BOPAlgo</translation>
+      <translation>Zły typ Operacji Logicznej komponentu Open Cascade</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
@@ -767,7 +767,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>BOPAlgo TooSmallEdge</source>
-      <translation>Zbyt Mała Krawędź BOPAlgo</translation>
+      <translation>Zbyt mała krawędź BOPAlgo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
@@ -855,7 +855,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="79"/>
       <source>Edit mirror plane</source>
-      <translation>Edycja płaszczyzny lustra</translation>
+      <translation>Edycja płaszczyzny odbicia lustrzanego</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="276"/>
@@ -1596,7 +1596,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Współosiowy</translation>
+      <translation>Współosiowo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
@@ -1608,7 +1608,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Sekcja Obrotu</translation>
+      <translation>Obrót przekroju</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="162"/>
@@ -1626,7 +1626,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="165"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Wyrównaj płaszczyznę do przejścia przez trzy wierzchołki.</translation>
+      <translation>Wyrównaj płaszczyznę tak, aby przechodziła przez trzy wierzchołki.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="167"/>
@@ -1656,7 +1656,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Inercja 2-3</translation>
+      <translation>Bezwładność 2-3</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="174"/>
@@ -1793,7 +1793,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Współosiowy</translation>
+      <translation>Współosiowo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
@@ -1805,7 +1805,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Sekcja Obrotu</translation>
+      <translation>Obrót przekroju</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="87"/>
@@ -1859,7 +1859,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../AttacherTexts.cpp" line="99"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Inercjalny układ współrzędnych, skonstruowany na głównej osi inercji i centrum bryły.</translation>
+      <translation>Bezwładnościowy układ współrzędnych, zbudowany na głównych osiach bezwładności i środku ciężkości.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
@@ -2348,7 +2348,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1440"/>
       <source>Chamfer...</source>
-      <translation>Fazowanie ...</translation>
+      <translation>Fazka ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
@@ -2438,7 +2438,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="661"/>
       <source>Split objects...</source>
-      <translation>Podziel obiekty...</translation>
+      <translation>Podziel obiekty ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="662"/>
@@ -2984,7 +2984,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1594"/>
       <source>Sweep...</source>
-      <translation>Wyciągnięcie po ścieżce...</translation>
+      <translation>Wyciągnięcie po ścieżce ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
@@ -3002,12 +3002,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../Command.cpp" line="1814"/>
       <source>Thickness...</source>
-      <translation>Grubość...</translation>
+      <translation>Grubość ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1815"/>
       <source>Utility to apply a thickness</source>
-      <translation>Narzędzie do ustawiania grubości</translation>
+      <translation>Narzędzie do nadawania grubości</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1827"/>
@@ -3164,7 +3164,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Sekcje</translation>
+      <translation>Przekroje</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -3235,7 +3235,7 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
       <location filename="../../DlgBooleanOperation.ui" line="129"/>
       <source>Compounds</source>
-      <translation>Kombinacje</translation>
+      <translation>Kształt złożony</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="96"/>
@@ -3266,12 +3266,12 @@ Kliknij "Kontynuuj", aby mimo to utworzyć element, lub "Przerwij", aby anulowa�
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="388"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation>Nie można wykonać operacji boolean na tym samym kształcie</translation>
+      <translation>Nie można wykonać operacji logicznej na tym samym kształcie</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="398"/>
       <source>No active document available</source>
-      <translation>Żaden aktywny dokument nie jest dostępny</translation>
+      <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="408"/>

@@ -591,7 +591,7 @@ Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Remove row(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remover linha(s)</numerusform>
         <numerusform>Remove row(s)</numerusform>
       </translation>
     </message>
@@ -619,7 +619,7 @@ Spreadsheet.my_alias_name em vez de Spreadsheet.B1</translation>
     <message numerus="yes">
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remover coluna(s)</numerusform>
         <numerusform>Remove column(s)</numerusform>
       </translation>
     </message>

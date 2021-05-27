@@ -142,12 +142,12 @@
       <translation>Lehenengo, hautatu 3 objektu</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Unsupported Function</source>
       <translation>Onartzen ez den funtzioa</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1353"/>
+      <location filename="importCSG.py" line="1355"/>
       <source>Press OK</source>
       <translation>Sakatu 'Ados'</translation>
     </message>
