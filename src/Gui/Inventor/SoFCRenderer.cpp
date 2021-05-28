@@ -1093,6 +1093,7 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
 
       glEnable(GL_STENCIL_TEST);
       glDisable(GL_LIGHTING);
+      glDisable(GL_DEPTH_TEST);
       auto col = drawidx >= 0 ? this->material.emissive
                               : draw_entry.material->hiddenlinecolor;
       glColor3ub((unsigned char)((col>>24)&0xff),
@@ -1102,7 +1103,6 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
 
       if (highlight) {
         glDisable(GL_BLEND);
-        glDisable(GL_DEPTH_TEST);
         float w = linewidth * std::max(1.0, ViewParams::getSelectionLineThicken());
         if (ViewParams::getSelectionLineMaxWidth() > 1.0)
           w = std::min<float>(w, std::max<float>(linewidth, ViewParams::getSelectionLineMaxWidth()));
@@ -1189,7 +1189,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     FC_GLERROR_CHECK;
   }
 
-  glPushAttrib(GL_ENABLE_BIT);
+  glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
   FC_GLERROR_CHECK;
   glDisable(GL_DEPTH_TEST);
   glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
@@ -1223,6 +1223,8 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
 
   glStencilFunc (GL_EQUAL, 1, 0x01);
   glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
+  glEnable(GL_DEPTH_TEST);
+  glDepthMask(GL_TRUE);
   FC_GLERROR_CHECK;
 
   const auto &info = this->material.clippers.get(curpass);
@@ -1258,7 +1260,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     if (r < 120 && r > 140) r = 160; else r = 255 - r;
     if (g < 120 && g > 140) g = 160; else g = 255 - g;
     if (b < 120 && b > 140) b = 160; else b = 255 - b;
-    glColor3ub(r, g, b);
+    glColor4ub(r, g, b, col&0xff);
   }
 
   glBegin(GL_QUADS);
@@ -1458,16 +1460,22 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
       break;
     case Material::Triangle:
       {
-        if (&draw_entries != &this->hlentries)
-          renderOutline(action, draw_entry, false);
-        if (!draw_entry.ventry->cache->hasTransparency()
-            || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
-          array |= SoFCVertexCache::FULL_SORTED_ARRAY;
-        else
-          array |= SoFCVertexCache::SORTED_ARRAY;
-        draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
-        if (&draw_entries == &this->hlentries)
-          renderOutline(action, draw_entry, true);
+        bool pushed = false;
+        int n = 0;
+        while (renderSection(action, draw_entry, n, pushed)) {
+          if (&draw_entries != &this->hlentries)
+            renderOutline(action, draw_entry, false);
+          if (!draw_entry.ventry->cache->hasTransparency()
+              || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
+            array |= SoFCVertexCache::FULL_SORTED_ARRAY;
+          else
+            array |= SoFCVertexCache::SORTED_ARRAY;
+          draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
+          if (&draw_entries == &this->hlentries)
+            renderOutline(action, draw_entry, true);
+        }
+        if (pushed)
+          glPopAttrib();
       }
       break;
     }
