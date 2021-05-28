@@ -1189,7 +1189,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     FC_GLERROR_CHECK;
   }
 
-  glPushAttrib(GL_ENABLE_BIT | GL_CURRENT_BIT);
+  glPushAttrib(GL_ENABLE_BIT);
   FC_GLERROR_CHECK;
   glDisable(GL_DEPTH_TEST);
   glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
@@ -1223,6 +1223,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
 
   glStencilFunc (GL_EQUAL, 1, 0x01);
   glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
+  glPushAttrib(GL_ENABLE_BIT|GL_DEPTH_BUFFER_BIT|GL_CURRENT_BIT);
   glEnable(GL_DEPTH_TEST);
   glDepthMask(GL_TRUE);
   FC_GLERROR_CHECK;
@@ -1251,6 +1252,11 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
   v3 = v4 = center - v;
   v3 += u;
   v4 -= u;
+  auto matrix = SoModelMatrixElement::get(action->getState()).inverse();
+  matrix.multVecMatrix(v1, v1);
+  matrix.multVecMatrix(v2, v2);
+  matrix.multVecMatrix(v3, v3);
+  matrix.multVecMatrix(v4, v4);
 
   if (ViewParams::getSectionFillInvert()) {
     auto col = this->material.diffuse;
@@ -1281,13 +1287,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
   glEnd();
   FC_GLERROR_CHECK;
 
-  if (ViewParams::getSectionFillInvert()) {
-    auto col = this->material.diffuse;
-    unsigned char r = (col >> 24) & 0xff;
-    unsigned char g = (col >> 16) & 0xff;
-    unsigned char b = (col >> 8) & 0xff;
-    glColor3ub(r, g, b);
-  }
+  glPopAttrib();
 
   glDisable(GL_STENCIL_TEST);
   FC_GLERROR_CHECK;
