@@ -84,6 +84,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return shapes representing the solids to be removed.'''
         PathLog.track()
+        self.removalshapes = []
 
         # self.isDebug = True if PathLog.getLevel(PathLog.thisModule()) == 4 else False
         self.removalshapes = []
@@ -162,7 +163,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         #    shape.tessellate(0.05)  # originally 0.1
 
         if self.removalshapes:
-            obj.removalshape = self.removalshapes[0][0]
+            obj.removalshape = Part.makeCompound([tup[0] for tup in self.removalshapes])
+
         return self.removalshapes
 
     # Support methods
