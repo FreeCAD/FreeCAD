@@ -119,8 +119,10 @@ def make_label(target_point=App.Vector(0, 0, 0),
         - `'Area'` will show the `Area` of the target object's `Shape`,
           or of the indicated `'FaceN'` in `target`.
 
-    custom_text: str, optional
+    custom_text: str, or list of str, optional
         It defaults to `'Label'`.
+        If it is a list, each element in the list represents a new text line.
+
         It is the text that will be displayed by the label when
         `label_type` is `'Custom'`.
 
@@ -280,9 +282,14 @@ def make_label(target_point=App.Vector(0, 0, 0),
     if not custom_text:
         custom_text = "Label"
     try:
-        utils.type_check([(custom_text, str)], name=_name)
+        utils.type_check([(custom_text, (str, list))], name=_name)
     except TypeError:
-        _err(translate("draft","Wrong input: must be a string."))
+        _err(translate("draft","Wrong input: must be a list of strings or a single string."))
+        return None
+
+    if (type(custom_text) is list
+            and not all(isinstance(element, str) for element in custom_text)):
+        _err(translate("draft","Wrong input: must be a list of strings or a single string."))
         return None
 
     _msg("direction: {}".format(direction))
