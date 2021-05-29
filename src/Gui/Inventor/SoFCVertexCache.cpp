@@ -294,7 +294,7 @@ public:
     this->prevpointindices.reset();
   }
 
-  SbBool depthSortTriangles(SoState * state, bool fullsort);
+  SbBool depthSortTriangles(SoState * state, bool fullsort, const SbPlane *sortplane);
 
   SoFCVertexCache *master;
   CoinPtr<SoFCVertexCache> prevcache;
@@ -857,7 +857,7 @@ SoFCVertexCache::hasTransparency() const
 }
 
 void
-SoFCVertexCache::renderTriangles(SoState * state, const int arrays, int part)
+SoFCVertexCache::renderTriangles(SoState * state, const int arrays, int part, const SbPlane *viewplane)
 {
   if (part >= 0) {
     PRIVATE(this)->render(state, PRIVATE(this)->triangleindexer, arrays, part, 3);
@@ -869,7 +869,7 @@ SoFCVertexCache::renderTriangles(SoState * state, const int arrays, int part)
   const int32_t * counts = NULL;
 
   if (arrays & (SORTED_ARRAY | FULL_SORTED_ARRAY)) {
-    if (PRIVATE(this)->depthSortTriangles(state, (arrays & FULL_SORTED_ARRAY) ? true : false)) {
+    if (PRIVATE(this)->depthSortTriangles(state, (arrays & FULL_SORTED_ARRAY) ? true : false, viewplane)) {
       offsets = &PRIVATE(this)->sortedpartarray[0];
       counts = &PRIVATE(this)->sortedpartcounts[0];
       drawcount = (int)PRIVATE(this)->sortedpartarray.size();
@@ -1346,7 +1346,7 @@ SoFCVertexCache::getPointIndices(void) const
 }
 
 SbBool
-SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort)
+SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort, const SbPlane *plane)
 {
   if (!this->vertexarray) return FALSE;
   int numv = this->vertexarray->getLength();
@@ -1370,7 +1370,7 @@ SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort)
     }
   }
 
-  SbPlane sortplane = SoViewVolumeElement::get(state).getPlane(0.0);
+  SbPlane sortplane = plane?*plane:SoViewVolumeElement::get(state).getPlane(0.0);
   // move plane into object space
   sortplane.transform(SoModelMatrixElement::get(state).inverse());
 
@@ -1379,7 +1379,8 @@ SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort)
   // If having parts, sort the parts (i.e. group of triangles) instead of
   // individual triangles
   if (numparts) {
-    if (numparts == (int)this->deptharray.size() && sortplane == this->prevsortplane)
+    if (numparts == (int)this->deptharray.size()
+        && sortplane.getNormal() == this->prevsortplane.getNormal())
       return TRUE;
 
     this->deptharray.clear();
@@ -1439,7 +1440,8 @@ SoFCVertexCacheP::depthSortTriangles(SoState * state, bool fullsort)
   }
 
   // normal sorting without parts
-  if (numtri == (int)deptharray.size() && sortplane == this->prevsortplane)
+  if (numtri == (int)deptharray.size()
+      && sortplane.getNormal() == this->prevsortplane.getNormal())
     return FALSE;
 
   GLint * iptr = this->triangleindexer->getWriteableIndices();

@@ -1063,6 +1063,7 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
 {
   int drawidx = draw_entry.ventry->partidx;
   if (this->shadowmapping
+      || this->depthwriteonly
       || draw_entry.material->type != Material::Triangle
       || (!draw_entry.material->outline
           && (!ViewParams::getShowPreSelectedFaceOutline() || !highlight)))
@@ -1421,18 +1422,18 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
   if (this->shadowmapping && !this->transpshadowmapping)
     return;
 
-  bool nosort = false;
+  bool notriangle = false;
   if (&draw_entries != &this->slentries
       && &draw_entries != &this->hlentries
       && SoFCDisplayModeElement::showHiddenLines(state)
       && ViewParams::getHiddenLineHideFace())
   {
-    nosort = true;
+    notriangle = true;
   }
 
-  if (!nosort && sort) {
+  if (!notriangle && sort) {
     SbPlane plane = SoViewVolumeElement::get(state).getPlane(0.0);
-    if (plane != this->prevplane) {
+    if (plane.getNormal() != this->prevplane.getNormal()) {
       this->prevplane = plane;
       if (!this->identity)
         plane.transform(this->matrix.inverse());
@@ -1449,6 +1450,8 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   FC_GLERROR_CHECK;
+
+  bool highlight = &draw_entries == &this->hlentries;
 
   for (auto & v : indices) {
     auto & draw_entry = draw_entries[v.idx];
@@ -1490,9 +1493,7 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
         bool pushed = false;
         int n = 0;
         while (renderSection(action, draw_entry, n, pushed)) {
-          if (&draw_entries != &this->hlentries)
-            renderOutline(action, draw_entry, false);
-          if (!nosort) {
+          if (!notriangle) {
             if (!draw_entry.ventry->cache->hasTransparency()
                 || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
               array |= SoFCVertexCache::FULL_SORTED_ARRAY;
@@ -1503,11 +1504,12 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
                                                       draw_entry.ventry->partidx,
                                                       &this->prevplane);
           }
-          if (&draw_entries == &this->hlentries)
-            renderOutline(action, draw_entry, true);
+          renderOutline(action, draw_entry, highlight);
         }
-        if (pushed)
+        if (pushed) {
           glPopAttrib();
+          FC_GLERROR_CHECK;
+        }
       }
       break;
     }
