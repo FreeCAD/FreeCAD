@@ -264,7 +264,7 @@ class Draft_SetStyle_TaskPanel:
             if pdict:
                 if name in pdict.keys():
                     reply = QtGui.QMessageBox.question(None,
-                                                       tranlate("Draft","Warning"),
+                                                       translate("Draft","Warning"),
                                                        translate("Draft","Name exists. Overwrite?"),
                                                        QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                                                        QtGui.QMessageBox.No)
