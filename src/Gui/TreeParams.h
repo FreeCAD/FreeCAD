@@ -147,8 +147,9 @@ public:
         { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     void on##_name##Changed();\
     static void update##_name(TreeParams *self) { \
-        self->_##_name = self->handle->Get##_type(#_name,_def); \
-        self->on##_name##Changed();\
+        auto _v = self->handle->Get##_type(#_name,_def); \
+        if (self->_##_name != _v) \
+            self->on##_name##Changed();\
     }\
     static const char *doc##_name(); \
 

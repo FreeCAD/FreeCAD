@@ -98,8 +98,9 @@ public:
     static void set_##_name(_ctype _v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     void on##_name##Changed();\
     static void update##_name(DocumentParams *self) { \
-        self->_##_name = self->handle->Get##_type(#_name,_def); \
-        self->on##_name##Changed();\
+        auto _v = self->handle->Get##_type(#_name,_def); \
+        if (self->_##_name != _v)\
+            self->on##_name##Changed();\
     }\
 
     FC_DOCUMENT_PARAMS
