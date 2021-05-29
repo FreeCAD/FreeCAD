@@ -30,7 +30,6 @@ import datetime
 import shlex
 import os.path
 from PathScripts import PostUtils
-from PathScripts import PathUtils
 
 TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
@@ -154,7 +153,7 @@ def processArguments(argstring):
         if args.no_tlo:
             USE_TLO = False
         if args.no_axis_modal:
-            OUTPUT_DOUBLES = true
+            OUTPUT_DOUBLES = True
 
     except Exception: # pylint: disable=broad-except
         return False
@@ -171,7 +170,7 @@ def export(objectslist, filename, argstring):
     global UNIT_SPEED_FORMAT
     global HORIZRAPID
     global VERTRAPID
- 
+
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
@@ -206,34 +205,10 @@ def export(objectslist, filename, argstring):
             if not obj.Base.Active:
                 continue
 
-        # fetch machine details
-        job = PathUtils.findParentJob(obj)
-
-        myMachine = 'not set'
-
-        if hasattr(job, "MachineName"):
-            myMachine = job.MachineName
-
-        if hasattr(job, "MachineUnits"):
-            if job.MachineUnits == "Metric":
-                UNITS = "G21"
-                UNIT_FORMAT = 'mm'
-                UNIT_SPEED_FORMAT = 'mm/min'
-            else:
-                UNITS = "G20"
-                UNIT_FORMAT = 'in'
-                UNIT_SPEED_FORMAT = 'in/min'
-
-        if hasattr(job, "SetupSheet"):
-            if hasattr(job.SetupSheet, "HorizRapid"):
-                HORIZRAPID = Units.Quantity(job.SetupSheet.HorizRapid, FreeCAD.Units.Velocity)
-            if hasattr(job.SetupSheet, "VertRapid"):
-                VERTRAPID = Units.Quantity(job.SetupSheet.HorizRapid, FreeCAD.Units.Velocity)
-
         # do the pre_op
         if OUTPUT_COMMENTS:
             gcode += linenumber() + "(BEGIN OPERATION: %s)\n" % obj.Label.upper()
-            gcode += linenumber() + "(MACHINE: %s, %s)\n" % (myMachine.upper(), UNIT_SPEED_FORMAT.upper())
+            gcode += linenumber() + "(MACHINE UNITS: %s)\n" % (UNIT_SPEED_FORMAT.upper())
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
@@ -459,7 +434,6 @@ def parse(pathobj):
                         outstring.append(param + str(int(c.Parameters['D'])))
                     elif param == 'S':
                         outstring.append(param + str(int(c.Parameters['S'])))
-                        currentSpeed = int(c.Parameters['S'])
                     else:
                         if (not OUTPUT_DOUBLES) and (param in currLocation) and (currLocation[param] == c.Parameters[param]):
                             continue
@@ -482,7 +456,6 @@ def parse(pathobj):
             # Check for Tool Change:
             if command == 'M6':
                 # stop the spindle
-                currentSpeed = 0
                 out += linenumber() + "M5\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line

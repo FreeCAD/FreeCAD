@@ -127,17 +127,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1181"/>
+      <location filename="../../Command.cpp" line="1177"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1182"/>
+      <location filename="../../Command.cpp" line="1178"/>
       <source>Insert Arch Workbench Object</source>
       <translation>Vista di Arch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1183"/>
+      <location filename="../../Command.cpp" line="1179"/>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
       <translation>Inserisce una vista di un piano di sezione dell'ambiente Arch</translation>
     </message>
@@ -268,6 +268,11 @@
       <source>Change Appearance of Lines</source>
       <translation>Aspetto delle linee</translation>
     </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1257"/>
+      <source>Change Appearance of selected Lines</source>
+      <translation>Cambia l'aspetto delle linee selezionate</translation>
+    </message>
   </context>
   <context>
     <name>CmdTechDrawDetailView</name>
@@ -311,17 +316,17 @@
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1115"/>
+      <location filename="../../Command.cpp" line="1111"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1116"/>
+      <location filename="../../Command.cpp" line="1112"/>
       <source>Insert Draft Workbench Object</source>
       <translation>Vista di Draft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1117"/>
+      <location filename="../../Command.cpp" line="1113"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>Inserisce una vista di un oggetto dell'ambiente Draft</translation>
     </message>
@@ -329,22 +334,22 @@
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1349"/>
+      <location filename="../../Command.cpp" line="1345"/>
       <source>File</source>
       <translation>File</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1346"/>
       <source>Export Page as DXF</source>
       <translation>Esporta la pagina in DXF</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1383"/>
-      <source>Save Dxf File </source>
-      <translation>Salva il file DXF </translation>
+      <location filename="../../Command.cpp" line="1379"/>
+      <source>Save Dxf File</source>
+      <translation type="unfinished">Save Dxf File</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1385"/>
+      <location filename="../../Command.cpp" line="1381"/>
       <source>Dxf (*.dxf)</source>
       <translation>DXF (*. dxf)</translation>
     </message>
@@ -352,12 +357,12 @@
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="1301"/>
       <source>File</source>
       <translation>File</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
+      <location filename="../../Command.cpp" line="1302"/>
       <source>Export Page as SVG</source>
       <translation>Esporta la pagina in SVG</translation>
     </message>
@@ -679,17 +684,17 @@
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1246"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1247"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Insert Spreadsheet View</source>
       <translation>Vista foglio di calcolo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1248"/>
+      <location filename="../../Command.cpp" line="1244"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Inserisce una vista di un foglio di calcolo</translation>
     </message>
@@ -789,63 +794,63 @@
       <location filename="../../Command.cpp" line="132"/>
       <location filename="../../Command.cpp" line="204"/>
       <source>Drawing create page</source>
-      <translation type="unfinished">Drawing create page</translation>
+      <translation>Crea pagina disegno</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="380"/>
       <source>Create view</source>
-      <translation type="unfinished">Create view</translation>
+      <translation>Creare vista</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="655"/>
       <source>Create Projection Group</source>
-      <translation type="unfinished">Create Projection Group</translation>
+      <translation>Crea gruppo di proiezione</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
       <source>Create Clip</source>
-      <translation type="unfinished">Create Clip</translation>
+      <translation>Crea clip</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="950"/>
       <source>ClipGroupAdd</source>
-      <translation type="unfinished">ClipGroupAdd</translation>
+      <translation>Aggiungi clip di gruppo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1023"/>
       <source>ClipGroupRemove</source>
-      <translation type="unfinished">ClipGroupRemove</translation>
+      <translation>Rimuovi clip di gruppo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1084"/>
       <source>Create Symbol</source>
-      <translation type="unfinished">Create Symbol</translation>
+      <translation>Crea simbolo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1148"/>
+      <location filename="../../Command.cpp" line="1144"/>
       <source>Create DraftView</source>
-      <translation type="unfinished">Create DraftView</translation>
+      <translation>Crea vista Draft</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1223"/>
+      <location filename="../../Command.cpp" line="1219"/>
       <source>Create ArchView</source>
-      <translation type="unfinished">Create ArchView</translation>
+      <translation>Crea vista Arch</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1271"/>
+      <location filename="../../Command.cpp" line="1267"/>
       <source>Create spreadsheet view</source>
-      <translation type="unfinished">Create spreadsheet view</translation>
+      <translation>Crea vista foglio di calcolo</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1392"/>
-      <location filename="../../MDIViewPage.cpp" line="985"/>
+      <location filename="../../Command.cpp" line="1388"/>
+      <location filename="../../MDIViewPage.cpp" line="873"/>
       <source>Save page to dxf</source>
-      <translation type="unfinished">Save page to dxf</translation>
+      <translation>Salva pagina su dxf</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="551"/>
       <source>Create Annotation</source>
-      <translation type="unfinished">Create Annotation</translation>
+      <translation>Crea annotazione</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="333"/>
@@ -857,113 +862,113 @@
       <location filename="../../CommandCreateDims.cpp" line="935"/>
       <location filename="../../CommandCreateDims.cpp" line="1362"/>
       <source>Create Dimension</source>
-      <translation type="unfinished">Create Dimension</translation>
+      <translation>Crea quota</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="251"/>
       <source>Create Hatch</source>
-      <translation type="unfinished">Create Hatch</translation>
+      <translation>Crea tratteggio</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="354"/>
       <source>Create GeomHatch</source>
-      <translation type="unfinished">Create GeomHatch</translation>
+      <translation>Crea tratteggio geometrico</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="422"/>
       <source>Create Image</source>
-      <translation type="unfinished">Create Image</translation>
+      <translation>Crea immagine</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="495"/>
+      <location filename="../../QGIViewBalloon.cpp" line="518"/>
       <source>Drag Balloon</source>
-      <translation type="unfinished">Drag Balloon</translation>
+      <translation>Trascina pallinatura</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="681"/>
+      <location filename="../../QGIViewDimension.cpp" line="687"/>
       <source>Drag Dimension</source>
-      <translation type="unfinished">Drag Dimension</translation>
+      <translation>Trascina quota</translation>
     </message>
     <message>
-      <location filename="../../QGVPage.cpp" line="1198"/>
       <location filename="../../QGVPage.cpp" line="1201"/>
+      <location filename="../../QGVPage.cpp" line="1204"/>
       <source>Create Balloon</source>
-      <translation type="unfinished">Create Balloon</translation>
+      <translation>Crea pallinatura</translation>
     </message>
     <message>
-      <location filename="../../TaskActiveView.cpp" line="195"/>
+      <location filename="../../TaskActiveView.cpp" line="191"/>
       <source>Create ActiveView</source>
-      <translation type="unfinished">Create ActiveView</translation>
+      <translation>Crea vista attiva</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="346"/>
       <source>Create CenterLine</source>
-      <translation type="unfinished">Create CenterLine</translation>
+      <translation>Crea linea di mezzeria</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.cpp" line="391"/>
       <source>Edit CenterLine</source>
-      <translation type="unfinished">Edit CenterLine</translation>
+      <translation>Modifica linea di mezzeria</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="271"/>
       <source>Update CosmeticLine</source>
-      <translation type="unfinished">Update CosmeticLine</translation>
+      <translation>Aggiorna linea cosmetica</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="472"/>
       <source>Create Detail View</source>
-      <translation type="unfinished">Create Detail View</translation>
+      <translation>Crea vista di dettaglio</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="509"/>
       <source>Update Detail</source>
-      <translation type="unfinished">Update Detail</translation>
+      <translation>Aggiorna dettaglio</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="400"/>
       <source>Create Leader</source>
-      <translation type="unfinished">Create Leader</translation>
+      <translation>Crea freccia</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="454"/>
+      <location filename="../../TaskLeaderLine.cpp" line="456"/>
       <source>Edit Leader</source>
-      <translation type="unfinished">Edit Leader</translation>
+      <translation>Modifica freccia</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="357"/>
+      <location filename="../../TaskRichAnno.cpp" line="356"/>
       <source>Create Anno</source>
-      <translation type="unfinished">Create Anno</translation>
+      <translation>Crea annotazione</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="416"/>
+      <location filename="../../TaskRichAnno.cpp" line="415"/>
       <source>Edit Anno</source>
-      <translation type="unfinished">Edit Anno</translation>
+      <translation>Modifica annotazione</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="354"/>
       <source>Apply Quick</source>
-      <translation type="unfinished">Apply Quick</translation>
+      <translation>Applica Velocemente</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="380"/>
       <source>Apply Aligned</source>
-      <translation type="unfinished">Apply Aligned</translation>
+      <translation>Applica allineato</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.cpp" line="403"/>
       <source>Create SectionView</source>
-      <translation type="unfinished">Create SectionView</translation>
+      <translation>Crea vista di sezione</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="652"/>
       <source>Create WeldSymbol</source>
-      <translation type="unfinished">Create WeldSymbol</translation>
+      <translation>Crea simbolo di saldatura</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="660"/>
       <source>Edit WeldSymbol</source>
-      <translation type="unfinished">Edit WeldSymbol</translation>
+      <translation>Modifica simbolo di saldatura</translation>
     </message>
   </context>
   <context>
@@ -1161,11 +1166,6 @@
       <translation>Monospace</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="105"/>
-      <source> </source>
-      <translation type="unfinished"> </translation>
-    </message>
-    <message>
       <location filename="../../mrichtextedit.cpp" line="164"/>
       <source>Remove character formatting</source>
       <translation>Rimuovi formattazione caratteri</translation>
@@ -1219,11 +1219,11 @@
       <location filename="../../Command.cpp" line="941"/>
       <location filename="../../Command.cpp" line="995"/>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="1136"/>
-      <location filename="../../Command.cpp" line="1161"/>
-      <location filename="../../Command.cpp" line="1210"/>
-      <location filename="../../Command.cpp" line="1216"/>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1132"/>
+      <location filename="../../Command.cpp" line="1157"/>
+      <location filename="../../Command.cpp" line="1206"/>
+      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1255"/>
       <location filename="../../CommandAnnotate.cpp" line="327"/>
       <location filename="../../CommandAnnotate.cpp" line="420"/>
       <location filename="../../CommandAnnotate.cpp" line="1154"/>
@@ -1295,47 +1295,47 @@
       <translation>Tutti i file</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1137"/>
+      <location filename="../../Command.cpp" line="1133"/>
       <source>Select at least one object.</source>
       <translation>Selezionare almeno un oggetto.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1162"/>
+      <location filename="../../Command.cpp" line="1158"/>
       <source>There were no DraftWB objects in the selection.</source>
       <translation>Non ci sono oggetti di Draft nella selezione.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1211"/>
+      <location filename="../../Command.cpp" line="1207"/>
       <source>Please select only 1 Arch Section.</source>
       <translation>Si prega di selezionare solo 1 sezione Arch.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1217"/>
+      <location filename="../../Command.cpp" line="1213"/>
       <source>No Arch Sections in selection.</source>
       <translation>Nessuna sezione Arch nella selezione.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1369"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>Can not export selection</source>
       <translation>Impossibile esportare la selezione</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1366"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>La pagina contiene una DrawViewArch che non verrà esportata. Continuare?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1260"/>
+      <location filename="../../Command.cpp" line="1256"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Selezionare un solo oggetto Foglio di calcolo.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1325"/>
       <source>No Drawing View</source>
       <translation>Nessuna Vista di disegno</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1330"/>
+      <location filename="../../Command.cpp" line="1326"/>
       <source>Open Drawing View before attempting export to SVG.</source>
       <translation>Aprire una Vista Disegno prima di tentare l'esportazione in SVG.</translation>
     </message>
@@ -1737,35 +1737,35 @@
       <translation>Non si può determinare la pagina corretta.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="650"/>
+      <location filename="../../MDIViewPage.cpp" line="635"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*. pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="651"/>
-      <location filename="../../MDIViewPage.cpp" line="944"/>
+      <location filename="../../MDIViewPage.cpp" line="636"/>
+      <location filename="../../MDIViewPage.cpp" line="832"/>
       <source>All Files (*.*)</source>
       <translation>Tutti i File (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="652"/>
+      <location filename="../../MDIViewPage.cpp" line="637"/>
       <source>Export Page As PDF</source>
       <translation>Esporta pagina in PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="943"/>
+      <location filename="../../MDIViewPage.cpp" line="831"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="945"/>
+      <location filename="../../MDIViewPage.cpp" line="833"/>
       <source>Export page as SVG</source>
       <translation>Esporta pagina in SVG</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="229"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="214"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="200"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="204"/>
       <source>Are you sure you want to continue?</source>
       <translation>Sei sicuro di voler continuare?</translation>
     </message>
@@ -1795,13 +1795,13 @@
       <translation>Modifica la linea guida</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="195"/>
+      <location filename="../../TaskRichAnno.cpp" line="196"/>
       <source>Rich text creator</source>
       <translation>Creatore di testi avanzato RTF</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="138"/>
-      <location filename="../../TaskRichAnno.cpp" line="305"/>
+      <location filename="../../TaskRichAnno.cpp" line="139"/>
+      <location filename="../../TaskRichAnno.cpp" line="304"/>
       <source>Rich text editor</source>
       <translation>Editor di testi avanzato</translation>
     </message>
@@ -1881,6 +1881,14 @@
       <source>Edit Detail View</source>
       <translation>Modifica la vista di dettaglio</translation>
     </message>
+    <message>
+      <location filename="../../ViewProviderBalloon.cpp" line="116"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="125"/>
+      <location filename="../../ViewProviderDimension.cpp" line="131"/>
+      <location filename="../../ViewProviderDimension.cpp" line="140"/>
+      <source>Edit %1</source>
+      <translation>Edita %1</translation>
+    </message>
   </context>
   <context>
     <name>Std_Delete</name>
@@ -1900,7 +1908,7 @@ it has a weld symbol that would become broken.</source>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="188"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="196"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="204"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="204"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="208"/>
       <location filename="../../ViewProviderViewPart.cpp" line="355"/>
       <location filename="../../ViewProviderViewPart.cpp" line="363"/>
       <location filename="../../ViewProviderViewPart.cpp" line="371"/>
@@ -1953,7 +1961,7 @@ the following referencing objects might be lost:</source>
 i seguenti oggetti di riferimento potrebbero andare persi:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="197"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>The following referencing object might break:</source>
       <translation>Il seguente oggetto di referimento potrebbe rompersi:</translation>
     </message>
@@ -2216,7 +2224,7 @@ Questa directory verrà utilizzata per la selezione del simbolo.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="105"/>
       <source>Edge Fuzz</source>
-      <translation type="unfinished">Edge Fuzz</translation>
+      <translation>Bordo sfumato</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>
@@ -2360,21 +2368,21 @@ ma può penalizzare le prestazioni in modelli complessi.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="450"/>
       <source>Mark Fuzz</source>
-      <translation type="unfinished">Mark Fuzz</translation>
+      <translation>Marcatura sfumata</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="475"/>
       <source>Size of selection area around edges
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Size of selection area around edges
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>Dimensione dell'area di selezione attorno ai bordi
+Ogni unità è larga circa 0,1 mm</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="516"/>
       <source>Selection area around center marks
 Each unit is approx. 0.1 mm wide</source>
-      <translation type="unfinished">Selection area around center marks
-Each unit is approx. 0.1 mm wide</translation>
+      <translation>Area di selezione intorno ai segni di centro
+Ogni unità è larga circa 0,1 mm</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="550"/>
@@ -2586,12 +2594,12 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="699"/>
       <source>Line group used to set line widths</source>
-      <translation type="unfinished">Line group used to set line widths</translation>
+      <translation>Gruppo di linea usato per impostare le larghezze della linea</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="702"/>
       <source>Line Width Group</source>
-      <translation type="unfinished">Line Width Group</translation>
+      <translation>Gruppo larghezza linea</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="616"/>
@@ -2869,14 +2877,14 @@ Each unit is approx. 0.1 mm wide</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="413"/>
       <source>Tolerance Text Scale</source>
-      <translation type="unfinished">Tolerance Text Scale</translation>
+      <translation>Scala testo tolleranza</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="438"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
-      <translation type="unfinished">Tolerance text scale
-Multiplier of &apos;Font Size&apos;</translation>
+      <translation>Scala testo tolleranza
+Moltiplicatore di &apos;Dimensione carattere&apos;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="215"/>
@@ -3016,13 +3024,13 @@ per i gruppi di proiezioni</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="233"/>
       <source>* this font is also used for dimensions
    Changes have no effect on existing dimensions.</source>
-      <translation type="unfinished">* this font is also used for dimensions
-   Changes have no effect on existing dimensions.</translation>
+      <translation>* questo carattere è utilizzato anche per le quote
+I cambiamenti non hanno effetto sulle quote esistenti.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="237"/>
       <source>Label Font*</source>
-      <translation type="unfinished">Label Font*</translation>
+      <translation>Carattere etichetta*</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="244"/>
@@ -3042,27 +3050,27 @@ per i gruppi di proiezioni</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="360"/>
       <source>Conventions</source>
-      <translation type="unfinished">Conventions</translation>
+      <translation>Convenzioni</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="381"/>
       <source>Projection Group Angle</source>
-      <translation type="unfinished">Projection Group Angle</translation>
+      <translation>Angolo di proiezione del gruppo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="400"/>
       <source>Use first- or third-angle multiview projection convention</source>
-      <translation type="unfinished">Use first- or third-angle multiview projection convention</translation>
+      <translation>Utilizza la convenzione del primo o terzo angolo nelle proiezioni ortogonali</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="410"/>
       <source>First</source>
-      <translation type="unfinished">First</translation>
+      <translation>Primo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="415"/>
       <source>Third</source>
-      <translation type="unfinished">Third</translation>
+      <translation>Terzo</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="420"/>
@@ -3072,12 +3080,12 @@ per i gruppi di proiezioni</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="428"/>
       <source>Hidden Line Style</source>
-      <translation type="unfinished">Hidden Line Style</translation>
+      <translation>Stile delle linee nascoste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="447"/>
       <source>Style for hidden lines</source>
-      <translation type="unfinished">Style for hidden lines</translation>
+      <translation>Stile per le linee nascoste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="457"/>
@@ -3395,74 +3403,74 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="144"/>
+      <location filename="../../MDIViewPage.cpp" line="141"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Esporta SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="138"/>
+      <location filename="../../MDIViewPage.cpp" line="135"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Attiva o disattiva l'aggiornamento automatico</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="141"/>
+      <location filename="../../MDIViewPage.cpp" line="138"/>
       <source>Toggle &amp;Frames</source>
       <translation>Attiva o disattiva la struttura</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="147"/>
+      <location filename="../../MDIViewPage.cpp" line="144"/>
       <source>Export DXF</source>
       <translation>Esporta in DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="150"/>
+      <location filename="../../MDIViewPage.cpp" line="147"/>
       <source>Export PDF</source>
       <translation>Esporta in formato PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="774"/>
+      <location filename="../../MDIViewPage.cpp" line="729"/>
       <source>Different orientation</source>
       <translation>Orientamento diverso</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="775"/>
+      <location filename="../../MDIViewPage.cpp" line="730"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>La stampante utilizza un orientamento diverso rispetto al disegno. Si desidera continuare?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="782"/>
+      <location filename="../../MDIViewPage.cpp" line="737"/>
       <source>Different paper size</source>
       <translation>Formato carta diverso</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="783"/>
+      <location filename="../../MDIViewPage.cpp" line="738"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La stampante utilizza un formato di carta diverso rispetto al disegno. Si desidera continuare?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="794"/>
+      <location filename="../../MDIViewPage.cpp" line="749"/>
       <source>Opening file failed</source>
       <translation>Apertura del file non riuscita</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="795"/>
+      <location filename="../../MDIViewPage.cpp" line="750"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Impossibile aprire il file %1 per la scrittura.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="969"/>
-      <source>Save Dxf File </source>
-      <translation>Salva il file DXF </translation>
+      <location filename="../../MDIViewPage.cpp" line="857"/>
+      <source>Save Dxf File</source>
+      <translation type="unfinished">Save Dxf File</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="971"/>
+      <location filename="../../MDIViewPage.cpp" line="859"/>
       <source>Dxf (*.dxf)</source>
       <translation>DXF (*. dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1456"/>
+      <location filename="../../MDIViewPage.cpp" line="1344"/>
       <source>Selected:</source>
       <translation>Selezionato:</translation>
     </message>
@@ -3525,12 +3533,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>Dimensione del carattere:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble Shape:</source>
-      <translation type="unfinished">Bubble Shape:</translation>
+      <translation>Forma della pallinatura:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
@@ -3580,7 +3588,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="185"/>
       <source>Bubble shape scale factor</source>
-      <translation type="unfinished">Bubble shape scale factor</translation>
+      <translation>Fattore scala pallinatura</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="204"/>
@@ -3595,22 +3603,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="218"/>
       <source>End Symbol Scale:</source>
-      <translation type="unfinished">End Symbol Scale:</translation>
+      <translation>Scala finale simbolo:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="231"/>
       <source>End symbol scale factor</source>
-      <translation type="unfinished">End symbol scale factor</translation>
+      <translation>Fattore di scala del simbolo finale</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="250"/>
       <source>Line Visible:</source>
-      <translation type="unfinished">Line Visible:</translation>
+      <translation>Linea Visibile:</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="257"/>
       <source>Whether the leader line is visible or not</source>
-      <translation type="unfinished">Whether the leader line is visible or not</translation>
+      <translation>Se la linea con freccia è visibile o no</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="264"/>
@@ -4014,66 +4022,65 @@ Personalizzato: viene utilizzato il fattore di scala personalizzato</translation
     <message>
       <location filename="../../TaskDimension.ui" line="20"/>
       <source>Tolerancing</source>
-      <translation type="unfinished">Tolerancing</translation>
+      <translation>Tolleranza</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
       <source>If theoretical exact (basic) dimension</source>
-      <translation type="unfinished">If theoretical exact (basic) dimension</translation>
+      <translation>Se quotatura teorica esatta (di base)</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="31"/>
       <source>Theoretically Exact</source>
-      <translation type="unfinished">Theoretically Exact</translation>
+      <translation>Esatto Teoricamente</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="38"/>
       <location filename="../../TaskDimension.ui" line="200"/>
       <source>Reverses usual direction of dimension line terminators</source>
-      <translation type="unfinished">Reverses usual direction of dimension line terminators</translation>
+      <translation>Inverte la direzione abituale dei terminatori della linea di quota</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="41"/>
       <source>Equal Tolerance</source>
-      <translation type="unfinished">Equal Tolerance</translation>
+      <translation>Tolleranza uguale</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="48"/>
       <source>Overtolerance:</source>
-      <translation type="unfinished">Overtolerance:</translation>
+      <translation>Tolleranza superiore:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="61"/>
       <source>Overtolerance value
 If &apos;Equal Tolerance&apos; is checked this is also
 the negated value for &apos;Under Tolerance&apos;.</source>
-      <translation type="unfinished">Overtolerance value
-If &apos;Equal Tolerance&apos; is checked this is also
-the negated value for &apos;Under Tolerance&apos;.</translation>
+      <translation>Valore tolleranza superiore
+Se è impostato &apos;Tolleranze uguali&apos; questo è anche il valore negativo per &apos;tolleranza inferiore&apos;.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="79"/>
       <source>Undertolerance:</source>
-      <translation type="unfinished">Undertolerance:</translation>
+      <translation>Tolleranza inferiore:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="92"/>
       <source>Undertolerance value
 If &apos;Equal Tolerance&apos; is checked it will be replaced
 by negative value of &apos;Over Tolerance&apos;.</source>
-      <translation type="unfinished">Undertolerance value
-If &apos;Equal Tolerance&apos; is checked it will be replaced
-by negative value of &apos;Over Tolerance&apos;.</translation>
+      <translation>Valore tolleranza inferiore
+Se è impostato &apos;Tolleranza uguale&apos;, sarà sostituito
+da un valore negativo di &apos;Tolleranza superiore&apos;.</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="115"/>
       <source>Formatting</source>
-      <translation type="unfinished">Formatting</translation>
+      <translation>Formattazione</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="123"/>
       <source>Format Specifier:</source>
-      <translation type="unfinished">Format Specifier:</translation>
+      <translation>Specificatore di formato:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="130"/>
@@ -4085,48 +4092,48 @@ by negative value of &apos;Over Tolerance&apos;.</translation>
       <location filename="../../TaskDimension.ui" line="176"/>
       <source>If checked the content of &apos;Format Spec&apos; will
 be used instead if the dimension value</source>
-      <translation type="unfinished">If checked the content of &apos;Format Spec&apos; will
-be used instead if the dimension value</translation>
+      <translation>Se selezionato, il contenuto di &apos;Formato Spec&apos; sarà usato
+al posto del valore di quotatura</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="141"/>
       <source>Arbitrary Text</source>
-      <translation type="unfinished">Arbitrary Text</translation>
+      <translation>Testo arbitrario</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="148"/>
       <source>OverTolerance Format Specifier:</source>
-      <translation type="unfinished">OverTolerance Format Specifier:</translation>
+      <translation>Specificatore formato tolleranza superiore:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="155"/>
       <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
-      <translation type="unfinished">Specifies the overtolerance format in printf() style, or arbitrary text</translation>
+      <translation>Specifica il formato di tolleranza superiore in stile printf() o testo arbitrario</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="162"/>
       <source>UnderTolerance Format Specifier:</source>
-      <translation type="unfinished">UnderTolerance Format Specifier:</translation>
+      <translation>Specificatore formato tolleranza inferiore:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="169"/>
       <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
-      <translation type="unfinished">Specifies the undertolerance format in printf() style, or arbitrary text</translation>
+      <translation>Specifica il formato di tolleranza inferiore in stile printf() o testo arbitrario</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="180"/>
       <source>Arbitrary Tolerance Text</source>
-      <translation type="unfinished">Arbitrary Tolerance Text</translation>
+      <translation>Testo tolleranza arbitraria</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="192"/>
       <source>Display Style</source>
-      <translation type="unfinished">Display Style</translation>
+      <translation>Visualizza stile</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="203"/>
       <source>Flip Arrowheads</source>
-      <translation type="unfinished">Flip Arrowheads</translation>
+      <translation>Capovolgi le punte della freccia</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="210"/>
@@ -4136,12 +4143,12 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="217"/>
       <source>Color of the dimension</source>
-      <translation type="unfinished">Color of the dimension</translation>
+      <translation>Colore della quotatura</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="231"/>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>Dimensione del carattere:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="250"/>
@@ -4151,12 +4158,12 @@ be used instead if the dimension value</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="272"/>
       <source>Drawing Style:</source>
-      <translation type="unfinished">Drawing Style:</translation>
+      <translation>Stile di disegno:</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="279"/>
       <source>Standard and style according to which dimension is drawn</source>
-      <translation type="unfinished">Standard and style according to which dimension is drawn</translation>
+      <translation>Standard e stile secondo cui la quotatura è disegnata</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="283"/>
@@ -4395,28 +4402,28 @@ Si possono scegliere ulteriori punti per ottenere dei segmenti di linea.</transl
       <translation>Tratto punto punto</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="553"/>
-      <location filename="../../TaskLeaderLine.cpp" line="597"/>
+      <location filename="../../TaskLeaderLine.cpp" line="555"/>
+      <location filename="../../TaskLeaderLine.cpp" line="599"/>
       <source>Pick a starting point for leader line</source>
       <translation>Scegli un punto di partenza per la linea guida</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="580"/>
+      <location filename="../../TaskLeaderLine.cpp" line="582"/>
       <source>Click and drag markers to adjust leader line</source>
       <translation>Clicca e trascina i marcatori per regolare la linea guida</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="630"/>
+      <location filename="../../TaskLeaderLine.cpp" line="632"/>
       <source>Left click to set a point</source>
       <translation>Click sinistro per impostare un punto</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="656"/>
+      <location filename="../../TaskLeaderLine.cpp" line="658"/>
       <source>Press OK or Cancel to continue</source>
       <translation>Premere OK o Annulla per continuare</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.cpp" line="758"/>
+      <location filename="../../TaskLeaderLine.cpp" line="760"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>Modifica in corso abbandonata. Ricominciare.</translation>
     </message>
@@ -5091,6 +5098,74 @@ usando la spaziatura X/Y specificata</translation>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Estensione verticale</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Dimensions</source>
+      <translation>Dimensioni</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Annotations</source>
+      <translation>Annotazioni</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Add Lines</source>
+      <translation>Aggiungi linee</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="40"/>
+      <source>Add Vertices</source>
+      <translation>Aggiungi Vertici</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="41"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="42"/>
+      <source>TechDraw Pages</source>
+      <translation>Pagine TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="43"/>
+      <source>TechDraw Views</source>
+      <translation>Viste TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="44"/>
+      <source>TechDraw Clips</source>
+      <translation>Ritagli TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="45"/>
+      <source>TechDraw Dimensions</source>
+      <translation>Quotature TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="46"/>
+      <source>TechDraw File Access</source>
+      <translation>Accesso File TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="47"/>
+      <source>TechDraw Decoration</source>
+      <translation>Decorazione TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="48"/>
+      <source>TechDraw Annotation</source>
+      <translation>Annotazione TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="49"/>
+      <source>Views</source>
+      <translation>Viste</translation>
     </message>
   </context>
 </TS>

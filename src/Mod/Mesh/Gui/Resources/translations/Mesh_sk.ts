@@ -739,8 +739,8 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
-      <source>Mesh Mesh Create</source>
-      <translation>Sieť Vytvoriť sieť</translation>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -878,7 +878,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1067"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Rozdeliť</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1131"/>
@@ -1449,7 +1449,7 @@ Najprv spustite príkaz na opravu záhybov</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="95"/>
       <source>Width:</source>
-      <translation>šírka:</translation>
+      <translation>Šírka:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="119"/>
@@ -1653,48 +1653,48 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation type="unfinished">Automatic</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation type="unfinished">Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation type="unfinished">Frontal Quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation type="unfinished">Parallelograms</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>Čas:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation type="unfinished">Running gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation type="unfinished">Failed to start</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -1714,7 +1714,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="381"/>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
@@ -1740,7 +1740,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="166"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Parametre</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="171"/>
@@ -1760,7 +1760,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="191"/>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="197"/>
@@ -1770,7 +1770,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
       <source>No selection</source>
-      <translation>bez výberu</translation>
+      <translation>Žiadny výber</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="285"/>
@@ -1833,7 +1833,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
   </context>
   <context>
@@ -2075,7 +2075,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="46"/>
       <source>Clear</source>
-      <translation>Vyčistiť</translation>
+      <translation>Vymazať</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
@@ -2217,7 +2217,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
       <location filename="../../Command.cpp" line="461"/>
       <location filename="../../Command.cpp" line="527"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Všetky súbory</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="465"/>

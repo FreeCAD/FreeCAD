@@ -48,14 +48,13 @@ class SubelementHighlight(gui_base_original.Modifier):
     """Gui Command for the SubelementHighlight tool."""
 
     def __init__(self):
+        super().__init__()
         self.is_running = False
         self.editable_objects = []
         self.original_view_settings = {}
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = ""
-        _tip = ()
 
         return {'Pixmap': 'Draft_SubelementHighlight',
                 'Accel': "H, S",
@@ -67,7 +66,7 @@ class SubelementHighlight(gui_base_original.Modifier):
         if self.is_running:
             return self.finish()
         self.is_running = True
-        super(SubelementHighlight, self).Activated(name=translate("draft","Subelement highlight"))
+        super(SubelementHighlight, self).Activated(name="Subelement highlight")
         self.get_selection()
 
     def proceed(self):

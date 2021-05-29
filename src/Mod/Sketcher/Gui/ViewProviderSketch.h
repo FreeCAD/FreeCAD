@@ -114,6 +114,8 @@ public:
     App::PropertyBool ShowLinks;
     App::PropertyBool ShowSupport;
     App::PropertyBool RestoreCamera;
+    App::PropertyBool ForceOrtho;
+    App::PropertyBool SectionView;
     App::PropertyString EditingWorkbench;
 
     /// Draw all constraint icons
@@ -127,6 +129,9 @@ public:
 
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
+
+    /// draw the edit markers
+    void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
 
     /// Is the view provider selectable
     bool isSelectable(void) const override;

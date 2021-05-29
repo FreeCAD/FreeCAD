@@ -186,7 +186,7 @@ class _Geometry(object):
 def _calculate_depth(MIC, geom):
     # given a maximum inscribed circle (MIC) and tool angle,
     # return depth of cut relative to zStart.
-    depth = geom.start - round(MIC / geom.scale, 4)
+    depth = geom.start - round(MIC * geom.scale, 4)
     PathLog.debug('zStart value: {} depth: {}'.format(geom.start, depth))
 
     return max(depth, geom.stop)

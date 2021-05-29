@@ -315,15 +315,15 @@ Action * StdCmdFreezeViews::createAction(void)
 
     // add the action items
     saveView = pcAction->addAction(QObject::tr("Save views..."));
-    saveView->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    saveView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* loadView = pcAction->addAction(QObject::tr("Load views..."));
-    loadView->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    loadView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
     freezeView = pcAction->addAction(QObject::tr("Freeze view"));
-    freezeView->setShortcut(QString::fromLatin1(sAccel));
-    freezeView->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    freezeView->setShortcut(QString::fromLatin1(getAccel()));
+    freezeView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     clearView = pcAction->addAction(QObject::tr("Clear views"));
-    clearView->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    clearView->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     separator = pcAction->addAction(QString::fromLatin1(""));
     separator->setSeparator(true);
     offset = pcAction->actions().count();
@@ -663,43 +663,43 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a0->setChecked(true);
     a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
     a0->setShortcut(QKeySequence(QString::fromUtf8("V,1")));
-    a0->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    a0->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     a1->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
     a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));
-    a1->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    a1->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
     a2->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
     a2->setShortcut(QKeySequence(QString::fromUtf8("V,3")));
-    a2->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    a2->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleHiddenLine"));
     a3->setObjectName(QString::fromLatin1("Std_DrawStyleHiddenLine"));
     a3->setShortcut(QKeySequence(QString::fromUtf8("V,4")));
-    a3->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    a3->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStyleNoShading"));
     a4->setObjectName(QString::fromLatin1("Std_DrawStyleNoShading"));
     a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
-    a4->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    a4->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a5 = pcAction->addAction(QString());
     a5->setCheckable(true);
     a5->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
     a5->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
     a5->setShortcut(QKeySequence(QString::fromUtf8("V,6")));
-    a5->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    a5->setWhatsThis(QString::fromLatin1(getWhatsThis()));
     QAction* a6 = pcAction->addAction(QString());
     a6->setCheckable(true);
     a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     a6->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
     a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
-    a6->setWhatsThis(QString::fromLatin1(sWhatsThis));
+    a6->setWhatsThis(QString::fromLatin1(getWhatsThis()));
 
 
     pcAction->setIcon(a0->icon());
@@ -1520,9 +1520,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
     sWhatsThis    = "Std_ViewFitSelection";
     sStatusTip    = QT_TR_NOOP("Fits the selected content on the screen");
     sAccel        = "V, S";
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-selection";
-#endif
     eType         = Alter3DView;
 }
 
@@ -1685,7 +1683,7 @@ Action * StdViewDockUndockFullscreen::createAction(void)
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setDropDownMenu(true);
     pcAction->setText(QCoreApplication::translate(
-        this->className(), sMenuText));
+        this->className(), getMenuText()));
 
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
     Command* cmdD = rcCmdMgr.getCommandByName("Std_ViewDock");
@@ -2494,9 +2492,7 @@ StdViewZoomIn::StdViewZoomIn()
     sToolTipText  = QT_TR_NOOP("Zoom In");
     sWhatsThis    = "Std_ViewZoomIn";
     sStatusTip    = QT_TR_NOOP("Zoom In");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-in";
-#endif
     sAccel        = keySequenceToAccel(QKeySequence::ZoomIn);
     eType         = Alter3DView;
 }
@@ -2529,9 +2525,7 @@ StdViewZoomOut::StdViewZoomOut()
     sToolTipText  = QT_TR_NOOP("Zoom Out");
     sWhatsThis    = "Std_ViewZoomOut";
     sStatusTip    = QT_TR_NOOP("Zoom Out");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-out";
-#endif
     sAccel        = keySequenceToAccel(QKeySequence::ZoomOut);
     eType         = Alter3DView;
 }
@@ -2564,9 +2558,7 @@ StdViewBoxZoom::StdViewBoxZoom()
     sToolTipText  = QT_TR_NOOP("Box zoom");
     sWhatsThis    = "Std_ViewBoxZoom";
     sStatusTip    = QT_TR_NOOP("Box zoom");
-#if QT_VERSION >= 0x040200
     sPixmap       = "zoom-border";
-#endif
     sAccel        = "Ctrl+B";
     eType         = Alter3DView;
 }
@@ -2595,9 +2587,7 @@ StdBoxSelection::StdBoxSelection()
     sToolTipText  = QT_TR_NOOP("Box selection");
     sWhatsThis    = "Std_BoxSelection";
     sStatusTip    = QT_TR_NOOP("Box selection");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-select-box";
-#endif
     sAccel        = "Shift+B";
     eType         = AlterSelection;
 }
@@ -2819,9 +2809,7 @@ StdBoxElementSelection::StdBoxElementSelection()
     sToolTipText  = QT_TR_NOOP("Box element selection");
     sWhatsThis    = "Std_BoxElementSelection";
     sStatusTip    = QT_TR_NOOP("Box element selection");
-#if QT_VERSION >= 0x040200
     sPixmap       = "edit-element-select-box";
-#endif
     sAccel        = "Shift+E";
     eType         = AlterSelection;
 }

@@ -213,7 +213,7 @@ but slower response to any scene changes.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>What kind of multisample anti-aliasing is used </string>
+           <string>What kind of multisample anti-aliasing is used</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AntiAliasing</cstring>
@@ -371,7 +371,7 @@ Larger value eases to pick things, but can make small features impossible to sel
           <property name="toolTip">
            <string>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </string>
+bounding box size of the 3D object that is currently displayed.</string>
           </property>
           <property name="decimals">
            <number>1</number>

@@ -289,13 +289,8 @@ PyObject* SheetPy::setStyle(PyObject *args)
             PyObject * item = PySet_Pop(copy);
 
             // check on the key:
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item))
                 style.insert(PyUnicode_AsUTF8(item));
-#else
-            if (PyString_Check(item))
-                style.insert(PyString_AsString(item));
-#endif
             else {
                 std::string error = std::string("type of the set need to be a string, not ") + item->ob_type->tp_name;
                 PyErr_SetString(PyExc_TypeError, error.c_str());
@@ -305,19 +300,11 @@ PyObject* SheetPy::setStyle(PyObject *args)
         }
         Py_DECREF(copy);
     }
-#if PY_MAJOR_VERSION >= 3
     else if (PyUnicode_Check(value)) {
-#else
-    else if (PyString_Check(value)) {
-#endif
         using namespace boost;
 
         escaped_list_separator<char> e('\0', '|', '\0');
-#if PY_MAJOR_VERSION >= 3
         std::string line = PyUnicode_AsUTF8(value);
-#else
-        std::string line = PyString_AsString(value);
-#endif
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
         for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
@@ -429,11 +416,7 @@ PyObject* SheetPy::getStyle(PyObject *args)
         PyObject * s = PySet_New(NULL);
 
         for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i)
-#if PY_MAJOR_VERSION >= 3
             PySet_Add(s, PyUnicode_FromString((*i).c_str()));
-#else
-            PySet_Add(s, PyString_FromString((*i).c_str()));
-#endif
 
         return s;
     }
@@ -478,17 +461,7 @@ PyObject* SheetPy::setAlias(PyObject *args)
     try {
         address = stringToAddress(strAddress);
         if (PyUnicode_Check(value))
-#if PY_MAJOR_VERSION >= 3
             getSheetPtr()->setAlias(address, PyUnicode_AsUTF8(value));
-#else
-        {
-            PyObject* unicode = PyUnicode_AsUTF8String(value);
-            getSheetPtr()->setAlias(address, PyString_AsString(unicode));
-            Py_DECREF(unicode);            
-        }
-        else if (PyString_Check(value))
-            getSheetPtr()->setAlias(address, PyString_AsString(value));
-#endif
         else if (value == Py_None)
             getSheetPtr()->setAlias(address, "");
         else
@@ -594,13 +567,8 @@ PyObject* SheetPy::setAlignment(PyObject *args)
         while (n-- > 0) {
             PyObject * item = PySet_Pop(copy);
 
-#if PY_MAJOR_VERSION >= 3
             if (PyUnicode_Check(item))
                 alignment = Cell::decodeAlignment(PyUnicode_AsUTF8(item), alignment);
-#else
-            if (PyString_Check(item))
-                alignment = Cell::decodeAlignment(PyString_AsString(item), alignment);
-#endif
             else {
                 std::string error = std::string("type of the key need to be a string, not") + item->ob_type->tp_name;
                 PyErr_SetString(PyExc_TypeError, error.c_str());
@@ -611,20 +579,12 @@ PyObject* SheetPy::setAlignment(PyObject *args)
 
         Py_DECREF(copy);
     }
-#if PY_MAJOR_VERSION >= 3
     else if (PyUnicode_Check(value)) {
-#else
-    else if (PyString_Check(value)) {
-#endif
         // Argument is a string, combination of alignments, separated by the pipe character
         using namespace boost;
 
         escaped_list_separator<char> e('\0', '|', '\0');
-#if PY_MAJOR_VERSION >= 3
         std::string line = PyUnicode_AsUTF8(value);
-#else
-        std::string line = PyString_AsString(value);
-#endif
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
         for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
@@ -691,7 +651,6 @@ PyObject* SheetPy::getAlignment(PyObject *args)
     if (cell && cell->getAlignment(alignment)) {
         PyObject * s = PySet_New(NULL);
 
-#if PY_MAJOR_VERSION >= 3
         if (alignment & Cell::ALIGNMENT_LEFT)
             PySet_Add(s, PyUnicode_FromString("left"));
         if (alignment & Cell::ALIGNMENT_HCENTER)
@@ -704,20 +663,6 @@ PyObject* SheetPy::getAlignment(PyObject *args)
             PySet_Add(s, PyUnicode_FromString("vcenter"));
         if (alignment & Cell::ALIGNMENT_BOTTOM)
             PySet_Add(s, PyUnicode_FromString("bottom"));
-#else
-        if (alignment & Cell::ALIGNMENT_LEFT)
-            PySet_Add(s, PyString_FromString("left"));
-        if (alignment & Cell::ALIGNMENT_HCENTER)
-            PySet_Add(s, PyString_FromString("center"));
-        if (alignment & Cell::ALIGNMENT_RIGHT)
-            PySet_Add(s, PyString_FromString("right"));
-        if (alignment & Cell::ALIGNMENT_TOP)
-            PySet_Add(s, PyString_FromString("top"));
-        if (alignment & Cell::ALIGNMENT_VCENTER)
-            PySet_Add(s, PyString_FromString("vcenter"));
-        if (alignment & Cell::ALIGNMENT_BOTTOM)
-            PySet_Add(s, PyString_FromString("bottom"));
-#endif
 
         return s;
     }
@@ -731,13 +676,8 @@ static float decodeFloat(const PyObject * obj)
 {
     if (PyFloat_Check(obj))
         return PyFloat_AsDouble((PyObject *)obj);
-#if PY_MAJOR_VERSION >= 3
     else if (PyLong_Check(obj))
         return PyLong_AsLong((PyObject *)obj);
-#else
-    else if (PyInt_Check(obj))
-        return PyInt_AsLong((PyObject *)obj);
-#endif
     throw Base::TypeError("Float or integer expected");
 }
 

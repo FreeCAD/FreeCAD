@@ -2205,7 +2205,7 @@ void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
 {
     const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
     unsigned long numSegm = rMesh.countSegments();
-    if (numSegm == colors.size()) {
+    if (numSegm > 0 && numSegm == colors.size()) {
         // Colorize the components
         pcMatBinding->value = SoMaterialBinding::PER_FACE;
         int uCtFacets = (int)rMesh.countFacets();

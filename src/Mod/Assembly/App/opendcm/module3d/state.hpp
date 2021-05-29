@@ -48,7 +48,7 @@ template<typename System, typename iterator>
 struct parser_generator< typename details::getModule3D<System>::type::Geometry3D , System, iterator > {
 
     typedef typename details::getModule3D<System>::type::Geometry3D  Geometry;
-    typedef karma::rule<iterator, boost::shared_ptr<Geometry>(), karma::locals<int> > generator;
+    typedef karma::rule<iterator, std::shared_ptr<Geometry>(), karma::locals<int> > generator;
     static void init(generator& r);
 };
 
@@ -86,7 +86,7 @@ struct parser_generator< typename details::getModule3D<System>::type::Constraint
     typedef typename details::getModule3D<System>::type::Constraint3D  Constraint3D;
     typedef typename details::getModule3D<System>::type::vertex_prop vertex_prop;
     typedef typename details::getModule3D<System>::type::edge_prop edge_prop;
-    typedef karma::rule<iterator, boost::shared_ptr<Constraint3D>()> generator;
+    typedef karma::rule<iterator, std::shared_ptr<Constraint3D>()> generator;
     static void init(generator& r);
 };
 
@@ -124,7 +124,7 @@ struct parser_parser< typename details::getModule3D<System>::type::Geometry3D, S
     typedef typename details::getModule3D<System>::type::Geometry3D  object_type;
     typedef typename System::Kernel Kernel;
 
-    typedef qi::rule<iterator, boost::shared_ptr<object_type>(System*), qi::space_type, qi::locals<std::string, typename Kernel::Vector, int> > parser;
+    typedef qi::rule<iterator, std::shared_ptr<object_type>(System*), qi::space_type, qi::locals<std::string, typename Kernel::Vector, int> > parser;
     static void init(parser& r);
 };
 
@@ -161,7 +161,7 @@ struct parser_parser< typename details::getModule3D<System>::type::Constraint3D,
     typedef typename details::getModule3D<System>::type::Constraint3D  Constraint3D;
     typedef typename System::Kernel Kernel;
 
-    typedef qi::rule<iterator, boost::shared_ptr<Constraint3D>(System*), qi::space_type > parser;
+    typedef qi::rule<iterator, std::shared_ptr<Constraint3D>(System*), qi::space_type > parser;
     static void init(parser& r);
 };
 

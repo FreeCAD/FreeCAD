@@ -66,13 +66,13 @@ class Offset(gui_base_original.Modifier):
     def Activated(self):
         """Execute when the command is called."""
         self.running = False
-        super(Offset, self).Activated(name=translate("draft","Offset"))
+        super(Offset, self).Activated(name="Offset")
         self.ghost = None
         self.linetrack = None
         self.arctrack = None
         if self.ui:
             if not Gui.Selection.getSelection():
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to offset"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

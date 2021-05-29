@@ -70,25 +70,19 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     paramGroup = new ParameterGroup(ui->splitter3);
     paramGroup->setHeaderLabels(groupLabels);
     paramGroup->setRootIsDecorated(false);
-#if QT_VERSION >= 0x050000
     paramGroup->setSortingEnabled(true);
     paramGroup->sortByColumn(0, Qt::AscendingOrder);
     paramGroup->header()->setProperty("showSortIndicator", QVariant(true));
-#endif
 
     QStringList valueLabels;
     valueLabels << tr( "Name" ) << tr( "Type" ) << tr( "Value" );
     paramValue = new ParameterValue(ui->splitter3);
     paramValue->setHeaderLabels(valueLabels);
     paramValue->setRootIsDecorated(false);
-#if QT_VERSION >= 0x050000
     paramValue->header()->setSectionResizeMode(0, QHeaderView::Stretch);
     paramValue->setSortingEnabled(true);
     paramValue->sortByColumn(0, Qt::AscendingOrder);
     paramValue->header()->setProperty("showSortIndicator", QVariant(true));
-#else
-    paramValue->header()->setResizeMode(0, QHeaderView::Stretch);
-#endif
 
     QSizePolicy policy = paramValue->sizePolicy();
     policy.setHorizontalStretch(3);
@@ -128,9 +122,7 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
 
     // set a placeholder text to inform the user
     // (QLineEdit has no placeholderText property in Qt4)
-#if QT_VERSION >= 0x050200
     ui->findGroupLE->setPlaceholderText(tr("Search Group"));
-#endif
 }
 
 /**
@@ -238,7 +230,6 @@ void DlgParameterImp::changeEvent(QEvent *e)
 
 void DlgParameterImp::on_checkSort_toggled(bool on)
 {
-#if QT_VERSION >= 0x050000
     paramGroup->setSortingEnabled(on);
     paramGroup->sortByColumn(0, Qt::AscendingOrder);
     paramGroup->header()->setProperty("showSortIndicator", QVariant(on));
@@ -246,9 +237,6 @@ void DlgParameterImp::on_checkSort_toggled(bool on)
     paramValue->setSortingEnabled(on);
     paramValue->sortByColumn(0, Qt::AscendingOrder);
     paramValue->header()->setProperty("showSortIndicator", QVariant(on));
-#else
-    Q_UNUSED(on)
-#endif
 }
 
 void DlgParameterImp::on_closeButton_clicked()
@@ -733,16 +721,12 @@ void ParameterValue::keyPressEvent (QKeyEvent* event)
 
 void ParameterValue::resizeEvent(QResizeEvent* event)
 {
-#if QT_VERSION >= 0x050000
     QHeaderView* hv = header();
     hv->setSectionResizeMode(QHeaderView::Stretch);
-#endif
 
     QTreeWidget::resizeEvent(event);
 
-#if QT_VERSION >= 0x050000
     hv->setSectionResizeMode(QHeaderView::Interactive);
-#endif
 }
 
 void ParameterValue::onChangeSelectedItem(QTreeWidgetItem* item, int col)

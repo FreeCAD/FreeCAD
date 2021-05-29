@@ -423,7 +423,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Vordergrundfarbe der Tabellen Zelle(n) einstellen</translation>
+      <translation>Vordergrundfarbe der Tabellen-Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
@@ -431,7 +431,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Hintergrundfarbe der Tabellen Zelle(n) einstellen</translation>
+      <translation>Hintergrundfarbe der Tabellen-Zelle(n) einstellen</translation>
     </message>
     <message>
       <source>Spreadsheet</source>
@@ -440,7 +440,7 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation>Tabellenblatt unterstützt beim Einfügen keine Bereichsauswahl.
+      <translation>Kalkulationstabelle unterstützt beim Einfügen keine Bereichsauswahl.
 Bitte nur eine Zelle auswählen.</translation>
     </message>
     <message>
@@ -564,24 +564,64 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <source>Insert rows</source>
-      <translation>Zeilen einfügen</translation>
-    </message>
-    <message>
-      <source>Remove rows</source>
-      <translation>Zeilen entfernen</translation>
-    </message>
-    <message>
-      <source>Insert columns</source>
-      <translation>Spalten einfügen</translation>
-    </message>
-    <message>
-      <source>Remove columns</source>
-      <translation>Spalten entfernen</translation>
-    </message>
-    <message>
       <source>Properties...</source>
       <translation>Eigenschaften...</translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) above</numerusform>
+        <numerusform>Insert %n row(s) above</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n row(s) below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n row(s) below</numerusform>
+        <numerusform>Insert %n row(s) below</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+        <numerusform>Insert %n non-contiguous rows</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove row(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove row(s)</numerusform>
+        <numerusform>Remove row(s)</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) left</numerusform>
+        <numerusform>Insert %n column(s) left</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n column(s) right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n column(s) right</numerusform>
+        <numerusform>Insert %n column(s) right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Insert %n non-contiguous columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+        <numerusform>Insert %n non-contiguous columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <source>Remove column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove column(s)</numerusform>
+        <numerusform>Remove column(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>

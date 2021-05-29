@@ -17,7 +17,16 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
@@ -60,8 +69,7 @@ Note: C++ importer is faster, but is not as featureful yet</string>
     <widget class="Gui::PrefCheckBox" name="checkBox_7">
      <property name="toolTip">
       <string>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet
-      </string>
+Note: C++ exporter is faster, but is not as featureful yet</string>
      </property>
      <property name="text">
       <string>Use legacy python exporter</string>
@@ -86,7 +94,7 @@ Note: C++ importer is faster, but is not as featureful yet
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
            <string>Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do this manually by installing the "dxf_library" workbench
+You can also do this manually by installing the &quot;dxf_library&quot; workbench
 from the Addon Manager.</string>
           </property>
           <property name="text">
@@ -114,7 +122,16 @@ from the Addon Manager.</string>
       <property name="spacing">
        <number>6</number>
       </property>
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <item>
@@ -295,10 +312,10 @@ Example: for files in millimeters: 1, in centimeters: 10,
                              in meters: 1000, in inches: 25.4, in feet: 304.8</string>
           </property>
           <property name="decimals">
-           <number>4</number>
+           <number>12</number>
           </property>
           <property name="maximum">
-           <double>99999.990000000005239</double>
+           <double>999999.999998999992386</double>
           </property>
           <property name="value">
            <double>1.000000000000000</double>

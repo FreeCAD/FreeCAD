@@ -78,6 +78,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathToolBitLibraryCmd
 
         import PathCommands
+
         PathGuiInit.Startup()
 
         # build commands list
@@ -87,8 +88,7 @@ class PathWorkbench (Workbench):
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop",
                        "Path_Custom", "Path_Probe"]
         twodopcmdlist = ["Path_Profile", "Path_Pocket_Shape", "Path_Drilling",
-                         "Path_MillFace", "Path_Helix", "Path_Adaptive",
-                         "Path_Slot"]
+                         "Path_MillFace", "Path_Helix", "Path_Adaptive"]
         threedopcmdlist = ["Path_Pocket_3D"]
         engravecmdlist = ["Path_Engrave", "Path_Deburr", "Path_Vcarve"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy"]
@@ -97,12 +97,10 @@ class PathWorkbench (Workbench):
                           "Path_DressupLeadInOut", "Path_DressupRampEntry",
                           "Path_DressupTag", "Path_DressupZCorrect"]
         extracmdlist = []
-        # modcmdmore = ["Path_Hop",]
-        # remotecmdlist = ["Path_Remote"]
         specialcmdlist = []
 
 
-        if PathPreferences.toolsReallyUseLegacyTools():
+        if PathPreferences.toolsUseLegacyTools():
             toolcmdlist.append("Path_ToolLibraryEdit")
             toolbitcmdlist = []
         else:
@@ -120,6 +118,14 @@ class PathWorkbench (Workbench):
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
             specialcmdlist.append('Path_Thread_Milling')
+            twodopcmdlist.append("Path_Slot")
+
+        if PathPreferences.advancedOCLFeaturesEnabled():
+            try:
+                import camotics
+                toolcmdlist.append("Path_Camotics")
+            except ImportError:
+                pass
 
             try:
                 import ocl  # pylint: disable=unused-variable
@@ -164,6 +170,9 @@ class PathWorkbench (Workbench):
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
 
+        # keep this one the last entry in the preferences
+        import PathScripts.PathPreferencesAdvanced as PathPreferencesAdvanced
+        FreeCADGui.addPreferencePage(PathPreferencesAdvanced.AdvancedPreferencesPage, "Path")
         Log('Loading Path workbench... done\n')
 
     def GetClassName(self):

@@ -2261,7 +2261,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 diffusecolor = obj.ViewObject.DiffuseColor
         if shapecolor and (shapetype != "clone"): # cloned objects are already colored
             key = None
-            rgbt = [shapecolor+(transparency,) for shape in shapes]
+            rgbt = [shapecolor+(transparency,)] * len(shapes)
             if diffusecolor \
                     and (len(diffusecolor) == len(obj.Shape.Faces)) \
                     and (len(obj.Shape.Solids) == len(colorshapes)):
@@ -2358,10 +2358,13 @@ def getUID(obj,preferences):
     if not uid:
         uid = ifcopenshell.guid.new()
         # storing the uid for further use
-        if preferences['STORE_UID'] and hasattr(obj,"IfcData"):
-            d = obj.IfcData
-            d["IfcUID"] = uid
-            obj.IfcData = d
+        if preferences["STORE_UID"]:
+            if hasattr(obj, "IfcData"):
+                d = obj.IfcData
+                d["IfcUID"] = uid
+                obj.IfcData = d
+            if hasattr(obj, "GlobalId"):
+                obj.GlobalId = uid
     return uid
 
 

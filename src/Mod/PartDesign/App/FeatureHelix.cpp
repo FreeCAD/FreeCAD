@@ -67,28 +67,34 @@ const double PI = 3.14159265359;
 
 using namespace PartDesign;
 
-const char* Helix::ModeEnums[] = {"pitch-height", "pitch-turns", "height-turns", NULL};
+const char* Helix::ModeEnums[] = {"pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", NULL};
 
 PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
+
+// we purposely use not FLT_MAX because this would not be computable
+const App::PropertyFloatConstraint::Constraints floatTurns = { Precision::Confusion(), INT_MAX, 1.0 };
+const App::PropertyAngle::Constraints floatAngle = { -89.0, 89.0, 1.0 };
 
 Helix::Helix()
 {
     addSubType = FeatureAddSub::Additive;
 
-    ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Helix", App::Prop_ReadOnly, "Base");
-    ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Helix", App::Prop_ReadOnly, "Axis");
-    ADD_PROPERTY_TYPE(Pitch,(10.),"Helix", App::Prop_None, "Pitch");
-    ADD_PROPERTY_TYPE(Height,(30.0),"Helix", App::Prop_None, "Height");
-    ADD_PROPERTY_TYPE(Turns,(3.0),"Helix", App::Prop_None, "Turns");
-    ADD_PROPERTY_TYPE(LeftHanded,(long(0)),"Helix", App::Prop_None, "LeftHanded");
-    ADD_PROPERTY_TYPE(Reversed,(long(0)),"Helix", App::Prop_None, "Reversed");
-    ADD_PROPERTY_TYPE(Angle,(0.0),"Helix", App::Prop_None, "Angle");
-    ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Helix", App::Prop_None, "Reference axis of revolution");
+    ADD_PROPERTY_TYPE(Base, (Base::Vector3d(0.0, 0.0, 0.0)), "Helix", App::Prop_ReadOnly, "Base");
+    ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0.0, 1.0, 0.0)), "Helix", App::Prop_ReadOnly, "Axis");
+    ADD_PROPERTY_TYPE(Pitch, (10.), "Helix", App::Prop_None, "Pitch");
+    ADD_PROPERTY_TYPE(Height, (30.0), "Helix", App::Prop_None, "Height");
+    ADD_PROPERTY_TYPE(Turns, (3.0), "Helix", App::Prop_None, "Turns");
+    Turns.setConstraints(&floatTurns);
+    ADD_PROPERTY_TYPE(LeftHanded, (long(0)), "Helix", App::Prop_None, "LeftHanded");
+    ADD_PROPERTY_TYPE(Reversed, (long(0)), "Helix", App::Prop_None, "Reversed");
+    ADD_PROPERTY_TYPE(Angle, (0.0), "Helix", App::Prop_None, "Angle");
+    ADD_PROPERTY_TYPE(Growth, (0.0), "Helix", App::Prop_None, "Growth");
+    Angle.setConstraints(&floatAngle);
+    ADD_PROPERTY_TYPE(ReferenceAxis, (0), "Helix", App::Prop_None, "Reference axis of revolution");
     ADD_PROPERTY_TYPE(Mode, (long(0)), "Helix", App::Prop_None, "Helix input mode");
-    ADD_PROPERTY_TYPE(Outside,(long(0)),"Helix", App::Prop_None, "Outside");
-    ADD_PROPERTY_TYPE(HasBeenEdited,(long(0)),"Helix", App::Prop_None, "HasBeenEdited");
+    ADD_PROPERTY_TYPE(Outside, (long(0)), "Helix", App::Prop_None, "Outside");
+    ADD_PROPERTY_TYPE(HasBeenEdited, (long(0)), "Helix", App::Prop_None, "HasBeenEdited");
     Mode.setEnums(ModeEnums);
-
 }
 
 short Helix::mustExecute() const
@@ -105,30 +111,33 @@ short Helix::mustExecute() const
 App::DocumentObjectExecReturn *Helix::execute(void)
 {
      // Validate and normalize parameters
-    switch (Mode.getValue()) {
-        case 0:  // pitch - height
-            if (Pitch.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: Pitch too small");
-            if (Height.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: height too small!");
-            break;
-        case 1: // pitch - turns
-            if (Pitch.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: pitch too small!");
-            if (Turns.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: turns too small!");
-            Height.setValue(Turns.getValue()*Pitch.getValue());
-            break;
-        case 2: // height - turns
-            if (Height.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error: height too small!");
-            if (Turns.getValue() < Precision::Confusion())
-                return new App::DocumentObjectExecReturn("Error turns too small!");
-            Pitch.setValue(Height.getValue()/Turns.getValue());
-            break;
-        default:
-            return new App::DocumentObjectExecReturn("Error: unsupported mode");
+    HelixMode mode = static_cast<HelixMode>(Mode.getValue());
+    if (mode == HelixMode::pitch_height_angle) {
+        if (Pitch.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: Pitch too small");
+        if (Height.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: height too small!");
+        Turns.setValue(Height.getValue()/Pitch.getValue());
+    } else if (mode == HelixMode::pitch_turns_angle) {
+        if (Pitch.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: pitch too small!");
+        if (Turns.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: turns too small!");
+        Height.setValue(Turns.getValue()*Pitch.getValue());
+    } else if (mode == HelixMode::height_turns_angle) {
+        if (Height.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error: height too small!");
+        if (Turns.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error turns too small!");
+        Pitch.setValue(Height.getValue()/Turns.getValue());
+    } else if (mode == HelixMode::height_turns_growth) {
+        if (Turns.getValue() < Precision::Confusion())
+            return new App::DocumentObjectExecReturn("Error turns too small!");
+        Pitch.setValue(Height.getValue()/Turns.getValue());
+    } else {
+        return new App::DocumentObjectExecReturn("Error: unsupported mode");
     }
+
 
     TopoDS_Shape sketchshape;
     try {
@@ -146,7 +155,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         //We would need a method to translate the front shape to match the shell starting position somehow...
         TopoDS_Face face = TopoDS::Face(sketchshape);
         BRepAdaptor_Surface adapt(face);
-        if(adapt.GetType() != GeomAbs_Plane)
+        if (adapt.GetType() != GeomAbs_Plane)
             return new App::DocumentObjectExecReturn("Error: Face must be planar");
     }
 
@@ -159,19 +168,12 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         base = TopoDS_Shape();
     }
 
-
     // update Axis from ReferenceAxis
     try {
         updateAxis();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-
-    // get revolve axis
-    Base::Vector3d b = Base.getValue();
-    gp_Pnt pnt(b.x,b.y,b.z);
-    Base::Vector3d v = Axis.getValue();
-    gp_Dir dir(v.x,v.y,v.z);
 
     try {
         this->positionByPrevious();
@@ -181,10 +183,6 @@ App::DocumentObjectExecReturn *Helix::execute(void)
 
         // generate the helix path
         TopoDS_Shape path = generateHelixPath();
-
-        // Below is basically a copy paste (with some simplification) from  FeaturePipe.cpp Pipe::execute
-        // TODO: find a way to reduce code repetition. E.g can I rip out this functionality of Pipe:execute to a static helper
-        // function and call from here?
 
         std::vector<TopoDS_Wire> wires;
         try {
@@ -197,9 +195,6 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         for(TopoDS_Wire& wire : wires)
             wiresections.emplace_back(1, wire);
 
-        //maybe we need a scaling law
-        Handle(Law_Function) scalinglaw;
-
         //build all shells
         std::vector<TopoDS_Shape> shells;
         std::vector<TopoDS_Wire> frontwires, backwires;
@@ -209,29 +204,17 @@ App::DocumentObjectExecReturn *Helix::execute(void)
 
             mkPS.SetTolerance(Precision::Confusion());
             mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-
             mkPS.SetMode(true);  //This is for frenet
-            //mkPipeShell.SetMode(TopoDS::Wire(auxpath), true);  // this is for two rails
 
-
-            if(!scalinglaw) {
-                for(TopoDS_Wire& wire : wires) {
-                    wire.Move(invObjLoc);
-                    mkPS.Add(wire);
-                }
-            }
-            else {
-                for(TopoDS_Wire& wire : wires)  {
-                    wire.Move(invObjLoc);
-                    mkPS.SetLaw(wire, scalinglaw);
-                }
+            for(TopoDS_Wire& wire : wires) {
+                wire.Move(invObjLoc);
+                mkPS.Add(wire);
             }
 
             if (!mkPS.IsReady())
                 return new App::DocumentObjectExecReturn("Error: Could not build");
 
             shells.push_back(mkPS.Shape());
-
 
             if (!mkPS.Shape().Closed()) {
                 // shell is not closed - use simulate to get the end wires
@@ -267,10 +250,11 @@ App::DocumentObjectExecReturn *Helix::execute(void)
             }
         }
 
-        if(!mkSolid.IsDone())
+        if (!mkSolid.IsDone())
             return new App::DocumentObjectExecReturn("Error: Result is not a solid");
 
         TopoDS_Shape result = mkSolid.Shape();
+
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
         if (SC.State() == TopAbs_IN)
@@ -278,8 +262,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
 
         AddSubShape.setValue(result);
 
-
-        if(base.IsNull()) {
+        if (base.IsNull()) {
 
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn("Error: There is nothing to subtract\n");
@@ -292,13 +275,14 @@ App::DocumentObjectExecReturn *Helix::execute(void)
             return App::DocumentObject::StdReturn;
         }
 
-        if(getAddSubType() == FeatureAddSub::Additive) {
+        if (getAddSubType() == FeatureAddSub::Additive) {
 
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Error: Adding the helix failed");
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+
             // lets check if the result is a solid
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Error: Result is not a solid");
@@ -311,7 +295,7 @@ App::DocumentObjectExecReturn *Helix::execute(void)
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
-        else if(getAddSubType() == FeatureAddSub::Subtractive) {
+        else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
             TopoDS_Shape boolOp;
 
@@ -355,8 +339,6 @@ App::DocumentObjectExecReturn *Helix::execute(void)
     }
 }
 
-
-
 void Helix::updateAxis(void)
 {
     App::DocumentObject *pcReferenceAxis = ReferenceAxis.getValue();
@@ -369,14 +351,15 @@ void Helix::updateAxis(void)
     Axis.setValue(dir.x,dir.y,dir.z);
 }
 
-
 TopoDS_Shape Helix::generateHelixPath(void)
 {
-    double pitch = Pitch.getValue();
+    double turns = Turns.getValue();
     double height = Height.getValue();
     bool leftHanded = LeftHanded.getValue();
     bool reversed = Reversed.getValue();
     double angle = Angle.getValue();
+    double growth = Growth.getValue();
+
     if (angle < Precision::Confusion() && angle > -Precision::Confusion())
         angle = 0.0;
 
@@ -404,9 +387,17 @@ TopoDS_Shape Helix::generateHelixPath(void)
         radius = 1.0; //fallback to radius 1
     }
 
+    bool growthMode = std::string(Mode.getValueAsString()).find("growth") != std::string::npos;
+    double radiusTop;
+    if (growthMode)
+        radiusTop = radius + turns*growth;
+    else
+        radiusTop = radius + height * tan(Base::toRadians(angle));
+
+
     //build the helix path
-    TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
-    TopoDS_Shape path = helix.getShape();
+    //TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
+    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 1, leftHanded);
 
 
     /*
@@ -447,22 +438,8 @@ TopoDS_Shape Helix::generateHelixPath(void)
     TopLoc_Location loc(mov);
     path.Move(loc.Inverted());
 
-
-# if OCC_VERSION_HEX < 0x70500
-    /* I initially tried using path.Move(invObjLoc) like usual. But it does not give the right result
-     * The starting point of the helix is not correct and I don't know why! With below hack it works.
-     */
-    Base::Vector3d placeAxis;
-    double placeAngle;
-    this->Placement.getValue().getRotation().getValue(placeAxis, placeAngle);
-    gp_Dir placeDir(placeAxis.x, placeAxis.y, placeAxis.z);
-    mov.SetRotation(gp_Ax1(origo, placeDir), placeAngle);
-    TopLoc_Location loc2(mov);
-    path.Move(loc2.Inverted());
-# else
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     path.Move(invObjLoc);
-# endif
 
     return path;
 }
@@ -504,7 +481,12 @@ double Helix::safePitch()
 void Helix::proposeParameters(bool force)
 {
     if (force || !HasBeenEdited.getValue()) {
-        double pitch = 1.1*safePitch();
+        TopoDS_Shape sketchshape = getVerifiedFace();
+        Bnd_Box bb;
+        BRepBndLib::Add(sketchshape, bb);
+        bb.SetGap(0.0);
+        double pitch = 1.1 * sqrt(bb.SquareExtent());
+
         Pitch.setValue(pitch);
         Height.setValue(pitch*3.0);
         HasBeenEdited.setValue(1);
@@ -523,6 +505,16 @@ Base::Vector3d Helix::getProfileCenterPoint()
     return Base::Vector3d(0.5*(xmin+xmax), 0.5*(ymin+ymax), 0.5*(zmin+zmax));
 }
 
+void Helix::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+{
+    // property Turns had the App::PropertyFloat and was changed to App::PropertyFloatConstraint
+    if (prop == &Turns && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat TurnsProperty;
+        // restore the PropertyFloat to be able to set its value
+        TurnsProperty.Restore(reader);
+        Turns.setValue(TurnsProperty.getValue());
+    }
+}
 
 PROPERTY_SOURCE(PartDesign::AdditiveHelix, PartDesign::Helix)
 AdditiveHelix::AdditiveHelix() {

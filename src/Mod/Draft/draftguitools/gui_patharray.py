@@ -73,7 +73,7 @@ class PathArray(gui_base_original.Modifier):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_PathArray", "Path array"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_PathArray", "Creates copies of the selected object along a selected path.\nFirst select the object, and then select the path.\nThe path can be a polyline, B-spline, Bezier curve, or even edges from other objects.")}
 
-    def Activated(self, name=translate("draft","Path array")):
+    def Activated(self, name="Path array"):
         """Execute when the command is called."""
         super(PathArray, self).Activated(name=name)
         self.name = name
@@ -165,7 +165,7 @@ class PathLinkArray(PathArray):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(PathLinkArray, self).Activated(name=translate("draft","Path link array"))
+        super(PathLinkArray, self).Activated(name="Path link array")
 
 
 Gui.addCommand('Draft_PathLinkArray', PathLinkArray())

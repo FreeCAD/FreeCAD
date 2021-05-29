@@ -173,7 +173,7 @@ void SelectionObserver::detachSelection()
 
 std::vector<SelectionObserverPython*> SelectionObserverPython::_instances;
 
-SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, int resolve) 
+SelectionObserverPython::SelectionObserverPython(const Py::Object& obj, int resolve)
     : SelectionObserver(true,resolve),inst(obj)
 {
 #undef FC_PY_ELEMENT
@@ -374,7 +374,7 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getCompleteSelection
     return getSelection("*",resolve);
 }
 
-std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const char* pDocName, 
+std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const char* pDocName,
         int resolve, bool single) const
 {
     std::vector<SelObj> temp;
@@ -588,7 +588,7 @@ void SelectionSingleton::notify(SelectionChanges &&Chng) {
             notify = !isSelected(msg.pDocName,msg.pObjectName,msg.pSubName,0);
             break;
         case SelectionChanges::SetPreselect:
-            notify = CurrentPreselection.Type==SelectionChanges::SetPreselect 
+            notify = CurrentPreselection.Type==SelectionChanges::SetPreselect
                 && CurrentPreselection.Object == msg.Object;
             break;
         case SelectionChanges::RmvPreselect:
@@ -639,7 +639,7 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop)
     return objs.size();
 }
 
-App::DocumentObject *SelectionSingleton::getObjectOfType(_SelObj &sel, 
+App::DocumentObject *SelectionSingleton::getObjectOfType(_SelObj &sel,
         Base::Type typeId, int resolve, const char **subelement)
 {
     auto obj = sel.pObject;
@@ -727,7 +727,7 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
        msg.Type == SelectionChanges::ShowSelection ||
        msg.Type == SelectionChanges::HideSelection)
         return;
-    
+
     if(msg.Object.getSubName().size()) {
         auto pParent = msg.Object.getObject();
         if(!pParent) return;
@@ -794,7 +794,7 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
 
     if (ActiveGate && signal!=1) {
         App::Document* pDoc = getDocument(pDocName);
-        if (!pDoc || !pObjectName) 
+        if (!pDoc || !pObjectName)
             return 0;
         std::pair<std::string,std::string> elementName;
         auto pObject = pDoc->getObject(pObjectName);
@@ -963,7 +963,7 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate *gate, int resolve)
 {
     if (ActiveGate)
         rmvSelectionGate();
-    
+
     ActiveGate = gate;
     gateResolve = resolve;
 }
@@ -1005,7 +1005,7 @@ int SelectionSingleton::enableCommandLog(bool silent) {
     if(!logDisabled && !silent) {
         auto manager = Application::Instance->macroManager();
         if(!hasSelection()) {
-            if(logHasSelection) 
+            if(logHasSelection)
                 manager->addLine(MacroManager::Cmt, "Gui.Selection.clearSelection()");
         }else{
             for(auto &sel : _SelList)
@@ -1016,7 +1016,7 @@ int SelectionSingleton::enableCommandLog(bool silent) {
 }
 
 void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect) {
-    if(logged && !remove) 
+    if(logged && !remove)
         return;
     logged = true;
     std::ostringstream ss;
@@ -1024,7 +1024,7 @@ void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect) {
         << "('" << DocName  << "','" << FeatName << "'";
     if(SubName.size()) {
         if(elementName.second.size() && elementName.first.size())
-            ss << ",'" << SubName.substr(0,SubName.size()-elementName.first.size()) 
+            ss << ",'" << SubName.substr(0,SubName.size()-elementName.first.size())
                 << elementName.second << "'";
         else
             ss << ",'" << SubName << "'";
@@ -1040,8 +1040,8 @@ void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect) {
     Application::Instance->macroManager()->addLine(MacroManager::Cmt, ss.str().c_str());
 }
 
-bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, 
-        const char* pSubName, float x, float y, float z, 
+bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName,
+        const char* pSubName, float x, float y, float z,
         const std::vector<SelObj> *pickedList, bool clearPreselect)
 {
     if(pickedList) {
@@ -1149,7 +1149,7 @@ void SelectionSingleton::selStackGoBack(int count) {
     if(_SelList.size()) {
         selStackPush(false,true);
         clearCompleteSelection();
-    } else 
+    } else
         --count;
     for(int i=0;i<count;++i) {
         _SelStackForward.push_front(std::move(_SelStackBack.back()));
@@ -1201,7 +1201,7 @@ void SelectionSingleton::selStackGoForward(int count) {
                 found = true;
             }
         }
-        if(found || tmpStack.empty()) 
+        if(found || tmpStack.empty())
             break;
         _SelStackBack.push_back(tmpStack.front());
         tmpStack.pop_front();
@@ -1224,7 +1224,7 @@ std::vector<SelectionObject> SelectionSingleton::selStackGet(
             return {};
         item = &_SelStackBack[_SelStackForward.size()-1-index];
     }
-    
+
     std::list<_SelObj> selList;
     for(auto &sobjT : *item) {
         _SelObj sel;
@@ -1277,7 +1277,7 @@ bool SelectionSingleton::addSelections(const char* pDocName, const char* pObject
     return true;
 }
 
-bool SelectionSingleton::updateSelection(bool show, const char* pDocName, 
+bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
                             const char* pObjectName, const char* pSubName)
 {
     if(!pDocName || !pObjectName)
@@ -1338,7 +1338,7 @@ bool SelectionSingleton::addSelection(const SelectionObject& obj,bool clearPrese
 }
 
 
-void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectName, const char* pSubName, 
+void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectName, const char* pSubName,
         const std::vector<SelObj> *pickedList)
 {
     if(pickedList) {
@@ -1369,7 +1369,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     std::vector<SelectionChanges> changes;
     for(auto It=_SelList.begin(),ItNext=It;It!=_SelList.end();It=ItNext) {
         ++ItNext;
-        if(It->DocName!=temp.DocName || It->FeatName!=temp.FeatName) 
+        if(It->DocName!=temp.DocName || It->FeatName!=temp.FeatName)
             continue;
         // if no subname is specified, remove all subobjects of the matching object
         if(temp.SubName.size()) {
@@ -1433,7 +1433,7 @@ void SelectionSingleton::setVisible(VisibleState vis) {
     std::vector<SelInfo> sels;
     sels.reserve(_SelList.size());
     for(auto &sel : _SelList) {
-        if(sel.DocName.empty() || sel.FeatName.empty() || !sel.pObject) 
+        if(sel.DocName.empty() || sel.FeatName.empty() || !sel.pObject)
             continue;
         sels.emplace_back(sel.DocName,sel.FeatName,sel.SubName);
     }
@@ -1612,7 +1612,7 @@ void SelectionSingleton::clearCompleteSelection(bool clearPreSelect)
     getMainWindow()->updateActions();
 }
 
-bool SelectionSingleton::isSelected(const char* pDocName, 
+bool SelectionSingleton::isSelected(const char* pDocName,
         const char* pObjectName, const char* pSubName, int resolve) const
 {
     _SelObj sel;
@@ -1621,14 +1621,14 @@ bool SelectionSingleton::isSelected(const char* pDocName,
 
 bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pSubName, int resolve) const
 {
-    if(!pObject || !pObject->getNameInDocument() || !pObject->getDocument()) 
+    if(!pObject || !pObject->getNameInDocument() || !pObject->getDocument())
         return false;
     _SelObj sel;
     return checkSelection(pObject->getDocument()->getName(),
             pObject->getNameInDocument(),pSubName,resolve,sel,&_SelList)>0;
 }
 
-int SelectionSingleton::checkSelection(const char *pDocName, const char *pObjectName, 
+int SelectionSingleton::checkSelection(const char *pDocName, const char *pObjectName,
         const char *pSubName, int resolve, _SelObj &sel, const std::list<_SelObj> *selList) const
 {
     sel.pDoc = getDocument(pDocName);
@@ -1697,7 +1697,7 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
         for(auto &s : *selList) {
             if(s.pResolvedObject != sel.pResolvedObject)
                 continue;
-            if(!pSubName[0]) 
+            if(!pSubName[0])
                 return 1;
             if(s.elementName.first.size()) {
                 if(s.elementName.first == sel.elementName.first)
@@ -1709,7 +1709,7 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     return 0;
 }
 
-const char *SelectionSingleton::getSelectedElement(App::DocumentObject *obj, const char* pSubName) const 
+const char *SelectionSingleton::getSelectedElement(App::DocumentObject *obj, const char* pSubName) const
 {
     if (!obj) return 0;
 
@@ -1821,58 +1821,84 @@ void SelectionSingleton::destruct (void)
 // SelectionSingleton Methods  // Methods structure
 PyMethodDef SelectionSingleton::Methods[] = {
     {"addSelection",         (PyCFunction) SelectionSingleton::sAddSelection, METH_VARARGS,
-     "addSelection(object,[string,float,float,float]) -- Add an object to the selection\n"
+     "Add an object to the selection\n"
+     "addSelection(object,[string,float,float,float]\n"
+     "--\n"
      "where string is the sub-element name and the three floats represent a 3d point"},
     {"updateSelection",      (PyCFunction) SelectionSingleton::sUpdateSelection, METH_VARARGS,
-     "updateSelection(show,object,[string]) -- update an object in the selection\n"
+     "update an object in the selection\n"
+     "updateSelection(show,object,[string])\n"
+     "--"
      "where string is the sub-element name and the three floats represent a 3d point"},
     {"removeSelection",      (PyCFunction) SelectionSingleton::sRemoveSelection, METH_VARARGS,
-     "removeSelection(object) -- Remove an object from the selection"},
+     "Remove an object from the selection"
+     "removeSelection(object)"},
     {"clearSelection"  ,     (PyCFunction) SelectionSingleton::sClearSelection, METH_VARARGS,
-     "clearSelection(docName='',clearPreSelect=True) -- Clear the selection\n"
+     "Clear the selection\n"
+     "clearSelection(docName='',clearPreSelect=True)\n"
+     "--\n"
      "Clear the selection to the given document name. If no document is\n"
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
-     "isSelected(object,resolve=True) -- Check if a given object is selected"},
+     "Check if a given object is selected\n"
+     "isSelected(object,resolve=True)"},
     {"setPreselection",      reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( SelectionSingleton::sSetPreselection )), METH_VARARGS|METH_KEYWORDS,
-     "setPreselection() -- Set preselected object"},
+     "Set preselected object\n"
+     "setPreselection()"},
     {"getPreselection",      (PyCFunction) SelectionSingleton::sGetPreselection, METH_VARARGS,
-     "getPreselection() -- Get preselected object"},
+     "Get preselected object\n"
+     "getPreselection()"},
     {"clearPreselection",   (PyCFunction) SelectionSingleton::sRemPreselection, METH_VARARGS,
-     "clearPreselection() -- Clear the preselection"},
+     "Clear the preselection\n"
+     "clearPreselection()"},
     {"countObjectsOfType",   (PyCFunction) SelectionSingleton::sCountObjectsOfType, METH_VARARGS,
-     "countObjectsOfType(string, [string],[resolve=1]) -- Get the number of selected objects\n"
+     "Get the number of selected objects\n"
+     "countObjectsOfType(string, [string],[resolve=1])\n"
+     "--\n"
      "The first argument defines the object type e.g. \"Part::Feature\" and the\n"
      "second argumeht defines the document name. If no document name is given the\n"
      "currently active document is used"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, METH_VARARGS,
-     "getSelection(docName='',resolve=1,single=False) -- Return a list of selected objects\n"
-     "\ndocName - document name. Empty string means the active document, and '*' means all document"
-     "\nresolve - whether to resolve the subname references."
-     "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
-     "\nsingle - only return if there is only one selection"},
+     "Return a list of selected objects\n"
+     "getSelection(docName='',resolve=1,single=False)\n"
+     "--\n"
+     "docName - document name. Empty string means the active document, and '*' means all document\n"
+     "resolve - whether to resolve the subname references.\n"
+     "          0: do not resolve, 1: resolve, 2: resolve with element map\n"
+     "single - only return if there is only one selection"},
     {"getPickedList",         (PyCFunction) SelectionSingleton::sGetPickedList, 1,
-     "getPickedList(docName='') -- Return a list of objects under the last mouse click\n"
-     "\ndocName - document name. Empty string means the active document, and '*' means all document"},
+     "Return a list of objects under the last mouse click\n"
+     "getPickedList(docName='')\n"
+     "--\n"
+     "docName - document name. Empty string means the active document, and '*' means all document"},
     {"enablePickedList",      (PyCFunction) SelectionSingleton::sEnablePickedList, METH_VARARGS,
-     "enablePickedList(boolean) -- Enable/disable pick list"},
+     "Enable/disable pick list\n"
+     "enablePickedList(boolean)"},
     {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, METH_VARARGS,
-     "getCompleteSelection(resolve=1) -- Return a list of selected objects of all documents."},
+     "Return a list of selected objects of all documents.\n"
+     "getCompleteSelection(resolve=1)"},
     {"getSelectionEx",         (PyCFunction) SelectionSingleton::sGetSelectionEx, METH_VARARGS,
-     "getSelectionEx(docName='',resolve=1, single=False) -- Return a list of SelectionObjects\n"
-     "\ndocName - document name. Empty string means the active document, and '*' means all document"
-     "\nresolve - whether to resolve the subname references."
-     "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
-     "\nsingle - only return if there is only one selection\n"
-     "\nThe SelectionObjects contain a variety of information about the selection, e.g. sub-element names."},
+     "Return a list of SelectionObjects\n"
+     "getSelectionEx(docName='',resolve=1, single=False)\n"
+     "--\n"
+     "docName - document name. Empty string means the active document, and '*' means all document\n"
+     "resolve - whether to resolve the subname references.\n"
+     "          0: do not resolve, 1: resolve, 2: resolve with element map\n"
+     "single - only return if there is only one selection\n"
+     "The SelectionObjects contain a variety of information about the selection, e.g. sub-element names."},
     {"getSelectionObject",  (PyCFunction) SelectionSingleton::sGetSelectionObject, METH_VARARGS,
-     "getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"},
+     "Return a SelectionObject\n"
+     "getSelectionObject(doc,obj,sub,(x,y,z))"},
     {"addObserver",         (PyCFunction) SelectionSingleton::sAddSelObserver, METH_VARARGS,
-     "addObserver(Object, resolve=1) -- Install an observer\n"},
+     "Install an observer\n"
+     "addObserver(Object, resolve=1)"},
     {"removeObserver",      (PyCFunction) SelectionSingleton::sRemSelObserver, METH_VARARGS,
-     "removeObserver(Object) -- Uninstall an observer\n"},
+     "Uninstall an observer\n"
+     "removeObserver(Object)"},
     {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, METH_VARARGS,
-     "addSelectionGate(String|Filter|Gate, resolve=1) -- activate the selection gate.\n"
+     "activate the selection gate.\n"
+     "addSelectionGate(String|Filter|Gate, resolve=1)\n"
+     "--\n"
      "The selection gate will prohibit all selections which do not match\n"
      "the given selection filter string.\n"
      " Examples strings are:\n"
@@ -1890,24 +1916,33 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "    return (sub[0:4] == 'Face')\n"
      "Gui.Selection.addSelectionGate(Gate())"},
     {"removeSelectionGate",      (PyCFunction) SelectionSingleton::sRemoveSelectionGate, METH_VARARGS,
-     "removeSelectionGate() -- remove the active selection gate\n"},
-    {"setVisible",            (PyCFunction) SelectionSingleton::sSetVisible, METH_VARARGS, 
-     "setVisible(visible=None) -- set visibility of all selection items\n"
+     "remove the active selection gate\n"
+     "removeSelectionGate()"},
+    {"setVisible",            (PyCFunction) SelectionSingleton::sSetVisible, METH_VARARGS,
+     "set visibility of all selection items\n"
+     "setVisible(visible=None)\n"
+     "--\n"
      "If 'visible' is None, then toggle visibility"},
     {"pushSelStack",      (PyCFunction) SelectionSingleton::sPushSelStack, METH_VARARGS,
-     "pushSelStack(clearForward=True, overwrite=False) -- push current selection to stack\n\n"
+     "push current selection to stack\n"
+     "pushSelStack(clearForward=True, overwrite=False)\n"
+     "--\n"
      "clearForward: whether to clear the forward selection stack.\n"
      "overwrite: overwrite the top back selection stack with current selection."},
     {"hasSelection",      (PyCFunction) SelectionSingleton::sHasSelection, METH_VARARGS,
-     "hasSelection(docName='', resolve=False) -- check if there is any selection\n"},
+     "check if there is any selection\n"
+     "hasSelection(docName='', resolve=False)"},
     {"hasSubSelection",   (PyCFunction) SelectionSingleton::sHasSubSelection, METH_VARARGS,
-     "hasSubSelection(docName='',subElement=False) -- check if there is any selection with subname\n"},
+     "check if there is any selection with subname\n"
+     "hasSubSelection(docName='',subElement=False)"},
     {"getSelectionFromStack",(PyCFunction) SelectionSingleton::sGetSelectionFromStack, METH_VARARGS,
-     "getSelectionFromStack(docName='',resolve=1,index=0) -- Return a list of SelectionObjects from selection stack\n"
-     "\ndocName - document name. Empty string means the active document, and '*' means all document"
-     "\nresolve - whether to resolve the subname references."
-     "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
-     "\nindex - select stack index, 0 is the last pushed selection, positive index to trace further back,\n"
+     "Return a list of SelectionObjects from selection stack\n"
+     "getSelectionFromStack(docName='',resolve=1,index=0)\n"
+     "--\n"
+     "docName - document name. Empty string means the active document, and '*' means all document\n"
+     "resolve - whether to resolve the subname references.\n"
+     "          0: do not resolve, 1: resolve, 2: resolve with element map\n"
+     "index - select stack index, 0 is the last pushed selection, positive index to trace further back,\n"
      "          and negative for forward stack item"},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
@@ -1921,7 +1956,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
     char* subname=0;
     float x=0,y=0,z=0;
     if (PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname ,
-                &subname,&x,&y,&z,&PyBool_Type,&clearPreselect)) 
+                &subname,&x,&y,&z,&PyBool_Type,&clearPreselect))
     {
         Selection().addSelection(docname,objname,subname,x,y,z,0,PyObject_IsTrue(clearPreselect));
         Py_Return;
@@ -1932,7 +1967,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
     subname = 0;
     x=0,y=0,z=0;
     if (PyArg_ParseTuple(args, "O!|sfffO!", &(App::DocumentObjectPy::Type),&object,
-                &subname,&x,&y,&z,&PyBool_Type,&clearPreselect)) 
+                &subname,&x,&y,&z,&PyBool_Type,&clearPreselect))
     {
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
@@ -1950,7 +1985,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
     PyErr_Clear();
     PyObject *sequence;
     if (PyArg_ParseTuple(args, "O!O|O!", &(App::DocumentObjectPy::Type),&object,
-                &sequence,&PyBool_Type,&clearPreselect)) 
+                &sequence,&PyBool_Type,&clearPreselect))
     {
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
@@ -2067,11 +2102,7 @@ PyObject *SelectionSingleton::sCountObjectsOfType(PyObject * /*self*/, PyObject 
         return NULL;
 
     unsigned int count = Selection().countObjectsOfType(objecttype, document, resolve);
-#if PY_MAJOR_VERSION < 3
-    return PyInt_FromLong(count);
-#else
     return PyLong_FromLong(count);
-#endif
 }
 
 PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
@@ -2079,7 +2110,7 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
     char *documentName=0;
     int resolve = 1;
     PyObject *single=Py_False;
-    if (!PyArg_ParseTuple(args, "|siO", &documentName,&resolve,&single))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|siO", &documentName,&resolve,&single))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionSingleton::SelObj> sel;
@@ -2107,7 +2138,7 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
 PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *args)
 {
     PyObject *enable = Py_True;
-    if (!PyArg_ParseTuple(args, "|O", &enable))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|O", &enable))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     Selection().enablePickedList(PyObject_IsTrue(enable));
@@ -2162,7 +2193,7 @@ PyObject *SelectionSingleton::sRemPreselection(PyObject * /*self*/, PyObject *ar
 PyObject *SelectionSingleton::sGetCompleteSelection(PyObject * /*self*/, PyObject *args)
 {
     int resolve = 1;
-    if (!PyArg_ParseTuple(args, "|i",&resolve))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|i",&resolve))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionSingleton::SelObj> sel;
@@ -2185,7 +2216,7 @@ PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *arg
     char *documentName=0;
     int resolve=1;
     PyObject *single = Py_False;
-    if (!PyArg_ParseTuple(args, "|siO", &documentName,&resolve,&single))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|siO", &documentName,&resolve,&single))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionObject> sel;
@@ -2207,7 +2238,7 @@ PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *arg
 PyObject *SelectionSingleton::sGetPickedList(PyObject * /*self*/, PyObject *args)
 {
     char *documentName=0;
-    if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|s", &documentName))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     std::vector<SelectionObject> sel;
@@ -2333,22 +2364,16 @@ PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args)
 {
     PyObject *visible = Py_None;
     if (!PyArg_ParseTuple(args, "|O",&visible))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     PY_TRY {
         int vis;
         if(visible == Py_None) {
             vis = -1;
         }
-#if PY_MAJOR_VERSION < 3
-        else if(PyInt_Check(visible)) {
-            vis = PyInt_AsLong(visible);
-        }
-#else
         else if(PyLong_Check(visible)) {
             vis = PyLong_AsLong(visible);
         }
-#endif
         else {
             vis = PyObject_IsTrue(visible)?1:0;
         }
@@ -2366,7 +2391,7 @@ PyObject *SelectionSingleton::sPushSelStack(PyObject * /*self*/, PyObject *args)
     PyObject *clear = Py_True;
     PyObject *overwrite = Py_False;
     if (!PyArg_ParseTuple(args, "|OO",&clear,&overwrite))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     Selection().selStackPush(PyObject_IsTrue(clear),PyObject_IsTrue(overwrite));
     Py_Return;
@@ -2377,7 +2402,7 @@ PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args)
     const char *doc = 0;
     PyObject *resolve = Py_False;
     if (!PyArg_ParseTuple(args, "|sO",&doc,&resolve))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     PY_TRY {
         bool ret;
@@ -2394,7 +2419,7 @@ PyObject *SelectionSingleton::sHasSubSelection(PyObject * /*self*/, PyObject *ar
     const char *doc = 0;
     PyObject *subElement = Py_False;
     if (!PyArg_ParseTuple(args, "|sO!",&doc,&PyBool_Type,&subElement))
-        return NULL;                             // NULL triggers exception 
+        return NULL;                             // NULL triggers exception
 
     PY_TRY {
         return Py::new_reference_to(
@@ -2407,7 +2432,7 @@ PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObje
     char *documentName=0;
     int resolve=1;
     int index=0;
-    if (!PyArg_ParseTuple(args, "|sii", &documentName,&resolve,&index))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "|sii", &documentName,&resolve,&index))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     PY_TRY {

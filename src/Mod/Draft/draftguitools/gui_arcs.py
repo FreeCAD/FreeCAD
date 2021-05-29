@@ -55,6 +55,7 @@ class Arc(gui_base_original.Creator):
     """Gui command for the Circular Arc tool."""
 
     def __init__(self):
+        super().__init__()
         self.closedCircle = False
         self.featureName = "Arc"
 
@@ -68,7 +69,7 @@ class Arc(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Arc, self).Activated(name=translate("draft","Arc"))
+        super(Arc, self).Activated(name=self.featureName)
         if self.ui:
             self.step = 0
             self.center = None
@@ -300,6 +301,7 @@ class Arc(gui_base_original.Creator):
             try:
                 # The command to run is built as a series of text strings
                 # to be committed through the `draftutils.todo.ToDo` class.
+                Gui.addModule("Draft")
                 if utils.getParam("UsePartPrimitives", False):
                     # Insert a Part::Primitive object
                     _base = DraftVecUtils.toString(self.center)
@@ -317,7 +319,6 @@ class Arc(gui_base_original.Creator):
                                 _cmd_list)
                 else:
                     # Insert a Draft circle
-                    Gui.addModule("Draft")
                     _base = DraftVecUtils.toString(self.center)
                     _cmd = 'Draft.makeCircle'
                     _cmd += '('
@@ -478,7 +479,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
     """GuiCommand for the Draft_Arc_3Points tool."""
 
     def __init__(self):
-        super(Arc_3Points, self).__init__(name=translate("draft","Arc by 3 points"))
+        super(Arc_3Points, self).__init__(name="Arc by 3 points")
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -509,7 +510,8 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             App.DraftWorkingPlane.setup()
 
         Gui.Snapper.getPoint(callback=self.getPoint,
-                             movecallback=self.drawArc)
+                             movecallback=self.drawArc,
+                             title=translate("draft","Arc by 3 points"))
 
     def getPoint(self, point, info):
         """Get the point by clicking on the 3D view.

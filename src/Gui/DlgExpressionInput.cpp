@@ -41,7 +41,7 @@ using namespace App;
 using namespace Gui::Dialog;
 
 DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
-                                       boost::shared_ptr<const Expression> _expression,
+                                       std::shared_ptr<const Expression> _expression,
                                        const Base::Unit & _impliedUnit, QWidget *parent)
   : QDialog(parent)
   , ui(new Ui::DlgExpressionInput)
@@ -65,11 +65,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     }
     else {
         QVariant text = parent->property("text");
-#if QT_VERSION >= 0x050000
         if (text.canConvert(QMetaType::QString)) {
-#else
-        if (text.canConvert(QVariant::String)) {
-#endif
             ui->expression->setText(text.toString());
         }
     }
@@ -135,7 +131,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             setMinimumWidth(ui->expression->minimumWidth());
 
         //now handle expression
-        boost::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
+        std::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
         if (expr) {
             std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);

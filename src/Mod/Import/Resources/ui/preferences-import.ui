@@ -42,7 +42,7 @@
        <property name="text">
         <string notr="true">AP 203</string>
        </property>
-       <property name="checked" >
+       <property name="checked">
         <bool>false</bool>
        </property>
        <property name="prefEntry" stdset="0">
@@ -58,7 +58,7 @@
        <property name="text">
         <string notr="true">AP 214</string>
        </property>
-       <property name="checked" >
+       <property name="checked">
         <bool>true</bool>
        </property>
        <property name="prefEntry" stdset="0">

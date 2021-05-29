@@ -860,13 +860,8 @@
 #define PARAM_REF(_src,_seq) \
     BOOST_PP_SEQ_FOR_EACH_I(PARAM_REF_,_src,_seq)
 
-#if PY_MAJOR_VERSION < 3
-    #define PARAM_CAST_PYOBJ_short(_v)   PyInt_FromLong(_v)
-    #define PARAM_CAST_PYOBJ_long(_v)    PyInt_FromLong(_v)
-#else
-    #define PARAM_CAST_PYOBJ_short(_v)   PyLong_FromLong(_v)
-    #define PARAM_CAST_PYOBJ_long(_v)    PyLong_FromLong(_v)
-#endif
+#define PARAM_CAST_PYOBJ_short(_v)   PyLong_FromLong(_v)
+#define PARAM_CAST_PYOBJ_long(_v)    PyLong_FromLong(_v)
 
 #define PARAM_CAST_PYOBJ_double(_v)  PyFloat_FromDouble(_v)
 #define PARAM_CAST_PYOBJ_bool(_v)    ((_v)?Py_True:Py_False)
@@ -877,13 +872,9 @@
 /** Stringize field to a Python string
  * \ingroup ParamPy ParamStringizer
  */
-#if PY_MAJOR_VERSION < 3
-#define PARAM_PY_STR(_field,_param)  \
-    PyString_FromString(PARAM_FIELD_STR(_field,_param))
-#else
 #define PARAM_PY_STR(_field,_param)  \
     PyUnicode_FromString(PARAM_FIELD_STR(_field,_param))
-#endif
+
 /** Helper for #PARAM_PY_DICT_SET_VALUE */
 #define PARAM_PY_DICT_SET_VALUE_(_1,_args,_param) \
     PyDict_SetItem(BOOST_PP_TUPLE_ELEM(0,_args), \
@@ -931,17 +922,10 @@
 #define PARAM_PY_DICT_DOC_enum2 PARAM_PY_DICT_DOC_enum
 
 /** Helper for #PARAM_PY_DICT_SET_DOC */
-#if PY_MAJOR_VERSION < 3
-#define PARAM_PY_DICT_SET_DOC_(_1,_args,_param) \
-    PyDict_SetItem(BOOST_PP_TUPLE_ELEM(0,_args), \
-            PARAM_PY_STR(BOOST_PP_TUPLE_ELEM(1,_args),_param),\
-            PyString_FromString(PARAM_TYPED(PARAM_PY_DICT_DOC_,_param)(_param)));
-#else
 #define PARAM_PY_DICT_SET_DOC_(_1,_args,_param) \
     PyDict_SetItem(BOOST_PP_TUPLE_ELEM(0,_args), \
             PARAM_PY_STR(BOOST_PP_TUPLE_ELEM(1,_args),_param),\
             PyUnicode_FromString(PARAM_TYPED(PARAM_PY_DICT_DOC_,_param)(_param)));
-#endif
 
 /** Populate a Python dict with the doc field of the parameter sequence
  *

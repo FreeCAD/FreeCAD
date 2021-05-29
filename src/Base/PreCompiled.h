@@ -55,6 +55,12 @@
 #include <Rpc.h>
 #endif
 
+#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+#include <dirent.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#endif
+
 // STL
 #include <string>
 #include <list>
@@ -92,7 +98,7 @@
 #include <xercesc/util/XMLUni.hpp>
 #include <xercesc/util/XMLUniDefs.hpp>
 #include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/platformutils.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
 #include <xercesc/sax/SAXParseException.hpp>

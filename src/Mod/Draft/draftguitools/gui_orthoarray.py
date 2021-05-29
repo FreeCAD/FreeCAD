@@ -73,7 +73,7 @@ class OrthoArray(gui_base.GuiCommandBase):
         We add callbacks that connect the 3D view with
         the widgets of the task panel.
         """
-        _log("GuiCommand: {}".format(_self.command_name))
+        _log("GuiCommand: {}".format(self.command_name))
         #_msg("{}".format(16*"-"))
         #_msg("GuiCommand: {}".format(self.command_name))
 

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2020 FreeCAD Developers                                 *
- *   Author: Uwe Stöhr <uwestoehr@lyx.org>                                 *
+ *   Author: Uwe StÃ¶hr <uwestoehr@lyx.org>                                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -172,7 +172,7 @@ TaskDlgHatch::TaskDlgHatch(TechDraw::DrawHatch* inHatch, TechDrawGui::ViewProvid
     viewProvider(nullptr)
 {
     widget  = new TaskHatch(inHatch, inVp, mode);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Tree_View"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_TreeView"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

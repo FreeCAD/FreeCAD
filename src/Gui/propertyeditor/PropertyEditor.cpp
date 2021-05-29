@@ -83,6 +83,9 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
 PropertyEditor::~PropertyEditor()
 {
+    QItemEditorFactory* f = delegate->itemEditorFactory();
+    delegate->setItemEditorFactory(nullptr);
+    delete f;
 }
 
 void PropertyEditor::setAutomaticExpand(bool v)
@@ -258,20 +261,38 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
     setupTransaction(index);
 }
 
+void PropertyEditor::recomputeDocument(App::Document* doc)
+{
+    try {
+        if (doc) {
+            if (!doc->isTransactionEmpty()) {
+                // Between opening and committing a transaction a recompute
+                // could already have been done
+                if (doc->isTouched())
+                    doc->recompute();
+            }
+        }
+    }
+    // do not re-throw
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("Unhandled std::exception caught in PropertyEditor::recomputeDocument.\n"
+                              "The error message is: %s\n", e.what());
+    }
+    catch (...) {
+        Base::Console().Error("Unhandled unknown exception caught in PropertyEditor::recomputeDocument.\n");
+    }
+}
+
 void PropertyEditor::closeTransaction()
 {
     int tid = 0;
-    if(App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
+    if (App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
         if (autoupdate) {
             App::Document* doc = App::GetApplication().getActiveDocument();
-            if (doc) {
-                if (!doc->isTransactionEmpty()) {
-                    // Between opening and committing a transaction a recompute
-                    // could already have been done
-                    if (doc->isTouched())
-                        doc->recompute();
-                }
-            }
+            recomputeDocument(doc);
         }
         App::GetApplication().closeActiveTransaction();
     }

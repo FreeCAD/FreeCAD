@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FemToolsCcx"
+__title__ = "FemToolsCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
-__url__    = "https://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup FEM
 #  @{
@@ -380,7 +380,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         except Exception:
             FreeCAD.Console.PrintError(
                 "Unexpected error when writing CalculiX input file: {}\n"
-                .format(sys.exc_info()[0])
+                .format(sys.exc_info()[1])
             )
             raise
 
@@ -816,7 +816,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             file = open(dat_result_file, "r")
             obj.Text = file.read()
             file.close()
-            # TODO make the Text of obj read only, or the obj itself
+            obj.setPropertyStatus("Text", "ReadOnly")        # set property editor readonly
+            if FreeCAD.GuiUp:
+                obj.ViewObject.ReadOnly = True               # set editor view readonly
         else:
             raise Exception("FEM: No .dat results found at {}!".format(dat_result_file))
 

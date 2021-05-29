@@ -223,9 +223,9 @@ def export(objectslist, filename, argstring):
   # Check canned cycles for drilling
   if TRANSLATE_DRILL_CYCLES:
     if len(SUPPRESS_COMMANDS) == 0:
-      SUPPRESS_COMMANDS = ['G98', 'G80']
+      SUPPRESS_COMMANDS = ['G99', 'G98', 'G80']
     else:
-      SUPPRESS_COMMANDS += ['G98', 'G80']
+      SUPPRESS_COMMANDS += ['G99', 'G98', 'G80']
 
   # Write the preamble
   if OUTPUT_COMMENTS:

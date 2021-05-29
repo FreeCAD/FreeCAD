@@ -24,9 +24,7 @@
 import os
 import re
 import shutil
-import stat
 import sys
-import tempfile
 
 from PySide import QtCore, QtGui
 
@@ -332,12 +330,12 @@ class FillMacroListWorker(QtCore.QThread):
         """Retrieve macros from the wiki
 
         Read the wiki and emit a signal for each found macro.
-        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes
+        Reads only the page https://wiki.freecadweb.org/Macros_recipes
         """
 
         self.info_label_signal.emit("Downloading list of macros from the FreeCAD wiki...")
         self.progressbar_show.emit(True)
-        u = utils.urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
+        u = utils.urlopen("https://wiki.freecadweb.org/Macros_recipes")
         if not u:
             FreeCAD.Console.PrintWarning(translate("AddonsInstaller",
                                                    "Appears to be an issue connecting to the Wiki, "
@@ -423,7 +421,7 @@ class ShowWorker(QtCore.QThread):
                         p = p.decode("utf-8")
                     u.close()
                     desc = utils.fix_relative_links(p, readmeurl.rsplit("/README.md")[0])
-                    if NOMARKDOWN or not have_markdown:
+                    if not NOMARKDOWN and have_markdown:
                         desc = markdown.markdown(desc, extensions=["md_in_html"])
                     else:
                         message = """
@@ -613,10 +611,14 @@ class ShowWorker(QtCore.QThread):
                         except Exception:
                             print("AddonManager: Debug: Error retrieving image from", path)
                         else:
-                            f = open(storename, "wb")
+                            try:
+                                f = open(storename, "wb")
+                            except OSError:
+                                # ecryptfs (and probably not only ecryptfs) has lower length limit for path
+                                storename = storename[-140:]
+                                f = open(storename, "wb")
                             f.write(imagedata)
                             f.close()
-
                             # resize the image to 300x300px if needed
                             img = QtGui.QImage(storename)
                             if (img.width() > 300) or (img.height() > 300):
@@ -654,7 +656,7 @@ class GetMacroDetailsWorker(QtCore.QThread):
             mac = self.macro.name.replace(" ", "_")
             mac = mac.replace("&", "%26")
             mac = mac.replace("+", "%2B")
-            url = "https://www.freecadweb.org/wiki/Macro_" + mac
+            url = "https://wiki.freecadweb.org/Macro_" + mac
             self.macro.fill_details_from_wiki(url)
         if self.macro.is_installed():
             already_installed_msg = ('<strong style=\"background: #00B629;\">'

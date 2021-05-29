@@ -31,8 +31,7 @@ __title__  = "FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__    = "https://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchCommands,math,sys,json,os,ArchIFC,ArchIFCSchema
-from FreeCAD import Vector
+import FreeCAD,Draft,ArchCommands,sys,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -738,20 +737,18 @@ class Component(ArchIFC.IfcProduct):
                         base = base.fuse(add)
 
                     elif hasattr(o,'Shape'):
-                        if o.Shape:
-                            if not o.Shape.isNull():
-                                if o.Shape.Solids:
-                                    s = o.Shape.copy()
-                                    if placement:
-                                        s.Placement = s.Placement.multiply(placement)
-                                    if base:
-                                        if base.Solids:
-                                            try:
-                                                base = base.fuse(s)
-                                            except Part.OCCError:
-                                                print("Arch: unable to fuse object ", obj.Name, " with ", o.Name)
-                                    else:
-                                        base = s
+                        if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
+                            s = o.Shape.copy()
+                            if placement:
+                                s.Placement = s.Placement.multiply(placement)
+                            if base:
+                                if base.Solids:
+                                    try:
+                                        base = base.fuse(s)
+                                    except Part.OCCError:
+                                        print("Arch: unable to fuse object ", obj.Name, " with ", o.Name)
+                            else:
+                                base = s
 
         # treat subtractions
         subs = obj.Subtractions
@@ -1421,11 +1418,7 @@ class ViewProviderComponent:
         if hasattr(self,"Object"):
             c = []
             if hasattr(self.Object,"Base"):
-                if Draft.getType(self.Object) != "Wall":
-                    c = [self.Object.Base]
-                elif Draft.getType(self.Object.Base) == "Space":
-                    c = []
-                else:
+                if not (Draft.getType(self.Object) == "Wall" and Draft.getType(self.Object.Base) == "Space"):
                     c = [self.Object.Base]
             if hasattr(self.Object,"Additions"):
                 c.extend(self.Object.Additions)
@@ -1726,6 +1719,8 @@ class ComponentTaskPanel:
             self.classButton.hide()
         else:
             import os
+            # the BIM_Classification command needs to be added before it can be used
+            FreeCADGui.activateWorkbench("BIMWorkbench")
             self.classButton.setIcon(QtGui.QIcon(os.path.join(os.path.dirname(BimClassification.__file__),"icons","BIM_Classification.svg")))
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)

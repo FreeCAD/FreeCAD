@@ -52,6 +52,7 @@
 
 #include "Mesh.h"
 #include "Exporter.h"
+#include "Importer.h"
 #include "FeatureMeshImport.h"
 #include <Mod/Mesh/App/MeshPy.h>
 
@@ -173,79 +174,11 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        MeshObject mesh;
-        MeshCore::Material mat;
-        if (mesh.load(EncodedName.c_str(), &mat)) {
-            Base::FileInfo file(EncodedName.c_str());
-            // create new document and add Import feature
-            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
-            unsigned long segmct = mesh.countSegments();
-            if (segmct > 1) {
-                for (unsigned long i=0; i<segmct; i++) {
-                    const Segment& group = mesh.getSegment(i);
-                    std::string groupName = group.getName();
-                    if (groupName.empty())
-                        groupName = file.fileNamePure();
+        // create new document and add Import feature
+        App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
 
-                    std::unique_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
-                    Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-                        (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
-                    pcFeature->Label.setValue(groupName.c_str());
-                    pcFeature->Mesh.swapMesh(*segm);
-
-                    // if colors are set per face
-                    if (mat.binding == MeshCore::MeshIO::PER_FACE &&
-                        mat.diffuseColor.size() == mesh.countFacets()) {
-                        App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-                            (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
-                        if (prop) {
-                            std::vector<App::Color> diffuseColor;
-                            diffuseColor.reserve(group.getIndices().size());
-                            for (const auto& it : group.getIndices()) {
-                                diffuseColor.push_back(mat.diffuseColor[it]);
-                            }
-                            prop->setValues(diffuseColor);
-                        }
-                    }
-                    pcFeature->purgeTouched();
-                }
-            }
-            else if (mat.binding == MeshCore::MeshIO::PER_VERTEX && 
-                     mat.diffuseColor.size() == mesh.countPoints()) {
-                FeatureCustom *pcFeature = new FeatureCustom();
-                pcFeature->Label.setValue(file.fileNamePure().c_str());
-                pcFeature->Mesh.swapMesh(mesh);
-                App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-                    (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
-                if (prop) {
-                    prop->setValues(mat.diffuseColor);
-                }
-                pcFeature->purgeTouched();
-
-                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
-            }
-            else if (mat.binding == MeshCore::MeshIO::PER_FACE && 
-                     mat.diffuseColor.size() == mesh.countFacets()) {
-                FeatureCustom *pcFeature = new FeatureCustom();
-                pcFeature->Label.setValue(file.fileNamePure().c_str());
-                pcFeature->Mesh.swapMesh(mesh);
-                App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-                    (pcFeature->addDynamicProperty("App::PropertyColorList", "FaceColors"));
-                if (prop) {
-                    prop->setValues(mat.diffuseColor);
-                }
-                pcFeature->purgeTouched();
-
-                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
-            }
-            else {
-                Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-                    (pcDoc->addObject("Mesh::Feature", file.fileNamePure().c_str()));
-                pcFeature->Label.setValue(file.fileNamePure().c_str());
-                pcFeature->Mesh.swapMesh(mesh);
-                pcFeature->purgeTouched();
-            }
-        }
+        Mesh::Importer import(pcDoc);
+        import.load(EncodedName);
 
         return Py::None();
     }
@@ -260,86 +193,19 @@ private:
         PyMem_Free(Name);
 
         App::Document *pcDoc = 0;
-        if (DocName)
+        if (DocName) {
             pcDoc = App::GetApplication().getDocument(DocName);
-        else
+        }
+        else {
             pcDoc = App::GetApplication().getActiveDocument();
+        }
 
         if (!pcDoc) {
             pcDoc = App::GetApplication().newDocument(DocName);
         }
 
-        MeshObject mesh;
-        MeshCore::Material mat;
-        if (mesh.load(EncodedName.c_str(), &mat)) {
-            Base::FileInfo file(EncodedName.c_str());
-            unsigned long segmct = mesh.countSegments();
-            if (segmct > 1) {
-                for (unsigned long i=0; i<segmct; i++) {
-                    const Segment& group = mesh.getSegment(i);
-                    std::string groupName = group.getName();
-                    if (groupName.empty())
-                        groupName = file.fileNamePure();
-
-                    std::unique_ptr<MeshObject> segm(mesh.meshFromSegment(group.getIndices()));
-                    Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-                        (pcDoc->addObject("Mesh::Feature", groupName.c_str()));
-                    pcFeature->Label.setValue(groupName.c_str());
-                    pcFeature->Mesh.swapMesh(*segm);
-
-                    // if colors are set per face
-                    if (mat.binding == MeshCore::MeshIO::PER_FACE &&
-                        mat.diffuseColor.size() == mesh.countFacets()) {
-                        App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-                            (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
-                        if (prop) {
-                            std::vector<App::Color> diffuseColor;
-                            diffuseColor.reserve(group.getIndices().size());
-                            for (const auto& it : group.getIndices()) {
-                                diffuseColor.push_back(mat.diffuseColor[it]);
-                            }
-                            prop->setValues(diffuseColor);
-                        }
-                    }
-                    pcFeature->purgeTouched();
-                }
-            }
-            else if (mat.binding == MeshCore::MeshIO::PER_VERTEX && 
-                     mat.diffuseColor.size() == mesh.countPoints()) {
-                FeatureCustom *pcFeature = new FeatureCustom();
-                pcFeature->Label.setValue(file.fileNamePure().c_str());
-                pcFeature->Mesh.swapMesh(mesh);
-                App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-                    (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
-                if (prop) {
-                    prop->setValues(mat.diffuseColor);
-                }
-                pcFeature->purgeTouched();
-
-                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
-            }
-            else if (mat.binding == MeshCore::MeshIO::PER_FACE && 
-                     mat.diffuseColor.size() == mesh.countFacets()) {
-                FeatureCustom *pcFeature = new FeatureCustom();
-                pcFeature->Label.setValue(file.fileNamePure().c_str());
-                pcFeature->Mesh.swapMesh(mesh);
-                App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
-                    (pcFeature->addDynamicProperty("App::PropertyColorList", "FaceColors"));
-                if (prop) {
-                    prop->setValues(mat.diffuseColor);
-                }
-                pcFeature->purgeTouched();
-
-                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
-            }
-            else {
-                Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
-                    (pcDoc->addObject("Mesh::Feature", file.fileNamePure().c_str()));
-                pcFeature->Label.setValue(file.fileNamePure().c_str());
-                pcFeature->Mesh.swapMesh(mesh);
-                pcFeature->purgeTouched();
-            }
-        }
+        Mesh::Importer import(pcDoc);
+        import.load(EncodedName);
 
         return Py::None();
     }
@@ -360,11 +226,7 @@ private:
                                  "exportAmfCompressed", NULL};
 
         if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
-#if PY_MAJOR_VERSION >= 3
                                           "Oet|dp",
-#else
-                                          "Oet|di",
-#endif // Python version switch
                                           kwList, &objects, "utf-8", &fileNamePy,
                                           &fTolerance, &exportAmfCompressed )) {
             throw Py::Exception();

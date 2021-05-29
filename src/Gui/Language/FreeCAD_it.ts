@@ -277,6 +277,17 @@
     </message>
   </context>
   <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::AccelLineEdit</name>
     <message>
       <source>none</source>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Dimensione parola</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Ringraziamenti</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD non sarebbe nulla senza i loro sforzi:</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licenza</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Collezione</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Ringraziamenti</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
       <translation> </translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Le righe del codice saranno numerate </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Premendo &lt;Tab&gt; verrà inserita la quantità di spazi definiti per l'indentazione</translation>
     </message>
@@ -1401,6 +1419,10 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     <message>
       <source>Color:</source>
       <translation>Colore:</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2540,10 +2562,6 @@ ma una più lenta risposta a qualsiasi cambiamento di scena.</translation>
       <translation>Centralizzata</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Il tipo di anti-aliasing multisample usato </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Oggetti trasparenti:</translation>
     </message>
@@ -2566,14 +2584,6 @@ ma una più lenta risposta a qualsiasi cambiamento di scena.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distanza tra gli occhi per le modalità stereo</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Distanza da-occhio-a-occhio utilizzata per le proiezioni stereo.
-Il valore specificato è un fattore che verrà moltiplicato per la
-dimensione della casella di delimitazione dell'oggetto 3D attualmente visualizzato. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2631,6 +2641,18 @@ La modifica di questa opzione richiede un riavvio dell'applicazione.</translatio
     <message>
       <source>Use software OpenGL</source>
       <translation>Usa software OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3246,32 +3268,28 @@ Si può anche utilizzare il modulo: John Doe &lt;john@doe.com&gt;</translation>
       <source>Framebuffer (as is)</source>
       <translation>Framebuffer (come è)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Pixel buffer</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <translation>Ambienti di lavoro scaricati</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Carica i workbenches selezionati, aggiungendo le loro finestre di preferenze alle impostazioni di preferenze.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Carica la selezione</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ambienti di lavoro disponibili non caricati&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Per preservare le risorse, FreeCAD non carica gli ambienti di lavoro finché non vengono utilizzati. Il loro caricamento può fornire l'accesso a preferenze aggiuntive relative alla loro funzionalità.&lt;/p&gt;&lt;p&gt;I seguenti ambienti di lavoro sono disponibili nella tua installazione, ma non sono ancora caricati:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3488,12 +3506,6 @@ Il valore è il diametro della sfera da adattare allo schermo.</translation>
       <translation>Fattore di zoom</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Quanto verrà zoomato.
-Passo di zoom di '1' significa un fattore di 7.5 per ogni passo di zoom. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>La direzione delle operazioni di zoom verrà invertita</translation>
     </message>
@@ -3581,6 +3593,28 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
       <source>Object center</source>
       <translation>Centro oggetto</translation>
     </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsSelection</name>
@@ -3606,7 +3640,7 @@ Questa impostazione non disabilitata l'inclinazione tramite mouse.</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
-      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
+      <translation>Aggiunge caselle di selezione nell'albero del modello</translation>
     </message>
   </context>
   <context>
@@ -3892,12 +3926,12 @@ Il sistema di preferenza è quello impostato nelle preferenze generali.</transla
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unità sconosciuta: </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>unità non corrispondente</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -5373,6 +5407,10 @@ How do you want to proceed?</source>
     <message>
       <source>Expression...</source>
       <translation>Espressione...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Espansione automatica</translation>
     </message>
   </context>
   <context>
@@ -6884,14 +6922,6 @@ Si prega di controllare la vista report per ulteriori informazioni...</translati
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Percorso fisico: </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Documento: </translation>
@@ -6916,11 +6946,19 @@ Documento: </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Ci sono stati errori gravi durante il caricamento del file. Alcuni dati potrebbero essere stati modificati o non recuperati affatto. Il salvataggio del progetto molto probabilmente si tradurrà in perdita di dati.</translation>
     </message>
     <message>
       <source>Workbenches</source>
       <translation>Ambienti di lavoro</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>
@@ -7366,7 +7404,7 @@ Documento: </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Selezionare gli oggetti da esportare prima di scegliere Esporta.</translation>
     </message>
   </context>
   <context>
@@ -7407,7 +7445,7 @@ Documento: </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Dona per contribuire allo sviluppo di FreeCAD</translation>
     </message>
   </context>
   <context>

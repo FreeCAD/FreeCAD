@@ -53,7 +53,6 @@
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
-#include <io.h>
 #include <fcntl.h>
 #include <assert.h>
 
@@ -68,6 +67,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <stdexcept>
+#include <tuple>
 
 #include <cmath>
 #include <ctime>
@@ -79,7 +79,6 @@
 #include <boost_signals2.hpp>
 #include <boost/bind/bind.hpp>
 
-#include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>
 #include <boost_graph_adjacency_list.hpp>
 
@@ -101,7 +100,8 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
-#include <windows.h>
+#include <Windows.h>
+#include <io.h>
 #endif //_PreComp_
 
 #ifndef _Standard_Version_HeaderFile

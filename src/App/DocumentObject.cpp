@@ -682,7 +682,7 @@ bool DocumentObject::removeDynamicProperty(const char* name)
     }
 
     for (auto it : removeExpr) {
-        ExpressionEngine.setValue(it, boost::shared_ptr<Expression>());
+        ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
     }
 
     return TransactionalObject::removeDynamicProperty(name);
@@ -912,7 +912,7 @@ void DocumentObject::Save (Base::Writer &writer) const
  * @param expr Expression tree
  */
 
-void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_ptr<Expression> expr)
+void DocumentObject::setExpression(const ObjectIdentifier &path, std::shared_ptr<Expression> expr)
 {
     ExpressionEngine.setValue(path, expr);
 }

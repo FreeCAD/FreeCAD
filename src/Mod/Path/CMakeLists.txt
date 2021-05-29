@@ -33,6 +33,7 @@ SET(PathScripts_SRCS
     PathScripts/PathCircularHoleBaseGui.py
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
+    PathScripts/PathCamoticsGui.py
     PathScripts/PathCustom.py
     PathScripts/PathCustomGui.py
     PathScripts/PathDeburr.py
@@ -84,6 +85,7 @@ SET(PathScripts_SRCS
     PathScripts/PathPost.py
     PathScripts/PathPostProcessor.py
     PathScripts/PathPreferences.py
+    PathScripts/PathPreferencesAdvanced.py
     PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
     PathScripts/PathProbe.py
@@ -158,6 +160,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/rml_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
+    PathScripts/post/uccnc_post.py
 )
 
 SET(Tools_Bit_SRCS

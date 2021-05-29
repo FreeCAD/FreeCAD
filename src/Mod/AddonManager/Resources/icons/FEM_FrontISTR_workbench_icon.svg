@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 250 250" width="250" height="250" id="svg42">
+  <metadata id="metadata46">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs id="defs4">
+    <path d="M208.8 0C231.55 0 250 18.45 250 41.2C250 82.96 250 167.53 250 209.41C250 231.83 231.83 250 209.41 250C167.53 250 82.47 250 40.59 250C18.17 250 0 231.83 0 209.41C0 167.53 0 87.64 0 47.05C0 21.07 21.07 0 47.05 0C87.64 0 167.04 0 208.8 0Z" id="aYZCzIjAA" />
+    <path d="M99.5 185.52C99.5 201.9 99.94 209.98 101.25 218.75C97.99 218.75 71.96 218.75 68.71 218.75C70.02 210.91 70.46 201.21 70.46 185.98C70.46 173.81 70.46 76.51 70.46 64.35C70.46 51.65 70.02 44.96 68.71 34.34C77.66 34.8 83.12 35.03 96.44 35.03C102.55 35.03 151.47 35.03 157.58 35.03C171.34 35.03 178.33 34.57 187.5 33.42C187.5 36.53 187.5 61.46 187.5 64.57C179.64 63.42 171.56 62.96 157.58 62.96C153.71 62.96 134.35 62.96 99.5 62.96L99.5 111.89C127.54 111.89 143.12 111.89 146.23 111.89C159.77 111.89 167.41 111.43 175.93 110.28C175.93 113.35 175.93 137.9 175.93 140.97C167.85 139.82 159.55 139.35 146.23 139.35C143.12 139.35 127.54 139.35 99.5 139.35C99.5 163.98 99.5 179.36 99.5 185.52Z" id="bbaAPBqsd" />
+  </defs>
+  <g id="g40">
+    <g id="g38">
+      <g id="g8">
+        <use xlink:href="#aYZCzIjAA" opacity="1" fill="#284f8e" fill-opacity="1" id="use6" />
+      </g>
+      <g id="g36">
+        <g id="g28">
+          <filter id="shadow15891929" x="59.71" y="24.42" width="137.79" height="204.33" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse">
+            <feFlood id="feFlood10" />
+            <feComposite in2="SourceAlpha" operator="in" id="feComposite12" />
+            <feGaussianBlur stdDeviation="1" id="feGaussianBlur14" />
+            <feOffset dx="1" dy="1" result="afterOffset" id="feOffset16" />
+            <feFlood flood-color="#000000" flood-opacity="0.5" id="feFlood18" />
+            <feComposite in2="afterOffset" operator="in" id="feComposite20" />
+            <feMorphology operator="dilate" radius="1" id="feMorphology22" />
+            <feComposite in2="SourceAlpha" operator="out" id="feComposite24" />
+          </filter>
+          <path d="M99.5 185.52C99.5 201.9 99.94 209.98 101.25 218.75C97.99 218.75 71.96 218.75 68.71 218.75C70.02 210.91 70.46 201.21 70.46 185.98C70.46 173.81 70.46 76.51 70.46 64.35C70.46 51.65 70.02 44.96 68.71 34.34C77.66 34.8 83.12 35.03 96.44 35.03C102.55 35.03 151.47 35.03 157.58 35.03C171.34 35.03 178.33 34.57 187.5 33.42C187.5 36.53 187.5 61.46 187.5 64.57C179.64 63.42 171.56 62.96 157.58 62.96C153.71 62.96 134.35 62.96 99.5 62.96L99.5 111.89C127.54 111.89 143.12 111.89 146.23 111.89C159.77 111.89 167.41 111.43 175.93 110.28C175.93 113.35 175.93 137.9 175.93 140.97C167.85 139.82 159.55 139.35 146.23 139.35C143.12 139.35 127.54 139.35 99.5 139.35C99.5 163.98 99.5 179.36 99.5 185.52Z" id="a1taxgGMFo" fill="white" fill-opacity="1" filter="url(#shadow15891929)" />
+        </g>
+        <use xlink:href="#bbaAPBqsd" opacity="1" fill="#ffffff" fill-opacity="1" id="use30" />
+        <g id="g34">
+          <use xlink:href="#bbaAPBqsd" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1.91" stroke-opacity="0" id="use32" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

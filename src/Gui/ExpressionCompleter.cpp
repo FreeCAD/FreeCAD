@@ -372,6 +372,10 @@ void ExpressionCompleter::setNoProperty(bool enabled) {
         static_cast<ExpressionCompleterModel*>(m)->setNoProperty(enabled);
 }
 
+void ExpressionCompleter::setRequireLeadingEqualSign(bool enabled) {
+    requireLeadingEqualSign = enabled;
+}
+
 QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
 {
     auto m = model();
@@ -450,21 +454,26 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 {
     init();
 
-    using namespace boost::tuples;
     std::string completionPrefix;
 
     // Compute start; if prefix starts with =, start parsing from offset 1.
     int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
 
+    if (requireLeadingEqualSign && start != 1) {
+        if (auto p = popup())
+            p->setVisible(false);
+        return;
+    }
+
     std::string expression = Base::Tools::toStdString(prefix.mid(start));
 
     // Tokenize prefix
-    std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
+    std::vector<std::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
 
     // No tokens
     if (tokens.size() == 0) {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
         return;
     }
 
@@ -510,8 +519,8 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 
     // Not an unclosed string and the last character is a space
     if(!stringing && prefix.size() && prefix[prefixEnd-1] == QChar(32)) {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
         return;
     }
 
@@ -550,17 +559,18 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     if (!completionPrefix.empty() && widget()->hasFocus())
         complete();
     else {
-        if (popup())
-            popup()->setVisible(false);
+        if (auto p = popup())
+            p->setVisible(false);
     }
 }
 
-ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
+ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty, bool requireLeadingEqualSign)
     : QLineEdit(parent)
-    , completer(0)
+    , completer(nullptr)
     , block(true)
     , noProperty(noProperty)
     , exactMatch(false)
+    , requireLeadingEqualSign(requireLeadingEqualSign)
 {
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
@@ -575,10 +585,9 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer = new ExpressionCompleter(currentDocObj, this, noProperty);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
+        completer->setRequireLeadingEqualSign(requireLeadingEqualSign);
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-#endif
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
         connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
@@ -593,10 +602,9 @@ void ExpressionLineEdit::setNoProperty(bool enabled) {
 
 void ExpressionLineEdit::setExactMatch(bool enabled) {
     exactMatch = enabled;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
     if (completer)
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
-#endif
+
 }
 
 bool ExpressionLineEdit::completerActive() const
@@ -638,7 +646,6 @@ void ExpressionLineEdit::keyPressEvent(QKeyEvent *e) {
 
 void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
     QMenu *menu = createStandardContextMenu();
     menu->addSeparator();
     QAction* match = menu->addAction(tr("Exact match"));
@@ -659,9 +666,6 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
     }
 
     delete menu;
-#else
-    QLineEdit::contextMenuEvent(event);
-#endif
 }
 
 
@@ -669,7 +673,7 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent *event)
 
 ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
     : QPlainTextEdit(parent)
-    , completer(0)
+    , completer(nullptr)
     , block(true)
     , exactMatch(false)
 {
@@ -678,10 +682,8 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
 
 void ExpressionTextEdit::setExactMatch(bool enabled) {
     exactMatch = enabled;
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
     if (completer)
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
-#endif
 }
 
 void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
@@ -691,12 +693,10 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
         return;
     }
 
-    if (currentDocObj != 0) {
+    if (currentDocObj != nullptr) {
         completer = new ExpressionCompleter(currentDocObj, this);
-#if QT_VERSION>=QT_VERSION_CHECK(5,2,0)
         if (!exactMatch)
             completer->setFilterMode(Qt::MatchContains);
-#endif
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
@@ -745,7 +745,6 @@ void ExpressionTextEdit::keyPressEvent(QKeyEvent *e) {
 
 void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,2,0)
     QMenu *menu = createStandardContextMenu();
     menu->addSeparator();
     QAction* match = menu->addAction(tr("Exact match"));
@@ -766,9 +765,6 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent *event)
     }
 
     delete menu;
-#else
-    QPlainTextEdit::contextMenuEvent(event);
-#endif
 }
 
 ///////////////////////////////////////////////////////////////////////

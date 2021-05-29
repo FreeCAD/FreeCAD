@@ -165,7 +165,7 @@ CmdTechDrawRichTextAnnotation::CmdTechDrawRichTextAnnotation()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_RichTextAnnotation";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-RichTextAnnotation";
+    sPixmap         = "actions/TechDraw_RichTextAnnotation";
 }
 
 void CmdTechDrawRichTextAnnotation::activated(int iMsg)
@@ -260,11 +260,11 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction(void)
     p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertx"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-Midpoints"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Midpoints"));
     p2->setObjectName(QString::fromLatin1("TechDraw_Midpoints"));
     p2->setWhatsThis(QString::fromLatin1("TechDraw_Midpoints"));
     QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-Quadrants"));
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Quadrants"));
     p3->setObjectName(QString::fromLatin1("TechDraw_Quadrants"));
     p3->setWhatsThis(QString::fromLatin1("TechDraw_Quadrants"));
 
@@ -457,7 +457,7 @@ CmdTechDrawMidpoints::CmdTechDrawMidpoints()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Midpoints";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-Midpoints";
+    sPixmap         = "actions/TechDraw_Midpoints";
 }
 
 void CmdTechDrawMidpoints::activated(int iMsg)
@@ -496,7 +496,7 @@ CmdTechDrawQuadrants::CmdTechDrawQuadrants()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Quadrants";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-Quadrants";
+    sPixmap         = "actions/TechDraw_Quadrants";
 }
 
 void CmdTechDrawQuadrants::activated(int iMsg)
@@ -612,7 +612,7 @@ Gui::Action * CmdTechDrawCenterLineGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-facecenterline"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_FaceCenterLine"));
     p1->setObjectName(QString::fromLatin1("TechDraw_FaceCenterLine"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_FaceCenterLine"));
     QAction* p2 = pcAction->addAction(QString());
@@ -678,7 +678,7 @@ CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-facecenterline";
+    sPixmap         = "actions/TechDraw_FaceCenterLine";
 }
 
 void CmdTechDrawFaceCenterLine::activated(int iMsg)
@@ -1199,7 +1199,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                         cl2Delete.push_back(tag);
                     } else {
                         Base::Console().Message(
-                            "CMD::CosmeticEraserP - edge: %d is confused - source: %d\n",idx,source);
+                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n",idx,source);
                     }
                 }
             } else if (geomType == "Vertex") {
@@ -1336,7 +1336,7 @@ CmdTechDrawShowAll::CmdTechDrawShowAll()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_ShowAll";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-showall";
+    sPixmap         = "actions/TechDraw_ShowAll";
 }
 
 void CmdTechDrawShowAll::activated(int iMsg)
@@ -1401,7 +1401,7 @@ CmdTechDrawWeldSymbol::CmdTechDrawWeldSymbol()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_WeldSymbol";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-weldsymbol";
+    sPixmap         = "actions/TechDraw_WeldSymbol";
 }
 
 void CmdTechDrawWeldSymbol::activated(int iMsg)

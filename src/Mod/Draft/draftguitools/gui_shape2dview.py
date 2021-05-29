@@ -54,8 +54,6 @@ class Shape2DView(gui_base_original.Modifier):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = ""
-        _tip = ()
 
         return {'Pixmap': 'Draft_2DShapeView',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Shape2DView", "Shape 2D view"),
@@ -63,10 +61,10 @@ class Shape2DView(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Shape2DView, self).Activated(name=translate("draft","Project 2D view"))
+        super(Shape2DView, self).Activated(name="Project 2D view")
         if not Gui.Selection.getSelection():
             if self.ui:
-                self.ui.selectUi()
+                self.ui.selectUi(on_close_call=self.finish)
                 _msg(translate("draft", "Select an object to project"))
                 self.call = self.view.addEventCallback(
                     "SoEvent",

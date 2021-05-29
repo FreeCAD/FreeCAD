@@ -737,11 +737,7 @@ PyObject* Application::sGetLocale(PyObject * /*self*/, PyObject *args)
         return NULL;
 
     std::string locale = Translator::instance()->activeLanguage();
-#if PY_MAJOR_VERSION >= 3
     return PyUnicode_FromString(locale.c_str());
-#else
-    return PyString_FromString(locale.c_str());
-#endif
 }
 
 PyObject* Application::sSetLocale(PyObject * /*self*/, PyObject *args)
@@ -819,11 +815,7 @@ PyObject* Application::sAddPreferencePage(PyObject * /*self*/, PyObject *args)
 
     PyObject* dlg;
     // old style classes
-#if PY_MAJOR_VERSION >= 3
     if (PyArg_ParseTuple(args, "O!s", &PyType_Type, &dlg, &grp)) {
-#else
-    if (PyArg_ParseTuple(args, "O!s", &PyClass_Type, &dlg, &grp)) {
-#endif
         // add to the preferences dialog
         new PrefPagePyProducer(Py::Object(dlg), grp);
 
@@ -1152,16 +1144,12 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
 
         std::string file;
         // usually this is the file name of the calling script
-#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION==3 && PY_MINOR_VERSION>=5))
         Py::Object info = list.getItem(0);
         PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
         if(!pyfile)
             throw Py::Exception();
         file = Py::Object(pyfile).as_string();
-#else
-        Py::Tuple info = list.getItem(0);
-        file = info.getItem(1).as_string();
-#endif
+
         Base::FileInfo fi(file);
         // convert backslashes to slashes
         file = fi.filePath();

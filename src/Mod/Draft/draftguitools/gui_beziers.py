@@ -69,7 +69,8 @@ class BezCurve(gui_lines.Line):
 
         Activate the specific bezier curve tracker.
         """
-        super(BezCurve, self).Activated(name=translate("draft", "BezCurve"))
+        super(BezCurve, self).Activated(name="BezCurve",
+                                        icon="Draft_BezCurve")
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
@@ -235,8 +236,6 @@ class CubicBezCurve(gui_lines.Line):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = ""
-        _tip = ()
 
         return {'Pixmap': 'Draft_CubicBezCurve',
                 # 'Accel': "B, Z",
@@ -248,7 +247,8 @@ class CubicBezCurve(gui_lines.Line):
 
         Activate the specific BezCurve tracker.
         """
-        super(CubicBezCurve, self).Activated(name=translate("draft", "CubicBezCurve"))
+        super(CubicBezCurve, self).Activated(name="CubicBezCurve",
+                                             icon="Draft_CubicBezCurve")
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 

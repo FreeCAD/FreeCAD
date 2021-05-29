@@ -75,7 +75,7 @@ const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
 
 ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/techdraw-RichTextAnnotation";
+    sPixmap = "actions/TechDraw_RichTextAnnotation";
 
     static const char *group = "Frame Format";
 
@@ -99,7 +99,7 @@ bool ViewProviderRichAnno::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
     if (ModNum == ViewProvider::Default ) {
-        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+        if (Gui::Control().activeDialog()) { //TaskPanel already open!
             return false;
         }
         Gui::Selection().clearSelection();

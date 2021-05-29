@@ -1307,7 +1307,7 @@ class DocumentFileIncludeCases(unittest.TestCase):
     # copy file from L5 which is in the same directory
     L7 = doc2.addObject("App::DocumentObjectFileIncluded","FileObject3")
     L7.File = (L5.File,"Copy.txt")
-    self.failUnless(os.path.exists(L5.File))
+    self.failUnless(os.path.exists(L7.File))
     FreeCAD.closeDocument("Doc2")
 
 

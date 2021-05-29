@@ -87,14 +87,14 @@
     <message>
       <location filename="../../Command.cpp" line="1464"/>
       <source>Decimation...</source>
-      <translation type="unfinished">Decimation...</translation>
+      <translation>Decimação...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
       <location filename="../../Command.cpp" line="1466"/>
       <location filename="../../Command.cpp" line="1467"/>
       <source>Decimates a mesh</source>
-      <translation type="unfinished">Decimates a mesh</translation>
+      <translation>Decimar uma malha</translation>
     </message>
   </context>
   <context>
@@ -467,7 +467,7 @@
     <message>
       <location filename="../../Command.cpp" line="1286"/>
       <source>Refinement...</source>
-      <translation type="unfinished">Refinement...</translation>
+      <translation>Refinamento...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1287"/>
@@ -739,8 +739,8 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
-      <source>Mesh Mesh Create</source>
-      <translation type="unfinished">Mesh Mesh Create</translation>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -781,37 +781,37 @@
     <message>
       <location filename="../../Command.cpp" line="1505"/>
       <source>Harmonize mesh normals</source>
-      <translation type="unfinished">Harmonize mesh normals</translation>
+      <translation>Harmonizar normais da malha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1539"/>
       <source>Flip mesh normals</source>
-      <translation type="unfinished">Flip mesh normals</translation>
+      <translation>Inverter normais da malha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Fill up holes</source>
-      <translation type="unfinished">Fill up holes</translation>
+      <translation>Preencher os buracos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1801"/>
       <source>Mesh merge</source>
-      <translation type="unfinished">Mesh merge</translation>
+      <translation>Fundir malhas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
       <source>Mesh split</source>
-      <translation type="unfinished">Mesh split</translation>
+      <translation>Dividir malha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1896"/>
       <source>Mesh scale</source>
-      <translation type="unfinished">Mesh scale</translation>
+      <translation>Redimensionar malha</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="147"/>
       <source>Mesh Decimating</source>
-      <translation type="unfinished">Mesh Decimating</translation>
+      <translation>Decimação de malha</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="483"/>
@@ -821,47 +821,47 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="586"/>
       <source>Remove non-manifolds</source>
-      <translation type="unfinished">Remove non-manifolds</translation>
+      <translation>Remover não-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
       <source>Fix indices</source>
-      <translation type="unfinished">Fix indices</translation>
+      <translation>Corrigir índices</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="751"/>
       <source>Remove degenerated faces</source>
-      <translation type="unfinished">Remove degenerated faces</translation>
+      <translation>Remover faces degeneradas</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="818"/>
       <source>Remove duplicated faces</source>
-      <translation type="unfinished">Remove duplicated faces</translation>
+      <translation>Remover faces duplicadas</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="883"/>
       <source>Remove duplicated points</source>
-      <translation type="unfinished">Remove duplicated points</translation>
+      <translation>Remover pontos duplicados</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="967"/>
       <source>Fix self-intersections</source>
-      <translation type="unfinished">Fix self-intersections</translation>
+      <translation>Corrigir auto-interseções</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1054"/>
       <source>Remove folds</source>
-      <translation type="unfinished">Remove folds</translation>
+      <translation>Remover dobras</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1094"/>
       <source>Repair mesh</source>
-      <translation type="unfinished">Repair mesh</translation>
+      <translation>Consertar malha</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="130"/>
       <source>Delete selection</source>
-      <translation type="unfinished">Delete selection</translation>
+      <translation>Apagar seleção</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="874"/>
@@ -883,7 +883,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1131"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Segmento</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1726"/>
@@ -893,7 +893,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1833"/>
       <source>Fill hole</source>
-      <translation type="unfinished">Fill hole</translation>
+      <translation>Preencher o buraco</translation>
     </message>
   </context>
   <context>
@@ -901,12 +901,12 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation type="unfinished">Decimating</translation>
+      <translation>Decimação</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation type="unfinished">Reduction</translation>
+      <translation>Redução</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
@@ -1652,48 +1652,48 @@ a uma aparência suavizada.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation>Automática</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation>Adaptável</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation>Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation>Quadrângulo frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation>Paralelogramos</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>Tempo:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation>Executando gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation>Falha ao iniciar</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>Erro</translation>
     </message>
@@ -2266,7 +2266,7 @@ Favor visitar http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Formato Assimptota</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>

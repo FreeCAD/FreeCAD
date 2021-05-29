@@ -655,7 +655,6 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
     sWhatsThis      = "Sketcher_SelectConflictingConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectConflictingConstraints";
-    sAccel          = "CTRL+SHIFT+E";
     eType           = ForEdit;
 }
 
@@ -909,7 +908,6 @@ CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignment
     sWhatsThis      = "Sketcher_RestoreInternalAlignmentGeometry";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Element_Ellipse_All";
-    sAccel          = "CTRL+SHIFT+E";
     eType           = ForEdit;
 }
 
@@ -1655,12 +1653,12 @@ void CmdSketcherCompCopy::activated(int iMsg)
     if (iMsg == 0){
         CmdSketcherClone sc;
         sc.activate();
-        pcAction->setShortcut(QString::fromLatin1(this->sAccel));
+        pcAction->setShortcut(QString::fromLatin1(this->getAccel()));
     }
     else if (iMsg == 1) {
         CmdSketcherCopy sc;
         sc.activate();
-        pcAction->setShortcut(QString::fromLatin1(this->sAccel));
+        pcAction->setShortcut(QString::fromLatin1(this->getAccel()));
     }
     else if (iMsg == 2) {
         CmdSketcherMove sc;
@@ -1689,7 +1687,7 @@ Gui::Action * CmdSketcherCompCopy::createAction(void)
     int defaultId = 0;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
-    pcAction->setShortcut(QString::fromLatin1(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
 
     return pcAction;
 }

@@ -62,8 +62,6 @@ class ShapeString(gui_base_original.Creator):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = ""
-        _tip = ()
 
         d = {'Pixmap': 'Draft_ShapeString',
              'Accel': "S, S",
@@ -73,8 +71,7 @@ class ShapeString(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "ShapeString")
-        super(ShapeString, self).Activated(name)
+        super(ShapeString, self).Activated(name="ShapeString")
         self.creator = gui_base_original.Creator
         if self.ui:
             self.ui.sourceCmd = self
@@ -93,7 +90,8 @@ class ShapeString(gui_base_original.Creator):
                 self.dialog = None
                 self.text = ''
                 self.ui.sourceCmd = self
-                self.ui.pointUi(name)
+                self.ui.pointUi(title=translate("draft",self.featureName),
+                                icon="Draft_ShapeString")
                 self.active = True
                 self.call = self.view.addEventCallback("SoEvent", self.action)
                 self.ssBase = None

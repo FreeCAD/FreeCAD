@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Test console output</source>
-      <translation>Teste une sortie sur console</translation>
+      <translation>Teste la sortie console</translation>
     </message>
   </context>
   <context>
@@ -274,6 +274,17 @@
     <message>
       <source>Filename</source>
       <translation>Nom de fichier</translation>
+    </message>
+  </context>
+  <context>
+    <name>ExpressionLabel</name>
+    <message>
+      <source>Enter an expression...</source>
+      <translation type="unfinished">Enter an expression...</translation>
+    </message>
+    <message>
+      <source>Expression: </source>
+      <translation type="unfinished">Expression: </translation>
     </message>
   </context>
   <context>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Taille de mot</translation>
     </message>
     <message>
-      <source>Credits</source>
-      <translation>Remerciements</translation>
-    </message>
-    <message>
-      <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>FreeCAD n'existerait pas sans leurs efforts :</translation>
-    </message>
-    <message>
       <source>License</source>
       <translation>Licence</translation>
     </message>
@@ -494,6 +497,25 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Collection</source>
       <translation>Collection</translation>
+    </message>
+    <message>
+      <source>Credits</source>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>Remerciements</translation>
+    </message>
+    <message>
+      <source>FreeCAD would not be possible without the contributions of</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+    </message>
+    <message>
+      <source>Individuals</source>
+      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <translation type="unfinished">Individuals</translation>
+    </message>
+    <message>
+      <source>Organizations</source>
+      <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
+      <translation type="unfinished">Organizations</translation>
     </message>
   </context>
   <context>
@@ -1363,10 +1385,6 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
       <translation>Texte source</translation>
     </message>
     <message>
-      <source>Code lines will be numbered </source>
-      <translation>Les lignes de code doivent être numérotées </translation>
-    </message>
-    <message>
       <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
       <translation>Appuyer sur &lt;Tab&gt; insérera une quantité de taille d'indentation définie</translation>
     </message>
@@ -1400,7 +1418,11 @@ Si ce n'est pas coché, alors la propriété doit être nommée de manière uniq
     </message>
     <message>
       <source>Color:</source>
-      <translation>Couleur:</translation>
+      <translation>Couleur :</translation>
+    </message>
+    <message>
+      <source>Code lines will be numbered</source>
+      <translation type="unfinished">Code lines will be numbered</translation>
     </message>
   </context>
   <context>
@@ -2537,10 +2559,6 @@ mais une réponse plus lente à tout changement de scène.</translation>
       <translation>Centralisé</translation>
     </message>
     <message>
-      <source>What kind of multisample anti-aliasing is used </source>
-      <translation>Quel type d'anticrénelage multiéchantillon est utilisé </translation>
-    </message>
-    <message>
       <source>Transparent objects:</source>
       <translation>Objets transparents :</translation>
     </message>
@@ -2563,14 +2581,6 @@ mais une réponse plus lente à tout changement de scène.</translation>
     <message>
       <source>Eye to eye distance for stereo modes</source>
       <translation>Distance entre les yeux pour les modes stéréo</translation>
-    </message>
-    <message>
-      <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
-      <translation>Ecart pupillaire utilisée pour les projections stéréo.
-La valeur spécifiée est un facteur qui sera multiplié avec la
-taille de la boîte englobante de l'objet 3D qui est actuellement affichée. </translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2628,6 +2638,18 @@ La modification de cette option nécessite un redémarrage de l'application.</tr
     <message>
       <source>Use software OpenGL</source>
       <translation>Utiliser OpenGL</translation>
+    </message>
+    <message>
+      <source>What kind of multisample anti-aliasing is used</source>
+      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+    </message>
+    <message>
+      <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
+      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</translation>
     </message>
   </context>
   <context>
@@ -3243,32 +3265,28 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
       <source>Framebuffer (as is)</source>
       <translation>Tampon de trame (en l'état)</translation>
     </message>
-    <message>
-      <source>Pixel buffer</source>
-      <translation>Mémoire tampon de pixels</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <translation>Ateliers non chargés</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Charger les ateliers sélectionnés, en ajoutant leurs fenêtres de préférences dans la boîte de dialogue des préférences.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <translation>Charger la sélection</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ateliers non chargés disponibles&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pour préserver les ressources, FreeCAD ne charge pas les ateliers tant qu'ils ne sont pas utilisés. Le chargement de ceux-ci peut donner accès à des préférences supplémentaires liées à leurs fonctionnalités.&lt;/p&gt;&lt;p&gt;Les ateliers suivants sont disponibles dans votre installation, mais ne sont pas encore chargés :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -3485,12 +3503,6 @@ La valeur est le diamètre de la sphère qui rentre à l'écran.</translation>
       <translation>Étape de zoom</translation>
     </message>
     <message>
-      <source>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step. </source>
-      <translation>Quel sera le zoom.
-Le zoom au pas de '1' signifie un facteur de 7.5 pour chaque pas de zoom. </translation>
-    </message>
-    <message>
       <source>Direction of zoom operations will be inverted</source>
       <translation>Le sens du zoom sera inversé</translation>
     </message>
@@ -3576,6 +3588,28 @@ Mouse tilting is not disabled by this setting.</source>
       <source>Object center</source>
       <translation>Centre de l'objet</translation>
     </message>
+    <message>
+      <source>Rotates to nearest possible state when clicking a cube face</source>
+      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+    </message>
+    <message>
+      <source>Rotate to nearest</source>
+      <translation type="unfinished">Rotate to nearest</translation>
+    </message>
+    <message>
+      <source>Cube size</source>
+      <translation type="unfinished">Cube size</translation>
+    </message>
+    <message>
+      <source>Size of the navigation cube</source>
+      <translation type="unfinished">Size of the navigation cube</translation>
+    </message>
+    <message>
+      <source>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
+      <translation type="unfinished">How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsSelection</name>
@@ -3601,7 +3635,7 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
-      <translation type="unfinished">Add checkboxes for selection in document tree</translation>
+      <translation>Ajouter des cases à cocher pour la sélection dans l'arborescence des documents</translation>
     </message>
   </context>
   <context>
@@ -3887,12 +3921,12 @@ Le système par défaut est celui défini dans les préférences générales.</t
   <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-      <source>unknown unit: </source>
-      <translation>unité inconnue : </translation>
-    </message>
-    <message>
       <source>unit mismatch</source>
       <translation>unité incompatible</translation>
+    </message>
+    <message>
+      <source>unknown unit:</source>
+      <translation type="unfinished">unknown unit:</translation>
     </message>
   </context>
   <context>
@@ -4127,7 +4161,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>0 Items</source>
-      <translation>0 Article</translation>
+      <translation>0 élément</translation>
     </message>
     <message>
       <source>Download Manager</source>
@@ -4689,7 +4723,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>Log messages</source>
-      <translation>Message du journal</translation>
+      <translation>Journal des messages</translation>
     </message>
     <message>
       <source>Warnings</source>
@@ -5368,6 +5402,10 @@ How do you want to proceed?</source>
     <message>
       <source>Expression...</source>
       <translation>Expression...</translation>
+    </message>
+    <message>
+      <source>Auto expand</source>
+      <translation>Expansion automatique</translation>
     </message>
   </context>
   <context>
@@ -6874,14 +6912,6 @@ Veuillez consulter la vue rapport pour plus d'informations...</translation>
     </message>
     <message>
       <source>
-
-Pyhsical path: </source>
-      <translation>
-
-Chemin physique : </translation>
-    </message>
-    <message>
-      <source>
 Document: </source>
       <translation>
 Document : </translation>
@@ -6906,11 +6936,19 @@ Document : </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Il y a eu de sérieuses erreurs lors du chargement du fichier. Certaines données ont peut-être été modifiées ou pas du tout récupérées. L'enregistrement du projet entraînera très probablement une perte de données.</translation>
     </message>
     <message>
       <source>Workbenches</source>
       <translation>Ateliers</translation>
+    </message>
+    <message>
+      <source>
+
+Physical path: </source>
+      <translation type="unfinished">
+
+Physical path: </translation>
     </message>
   </context>
   <context>
@@ -7356,7 +7394,7 @@ Document : </translation>
     </message>
     <message>
       <source>Select the objects to export before choosing Export.</source>
-      <translation type="unfinished">Select the objects to export before choosing Export.</translation>
+      <translation>Sélectionnez les objets à exporter avant de choisir Exporter.</translation>
     </message>
   </context>
   <context>
@@ -7397,7 +7435,7 @@ Document : </translation>
     </message>
     <message>
       <source>Donate to FreeCAD development</source>
-      <translation type="unfinished">Donate to FreeCAD development</translation>
+      <translation>Faire un don pour soutenir le développement de FreeCAD</translation>
     </message>
   </context>
   <context>

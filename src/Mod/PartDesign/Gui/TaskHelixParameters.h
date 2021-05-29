@@ -31,8 +31,6 @@
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHelix.h"
 
-class Ui_TaskHelixParameters;
-
 namespace App {
 class Property;
 }
@@ -42,6 +40,7 @@ class ViewProvider;
 }
 
 namespace PartDesignGui {
+class Ui_TaskHelixParameters;
 
 
 
@@ -54,6 +53,8 @@ public:
     ~TaskHelixParameters();
 
     virtual void apply() override;
+
+    static bool showPreview(PartDesign::Helix*);
 
     /**
      * @brief fillAxisCombo fills the combo and selects the item according to
@@ -70,6 +71,7 @@ private Q_SLOTS:
     void onHeightChanged(double);
     void onTurnsChanged(double);
     void onAngleChanged(double);
+    void onGrowthChanged(double);
     void onAxisChanged(int);
     void onLeftHandedChanged(bool);
     void onReversedChanged(bool);
@@ -82,7 +84,8 @@ protected:
     void changeEvent(QEvent *e) override;
     bool updateView() const;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
-
+    void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
+    void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base) override;
 
     //mirrors of helixes's properties
     App::PropertyLength*      propPitch;
@@ -92,6 +95,7 @@ protected:
     App::PropertyBool*        propReversed;
     App::PropertyLinkSub*     propReferenceAxis;
     App::PropertyAngle*       propAngle;
+    App::PropertyLength*      propGrowth;
     App::PropertyEnumeration* propMode;
     App::PropertyBool*        propOutside;
 

@@ -265,25 +265,8 @@ PyObject * QuantityPy::number_int_handler (PyObject *self)
     }
 
     QuantityPy* q = static_cast<QuantityPy*>(self);
-#if PY_MAJOR_VERSION < 3
-    return PyInt_FromLong((long)q->getValue());
-#else
     return PyLong_FromLong((long)q->getValue());
-#endif
 }
-
-#if PY_MAJOR_VERSION < 3
-PyObject * QuantityPy::number_long_handler (PyObject *self)
-{
-    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "Arg must be Quantity");
-        return 0;
-    }
-
-    QuantityPy* q = static_cast<QuantityPy*>(self);
-    return PyInt_FromLong((long)q->getValue());
-}
-#endif
 
 PyObject * QuantityPy::number_negative_handler (PyObject *self)
 {
@@ -324,10 +307,6 @@ static Quantity &pyToQuantity(Quantity &q, PyObject *pyobj) {
         q = *static_cast<Base::QuantityPy*>(pyobj)->getQuantityPtr();
     else if (PyFloat_Check(pyobj))
         q = Quantity(PyFloat_AsDouble(pyobj));
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(pyobj))
-        q = Quantity(PyInt_AsLong(pyobj));
-#endif
     else if (PyLong_Check(pyobj))
         q = Quantity(PyLong_AsLong(pyobj));
     else {
@@ -427,11 +406,6 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
     else if (PyFloat_Check(other)) {
         d2 = PyFloat_AsDouble(other);
     }
-#if PY_MAJOR_VERSION < 3
-    else if (PyInt_Check(other)) {
-        d2 = (double)PyInt_AsLong(other);
-    }
-#endif
     else if (PyLong_Check(other)) {
         d2 = (double)PyLong_AsLong(other);
     }
@@ -479,13 +453,6 @@ PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, Py
             double b = PyFloat_AsDouble(other);
             return new QuantityPy(new Quantity(a->pow(b)) );
         }
-#if PY_MAJOR_VERSION < 3
-        else if (PyInt_Check(other)) {
-            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-            double b = (double)PyInt_AsLong(other);
-            return new QuantityPy(new Quantity(a->pow(b)));
-        }
-#endif
         else if (PyLong_Check(other)) {
             Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
             double b = (double)PyLong_AsLong(other);
@@ -641,11 +608,7 @@ void  QuantityPy::setFormat(Py::Dict arg)
 
     if (arg.hasKey("NumberFormat")) {
         Py::Char form(arg.getItem("NumberFormat"));
-#if PY_MAJOR_VERSION >= 3
         std::string fmtstr = static_cast<std::string>(Py::String(form));
-#else
-        std::string fmtstr = static_cast<std::string>(form);
-#endif
         if (fmtstr.size() != 1)
             throw Py::ValueError("Invalid format character");
 
@@ -672,25 +635,31 @@ void  QuantityPy::setFormat(Py::Dict arg)
 
 PyObject *QuantityPy::getCustomAttributes(const char* attr) const
 {
+    QuantityPy* py = nullptr;
     if (strcmp(attr, "Torr") == 0) {
-        return new QuantityPy(new Quantity(Quantity::Torr));
+        py = new QuantityPy(new Quantity(Quantity::Torr));
     }
     else if (strcmp(attr, "mTorr") == 0) {
-        return new QuantityPy(new Quantity(Quantity::mTorr));
+        py = new QuantityPy(new Quantity(Quantity::mTorr));
     }
     else if (strcmp(attr, "yTorr") == 0) {
-        return new QuantityPy(new Quantity(Quantity::yTorr));
+        py = new QuantityPy(new Quantity(Quantity::yTorr));
     }
     else if (strcmp(attr, "PoundForce") == 0) {
-        return new QuantityPy(new Quantity(Quantity::PoundForce));
+        py = new QuantityPy(new Quantity(Quantity::PoundForce));
     }
     else if (strcmp(attr, "AngularMinute") == 0) {
-        return new QuantityPy(new Quantity(Quantity::AngMinute));
+        py = new QuantityPy(new Quantity(Quantity::AngMinute));
     }
     else if (strcmp(attr, "AngularSecond") == 0) {
-        return new QuantityPy(new Quantity(Quantity::AngSecond));
+        py = new QuantityPy(new Quantity(Quantity::AngSecond));
     }
-    return 0;
+
+    if (py) {
+        py->setNotTracking();
+    }
+
+    return py;
 }
 
 int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
@@ -734,21 +703,3 @@ PyObject * QuantityPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
-int QuantityPy::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
-{
-    return 1;
-}
-
-PyObject * QuantityPy::number_oct_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_TypeError, "oct() argument can't be converted to oct");
-    return 0;
-}
-
-PyObject * QuantityPy::number_hex_handler (PyObject* /*self*/)
-{
-    PyErr_SetString(PyExc_TypeError, "hex() argument can't be converted to hex");
-    return 0;
-}
-#endif
