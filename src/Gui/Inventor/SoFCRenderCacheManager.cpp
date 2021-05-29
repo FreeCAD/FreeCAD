@@ -27,6 +27,7 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoResetTransform.h>
@@ -741,7 +742,11 @@ SoFCRenderCacheManager::render(SoGLRenderAction * action)
 
   const SoPath * path = action->getCurPath();
   if (!PRIVATE(this)->sceneid || PRIVATE(this)->sceneid != path->getTail()->getNodeId()) {
-    PRIVATE(this)->sceneid = path->getTail()->getNodeId();
+    SoState * state = action->getState();
+    const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+    unsigned int shapestyleflags = shapestyle->getFlags();
+    if (!(shapestyleflags & SoShapeStyleElement::SHADOWMAP))
+      PRIVATE(this)->sceneid = path->getTail()->getNodeId();
     RenderCachePtr cache = new SoFCRenderCache(state, path->getTail());
     cache->open(state, true, true);
     PRIVATE(this)->stack.resize(1, cache);
