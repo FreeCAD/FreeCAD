@@ -86,6 +86,7 @@
 #include "SoFCRenderer.h"
 #include "SoFCRenderCache.h"
 #include "SoFCVertexCache.h"
+#include "SoFCDisplayModeElement.h"
 #include "../ViewParams.h"
 
 FC_LOG_LEVEL_INIT("Renderer", true, true)
@@ -1360,6 +1361,11 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
     while (renderSection(action, draw_entry, n, pushed)) {
       switch (draw_entry.material->type) {
       case Material::Triangle:
+        if (&draw_entries != &this->slentries
+            && &draw_entries != &this->hlentries
+            && draw_entry.material->outline
+            && ViewParams::getHiddenLineHideFace())
+          continue;
         if (!draw_entry.ventry->cache->hasTransparency())
           draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
         else if (!this->material.pervertexcolor) {
@@ -1403,7 +1409,16 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
   if (this->shadowmapping && !this->transpshadowmapping)
     return;
 
-  if (sort) {
+  bool nosort = false;
+  if (&draw_entries != &this->slentries
+      && &draw_entries != &this->hlentries
+      && SoFCDisplayModeElement::showHiddenLines(state)
+      && ViewParams::getHiddenLineHideFace())
+  {
+    nosort = true;
+  }
+
+  if (!nosort && sort) {
     SbPlane plane = SoViewVolumeElement::get(state).getPlane(0.0);
     if (plane != this->prevplane) {
       this->prevplane = plane;
@@ -1465,12 +1480,17 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
         while (renderSection(action, draw_entry, n, pushed)) {
           if (&draw_entries != &this->hlentries)
             renderOutline(action, draw_entry, false);
-          if (!draw_entry.ventry->cache->hasTransparency()
-              || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
-            array |= SoFCVertexCache::FULL_SORTED_ARRAY;
-          else
-            array |= SoFCVertexCache::SORTED_ARRAY;
-          draw_entry.ventry->cache->renderTriangles(state, array, draw_entry.ventry->partidx);
+          if (!nosort) {
+            if (!draw_entry.ventry->cache->hasTransparency()
+                || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
+              array |= SoFCVertexCache::FULL_SORTED_ARRAY;
+            else
+              array |= SoFCVertexCache::SORTED_ARRAY;
+            draw_entry.ventry->cache->renderTriangles(state,
+                                                      array,
+                                                      draw_entry.ventry->partidx,
+                                                      &this->prevplane);
+          }
           if (&draw_entries == &this->hlentries)
             renderOutline(action, draw_entry, true);
         }

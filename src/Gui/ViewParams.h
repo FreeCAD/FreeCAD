@@ -196,6 +196,8 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Hide seam edges in hidden line draw style."))\
     FC_VIEW_PARAM(HiddenLineHideVertex, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Hide vertex in hidden line draw style."))\
+    FC_VIEW_PARAM(HiddenLineHideFace,bool,Bool,false, \
+       QT_TRANSLATE_NOOP("ViewParams","Hide face in hidden line draw style."))\
     FC_VIEW_PARAM(StatusMessageTimeout, int, Int, 5000, "") \
     FC_VIEW_PARAM(ShadowFlatLines, bool, Bool, true, \
        QT_TRANSLATE_NOOP("ViewParams","Draw object with 'Flat lines' style when shadow is enabled.")) \
