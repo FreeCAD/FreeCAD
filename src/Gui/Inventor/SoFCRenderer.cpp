@@ -1145,6 +1145,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
 
   if (this->depthwriteonly
       || curpass >= numclip
+      || draw_entry.ventry->partidx >= 0
       || (!ViewParams::getSectionFill() && !concave))
     return curpass == 0;
 
@@ -1168,8 +1169,7 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     pushed = true;
     glPushAttrib(GL_ENABLE_BIT
         | GL_DEPTH_BUFFER_BIT
-        | GL_STENCIL_BUFFER_BIT
-        | GL_CURRENT_BIT);
+        | GL_STENCIL_BUFFER_BIT);
   }
 
   if (curpass == 0 && concave) {
@@ -1224,7 +1224,11 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
 
   glStencilFunc (GL_EQUAL, 1, 0x01);
   glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
-  glPushAttrib(GL_ENABLE_BIT|GL_DEPTH_BUFFER_BIT|GL_CURRENT_BIT);
+  FC_GLERROR_CHECK;
+
+  glPushAttrib(GL_ENABLE_BIT|GL_DEPTH_BUFFER_BIT);
+  FC_GLERROR_CHECK;
+
   glEnable(GL_DEPTH_TEST);
   glDepthMask(GL_TRUE);
   FC_GLERROR_CHECK;
@@ -1264,9 +1268,9 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     unsigned char r = (col >> 24) & 0xff;
     unsigned char g = (col >> 16) & 0xff;
     unsigned char b = (col >> 8) & 0xff;
-    if (r < 120 && r > 140) r = 160; else r = 255 - r;
-    if (g < 120 && g > 140) g = 160; else g = 255 - g;
-    if (b < 120 && b > 140) b = 160; else b = 255 - b;
+    if (r > 120 && r < 140) r = 180; else r = 255 - r;
+    if (g > 120 && g < 140) g = 180; else g = 255 - g;
+    if (b > 120 && b < 140) b = 180; else b = 255 - b;
     glColor4ub(r, g, b, col&0xff);
   }
 
@@ -1289,6 +1293,14 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
   FC_GLERROR_CHECK;
 
   glPopAttrib();
+
+  if (ViewParams::getSectionFillInvert()) {
+    auto col = this->material.diffuse;
+    unsigned char r = (col >> 24) & 0xff;
+    unsigned char g = (col >> 16) & 0xff;
+    unsigned char b = (col >> 8) & 0xff;
+    glColor4ub(r, g, b, col&0xff);
+  }
 
   glDisable(GL_STENCIL_TEST);
   FC_GLERROR_CHECK;
