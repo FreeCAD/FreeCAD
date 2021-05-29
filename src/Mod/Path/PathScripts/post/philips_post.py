@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-# 03-24-2021  Sliptonic:  I've removed teh PathUtils import and job lookup
+# 03-24-2021  Sliptonic:  I've removed the PathUtils import and job lookup
 # post processors shouldn't be reaching back to the job.  This can cause a
 # proxy error.
 

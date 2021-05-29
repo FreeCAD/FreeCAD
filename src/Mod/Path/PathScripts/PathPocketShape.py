@@ -192,7 +192,7 @@ class Extension(object):
     def getExtensionFaces(self, extensionWire):
         '''getExtensionFace(extensionWire)...
         A public helper method to retrieve the requested extension as a face,
-        rather than a wire becuase some extensions require a face shape
+        rather than a wire because some extensions require a face shape
         for definition that allows for two wires for boundary definition.
         '''
 

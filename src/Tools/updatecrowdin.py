@@ -253,7 +253,7 @@ if __name__ == "__main__":
         main_ts_files = list(filter(lambda f: not [a for a in ts_files_wo_ext if a in f and f != a], ts_files_wo_ext))
         # Create tuples to map Crowdin name with local path name
         names_and_path = [(f'{basename(f)}.ts', f'{f}.ts') for f in main_ts_files]
-        # Accomodate for legacy naming
+        # Accommodate for legacy naming
         ts_files = [TsFile(LEGACY_NAMING_MAP[a] if a in LEGACY_NAMING_MAP else a, b) for (a, b) in names_and_path]
 
         updater.update(ts_files)
