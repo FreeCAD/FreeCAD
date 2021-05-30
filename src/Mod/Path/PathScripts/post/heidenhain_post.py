@@ -20,14 +20,10 @@
 
 # HEDENHAIN Post-Processor for FreeCAD
 
-import FreeCAD
-from FreeCAD import Units
 import argparse
-import time
 import shlex
 import PathScripts
 from PathScripts import PostUtils
-from PathScripts import PathUtils
 import math
 
 #**************************************************************************#
@@ -261,11 +257,8 @@ def export(objectslist, filename, argstring):
     global LBLIZE_STAUS
 
     Object_Kind = None
-    Feed_Rapid = False
     Feed = 0
-    Spindle_RPM = 0
     Spindle_Active = False
-    ToolId = ""
     Compensation = "0"
     params = [
         'X', 'Y', 'Z',
@@ -360,22 +353,14 @@ def export(objectslist, filename, argstring):
 
         for c in obj.Path.Commands:
             Cmd_Count += 1
-            outstring = []
             command = c.Name
             if command != 'G0':
                 command = command.replace('G0','G') # normalize: G01 -> G1
-                Feed_Rapid = False
-            else:
-                Feed_Rapid = True
 
             for param in params:
                 if param in c.Parameters:
                     if param == 'F':
                         Feed = c.Parameters['F']
-                    elif param == 'S':
-                        Spindle_RPM = c.Parameters['S'] # Could be deleted if tool it's OK
-                    elif param == 'T':
-                        ToolId = c.Parameters['T'] # Could be deleted if tool it's OK
 
             if command == 'G90':
                 G_FUNCTION_STORE['G90'] = True
@@ -474,21 +459,21 @@ def export(objectslist, filename, argstring):
 
 def HEIDEN_Begin(ActualJob): #use Label for program name
     global UNITS
-    JobParent = PathUtils.findParentJob(ActualJob[0])
-    if hasattr(JobParent, "Label"):
-        program_id = JobParent.Label
-    else:
-        program_id = "NEW"
-    return "BEGIN PGM " + str(program_id) + " " + UNITS
+    # JobParent = PathUtils.findParentJob(ActualJob[0])
+    # if hasattr(JobParent, "Label"):
+    #     program_id = JobParent.Label
+    # else:
+    #     program_id = "NEW"
+    return "BEGIN PGM {}".format(UNITS)
 
 def HEIDEN_End(ActualJob): #use Label for program name
     global UNITS
-    JobParent = PathUtils.findParentJob(ActualJob[0])
-    if hasattr(JobParent, "Label"):
-        program_id = JobParent.Label
-    else:
-        program_id = "NEW"
-    return "END PGM " + program_id + " " + UNITS
+    # JobParent = PathUtils.findParentJob(ActualJob[0])
+    # if hasattr(JobParent, "Label"):
+    #     program_id = JobParent.Label
+    # else:
+    #     program_id = "NEW"
+    return "END PGM {}".format(UNITS)
 
 #def HEIDEN_ToolDef(tool_id, tool_length, tool_radius): # old machines don't have tool table, need tooldef list
 #    return "TOOL DEF  " + tool_id + " R" + "{:.3f}".format(tool_length) + " L" + "{:.3f}".format(tool_radius)

@@ -322,6 +322,24 @@ clique em "Continuar" para criar o objeto de qualquer maneira, ou "Abortar" para
       <translation>Selecione pelo menos dois objetos, ou um ou mais compostos, primeiro! Se apenas um composto estiver selecionado, as formas combinadas serão interceptadas entre si (caso contrário, os compostos com auto-intersecções serão inválidos).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Má seleção</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>O cálculo do resultado falhou com um erro:
+
+{err}
+
+clique em 'Continuar' para criar o objeto mesmo assim, ou 'Abortar' para cancelar.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Selecione pelo menos dois objetos, ou um ou mais compostos. Se apenas um composto for selecionado, as formas combinadas serão intersecionadas entre si (caso contrário, os compostos com auto-intersecções serão inválidos).</translation>
@@ -330,16 +348,6 @@ clique em "Continuar" para criar o objeto de qualquer maneira, ou "Abortar" para
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Fatiar para composto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmentos booleanos</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Separa os objetos, pelas suas intersecções</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -379,22 +387,14 @@ Isso significa que os volumes sobrepostos das formas serão removidos.
 Um 'Filtro de Composto' pode ser usado para extrair as partes restantes.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Má seleção</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmentos booleanos</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>O cálculo do resultado falhou com um erro:
-
-{err}
-
-clique em 'Continuar' para criar o objeto mesmo assim, ou 'Abortar' para cancelar.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Separa os objetos, pelas suas intersecções</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

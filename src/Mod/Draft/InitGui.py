@@ -155,12 +155,12 @@ class DraftWorkbench(FreeCADGui.Workbench):
                 else:
                     self.appendContextMenu("Draft", self.drawing_commands)
             else:
-                if FreeCAD.activeDraftCommand.featureName in (translate("draft", "Line"),
-                                                              translate("draft", "Wire"),
-                                                              translate("draft", "Polyline"),
-                                                              translate("draft", "BSpline"),
-                                                              translate("draft", "BezCurve"),
-                                                              translate("draft", "CubicBezCurve")):
+                if FreeCAD.activeDraftCommand.featureName in ("Line",
+                                                              "Wire",
+                                                              "Polyline",
+                                                              "BSpline",
+                                                              "BezCurve",
+                                                              "CubicBezCurve"):
                     self.appendContextMenu("", self.line_commands)
         else:
             if FreeCADGui.Selection.getSelection():

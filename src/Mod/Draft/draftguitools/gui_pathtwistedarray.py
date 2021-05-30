@@ -66,7 +66,7 @@ class PathTwistedArray(gui_base_original.Modifier):
                 'MenuText': QT_TRANSLATE_NOOP("Draft_PathTwistedArray", "Path twisted array"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_PathTwistedArray", "Creates copies of the selected object along a selected path, and twists the copies.\nFirst select the object, and then select the path.\nThe path can be a polyline, B-spline, Bezier curve, or even edges from other objects.")}
 
-    def Activated(self, name=translate("draft","Path twisted array")):
+    def Activated(self, name="Path twisted array"):
         """Execute when the command is called."""
         super(PathTwistedArray, self).Activated(name=name)
         self.name = name
@@ -124,7 +124,7 @@ class PathTwistedLinkArray(PathTwistedArray):
     def Activated(self):
         """Execute when the command is called."""
         super(PathTwistedLinkArray,
-              self).Activated(name=translate("draft","Path twisted link array"))
+              self).Activated(name="Path twisted link array")
 
 
 Gui.addCommand('Draft_PathTwistedLinkArray', PathTwistedLinkArray())

@@ -277,6 +277,17 @@
     </message>
 </context>
 <context>
+    <name>ExpressionLabel</name>
+    <message>
+        <source>Enter an expression...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expression: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::AccelLineEdit</name>
     <message>
         <source>none</source>
@@ -465,14 +476,6 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>FreeCAD would be nowhere without their efforts:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>License</source>
         <translation type="unfinished"></translation>
     </message>
@@ -493,6 +496,25 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Collection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <extracomment>Header for the Credits tab of the About screen</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD would not be possible without the contributions of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Individuals</source>
+        <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Organizations</source>
+        <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1359,10 +1381,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
         <translation></translation>
     </message>
     <message>
-        <source>Code lines will be numbered </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Pressing &lt;Tab&gt; will insert amount of defined indent size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1396,6 +1414,10 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
         <source>Color:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code lines will be numbered</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2495,10 +2517,6 @@ but slower response to any scene changes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>What kind of multisample anti-aliasing is used </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Transparent objects:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2520,12 +2538,6 @@ but slower response to any scene changes.</source>
     </message>
     <message>
         <source>Eye to eye distance for stereo modes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2579,6 +2591,16 @@ Changing this option requires a restart of the application.</source>
     </message>
     <message>
         <source>Use software OpenGL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What kind of multisample anti-aliasing is used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3184,10 +3206,6 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
         <source>Framebuffer (as is)</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Pixel buffer</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
@@ -3422,11 +3440,6 @@ The value is the diameter of the sphere to fit on the screen.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>How much will be zoomed.
-Zoom step of &apos;1&apos; means a factor of 7.5 for every zoom step. </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Direction of zoom operations will be inverted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3510,6 +3523,27 @@ Mouse tilting is not disabled by this setting.</source>
     </message>
     <message>
         <source>Object center</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotates to nearest possible state when clicking a cube face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotate to nearest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cube size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size of the navigation cube</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>How much will be zoomed.
+Zoom step of &apos;1&apos; means a factor of 7.5 for every zoom step.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3821,11 +3855,11 @@ The preference system is the one set in the general preferences.</source>
 <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
-        <source>unknown unit: </source>
+        <source>unit mismatch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unit mismatch</source>
+        <source>unknown unit:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6792,12 +6826,6 @@ Please check report view for more...</source>
     </message>
     <message>
         <source>
-
-Pyhsical path: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
 Document: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -6824,6 +6852,12 @@ Document: </source>
     </message>
     <message>
         <source>Workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+
+Physical path: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>

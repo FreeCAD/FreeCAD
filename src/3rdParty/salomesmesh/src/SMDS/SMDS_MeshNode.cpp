@@ -191,7 +191,7 @@ public:
 SMDS_ElemIteratorPtr SMDS_MeshNode::
 GetInverseElementIterator(SMDSAbs_ElementType type) const
 {
-  vtkCellLinks::Link l = SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetCellLinks()->GetLink(myVtkID);
+  vtkCellLinks::Link l = static_cast<vtkCellLinks*>(SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetCellLinks())->GetLink(myVtkID);
   //MESSAGE("myID " << myID << " ncells " << l.ncells);
   return SMDS_ElemIteratorPtr(new SMDS_MeshNode_MyInvIterator(SMDS_Mesh::_meshList[myMeshId], l.cells, l.ncells, type));
 }
@@ -251,7 +251,7 @@ elementsIterator(SMDSAbs_ElementType type) const
     return SMDS_MeshElement::elementsIterator(SMDSAbs_Node);
   else
   {
-    vtkCellLinks::Link l = SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetCellLinks()->GetLink(myVtkID);
+    vtkCellLinks::Link l = static_cast<vtkCellLinks*>(SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetCellLinks())->GetLink(myVtkID);
     return SMDS_ElemIteratorPtr(new SMDS_MeshNode_MyIterator(SMDS_Mesh::_meshList[myMeshId], l.cells, l.ncells, type));
   }
 }
@@ -350,7 +350,7 @@ void SMDS_MeshNode::AddInverseElement(const SMDS_MeshElement* ME)
   const SMDS_MeshCell *cell = dynamic_cast<const SMDS_MeshCell*> (ME);
   assert(cell);
   SMDS_UnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-  vtkCellLinks *Links = grid->GetCellLinks();
+  vtkCellLinks *Links = static_cast<vtkCellLinks*>(grid->GetCellLinks());
   Links->ResizeCellList(myVtkID, 1);
   Links->AddCellReference(cell->getVtkId(), myVtkID);
 }
@@ -366,7 +366,7 @@ void SMDS_MeshNode::ClearInverseElements()
 
 bool SMDS_MeshNode::emptyInverseElements()
 {
-  vtkCellLinks::Link l = SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetCellLinks()->GetLink(myVtkID);
+  vtkCellLinks::Link l = static_cast<vtkCellLinks*>(SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetCellLinks())->GetLink(myVtkID);
   return (l.ncells == 0);
 }
 
@@ -378,7 +378,7 @@ bool SMDS_MeshNode::emptyInverseElements()
 
 int SMDS_MeshNode::NbInverseElements(SMDSAbs_ElementType type) const
 {
-  vtkCellLinks::Link l = SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetCellLinks()->GetLink(myVtkID);
+  vtkCellLinks::Link l = static_cast<vtkCellLinks*>(SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetCellLinks())->GetLink(myVtkID);
 
   if ( type == SMDSAbs_All )
     return l.ncells;

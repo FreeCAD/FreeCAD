@@ -330,6 +330,26 @@ Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustaj
       <translation>Prvo odaberite najmanje dva objekta, ili jedan ili više spojeva! Ako je samo jedan spoj odabran, spojeni oblici će biti premreženi međusobno (inače, spojevi sa osobnim sjecištima nisu valjani).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Nevažeći odabir</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Izračunavanje rezultata nije uspjelo s pogreškom:
+
+{err}
+
+Kliknite "Nastavi" da biste svejedno stvorili značajku ili "Prekini" da biste je otkazali.
+
+</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Odaberite najmanje dva predmeta ili jedan ili više složenih spojeva. Ako je odabran samo jedan složeni spoj, složeni oblici će se međusobno presijecati (u suprotnom, složeni spojevi sa samo-presjecima nisu valjani).</translation>
@@ -338,16 +358,6 @@ Kliknite na 'Nastavi' za stvaranja svojstava svejedno, ili "Odustani" za odustaj
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Razdijeli u složeni objekt</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleovi Fragmenti</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Razdjeli objekate gdje se sijeku</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -387,24 +397,14 @@ To znači da će se ukloniti preklapajući volumeni oblika.
 'Složeni filtar' može se koristiti za izdvajanje preostalih dijelova.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Nevažeći odabir</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleovi Fragmenti</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Izračunavanje rezultata nije uspjelo s pogreškom:
-
-{err}
-
-Kliknite "Nastavi" da biste svejedno stvorili značajku ili "Prekini" da biste je otkazali.
-
-</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Razdjeli objekate gdje se sijeku</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

@@ -31,7 +31,7 @@
     <message>
       <location filename="Instance.py" line="72"/>
       <source>Ship draft [m]</source>
-      <translation>船舶吃水 [m]</translation>
+      <translation>船舶吃水</translation>
     </message>
     <message>
       <location filename="Instance.py" line="82"/>
@@ -124,7 +124,7 @@
     <message>
       <location filename="TaskPanel.py" line="228"/>
       <source>Draft</source>
-      <translation>吃水深度</translation>
+      <translation>拔模</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="323"/>
@@ -433,7 +433,7 @@
     <message>
       <location filename="TaskPanel.py" line="234"/>
       <source>Draft</source>
-      <translation>吃水深度</translation>
+      <translation>拔模</translation>
     </message>
   </context>
   <context>

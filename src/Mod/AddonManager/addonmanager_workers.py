@@ -330,12 +330,12 @@ class FillMacroListWorker(QtCore.QThread):
         """Retrieve macros from the wiki
 
         Read the wiki and emit a signal for each found macro.
-        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes
+        Reads only the page https://wiki.freecadweb.org/Macros_recipes
         """
 
         self.info_label_signal.emit("Downloading list of macros from the FreeCAD wiki...")
         self.progressbar_show.emit(True)
-        u = utils.urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
+        u = utils.urlopen("https://wiki.freecadweb.org/Macros_recipes")
         if not u:
             FreeCAD.Console.PrintWarning(translate("AddonsInstaller",
                                                    "Appears to be an issue connecting to the Wiki, "
@@ -656,7 +656,7 @@ class GetMacroDetailsWorker(QtCore.QThread):
             mac = self.macro.name.replace(" ", "_")
             mac = mac.replace("&", "%26")
             mac = mac.replace("+", "%2B")
-            url = "https://www.freecadweb.org/wiki/Macro_" + mac
+            url = "https://wiki.freecadweb.org/Macro_" + mac
             self.macro.fill_details_from_wiki(url)
         if self.macro.is_installed():
             already_installed_msg = ('<strong style=\"background: #00B629;\">'

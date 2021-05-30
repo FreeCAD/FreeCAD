@@ -375,9 +375,12 @@ def getSVG(source,
                 drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
+        elif o.isDerivedFrom("App::DocumentObjectGroup"):
+            # These will have been expanded by getSectionData already
+            pass
         elif looksLikeDraft(o):
             drafts.append(o)
-        elif not o.isDerivedFrom("App::DocumentObjectGroup"):
+        else:
             nonspaces.append(o)
         if Draft.getType(o.getLinkedObject()) == "Window":  # To support Link of Windows(Doors)
             windows.append(o)

@@ -102,10 +102,7 @@ class Wire(DraftObject):
             if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                 shape = obj.Base.Shape.copy()
                 if obj.Base.Shape.isClosed():
-                    if hasattr(obj,"MakeFace"):
-                        if obj.MakeFace:
-                            shape = Part.Face(shape)
-                    else:
+                    if getattr(obj,"MakeFace",True):
                         shape = Part.Face(shape)
                 obj.Shape = shape
         elif obj.Base and obj.Tool:
@@ -126,21 +123,20 @@ class Wire(DraftObject):
                 obj.Points.pop()
             if obj.Closed and (len(obj.Points) > 2):
                 pts = obj.Points
-                if hasattr(obj,"Subdivisions"):
-                    if obj.Subdivisions > 0:
-                        npts = []
-                        for i in range(len(pts)):
-                            p1 = pts[i]
-                            npts.append(pts[i])
-                            if i == len(pts)-1:
-                                p2 = pts[0]
-                            else:
-                                p2 = pts[i+1]
-                            v = p2.sub(p1)
-                            v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
-                            for j in range(obj.Subdivisions):
-                                npts.append(p1.add(App.Vector(v).multiply(j+1)))
-                        pts = npts
+                if getattr(obj,"Subdivisions",0) > 0:
+                    npts = []
+                    for i in range(len(pts)):
+                        p1 = pts[i]
+                        npts.append(pts[i])
+                        if i == len(pts)-1:
+                            p2 = pts[0]
+                        else:
+                            p2 = pts[i+1]
+                        v = p2.sub(p1)
+                        v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
+                        for j in range(obj.Subdivisions):
+                            npts.append(p1.add(App.Vector(v).multiply(j+1)))
+                    pts = npts
                 shape = Part.makePolygon(pts+[pts[0]])
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
@@ -153,10 +149,7 @@ class Wire(DraftObject):
                         if w:
                             shape = w
                 try:
-                    if hasattr(obj,"MakeFace"):
-                        if obj.MakeFace:
-                            shape = Part.Face(shape)
-                    else:
+                    if getattr(obj,"MakeFace",True):
                         shape = Part.Face(shape)
                 except Part.OCCError:
                     pass
@@ -166,18 +159,15 @@ class Wire(DraftObject):
                 lp = obj.Points[0]
                 for p in pts:
                     if not DraftVecUtils.equals(lp,p):
-                        if hasattr(obj,"Subdivisions"):
-                            if obj.Subdivisions > 0:
-                                npts = []
-                                v = p.sub(lp)
-                                v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
-                                edges.append(Part.LineSegment(lp,lp.add(v)).toShape())
-                                lv = lp.add(v)
-                                for j in range(obj.Subdivisions):
-                                    edges.append(Part.LineSegment(lv,lv.add(v)).toShape())
-                                    lv = lv.add(v)
-                            else:
-                                edges.append(Part.LineSegment(lp,p).toShape())
+                        if getattr(obj,"Subdivisions",0) > 0:
+                            npts = []
+                            v = p.sub(lp)
+                            v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
+                            edges.append(Part.LineSegment(lp,lp.add(v)).toShape())
+                            lv = lp.add(v)
+                            for j in range(obj.Subdivisions):
+                                edges.append(Part.LineSegment(lv,lv.add(v)).toShape())
+                                lv = lv.add(v)
                         else:
                             edges.append(Part.LineSegment(lp,p).toShape())
                         lp = p

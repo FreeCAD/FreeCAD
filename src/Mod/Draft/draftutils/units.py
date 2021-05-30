@@ -100,10 +100,16 @@ def display_external(internal_value,
 
             conversion = q.getUserPreferred()[1]
             uom = q.getUserPreferred()[2]
+        elif unit.lower() == "arch":
+            return App.Units.schemaTranslate(q,5)[0].replace("+"," ")
         else:
-            uom = unit
-            internal_value = q.getValueAs(unit)
-            conversion = 1
+            try:
+                uom = unit
+                internal_value = q.getValueAs(unit)
+                conversion = 1
+            except:
+                conversion = q.getUserPreferred()[1]
+                uom = q.getUserPreferred()[2]
     elif dim == 'Angle':
         return App.Units.Quantity(internal_value, App.Units.Angle).UserString
     else:

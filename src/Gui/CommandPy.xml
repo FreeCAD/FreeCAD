@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
+  <PythonExport
       Father="PyObjectBase"
-      Name="CommandPy" 
+      Name="CommandPy"
       Twin="Command"
       TwinPointer="Command"
       Include="Gui/Command.h"
@@ -15,88 +15,82 @@
     </Documentation>
     <Methode Name="get" Static='true'>
       <Documentation>
-          <UserDocu>get(string) -> Command
-
-Get a given command by name or None if it doesn't exist.
+          <UserDocu>Get a given command by name or None if it doesn't exist.
+get(string) -> Command
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="update" Static='true'>
       <Documentation>
-          <UserDocu>update() -> None
-
-Update active status of all commands.
+          <UserDocu>Update active status of all commands.
+update() -> None
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="listAll" Static='true'>
       <Documentation>
-          <UserDocu>listAll() -> list of strings
-
-Returns the name of all commands.
+          <UserDocu>Returns the name of all commands.
+listAll() -> list of strings
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="listByShortcut" Static='true'>
       <Documentation>
-          <UserDocu>listByShortcut(string, bool bUseRegExp=False) -> list of strings
-
-Returns a list of all commands, filtered by shortcut.
+          <UserDocu>Returns a list of all commands, filtered by shortcut.
+listByShortcut(string, bool bUseRegExp=False) -> list of strings
+--
 Shortcuts are converted to uppercase and spaces removed prior to comparison.
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="run">
       <Documentation>
-          <UserDocu>run() -> None
-
-Runs the given command.
+          <UserDocu>Runs the given command.
+run() -> None
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isActive" Const="true">
       <Documentation>
-          <UserDocu>isActive() -> bool
-
-Returns True if the command is active, False otherwise.
+          <UserDocu>Returns True if the command is active, False otherwise.
+isActive() -> bool
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getShortcut">
       <Documentation>
-          <UserDocu>getShortcut() -> string
-
-Returns string representing shortcut key accelerator for command.
+          <UserDocu>Returns string representing shortcut key accelerator for command.
+getShortcut() -> string
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setShortcut">
       <Documentation>
-          <UserDocu>setShortcut(string) -> bool
-
-Sets shortcut for given command, returns bool True for success.
+          <UserDocu>Sets shortcut for given command, returns bool True for success.
+setShortcut(string) -> bool
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="resetShortcut">
       <Documentation>
-          <UserDocu>resetShortcut() -> bool
-
-Resets shortcut for given command back to the default, returns bool True for success.
+          <UserDocu>Resets shortcut for given command back to the default, returns bool True for success.
+resetShortcut() -> bool
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getInfo">
       <Documentation>
-          <UserDocu>getInfo() -> list of strings
-
+          <UserDocu>Return information about this command.
+getInfo() -> list of strings
+--
 Usage: menuText, tooltipText, whatsThisText, statustipText, pixmapText, shortcutText.
 </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getAction">
       <Documentation>
-          <UserDocu>getAction() -> list of QAction</UserDocu>
+          <UserDocu>Return the associated QAction object.
+getAction() -> list of QAction</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

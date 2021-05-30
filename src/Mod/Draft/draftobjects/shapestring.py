@@ -55,8 +55,8 @@ class ShapeString(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
         obj.addProperty("App::PropertyLength", "Tracking", "Draft", _tip)
 
-        _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters")
-        obj.addProperty("App::PropertyBool", "FillLetters", "Draft", _tip).FillLetters = True
+        _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
+        obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
 
     def execute(self, obj):
         import Part
@@ -95,8 +95,8 @@ class ShapeString(DraftObject):
                 sticky = True
 
             fill = True
-            if hasattr(obj, "FillLetters"):
-                fill = obj.FillLetters
+            if hasattr(obj, "MakeFace"):
+                fill = obj.MakeFace
 
             for char in CharList:
                 if sticky or (not fill):

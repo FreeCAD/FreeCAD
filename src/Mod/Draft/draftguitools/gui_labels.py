@@ -66,14 +66,13 @@ class Label(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        self.name = translate("draft", "Label")
-        super(Label, self).Activated(self.name, noplanesetup=True)
+        super(Label, self).Activated(name="Label", noplanesetup=True)
         self.ghost = None
         self.labeltype = utils.getParam("labeltype", "Custom")
         self.sel = Gui.Selection.getSelectionEx()
         if self.sel:
             self.sel = self.sel[0]
-        self.ui.labelUi(self.name, callback=self.setmode)
+        self.ui.labelUi(title=translate("draft",self.featureName), callback=self.setmode)
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         self.ghost = trackers.lineTracker()

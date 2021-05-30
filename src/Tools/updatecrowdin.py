@@ -29,7 +29,7 @@ For it to work, you need a ~/.crowdin-freecad-token file in your user's folder, 
 the API access token that gives access to the crowdin FreeCAD project.
 The API token can also be specified in the CROWDIN_TOKEN environment variable.
 
-The CROWDIN_PROJECT_ID environment variable must be set.
+The CROWDIN_PROJECT_ID environment variable can be used to use this script in other projects.
 
 Usage:
 
@@ -41,6 +41,7 @@ Available commands:
     update:              updates crowdin the current version of .ts files found in the source code
     build:               builds a new downloadable package on crowdin with all translated strings
     download [build_id]: downloads build specified by 'build_id' or latest if build_id is left blank
+    apply:               applies downloaded translations to source code (runs updatefromcrowdin.py)
 
 Example:
 
@@ -137,14 +138,14 @@ class CrowdinUpdater:
             print(f'{filename} uploaded')
 
     def status(self):
-        response = self._make_project_api_req('/languages/progress')
+        response = self._make_project_api_req('/languages/progress?limit=100')
         return [item['data'] for item in response]
 
     def download(self, build_id):
         filename = f'{self.project_identifier}.zip'
         response = self._make_project_api_req(f'/translations/builds/{build_id}/download')
         urlretrieve(response['url'], filename)
-        print('download complete')
+        print('download of '+filename+' complete')
 
     def build(self):
         self._make_project_api_req('/translations/builds', data={}, method='POST')
@@ -192,17 +193,33 @@ if __name__ == "__main__":
 
     project_identifier = os.environ.get('CROWDIN_PROJECT_ID')
     if not project_identifier:
-        print('CROWDIN_PROJECT_ID env var must be set')
-        sys.exit()
+        project_identifier = "freecad"
+        #print('CROWDIN_PROJECT_ID env var must be set')
+        #sys.exit()
 
     updater = CrowdinUpdater(token, project_identifier)
 
     if command == "status":
         status = updater.status()
+        status = sorted(status,key=lambda item: item['translationProgress'],reverse=True)
+        print(len([item for item in status if item['translationProgress'] > 50])," languages with status > 50%:")
+        print("    ")
+        sep = False
+        prefix = ""
+        suffix = ""
+        if os.name == "posix":
+            prefix = "\033[;32m"
+            suffix = "t\033[0m"
         for item in status:
-            print(f"language: {item['languageId']}")
-            print(f"  translation progress: {item['translationProgress']}%")
-            print(f"  approval progress: {item['approvalProgress']}%")
+            if item['translationProgress'] > 0:
+                if (item['translationProgress'] < 50) and (not sep):
+                    print("    ")
+                    print("Other languages:")
+                    print("    ")
+                    sep = True
+                print(prefix+f"language: {item['languageId']}"+suffix)
+                print(f"  translation progress: {item['translationProgress']}%")
+                print(f"  approval progress:    {item['approvalProgress']}%")
 
     elif command == "build-status":
         for item in updater.build_status():
@@ -239,5 +256,10 @@ if __name__ == "__main__":
         ts_files = [TsFile(LEGACY_NAMING_MAP[a] if a in LEGACY_NAMING_MAP else a, b) for (a, b) in names_and_path]
 
         updater.update(ts_files)
+
+    elif command == "apply":
+        import updatefromcrowdin
+        updatefromcrowdin.run()
+
     else:
         print(__doc__)

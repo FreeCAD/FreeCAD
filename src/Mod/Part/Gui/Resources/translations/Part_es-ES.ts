@@ -322,6 +322,24 @@ Haga clic en 'Continuar' para crear la operación de todos modos, o 'Abortar' pa
       <translation>¡Seleccione al menos dos objetos, o uno o más compuestos, en primer lugar! Si sólo se selecciona un compuesto, las formas compuestas serán intersectadas entre sí (de lo contrario, los compuestos con intersecciones con uno mismo son inválidos).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Mala selección</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>El cálculo del resultado falló con un error:
+
+{err}
+
+Haga clic en 'Continuar' para crear la función de todos modos, o 'Abortar' para cancelar.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Seleccione al menos dos objetos, o uno o más compuestos. Si sólo se selecciona un compuesto, las formas compuestas se intersecarán entre sí (de lo contrario, los compuestos con intersecciones automáticas no son válidos).</translation>
@@ -330,16 +348,6 @@ Haga clic en 'Continuar' para crear la operación de todos modos, o 'Abortar' pa
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Corte a compuesto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Fragmentos booleanos</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Corta objetos donde intersectan</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -379,22 +387,14 @@ Esto significa que los volúmenes superpuestos de las formas se eliminarán.
 Un 'Filtro Compuesto' se puede utilizar para extraer las piezas restantes.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Mala selección</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmentos booleanos</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>El cálculo del resultado falló con un error:
-
-{err}
-
-Haga clic en 'Continuar' para crear la función de todos modos, o 'Abortar' para cancelar.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Corta objetos donde intersectan</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -3630,7 +3630,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location filename="../../DlgFilletEdges.cpp" line="684"/>
       <location filename="../../DlgFilletEdges.cpp" line="744"/>
       <source>Edge%1</source>
-      <translation>Lado %1</translation>
+      <translation>Arista %1</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="827"/>
@@ -3656,13 +3656,13 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="935"/>
       <source>No edge selected</source>
-      <translation>Ningún borde seleccionado</translation>
+      <translation>Ninguna arista seleccionada</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="936"/>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-      <translation>No se ha seleccionado ninguna arista
+      <translation>No se ha seleccionado ninguna arista para redondear
 Por favor selecciona primero una o más aristas.</translation>
     </message>
   </context>

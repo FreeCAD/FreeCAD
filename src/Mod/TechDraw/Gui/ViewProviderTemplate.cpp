@@ -66,7 +66,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderTemplate, Gui::ViewProviderDocumentObje
 
 ViewProviderTemplate::ViewProviderTemplate()
 {
-    sPixmap = "TechDraw_Tree_PageTemplate";
+    sPixmap = "TechDraw_TreePageTemplate";
 
     DisplayMode.setStatus(App::Property::Hidden,true);
 }

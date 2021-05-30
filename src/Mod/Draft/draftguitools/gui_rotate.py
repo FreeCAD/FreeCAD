@@ -64,7 +64,7 @@ class Rotate(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Rotate, self).Activated(name=translate("draft","Rotate"))
+        super(Rotate, self).Activated(name="Rotate")
         if not self.ui:
             return
         self.ghosts = []

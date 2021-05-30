@@ -41,6 +41,7 @@ import math
 from lazy_loader.lazy_loader import LazyLoader
 Part = LazyLoader('Part', globals(), 'Part')
 Arcs = LazyLoader('draftgeoutils.arcs', globals(), 'draftgeoutils.arcs')
+PathGeom = LazyLoader('PathScripts.PathGeom', globals(), 'PathScripts.PathGeom')
 if FreeCAD.GuiUp:
     FreeCADGui = LazyLoader('FreeCADGui', globals(), 'FreeCADGui')
 
@@ -159,7 +160,7 @@ class ObjectSlot(PathOp.ObjectOp):
             'CustomPoint1': FreeCAD.Vector(0.0, 0.0, 0.0),
             'ExtendPathStart': 0.0,
             'Reference1': 'Center of Mass',
-            'CustomPoint2': FreeCAD.Vector(10.0, 10.0, 0.0),
+            'CustomPoint2': FreeCAD.Vector(0.0, 0.0, 0.0),
             'ExtendPathEnd': 0.0,
             'Reference2': 'Center of Mass',
             'LayerMode': 'Multi-pass',
@@ -353,6 +354,7 @@ class ObjectSlot(PathOp.ObjectOp):
         self.arcMidPnt = None
         self.arcRadius = 0.0
         self.newRadius = 0.0
+        self.featureDetails = ["", ""]
         self.isDebug = False if PathLog.getLevel(PathLog.thisModule()) != 4 else True
         self.showDebugObjects = False
         self.stockZMin = self.job.Stock.Shape.BoundBox.ZMin
@@ -433,35 +435,41 @@ class ObjectSlot(PathOp.ObjectOp):
             # Use custom inputs here
             p1 = obj.CustomPoint1
             p2 = obj.CustomPoint2
-            if p1.z == p2.z:
+            if p1 == p2:
+                msg = translate('PathSlot',
+                        'Custom points are identical.')
+                FreeCAD.Console.PrintError(msg + '\n')
+                return False
+            elif p1.z == p2.z:
                 pnts = (p1, p2)
+                featureCount = 2
             else:
                 msg = translate('PathSlot',
                         'Custom points not at same Z height.')
                 FreeCAD.Console.PrintError(msg + '\n')
                 return False
-
-        baseGeom = obj.Base[0]
-        base, subsList = baseGeom
-        self.base = base
-
-        featureCount = len(subsList)
-        if  featureCount == 1:
-            PathLog.debug('Reference 1: {}'.format(obj.Reference1))
-            sub1 = subsList[0]
-            shape_1 = getattr(base.Shape, sub1)
-            self.shape1 = shape_1
-            pnts = self._processSingle(obj, shape_1, sub1)
         else:
-            PathLog.debug('Reference 1: {}'.format(obj.Reference1))
-            PathLog.debug('Reference 2: {}'.format(obj.Reference2))
-            sub1 = subsList[0]
-            sub2 = subsList[1]
-            shape_1 = getattr(base.Shape, sub1)
-            shape_2 = getattr(base.Shape, sub2)
-            self.shape1 = shape_1
-            self.shape2 = shape_2
-            pnts = self._processDouble(obj, shape_1, sub1, shape_2, sub2)
+            baseGeom = obj.Base[0]
+            base, subsList = baseGeom
+            self.base = base
+
+            featureCount = len(subsList)
+            if  featureCount == 1:
+                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+                sub1 = subsList[0]
+                shape_1 = getattr(base.Shape, sub1)
+                self.shape1 = shape_1
+                pnts = self._processSingle(obj, shape_1, sub1)
+            else:
+                PathLog.debug('Reference 1: {}'.format(obj.Reference1))
+                PathLog.debug('Reference 2: {}'.format(obj.Reference2))
+                sub1 = subsList[0]
+                sub2 = subsList[1]
+                shape_1 = getattr(base.Shape, sub1)
+                shape_2 = getattr(base.Shape, sub2)
+                self.shape1 = shape_1
+                self.shape2 = shape_2
+                pnts = self._processDouble(obj, shape_1, sub1, shape_2, sub2)
 
         if not pnts:
             return False
@@ -608,21 +616,26 @@ class ObjectSlot(PathOp.ObjectOp):
                     PathLog.debug('_finishLine() Perp, featureCnt == 2')
             if perpZero:
                 (p1, p2) = pnts
-                pnts = self._makePerpendicular(p1, p2, 10.0)  # 10.0 offset below
+                initPerpDist = p1.sub(p2).Length
+                pnts = self._makePerpendicular(p1, p2, initPerpDist)  # 10.0 offset below
         else:
             # Modify path points if user selected two parallel edges
             if (featureCnt == 2 and self.shapeType1 == 'Edge' and 
-                    self.shapeType2 == 'Edge' and self._isParallel(self.dYdX1, self.dYdX2)):
-                (p1, p2) = pnts
-                edg1_len = self.shape1.Length
-                edg2_len = self.shape2.Length
-                set_length = max(edg1_len, edg2_len)
-                pnts = self._makePerpendicular(p1, p2, 10.0 + set_length)  # 10.0 offset below
-                if edg1_len != edg2_len:
-                    msg = obj.Label + ' '
-                    msg += translate('PathSlot',
-                            'Verify slot path start and end points.')
-                    FreeCAD.Console.PrintWarning(msg + '\n')
+                    self.shapeType2 == 'Edge'):
+                if self.featureDetails[0] == "arc" and self.featureDetails[1] == "arc":
+                    perpZero = False
+                elif self._isParallel(self.dYdX1, self.dYdX2):
+                    PathLog.debug('_finishLine() StE, featureCnt == 2 // edges')
+                    (p1, p2) = pnts
+                    edg1_len = self.shape1.Length
+                    edg2_len = self.shape2.Length
+                    set_length = max(edg1_len, edg2_len)
+                    pnts = self._makePerpendicular(p1, p2, 10.0 + set_length)  # 10.0 offset below
+                    if edg1_len != edg2_len:
+                        msg = obj.Label + ' '
+                        msg += translate('PathSlot',
+                                'Verify slot path start and end points.')
+                        FreeCAD.Console.PrintWarning(msg + '\n')
             else:
                 perpZero = False
 
@@ -712,21 +725,30 @@ class ObjectSlot(PathOp.ObjectOp):
             pnts = False
             norm = shape_1.normalAt(0.0, 0.0)
             PathLog.debug('{}.normalAt(): {}'.format(sub1, norm))
-            if norm.z == 1 or norm.z == -1:
-                pnts = self._processSingleHorizFace(obj, shape_1)
-            elif norm.z == 0:
-                faceType = self._getVertFaceType(shape_1)
-                if faceType:
-                    (geo, shp) = faceType
-                    if geo == 'Face':
-                        pnts = self._processSingleComplexFace(obj, shp)
-                    if geo == 'Wire':
-                        pnts = self._processSingleVertFace(obj, shp)
-                    if geo == 'Edge':
-                        pnts = self._processSingleVertFace(obj, shp)
+            
+            if PathGeom.isRoughly(shape_1.BoundBox.ZMax, shape_1.BoundBox.ZMin):
+                # Horizontal face
+                if norm.z == 1 or norm.z == -1:
+                    pnts = self._processSingleHorizFace(obj, shape_1)
+                elif norm.z == 0:
+                    faceType = self._getVertFaceType(shape_1)
+                    if faceType:
+                        (geo, shp) = faceType
+                        if geo == 'Face':
+                            pnts = self._processSingleComplexFace(obj, shp)
+                        if geo == 'Wire':
+                            pnts = self._processSingleVertFace(obj, shp)
+                        if geo == 'Edge':
+                            pnts = self._processSingleVertFace(obj, shp)
             else:
+                if len(shape_1.Edges) == 4:
+                    pnts = self._processSingleHorizFace(obj, shape_1)
+                else: 
+                    pnts = self._processSingleComplexFace(obj, shape_1)
+
+            if not pnts:
                 msg = translate('PathSlot',
-                    'The selected face is not oriented horizontally or vertically.')
+                    'The selected face is inaccessible.')
                 FreeCAD.Console.PrintError(msg + '\n')
                 return False
 
@@ -862,16 +884,16 @@ class ObjectSlot(PathOp.ObjectOp):
     def _processSingleComplexFace(self, obj, shape):
         """Determine slot path endpoints from a single complex face."""
         PathLog.debug('_processSingleComplexFace()')
-        PNTS = list()
+        pnts = list()
 
-        def zVal(V):
-            return V.z
+        def zVal(p):
+            return p.z
 
         for E in shape.Wires[0].Edges:
             p = self._findLowestEdgePoint(E)
-            PNTS.append(p)
-        PNTS.sort(key=zVal)
-        return (PNTS[0], PNTS[1])
+            pnts.append(p)
+        pnts.sort(key=zVal)
+        return (pnts[0], pnts[1])
 
     def _processSingleVertFace(self, obj, shape):
         """Determine slot path endpoints from a single vertically oriented face
@@ -925,7 +947,7 @@ class ObjectSlot(PathOp.ObjectOp):
             # Check that all Z values are equal (isRoughly same)
             if (abs(z1 - z2) > tolrnc or
                 abs(z1 - z3) > tolrnc ):
-#                abs(z2 - z3) > tolrnc):  3rd test redundant.
+                # abs(z2 - z3) > tolrnc):  3rd test redundant.
                 return False
             return True
 
@@ -1182,6 +1204,9 @@ class ObjectSlot(PathOp.ObjectOp):
                 p = self._getHighestPoint(shape)
 
         elif cat == 'Edge':
+            featDetIdx = pNum - 1
+            if shape.Curve.TypeId == 'Part::GeomCircle':
+                self.featureDetails[featDetIdx] = "arc"
             # calculate slope between end vertexes
             v0 = shape.Edges[0].Vertexes[0]
             v1 = shape.Edges[0].Vertexes[1]
@@ -1309,13 +1334,13 @@ class ObjectSlot(PathOp.ObjectOp):
 
     def _isParallel(self, dYdX1, dYdX2):
         """Determine if two orientation vectors are parallel."""
+        # if dYdX1.add(dYdX2).Length == 0:
+        #    return True
+        # if ((dYdX1.x + dYdX2.x) / 2.0 == dYdX1.x and
+        #    (dYdX1.y + dYdX2.y) / 2.0 == dYdX1.y):
+        #    return True
+        # return False
         return (dYdX1.cross(dYdX2) == FreeCAD.Vector(0,0,0) )
- #       if dYdX1.add(dYdX2).Length == 0:
- #           return True
- #       if ((dYdX1.x + dYdX2.x) / 2.0 == dYdX1.x and
- #               (dYdX1.y + dYdX2.y) / 2.0 == dYdX1.y):
- #           return True
- #       return False
 
     def _makePerpendicular(self, p1, p2, length):
         """_makePerpendicular(p1, p2, length)...
@@ -1367,7 +1392,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _findLowestEdgePoint(self, E):
         zMin = E.BoundBox.ZMin
         eLen = E.Length
-        L0 = 0
+        L0 = 0.0
         L1 = eLen
         p0 = None
         p1 = None

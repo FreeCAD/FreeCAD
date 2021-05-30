@@ -65,7 +65,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderProjGroup, TechDrawGui::ViewProviderDra
 
 ViewProviderProjGroup::ViewProviderProjGroup()
 {
-    sPixmap = "TechDraw_Tree_ProjGroup";
+    sPixmap = "TechDraw_TreeProjGroup";
 }
 
 ViewProviderProjGroup::~ViewProviderProjGroup()

@@ -58,7 +58,7 @@ class Split(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Split, self).Activated(name=translate("draft","Split"))
+        super(Split, self).Activated(name="Split")
         if not self.ui:
             return
         _msg(translate("draft", "Click anywhere on a line to split it."))

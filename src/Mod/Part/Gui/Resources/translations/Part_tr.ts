@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation>Ek...</translation>
+      <translation>Eklenti...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Ek</translation>
+      <translation>Eklenti</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
@@ -318,6 +318,24 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <translation>Öncelikle en az iki nesne ya da bir veya daha fazla bileşik seçin! Yalnızca bir bileşik seçilirse, bileşik şekiller birbirleri arasında kesişir (aksi halde, kendi kesişen bileşikler geçersiz olur).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Kötü seçim</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Sonuçları hesaplama işlemi hatayla sonuçlandı:
+
+{err}
+
+Özelliği yine de oluşturmak için 'Devam et' e, iptal etmek için 'Vazgeç' e tıklayın.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>En azından iki nesne veya bir ya da daha fazla birleşik seçin. Eğer sadece bir birleşik seçilirse, birleştirilmiş şekiller birbiri arasında kesiştirilecektir (diğer yandan, kendileriyle kesişen birleşikler geçersizdir).</translation>
@@ -326,16 +344,6 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Bileşiği dilimle</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Mantıksal (Boolean) Parçalar</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Nesnelerin kesiştiği yerlerden ayır</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -349,7 +357,7 @@ Bölümleri nesneden çıkarmak için 'Birleşik Filtresi' kullanılabilir.</tra
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
-      <translation>Dilimle</translation>
+      <translation>Parçalara ayır</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="381"/>
@@ -374,22 +382,14 @@ Bu; şekillerin örtüşen hacimleri kaldırılacak anlamına gelir.
 Kalan parçaları çıkarmak için 'Birleşik Filtresi' kullanılabilir.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Kötü seçim</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Mantıksal (Boolean) Parçalar</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Sonuçları hesaplama işlemi hatayla sonuçlandı:
-
-{err}
-
-Özelliği yine de oluşturmak için 'Devam et' e, iptal etmek için 'Vazgeç' e tıklayın.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Nesnelerin kesiştiği yerlerden ayır</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -4043,7 +4043,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <location filename="../../DlgPrimitives.ui" line="114"/>
       <location filename="../../DlgPrimitives.cpp" line="562"/>
       <source>Helix</source>
-      <translation>Helezon</translation>
+      <translation>Helis</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>

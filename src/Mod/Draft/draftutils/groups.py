@@ -197,8 +197,8 @@ def get_group_contents(objectslist,
 
     spaces: bool, optional
         It defaults to `False`.
-        If it is `True`, Arch Spaces are treated as groups,
-        and are added to the output list.
+        If it is `True`, Arch Spaces are added to the output list even
+        when addgroups is False (their contents are always added).
 
     noarchchild: bool, optional
         It defaults to `False`.
@@ -297,7 +297,7 @@ def get_movable_children(objectslist, recursive=True):
     for obj in objectslist:
         # Skips some objects that should never move their children
         if utils.get_type(obj) not in ("Clone", "SectionPlane",
-                                       "Facebinder", "BuildingPart"):
+                                       "Facebinder", "BuildingPart", "App::Link"):
             children = obj.OutList
             if (hasattr(obj, "Proxy") and obj.Proxy
                     and hasattr(obj.Proxy, "getSiblings")

@@ -59,15 +59,14 @@ class Polygon(gui_base_original.Creator):
 
     def Activated(self):
         """Execute when the command is called."""
-        name = translate("draft", "Polygon")
-        super(Polygon, self).Activated(name)
+        super(Polygon, self).Activated(name="Polygon")
         if self.ui:
             self.step = 0
             self.center = None
             self.rad = None
             self.tangents = []
             self.tanpoints = []
-            self.ui.pointUi(title=name, icon="Draft_Polygon")
+            self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Polygon")
             self.ui.extUi()
             self.ui.numFaces.show()
             self.ui.numFacesLabel.show()

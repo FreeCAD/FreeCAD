@@ -1,16 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/TechDraw_Tree_Hatch.svg</file>
-        <file>icons/TechDraw_Tree_Page.svg</file>
-        <file>icons/TechDraw_Tree_Page_Unsync.svg</file>
-        <file>icons/TechDraw_Tree_Page_Sync.svg</file>
-        <file>icons/TechDraw_Tree_PageTemplate.svg</file>
-        <file>icons/TechDraw_Tree_ProjGroup.svg</file>
-        <file>icons/TechDraw_Tree_Section.svg</file>
-        <file>icons/TechDraw_Tree_Spreadsheet.svg</file>
-        <file>icons/TechDraw_Tree_Symbol.svg</file>
-        <file>icons/TechDraw_Tree_View.svg</file>
-        <file>icons/TechDraw_Tree_Multi.svg</file>
         <file>icons/TechDraw_Pages.svg</file>
         <file>icons/TechDraw_ProjBottom.svg</file>
         <file>icons/TechDraw_ProjFront.svg</file>
@@ -22,6 +11,17 @@
         <file>icons/TechDraw_ProjRear.svg</file>
         <file>icons/TechDraw_ProjRight.svg</file>
         <file>icons/TechDraw_ProjTop.svg</file>
+        <file>icons/TechDraw_TreeHatch.svg</file>
+        <file>icons/TechDraw_TreePage.svg</file>
+        <file>icons/TechDraw_TreePageUnsync.svg</file>
+        <file>icons/TechDraw_TreePageSync.svg</file>
+        <file>icons/TechDraw_TreePageTemplate.svg</file>
+        <file>icons/TechDraw_TreeProjGroup.svg</file>
+        <file>icons/TechDraw_TreeSection.svg</file>
+        <file>icons/TechDraw_TreeSpreadsheet.svg</file>
+        <file>icons/TechDraw_TreeSymbol.svg</file>
+        <file>icons/TechDraw_TreeView.svg</file>
+        <file>icons/TechDraw_TreeMulti.svg</file>
         <file>icons/TechDraw_Dimension.svg</file>
         <file>icons/TechDraw_AngleDimension.svg</file>
         <file>icons/TechDraw_3PtAngleDimension.svg</file>

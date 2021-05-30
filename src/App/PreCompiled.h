@@ -58,6 +58,11 @@
 #include <crtdbg.h>
 #endif
 
+#if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+#include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
+#endif
 
 // Streams
 #include <iostream>

@@ -51,7 +51,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation>Genegeerd. Kan object aan zichzelf koppelen!</translation>
+      <translation>Genegeerd. Kan object niet aan zichzelf koppelen!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
@@ -322,6 +322,24 @@ Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annu
       <translation>Selecteer eerst minstens twee objecten, of een of meer verbindingen! Als er slechts één verbinding is geselecteerd, dan zulen de samengestelde vormen worden doorsneden tussen elkaar (anders, zijn verbindingen met eigen kruispunten ongeldig).</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
+      <source>Bad selection</source>
+      <translation>Foute selectie</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>De berekening van het resultaat is mislukt met een fout: 
+
+{err}
+
+Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt annuleren.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="543"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Selecteer ten minste twee objecten, of een of meer samenstellingen. Als er slechts één samenstelling is geselecteerd, worden de samengestelde vormen tussen elkaar (anders zijn samenstellingen met snijpunten ongeldig).</translation>
@@ -330,16 +348,6 @@ Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annu
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
       <translation>Versnijden tot groep</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
-      <source>Boolean Fragments</source>
-      <translation>Booleaanse fragmenten</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Split objects where they intersect</source>
-      <translation>Splits voorwerpen waar ze overlappen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="349"/>
@@ -379,22 +387,14 @@ Dit betekent dat de overlappende volumes van de vormen worden verwijderd.
 Een 'Samengestelde Filter' kan worden gebruikt om de resterende stukken uit te pakken.</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
-      <source>Bad selection</source>
-      <translation>Foute selectie</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Booleaanse fragmenten</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="501"/>
-      <source>Computing the result failed with an error:
-
-{err}
-
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>De berekening van het resultaat is mislukt met een fout: 
-
-{err}
-
-Klik op 'Doorgaan' om de functie toch aan te maken, of op 'Afbreken' als u wilt annuleren.</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Split objects where they intersect</source>
+      <translation>Splits voorwerpen waar ze overlappen</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>

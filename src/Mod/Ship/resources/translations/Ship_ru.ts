@@ -669,7 +669,7 @@
     <message>
       <location filename="WeightInstance.py" line="85"/>
       <source>Density [kg / m^3]</source>
-      <translation>Плотность [кг / куб.м]</translation>
+      <translation>Плотность, кг/м³</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="118"/>
@@ -719,7 +719,7 @@
     <message>
       <location filename="WeightInstance.py" line="76"/>
       <source>Area density [kg / m^2]</source>
-      <translation>Поверхностная плотность [кг/м^2]</translation>
+      <translation>Поверхностная плотность, кг/м²</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="166"/>

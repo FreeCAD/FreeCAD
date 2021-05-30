@@ -78,8 +78,7 @@ class PointArray(gui_base_original.Modifier):
 
     def Activated(self, name="Point array"):
         """Execute when the command is called."""
-        self.name = name
-        super(PointArray, self).Activated(name=translate("draft","Point array"))
+        super(PointArray, self).Activated(name=name)
         # This was deactivated because it doesn't work correctly;
         # the selection needs to be made on two objects, but currently
         # it only selects one.

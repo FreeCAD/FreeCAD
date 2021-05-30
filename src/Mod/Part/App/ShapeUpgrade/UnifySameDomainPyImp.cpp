@@ -27,6 +27,9 @@
 # include <Standard_Failure.hxx>
 #endif
 
+// Needed for OCCT 7.5.2
+#include <TopoDS_Edge.hxx>
+
 #include "ShapeUpgrade/UnifySameDomainPy.h"
 #include "ShapeUpgrade/UnifySameDomainPy.cpp"
 #include "TopoShapePy.h"

@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="370"/>
       <source>Intersection</source>
-      <translation>Risteys</translation>
+      <translation>Leikkaus</translation>
     </message>
   </context>
   <context>
@@ -693,7 +693,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Union</source>
-      <translation>Yhdiste</translation>
+      <translation>Unioni</translation>
     </message>
   </context>
   <context>
@@ -739,8 +739,8 @@
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <location filename="../../Command.cpp" line="149"/>
-      <source>Mesh Mesh Create</source>
-      <translation>Verkkopintojen liiton luominen</translation>
+      <source>Mesh Create</source>
+      <translation type="unfinished">Mesh Create</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
@@ -1308,7 +1308,7 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="106"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="115"/>
@@ -1318,7 +1318,7 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="124"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="133"/>
@@ -1653,48 +1653,48 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Automatic</source>
       <translation>Automaattinen</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="108"/>
       <source>Adaptive</source>
       <translation type="unfinished">Adaptive</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="110"/>
       <source>Frontal</source>
       <translation>Etuosa</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="112"/>
       <source>Frontal Quad</source>
       <translation>Etuosan nelikkö (quad)</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="113"/>
       <source>Parallelograms</source>
       <translation>Suunnikkaat</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="175"/>
-      <location filename="../../RemeshGmsh.cpp" line="231"/>
+      <location filename="../../RemeshGmsh.cpp" line="184"/>
+      <location filename="../../RemeshGmsh.cpp" line="240"/>
       <source>Time:</source>
       <translation>Aika:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="220"/>
+      <location filename="../../RemeshGmsh.cpp" line="229"/>
       <source>Running gmsh...</source>
       <translation>Suorittaa gmsh...</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="242"/>
+      <location filename="../../RemeshGmsh.cpp" line="251"/>
       <source>Failed to start</source>
       <translation>Käynnistäminen epäonnistui</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="249"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Error</source>
       <translation>Virhe</translation>
     </message>
@@ -1949,7 +1949,7 @@ sileämpään ulkonäköön.
     <message>
       <location filename="../../Segmentation.ui" line="83"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="92"/>
@@ -1970,7 +1970,7 @@ sileämpään ulkonäköön.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1998,7 +1998,7 @@ sileämpään ulkonäköön.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Sphere</source>
-      <translation>Pallo(kuori)</translation>
+      <translation>Pallo</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -2029,7 +2029,7 @@ sileämpään ulkonäköön.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Cylinder</source>
-      <translation>Sylinteri</translation>
+      <translation>Lieriö</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="337"/>
@@ -2386,7 +2386,7 @@ osoittweessa asentaaksesi ohjelman.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Boolean</source>
-      <translation>Boolean</translation>
+      <translation>Boolen operaatio</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>

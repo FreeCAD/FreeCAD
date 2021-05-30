@@ -65,8 +65,7 @@ class Mirror(gui_base_original.Modifier):
 
     def Activated(self):
         """Execute when the command is called."""
-        self.name = translate("draft", "Mirror")
-        super(Mirror, self).Activated(name=self.name)
+        super(Mirror, self).Activated(name="Mirror")
         self.ghost = None
         if self.ui:
             if not Gui.Selection.getSelection():
@@ -84,7 +83,7 @@ class Mirror(gui_base_original.Modifier):
             self.view.removeEventCallback("SoEvent", self.call)
 
         self.sel = Gui.Selection.getSelection()
-        self.ui.pointUi(title=self.name, icon="Draft_Mirror")
+        self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Mirror")
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()

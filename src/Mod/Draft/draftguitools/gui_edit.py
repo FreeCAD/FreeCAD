@@ -930,8 +930,8 @@ class Edit(gui_base_original.Modifier):
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
         if len(selection) > self.maxObjects:
-            _err = translate("draft", "Too many objects selected, max number set to: ")
-            App.Console.PrintMessage(_err + str(self.maxObjects) + "\n")
+            _err = translate("draft", "Too many objects selected, max number set to:")
+            App.Console.PrintMessage(_err + " " + str(self.maxObjects) + "\n")
             return None
 
         for obj in selection:

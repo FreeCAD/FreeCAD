@@ -745,18 +745,29 @@ def guessDepths(objshape, subs=None):
 
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
-    if not hasattr(tool, 'CuttingEdgeAngle') or tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or float(tool.Diameter) == 0.0:
+
+    if isinstance(tool, Path.Tool):
+        PathLog.error(translate("Path", "Legacy Tools not supported"))
         return 0.0
-    else:
-        if tool.CuttingEdgeAngle <= 0 or tool.CuttingEdgeAngle >= 180:
-            PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % tool.CuttingEdgeAngle)
-            return 0.0
-        theta = math.radians(tool.CuttingEdgeAngle)
-        length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
-        if length < 0:
-            PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
-            return 0.0
-        return length
+
+    if not hasattr(tool, 'TipAngle'):
+        PathLog.error(translate("Path", "Selected tool is not a drill"))
+        return 0.0
+
+    angle = tool.TipAngle
+
+    if angle <= 0 or angle >= 180:
+        PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % angle)
+        return 0.0
+
+    theta = math.radians(angle)
+    length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
+
+    if length < 0:
+        PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % angle)
+        return 0.0
+
+    return length
 
 
 class depth_params(object):

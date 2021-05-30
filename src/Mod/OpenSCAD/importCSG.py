@@ -806,6 +806,8 @@ def p_linear_extrude_with_transform(p):
     if p[3]['center']=='true' :
        center(newobj,0,0,h)
     p[0] = [newobj]
+    if gui:
+        obj.ViewObject.hide()
     if printverbose: print("End Linear Extrude with Transform")
 
 def p_import_file1(p):

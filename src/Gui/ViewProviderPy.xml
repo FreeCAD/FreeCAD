@@ -1,191 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport 
-		Father="ExtensionContainerPy" 
-		Name="ViewProviderPy" 
-		Twin="ViewProvider" 
-		TwinPointer="ViewProvider" 
-		Include="Gui/ViewProvider.h" 
-		Namespace="Gui" 
-		FatherInclude="App/ExtensionContainerPy.h"
-		FatherNamespace="App">
-		<Documentation>
-			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-			<UserDocu>This is the ViewProvider base class</UserDocu>
-		</Documentation>
+    <PythonExport
+        Father="ExtensionContainerPy"
+        Name="ViewProviderPy"
+        Twin="ViewProvider"
+        TwinPointer="ViewProvider"
+        Include="Gui/ViewProvider.h"
+        Namespace="Gui"
+        FatherInclude="App/ExtensionContainerPy.h"
+        FatherNamespace="App">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>This is the ViewProvider base class</UserDocu>
+        </Documentation>
         <Methode Name="addProperty">
             <Documentation>
-                <UserDocu>
-                    addProperty(string, string) -- Add a generic property.
-                    The first argument specifies the type, the second the
-                    name of the property.
+                <UserDocu>Add a generic property.
+addProperty(string, string)
+--
+The first argument specifies the type, the second the name of the property.
                 </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="removeProperty">
             <Documentation>
-                <UserDocu>
-                    removeProperty(string) -- Remove a generic property.
-                    Note, you can only remove user-defined properties, not built-in ones.
+                <UserDocu>Remove a generic property.
+removeProperty(string)
+--
+Note, you can only remove user-defined properties, not built-in ones.
                 </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="supportedProperties">
             <Documentation>
-                <UserDocu>A list of supported property types</UserDocu>
+                <UserDocu>A list of supported property types
+</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="show">
-			<Documentation>
-				<UserDocu>Show the object</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="hide">
-			<Documentation>
-				<UserDocu>Hide the object</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="isVisible">
-			<Documentation>
-				<UserDocu>Check if the object is visible</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="canDragObject">
-			<Documentation>
-                <UserDocu>canDragObject(obj=None): check whether the child object can be removed by dragging</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="dragObject">
-			<Documentation>
-                <UserDocu>dragObject(obj): remove a child object by dropping</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="canDropObject">
-			<Documentation>
-                <UserDocu>
-                    canDropObject(obj=None,owner=None,subname=None) 
-                    check whether the child object can be added by dropping
-                </UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="dropObject">
-			<Documentation>
-                <UserDocu>dropObject(obj,owner=None,subname=None): add a child object by dropping</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="canDragAndDropObject">
-			<Documentation>
-                <UserDocu>
+            <Documentation>
+                <UserDocu>Show the object
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hide">
+            <Documentation>
+                <UserDocu>Hide the object
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isVisible">
+            <Documentation>
+                <UserDocu>Check if the object is visible
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="canDragObject">
+            <Documentation>
+                <UserDocu>check whether the child object can be removed by dragging
+canDragObject(obj=None)
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="dragObject">
+            <Documentation>
+                <UserDocu>remove a child object by dropping
+dragObject(obj)
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="canDropObject">
+            <Documentation>
+                <UserDocu>check whether the child object can be added by dropping
+canDropObject(obj=None,owner=None,subname=None)
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="dropObject">
+            <Documentation>
+                <UserDocu>add a child object by dropping
+dropObject(obj,owner=None,subname=None)</UserDocu>
+</Documentation>
+        </Methode>
+        <Methode Name="canDragAndDropObject">
+            <Documentation>
+                <UserDocu>Check whether the child object can be removed from other parent and added here by drag and drop
 canDragAndDropObject(obj)
-Check whether the child object can be removed from other parent and added here by drag and drop
-                </UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="replaceObject">
-			<Documentation>
-                <UserDocu>
-replaceObject(oldObj, newObj) -> Int: replace a child object
-
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="replaceObject">
+            <Documentation>
+                <UserDocu>replace a child object
+replaceObject(oldObj, newObj) -> Int
+--
 Returns 1 if succeeded, 0 if not found, -1 if not supported
-                </UserDocu>
-			</Documentation>
-		</Methode>
+</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="doubleClicked">
             <Documentation>
-                <UserDocu>Trigger double clicking the corresponding tree item of this view object</UserDocu>
+                <UserDocu>Trigger double clicking the corresponding tree item of this view object
+</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="addDisplayMode">
             <Documentation>
-                <UserDocu>Add a new display mode to the view provider</UserDocu>
+                <UserDocu>Add a new display mode to the view provider
+</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="listDisplayModes">
-			<Documentation>
-				<UserDocu>Show a list of all display modes</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="toString">
-			<Documentation>
-				<UserDocu>Return a string representation of the Inventor node</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="setTransformation">
-			<Documentation>
-				<UserDocu>Set a transformation on the Inventor node</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>Show a list of all display modes
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="toString">
+            <Documentation>
+                <UserDocu>Return a string representation of the Inventor node
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setTransformation">
+            <Documentation>
+                <UserDocu>Set a transformation on the Inventor node
+</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="claimChildren" Const="true">
-			<Documentation>
-				<UserDocu>Returns list of objects that are to be grouped in tree under this object.</UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>Returns list of objects that are to be grouped in tree under this object.
+</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="partialRender">
-			<Documentation>
-                <UserDocu>
-                    partialRender(sub=None,clear=False): render only part of the object
-
-                    sub: string or list of string refer to the subelement. If it is None then
-                         reset the partial rendering.
-                    clear: true to add, or false to remove the subelement(s) for rendering.
-                </UserDocu>
-			</Documentation>
-		</Methode>
+            <Documentation>
+                <UserDocu>render only part of the object
+partialRender(sub=None,clear=False)
+--
+sub: string or list of string refer to the subelement. If it is None then reset the partial rendering.
+clear: true to add, or false to remove the subelement(s) for rendering.
+</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getElementColors">
-			<Documentation>
-                <UserDocu>
-getElementColors(elementName=None) -> dict(elementName:color) 
-                </UserDocu>
-			</Documentation>
-		</Methode>
-        <Methode Name="setElementColors">
-			<Documentation>
-                <UserDocu>
-setElementColors(colors): set element colors
-
-colors: color dictionary of type elementName:(r,g,b,a)
-                </UserDocu>
-			</Documentation>
-		</Methode>
-        <Methode Name="getElementPicked" Const="true">
-			<Documentation>
-                <UserDocu>getElementPicked(pickPoint): return the picked subelement</UserDocu>
-			</Documentation>
-		</Methode>
-        <Methode Name="getDetailPath" Const="true">
-			<Documentation>
-                <UserDocu>
-                    getDetailPath(subname,path,append=True): return Coin detail and path of an subelement
-
-                    subelement: dot separated string reference to the sub element
-                    pPath: output coin path leading to the returned element detail
-                    append: If true, path will be first appended with the root node and the mode 
-                    switch node of this view provider. 
-                </UserDocu>
-			</Documentation>
-		</Methode>
-        <Methode Name="signalChangeIcon" Const="true">
-			<Documentation>
-                <UserDocu>Trigger icon changed signal</UserDocu>
-			</Documentation>
-		</Methode>
-        <Methode Name="getBoundingBox">
             <Documentation>
                 <UserDocu>
-getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box of this view object
-
-* subname: the optional subname referring a sub-object
-* transform: whether to apply the transformation matrix of this view provider
-* view: the MDIView, default to active view
+getElementColors(elementName=None) -> dict(elementName:color)
                 </UserDocu>
             </Documentation>
         </Methode>
-		<Attribute Name="Annotation" ReadOnly="false">
-			<Documentation>
-				<UserDocu>A pivy Separator to add a custom scenegraph to this ViewProvider</UserDocu>
-			</Documentation>
-			<Parameter Name="Annotation" Type="Object" />
-		</Attribute>
+        <Methode Name="setElementColors">
+            <Documentation>
+                <UserDocu>
+setElementColors(colors): set element colors
+--
+colors: color dictionary of type elementName:(r,g,b,a)
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getElementPicked" Const="true">
+            <Documentation>
+                <UserDocu>return the picked subelement
+getElementPicked(pickPoint)
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getDetailPath" Const="true">
+            <Documentation>
+                <UserDocu>return Coin detail and path of an subelement
+getDetailPath(subname,path,append=True)
+--
+subelement: dot separated string reference to the sub element
+pPath: output coin path leading to the returned element detail
+append: If true, path will be first appended with the root node and the mode
+switch node of this view provider.
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="signalChangeIcon" Const="true">
+            <Documentation>
+                <UserDocu>Trigger icon changed signal</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getBoundingBox">
+            <Documentation>
+                <UserDocu>obtain the bounding box of this view object
+getBoundingBox(subname=None, transform=True, view=None)
+--
+subname: the optional subname referring a sub-object
+transform: whether to apply the transformation matrix of this view provider
+view: the MDIView, default to active view
+</UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="Annotation" ReadOnly="false">
+            <Documentation>
+                <UserDocu>A pivy Separator to add a custom scenegraph to this ViewProvider</UserDocu>
+            </Documentation>
+            <Parameter Name="Annotation" Type="Object" />
+        </Attribute>
     <Attribute Name="Icon" ReadOnly="true">
       <Documentation>
         <UserDocu>The icon of this ViewProvider</UserDocu>

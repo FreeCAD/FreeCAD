@@ -76,7 +76,7 @@ def setup(doc=None, solvertype="elmer"):
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
-     # solver
+    # solver
     if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")

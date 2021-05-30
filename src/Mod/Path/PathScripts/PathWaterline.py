@@ -251,8 +251,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         # Used to hide inputs in properties list
         expMode = G = 0
         show = hide = A = B = C = 2
-        if hasattr(obj, 'EnableRotation'):
-            obj.setEditorMode('EnableRotation', hide)
 
         obj.setEditorMode('BoundaryEnforcement', hide)
         obj.setEditorMode('InternalFeaturesAdjustment', hide)

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg2160"
+   height="64"
+   width="64">
+  <title
+     id="title845">TechDraw_TreeSection</title>
+  <defs
+     id="defs2162">
+    <linearGradient
+       id="linearGradient3020">
+      <stop
+         style="stop-color:#555753;stop-opacity:1"
+         offset="0"
+         id="stop3022" />
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="1"
+         id="stop3024" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="19.585159"
+       x2="22.600058"
+       y1="22.427111"
+       x1="24.011684"
+       id="linearGradient3841"
+       xlink:href="#linearGradient3827" />
+    <linearGradient
+       id="linearGradient3827">
+      <stop
+         id="stop3829"
+         offset="0"
+         style="stop-color:#d3d7cf;stop-opacity:1" />
+      <stop
+         id="stop3831"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="matrix(1,0,0,-1,0,-1)"
+       gradientUnits="userSpaceOnUse"
+       y2="13"
+       x2="26"
+       y1="-15"
+       x1="32"
+       id="linearGradient3833"
+       xlink:href="#linearGradient3020" />
+  </defs>
+  <metadata
+     id="metadata2165">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>TechDraw_TreeSection</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>TechDraw_TreeSection</dc:title>
+        <dc:date>2016-04-27</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_TreeSection.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,32)"
+     id="layer1">
+    <rect
+       y="-27"
+       x="5"
+       height="54"
+       width="54"
+       id="rect4138-1"
+       style="fill:none;stroke:#2e3436;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6, 12;stroke-dashoffset:7.8;stroke-opacity:1" />
+    <path
+       id="path7047-7"
+       d="M 13,17 V -17 H 51 V 8.000001 H 27 C 27,8.000001 27,17 19,17 c -4,0 -6,0 -6,0 z"
+       style="fill:url(#linearGradient3833);fill-opacity:1;fill-rule:evenodd;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+    <path
+       id="path7047-4"
+       d="M 15,15 V -15 H 49 V 5.9999998 H 25 C 25,5.9999998 25,15 20,15 c -4,0 -5,0 -5,0 z"
+       style="fill:none;stroke:#d3d7cf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+    <ellipse
+       ry="2.4867074"
+       rx="2.4703476"
+       cy="21.006134"
+       cx="22.952965"
+       transform="matrix(2.8336091,0,0,2.8149673,-27.039729,-53.131581)"
+       id="path7049-4"
+       style="fill:url(#linearGradient3841);fill-opacity:1;stroke:#2e3436;stroke-width:0.708147;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       y="-27"
+       x="5"
+       height="54"
+       width="54"
+       id="rect4138-7"
+       style="fill:none;stroke:#babdb6;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6, 12;stroke-dashoffset:7.8;stroke-opacity:1" />
+    <ellipse
+       ry="2.4867074"
+       rx="2.4703476"
+       cy="21.006134"
+       cx="22.952965"
+       transform="matrix(2.0240063,0,0,2.0106911,-8.4569449,-36.236847)"
+       id="path7049-0"
+       style="fill:none;stroke:#ffffff;stroke-width:0.991406;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  </g>
+</svg>
