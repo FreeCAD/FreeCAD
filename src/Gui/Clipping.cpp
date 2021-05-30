@@ -291,13 +291,13 @@ void Clipping::toggle()
 /** Destroys the object and frees any allocated resources */
 Clipping::~Clipping()
 {
-    if (d->view) {
+    if (d->node) {
         d->node->removeChild(d->clipX);
         d->node->removeChild(d->clipY);
         d->node->removeChild(d->clipZ);
         d->node->removeChild(d->clipView);
-        d->node->unref();
     }
+    d->node->unref();
     delete d;
 }
 
