@@ -31,6 +31,7 @@
 # include <QPointer>
 # include <QScrollArea>
 # include <QAction>
+# include <QMessageBox>
 # include <cmath>
 #endif
 
@@ -43,6 +44,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
+#include "MainWindow.h"
 
 using namespace Gui::Dialog;
 
@@ -116,7 +118,7 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     // create widgets
     d->ui.setupUi(this);
 
-    d->ui.checkBoxFill->setChecked(ViewParams::getSectionFill());
+    d->ui.checkBoxFill->setChecked(ViewParams::getSectionFill() && ViewParams::isUsingRenderer());
     d->ui.checkBoxInvert->setChecked(ViewParams::getSectionFillInvert());
     d->ui.checkBoxConcave->setChecked(ViewParams::getSectionConcave());
     d->ui.checkBoxOnTop->setChecked(ViewParams::getNoSectionOnTop());
@@ -125,6 +127,15 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     d->ui.editHatchTexture->setFileName(
             QString::fromUtf8(ViewParams::getSectionHatchTexture().c_str()));
     d->ui.spinBoxHatchScale->setValue(ViewParams::getSectionHatchTextureScale());
+
+    if (!d->ui.checkBoxFill->isChecked()) {
+        d->ui.checkBoxInvert->setDisabled(true);
+        d->ui.checkBoxConcave->setDisabled(true);
+        d->ui.checkBoxOnTop->setDisabled(true);
+        d->ui.checkBoxHatch->setDisabled(true);
+        d->ui.editHatchTexture->setDisabled(true);
+        d->ui.spinBoxHatchScale->setDisabled(true);
+    }
 
     d->ui.clipView->setRange(-INT_MAX,INT_MAX);
     d->ui.clipView->setSingleStep(0.1f);
@@ -327,7 +338,25 @@ void Clipping::on_groupBoxZ_toggled(bool on)
 
 void Clipping::on_checkBoxFill_toggled(bool on)
 {
+    if (on && !ViewParams::isUsingRenderer()) {
+        int res = QMessageBox::question(Gui::getMainWindow(), tr("Clipping"),
+                tr("Cross section fill only works with 'Experiemental' render cache"
+                   " (Preferences -> Display -> Render cache).\n\n"
+                   "Do you want to enable it?"),
+                QMessageBox::Yes, QMessageBox::No|QMessageBox::No);
+        if (res == QMessageBox::No) {
+            d->ui.checkBoxFill->setChecked(false);
+            return;
+        }
+        ViewParams::useRenderer(true);
+    }
     ViewParams::setSectionFill(on);
+    d->ui.checkBoxInvert->setEnabled(on);
+    d->ui.checkBoxConcave->setEnabled(on);
+    d->ui.checkBoxOnTop->setEnabled(on && !ViewParams::getSectionConcave());
+    d->ui.checkBoxHatch->setEnabled(on);
+    d->ui.editHatchTexture->setEnabled(on);
+    d->ui.spinBoxHatchScale->setEnabled(on);
     if (d->view)
         d->view->getViewer()->redraw();
 }

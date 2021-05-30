@@ -125,3 +125,17 @@ void ViewParams::onSectionHatchTextureChanged() {
 void ViewParams::onRenderCacheChanged() {
     onSectionHatchTextureChanged();
 }
+
+bool ViewParams::isUsingRenderer()
+{
+    return instance()->getRenderCache() == 3;
+}
+
+void ViewParams::useRenderer(bool enable)
+{
+    if (instance()->isUsingRenderer()) {
+        if (!enable)
+            instance()->setRenderCache(0);
+    } else if (enable)
+        instance()->setRenderCache(3);
+}

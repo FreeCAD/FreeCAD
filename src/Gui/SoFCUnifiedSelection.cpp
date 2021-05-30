@@ -178,7 +178,7 @@ public:
     }
 
     bool useRenderer() const {
-        return ViewParams::getRenderCache() == 3;
+        return ViewParams::isUsingRenderer();
     }
 
     bool render(SoGLRenderAction * action) {
@@ -314,9 +314,9 @@ SoFCUnifiedSelection::SoFCUnifiedSelection()
     SO_NODE_DEFINE_ENUM_VALUE(HighlightModes, OFF);
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
 
-    this->renderCaching = ViewParams::getRenderCache() == 3 ?
+    this->renderCaching = ViewParams::isUsingRenderer() ?
         SoSeparator::OFF : SoSeparator::ON;
-    this->boundingBoxCaching = ViewParams::getRenderCache() == 3 ?
+    this->boundingBoxCaching = ViewParams::isUsingRenderer() ?
         SoSeparator::OFF : SoSeparator::ON;
 
     this->useNewSelection = ViewParams::instance()->getUseNewSelection();

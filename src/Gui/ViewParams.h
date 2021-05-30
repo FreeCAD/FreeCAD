@@ -362,6 +362,9 @@ public:
         return getShowSelectionOnTop() && getPartialHighlightOnFullSelect();
     }
 
+    static void useRenderer(bool enable);
+    static bool isUsingRenderer();
+
 private:
     void remove(const char *);
 
