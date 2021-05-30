@@ -22,12 +22,16 @@
 
 #include "PreCompiled.h"
 #include <App/Application.h>
+#include "Application.h"
+#include "Document.h"
 #include "ViewProvider.h"
 #include "ViewParams.h"
 #include "Selection.h"
 #include "OverlayWidgets.h"
 #include "Widgets.h"
 #include "MainWindow.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
 
 using namespace Gui;
 
@@ -106,3 +110,18 @@ void ViewParams::onTextCursorWidthChanged() {
     LineEditStyle::setupChildren(getMainWindow());
 }
 
+void ViewParams::onSectionHatchTextureChanged() {
+    for (auto doc : App::GetApplication().getDocuments()) {
+        Gui::Document* gdoc = Gui::Application::Instance->getDocument(doc);
+        if (gdoc) {
+            for (auto v : gdoc->getMDIViewsOfType(View3DInventor::getClassTypeId())) {
+                auto view = static_cast<View3DInventor*>(v)->getViewer();
+                view->updateHatchTexture();
+            }
+        }
+    }
+}
+
+void ViewParams::onRenderCacheChanged() {
+    onSectionHatchTextureChanged();
+}

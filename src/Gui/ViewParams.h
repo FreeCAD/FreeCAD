@@ -62,7 +62,7 @@ public:
     FC_VIEW_PARAM(UseSelectionRoot,bool,Bool,true, "") \
     FC_VIEW_PARAM(EnableSelection,bool,Bool,true, "") \
     FC_VIEW_PARAM(EnablePreselection,bool,Bool,true, "") \
-    FC_VIEW_PARAM(RenderCache,int,Int,0, "") \
+    FC_VIEW_PARAM2(RenderCache,int,Int,0, "") \
     FC_VIEW_PARAM(RandomColor,bool,Bool,false, "") \
     FC_VIEW_PARAM(BoundingBoxColor,unsigned long,Unsigned,0xffffffff, "") \
     FC_VIEW_PARAM(AnnotationTextColor,unsigned long,Unsigned,0xffffffff, "") \
@@ -325,11 +325,18 @@ public:
         QT_TRANSLATE_NOOP("ViewParams","Cross section in concave."))\
     FC_VIEW_PARAM(NoSectionOnTop, bool, Bool, true, \
         QT_TRANSLATE_NOOP("ViewParams","Ignore section clip planes when rendering on top."))\
+    FC_VIEW_PARAM(SectionHatchTextureScale, float, Float, 1.0, \
+        QT_TRANSLATE_NOOP("ViewParams","Section filling texture image scale."))\
+    FC_VIEW_PARAM2(SectionHatchTexture, std::string, ASCII, ":icons/section-hatch.png", \
+        QT_TRANSLATE_NOOP("ViewParams","Section filling texture image path."))\
+    FC_VIEW_PARAM(SectionHatchTextureEnable, bool, Bool, true, \
+        QT_TRANSLATE_NOOP("ViewParams","Enable section fill texture."))\
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
     static const _ctype &get##_name() { return instance()->_##_name; }\
     static const _ctype &_name() { return instance()->_##_name; }\
+    static void remove##_name() {instance()->handle->Remove##_type(#_name);}\
     static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
     static void update##_name(ViewParams *self) { self->_##_name = self->handle->Get##_type(#_name,_def); }\
     static const char *doc##_name(); \
@@ -338,6 +345,7 @@ public:
 #define FC_VIEW_PARAM2(_name,_ctype,_type,_def,_doc) \
     static const _ctype &get##_name() { return instance()->_##_name; }\
     static void set##_name(const _ctype &_v) { instance()->handle->Set##_type(#_name,_v); instance()->_##_name=_v; }\
+    static void remove##_name() {instance()->handle->Remove##_type(#_name);}\
     void on##_name##Changed();\
     static void update##_name(ViewParams *self) { \
         auto _v = self->handle->Get##_type(#_name,_def); \
@@ -353,6 +361,8 @@ public:
     }
 
 private:
+    void remove(const char *);
+
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def,_doc) \
     _ctype _##_name;

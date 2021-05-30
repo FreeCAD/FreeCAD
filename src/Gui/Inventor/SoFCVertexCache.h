@@ -128,6 +128,8 @@ public:
   int getNumNonFlatParts(void) const; 
   const int *getNonFlatParts() const;
 
+  int getNumFaceParts() const;
+
   bool isElementSelectable() const;
   bool allowOnTopPattern() const;
 

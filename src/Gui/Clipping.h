@@ -67,6 +67,9 @@ protected Q_SLOTS:
     void on_checkBoxInvert_toggled(bool);
     void on_checkBoxConcave_toggled(bool);
     void on_checkBoxOnTop_toggled(bool);
+    void on_spinBoxHatchScale_valueChanged(double);
+    void on_checkBoxHatch_toggled(bool on);
+    void on_editHatchTexture_fileNameSelected(const QString &filename);
 
 public:
     void done(int);

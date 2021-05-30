@@ -26,6 +26,7 @@
 #include <map>
 #include "../InventorBase.h"
 
+class SoSFImage;
 class SoGLRenderAction;
 class SoGroup;
 class SoFCRenderCache;
@@ -80,6 +81,8 @@ public:
   void getBoundingBox(SbBox3f & bbox) const;
 
   SbFCUniqueId getSceneNodeId() const;
+
+  void setHatchImage(const void *dataptr, int nc, int width, int height);
 
 private:
   friend class SoFCRenderCacheManagerP;

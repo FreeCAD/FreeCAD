@@ -2,6 +2,7 @@
     <qresource prefix="/icons">
         <file>freecadsplash.png</file>
         <file>background.png</file>
+        <file>section-hatch.png</file>
         <file>mouse_pointer.svg</file>
         <file>Document.svg</file>
         <file>Feature.svg</file>

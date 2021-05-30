@@ -738,6 +738,14 @@ SoFCVertexCache::getNonFlatParts() const
   return getNumNonFlatParts() ? &PRIVATE(this)->nonflatparts[0] : nullptr;
 }
 
+int
+SoFCVertexCache::getNumFaceParts() const
+{
+  if (PRIVATE(this)->triangleindexer)
+    return PRIVATE(this)->triangleindexer->getNumParts();
+  return 0;
+}
+
 void
 SoFCVertexCacheP::render(SoState *state,
                          SoFCVertexArrayIndexer *indexer,

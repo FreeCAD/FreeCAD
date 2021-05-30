@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>311</width>
-    <height>512</height>
+    <width>335</width>
+    <height>573</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -179,6 +179,36 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="checkBoxHatch">
+       <property name="text">
+        <string>Hatch texture</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Hatch scale</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::FileChooser" name="editHatchTexture" native="true"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QDoubleSpinBox" name="spinBoxHatchScale">
+       <property name="decimals">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <double>100000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.100000000000000</double>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item row="7" column="0">
@@ -263,6 +293,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>groupBoxX</tabstop>
   <tabstop>clipX</tabstop>

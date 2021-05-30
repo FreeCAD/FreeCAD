@@ -121,6 +121,10 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     d->ui.checkBoxConcave->setChecked(ViewParams::getSectionConcave());
     d->ui.checkBoxOnTop->setChecked(ViewParams::getNoSectionOnTop());
     d->ui.checkBoxOnTop->setDisabled(ViewParams::getSectionConcave());
+    d->ui.checkBoxHatch->setChecked(ViewParams::getSectionHatchTextureEnable());
+    d->ui.editHatchTexture->setFileName(
+            QString::fromUtf8(ViewParams::getSectionHatchTexture().c_str()));
+    d->ui.spinBoxHatchScale->setValue(ViewParams::getSectionHatchTextureScale());
 
     d->ui.clipView->setRange(-INT_MAX,INT_MAX);
     d->ui.clipView->setSingleStep(0.1f);
@@ -456,6 +460,30 @@ void Clipping::on_dirZ_valueChanged(double)
     SbVec3f normal(x,y,z);
     if (normal.sqrLength() > 0.0f)
         d->clipView->plane.setValue(SbPlane(normal,pln.getDistanceFromOrigin()));
+}
+
+void Clipping::on_spinBoxHatchScale_valueChanged(double v)
+{
+    ViewParams::setSectionHatchTextureScale(v);
+    if (d->view)
+        d->view->getViewer()->redraw();
+}
+
+void Clipping::on_checkBoxHatch_toggled(bool on)
+{
+    ViewParams::setSectionHatchTextureEnable(on);
+    if (d->view)
+        d->view->getViewer()->redraw();
+}
+
+void Clipping::on_editHatchTexture_fileNameSelected(const QString &filename)
+{
+    if (filename.isEmpty())
+        ViewParams::removeSectionHatchTexture();
+    else
+        ViewParams::setSectionHatchTexture(filename.toUtf8().constData());
+    if (d->view)
+        d->view->getViewer()->redraw();
 }
 
 #include "moc_Clipping.cpp"

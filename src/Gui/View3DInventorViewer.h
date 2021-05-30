@@ -437,6 +437,8 @@ public:
     bool isEnabledVBO() const;
     void setRenderCache(int);
 
+    void updateHatchTexture();
+
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);

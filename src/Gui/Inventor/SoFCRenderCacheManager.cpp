@@ -1141,4 +1141,10 @@ SoFCRenderCacheManager::getSceneNodeId() const
   return PRIVATE(this)->sceneid;
 }
 
+void
+SoFCRenderCacheManager::setHatchImage(const void *dataptr, int nc, int width, int height)
+{
+  PRIVATE(this)->renderer->setHatchImage(dataptr, nc, width, height);
+}
+
 // vim: noai:ts=2:sw=2

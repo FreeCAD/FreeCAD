@@ -33,6 +33,7 @@
 # include <GL/gl.h>
 # endif
 # include <Inventor/SbBox.h>
+# include <Inventor/SbImage.h>
 # include <Inventor/SoEventManager.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGetMatrixAction.h>
@@ -87,6 +88,7 @@
 # include <QStatusBar>
 # include <QBitmap>
 # include <QMimeData>
+# include <QFileInfo>
 #endif
 
 #include <Inventor/sensors/SoTimerSensor.h>
@@ -142,6 +144,7 @@
 #include "SoFCSpotLight.h"
 #include "View3DInventorRiftViewer.h"
 #include "Utilities.h"
+#include "BitmapFactory.h"
 
 #include "Selection.h"
 #include "SoFCSelectionAction.h"
@@ -824,6 +827,8 @@ void View3DInventorViewer::init()
 
     naviCube = new NaviCube(this);
     naviCubeEnabled = true;
+
+    updateHatchTexture();
 }
 
 View3DInventorViewer::~View3DInventorViewer()
@@ -5608,6 +5613,42 @@ View3DInventorViewer::getPickedList(const std::vector<SbVec2f> &pts,
 void View3DInventorViewer::setTransparencyOnTop(float t)
 {
     pcGroupOnTopDispMode->transparency = t;
+}
+
+struct HatchTextureFile {
+    QDateTime date;
+    SbImage image;
+};
+
+static std::map<QString, HatchTextureFile> _HatchTextures;
+
+void View3DInventorViewer::updateHatchTexture()
+{
+    if (auto manager = selectionRoot->getRenderManager()) {
+        QString path = QString::fromUtf8(ViewParams::getSectionHatchTexture().c_str());
+        QDateTime date;
+        auto &entry = _HatchTextures[path];
+        if (!path.startsWith(QLatin1Char(':'))) {
+            QFileInfo finfo(path);
+            if (!finfo.exists()) {
+                manager->setHatchImage(nullptr,0,0,0);
+                return;
+            }
+            date = finfo.lastModified();
+        }
+        if (entry.date != date || !entry.image.hasData()) {
+            entry.date = date;
+            QImage img = QImage(path).convertToFormat(QImage::Format_ARGB32_Premultiplied);
+            SoSFImage tmp;
+            BitmapFactory().convert(img, tmp);
+            entry.image = tmp.getValue();
+        }
+        SbVec2s size;
+        int nc;
+        auto dataptr = entry.image.getValue(size,nc);
+        manager->setHatchImage(dataptr,nc,size[0],size[1]);
+        redraw();
+    }
 }
 
 #include "moc_View3DInventorViewer.cpp"

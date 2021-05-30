@@ -61,6 +61,8 @@ public:
 
   void getBoundingBox(SbBox3f & bbox) const;
 
+  void setHatchImage(const void *dataptr, int nc, int width, int height);
+
 private:
   friend class SoFCRenderCacheP;
   SoFCRendererP * pimpl;

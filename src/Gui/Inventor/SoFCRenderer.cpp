@@ -60,6 +60,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoPolygonOffsetElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
@@ -69,6 +70,8 @@
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoClipPlaneElement.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/annex/FXViz/elements/SoShadowStyleElement.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoMaterial.h>
@@ -160,6 +163,15 @@ enum RenderPass {
   RenderPassHighlight         = 4,
 };
 
+struct HatchTexture
+{
+  const void *data = nullptr;
+  GLuint texture = 0;
+  int refcount = 0;
+  int width = 100;
+  int height = 100;
+};
+
 class SoFCRendererP {
 public:
   SoFCRendererP()
@@ -170,6 +182,8 @@ public:
   ~SoFCRendererP()
   {
   }
+
+  void deleteHatchTexture();
 
   bool applyMaterial(SoGLRenderAction * action,
                      const Material & next,
@@ -261,7 +275,11 @@ public:
   bool shadowrendering = false;
   bool shadowmapping = false;
   bool transpshadowmapping = false;
+
+  HatchTexture *hatchtexture = nullptr;
 };
+
+static std::map<const void *, HatchTexture> _HatchTextures;
 
 SoFCRenderer::SoFCRenderer()
   : pimpl(new SoFCRendererP)
@@ -270,7 +288,60 @@ SoFCRenderer::SoFCRenderer()
 
 SoFCRenderer::~SoFCRenderer()
 {
+  PRIVATE(this)->deleteHatchTexture();
   delete pimpl;
+}
+
+void
+SoFCRendererP::deleteHatchTexture()
+{
+  if (!this->hatchtexture || --this->hatchtexture->refcount)
+    return;
+  glDeleteTextures(1, &this->hatchtexture->texture);
+  _HatchTextures.erase(this->hatchtexture->data);
+  this->hatchtexture = nullptr;
+}
+
+void
+SoFCRenderer::setHatchImage(const void *dataptr, int nc, int width, int height)
+{
+  if (!dataptr) {
+    PRIVATE(this)->deleteHatchTexture();
+    return;
+  }
+
+  auto &info = _HatchTextures[dataptr];
+  if (&info == PRIVATE(this)->hatchtexture)
+    return;
+
+  PRIVATE(this)->deleteHatchTexture();
+  ++info.refcount;
+  if (info.texture == 0) {
+    info.data = dataptr;
+    glGenTextures(1, &info.texture);
+    glBindTexture(GL_TEXTURE_2D, info.texture);
+
+    GLenum format;
+    switch (nc) {
+    case 1:
+      format = GL_LUMINANCE8;
+      break;
+    case 2:
+      format = GL_LUMINANCE8_ALPHA8;
+      break;
+    case 3:
+      format = GL_RGB8;
+      break;
+    case 4:
+    default:
+      format = GL_RGBA8;
+      break;
+    }
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, dataptr);
+    info.width = width;
+    info.height = height;
+  }
+  PRIVATE(this)->hatchtexture = &info;
 }
 
 static inline void
@@ -353,7 +424,8 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
 
   auto clippers = next.clippers;
   if (this->shadowmapping
-      || ((ViewParams::getNoSectionOnTop() || ViewParams::getSectionConcave())
+      || ((ViewParams::getNoSectionOnTop()
+          || (ViewParams::getSectionConcave() && clippers.getNum() > 1))
           && next.isOnTop()))
     clippers.clear();
 
@@ -371,13 +443,7 @@ SoFCRendererP::applyMaterial(SoGLRenderAction * action,
       for(auto & info : clippers.getData()) {
         if (!info.identity)
           SoModelMatrixElement::set(state, NULL, info.matrix);
-        auto clipper = static_cast<SoClipPlane*>(info.node.get());
-        if (ViewParams::getSectionConcave()) {
-          SbPlane plane(-clipper->plane.getValue().getNormal(),
-                        clipper->plane.getValue().getDistance(SbVec3f(0,0,0)));
-          SoClipPlaneElement::add(state, clipper, plane);
-        } else
-          SoClipPlaneElement::add(state, clipper, clipper->plane.getValue());
+        info.node->GLRender(action);
         if (!info.identity)
           SoModelMatrixElement::makeIdentity(state, NULL);
       }
@@ -1041,6 +1107,8 @@ SoFCRendererP::setupMatrix(SoState * state, const VertexCacheEntry * ventry)
 void
 SoFCRendererP::renderLines(SoState *state, int array, DrawEntry &draw_entry)
 {
+  if (this->depthwriteonly || this->shadowmapping)
+    return;
   bool noseam = ViewParams::getHiddenLineHideSeam()
     && draw_entry.ventry->partidx < 0
     && draw_entry.material->outline;
@@ -1050,6 +1118,8 @@ SoFCRendererP::renderLines(SoState *state, int array, DrawEntry &draw_entry)
 void
 SoFCRendererP::renderPoints(SoState *state, int array, DrawEntry &draw_entry)
 {
+  if (this->depthwriteonly || this->shadowmapping)
+    return;
   if (!ViewParams::getHiddenLineHideVertex()
       || draw_entry.ventry->partidx >= 0
       || !draw_entry.material->outline)
@@ -1069,10 +1139,14 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
           && (!ViewParams::getShowPreSelectedFaceOutline() || !highlight)))
     return;
 
+  SoState *state = action->getState();
+
   int numparts = draw_entry.ventry->cache->getNumNonFlatParts();
   int dummyparts[1];
-  const int *partindices;
-  if (numparts && drawidx < 0) {
+  const int *partindices = nullptr;
+  if (this->material.clippers.getNum() && drawidx < 0) {
+    numparts = draw_entry.ventry->cache->getNumFaceParts();
+  } else if (numparts && drawidx < 0) {
     partindices = draw_entry.ventry->cache->getNonFlatParts();
   } else {
     numparts = 1;
@@ -1082,8 +1156,13 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
 
   bool pushed = false;
   for (int i=0; i<numparts; ++i) {
-    if (drawidx >= 0 && drawidx != partindices[i])
-      continue;
+    int partidx;
+    if (partindices) {
+      if (drawidx >= 0 && drawidx != partindices[i])
+        continue;
+      partidx = partindices[i];
+    } else
+      partidx = i;
 
     if (!pushed) {
       pushed = true;
@@ -1117,17 +1196,17 @@ SoFCRendererP::renderOutline(SoGLRenderAction *action,
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
     glStencilFunc (GL_ALWAYS, 1, -1);
-    glStencilOp (GL_KEEP, GL_KEEP, GL_REPLACE);
+    glStencilOp (GL_KEEP, GL_REPLACE, GL_REPLACE);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    draw_entry.ventry->cache->renderTriangles(action->getState(),
+    draw_entry.ventry->cache->renderTriangles(state,
                                               SoFCVertexCache::NON_SORTED_ARRAY,
-                                              partindices[i]);
+                                              partidx);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glStencilFunc(GL_NOTEQUAL, 1, -1);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    draw_entry.ventry->cache->renderTriangles(action->getState(),
+    draw_entry.ventry->cache->renderTriangles(state,
                                               SoFCVertexCache::NON_SORTED_ARRAY,
-                                              partindices[i]);
+                                              partidx);
   }
   if (pushed)
     glPopAttrib();
@@ -1227,7 +1306,10 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
   glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
   FC_GLERROR_CHECK;
 
-  glPushAttrib(GL_ENABLE_BIT|GL_DEPTH_BUFFER_BIT);
+  glPushAttrib(GL_ENABLE_BIT
+      | GL_DEPTH_BUFFER_BIT
+      | (this->hatchtexture ? 
+          (GL_COLOR_BUFFER_BIT|GL_CURRENT_BIT|GL_TEXTURE_BIT): 0));
   FC_GLERROR_CHECK;
 
   glEnable(GL_DEPTH_TEST);
@@ -1269,27 +1351,54 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     unsigned char r = (col >> 24) & 0xff;
     unsigned char g = (col >> 16) & 0xff;
     unsigned char b = (col >> 8) & 0xff;
+    unsigned char a = col & 0xff;
     if (r > 120 && r < 140) r = 180; else r = 255 - r;
     if (g > 120 && g < 140) g = 180; else g = 255 - g;
     if (b > 120 && b < 140) b = 180; else b = 255 - b;
-    glColor4ub(r, g, b, col&0xff);
+    glColor4ub(r, g, b, a);
+  }
+
+  float hatchscale = std::max(1e-4f, 0.3f * ViewParams::getSectionHatchTextureScale());
+
+  auto hatch = this->hatchtexture;
+  if (!ViewParams::getSectionHatchTextureEnable())
+    hatch = nullptr;
+  if (hatch) {
+    glEnable(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, hatch->texture);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    SbViewVolume vv = SoViewVolumeElement::get(action->getState());
+    SbVec3f center = vv.getSightPoint(vv.getNearDist());
+    const SbViewportRegion & vp = SoViewportRegionElement::get(action->getState());
+    SbVec2s vp_size = vp.getViewportSizePixels();
+    float scale = hatchscale * vv.getWorldToScreenScale(center, 1.f);
+    // This gives the pixel size of the current world unit size
+    float pixelsize = vp_size[0] / scale;
+    // This gives the pixel width of the current drawing section plane
+    float width = draw_entry.radius * pixelsize;
+    // And now we have the texture scale
+    hatchscale = std::max(1e-3f, width / hatch->width);
   }
 
   glBegin(GL_QUADS);
-  if (concave) {
-    dir = -dir;
-    glNormal3fv(dir.getValue());
-    glVertex3fv(v4.getValue());
-    glVertex3fv(v3.getValue());
-    glVertex3fv(v2.getValue());
-    glVertex3fv(v1.getValue());
-  } else {
-    glNormal3fv(dir.getValue());
-    glVertex3fv(v1.getValue());
-    glVertex3fv(v2.getValue());
-    glVertex3fv(v3.getValue());
-    glVertex3fv(v4.getValue());
-  }
+  glNormal3fv(dir.getValue());
+  if(hatch)
+    glTexCoord2f(0.f, hatchscale);
+  glVertex3fv(v1.getValue());
+  if(hatch)
+    glTexCoord2f(0.f, 0.f);
+  glVertex3fv(v2.getValue());
+  if(hatch)
+    glTexCoord2f(hatchscale, 0.f);
+  glVertex3fv(v3.getValue());
+  if(hatch)
+    glTexCoord2f(hatchscale, hatchscale);
+  glVertex3fv(v4.getValue());
   glEnd();
   FC_GLERROR_CHECK;
 
@@ -1300,7 +1409,8 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     unsigned char r = (col >> 24) & 0xff;
     unsigned char g = (col >> 16) & 0xff;
     unsigned char b = (col >> 8) & 0xff;
-    glColor4ub(r, g, b, col&0xff);
+    unsigned char a = col & 0xff;
+    glColor4ub(r, g, b, a);
   }
 
   glDisable(GL_STENCIL_TEST);
@@ -1372,6 +1482,12 @@ SoFCRendererP::renderOpaque(SoGLRenderAction * action,
     int n = 0;
     bool pushed = false;
     while (renderSection(action, draw_entry, n, pushed)) {
+      if (!ViewParams::getSectionConcave()
+          && this->material.clippers.getNum() > 0
+          && SoCullElement::cullTest(state, draw_entry.bbox, FALSE))
+      {
+          continue;
+      }
       switch (draw_entry.material->type) {
       case Material::Triangle:
         if (&draw_entries != &this->slentries
@@ -1493,6 +1609,12 @@ SoFCRendererP::renderTransparency(SoGLRenderAction * action,
         bool pushed = false;
         int n = 0;
         while (renderSection(action, draw_entry, n, pushed)) {
+          if (!ViewParams::getSectionConcave()
+              && this->material.clippers.getNum() > 0
+              && SoCullElement::cullTest(state, draw_entry.bbox, FALSE))
+          {
+            continue;
+          }
           if (!notriangle) {
             if (!draw_entry.ventry->cache->hasTransparency()
                 || draw_entry.material->overrideflags.test(Material::FLAG_TRANSPARENCY))
