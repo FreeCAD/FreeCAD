@@ -33,7 +33,6 @@
 # include <GL/gl.h>
 # endif
 # include <Inventor/SbBox.h>
-# include <Inventor/SbImage.h>
 # include <Inventor/SoEventManager.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGetMatrixAction.h>
@@ -91,6 +90,7 @@
 # include <QFileInfo>
 #endif
 
+#include <Inventor/SbImage.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SoEventManager.h>
 #include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
