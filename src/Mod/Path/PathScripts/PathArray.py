@@ -75,38 +75,34 @@ class ObjectArray:
         return None
 
     def setEditorProperties(self, obj):
+        if obj.Type == 'Linear1D':
+            Angle = Centre = CopiesX = CopiesY = SwapDirection = 2
+            Copies = Offset = 0
+        elif obj.Type == 'Linear2D':
+            Angle = Copies = Centre = 2
+            CopiesX = CopiesY = Offset = SwapDirection = 0
+        elif obj.Type == 'Polar':
+            Angle = Copies = Centre = 0
+            CopiesX = CopiesY = Offset = SwapDirection = 2
+
+        obj.setEditorMode('Angle', Angle)
+        obj.setEditorMode('Copies', Copies)
+        obj.setEditorMode('Centre', Centre)
+        obj.setEditorMode('CopiesX', CopiesX)
+        obj.setEditorMode('CopiesY', CopiesY)
+        obj.setEditorMode('Offset', Offset)
+        obj.setEditorMode('SwapDirection', SwapDirection)
         obj.setEditorMode('JitterPercent', 0)
         obj.setEditorMode('JitterMagnitude', 0)
         obj.setEditorMode('ToolController', 2)
-        if obj.Type == 'Linear2D':
-            obj.setEditorMode('Angle', 2)
-            obj.setEditorMode('Copies', 2)
-            obj.setEditorMode('Centre', 2)
-
-            obj.setEditorMode('CopiesX', 0)
-            obj.setEditorMode('CopiesY', 0)
-            obj.setEditorMode('Offset', 0)
-            obj.setEditorMode('SwapDirection', False)
-        elif obj.Type == 'Polar':
-            obj.setEditorMode('Angle', 0)
-            obj.setEditorMode('Copies', 0)
-            obj.setEditorMode('Centre', 0)
-
-            obj.setEditorMode('CopiesX', 2)
-            obj.setEditorMode('CopiesY', 2)
-            obj.setEditorMode('Offset', 2)
-        elif obj.Type == 'Linear1D':
-            obj.setEditorMode('Angle', 2)
-            obj.setEditorMode('Copies', 0)
-            obj.setEditorMode('Centre', 2)
-
-            obj.setEditorMode('CopiesX', 2)
-            obj.setEditorMode('CopiesY', 2)
-            obj.setEditorMode('Offset', 0)
 
     def onChanged(self, obj, prop):
         if prop == "Type":
             self.setEditorProperties(obj)
+
+    def onDocumentRestored(self, obj):
+        """onDocumentRestored(obj) ... Called automatically when document is restored."""
+        self.setEditorProperties(obj)
 
     def rotatePath(self, path, angle, centre):
         '''
@@ -167,26 +163,74 @@ class ObjectArray:
 
         return newPath
 
-    def calculateJitter(self, obj, pos):
-        if random.randint(0,100) < obj.JitterPercent:
-            pos.x = pos.x + random.uniform(-obj.JitterMagnitude.x, obj.JitterMagnitude.y)
-            pos.y = pos.y + random.uniform(-obj.JitterMagnitude.y, obj.JitterMagnitude.y)
-            pos.z = pos.z + random.uniform(-obj.JitterMagnitude.z, obj.JitterMagnitude.z)
-        return pos
-
-
     def execute(self, obj):
-
         # backwards compatibility for PathArrays created before support for multiple bases
         if isinstance(obj.Base, list):
             base = obj.Base
         else:
             base = [obj.Base]
 
-        if len(base)==0:
+        if len(base) == 0:
             return
 
         obj.ToolController = base[0].ToolController
+
+        pa = PathArray(obj.Base, obj.Type, obj.Copies, obj.Offset,
+                       obj.CopiesX, obj.CopiesY, obj.Angle, obj.Centre, obj.SwapDirection,
+                       obj.JitterMagnitude, obj.JitterPercent, obj.Name)
+        obj.Path = pa.getPath()
+
+
+class PathArray:
+    """class PathArray ...
+    This class receives one or more base operations and repeats those operations
+    at set intervals based upon array type requested and the related settings for that type."""
+
+    def __init__(self, baseList, arrayType, copies, offsetVector,
+                 copiesX, copiesY, angle, centre, swapDirection,
+                 jitterMagnitude=FreeCAD.Vector(0, 0, 0), jitterPercent=0,
+                 seed='FreeCAD'):
+        self.baseList = list()
+        self.arrayType = arrayType  # ['Linear1D', 'Linear2D', 'Polar']
+        self.copies = copies
+        self.offsetVector = offsetVector
+        self.copiesX = copiesX
+        self.copiesY = copiesY
+        self.angle = angle
+        self.centre = centre
+        self.swapDirection = swapDirection
+        self.jitterMagnitude = jitterMagnitude
+        self.jitterPercent = jitterPercent
+        self.seed = seed
+
+        if baseList:
+            if isinstance(baseList, list):
+                self.baseList = baseList
+            else:
+                self.baseList = [baseList]
+
+    # Private method
+    def _calculateJitter(self, pos):
+        """_calculateJitter(pos) ...
+        Returns the position argument with a random vector shift applied."""
+        if self.jitterPercent == 0:
+            pass
+        elif random.randint(0,100) < self.jitterPercent:
+            pos.x = pos.x + random.uniform(-self.jitterMagnitude.x, self.jitterMagnitude.y)
+            pos.y = pos.y + random.uniform(-self.jitterMagnitude.y, self.jitterMagnitude.y)
+            pos.z = pos.z + random.uniform(-self.jitterMagnitude.z, self.jitterMagnitude.z)
+        return pos
+
+    # Public method
+    def getPath(self):
+        """getPath() ... Call this method on an instance of the class to generate and return
+        path data for the requested path array."""
+
+        if len(self.baseList) == 0:
+            PathLog.error(translate("PathArray", "No base objects for PathArray."))
+            return None
+
+        base = self.baseList
         for b in base:
             if not b.isDerivedFrom("Path::Feature"):
                 return
@@ -194,17 +238,18 @@ class ObjectArray:
                 return
             if not b.ToolController:
                 return
-            if b.ToolController != obj.ToolController:
+            if b.ToolController != base[0].ToolController:
                 # this may be important if Job output is split by tool controller
-                PathLog.warning(QtCore.QT_TRANSLATE_NOOP("App::Property",'Arrays of paths having different tool controllers are handled according to the tool controller of the first path.'))
+                PathLog.warning(translate("PathArray", "Arrays of paths having different tool controllers are handled according to the tool controller of the first path."))
 
         # build copies
         output = ""
-        random.seed(obj.Name)
-        if obj.Type == 'Linear1D':
-            for i in range(obj.Copies):
-                pos = FreeCAD.Vector(obj.Offset.x * (i + 1), obj.Offset.y * (i + 1), 0)
-                pos = self.calculateJitter(obj, pos)
+        random.seed(self.seed)
+
+        if self.arrayType == 'Linear1D':
+            for i in range(self.copies):
+                pos = FreeCAD.Vector(self.offsetVector.x * (i + 1), self.offsetVector.y * (i + 1), 0)
+                pos = self._calculateJitter(pos)
 
                 for b in base:
                     pl = FreeCAD.Placement()
@@ -213,15 +258,15 @@ class ObjectArray:
                                     for cm in b.Path.Commands])
                     output += np.toGCode()
 
-        elif obj.Type == 'Linear2D':
-            if obj.SwapDirection:
-                for i in range(obj.CopiesY + 1):
-                    for j in range(obj.CopiesX + 1):
+        elif self.arrayType == 'Linear2D':
+            if self.swapDirection:
+                for i in range(self.copiesY + 1):
+                    for j in range(self.copiesX + 1):
                         if (i % 2) == 0:
-                            pos = FreeCAD.Vector(obj.Offset.x * j, obj.Offset.y * i, 0)
+                            pos = FreeCAD.Vector(self.offsetVector.x * j, self.offsetVector.y * i, 0)
                         else:
-                            pos = FreeCAD.Vector(obj.Offset.x * (obj.CopiesX - j), obj.Offset.y * i, 0)
-                        pos = self.calculateJitter(obj, pos)
+                            pos = FreeCAD.Vector(self.offsetVector.x * (self.copiesX - j), self.offsetVector.y * i, 0)
+                        pos = self._calculateJitter(pos)
 
                         for b in base:
                             pl = FreeCAD.Placement()
@@ -231,13 +276,13 @@ class ObjectArray:
                                 np = Path.Path([cm.transform(pl) for cm in b.Path.Commands])
                                 output += np.toGCode()
             else:
-                for i in range(obj.CopiesX + 1):
-                    for j in range(obj.CopiesY + 1):
+                for i in range(self.copiesX + 1):
+                    for j in range(self.copiesY + 1):
                         if (i % 2) == 0:
-                            pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * j, 0)
+                            pos = FreeCAD.Vector(self.offsetVector.x * i, self.offsetVector.y * j, 0)
                         else:
-                            pos = FreeCAD.Vector(obj.Offset.x * i, obj.Offset.y * (obj.CopiesY - j), 0)
-                        pos = self.calculateJitter(obj, pos)
+                            pos = FreeCAD.Vector(self.offsetVector.x * i, self.offsetVector.y * (self.copiesY - j), 0)
+                        pos = self._calculateJitter(pos)
 
                         for b in base:
                             pl = FreeCAD.Placement()
@@ -246,20 +291,18 @@ class ObjectArray:
                                 pl.move(pos)
                                 np = Path.Path([cm.transform(pl) for cm in b.Path.Commands])
                                 output += np.toGCode()
-
-
+            # Eif
         else:
-            for i in range(obj.Copies):
+            for i in range(self.copies):
                 for b in base:
                     ang = 360
-                    if obj.Copies > 0:
-                        ang = obj.Angle / obj.Copies * (1 + i)
-                    np = self.rotatePath(b.Path.Commands, ang, obj.Centre)
+                    if self.copies > 0:
+                        ang = self.angle / self.copies * (1 + i)
+                    np = self.rotatePath(b.Path.Commands, ang, self.centre)
                     output += np.toGCode()
 
-        # print output
-        path = Path.Path(output)
-        obj.Path = path
+        # return output
+        return Path.Path(output)
 
 
 class ViewProviderArray:
