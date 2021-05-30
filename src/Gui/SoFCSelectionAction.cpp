@@ -1624,13 +1624,18 @@ void SoFCRayPickAction::doPick(SoNode *node)
                 state->getElementNoPush(SoClipPlaneElement::getClassStackIndex()));
         if (element && element->getNum()) {
             if (!resetclipplane) {
-                setPickAll(TRUE);
-                pushed = true;
-                state->push();
-                element = static_cast<SoClipPlaneElement*>(
-                        state->getElement(SoClipPlaneElement::getClassStackIndex()));
+                if (element->getNum() < 2)
+                    element = nullptr;
+                else {
+                    setPickAll(TRUE);
+                    pushed = true;
+                    state->push();
+                    element = static_cast<SoClipPlaneElement*>(
+                            state->getElement(SoClipPlaneElement::getClassStackIndex()));
+                }
             }
-            element->init(state);
+            if (element)
+                element->init(state);
         }
     }
     node->rayPick(this);
