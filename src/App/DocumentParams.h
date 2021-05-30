@@ -99,8 +99,10 @@ public:
     void on##_name##Changed();\
     static void update##_name(DocumentParams *self) { \
         auto _v = self->handle->Get##_type(#_name,_def); \
-        if (self->_##_name != _v)\
+        if (self->_##_name != _v) {\
+            self->_##_name = _v;\
             self->on##_name##Changed();\
+        }\
     }\
 
     FC_DOCUMENT_PARAMS

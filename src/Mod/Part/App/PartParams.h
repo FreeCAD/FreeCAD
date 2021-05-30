@@ -84,8 +84,10 @@ public:
     void on##_name##Changed();\
     static void update##_name(PartParams *self) { \
         auto _v = self->handle->Get##_type(#_name,_def); \
-        if (self->_##_name != _v) \
+        if (self->_##_name != _v) {\
+            self->_##_name = _v;\
             self->on##_name##Changed();\
+        }\
     }\
 
     FC_APP_PART_PARAMS

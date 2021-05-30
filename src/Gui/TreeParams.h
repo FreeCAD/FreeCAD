@@ -148,8 +148,10 @@ public:
     void on##_name##Changed();\
     static void update##_name(TreeParams *self) { \
         auto _v = self->handle->Get##_type(#_name,_def); \
-        if (self->_##_name != _v) \
+        if (self->_##_name != _v) {\
+            self->_##_name = _v;\
             self->on##_name##Changed();\
+        }\
     }\
     static const char *doc##_name(); \
 
