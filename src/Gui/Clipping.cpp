@@ -225,11 +225,9 @@ void Clipping::onViewDestroyed(QObject *o)
     _Clippings.erase(o);
     auto parent = parentWidget();
     if (parent) {
-        if (_StackedWidget && _StackedWidget->count() > 1) {
-            // Qt will crash if we are the last and docked as overlay widgets.
-            // So just let it be as a workaround.
+        parent = parent->parentWidget();
+        if (parent)
             parent->deleteLater();
-        }
     }
 }
 
@@ -246,8 +244,6 @@ static QWidget *bindView(Gui::View3DInventor *view)
         scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         auto clipping = new Clipping(view, scrollArea);
         scrollArea->setWidget(clipping);
-        if (_StackedWidget->count() == 1  && _Clippings.size() == 1)
-            _StackedWidget->widget(0)->deleteLater(); // clean orphan widget, see onViewDestroyed()
         _StackedWidget->addWidget(scrollArea);
     }
     _StackedWidget->setCurrentWidget(scrollArea);
@@ -291,7 +287,7 @@ void Clipping::toggle()
 /** Destroys the object and frees any allocated resources */
 Clipping::~Clipping()
 {
-    if (d->node) {
+    if (d->view) {
         d->node->removeChild(d->clipX);
         d->node->removeChild(d->clipY);
         d->node->removeChild(d->clipZ);
