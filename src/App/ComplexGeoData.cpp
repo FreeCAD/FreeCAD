@@ -588,7 +588,13 @@ public:
                 if (tokens.size() > 1) {
                     child.sids.reserve(tokens.size()-1);
                     for (unsigned k=1; k<tokens.size(); ++k) {
-                        long n = strtol(tokens[k].c_str(), nullptr, 16);
+                        // The element child string ID is saved as decimal
+                        // instead of hex by accident. To simplify maintainance
+                        // of backward compatibility, it is not corrected, and
+                        // just restored as decimal here.
+                        //
+                        // long n = strtol(tokens[k].c_str(), nullptr, 16);
+                        long n = strtol(tokens[k].c_str(), nullptr, 10);
                         auto sid = hasher->getID(n);
                         if (!sid)
                             childSIDWarn = "Missing element child string id";
