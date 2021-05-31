@@ -165,11 +165,13 @@ enum RenderPass {
 
 struct HatchTexture
 {
-  const void *data = nullptr;
+  const void *key = nullptr;
+  std::vector<unsigned char> data;
   GLuint texture = 0;
   int refcount = 0;
   int width = 100;
   int height = 100;
+  int nc = 0;
 };
 
 class SoFCRendererP {
@@ -297,8 +299,9 @@ SoFCRendererP::deleteHatchTexture()
 {
   if (!this->hatchtexture || --this->hatchtexture->refcount)
     return;
-  glDeleteTextures(1, &this->hatchtexture->texture);
-  _HatchTextures.erase(this->hatchtexture->data);
+  if (this->hatchtexture->texture)
+    glDeleteTextures(1, &this->hatchtexture->texture);
+  _HatchTextures.erase(this->hatchtexture->key);
   this->hatchtexture = nullptr;
 }
 
@@ -315,31 +318,13 @@ SoFCRenderer::setHatchImage(const void *dataptr, int nc, int width, int height)
     return;
 
   PRIVATE(this)->deleteHatchTexture();
-  ++info.refcount;
-  if (info.texture == 0) {
-    info.data = dataptr;
-    glGenTextures(1, &info.texture);
-    glBindTexture(GL_TEXTURE_2D, info.texture);
-
-    GLenum format;
-    switch (nc) {
-    case 1:
-      format = GL_LUMINANCE8;
-      break;
-    case 2:
-      format = GL_LUMINANCE8_ALPHA8;
-      break;
-    case 3:
-      format = GL_RGB8;
-      break;
-    case 4:
-    default:
-      format = GL_RGBA8;
-      break;
-    }
-    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, dataptr);
+  if (++info.refcount == 1) {
     info.width = width;
     info.height = height;
+    info.nc = nc;
+    info.key = dataptr;
+    info.data.resize(nc * width * height);
+    memcpy(&info.data[0], dataptr, info.data.size());
   }
   PRIVATE(this)->hatchtexture = &info;
 }
@@ -1365,12 +1350,17 @@ SoFCRendererP::renderSection(SoGLRenderAction *action,
     hatch = nullptr;
   if (hatch) {
     glEnable(GL_TEXTURE_2D);
-
-    glBindTexture(GL_TEXTURE_2D, hatch->texture);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    if (hatch->texture == 0) {
+      glGenTextures(1, &hatch->texture);
+      glBindTexture(GL_TEXTURE_2D, hatch->texture);
+      glTexImage2D(GL_TEXTURE_2D, 0, hatch->nc,
+          hatch->width, hatch->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &hatch->data[0]);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    } else
+      glBindTexture(GL_TEXTURE_2D, hatch->texture);
 
     SbViewVolume vv = SoViewVolumeElement::get(action->getState());
     SbVec3f center = vv.getSightPoint(vv.getNearDist());
