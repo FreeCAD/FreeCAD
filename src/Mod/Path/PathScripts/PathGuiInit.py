@@ -39,23 +39,17 @@ def Startup():
         PathLog.debug('Initializing PathGui')
         from PathScripts import PathAdaptiveGui
         from PathScripts import PathArray
-        try:
-            import camotics
-        except ImportError:
-            import FreeCAD
-            FreeCAD.Console.PrintError("Camotics is not available.\n")
-        else:
-            from PathScripts import PathCamoticsGui
         from PathScripts import PathComment
+        # from PathScripts import PathCustom
         from PathScripts import PathCustomGui
         from PathScripts import PathDeburrGui
         from PathScripts import PathDressupAxisMap
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
-        from PathScripts import PathDressupLeadInOut
-        from PathScripts import PathDressupPathBoundaryGui
         from PathScripts import PathDressupRampEntry
+        from PathScripts import PathDressupPathBoundaryGui
         from PathScripts import PathDressupTagGui
+        from PathScripts import PathDressupLeadInOut
         from PathScripts import PathDressupZCorrect
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
@@ -68,20 +62,26 @@ def Startup():
         from PathScripts import PathPocketShapeGui
         from PathScripts import PathPost
         from PathScripts import PathProbeGui
+        # from PathScripts import PathProfileContourGui
+        # from PathScripts import PathProfileEdgesGui
+        # from PathScripts import PathProfileFacesGui
         from PathScripts import PathProfileGui
         from PathScripts import PathPropertyBagGui
         from PathScripts import PathSanity
         from PathScripts import PathSetupSheetGui
         from PathScripts import PathSimpleCopy
         from PathScripts import PathSimulatorGui
+        from PathScripts import PathCamoticsGui
         from PathScripts import PathSlotGui
         from PathScripts import PathStop
+        # from PathScripts import PathSurfaceGui  # Added in initGui.py due to OCL dependency
         from PathScripts import PathThreadMillingGui
         from PathScripts import PathToolController
         from PathScripts import PathToolControllerGui
-        from PathScripts import PathToolLibraryEditor
         from PathScripts import PathToolLibraryManager
+        from PathScripts import PathToolLibraryEditor
         from PathScripts import PathUtilsGui
+        # from PathScripts import PathWaterlineGui  # Added in initGui.py due to OCL dependency
         from PathScripts import PathVcarveGui
         Processed = True
     else:
